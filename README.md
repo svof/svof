@@ -16,9 +16,9 @@ Svof is licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.
 
 1. Obtain Svof source code. Either clone using Git (which will allow you to easily update the Svof code and contribute back) or a [zip snapshot](https://github.com/svof/svof/archive/master.zip) (which doesn't require knowledge of Git).
 1. Uninstall Svof/Svof you currently have installed. This is necessary to run the developer version of the system.
-1. Install Lua, LuaFileSystem, Penlight, and 7zip.
+1. Install Lua, LuaFileSystem, LuaRocks, Penlight, and 7zip.
     1. Windows: download and install latest [LuaForWindows](https://github.com/rjpcomputing/luaforwindows/releases), which all the Lua components indluded. Install 7zip [from here](http://www.7-zip.org/download.html).
-    1. Ubuntu: install [Lua](https://apps.ubuntu.com/cat/applications/lua5.1/), [LuaFileSystem](https://apps.ubuntu.com/cat/applications/lua-filesystem/), [Penlight](https://apps.ubuntu.com/cat/applications/lua-penlight/), and [7zip](https://apps.ubuntu.com/cat/applications/p7zip-full/).
+    1. Ubuntu: install [Lua](https://apps.ubuntu.com/cat/applications/lua5.1/), [LuaFileSystem](https://apps.ubuntu.com/cat/applications/lua-filesystem/), [LuaRocks](https://apps.ubuntu.com/cat/applications/luarocks/), [Penlight](https://apps.ubuntu.com/cat/applications/lua-penlight/), and [7zip](https://apps.ubuntu.com/cat/applications/p7zip-full/).
     1. OSX: haven't got a Mac, someone fill this in.
 1. Open the command-line and navigate to the Svof folder, and run:
 
