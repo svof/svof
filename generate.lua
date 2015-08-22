@@ -238,6 +238,9 @@ local function dowork(systemfor, release, own)
     file.copy(cwd.."/svo ("..addon..").xml", cwd.."/svo template/svo ("..addon..").xml")
   end
 
+  -- copy main system in
+  file.copy(cwd.."/svo (install the zip, not me).xml", cwd.."/svo template/svo (install the zip, not me).xml")
+
   print("Making a package...")
   local cmd = [[7z a -tzip "]]..systemfor..[[ svo" "]]..cwd..[[/svo template/*" > NUL:]]
   os.execute(cmd)
