@@ -346,6 +346,7 @@ end)
 
 signals.gmcpcharname:connect(function()
   innews = nil
+  sk.logged_in = true
 end)
 
 signals.gmcpcharstatus:connect(function()
