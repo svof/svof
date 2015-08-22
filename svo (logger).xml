@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.0">
+    <TriggerPackage/>
+    <TimerPackage/>
+    <AliasPackage>
+        <AliasGroup isActive="yes" isFolder="yes">
+            <name>HTML5 logger</name>
+            <script></script>
+            <command></command>
+            <packageName></packageName>
+            <regex></regex>
+            <Alias isActive="yes" isFolder="no">
+                <name>(startlog) Start logging</name>
+                <script>html5log.recording_stopwatch = createStopWatch()
+startStopWatch(html5log.recording_stopwatch)
+
+html5log.current_data = {[[
+
+&lt;html&gt;
+    &lt;head&gt;
+    &lt;style&gt;
+            /* http://meyerweb.com/eric/tools/css/reset/
+               v2.0 | 20110126
+               License: none (public domain)
+            */
+            html, body, div, span, applet, object, iframe,
+            h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+            a, abbr, acronym, address, big, cite, code,
+            del, dfn, em, img, ins, kbd, q, s, samp,
+            small, strike, strong, sub, sup, tt, var,
+            b, u, i, center,
+            dl, dt, dd, ol, ul, li,
+            fieldset, form, label, legend,
+            table, caption, tbody, tfoot, thead, tr, th, td,
+            article, aside, canvas, details, embed,
+            figure, figcaption, footer, header, hgroup,
+            menu, nav, output, ruby, section, summary,
+            time, mark, audio, video {
+                    margin: 0;
+                    padding: 0;
+                    border: 0;
+                    font-size: 100%;
+                    font: inherit;
+                    vertical-align: baseline;
+            }
+            /* HTML5 display-role reset for older browsers */
+            article, aside, details, figcaption, figure,
+            footer, header, hgroup, menu, nav, section {
+                    display: block;
+            }
+            body {
+                    line-height: 1;
+            }
+            ol, ul {
+                    list-style: none;
+            }
+            blockquote, q {
+                    quotes: none;
+            }
+            blockquote:before, blockquote:after,
+            q:before, q:after {
+                    content: '';
+                    content: none;
+            }
+            table {
+                    border-collapse: collapse;
+                    border-spacing: 0;
+            }
+            html, body {
+                    background: #000;
+                    color: silver;
+                    margin: 10px;
+                    font-size: 13px;
+                    font-family: 'Arial',sans-serif;
+            }
+            p, h2, pre {
+                    padding: 1px;
+                    margin: -1px;
+                    clear: both;
+            }
+            A:link, A:visited, A:active {
+                    color: #327CE3;
+                    text-decoration: none;
+            }
+            A:hover {
+                    color: #fff;
+            }
+            h1 {
+                    font-size: 30px;
+                    margin: 0;
+                    padding: 0;
+            }
+            h2 {color: #327CE3;}
+            td {vertical-align: top;}
+            .clear {clear: both; height: 5px;}
+            .break {line-height: 100%; margin: 0; padding:0px; padding: 1px 0;}
+            .tnc_bg_default {background: #111;}
+            .tnc_default {color: silver;}
+            .tnc_bright .tnc_default {color: #fff;}
+            .tnc_normal {font-weight:normal;}
+            .tnc_bold {font-weight: bold;}
+            .tnc_inverse {color: black; background: white;}
+            .tnc_black {color: black;}
+            .tnc_red {color: #800000;}
+            .tnc_green {color: #00b300;}
+            .tnc_yellow {color: #808000;}
+            .tnc_blue {color: #000080;}
+            .tnc_magenta {color: #800080;}
+            .tnc_cyan {color: #008080;}
+            .tnc_white {color: silver;}
+            .tnc_bright .tnc_black {color: #464646;}
+            .tnc_bright .tnc_red {color: #ff0000;}
+            .tnc_bright .tnc_green {color: #00ff00;}
+            .tnc_bright .tnc_yellow {color: #ffff00;}
+            .tnc_bright .tnc_blue {color: #0000ff;}
+            .tnc_bright .tnc_magenta {color: #ff00ff;}
+            .tnc_bright .tnc_cyan {color: #00ffff;}
+            .tnc_bright .tnc_white {color: white;}
+            .tnc_bg_black {background-color: black;}
+            .tnc_bg_red {background-color: #800000;}
+            .tnc_bg_green {background-color: #00b300;}
+            .tnc_bg_yellow {background-color: #808000;}
+            .tnc_bg_blue {background-color: #000080;}
+            .tnc_bg_magenta {background-color: #ff00ff;}
+            .tnc_bg_cyan {background-color: #008080;}
+            .tnc_bg_white {background-color: silver;}
+            #options {
+                position:fixed;
+                top:0;
+                left: 0;
+                background: #242424;
+                border-bottom: 1px solid #464646;
+                width: 100%;
+                height: 50px;
+            }
+            #current_time, #save {
+                float:right;
+                min-width: 150px;
+                height: 25px;
+                background: #000;
+                border: 1px solid #464646;
+                margin: 5px;
+                padding: 5px;
+                padding-top: 10px;
+                font-size: 24px;
+                text-align: center;
+            }
+            #buttons {
+                margin-left: 10px;
+                margin-top: 15px;
+            }
+            #log {
+                padding-top: 55px;
+                word-wrap: break-word;
+                white-space: pre-wrap;
+                font-family: monospace;
+            }
+            #log p {
+	            padding: 0px;
+	            margin: 0px;
+	            line-height: 120%;
+	            clear: both;
+	       }
+    &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    var log;
+    var first_offset = 0;
+    var last_index = 0;
+    var timer;
+    var display_time = function () {
+        document.getElementById(&quot;current_time&quot;).style.color = &quot;white&quot;;
+        document.getElementById(&quot;current_time&quot;).innerHTML = parseFloat(log[last_index].offset/1000) + &quot; sec.&quot;;
+    }
+    var pause = function() {
+        clearTimeout(timer);
+        display_time();
+        document.getElementById(&quot;current_time&quot;).style.color = &quot;red&quot;;
+    }
+    var rewind = function (time)
+    {
+        current_time = parseInt(log[last_index].offset);
+        var target_time = current_time - time;
+        var target_index = -1;
+        for (var i=0; i&lt;last_index; i++)
+        {
+            if (parseInt(log[i].offset) &lt;= target_time)
+            {
+                target_index = i;
+            }
+        }
+        if (target_index == -1)
+            target_index = log.length - 1;
+        for (var j=target_index; j&lt;log.length; j++)
+        {
+            remove_segment(j);
+        }
+        last_index = target_index;
+        if (last_index &lt; 0)
+            last_index = 0;
+        pause();
+    }
+    var fast_forward = function (time) {
+        current_time = parseInt(log[last_index].offset);
+        var target_time = current_time + time;
+        var target_index = -1;
+        for (var i=last_index; i&lt;log.length; i++)
+        {
+            if (parseInt(log[i].offset) &lt;= target_time)
+            {
+                target_index = i;
+            }
+        }
+        if (target_index == -1)
+            target_index = log.length - 1;
+        for (var j=last_index; j&lt;=target_index; j++)
+        {
+            display_segment(j);
+            last_index = j;
+        }
+        last_index++;
+        if (last_index &gt;= log.length)
+            last_index = 0;
+        pause();
+    };
+    var replay = function () {
+        if (last_index == 0)
+            document.getElementById(&quot;log&quot;).innerHTML = &quot;&quot;;
+        display_time();
+        display_segment(last_index);
+        if (last_index &lt; log.length)
+            timer = setTimeout(&quot;replay()&quot;, (log[last_index].offset-log[last_index-1].offset));
+        else
+            last_index = 0;
+    };
+    var remove_segment = function (i, no_scroll) {
+        var elem = document.getElementById(log[i].offset);
+        if (elem)
+            elem.parentNode.removeChild(elem);
+        if (!no_scroll || no_scroll !== true)
+            window.scrollTo(0, document.body.scrollHeight);
+    };
+    var display_segment = function (i, no_scroll) {
+        var elem = document.createElement(&quot;div&quot;);
+        elem.setAttribute(&quot;id&quot;, log[i].offset);
+        elem.innerHTML = &quot;&lt;div&gt;&quot;;
+        offset = log[i].offset;
+        while (i &lt; log.length &amp;&amp; log[i].offset == offset)
+        {
+            elem.innerHTML += &quot;&lt;div&gt;&quot; + log[i].message + &quot;&lt;/div&gt;&quot;;
+            i++;
+        }
+        last_index = i;
+        elem.innerHTML += &quot;&lt;/div&gt;&quot;;
+        document.getElementById(&quot;log&quot;).appendChild(elem);
+        if (!no_scroll || no_scroll !== true)
+            window.scrollTo(0, document.body.scrollHeight);
+    };
+    var build_log_array = function ()
+    {
+        log = [];
+        var elems = getElementsByClassName(document, &quot;log&quot;);
+        for (i in elems)
+        {
+		if (log[log.length-1] &amp;&amp; log[log.length-1].offset == elems[i].getAttribute(&quot;id&quot;))
+		{
+			log[log.length-1].message += elems[i].innerHTML;
+		} else {
+			log[log.length] = {offset : elems[i].getAttribute(&quot;id&quot;), message: &quot;&lt;div&gt;&quot; + elems[i].innerHTML + &quot;&lt;/div&gt;&quot;};
+		}
+        }
+        first_offset = log[0].offset;
+    }
+    var display_all = function () {
+        setTimeout(function () {
+            for (var i = 0; i &lt; log.length; i++)
+                display_segment(i, true);
+        }, 0);
+    }
+    function add_event(obj, evType, fn){
+     if (obj.addEventListener){
+       obj.addEventListener(evType, fn, false);
+       return true;
+     } else if (obj.attachEvent){
+       var r = obj.attachEvent(&quot;on&quot;+evType, fn);
+       return r;
+     } else {
+       return false;
+     }
+    }
+    function getElementsByClassName(node,classname) {
+      if (node.getElementsByClassName) { // use native implementation if available
+        return node.getElementsByClassName(classname);
+      } else {
+        return (function getElementsByClass(searchClass,node) {
+            if ( node == null )
+              node = document;
+            var classElements = [],
+                els = node.getElementsByTagName(&quot;*&quot;),
+                elsLen = els.length,
+                pattern = new RegExp(&quot;(^|\s)&quot;+searchClass+&quot;(\s|$)&quot;), i, j;
+            for (i = 0, j = 0; i &lt; elsLen; i++) {
+              if ( pattern.test(els[i].className) ) {
+                  classElements[j] = els[i];
+                  j++;
+              }
+            }
+            return classElements;
+        })(classname, node);
+      }
+    }
+    add_event(window, &quot;load&quot;, function () {build_log_array()});
+&lt;/script&gt;
+&lt;div id=&quot;options&quot;&gt;
+    &lt;div id=&quot;current_time&quot;&gt;&lt;/div&gt;
+    &lt;div id=&quot;buttons&quot;&gt;
+        &lt;input type=&quot;button&quot; onclick=&quot;replay()&quot; value=&quot;Play Log&quot; /&gt;
+        &lt;input type=&quot;button&quot; onclick=&quot;pause()&quot; value=&quot;Pause&quot;/&gt;
+        &lt;input type=&quot;button&quot; onclick=&quot;rewind(10000)&quot; value=&quot;&lt;&lt;&quot; title=&quot;Rewind 10 Seconds&quot;/&gt;
+        &lt;input type=&quot;button&quot; onclick=&quot;rewind(5000)&quot; value=&quot;&lt;&quot; title=&quot;Rewind 5 Seconds&quot;/&gt;
+        &lt;input type=&quot;button&quot; onclick=&quot;fast_forward(5000)&quot; value=&quot;&gt;&quot; title=&quot;Fast Forward 5 Seconds&quot;/&gt;
+        &lt;input type=&quot;button&quot; onclick=&quot;fast_forward(10000)&quot; value=&quot;&gt;&gt;&quot; title=&quot;Fast Forward 10 Seconds&quot;/&gt;
+        &lt;p id=&quot;save&quot;&gt;Press &lt;strong&gt;CTRL-S&lt;/strong&gt; to save the log on your computer&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;log&quot; class=&quot;tnc_default&quot;&gt;
+]]}
+
+html5log.inbetween = {}
+
+--enableTrigger(&quot;Capture each line&quot;)
+--enableTrigger(&quot;Record on the prompt&quot;)
+
+if html5log.trig then killTrigger(html5log.trig) end
+html5log.trig = tempRegexTrigger(&quot;^&quot;, &quot;html5log.recordline()&quot;)
+
+html5log.showlabel()
+cecho(&quot;\nStarted logging... use 'stoplog' to stop.&quot;)
+</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^startlog$</regex>
+            </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>(stoplog) Stop logging</name>
+                <script>html5log_stoplogging()</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^stoplog$</regex>
+            </Alias>
+        </AliasGroup>
+    </AliasPackage>
+    <ActionPackage/>
+    <ScriptPackage>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>HTML5 logger</name>
+            <packageName></packageName>
+            <script>html5log = html5log or {}
+
+function html5log.recordcurrentline()
+  local line_num, cur_line = getLineNumber(), getCurrentLine()
+
+  local output, tc = {}, 1
+  local index = 0
+  local r,g,b = 0,0,0
+  local br,bg,bb = 0,0,0
+  local cbr,cbg,cbb --last bg colors
+  local cr,cg,cb -- last colors
+  local tc = 1 -- table count
+
+  while index &lt; #cur_line do
+    index = index + 1
+
+    if moveCursor(&quot;main&quot;, index, line_num) and selectString(cur_line:sub(index), 1) then
+      r,g,b = getFgColor()
+      br,bg,bb = getBgColor()
+      if cr ~= r or cg ~= g or cb ~= b or cbr ~= br or cbg ~= bg or cbb ~= bb then
+        cr,cg,cb = r,g,b
+        cbr,cbg,cbb = br,bg,bb
+        if tc == 1 then
+          output[tc] = string.format(&quot;&lt;span style=\'color: rgb(%d,%d,%d);background: rgb(%d,%d,%d);'&gt;%s&quot;, r,g,b,br,bg,bb, cur_line:sub(index, index))
+        else
+          output[tc] = string.format(&quot;&lt;/span&gt;&lt;span style=\'color: rgb(%d,%d,%d);background: rgb(%d,%d,%d);'&gt;%s&quot;, r,g,b,br,bg,bb, cur_line:sub(index, index))
+        end
+        tc = tc +1
+      else
+        output[tc] = cur_line:sub(index, index)
+        tc = tc +1
+      end
+      cur_line:sub(index, index)
+    end
+  end
+  output[#output+1] = &quot;&lt;/span&gt;&quot;
+
+  return table.concat(output)
+end
+
+function html5log_stoplogging()
+  disableTrigger(&quot;Capture each line&quot;)
+  disableTrigger(&quot;Record on the prompt&quot;)
+
+  html5log.current_data[#html5log.current_data+1] = [[&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;]]
+
+
+  local logfile = getMudletHomeDir()..&quot;/svolog.html&quot;
+  local file_output = io.open(logfile, &quot;w&quot;)
+
+
+  local conversions = {
+    [&quot;¦&quot;] = &quot;&amp;brvbar;&quot;,
+    [&quot;×&quot;] = &quot;&amp;times;&quot;,
+    [&quot;«&quot;] = &quot;&amp;#171;&quot;,
+    [&quot;»&quot;] = &quot;&amp;raquo;&quot;
+  }
+
+
+  local s = table.concat(html5log.current_data)
+
+  for from, to in pairs(conversions) do
+    s = string.gsub(s, from, to)
+  end
+
+  file_output:write(s)
+  file_output:close()
+
+  -- this can use quite a bit of memory on a large buffer, so free it up right away
+  collectgarbage(&quot;collect&quot;)
+  local location = [[file:///]]..logfile:gsub([[\]], &quot;/&quot;)
+  cecho(&quot;\n&lt;cyan&gt;Log recording finished, opening &lt;cyan&gt;&quot;..location..&quot;.&quot;)
+  openUrl(location)
+
+  html5log.current_data = nil
+  html5log.inbetween = nil
+  if html5log.trig then killTrigger(html5log.trig) end
+  html5log.trig = nil
+
+  html5log.label:hide()
+  collectgarbage(&quot;collect&quot;)
+end
+
+function html5log.showlabel()
+  if html5log.label then
+    html5log.label:show()
+  else
+
+    html5log.label = Geyser.Label:new({
+      name=&quot;html5log.label&quot;,
+      x=-110, y=-60,
+      width=50, height=30,
+    })
+
+    html5log.label:setStyleSheet[[
+      color: #333;
+      border: 2px solid #555;
+      border-radius: 11px;
+      padding: 5px;
+      background: qradialgradient(cx: 0.3, cy: -0.4,
+      fx: 0.3, fy: -0.4,
+      radius: 1.35, stop: 0 #fff, stop: 1 #888);
+      min-width: 80px;
+  ]]
+
+    html5log.label:echo&quot;&lt;center&gt;Stop logging&lt;/center&gt;&quot;
+    html5log.label:setClickCallback(&quot;html5log_stoplogging&quot;)
+  end
+end
+
+function html5log.recordline()
+  html5log.inbetween[#html5log.inbetween+1] = html5log.recordcurrentline()
+
+  if isPrompt() then
+    for i = 1, #html5log.inbetween do
+      html5log.current_data[#html5log.current_data+1] = string.format([[&lt;div id=&quot;%d&quot; class=&quot;log tnc_default&quot;&gt;&lt;p&gt;%s&lt;/p&gt;&lt;/div&gt;]], getStopWatchTime(html5log.recording_stopwatch)*1000, string.gsub(html5log.inbetween[i], '\n', '&lt;br/&gt;'))
+    end
+
+    html5log.inbetween = {}
+  end
+end
+</script>
+            <eventHandlerList/>
+        </ScriptGroup>
+    </ScriptPackage>
+    <KeyPackage/>
+    <HelpPackage>
+        <helpURL></helpURL>
+    </HelpPackage>
+</MudletPackage>

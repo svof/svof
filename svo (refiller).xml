@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.0">
+    <TriggerPackage>
+        <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>svo Refiller</name>
+            <script></script>
+            <triggerType>0</triggerType>
+            <conditonLineDelta>99</conditonLineDelta>
+            <mStayOpen>0</mStayOpen>
+            <mCommand></mCommand>
+            <packageName></packageName>
+            <mFgColor>#ff0000</mFgColor>
+            <mBgColor>#ffff00</mBgColor>
+            <mSoundFile></mSoundFile>
+            <colorTriggerFgColor>#000000</colorTriggerFgColor>
+            <colorTriggerBgColor>#000000</colorTriggerBgColor>
+            <regexCodeList/>
+            <regexCodePropertyList/>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Stuff has boiled</name>
+                <script>svo.rf_magichappened()</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>With a sudden slow pulsing of white light, the liquid and floating bits of plant</string>
+                    <string>The liquid in .+ pot boils away, leaving nothing but an unpleasant odour and some scattered bits of plant matter.</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Arty vial</name>
+                <script>svo.rf_fillarty()</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>That would be more fills than are in this pot.</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>3</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Filled a vial</name>
+                <script>svo.rf_fillnext()</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You slowly pour the liquid from</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Stop refilling</name>
+                <script>svo.rf_nextpotion()</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You do not possess an empty.</string>
+                    <string>^You cannot .+ pot with that\.$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>3</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Missing ingredients</name>
+                <script>svo.rf_missingstuff()</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You must specify a valid concoctions component to inpot.</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>3</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Look for artefact vials</name>
+                <script>svo.rf_arties = {}</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>300</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You are holding:</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>3</integer>
+                </regexCodePropertyList>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>An artefact vial</name>
+                    <script>svo.rf_arties[#svo.rf_arties+1] = tonumber(matches[2])</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>^ +vial(\d+)</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>1</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Stop</name>
+                    <script>setTriggerStayOpen(&quot;Look for artefact vials&quot;, 0)
+
+if not svo.rf_refilling or not next(svo.rf_refilling.p) then return end
+
+echo'\n' svo.echof(&quot;Found %d artefact vials to use in refills (%s).&quot;, table.size(svo.rf_arties), svo.concatand(svo.rf_arties)) svo.showprompt()
+
+svo.rf_nextpotion()</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>return isPrompt()</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>4</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Putting vials away</name>
+                <script>if not svo.putvials then return end
+svo.doadd(&quot;put 50 vial in &quot;..(svo.conf.packid or 'pack'))</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>1</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You put</string>
+                    <string>return isPrompt()</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>4</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Done with putvials</name>
+                <script>if not svo.putvials then return end
+
+svo.putvials = nil
+echo'\n' svo.echof(&quot;Done stuffing away vials - they can give theirs now.&quot;)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You hold no more of that item.</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>3</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Getting vials back</name>
+                <script>if not svo.getvials then return end
+svo.doadd(&quot;get 50 vial from &quot;..(svo.conf.packid or 'pack'))</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>1</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You take</string>
+                    <string>return isPrompt()</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>4</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Done with getvials</name>
+                <script>if not svo.getvials then return end
+
+svo.getvials = nil
+echo'\n' svo.echof(&quot;Retrieved all of your vials back.&quot;)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>There are no more </string>
+                    <string>doesn't contain that</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>0</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Giving vials away</name>
+                <script>svo.doadd(&quot;give 50 vial to &quot;..svo.givevials.person)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>1</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You give</string>
+                    <string>return isPrompt() and svo.givevials</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>4</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Done with givevials</name>
+                <script>if not svo.givevials then return end
+
+if svo.givevials.selfish then
+  svo.defs.keepup(&quot;selfishness&quot;, true)
+end
+
+svo.givevials = nil
+echo'\n' svo.echof(&quot;Handed all vials over.&quot;)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You hold no more of that item.</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>3</integer>
+                </regexCodePropertyList>
+            </Trigger>
+        </TriggerGroup>
+    </TriggerPackage>
+    <TimerPackage/>
+    <AliasPackage>
+        <AliasGroup isActive="yes" isFolder="yes">
+            <name>svo Refiller</name>
+            <script></script>
+            <command></command>
+            <packageName></packageName>
+            <regex></regex>
+            <Alias isActive="yes" isFolder="no">
+                <name>Refill something</name>
+                <script>-- refill 5 health 2 arty, 3 restoration
+-- don't kill refilling from tuns
+if command:find(&quot;refill %w+ with %w+&quot;) then send(command, false) return end
+if command:find(&quot;refill %w+ from %w+&quot;) then send(command, false) return end
+
+if matches[2] == 'cancel' then svo.rf_cancel() svo.showprompt() echo'\n' return end
+
+-- sometimes people install things and forget about them... two refillers using same alias causes problems
+if wieczoRefiller then svo.echof(&quot;Warning: You have another refiller installed as well! Things will double-up and be messy.&quot;) return end
+
+svo.rf_refill(matches[2])</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^refill (.+)$</regex>
+            </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>Refill next potion</name>
+                <script>-- this alias is only for the refiller to do the next potion once it's done getting
+-- herbs out of the pot after a failed fill (when you didn't have enough herbs)
+svo.rf_nextpotion()</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^refill next potion$</regex>
+            </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>(putvials) Put vials away</name>
+                <script>svo.putvials = true
+svo.doadd(&quot;put 50 vial in &quot;..(svo.conf.packid or 'pack'))</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^putvials$</regex>
+            </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>(getvials) Retrieve vials</name>
+                <script>svo.getvials = true
+svo.doadd(&quot;get 50 vial from &quot;..(svo.conf.packid or 'pack'))</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^getvials$</regex>
+            </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>(givevials) Hand over vials</name>
+                <script>svo.givevials = {person = matches[2]}
+
+if svo.defkeepup[svo.defs.mode].selfishness then
+  svo.defs.keepup(&quot;selfishness&quot;, false)
+  svo.givevials.selfish = true
+end
+
+svo.doadd(&quot;give 50 vial to &quot;..svo.givevials.person)</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^givevials (\w+)$</regex>
+            </Alias>
+        </AliasGroup>
+    </AliasPackage>
+    <ActionPackage/>
+    <ScriptPackage>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>svo Refiller</name>
+            <packageName></packageName>
+            <script>-------------------------------------------------
+--         Put your Lua functions here.        --
+--                                             --
+-- Note that you can also use external Scripts --
+-------------------------------------------------
+</script>
+            <eventHandlerList/>
+            <Script isActive="yes" isFolder="no">
+                <name>svorf_check_trans</name>
+                <packageName></packageName>
+                <script>function svorf_check_trans()
+  if not (gmcp and gmcp.Char and gmcp.Char.Skills and gmcp.Char.Skills.Groups) then return end
+
+  svo.rf_transrefiller = false
+  for _, t in pairs(gmcp.Char.Skills.Groups) do
+    if t.name and (t.name == &quot;Remedies&quot; or t.name == &quot;Concoctions&quot;) and t.rank and t.rank == &quot;Transcendent&quot; then
+      svo.rf_transrefiller = true; break
+    end
+  end
+end</script>
+                <eventHandlerList>
+                    <string>gmcp.Char.Skills</string>
+                </eventHandlerList>
+            </Script>
+        </ScriptGroup>
+    </ScriptPackage>
+    <KeyPackage/>
+    <HelpPackage>
+        <helpURL></helpURL>
+    </HelpPackage>
+</MudletPackage>

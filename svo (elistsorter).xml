@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.0">
+    <TriggerPackage>
+        <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>svo Elist Sorter</name>
+            <script></script>
+            <triggerType>0</triggerType>
+            <conditonLineDelta>0</conditonLineDelta>
+            <mStayOpen>0</mStayOpen>
+            <mCommand></mCommand>
+            <packageName></packageName>
+            <mFgColor>#ff0000</mFgColor>
+            <mBgColor>#ffff00</mBgColor>
+            <mSoundFile></mSoundFile>
+            <colorTriggerFgColor>#000000</colorTriggerFgColor>
+            <colorTriggerBgColor>#000000</colorTriggerBgColor>
+            <regexCodeList/>
+            <regexCodePropertyList/>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>svo Capture elist/elist2/venomlist</name>
+                <script>svo.parsing_vlist = line:find(&quot;Venom&quot;) and true or false
+
+svo.es_capture()
+
+svo.storedvials = {}</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>999</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>Vial</string>
+                    <string>Months</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>0</integer>
+                </regexCodePropertyList>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>svo Capture elist stop</name>
+                    <script>if not string.find(getLines(getLineNumber()-1, getLineNumber())[1], &quot;^Vial&quot;) then
+  setTriggerStayOpen(&quot;svo Capture elist/elist2/venomlist&quot;, 0)
+
+  svo.es_captured(svo.parsing_vlist)
+  send(&quot;config pagelength &quot;..(svo.conf.pagelength &gt;= 20 and svo.conf.pagelength or 20), false)
+
+  svo.gag_list = nil
+end</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#aaff00</mFgColor>
+                    <mBgColor>#00aa00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>------------------------------------------</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>2</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>elist/elist2 vial</name>
+                    <script>if svo.gag_list then deleteLine() end
+
+local vialid = tonumber(matches[2])
+local potion = matches[3]
+local sips = tonumber(matches[4])
+local months = tonumber(matches[5]) or &quot;arty&quot;
+local category = svo.es_categories[potion] or &quot;unknown&quot;
+
+svo.es_vials = svo.es_vials or {}
+svo.es_vials[vialid] = {months = months, potion = potion, sips = sips}
+svo.es_potions[category] = svo.es_potions[category] or {}
+svo.es_potions[category][potion] = svo.es_potions[category][potion] or {sips = 0, vials = 0, decays = 0}
+svo.es_potions[category][potion].sips = svo.es_potions[category][potion].sips + sips
+svo.es_potions[category][potion].vials = svo.es_potions[category][potion].vials + 1
+
+svo.es_vialids = svo.es_vialids or {}
+if svo.es_shortnamesr[potion] then
+  svo.es_vialids[svo.es_shortnamesr[potion]] = svo.es_vialids[svo.es_shortnamesr[potion]] or {}
+  svo.es_vialids[svo.es_shortnamesr[potion]][#svo.es_vialids[svo.es_shortnamesr[potion]]+1] = vialid
+end
+
+if type(months) == &quot;number&quot; and months &lt;= svo.conf.decaytime then
+  svo.es_potions[category][potion].decays = svo.es_potions[category][potion].decays + 1
+end
+
+svo.es_knownstuff[potion] = svo.es_knownstuff[potion] or 2
+
+-- deal with obfuscated vials now
+if not line:find(&quot;Obfuscated&quot;) then return end
+
+if sips &lt;= svo.conf.obfsips then
+  svo.doaddfree(string.format(&quot;put %s in %s&quot;, vialid, svo.conf.obfcontainer))
+  svo.storedvials = svo.storedvials or {}
+  svo.storedvials[vialid] = true
+end</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>3</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>[Vv]ial(\d+)\s+(.+?)\s+(\d+)\s+(\d+|(?:---))$</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>1</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Auto-more (elist)</name>
+                    <script>send(&quot;more&quot;, false)
+svo.deleteLineP()</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>[Type MORE if you wish to continue reading</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>2</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+            </Trigger>
+        </TriggerGroup>
+    </TriggerPackage>
+    <TimerPackage/>
+    <AliasPackage>
+        <AliasGroup isActive="yes" isFolder="yes">
+            <name>svo Elist Sorter</name>
+            <script></script>
+            <command></command>
+            <packageName></packageName>
+            <regex></regex>
+            <Alias isActive="yes" isFolder="no">
+                <name>Dispose of decays</name>
+                <script>svo.es_dispose(matches[2])</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^dispose of decays by: (.+)$</regex>
+            </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>Get obfuscated vials out of pack</name>
+                <script>if not svo.storedvials then svo.echof(&quot;We didn't store any obfuscated vials stored away.&quot;) svo.showprompt() return end
+
+for vial in pairs(svo.storedvials) do
+  send(&quot;get &quot;..vial..&quot; from &quot;..svo.conf.obfcontainer, false)
+end</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^vialsout$</regex>
+            </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>elist/vlist</name>
+                <script>svo.gag_list = true
+send(&quot;config pagelength 250&quot;, false)
+send(command, false)</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^(?:e|v)list$</regex>
+            </Alias>
+        </AliasGroup>
+    </AliasPackage>
+    <ActionPackage/>
+    <ScriptPackage>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>svo Elist Sorter</name>
+            <packageName></packageName>
+            <script></script>
+            <eventHandlerList/>
+            <Script isActive="yes" isFolder="no">
+                <name>svo_put_vials_away</name>
+                <packageName></packageName>
+                <script>function svo_put_vials_away()
+if not svo.storedvials then return end
+
+for vial in pairs(svo.storedvials) do
+  send(&quot;get &quot;..vial..&quot; from &quot;..svo.conf.obfcontainer, false)
+end
+
+svo.storedvials = {}
+end</script>
+                <eventHandlerList>
+                    <string>svo quit</string>
+                </eventHandlerList>
+            </Script>
+        </ScriptGroup>
+    </ScriptPackage>
+    <KeyPackage/>
+    <HelpPackage>
+        <helpURL></helpURL>
+    </HelpPackage>
+</MudletPackage>

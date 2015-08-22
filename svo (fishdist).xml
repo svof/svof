@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.0">
+    <TriggerPackage>
+        <TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>svo Fishing Distance by Trilliana</name>
+            <script></script>
+            <triggerType>0</triggerType>
+            <conditonLineDelta>0</conditonLineDelta>
+            <mStayOpen>0</mStayOpen>
+            <mCommand></mCommand>
+            <packageName>fishing distancetest</packageName>
+            <mFgColor>#ff0000</mFgColor>
+            <mBgColor>#ffff00</mBgColor>
+            <mSoundFile></mSoundFile>
+            <colorTriggerFgColor>#000000</colorTriggerFgColor>
+            <colorTriggerBgColor>#000000</colorTriggerBgColor>
+            <regexCodeList/>
+            <regexCodePropertyList/>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>casting</name>
+                <script>deleteLine()
+cecho(&quot;\n&lt;steel_blue&gt;Cast the line &quot; .. matches[2] .. &quot; feet.&quot;)
+fdistance = matches[2]</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>3</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>^You cock back your arm and smoothly cast a line into the nearby water. You judge the cast at about (\d+) feet\.$</string>
+                    <string>^You cock back your arm and smoothly cast your line over the railing into the nearby water. You judge the cast at about (\d+) feet\.$</string>
+                    <string>^You cock back your arm and smoothly cast a line into the nearby water. You judge the cast at about (\d+) feet\.$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>fishing highlight 2</name>
+                <script>deleteLine()
+cecho(&quot;\n&lt;DeepPink&gt;Fish swam out &quot; .. matches[2].. &quot; feet.&quot;)
+fdistance = fdistance + matches[2]
+cecho(&quot;&lt;LightGoldenrod&gt; Gotta reel in &quot; .. fdistance .. &quot; feet.&quot;)
+if catch then cecho(&quot;&lt;red&gt; Caught a &quot; ..catch..&quot;!!&quot;) end
+</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>3</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>^The fish tries to swim with the hook, drawing (\d+) feet of line\.$</string>
+                    <string>^Your rod bends slightly as your fish tries to escape its barbed tether, running out (\d+) foot of line\$.</string>
+                    <string>^The fish you've hooked struggles against the line and runs it out (\d+) feet\.$</string>
+                    <string>^You feel the fish tugging on your line, drawing it out about (\d+) foot\.$</string>
+                    <string>^Your rod bends slightly as your fish tries to escape its barbed tether, running out (\d+) feet of line\.$</string>
+                    <string>^You feel the fish tugging on your line, drawing it out about (\d+) feet\.$</string>
+                    <string>^Your rod bends slightly as your fish tries to escape its barbed tether, running out (\d+) feet of line\.$</string>
+                    <string>Your fish struggles and swims firmly away from you, drawing out (\d+) feet of fishing line.</string>
+                    <string>The fish tries to swim with the hook, drawing (\d+) foot of line.</string>
+                    <string>^Your rod bends slightly as your fish tries to escape its barbed tether, running out (\d+) foot of line\.$</string>
+                    <string>^The fish on your line shows its power by running out (\d+) feet of line\.$</string>
+                    <string>^Tugging powerfully, your fish draws out (\d+) feet of line\.$</string>
+                    <string>^Dodging back and forth furiously, your fish draws out (\d+) feet of line\.$</string>
+                    <string>^With a pull that threatens to rip the pole from your hand, the fish you've hooked runs out (\d+) feet of line\.$</string>
+                    <string>^With an arm-wrenching burst of power, the fish you've hooked runs out (\d+) feet of fishing line\.$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>fishing highlight</name>
+                <script>deleteLine()
+cecho(&quot;\n&lt;LawnGreen&gt;You have &quot;.. matches[2].. &quot; feet left to reel in!&quot;)
+fdifference = fdistance - matches[2]
+cecho(&quot;&lt;medium_orchid&gt; You reeled in &quot;.. fdifference .. &quot; feet.&quot;)
+fdistance = matches[2]
+if catch then cecho(&quot;&lt;red&gt; Caught a &quot; ..catch..&quot;!!&quot;) end</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>3</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You have (\d+) feet of line left to bring in\.$</string>
+                    <string>You have (\d+) foot of line left to bring in\.$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>fish!</name>
+                <script>if selectString( line, 1 ) &gt; -1 then setFgColor( 255,204,204 ) setBgColor( 51,0,51 ) resetFormat() end
+fdistance = false
+catch = false
+</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>39</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff00ff</mFgColor>
+                <mBgColor>#55007f</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>With a final tug, you finish reeling in the line and land a</string>
+                    <string>You reel in the last bit of line and your struggle is over. You've landed a </string>
+                    <string>You reel in the last bit of line and your struggle is over. </string>
+                    <string>With a style born of skill, you reel in a</string>
+                    <string>You quickly reel in a </string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>2</integer>
+                    <integer>2</integer>
+                    <integer>2</integer>
+                    <integer>2</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="yes" isColorizerTrigger="yes" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>fishinghightlight 3</name>
+                <script>deleteLine()
+catch = matches[2], true
+cecho(&quot;\n&lt;DeepPink&gt;Fish swam out &quot; .. matches[3].. &quot; feet.&quot;)
+fdistance = fdistance + matches[3]
+cecho(&quot;&lt;LightGoldenrod&gt; Distance left to reel is &quot; .. fdistance .. &quot;.&quot;)
+cecho(&quot;&lt;red&gt; Caught a &quot; .. catch ..&quot;!!&quot;)
+</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>3</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffffff</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>^With a power born of the Seagod, a (whiskerknot skrei|stripefish|two-headed fish|giant hatchetfish|coelacanth|spotted fangtooth|duskfin tuna|redfin tuna) leaps from the water explosively, running the line out (\d+) feet\.$</string>
+                    <string>^Leaping from the water in a frenzy to escape, a (whiskerknot skrei|stripefish|two-headed fish|giant hatchetfish|coelacanth|spotted fangtooth|duskfin tuna|redfin tuna) runs out (\d+) feet of your line\.$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="yes" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Snapline</name>
+                <script>cecho(&quot;\n&lt;red&gt;AWW SNAP!&quot;)
+cecho(&quot;\n&lt;yellow&gt;AWW SNAP!&quot;)
+catch = false
+fdistance = false</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>39</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>As the fish strains your line beyond its breaking point, it snaps suddenly, costing you your fish and bait.</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>3</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>baited</name>
+                <script>fdistance = &quot;baited&quot;</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>Throwing away your existing bait, you carefully thread a</string>
+                    <string>You carefully thread a</string>
+                    <string>You reel your line in completely.</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>2</integer>
+                    <integer>3</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Removing bait</name>
+                <script>fdistance = false</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You take (a worm|a minnow|a sand flea|a shrimp|a shelled clam|a crab|a mudsucker|a hunk of octopus|a rock bass|a marble carp) from (a|an) (.*) fishing pole.$</string>
+                    <string>Your line snaps or fouls and you lose your bait.</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>1</integer>
+                    <integer>3</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>decay on pole</name>
+                <script>fdistance = lineout</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>A (.*) has decayed to dust inside of pole#(\d+)$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>moved</name>
+                <script>fdistance = false</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>Your line fouls and you lose your bait.</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>3</integer>
+                </regexCodePropertyList>
+            </Trigger>
+        </TriggerGroup>
+    </TriggerPackage>
+    <TimerPackage/>
+    <AliasPackage/>
+    <ActionPackage/>
+    <ScriptPackage>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>svo Fishing Distance by Trilliana</name>
+            <packageName></packageName>
+            <script></script>
+            <eventHandlerList/>
+            <Script isActive="yes" isFolder="no">
+                <name>svo_load_fishingdistance</name>
+                <packageName></packageName>
+                <script>function svo_load_fishingdistance()
+  svo.adddefinition(&quot;@fishdist&quot;, &quot;svo.telldistance()&quot;)
+  -- returns the value of the 'baited' 'no line out' or the distance
+  function svo.telldistance()
+    if fdistance == &quot;baited&quot; then return &quot;&lt;light_sky_blue&gt;baited&quot; elseif fdistance == &quot;lineout&quot; then return &quot;&lt;dark_green&gt;Line out, no bait!&quot; elseif fdistance then return &quot;&lt;slate_blue&gt;&quot;..fdistance..&quot; feet out&quot; else return &quot;&lt;medium_sea_green&gt;no line out&quot; end
+  end
+
+  if type(svo.conf.fishhighlight) ~= 'nil' then
+    if svo.conf.fishhighlight then enableTrigger&quot;svo Fishing Distance by Trilliana&quot; else
+    disableTrigger&quot;svo Fishing Distance by Trilliana&quot; end
+  end
+
+  svo.config.setoption(&quot;fishhighlight&quot;,
+  {
+   vconfig2string = true,
+    type = &quot;boolean&quot;,
+    onenabled = function ()
+      enableTrigger&quot;svo Fishing Distance by Trilliana&quot;
+      svo.echof(&quot;&lt;0,250,0&gt;Will%s show highlights for fishing.&quot;, svo.getDefaultColor())
+
+      if not string.find(svo.conf.customprompt, &quot;@fishdist&quot;, 1, true) then
+        svo.config.set(&quot;customprompt&quot;, svo.conf.customprompt ..&quot; @fishdist&quot;, false)
+        svo.echof(&quot;Added the fishing distance to your custom prompt as well.&quot;)
+      end
+    end,
+    ondisabled = function ()
+      disableTrigger&quot;svo Fishing Distance by Trilliana&quot;
+
+      if string.find(svo.conf.customprompt, &quot;@fishdist&quot;, 1, true) then
+        svo.config.set(&quot;customprompt&quot;, svo.conf.customprompt:gsub(&quot; @fishdist&quot;, &quot;&quot;), false)
+        svo.echof(&quot;Removed the fishing distance tag from your custom prompt.&quot;)
+      end
+
+      svo.echof(&quot;&lt;250,0,0&gt;Won't%s show highlights for fishing.&quot;, svo.getDefaultColor())
+    end,
+    onshow = function (defaultcolour)
+      fg(&quot;gold&quot;)
+      echoLink(&quot;fishing dist:&quot;, &quot;&quot;, &quot;svo Fishing Distance by Trilliana&quot;, true)
+      fg(defaultcolour)
+      echo(&quot; Fishing highlights are &quot;)
+      fg(&quot;a_cyan&quot;) echoLink(svo.conf.fishhighlight and &quot;enabled&quot; or &quot;disabled&quot;, &quot;svo.config.set('fishhighlight', &quot;..(svo.conf.fishhighlight and &quot;false&quot; or &quot;true&quot;)..&quot;, true)&quot;, &quot;Click to &quot;..(svo.conf.fishhighlight and &quot;disable&quot; or &quot;enable&quot;)..&quot; fishing highlight triggers&quot;, true) fg(defaultcolour)
+      echo(&quot;.\n&quot;)
+  end})
+end</script>
+                <eventHandlerList>
+                    <string>svo system loaded</string>
+                </eventHandlerList>
+            </Script>
+        </ScriptGroup>
+    </ScriptPackage>
+    <KeyPackage/>
+    <HelpPackage>
+        <helpURL></helpURL>
+    </HelpPackage>
+</MudletPackage>

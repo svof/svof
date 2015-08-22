@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.0">
+    <TriggerPackage>
+        <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>svo Dragon limbcounter</name>
+            <script></script>
+            <triggerType>0</triggerType>
+            <conditonLineDelta>0</conditonLineDelta>
+            <mStayOpen>0</mStayOpen>
+            <mCommand></mCommand>
+            <packageName></packageName>
+            <mFgColor>#ff0000</mFgColor>
+            <mBgColor>#ffff00</mBgColor>
+            <mSoundFile></mSoundFile>
+            <colorTriggerFgColor>#000000</colorTriggerFgColor>
+            <colorTriggerBgColor>#000000</colorTriggerBgColor>
+            <regexCodeList/>
+            <regexCodePropertyList/>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Rend</name>
+                <script>svo.dl_hit(multimatches[2][2], multimatches[2][3])</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>Lunging forward with long, flashing claws extended, you tear into the flesh of</string>
+                    <string>Lunging forward with long, flashing claws extended, you tear into the flesh of (\w+)'s (.+)\.$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>svodl Don't register</name>
+                <script>-- it's OK, the trigger is supposed to be off by default
+svo.dl_ignore()</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>^\w+ dodges nimbly out of the way\.$</string>
+                    <string>^\w+ twists (?:his|her) body out of harm's way\.$</string>
+                    <string>^\w+ parries the attack with a deft manoeuvre\.$</string>
+                    <string>^\w+ steps into the attack, grabs your arm, and throws you violently to the ground\.$</string>
+                    <string>^\w+ quickly jumps back, avoiding the attack\.$</string>
+                    <string>^A chaos orb intercepts the attack against \w+ and renders it harmless\.$</string>
+                    <string>The attack rebounds back onto you!</string>
+                    <string>^A reflection of \w+ blinks out of existence\.$</string>
+                    <string>The attack rebounds onto you!</string>
+                    <string>^\w+ moves into your attack, knocking your blow aside before viciously countering with a strike to your head\.$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                    <integer>3</integer>
+                    <integer>1</integer>
+                    <integer>3</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+        </TriggerGroup>
+    </TriggerPackage>
+    <TimerPackage/>
+    <AliasPackage>
+        <AliasGroup isActive="yes" isFolder="yes">
+            <name>svo Dragon limbcounter</name>
+            <script></script>
+            <command></command>
+            <packageName></packageName>
+            <regex></regex>
+            <Alias isActive="yes" isFolder="no">
+                <name>Reset</name>
+                <script>svo.dl_reset(matches[2])</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^nn ?(.+)?$</regex>
+            </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>Check status</name>
+                <script>if svo.dl_show then svo.dl_show() end</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^vsl$</regex>
+            </Alias>
+        </AliasGroup>
+    </AliasPackage>
+    <ActionPackage/>
+    <ScriptPackage>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>svo Dragon limbcounter</name>
+            <packageName></packageName>
+            <script>-- dragon limbcounters prompt tag is defined here
+-- feel free to tinker with it, but move it out into a script of its own,
+-- so your changes don't get erased on an update!
+tempTimer(0, function()
+
+
+function svo.dl_prompttag2()
+  if not svo.defc.dragonform or not svo.lasthit or not svo.dl_list or not svo.dl_list[svo.lasthit] then return &quot;&quot; end
+  local t = svo.dl_list[svo.lasthit]
+  return string.format(&quot;%s: h %d|t %d|ra %d|la %d|rl %d|ll %d&quot;, svo.lasthit, t.head, t.torso, t.rightarm, t.leftarm, t.rightleg, t.leftleg)
+end
+svo.adddefinition(&quot;@dl_prompttag2&quot;, &quot;svo.dl_prompttag2()&quot;)
+
+
+
+function svo.dl_prompttag()
+  if not svo.defc.dragonform or not svo.lasthit or not svo.dl_list or not svo.dl_list[svo.lasthit] then return &quot;&quot; end
+  local t = svo.dl_list[svo.lasthit]
+  local prep = 1
+  return string.format(&quot;%s%d&lt;a_white&gt;/%s%d&lt;a_white&gt;|%s%d&lt;a_white&gt;/%s%d&lt;a_white&gt;|%s%d&lt;a_white&gt;/%s%d&lt;a_white&gt;|%d&quot;,
+                   ((svo.dl_break_at - t.leftarm) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.leftarm,
+                   ((svo.dl_break_at - t.rightarm) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.rightarm,
+                   ((svo.dl_break_at - t.leftleg) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.leftleg,
+                   ((svo.dl_break_at - t.rightleg) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.rightleg,
+                   ((svo.dl_break_at - t.head) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.head,
+                   ((svo.dl_break_at - t.torso) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.torso, svo.dl_break_at)
+end
+svo.adddefinition(&quot;@dl_prompttag&quot;, &quot;svo.dl_prompttag()&quot;)
+
+
+function svo.dl_prompttag3()
+  if not svo.defc.dragonform or not svo.lasthit or not svo.dl_list or not svo.dl_list[svo.lasthit] then return &quot;&quot; end
+  local t = svo.dl_list[svo.lasthit]
+  local prep = 1
+  return string.format(&quot;&lt;a_darkgrey&gt;(%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%d)&quot;,
+                   ((svo.dl_break_at - t.leftarm) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.leftarm,
+                   ((svo.dl_break_at - t.rightarm) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.rightarm,
+                   ((svo.dl_break_at - t.leftleg) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.leftleg,
+                   ((svo.dl_break_at - t.rightleg) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.rightleg,
+                   ((svo.dl_break_at - t.head) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.head,
+                   ((svo.dl_break_at - t.torso) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.torso, svo.dl_break_at)
+end
+svo.adddefinition(&quot;@dl_prompttag3&quot;, &quot;svo.dl_prompttag3()&quot;)
+
+
+end)</script>
+            <eventHandlerList/>
+        </ScriptGroup>
+    </ScriptPackage>
+    <KeyPackage/>
+    <HelpPackage>
+        <helpURL></helpURL>
+    </HelpPackage>
+</MudletPackage>

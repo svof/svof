@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.0">
+    <TriggerPackage>
+        <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>svo Monk limbcounter</name>
+            <script></script>
+            <triggerType>0</triggerType>
+            <conditonLineDelta>0</conditonLineDelta>
+            <mStayOpen>0</mStayOpen>
+            <mCommand></mCommand>
+            <packageName></packageName>
+            <mFgColor>#ff0000</mFgColor>
+            <mBgColor>#ffff00</mBgColor>
+            <mSoundFile></mSoundFile>
+            <colorTriggerFgColor>#000000</colorTriggerFgColor>
+            <colorTriggerBgColor>#000000</colorTriggerBgColor>
+            <regexCodeList/>
+            <regexCodePropertyList/>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Punch</name>
+                <script>svo.ml_hit(multimatches[2][2], multimatches[3][2], &quot;arm&quot;)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>1</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You ball up one fist and hammerfist</string>
+                    <string>^You ball up one fist and hammerfist (\w+)\.$</string>
+                    <string>^You connect to the (.+)!$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Punch</name>
+                <script>svo.ml_hit(multimatches[2][2], multimatches[3][2], &quot;arm&quot;)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>1</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You form a spear hand and stab out towards</string>
+                    <string>^You form a spear hand and stab out towards (\w+)\.$</string>
+                    <string>^You connect to the (.+)!$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Punch</name>
+                <script>svo.ml_hit(multimatches[2][2], multimatches[3][2], &quot;arm&quot;)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>1</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You launch a powerful uppercut at</string>
+                    <string>^You launch a powerful uppercut at (\w+)\.$</string>
+                    <string>^You connect to the (.+)!$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Punch</name>
+                <script>svo.ml_hit(multimatches[2][2], multimatches[3][2], &quot;arm&quot;)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>1</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You unleash a powerful hook towards</string>
+                    <string>^You unleash a powerful hook towards (\w+)\.$</string>
+                    <string>^You connect to the (.+)!$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Kick</name>
+                <script>svo.ml_hit(multimatches[2][2], multimatches[3][2], &quot;leg&quot;)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>1</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You hurl yourself towards</string>
+                    <string>^You hurl yourself towards (\w+) with a lightning\-fast moon kick\.$</string>
+                    <string>^You connect to the (.+)!$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Kick</name>
+                <script>svo.ml_hit(multimatches[2][2], multimatches[3][2], &quot;leg&quot;)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>1</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You let fly at</string>
+                    <string>^You let fly at (\w+) with a snap kick\.$</string>
+                    <string>^You connect to the (.+)!$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Kick</name>
+                <script>svo.ml_hit(multimatches[2][2], multimatches[3][2], &quot;leg&quot;)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>1</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You pump out at</string>
+                    <string>^You pump out at (\w+) with a powerful side kick\.$</string>
+                    <string>^You connect to the (.+)!$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Kick</name>
+                <script>svo.ml_hit(multimatches[2][2], multimatches[3][2], &quot;leg&quot;)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>1</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You spin into the air and throw a whirlwind kick towards</string>
+                    <string>^You spin into the air and throw a whirlwind kick towards (\w+)\.$</string>
+                    <string>^You connect to the (.+)!$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Roundhouse kick</name>
+                <script>svo.ml_hit(multimatches[2][2], &quot;torso&quot;, &quot;torso&quot;)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>1</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You twist your torso and send a roundhouse towards</string>
+                    <string>^You twist your torso and send a roundhouse towards (\w+)\.$</string>
+                    <string>^Your kick drives savagely into \w+'s chest\.$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>AXK</name>
+                <script>svo.ml_hit(multimatches[2][2], &quot;head&quot;, &quot;AXK&quot;)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>1</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>You kick your leg high and scythe downwards at</string>
+                    <string>^You kick your leg high and scythe downwards at (\w+)\.$</string>
+                    <string>^You connect to the (.+)!$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>2</integer>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+        </TriggerGroup>
+    </TriggerPackage>
+    <TimerPackage/>
+    <AliasPackage>
+        <AliasGroup isActive="yes" isFolder="yes">
+            <name>svo Monk limbcounter</name>
+            <script></script>
+            <command></command>
+            <packageName></packageName>
+            <regex></regex>
+            <Alias isActive="yes" isFolder="no">
+                <name>Reset</name>
+                <script>svo.ml_reset(matches[2])</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^nn ?(.+)?$</regex>
+            </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>Check status</name>
+                <script>if svo.ml_show then svo.ml_show() end</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^vsl$</regex>
+            </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>Set the hits needed</name>
+                <script>local name = (matches[2] ~= &quot;&quot;) and matches[2] or nil
+local hits = tonumber(matches[3])
+
+svo.ml_sethitsneeded(name,hits)</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^shn(?: (\w+))? ([\d.]+)$</regex>
+            </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>Syncronize hits</name>
+                <script>svo.ml_synchits()</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^kk$</regex>
+            </Alias>
+        </AliasGroup>
+    </AliasPackage>
+    <ActionPackage/>
+    <ScriptPackage>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>svo Monk limbcounter</name>
+            <packageName></packageName>
+            <script>-- limbcounters prompt tag is defined here
+-- feel free to tinker with it, but move it out into a script of its own,
+-- so your changes don't get erased on an update!
+function svo.ml_prompttag2()
+  if svo.defc.dragonform or not svo.lasthit or not svo.ml_list or not svo.ml_list[svo.lasthit] then return &quot;&quot; end
+  local t = svo.ml_list[svo.lasthit]
+  return string.format(&quot;%s: h %d|t %d|ra %d|la %d|rl %d|ll %d&quot;, svo.lasthit, t.head, t.torso, t.rightarm, t.leftarm, t.rightleg, t.leftleg)
+end
+svo.adddefinition(&quot;@ml_prompttag2&quot;, &quot;svo.ml_prompttag2()&quot;)
+
+
+
+function svo.ml_prompttag()
+  if svo.defc.dragonform or not svo.lasthit or not svo.ml_list or not svo.ml_list[svo.lasthit] then return &quot;&quot; end
+  local t = svo.ml_list[svo.lasthit]
+  local prep = 1
+  return string.format(&quot;%s%d&lt;a_white&gt;/%s%d&lt;a_white&gt;|%s%d&lt;a_white&gt;/%s%d&lt;a_white&gt;|%s%d&lt;a_white&gt;/%s%d&lt;a_white&gt;|%d&quot;,
+                   ((svo.ml_break_at - t.leftarm) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.leftarm,
+                   ((svo.ml_break_at - t.rightarm) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.rightarm,
+                   ((svo.ml_break_at - t.leftleg) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.leftleg,
+                   ((svo.ml_break_at - t.rightleg) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.rightleg,
+                   ((svo.ml_break_at - t.head) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.head,
+                   ((svo.ml_break_at - t.torso) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.torso, svo.ml_break_at)
+end
+svo.adddefinition(&quot;@ml_prompttag&quot;, &quot;svo.ml_prompttag()&quot;)
+
+
+function svo.ml_prompttag3()
+  if svo.defc.dragonform or not svo.lasthit or not svo.ml_list or not svo.ml_list[svo.lasthit] then return &quot;&quot; end
+  local t = svo.ml_list[svo.lasthit]
+  local prep = 1
+  return string.format(&quot;&lt;a_darkgrey&gt;(%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%d)&quot;,
+                   ((svo.ml_break_at - t.leftarm) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.leftarm,
+                   ((svo.ml_break_at - t.rightarm) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.rightarm,
+                   ((svo.ml_break_at - t.leftleg) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.leftleg,
+                   ((svo.ml_break_at - t.rightleg) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.rightleg,
+                   ((svo.ml_break_at - t.head) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.head,
+                   ((svo.ml_break_at - t.torso) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.torso, svo.ml_break_at)
+end
+svo.adddefinition(&quot;@ml_prompttag3&quot;, &quot;svo.ml_prompttag3()&quot;)</script>
+            <eventHandlerList/>
+        </ScriptGroup>
+    </ScriptPackage>
+    <KeyPackage/>
+    <HelpPackage>
+        <helpURL></helpURL>
+    </HelpPackage>
+</MudletPackage>
