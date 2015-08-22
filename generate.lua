@@ -43,7 +43,7 @@ local doall           = args.release
 local name            = args.name
 local release         = not args.debug
 local own             = args.own
-local version         = "2"
+local version         = "3"
 local defaultaddons   = {
   "dragonlimbcounter", "elistsorter", "enchanter", "fishdist", "inker", "logger",  "mindnet", "offering", "peopletracker", "reboundingsileristracker", "refiller", "runeidentifier", "namedb",
   druid = "refiller", sylvan = "refiller", sentinel = "refiller",
