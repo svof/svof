@@ -9,7 +9,6 @@
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 local preprocess = require "luapp" . preprocess
-require "luarocks.loader"
 local lapp    = require 'pl.lapp'
 local lfs     = require 'lfs'
 local seq     = require 'pl.seq'
