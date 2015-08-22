@@ -43,7 +43,7 @@ local doall           = args.release
 local name            = args.name
 local release         = not args.debug
 local own             = args.own
-local version         = "1"
+local version         = "2"
 local defaultaddons   = {
   "dragonlimbcounter", "elistsorter", "enchanter", "fishdist", "inker", "logger",  "mindnet", "offering", "peopletracker", "reboundingsileristracker", "refiller", "runeidentifier", "namedb",
   druid = "refiller", sylvan = "refiller", sentinel = "refiller",
@@ -246,7 +246,7 @@ local function dowork(systemfor, release, own)
   os.execute(cmd)
 
   -- send away to output folder
-  file.move(cwd.."/"..systemfor.." svo.zip",  cwd.."/output/"..systemfor.." Svof v"..version..".zip")
+  file.move(cwd.."/"..systemfor.." svo.zip",  cwd.."/output/"..systemfor..".Svof.v"..version..".zip")
   print("All done! How good is that!")
 end
 
