@@ -96,7 +96,7 @@ This the order that things happen on the prompt function:
 
 ## View system debug log
 1. install [Logger](http://forums.mudlet.org/viewtopic.php?f=6&t=1424)
-1. view mudlet-data/profiles/<profile>/log/svof.txt
+1. view mudlet-data/profiles/\<profile>/log/svof.txt
 
 ## Gotcha with luapp
 If luapp, the pre-processor has an error compiling, it doesn't seem to print any errors. The preprocessed file will just stop at the erroring line.
