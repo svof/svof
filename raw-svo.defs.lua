@@ -1300,7 +1300,7 @@ defs_data = pl.OrderedMap {}
     invisibledef = true })
   defs_data:set("simulacrum", { type = "occultism",
     on = "Cupping your hands before you, you tap into your stores of karma. Focusing your will on an image of yourself, an unearthly violet glow fills your cupped hands and solidifies into an amethyst resembling you.",
-    offr = [[^A simulacrum shaped like $(name) cracks and crumbles to dust\.$]],
+    offr = [[^A simulacrum shaped like <fix me, insert character name here> cracks and crumbles to dust\.$]],
     invisibledef = true })
   defs_data:set("transmogrify", { type = "occultism",
       staysindragon = true,
@@ -2069,7 +2069,7 @@ defs_data = pl.OrderedMap {}
       "You close your eyes and, calling upon latent alchemical energies, sketch the symbol of the moon in the air. A warm thrill shivers throughout your body, and a halo of pale flames flickers momentarily about your body.",
       "You close your eyes and, calling upon latent alchemical energies, sketch the symbol of Nebula in the air. A warm thrill shivers throughout your body, and a halo of pale flames flickers momentarily about your body.",
       "You close your eyes and, calling upon latent alchemical energies, sketch the symbol of Ethian in the air. A warm thrill shivers throughout your body, and a halo of pale flames flickers momentarily about your body.",
-      "$(name) is already empowered by astronomical energies.",
+      "<fix me, insert character name here> is already empowered by astronomical energies.",
       "You are already empowered by astronomical energies.",
     },
 

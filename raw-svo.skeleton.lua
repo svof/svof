@@ -2091,7 +2091,7 @@ signals.gmcpcharitemslist:connect(function ()
     if t.name then
       if t.name == "a heartstone" then
         defences.got("heartstone")
-      elseif t.name == "a simulacrum shaped like $(name)" then
+      elseif t.name == "a simulacrum shaped like "..me.name then
         defences.got("simulacrum")
       end
     end
