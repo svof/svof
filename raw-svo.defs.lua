@@ -1647,7 +1647,7 @@ defs_data = pl.OrderedMap {}
     on = {"You bind all your open elemental channels to you.", "You bind the element of Earth to your superior will."}})
   defs_data:set("circulate", { type = "weatherweaving",
     on = {"You begin circulating electricity throughout your body in a constant cycle.", "You are already circulating electricity throughout your body."},
-    def = "Circulating electricity throughout your body."})
+    def = "You are circulating electricity throughout your body."})
 #end
 
 #if skills.pranks then
