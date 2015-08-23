@@ -305,7 +305,7 @@ function install.checkskillgmcp()
   if t.skill == "clotting" then t.skill = "clot" end
   if t.skill == "parrying" then t.skill = "parry" end
 
-  if conf[t.skill] == nil and t.info == "" then
+  if conf[t.skill] == nil and (t.info == "" or t.info:find("You have not yet learned this ability")) then
     conf[t.skill] = false
     echof("Don't have %s, so <250,0,0>won't%s be using it whenever possible.", t.skill, getDefaultColor())
     raiseEvent("svo config changed", t.skill)
