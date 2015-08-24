@@ -51477,8 +51477,8 @@ setUnderline(true)</script>
                         <colorTriggerFgColor>#000000</colorTriggerFgColor>
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
-                            <string>Use MSG LIST *</string>
-                            <string>^Use MSG LIST \* (\d+) to see more of your message summary\.$</string>
+                            <string>Use MSG LIST</string>
+                            <string>^Use MSG LIST (\d+) to see more of your message summary\.$</string>
                         </regexCodeList>
                         <regexCodePropertyList>
                             <integer>2</integer>
