@@ -43718,7 +43718,8 @@ svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                     </regexCodePropertyList>
                     <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                         <name>Disrupted</name>
-                        <script>svo.valid.simpledisrupt()</script>
+                        <script>svo.valid.simpledisrupt()
+svo.valid.simpleprone()</script>
                         <triggerType>0</triggerType>
                         <conditonLineDelta>0</conditonLineDelta>
                         <mStayOpen>0</mStayOpen>
