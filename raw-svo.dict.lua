@@ -1926,7 +1926,7 @@ dict = {
       spriority = 0,
 
       isadvisable = function ()
-        return (affs.vertigo and
+        return (affs.vertigo and not affs.madness and
           not doingaction("vertigo")) or false
       end,
 
@@ -1949,7 +1949,7 @@ dict = {
       spriority = 0,
 
       isadvisable = function ()
-        return (affs.vertigo and
+        return (affs.vertigo and not affs.madness and
           not doingaction("vertigo")) or false
       end,
 
