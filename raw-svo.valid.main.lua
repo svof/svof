@@ -1528,6 +1528,11 @@ function valid.ablaze_woreoff()
   lifevision.add(actions.ablaze_gone.p)
 end
 
+function valid.cadmus_woreof()
+	checkaction(dict.cadmus.gone, true)
+	lifevision.add(actions.cadmus_gone.p)
+end
+
 function valid.wake_start()
   checkaction(dict.sleep.misc)
   if actions.sleep_misc then
