@@ -45,7 +45,7 @@ local release         = not args.debug
 local own             = args.own
 local version         = "3"
 local defaultaddons   = {
-  "dragonlimbcounter", "elistsorter", "enchanter", "fishdist", "inker", "logger",  "mindnet", "offering", "peopletracker", "reboundingsileristracker", "refiller", "runeidentifier", "namedb",
+  "dragonlimbcounter", "elistsorter", "enchanter", "fishdist", "inker", "logger", "offering", "peopletracker", "reboundingsileristracker", "refiller", "runeidentifier", "namedb",
   druid = "refiller", sylvan = "refiller", sentinel = "refiller",
   priest = {"priestreport", "priesthealing", "priestlimbcounter"},
   magi = {"enchanter", "burncounter", "magilimbcounter", "stormhammertarget"},
