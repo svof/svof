@@ -52773,6 +52773,13 @@ send(&quot;ir&quot;)</script>
                 <packageName></packageName>
                 <regex>^vinstall( fresh)?$</regex>
             </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>Reload system</name>
+                <script>svo_reload()</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^vreload$</regex>
+            </Alias>
             <AliasGroup isActive="yes" isFolder="yes">
                 <name>Parry config</name>
                 <script></script>
@@ -53708,6 +53715,31 @@ function svo_whereisit()
   local path = invokeFileDialog(false, &quot;Where is the svo folder? Select it and click Open&quot;)
 
   if path == &quot;&quot; then return nil else return path .. _sep end
+end
+
+-- updating on the fly
+function svo_reload()
+  package.loaded.svo = nil
+  -- loader for packages
+  local foldername
+  for item in lfs.dir(getMudletHomeDir()) do
+    foldername = item:match(&quot;(%w+) svo&quot;)
+    if foldername and lfs.attributes(getMudletHomeDir()..&quot;/&quot;..foldername..&quot; svo/svo&quot;) then
+      local oldpath = package.path
+      local system_path = getMudletHomeDir()..&quot;/&quot;..foldername..&quot; svo/&quot;
+      package.path = system_path .. &quot;?;&quot; .. system_path .. &quot;?.lua;&quot; .. system_path .. &quot;?.dll;&quot; .. system_path .. &quot;?.so;&quot;
+
+      local s,m = pcall(require, &quot;svo&quot;)
+      package.path = oldpath
+
+      if not s then display(m) return end
+
+      svo.echofn(&quot;Reloaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
+      echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svo.vadisystems.com&quot;', &quot;Svo homepage&quot;)
+      decho(svo.getDefaultColor()..&quot;)\n&quot;)
+      return
+    end
+  end
 end
 
 --load system
