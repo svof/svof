@@ -47,7 +47,7 @@ end
 
 )
 
-#madness_affs = {"addiction", "confusion", "dementia", "hallucinations", "hypersomnia", "illness", "impatience", "lethargy", "loneliness", "madness", "masochism", "paranoia", "recklessness", "stupidity"}
+#madness_affs = {"addiction", "confusion", "dementia", "hallucinations", "hypersomnia", "illness", "impatience", "lethargy", "loneliness", "madness", "masochism", "paranoia", "recklessness", "stupidity", "vertigo"}
 
 #for herbname, herb in pairs({
 #goldenseal = {"dissonance", "impatience", "stupidity", "dizziness", "epilepsy", "shyness"},

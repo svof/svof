@@ -42,7 +42,7 @@ function compile.dowork(addons)
   end
 
   -- load svo files in
-  for _, svofile in ipairs({"bin/start.lua", "bin/svo.setup.lua", "bin/svo.misc.lua", "bin/svo.empty.lua", "bin/svo.dict.lua", "bin/svo.skeleton.lua", "bin/svo.controllers.lua", "bin/svo.actionsystem.lua", "bin/svo.pipes.lua", "bin/svo.rift.lua", "bin/svo.valid.diag.lua", "bin/svo.valid.simple.lua", "bin/svo.valid.main.lua", "bin/svo.config.lua", "bin/svo.install.lua", "bin/svo.aliases.lua", "bin/svo.defs.lua", "bin/svo.prio.lua", "bin/svo.sp.lua", "bin/svo.funnies.lua", "bin/svo.dor.lua", "bin/svo.customprompt.lua", "bin/svo.serverside.lua", "bin/svo.runeidentifier.lua", "bin/svo.logger.lua", "bin/svo.peopletracker.lua", "bin/svo.fishdist.lua", "bin/svo.mindnet.lua"}) do
+  for _, svofile in ipairs({"bin/start.lua", "bin/svo.setup.lua", "bin/svo.misc.lua", "bin/svo.empty.lua", "bin/svo.dict.lua", "bin/svo.skeleton.lua", "bin/svo.controllers.lua", "bin/svo.actionsystem.lua", "bin/svo.pipes.lua", "bin/svo.rift.lua", "bin/svo.valid.diag.lua", "bin/svo.valid.simple.lua", "bin/svo.valid.main.lua", "bin/svo.config.lua", "bin/svo.install.lua", "bin/svo.aliases.lua", "bin/svo.defs.lua", "bin/svo.prio.lua", "bin/svo.sp.lua", "bin/svo.funnies.lua", "bin/svo.dor.lua", "bin/svo.customprompt.lua", "bin/svo.serverside.lua", "bin/svo.runeidentifier.lua", "bin/svo.logger.lua", "bin/svo.peopletracker.lua", "bin/svo.fishdist.lua"}) do
     io.input(svofile)
     local contents = io.read("*a")
     f:write(contents)
