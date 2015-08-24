@@ -17,7 +17,10 @@ Svof is licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.
 1. Install Lua, LuaFileSystem, LuaRocks, Penlight, and 7zip.
     1. Windows: download and install latest [LuaForWindows](https://github.com/rjpcomputing/luaforwindows/releases), which all the Lua components indluded. Install 7zip [from here](http://www.7-zip.org/download.html).
     1. Ubuntu: install [Lua](https://apps.ubuntu.com/cat/applications/lua5.1/), [LuaFileSystem](https://apps.ubuntu.com/cat/applications/lua-filesystem/), [LuaRocks](https://apps.ubuntu.com/cat/applications/luarocks/), [Penlight](https://apps.ubuntu.com/cat/applications/lua-penlight/), and [7zip](https://apps.ubuntu.com/cat/applications/p7zip-full/).
-    1. OSX: haven't got a Mac, someone fill this in.
+    1. OSX: install [Homebrew](http://brew.sh).
+        1. Using Brew from your Terminal: `brew install lua` and `brew install p7zip`.
+            1. Afterwards, make sure to `brew install lua5.1`.
+        1. Using LuaRocks from your Terminal: `luarocks install luafilesystem` and `luarocks install penlight`
 1. Open the command-line and navigate to the Svof folder, and run:
 
        On Ubuntu:
@@ -25,6 +28,9 @@ Svof is licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.
 
        In Windows:
        generate.lua -o &lt;your class&gt;
+       
+       On OSX:
+       lua5.1 generate.lua -o &lt;your class&gt;
 
 
 1. Replace &lt;Svof Git location&gt; with the path to the XML files, and then run this command in Mudlet.
