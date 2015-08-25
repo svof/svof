@@ -48965,7 +48965,7 @@ svo.valid.simplecrippledleftleg()</script>
                         <colorTriggerFgColor>#000000</colorTriggerFgColor>
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
-                            <string>^(\w+) shifts into a more aggressive stance\.$</string>
+                            <string>^An expression of calculated focus crosses the face of (\w+), and s?he shifts h(?:er|is) feet slightly wider apart\.$</string>
                         </regexCodeList>
                         <regexCodePropertyList>
                             <integer>1</integer>
