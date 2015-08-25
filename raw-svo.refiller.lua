@@ -15,6 +15,9 @@ rf_refilling = false
 -- format: "potion"
 -- this stores the current potion that we're doing of the whole order
 
+-- need a variable to handle either remedies or toxicology transcendence
+local rf_currenttrans = rf_currenttrans or false
+
 conf.potid = conf.potid or "pot"
 config.setoption("potid", {
   type = "string",
@@ -106,10 +109,142 @@ local concoctions = {
     ["gold"] = 2,
   },
   caloric = {
-    kuzu = 2,
-    kelp = 2,
-    valerian = 1,
-    bellwort = 1
+    ["kuzu"] = 2,
+    ["kelp"] = 2,
+    ["valerian"] = 1,
+    ["bellwort"] = 1
+  }
+}
+
+local toxins = {
+  xentio = {
+    ["kelp"] = 2,
+    ["bloodroot"] = 1,
+    ["blueink"] = 1
+  },
+  oleander = {
+    ["bayberry"] = 1,
+    ["ginseng"] = 1,
+    ["blueink"] = 1
+  },
+  eurypteria = {
+    ["lobelia"] = 1,
+    ["goldenseal"] = 1
+    ["redink"] = 1
+  },
+  kalmia = {
+    ["bloodroot"] = 1,
+    ["ginseng"] = 1,
+    ["moss"] = 1,
+    ["redink"] = 1,
+    ["blueink"] = 1
+  },
+  digitalis = {
+    ["bellwort"] = 1,
+    ["lobelia"] = 1,
+    ["redink"] = 1
+  },
+  darkshade = {
+    ["bloodroot"] = 1,
+    ["ginseng"] = 1,
+    ["kelp"] = 1,
+    ["redink"] = 1
+  },
+  curare = {
+    ["bloodroot"] = 1,
+    ["bellwort"] = 1,
+    ["greenink"] = 1
+  },
+  epteth = {
+    ["valerian"] = 1,
+    ["bellwort"] = 1,
+    ["yellowink"] = 1
+  },
+  prefarar = {
+    ["bloodroot"] = 1,
+    ["ginseng"] = 1,
+    ["purpleink"] = 1
+  },
+  monkshood = {
+    ["valerian"] = 1,
+    ["bellwort"] = 1,
+    ["redink"] = 1
+  },
+  euphorbia = {
+    ["kelp"] = 1,
+    ["goldenseal"] = 1,
+    ["greenink"] = 1
+  },
+  colocasia = {
+    ["bayberry"] = 1,
+    ["hawthorn"] = 1,
+    ["blueink"] = 1
+  },
+  oculus = {
+    ["bayberry"] = 1,
+    ["goldenseal"] = 1,
+    ["redink"] = 1
+  },
+  vernalius = {
+    ["kelp"] = 2,
+    ["goldenseal"] = 1,
+    ["purpleink"] = 1
+  },
+  epseth = {
+    ["valerian"] = 1,
+    ["bellwort"] = 1,
+    ["purpleink"] = 1
+  },
+  larkspur = {
+    ["goldenseal"] = 2,
+    ["kelp"] = 1,
+    ["blueink"] = 1
+  },
+  slike = {
+    ["ginseng"] = 2,
+    ["elm"] = 1,
+    ["greenink"] = 1
+  },
+  voyria = {
+    ["ginseng"] = 3,
+    ["skullcap"] = 2,
+    ["goldenseal"] = 2,
+    ["goldink"] = 1,
+    ["redink"] = 1
+  },
+  delphinium = {
+    ["bellwort"] = 2,
+    ["goldenseal"] = 1,
+    ["blueink"] = 1
+  },
+  vardrax = {
+    ["skullcap"] = 1,
+    ["elm"] = 1,
+    ["ginseng"] = 1,
+    ["greenink"] = 1
+  },
+  loki = {
+    ["goldenseal"] = 2,
+    ["kelp"] = 2,
+    ["bloodroot"] = 2,
+    ["ginseng"] = 1,
+    ["yellowink"] = 2
+  },
+  aconite = {
+    ["goldenseal"] = 2,
+    ["lobelia"] = 1,
+    ["yellowink"] = 1
+  },
+  selarnia = {
+    ["lobelia"] = 1,
+    ["bloodroot"] = 1,
+    ["goldink"] = 1
+  },
+  gecko = {
+    ["valerian"] = 1,
+    ["bloodroot"] = 1,
+    ["kelp"] = 1,
+    ["purpleink"] = 1
   }
 }
 
@@ -141,7 +276,15 @@ function rf_fillpot(potion, fills, pot)
   assert(potion and fills, "rf_fillpot: need to supply both what to brew and what amount to brew")
 
   -- 1 set of ingredients = 1 fill
-  assert(concoctions[potion], "rf_fillpot: don't know about such a potion")
+  
+  -- Have to change this. If I don't, it's going to be a massive
+  -- rewrite of the entire refilling system, with lots of duplicate functions
+  -- just to accomodate toxins.
+  --assert(concoctions[potion], "rf_fillpot: don't know about such a potion")
+  if not concoctions[potion] and not toxins[potion] then
+    assert(false, "rf_fillpot: don't know about such a potion")
+  end
+  
   for item, amount in pairs(concoctions[potion]) do
     outr(item, amount * fills)
     inpot(item, amount * fills, pot or conf.potid)
@@ -185,7 +328,7 @@ end
 function rf_fillnext()
   if not rf_refilling then return end
 
-  sendc("fill emptyvial from "..conf.potid.." "..(svo.rf_transrefiller and 4 or 5).." times", rf_debug)
+  sendc("fill emptyvial from "..conf.potid.." "..(svo.rf_currenttrans and 4 or 5).." times", rf_debug)
 end
 
 function rf_fillarty()
@@ -200,7 +343,7 @@ function rf_fillarty()
     return
   end
 
-  sendc("fill "..table.remove(svo.rf_arties).." from "..conf.potid.." "..(svo.rf_transrefiller and 2 or 3).." times", rf_debug)
+  sendc("fill "..table.remove(svo.rf_arties).." from "..conf.potid.." "..(svo.rf_currenttrans and 2 or 3).." times", rf_debug)
 end
 
 function rf_cancel()
@@ -223,7 +366,7 @@ function rf_refill(what)
       amount, potion = 1, what[i]:match("^(%w+)")
     end
 
-    if not concoctions[potion] then
+    if not concoctions[potion] and not toxins[potion] then
       echof("Don't know the ingredients for a '%s' potion :|", tostring(potion))
     else
       rf_refilling.p[potion] = {normal = tonumber(amount)}
@@ -265,9 +408,17 @@ function rf_nextpotion()
     raiseEvent("svo done refilling")
   else
     svo.echof("Going to work on refilling %s.", tostring(rf_refilling.currentorder))
+    
+    -- change which trans to check based on what we're brewing
+    if concoctions[rf_refilling.currentorder] then
+      rf_currenttrans = svo.rf_transrefiller
+    else
+      rf_currenttrans = svo.rf_transtoxicology
+    end
+    
     rf_fillpot(rf_refilling.currentorder,
       -- refill 5 health 2 arty means 3 normal + 2 arty!
-      (rf_refilling.p[rf_refilling.currentorder].normal - rf_refilling.p[rf_refilling.currentorder].arty) * (svo.rf_transrefiller and 4 or 5) +
+      (rf_refilling.p[rf_refilling.currentorder].normal - rf_refilling.p[rf_refilling.currentorder].arty) * (rf_currenttrans and 4 or 5) +
       rf_refilling.p[rf_refilling.currentorder].arty * 2)
     rf_boilpot()
 
@@ -294,6 +445,6 @@ function rf_missingstuff()
   echo'\n' echof("Ack, looks like you're out of enough ingredients - going to get what we put into the pot back...")
 
     rf_undopot(rf_refilling.currentorder,
-      (rf_refilling.currentorderdata.normal - rf_refilling.currentorderdata.arty) * (svo.rf_transrefiller and 4 or 5) +
+      (rf_refilling.currentorderdata.normal - rf_refilling.currentorderdata.arty) * (rf_currenttrans and 4 or 5) +
       rf_refilling.currentorderdata.arty * 2)
 end
