@@ -368,7 +368,7 @@ function rf_refill(what)
 
     if not concoctions[potion] and not toxins[potion] then
       echof("Don't know the ingredients for a '%s' potion :|", tostring(potion))
-      end
+    else
       rf_refilling.p[potion] = {normal = tonumber(amount)}
       rf_refilling.p[potion].arty = tonumber(what[i]:match("(%d+) arty$") or 0)
 
