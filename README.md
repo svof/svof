@@ -7,7 +7,7 @@ To download the system for use, [see here](https://github.com/svof/svof/releases
 # Contributing
 To code in the system itself, follow instructions below on how to set it up. See also the [developer readme](Developer readme.md) for more useful information.
 
-If you're looking for something to do, have a look at the existing [issues/features](https://github.com/svof/svof/issues) list.
+If you're looking for something to do, have a look at the existing [issues/features](https://github.com/svof/svof/issues) list, and have a [look at the wiki](https://github.com/svof/svof/wiki) on information about the project.
 
 ## License
 Svof is licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/). You must read the license before using Svof source code.
