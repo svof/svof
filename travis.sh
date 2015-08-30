@@ -1,10 +1,11 @@
+lua generate.lua -r "$TRAVIS_TAG"
+
 if [ -z "$TRAVIS_TAG" ]
 then
-  echo "No tag, no release."
+  echo "No tag, no update in documentation needed."
   exit 0
 fi
 
-lua generate.lua -r "$TRAVIS_TAG"
 lua precommit.lua "$TRAVIS_TAG"
 
 cd doc/_build/html

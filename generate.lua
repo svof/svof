@@ -205,6 +205,8 @@ local function dowork(systemfor, release, own)
 
   -- compile new svo
   compile.dowork(tbl.addons)
+  assert(loadfile(cwd.."/bin/svo")) -- do a compile of the concatinated svo to
+                                    -- check the syntax
 
   -- clear existing addons
   local svo_template = cwd.."/svo template"
