@@ -129,7 +129,7 @@ local toxins = {
   },
   eurypteria = {
     ["lobelia"] = 1,
-    ["goldenseal"] = 1
+    ["goldenseal"] = 1,
     ["redink"] = 1
   },
   kalmia = {
