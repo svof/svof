@@ -13,8 +13,8 @@ touch .nojekyll
 
 git init
 
-git config user.name "Travis CI"
-git config user.email "keneanung@googlemail.com"
+git config user.name "svof-machine-account"
+git config user.email "machine@svof.com"
 
 git add .
 git commit -m "Deploy to GitHub Pages"
