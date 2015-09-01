@@ -4,6 +4,9 @@ Svof is an AI system for Achaea, an online MUD. It has advanced and adaptable cu
 # Downloading
 To download the system for use, [see here](https://github.com/svof/svof/releases).
 
+# Documentation
+Extensive documentation for the system is available [here](https://svof.github.io/svof/).
+
 # Contributing
 To code in the system itself, follow instructions below on how to set it up. See also the [developer readme](Developer readme.md) for more useful information.
 
