@@ -4,6 +4,7 @@ install:
 - sudo apt-get update
 - sudo apt-get install lua5.1 luarocks p7zip-full python-sphinx
 - sudo luarocks install penlight
+- sudo gem install github_changelog_generator
 script:
 - bash travis.sh
 notifications:
