@@ -328,7 +328,7 @@ end
 function rf_fillnext()
   if not rf_refilling then return end
 
-  sendc("fill emptyvial from "..conf.potid.." "..(svo.rf_currenttrans and 4 or 5).." times", rf_debug)
+  sendc("fill emptyvial from "..conf.potid.." "..(rf_currenttrans and 4 or 5).." times", rf_debug)
 end
 
 function rf_fillarty()
@@ -343,7 +343,7 @@ function rf_fillarty()
     return
   end
 
-  sendc("fill "..table.remove(svo.rf_arties).." from "..conf.potid.." "..(svo.rf_currenttrans and 2 or 3).." times", rf_debug)
+  sendc("fill "..table.remove(svo.rf_arties).." from "..conf.potid.." "..(rf_currenttrans and 2 or 3).." times", rf_debug)
 end
 
 function rf_cancel()
