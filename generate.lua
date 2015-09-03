@@ -23,7 +23,7 @@ local cwd = lfs.currentdir()
 
 local args = lapp [[
 -d,--debug  Build with debugging information enabled
--r,--release (string)  Build all systems
+-r,--release (default false)  Build all systems
 -o,--own  Build a Svof for yourself
  <name...> (default infernal )  Class to build a system for
 ]]
@@ -33,7 +33,7 @@ local args = lapp [[
 ]]
 
 local builder         = "lua" -- or "luajit"
-local doall           = not not args.release -- make doall a bool
+local doall           = args.release ~= "false" -- make doall a bool
 local name            = args.name
 local release         = not args.debug
 local own             = args.own
