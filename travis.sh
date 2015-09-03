@@ -43,7 +43,7 @@ fi
 
 
 # now generate changelog
-github_changelog_generator --since-tag `cat output.txt | jq '.[1].tag_name | tonumber'` -t ${GH_TOKEN} --no-unreleased
+github_changelog_generator --since-tag `cat output.txt | jq '.[1].tag_name | tonumber'` -t ${GH_TOKEN} --no-unreleased --no-issues
 
 # modify the changelog a little
 echo "`cat CHANGELOG.md | grep -v "# Change Log" | grep -v "^##" | egrep -v "This Change Log"`" > CHANGELOG.md
