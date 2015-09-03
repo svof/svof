@@ -23,27 +23,21 @@ local cwd = lfs.currentdir()
 
 local args = lapp [[
 -d,--debug  Build with debugging information enabled
--r,--release  Build all systems
+-r,--release (default false)  Build all systems
 -o,--own  Build a Svof for yourself
  <name...> (default infernal )  Class to build a system for
 ]]
 
 --[[
- To build a new update, do:
-- commit whatever is left first
-- increment the version in this file
-- run ./precommit.lua
-- bzr commit -m "<new version> update"
-- bzr tag <new version>
-- finally, run ./generate.lua -r && ./generate.lua -u
+  Building new updates is done by creating a new release on GitHub. The rest is done by travis.
 ]]
 
 local builder         = "lua" -- or "luajit"
-local doall           = args.release
+local doall           = args.release ~= "false" -- make doall a bool
 local name            = args.name
 local release         = not args.debug
 local own             = args.own
-local version         = "3"
+local version         = args.release
 local defaultaddons   = {
   "dragonlimbcounter", "elistsorter", "enchanter", "fishdist", "inker", "logger", "offering", "peopletracker", "reboundingsileristracker", "refiller", "runeidentifier", "namedb",
   druid = "refiller", sylvan = "refiller", sentinel = "refiller",
@@ -211,6 +205,8 @@ local function dowork(systemfor, release, own)
 
   -- compile new svo
   compile.dowork(tbl.addons)
+  assert(loadfile(cwd.."/bin/svo")) -- do a compile of the concatinated svo to
+                                    -- check the syntax
 
   -- clear existing addons
   local svo_template = cwd.."/svo template"

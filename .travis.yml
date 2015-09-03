@@ -1,0 +1,27 @@
+language: c
+sudo: required
+install:
+- sudo apt-get update
+- sudo apt-get install lua5.1 luarocks p7zip-full python-sphinx
+- sudo luarocks install penlight
+- gem install github_changelog_generator
+script:
+- bash travis.sh
+notifications:
+  email:
+    on_failure: always
+    on_success: change
+env:
+  global:
+  - GH_REF=github.com/svof/svof.git
+  - GH_USER=svof-machine-account
+  - secure: nuoaPEXRUTlMK99Vy3tN7KgT/eas98nER0Tdx+mt86q/AhSfL4UhnKa6dJfDUkec/tExRgU/gEU44LUx3pWmduJuZZqi+mluwHBPqFFmUdcjf1agV2wvJblJCfEH6OvE61bFQYkn5bROma6NSESJkMPDCmTSmpqaYbUu3sLoE+SBsGEx/zKxHYBmw5/QoVXq6NA9GG5oGrMzt5zpcSwwenccPXMmODQcHXhAR8pakOCNxQJoKq18X1EqX5bANMfVjMajBv0LecliSwuqLU4uyM9swtYZoJmTZZox+2ViHP7uP0n0VekS1jamcarZ4paxBY7BPYB2BHuvv9Nx6L5mf3a7lw1HcFL4GKmCL8tQwRDvQZsKAwig5zEm2IMYyq+s+LITCQvh07j4OzTQx6/J03s0CYNRUzBJjjM6y5dqZJFzWKj3wkcXTCztqN+HpnESqIILnZDEp+TuMV3IJG4xRMbST+CatnHUeJfYrF88xaJdhQBQcgtbxLU5P3CB0JlLakgp9/B2rYxtPdQlcwgYxHFU4UFGrzPRDuw30xTS3LmCNPZQFZ6WzO3rFZUIrSCgd4WnVdYP7MaEXnJmQOTYFIuSU+LOzwen/ZBt5qLX64R7ElVUxvGoqRKAKy1e1P3CGRW6hxSjjO6z2dzG/c5qUtRwhwRSVRrfIPG3w01wjWI=
+deploy:
+  provider: releases
+  file_glob: true
+  file: output/*.zip
+  skip_cleanup: true
+  on:
+    tags: true
+  api_key:
+    secure: BF4Bcrvy/Itxd/ENeE1IrFS7PcqGCVvWduu7hXp44GGjWxYCIwup2YLcDBxFURweSG+bJkcyKJteDt4Yo5QhyHUhXeCKp3uN0HHaa25OJEeW3cauXZ7EEk/jNZOAODPG5lh5Qk5z3hM+Zp3XdANgCNyT5rAu7uCu0WvTvk3RE9FDU5rVLIpOwIvFuAE73R1vVoJF3FMBT5eJJzI8ttFrsxRuul6EaA/ZzijpJuoKF2vuGujSqxuIJQPkWw1iOc2gjQ6JDvNiWClo1kQNt9e3vK2cW5vwtu10aAqGR0gHlSq1qYvYIKO9bXnh682Fh67NbsumJBVTzXZlwQKEcq9cZqSnGPvp+Pa5r/A0tAICirYojgBKMsOKWUSqSjJv3ZtqhMeH42RYymIV5zaXKxf32H9kJca8Bjz7kfO0rogsdbLaZ49x65YtMcq4mwPMcjryAE9sdL0fn+cpIQHheuSWFwSyUgjkY4OjVGsRyryfQNcTNnjbTSr6XTSCPB9PapWNT1oTYLLLKFJ40codVBP616klSkK5dHi9to/r/4hepfhzhIAji02Hlmz+dr3Gn/vngnGGwTwjlFHkzqWNQPD3ZzdXiUWYFOxQVaOhvDHwv199nhQCN6vtElePbzK5hOx5yKEWLwQ3XP1xVglheO34J3TGWzrOPjBIX5yQbfiv5vk=
