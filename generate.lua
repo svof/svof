@@ -40,15 +40,15 @@ local own             = args.own
 local version         = args.release
 local defaultaddons   = {
   "dragonlimbcounter", "elistsorter", "enchanter", "fishdist", "inker", "logger", "offering", "peopletracker", "reboundingsileristracker", "refiller", "runeidentifier", "namedb",
-  druid = "refiller", sylvan = "refiller", sentinel = "refiller",
   priest = {"priestreport", "priesthealing", "priestlimbcounter"},
   magi = {"burncounter", "magilimbcounter", "stormhammertarget"},
-  monk = {"mindnet", "metalimbcounter"}, blademaster = "mindnet",
+  monk = {"mindnet", "monklimbcounter"}, blademaster = "mindnet",
   infernal = {"knightlimbcounter"},
   runewarden = {"knightlimbcounter"},
   paladin = {"knightlimbcounter"},
   sentinel = {"metalimbcounter"},
   sylvan = {"metalimbcounter"},
+  druid = {"metalimbcounter"},
 }
 
 
@@ -131,7 +131,7 @@ local function dowork(systemfor, release, own)
 
   -- add default addons
   for k, addon in pairs(defaultaddons) do
-    if not (type(k) ~= 'number' and k ~= tbl.class) then
+    if type(k) == 'number' or k == tbl.class then
       if type(addon) == "string" and not tablex.find(tbl.addons, addon) then
       tbl.addons[#tbl.addons+1] = addon
       elseif type(addon) == "table" then
