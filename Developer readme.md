@@ -2,13 +2,13 @@
 
     bin/                                 = preprocessed files + Lua libraries
     bin/notify                           = LuaNotify library for signal processing
-    bin/pl                               = Penlight library for a miscellany of useful features, cut=down version
+    bin/pl                               = Penlight library for a miscellany of useful features, cut-down version
     bin/default_prios                    = default priorities for Svof
     bin/*.lua                            = pre-processed Lua files - don't edit these, but the raw-svo.*.lua ones instead.
     doc/                                 = documentation in Sphinx.
     output/                              = storage location for build systems
     own svo/                             = your own Svof that your Mudlet profile loads
-    svo template/                        = tempalte folder containing things that need to be packed up into the final Svof
+    svo template/                        = template folder containing things that need to be packed up into the final Svof
     compile.lua                          = pulls Svof files together into one big one that can be loaded in, used by generate.lua
     file.lua                             = Lua library with basic file functions, used by generate.lua
     luapp.lua                            = Lua preprocessing libraries, allows compile-time modification of Lua code - helps with some of the monotonous and repeating functions
@@ -31,7 +31,7 @@
     raw-svo.fishdist.lua                 = Trilliana's fishing distance addon
     raw-svo.funnies.lua                  = Svof's humour - welcome message, protips and dying messages
     raw-svo.inker.lua                    = Inker addon
-    raw-svo.install.lua                  = Installation procedure - audotects skills (before GMCP came along, by ABing and gagging) and asks questions for things it couldn't
+    raw-svo.install.lua                  = Installation procedure - autodetects skills (before GMCP came along, by ABing and gagging) and asks questions for things it couldn't
     raw-svo.knightlimbcounter.lua        = Knight limbcounter addon
     raw-svo.logger.lua                   = Svof's logger (startlog / stoplog aliases)
     raw-svo.magilimbcounter.lua          = Magi limbcounter addon
