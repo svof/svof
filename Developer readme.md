@@ -4,6 +4,7 @@
     bin/notify                           = LuaNotify library for signal processing
     bin/pl                               = Penlight library for a miscellany of useful features, cut=down version
     bin/default_prios                    = default priorities for Svof
+    bin/*.lua                            = pre-processed Lua files - don't edit these, but the raw-svo.*.lua ones instead.
     doc/                                 = documentation in Sphinx.
     output/                              = storage location for build systems
     own svo/                             = your own Svof that your Mudlet profile loads
