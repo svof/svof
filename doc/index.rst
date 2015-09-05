@@ -736,7 +736,7 @@ Do ``vlua svo.conf.noeqtimeout = 6``.
 
 What to do if you have a problem?
 ----------------------------------------------------------
-Copy/paste the problem parts that you saw in the game and email to me.
+Copy/paste the problem parts that you saw in the game and file an `issue on Github <https://github.com/svof/svof/issues>`_.
 
 Then, try checking diagnose if it's affliction related, or *def* if it's defences-related. For afflictions, if you're still having a problem - try *vreset affs* (or *vreseta* for short).
 
