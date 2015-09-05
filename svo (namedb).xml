@@ -2641,16 +2641,18 @@ send(matches[2]..&quot; enemies&quot;, false)</script>
             </Alias>
             <Alias isActive="yes" isFolder="no">
                 <name>ndb alias cheatsheet</name>
-                <script>-- load help data in
+                <script>local class = svo.me.class:title()
+
+-- load help data in
 if not ndb.help then
-if not lfs.attributes(getMudletHomeDir()..&quot;/&quot;..svo.me.name..&quot; svo&quot;) then
+if not lfs.attributes(getMudletHomeDir()..&quot;/&quot;..class..&quot; svo&quot;) then
   svo.echof(&quot;You don't seem to have installed Svof as a package in the name of \&quot;&quot;..svo.me.name..&quot; svo\&quot; - I can't find the ndb help file!&quot;)
   return
 end
 
-local f, msg = io.open(getMudletHomeDir()..&quot;/&quot;..svo.me.name..&quot; svo/ndb-help.lua&quot;)
+local f, msg = io.open(getMudletHomeDir()..&quot;/&quot;..class..&quot; svo/ndb-help.lua&quot;)
 if not f then
-  svo.echof(&quot;Didn't find the ndb-help.lua file in '&quot;..getMudletHomeDir()..&quot;/&quot;..svo.me.name..&quot; svo/ndb-help.lua&quot;..&quot;' - I can't show you the aliases!&quot;)
+  svo.echof(&quot;Didn't find the ndb-help.lua file in '&quot;..getMudletHomeDir()..&quot;/&quot;..class..&quot; svo/ndb-help.lua&quot;..&quot;' - I can't show you the aliases!&quot;)
   return
 end
 
