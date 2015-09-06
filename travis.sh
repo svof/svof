@@ -28,7 +28,7 @@ git push --force --quiet "https://${GH_USER}:${GH_TOKEN}@${GH_REF}" master:gh-pa
 # create release body
 
 # get all releases first
-http_code=`curl -s -w "%{http_code}" -o output.txt "https://api.github.com/repos/keneanung/svof/releases?access_token=${GH_TOKEN}"`
+http_code=`curl -s -w "%{http_code}" -o output.txt "https://api.github.com/repos/svof/svof/releases?access_token=${GH_TOKEN}"`
 out=$?
 if [ "$out" != "0" ]
 then
