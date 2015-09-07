@@ -53116,7 +53116,7 @@ end</script>
             </Alias>
             <Alias isActive="yes" isFolder="no">
                 <name>(vhelp) Open docs</name>
-                <script>local url = &quot;http://doc.svo.vadisystems.com/&quot;
+                <script>local url = &quot;https://svof.github.io/svof/&quot;
 
 openUrl(url)
 svo.echof(&quot;Opened vhelp in your browser at:\n  %s&quot;, url)</script>
