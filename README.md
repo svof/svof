@@ -8,7 +8,7 @@ To download the system for use, [see here](https://github.com/svof/svof/releases
 Extensive documentation for the system is available [here](https://svof.github.io/svof/).
 
 # Contributing
-To code in the system itself, follow instructions below on how to set it up. See also the [developer readme](Developer readme.md) for more useful information.
+To code in the system itself, follow instructions below on how to set it up. See also the [developer readme](Developer readme.md) for useful information on the code, acquaint yourself with the [code style](https://github.com/svof/svof/wiki/Code-style), and read the [design principles](https://github.com/svof/svof/wiki/Svof-design-principles).
 
 If you're looking for something to do, have a look at the existing [issues/features](https://github.com/svof/svof/issues) list, and have a [look at the wiki](https://github.com/svof/svof/wiki) on information about the project.
 
