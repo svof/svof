@@ -8,6 +8,7 @@ fi
 
 lua precommit.lua "$TRAVIS_TAG"
 
+# Create documentation for the release
 cd doc/_build/html
 touch .nojekyll
 
@@ -24,6 +25,9 @@ git commit -m "Deploy to GitHub Pages"
 # will be lost, since we are overwriting it.) We redirect any output to
 # /dev/null to hide any sensitive credential data that might otherwise be exposed.
 git push --force --quiet "https://${GH_USER}:${GH_TOKEN}@${GH_REF}" master:gh-pages > /dev/null 1>&2
+
+# return to repo root directory
+cd -
 
 # create release body
 
@@ -43,7 +47,7 @@ fi
 
 
 # now generate changelog
-github_changelog_generator --since-tag `cat output.txt | jq '.[1].tag_name | tonumber'` -t ${GH_TOKEN} --no-unreleased --no-issues
+github_changelog_generator --since-tag `cat output.txt | jq '.[1].tag_name | tonumber'` -t ${GH_TOKEN} --no-unreleased --no-issues -u svof -p svof
 
 # modify the changelog a little
 echo "`cat CHANGELOG.md | grep -v "# Change Log" | grep -v "^##" | egrep -v "This Change Log"`" > CHANGELOG.md
