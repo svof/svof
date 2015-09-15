@@ -54,7 +54,7 @@ echo "`cat CHANGELOG.md | grep -v "# Change Log" | grep -v "^##" | egrep -v "Thi
 
 # now upload the changelog
 data=$(jq -n --arg v "`cat CHANGELOG.md`" '{"body": $v}')
-http_code=curl -s -w "%{http_code}" --request PATCH --data "data" "https://api.github.com/repos/svof/svof/releases/`cat output.txt | jq ".[0].id | tonumber"`?access_token=${GH_TOKEN}"
+http_code=$(curl -s -w "%{http_code}" --request PATCH --data "${data}" -o /dev/null "https://api.github.com/repos/svof/svof/releases/`cat output.txt | jq ".[0].id | tonumber"`?access_token=${GH_TOKEN}")
 if [ "$out" != "0" ]
 then
   echo "Updating release body failed:" "$out"
