@@ -15,81 +15,18 @@
             <packageName></packageName>
             <regex></regex>
             <Alias isActive="yes" isFolder="no">
-                <name>enchant what howmuch</name>
-                <script>enchantment = matches[3]
-number = matches[2]
-enchant(enchantment, number)</script>
+                <name>enchant</name>
+                <script>svo.parseEnchantArguments(matches[2])</script>
                 <command></command>
                 <packageName></packageName>
-                <regex>^enchant (.*) (\w+)$</regex>
+                <regex>^enchant (.+)$</regex>
             </Alias>
             <Alias isActive="yes" isFolder="no">
-                <name>Enchant Medallion</name>
-                <script>matches[2] = medallion
-</script>
+                <name>repeat the last order</name>
+                <script>svo.reenchant()</script>
                 <command></command>
                 <packageName></packageName>
-                <regex>^enchant medallion (\w+)$</regex>
-            </Alias>
-            <Alias isActive="yes" isFolder="no">
-                <name>re-enchant howmany</name>
-                <script>stopnumber= matches[2]</script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^re-enchant (\d+)$</regex>
-            </Alias>
-            <Alias isActive="yes" isFolder="no">
-                <name>Enchant list</name>
-                <script>cecho( &quot;&lt;white&gt;              Sigils:\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;          'eye' - Eye Sigil\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;          'key' - Key Sigil\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;          'orb' - Orb Sigil\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;         'cube' - Cube Sigil\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;         'fist' - Fist Sigil\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;         'star' - Star Sigil\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;        'flame' - Flame Sigil\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;        'knife' - Knife Sigil\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;     'monolith' - Monolith Sigil\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;     'mushroom' - Mushroom Sigil\n&quot; )
-
-cecho( &quot;\n&lt;white&gt;          Resistance:\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;         'cold' - Cold Resist\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;        'magic' - Magic Resist\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;      'fresist' - Fire Resist\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;     'electric' - Electric Resist\n&quot; )
-
-cecho( &quot;\n&lt;white&gt;   Item Enchantments:\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;       'meteor' - Meteor Arrow\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;      'augment' - Augment Armour or Weapon\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;      'icewall' - Icewall\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;     'firelash' - Firelash\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;     'firewall' - Firewall\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;     'scabbard' - Scabbard of Stasis\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt; 'waterwalking' - Waterwalking\n&quot; )
-
-cecho( &quot;\n&lt;white&gt;       Item Creation:\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;       'bauble' - Scented Bauble\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;       'brooch' - Brooch of Thoth\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;       'purity' - Necklace of Purity\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;       'stasis' - Bag of Stasis\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;      'hearing' - Earring of Hearing\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;     'negation' - Gem of Negation\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;    'whirlwind' - Whirlwind of Vastar\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;   'pestilence' - Ring of Pestilence\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;   'worrystone' - Worrystone\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;  'concealment' - Orb of Concealment\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt; 'dreamcatcher' - Dreamcatcher\n&quot; )
-cecho( &quot;&lt;SlateGrey&gt;'comprehension' - Necklace of Comprehension\n&quot; )</script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^enchant list$</regex>
-            </Alias>
-            <Alias isActive="yes" isFolder="no">
-                <name>getgold - obtain gold from a container</name>
-                <script>send(&quot;get &quot;..matches[2]..&quot; gold from pack&quot;)</script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^getgold (\d+)$</regex>
+                <regex>^reenchant$</regex>
             </Alias>
         </AliasGroup>
     </AliasPackage>
@@ -101,1051 +38,1192 @@ cecho( &quot;&lt;SlateGrey&gt;'comprehension' - Necklace of Comprehension\n&quot
             <script>-------------------------------------------------
 --           Originally made by Jenny          --
 --        Updated/Corrected by Jukilian        --
+--            Rewritten by Keneanung           --
 -------------------------------------------------
 </script>
             <eventHandlerList/>
             <Script isActive="yes" isFolder="no">
                 <name>script</name>
                 <packageName></packageName>
-                <script>local oubori_data = {
-	[18864] = { &quot;ouroboros60684&quot;,  &quot;ouroboros203598&quot; },
-	[21191] = { &quot;ouroboros34462&quot;,  &quot;ouroboros49014&quot;  },
-	[21192] = { &quot;ouroboros191596&quot;, &quot;ouroboros191631&quot; },
-	 [5953] = { &quot;ouroboros36673&quot;,  &quot;ouroboros36838&quot;  },
-	 [5954] = { &quot;ouroboros23502&quot;,  &quot;ouroboros57255&quot;  },
-	 [5955] = { &quot;ouroboros1263&quot;,   &quot;ouroboros30460&quot;  }
+                <script>local ourobori_data = {
+  [18864] = { &quot;ouroboros60684&quot;,  &quot;ouroboros203598&quot; },
+  [21191] = { &quot;ouroboros34462&quot;,  &quot;ouroboros49014&quot;  },
+  [21192] = { &quot;ouroboros191596&quot;, &quot;ouroboros191631&quot; },
+   [5953] = { &quot;ouroboros36673&quot;,  &quot;ouroboros36838&quot;  },
+   [5954] = { &quot;ouroboros23502&quot;,  &quot;ouroboros57255&quot;  },
+   [5955] = { &quot;ouroboros1263&quot;,   &quot;ouroboros30460&quot;  }
 }
 
-local enchanting = {}
+-- Keep track if we are already ennchating
+local enchanting = false
+-- Queue of items we want to create. The item we are currently making is not in here.
+local enchantmentQueue = {}
+-- Queue of actions we need to do for the current enchantment
+local enchantmentActions = {}
+-- Flag for checking the IDs of the ourobori in the current room
+local checking_ourobori = false
+-- Keeps track if we need to put up selfishness again after enchanting
+local hadSelfishness = false
+-- The string command of the last order in case we want to repeat it
+local lastOrder = &quot;&quot;
 
+-- The ouroboros we work with
 local ouroboros1, ouroboros2
 
+-- Hard coded list of known enchantments. Structure of each item:
+--[[
+  fullname:    Name that is used in the begin command
+  type:        Type of Enchantment. Possible values: &quot;creation&quot; and &quot;enchantment&quot;
+  nameToGet:   (creation only) name that will be used when getting the item from the ouroboros
+  ingredients: Name - value table. Name is the ingredient that goes into the ouroboros, value is the number for one item
+  otherItems:  Other items needed, that go not into the ouroboros. Currently the number of kola nuts and if a coin is needed
+  actions:     Ordered list of actions to create the item
+--]]
+local enchantments = {
+
+  purity = {
+    fullname    = &quot;necklace of purity&quot;,
+    type        = &quot;creation&quot;,
+    nameToGet   = &quot;necklace&quot;,
+    ingredients = {
+      ice      = 4,
+      goldbar  = 1,
+      dust     = 1,
+    },
+    otherItems = {},
+    actions     = {
+      &quot;bang drum&quot;,
+      &quot;ring bell&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;wave arms&quot;,
+      &quot;play horn&quot;,
+      &quot;play horn&quot;,
+      &quot;play horn&quot;,
+      &quot;play horn&quot;,
+      &quot;burn incense&quot;,
+      &quot;light candle&quot;,
+      &quot;square the circle&quot;,
+      &quot;square the circle&quot;,
+      &quot;square the circle&quot;
+    }
+  },
+
+  pestilence = {
+    fullname     = &quot;ring of pestilence&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;ring&quot;,
+    ingredients  = {
+      goldbar   = 1,
+      silverbar = 2,
+      staghorn  = 1,
+    },
+    otherItems = {
+      gold = true
+    },
+    actions      = {
+      &quot;strum lute&quot;,
+      &quot;flipcoin&quot;,
+      &quot;bang drum&quot;,
+      &quot;wave arms&quot;,
+      &quot;square the circle&quot;,
+      &quot;wave feather&quot;,
+      &quot;burn incense&quot;,
+      &quot;point sword&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;play horn&quot;,
+      &quot;play horn&quot;,
+      &quot;play horn&quot;,
+      &quot;ring bell&quot;,
+      &quot;ring bell&quot;,
+      &quot;ring bell&quot;,
+      &quot;bang drum&quot;,
+      &quot;square the circle&quot;,
+      &quot;strum lute&quot;
+    }
+  },
+
+  negation = {
+    fullname     = &quot;gem of negation&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;ring&quot;,
+    ingredients  = {
+      goldbar   = 1,
+    },
+    otherItems = {
+      kola = 1
+    },
+    actions      = {
+      &quot;ring bell&quot;,
+      &quot;ring bell&quot;,
+      &quot;ring bell&quot;,
+      &quot;light candle&quot;,
+      &quot;crush kola&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;point sword&quot;,
+      &quot;chant zool ekilthia requi oben&quot;
+    }
+  },
+
+  dreamcatcher = {
+    fullname     = &quot;dreamcatcher&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;dreamcatcher&quot;,
+    ingredients  = {
+      goldbar   = 2,
+      silverbar = 2,
+      staghorn  = 1,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;wave arms&quot;,
+      &quot;burn incense&quot;,
+      &quot;square the circle&quot;,
+      &quot;light candle&quot;,
+      &quot;strum lute&quot;,
+      &quot;strum lute&quot;,
+      &quot;strum lute&quot;,
+      &quot;ring bell&quot;,
+      &quot;ring bell&quot;,
+      &quot;ring bell&quot;,
+      &quot;point sword&quot;,
+      &quot;point sword&quot;,
+      &quot;strum lute&quot;,
+      &quot;strum lute&quot;,
+      &quot;strum lute&quot;
+    }
+  },
+
+  bauble = {
+    fullname     = &quot;bauble&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;bauble&quot;,
+    ingredients  = {
+      dust      = 1,
+    },
+    otherItems = {
+      kola = 1
+    },
+    actions      = {
+      &quot;crush kola&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;clap hands&quot;,
+      &quot;square the circle&quot;,
+      &quot;chant disei stalla rapwah cosoth tu&quot;
+    }
+  },
+
+  fresist = {
+    fullname     = &quot;fire resistance&quot;,
+    type         = &quot;enchantment&quot;,
+    ingredients  = {
+      ice       = 1,
+      silverbar = 2,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;ring bell&quot;,
+      &quot;ring bell&quot;,
+      &quot;light candle&quot;,
+      &quot;light candle&quot;,
+      &quot;play horn&quot;,
+      &quot;play horn&quot;,
+      &quot;light candle&quot;,
+      &quot;light candle&quot;,
+      &quot;bang drum&quot;,
+      &quot;bang drum&quot;,
+      &quot;clap hands&quot;,
+      &quot;clap hands&quot;,
+      &quot;strum lute&quot;,
+      &quot;strum lute&quot;,
+      &quot;clap hands&quot;,
+      &quot;clap hands&quot;,
+      &quot;bang drum&quot;,
+      &quot;bang drum&quot;,
+      &quot;light candle&quot;,
+      &quot;light candle&quot;
+    }
+  },
+
+  concealment = {
+    fullname     = &quot;orb of concealment&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;concealment&quot;,
+    ingredients  = {
+      goldbar   = 1,
+      silverbar = 5,
+    },
+    otherItems = {
+      gold = true
+    },
+    actions      = {
+      &quot;wave feather&quot;,
+      &quot;wave arms&quot;,
+      &quot;flipcoin&quot;,
+      &quot;play horn&quot;,
+      &quot;point sword&quot;,
+      &quot;clap hands&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;chant aisyalam&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;clap hands&quot;,
+      &quot;point sword&quot;,
+      &quot;play horn&quot;,
+      &quot;flipcoin&quot;,
+      &quot;wave arms&quot;,
+      &quot;wave feather&quot;
+    }
+  },
+
+  icewall = {
+    fullname     = &quot;icewall&quot;,
+    type         = &quot;enchantment&quot;,
+    ingredients  = {
+      ice       = 1,
+      dust      = 1,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;chant incula cela ecta&quot;,
+      &quot;play horn&quot;,
+      &quot;play horn&quot;,
+      &quot;play horn&quot;,
+      &quot;bang drum&quot;,
+      &quot;bang drum&quot;,
+      &quot;square the circle&quot;,
+      &quot;point sword&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;burn the polygon&quot;
+    }
+  },
+
+  comprehension = {
+    fullname     = &quot;necklace of comprehension&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;necklace&quot;,
+    ingredients  = {
+      ice       = 2,
+      silverbar = 4,
+      staghorn  = 3,
+      goldbar   = 3,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;play horn&quot;,
+      &quot;play horn&quot;,
+      &quot;play horn&quot;,
+      &quot;burn incense&quot;,
+      &quot;wave feather&quot;,
+      &quot;ring bell&quot;,
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;burn incense&quot;,
+      &quot;outr kola$crush kola&quot;
+    }
+  },
+
+  whirlwind = {
+    fullname     = &quot;whirlwind of vastar&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;whirlwind&quot;,
+    ingredients  = {
+      silverbar = 1,
+      staghorn  = 1,
+      goldbar   = 1,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;spin around thrice&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;wave feather&quot;,
+      &quot;burn incense&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;spin around thrice&quot;
+    }
+  },
+
+  magic = {
+    fullname     = &quot;magical resistance&quot;,
+    type         = &quot;enchantment&quot;,
+    ingredients  = {
+      silverbar = 2,
+      staghorn  = 5,
+      goldbar   = 1,
+    },
+    otherItems = {
+      gold = true
+    },
+    actions      = {
+      &quot;burn the polygon&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;strum lute&quot;,
+      &quot;strum lute&quot;,
+      &quot;wave feather&quot;,
+      &quot;wave feather&quot;,
+      &quot;strum lute&quot;,
+      &quot;strum lute&quot;,
+      &quot;burn incense&quot;,
+      &quot;burn incense&quot;,
+      &quot;flipcoin&quot;,
+      &quot;flipcoin&quot;,
+      &quot;square the circle&quot;,
+      &quot;square the circle&quot;,
+      &quot;flipcoin&quot;,
+      &quot;flipcoin&quot;,
+      &quot;burn incense&quot;,
+      &quot;burn incense&quot;,
+      &quot;strum lute&quot;,
+      &quot;strum lute&quot;
+    }
+  },
+
+  brooch = {
+    fullname     = &quot;brooch of thoth&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;brooch&quot;,
+    ingredients  = {
+      silverbar = 2,
+      staghorn  = 1,
+      dust      = 2,
+      ice       = 1,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;chant mortis troy tenkla&quot;,
+      &quot;chant mortis troy tenklu&quot;,
+      &quot;chant mortis troy tenkli&quot;,
+      &quot;clap hands&quot;,
+      &quot;clap hands&quot;,
+      &quot;clap hands&quot;
+    }
+  },
+
+  firewall = {
+    fullname     = &quot;firewall&quot;,
+    type         = &quot;enchantment&quot;,
+    ingredients  = {
+      silverbar = 3,
+      staghorn  = 3,
+      dust      = 1,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;chant firth ilith rhedo een&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;point sword&quot;,
+      &quot;square the circle&quot;,
+      &quot;bang drum&quot;,
+      &quot;bang drum&quot;,
+      &quot;play horn&quot;,
+      &quot;play horn&quot;,
+      &quot;play horn&quot;
+    }
+  },
+
+  electric = {
+    fullname     = &quot;electrical resistance&quot;,
+    type         = &quot;enchantment&quot;,
+    ingredients  = {
+      goldbar   = 5,
+    },
+    otherItems = {
+      gold = true,
+      kola = 2
+    },
+    actions      = {
+      &quot;light candle&quot;,
+      &quot;light candle&quot;,
+      &quot;burn incense&quot;,
+      &quot;burn incense&quot;,
+      &quot;flipcoin&quot;,
+      &quot;flipcoin&quot;,
+      &quot;burn incense&quot;,
+      &quot;burn incense&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;play horn&quot;,
+      &quot;play horn&quot;,
+      &quot;crush kola&quot;,
+      &quot;crush kola&quot;,
+      &quot;play horn&quot;,
+      &quot;play horn&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;burn the polygon&quot;
+    }
+  },
+
+  cold = {
+    fullname     = &quot;cold resistance&quot;,
+    type         = &quot;enchantment&quot;,
+    ingredients  = {
+      goldbar   = 2,
+      horn      = 2,
+      dust      = 2,
+    },
+    otherItems = {
+      gold = true
+    },
+    actions      = {
+      &quot;bang drum&quot;,
+      &quot;bang drum&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;flipcoin&quot;,
+      &quot;flipcoin&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;light candle&quot;,
+      &quot;light candle&quot;,
+      &quot;point sword&quot;,
+      &quot;point sword&quot;,
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;,
+      &quot;point sword&quot;,
+      &quot;point sword&quot;,
+      &quot;light candle&quot;,
+      &quot;light candle&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;burn the polygon&quot;
+    }
+  },
+
+  orb = {
+    fullname     = &quot;orb sigil&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;orbsigil&quot;,
+    ingredients  = {
+      dust      = 1,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;chant solip preena het epi re enla&quot;,
+      &quot;chant solip preena het epi re enla&quot;,
+      &quot;chant solip preena het epi re enla&quot;,
+      &quot;ring bell&quot;
+    }
+  },
+
+  cube = {
+    fullname     = &quot;cube sigil&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;cube&quot;,
+    ingredients  = {
+      silverbar = 2,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;chant dara acti me prishna eni not&quot;,
+      &quot;chant dara acti me prishna eni not&quot;,
+      &quot;chant dara acti me prishna eni not&quot;,
+      &quot;ring bell&quot;
+    }
+  },
+
+  mushroom = {
+    fullname     = &quot;mushroom sigil&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;mushroom&quot;,
+    ingredients  = {
+      ice       = 1,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;chant mil usra shal hract reed oom oon mez&quot;,
+      &quot;chant mil usra shal hract reed oom oon mez&quot;,
+      &quot;chant mil usra shal hract reed oom oon mez&quot;,
+      &quot;ring bell&quot;
+    }
+  },
+
+  monolith = {
+    fullname     = &quot;monolith sigil&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;monolith&quot;,
+    ingredients  = {
+      silverbar = 1,
+      goldbar   = 1
+    },
+    otherItems = {},
+    actions      = {
+      &quot;chant me ol nok oloth lilo ib te het&quot;,
+      &quot;chant me ol nok oloth lilo ib te het&quot;,
+      &quot;chant me ol nok oloth lilo ib te het&quot;,
+      &quot;ring bell&quot;
+    }
+  },
+
+  knife = {
+    fullname     = &quot;knife sigil&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;knife&quot;,
+    ingredients  = {
+      silverbar = 1,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;chant keef nitash idca feef enla&quot;,
+      &quot;chant keef nitash idca feef enla&quot;,
+      &quot;chant keef nitash idca feef enla&quot;,
+      &quot;ring bell&quot;
+    }
+  },
+
+  key = {
+    fullname     = &quot;key sigil&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;key&quot;,
+    ingredients  = {
+      goldbar   = 1
+    },
+    otherItems = {},
+    actions      = {
+      &quot;chant krolop escit yall&quot;,
+      &quot;chant krolop escit yall&quot;,
+      &quot;chant krolop escit yall&quot;,
+      &quot;ring bell&quot;
+    }
+  },
+
+  flame = {
+    fullname     = &quot;flame sigil&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;flame&quot;,
+    ingredients  = {
+      silverbar = 1,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;chant flet lhar abe minlo eec&quot;,
+      &quot;chant flet lhar abe minlo eec&quot;,
+      &quot;chant flet lhar abe minlo eec&quot;,
+      &quot;ring bell&quot;
+    }
+  },
+
+  fist = {
+    fullname     = &quot;fist sigil&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;fist&quot;,
+    ingredients  = {
+      silverbar = 1,
+      staghorn  = 2,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;chant fartak ishla spooz tran&quot;,
+      &quot;chant fartak ishla spooz tran&quot;,
+      &quot;chant fartak ishla spooz tran&quot;,
+      &quot;ring bell&quot;
+    }
+  },
+
+  hearing = {
+    fullname     = &quot;hearing&quot;,
+    type         = &quot;enchantment&quot;,
+    ingredients  = {
+      silverbar = 3,
+      horn      = 4,
+    },
+    otherItems = {
+      kola = 1
+    },
+    actions      = {
+      &quot;bang drum&quot;,
+      &quot;clap hands&quot;,
+      &quot;play horn&quot;,
+      &quot;strum lute&quot;,
+      &quot;clap hands&quot;,
+      &quot;play horn&quot;,
+      &quot;bang drum&quot;,
+      &quot;strum lute&quot;,
+      &quot;strum lute&quot;,
+      &quot;play horn&quot;,
+      &quot;clap hands&quot;,
+      &quot;bang drum&quot;,
+      &quot;bang drum&quot;,
+      &quot;crush kola&quot;,
+      &quot;ring bell&quot;
+    }
+  },
+
+  eye = {
+    fullname     = &quot;eye sigil&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;eye&quot;,
+    ingredients  = {
+      obsidian  = 1,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;square the circle&quot;,
+      &quot;ring bell&quot;,
+    }
+  },
+
+  worrystone = {
+    fullname     = &quot;worrystone&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;worrystone&quot;,
+    ingredients  = {
+      ice       = 1,
+      goldbar   = 1,
+      silverbar = 1,
+      horn      = 1,
+      dust      = 1,
+    },
+    otherItems = {
+      gold = true
+    },
+    actions      = {
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;,
+      &quot;flipcoin&quot;,
+      &quot;flipcoin&quot;,
+      &quot;flipcoin&quot;,
+      &quot;flipcoin&quot;,
+      &quot;flipcoin&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;wave feather&quot;,
+      &quot;square the circle&quot;
+    }
+  },
+
+  meteor = {
+    fullname     = &quot;meteor&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;meteor&quot;,
+    ingredients  = {
+      dust      = 1,
+      arrow     = 1,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;wave arms&quot;,
+      &quot;wave feather&quot;,
+      &quot;chant minlo ecta tu ecta oloth rhedo&quot;,
+      &quot;bang drum&quot;
+    }
+  },
+
+  waterwalking = {
+    fullname     = &quot;walk on water&quot;,
+    type         = &quot;enchantment&quot;,
+    ingredients  = {
+      silverbar = 1,
+      goldbar   = 2,
+      ice       = 1,
+    },
+    otherItems = {
+      kola = 1
+    },
+    actions      = {
+      &quot;square the circle&quot;,
+      &quot;wave arms&quot;,
+      &quot;wave arms&quot;,
+      &quot;wave arms&quot;,
+      &quot;point sword&quot;,
+      &quot;point sword&quot;,
+      &quot;strum lute&quot;,
+      &quot;bang drum&quot;,
+      &quot;bang drum&quot;,
+      &quot;bang drum&quot;,
+      &quot;bang drum&quot;,
+      &quot;roll dice&quot;,
+      &quot;crush kola&quot;
+    }
+  },
+
+  scabbard = {
+    fullname     = &quot;stasis&quot;,
+    type         = &quot;enchantment&quot;,
+    ingredients  = {
+      silverbar = 2,
+      goldbar   = 3,
+      ice       = 3,
+      dust      = 3,
+      horn      = 3,
+    },
+    otherItems = {
+      kola = 1
+    },
+    actions      = {
+      &quot;wave feather&quot;,
+      &quot;wave feather&quot;,
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;,
+      &quot;wave arms&quot;,
+      &quot;wave arms&quot;,
+      &quot;crush kola&quot;,
+      &quot;chant drabbacs statorium&quot;,
+      &quot;strum lute&quot;,
+      &quot;wave feather&quot;,
+      &quot;wave feather&quot;,
+      &quot;square the circle&quot;,
+      &quot;square the circle&quot;,
+      &quot;square the circle&quot;,
+      &quot;wave feather&quot;
+    }
+  },
+
+  stasis = {
+    fullname     = &quot;bag of stasis&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;bag&quot;,
+    ingredients  = {
+      ice       = 3,
+      goldbar   = 4,
+      silverbar = 1,
+      dust      = 2,
+      horn      = 3,
+    },
+    otherItems = {
+      kola = 2
+    },
+    actions      = {
+      &quot;wave feather&quot;,
+      &quot;wave feather&quot;,
+      &quot;bang drum&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;light candle&quot;,
+      &quot;ring bell&quot;,
+      &quot;chant stasis statorium&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;clap hands&quot;,
+      &quot;clap hands&quot;,
+      &quot;square the circle&quot;,
+      &quot;square the circle&quot;,
+      &quot;square the circle&quot;,
+      &quot;wave feather&quot;,
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;,
+      &quot;crush kola&quot;,
+      &quot;crush kola&quot;
+    }
+  },
+
+  firelash = {
+    fullname     = &quot;firelash&quot;,
+    type         = &quot;enchantment&quot;,
+    ingredients  = {
+      silverbar = 1,
+      goldbar   = 1,
+      dust      = 2,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;bang drum&quot;,
+      &quot;clap hands&quot;,
+      &quot;burn incense&quot;,
+      &quot;point sword&quot;,
+      &quot;light candle&quot;,
+      &quot;chant fo icti re eschle lok ast suh hrat&quot;,
+      &quot;ring bell&quot;,
+      &quot;spin around thrice&quot;,
+      &quot;burn the polygon&quot;,
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;,
+      &quot;roll dice&quot;
+    }
+  },
+
+  star = {
+    fullname     = &quot;star sigil&quot;,
+    type         = &quot;creation&quot;,
+    nameToGet    = &quot;star&quot;,
+    ingredients  = {
+      silverbar = 1,
+      goldbar   = 2,
+    },
+    otherItems = {},
+    actions      = {
+      &quot;strum lute&quot;,
+      &quot;ring bell&quot;
+    }
+  },
+}
+
+-- Starts the check for oroboros
 local function getOIDs()
-	-- export to globals so the event handler can get to it
-	svo.checking_oubori = true
-	svo.oubori_data = oubori_data
-	svo.enchanting = enchanting
+  checking_ourobori = true
 
-	svo.echof( &quot;Don't know the ourobori IDs for this room, so going to check...&quot; )
-	send( &quot;ql&quot; )
+  svo.echof( &quot;Don't know the ourobori IDs for this room, so going to check...&quot; )
+  send( &quot;ql&quot; )
 end
 
-function enchant( enchantment, number )
-	if not oubori_data[ gmcp.Room.Info.num ] then
-		enchanting = { enchantment, number }
-		getOIDs()
-		return
-	end
-
-	ouroboros1 = oubori_data[ gmcp.Room.Info.num ][ 1 ]
-	ouroboros2 = oubori_data[ gmcp.Room.Info.num ][ 2 ]
-
-	if ( enchantment == 'eye' ) then
-		eye( number )
-	end
-
-	if ( enchantment == 'meteor' ) then
-		meteor( number )
-	end
-
-	if ( enchantment == 'waterwalking' ) then
-		waterwalking( number )
-	end
-
-	if ( enchantment == 'worrystone' ) then
-		worrystone( number )
-	end
-
-	if ( enchantment == 'scabbard' ) then
-		scabbard( number )
-	end
-
-	if ( enchantment == 'stasis' ) then
-		stasis( number )
-	end
-
-	if ( enchantment == 'firelash' ) then
-		firelash( number )
-	end
-
-	if ( enchantment == 'hearing' ) then
-		hearing( number )
-	end
-
-	if ( enchantment == 'fist' ) then
-		fist( number )
-	end
-
-	if ( enchantment == 'flame' ) then
-		flame( number )
-	end
-
-	if ( enchantment == 'key' ) then
-		key( number )
-	end
-
-	if ( enchantment == 'knife' ) then
-		knife( number )
-	end
-
-	if ( enchantment == 'mushroom' ) then
-		mushroom( number )
-	end
-
-	if ( enchantment == 'monolith' ) then
-		monolith( number )
-	end
-
-	if ( enchantment == 'cube' ) then
-		cube( number )
-	end
-
-	if ( enchantment == 'orb' ) then
-		orb( number )
-	end
-
-	if ( enchantment == 'cold' ) then
-		cold( number )
-	end
-
-	if ( enchantment == 'electric' ) then
-		electric( number )
-	end
-
-	if ( enchantment == 'firewall' ) then
-		firewall( number )
-	end
-
-	if ( enchantment == 'brooch' ) then
-		brooch( number )
-	end
-
-	if ( enchantment == 'augment' ) then
-		augment( number )
-	end
-
-	if ( enchantment == 'magic' ) then
-		magic( number )
-	end
-
-	if ( enchantment == 'whirlwind' ) then
-		whirlwind( number )
-	end
-
-	if ( enchantment == 'comprehension' ) then
-		comprehension( number )
-	end
-
-	if ( enchantment == 'icewall' ) then
-		icewall( number )
-	end
-
-	if ( enchantment == 'concealment' ) then
-		concealment( number )
-	end
-
-	if ( enchantment == 'fresist' ) then
-		fresist( number )
-	end
-
-	if ( enchantment == 'bauble' ) then
-		bauble( number )
-	end
-
-	if ( enchantment == 'dreamcatcher' ) then
-		dreamcatcher( number )
-	end
-
-	if ( enchantment == 'negation' ) then
-		negation( number )
-	end
-
-	if ( enchantment == 'pestilence' ) then
-		pestilence( number )
-	end
-
-	if ( enchantment == 'purity' ) then
-		purity( number )
-	end
-
-	if ( enchantment == 'star' ) then
-		star( number )
-	end
+-- Repeats the last order
+local function reenchant()
+  enchant(enchanting[1], enchanting[2])
 end
 
-function purity( number )
-	send( &quot;outr &quot; .. number * 4 .. &quot; ice&quot; )
-	send( &quot;outr &quot; .. number .. &quot; goldbar&quot; )
-	send( &quot;outr &quot; .. number .. &quot; dust&quot; )
-	send( &quot;put group ice in &quot; .. ouroboros1 )
-
-	if ( number == '1' ) then
-		send( &quot;put goldbar in &quot; .. ouroboros1 )
-		send( &quot;put dust in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group goldbar in &quot; .. ouroboros1 )
-		send( &quot;put group dust in &quot; .. ouroboros1 )
-	end
-
-	send( &quot;begin creation of &quot; .. number .. &quot; necklace of purity&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;wave arms&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; necklace from &quot; .. ouroboros2 )
+local function addToActionQueue(command, balanceful)
+  enchantmentActions[#enchantmentActions + 1] = {
+    command = command,
+    balanceful = (balanceful or false) }
 end
 
-function pestilence( number )
-	send( &quot;outr &quot; .. number .. &quot; goldbar&quot; )
-	send( &quot;outr &quot; .. number * 2 .. &quot; silverbar&quot; )
-	send( &quot;outr &quot; .. number .. &quot; staghorn&quot; )
+-- Queues the actions needed for the next item in the queue
+local function enchantNextItem()
+  local queueItem = enchantmentQueue[1]
+  -- No first item anymore? We are done!
+  if not queueItem then
+    return false
+  end
+  -- remove the item from queue
+  table.remove(enchantmentQueue, 1)
+  -- get the descriptive object for the enchantment
+  local what = enchantments[queueItem.what]
 
-	send(&quot;put group silverbar in &quot; .. ouroboros1)
-	if ( number == '1' ) then
-		send( &quot;put goldbar in &quot; .. ouroboros1 )
-		send( &quot;put staghorn in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group goldbar in &quot; .. ouroboros1 )
-		send( &quot;put group staghorn in &quot; .. ouroboros1 )
-	end
+  -- determine, how many items we want to create
+  local amount
+  if what.type == &quot;creation&quot; then
+    amount = tonumber(queueItem.arg) or 1
+  else
+    amount = 1
+  end
 
-	send( &quot;begin creation of &quot; .. number .. &quot; ring of pestilence&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;getgold 1$flipcoin&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;wave arms&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; ring from &quot; .. ouroboros2 )
-end
-
-function negation( number )
-	send( &quot;outr &quot; .. number .. &quot; goldbar&quot; )
-
-	if ( number == '1' ) then
-		send( &quot;put goldbar in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group goldbar in &quot; .. ouroboros1 )
-	end
-
-	send( &quot;begin creation of &quot; .. number .. &quot; gem of negation&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;outr kola$crush kola&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;chant zool ekilthia requi oben&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; gem from &quot; .. ouroboros2 )
-end
-
-function dreamcatcher( number )
-	send( &quot;outr &quot; .. number * 2 .. &quot; goldbar&quot; )
-	send( &quot;outr &quot; .. number * 2 .. &quot; silverbar&quot; )
-	send( &quot;outr &quot; .. number .. &quot; staghorn&quot; )
-	send( &quot;put group goldbar in &quot; .. ouroboros1 )
-	send( &quot;put group silverbar in &quot; .. ouroboros1 )
-
-	if ( number == '1' ) then
-		send( &quot;put staghorn in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group staghorn in &quot; .. ouroboros1 )
-	end
-
-	send( &quot;begin creation of &quot; .. number .. &quot; dreamcatcher&quot; )
-	svo.doadd( &quot;wave arms&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; dreamcatcher from &quot; .. ouroboros2 )
-end
-
-function bauble( number )
-	send( &quot;outr &quot; .. number .. &quot; dust&quot; )
-
-	if ( number == '1' ) then
-		send( &quot;put dust in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group dust in &quot; .. ouroboros1 )
-	end
-
-	send( &quot;begin creation of &quot; .. number .. &quot; bauble&quot; )
-	svo.doadd( &quot;outr kola$crush kola&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;chant disei stalla rapwah cosoth tu&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; bauble from &quot; .. ouroboros2 )
-end
-
-function fresist( number )
-	send( &quot;outr 2 silverbar&quot; )
-	send( &quot;outr 1 ice&quot; )
-	send( &quot;put group silverbar in &quot; .. ouroboros1 )
-	send( &quot;put ice in &quot; .. ouroboros1 )
-	send( &quot;put &quot; .. number ..  &quot; in &quot; .. ouroboros2 )
-	send( &quot;begin enchantment of &quot; .. number .. &quot; with fire resistance&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; from &quot; .. ouroboros2 )
-end
-
-function concealment( number )
-	send( &quot;outr &quot; .. number * 5 .. &quot; silverbar&quot; )
-	send( &quot;outr &quot; .. number .. &quot; goldbar&quot; )
-	send( &quot;put group silverbar in &quot; .. ouroboros1 )
-
-	if ( number == '1' ) then
-		send( &quot;put goldbar in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group goldbar in &quot; .. ouroboros1 )
-	end
-
-	send( &quot;begin creation of &quot; .. number .. &quot; orb of concealment&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;wave arms&quot; )
-	svo.doadd( &quot;getgold 1$flipcoin&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;spin around thrice&quot; )
-	svo.doadd( &quot;chant aisyalam&quot; )
-	svo.doadd( &quot;spin around thrice&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;getgold 1$flipcoin&quot; )
-	svo.doadd( &quot;wave arms&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; concealment from &quot; .. ouroboros2 )
-end
-
-function icewall( number )
-	send( &quot;outr 1 dust&quot; )
-	send( &quot;outr 1 ice&quot; )
-	send( &quot;put dust in &quot; .. ouroboros1 )
-	send( &quot;put ice in &quot; .. ouroboros1 )
-	send( &quot;put &quot; .. number ..  &quot; in &quot; .. ouroboros2 )
-
-	send( &quot;begin enchantment of &quot; .. number .. &quot; with icewall&quot; )
-	svo.doadd( &quot;chant incula cela ecta&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;spin around thrice&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; from &quot; .. ouroboros2 )
-end
-
-function comprehension( number )
-	send( &quot;outr &quot; .. number * 2 .. &quot; ice&quot; )
-	send( &quot;outr &quot; .. number * 4 .. &quot; silverbar&quot; )
-	send( &quot;outr &quot; .. number * 3 .. &quot; staghorn&quot; )
-	send( &quot;outr &quot; .. number * 3 .. &quot; goldbar&quot; )
-	send( &quot;put group silverbar in &quot; .. ouroboros1 )
-	send( &quot;put group ice in &quot; .. ouroboros1 )
-	send( &quot;put group staghorn in &quot; .. ouroboros1 )
-	send( &quot;put group goldbar in &quot; .. ouroboros1 )
-	send( &quot;begin creation of &quot; .. number .. &quot; necklace of comprehension&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;spin around thrice&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;outr kola$crush kola&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; necklace from &quot; .. ouroboros2 )
-end
-
-function whirlwind( number )
-	send( &quot;outr &quot; .. number .. &quot; dust&quot; )
-	send( &quot;outr &quot; .. number .. &quot; silverbar&quot; )
-	send( &quot;outr &quot; .. number .. &quot; staghorn&quot; )
-	if ( number == '1' ) then
-		send( &quot;put silverbar in &quot; .. ouroboros1 )
-		send( &quot;put dust in &quot; .. ouroboros1 )
-		send( &quot;put staghorn in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group silverbar in &quot; .. ouroboros1 )
-		send( &quot;put group dust in &quot; .. ouroboros1 )
-		send( &quot;put group staghorn in &quot; .. ouroboros1 )
-	end
-
-	send( &quot;begin creation of &quot; .. number .. &quot; whirlwind of vastar&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;spin around thrice&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;outr kola$crush kola&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; whirlwind from &quot; .. ouroboros2 )
-end
-
-function magic( number )
-	send( &quot;outr 2 silverbar&quot; )
-	send( &quot;outr 5 staghorn&quot; )
-	send( &quot;outr 1 goldbar&quot; )
-	send( &quot;put group silverbar in &quot; .. ouroboros1 )
-	send( &quot;put group staghorn in &quot; .. ouroboros1 )
-	send( &quot;put goldbar in &quot; .. ouroboros1 )
-	send( &quot;put &quot; .. number ..  &quot; in &quot; .. ouroboros2 )
-
-	send( &quot;begin enchantment of &quot; .. number .. &quot; with magical resistance&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;getgold 1$flipcoin&quot; )
-	svo.doadd( &quot;flipcoin&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;flipcoin&quot; )
-	svo.doadd( &quot;flipcoin&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; from &quot; .. ouroboros2 )
-end
-
-function augment( number )
-	send( &quot;outr 1 silverbar&quot; )
-	send( &quot;outr 2 dust&quot; )
-	send( &quot;outr 1 goldbar&quot; )
-	send( &quot;put silverbar in &quot; .. ouroboros1 )
-	send( &quot;put group dust in &quot; .. ouroboros1 )
-	send( &quot;put goldbar in &quot; .. ouroboros1 )
-	send( &quot;put &quot; .. number ..  &quot; in &quot; .. ouroboros2 )
-
-	send( &quot;begin enchantment of &quot; .. number .. &quot; with augmentation&quot; )
-	svo.doadd( &quot;outr kola$crush kola&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;wave arms&quot; )
-	svo.doadd( &quot;wave arms&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;spin around thrice&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;outr kola$crush kola&quot; )
-	svo.doadd( &quot;outr kola$crush kola&quot; )
-	svo.doadd( &quot;outr kola$crush kola&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; from &quot; .. ouroboros2 )
-end
-
-function brooch( number )
-	send( &quot;outr &quot; .. number * 2 .. &quot; silverbar&quot; )
-	send( &quot;outr &quot; .. number .. &quot; ice&quot; )
-	send( &quot;outr &quot; .. number * 2 .. &quot; dust&quot; )
-	send( &quot;outr &quot; .. number .. &quot; staghorn&quot; )
-	send( &quot;put group silverbar in &quot; .. ouroboros1 )
-	send( &quot;put group dust in &quot; .. ouroboros1 )
-
-	if ( number == '1' ) then
-		send( &quot;put staghorn in &quot; .. ouroboros1 )
-		send( &quot;put ice in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group staghorn in &quot; .. ouroboros1 )
-		send( &quot;put group ice in &quot; .. ouroboros1 )
-	end
-
-	send( &quot;begin creation of &quot; .. number .. &quot; brooch of thoth&quot; )
-	svo.doadd( &quot;chant mortis troy tenkla&quot; )
-	svo.doadd( &quot;chant mortis troy tenklu&quot; )
-	svo.doadd( &quot;chant mortis troy tenkli&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; brooch from &quot; .. ouroboros2 )
-end
-
-function firewall( number )
-	send( &quot;outr 3 silverbar&quot; )
-	send( &quot;outr 1 dust&quot; )
-	send( &quot;outr 3 staghorn&quot; )
-	send( &quot;put group silverbar in &quot; .. ouroboros1 )
-	send( &quot;put dust in &quot; .. ouroboros1 )
-	send( &quot;put group staghorn in &quot; .. ouroboros1 )
-	send( &quot;put &quot; .. number ..  &quot; in &quot; .. ouroboros2 )
-
-	send( &quot;begin enchantment of &quot; .. number .. &quot; with firewall&quot; )
-	svo.doadd( &quot;chant firth ilith rhedo een&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;spin around thrice&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; from &quot; .. ouroboros2 )
-end
-
-function electric( number )
-	send( &quot;outr 5 goldbar&quot; )
-	send( &quot;put group goldbar in &quot; .. ouroboros1 )
-	send( &quot;put &quot; .. number ..  &quot; in &quot; .. ouroboros2 )
-
-	send( &quot;begin enchantment of &quot; .. number .. &quot;  with electrical resistance&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;getgold 1$flipcoin&quot; )
-	svo.doadd( &quot;flipcoin&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;outr 2 kola$crush kola&quot; )
-	svo.doadd( &quot;crush kola&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; from &quot; .. ouroboros2 )
-end
-
-function cold( number )
-	send( &quot;outr 2 goldbar&quot; )
-	send( &quot;outr 2 horn&quot; )
-	send( &quot;outr 2 dust&quot; )
-	send( &quot;put group staghorn in &quot; .. ouroboros1 )
-	send( &quot;put group goldbar in &quot; .. ouroboros1 )
-	send( &quot;put group dust in &quot; .. ouroboros1 )
-	send( &quot;put &quot; .. number ..  &quot; in &quot; .. ouroboros2 )
-
-	send( &quot;begin enchantment of &quot; .. number .. &quot; with cold resistance&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;getgold 1$flipcoin&quot; )
-	svo.doadd( &quot;flipcoin&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; from &quot; .. ouroboros2 )
-end
-
-
-function orb( number )
-	send( &quot;outr &quot; .. number .. &quot; dust&quot; )
-	if ( number == '1' ) then
-		send( &quot;put dust in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group dust in &quot; .. ouroboros1 )
-	end
-	send( &quot;begin creation of &quot; .. number .. &quot; orb sigil&quot; )
-	svo.doadd( &quot;chant solip preena het epi re enla&quot; )
-	svo.doadd( &quot;chant solip preena het epi re enla&quot; )
-	svo.doadd( &quot;chant solip preena het epi re enla&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; orbsigil from &quot; .. ouroboros2 )
-end
-
-function cube( number )
-	send( &quot;outr &quot; .. number * 2 .. &quot; silverbar&quot; )
-	send( &quot;put group silverbar in &quot; .. ouroboros1)
-	send( &quot;begin creation of &quot; .. number .. &quot; cube sigil&quot; )
-	svo.doadd( &quot;chant dara acti me prishna eni not&quot; )
-	svo.doadd( &quot;chant dara acti me prishna eni not&quot; )
-	svo.doadd( &quot;chant dara acti me prishna eni not&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; cube from &quot; .. ouroboros2 )
-end
-
-function mushroom( number )
-	send( &quot;outr &quot; .. number .. &quot; ice&quot; )
-	if ( number == '1' ) then
-		send( &quot;put ice in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group ice in &quot; .. ouroboros1 )
-	end
-	send( &quot;begin creation of &quot; .. number .. &quot; mushroom sigil&quot; )
-	svo.doadd( &quot;chant mil usra shal hract reed oom oon mez&quot; )
-	svo.doadd( &quot;chant mil usra shal hract reed oom oon mez&quot; )
-	svo.doadd( &quot;chant mil usra shal hract reed oom oon mez&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; mushroom from &quot; .. ouroboros2 )
-end
-
-function monolith( number )
-	send( &quot;outr &quot; .. number .. &quot; silverbar&quot; )
-	send( &quot;outr &quot; .. number .. &quot; goldbar&quot; )
-	if ( number == '1' ) then
-		send( &quot;put goldbar in &quot; .. ouroboros1 )
-		send( &quot;put silverbar in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group goldbar in &quot; .. ouroboros1 )
-		send( &quot;put group silverbar in &quot; .. ouroboros1 )
-	end
-
-	send( &quot;begin creation of &quot; .. number .. &quot; monolith sigil&quot; )
-	svo.doadd( &quot;chant me ol nok oloth lilo ib te het&quot; )
-	svo.doadd( &quot;chant me ol nok oloth lilo ib te het&quot; )
-	svo.doadd( &quot;chant me ol nok oloth lilo ib te het&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; monolith from &quot; .. ouroboros2 )
-end
-
-function knife( number )
-	send( &quot;outr &quot; .. number .. &quot; silverbar&quot; )
-	if ( number == '1' ) then
-		send( &quot;put silverbar in &quot; .. ouroboros1 )
-	else
-		send(&quot;put group silverbar in &quot; .. ouroboros1)
-	end
-	send( &quot;begin creation of &quot; .. number .. &quot; knife sigil&quot; )
-	svo.doadd( &quot;chant keef nitash idca feef enla&quot; )
-	svo.doadd( &quot;chant keef nitash idca feef enla&quot; )
-	svo.doadd( &quot;chant keef nitash idca feef enla&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; knife from &quot; .. ouroboros2 )
-end
-
-function key( number )
-	send( &quot;outr &quot; .. number .. &quot; goldbar&quot; )
-	if ( number == '1' ) then
-		send( &quot;put goldbar in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group goldbar in &quot; .. ouroboros1 )
-	end
-	send( &quot;begin creation of &quot; .. number .. &quot; key sigil&quot; )
-	svo.doadd( &quot;chant krolop escit yall&quot; )
-	svo.doadd( &quot;chant krolop escit yall&quot; )
-	svo.doadd( &quot;chant krolop escit yall&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; key from &quot; .. ouroboros2 )
-end
-
-function flame( number )
-	send( &quot;outr &quot; .. number .. &quot; silverbar&quot; )
-	if ( number == '1' ) then
-		send( &quot;put silverbar in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group silverbar in &quot; .. ouroboros1 )
-	end
-	send( &quot;begin creation of &quot; .. number .. &quot; flame sigil&quot; )
-	svo.doadd( &quot;chant flet lhar abe minlo eec&quot; )
-	svo.doadd( &quot;chant flet lhar abe minlo eec&quot; )
-	svo.doadd( &quot;chant flet lhar abe minlo eec&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; flame from &quot; .. ouroboros2 )
-end
-
-
-function fist( number )
-	send( &quot;outr &quot; .. number .. &quot; silverbar&quot; )
-	send( &quot;outr &quot; .. number * 2 .. &quot; staghorn&quot; )
-	if ( number == '1' ) then
-		send( &quot;put silverbar in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group silverbar in &quot; .. ouroboros1 )
-	end
-	send( &quot;put group staghorn in &quot; .. ouroboros1 )
-	send( &quot;begin creation of &quot; .. number .. &quot; fist sigil&quot; )
-	svo.doadd( &quot;chant fartak ishla spooz tran&quot; )
-	svo.doadd( &quot;chant fartak ishla spooz tran&quot; )
-	svo.doadd( &quot;chant fartak ishla spooz tran&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; fist from &quot; .. ouroboros2 )
-end
-
-
-function hearing( number )
-	send( &quot;outr 4 staghorn&quot; )
-	send( &quot;outr 3 silverbar&quot; )
-	send( &quot;put group silverbar in &quot; .. ouroboros1 )
-	send( &quot;put group staghorn in &quot; .. ouroboros1 )
-	send( &quot;put &quot; .. number ..  &quot; in &quot; .. ouroboros2 )
-	send( &quot;begin enchantment of &quot; .. number .. &quot; with hearing&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;play horn&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;outr kola$crush kola&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; from &quot; .. ouroboros2)
-end
-
-function eye( number )
-	send( &quot;outr &quot; .. number .. &quot; obsidian&quot; )
-	if ( number == '1' ) then
-		send( &quot;put obsidian in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group obsidian in &quot; .. ouroboros1 )
-	end
-	send( &quot;begin creation of &quot; .. number .. &quot; eye sigil&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; eye from &quot; .. ouroboros2 )
-end
-
-function worrystone( number )
-	send( &quot;outr &quot; .. number .. &quot; ice&quot; )
-	send( &quot;outr &quot; .. number .. &quot; goldbar&quot; )
-	send( &quot;outr &quot; .. number .. &quot; silverbar&quot; )
-	send( &quot;outr &quot; .. number .. &quot; staghorn&quot; )
-	send( &quot;outr &quot; .. number .. &quot; dust&quot; )
-	if ( number == '1' ) then
-		send( &quot;put ice in &quot; .. ouroboros1 )
-		send( &quot;put goldbar in &quot; .. ouroboros1 )
-		send( &quot;put silverbar in &quot; .. ouroboros1 )
-		send( &quot;put staghorn in &quot; .. ouroboros1 )
-		send( &quot;put dust in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group ice in &quot; .. ouroboros1 )
-		send( &quot;put group goldbar in &quot; .. ouroboros1 )
-		send( &quot;put group silverbar in &quot; .. ouroboros1 )
-		send( &quot;put group staghorn in &quot; .. ouroboros1 )
-		send( &quot;put group dust in &quot; .. ouroboros1 )
-	end
-
-	send( &quot;begin creation of &quot; .. number .. &quot; worrystone&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;getgold 1$flipcoin&quot; )
-	svo.doadd( &quot;flipcoin&quot; )
-	svo.doadd( &quot;flipcoin&quot; )
-	svo.doadd( &quot;flipcoin&quot; )
-	svo.doadd( &quot;flipcoin&quot; )
-	svo.doadd( &quot;spin around thrice&quot; )
-    svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; worrystone from &quot; .. ouroboros2 )
-end
-
-function meteor( number )
-	send( &quot;outr &quot; .. number .. &quot; dust&quot; )
-	if ( number == '1' ) then
-		send( &quot;put dust in &quot; .. ouroboros1 )
-		send( &quot;put arrow in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group dust in &quot; .. ouroboros1 )
-		svo.doadd( &quot;put &quot; .. number .. &quot; arrow in &quot;  .. ouroboros1 )
-	end
-
-	svo.doadd( &quot;begin creation of &quot; .. number .. &quot; meteor&quot; )
-	svo.doadd( &quot;wave arms&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;chant minlo ecta tu ecta oloth rhedo&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; meteor from &quot; .. ouroboros2 )
-end
-
-function waterwalking( number )
-	send( &quot;outr 1 ice&quot; )
-	send( &quot;outr 2 goldbar&quot; )
-	send( &quot;outr 1 silverbar&quot; )
-	send( &quot;put silverbar in &quot; .. ouroboros1 )
-	send( &quot;put ice in  &quot; .. ouroboros1 )
-	send( &quot;put group goldbar in &quot; .. ouroboros1 )
-	send( &quot;put &quot; .. number ..  &quot; in &quot; .. ouroboros2 )
-	send( &quot;begin enchantment of &quot; .. number .. &quot; with walk on water&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;wave arms&quot; )
-	svo.doadd( &quot;wave arms&quot; )
-	svo.doadd( &quot;wave arms&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;outr kola$crush kola&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; from &quot; .. ouroboros2 )
-end
-
-function scabbard( number )
-	send( &quot;outr 3 ice&quot; )
-	send( &quot;outr 3 goldbar&quot; )
-	send( &quot;outr 2 silverbar&quot; )
-	send( &quot;outr 3 dust&quot; )
-	send( &quot;outr 3 horn&quot; )
-	send( &quot;put group silverbar in &quot; .. ouroboros1 )
-	send( &quot;put group ice in  &quot; .. ouroboros1 )
-	send( &quot;put group goldbar in &quot; .. ouroboros1 )
-	send( &quot;put group staghorn in &quot; .. ouroboros1 )
-	send( &quot;put group dust in &quot; .. ouroboros1 )
-	send( &quot;put &quot; .. number ..  &quot; in &quot; .. ouroboros2 )
-	send( &quot;begin enchantment of &quot; .. number .. &quot; with stasis &quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;wave arms&quot; )
-	svo.doadd( &quot;wave arms&quot; )
-	svo.doadd( &quot;outr kola$crush kola&quot; )
-	svo.doadd( &quot;chant drabbacs statorium&quot; )
-	svo.doadd( &quot;strum lute&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; from &quot; .. ouroboros2 )
-end
-
-function stasis( number )
-	send( &quot;outr &quot; .. number * 3 .. &quot; ice&quot; )
-	send( &quot;outr &quot; .. number * 4 .. &quot; goldbar&quot; )
-	send( &quot;outr &quot; .. number .. &quot; silverbar&quot; )
-	send( &quot;outr &quot; .. number * 2 .. &quot; dust&quot; )
-	send( &quot;outr &quot; .. number * 3 .. &quot; staghorn&quot; )
-	if ( number == '1' ) then
-		send( &quot;put silverbar in &quot; .. ouroboros1 )
-	else
-		send( &quot;put group silverbar in &quot; .. ouroboros1 )
-	end
-
-	send( &quot;put group ice in  &quot; .. ouroboros1 )
-	send( &quot;put group goldbar in &quot; .. ouroboros1 )
-	send( &quot;put group staghorn in &quot; .. ouroboros1 )
-	send( &quot;put group dust in &quot; .. ouroboros1 )
-	send( &quot;begin creation of &quot; .. number .. &quot; bag of stasis&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;spin around thrice&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;chant stasis statorium&quot; )
-	svo.doadd( &quot;spin around thrice&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;square the circle&quot; )
-	svo.doadd( &quot;wave feather&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;outr kola$crush kola&quot; )
-	svo.doadd( &quot;outr kola$crush kola&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; bag from &quot; .. ouroboros2 )
-end
-
-function firelash( number )
-	send( &quot;outr 1 goldbar&quot; )
-	send( &quot;outr 1 silverbar&quot; )
-	send( &quot;outr 2 dust&quot; )
-	send( &quot;put silverbar in &quot; .. ouroboros1 )
-	send( &quot;put goldbar in &quot; .. ouroboros1 )
-	send( &quot;put group dust in &quot; .. ouroboros1 )
-	send( &quot;put &quot; .. number ..  &quot; in &quot; .. ouroboros2 )
-
-	send( &quot;begin enchantment of &quot; .. number .. &quot; with firelash&quot; )
-	svo.doadd( &quot;bang drum&quot; )
-	svo.doadd( &quot;clap hands&quot; )
-	svo.doadd( &quot;burn incense&quot; )
-	svo.doadd( &quot;point sword&quot; )
-	svo.doadd( &quot;light candle&quot; )
-	svo.doadd( &quot;chant fo icti re eschle lok ast suh hrat&quot; )
-	svo.doadd( &quot;ring bell&quot; )
-	svo.doadd( &quot;spin around thrice&quot; )
-	svo.doadd( &quot;burn the polygon&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;roll dice&quot; )
-	svo.doadd( &quot;end ritual&quot; )
-	svo.doadd( &quot;get &quot; .. number .. &quot; from &quot; .. ouroboros2 )
-end
-
-function star( number )
-send( &quot;outr &quot; .. number .. &quot; silverbar&quot; )
-send( &quot;outr &quot; .. number*2 .. &quot; goldbar&quot; )
-if ( number == '1' ) then
-send( &quot;put goldbar in &quot; .. ouroboros1 )
-send( &quot;put goldbar in &quot; .. ouroboros1 )
-send( &quot;put silverbar in &quot; .. ouroboros1 )
-else
-send( &quot;put group goldbar in &quot; .. ouroboros1 )
-send( &quot;put group silverbar in &quot; .. ouroboros1 )
-end
-send( &quot;begin creation of &quot; .. number .. &quot; star sigil&quot; )
-svo.doadd( &quot;strum lute&quot; )
-svo.doadd( &quot;ring bell&quot; )
-svo.doadd( &quot;end ritual&quot; )
-svo.doadd( &quot;get &quot; .. number .. &quot; star from &quot; .. ouroboros2 )
-end</script>
-                <eventHandlerList/>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo_ourobori</name>
-                <packageName></packageName>
-                <script>function svo_ourobori()
-  if not svo.checking_oubori or gmcp.Char.Items.List.location ~= &quot;room&quot; then return end
-
-  for _, item in ipairs(gmcp.Char.Items.List.items) do
-    if item.name == 'a beguiling ouroboros' then
-      svo.oubori_data[gmcp.Room.Info.num] = svo.oubori_data[gmcp.Room.Info.num] or {}
-      table.insert(svo.oubori_data[gmcp.Room.Info.num], &quot;ouroboros&quot;..item.id)
+  -- retrieve ingredients and put them into the ouroboros
+  for name, per in pairs(what.ingredients) do
+    local totalAmount = per * amount
+    if name == &quot;arrow&quot; then
+      addToActionQueue(&quot;outq &quot; .. totalAmount .. &quot; &quot; .. name, true)
+      addToActionQueue(&quot;put &quot; .. totalAmount .. &quot; &quot; .. name .. &quot; in &quot; .. ouroboros2, true)
+    else
+      addToActionQueue(&quot;outr &quot; .. totalAmount .. &quot; &quot; .. name, false)
+      addToActionQueue(&quot;put &quot; .. (totalAmount &gt; 1 and &quot;group &quot; or &quot;&quot;) .. name .. &quot; in &quot; .. ouroboros1, false)
     end
   end
 
-  if not svo.oubori_data[gmcp.Room.Info.num] then
-     svo.echof(&quot;Hey, I don't think there are actually are any ourobori here :|&quot;)
-  else
-	svo.enchant(svo.enchanting[1], svo.enchanting[2])
+  -- retrieve other items needed
+  local kola = what.otherItems.kola
+  if kola then
+      addToActionQueue(&quot;outr &quot; .. kola .. &quot; kola&quot;, false)
   end
 
-  -- clean up globals
-  svo.checking_oubori, svo.enchanting, svo.oubori_data = nil, nil, nil
-end</script>
-                <eventHandlerList>
-                    <string>gmcp.Char.Items.List</string>
-                </eventHandlerList>
+  local gold = what.otherItems.gold
+  if gold then
+      svo.conf.enchantGetGold:gsub(&quot;([^$]+)&quot;, addToActionQueue)
+  end
+
+  -- start enchantment
+  if what.type == &quot;enchantment&quot; then
+      addToActionQueue(&quot;put &quot; .. queueItem.arg .. &quot; in &quot; .. ouroboros2, false)
+      addToActionQueue(&quot;begin enchantment of &quot; .. queueItem.arg .. &quot; with &quot; .. what.fullname, false)
+  else
+      addToActionQueue(&quot;begin creation of &quot; .. amount .. &quot; &quot; .. what.fullname, false)
+  end
+
+  --queue actions
+  for _, action in ipairs(what.actions) do
+      addToActionQueue(action, true)
+  end
+
+  -- end the ritual
+  addToActionQueue(&quot;end ritual&quot;, false)
+  if what.type == &quot;creation&quot; then
+      addToActionQueue(&quot;get &quot; .. (amount &gt; 1 and (amount .. &quot; &quot;) or &quot;&quot;) .. what.nameToGet .. &quot; from &quot; ..ouroboros2, amount &gt; 1)
+  else
+      addToActionQueue(&quot;get &quot; .. queueItem.arg .. &quot; from &quot; .. ouroboros2, false)
+  end
+  if gold then
+      svo.conf.enchantPutGold:gsub(&quot;([^$]+)&quot;, addToActionQueue)
+  end
+  return true
+end
+
+-- Full order done. Clean up and tell the user.
+local function endEnchanting()
+  enchanting = false
+  svo.removebalanceful(&quot;enchantment step&quot;)
+  svo.defs.keepup(&quot;selfishness&quot;, hadSelfishness, svo.defs.mode, false)
+  svo.echof(&quot;Enchantment order done!&quot;)
+  return hadSelfishness
+end
+
+-- Run the next step(s) in queue
+local function enchantmentStep()
+
+  local step
+  -- run all steps that don't need balance at once. Needs a little less time, less spam and doesn't break svo.addbalanceful.
+  repeat
+    -- enchantmentActions empty? Try to fill it from the queue
+    -- if there's nothing, we're done.
+    if #enchantmentActions == 0 and not enchantNextItem() then
+      return endEnchanting()
+    end
+    step = enchantmentActions[1]
+    table.remove(enchantmentActions, 1)
+    svo.sendc(step.command)
+  until step.balanceful
+  return true
+end
+
+-- Start the enchanting process. Some common setup first.
+local function startEnchanting()
+  --skip this in case we are already enchanting
+  if not enchanting then
+    enchanting = true
+    svo.echof(&quot;Starting enchantment order&quot;)
+    ouroboros1 = ourobori_data[ gmcp.Room.Info.num ][ 1 ]
+    ouroboros2 = ourobori_data[ gmcp.Room.Info.num ][ 2 ]
+    hadSelfishness = svo.defc.selfishness
+    if hadSelfishness then
+      svo.defs.keepup(&quot;selfishness&quot;, false, svo.defs.mode, false)
+    end
+    svo.addbalanceful(&quot;enchantment step&quot;, enchantmentStep)
+    svo.donext()
+  end
+end
+
+-- exported via the svo namespace below. Parses gmcp.Char.Items.List for ourorboros
+local function check_ourobori()
+  if not checking_ourobori or gmcp.Char.Items.List.location ~= &quot;room&quot; then return end
+
+  for _, item in ipairs(gmcp.Char.Items.List.items) do
+    if item.name == 'a beguiling ouroboros' then
+      ourobori_data[gmcp.Room.Info.num] = ourobori_data[gmcp.Room.Info.num] or {}
+      table.insert(ourobori_data[gmcp.Room.Info.num], &quot;ouroboros&quot;..item.id)
+    end
+  end
+
+  checking_ourobori = false
+
+  if not ourobori_data[gmcp.Room.Info.num] then
+    svo.echof(&quot;Hey, I don't think there are actually are any ourobori here :|&quot;)
+    enchantmentQueue = {}
+  else
+    startEnchanting()
+  end
+end
+
+-- Add an enchantment to the queue
+--   enchantment: The name of a known enchantment
+--   number: How many items to create or which item id should be enchanted (depends on enchantment type)
+local function enchant( enchantment, number )
+  if not enchantment then
+    svo.echof(&quot;What do you want to echant? (Hint: 'enchant (number) (with what)[, (number) (with what)]*')&quot;)
+    return
+  end
+  if not number then
+    svo.echof(&quot;Which item do you want to enchant or how many items do you want to create? (Hint: 'enchant (number) (with what)[, (number) (with what)]*')&quot;)
+    return
+  end
+
+  local enchantmentObject = enchantments[enchantment]
+
+  if not enchantmentObject then
+    svo.echof(&quot;Echantment '&quot; .. enchantment .. &quot;' unknown. See 'enchant list' for known enchantments.&quot;)
+  else
+
+    if enchantmentObject.type == &quot;creation&quot; then
+      local step = svo.conf.haveEnchantmentMedaillon and 5 or 1
+      for i=step,tonumber(number),step do
+        enchantmentQueue[#enchantmentQueue + 1] = { what = enchantment, arg = step }
+        number = number - step
+      end
+      if tonumber(number) &gt; 0 then
+        enchantmentQueue[#enchantmentQueue + 1] = { what = enchantment, arg = number }
+      end
+    else
+      enchantmentQueue[#enchantmentQueue + 1] = { what = enchantment, arg = number }
+    end
+
+    if not ourobori_data[ gmcp.Room.Info.num ] then
+      getOIDs()
+    else
+      startEnchanting()
+    end
+  end
+end
+
+-- Calculate the object cost of an enchantment
+--   what: name of a known enchantment
+--   num: How many items should be created (only matters for created items)
+--   costCollection: table where costs get added. This is useful if the function is called multiple times in a row, because costs get added up here
+-- returns the calculated cost in a table
+local function getEnchantCost(what, num, costCollection)
+  local enchantObject = enchantments[what]
+  costCollection = type(costCollection) == &quot;table&quot; and costCollection or {}
+  if not enchantObject then return end
+  local factor = enchantObject.type == &quot;creation&quot; and tonumber(num) or 1
+  for item, amount in pairs(enchantObject.ingredients) do
+    costCollection[item] = factor * amount + (costCollection[item] or 0)
+  end
+  local kola = enchantObject.otherItems.kola
+  if kola then
+    costCollection[&quot;kola&quot;] = factor * kola + (costCollection[&quot;kola&quot;] or 0)
+  end
+  return costCollection
+end
+
+-- Prints the costs calculated by getEnchantCost
+local function printEnchantCosts(cost)
+  local echo = cecho
+  echo(&quot;Your order uses the following commodities:\n&quot;)
+  for item, amount in pairs(cost) do
+    echo(&quot;  &lt;gold&gt;&quot; .. item .. &quot;&lt;reset&gt; - &lt;SlateGrey&gt;&quot; .. amount .. &quot;&lt;reset&gt;\n&quot;)
+  end
+end
+
+-- Parses the argument(s) given to the enchant alias
+local function parseEnchantArguments(arg)
+
+  -- if a list was requested, print it
+  if arg == &quot;list&quot; then
+    cecho( &quot;&lt;white&gt;              Sigils:\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;          'eye' - Eye Sigil\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;          'key' - Key Sigil\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;          'orb' - Orb Sigil\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;         'cube' - Cube Sigil\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;         'fist' - Fist Sigil\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;         'star' - Star Sigil\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;        'flame' - Flame Sigil\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;        'knife' - Knife Sigil\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;     'monolith' - Monolith Sigil\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;     'mushroom' - Mushroom Sigil\n&quot; )
+
+    cecho( &quot;\n&lt;white&gt;          Resistance:\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;         'cold' - Cold Resist\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;        'magic' - Magic Resist\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;      'fresist' - Fire Resist\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;     'electric' - Electric Resist\n&quot; )
+
+    cecho( &quot;\n&lt;white&gt;   Item Enchantments:\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;       'meteor' - Meteor Arrow\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;      'augment' - Augment Armour or Weapon\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;      'icewall' - Icewall\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;     'firelash' - Firelash\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;     'firewall' - Firewall\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;     'scabbard' - Scabbard of Stasis\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt; 'waterwalking' - Waterwalking\n&quot; )
+
+    cecho( &quot;\n&lt;white&gt;       Item Creation:\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;       'bauble' - Scented Bauble\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;       'brooch' - Brooch of Thoth\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;       'purity' - Necklace of Purity\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;       'stasis' - Bag of Stasis\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;      'hearing' - Earring of Hearing\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;     'negation' - Gem of Negation\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;    'whirlwind' - Whirlwind of Vastar\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;   'pestilence' - Ring of Pestilence\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;   'worrystone' - Worrystone\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;  'concealment' - Orb of Concealment\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt; 'dreamcatcher' - Dreamcatcher\n&quot; )
+    cecho( &quot;&lt;SlateGrey&gt;'comprehension' - Necklace of Comprehension\n&quot; )
+  elseif string.starts(arg, &quot;cancel&quot;) then
+    enchantmentQueue = {}
+    if arg == &quot;cancel force&quot; then
+      enchantmentActions = {}
+    end
+  else
+    local functionToUse
+    local getCosts = false
+
+    -- Differ between cost calculation and real enchantment
+    if string.starts(arg, &quot;cost&quot;) then
+      functionToUse = getEnchantCost
+      arg = arg:sub(5)
+      getCosts = true
+    else
+      functionToUse = enchant
+      lastOrder = arg
+    end
+
+    -- split the arguments and feed them to the function
+    local arguments = arg:split(&quot;,&quot;)
+    local output = {}
+    for _, argument in ipairs(arguments) do
+      argument = argument:trim()
+      local num, enchantment = argument:match(&quot;^(%w+) (%w+)$&quot;)
+      functionToUse(enchantment, num, output)
+    end
+    -- print costs, if requested
+    if getCosts then
+      printEnchantCosts(output)
+    end
+  end
+
+end
+
+-- repeat the last order
+local function reenchant()
+  parseEnchantArguments(lastOrder)
+end
+
+-- initialise the script by adding some publishing some functions in the svo namespace as well as adding in some functions
+function initialiseEnchantScript()
+  svo.check_ourobori = check_ourobori
+  svo.parseEnchantArguments = parseEnchantArguments
+  svo.reenchant = reenchant
+  svo.getEnchantCost = getEnchantCost
+  svo.config.setoption(&quot;haveEnchantmentMedaillon&quot;,
+  {
+    vconfig2string = true,
+    type = &quot;boolean&quot;,
+    onenabled = function ()
+      svo.echof(&quot;&lt;0,250,0&gt;Will%s use the Medaillon of Enchantment for item creation.&quot;, svo.getDefaultColor())
+    end,
+    ondisabled = function ()
+      svo.echof(&quot;&lt;250,0,0&gt;Won't%s use the Medaillon of Enchantment for item creation.&quot;, svo.getDefaultColor())
+    end,
+    onshow = function (defaultcolour)
+      fg(&quot;gold&quot;)
+      echoLink(&quot;enchanter:&quot;, &quot;&quot;, &quot;svo enchanting script&quot;, true)
+      fg(defaultcolour)
+      echo(&quot; Using the Medaillon of Enchantment for item creation is &quot;)
+      fg(&quot;a_cyan&quot;) echoLink(svo.conf.haveEnchantmentMedaillon and &quot;enabled&quot; or &quot;disabled&quot;, &quot;svo.config.set('haveEnchantmentMedaillon', &quot;..(svo.conf.haveEnchantmentMedaillon and &quot;false&quot; or &quot;true&quot;)..&quot;, true)&quot;, &quot;Click to &quot;..(svo.conf.haveEnchantmentMedaillon and &quot;disable&quot; or &quot;enable&quot;)..&quot; the use of the Medaillon of Enchantment&quot;, true) fg(defaultcolour)
+      echo(&quot;.\n&quot;)
+  end})
+
+  svo.conf.enchantGetGold = svo.conf.enchantGetGold or &quot;get 1 gold from pack&quot;
+  svo.config.setoption(&quot;enchantGetGold&quot;, {
+    type = &quot;string&quot;,
+    vconfig2string = true,
+    onshow = function (defaultcolour)
+      fg(&quot;gold&quot;)
+      echoLink(&quot;enchanter:&quot;, &quot;&quot;, &quot;svo enchanting script&quot;, true)
+      fg(defaultcolour) echo(&quot;Will use &quot;)
+      fg(&quot;a_cyan&quot;) echoLink((svo.conf.enchantGetGold or &quot;get 1 gold from pack&quot;), &quot;printCmdLine 'vconfig enchantGetGold '&quot;, &quot;Click to set the command to use for retrieving a gold coin&quot;, true)
+      fg(defaultcolour) echo(&quot; for getting gold coins to flip; putting it away with&quot;)
+      fg(&quot;a_cyan&quot;) echoLink(&quot; &quot;..(svo.conf.enchantPutGold or &quot;put 1 gold in pack&quot;), &quot;printCmdLine'vconfig enchantPutGold '&quot;, &quot;Click to set the command to use for putting the gold coin away&quot;, true)
+      fg(defaultcolour) echo(&quot;.\n&quot;)
+    end,
+    onset = function ()
+      svo.echof(&quot;Okay, will get a gold coin with '%s'.&quot;, svo.conf.enchantGetGold)
+    end
+  })
+
+  svo.conf.enchantPutGold = svo.conf.enchantPutGold or &quot;put 1 gold in pack&quot;
+  svo.config.setoption(&quot;enchantPutGold&quot;, {
+    type = &quot;string&quot;,
+    onset = function ()
+      svo.echof(&quot;Okay, will put gold coins away with '%s'.&quot;, svo.conf.enchantPutGold)
+    end
+  })
+end
+
+registerAnonymousEventHandler(&quot;gmcp.Char.Items.List&quot;, &quot;svo.check_ourobori&quot;)
+registerAnonymousEventHandler(&quot;svo system loaded&quot;, &quot;initialiseEnchantScript&quot;)
+</script>
+                <eventHandlerList/>
             </Script>
         </ScriptGroup>
     </ScriptPackage>

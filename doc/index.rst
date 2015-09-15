@@ -8,6 +8,7 @@ Addons documentation
 
    dragonlimbcounter.rst
    elistsorter.rst
+   enchanter.rst
    inker.rst
    knightlimbcounter.rst
    magilimbcounter.rst
