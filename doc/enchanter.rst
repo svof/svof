@@ -31,6 +31,12 @@ Aliases
   enchant cost <order>
     Calculates the commodity cost of the order.
 
+  enchant cancel
+    Stops the current order after the currently running enchantment.
+
+  enchant cancel force
+    Immediately stops the current enchantment order
+
   reenchant
     Repeats the last order.
 
