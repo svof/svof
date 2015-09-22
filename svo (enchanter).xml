@@ -16,7 +16,7 @@
             <regex></regex>
             <Alias isActive="yes" isFolder="no">
                 <name>enchant</name>
-                <script>svo.parseEnchantArguments(matches[2])</script>
+                <script>svo.parse_enchant_arguments(matches[2])</script>
                 <command></command>
                 <packageName></packageName>
                 <regex>^enchant (.+)$</regex>
@@ -920,7 +920,7 @@ local function enchantNextItem()
 
   local gold = what.otherItems.gold
   if gold then
-      svo.conf.enchantGetGold:gsub(&quot;([^$]+)&quot;, addToActionQueue)
+      svo.conf.enchantgetgold:gsub(&quot;([^$]+)&quot;, addToActionQueue)
   end
 
   -- start enchantment
@@ -944,7 +944,7 @@ local function enchantNextItem()
       addToActionQueue(&quot;get &quot; .. queueItem.arg .. &quot; from &quot; .. ouroboros2, false)
   end
   if gold then
-      svo.conf.enchantPutGold:gsub(&quot;([^$]+)&quot;, addToActionQueue)
+      svo.conf.enchantputgold:gsub(&quot;([^$]+)&quot;, addToActionQueue)
   end
   return true
 end
@@ -1034,7 +1034,7 @@ local function enchant( enchantment, number )
   else
 
     if enchantmentObject.type == &quot;creation&quot; then
-      local step = svo.conf.haveEnchantmentMedaillon and 5 or 1
+      local step = svo.conf.haveenchantmentmedaillon and 5 or 1
       for i=step,tonumber(number),step do
         enchantmentQueue[#enchantmentQueue + 1] = { what = enchantment, arg = step }
         number = number - step
@@ -1171,10 +1171,10 @@ end
 -- initialise the script by adding some publishing some functions in the svo namespace as well as adding in some functions
 function initialiseEnchantScript()
   svo.check_ourobori = check_ourobori
-  svo.parseEnchantArguments = parseEnchantArguments
+  svo.parse_enchant_arguments = parseEnchantArguments
   svo.reenchant = reenchant
-  svo.getEnchantCost = getEnchantCost
-  svo.config.setoption(&quot;haveEnchantmentMedaillon&quot;,
+  svo.get_enchant_cost = getEnchantCost
+  svo.config.setoption(&quot;haveenchantmentmedaillon&quot;,
   {
     vconfig2string = true,
     type = &quot;boolean&quot;,
@@ -1189,33 +1189,33 @@ function initialiseEnchantScript()
       echoLink(&quot;enchanter:&quot;, &quot;&quot;, &quot;svo enchanting script&quot;, true)
       fg(defaultcolour)
       echo(&quot; Using the Medaillon of Enchantment for item creation is &quot;)
-      fg(&quot;a_cyan&quot;) echoLink(svo.conf.haveEnchantmentMedaillon and &quot;enabled&quot; or &quot;disabled&quot;, &quot;svo.config.set('haveEnchantmentMedaillon', &quot;..(svo.conf.haveEnchantmentMedaillon and &quot;false&quot; or &quot;true&quot;)..&quot;, true)&quot;, &quot;Click to &quot;..(svo.conf.haveEnchantmentMedaillon and &quot;disable&quot; or &quot;enable&quot;)..&quot; the use of the Medaillon of Enchantment&quot;, true) fg(defaultcolour)
+      fg(&quot;a_cyan&quot;) echoLink(svo.conf.haveenchantmentmedaillon and &quot;enabled&quot; or &quot;disabled&quot;, &quot;svo.config.set('haveenchantmentmedaillon', &quot;..(svo.conf.haveenchantmentmedaillon and &quot;false&quot; or &quot;true&quot;)..&quot;, true)&quot;, &quot;Click to &quot;..(svo.conf.haveenchantmentmedaillon and &quot;disable&quot; or &quot;enable&quot;)..&quot; the use of the Medaillon of Enchantment&quot;, true) fg(defaultcolour)
       echo(&quot;.\n&quot;)
   end})
 
-  svo.conf.enchantGetGold = svo.conf.enchantGetGold or &quot;get 1 gold from pack&quot;
-  svo.config.setoption(&quot;enchantGetGold&quot;, {
+  svo.conf.enchantgetgold = svo.conf.enchantgetgold or &quot;get 1 gold from pack&quot;
+  svo.config.setoption(&quot;enchantgetgold&quot;, {
     type = &quot;string&quot;,
     vconfig2string = true,
     onshow = function (defaultcolour)
       fg(&quot;gold&quot;)
       echoLink(&quot;enchanter:&quot;, &quot;&quot;, &quot;svo enchanting script&quot;, true)
       fg(defaultcolour) echo(&quot;Will use &quot;)
-      fg(&quot;a_cyan&quot;) echoLink((svo.conf.enchantGetGold or &quot;get 1 gold from pack&quot;), &quot;printCmdLine 'vconfig enchantGetGold '&quot;, &quot;Click to set the command to use for retrieving a gold coin&quot;, true)
+      fg(&quot;a_cyan&quot;) echoLink((svo.conf.enchantgetgold or &quot;get 1 gold from pack&quot;), &quot;printCmdLine 'vconfig enchantgetgold '&quot;, &quot;Click to set the command to use for retrieving a gold coin&quot;, true)
       fg(defaultcolour) echo(&quot; for getting gold coins to flip; putting it away with&quot;)
-      fg(&quot;a_cyan&quot;) echoLink(&quot; &quot;..(svo.conf.enchantPutGold or &quot;put 1 gold in pack&quot;), &quot;printCmdLine'vconfig enchantPutGold '&quot;, &quot;Click to set the command to use for putting the gold coin away&quot;, true)
+      fg(&quot;a_cyan&quot;) echoLink(&quot; &quot;..(svo.conf.enchantputgold or &quot;put 1 gold in pack&quot;), &quot;printCmdLine'vconfig enchantputgold '&quot;, &quot;Click to set the command to use for putting the gold coin away&quot;, true)
       fg(defaultcolour) echo(&quot;.\n&quot;)
     end,
     onset = function ()
-      svo.echof(&quot;Okay, will get a gold coin with '%s'.&quot;, svo.conf.enchantGetGold)
+      svo.echof(&quot;Okay, will get a gold coin with '%s'.&quot;, svo.conf.enchantgetgold)
     end
   })
 
-  svo.conf.enchantPutGold = svo.conf.enchantPutGold or &quot;put 1 gold in pack&quot;
-  svo.config.setoption(&quot;enchantPutGold&quot;, {
+  svo.conf.enchantputgold = svo.conf.enchantputgold or &quot;put 1 gold in pack&quot;
+  svo.config.setoption(&quot;enchantputgold&quot;, {
     type = &quot;string&quot;,
     onset = function ()
-      svo.echof(&quot;Okay, will put gold coins away with '%s'.&quot;, svo.conf.enchantPutGold)
+      svo.echof(&quot;Okay, will put gold coins away with '%s'.&quot;, svo.conf.enchantputgold)
     end
   })
 end

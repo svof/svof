@@ -40,13 +40,13 @@ Aliases
   reenchant
     Repeats the last order.
 
-  vconfig enchantGetGold <command>
+  vconfig enchantgetgold <command>
     Sets the command how to retrieve gold coins, if one is needed for the enchantment (action **flipcoin**). The command may contain '$' as command separator.
 
-  vconfig enchantPutGold <command>
+  vconfig enchantputgold <command>
     Sets the command how to put gold coins away, if one is needed for the enchantment (action **flipcoin**). The command contain '$' as command separator.
 
-  vconfig haveEnchantmentMedaillon
+  vconfig haveenchantmentmedaillon
     Toggles whether you have the Medaillon of Enchantment or not.
 
 
@@ -54,7 +54,7 @@ API
 ^^^
 .. glossary::
 
-  svo.getEnchantCost(what, howMany, costCollection)
+  svo.get_enchant_cost(what, howMany, costCollection)
     what - the name of the enchantment
 
     howMany - amount of created items of that type (only needed for created items including meteor)
