@@ -982,8 +982,8 @@ local function startEnchanting()
   if not enchanting then
     enchanting = true
     svo.echof(&quot;Starting enchantment order&quot;)
-    ouroboros1 = ourobori_data[ gmcp.Room.Info.num ][ 1 ]
-    ouroboros2 = ourobori_data[ gmcp.Room.Info.num ][ 2 ]
+    ouroboros1 = ourobori_data[gmcp.Room.Info.num][1]
+    ouroboros2 = ourobori_data[gmcp.Room.Info.num][2]
     hadSelfishness = svo.defc.selfishness
     if hadSelfishness then
       svo.defs.keepup(&quot;selfishness&quot;, false, svo.defs.mode, false)
@@ -1034,7 +1034,7 @@ local function enchant( enchantment, number )
   else
 
     if enchantmentObject.type == &quot;creation&quot; then
-      local step = svo.conf.haveenchantmentmedaillon and 5 or 1
+      local step = svo.conf.haveenchantmentmedallion and 5 or 1
       for i=step,tonumber(number),step do
         enchantmentQueue[#enchantmentQueue + 1] = { what = enchantment, arg = step }
         number = number - step
@@ -1088,46 +1088,46 @@ local function parseEnchantArguments(arg)
 
   -- if a list was requested, print it
   if arg == &quot;list&quot; then
-    cecho( &quot;&lt;white&gt;              Sigils:\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;          'eye' - Eye Sigil\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;          'key' - Key Sigil\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;          'orb' - Orb Sigil\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;         'cube' - Cube Sigil\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;         'fist' - Fist Sigil\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;         'star' - Star Sigil\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;        'flame' - Flame Sigil\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;        'knife' - Knife Sigil\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;     'monolith' - Monolith Sigil\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;     'mushroom' - Mushroom Sigil\n&quot; )
+    cecho(&quot;&lt;white&gt;              Sigils:\n&quot; )
+    cecho(&quot;&lt;SlateGrey&gt;          'eye' - Eye Sigil\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;          'key' - Key Sigil\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;          'orb' - Orb Sigil\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;         'cube' - Cube Sigil\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;         'fist' - Fist Sigil\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;         'star' - Star Sigil\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;        'flame' - Flame Sigil\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;        'knife' - Knife Sigil\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;     'monolith' - Monolith Sigil\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;     'mushroom' - Mushroom Sigil\n&quot;)
 
-    cecho( &quot;\n&lt;white&gt;          Resistance:\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;         'cold' - Cold Resist\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;        'magic' - Magic Resist\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;      'fresist' - Fire Resist\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;     'electric' - Electric Resist\n&quot; )
+    cecho(&quot;\n&lt;white&gt;          Resistance:\n&quot; )
+    cecho(&quot;&lt;SlateGrey&gt;         'cold' - Cold Resist\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;        'magic' - Magic Resist\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;      'fresist' - Fire Resist\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;     'electric' - Electric Resist\n&quot;)
 
-    cecho( &quot;\n&lt;white&gt;   Item Enchantments:\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;       'meteor' - Meteor Arrow\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;      'augment' - Augment Armour or Weapon\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;      'icewall' - Icewall\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;     'firelash' - Firelash\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;     'firewall' - Firewall\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;     'scabbard' - Scabbard of Stasis\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt; 'waterwalking' - Waterwalking\n&quot; )
+    cecho(&quot;\n&lt;white&gt;   Item Enchantments:\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;       'meteor' - Meteor Arrow\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;      'augment' - Augment Armour or Weapon\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;      'icewall' - Icewall\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;     'firelash' - Firelash\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;     'firewall' - Firewall\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;     'scabbard' - Scabbard of Stasis\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt; 'waterwalking' - Waterwalking\n&quot;)
 
-    cecho( &quot;\n&lt;white&gt;       Item Creation:\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;       'bauble' - Scented Bauble\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;       'brooch' - Brooch of Thoth\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;       'purity' - Necklace of Purity\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;       'stasis' - Bag of Stasis\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;      'hearing' - Earring of Hearing\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;     'negation' - Gem of Negation\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;    'whirlwind' - Whirlwind of Vastar\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;   'pestilence' - Ring of Pestilence\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;   'worrystone' - Worrystone\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;  'concealment' - Orb of Concealment\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt; 'dreamcatcher' - Dreamcatcher\n&quot; )
-    cecho( &quot;&lt;SlateGrey&gt;'comprehension' - Necklace of Comprehension\n&quot; )
+    cecho(&quot;\n&lt;white&gt;       Item Creation:\n&quot; )
+    cecho(&quot;&lt;SlateGrey&gt;       'bauble' - Scented Bauble\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;       'brooch' - Brooch of Thoth\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;       'purity' - Necklace of Purity\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;       'stasis' - Bag of Stasis\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;      'hearing' - Earring of Hearing\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;     'negation' - Gem of Negation\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;    'whirlwind' - Whirlwind of Vastar\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;   'pestilence' - Ring of Pestilence\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;   'worrystone' - Worrystone\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;  'concealment' - Orb of Concealment\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt; 'dreamcatcher' - Dreamcatcher\n&quot;)
+    cecho(&quot;&lt;SlateGrey&gt;'comprehension' - Necklace of Comprehension\n&quot;)
   elseif string.starts(arg, &quot;cancel&quot;) then
     enchantmentQueue = {}
     if arg == &quot;cancel force&quot; then
@@ -1174,22 +1174,22 @@ function initialiseEnchantScript()
   svo.parse_enchant_arguments = parseEnchantArguments
   svo.reenchant = reenchant
   svo.get_enchant_cost = getEnchantCost
-  svo.config.setoption(&quot;haveenchantmentmedaillon&quot;,
+  svo.config.setoption(&quot;haveenchantmentmedallion&quot;,
   {
     vconfig2string = true,
     type = &quot;boolean&quot;,
     onenabled = function ()
-      svo.echof(&quot;&lt;0,250,0&gt;Will%s use the Medaillon of Enchantment for item creation.&quot;, svo.getDefaultColor())
+      svo.echof(&quot;&lt;0,250,0&gt;Will%s use the Medallion of Enchantment for item creation.&quot;, svo.getDefaultColor())
     end,
     ondisabled = function ()
-      svo.echof(&quot;&lt;250,0,0&gt;Won't%s use the Medaillon of Enchantment for item creation.&quot;, svo.getDefaultColor())
+      svo.echof(&quot;&lt;250,0,0&gt;Won't%s use the Medallion of Enchantment for item creation.&quot;, svo.getDefaultColor())
     end,
     onshow = function (defaultcolour)
       fg(&quot;gold&quot;)
       echoLink(&quot;enchanter:&quot;, &quot;&quot;, &quot;svo enchanting script&quot;, true)
       fg(defaultcolour)
-      echo(&quot; Using the Medaillon of Enchantment for item creation is &quot;)
-      fg(&quot;a_cyan&quot;) echoLink(svo.conf.haveenchantmentmedaillon and &quot;enabled&quot; or &quot;disabled&quot;, &quot;svo.config.set('haveenchantmentmedaillon', &quot;..(svo.conf.haveenchantmentmedaillon and &quot;false&quot; or &quot;true&quot;)..&quot;, true)&quot;, &quot;Click to &quot;..(svo.conf.haveenchantmentmedaillon and &quot;disable&quot; or &quot;enable&quot;)..&quot; the use of the Medaillon of Enchantment&quot;, true) fg(defaultcolour)
+      echo(&quot; Using the Medallion of Enchantment for item creation is &quot;)
+      fg(&quot;a_cyan&quot;) echoLink(svo.conf.haveenchantmentmedallion and &quot;enabled&quot; or &quot;disabled&quot;, &quot;svo.config.set('haveenchantmentmedallion', &quot;..(svo.conf.haveenchantmentmedallion and &quot;false&quot; or &quot;true&quot;)..&quot;, true)&quot;, &quot;Click to &quot;..(svo.conf.haveenchantmentmedallion and &quot;disable&quot; or &quot;enable&quot;)..&quot; the use of the Medallion of Enchantment&quot;, true) fg(defaultcolour)
       echo(&quot;.\n&quot;)
   end})
 
