@@ -1048,7 +1048,7 @@ dict = {
     }
   },
   sanguinehumour = {
-    gamename = "temperedphlegmatic",
+    gamename = "temperedsanguine",
     herb = {
       aspriority = 0,
       spriority = 0,
