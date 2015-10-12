@@ -188,11 +188,43 @@ end)
 signals.gmcproominfo        = luanotify.signal.new()
 signals.gmcpcharstatus      = luanotify.signal.new()
 signals.gmcpcharitemslist   = luanotify.signal.new()
+signals.gmcpcharitemslist:connect(function()
+  if not gmcp.Char.Items.List.location then echof("(GMCP problem) location field is missing from Achaea's response.") return end
+  if gmcp.Char.Items.List.location ~= "inv" then return end
+  me.inventory = table.deepcopy(gmcp.Char.Items.List.items)
+end)
 signals.gmcpcharitemsadd    = luanotify.signal.new()
+signals.gmcpcharitemsadd:connect(function()
+  if not gmcp.Char.Items.Add.location then echof("(GMCP problem) location field is missing from Achaea's response.") return end
+  if gmcp.Char.Items.Add.location ~= "inv" then return end
+  me.inventory[#me.inventory + 1] = table.deepcopy(gmcp.Char.Items.Add.item)
+end)
 signals.gmcpcharskillsinfo  = luanotify.signal.new()
 signals.gmcpcharskillslist  = luanotify.signal.new()
 signals.gmcpcharitemsupdate = luanotify.signal.new()
+signals.gmcpcharitemsupdate:connect(function()
+  if not gmcp.Char.Items.Update.location then echof("(GMCP problem) location field is missing from Achaea's response.") return end
+  if gmcp.Char.Items.Update.location ~= "inv" then return end
+  local update = gmcp.Char.Items.Update.item
+  for i, item in ipairs(me.inventory) do
+    if item.id == update.id then
+      me.inventory[i] = table.deepcopy(gmcp.Char.Items.Update.item)
+      break
+    end
+  end
+end)
 signals.gmcpcharitemsremove = luanotify.signal.new()
+signals.gmcpcharitemsremove:connect(function()
+  if not gmcp.Char.Items.Remove.location then echof("(GMCP problem) location field is missing from Achaea's response.") return end
+  if gmcp.Char.Items.Remove.location ~= "inv" then return end
+  local remove = gmcp.Char.Items.Remove.item
+  for i, item in ipairs(me.inventory) do
+    if item.id == remove.id then
+      table.remove(me.inventory, i)
+      break
+    end
+  end
+end)
 signals.gmcpcharvitals      = luanotify.signal.new()
 
 -- make a 'signals bank' that remembers all gmcp events that happend before the prompt. reset on prompt. check it for stuff when necessary.
@@ -607,6 +639,8 @@ me.cadmusaffs = me.cadmusaffs or {
   ["vertigo"]        = false,
   ["weakness"]       = false,
 }
+
+me.inventory = {}
 ---
 
 #if not skills.shindo then
