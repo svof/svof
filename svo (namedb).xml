@@ -63,7 +63,7 @@ ndb.temp_classes_list = {}</script>
                         <colorTriggerFgColor>#000000</colorTriggerFgColor>
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
-                            <string>Citizen                                                     Rank CT  Class</string>
+                            <string>Citizen                                                   Rank CT  Class</string>
                         </regexCodeList>
                         <regexCodePropertyList>
                             <integer>3</integer>
@@ -76,7 +76,7 @@ local match = getColorWildcard(14)
 if match then
   local matches = multimatches[1]
   local isdragon
-  if (matches[4] and matches[4]:lower() == &quot;dragon&quot;) then matches[4] = nil; isdragon = true end
+  if (matches[4] and matches[4]:lower():find(&quot;dragon&quot;)) then matches[4] = nil; isdragon = true end
 
   temp_name_list[#temp_name_list + 1] = {
     name = match[1],
