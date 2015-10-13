@@ -128,10 +128,10 @@ function sk.updateserversideprios()
           priochangecache[balance] = priochangecache[balance] or {}
           local affs, defs, ignoreaffs, ignoredefs = sk.splitdefs(balance, neworder)
           local raffs, rdefs, rignoreaffs, rignoredefs = {}, {}, {}, {}
-          for i = 1, #affs do raffs[affs[i]] = i end
-          for i = 1, #defs do rdefs[defs[i]] = i end
-          for i = 1, #ignoreaffs do rignoreaffs[ignoreaffs[i]] = i end
-          for i = 1, #ignoredefs do rignoredefs[ignoredefs[i]] = i end
+          for i = 1, table.maxn(affs) do if affs[i] then raffs[affs[i]] = i end end
+          for i = 1, table.maxn(defs) do if defs[i] then rdefs[defs[i]] = i end end
+          for i = 1, table.maxn(ignoreaffs) do if ignoreaffs[i] then rignoreaffs[ignoreaffs[i]] = i end end
+          for i = 1, table.maxn(ignoredefs) do if ignoredefs[i] then rignoredefs[ignoredefs[i]] = i end end
 
           -- update for the changes
           for _, action in pairs(diff[balance]) do
@@ -162,10 +162,10 @@ function sk.updateserversideprios()
       local neworder = prio.getsortedlist(balance)
       local affs, defs, ignoreaffs, ignoredefs = sk.splitdefs(balance, neworder)
       local raffs, rdefs, rignoreaffs, rignoredefs = {}, {}, {}, {}
-      for i = 1, #affs do raffs[affs[i]] = i end
-      for i = 1, #defs do rdefs[defs[i]] = i end
-      for i = 1, #ignoreaffs do rignoreaffs[ignoreaffs[i]] = i end
-      for i = 1, #ignoredefs do rignoredefs[ignoredefs[i]] = i end
+      for i = 1, table.maxn(affs) do if affs[i] then raffs[affs[i]] = i end end
+      for i = 1, table.maxn(defs) do if defs[i] then rdefs[defs[i]] = i end end
+      for i = 1, table.maxn(ignoreaffs) do if ignoreaffs[i] then rignoreaffs[ignoreaffs[i]] = i end end
+      for i = 1, table.maxn(ignoredefs) do if ignoredefs[i] then rignoredefs[ignoredefs[i]] = i end end
 
       -- if not in slowcuring mode, switch to slowcuring prios first
       local needtoswitch, needtoswitchback = false, false
@@ -267,32 +267,29 @@ function sk.splitdefs(balance, list)
     if dict[action][balance].def then
       -- check that it's not undeffable in-game and on keepup
       if not dict[action][balance].undeffable and ((sys.deffing and defdefup[defmode][action]) or (not sys.deffing and defkeepup[defmode][action])) and not sk.shouldignoreserverside(action) then
-        defs[#defs+1] = tremove(list, i)
+        defs[i] = list[i]
+        list[i] = nil
       -- if it's off keepup, send to another list so those defs get ignored
       elseif not dict[action][balance].undeffable and sk.shouldignoreserverside(action) then
-        disableddefs[#disableddefs+1] = tremove(list, i)
+        disableddefs[#disableddefs+1] = list[i]
+        list[i] = nil
       else
         -- make sure to remove a def either way
-        tremove(list, i)
+        list[i] = nil
       end
     else
       -- remove if not priotisable
       if dict[action][balance].uncurable or dict[action][balance].irregular then
-        tremove(list, i)
+        list[i] = nil
       -- if handled by svo, or handled by serverside and on normal ignore, ignore
       elseif dict[action].aff and sk.shouldignoreserverside(action) then
-        disabledaffs[#disabledaffs+1] = tremove(list, i)
+        disabledaffs[#disabledaffs+1] = list[i]
+        list[i] = nil
       end
     end
   end
 
-  -- since we were iterating lists backwards, sort defs and disableddefs
-  local ordereddefs, ordereddisableddefs, ordereddisabledaffs = {}, {}, {}
-  for i = #defs, 1, -1 do ordereddefs[#ordereddefs+1] = defs[i] end
-  for i = #disableddefs, 1, -1 do ordereddisableddefs[#ordereddisableddefs+1] = disableddefs[i] end
-  for i = #disabledaffs, 1, -1 do ordereddisabledaffs[#ordereddisabledaffs+1] = disabledaffs[i] end
-
-  return list, ordereddefs, ordereddisabledaffs, ordereddisableddefs
+  return list, defs, disabledaffs, disableddefs
 end
 
 

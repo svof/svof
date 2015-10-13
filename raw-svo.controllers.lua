@@ -925,8 +925,8 @@ function printorder(balance, limited_around)
   local list = prio.getsortedlist(balance)
   local affs, defs = sk.splitdefs(balance, list)
   local raffs, rdefs = {}, {}
-  for i = 1, #affs do raffs[affs[i]] = i end
-  for i = 1, #defs do rdefs[defs[i]] = i end
+  for i = 1, table.maxn(affs) do if affs[i] then raffs[affs[i]] = i end end
+  for i = 1, table.maxn(defs) do if defs[i] then rdefs[defs[i]] = i end end
 
   if limited_around then
     echofn("(")
