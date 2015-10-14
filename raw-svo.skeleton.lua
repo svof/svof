@@ -671,7 +671,7 @@ end
 
 function clearbalanceless()
   balanceless = {}
-  addbalanceless("svo check dofree", sk.check_dofree)
+  addbalanceless("svo check dofree", check_dofree)
   raiseEvent("svo balanceless ready")
 end
 
