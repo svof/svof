@@ -905,7 +905,12 @@ local function enchantNextItem()
     local totalAmount = per * amount
     if name == &quot;arrow&quot; then
       addToActionQueue(&quot;outq &quot; .. totalAmount .. &quot; &quot; .. name, true)
-      addToActionQueue(&quot;put &quot; .. totalAmount .. &quot; &quot; .. name .. &quot; in &quot; .. ouroboros1, true)
+      -- lets handle arrows differently. Since 'arrow' also applies to meteors, we will need special encoding
+      if totalAmount == 1 then
+        addToActionQueue(&quot;put @an arrow@ in &quot; .. ouroboros1, false)
+		else
+        addToActionQueue(string.format(&quot;put group @a group of %d arrows@ in %s&quot;, totalAmount, ouroboros1), false)
+		end
     else
       addToActionQueue(&quot;outr &quot; .. totalAmount .. &quot; &quot; .. name, false)
       addToActionQueue(&quot;put &quot; .. (totalAmount &gt; 1 and &quot;group &quot; or &quot;&quot;) .. name .. &quot; in &quot; .. ouroboros1, false)
@@ -946,9 +951,6 @@ local function enchantNextItem()
   if gold then
       svo.conf.enchantputgold:gsub(&quot;([^$]+)&quot;, addToActionQueue)
   end
-  if what.nameToGet == &quot;meteor&quot; then
-      addToActionQueue(&quot;put &quot; .. amount .. &quot; meteor in pack&quot;, amount &gt; 1)
-  end
   return true
 end
 
@@ -974,7 +976,15 @@ local function enchantmentStep()
     end
     step = enchantmentActions[1]
     table.remove(enchantmentActions, 1)
-    svo.sendc(step.command)
+    -- replace special stuff for meteors enchantment
+    local command = step.command:gsub(&quot;@(.+)@&quot;, function(what)
+        for _, item in ipairs(svo.me.inventory) do
+          if what == item.name then
+            return item.id
+          end
+        end
+      end)
+    svo.sendc(command)
   until step.balanceful
   return true
 end
