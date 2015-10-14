@@ -1,3 +1,4 @@
+lua precommit.lua "$TRAVIS_TAG"
 lua generate.lua -r "$TRAVIS_TAG"
 
 if [ -z "$TRAVIS_TAG" ]
@@ -5,8 +6,6 @@ then
   echo "No tag, no update in documentation needed."
   exit 0
 fi
-
-lua precommit.lua "$TRAVIS_TAG"
 
 # Create documentation for the release
 cd doc/_build/html
