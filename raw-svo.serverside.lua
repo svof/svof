@@ -128,10 +128,10 @@ function sk.updateserversideprios()
           priochangecache[balance] = priochangecache[balance] or {}
           local affs, defs, ignoreaffs, ignoredefs = sk.splitdefs(balance, neworder)
           local raffs, rdefs, rignoreaffs, rignoredefs = {}, {}, {}, {}
-          for i = 1, table.maxn(affs) do if affs[i] then raffs[affs[i]] = i end end
-          for i = 1, table.maxn(defs) do if defs[i] then rdefs[defs[i]] = i end end
-          for i = 1, table.maxn(ignoreaffs) do if ignoreaffs[i] then rignoreaffs[ignoreaffs[i]] = i end end
-          for i = 1, table.maxn(ignoredefs) do if ignoredefs[i] then rignoredefs[ignoredefs[i]] = i end end
+          for index, aff in pairs(affs) do raffs[aff] = index end
+          for index, def in pairs(defs) do rdefs[def] = index end
+          for index, aff in pairs(ignoreaffs) do rignoreaffs[aff] = index end
+          for index, def in pairs(ignoredefs) do rignoredefs[def] = index end
 
           -- update for the changes
           for _, action in pairs(diff[balance]) do
@@ -162,10 +162,10 @@ function sk.updateserversideprios()
       local neworder = prio.getsortedlist(balance)
       local affs, defs, ignoreaffs, ignoredefs = sk.splitdefs(balance, neworder)
       local raffs, rdefs, rignoreaffs, rignoredefs = {}, {}, {}, {}
-      for i = 1, table.maxn(affs) do if affs[i] then raffs[affs[i]] = i end end
-      for i = 1, table.maxn(defs) do if defs[i] then rdefs[defs[i]] = i end end
-      for i = 1, table.maxn(ignoreaffs) do if ignoreaffs[i] then rignoreaffs[ignoreaffs[i]] = i end end
-      for i = 1, table.maxn(ignoredefs) do if ignoredefs[i] then rignoredefs[ignoredefs[i]] = i end end
+      for index, aff in pairs(affs) do raffs[aff] = index end
+      for index, def in pairs(defs) do rdefs[def] = index end
+      for index, aff in pairs(ignoreaffs) do rignoreaffs[aff] = index end
+      for index, def in pairs(ignoredefs) do rignoredefs[def] = index end
 
       -- if not in slowcuring mode, switch to slowcuring prios first
       local needtoswitch, needtoswitchback = false, false
