@@ -63,10 +63,10 @@ ndb.temp_classes_list = {}</script>
                         <colorTriggerFgColor>#000000</colorTriggerFgColor>
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
-                            <string>Citizen                                                   Rank CT  Class</string>
+                            <string>^Citizen\s+Rank\s+CT\s+Class$</string>
                         </regexCodeList>
                         <regexCodePropertyList>
-                            <integer>3</integer>
+                            <integer>1</integer>
                         </regexCodePropertyList>
                         <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                             <name>Get name (cwho)</name>
