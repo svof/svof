@@ -189,13 +189,13 @@ signals.gmcproominfo        = luanotify.signal.new()
 signals.gmcpcharstatus      = luanotify.signal.new()
 signals.gmcpcharitemslist   = luanotify.signal.new()
 signals.gmcpcharitemslist:connect(function()
-  if not gmcp.Char.Items.List.location then echof("(GMCP problem) location field is missing from Achaea's response.") return end
+  if not gmcp.Char.Items.List.location then debugf("(GMCP problem) location field is missing from Achaea's response.") return end
   if gmcp.Char.Items.List.location ~= "inv" then return end
   me.inventory = table.deepcopy(gmcp.Char.Items.List.items)
 end)
 signals.gmcpcharitemsadd    = luanotify.signal.new()
 signals.gmcpcharitemsadd:connect(function()
-  if not gmcp.Char.Items.Add.location then echof("(GMCP problem) location field is missing from Achaea's response.") return end
+  if not gmcp.Char.Items.Add.location then debugf("(GMCP problem) location field is missing from Achaea's response.") return end
   if gmcp.Char.Items.Add.location ~= "inv" then return end
   me.inventory[#me.inventory + 1] = table.deepcopy(gmcp.Char.Items.Add.item)
 end)
@@ -203,7 +203,7 @@ signals.gmcpcharskillsinfo  = luanotify.signal.new()
 signals.gmcpcharskillslist  = luanotify.signal.new()
 signals.gmcpcharitemsupdate = luanotify.signal.new()
 signals.gmcpcharitemsupdate:connect(function()
-  if not gmcp.Char.Items.Update.location then echof("(GMCP problem) location field is missing from Achaea's response.") return end
+  if not gmcp.Char.Items.Update.location then debugf("(GMCP problem) location field is missing from Achaea's response.") return end
   if gmcp.Char.Items.Update.location ~= "inv" then return end
   local update = gmcp.Char.Items.Update.item
   for i, item in ipairs(me.inventory) do
@@ -215,7 +215,7 @@ signals.gmcpcharitemsupdate:connect(function()
 end)
 signals.gmcpcharitemsremove = luanotify.signal.new()
 signals.gmcpcharitemsremove:connect(function()
-  if not gmcp.Char.Items.Remove.location then echof("(GMCP problem) location field is missing from Achaea's response.") return end
+  if not gmcp.Char.Items.Remove.location then debugf("(GMCP problem) location field is missing from Achaea's response.") return end
   if gmcp.Char.Items.Remove.location ~= "inv" then return end
   local remove = gmcp.Char.Items.Remove.item
   for i, item in ipairs(me.inventory) do
