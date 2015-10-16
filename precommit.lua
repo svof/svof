@@ -37,3 +37,7 @@ local data = gl.striptrailinglines(gl.readfile("doc/namedb.rst"))
 local f = io.open([[svo template/ndb-help.lua]], "w+")
 f:write(pretty.write(data))
 f:close()
+
+local f = io.open([[own svo/ndb-help.lua]], "w+")
+f:write(pretty.write(data))
+f:close()
