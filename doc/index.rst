@@ -1351,6 +1351,7 @@ svo.me.canoutr      A boolean that keeps track of whenever you can outr things o
 svo.me.dopaused     A boolean for whenever the do and dofree queues are paused or not. You can set this value directly.
 svo.me.gametarget   The current target as the game is tracking it (usually the NPC you're bashing).
 svo.me.gametargethp The current game targets health.
+svo.me.inventory    The current inventory as reflected via gmcp.
 =================== ===================
 
 
