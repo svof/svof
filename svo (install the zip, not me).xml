@@ -52902,7 +52902,7 @@ svo.showprompt()</script>
             <Alias isActive="yes" isFolder="no">
                 <name>(vversion) Show system version</name>
                 <script>svo.echof(&quot;system version is %s&quot;, svo.version)
-svo.checkforupdate()</script>
+--[[svo.checkforupdate()]]</script>
                 <command></command>
                 <packageName></packageName>
                 <regex>^vversion$</regex>
