@@ -66,3 +66,19 @@ then
   echo "Updating release body failed:" "$http_code"
   exit 1
 fi
+
+# Upload release zip files via sftp so automatic updates work
+
+# Change to output directory
+cd output
+
+# Create current_version file
+echo "${TRAVIS_TAG}" > current_version.txt
+
+# upload everything here.
+for f in *
+do
+  echo "Uploading ${f}"
+  curl -3 -v --disable-epsv --ftp-skip-pasv-ip \
+  --ftp-ssl -u "svof-machine-account:${FTP_PASS}" -T "${f}" "ftp://ftp.pathurs.com"
+done
