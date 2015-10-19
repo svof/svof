@@ -54906,7 +54906,7 @@ function svo.checkforupdate(type)
     end
 
     svo.checkingupdates = true
-    downloadFile(svo.versionfile, &quot;http://svo.vadisystems.com/current_version&quot;)
+    downloadFile(svo.versionfile, &quot;http://svof.pathurs.com/current_version&quot;)
 
     if type == &quot;checking&quot; then
       svo.echof(&quot;Checking for updates...&quot;)
@@ -54937,7 +54937,7 @@ end
 -- downloads the system &amp; updates the system version saved
 function svo.downloadnewsystem(newversion)
   svo.downloadedsystem = downloadfolder..string.format(&quot;%s svo.zip&quot;, svo.me.name)
-  local downloadurl = [[http://vadisystems.com/svo-r/r/]]..svo.me.name..[[%20svo.zip]]
+  local downloadurl = [[http://pathurs.com/svof-r/r/]]..svo.me.class..[[%20svo.zip]]
 
   downloadFile(svo.downloadedsystem, downloadurl)
   svo.newdownloadedversion = newversion
