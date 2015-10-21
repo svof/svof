@@ -53659,7 +53659,7 @@ function svo_load()
       if not s then display(m) return end
 
       svo.echofn(&quot;Loaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
-      echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.pathurs.com/homepage/&quot;', &quot;Svof homepage&quot;)
+      echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.pathurs.com/homepage.php&quot;', &quot;Svof homepage&quot;)
       decho(svo.getDefaultColor()..&quot;)\n&quot;)
       return
     end
@@ -53710,7 +53710,7 @@ function svo_load()
   if not s then display(m) return end
 
   svo.echofn(&quot;Loaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
-  echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.pathurs.com/homepage/&quot;', &quot;Svof homepage&quot;)
+  echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.pathurs.com/homepage.php&quot;', &quot;Svof homepage&quot;)
   decho(svo.getDefaultColor()..&quot;)\n&quot;)
 
   -- update file
@@ -55061,7 +55061,7 @@ function svo_doupdate_click()
     installPackage(getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s.Svof.current.zip&quot;, class))
 
     svo_updating_system = nil
-    svo.echof(&quot;Svo updated! Restart Mudlet, and you'll be all done. You can find the changelog on svof.pathurs.com/changelog/.&quot;)
+    svo.echof(&quot;Svo updated! Restart Mudlet, and you'll be all done. You can find the changelog on svof.pathurs.com/changelog.php&quot;)
 
     svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Svo updated!&lt;br&gt;&lt;br&gt;Restart Mudlet, and you'll be all done.&lt;p&gt;]])
     svo.updatelabel:setStyleSheet([[
