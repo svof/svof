@@ -53659,7 +53659,7 @@ function svo_load()
       if not s then display(m) return end
 
       svo.echofn(&quot;Loaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
-      echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svo.vadisystems.com&quot;', &quot;Svo homepage&quot;)
+      echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.pathurs.com&quot;', &quot;Svof homepage&quot;)
       decho(svo.getDefaultColor()..&quot;)\n&quot;)
       return
     end
@@ -53710,7 +53710,7 @@ function svo_load()
   if not s then display(m) return end
 
   svo.echofn(&quot;Loaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
-  echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svo.vadisystems.com&quot;', &quot;Svo homepage&quot;)
+  echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.pathurs.com&quot;', &quot;Svof homepage&quot;)
   decho(svo.getDefaultColor()..&quot;)\n&quot;)
 
   -- update file
@@ -54834,7 +54834,7 @@ stupidityCheckTable = {
       writtenversion = f:read(&quot;*a&quot;)
     end
 
-    if not writtenversion or writtenversion:trim() ~= s:trim() or not lfs.attributes(getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s svo.zip&quot;, svo.me.name)) then
+    if not writtenversion or writtenversion:trim() ~= s:trim() or not lfs.attributes(getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s.Svof.v%s.zip&quot;, svo.me.class, svo.version)) then
       if svo.announceupdates == &quot;checking&quot; then svo.echof(&quot;A new Svo is available! You're on %s, latest is %s. I'll download it for you.&quot;, svo.version, s:trim()) end
       svo.downloadnewsystem(s:trim())
     else
@@ -54923,7 +54923,7 @@ function svo.checkforupdate(type)
         if not s then svo.echof(&quot;Couldn't remove the %s file (error was: %s) - this might be a problem.&quot;, location, m) end
       end
 
-      location = downloadfolder..string.format(&quot;%s svo.zip&quot;, svo.me.name)
+      location = downloadfolder..string.format(&quot;%s.Svof.v%s.zip&quot;, svo.me.class, svo.version)
       if io.exists(location) then
         local s,m = os.remove(location)
         if not s then svo.echof(&quot;Couldn't delete the old svo zip (located at %s), because of: %s. This might be a problem.&quot;, location, m) end
@@ -54936,7 +54936,7 @@ end
 
 -- downloads the system &amp; updates the system version saved
 function svo.downloadnewsystem(newversion)
-  svo.downloadedsystem = downloadfolder..string.format(&quot;%s svo.zip&quot;, svo.me.name)
+  svo.downloadedsystem = downloadfolder..string.format(&quot;%s.Svof.v%s.zip&quot;, svo.me.class, svo.version)
   local downloadurl = [[http://svof.pathurs.com/]]..svo.me.class..[[%20svo.zip]]
 
   downloadFile(svo.downloadedsystem, downloadurl)
@@ -55040,28 +55040,28 @@ function svo_doupdate_click()
   svo.doupdatelabel:hide()
   svo.dontupdatelabel:hide()
 
-  local name = svo.me.name
+  local class = svo.me.class
 
   if not (uninstallPackage and installPackage) then
     svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Can't update your Svo. You didn't update to Mudlet 2.1, and your current Mudlet lacks the features necessary. Go update first please.&lt;p&gt;]])
     return
   end
 
-  if not io.exists(getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s svo.zip&quot;, svo.me.name)) then
+  if not io.exists(getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s.Svof.v%s.zip&quot;, svo.me.class, svo.version)) then
     svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Hm, can't update Svo - seems the new system we downloaded dissapeared. Do 'vupdate force' to download it again.&lt;p&gt;]])
     return
   end
 
   function svo_update_system()
     svo_updating_system = &quot;uninstalling&quot;
-    uninstallPackage(name..&quot; svo&quot;)
+    uninstallPackage(class..&quot; svo&quot;)
 
     svo_updating_system = &quot;installing&quot;
     svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Uninstalled the old Svo, installing the new one now...&lt;p&gt;]])
-    installPackage(getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s svo.zip&quot;, svo.me.name))
+    installPackage(getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s.Svof.v%s.zip&quot;, svo.me.class, svo.version))
 
     svo_updating_system = nil
-    svo.echof(&quot;Svo updated! Restart Mudlet, and you'll be all done. You can find the changelog on svo.vadisystems.com.&quot;)
+    svo.echof(&quot;Svo updated! Restart Mudlet, and you'll be all done. You can find the changelog on svof.pathurs.com.&quot;)
 
     svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Svo updated!&lt;br&gt;&lt;br&gt;Restart Mudlet, and you'll be all done.&lt;p&gt;]])
     svo.updatelabel:setStyleSheet([[
@@ -55090,9 +55090,9 @@ function svo_doupdate_click()
     if not svo_updating_system then return end
 
     if svo_updating_system == &quot;uninstalling&quot; then
-      svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:8pt; color:white&quot;&gt;Hm, seems the update got stuck on the uninstallPackage() function. Try uninstalling Svo from the Package Manager and then installing it from the zip (found in ]].. getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s svo.zip&quot;, svo.me.name) ..[[) to upgrade now.&lt;p&gt;]])
+      svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:8pt; color:white&quot;&gt;Hm, seems the update got stuck on the uninstallPackage() function. Try uninstalling Svo from the Package Manager and then installing it from the zip (found in ]].. getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s.Svof.v%s.zip&quot;, svo.me.class, svo.version) ..[[) to upgrade now.&lt;p&gt;]])
     elseif svo_updating_system == &quot;installing&quot; then
-      svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:8pt; color:white&quot;&gt;Hm, seems the update got stuck on the installPackage() function. Old Svo is uninstalled, but it the new one didn't get installed - install your Svo zip (found in ]].. getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s svo.zip&quot;, svo.me.name) ..[[ via the Package Manager.&lt;p&gt;]])
+      svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:8pt; color:white&quot;&gt;Hm, seems the update got stuck on the installPackage() function. Old Svo is uninstalled, but it the new one didn't get installed - install your Svo zip (found in ]].. getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s.Svof.v%s.zip&quot;, svo.me.class, svo.version) ..[[ via the Package Manager.&lt;p&gt;]])
     end
   end)
   svo_update_system()
