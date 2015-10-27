@@ -671,7 +671,7 @@ end
 
 function clearbalanceless()
   balanceless = {}
-  addbalanceless("svo check dofree", sk.check_dofree)
+  addbalanceless("svo check dofree", check_dofree)
   raiseEvent("svo balanceless ready")
 end
 
@@ -1988,7 +1988,7 @@ end
 #end
 
 signals.gmcpcharitemslist:connect(function ()
-  if not gmcp.Char.Items.List.location then echof("(GMCP problem) location field is missing from Achaea's response.") return end
+  if not gmcp.Char.Items.List.location then debugf("(GMCP problem) location field is missing from Achaea's response.") return end
   if not sk.inring or gmcp.Char.Items.List.location ~= "inv" then return end
 
   local hadsomething = {}
@@ -2083,7 +2083,7 @@ end
 
 #if skills.occultism then
 signals.gmcpcharitemslist:connect(function ()
-  if not gmcp.Char.Items.List.location or not gmcp.Char.Items.List.items then echof("(GMCP problem) location or items field is missing from Achaea's response.") return end
+  if not gmcp.Char.Items.List.location or not gmcp.Char.Items.List.items then debugf("(GMCP problem) location or items field is missing from Achaea's response.") return end
 
   if gmcp.Char.Items.List.location ~= "inv" then return end
 

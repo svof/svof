@@ -63,10 +63,10 @@ ndb.temp_classes_list = {}</script>
                         <colorTriggerFgColor>#000000</colorTriggerFgColor>
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
-                            <string>Citizen                                                     Rank CT  Class</string>
+                            <string>^Citizen\s+Rank\s+CT\s+Class$</string>
                         </regexCodeList>
                         <regexCodePropertyList>
-                            <integer>3</integer>
+                            <integer>1</integer>
                         </regexCodePropertyList>
                         <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                             <name>Get name (cwho)</name>
@@ -76,7 +76,7 @@ local match = getColorWildcard(14)
 if match then
   local matches = multimatches[1]
   local isdragon
-  if (matches[4] and matches[4]:lower() == &quot;dragon&quot;) then matches[4] = nil; isdragon = true end
+  if (matches[4] and matches[4]:lower():find(&quot;dragon&quot;)) then matches[4] = nil; isdragon = true end
 
   temp_name_list[#temp_name_list + 1] = {
     name = match[1],
@@ -2645,26 +2645,47 @@ send(matches[2]..&quot; enemies&quot;, false)</script>
 
 -- load help data in
 if not ndb.help then
-if not lfs.attributes(getMudletHomeDir()..&quot;/&quot;..class..&quot; svo&quot;) then
-  svo.echof(&quot;You don't seem to have installed Svof as a package in the name of \&quot;&quot;..svo.me.name..&quot; svo\&quot; - I can't find the ndb help file!&quot;)
-  return
-end
+  local path = getMudletHomeDir()..&quot;/&quot;..class..&quot; svo&quot;
+  if not lfs.attributes(path) then
+  -- not found? Lets try the dev version
+    local svo_location = getMudletHomeDir() .. _sep .. &quot;svo_location&quot;
+    local system_path -- location of the system's folder with a trailing slash
+    local f,msg
 
-local f, msg = io.open(getMudletHomeDir()..&quot;/&quot;..class..&quot; svo/ndb-help.lua&quot;)
-if not f then
-  svo.echof(&quot;Didn't find the ndb-help.lua file in '&quot;..getMudletHomeDir()..&quot;/&quot;..class..&quot; svo/ndb-help.lua&quot;..&quot;' - I can't show you the aliases!&quot;)
-  return
-end
+    if lfs.attributes(svo_location) then
+      f,msg = io.open(svo_location, &quot;r+&quot;)
+      assert(f, msg)
 
-local s = f:read(&quot;*a&quot;)
+      -- this should give us the folder it's in
+      system_path = f:read(&quot;*l&quot;)
 
-   local data = loadstring(&quot;return &quot;..s)()
-	if not data then
-		svo.echof(&quot;Couldn't load data from the ndb-help.lua file :/ maybe it is messed up.&quot;)
-		return
-	end
+      if string.sub(system_path, -1) == &quot;/&quot; or string.sub(system_path, -1) == [[\]] then
+        system_path = string.sub(system_path, 1, -2)
+      end
 
-	ndb.help = data
+      -- Got a valid path?
+      if lfs.attributes(system_path) then
+        path = system_path ..&quot;/ndb-help.lua&quot;
+      else
+        svo.echof(&quot;Didn't find the ndb-help.lua file anywhere - I can't show you the aliases!&quot;)
+        return
+      end
+    else
+      svo.echof(&quot;Didn't find the ndb-help.lua file anywhere - I can't show you the aliases!&quot;)
+      return
+    end
+  end
+
+  local f, m = io.open(path)
+  local s = f:read(&quot;*a&quot;)
+
+  local data = loadstring(&quot;return &quot;..s)()
+  if not data then
+    svo.echof(&quot;Couldn't load data from the ndb-help.lua file :/ maybe it is messed up.&quot;)
+    return
+  end
+
+  ndb.help = data
 end
 
 local function gettooltip(entry)
