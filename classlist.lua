@@ -23,7 +23,7 @@ skills = {
   runewarden  = {"runelore", "chivalry", "weaponmastery"},
   sentinel    = {"metamorphosis", "woodlore", "skirmishing"},
   serpent     = {"subterfuge", "venom", "hypnosis"},
-  shaman      = {"runelore", "curses", "vodun"},
+  shaman      = {"spiritlore", "curses", "vodun"},
   sylvan      = {"weatherweaving", "groves", "propagation"},
-  allclasses  = {"weatherweaving", "groves", "propagation", "runelore", "curses", "vodun", "subterfuge", "venom", "hypnosis", "metamorphosis", "woodlore", "skirmishing", "chivalry", "weaponmastery", "spirituality", "devotion", "healing", "occultism", "tarot", "domination", "tekura", "kaido", "telepathy", "elementalism", "crystalism", "artificing", "pranks", "puppetry", "necromancy",  "reclamation", "twoarts", "striking", "shindo", "voicecraft", "swashbuckling", "harmonics", "evileye", "apostasy", "transmutation", "physiology", "alchemy"},
+  allclasses  = {"weatherweaving", "groves", "propagation", "runelore", "curses", "vodun", "subterfuge", "venom", "hypnosis", "metamorphosis", "woodlore", "skirmishing", "chivalry", "weaponmastery", "spirituality", "devotion", "healing", "occultism", "tarot", "domination", "tekura", "kaido", "telepathy", "elementalism", "crystalism", "artificing", "pranks", "puppetry", "necromancy",  "reclamation", "twoarts", "striking", "shindo", "voicecraft", "swashbuckling", "harmonics", "evileye", "apostasy", "transmutation", "physiology", "alchemy", "spiritlore"},
 }

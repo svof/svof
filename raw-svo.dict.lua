@@ -14876,6 +14876,10 @@ signals.gmcpcharstatus:connect(function ()
     defences.got("dragonform")
   else
     defences.lost("dragonform")
+    if gmcp.Char.Status.class ~= me.class then
+      me.class = gmcp.Char.Status.class
+-- TODO handle other class changes here
+    end
   end
 
   signals.dragonform:emit()

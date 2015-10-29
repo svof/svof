@@ -103,7 +103,7 @@ local function dowork(systemfor, release, own)
   tbl.pairs = pairs
   tbl.table = table
   tbl.type = type
-  tbl.tostring = tostring00
+  tbl.tostring = tostring
   tbl.require = require
   tbl.package = package
   tbl.print = print
@@ -111,6 +111,7 @@ local function dowork(systemfor, release, own)
   tbl.skills = {}
   tbl.class = stringx.split(systemfor, " & ")
   tbl.io = io
+  tbl.classskills = i.skills
 
   if not tbl.class then
     missing_data[#missing_data+1] = tbl.name.. " is missing a class!"
