@@ -75,15 +75,12 @@ svo.deleteLineP()</script>
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Stop (people tracker who)</name>
-                    <script>tempLineTrigger(1,1,[[
-  if isPrompt() then
-    disableTrigger(&quot;qwho (svo people tracker)&quot;)
-    if svo.qwhoopen then killTimer(svo.qwhoopen) end
-    svo.qwhoopen = nil
-    tempTimer(0, function() svo.echof(&quot;Done checking all of wholist!&quot;) svo.buildwhosummary() svo.showprompt() wrapLine(getLineCount()) end)
-    raiseEvent(&quot;mmapper updated pdb&quot;)
-  end
-]])</script>
+                    <script>svo.deleteLineP()
+disableTrigger(&quot;qwho (svo people tracker)&quot;)
+if svo.qwhoopen then killTimer(svo.qwhoopen) end
+svo.qwhoopen = nil
+tempTimer(0, function() svo.echof(&quot;Done checking all of wholist!&quot;) svo.buildwhosummary() svo.showprompt() wrapLine(getLineCount()) end)
+raiseEvent(&quot;mmapper updated pdb&quot;)</script>
                     <triggerType>0</triggerType>
                     <conditonLineDelta>0</conditonLineDelta>
                     <mStayOpen>0</mStayOpen>
@@ -95,13 +92,9 @@ svo.deleteLineP()</script>
                     <colorTriggerFgColor>#000000</colorTriggerFgColor>
                     <colorTriggerBgColor>#000000</colorTriggerBgColor>
                     <regexCodeList>
-                        <string>^(\w+) +\((.+)\)$</string>
-                        <string>^(\w+)$</string>
-                        <string>^\(Phased\) (\w+) +\((.+)\)$</string>
+                        <string>^Total: \d+$</string>
                     </regexCodeList>
                     <regexCodePropertyList>
-                        <integer>1</integer>
-                        <integer>1</integer>
                         <integer>1</integer>
                     </regexCodePropertyList>
                 </Trigger>
