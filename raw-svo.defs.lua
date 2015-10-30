@@ -64,19 +64,22 @@ local function defs_data_set(skill, tbl)
     if type(existingData.type) == "nil" then
       existingData.type = { tbl.type }
     elseif type(existingData.type) == "string" then
-      existingData.specialskip = { [existingData.type] = existingData.specialskip, [tbl.type] = tble.specialskip }
+      existingData.specialskip = { [existingData.type] = existingData.specialskip, [tbl.type] = tbl.specialskip }
       existingData.type = { existingData.type, tbl.type }
     else
+      if not existingData.specialskip then
+        existingData.specialskip = {}
+      end
       existingData.specialskip[tbl.type] = tbl.specialskip
       existingData.type[#existingData.type + 1] = tbl.type
     end
     for _, lines in ipairs({"on", "off", "onr", "offr", "on_only", "onenable", "ondef", "defr", "def"}) do
       if tbl[lines] then
-        if type(tbl[lines]) == "string" then
+        if type(tbl[lines]) ~= "table" then
           tbl[lines] = { tbl[lines] }
         end
         if existingData[lines] then
-          if type(existingData[lines]) == "string" then
+          if type(existingData[lines]) ~= "table" then
             existingData[lines] = { existingData[lines] }
           end
           for _, line in ipairs(tbl[lines]) do
