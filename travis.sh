@@ -81,7 +81,9 @@ do
   echo "Uploading ${f}"
   curl -3 -k --disable-epsv --ftp-skip-pasv-ip \
   --ftp-ssl -u "svof-machine-account:${FTP_PASS}" -T "${f}" "ftp://ftp.pathurs.com" &> /dev/null
-  if [ "$?" -ne 0 ]; then
+  stat=$?
+  if [ "$stat" -ne 0 ]; then
+    echo "Could not upload ${f}: Return code was ${stat}"
     exit 1
   fi
 done
