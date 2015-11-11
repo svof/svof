@@ -209,7 +209,8 @@ function sk.splitbals(list)
   for i = 1, #list do
     local action_balance = list[i]
 
-    local _, action, balance = valid_sync_action(action_balance)
+    local valid, action, balance = valid_sync_action(action_balance)
+    if not valid then return {} end
     balances[balance] = balances[balance] or {}
     local balancet = balances[balance]
     balancet[#balancet+1] = action

@@ -2576,7 +2576,12 @@ function defs.keepup(which, status, mode, echoback, reshow)
   end
 
   if status == true and defs_data[which].onenable then
-    for _, func in ipairs(defs_data[which].onenable) do
+    if type(defs_data[which].onenable) == "table" then
+      for _, func in ipairs(defs_data[which].onenable) do
+        local s,m = func(mode, which, "keepup", echoback)
+        if not s then echof(m) return end
+      end
+    else
       local s,m = defs_data[which].onenable(mode, which, "keepup", echoback)
       if not s then echof(m) return end
     end
@@ -2632,8 +2637,15 @@ function defs.defup(which, status, mode, echoback, reshow)
   end
 
   if status == true and defs_data[which].onenable then
-    local s,m = defs_data[which].onenable(mode, which, "defup", echoback)
-    if not s then echof(m) return end
+    if type(defs_data[which].onenable) == "table" then
+      for _, func in ipairs(defs_data[which].onenable) do
+        local s,m = func(mode, which, "defup", echoback)
+        if not s then echof(m) return end
+      end
+    else
+      local s,m = defs_data[which].onenable(mode, which, "defup", echoback)
+      if not s then echof(m) return end
+    end
   end
 
   defdefup[mode][which] = status
@@ -2949,7 +2961,7 @@ signals.systemstart:connect(function ()
       defs["def_"..sk.sanitize(k)] = function ()
 
         -- if we're in dragonform and this isn't a general or a dragoncraft def, then remember it as an additional def - not a class skill one, since those are not shown in Dragon
-        if defc.dragonform and ((type(v.type) == "string" and v.type ~= "general" and v.type ~= "dragoncraft") or (type(v.type) == "table" and not table.contains(v.type, "general") and not table.contains(v.type, "dragoncraft"))) then
+        if haveSkill(v.type) then
           if not v.ondef then
             defences.nodef_list[k] = true
           else
@@ -3209,14 +3221,14 @@ local function show_defs(tbl, linkcommand, cmdname)
   local function show_em(skillset, what)
     if skillset and
        not sk.ignored_defences[skillset].status and 
-       (table.contains(classskills[me.class:lower()], skillset) or skillset == "general" or skillset == "dragoncraft")
+       haveSkill(skillset)
     then
       echof("%s defences:", skillset:title())
     end
     for c,def in ipairs(what) do
       local disabled = ((sk.ignored_defences[skillset] and sk.ignored_defences[skillset].status) or 
                         sk.ignored_defences[sk.ignored_defences_map[def]].t[def] or 
-                        (skillset ~= nil and not table.contains(classskills[me.class:lower()], skillset) and skillset ~= "general" and skillset ~= "dragoncraft") )
+                        not haveSkill(skillset))
 
       if not disabled and not tbl[def] and not defences.nodef_list[def] then
         if (count % 3) ~= 0 then
@@ -3399,7 +3411,7 @@ function sk.have_defup_defs()
       ret = deft.specialskip()
     else
       for skill, specialskip in pairs(deft.specialskip) do
-        if table.contains(classskills[me.class:lower()], skill) and specialskip() then
+        if haveSkill(skill) and specialskip() then
           ret = true
           break
         end
@@ -3412,12 +3424,10 @@ function sk.have_defup_defs()
      -- if we have to skip it
     and not ((deft.specialskip and calcSpecialSkip(deft) )
      -- or if it's ignored
-    or ignore[def]
-      -- or it's not a general or dragon defence and we're in dragon
-    or (defc.dragonform and not 
-         ((type(deft.type) == "string" and (deft.type == "dragoncraft" or deft.type == "general")) or 
-         (type(deft.type) == "table" and (table.contains(deft.type, "dragoncraft") or table.contains(deft.type, "general")))
-        ))) and not deft.nodef then
+      or ignore[def]
+      -- or it's a skill we don't have
+      or not haveSkill(deft.type))
+    and not deft.nodef then
       if dict[def] then
         if dict[def].physical and not dict_balanceful_def[def] and not dict_balanceless_def[def] then
           waitingon[#waitingon+1] = string.format("%s (?)", def)
