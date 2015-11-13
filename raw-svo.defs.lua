@@ -83,7 +83,7 @@ local function defs_data_set(skill, tbl)
             existingData[lines] = { existingData[lines] }
           end
           for _, line in ipairs(tbl[lines]) do
-            if not table.contains(existingData, line) then
+            if not table.contains(existingData[lines], line) then
               existingData[lines][#existingData[lines]+1] = line
             end
           end
@@ -2961,7 +2961,7 @@ signals.systemstart:connect(function ()
       defs["def_"..sk.sanitize(k)] = function ()
 
         -- if we're in dragonform and this isn't a general or a dragoncraft def, then remember it as an additional def - not a class skill one, since those are not shown in Dragon
-        if haveSkill(v.type) then
+        if not haveSkill(v.type) then
           if not v.ondef then
             defences.nodef_list[k] = true
           else
@@ -3062,7 +3062,7 @@ signals.systemstart:connect(function ()
 
   -- remove skillsets from ignorelist that we don't have, for people that change
   for skillset, _ in pairs(sk.ignored_defences) do
-    if skillset ~= "general" and skillset ~= "enchantment" and skillset ~= "dragoncraft" and not me.skills[skillset] then
+    if not haveSkill(skillset) then
       sk.ignored_defences[skillset] = nil
     end
   end
@@ -3117,10 +3117,7 @@ function defs.defprompt()
   local function check_additionals()
     for def, _ in defences.nodef_list:pairs() do
       if defs_data[def] and (defs_data[def].nodef or
-        (defc.dragonform and 
-          ((type(defs_data[def].type) == "string" and defs_data[def].type ~= "dragoncraft" and defs_data[def].type ~= "general") or 
-           (type(defs_data[def].type) == "table" and not table.contains(defs_data[def].type, "dragoncraft") and not table.contains(defs_data[def].type, "general")))
-        )) then
+        not haveSkill(defs_data[def].type)) then
           return true
       end
     end
@@ -3131,10 +3128,7 @@ function defs.defprompt()
     local count = 1
     for def, value in defences.nodef_list:pairs() do
       if defs_data[def] and (defs_data[def].nodef or
-        (defc.dragonform and 
-          ((type(defs_data[def].type) == "string" and defs_data[def].type ~= "dragoncraft" and defs_data[def].type ~= "general") or 
-           (type(defs_data[def].type) == "table" and not table.contains(defs_data[def].type, "dragoncraft") and not table.contains(defs_data[def].type, "general")))
-        )) then
+        not haveSkill(defs_data[def].type)) then
           if value == true then
             decho(string.format("<153,204,204>[<0,204,0>X<153,204,204>] %-23s", sk.desanitize(def)))
           else
