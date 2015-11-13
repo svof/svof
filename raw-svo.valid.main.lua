@@ -4552,13 +4552,13 @@ function valid.devastate_arms_mangle()
   if affs.mangledrightarm
   then
     removeaff("mangledrightarm")
-	valid.simplemutilatedrightarm()
+    valid.simplemutilatedrightarm()
   else valid.simplemangledrightarm()
   end
   if affs.mangledleftarm
   then
     removeaff("mangledleftarm")
-	valid.simplemutilatedleftarm()
+    valid.simplemutilatedleftarm()
   else valid.simplemangledleftarm()
   end
 end
@@ -4591,13 +4591,13 @@ function valid.devastate_legs_mangle()
   if affs.mangledrightleg
   then
     removeaff("mangledrightleg")
-	valid.simplemutilatedrightleg()
+    valid.simplemutilatedrightleg()
   else valid.simplemangledrightleg()
   end
   if affs.mangledleftleg
   then
     removeaff("mangledleftleg")
-	valid.simplemutilatedleftleg()
+    valid.simplemutilatedleftleg()
   else valid.simplemangledleftleg()
   end
 end
