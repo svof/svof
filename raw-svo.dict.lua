@@ -12995,7 +12995,7 @@ local function addDefs()
 #end
 
 #if skills.healing or skills.elementalism or skills.weatherweaving then
-    channels = { --TODO find a solution!
+    channels = {
       simultaneity = {
         physical = {
           balanceful_act = true,
@@ -13033,11 +13033,19 @@ local function addDefs()
           oncompleted = function ()
             defences.got("air")
             if defc.air and defc.earth and defc.water
-#if skills.healing then
-             and defc.spirit
+#if skills.healing or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  not haveSkill("healing") or 
 #end
-#if not skills.weatherweaving then
-             and defc.fire
+                  defc.spirit)
+#end
+#if not skills.weatherweaving or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  haveSkill("weatherweaving") or
+#end
+                  defc.fire)
 #end
              then
               defences.got("simultaneity")
@@ -13071,11 +13079,19 @@ local function addDefs()
           oncompleted = function ()
             defences.got("water")
             if defc.air and defc.earth and defc.water
-#if skills.healing then
-             and defc.spirit
+#if skills.healing or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  not haveSkill("healing") or 
 #end
-#if not skills.weatherweaving then
-             and defc.fire
+                  defc.spirit)
+#end
+#if not skills.weatherweaving or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  haveSkill("weatherweaving") or
+#end
+                  defc.fire)
 #end
              then
               defences.got("simultaneity")
@@ -13109,11 +13125,19 @@ local function addDefs()
           oncompleted = function ()
             defences.got("earth")
             if defc.air and defc.earth and defc.water
-#if skills.healing then
-             and defc.spirit
+#if skills.healing or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  not haveSkill("healing") or 
 #end
-#if not skills.weatherweaving then
-             and defc.fire
+                  defc.spirit)
+#end
+#if not skills.weatherweaving or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  haveSkill("weatherweaving") or
+#end
+                  defc.fire)
 #end
              then
               defences.got("simultaneity")
@@ -13132,7 +13156,7 @@ local function addDefs()
           end
         }
       },
-#if not skills.weatherweaving then
+#if not skills.weatherweaving or class == "allclasses" then
       fire = {
         physical = {
           balanceful_act = true,
@@ -13142,14 +13166,18 @@ local function addDefs()
           undeffable = true,
 
           isadvisable = function ()
-           return (not defc.fire and ((sys.deffing and defdefup[defs.mode].fire) or (conf.keepup and defkeepup[defs.mode].fire)) and not codepaste.balanceful_defs_codepaste()) or false
+           return (not haveSkill("weatherweaving") and not defc.fire and ((sys.deffing and defdefup[defs.mode].fire) or (conf.keepup and defkeepup[defs.mode].fire)) and not codepaste.balanceful_defs_codepaste()) or false
           end,
 
           oncompleted = function ()
             defences.got("fire")
             if defc.air and defc.fire and defc.earth and defc.water
-#if skills.healing then
-             and defc.spirit
+#if skills.healing or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  not haveSkill("healing") or 
+#end
+                  defc.spirit)
 #end
              then
               defences.got("simultaneity")
@@ -13179,12 +13207,12 @@ local function addDefs()
           undeffable = true,
 
           isadvisable = function ()
-            return (((((sys.deffing and defdefup[defs.mode].spirit and not defc.spirit) or (conf.keepup and defkeepup[defs.mode].spirit and not defc.spirit))) or (conf.keepup and defkeepup[defs.mode].spirit and not defc.spirit)) and not codepaste.balanceful_defs_codepaste() and defc.air and defc.fire and defc.water and defc.earth) or false
+            return (haveSkill("healing") and ((((sys.deffing and defdefup[defs.mode].spirit and not defc.spirit) or (conf.keepup and defkeepup[defs.mode].spirit and not defc.spirit))) or (conf.keepup and defkeepup[defs.mode].spirit and not defc.spirit)) and not codepaste.balanceful_defs_codepaste() and defc.air and defc.fire and defc.water and defc.earth) or false
           end,
 
           oncompleted = function ()
             defences.got("spirit")
-            if defc.air and defc.fire and defc.earth and defc.water and defc.spirit then
+            if defc.air and (haveSkill("weatherweaving") or defc.fire) and defc.earth and defc.water and defc.spirit then
               defences.got("simultaneity")
             end
           end,
@@ -13246,11 +13274,19 @@ local function addDefs()
           oncompleted = function ()
             defences.got("boundair")
             if defc.boundair  and defc.boundearth and defc.boundwater
-#if skills.healing then
-             and defc.boundspirit
+#if skills.healing or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  not haveSkill("healing") or 
 #end
-#if not skills.weatherweaving then
-             and defc.boundfire
+                  defc.boundspirit)
+#end
+#if not skills.weatherweaving or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  haveSkill("weatherweaving") or
+#end
+                  defc.boundfire)
 #end
             then
               defences.got("bindall")
@@ -13284,11 +13320,19 @@ local function addDefs()
           oncompleted = function ()
             defences.got("boundwater")
             if defc.boundair and defc.boundearth and defc.boundwater
-#if skills.healing then
-             and defc.boundspirit
+#if skills.healing or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  not haveSkill("healing") or 
 #end
-#if not skills.weatherweaving then
-             and defc.boundfire
+                  defc.boundspirit)
+#end
+#if not skills.weatherweaving or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  haveSkill("weatherweaving") or
+#end
+                  defc.boundfire)
 #end
             then
               defences.got("bindall")
@@ -13307,7 +13351,7 @@ local function addDefs()
           end
         }
       },
-#if not skills.weatherweaving then
+#if not skills.weatherweaving or class = "allclasses" then
       boundfire = {
         physical = {
           balanceful_act = true,
@@ -13317,16 +13361,19 @@ local function addDefs()
           undeffable = true,
 
           isadvisable = function ()
-            return (((((sys.deffing and defdefup[defs.mode].boundfire and not defc.boundfire) or (conf.keepup and defkeepup[defs.mode].boundfire and not defc.boundfire))) or (conf.keepup and defkeepup[defs.mode].boundfire and not defc.boundfire)) and not codepaste.balanceful_defs_codepaste() and defc.fire) or false
+            return (not haveSkill("weatherweaving") and ((((sys.deffing and defdefup[defs.mode].boundfire and not defc.boundfire) or (conf.keepup and defkeepup[defs.mode].boundfire and not defc.boundfire))) or (conf.keepup and defkeepup[defs.mode].boundfire and not defc.boundfire)) and not codepaste.balanceful_defs_codepaste() and defc.fire) or false
           end,
 
           oncompleted = function ()
             defences.got("boundfire")
             if defc.boundair and defc.boundfire and defc.boundearth and defc.boundwater
-#if skills.healing then
-             and defc.boundspirit
+#if skills.healing or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  not haveSkill("healing") or 
 #end
-            then
+                  defc.boundspirit)
+#end
               defences.got("bindall")
             end
           end,
@@ -13358,9 +13405,20 @@ local function addDefs()
 
           oncompleted = function ()
             defences.got("boundearth")
-            if defc.boundair and defc.boundfire and defc.boundearth and defc.boundwater
-#if skills.healing then
-             and defc.boundspirit
+            if defc.boundair and defc.boundearth and defc.boundwater
+#if skills.healing or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  not haveSkill("healing") or 
+#end
+                  defc.boundspirit)
+#end
+#if not skills.weatherweaving or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  haveSkill("weatherweaving") or
+#end
+                  defc.boundfire)
 #end
             then
               defences.got("bindall")
@@ -13389,12 +13447,12 @@ local function addDefs()
           undeffable = true,
 
           isadvisable = function ()
-            return (((((sys.deffing and defdefup[defs.mode].boundspirit and not defc.boundspirit) or (conf.keepup and defkeepup[defs.mode].boundspirit and not defc.boundspirit))) or (conf.keepup and defkeepup[defs.mode].boundspirit and not defc.boundspirit)) and not codepaste.balanceful_defs_codepaste() and defc.spirit) or false
+            return (haveSkill("healing") and ((((sys.deffing and defdefup[defs.mode].boundspirit and not defc.boundspirit) or (conf.keepup and defkeepup[defs.mode].boundspirit and not defc.boundspirit))) or (conf.keepup and defkeepup[defs.mode].boundspirit and not defc.boundspirit)) and not codepaste.balanceful_defs_codepaste() and defc.spirit) or false
           end,
 
           oncompleted = function ()
             defences.got("boundspirit")
-            if defc.boundair and defc.boundfire and defc.boundearth and defc.boundwater and defc.boundspirit then
+            if defc.boundair and (haveSkill("weatherweaving") or defc.boundfire) and defc.boundearth and defc.boundwater and defc.boundspirit then
               defences.got("bindall")
             end
           end,
@@ -13422,11 +13480,19 @@ local function addDefs()
 
           isadvisable = function ()
             return (((((sys.deffing and defdefup[defs.mode].fortifyall and not defc.fortifyall) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall))) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana >= 600 and defc.air and defc.earth and defc.water
-#if skills.healing then
-             and defc.spirit
+#if skills.healing or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  not haveSkill("healing") or 
 #end
-#if not skills.weatherweaving then
-             and defc.fire
+                  defc.spirit)
+#end
+#if not skills.weatherweaving or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  haveSkill("weatherweaving") or
+#end
+                  defc.fire)
 #end
              ) or false
           end,
@@ -13455,9 +13521,20 @@ local function addDefs()
 
           oncompleted = function ()
             defences.got("fortifiedair")
-            if defc.fortifiedair and defc.fortifiedfire and defc.fortifiedearth and defc.fortifiedwater
-#if skills.healing then
-             and defc.fortifiedspirit
+            if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater
+#if skills.healing or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  not haveSkill("healing") or 
+#end
+                  defc.fortifiedspirit)
+#end
+#if not skills.weatherweaving or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  haveSkill("weatherweaving") or
+#end
+                  defc.fortifiedfire)
 #end
              then
               defences.got("fortifyall")
@@ -13490,9 +13567,20 @@ local function addDefs()
 
           oncompleted = function ()
             defences.got("fortifiedwater")
-            if defc.fortifiedair and defc.fortifiedfire and defc.fortifiedearth and defc.fortifiedwater
-#if skills.healing then
-             and defc.fortifiedspirit
+            if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater
+#if skills.healing or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  not haveSkill("healing") or 
+#end
+                  defc.fortifiedspirit)
+#end
+#if not skills.weatherweaving or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  haveSkill("weatherweaving") or
+#end
+                  defc.fortifiedfire)
 #end
              then
               defences.got("fortifyall")
@@ -13511,7 +13599,7 @@ local function addDefs()
           end
         }
       },
-#if not skills.weatherweaving then
+#if not skills.weatherweaving or class == "allclasses" then
       fortifiedfire = {
         physical = {
           balanceful_act = true,
@@ -13527,8 +13615,12 @@ local function addDefs()
           oncompleted = function ()
             defences.got("fortifiedfire")
             if defc.fortifiedair and defc.fortifiedfire and defc.fortifiedearth and defc.fortifiedwater
-#if skills.healing then
-             and defc.fortifiedspirit
+#if skills.healing or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  not haveSkill("healing") or 
+#end
+                  defc.fortifiedspirit)
 #end
              then
               defences.got("fortifyall")
@@ -13562,9 +13654,20 @@ local function addDefs()
 
           oncompleted = function ()
             defences.got("fortifiedearth")
-            if defc.fortifiedair and defc.fortifiedfire and defc.fortifiedearth and defc.fortifiedwater
-#if skills.healing then
-             and defc.fortifiedspirit
+            if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater
+#if skills.healing or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  not haveSkill("healing") or 
+#end
+                  defc.fortifiedspirit)
+#end
+#if not skills.weatherweaving or class == "allclasses" then
+             and (
+#if class == "allclasses" then
+                  haveSkill("weatherweaving") or
+#end
+                  defc.fortifiedfire)
 #end
              then
               defences.got("fortifyall")
@@ -13583,7 +13686,7 @@ local function addDefs()
           end
         }
       },
-#if skills.healing then
+#if skills.healing or class == "allclasses" then
       fortifiedspirit = {
         physical = {
           balanceful_act = true,
@@ -13731,7 +13834,7 @@ local function addDefs()
     },
 #end
 #if skills.elementalism or skills.weatherweaving then
-    eleweather = { --TODO find a solution
+    eleweather = {
       reflection = {
         gamename = "reflections",
         physical = {
@@ -14711,7 +14814,7 @@ local function addDefs()
 
 -- override groves lyre, as druids can get 2 types of lyre (groves and nightingale)
 #if skills.metamorphosis then
-    lyre = { --TODO find a solution
+    lyre = {
       lyre = {
         physical = {
           aspriority = 0,
@@ -14874,6 +14977,24 @@ local function addDefs()
       for defName, defTbl in pairs(def) do
         dict[defName] = defTbl
       end
+    end
+  end
+
+  if haveSkill({ "healing", "elementalism", "weatherweaving" }) then
+    for defName, defTbl in pairs(defTabel.channels) do
+      dict[defName] = defTbl
+    end
+  end
+
+  if haveSkill({ "elementalism", "weatherweaving" }) then
+    for defName, defTbl in pairs(defTabel.eleweather) do
+      dict[defName] = defTbl
+    end
+  end
+
+  if haveSkill("metamorphosis") then
+    for defName, defTbl in pairs(defTabel.lyre) do
+      dict[defName] = defTbl
     end
   end
   dict_setup()
