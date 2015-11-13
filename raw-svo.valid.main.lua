@@ -4596,7 +4596,7 @@ function valid.devastate_legs_mangle()
   end
   if affs.mangledleftleg
   then
-    removeadd("mangledleftleg")
+    removeaff("mangledleftleg")
 	valid.simplemutilatedleftleg()
   else valid.simplemangledleftleg()
   end
