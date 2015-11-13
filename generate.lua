@@ -33,8 +33,7 @@ local args = lapp [[
 ]]
 
 local builder         = "lua" -- or "luajit"
-local doall           = args.release ~= "false" and args.name == "none" -- make doall a bool
-print("doall is " .. (doall and "true" or "false"))
+local doall           = args.release ~= "false" -- make doall a bool
 local name            = args.name
 local release         = not args.debug
 local own             = args.own
@@ -109,7 +108,7 @@ local function dowork(systemfor, release, own)
   tbl.print = print
   tbl.pcall = pcall
   tbl.skills = {}
-  tbl.class = stringx.split(systemfor, " & ")
+  tbl.class = systemfor
   tbl.io = io
   tbl.classskills = i.skills
 
@@ -133,7 +132,7 @@ local function dowork(systemfor, release, own)
 
   -- add default addons
   for k, addon in pairs(defaultaddons) do
-    if type(k) == 'number' or tablex.find(tablex.values(tbl.class), k) then
+    if type(k) == 'number' or k == tbl.class then
       if type(addon) == "string" and not tablex.find(tbl.addons, addon) then
       tbl.addons[#tbl.addons+1] = addon
       elseif type(addon) == "table" then
