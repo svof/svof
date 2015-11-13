@@ -48905,7 +48905,7 @@ end</script>
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
                             <string>^\w+ launches a devastating slash at your already injured legs, (?:his|her) blade cleaving to the bone\.$</string>
-                            <string>^\w+ draws back his warhammer, then unleashes a precise blow that smashes into your legs with bone cracking force\.$</string>
+                            <string>^\w+ draws back (?:his|her) warhammer, then unleashes a precise blow that smashes into your legs with bone cracking force\.$</string>
                         </regexCodeList>
                         <regexCodePropertyList>
                             <integer>1</integer>
