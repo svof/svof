@@ -4549,17 +4549,16 @@ function valid.devastate_arms_mangle()
   checkaction(dict.wristfractures.gone, true)
   lifevision.add(actions.wristfractures_gone.p)
 
-  if affs.mangledrightarm
-  then
+  if affs.mangledrightarm then
     removeaff("mangledrightarm")
     valid.simplemutilatedrightarm()
   else valid.simplemangledrightarm()
   end
-  if affs.mangledleftarm
-  then
+  if affs.mangledleftarm then
     removeaff("mangledleftarm")
     valid.simplemutilatedleftarm()
-  else valid.simplemangledleftarm()
+  else
+    valid.simplemangledleftarm()
   end
 end
 
@@ -4588,17 +4587,17 @@ function valid.devastate_legs_mangle()
   lifevision.add(actions.torntendons_gone.p)
 
 
-  if affs.mangledrightleg
-  then
+  if affs.mangledrightleg then
     removeaff("mangledrightleg")
     valid.simplemutilatedrightleg()
-  else valid.simplemangledrightleg()
+  else
+    valid.simplemangledrightleg()
   end
-  if affs.mangledleftleg
-  then
+  if affs.mangledleftleg then
     removeaff("mangledleftleg")
     valid.simplemutilatedleftleg()
-  else valid.simplemangledleftleg()
+  else
+    valid.simplemangledleftleg()
   end
 end
 
