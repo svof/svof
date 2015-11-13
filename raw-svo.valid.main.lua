@@ -4544,12 +4544,23 @@ function valid.devastate_arms_cripple()
 end
 
 -- happens on wrist fracture levels 4,5
+-- edit: This ability can also mutilate a mangled limb.
 function valid.devastate_arms_mangle()
   checkaction(dict.wristfractures.gone, true)
   lifevision.add(actions.wristfractures_gone.p)
 
-  valid.simplemangledrightarm()
-  valid.simplemangledleftarm()
+  if affs.mangledrightarm then
+    removeaff("mangledrightarm")
+    valid.simplemutilatedrightarm()
+  else
+    valid.simplemangledrightarm()
+  end
+  if affs.mangledleftarm then
+    removeaff("mangledleftarm")
+    valid.simplemutilatedleftarm()
+  else
+    valid.simplemangledleftarm()
+  end
 end
 
 -- happens on wrist fracture levels 6,7
@@ -4571,12 +4582,24 @@ function valid.devastate_legs_cripple()
 end
 
 -- happens on torn tendon levels 4,5
+-- edit: This ability can also mutilate a mangled limb.
 function valid.devastate_legs_mangle()
   checkaction(dict.torntendons.gone, true)
   lifevision.add(actions.torntendons_gone.p)
 
-  valid.simplemangledrightleg()
-  valid.simplemangledleftleg()
+
+  if affs.mangledrightleg then
+    removeaff("mangledrightleg")
+    valid.simplemutilatedrightleg()
+  else
+    valid.simplemangledrightleg()
+  end
+  if affs.mangledleftleg then
+    removeaff("mangledleftleg")
+    valid.simplemutilatedleftleg()
+  else
+    valid.simplemangledleftleg()
+  end
 end
 
 -- happens on torn tendon levels 6,7

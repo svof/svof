@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
 <MudletPackage version="1.0">
     <TriggerPackage>
@@ -48636,7 +48636,7 @@ end</script>
                     <triggerType>0</triggerType>
                     <conditonLineDelta>0</conditonLineDelta>
                     <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
+                   <mCommand></mCommand>
                     <packageName></packageName>
                     <mFgColor>#ff0000</mFgColor>
                     <mBgColor>#ffff00</mBgColor>
@@ -48648,7 +48648,7 @@ end</script>
                     <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="yes" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                         <name>Overhand</name>
                         <script>svo.valid.gothit(&quot;knight&quot;, matches[2])
-svo.valid.doublehander_hit(matches[2])</script>
+        svo.valid.doublehander_hit(matches[2])</script>
                         <triggerType>0</triggerType>
                         <conditonLineDelta>0</conditonLineDelta>
                         <mStayOpen>0</mStayOpen>
@@ -48691,7 +48691,7 @@ svo.valid.doublehander_hit(matches[2])</script>
                     <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                         <name>Underhand</name>
                         <script>svo.valid.gothit(&quot;knight&quot;, matches[2])
-svo.valid.doublehander_hit(matches[2])</script>
+        svo.valid.doublehander_hit(matches[2])</script>
                         <triggerType>0</triggerType>
                         <conditonLineDelta>0</conditonLineDelta>
                         <mStayOpen>0</mStayOpen>
@@ -48754,7 +48754,7 @@ svo.valid.doublehander_hit(matches[2])</script>
                     <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                         <name>Hew</name>
                         <script>svo.valid.gothit(&quot;knight&quot;, matches[2])
-svo.valid.doublehander_hit(matches[2])</script>
+        svo.valid.doublehander_hit(matches[2])</script>
                         <triggerType>0</triggerType>
                         <conditonLineDelta>0</conditonLineDelta>
                         <mStayOpen>0</mStayOpen>
@@ -48825,27 +48825,6 @@ svo.valid.doublehander_hit(matches[2])</script>
                         </regexCodePropertyList>
                     </Trigger>
                     <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                        <name>Devastate legs crippled</name>
-                        <script>svo.valid.simplecrippledrightleg()
-svo.valid.simplecrippledleftleg()</script>
-                        <triggerType>0</triggerType>
-                        <conditonLineDelta>0</conditonLineDelta>
-                        <mStayOpen>0</mStayOpen>
-                        <mCommand></mCommand>
-                        <packageName></packageName>
-                        <mFgColor>#ff0000</mFgColor>
-                        <mBgColor>#ffff00</mBgColor>
-                        <mSoundFile></mSoundFile>
-                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                        <regexCodeList>
-                            <string>^\w+ draws back (?:her|his) .+?, then unleashes a precise blow that smashes into your legs with bone cracking force\.$</string>
-                        </regexCodeList>
-                        <regexCodePropertyList>
-                            <integer>1</integer>
-                        </regexCodePropertyList>
-                    </Trigger>
-                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                         <name>Devastate arms cripple</name>
                         <script>svo.valid.devastate_arms_cripple()</script>
                         <triggerType>0</triggerType>
@@ -48859,8 +48838,8 @@ svo.valid.simplecrippledleftleg()</script>
                         <colorTriggerFgColor>#000000</colorTriggerFgColor>
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
+                            <string>^\w+ draws back (?:his|her) warhammer, then unleashes a precise blow that smashes into your arms with bone cracking force\.$</string>
                             <string>^\w+ launches a devastating slash at your already injured arms, (?:his|her) blade cleaving to the bone\.$</string>
-                            <string>^\w+ whirls .+? in a terrible two-handed blow, aimed at your already injured arms\.$</string>
                         </regexCodeList>
                         <regexCodePropertyList>
                             <integer>1</integer>
@@ -48881,9 +48860,11 @@ svo.valid.simplecrippledleftleg()</script>
                         <colorTriggerFgColor>#000000</colorTriggerFgColor>
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
-                            <string>^\w+ brings .+? whirling about to cleave deeply into your already damaged arms\.$</string>
+                            <string>^\w+ whirls .+ in a terrible two-handed blow, aimed at your already injured arms\.$</string>
+                            <string>^\w+ brings .+ whirling about to cleave deeply into your already damaged arms\.$</string>
                         </regexCodeList>
                         <regexCodePropertyList>
+                            <integer>1</integer>
                             <integer>1</integer>
                         </regexCodePropertyList>
                     </Trigger>
@@ -48901,11 +48882,11 @@ svo.valid.simplecrippledleftleg()</script>
                         <colorTriggerFgColor>#000000</colorTriggerFgColor>
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
-                            <string>With calculated precision,</string>
+                            <string>^\w+ unleashes a bone crushing blow with .+ at your arms, pulverising meat and bone in a single strike\.$</string>
                             <string>^With calculated precision, \w+ unleashes a mighty blow at your arms, shattering bone and pulping flesh\.$</string>
                         </regexCodeList>
                         <regexCodePropertyList>
-                            <integer>2</integer>
+                            <integer>1</integer>
                             <integer>1</integer>
                         </regexCodePropertyList>
                     </Trigger>
@@ -48924,8 +48905,10 @@ svo.valid.simplecrippledleftleg()</script>
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
                             <string>^\w+ launches a devastating slash at your already injured legs, (?:his|her) blade cleaving to the bone\.$</string>
+                            <string>^\w+ draws back (?:his|her) warhammer, then unleashes a precise blow that smashes into your legs with bone cracking force\.$</string>
                         </regexCodeList>
                         <regexCodePropertyList>
+                            <integer>1</integer>
                             <integer>1</integer>
                         </regexCodePropertyList>
                     </Trigger>
@@ -48944,14 +48927,14 @@ svo.valid.simplecrippledleftleg()</script>
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
                             <string>^\w+ whips .+? in a savage arc, cleaving at your legs\.$</string>
-                            <string>^\w+ unleashes a bone crushing blow with .+? at your legs, pulverising meat and bone in a single strike\.$</string>
+                            <string>^\w+ aims a devastating blow with .+ at your already injured legs\.$</string>
                         </regexCodeList>
                         <regexCodePropertyList>
                             <integer>1</integer>
                             <integer>1</integer>
                         </regexCodePropertyList>
                     </Trigger>
-                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                         <name>Devastate legs mutilate</name>
                         <script>svo.valid.devastate_legs_mutilate()</script>
                         <triggerType>0</triggerType>
@@ -48965,11 +48948,11 @@ svo.valid.simplecrippledleftleg()</script>
                         <colorTriggerFgColor>#000000</colorTriggerFgColor>
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
-                            <string>With calculated precision,</string>
+                            <string>^\w+ unleashes a bone crushing blow with .+ at your legs, pulverising meat and bone in a single strike\.$</string>
                             <string>^With calculated precision, \w+ unleashes a mighty blow at your legs, shattering bone and pulping flesh\.$</string>
                         </regexCodeList>
                         <regexCodePropertyList>
-                            <integer>2</integer>
+                            <integer>1</integer>
                             <integer>1</integer>
                         </regexCodePropertyList>
                     </Trigger>
