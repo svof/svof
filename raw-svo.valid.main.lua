@@ -4557,7 +4557,7 @@ function valid.devastate_arms_mangle()
   end
   if affs.mangledleftarm
   then
-    removeadd("mangledleftarm")
+    removeaff("mangledleftarm")
 	valid.simplemutilatedleftarm()
   else valid.simplemangledleftarm()
   end
