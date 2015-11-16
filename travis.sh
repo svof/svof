@@ -79,8 +79,8 @@ echo "${TRAVIS_TAG}" > current_version.txt
 for f in *
 do
   echo "Uploading ${f}"
-  curl -3 -k --disable-epsv --ftp-skip-pasv-ip \
-  --ftp-ssl -u "svof-machine-account:${FTP_PASS}" -T "${f}" "ftp://ftp.pathurs.com" &> /dev/null
+  curl -3 --disable-epsv --ftp-skip-pasv-ip \
+  -u "svof-machine-account:${FTP_PASS}" -T "${f}" "ftp://ftp.pathurs.com" &> /dev/null
   stat=$?
   if [ "$stat" -ne 0 ]; then
     echo "Could not upload ${f}: Return code was ${stat}"
