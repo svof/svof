@@ -11061,13 +11061,21 @@ local function addDefs()
           spriority = 0,
           def = true,
 #if skills.metamorphosis then
+#if class == "allclasses" then
+          undeffable = haveSkill("metamorphosis"),
+#else
           undeffable = true, -- mark as undeffable since serverside can't morph
+#end
 #end
 
           isadvisable = function ()
             return (not defc.nightsight and ((sys.deffing and defdefup[defs.mode].nightsight) or (conf.keepup and defkeepup[defs.mode].nightsight)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.prone and not doingaction'nightsight'
 #if skills.metamorphosis then
-               and ((not affs.cantmorph and sk.morphsforskill.nightsight) or defc.dragonform)
+               and ((not affs.cantmorph and sk.morphsforskill.nightsight) or defc.dragonform
+#if class == "allclasses" then
+                    or not haveSkill("metamorphosis")
+#end
+                   )
 #end
             ) or false
           end,
@@ -11081,13 +11089,26 @@ local function addDefs()
 #if not skills.metamorphosis then
             send("nightsight on", conf.commandecho)
 #else
-            if not defc.dragonform and (not conf.transmorph and sk.inamorph() and not sk.inamorphfor"nightsight") then
+
+            if not defc.dragonform and (not conf.transmorph and sk.inamorph() and not sk.inamorphfor"nightsight")
+#if class == "allclasses" then
+              and haveSkill("metamorphosis")
+#end
+            then
               if defc.flame then send("relax flame", conf.commandecho) end
               send("human", conf.commandecho)
-            elseif not defc.dragonform and not sk.inamorphfor"nightsight" then
+            elseif not defc.dragonform and not sk.inamorphfor"nightsight"
+#if class == "allclasses" then
+              and haveSkill("metamorphosis")
+#end
+            then
               if defc.flame then send("relax flame", conf.commandecho) end
               send("morph "..sk.morphsforskill.nightsight[1], conf.commandecho)
-            elseif defc.dragonform or sk.inamorphfor"nightsight" then
+            elseif defc.dragonform or sk.inamorphfor"nightsight"
+#if class == "allclasses" then
+              or not haveSkill("metamorphosis")
+#end
+            then
               send("nightsight on", conf.commandecho)
             end
 #end
@@ -13351,7 +13372,7 @@ local function addDefs()
           end
         }
       },
-#if not skills.weatherweaving or class = "allclasses" then
+#if not skills.weatherweaving or class == "allclasses" then
       boundfire = {
         physical = {
           balanceful_act = true,
@@ -13374,6 +13395,7 @@ local function addDefs()
 #end
                   defc.boundspirit)
 #end
+            then
               defences.got("bindall")
             end
           end,
@@ -14981,19 +15003,19 @@ local function addDefs()
   end
 
   if haveSkill({ "healing", "elementalism", "weatherweaving" }) then
-    for defName, defTbl in pairs(defTabel.channels) do
+    for defName, defTbl in pairs(defTable.channels) do
       dict[defName] = defTbl
     end
   end
 
   if haveSkill({ "elementalism", "weatherweaving" }) then
-    for defName, defTbl in pairs(defTabel.eleweather) do
+    for defName, defTbl in pairs(defTable.eleweather) do
       dict[defName] = defTbl
     end
   end
 
   if haveSkill("metamorphosis") then
-    for defName, defTbl in pairs(defTabel.lyre) do
+    for defName, defTbl in pairs(defTable.lyre) do
       dict[defName] = defTbl
     end
   end
