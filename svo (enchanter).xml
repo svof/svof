@@ -310,7 +310,9 @@ local enchantments = {
       staghorn  = 3,
       goldbar   = 3,
     },
-    otherItems = {},
+    otherItems = {
+      kola = 1,
+    },
     actions      = {
       &quot;play horn&quot;,
       &quot;play horn&quot;,
@@ -322,7 +324,7 @@ local enchantments = {
       &quot;roll dice&quot;,
       &quot;spin around thrice&quot;,
       &quot;burn incense&quot;,
-      &quot;outr kola$crush kola&quot;
+      &quot;crush kola&quot;
     }
   },
 
