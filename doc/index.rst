@@ -6,6 +6,7 @@ Addons documentation
 .. toctree::
    :maxdepth: 1
 
+   index.rst
    dragonlimbcounter.rst
    elistsorter.rst
    enchanter.rst
@@ -24,21 +25,21 @@ Addons documentation
    runeidentifier.rst
 
 Contents
-==================
+--------
 
 * :ref:`genindex`
 * :ref:`search`
 
 
 Basics of the system
-===============================
+--------------------
 
 What is this system?
------------------------------
+~~~~~~~~~~~~~~~~~~~~
 This system is what was previously called Svo, which is no longer available. Svof is the free, open-source and community-supported version of Svo.
 
 Installing
------------------------------
+~~~~~~~~~~
 
 To install the system, make sure GMCP is enabled (Mudlet settings), and that you're connected to server **achaea.com** and port **23**, and logged in -- then use the **vinstall** command. This'll have the system run auto-configuration first - where it'll detect and enable skills that you have. After that, it'll ask you preference questions about the basic and essential options. Feel free to take your time to ask someone else as to what should you set an option to (like for sipping health). The installation otherwise is fairly painless - and you can always change any option you'd like later with the same command.
 
@@ -49,7 +50,7 @@ Enjoy!
 :note: It is best not to do *CONFIG SCREENREADER ON* in the game - that will mess up Svof's tracking of prompt flags.
 
 Using the system
------------------------------
+~~~~~~~~~~~~~~~~
 The system cures any ailments you get for you automatically - nothing needs to be turned on. Of course, the system won't cure if it's paused, but while it is, it'll still track all afflictions.
 
 :note: you want to use the **dv** alias to have the system diagnose and **df** to check your defences. This will have the system both recognize the output, and also has the feature of the aliases being usable at any time - the system will do the action asap for you.
@@ -68,7 +69,7 @@ That's about it! Do make sure that you have all the curatives necessary on you a
 
 
 Differences to know if coming from vadi-m
----------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Don't use Vadi Mapper anymore - the mudbot proxy isn't supported with Svof. Instead, use Mudlets Mapper - which is what I work on now. It doesn't have the community map making (and the free, often updated maps that magically came from out of nowhere), but that'll happen soon - plus it has awesome 3D and 2D viewing modes, allows for zooming, and has a ton of other features. For some people, it walks faster as well, and it doesn't cause a spam of blank lines like the Vadi Mapper does.
 
 Besides, you'll come to love it:
@@ -112,7 +113,7 @@ To add your xp, you can use this - and of course you can re-arrange the tags as 
 :note: Mudlet does have timestamps built-in that you can enable to show by pressing the blue (i) button bottom-right. This goes back in time as well, so you don't have to always keep it on.
 
 Using defences
------------------------------
+~~~~~~~~~~~~~~
 The system organizes defences around defence modes, in which you can have it put up different defences. The process of putting them up is also in two stages: *defup* and *keepup*.
 
 When you first switch to a defence mode using *vdefs <mode>*, defup will put up all of the defences that are on its list. Remember that you can tell defup to put up different defences in different modes - that is the difference in modes. After defup is done, the system will say *Ready for combat!*, and defup will be done - it'll care no more about your defences. Instead, keepup takes over. Keepups job, as the name implies, is to make sure its defences always stay up - if one goes down for any reason, it'll put it back up. Keepup can also be disabled or enabled for convenience with *tf keepup*, *tn keepup*.
@@ -166,7 +167,7 @@ If you have the lifevision artefact, then the system will realize that fact and 
 The same goes with shrouding - if you've got yours as an artefact, it will automatically detect it. If yours is customized, that's not a problem, you can enable it with *vconfig haveshroud*.
 
 Anti-illusion
--------------------------------
+~~~~~~~~~~~~~
 Svof's anti-illusion is disabled by default, but is easily enabled with *tn a* or *tn anti-illusion*. You *must* enable anti-illusion when fighting anyone that can illusion - Serpents, Magi, Puppetry users, Dragons or people with the Staff of Illusion. Against serpents, you also ought to enable *sbites* and *stabs* - but read up on the *ignoresinglebites* option to know how that works, because that has it's own pitfalls.
 
 To check whenever anti-illusion is on or off, look at *vshow*.
@@ -176,7 +177,7 @@ Anti-illusion has been getting modernized in recent updates, and will be more tr
 The AI is always improved and expanded upon - so if you notice an instance where it failed to do it's job, or could've done better - please provide feedback! You can also customize anti-illusion - check the :ref:`customizing-anti-illusion` section.
 
 Using the *do / dofree* system
--------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The system includes a very nice feature to assist you in everyday tasks - the *do* queue. It allows you to queue actions (that take balance or equilibrium to do) to be done as soon as possible.
 
 Using it is simple, the syntax is - ``do <action>``. If you already have both balance and equilibrium, then the system will do your action at once - otherwise, it'll do it as soon as you regain both balance and equilibrium. If you ask it to do multiple actions, then it'll do them properly, one action per balance/eq regain.
@@ -202,11 +203,11 @@ Along with *do*, a *dofree* system is also provided - it's for actions that requ
 You can use the *dop*, *dop on* and *dop off* to pause do/dofree, while not affecting the whole system.
 
 Bashing triggers
-----------------
+~~~~~~~~~~~~~~~~
 Svof comes with a ton of bashing triggers that are contributed by Drazik, Kard, Searnla, and many others. To enable them - do *tn bashing*, to check if you have them on - *vshow*, and to disable them, *tf bashing*.
 
 Ignoring curing things
-----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~
 *Svof* has a feature that allows you to ignore curing afflictions - this can come in handy handy in many situations; such as ignoring clumsiness for testing, ignoring an affliction that you get frequently while bashing but don't want to waste curatives on, or pausing curing a certain affliction to avoid a killing strat getting pulled of on you.
 
 To view a list of all things you can ignore, you can use the ``vshow ignorelist`` alias. Warning, the list is big! While some afflictions are self-explanatory, some names require a bit of explanation:
@@ -224,7 +225,7 @@ Lastly, you can use ``vshow ignore`` to view all items you've set to ignore (or 
    :align: center
 
 Serverside
-----------
+~~~~~~~~~~
 Serverside curing is now built-in to Svof! To enable it, just do **tn serverside** - and everything will just work. Svof will use serverside for curing/defences by changing in-game priorities for you, adjust CURING config options to be the same as Svof's, augment serverside curing by predicting reckless, and so on. Essentially by doing **tn serverside**, everything is still the same (and thus any of your priority customisations, Svof toggle aliases, etc still work) - just serverside will be used for doing actions wherever possible.
 
 Note that serverside curing has a built-in delay, so if your connection is faster than that, you would be better off using Svof's curing. Likewise, if your connection is slow or drops out, enabling serverside would be a good idea.
@@ -266,13 +267,13 @@ Additionally, afflictions are no longer ignored on **vshow** - if you ignore an 
    :align: center
 
 Pipes
------
+~~~~~
 Svof automatically auto-assigns herbs to pipes for you from checking 'plist' and will auto-refill and auto-relight them for you.
 
 Svof now also has support for secondary pipes, allowing you to have 6 pipes with a backup one for each herb - just check 'plist' and Svof will again auto-assign all pipes for you, keep them refilled and lit. The advantage of having a backup pipe is similar to precache - when a pipe goes out and you can't refill it, you can still smoke your backup.
 
 Lust
-------------------------
+~~~~
 Svof by default is in *vconfig autoreject whitelist* mode - which means that any name not on its whitelist will be automatically rejected when they lust you, or you check *allies*. To add/remove names on the lustlist, do *vconfig lustlist <name>*.
 
 You can also set it to the blacklist mode - where it will reject names *only* on the lustlist. You can do that with *vconfig autoreject blacklist*.
@@ -280,7 +281,7 @@ You can also set it to the blacklist mode - where it will reject names *only* on
 .. _on-affliction-locks:
 
 Affliction locks
-----------------------
+~~~~~~~~~~~~~~~~
 The system has features to both warn you when you become locked via certain afflictions, and cure the said locks - either usage of the fitness, eating a kelp in your inventory, focusing or using the tree tattoo.
 
 To enable fitness lock curing, you do **vconfig fitness yep**, and to enable focus curing, **vconfig focus yep**.
@@ -303,7 +304,7 @@ stain         (restore, dragonheal)              stain, slickness, empty valeria
 Note that passive curing is not included here, and weariness prevents fitness.
 
 Retardation curing
-----------------------------------------------------------
+~~~~~~~~~~~~~~~~~~
 One of the most powerful features of **Svof** is complete retardation curing. By that, it is implied that the system can do everything - cure (apply salves, outr if necessary and eat herbs, smoke, drink, writhe), keepup defences and etc while in aeon or retardation. First two of course have been prioritized to be cured as soon as possible.
 
 Now, there is the problem of you doing stuff while in aeon/retardation - anything you do would disrupt the previous command, and if the system is, for example, trying to cure you - commands will be getting in the way and it'll have to keep restarting and etc. Sometimes you can do a command accidentally, when you didn't even mean to disrupt anything, or sometimes you *want* to override what the system is doing - for example, curing you while all you really want to do is tumble away.
@@ -329,7 +330,7 @@ This will not trigger the retardation having disappeared auto-detection either.
 :note: the system will stop gagging your breathing in retardation, so you can exactly see everything that is happening and not be confused by gagged stuff.
 
 Herb precaching
----------------------------------
+~~~~~~~~~~~~~~~
 Another great feature **Svof** offers you is herb precaching - keeping a certain amount of a herb out in your inventory at all times. This is very useful for many reasons - firstly, Svof will then be able to eat the herb and then outr it when necessary instead of outr and eat, and this'll shave off about half of your ping time off you curing an aff. Svof won't have to outr the herb and be able to eat it right away if you already have it in aeon/retardation as well - nor will you be affected by riftlocks if you have kelp out.
 
 Regarding the quicker curing, the speedup can be quite significant if you're on a poor ping because of how the games processing of commands works - in simple terms, the first command will take about your ping time (the N: number) to go through, and the second one will take 2 ping times. So if the first command is outr, because you don't have the herb out already, the eat gets delayed. Here's a graphical example:
@@ -344,7 +345,7 @@ To setup herb precaching, do **vshowp**. Click on the + besides a herb to increa
 :tip: if you'd like to stop precaching, you can switch to the *empty* defences mode - *vdefs empty*! (provided you don't fill the empty defence mode with any herbs)
 
 Transmute
----------------------------------
+~~~~~~~~~
 Svof has pretty thorough support for the Kaido Transmute skill - you can have the system supplement your normal curing with transmute use, or rely just on transmute to keep you alive.
 
 To set it up, firstly set the *transmuteamount* option to the % below which you'll be using transmute - for example, **vconfig transmuteamount 80** will have you use transmute below 80% health.
@@ -361,7 +362,7 @@ That's all to it then, select one of the options with **vconfig transmute <optio
 Note that when you're in one of the "just rely on tramsude" modes (replaceall/replacehealth), Svof will switch to health sipping in case you're unable to transmute - if you're out of mana, have no willpower, or are prone. This is so in PvP, the system won't be sitting there waiting for your mana to come back up, or your willpower to regen, or you to get up before it continues healing your health. In PvE though you might be OK with not healing while you're prone, because you won't be afflicted a lot, and will get up soon anyway to transmute (and thus you don't want the system sipping for health while you're prone) - so you can use the *vconfig transsipprone off* to let the system know that. Otherwise in PK, to have the system sip health/vitality while you're prone and not wait for you to get up, you'd do *vconfig transsipprone on*.
 
 Lyre mode
----------------------------------
+~~~~~~~~~
 The system has a lyre mode for the Lasallian Lyre artefact (500cr, well worth it), Metamorphosis Nightingale melody and Grove barrier skills. This makes it easy to use the lyre a) without the system screwing it up by doing stuff, and b) helping you cure affs and re-lyring ASAP.
 
 To turn it on, do **lyr**. This isn't a toggle. To turn it off, do **lyf**. The system will strum lyre and automatically pause for you. It will also re-strum it on movement or whenever something destroys your prismatic barrier.
@@ -369,7 +370,7 @@ To turn it on, do **lyr**. This isn't a toggle. To turn it off, do **lyf**. The 
 Since it is still possible to get afflicted while behind the prismatic barrier (telepathy, torc artefact, truename) - the **lyc** alias is provided for you. It will do one set of curing commands and re-strum right away. It will also cure in aeon for you as well.
 
 Single prompt
----------------------------------
+~~~~~~~~~~~~~
 Svof has a built-in singleprompt feature which allows you to have a stationary prompt at the bottom of the screen, and have it be removed or kept from the games output. This helps cut down on spam, allowing combat to scroll by 'slower', as there's less lines coming in.
 
 .. image:: images/singleprompt.png
@@ -392,13 +393,13 @@ If you'd like to customize the singleprompt in code, the Geyser object used for 
 To customise the location, adjust the ``moveWindow`` bit. To move it to the right, try ``self:get_x()+10`` - then change the size of Mudlets window (unmaximize and maximize again, for example) for the change to take effect.
 
 Changing colour highlights
----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Svof** does some basic highlights on your balances recovery and passive healing. You can change the highlighting as you wish without worrying - it won't affect the system. Just create triggers for the things you'd like to highlight *after* the *Svof* triggers folder, enable highlight option, and pick your colour(s).
 
 .. _customprompt:
 
 Setting a custom prompt
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 Svof allows you to completely re-write your prompt - re-order elements, change the text, change the colour, add new information to it from pre-defined tags or even your own tags that display whatever you wish, right on your prompt!
 
 To get started, take a look at your current customprompt by going to ``vconfig2`` and clicking on **view**. This will both show you your current customprompt as it is assembled with tags, and insert it into your command line so you can easily adjust a part of it and re-enter with the ``vconfig customprompt <line>`` command.
@@ -611,7 +612,7 @@ Adding your own custom tag to the prompt, you might run into a problem: if Svof 
 To get around this, you can make your prompt tag only get registered when Svof has loaded. See below on how.
 
 Running scripts when Svof is ready
-----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Should you work with custom prompt tags, custom tree/restore/dragonheal strats or whatever else Svof mods you do in scripts, you'll notice that in order to make use of the system - the system needs to actually exist first. As Mudlet loads all scripts logically in the visual order, this means often shuffling your scripts to be below Svof's after you upgrade the system.
 
 There's a solution to that, and that is making use of the ``svo system loaded`` event - once you do that, you don't have to shuffle stuff around anymore.
@@ -626,7 +627,7 @@ The ``add_svo_tag`` function is the one that actually does the job. You can put 
 :note: Now that you script is running when the event is raised, it won't run when you save it - that is, the prompt tag won't be updated right away. You can manually do ``vlua add_svo_tag()`` to update it, or add ``if svo then add_svo_tag() end`` after the function to restore the 'run on save' behaviour.
 
 Troubleshooting
----------------
+~~~~~~~~~~~~~~~
 .. glossary::
    :sorted:
 
@@ -638,7 +639,7 @@ Troubleshooting
 
 
 Random questions you might ask
------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **How come Svof uses different affliction names than the game?**
 
 Svof was released in September 2011, Achaea's internal affliction names became public via the server curing system in May 2014.
@@ -736,7 +737,7 @@ Do ``vlua svo.conf.noeqtimeout = 6``.
 
 
 What to do if you have a problem?
-----------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Copy/paste the problem parts that you saw in the game and file an `issue on Github <https://github.com/svof/svof/issues>`_.
 
 Then, try checking diagnose if it's affliction related, or *def* if it's defences-related. For afflictions, if you're still having a problem - try *vreset affs* (or *vreseta* for short).
@@ -750,7 +751,7 @@ Custom prompt disappeared?
 If your custom prompt disappeared, or inra stopped working - upgrade your `Mudlet <http://www.mudlet.org/download/>`_ to 2.1.
 
 Updating the system
----------------------------
+~~~~~~~~~~~~~~~~~~~
 
 a) uninstall the Svof package
 b) download the new package from the original link you got
@@ -760,12 +761,12 @@ d) restart mudlet. You can delete the zip now too, it's not needed anymore. Do n
 Don't worry, your personal settings won't be lost.
 
 Getting help
------------------------------
+~~~~~~~~~~~~
 Ask for help on the Svof clan or from your friends!
 
 
 Glossary
------------------------------
+~~~~~~~~
 This is a list of terms that are commonly used by the system, that would be helpful to know.
 
 .. glossary::
@@ -810,7 +811,7 @@ Is there something missing from the list? Let me know, I'll add it.
 .. _vconfig_options:
 
 vconfig options
------------------------------
+~~~~~~~~~~~~~~~
 
 .. glossary::
   :sorted:
@@ -1151,10 +1152,10 @@ vconfig options
 
 
 Advanced usage
-===============================
+--------------
 
 Scripting with it
------------------------------
+~~~~~~~~~~~~~~~~~
 
 Afflictions
 ^^^^^^^^^^^^^
@@ -1356,7 +1357,7 @@ svo.me.inventory    The current inventory as reflected via gmcp.
 
 
 Locks
------------------------------
+~~~~~
 Svof makes the current affliction locks you have available in the *svo.me.locks* key-value table. ::
 
    -- check if you have no locks
@@ -1376,7 +1377,7 @@ All of the systems configuration options are available in the *svo.conf* table f
 
 
 Events raised by the system
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The system raises several Mudlet events to help you trigger on reliably.
 
 ================================= ====================================== ============
@@ -1474,7 +1475,7 @@ The script used is: ::
    end
 
 Scripting to do actions on balance/eq
---------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 While the system already offers a do queue that's easy to use in simple aliases or just the command input lint, it also offers a more "proper scripting friendly" way of easily using the balance queue, not having to track balance/equilibrium, and not interfering with the systems actions.
 
 How it works is so - you give Svof a function that you want to be done when you get balance/equilibrium back, and the system will run the function for you. So inside that function, you can decide whenever you need to send some command or not - which is better than queueing a command for the next balance/equilibrium regain since the conditions can change in the mean time.
@@ -1522,13 +1523,13 @@ Lastly, there is a problem of using svo.addbalanceful / svo.addbalanceless funct
 
 
 Ignoring afflictions/cures
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can have the system ignore an affliction by registering it in the **svo.ignore** table - for example, by doing ``svo.ignore.clumsiness = true``. You'd do ``svo.ignore.clumsiness = nil`` to remove it. This can be useful for a variety of things - either being able to test with clumsiness on, having the system ignore useless afflictions in bashing, or having it ignore cures that you don't have the ingredients to cure.
 
 In the future, it'll also allow you to be more specific about ignoring things - ie don't ignore an affliction wholly, but only a certain balance cure for it, if there's demand for that.
 
 Managing your own priorities
--------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 One of the many nice new things **Svof** brings to the table is very customizable curing priorities. You can re-prioritize afflictions on the fly, or make whole lists of them that you can switch depending on who are you fighting, or even share your lists with others.
 
 The priority list is "smart": it will not cure the afflictions in exact order as shown if you can't do them in that order. If you have affA before affB, but affB prevents curing of affA - it will cure affB first, then affA. Keep that in mind when working with them!
@@ -1595,7 +1596,7 @@ Once exported, you can also edit all priorities within that file by opening it i
 To import the priority list, you can use the :func:`svo.prio.import` function or the **vimportprio <name>** alias. The ``report_errors`` argument of the function will, as the name suggests, report any errors it gets from when loading the file instead of suppressing them by default (you could introduce an error by accident when modifying the priorities).
 
 Adding your own tree scenarios
--------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can customize completely when will Svof use the tree tattoo by enabling/disabling the default scenarios (see the menu from vconfig2 and click on the boxes), or by adding your own as well.
 
 Doing so is rather easy - what you need to do is define your function that'll return true if tree should be touched, in a separate script of your own. Svof will automatically check your function(s) when necessary, and take care of using the tree for you.
@@ -1624,7 +1625,7 @@ For example, here's a function that'll use tree whenever you get blackout: ::
 After you added your function, it's enabled by default - and you can enable/disable it via the menu, or by doing *svo.me.disabledtreefunc.<strat name> = true*. If you'd like to see more tree scenario examples, then check the **Tree curing strats** script in *svo/svo Utilities* which is where all of Svof's scenarios are written.
 
 Adding your own restore / dragonheal / shrugging / rage scenarios
------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This is very much the same as tree scenarios, with all of the systems scenarios being stored in **<thing> curing strats**. See above on how to add your own. To script enabling/disabling the scenarios, use *svo.me.disabled<thing>func.<strat name> = true* or *false*.
 
 Note that rage scenarios already take into account you
@@ -1632,13 +1633,13 @@ Note that rage scenarios already take into account you
 .. _custom_color_schemes:
 
 Adding your own echo colour schemes
--------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can make your own echo schemes for the system to use! To get started, take a look at **vshow colours** - that lists the available colour schemes. You can also use this method to change the systems names in echoes.
 
 To add your own, find and move the 'Customize_systems_echos' script outside of Svof's folder, and activate it. Then you can edit the colour numbers, scheme name, or add more schemes - save the script after and do 'vshow colours' to select your new scheme.
 
 More fine-grained control of the system
------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Several points about controlling the system more precisely if you'd like to...
 
 Adding your own triggers
@@ -1695,7 +1696,7 @@ And secondly, once you've confirmed that the affliction is real, let Svof know: 
 If there is no svo.valid.proper\_aff function, replace the svo.valid.simpleaff one instead.
 
 Custom parry strategy
--------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~
 Another nice feature of Svof is that it allows you to easily use your own, custom, parry functions just for calculating what to parry - and the system will take care of making it happening.
 
 To set a custom parry function, put it into the ``svo.sp_config.parry`` field in an existing or a new script in Mudlet, like so: ::
@@ -1733,10 +1734,10 @@ Once you do the math on what to parry, set the values of *all* limbs in ``svo.sp
 
 
 Alias list
-===============================
+----------
 
 Shortcuts
--------------------------------------
+~~~~~~~~~
 
 .. glossary::
   :sorted:
@@ -1829,7 +1830,7 @@ Shortcuts
     toggles reflect mode - the system will make sure you're reflected! (requires reflect skill) You can also use *rfl on/off*.
 
 General aliases
--------------------------------------
+~~~~~~~~~~~~~~~
 
 .. glossary::
   :sorted:
@@ -2051,7 +2052,7 @@ General aliases
     this echoes the given text as if it came from the game. To use it, do vecho <line>, and then press enter **twice**. To make the echo show another line, use $ to separate them - ie *vecho line1$line$*.
 
 Svof API functions
-===============================
+------------------
 
 :tip: A lot of functions take a *echoback* argument - it's a boolean value that lets the function know whenever it should echo the results of its work or not, so fill it with **true** if you want to see an echo.
 
@@ -2875,7 +2876,7 @@ Svof API functions
    The system also automatically accounts for command queues way too long for the game to handle and splits them up accordingly.
 
 Svof API data
-===============================
+-------------
 
 This is the start of a list that details all of the data (variables) available to you - what do they do, and how to set them. The list is still a work in progress.
 
