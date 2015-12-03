@@ -1,28 +1,5 @@
 Svof |release| documentation
 ============================
-Addons documentation
------------------------------
-
-.. toctree::
-   :maxdepth: 1
-
-   index.rst
-   dragonlimbcounter.rst
-   elistsorter.rst
-   enchanter.rst
-   inker.rst
-   knightlimbcounter.rst
-   magilimbcounter.rst
-   metalimbcounter.rst
-   monklimbcounter.rst
-   namedb.rst
-   offering.rst
-   peopletracker.rst
-   priesthealing.rst
-   priestlimbcounter.rst
-   priestreport.rst
-   refiller.rst
-   runeidentifier.rst
 
 Contents
 --------
@@ -2939,7 +2916,7 @@ This is the start of a list that details all of the data (variables) available t
 
       It'll be ``false`` if no illusion was detected, ``true`` if one was or a string if an illusion was detected and a reason for it's detection was supplied.
 
-   svo.me.focusedknights
+  svo.me.focusedknights
     (table) a key-based table of all the knights who are currently focused (and thus will do double damage).
 
   svo.newbals
