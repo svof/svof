@@ -736,7 +736,7 @@ make_gnomes_work_async = function()
     oldsend = send
     send = fancysend
 
-    -- delay expandAlias execution, used in dor, to after batch completes
+    -- insert expandAlias (used in dofree, dor and similar) into the current batch, breaking the batch up in the process
     local oldexpandAlias = expandAlias
     if conf.batch then
       expandAlias = function(command, show)
