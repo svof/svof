@@ -53769,6 +53769,7 @@ end</script>
                         <string>gmcp.Char</string>
                         <string>gmcp.Room</string>
                         <string>gmcp.Char.Status</string>
+                        <string>gmcp.IRE.Time</string>
                     </eventHandlerList>
                 </Script>
                 <Script isActive="yes" isFolder="no">
