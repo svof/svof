@@ -245,11 +245,11 @@ signals.gmcpcharitemsremove:connect(function()
 end)
 signals.gmcpcharvitals      = luanotify.signal.new()
 signals.gmcpiretimelist = luanotify.signal.new()
-signals.gmcpiretimelist:connection(function()
+signals.gmcpiretimelist:connect(function()
   me.time = deepcopy(gmcp.IRE.Time.List)
 end)
 signals.gmcpiretimeupdate = luanotify.signal.new()
-signals.gmcpiretimeupdate:connection(function()
+signals.gmcpiretimeupdate:connect(function()
   if not me.time then me.time = {} end
   for k, v in pairs(gmcp.IRE.Time.Update) do
     me.time[k] = v
