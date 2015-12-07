@@ -252,11 +252,11 @@ end)
 signals.gmcpcharvitals      = luanotify.signal.new()
 signals.gmcpiretimelist = luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
-  me.time = deepcopy(gmcp.IRE.Time.List)
+  me.gametime = deepcopy(gmcp.IRE.Time.List)
 end)
 signals.gmcpiretimeupdate = luanotify.signal.new()
 signals.gmcpiretimeupdate:connect(function()
-  if not me.gametime then me.time = {} end
+  if not me.gametime then me.gametime = {} end
   for k, v in pairs(gmcp.IRE.Time.Update) do
     me.gametime[k] = v
   end
