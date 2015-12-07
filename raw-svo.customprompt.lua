@@ -366,19 +366,16 @@ cpp.compute_diffhealth_bracket = function()
   return (me.healthchange > 0 and "[+"..me.healthchange.."]" or (me.healthchange < 0 and "["..me.healthchange.."]" or ''))
 end
 
-svo.cpp.compute_day = function()
-  local gmcp = gmcp
-  return (gmcp.IRE and ((gmcp.IRE.Time.Update and gmcp.IRE.Time.Update.day) or (gmcp.IRE.Time.List and gmcp.IRE.Time.List.day))) or ""
+cpp.compute_day = function()
+  return me.time and me.time.day or ""
 end
 
-svo.cpp.compute_month = function()
-  local gmcp = gmcp
-  return (gmcp.IRE and ((gmcp.IRE.Time.Update and gmcp.IRE.Time.Update.month) or (gmcp.IRE.Time.List and gmcp.IRE.Time.List.month))) or ""
+cpp.compute_month = function()
+  return me.time and me.time.month or ""
 end
 
-svo.cpp.compute_year = function()
-  local gmcp = gmcp
-  return (gmcp.IRE and ((gmcp.IRE.Time.Update and gmcp.IRE.Time.Update.year) or (gmcp.IRE.Time.List and gmcp.IRE.Time.List.year))) or ""
+cpp.compute_year = function()
+  return me.time and me.time.year or ""
 end
 
 cp.definitions = {
