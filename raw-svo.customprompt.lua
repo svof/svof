@@ -367,15 +367,15 @@ cpp.compute_diffhealth_bracket = function()
 end
 
 cpp.compute_day = function()
-  return me.time and me.time.day or ""
+  return me.gametime and me.gametime.day or ""
 end
 
 cpp.compute_month = function()
-  return me.time and me.time.month or ""
+  return me.gametime and me.gametime.month or ""
 end
 
 cpp.compute_year = function()
-  return me.time and me.time.year or ""
+  return me.gametime and me.gametime.year or ""
 end
 
 cp.definitions = {
