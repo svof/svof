@@ -244,6 +244,17 @@ signals.gmcpcharitemsremove:connect(function()
   end
 end)
 signals.gmcpcharvitals      = luanotify.signal.new()
+signals.gmcpiretimelist = luanotify.signal.new()
+signals.gmcpiretimelist:connect(function()
+  me.gametime = deepcopy(gmcp.IRE.Time.List)
+end)
+signals.gmcpiretimeupdate = luanotify.signal.new()
+signals.gmcpiretimeupdate:connect(function()
+  me.gametime = me.gametime or {}
+  for k, v in pairs(gmcp.IRE.Time.Update) do
+    me.gametime[k] = v
+  end
+end)
 
 -- make a 'signals bank' that remembers all gmcp events that happend before the prompt. reset on prompt. check it for stuff when necessary.
 -- have the herb out signal be remembers on it's own & verified by the syste
