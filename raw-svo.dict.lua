@@ -13109,9 +13109,12 @@ affinity = {
 
       oncompleted = function ()
         defences.got("boundearth")
-        if defc.boundair and defc.boundfire and defc.boundearth and defc.boundwater
+        if defc.boundair and defc.boundearth and defc.boundwater
 #if skills.healing then
          and defc.boundspirit
+#end
+#if not skills.weatherweaving then
+         and defc.boundfire
 #end
         then
           defences.got("bindall")
@@ -13206,9 +13209,12 @@ affinity = {
 
       oncompleted = function ()
         defences.got("fortifiedair")
-        if defc.fortifiedair and defc.fortifiedfire and defc.fortifiedearth and defc.fortifiedwater
+        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater
 #if skills.healing then
          and defc.fortifiedspirit
+#end
+#if not skills.weatherweaving then
+         and defc.fortifiedfire
 #end
          then
           defences.got("fortifyall")
@@ -13241,9 +13247,12 @@ affinity = {
 
       oncompleted = function ()
         defences.got("fortifiedwater")
-        if defc.fortifiedair and defc.fortifiedfire and defc.fortifiedearth and defc.fortifiedwater
+        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater
 #if skills.healing then
          and defc.fortifiedspirit
+#end
+#if not skills.weatherweaving then
+         and defc.fortifiedfire
 #end
          then
           defences.got("fortifyall")
@@ -13313,9 +13322,12 @@ affinity = {
 
       oncompleted = function ()
         defences.got("fortifiedearth")
-        if defc.fortifiedair and defc.fortifiedfire and defc.fortifiedearth and defc.fortifiedwater
+        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater
 #if skills.healing then
          and defc.fortifiedspirit
+#end
+#if not skills.weatherweaving then
+         and defc.fortifiedfire
 #end
          then
           defences.got("fortifyall")
