@@ -15143,7 +15143,7 @@ signals.gmcpcharstatus:connect(function ()
     if gmcp.Char.Status.class ~= me.class then
       me.class = gmcp.Char.Status.class
       addDefs()
--- TODO handle other class changes here
+      signals["class changed"]:emit()
     end
   end
 

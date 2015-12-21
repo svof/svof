@@ -27,6 +27,11 @@ signals["svo system loaded"]:connect(function()
   sk.priosbeforechange = sk.getblankbeforestateprios()
 end)
 
+-- reset prios on class change
+signals["class changed"]:connect(function()
+  sk.priosbeforechange = sk.getblankbeforestateprios()
+end)
+
 
 function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache)
   local isdefence, priority, gamename

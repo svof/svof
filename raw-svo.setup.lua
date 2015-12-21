@@ -165,6 +165,8 @@ signals.dragonform:add_post_emit(function()
   end
 end)
 
+signals["class changed"] = luanotify.signal.new()
+
 signals.canoutr = luanotify.signal.new()
 signals.canoutr:connect(function()
   if (affs.webbed or affs.bound or affs.transfixed or affs.roped or affs.impale or ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))) then
