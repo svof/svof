@@ -256,7 +256,7 @@ signals.gmcpiretimelist:connect(function()
 end)
 signals.gmcpiretimeupdate = luanotify.signal.new()
 signals.gmcpiretimeupdate:connect(function()
-  if not me.gametime then me.gametime = {} end
+  me.gametime = me.gametime or {}
   for k, v in pairs(gmcp.IRE.Time.Update) do
     me.gametime[k] = v
   end

@@ -13,8 +13,10 @@ actions = pl.OrderedMap()
 actions_performed = actions_performed or {}
 bals_in_use       = bals_in_use or {}
 
--- ie:
--- doaction(dict.healhealth.sip)
+-- does an action - call this when you'd like to execute an action. The system will setup 
+-- the timeout failsafes (which flow through into stupidity and lag detection), as well as
+-- record actions in per-action, per-balance tables for checking against later
+-- ie: doaction(dict.healhealth.sip)
 doaction = function(act)
   assert(act, "$(sys).doaction requires an argument")
   --it'll be in format of dict.what.#somebalance
@@ -120,10 +122,10 @@ doaction = function(act)
 
 end
 
--- if input is true, then add to the queue regardless
--- otherwise if it's output from us, only add if we got anti-illusion
---   off.
--- input determines if we should force insert
+-- used for pre-checking if we're doing an action in trigger functions. 
+-- if anti-illusion is off, or the true argument is passed, the action
+-- will get recorded as currently being done (this helps in cases where a 3rd 
+-- party did an action on you and you want to record it)
 checkaction = function (act, input)
 #if DEBUG_actions then
   if not act then debugf("[svo error]: checkaction called with -nothing-") return end
@@ -156,8 +158,8 @@ checkaction = function (act, input)
   end
 end
 
--- checks if any of the actions are being done, returns one if true;
--- does not create new ever
+-- checks if any of the actions are being done (multi-param version of checkaction), returns one if true
+-- doesn't have ability to force-insert like checkaction
 checkany = function (...)
   local t = {...}
 
@@ -172,6 +174,7 @@ checkany = function (...)
   end
 end
 
+-- returns one of the actions currently being done in the given balance
 findbybal = function (balance)
   return bals_in_use[balance] and select(2, next(bals_in_use[balance]))
 end
@@ -186,6 +189,7 @@ end
 
 codepaste.balanceful_codepaste = will_take_balance
 
+-- multi-balance version of findbybal
 findbybals = function(balances)
   local t = {}
 
@@ -200,7 +204,7 @@ findbybals = function(balances)
   if next(t) then return t end
 end
 
--- for illusions/actions that need to be cancelled
+-- only used by lifevision system if an illusion was detected - used by lifevision system to clear actions it has seen
 actionclear = function(act)
 #if DEBUG_actions then
   debugf("actions: cleared action %s", tostring(act.name))
@@ -234,6 +238,7 @@ actionclear = function(act)
   end
 end
 
+-- used by lifevision system to complete an action that was seen in the paragraph (when no illusion was seen)
 actionfinished = function(act, other_action, arg)
   assert(act, "$(sys).actionfinished wants an argument")
   if not act.name or not actions[act.name] or not actions[act.name].completed then echo("(e!)")
@@ -287,6 +292,7 @@ actionfinished = function(act, other_action, arg)
   if sys.sync then tempTimer(0, function() make_gnomes_work() end) end
 end
 
+-- cancels an action entirely
 -- needs the dict+balance, ie: killaction (dict.icing.waitingfor)
 killaction = function (act)
 #if DEBUG_actions then
@@ -338,6 +344,7 @@ killaction = function (act)
   if sys.sync then tempTimer(0, function() make_gnomes_work() end) end
 end
 
+-- returns true if the balance will be used up by an action that was sent
 usingbal = function (which)
   return (bals_in_use[which] and next(bals_in_use[which])) and true or false
 end
