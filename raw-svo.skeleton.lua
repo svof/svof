@@ -733,7 +733,6 @@ make_gnomes_work_async = function()
   signals.sysdatasendrequest:block(cnrl.processusercommand)
 
   if conf.commandecho and (conf.commandechotype == "fancy" or conf.commandechotype == "fancynewline") then
-    oldsend = send
     send = fancysend
 
     -- insert expandAlias (used in dofree, dor and similar) into the current batch, breaking the batch up in the process
