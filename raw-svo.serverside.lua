@@ -29,7 +29,7 @@ end)
 
 -- reset prios on class change
 signals["class changed"]:connect(function()
-  sk.priosbeforechange = sk.getblankbeforestateprios()
+  sk.resetservercuringpriorities()
 end)
 
 
@@ -482,17 +482,22 @@ signals.sync:connect(function ()
   end
 end)
 
--- vconfig serverside
-signals["svo config changed"]:connect(function(config)
-  if config ~= "serverside" then return end
-
-  if conf.serverside then
+function sk.resetservercuringpriorities()
     sk.priochangecache = { special = {} }
     -- sync everything
     sk.priosbeforechange = sk.getblankbeforestateprios()
     sendcuring("PRIORITY RESET")
+    sendcuring("PRIORITY DEFENCE LIST RESET")
     sk.priochangetimer = true
     sk.updateserversideprios()
+
+end
+
+-- vconfig serverside
+signals["svo config changed"]:connect(function(config)
+  if config ~= "serverside" then return end
+  sk.resetservercuringpriorities()
+  if conf.serverside then
     -- sync all special things like health
     for action, actiont in pairs(dict) do
       for balance, balancet in pairs(actiont) do
