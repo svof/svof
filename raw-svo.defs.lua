@@ -2246,6 +2246,12 @@ do
     end)
   end)
   signals.gmcpcharitemslist:connect(defences.checklifevision)
+  signals["class changed"]:connect(function()
+    if conf.havelifevision then
+      defences.enablelifevision()
+      signals.gmcpcharitemslist:disconnect(defences.checklifevision)
+    end
+  end)
 end
 
 do
