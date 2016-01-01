@@ -1141,32 +1141,6 @@ dict = {
       end
     }
   },
-  waterbubble = {
-    gamename = "airpocket",
-    herb = {
-      aspriority = 0,
-      spriority = 0,
-      def = true,
-      -- not handled by serverside
-      undeffable = true,
-
-      isadvisable = function ()
-        return false
-      end,
-
-      eatcure = {"pear", "calcite"},
-
-      onstart = function ()
-        eat(dict.waterbubble.herb)
-      end,
-
-      oncompleted = function ()
-      end,
-
-      empty = function()
-      end
-    }
-  },
   pacifism = {
     gamename = "pacified",
     herb = {
@@ -6168,62 +6142,6 @@ dict = {
       end
     },
   },
-  block = {
-    gamename = "blocking",
-    physical = {
-      blockingdir = "",
-      balanceless_act = true,
-      aspriority = 0,
-      spriority = 0,
-      def = true,
-      undeffable = true,
-
-      isadvisable = function ()
-        if defc.block and ((conf.keepup and not defkeepup[defs.mode].block and not sys.deffing) or (sys.deffing and not defdefup[defs.mode].block)) and not doingaction"block" then return true end
-
-        return (((sys.deffing and defdefup[defs.mode].block) or (conf.keepup and defkeepup[defs.mode].block and not sys.deffing)) and (not defc.block or dict.block.physical.blockingdir ~= conf.blockingdir) and not doingaction"block" and (not sys.enabledgmcp or (gmcp.Room and gmcp.Room.Info.exits[conf.blockingdir])) and not codepaste.balanceful_codepaste() and not affs.prone
-#if skills.metamorphosis then
-        and (defc.riding or defc.elephant or defc.dragonform or defc.hydra)
-#end
-#if skills.subterfuge then
-  -- you can't block while phased
-        and not defc.phase
-#end
-        ) or false
-      end,
-
-      oncompleted = function (dir)
-        if dir then
-          dict.block.physical.blockingdir = sk.anytoshort(dir)
-        else --workaround for looping
-          dict.block.physical.blockingdir = conf.blockingdir
-        end
-        defences.got("block")
-      end,
-
-      -- in case of failing to block, register that the action has been completed
-      failed = function()
-      end,
-
-      onstart = function ()
-        if (not defc.block or dict.block.physical.blockingdir ~= conf.blockingdir) then
-          send("block "..tostring(conf.blockingdir), conf.commandecho)
-        else
-          send("unblock", conf.commandecho)
-        end
-      end,
-    },
-    gone = {
-      oncompleted = function ()
-        defences.lost("block")
-        dict.block.physical.blockingdir = ""
-
-        if actions.block_physical then
-          killaction(dict.block.physical)
-        end
-      end
-    }
-  },
 #if skills.kaido then
   transmute = {
     -- transmutespam is used to throttle bleed spamming so it doesn't get out of control
@@ -9567,6 +9485,88 @@ local function addDefs()
   local defTable = {
     general = {
       -- general defences
+      waterbubble = {
+        gamename = "airpocket",
+        herb = {
+          aspriority = 0,
+          spriority = 0,
+          def = true,
+          -- not handled by serverside
+          undeffable = true,
+
+          isadvisable = function ()
+            return false
+          end,
+
+          eatcure = {"pear", "calcite"},
+
+          onstart = function ()
+            eat(dict.waterbubble.herb)
+          end,
+
+          oncompleted = function ()
+          end,
+
+          empty = function()
+          end
+        }
+      },
+      block = {
+        gamename = "blocking",
+        physical = {
+          blockingdir = "",
+          balanceless_act = true,
+          aspriority = 0,
+          spriority = 0,
+          def = true,
+          undeffable = true,
+
+          isadvisable = function ()
+            if defc.block and ((conf.keepup and not defkeepup[defs.mode].block and not sys.deffing) or (sys.deffing and not defdefup[defs.mode].block)) and not doingaction"block" then return true end
+
+            return (((sys.deffing and defdefup[defs.mode].block) or (conf.keepup and defkeepup[defs.mode].block and not sys.deffing)) and (not defc.block or dict.block.physical.blockingdir ~= conf.blockingdir) and not doingaction"block" and (not sys.enabledgmcp or (gmcp.Room and gmcp.Room.Info.exits[conf.blockingdir])) and not codepaste.balanceful_codepaste() and not affs.prone
+#if skills.metamorphosis then
+            and (defc.riding or defc.elephant or defc.dragonform or defc.hydra)
+#end
+#if skills.subterfuge then
+      -- you can't block while phased
+            and not defc.phase
+#end
+            ) or false
+          end,
+
+          oncompleted = function (dir)
+            if dir then
+              dict.block.physical.blockingdir = sk.anytoshort(dir)
+            else --workaround for looping
+              dict.block.physical.blockingdir = conf.blockingdir
+            end
+            defences.got("block")
+          end,
+
+          -- in case of failing to block, register that the action has been completed
+          failed = function()
+          end,
+
+          onstart = function ()
+            if (not defc.block or dict.block.physical.blockingdir ~= conf.blockingdir) then
+              send("block "..tostring(conf.blockingdir), conf.commandecho)
+            else
+              send("unblock", conf.commandecho)
+            end
+          end,
+        },
+        gone = {
+          oncompleted = function ()
+            defences.lost("block")
+            dict.block.physical.blockingdir = ""
+
+            if actions.block_physical then
+              killaction(dict.block.physical)
+            end
+          end
+        }
+      },
       rebounding = {
         blocked = false, -- we need to block off in blackout, because otherwise we waste sips
         smoke = {
