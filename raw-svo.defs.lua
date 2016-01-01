@@ -2373,6 +2373,12 @@ do
     end)
   end)
   signals.gmcpcharitemslist:connect(defences.checkshroud)
+  signals["class changed"]:connect(function()
+    if conf.haveshroud then
+      defences.enableshroud()
+      signals.gmcpcharitemslist:disconnect(defences.checkshroud)
+    end
+  end)
 end
 
 -- check for both shadowcloak and mask of lifevision
