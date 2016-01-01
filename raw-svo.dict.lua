@@ -15140,11 +15140,11 @@ signals.gmcpcharstatus:connect(function ()
     defences.got("dragonform")
   else
     defences.lost("dragonform")
-    if gmcp.Char.Status.class ~= me.class then
-      me.class = gmcp.Char.Status.class
-      addDefs()
-      signals["class changed"]:emit()
-    end
+  end
+  if gmcp.Char.Status.class ~= me.class then
+    me.class = gmcp.Char.Status.class
+    addDefs()
+    signals["class changed"]:emit()
   end
 
   signals.dragonform:emit()
