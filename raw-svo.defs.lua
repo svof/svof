@@ -2131,9 +2131,13 @@ do
   function defences.enablelifevision()
     if dict.lifevision then return end
 
-    defs_data_set("lifevision", { type = "general",
-      on = {"You narrow your eyes and blink rapidly, enhancing your vision to seek out sources of lifeforce in others.", "You already possess enhanced vision."},
-      def = "You have enhanced your vision to be able to see traces of lifeforce."})
+    local addedDefData = false
+
+    if not defs_data.lifevision then
+      defs_data_set("lifevision", { type = "general",
+        on = {"You narrow your eyes and blink rapidly, enhancing your vision to seek out sources of lifeforce in others.", "You already possess enhanced vision."},
+        def = "You have enhanced your vision to be able to see traces of lifeforce."})
+    end
 
     dict.lifevision = {
       physical = {
@@ -2168,7 +2172,18 @@ do
     sk.ignored_defences.general.t.lifevision = sk.ignored_defences.general.t.lifevision or false
     sk.ignored_defences_map["lifevision"] = "general"
 
-    defences.def_types["general"][#defences.def_types["general"]+1] = "lifevision"
+    local found = false
+
+    for _, def in ipairs(defences.def_types["general"]) do
+      if def == "lifevision" then
+        found = true
+        break
+      end
+    end
+
+    if not found then
+    	defences.def_types["general"][#defences.def_types["general"]+1] = "lifevision"
+    end
 
     local v = defs_data.lifevision;
     local k = "lifevision";
@@ -2258,10 +2273,14 @@ do
   function defences.enableshroud()
     if dict.shroud then return end
 
-    defs_data_set("shroud", { type = "general",
-      on = {"You draw your Shadowcloak about you and blend into your surroundings.", "You draw a Shadowcloak about you and blend into your surroundings.", "You draw a cloak of the Blood Maiden about you and blend into your surroundings."},
-      def = "Your actions are cloaked in secrecy.",
-      off = {"Your shroud dissipates and you return to the realm of perception.", "The flash of light illuminates you - you have been discovered!"}})
+    local addedDefData = false
+
+    if not defs_data.shroud then
+      defs_data_set("shroud", { type = "general",
+        on = {"You draw your Shadowcloak about you and blend into your surroundings.", "You draw a Shadowcloak about you and blend into your surroundings.", "You draw a cloak of the Blood Maiden about you and blend into your surroundings."},
+        def = "Your actions are cloaked in secrecy.",
+        off = {"Your shroud dissipates and you return to the realm of perception.", "The flash of light illuminates you - you have been discovered!"}})
+    end
 
     dict.shroud = {
       physical = {
@@ -2296,7 +2315,18 @@ do
     sk.ignored_defences.general.t.shroud = sk.ignored_defences.general.t.shroud or false
     sk.ignored_defences_map["shroud"] = "general"
 
-    defences.def_types["general"][#defences.def_types["general"]+1] = "shroud"
+    local found = false
+
+    for _, def in ipairs(defences.def_types["general"]) do
+      if def == "shroud" then
+        found = true
+        break
+      end
+    end
+
+    if not found then
+    	defences.def_types["general"][#defences.def_types["general"]+1] = "shroud"
+    end
 
     local v = defs_data.shroud;
     local k = "shroud";
