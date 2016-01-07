@@ -45775,8 +45775,10 @@ svo.startedfighting(&quot;monk&quot;, matches[2])</script>
                         <string>^(\w+) knocks your legs out from under you and sends you sprawling to the floor\.$</string>
                         <string>^(\w+) moves in and delivers a precision strike to your neck as you attack\.$</string>
                         <string>^(\w+) violently grabs your already damaged \w+ \w+, wrenches you off balance, then throws you violently to the ground\.$</string>
+                        <string>^Your only warning of the impending danger is a great shout from (\w+) as s?he comes launching up from below\. Then (?:his|her) heel drives into your chest with shocking power, driving you back to the earth below with bone jarring force\.$</string>
                     </regexCodeList>
                     <regexCodePropertyList>
+                        <integer>1</integer>
                         <integer>1</integer>
                         <integer>1</integer>
                         <integer>1</integer>
