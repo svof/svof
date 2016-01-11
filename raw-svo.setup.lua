@@ -591,9 +591,9 @@ me.wielded = {}
 me.oldhealth = 0
 
 $(
-local paths = {}; paths.oldpath = package.path; package.path = package.path..";./?.lua;./bin/?.lua;"; local pretty = require "pl.pretty"; package.path = paths.oldpath
+local paths = {}; paths.oldpath = package.path; package.path = package.path..";./?.lua;./bin/?.lua;"; local pretty = require "pl.pretty"; local stringx = require "pl.stringx"; local tablex = require "pl.tablex"; package.path = paths.oldpath
 
-_put(string.format("me.class = \"%s\"\n", type(class) == "string" and class or table.concat(class, ", ")))
+_put(string.format("me.class = \"%s\"\n", type(class) == "string" and stringx.title(class) or table.concat(tablex.imap(stringx.title, class), ", ")))
 _put("me.skills = ".. pretty.write(skills))
 )
 
