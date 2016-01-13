@@ -733,15 +733,14 @@ make_gnomes_work_async = function()
   signals.sysdatasendrequest:block(cnrl.processusercommand)
 
   if conf.commandecho and (conf.commandechotype == "fancy" or conf.commandechotype == "fancynewline") then
+    oldsend = send
     send = fancysend
 
     -- insert expandAlias (used in dofree, dor and similar) into the current batch, breaking the batch up in the process
     local oldexpandAlias = expandAlias
     if conf.batch then
       expandAlias = function(command, show)
-        tempTimer(0, function()
-          oldexpandAlias(command, (show and true or false)) -- see https://bugs.launchpad.net/mudlet/+bug/1456794
-        end)
+        sendc({ func = oldexpandAlias, args = {command, show} })
       end
     end
 
@@ -2278,6 +2277,13 @@ function sk.sendqueuecmd(...)
       sk.sendqueuel = sk.sendqueuel + #what + 1 -- +1 for the separator
       if not sk.sendcuringtimer then
         sk.sendcuringtimer = tempTimer(0, sk.dosendqueue)
+      end
+    elseif type(what) == "table" and what.func then
+      sk.dosendqueue() --flush send queue first
+      if what.args then
+        what.func(unpack(what.args))
+      else
+        what.func()
       end
     end
   end
