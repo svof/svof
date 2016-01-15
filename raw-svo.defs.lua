@@ -210,7 +210,8 @@ defs_data = pl.OrderedMap {}
       end
 
       return true
-    end}) -- added in xml w/ conf.gagbreath
+    end,
+    def = [[You are holding your breath.]]}) -- added in xml w/ conf.gagbreath
   defs_data:set("vigilance", { type = "general",
     on = {"You squint your eyes, more alert to potential danger.", "You are already vigilant."},
     mana = "little",
