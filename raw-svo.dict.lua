@@ -1880,31 +1880,6 @@ dict = {
         empty.eat_kelp()
       end
     },
-    focus = {
-      aspriority = 0,
-      spriority = 0,
-
-      isadvisable = function ()
-        return (affs.weakness and
-          not doingaction("weakness")) or false
-      end,
-
-      oncompleted = function ()
-        removeaff("weakness")
-        lostbal_focus()
-      end,
-
-      action = "focus",
-      onstart = function ()
-        send("focus", conf.commandecho)
-      end,
-
-      empty = function ()
-        lostbal_focus()
-
-        empty.focus()
-      end
-    },
     aff = {
       oncompleted = function ()
         addaff(dict.weakness)
