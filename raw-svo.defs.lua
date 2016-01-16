@@ -211,7 +211,9 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    def = [[You are holding your breath.]]}) -- added in xml w/ conf.gagbreath
+    def = [[You are holding your breath.]],
+    ondef = function() return "" end, --workaround to make it show up in defense lists...
+  }) -- added in xml w/ conf.gagbreath
   defs_data:set("vigilance", { type = "general",
     on = {"You squint your eyes, more alert to potential danger.", "You are already vigilant."},
     mana = "little",
