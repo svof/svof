@@ -15251,9 +15251,11 @@ svo.valid.remove_unknownany(&quot;clumsiness&quot;)</script>
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
                             <string>You lash out clumsily.</string>
+                            <string>^You lash out at (\w+) with (.+), but miss\.$</string>
                         </regexCodeList>
                         <regexCodePropertyList>
                             <integer>3</integer>
+                            <integer>1</integer>
                         </regexCodePropertyList>
                     </Trigger>
                     <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
