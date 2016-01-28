@@ -14859,10 +14859,12 @@ signals.dragonform:connect(function ()
 end)
 signals.systemstart:connect(function () signals.dragonform:emit() end)
 signals.gmcpcharstatus:connect(function ()
-  if gmcp.Char.Status.race and gmcp.Char.Status.race:find("Dragon") then
-    defences.got("dragonform")
-  else
-    defences.lost("dragonform")
+  if gmcp.Char.Status.race then
+    if gmcp.Char.Status.race:find("Dragon") then
+      defences.got("dragonform")
+    else
+      defences.lost("dragonform")
+    end
   end
 
   signals.dragonform:emit()
