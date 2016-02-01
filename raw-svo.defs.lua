@@ -1692,6 +1692,12 @@ end
   defs_data_set("circulate", { type = "weatherweaving",
     on = {"You begin circulating electricity throughout your body in a constant cycle.", "You are already circulating electricity throughout your body."},
     def = "You are circulating electricity throughout your body."})
+  defs_data:set("reflection", {
+    type = "weatherweaving",
+    def = "You are surrounded by one reflection of youself.",
+    defr = [[^You are surrounded by \d+ reflections? of yourself\.$]],
+    on = {"You cast a spell of reflection over yourself.", "This spell may only be used to cast one reflection on someone. If he or she already has one, it may not be used."},
+    off = {"One of your reflections has been destroyed! You have 0 left.", "All your reflections wink out of existence!"}})
 #end
 
 #if skills.pranks then
