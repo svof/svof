@@ -1150,7 +1150,7 @@ end
     on = "You yawn and slouch about as the spirit of the Sloth permeates your being.",
     offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A sloth spirit co-habits your body." })
-#if class == "sentinel" then
+#if class == "sentinel" or class == "allclasses" then
   defs_data_set("basilisk", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"} do
@@ -1221,7 +1221,7 @@ end
     on = "Your muscles feel like taut steel as the spirit of the Wolverine enters you.",
     offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A wolverine spirit co-habits your body." })
-#if class == "sentinel" then
+#if class == "sentinel" or class == "allclasses" then
   defs_data_set("jaguar", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
@@ -1278,7 +1278,7 @@ end
     end,
     on = "Images of cold, unseen lands drift before your mind's eye as the mysterious spirit of the Icewyrm dwells within your uneasy soul.",
     def = "An icewyrm spirit co-habits your body." })
-#if class == "druid" then
+#if class == "druid" or class == "allclasses" then
   defs_data_set("wyvern", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"} do
@@ -1692,7 +1692,7 @@ end
   defs_data_set("circulate", { type = "weatherweaving",
     on = {"You begin circulating electricity throughout your body in a constant cycle.", "You are already circulating electricity throughout your body."},
     def = "You are circulating electricity throughout your body."})
-  defs_data:set("reflection", {
+  defs_data_set("reflection", {
     type = "weatherweaving",
     def = "You are surrounded by one reflection of youself.",
     defr = [[^You are surrounded by \d+ reflections? of yourself\.$]],

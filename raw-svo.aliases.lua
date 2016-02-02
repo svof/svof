@@ -340,6 +340,9 @@ local c3,s3 =
   end
 
 #if skills.healing then
+#if class == "allclasses" then
+  if haveSkill("healing") then
+#end
   if not printCmdLine then
     cecho(string.format("    <a_blue>- <a_grey>Your highest Healing skill is <a_darkgrey>%s<a_grey>; using <a_darkgrey>%s<a_grey> Healing mode.\n", (conf.healingskill and conf.healingskill or "(none set)"), tostring(conf.usehealing)))
   else
@@ -349,8 +352,14 @@ local c3,s3 =
     echoLink(tostring(conf.usehealing), 'printCmdLine"vconfig usehealing "', "Click to change your healing mode - can be full, partial or none", true)
     cecho("<a_grey> Healing mode.\n")
   end
+#if class == "allclasses" then
+  end
+#end
 #end
 #if skills.kaido then
+#if class == "allclasses" then
+  if haveSkill("kaido") then
+#end
   if not printCmdLine then
     cecho(string.format("    <a_blue>- <a_grey>Transmuting if below <a_cyan>%d%%<a_grey> (<a_cyan>%dh<a_grey>); using <a_darkgrey>%s<a_grey> mode.\n", (conf.transmuteamount or "?"), (sys.transmuteamount or "?"), tostring(conf.transmute)))
   else
@@ -362,8 +371,14 @@ local c3,s3 =
     echoLink(tostring(conf.transmute), 'printCmdLine"vconfig transmute "', "Set the mode in which to use transmute in - can be replaceall, replacehealth, supplement or none.  \nreplaceall means that it won't sip health nor eat moss to heal your health, but only use transmute.  \nreplacehealth will mean that it will not sip health, but use moss and transmute.  \nsupplement means that it'll use all three ways to heal you, and none means that it won't use transmute.", true)
     cecho("<a_grey> mode.\n")
   end
+#if class == "allclasses" then
+  end
+#end
 #end
 #if skills.metamorphosis then
+#if class == "allclasses" then
+  if haveSkill("metamorphosis") then
+#end
   if not printCmdLine then
     cecho(string.format("    <a_blue>- <a_grey>Your highest morph skill is <a_darkgrey>%s<a_grey> (", (conf.morphskill and conf.morphskill or "(none set)")))
     echoLink("view defs you can do", 'svo.viewmetadefs()', "View defences you can put up")
@@ -375,6 +390,9 @@ local c3,s3 =
     echoLink("view defs you can do", 'svo.viewmetadefs()', "View defences you can put up")
     echo(").\n")
   end
+#if class == "allclasses" then
+  end
+#end
 #end
   if not conf.customprompt then
     cecho("    <a_blue>- ") fg("a_grey")
@@ -1111,7 +1129,11 @@ end
 #if skills.kaido then
   transmute = function()
     -- custom check here, not using isadvisable because this should ignore prone
-    if (not defc.dragonform and (stats.currenthealth < sys.transmuteamount) and not doingaction"healhealth" and not doingaction"transmute" and can_usemana()) then
+    if (not defc.dragonform and (stats.currenthealth < sys.transmuteamount) and not doingaction"healhealth" and not doingaction"transmute" and can_usemana()
+#if class == "allclasses" then
+    and haveSkill("kaido")
+#end
+    ) then
         doaction("transmute", "physical")
     end
   end

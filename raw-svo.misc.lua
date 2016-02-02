@@ -660,7 +660,11 @@ end
 function sk.fix_affs_and_defs()
   if affs.blindaff and ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
 #if class ~= "apostate" then
-   or defc.mindseye
+   or (defc.mindseye
+#if class == "allclasses" then
+	and not haveSkill("evileye")
+#end
+      )
 #end
    ) then
     removeaff("blindaff")
@@ -668,7 +672,11 @@ function sk.fix_affs_and_defs()
     echof("blindness is now considered a defence.")
   elseif defc.blind and not ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
 #if class ~= "apostate" then
-   or defc.mindseye
+   or (defc.mindseye
+#if class == "allclasses" then
+	and not haveSkill("evileye")
+#end
+      )
 #end
    ) then
     defences.lost("blind")
@@ -822,7 +830,9 @@ end)
 
 
 function setdefaultprompt()
-#if skills.shindo then
+#if class == "allclasses" then
+  config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^8@shin^6@kai^w-]], false)
+#elseif skills.shindo then
   config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@shin^w-]], false)
 #elseif skills.kaido then
   config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@kai^W-]], false)

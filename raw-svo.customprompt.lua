@@ -316,20 +316,44 @@ cpp.compute_promptstring = function()
         (defc.blackwind and "@" or "")..
         (defc.breath and "<blue>|<LightSlateGrey>b" or "")..
 #if skills.domination then
-        (bals.entities and "e" or "")..
+        (bals.entities
+#if class == "allclasses" then
+           and haveSkill("domination")
+#end
+           and "e" or "")..
 #end
 #if skills.healing then
-        (bals.healing and "E" or "")..
+        (bals.healing
+#if class == "allclasses" then
+           and haveSkill("healing")
+#end
+           and "E" or "")..
 #end
 #if skills.physiology then
-        (bals.humour and "h" or "")..
-        (bals.homunculus and "H" or "")..
+        (bals.humour
+#if class == "allclasses" then
+           and haveSkill("physiology")
+#end
+           and "h" or "")..
+        (bals.homunculus
+#if class == "allclasses" then
+           and haveSkill("physiology")
+#end
+           and "H" or "")..
 #end
 #if skills.venom then
-        (bals.shrugging and "s" or "")..
+        (bals.shrugging
+#if class == "allclasses" then
+           and haveSkill("venom")
+#end
+           and "s" or "")..
 #end
 #if skills.voicecraft then
-        (bals.voice and "v" or "")..
+        (bals.voice
+#if class == "allclasses" then
+           and haveSkill("voicecraft")
+#end
+           and "v" or "")..
 #end
         ("-<grey>")
 end
@@ -455,10 +479,10 @@ cp.definitions = {
 #if skills.kaido then
   ["^6"]             = "svo.cpp.compute_kai_colour()",
 #end
-#if skills.shindo then
-  ["^6"]             = "svo.cpp.compute_shin_colour()",
-#end
   ["^7"]             = "svo.cpp.compute_power_color()",
+#if skills.shindo then
+  ["^8"]             = "svo.cpp.compute_shin_colour()",
+#end
   ["^r"]             = "'<a_red>'",
   ["^R"]             = "'<a_darkred>'",
   ["^g"]             = "'<a_green>'",

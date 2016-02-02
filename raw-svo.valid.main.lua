@@ -3617,7 +3617,10 @@ function valid.soulcaged()
     defs.switch(conf.burstmode, false)
   end
 end
-#elseif skills.occultism then
+#else
+function valid.soulcaged() end
+#end
+#if skills.occultism then
 function valid.transmogged()
   reset.affs()
   reset.general()
@@ -3628,7 +3631,6 @@ function valid.transmogged()
   end
 end
 #else
-function valid.soulcaged() end
 function valid.transmogged() end
 #end
 
@@ -4083,7 +4085,7 @@ function valid.stripped_insomnia()
   end
 end
 
-#if skills.elementalism or skills.healing then
+#if skills.elementalism or skills.healing or skills.weatherweaving then
 function valid.lacking_channels()
   if usingbal("physical") then
     defs.lost_simultaneity()

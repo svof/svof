@@ -418,7 +418,7 @@ dict = {
         return ((stats.currenthealth < sys.siphealth or (sk.gettingfullstats and stats.currenthealth < stats.maxhealth)) and not actions.healhealth_sip and not shouldntsip())
 #else
         return ((stats.currenthealth < sys.siphealth or (sk.gettingfullstats and stats.currenthealth < stats.maxhealth)) and not actions.healhealth_sip  and not shouldntsip() and
-          (defc.dragonform or -- sip health if we're in dragonform, can't use Kaido
+          (not haveSkill("kaido") or -- sip health if we're in dragonform, can't use Kaido
             not can_usemana() or -- or we don't have enough mana (should be an option). The downside of this is that we won't get mana back via sipping, only moss, the time to being able to transmute will approach slower than straight sipping mana
             (affs.prone and not conf.transsipprone) or -- or we're prone and sipping while prone is off (better for bashing, not so for PK)
             (conf.transmute ~= "replaceall" and conf.transmute ~= "replacehealth" and not doingaction"transmute") -- or we're not in a replacehealth/replaceall mode, so we can still sip
@@ -455,7 +455,7 @@ dict = {
 #if not skills.kaido then
         return ((stats.currenthealth < sys.mosshealth) and (not doingaction ("healhealth") or (stats.currenthealth < (sys.mosshealth-600)))) or false
 #else
-        return ((stats.currenthealth < sys.mosshealth) and (not doingaction ("healhealth") or (stats.currenthealth < (sys.mosshealth-600))) and (defc.dragonform or not can_usemana() or affs.prone or (conf.transmute ~= "replaceall" and not doingaction"transmute"))) or false
+        return ((stats.currenthealth < sys.mosshealth) and (not doingaction ("healhealth") or (stats.currenthealth < (sys.mosshealth-600))) and (not haveSkill("kaido") or not can_usemana() or affs.prone or (conf.transmute ~= "replaceall" and not doingaction"transmute"))) or false
 #end
       end,
 
@@ -5313,7 +5313,11 @@ dict = {
       oncompleted = function ()
         if (defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
 #if class ~= "apostate" then
-         or defc.mindseye
+         or (defc.mindseye
+#if class == "allclasses" then
+	and not haveSkill("evileye")
+#end
+	)
 #end
          then
           defences.got("blind")
@@ -5890,7 +5894,11 @@ dict = {
       uncurable = true,
 
       isadvisable = function ()
-        if not next(affs) or not bals.balance or not bals.equilibrium or not bals.healing or conf.usehealing == "none" or not can_usemana() or doingaction "usehealing" or affs.transfixed or stats.currentwillpower <= 50 or defc.bedevil or ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm)) then return false end
+        if not next(affs) or not bals.balance or not bals.equilibrium or not bals.healing or conf.usehealing == "none" or not can_usemana() or doingaction "usehealing" or affs.transfixed or stats.currentwillpower <= 50 or defc.bedevil or ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))
+#if class == "allclasses" then
+or not haveSkill("healing")
+#end
+then return false end
 
         -- we calculate here if we can use Healing on any of the affs we got; cache the result as well
 
@@ -6128,7 +6136,7 @@ dict = {
       spriority = 0,
 
       isadvisable = function ()
-        return (conf.transmute ~= "none" and not defc.dragonform and (stats.currenthealth < sys.transmuteamount or (sk.gettingfullstats and stats.currenthealth < stats.maxhealth)) and not doingaction"healhealth" and not doingaction"transmute" and not codepaste.balanceful_codepaste() and can_usemana() and (not affs.prone or doingaction"prone") and not dict.transmute.transmutespam) or false
+        return (conf.transmute ~= "none" and haveSkill("kaido") and (stats.currenthealth < sys.transmuteamount or (sk.gettingfullstats and stats.currenthealth < stats.maxhealth)) and not doingaction"healhealth" and not doingaction"transmute" and not codepaste.balanceful_codepaste() and can_usemana() and (not affs.prone or doingaction"prone") and not dict.transmute.transmutespam) or false
       end,
 
       oncompleted = function()
@@ -6180,6 +6188,8 @@ dict = {
           and not doingaction "doparry" and (
 #if class == "monk" then
             conf.guarding
+#elseif class == "allclasses" then
+            (haveSkill("tekura") and conf.guarding) or conf.parry
 #else
             conf.parry
 #end
@@ -6187,6 +6197,9 @@ dict = {
 #if class ~= "blademaster" and class ~= "monk" then
           -- blademasters can parry with their sword sheathed
           and ((not sys.enabledgmcp or defc.dragonform) or (next(me.wielded) and sk.have_parryable()))
+#if class == "allclasses" then
+          and (haveSkill("tekura") or haveSkill("twoarts"))
+#end
 #end
           and not codepaste.balanceful_defs_codepaste()) or false
       end,
@@ -6202,11 +6215,14 @@ dict = {
         if sps.something_to_parry() then
           for name, limb in pairs(sp_config.parry_shouldbe) do
             if limb and limb ~= sps.parry_currently[name] then
-#if not skills.tekura then
-              send(string.format("%sparry %s", (not defc.dragonform and "" or "claw"), name), conf.commandecho)
-#else
-              send(string.format("%s %s", (not defc.dragonform and "guard" or "clawparry"), name), conf.commandecho)
+#if class == "allclasses" then
+              local cmd = (haveSkill("tekura") and "guard") or (defc.dragonform and "clawparry") or "parry"
+#elseif not skills.tekura then
+              local cmd = not defc.dragonform and "" or "clawparry"
+else
+              local cmd = not defc.dragonform and "guard" or "clawparry"
 #end
+              send(string.format("%s %s", cmd, name), conf.commandecho)
               return
             end
           end
@@ -6214,11 +6230,14 @@ dict = {
           -- check if we need to unparry in manual
           for limb, status in pairs(sps.parry_currently) do
             if status ~= sp_config.parry_shouldbe[limb] then
-#if not skills.tekura then
-             send(string.format("%sparry nothing", (not defc.dragonform and "" or "claw")), conf.commandecho)
-#else
-             send(string.format("%s nothing", (not defc.dragonform and "guard" or "clawparry")), conf.commandecho)
+#if class == "allclasses" then
+              local cmd = (haveSkill("tekura") and "guard") or (defc.dragonform and "clawparry") or "parry"
+#elseif not skills.tekura then
+              local cmd = not defc.dragonform and "" or "clawparry"
+else
+              local cmd = not defc.dragonform and "guard" or "clawparry"
 #end
+              send(string.format("%s nothing", cmd), conf.commandecho)
              return
             end
           end
@@ -6226,11 +6245,14 @@ dict = {
           -- got here? nothing to do...
           sys.sp_satisfied = true
         elseif sp_config.priority[1] and not sps.parry_currently[sp_config.priority[1]] then
-#if not skills.tekura then
-          send(string.format("%sparry %s", (not defc.dragonform and "" or "claw"), sp_config.priority[1]), conf.commandecho)
-#else
-          send(string.format("%s %s", (not defc.dragonform and "guard" or "clawparry"), sp_config.priority[1]), conf.commandecho)
+#if class == "allclasses" then
+              local cmd = (haveSkill("tekura") and "guard") or (defc.dragonform and "clawparry") or "parry"
+#elseif not skills.tekura then
+              local cmd = not defc.dragonform and "" or "clawparry"
+else
+              local cmd = not defc.dragonform and "guard" or "clawparry"
 #end
+              send(string.format("%s %s", cmd, sp_config.priority[1]), conf.commandecho)
         else -- got here? nothing to do...
           sys.sp_satisfied = true end
       end,
@@ -6289,7 +6311,12 @@ dict = {
       isadvisable = function ()
         return (affs.prone and (not affs.paralysis or doingaction"paralysis")
 #if skills.weaponmastery then
-          and (sk.didfootingattack or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm))
+          and (
+               (sk.didfootingattack
+#if class == "allclasses" then
+                 and haveSkill("weaponmastery")
+#end
+               ) or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm))
 #else
           and bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm
 #end
@@ -6313,7 +6340,11 @@ dict = {
 #end
       onstart = function ()
 #if skills.weaponmastery then
-        if sk.didfootingattack and conf.recoverfooting then
+        if sk.didfootingattack and conf.recoverfooting 
+#if class == "allclasses" then
+          and haveSkill("weaponmastery")
+#end
+        then
           send("recover footing", conf.commandecho)
           if affs.blackout then send("recover footing", conf.commandecho) end
         else
@@ -7422,7 +7453,7 @@ dict = {
       spriority = 0,
 
       isadvisable = function ()
-        return (conf.dwinnu and bals.voice and (affs.webbed or affs.roped) and codepaste.writhe() and not affs.paralysis and not defc.dragonform) or false
+        return (conf.dwinnu and bals.voice and (affs.webbed or affs.roped) and codepaste.writhe() and not affs.paralysis and haveSkill("voicecraft")) or false
       end,
 
       oncompleted = function ()
@@ -7446,7 +7477,7 @@ dict = {
       uncurable = true,
 
       isadvisable = function ()
-        if not (conf.rage and bals.rage and (affs.inlove or affs.justice or affs.generosity or affs.pacifism or affs.peace) and not defc.dragonform and can_usemana()) then return false end
+        if not (conf.rage and bals.rage and (affs.inlove or affs.justice or affs.generosity or affs.pacifism or affs.peace) and haveSkill("chivalry") and can_usemana()) then return false end
 
         for name, func in pairs(rage) do
           if not me.disabledragefunc[name] then
@@ -9500,12 +9531,17 @@ local function addDefs()
             if defc.block and ((conf.keepup and not defkeepup[defs.mode].block and not sys.deffing) or (sys.deffing and not defdefup[defs.mode].block)) and not doingaction"block" then return true end
 
             return (((sys.deffing and defdefup[defs.mode].block) or (conf.keepup and defkeepup[defs.mode].block and not sys.deffing)) and (not defc.block or dict.block.physical.blockingdir ~= conf.blockingdir) and not doingaction"block" and (not sys.enabledgmcp or (gmcp.Room and gmcp.Room.Info.exits[conf.blockingdir])) and not codepaste.balanceful_codepaste() and not affs.prone
-#if skills.metamorphosis then
+#if class == "allclasses" then
+            and (haveSkill("chivalry") or (haveSkill("subterfuge") and not defc.phase) or
+                (haveSkill("metamorphosis") and (defc.elephant or defc.hydra)) or defc.dragonform or
+                defc.riding)
+#elseif skills.metamorphosis then
             and (defc.riding or defc.elephant or defc.dragonform or defc.hydra)
-#end
-#if skills.subterfuge then
+#elseif skills.subterfuge then
       -- you can't block while phased
             and not defc.phase
+#else
+            and (defc.riding or defc.dragonform)
 #end
             ) or false
           end,
@@ -9618,7 +9654,13 @@ local function addDefs()
           oncompleted = function ()
             defences.got("frost")
 #if skills.metamorphosis then
+#if class == "allclasses" then
+            if haveSkill("metamorphosis") then
+#end
             defences.got("temperance")
+#if class == "allclasses" then
+            end
+#end
 #end
           end,
 
@@ -9639,7 +9681,13 @@ local function addDefs()
         gone = {
           oncompleted = function ()
 #if skills.metamorphosis then
+#if class == "allclasses" then
+            if haveSkill("metamorphosis") then
+#end
            defences.lost("temperance")
+#if class == "allclasses" then
+            end
+#end
 #end
           end
         }
@@ -10075,7 +10123,11 @@ local function addDefs()
           uncurable = true,
 
           isadvisable = function ()
-            if not (not affs.weakness and not defc.dragonform and bals.fitness and not codepaste.balanceful_defs_codepaste()) then
+            if affs.weakness or not bals.fitness or codepaste.balanceful_defs_codepaste()
+#if class == "allclasses" then
+              or not haveSkill({"chivalry", "striking", "kaido"})
+#end
+            then
               return false
             end
 
@@ -10263,10 +10315,18 @@ local function addDefs()
           -- with blind skill: ignore serverside can use skill, or if it's not to be deffed up atm
           return
 #if skills.shindo then
-            (conf.shindoblind and not defc.dragonform) or
+            (conf.shindoblind and not defc.dragonform
+#if class == "allclasses" then
+              and haveSkill("shindo")
+#end
+            ) or
 #end
 #if skills.kaido then
-            (conf.kaidoblind and not defc.dragonform) or
+            (conf.kaidoblind and not defc.dragonform
+#if class == "allclasses" then
+              and haveSkill("kaido")
+#end
+            ) or
 #end
             not ((sys.deffing and defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind))
         end,
@@ -10278,10 +10338,18 @@ local function addDefs()
           isadvisable = function ()
             return (not affs.scalded and
 #if skills.shindo then
-              (defc.dragonform or (not conf.shindoblind)) and
+              (defc.dragonform or not conf.shindoblind
+#if class == "allclasses" then
+                or not haveSkill("shindo")
+#end
+              ) and
 #end
 #if skills.kaido then
-              (defc.dragonform or (not conf.kaidoblind)) and
+              (defc.dragonform or not conf.kaidoblind
+#if class == "allclasses" then
+                or not haveSkill("kaido")
+#end
+              ) and
 #end
             ((sys.deffing and defdefup[defs.mode].blind and not defc.blind) or (conf.keepup and defkeepup[defs.mode].blind and not defc.blind)) and not doingaction"waitingonblind") or false
           end,
@@ -10305,34 +10373,14 @@ local function addDefs()
             lostbal_herb()
           end
         },
-#if skills.shindo then
+#if skills.shindo or skills.kaido then
         misc = {
           aspriority = 0,
           spriority = 0,
           def = true,
 
           isadvisable = function ()
-            return (conf.shindoblind and not defc.dragonform and ((sys.deffing and defdefup[defs.mode].blind and not defc.blind) or (conf.keepup and defkeepup[defs.mode].blind and not defc.blind)) and not doingaction"waitingonblind") or false
-          end,
-
-          oncompleted = function ()
-            doaction(dict.waitingonblind.waitingfor)
-          end,
-
-          action = "blind",
-          onstart = function ()
-            send("blind", conf.commandecho)
-          end
-        },
-#end
-#if skills.kaido then
-        misc = {
-          aspriority = 0,
-          spriority = 0,
-          def = true,
-
-          isadvisable = function ()
-            return (conf.kaidoblind and not defc.dragonform and ((sys.deffing and defdefup[defs.mode].blind and not defc.blind) or (conf.keepup and defkeepup[defs.mode].blind and not defc.blind)) and not doingaction"waitingonblind") or false
+            return ((conf.shindoblind and haveSkill("shindo")) or (conf.kaidoblind and haveSkill("kaido"))) and ((sys.deffing and defdefup[defs.mode].blind and not defc.blind) or (conf.keepup and defkeepup[defs.mode].blind and not defc.blind)) and not doingaction"waitingonblind"
           end,
 
           oncompleted = function ()
@@ -10373,10 +10421,18 @@ local function addDefs()
           -- with deaf skill: ignore serverside can use skill, or if it's not to be deffed up atm
           return
 #if skills.shindo then
-            (conf.shindodeaf and not defc.dragonform) or
+            (conf.shindodeaf and not defc.dragonform
+#if class == "allclasses" then
+              and haveSkill("shindo")
+#end
+            ) or
 #end
 #if skills.kaido then
-            (conf.kaidodeaf and not defc.dragonform) or
+            (conf.kaidodeaf and not defc.dragonform
+#if class == "allclasses" then
+              and haveSkill("kaido")
+#end
+            ) or
 #end
             not ((sys.deffing and defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf))
         end,
@@ -10388,10 +10444,18 @@ local function addDefs()
           isadvisable = function ()
             return (not defc.deaf and
 #if skills.shindo then
-             (defc.dragonform or not conf.shindodeaf) and
+             (defc.dragonform or not conf.shindodeaf
+#if class == "allclasses" then
+                or not haveSkill("shindo")
+#end
+             ) and
 #end
 #if skills.kaido then
-             (defc.dragonform or not conf.kaidodeaf) and
+             (defc.dragonform or not conf.kaidodeaf
+#if class == "allclasses" then
+                or not haveSkill("kaido")
+#end
+             ) and
 #end
              ((sys.deffing and defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf)) and not doingaction("waitingondeaf")) or false
           end,
@@ -10417,27 +10481,7 @@ local function addDefs()
           def = true,
 
           isadvisable = function ()
-            return (not defc.deaf and conf.shindodeaf and not defc.dragonform and ((sys.deffing and defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf)) and not doingaction("waitingondeaf")) or false
-          end,
-
-          oncompleted = function ()
-            doaction(dict.waitingondeaf.waitingfor)
-          end,
-
-          action = "deaf",
-          onstart = function ()
-            send("deaf", conf.commandecho)
-          end
-        },
-#end
-#if skills.kaido then
-        misc = {
-          aspriority = 0,
-          spriority = 0,
-          def = true,
-
-          isadvisable = function ()
-            return (not defc.deaf and conf.kaidodeaf and not defc.dragonform and ((sys.deffing and defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf)) and not doingaction("waitingondeaf")) or false
+            return (not defc.deaf and ((conf.shindodeaf and haveSkill("shindo")) or (conf.kaidodeaf and haveSkill("kaido"))) and ((sys.deffing and defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf)) and not doingaction("waitingondeaf")) or false
           end,
 
           oncompleted = function ()
@@ -10482,7 +10526,7 @@ local function addDefs()
           uncurable = true,
 
           isadvisable = function ()
-            return (defc.bloodsworn and conf.bloodswornoff and stats.currenthealth <= sys.bloodswornoff and not doingaction"bloodsworntoggle" and not defc.dragonform) or false
+            return (defc.bloodsworn and conf.bloodswornoff and stats.currenthealth <= sys.bloodswornoff and not doingaction"bloodsworntoggle" and haveSkill("devotion")) or false
           end,
 
           oncompleted = function ()
@@ -10680,13 +10724,13 @@ local function addDefs()
             -- strip class defences that don't stay through dragon
             for def, deft in defs_data:iter() do
               local skillset = deft.type
-              if skillset ~= "general" and skillset ~= "enchantment" and skillset ~= "dragoncraft" and not deft.staysindragon and defc[def] then
+              if not haveSkill(skillset) and not deft.staysindragon and defc[def] then
                 defences.lost(def)
               end
             end
 
             -- lifevision, via artefact, has to be removed as well
-#if not skills.necromancy then
+#if not skills.necromancy or class == "allclasses" then
             if defc.lifevision then defences.lost("lifevision") end
 #end
 
@@ -10934,28 +10978,7 @@ local function addDefs()
 
           oncompleted = function ()
             defences.got("mindseye")
-
-            -- check if we need to re-classify deaf
-            if (defc.deaf or affs.deafaff) and (defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye then
-              defences.got("deaf")
-              removeaff("deafaff")
-            elseif (defc.deaf or affs.deafaff) then
-              defences.lost("deaf")
-              addaff(dict.deafaff)
-            end
-
-            -- check if we need to re-classify blind
-            if (defc.blind or affs.blindaff) and (defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
-#if class ~= "apostate" then
-             or defc.mindseye
-#end
-             then
-              defences.got("blind")
-              removeaff("blindaff")
-            elseif (defc.blind or affs.blindaff) then
-              defences.lost("blind")
-              addaff(dict.blindaff)
-            end
+            sk.fix_affs_and_defs()
           end,
 
           action = "touch mindseye",
@@ -11111,7 +11134,7 @@ local function addDefs()
           actions = {"touch shield", "angel aura"},
           onstart = function ()
 #if skills.spirituality then
-            if defc.dragonform or not defc.summon or stats.currentwillpower <= 10 then
+            if not haveSkill("spirituality") or not defc.summon or stats.currentwillpower <= 10 then
               send("touch shield", conf.commandecho)
             else
               send("angel aura", conf.commandecho)
@@ -12389,7 +12412,7 @@ local function addDefs()
           end,
         }
       },
-#if class == "sentinel" then
+#if class == "sentinel" or class == "allclasses" then
       basilisk = {
         physical = {
           balanceful_act = true,
@@ -12566,7 +12589,7 @@ local function addDefs()
           end,
         }
       },
-#if class == "sentinel" then
+#if class == "sentinel" or class == "allclasses" then
       jaguar = {
         physical = {
           balanceful_act = true,
@@ -12708,7 +12731,7 @@ local function addDefs()
           end,
         }
       },
-#if class == "druid" then
+#if class == "druid" or class == "allclasses" then
       wyvern = {
         physical = {
           balanceful_act = true,

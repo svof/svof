@@ -1854,8 +1854,10 @@ function sk.clearmorphs()
   for _, morph in ipairs
 #if class == "druid" then
     {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
-#else
+#elseif class == "sentinel" then
     {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm"}
+#else
+    {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
 #end
      do
     defences.lost(morph)
@@ -1865,8 +1867,10 @@ end
 function sk.inamorph()
 #if class == "druid" then
   local t = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
-#else
+#elseif class == "sentinel" then
   local t = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm"}
+#else
+  local t = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
 #end
   for i = 1, #t do
     if defc[t[i]] then return true end
@@ -1878,8 +1882,10 @@ end
 function sk.validmorphskill(name)
 #if class == "druid" then
   for _, morph in ipairs{"squirrel", "powers", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "bonding", "nightingale", "elephant", "transmorph", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "affinity", "wyvern", "hydra", "truemorph"} do
-#else
+#elseif class == "sentinel" then
   for _, morph in ipairs{"squirrel", "powers", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "bonding", "nightingale", "elephant", "transmorph", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "affinity", "truemorph"} do
+#else
+  for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"} do
 #end
     if name:lower() == morph then return true end
   end
@@ -1901,13 +1907,17 @@ function sk.updatemorphskill()
   sk.morphsforskill = {
 #if class == "druid"   then
     elusiveness = { "hyena", "wolverine" },
+#elseif class == "sentinel" then
+    elusiveness = { "basilisk", "hyena", "wolverine", "jaguar" },
 #else
     elusiveness = { "basilisk", "hyena", "wolverine", "jaguar" },
 #end
 #if class == "druid" then
     fitness = { "wolf", "cheetah", "hyena", "elephant", "wyvern", "hydra" },
-#else
+#elseif class == "sentinel" then
     fitness = { "wolf", "cheetah", "hyena", "elephant", "jaguar"},
+#else
+    fitness = { "wolf", "cheetah", "hyena", "elephant", "wyvern", "hydra", "jaguar" },
 #end
 #if class == "druid" then
     flame = { "wyvern" },
@@ -1917,14 +1927,18 @@ function sk.updatemorphskill()
     lyre = { "nightingale" },
 #if class == "druid" then
     nightsight = { "wildcat", "wolf", "cheetah", "owl", "hyena", "condor", "wolverine", "eagle", "icewyrm", "wyvern", "hydra" },
-#else
+#elseif class == "sentinel" then
     nightsight = { "wildcat", "wolf", "cheetah", "owl", "hyena", "condor", "wolverine", "jaguar", "eagle", "icewyrm" },
+#else
+    nightsight = { "wildcat", "wolf", "cheetah", "owl", "hyena", "condor", "wolverine", "jaguar", "eagle", "icewyrm", "wyvern", "hydra" },
 #end
     rest = { "sloth" },
 #if class == "druid" then
     resistance = { "hydra" },
-#else
+#elseif class == "sentinel" then
     resistance = { "basilisk", "jaguar" },
+#else
+    resistance = { "basilisk", "jaguar", "hydra" },
 #end
 #if class == "druid" then
     stealth = { "hyena" },
@@ -1933,13 +1947,17 @@ function sk.updatemorphskill()
 #end
 #if class == "druid" then
     temperance = { "icewyrm", "wyvern", "hydra" },
-#else
+#elseif class == "sentinel" then
     temperance = { "icewyrm" },
+#else
+    temperance = { "icewyrm", "wyvern", "hydra" },
 #end
 #if class == "druid" then
     vitality = { "bear", "elephant", "icewyrm", "wyvern", "hydra" }
-#else
+#elseif class == "sentinel" then
     vitality = { "bear", "elephant", "jaguar", "icewyrm" }
+#else
+    vitality = { "bear", "elephant", "icewyrm", "wyvern", "hydra" }
 #end
   }
   sk.skillmorphs = {}
@@ -1953,9 +1971,10 @@ function sk.updatemorphskill()
   local newskillmorphs = {}
 #if class == "druid" then
   for _, morph in pairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"} do
-#else
+#elseif class == "sentinel" then
   for _, morph in pairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm"} do
-
+#else
+  for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"} do
 #end
     newskillmorphs[morph] = sk.skillmorphs[morph]
     if svo.conf.morphskill == morph then break end

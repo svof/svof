@@ -127,8 +127,12 @@ local function check_promptflags()
 
   if pflags.b and not defc.blind and not affs.blindaff then
     if ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
-#if class ~= "apostate" then
-     or defc.mindseye
+#if skills.evileye then
+     or (defc.mindseye
+#if class == "allclasses" then
+         and not haveSkill("evileye")
+#end
+     )
 #end
      ) then
       defences.got("blind")
@@ -164,23 +168,47 @@ local function check_promptflags()
   end
 
 #if skills.shindo then
+#if class == "allclasses" then
+  if haveSkill("shindo") then
+#end
   stats.shin = line:match("%-(%d+)%-") or line:match("%-(%d+) Vote%-") or 0
+#if class == "allclasses" then
+  end
+#end
 #end
 
 #if skills.kaido then
+#if class == "allclasses" then
+  if haveSkill("kaido") then
+#end
   stats.kai = line:match("%-(%d+)%-") or line:match("%-(%d+) Vote%-") or 0
+#if class == "allclasses" then
+  end
+#end
 #end
 
 #if skills.necromancy then
-  if pflags.at then defences.got("blackwind") else defences.lost("blackwind") end
+  if pflags.at
+#if class == "allclasses" then
+    and haveSkill("necromancy")
+#end
+  then defences.got("blackwind") else defences.lost("blackwind") end
 #end
 
 #if skills.occultism then
-  if pflags.at then defences.got("astralform") else defences.lost("astralform") end
+  if pflags.at
+#if class == "allclasses" then
+    and haveSkill("occultism")
+#end
+  then defences.got("astralform") else defences.lost("astralform") end
 #end
 
 #if skills.subterfuge then
-  if pflags.at then defences.got("phase") else defences.lost("phase") end
+  if pflags.at
+#if class == "allclasses" then
+    and haveSkill("subterfuge")
+#end
+  then defences.got("phase") else defences.lost("phase") end
 #end
 
   local oldgametarget, oldgametargethp = me.gametarget, me.gametargethp
@@ -194,7 +222,13 @@ local function check_promptflags()
   end
 
 #if skills.weaponmastery then
+#if class == "allclasses" then
+  if haveSkill("weaponmastery") then
+#end
   stats.weaponmastery = line:match("k(%d+)")
+#if class == "allclasses" then
+  end
+#end
 #end
 
   me.servertime = line:match("-s(%d+:%d+:%d+%.%d+)")

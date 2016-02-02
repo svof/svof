@@ -11,11 +11,12 @@ install.ids = install.ids or {}
 -- same name as conf
 -- function to say have/don't have
 local installdata = {
-#if not skills.tekura then
+#if not skills.tekura or class == "allclasses" then
   parry = {
     gmcp = {group = "weaponry", name = "parrying"},
   },
-#else
+#end
+#if skills.tekura then
   parry = {
     gmcp = {group = "tekura", name = "guarding"},
   },
@@ -72,18 +73,22 @@ local installdata = {
     gmcp = {group = "voicecraft", name = "dwinnu"},
   },
 #end
-#if skills.chivalry or skills.shindo or skills.kaido then
-  fitness = {
 #if skills.chivalry then
+  chivalryfitness = {
     command = "ab chivalry fitness",
     gmcp = {group = "chivalry", name = "fitness"},
-#elseif skills.kaido then
+  },
+#end
+#if skills.kaido then
+  kaidofitness = {
     command = "ab kaido fitness",
     gmcp = {group = "kaido", name = "fitness"},
-#elseif skills.shindo then
+  },
+#end
+#if skills.shindo then
+  shindofitness = {
     command = "ab striking fitness",
     gmcp = {group = "striking", name = "fitness"},
-#end
   },
 #end
 #if skills.chivalry then
@@ -97,6 +102,14 @@ local installdata = {
   },
   shindoblind = {
     gmcp = {group = "shindo", name = "blind"},
+  },
+#end
+#if skills.kaido then
+  kaidodeaf = {
+    gmcp = {group = "kaido", name = "deaf"},
+  },
+  kaidoblind = {
+    gmcp = {group = "kaido", name = "blind"},
   },
 #end
 #if skills.weaponmastery then
@@ -195,7 +208,7 @@ function installstart(fresh)
 
 
   if sys.enabledgmcp then
-    echof("Starting auto-configuration - going to detect which skills and pipes you've got. Please wait 5 seconds for the questions to start.")
+    echof("Starting auto-configuration - going to detect which skills and pipes you've got (currently). Please wait 5 seconds for the questions to start.")
     printCmdLine("Please wait, doing auto-configuration...")
     echo"\n"
   else
@@ -351,11 +364,11 @@ function install.checkskilllist()
 #if skills.metamorphosis then
   elseif t.group == "metamorphosis" then
     for _, k in ipairs{"truemorph", "hydra", "wyvern", "affinity", "icewyrm", "gorilla", "eagle", "jaguar", "wolverine", "transmorph", "elephant", "nightingale", "bonding", "bear", "basilisk", "sloth", "gopher", "condor", "hyena", "owl", "cheetah", "jackdaw", "turtle", "wolf", "wildcat", "powers", "squirrel"} do
-    if contains(t.list, k:title()) then
-      config.set("morphskill", k, true)
-      break
+      if contains(t.list, k:title()) then
+        config.set("morphskill", k, true)
+        break
+      end
     end
-  end
 
   installclear("morphskill")
 #end

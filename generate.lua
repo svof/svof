@@ -190,7 +190,7 @@ local function dowork(systemfor, release, own)
 
   -- does the preprocessing stages and outputs into the bin/ folder
   for _,j in ipairs(files) do
-    local result, message = pcall(preprocess, {input = {"raw-".. j ..".lua"}, output = {"bin/".. j ..".lua"}, lookup = tbl})
+    local result, message = preprocess({input = {"raw-".. j ..".lua"}, output = {"bin/".. j ..".lua"}, lookup = tbl})
     if not result then print("Failed on "..j.."; "..message) return end
   end
 

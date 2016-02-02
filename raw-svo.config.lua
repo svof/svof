@@ -672,7 +672,7 @@ config_dict = pl.OrderedMap {
     end end,
     installstart = function () conf.repeatcmd = 0 end
   }},
-#if not skills.tekura then
+#if not skills.tekura or class == "allclasses" then
 #conf_name = "parry"
   {$(conf_name) = {
     type = "boolean",
@@ -682,7 +682,8 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.parry = nil end,
     installcheck = function () echof("Are you able to use parry?") end
   }},
-#else
+#end
+#if skills.tekura then
 #conf_name = "guarding"
   {$(conf_name) = {
     type = "boolean",
@@ -998,11 +999,24 @@ config_dict = pl.OrderedMap {
     end,
     onset = function ()
       conf.morphskill = conf.morphskill:lower()
-      local t = {powers = "squirrel", bonding = "bear", transmorph = "elephant", affinity = "icewyrm",
-#if class == "druid" then
-      truemorph = "hydra"}
-#else
-      truemorph = "icewyrm"}
+      local t = {powers = "squirrel", bonding = "bear", transmorph = "elephant", affinity = "icewyrm"}
+#if class == "allclasses" then
+      if me.class == "Druid" then
+#end
+#if class == "allclasses" or class == "druid" then
+      t["truemorph"] = "hydra"
+#end
+#if class == "allclasses" then
+      end
+#end
+#if class == "allclasses" then
+      if me.class == "Sentinel" then
+#end
+#if class == "allclasses" or class == "sentinel" then
+      t["truemorph"] = "icewyrm"
+#end
+#if class == "allclasses" then
+      end
 #end
       if t[conf.morphskill] then
         echof("Thanks! I've set your morphskill to '%s' though, because %s isn't a morph.", t[conf.morphskill], conf.morphskill)
@@ -1742,7 +1756,9 @@ config_dict = pl.OrderedMap {
       fg(defaultcolour)
       echo("Upon starbursting, will go into ") fg("a_cyan")
       echoLink(tostring(conf.burstmode), 'printCmdLine"vconfig burstmode "',
-#if skills.necromancy then
+#if class == "allclasses" then
+      "Set the defences mode system should autoswitch to upon starburst/soulcage/transmog",
+#elseif skills.necromancy then
       "Set the defences mode system should autoswitch to upon starburst/soulcage",
 #elseif skills.occultism then
       "Set the defences mode system should autoswitch to upon starburst/transmog",
@@ -1754,7 +1770,9 @@ config_dict = pl.OrderedMap {
     end,
     onset = function ()
       conf.burstmode = conf.burstmode:lower()
-#if skills.necromancy then
+#if class == "allclasses" then
+      echof("Upon starburst/soulcage/transmogrify, will go into %s defences mode.", conf.burstmode)
+#elseif skills.necromancy then
       echof("Upon starburst/soulcage, will go into %s defences mode.", conf.burstmode)
 #elseif skills.occultism then
       echof("Upon starburst/transmogrify, will go into %s defences mode.", conf.burstmode)
