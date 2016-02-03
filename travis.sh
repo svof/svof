@@ -1,6 +1,13 @@
 lua precommit.lua "$TRAVIS_TAG"
 lua generate.lua -r "$TRAVIS_TAG"
 
+stat=$?
+if [ $stat -ne 0 ]
+then
+  echo "Error compiling release, exitini."
+  exit $stat
+fi
+
 if [ -z "$TRAVIS_TAG" ]
 then
   echo "No tag, no update in documentation needed."
