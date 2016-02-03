@@ -601,7 +601,8 @@ me.oldhealth = 0
 $(
 local paths = {}; paths.oldpath = package.path; package.path = package.path..";./?.lua;./bin/?.lua;"; local pretty = require "pl.pretty"; local stringx = require "pl.stringx"; local tablex = require "pl.tablex"; package.path = paths.oldpath
 
-_put(string.format("me.class = \"%s\"\n", type(class) == "string" and stringx.title(class) or table.concat(tablex.imap(stringx.title, class), ", ")))
+_put(string.format("me.class = \"%s\"\n", type(class) == "string" and stringx.title(class) or table.concat(tablex.imap(stringx.title, class), ", "))) --used in the system to determine current class, updated via gmcp
+_put(string.format("forclass = \"%s\"\n", type(class) == "string" and stringx.title(class) or table.concat(tablex.imap(stringx.title, class), ", "))) --used to download the same version of the system, should not be changed at all.
 _put("me.skills = ".. pretty.write(skills))
 )
 

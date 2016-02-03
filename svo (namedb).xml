@@ -2641,7 +2641,7 @@ send(matches[2]..&quot; enemies&quot;, false)</script>
             </Alias>
             <Alias isActive="yes" isFolder="no">
                 <name>ndb alias cheatsheet</name>
-                <script>local class = svo.me.class:title()
+                <script>local class = svo.forclass:title()
 
 -- load help data in
 if not ndb.help then
