@@ -6219,7 +6219,7 @@ then return false end
               local cmd = (haveSkill("tekura") and "guard") or (defc.dragonform and "clawparry") or "parry"
 #elseif not skills.tekura then
               local cmd = not defc.dragonform and "" or "clawparry"
-else
+#else
               local cmd = not defc.dragonform and "guard" or "clawparry"
 #end
               send(string.format("%s %s", cmd, name), conf.commandecho)
@@ -6234,7 +6234,7 @@ else
               local cmd = (haveSkill("tekura") and "guard") or (defc.dragonform and "clawparry") or "parry"
 #elseif not skills.tekura then
               local cmd = not defc.dragonform and "" or "clawparry"
-else
+#else
               local cmd = not defc.dragonform and "guard" or "clawparry"
 #end
               send(string.format("%s nothing", cmd), conf.commandecho)
@@ -6249,7 +6249,7 @@ else
               local cmd = (haveSkill("tekura") and "guard") or (defc.dragonform and "clawparry") or "parry"
 #elseif not skills.tekura then
               local cmd = not defc.dragonform and "" or "clawparry"
-else
+#else
               local cmd = not defc.dragonform and "guard" or "clawparry"
 #end
               send(string.format("%s %s", cmd, sp_config.priority[1]), conf.commandecho)
