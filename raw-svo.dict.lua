@@ -73,28 +73,6 @@ function basicdef(which, command, balanceless, gamename, undeffable)
 end
 )
 
--- skill may be a string or a table
-local function haveSkill(skill)
-  --sanitize the skill to test first
-  if not skill then skill = "general" end
-  if type(skill) == "string" then skill = { skill } end
-
-  if defc.dragonform then
-    for _, s in ipairs(skill) do
-      if s == "dragoncraft" or s == "general" then
-        return true
-      end
-    end
-  else
-    for _, s in ipairs(skill) do
-      if table.contains(classskills[me.class:lower()], s) or s == "general" then
-        return true
-      end
-    end
-  end
-  return false
-end
-
 
 local dict_balanceful = {}
 local dict_balanceless = {}
