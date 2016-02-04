@@ -86,6 +86,12 @@ local function deepcopy(object)
   return _copy(object)
 end
 
+local classskills = $(
+local paths = {}; paths.oldpath = package.path; package.path = package.path..";./?.lua;./bin/?.lua;"; local pretty = require "pl.pretty"; package.path = paths.oldpath
+
+_put(pretty.write(classskills))
+)
+
 -- skill may be a string or a table
 local function haveSkill(skill)
   --sanitize the skill to test first
@@ -107,12 +113,6 @@ local function haveSkill(skill)
   end
   return false
 end
-
-local classskills = $(
-local paths = {}; paths.oldpath = package.path; package.path = package.path..";./?.lua;./bin/?.lua;"; local pretty = require "pl.pretty"; package.path = paths.oldpath
-
-_put(pretty.write(classskills))
-)
 
 local affs        = {}
 local balanceless = {}
