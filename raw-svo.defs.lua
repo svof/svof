@@ -73,6 +73,9 @@ local function defs_data_set(skill, tbl)
       existingData.specialskip[tbl.type] = tbl.specialskip
       existingData.type[#existingData.type + 1] = tbl.type
     end
+    if existingData.nodef and not tbl.nodef then
+      existingData.nodef = false
+    end
     for _, lines in ipairs({"on", "off", "onr", "offr", "on_only", "onenable", "ondef", "defr", "def"}) do
       if tbl[lines] then
         if type(tbl[lines]) ~= "table" then
@@ -3005,8 +3008,10 @@ signals.systemstart:connect(function ()
       end
     end
 
-    if not v.nodef and not v.custom_def_type then
+    if not v.custom_def_type then
       defs["def_"..sk.sanitize(k)] = function ()
+
+        if not actions.defcheck_physical then return end
 
         -- if we're in dragonform and this isn't a general or a dragoncraft def, then remember it as an additional def - not a class skill one, since those are not shown in Dragon
         if not haveSkill(v.type) then
@@ -3040,31 +3045,9 @@ signals.systemstart:connect(function ()
         end
         deleteLine()
       end
-    elseif not v.nodef and v.custom_def_type then
+    elseif v.custom_def_type then
       defs["def_"..sk.sanitize(k)] = function ()
         defences.got(k)
-      end
-
-    -- additional defence (nodef)
-    else
-      defs["def_"..sk.sanitize(k)] = function ()
-      -- only accept the def line if we know that we're parsing the def list currently, so lines similar to ones on the DEFENCES list that show up elsewhere don't mess things up
-        if not actions.defcheck_physical then return end
-
-        deleteLine()
-        if not v.ondef then
-          defences.nodef_list[k] = true
-        else
-          if type(v.ondef) == "table" then
-            local str = ""
-            for _, func in ipairs(v.ondef) do
-              str = str .. func()
-            end
-            defences.nodef_list[k] = str
-          else
-            defences.nodef_list[k] = v.ondef()
-          end
-      end
       end
     end
 
