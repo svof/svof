@@ -9561,8 +9561,8 @@ local function addDefs()
       rebounding = {
         blocked = false, -- we need to block off in blackout, because otherwise we waste sips
         smoke = {
-          aspriority = 137,
-          spriority = 261,
+          aspriority = 0,
+          spriority = 0,
           def = true,
 
           isadvisable = function ()
@@ -9735,8 +9735,8 @@ local function addDefs()
       speed = {
         blocked = false, -- we need to block off in blackout, because otherwise we waste sips
         purgative = {
-          aspriority = 8,
-          spriority = 265,
+          aspriority = 0,
+          spriority = 0,
           def = true,
 
           isadvisable = function ()
@@ -9808,8 +9808,8 @@ local function addDefs()
         gamename = "fangbarrier",
         applying = "",
         misc = {
-          aspriority = 8,
-          spriority = 265,
+          aspriority = 0,
+          spriority = 0,
           def = true,
 
           isadvisable = function ()
