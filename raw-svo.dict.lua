@@ -6172,13 +6172,15 @@ then return false end
             conf.parry
 #end
            ) and not codepaste.balanceful_codepaste()
-#if class ~= "blademaster" and class ~= "monk" then
+           and ((not sys.enabledgmcp or defc.dragonform)
           -- blademasters can parry with their sword sheathed
-          and ((not sys.enabledgmcp or defc.dragonform) or (next(me.wielded) and sk.have_parryable()))
+#if class ~= "blademaster" and class ~= "monk" then
+           or (next(me.wielded) and sk.have_parryable())
 #if class == "allclasses" then
-          and (haveSkill("tekura") or haveSkill("twoarts"))
+            or haveSkill("tekura") or haveSkill("twoarts")
 #end
 #end
+          )
           and not codepaste.balanceful_defs_codepaste()) or false
       end,
 
