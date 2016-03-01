@@ -29,6 +29,8 @@ end)
 
 -- reset prios on class change
 signals["class changed"]:connect(function()
+  if not conf.serverside then return end
+
   sk.resetservercuringpriorities()
 end)
 
