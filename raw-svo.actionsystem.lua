@@ -368,15 +368,3 @@ doing = doingaction
 haveorwill = function (aff)
   return actions[aff.."_aff"] or affs[aff]
 end
-
--- string -> boolean
--- returns true if the given string in the format of actionname_balance exists
-valid_sync_action = function(name)
-  local actionname, balance = name:match("^(%w+)_(%w+)$")
-  if not (actionname and balance) then return false, "actionname is in invalid format; it should be as 'actionname_balance'" end
-
-  if not dict[actionname] then return false, "action "..actionname.." doesn't exist" end
-  if not dict[actionname][balance] then return false, actionname.." doesn't operate on the "..balance.." balance" end
-
-  return true, actionname, balance
-end

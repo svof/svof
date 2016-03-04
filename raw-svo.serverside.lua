@@ -17,7 +17,7 @@ end)
 
 -- update serverside prios with custom dict overrides, ie for health which is not on serverside prios
 signals["svo prio changed"]:connect(function(action, balance, newprio, slowcuring)
-  if not (conf.serverside and dict[action][balance].onprioswitch) then return end
+  if not (conf.serverside and dict[action] and dict[action][balance] and dict[action][balance].onprioswitch) then return end
 
   dict[action][balance].onprioswitch(newprio, slowcuring)
 end)
@@ -272,27 +272,29 @@ function sk.splitdefs(balance, list)
     local action = list[i]
 
     -- take care of defs
-    if dict[action][balance].def then
-      -- check that it's not undeffable in-game and on keepup
-      if not dict[action][balance].undeffable and ((sys.deffing and defdefup[defmode][action]) or (not sys.deffing and defkeepup[defmode][action])) and not sk.shouldignoreserverside(action) then
-        defs[i] = list[i]
-        list[i] = nil
-      -- if it's off keepup, send to another list so those defs get ignored
-      elseif not dict[action][balance].undeffable and sk.shouldignoreserverside(action) then
-        disableddefs[#disableddefs+1] = list[i]
-        list[i] = nil
+    if dict[action] and dict[action][balance] then
+      if dict[action][balance].def then
+        -- check that it's not undeffable in-game and on keepup
+        if not dict[action][balance].undeffable and ((sys.deffing and defdefup[defmode][action]) or (not sys.deffing and defkeepup[defmode][action])) and not sk.shouldignoreserverside(action) then
+          defs[i] = list[i]
+          list[i] = nil
+        -- if it's off keepup, send to another list so those defs get ignored
+        elseif not dict[action][balance].undeffable and sk.shouldignoreserverside(action) then
+          disableddefs[#disableddefs+1] = list[i]
+          list[i] = nil
+        else
+          -- make sure to remove a def either way
+          list[i] = nil
+        end
       else
-        -- make sure to remove a def either way
-        list[i] = nil
-      end
-    else
-      -- remove if not priotisable
-      if dict[action][balance].uncurable or dict[action][balance].irregular then
-        list[i] = nil
-      -- if handled by svo, or handled by serverside and on normal ignore, ignore
-      elseif dict[action].aff and sk.shouldignoreserverside(action) then
-        disabledaffs[#disabledaffs+1] = list[i]
-        list[i] = nil
+        -- remove if not priotisable
+        if dict[action][balance].uncurable or dict[action][balance].irregular then
+          list[i] = nil
+        -- if handled by svo, or handled by serverside and on normal ignore, ignore
+        elseif dict[action].aff and sk.shouldignoreserverside(action) then
+          disabledaffs[#disabledaffs+1] = list[i]
+          list[i] = nil
+        end
       end
     end
   end

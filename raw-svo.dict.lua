@@ -77,6 +77,9 @@ end
 local dict_balanceful = {}
 local dict_balanceless = {}
 
+-- list of all keys in the dict that are possible.
+-- Useful for checking, whether some keys could be valid at some point.
+local all_dict_keys
 
 -- defence shortlists
 local dict_balanceful_def = {}
@@ -9422,43 +9425,32 @@ local function dict_setup()
     if not j.sw then j.sw = createStopWatch() end
   end -- went through the dict list once at this point
 
-  for balancename, list in pairs(unassigned_actions) do
-    if #list > 0 then
-      -- shift up by # all actions for that balance to make room @ bottom
-      for i,j in pairs(dict) do
-        for balance,l in pairs(j) do
-          if balance == balancename and type(l) == "table" and l.aspriority and l.aspriority ~= 0 then
-            l.aspriority = l.aspriority + #list
-          end
-        end
-      end
+  if not all_dict_keys then
+    all_dict_keys = {}
+    for key in pairs(dict) do
+      all_dict_keys[key] = true
+    end
+  end
 
-      -- now setup the low id's
-      for i, actionname in ipairs(list) do
-        dict[actionname][balancename].aspriority = i
+  for balancename, list in pairs(unassigned_actions) do
+    for i, actionname in ipairs(list) do
+      local priority = prio.getnumber(actionname, balancename)
+      if not priority then
+        prio.insert(actionname, balancename, 1)
+      else
+        dict[actionname][balancename].aspriority = priority
       end
     end
   end
 
-  local totalcount = 0
-  for _, list in pairs(unassigned_sync_actions) do
-    totalcount = totalcount + #list
-  end
-
   for balancename, list in pairs(unassigned_sync_actions) do
-    if totalcount > 0 then
-      -- shift up by # all actions for that balance to make room @ bottom
-      for i,j in pairs(dict) do
-        for balance,l in pairs(j) do
-          if type(l) == "table" and l.spriority and l.spriority ~= 0 then
-            l.spriority = l.spriority + totalcount
-          end
-        end
-      end
-
-      -- now setup the low id's
-      for i, actionname in ipairs(list) do
-        dict[actionname][balancename].spriority = i
+    for i, actionname in ipairs(list) do
+      local prioname = string.format("%s_%s", actionname, balancename)
+      local priority = prio.getnumber(prioname, "slowcuring")
+      if not priority then
+        prio.insert(prioname,"slowcuring", 1)
+      else
+        dict[actionname][balancename].spriority = priority
       end
     end
   end
@@ -14999,7 +14991,9 @@ local function addDefs()
   end
   dict_setup()
 end
-addDefs()
+signals.systemstart:connect(function ()
+  addDefs()
+end)
 
 local function dict_validate()
   -- basic theory is to create table keys for each table within dict.#,
