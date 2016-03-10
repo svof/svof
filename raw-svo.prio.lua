@@ -19,8 +19,6 @@ do
   local set_new_prios = function(balance)
 
     local balance_prios = private_prios[balance]
-local dbg = balance == "misc"
-if dbg then display({balance = balance, balance_prios = balance_prios, callstack = debug.traceback() }) end
 
     local max = 0
     for prio in pairs(balance_prios) do
@@ -263,7 +261,6 @@ if dbg then display({balance = balance, balance_prios = balance_prios, callstack
 
     local t = private_prios[balance]
     local originalt = deepcopy(t)
-if balance == "misc" then display({t = t, action = action}) end
 
     if balance ~= "slowcuring" and not t then return nil, "no such balance: "..balance end
 
@@ -559,9 +556,9 @@ if balance == "misc" then display({t = t, action = action}) end
         return string.format("ss aff %"..ssprioamount.."s", (raffs[data[j]] <= 25 and raffs[data[j]] or "25"))
       elseif rdefs[data[j]] then
         return string.format("ss def %"..ssprioamount.."s", (rdefs[data[j]] <= 25 and rdefs[data[j]] or "25"))
-      elseif dict[data[j]][balance].def then
+      elseif dict[data[j]] and dict[data[j]][balance] and dict[data[j]][balance].def then
         return "ss def"..(' '):rep(ssprioamount).."-"
-      elseif dict[data[j]][balance].aff then
+      elseif dict[data[j]] and dict[data[j]][balance] and dict[data[j]][balance].aff then
         return "ss aff"..(' '):rep(ssprioamount).."-"
       else
         return "ss    "..(' '):rep(ssprioamount).."-"
@@ -579,7 +576,11 @@ if balance == "misc" then display({t = t, action = action}) end
         echo(" ")
         setFgColor(148,148,255)
         echoLink("vv", 'svo.prio_swap("'..data[j]..'", "'..balance..'", '..(j-1)..', nil, false, svo.printorder, "'..balance..'", '..(j-1)..')', 'shuffle '..data[j]..' down', true)
-        setFgColor(112,112,112)
+        if dict[data[j]] and dict[data[j]][balance] then
+          setFgColor(112,112,112)
+        else
+          setFgColor(80, 80, 80)
+        end
         -- focus balance can't have 'priority'
         if not conf.serverside or balance == "focus" then
           echo(string.format(" (%s) "..(' '):rep(prioamount - intlen(j)).."%s", j, data[j]))
