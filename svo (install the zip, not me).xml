@@ -54122,6 +54122,11 @@ function svo.gettreeableaffs()
   return table.n_intersection(svo.keystolist(svo.affl), svo.treecurables)
 end
 
+-- returns a list of affs that fous can get
+function svo.getfocusableaffs()
+  return table.n_intersection(svo.keystolist(svo.affl), svo.focuscurables)
+end
+
 -- starts the stopwatch which measures how long a balance was missing for
 function svo.startbalancewatch(balance)
   svo.watch[&quot;bal_&quot;..balance] = svo.watch[&quot;bal_&quot;..balance] or createStopWatch()
@@ -54303,7 +54308,7 @@ svo.restore.anyoneortwolimbs = {
     if svo.affl.mangledleftarm or svo.affl.mutilatedleftarm then mangledormultilated = mangledormultilated + 1 end
 
     local crippled = svo.countonlybrokenlimbs()
-    
+
     -- add mangled/mutilated limbs to count, so we don't exceed it
     -- don't go off on mangled/mutilated limbs only as well
     local total = mangledormultilated + crippled
@@ -54326,7 +54331,7 @@ svo.restore.anyoneortwolimbsprone = {
     if svo.affl.mangledleftarm or svo.affl.mutilatedleftarm then mangledormultilated = mangledormultilated + 1 end
 
     local crippled = svo.countonlybrokenlimbs()
-    
+
     -- add mangled/mutilated limbs to count, so we don't exceed it
     -- don't go off on mangled/mutilated limbs only as well
     local total = mangledormultilated + crippled
@@ -54695,7 +54700,7 @@ local aff_abbrev = {
   timeflux            = &quot;tfx&quot;,
   torntendons         = &quot;tt&quot;,
   transfixed          = &quot;transf&quot;,
-  unconsciousness     = &quot;unconc&quot;, 
+  unconsciousness     = &quot;unconc&quot;,
   unknownany          = &quot;?&quot;,
   unknowncrippledarm  = &quot;uwna&quot;,
   unknowncrippledleg  = &quot;uwnl&quot;,
