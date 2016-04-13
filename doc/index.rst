@@ -2759,6 +2759,10 @@ Svof API functions
 
    Returns a list of afflictions that you've currently got that can be cured by tree - or by any other simple and general curing means - passive cures, shrugging, bloodboil, phoenix and so on. This is a general utility function and thus it does not account for specific sets of afflictions that block the use of any particular method - like can't touch tree with both arms crippled, can't shrug with weakness and so on.
 
+.. function:: svo.getfocusableaffs()
+
+   Returns a list of afflictions that you've currently got that can be cured by focus. This is a general utility function and thus it does not account for specific sets of afflictions that block the use of the ability - like can't focus with impatience, inquisition and so on.
+
 .. function:: svo.amiwielding(what)
 
    Returns `true` or `false` depending on if you're wielding that item. You can use the full name or part of the name for this: ::
@@ -2921,4 +2925,3 @@ This is the start of a list that details all of the data (variables) available t
 
   svo.newbals
     (table) captures the incoming status of balance and equilibrium, before svo.bals is updated - helpful for scripts that work off the prompt.
-

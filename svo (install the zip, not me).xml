@@ -54122,7 +54122,7 @@ function svo.gettreeableaffs()
   return table.n_intersection(svo.keystolist(svo.affl), svo.treecurables)
 end
 
--- returns a list of affs that fous can get
+-- returns a list of affs that focus can get
 function svo.getfocusableaffs()
   return table.n_intersection(svo.keystolist(svo.affl), svo.focuscurables)
 end
