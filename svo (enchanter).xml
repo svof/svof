@@ -64,6 +64,8 @@ local enchantmentActions = {}
 local checking_ourobori = false
 -- Keeps track if we need to put up selfishness again after enchanting
 local hadSelfishness = false
+-- Keeps track if we need to put up riding again after enchanting
+local hadRiding = false
 -- The string command of the last order in case we want to repeat it
 local lastOrder = &quot;&quot;
 
@@ -961,8 +963,9 @@ local function endEnchanting()
   enchanting = false
   svo.removebalanceful(&quot;enchantment step&quot;)
   svo.defs.keepup(&quot;selfishness&quot;, hadSelfishness, svo.defs.mode, false)
+  svo.defs.keepup(&quot;riding&quot;, hadRiding, svo.defs.mode, false)
   svo.echof(&quot;Enchantment order done!&quot;)
-  return hadSelfishness
+  return hadSelfishness and hadRiding
 end
 
 -- Run the next step(s) in queue
@@ -1002,6 +1005,10 @@ local function startEnchanting()
     hadSelfishness = svo.defc.selfishness
     if hadSelfishness then
       svo.defs.keepup(&quot;selfishness&quot;, false, svo.defs.mode, false)
+    end
+    hadRiding = svo.defc.riding
+    if hadRiding then
+      svo.defs.keepup(&quot;riding&quot;, false, svo.defs.mode, false)
     end
     svo.addbalanceful(&quot;enchantment step&quot;, enchantmentStep)
     svo.donext()
