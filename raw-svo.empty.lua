@@ -78,10 +78,14 @@ empty.eat_bloodroot = function()
   if not affs.stain then removeaff("slickness") end
 end
 
+empty.focuscurables = {"claustrophobia", "masochism", "dizziness", "confusion", "stupidity", "generosity", "loneliness", "agoraphobia", "recklessness", "epilepsy", "pacifism", "anorexia", "shyness", "vertigo", "unknownmental", "airdisrupt", "earthdisrupt", "waterdisrupt", "firedisrupt"}
+
+-- expose publicly
+focuscurables = empty.focuscurables
 empty.focus = function()
   if affs.madness then return end
 
-  removeaff({"claustrophobia", "masochism", "dizziness", "confusion", "stupidity", "generosity", "loneliness", "agoraphobia", "recklessness", "epilepsy", "pacifism", "anorexia", "shyness", "vertigo", "unknownmental", "airdisrupt", "earthdisrupt", "waterdisrupt", "firedisrupt"})
+  removeaff(empty.focuscurables)
 end
 
 -- you /can/ cure hamstring, dissonance with tree
