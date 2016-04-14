@@ -48156,9 +48156,9 @@ end</script>
                         <integer>3</integer>
                     </regexCodePropertyList>
                 </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Def strip (lemming)</name>
-                    <script>svo.valid.defstrip(multimatches[2][2])</script>
+                    <script>svo.valid.defstrip(matches[2])</script>
                     <triggerType>0</triggerType>
                     <conditonLineDelta>0</conditonLineDelta>
                     <mStayOpen>0</mStayOpen>
@@ -48170,11 +48170,9 @@ end</script>
                     <colorTriggerFgColor>#000000</colorTriggerFgColor>
                     <colorTriggerBgColor>#000000</colorTriggerBgColor>
                     <regexCodeList>
-                        <string>A small brown lemming scurries around you furiously, stripping your</string>
-                        <string>^A small brown lemming scurries around you furiously, stripping your (.+) defence\.$</string>
+                        <string>^A small brown lemming rips apart your (.+) with its claws\.$</string>
                     </regexCodeList>
                     <regexCodePropertyList>
-                        <integer>2</integer>
                         <integer>1</integer>
                     </regexCodePropertyList>
                 </Trigger>
