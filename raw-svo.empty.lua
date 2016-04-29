@@ -78,7 +78,7 @@ empty.eat_bloodroot = function()
   if not affs.stain then removeaff("slickness") end
 end
 
-empty.focuscurables = {"claustrophobia", "masochism", "dizziness", "confusion", "stupidity", "generosity", "loneliness", "agoraphobia", "recklessness", "epilepsy", "pacifism", "anorexia", "shyness", "vertigo", "unknownmental", "airdisrupt", "earthdisrupt", "waterdisrupt", "firedisrupt"}
+empty.focuscurables = {"claustrophobia", "masochism", "dizziness", "confusion", "stupidity", "generosity", "loneliness", "agoraphobia", "recklessness", "epilepsy", "pacifism", "anorexia", "shyness", "vertigo", "unknownmental", "airdisrupt", "earthdisrupt", "waterdisrupt", "firedisrupt", "paranoia", "hallucinations", "dementia"}
 
 -- expose publicly
 focuscurables = empty.focuscurables

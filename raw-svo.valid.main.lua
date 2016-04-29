@@ -2775,7 +2775,7 @@ end
 
 -- focus
 #do
-#local afflist = {"claustrophobia", "masochism", "dizziness", "confusion", "stupidity", "generosity", "loneliness", "agoraphobia", "recklessness", "epilepsy", "pacifism", "anorexia", "shyness", "vertigo", "fear", "airdisrupt", "firedisrupt", "waterdisrupt"}
+#local afflist = {"claustrophobia", "masochism", "dizziness", "confusion", "stupidity", "generosity", "loneliness", "agoraphobia", "recklessness", "epilepsy", "pacifism", "anorexia", "shyness", "vertigo", "fear", "airdisrupt", "firedisrupt", "waterdisrupt", "dementia", "paranoia", "hallucinations"}
 #local checkany_string = ""
 #local temp = {}
 
