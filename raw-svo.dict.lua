@@ -2021,7 +2021,7 @@ dict = {
       spriority = 0,
 
       isadvisable = function ()
-        return (affs.dementia and not affs.madness) or false
+        return (affs.dementia and not affs.madness and not doingaction("dementia")) or false
       end,
 
       oncompleted = function ()
@@ -2079,7 +2079,7 @@ dict = {
       spriority = 0,
 
       isadvisable = function ()
-        return (affs.paranoia and not affs.madness) or false
+        return (affs.paranoia and not affs.madness and not doingaction("paranoia")) or false
       end,
 
       oncompleted = function ()
@@ -2171,7 +2171,7 @@ dict = {
       spriority = 0,
 
       isadvisable = function ()
-        return (affs.hallucinations and not affs.madness) or false
+        return (affs.hallucinations and not affs.madness and not doingaction("hallucinations")) or false
       end,
 
       oncompleted = function ()
