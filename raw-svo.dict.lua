@@ -2021,7 +2021,7 @@ dict = {
       spriority = 0,
 
       isadvisable = function ()
-        return (affs.dementia and not affs.madness) or false
+        return (affs.dementia and not affs.madness and not doingaction("dementia")) or false
       end,
 
       oncompleted = function ()
@@ -2036,6 +2036,30 @@ dict = {
 
       empty = function()
         empty.eat_ash()
+      end
+    },
+    focus = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return (affs.dementia and not affs.madness and not doingaction("dementia")) or false
+      end,
+
+      oncompleted = function ()
+        removeaff("dementia")
+        lostbal_focus()
+      end,
+
+      action = "focus",
+      onstart = function ()
+        send("focus", conf.commandecho)
+      end,
+
+      empty = function ()
+        lostbal_focus()
+
+        empty.focus()
       end
     },
     aff = {
@@ -2055,7 +2079,7 @@ dict = {
       spriority = 0,
 
       isadvisable = function ()
-        return (affs.paranoia and not affs.madness) or false
+        return (affs.paranoia and not affs.madness and not doingaction("paranoia")) or false
       end,
 
       oncompleted = function ()
@@ -2070,6 +2094,30 @@ dict = {
 
       empty = function()
         empty.eat_ash()
+      end
+    },
+    focus = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return (affs.paranoia and not affs.madness and not doingaction("paranoia")) or false
+      end,
+
+      oncompleted = function ()
+        removeaff("paranoia")
+        lostbal_focus()
+      end,
+
+      action = "focus",
+      onstart = function ()
+        send("focus", conf.commandecho)
+      end,
+
+      empty = function ()
+        lostbal_focus()
+
+        empty.focus()
       end
     },
     aff = {
@@ -2123,7 +2171,7 @@ dict = {
       spriority = 0,
 
       isadvisable = function ()
-        return (affs.hallucinations and not affs.madness) or false
+        return (affs.hallucinations and not affs.madness and not doingaction("hallucinations")) or false
       end,
 
       oncompleted = function ()
@@ -2138,6 +2186,30 @@ dict = {
 
       empty = function()
         empty.eat_ash()
+      end
+    },
+    focus = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return (affs.hallucinations and not affs.madness and not doingaction("hallucinations")) or false
+      end,
+
+      oncompleted = function ()
+        removeaff("hallucinations")
+        lostbal_focus()
+      end,
+
+      action = "focus",
+      onstart = function ()
+        send("focus", conf.commandecho)
+      end,
+
+      empty = function ()
+        lostbal_focus()
+
+        empty.focus()
       end
     },
     aff = {
