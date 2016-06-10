@@ -291,6 +291,7 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
+    on = "You deftly shape the wall of light into a barrier surrounding yourself.",
     onr = [[^You strum .+, and a prismatic barrier forms around you\.$]],
     def = "You are standing within a prismatic barrier.",
     off = {"Your prismatic barrier dissolves into nothing.", "The stream hits your prismatic barrier, shattering it.", "The breath weapon rips apart your prismatic barrier.", "The breath weapon rips through both your shield and prismatic barrier.", "The spear shatters your prismatic barrier."}})
