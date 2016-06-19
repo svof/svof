@@ -1,0 +1,290 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Svof Multi-Person Magi Limbcounter &mdash; Svof docs</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Svof docs" href="index.html"/>
+        <link rel="next" title="Svof Multi-Person Meta Limbcounter" href="metalimbcounter.html"/>
+        <link rel="prev" title="Svof Multi-Person Knight Limbcounter" href="knightlimbcounter.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="contents.html" class="icon icon-home"> Svof
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                18
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Svof 18 documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dragonlimbcounter.html">Svof Multi-Person Dragon Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elistsorter.html">Svof Elist Sorter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enchanter.html">Svof Enchanter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inker.html">Svof Tattoo Inker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knightlimbcounter.html">Svof Multi-Person Knight Limbcounter</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Svof Multi-Person Magi Limbcounter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#aliases">Aliases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="metalimbcounter.html">Svof Multi-Person Meta Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monklimbcounter.html">Svof Multi-Person Monk Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="namedb.html">Svof NameDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offering.html">Svof Corpse stuff</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peopletracker.html">Svof People Tracker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="priesthealing.html">Svof Priest Healer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="priestlimbcounter.html">Svof Multi-Person Priest Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="priestreport.html">Svof Priest Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refiller.html">Svof Refiller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runeidentifier.html">Svof Rune Identifier</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="contents.html">Svof</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="contents.html">Docs</a> &raquo;</li>
+      
+    <li>Svof Multi-Person Magi Limbcounter</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/magilimbcounter.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="svof-multi-person-magi-limbcounter">
+<h1>Svof Multi-Person Magi Limbcounter<a class="headerlink" href="#svof-multi-person-magi-limbcounter" title="Permalink to this headline">¶</a></h1>
+<p>The magi limbcounter automatically tracks whomever you are hitting, and tells you their limb status after each hit - along with any limbs that are prepped, if any.</p>
+<p>It also has a feature of showing the last hit opponents limb status on the prompt - to use this, add the <em>&#64;ml_prompttag</em>, <em>&#64;ml_prompttag2</em> or <em>&#64;ml_prompttag3</em> tag to your <a class="reference internal" href="index.html#customprompt"><span class="std std-ref">custom prompt</span></a>. The tags display the same information in different ways, so choose whichever one you&#8217;d like. If you&#8217;d like to modify a tag, the source code for them is available in the script for the addon - copy it into a new script (so it doesn&#8217;t get overwritten on an update) and feel free to tinker.</p>
+<p>If you just want to keep your prompt as-is, then you can use this:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span></span>vconfig customprompt ^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw ^W@eqbal@defs^b|@ml_prompttag^W- @affs
+</pre></div>
+</div>
+<p>You might also find this <a class="reference external" href="http://www.ironrealms.com/mud-scripts/example-hit-a-targetted-limb-alias">example targetting alias</a> useful for attacking with.</p>
+<div class="section" id="aliases">
+<h2>Aliases<a class="headerlink" href="#aliases" title="Permalink to this headline">¶</a></h2>
+<dl class="glossary docutils">
+<dt id="term-vsl">vsl</dt>
+<dd>Shows limb data of everything that the counter is keeping track of.</dd>
+<dt id="term-nn">nn</dt>
+<dd>Resets the limb data of the last hit person.</dd>
+<dt id="term-nn-person">nn <em>person</em></dt>
+<dd>Resets the limb data of a given <em>person</em>.</dd>
+<dt id="term-nn-t-h-rl-ll-ra-la">nn <em>t/h/rl/ll/ra/la</em></dt>
+<dd>Resets a specific limb of the last hit person.</dd>
+</dl>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<dl class="glossary docutils">
+<dt id="term-svo-limbcounter-hit-who-where-event">svo limbcounter hit (who, where) (event)</dt>
+<dd>This <a class="reference external" href="http://doc.svo.vadisystems.com/#event-use-examples">Mudlet event</a> goes off when you&#8217;ve hit someone&#8217;s limb. The event arguments include whom and where did you hit them.</dd>
+<dt id="term-svo-limbcounter-reset">svo limbcounter reset</dt>
+<dd>This event is raised when the limbcounter is reset (either fully, or only an a person, or a specific persons limb). You can then re-read the current <em>svo.ml_list</em> table to get the current values.</dd>
+<dt id="term-svo-ml-list-table">svo.ml_list (table)</dt>
+<dd><p class="first">A table containing all of the limbcounters tracking data - organized by named tables of people and their limb status, along with their breaking points.</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">svo</span><span class="p">.</span><span class="n">ml_list</span><span class="p">)</span>
+
+<span class="cm">--[[yields, for example:</span>
+<span class="cm">table {</span>
+<span class="cm">  &#39;Person2&#39;: table {</span>
+<span class="cm">    &#39;ml_break_at&#39;: 10</span>
+<span class="cm">    &#39;rightleg&#39;: 0</span>
+<span class="cm">    &#39;leftleg&#39;: 4</span>
+<span class="cm">    &#39;torso&#39;: 0</span>
+<span class="cm">    &#39;leftarm&#39;: 0</span>
+<span class="cm">    &#39;rightarm&#39;: 0</span>
+<span class="cm">    &#39;head&#39;: 0</span>
+<span class="cm">  }</span>
+<span class="cm">  &#39;Person1&#39;: table {</span>
+<span class="cm">    &#39;ml_break_at&#39;: 10</span>
+<span class="cm">    &#39;rightleg&#39;: 0</span>
+<span class="cm">    &#39;leftleg&#39;: 0</span>
+<span class="cm">    &#39;torso&#39;: 4</span>
+<span class="cm">    &#39;leftarm&#39;: 0</span>
+<span class="cm">    &#39;rightarm&#39;: 0</span>
+<span class="cm">    &#39;head&#39;: 9</span>
+<span class="cm">  }</span>
+<span class="cm">}</span>
+<span class="cm">]]</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-svo-lasthit-string">svo.lasthit (string)</dt>
+<dd><p class="first">Stores the last hit persons name. You can use it to check a specific limb status in an alias, for example:</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="n">echo</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">%s&#39;s head is at %s.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">svo</span><span class="p">.</span><span class="n">lasthit</span><span class="p">,</span> <span class="n">svo</span><span class="p">.</span><span class="n">ml_list</span><span class="p">[</span><span class="n">svo</span><span class="p">.</span><span class="n">lasthit</span><span class="p">].</span><span class="n">head</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-svo-ml-prep-at-number">svo.ml_prep_at (number)</dt>
+<dd>Amount that new people&#8217;s that the limbcounter sees prep point is set to. Default is 4.</dd>
+<dt id="term-svo-ml-break-at-number">svo.ml_break_at (number)</dt>
+<dd>Amount that new people&#8217;s that the limbcounter sees breaking point is set to. Default is 5.</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="metalimbcounter.html" class="btn btn-neutral float-right" title="Svof Multi-Person Meta Limbcounter" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="knightlimbcounter.html" class="btn btn-neutral" title="Svof Multi-Person Knight Limbcounter" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Vadim Peretokin.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'18',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

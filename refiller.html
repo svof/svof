@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Svof Refiller &mdash; Svof docs</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Svof docs" href="index.html"/>
+        <link rel="next" title="Svof Rune Identifier" href="runeidentifier.html"/>
+        <link rel="prev" title="Svof Priest Report" href="priestreport.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="contents.html" class="icon icon-home"> Svof
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                18
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Svof 18 documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dragonlimbcounter.html">Svof Multi-Person Dragon Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elistsorter.html">Svof Elist Sorter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enchanter.html">Svof Enchanter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inker.html">Svof Tattoo Inker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knightlimbcounter.html">Svof Multi-Person Knight Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="magilimbcounter.html">Svof Multi-Person Magi Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metalimbcounter.html">Svof Multi-Person Meta Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monklimbcounter.html">Svof Multi-Person Monk Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="namedb.html">Svof NameDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offering.html">Svof Corpse stuff</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peopletracker.html">Svof People Tracker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="priesthealing.html">Svof Priest Healer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="priestlimbcounter.html">Svof Multi-Person Priest Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="priestreport.html">Svof Priest Report</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Svof Refiller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#aliases">Aliases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="runeidentifier.html">Svof Rune Identifier</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="contents.html">Svof</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="contents.html">Docs</a> &raquo;</li>
+      
+    <li>Svof Refiller</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/refiller.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="svof-refiller">
+<h1>Svof Refiller<a class="headerlink" href="#svof-refiller" title="Permalink to this headline">¶</a></h1>
+<p>Refilling with this is extremely easy - the script automatically takes care of managing artefact vials and your refilling skill for you, as well as refilling <strong>all</strong> of the order in one go.</p>
+<p>The script automatically detects the number of fills to use (depending if you&#8217;re transcendent or not - please check AB for it to know!), doesn&#8217;t boil the pot if you&#8217;re missing an ingredient (but instead takes them out, and gets the pot and goes on to do the next potion), properly works where inpot requires doing more than 50 ingredients.</p>
+<p>Use of the refiller would be: do <strong>putvials</strong> to put all of your vials away, and have the customer hand you the vials. Do <strong>refill &lt;whole order, each potion separated with a comma&gt;</strong> to have it do all the heavy work for you. Then <strong>givevials &lt;customer&gt;</strong> to hand the vials back to them, and <strong>getvials</strong> to retrieve your own vials. Same thing if you&#8217;re refilling for yourself - put the vials away.</p>
+<div class="section" id="aliases">
+<h2>Aliases<a class="headerlink" href="#aliases" title="Permalink to this headline">¶</a></h2>
+<dl class="glossary docutils">
+<dt id="term-refill-what">refill &lt;what&gt;</dt>
+<dd><p class="first">Does your <strong>entire</strong> order - separate different potions with a comma, and if you&#8217;d like a certain amount of a potion to go into artefact vials, add &#8220;# arty&#8221; at the end. For example:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- this will refill vials of health</span>
+<span class="n">refill</span> <span class="mi">5</span> <span class="n">health</span>
+
+<span class="c1">-- this will refill 3 normal vials and 2 artefact vials of health</span>
+<span class="n">refill</span> <span class="mi">5</span> <span class="n">health</span> <span class="mi">2</span> <span class="n">arty</span>
+
+<span class="c1">-- this will refill 5 health vials and 2 vials of caloric</span>
+<span class="n">refill</span> <span class="mi">5</span> <span class="n">health</span><span class="p">,</span> <span class="mi">2</span> <span class="n">caloric</span>
+
+<span class="c1">-- some other mixed order that just requires one command to do!</span>
+<span class="n">refill</span> <span class="mi">1</span> <span class="n">caloric</span><span class="p">,</span> <span class="mi">1</span> <span class="n">mass</span><span class="p">,</span> <span class="mi">1</span> <span class="n">health</span><span class="p">,</span> <span class="mi">3</span> <span class="n">mana</span><span class="p">,</span> <span class="mi">1</span> <span class="n">speed</span>
+</pre></div>
+</div>
+<p class="last">Take note that when doing artefact refills, you specify them as a portion of the potion - if you want 4 refills of health and 2 of them in artefact vials, you&#8217;d do <em>refill 4 health 2 arty</em>.</p>
+</dd>
+<dt id="term-refill-cancel">refill cancel</dt>
+<dd>Stops refilling right away.</dd>
+<dt id="term-vconfig-potid-pot-id">vconfig potid &lt;pot ID&gt;</dt>
+<dd>Sets the pot ID to brew things in. Set this to your own, in case there is someone else&#8217;s pot on the ground.</dd>
+<dt id="term-vconfig-packid-pack-id">vconfig packid &lt;pack ID&gt;</dt>
+<dd>Sets the back ID to store vials away into when you do &#8216;putvials&#8217; before taking on the customers vials. To get them out after, do &#8216;getvials&#8217;.</dd>
+<dt id="term-putvials">putvials</dt>
+<dd>Stuffs all of your current vials away into a container, so you can take the customers empty and artefact vials without them getting mixed in with yours. You should do this before they give you their vials.</dd>
+<dt id="term-getvials">getvials</dt>
+<dd>After you&#8217;ve given vials back with &#8216;givevials&#8217;, <em>getvials</em> will reclaim your vials from the container you hid them in.</dd>
+<dt id="term-givevials-person">givevials &lt;person&gt;</dt>
+<dd>Hands over all of your vials to another person.</dd>
+</dl>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<dl class="glossary docutils">
+<dt id="term-svo-done-refilling-event">svo done refilling (event)</dt>
+<dd>Raised when a successful refill is done. You can use this event, for example, to perform order cost calculations.</dd>
+<dt id="term-svo-rf-previousorder-table">svo.rf_previousorder (table)</dt>
+<dd><p class="first">Contains the details of the previous order that was completed - key names are the potions, and values are tables with &#8216;normal&#8217; and &#8216;arty&#8217; amounts, ie:</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="n">svo</span><span class="p">.</span><span class="n">rf_previousorder</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="n">health</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n">arty</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="n">mana</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">arty</span> <span class="o">=</span> <span class="mi">3</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="runeidentifier.html" class="btn btn-neutral float-right" title="Svof Rune Identifier" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="priestreport.html" class="btn btn-neutral" title="Svof Priest Report" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Vadim Peretokin.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'18',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

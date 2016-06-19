@@ -1,0 +1,666 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Svof NameDB &mdash; Svof docs</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Svof docs" href="index.html"/>
+        <link rel="next" title="Svof Corpse stuff" href="offering.html"/>
+        <link rel="prev" title="Svof Multi-Person Monk Limbcounter" href="monklimbcounter.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="contents.html" class="icon icon-home"> Svof
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                18
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Svof 18 documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dragonlimbcounter.html">Svof Multi-Person Dragon Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elistsorter.html">Svof Elist Sorter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enchanter.html">Svof Enchanter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inker.html">Svof Tattoo Inker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knightlimbcounter.html">Svof Multi-Person Knight Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="magilimbcounter.html">Svof Multi-Person Magi Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metalimbcounter.html">Svof Multi-Person Meta Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monklimbcounter.html">Svof Multi-Person Monk Limbcounter</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Svof NameDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-it">Working with it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pre-available-data">Pre-available data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scripting-with-it">Scripting with it</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#forcing-an-update-on-data">Forcing an update on data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#incompatibilities">Incompatibilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#future-additions">Future additions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contributing-to-namedb">Contributing to NameDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#aliases">Aliases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="offering.html">Svof Corpse stuff</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peopletracker.html">Svof People Tracker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="priesthealing.html">Svof Priest Healer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="priestlimbcounter.html">Svof Multi-Person Priest Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="priestreport.html">Svof Priest Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refiller.html">Svof Refiller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runeidentifier.html">Svof Rune Identifier</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="contents.html">Svof</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="contents.html">Docs</a> &raquo;</li>
+      
+    <li>Svof NameDB</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/namedb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="svof-namedb">
+<h1>Svof NameDB<a class="headerlink" href="#svof-namedb" title="Permalink to this headline">¶</a></h1>
+<p>NameDB is a script whose job is to &#8220;know&#8221; people - who is a person, and what they are. With this in your toolbox, you, and your aliases/triggers/scripts, can tell people apart.</p>
+<p>NameDB is a dataminer script that collects information either automatically or by you providing it, and then provides you the same information for use.</p>
+<p>For you yourself, the script provides a sophisticated <strong>highlighting feature</strong> - that can highlight, bold, italicize or underline names. It can highlight a person by their citizenship, your city/house/order enemy status, or a special watchfor list you can manipulate. The highlighter &#8220;stacks&#8221; properly - if a person belongs to a group that should be underlined as well as to a group that should be in red, their name will be both underlined and in red. You can also <strong>ignore names</strong> you don&#8217;t want highlighted, so you don&#8217;t get Page, Chronos or May highlighted. All of this is configurable from your scripts or by hand, via an intuitive menu (<em>vconfig politics</em>):</p>
+<img alt="_images/namedb-politics.png" class="align-center" src="_images/namedb-politics.png" />
+<p>For your triggers/aliases/scripts, there is a <em>multitude</em> of uses where this comes in handy. The most basic one is giving <strong>intelligence to your triggers</strong> - for example, if you want to make a trigger that will automatically tentacle enemies flying above you, with NameDB your script will know if it&#8217;s an enemy or not before tentacling - saving annoyances of your allies! If you only want to announce enemies or particular citizens to mindnet, you can.  All that without manually managing lists of people - saves you a lot of hassle. You could even analyze and know exactly, at a glance, what classes a raiding group consists of with its help! These are just a few examples. NameDB can help you with a ton of things, including extracting names from lines and so on.</p>
+<p>NameDB allows you to store your own notes on a person, as well as remembering their title, class, city, city rank, house, might, a custom importance level, their xp rank, and whenever they&#8217;re house/order or city enemies. You can also explicitly set them to be enemies or allies to you, or have that be auto-determined altogether (based on their citizenship or being enemied to your city/house/order).</p>
+<p>NameDB is an addon for Svof, and it is included with all systems, for free. It is not designed to be stand-alone and is not sold or distributed separately.</p>
+<div class="section" id="working-with-it">
+<h2>Working with it<a class="headerlink" href="#working-with-it" title="Permalink to this headline">¶</a></h2>
+<p>NameDB by default datamines any new names only it comes across from cw, hw, citizens, house/order/city enemies and qw lists (you can turn this off with <strong>vconfig autocheck off</strong>). It&#8217;ll automatically gag the honors of a person while doing that, so you don&#8217;t get spammed out - and it leaves the titles or guides/immortals intact, so you can tell when is the first time it notices them (as a little feature). You can enable/disable auto-honors with <strong>vconfig autocheck</strong>.</p>
+<img alt="_images/namedb-checking.png" class="align-center" src="_images/namedb-checking.png" />
+<p>While NameDB automatically picks up the class of people from cwho and hwho lists, it&#8217;s impossible to find this out for others - so you&#8217;ll want to manually add the persons classes in with <em>ndb set &lt;person&gt; class &lt;class&gt;</em> if that&#8217;s something you&#8217;re interested in.</p>
+<p>Other than that, once NameDB knows somebody, it&#8217;ll be helping you from there on - either with highlights or by allowing you to script with it. There are tons of places where your triggers could use help differentiating allies/friendlies, for example tarot/priest healing/shielding, automatically enemying enemies as you see them, enemy-only mindnet announces, and so on.</p>
+<p>If you&#8217;d like to add gemmed/offline people to it, honors them manually (with the <em>honors person</em> syntax). You can also script the addition of them (or build an importer) with the <em>ndb.addname(name)</em> function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">protip:</th><td class="field-body">You can create custom highlighting categories by adding people to fake Orders (their validity isn&#8217;t checked, and everything/all options get auto-created for any order name).</td>
+</tr>
+</tbody>
+</table>
+<p>NameDB doesn&#8217;t highlight your own name so it won&#8217;t blend in, plus some people wouldn&#8217;t want to have it highlight. It&#8217;s fairly easy to add a highlight trigger in Mudlet if you want to see it highlighted - put your name in as the substring in a new trigger, and tick the highlight checkbox.</p>
+<p>Your home city for <em>vconfig politics</em> is set via <em>vconfig org &lt;city&gt;</em>.</p>
+</div>
+<div class="section" id="pre-available-data">
+<h2>Pre-available data<a class="headerlink" href="#pre-available-data" title="Permalink to this headline">¶</a></h2>
+<p>NameDB doesn&#8217;t come with any data built-in, but Tanaar and Cooper have made their data available for download - <a class="reference external" href="http://forums.achaea.com/discussion/comment/56057/#Comment_56057">Tanaar&#8217;s</a>, <a class="reference external" href="http://forums.achaea.com/discussion/comment/56238/#Comment_56238">Cooper&#8217;s</a> and <a class="reference external" href="http://forums.achaea.com/discussion/comment/57754/#Comment_57754">Cesarina&#8217;s</a>. Importing data with &#8216;ndb import&#8217; doesn&#8217;t clear the names you&#8217;ve had, it adds.</p>
+</div>
+<div class="section" id="scripting-with-it">
+<h2>Scripting with it<a class="headerlink" href="#scripting-with-it" title="Permalink to this headline">¶</a></h2>
+<p>To begin scripting with NameDB, check the <a class="reference internal" href="#api"><span class="std std-ref">API</span></a>. There, all currently available functions are detailed to you, with practical examples that help you understand how to use them. If you need any help with them, feel free to ask on the Svof clan or Vadimuses about them.</p>
+<p>NameDB is designed to be built upon and extended - feel free to use its building blocks to build upon it or expand it. As an example, check out the falcon glance report trigger in the <em>Scripting Examples</em> folder on how you can build upon it and use its features.</p>
+<p>::note:: Do not use any of NameDB&#8217;s internal functions (that is, those not listed on API) in your scripts - they are not documented for a reason - they may be changed, or deleted altogether, breaking your scripts. The ones on the API won&#8217;t be (same with Svof API functions) - use those instead!</p>
+<p>To query the database for data, make use of <a class="reference external" href="http://wiki.mudlet.org/w/Manual:Database_Functions">Mudlet&#8217;s db</a> API.</p>
+<p>Here are some practical examples:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- print a list of all Ashtani CR4+&#39;s known</span>
+<span class="n">vlua</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">person</span> <span class="k">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">db</span><span class="p">:</span><span class="n">fetch</span><span class="p">(</span><span class="n">ndb</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="n">people</span><span class="p">,</span> <span class="p">{</span><span class="n">db</span><span class="p">:</span><span class="n">eq</span><span class="p">(</span><span class="n">ndb</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="n">people</span><span class="p">.</span><span class="n">city</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">Ashtan&quot;</span><span class="p">),</span> <span class="n">db</span><span class="p">:</span><span class="n">gte</span><span class="p">(</span><span class="n">ndb</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="n">people</span><span class="p">.</span><span class="n">city_rank</span><span class="p">,</span> <span class="mi">4</span><span class="p">)}))</span> <span class="k">do</span> <span class="nb">print</span><span class="p">(</span><span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">)</span> <span class="k">end</span>
+</pre></div>
+</div>
+<div class="section" id="forcing-an-update-on-data">
+<h3>Forcing an update on data<a class="headerlink" href="#forcing-an-update-on-data" title="Permalink to this headline">¶</a></h3>
+<p>To update or add a person to NameDB, you can manually <em>honors</em> them. If you&#8217;d like to do it via scripting, the preferred way is to set the persons might xp rank to -1 (&#8220;unknown&#8221;) in the DB and raise a new data event. Here&#8217;s an example:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- force an update on a single name, Bouff</span>
+<span class="kd">local</span> <span class="n">temp_name_list</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">Bouff&quot;</span><span class="p">,</span> <span class="n">xp_rank</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">}</span> <span class="p">}</span>
+<span class="n">db</span><span class="p">:</span><span class="n">merge_unique</span><span class="p">(</span><span class="n">ndb</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="n">people</span><span class="p">,</span> <span class="n">temp_name_list</span><span class="p">)</span>
+<span class="n">raiseEvent</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">NameDB got new data&quot;</span><span class="p">)</span>
+
+
+<span class="c1">-- force an update on many names, from a list of names you&#39;ve got</span>
+<span class="kd">local</span> <span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;</span><span class="s">Bouff&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">Lianca&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">Teela&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">Malifuus&quot;</span><span class="p">}</span>
+<span class="kd">local</span> <span class="n">temp_name_list</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">#</span><span class="n">names</span> <span class="k">do</span>
+  <span class="n">temp_name_list</span><span class="p">[</span><span class="o">#</span><span class="n">temp_name_list</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="o">=</span> <span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">xp_rank</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">db</span><span class="p">:</span><span class="n">merge_unique</span><span class="p">(</span><span class="n">ndb</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="n">people</span><span class="p">,</span> <span class="n">temp_name_list</span><span class="p">)</span>
+<span class="n">raiseEvent</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">NameDB got new data&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p>Several pre-made triggers that use NameDB already come provided for you in the <em>Scripting Examples</em> folder - to use them, drag them out of NameDB&#8217;s folders completely into your own, enable the triggers and optionally adjust them for yourself.</p>
+</div>
+</div>
+<div class="section" id="incompatibilities">
+<h2>Incompatibilities<a class="headerlink" href="#incompatibilities" title="Permalink to this headline">¶</a></h2>
+<p>If you are syncing your Mudlet profile using Dropbox, make sure <em>not</em> to sync the <strong>Database_namedb.db</strong> file - Dropbox seems to corrupt it and make it inoperable.</p>
+<p>Be wary of storing it on a Linux NFS share as well - that seems to present issues.</p>
+</div>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<p>If your qwho-like aliases and any others that do anything with geography stop working, and you check the errors view to see <strong>mmp</strong> being mentioned, like so:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span></span>[ERROR:] object:&lt;error in anonymous Lua function&gt; function:&lt;no debug data available&gt;
+         &lt;Lua error:[string &quot;function mmp.echo(what)...&quot;]:125: attempt to index local &#39;key&#39; (a number value)&gt;
+</pre></div>
+</div>
+<p>The issue is with your mapper script (perhaps it is far outdated). Try reinstalling the latest one <a class="reference external" href="http://wiki.mudlet.org/w/IRE_mapping_script">from here</a>.</p>
+</div>
+<div class="section" id="future-additions">
+<h2>Future additions<a class="headerlink" href="#future-additions" title="Permalink to this headline">¶</a></h2>
+<p>NameDB opens up for a <em>ton</em> of possibilities to be improved upon. Here are some ideas I&#8217;ve got that&#8217;ll be added in the future:</p>
+<ul class="simple">
+<li>storing a persons max health and mana</li>
+<li>rogues as a category, so they can be highlighted</li>
+<li>a way to remember when you&#8217;ve last seen a person, and</li>
+<li>an option to highlight only recently seen people</li>
+<li>making all of whois clickable</li>
+<li>add a highlighting category for rogues and house members</li>
+<li>city allies tracking</li>
+<li>(done, qwc instead) qw &lt;city&gt; to check qw and have only known citizens of a particular city be highlighted</li>
+<li>add background highlighting for names</li>
+<li>add infamous tracking</li>
+</ul>
+<p>If you&#8217;ve got more ideas, let me know. If you&#8217;d like to make any ideas happen yourself, you&#8217;re free to do so - the code is there.</p>
+</div>
+<div class="section" id="contributing-to-namedb">
+<h2>Contributing to NameDB<a class="headerlink" href="#contributing-to-namedb" title="Permalink to this headline">¶</a></h2>
+<p>All the code for NameDB is available for you to modify and improve upon. You do, however, assume the risk of breaking it on yourself by doing so!</p>
+<p>Please contribute the changes you do to NameDB back, so they can be integrated with future releases and the wider community.</p>
+</div>
+<div class="section" id="aliases">
+<h2>Aliases<a class="headerlink" href="#aliases" title="Permalink to this headline">¶</a></h2>
+<dl class="glossary docutils">
+<dt id="term-whois-person">whois &lt;person&gt;</dt>
+<dd><p class="first">Gives you a a complete dossier on a person that NameDB knows of:</p>
+<img alt="_images/namedb-whois.png" class="last align-center" src="_images/namedb-whois.png" />
+</dd>
+<dt id="term-vconfig-politics">vconfig politics</dt>
+<dd>Gives you a menu where you can adjust city relationship stances, and setup highlights.</dd>
+<dt id="term-ndb">ndb</dt>
+<dd>NameDB alias cheetsheet - shows the same information as this aliases list. Hover your mouse or click on an alias to see the description.</dd>
+<dt id="term-ndb-long">ndb long</dt>
+<dd>NameDB alias cheetsheet, with the descriptions expanded.</dd>
+<dt id="term-vconfig-autocheck-yep-nope">vconfig autocheck yep/nope</dt>
+<dd>Sets whenever NameDB should automatically check new people it comes across to gather information about them or not. Most of the time this does grab their citizenship.</dd>
+<dt id="term-vconfig-usehonors-yep-nope">vconfig usehonors yep/nope</dt>
+<dd>Sets whenever NameDB should use honors for checking names - honors allows qwm, qwi and qwic to work.</dd>
+<dt id="term-vconfig-autoclassset">vconfig autoclassset #</dt>
+<dd>Sets the amount of consecutive hits an opponents should do from a class before NameDB remembers them as that specific class. This is to prevent illusions easily messing with their known class.</dd>
+<dt id="term-qw-qw2">qw/qw2</dt>
+<dd><p class="first">Checks the QW list and records new adventurer names and their city affiliation for use in highlighting. NameDB uses the in-game &#8216;qwc&#8217; command for this.</p>
+<table class="last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">note:</th><td class="field-body">You need to have CONFIG MXP OFF in-game for the city affiliation capture to work - as the name highlighting done by the game here with MXP is different from elsewhere and isn&#8217;t supported by Mudlet.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt id="term-qw-update">qw update</dt>
+<dd>Re-checks all names on the QW list, even if they&#8217;re already and currently known - required <code class="docutils literal"><span class="pre">vconfig</span> <span class="pre">usehonors</span></code> to be on.</dd>
+<dt id="term-qwc">qwc</dt>
+<dd><p class="first">Checks the QW list and display you a menu of players present by their organization affiliation, sorted:</p>
+<img alt="_images/namedb-qwc.png" class="last align-center" src="_images/namedb-qwc.png" />
+</dd>
+<dt id="term-qwm">qwm</dt>
+<dd>Shows ungemmed Marks on the QW list.</dd>
+<dt id="term-qwic">qwic</dt>
+<dd>Shows ungemmed Infamous on the QW list.</dd>
+<dt id="term-qwi">qwi</dt>
+<dd>Re-checks all people visible on the QW list and then shows the ungemmed Infamous.</dd>
+<dt id="term-ppof-city">ppof &lt;city&gt;</dt>
+<dd>Checks QW list and citizens of a particular city to cc (so party or a clan, depends what you&#8217;ve set vconfig ccto to)</dd>
+<dt id="term-ndb-infamous">ndb infamous</dt>
+<dd>Shows the list of known Infamous people from the database.</dd>
+<dt id="term-house-order-city-enemies">house/order/city enemies</dt>
+<dd>Sets the enemy status of the people that NameDB knows of from those lists. This won&#8217;t auto-add names it doesn&#8217;t know for checking (so your db doesn&#8217;t get filled up with dormant people and they&#8217;ll be getting highlighted for no reason).</dd>
+<dt id="term-house-order-city-enemies-add">house/order/city enemies add</dt>
+<dd>Sets the enemy status of the people from those lists, and auto-adds names it doesn&#8217;t know for checking.</dd>
+<dt id="term-ndb-honorsnew">ndb honorsnew</dt>
+<dd>If vconfig autocheck is off, ndb honorsnew will allow NameDB to honors the new people it knows of.</dd>
+<dt id="term-ndb-cancel">ndb cancel</dt>
+<dd>Stops honors&#8217;ing the list of people that need to be checked.</dd>
+<dt id="term-npp">npp</dt>
+<dd>Stops/resumes name highlighting. You might want to turn highlighting off for KoTHs, for example, where the game-provided colors are more important.</dd>
+<dt id="term-npp-on-off">npp on/off</dt>
+<dd>Stops/resumes name highlighting explicitly.</dd>
+<dt id="term-vconfig-highlightignore-person">vconfig highlightignore &lt;person&gt;</dt>
+<dd>Adds/removes a name on the list that keeps track of who should not be highlighted.</dd>
+<dt id="term-vshow-highlightignore">vshow highlightignore</dt>
+<dd>Shows the list of persons who shouldn&#8217;t be highlighted.</dd>
+<dt id="term-cw">cw</dt>
+<dd>Appends class and Dragon information to each adventurer on the CW list, as well as providing a total summary of classes at the bottom. This looks best when Mudlets screenwidth is set to 100 in Mudlets settings (the games, as set via CONFIG, should be 0).</dd>
+<dt id="term-iff-person-ally-enemy-auto">iff &lt;person&gt; ally/enemy/auto</dt>
+<dd><p class="first">Explicitly sets a persons status to you, overriding the auto-determination of enemy vs non-enemy by NameDB.</p>
+<p>Making them an ally will make NameDB disregard their citizenship and political stances and whenever they&#8217;re a house/order/city enemy - thus never considering them an enemy.</p>
+<p>Making them an enemy will always consider them an enemy, disregarding anything else.</p>
+<p class="last">Setting it to auto will have NameDB compute their status to you depending on a number of things - if they&#8217;re in a city that is considered an enemy to you, or if they&#8217;re a house/city/order enemy, they&#8217;ll be considered an enemy. Otherwise, they won&#8217;t be an enemy.</p>
+</dd>
+<dt id="term-ndb-set-person-notes-notes">ndb set &lt;person&gt; notes &lt;notes&gt;</dt>
+<dd>Adjusts the notes you have on the person to the new ones. If you do <em>whois person</em> and click on <em>&#8216;edit&#8217;</em>, you an edit current notes you have on them. You can use the same color formatting from a cecho to color your notes (ie <em>&lt;red&gt; text</em>), and insert n&#8217;s in the same manner to get a linebreak.</dd>
+<dt id="term-ndb-export">ndb export</dt>
+<dd>Opens up a menu where you can export your data. It allows you to selectively export fields (so you don&#8217;t have to share everything, for example, not your notes), and which people to export (atm, it&#8217;s everybody).</dd>
+<dt id="term-ndb-import">ndb import</dt>
+<dd>Opens up a menu where you can import exported NameDB data. You can selectively choose which fields about a person should be imported - they will overwrite what you&#8217;ve had. This will not clear your names in NameDB that you&#8217;ve got already - if you&#8217;d like to start clean, use &#8216;ndb delete all&#8217;.</dd>
+<dt id="term-ndb-delete-person">ndb delete &lt;person&gt;</dt>
+<dd>Wipes an individual entry from NameDB.</dd>
+<dt id="term-ndb-delete-all">ndb delete all</dt>
+<dd>Wipes all data from the database, essentially making you start over clean. You have to use this alias twice for it to go off.</dd>
+<dt id="term-ndb-delete-unranked">ndb delete unranked</dt>
+<dd>Wipes all unranked - that is, newbies and older players - from NameDB.</dd>
+<dt id="term-ndb-update-all">ndb update all</dt>
+<dd>Re-checks every person in the database. This can&#8217;t be undone, only paused (with ndb cancel) - NameDB will re-check everybody as you&#8217;ve asked it to, so don&#8217;t do it on a whim!</dd>
+<dt id="term-ndb-set-person-class-class">ndb set &lt;person&gt; class &lt;class&gt;</dt>
+<dd>Manually sets/adjusts the persons class. It&#8217;s always stored in lowercase by NameDB. NameDB automatically picks up the class from cwho and hwho lists, but this isn&#8217;t possible for everyone.</dd>
+<dt id="term-ndb-set-person-city-city">ndb set &lt;person&gt; city &lt;city&gt;</dt>
+<dd>Manually changes the persons city. It&#8217;s always stored in proper case (first letter capitalized) by NameDB. NameDB automatically picks it up from honors for you already.</dd>
+<dt id="term-ndb-set-person-title-title">ndb set &lt;person&gt; title &lt;title&gt;</dt>
+<dd>Adjusts the persons title as NameDB knows it. It&#8217;s not really useful for much, as titles change all the time, but the option to set/retrieve them is there for you.</dd>
+<dt id="term-ndb-set-person-city-rank-rank">ndb set &lt;person&gt; city_rank &lt;rank&gt;</dt>
+<dd>Manually adjusts the persons city rank. 0 is known, 1 is cr1 and 6 is cr6. NameDB automatically picks up the city rank from honors for you already.</dd>
+<dt id="term-ndb-set-person-house-house">ndb set &lt;person&gt; house &lt;house&gt;</dt>
+<dd>Manually adjusts the persons House affiliation. NameDB can only capture this from hwho or house members, so you&#8217;d want to use this for setting others&#8217; Houses if that&#8217;s something you want to track.</dd>
+<dt id="term-ndb-set-person-order-order">ndb set &lt;person&gt; order &lt;order&gt;</dt>
+<dd>Manually adjusts the persons Order affiliation. NameDB stores it with proper titlecase, and it&#8217;ll pull information from ORDER MEMBERS for you. You will need to manually input the members of other Orders though.</dd>
+<dt id="term-ndb-set-person-might-might">ndb set &lt;person&gt; might &lt;might&gt;</dt>
+<dd>Adjusts the persons might (lessons invested vs you) relative to you - 0 is 0% of your might, 100 is equal to you. <em>-1</em> is unknown, and will cause NameDB to re-honors the person. NameDB automatically captures this from honors.</dd>
+<dt id="term-ndb-set-person-importance-number">ndb set &lt;person&gt; importance &lt;number&gt;</dt>
+<dd>Manually sets a persons &#8220;importance&#8221;. This isn&#8217;t used by NameDB, but it&#8217;s a way for you to explicitly prioritize people without relying on heuristics such as city rank and might.</dd>
+<dt id="term-ndb-set-person-xp-rank-number">ndb set &lt;person&gt; xp_rank &lt;number&gt;</dt>
+<dd>Manually sets the persons rank in experience in the game. <em>-2</em> is unranked, <em>-1</em> is unknown - this&#8217;ll cause NameDB to auto-honors the person. Any other number is their actual rank. NameDB automatically captures this from honors.</dd>
+<dt id="term-ndb-set-person-immortal-yep-nope">ndb set &lt;person&gt; immortal &lt;yep/nope&gt;</dt>
+<dd>Manually adjusts whenever somebody is an Immortal or not. NameDB automatically captures this from honors.</dd>
+<dt id="term-ndb-set-person-cityenemy-houseenemy-orderenemy-yep-nope">ndb set &lt;person&gt; cityenemy/houseenemy/orderenemy &lt;yep/nope&gt;</dt>
+<dd>Manually sets whenever the person is your citys, houses or orders enemy.  NameDB automatically captures this from the enemy lists, but you can adjust it manually as well.</dd>
+<dt id="term-ndb-stats">ndb stats</dt>
+<dd>A little stats alias showing the number of people known and city populations.</dd>
+</dl>
+</div>
+<div class="section" id="api">
+<span id="id1"></span><h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<dl class="glossary docutils">
+<dt id="term-ndb-isenemy-name">ndb.isenemy(name)</dt>
+<dd><p class="first">Returns true if the person is your enemy - whenever they are explicitly marked as one via <em>iff &lt;name&gt; enemy&gt;</em> or they are in a city that you are at war with per <em>vconfig politics</em>, or they are a city, house or order enemy.</p>
+<p>This function is useful to use in auto-action triggers, for example only tentacle your enemies and not everybody:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">ndb</span><span class="p">.</span><span class="n">isenemy</span><span class="p">(</span><span class="n">matches</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">then</span>
+  <span class="k">if</span> <span class="n">svo</span><span class="p">.</span><span class="n">defc</span><span class="p">.</span><span class="n">dragonform</span> <span class="k">then</span>
+    <span class="n">svo</span><span class="p">.</span><span class="n">doadd</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">becalm&quot;</span><span class="p">)</span>
+  <span class="k">else</span>
+    <span class="n">svo</span><span class="p">.</span><span class="n">doadd</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">touch tentacle &quot;</span> <span class="o">..</span> <span class="n">matches</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Or automatically pick up monolith sigils and enemy drops:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- pattern (perl regex): ^(\w+) drops a monolith sigil\.$</span>
+
+<span class="k">if</span> <span class="n">ndb</span><span class="p">.</span><span class="n">isenemny</span><span class="p">(</span><span class="n">matches</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">then</span>
+  <span class="n">svo</span><span class="p">.</span><span class="n">doaddfree</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">get monolith&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Or only announce enemies on mindnet:</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">ndb</span><span class="p">.</span><span class="n">isenemy</span><span class="p">(</span><span class="n">matches</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">then</span>
+  <span class="n">svo</span><span class="p">.</span><span class="n">cc</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">%s has entered %s!&quot;</span><span class="p">,</span> <span class="n">matches</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">gmcp</span><span class="p">.</span><span class="n">Room</span><span class="p">.</span><span class="n">Info</span><span class="p">.</span><span class="n">area</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-isperson-name">ndb.isperson(name)</dt>
+<dd><p class="first">Returns true if the given name is one NameDB knows of.</p>
+<p>This function is useful for making your attacks differentiate between PvP and bashing, as one example:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span></span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">smite &quot;</span><span class="o">..</span><span class="n">target</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">ndb</span><span class="p">.</span><span class="n">isperson</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">svo</span><span class="p">.</span><span class="n">inslowcuringmode</span><span class="p">()</span> <span class="k">then</span>
+  <span class="n">send</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">chasten &quot;</span><span class="o">..</span><span class="n">target</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>In another example, you could automatically enemy in your target alias:</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="n">target</span> <span class="o">=</span> <span class="n">matches</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="n">ndb</span><span class="p">.</span><span class="n">isperson</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">svo</span><span class="p">.</span><span class="n">inslowcuringmode</span><span class="p">()</span> <span class="k">then</span>
+  <span class="n">send</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">enemy &quot;</span><span class="o">..</span><span class="n">target</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-exists-name">ndb.exists(name)</dt>
+<dd>Returns true if the given character name exists as NameDB knows it.</dd>
+<dt id="term-ndb-getname-name">ndb.getname(name)</dt>
+<dd><p class="first">Returns a table with all information known about a name - useful to use if you want to check multiple fields of a person.</p>
+<p>Here&#8217;s an example that shows the persons class, house and city at once:</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="kd">local</span> <span class="n">person</span> <span class="o">=</span> <span class="n">ndb</span><span class="p">.</span><span class="n">getname</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Vadimuses&quot;</span><span class="p">)</span>
+
+<span class="c1">-- if ndb doesn&#39;t know the person, it&#39;ll return nil, so handle that</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">person</span> <span class="k">then</span> <span class="n">svo</span><span class="p">.</span><span class="n">echof</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">I&#39;m afraid I don&#39;t know Vadimuses yet.&quot;</span><span class="p">)</span> <span class="k">return</span> <span class="k">end</span>
+
+<span class="n">svo</span><span class="p">.</span><span class="n">echof</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Vadimuses&#39;s class that we know of is %s, and he&#39;s a %s in %s.&quot;</span><span class="p">,</span> <span class="n">person</span><span class="p">.</span><span class="n">class</span><span class="p">,</span> <span class="n">person</span><span class="p">.</span><span class="n">guild</span><span class="p">,</span> <span class="n">person</span><span class="p">.</span><span class="n">city</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-findname-line">ndb.findname(line)</dt>
+<dd>Given a line, returns the first character name it finds on it.</dd>
+<dt id="term-ndb-findnames-line">ndb.findnames(line)</dt>
+<dd>Given a line, returns a list of known character names found on it. If no names are found, it returns nil.</dd>
+<dt id="term-ndb-isclass-name-class">ndb.isclass(name, class)</dt>
+<dd><p class="first">Returns true if the given person is known to be of that class.</p>
+<p>An example of use:</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- on a trigger where the person lands in your room</span>
+<span class="k">if</span> <span class="n">ndb</span><span class="p">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">matches</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;</span><span class="s">monk&quot;</span><span class="p">)</span> <span class="k">then</span>
+  <span class="n">svo</span><span class="p">.</span><span class="n">echof</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Watch out! This might be a deliverance trick!&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-getclass-name">ndb.getclass(name)</dt>
+<dd>Returns the known class of a person. If the person isn&#8217;t known, it returns nil - and if the class isn&#8217;t known, it returns &#8220;&#8221;.</dd>
+<dt id="term-ndb-setclass-name-class">ndb.setclass(name, class)</dt>
+<dd>Sets the class on a given person.</dd>
+<dt id="term-ndb-getxprank-name">ndb.getxprank(name)</dt>
+<dd>Returns the XP rank a person. If the person isn&#8217;t known, it returns nil. If the rank isn&#8217;t known, it returns -1, and if the person is unranked, it returns -2.</dd>
+<dt id="term-ndb-getcity-name">ndb.getcity(name)</dt>
+<dd><p class="first">Returns the known city of a person. If the person isn&#8217;t known, it returns nil - and if the city isn&#8217;t known, it returns &#8220;&#8221;.</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- check if somebody is from a particular city. The city name should be capitalized</span>
+<span class="k">if</span> <span class="n">ndb</span><span class="p">.</span><span class="n">getcity</span><span class="p">(</span><span class="n">matches</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">Cyrene&quot;</span> <span class="k">then</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-isashtani-name">ndb.isashtani(name)</dt>
+<dt id="term-ndb-iscyrenian-name">ndb.iscyrenian(name)</dt>
+<dt id="term-ndb-iseleusian-name">ndb.iseleusian(name)</dt>
+<dt id="term-ndb-ishashani-name">ndb.ishashani(name)</dt>
+<dt id="term-ndb-ismhaldorian-name">ndb.ismhaldorian(name)</dt>
+<dt id="term-ndb-istargossian-name">ndb.istargossian(name)</dt>
+<dd><p class="first">Convenience functions, return true if the person belongs to the given city. You might want to use ndb.isenemy() when checking for enemies instead, as then you can configure which citizens you consider your enemies to be via a menu, instead of having to change all your code.</p>
+<p>Here are some examples:</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">ndb</span><span class="p">.</span><span class="n">ismhaldorian</span><span class="p">(</span><span class="n">matches</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">then</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ndb</span><span class="p">.</span><span class="n">iseleusian</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Bob&quot;</span><span class="p">)</span> <span class="k">then</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-gethouse-name">ndb.gethouse(name)</dt>
+<dd><p class="first">Returns the known House of a person. If the person isn&#8217;t known, it returns nil - and if the house isn&#8217;t known, it returns &#8220;&#8221;.</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- check if somebody is from a particular house. The house name should be capitalized</span>
+<span class="k">if</span> <span class="n">ndb</span><span class="p">.</span><span class="n">gethouse</span><span class="p">(</span><span class="n">matches</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">Sentinels&quot;</span> <span class="k">then</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-getnotes-name">ndb.getnotes(name)</dt>
+<dd>Returns the notes that you&#8217;ve stored about a person - or &#8220;&#8221; if you haven&#8217;t got any.</dd>
+<dt id="term-ndb-ismark-name">ndb.ismark(name)</dt>
+<dd><p class="first">Returns true or the mark type depending on whenever the person is a known Mark. If the person isn&#8217;t known, it returns nil.</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- see if a given person is a Mark</span>
+<span class="kd">local</span> <span class="n">ismark</span> <span class="o">=</span> <span class="n">ndb</span><span class="p">.</span><span class="n">ismark</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Vadimuses&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">ismark</span> <span class="k">then</span>
+  <span class="n">svo</span><span class="p">.</span><span class="n">echof</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Vadimuses is a &quot;</span><span class="o">..</span><span class="n">ismark</span><span class="o">..</span><span class="s2">&quot;</span><span class="s"> mark!&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-setmark-name-type">ndb.setmark(name, type)</dt>
+<dd><p class="first">Sets whenever a person is a Mark or not. If they&#8217;re a mark, then supply the type - <code class="docutils literal"><span class="pre">Ivory</span></code> or <code class="docutils literal"><span class="pre">Quisalis</span></code> (make sure to capitalise).</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- remove Bob&#39;s mark status, he couldn&#39;t handle the pressure</span>
+<span class="n">ndb</span><span class="p">.</span><span class="n">setmark</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Bob&quot;</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
+
+<span class="c1">-- set Amy to be an Ivory mark</span>
+<span class="n">ndb</span><span class="p">.</span><span class="n">setmark</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Amy&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">Ivory&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-isinfamous-name">ndb.isinfamous(name)</dt>
+<dd>Returns -1 if unknown, 0 if not infamous, 1 if nearly infamous, and 2-7 for the various levels of infamy.</dd>
+<dt id="term-ndb-isdragon-name">ndb.isdragon(name)</dt>
+<dd><p class="first">Returns true or false depending on whenever the person is a known Dragon. If the person isn&#8217;t known, it returns nil.</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- see if a given person is a Dragon</span>
+<span class="k">if</span> <span class="n">ndb</span><span class="p">.</span><span class="n">isdragon</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Vadimuses&quot;</span><span class="p">)</span> <span class="k">then</span>
+  <span class="n">svo</span><span class="p">.</span><span class="n">echof</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Vadimuses is a Dragon!&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-setdragon-name-status">ndb.setdragon(name, status)</dt>
+<dd><p class="first">Sets whenever a person is a Dragon or not. The status can be a true/false boolean or a string affirmation (yep/nope and so on) value.</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="n">ndb</span><span class="p">.</span><span class="n">setdragon</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Vadimuses&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+<span class="n">ndb</span><span class="p">.</span><span class="n">setdragon</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Vadimuses&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">yep&quot;</span><span class="p">)</span>
+
+<span class="n">ndb</span><span class="p">.</span><span class="n">setdragon</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Unnamednewbie&quot;</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
+<span class="n">ndb</span><span class="p">.</span><span class="n">setdragon</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Unnamednewbie&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">nope&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-setiff-name-status">ndb.setiff(name, status)</dt>
+<dd><p class="first">Adjusts <code class="docutils literal"><span class="pre">iff</span></code> (see the <code class="docutils literal"><span class="pre">iff</span></code> alias) of a person. Status can be <code class="docutils literal"><span class="pre">auto</span></code>, <code class="docutils literal"><span class="pre">ally</span></code> or <code class="docutils literal"><span class="pre">enemy</span></code>.</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- we don&#39;t like Bob anymore. Set him to be treated as an enemy now by ndb.isenemy()</span>
+<span class="n">ndb</span><span class="p">.</span><span class="n">setiff</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">enemy&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-isimmortal-name">ndb.isimmortal(name)</dt>
+<dd>Returns true or false depending on whenever the person is a known Immortal (that is - Guide, God or Celani).</dd>
+<dt id="term-ndb-getpluralcity-city-count">ndb.getpluralcity(city, count)</dt>
+<dd><p class="first">Given a city affiliation and a number of citizens from it, returns either the singlar or plural variation of the city name.</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- the following will say: There are 5 Ashtani</span>
+<span class="kd">local</span> <span class="n">city</span><span class="p">,</span> <span class="n">amount</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">Ashtan&quot;</span><span class="p">,</span> <span class="mi">5</span>
+<span class="n">svo</span><span class="p">.</span><span class="n">cc</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">There are %s %s&quot;</span><span class="p">,</span> <span class="n">amount</span><span class="p">,</span> <span class="n">ndb</span><span class="p">.</span><span class="n">getpluralcity</span><span class="p">(</span><span class="n">city</span><span class="p">,</span> <span class="n">amount</span><span class="p">))</span>
+
+<span class="c1">-- the following will say: 1 Cyrenian</span>
+<span class="kd">local</span> <span class="n">city</span><span class="p">,</span> <span class="n">amount</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">Cyrene&quot;</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">svo</span><span class="p">.</span><span class="n">cc</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">%s %s&quot;</span><span class="p">,</span> <span class="n">amount</span><span class="p">,</span> <span class="n">ndb</span><span class="p">.</span><span class="n">getpluralcity</span><span class="p">(</span><span class="n">city</span><span class="p">,</span> <span class="n">amount</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-getcolor-name">ndb.getcolor(name)</dt>
+<dd><p class="first">Returns you the cecho color for the given persons name, or &#8216;&#8217; if there is none (they aren&#8217;t highlighted). You can use this to make echoes where peoples names are colored as they would be by NameDB.</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- you can insert the color as a variable, between ..&#39;s:</span>
+<span class="n">cecho</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Highlights: &quot;</span><span class="o">..</span><span class="n">ndb</span><span class="p">.</span><span class="n">getcolor</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Tanaar&quot;</span><span class="p">)</span><span class="o">..</span><span class="s2">&quot;</span><span class="s">Tanaar&lt;a_grey&gt;, &quot;</span><span class="o">..</span><span class="n">ndb</span><span class="p">.</span><span class="n">getcolor</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Vadimuses&quot;</span><span class="p">)</span><span class="o">..</span><span class="s2">&quot;</span><span class="s">Vadimuses&quot;</span><span class="p">)</span>
+
+<span class="c1">-- or be a bit more fancy about it, using string.format to insert the color:</span>
+<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="k">in</span> <span class="nb">ipairs</span><span class="p">({</span><span class="s2">&quot;</span><span class="s">Tanaar&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">Vadimuses&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">Lynara&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">Kard&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">Seragorn&quot;</span><span class="p">})</span> <span class="k">do</span>
+  <span class="n">cecho</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Name in color: %s%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">ndb</span><span class="p">.</span><span class="n">getcolor</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">name</span><span class="p">))</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-getcolorp-name">ndb.getcolorp(name)</dt>
+<dd>Returns you the foreground color that the person would be highlighted as, if they are meant to be. If they aren&#8217;t meant to be highlighted or the person isn&#8217;t known, returns nil.</dd>
+<dt id="term-ndb-shouldbold-name">ndb.shouldbold(name)</dt>
+<dd><p class="first">Returns true if the persons name would be bolded by NameDB, or false otherwise. This would be helpful to use in conjunction with <a class="reference external" href="http://wiki.mudlet.org/w/Manual:UI_Functions#setBold">setBold()</a>.</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- enables or disables bolding, depending whenever Aradors name is bolded by NameDB</span>
+<span class="n">setBold</span><span class="p">(</span><span class="n">ndb</span><span class="p">.</span><span class="n">shouldbold</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Arador&quot;</span><span class="p">))</span>
+<span class="n">echo</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Arador&quot;</span><span class="p">)</span>
+<span class="n">resetFormat</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-shoulditalicize-name">ndb.shoulditalicize(name)</dt>
+<dd><p class="first">Returns true if the persons name would be italicized by NameDB, or false otherwise. This would be helpful to use in conjunction with <a class="reference external" href="http://wiki.mudlet.org/w/Manual:UI_Functions#setItalics">setItalics()</a>.</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- enables or disables undernlined text, depending whenever Aradors name is italicized by NameDB</span>
+<span class="n">setItalics</span><span class="p">(</span><span class="n">ndb</span><span class="p">.</span><span class="n">shoulditalicize</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Arador&quot;</span><span class="p">))</span>
+<span class="n">echo</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Arador&quot;</span><span class="p">)</span>
+<span class="n">resetFormat</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-shouldunderline-name">ndb.shouldunderline(name)</dt>
+<dd><p class="first">Returns true if the persons name would be underlined by NameDB, or false otherwise. This would be helpful to use in conjunction with <a class="reference external" href="http://wiki.mudlet.org/w/Manual:UI_Functions#setUnderline">setUnderline()</a>.</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="c1">-- enables or disables undernlined text, depending whenever Aradors name is underlined by NameDB</span>
+<span class="n">setUnderline</span><span class="p">(</span><span class="n">ndb</span><span class="p">.</span><span class="n">shouldunderline</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Arador&quot;</span><span class="p">))</span>
+<span class="n">echo</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Arador&quot;</span><span class="p">)</span>
+<span class="n">resetFormat</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-ndb-iscityenemy-name">ndb.iscityenemy(name)</dt>
+<dd>Similar to ndb.isenemy - but ignores whenever someone is a house enemy or not. So it checks everything else that ndb.isenemy checks (citizenship, iff, and city) while ignoring the status of someone being your House&#8217;s enemy.</dd>
+<dt id="term-svo-config-set-ndbpaused-option-true">svo.config.set(&#8220;ndbpaused&#8221;, option, true)</dt>
+<dd>Disables or enables NameDB highlighting (same as what the <code class="docutils literal"><span class="pre">npp</span></code> alias does). <code class="docutils literal"><span class="pre">option</span></code> is a toggle in the same manner as <code class="docutils literal"><span class="pre">svo.config.set()</span></code> operates - it can be <code class="docutils literal"><span class="pre">true</span></code>, <code class="docutils literal"><span class="pre">false</span></code>, <code class="docutils literal"><span class="pre">&quot;on&quot;</span></code>, <code class="docutils literal"><span class="pre">&quot;off&quot;</span></code> and so on. The last argument, <code class="docutils literal"><span class="pre">true</span></code>, has to be there for the function to take effect.</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="offering.html" class="btn btn-neutral float-right" title="Svof Corpse stuff" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="monklimbcounter.html" class="btn btn-neutral" title="Svof Multi-Person Monk Limbcounter" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Vadim Peretokin.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'18',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

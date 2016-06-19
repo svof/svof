@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Svof Elist Sorter &mdash; Svof docs</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Svof docs" href="index.html"/>
+        <link rel="next" title="Svof Enchanter" href="enchanter.html"/>
+        <link rel="prev" title="Svof Multi-Person Dragon Limbcounter" href="dragonlimbcounter.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="contents.html" class="icon icon-home"> Svof
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                18
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Svof 18 documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dragonlimbcounter.html">Svof Multi-Person Dragon Limbcounter</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Svof Elist Sorter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#aliases">Aliases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="enchanter.html">Svof Enchanter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inker.html">Svof Tattoo Inker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knightlimbcounter.html">Svof Multi-Person Knight Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="magilimbcounter.html">Svof Multi-Person Magi Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metalimbcounter.html">Svof Multi-Person Meta Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monklimbcounter.html">Svof Multi-Person Monk Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="namedb.html">Svof NameDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="offering.html">Svof Corpse stuff</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peopletracker.html">Svof People Tracker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="priesthealing.html">Svof Priest Healer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="priestlimbcounter.html">Svof Multi-Person Priest Limbcounter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="priestreport.html">Svof Priest Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refiller.html">Svof Refiller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runeidentifier.html">Svof Rune Identifier</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="contents.html">Svof</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="contents.html">Docs</a> &raquo;</li>
+      
+    <li>Svof Elist Sorter</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/elistsorter.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="svof-elist-sorter">
+<h1>Svof Elist Sorter<a class="headerlink" href="#svof-elist-sorter" title="Permalink to this headline">¶</a></h1>
+<p>This script helps you keep your vials in good order - it tells you what you&#8217;re running low on (with configurable amounts for each elixir/salve/venom), what is about to decay (with configurable time), and has a button for inserting text of which refills would you like (venoms work as well). For vials that are about to decay, it has a feature to pour contents into other vials and then dispose of them via a custom command.</p>
+<p>To use it, check <em>elist</em> or <em>vlist</em> and it&#8217;ll display a nicely organized menu of it&#8217;s own after the output. If you&#8217;re running low on any vials, it&#8217;ll tell you how many of each, and allow you to click on a button at the end of the menu that&#8217;ll insert into the command line what stuff do you need.</p>
+<p>If you have any vials that are going to decay soon, it&#8217;ll tell you how many as well, and provide a button that&#8217;ll dispose of vials that are near decaying. You can give it a custom command to use to dispose of vials - for example, <em>dispose of decays by: drop vial</em> or <em>dispose of decays by: put vial in pack</em>. Before disposing, the script will intelligently empty out the vial by pouring it into other vials or other empties that aren&#8217;t going to decay, so you don&#8217;t lose out.</p>
+<p>You can adjust the amount of months below which sorter will consider a vial about to decay, and the amount of vials for each potion/elixir/venom that you&#8217;d like to have from the <em>vconfig2</em> menu.</p>
+<div class="section" id="aliases">
+<h2>Aliases<a class="headerlink" href="#aliases" title="Permalink to this headline">¶</a></h2>
+<dl class="glossary docutils">
+<dt id="term-elist">elist</dt>
+<dd><p class="first">Shows you the elist summary - how many vials of a certain thing have you got, and how many vials of a potion are you missing (according to your desired stocking preferences).</p>
+<p class="last">It also shows you links to change the desired amounts of vials, refill all vials from tuns, or append the refill request to the command/input line - so you can tell a refiller what you&#8217;d like.</p>
+</dd>
+<dt id="term-dispose-of-decays-by-command">dispose of decays by: &lt;command&gt;</dt>
+<dd><p class="first">Uses the custom command to dispose of near-decay vials. Make sure to include the word <em>vial</em> in it, it will be substituted with the vial ID. This function <em>will</em> save your sips by transferring them to non-decay vials.</p>
+<p class="last">This will check elist first before doing its job, just in case you&#8217;ve bought new vials inbetween the last time you checked elist - and you&#8217;d like the new vials to be used for pouring into instead of wasting many old vials away with content still in them.</p>
+</dd>
+<dt id="term-vconfig-setpotion-potion-amount">vconfig setpotion &lt;potion&gt; &lt;amount&gt;</dt>
+<dd>Adjusts desired potion amounts. You can also do it via elist &gt; (change desired amounts) &gt; clicking on a number.</dd>
+<dt id="term-vconfig-decaytime-months">vconfig decaytime &lt;months&gt;</dt>
+<dd>Sets the amount of months a vial will have left on it to be considered soon to be decaying. If a vial is below this many months, the <code class="docutils literal"><span class="pre">dispose</span> <span class="pre">of</span> <span class="pre">decays</span> <span class="pre">by:</span></code> command will take it into account.</dd>
+</dl>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<dl class="glossary docutils">
+<dt id="term-svo-es-potions-table">svo.es_potions (table)</dt>
+<dd><p class="first">Stores potions in the format of:</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="nb">type</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">potion</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">vials</span> <span class="o">=</span> <span class="o">#</span><span class="p">,</span>
+                <span class="n">decays</span> <span class="o">=</span> <span class="o">#</span><span class="p">,</span>
+                <span class="n">sips</span> <span class="o">=</span> <span class="o">#</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+<dt id="term-svo-es-vials-table">svo.es_vials (table)</dt>
+<dd><p class="first">Stores each vial in the format of:</p>
+<div class="last highlight-lua"><div class="highlight"><pre><span></span><span class="n">vial</span> <span class="n">id</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">months</span> <span class="o">=</span> <span class="o">#</span><span class="p">,</span>
+        <span class="n">potion</span> <span class="o">=</span> <span class="n">contents</span><span class="p">,</span>
+        <span class="n">sips</span> <span class="o">=</span> <span class="o">#</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="enchanter.html" class="btn btn-neutral float-right" title="Svof Enchanter" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dragonlimbcounter.html" class="btn btn-neutral" title="Svof Multi-Person Dragon Limbcounter" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Vadim Peretokin.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'18',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
