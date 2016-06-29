@@ -436,9 +436,10 @@ end
   defs_data_set("deathsight", { type = "necromancy",
     staysindragon = true,
     availableindragon = true,
-    def = "Your mind has been touched by Thoth, the Lord of Death.",
-    off = {"You relax your link with the realm of Death.", "You are not linked with the realm of Death."},
-    on = {"Your mind is already touched by the Deathgod.", "You shut your eyes and concentrate on Thoth, the God of Death. A moment later, you feel inextricably linked with Death itself.", "You already possess the deathsight.", "A miasma of darkness passes over your eyes and you feel a link to Thoth, the God of Death, form in your mind."}})
+    def = "Your mind has been attuned to the realm of Death.",
+    on = {"Your mind is already attuned to the realm of Death.", "You shut your eyes and concentrate on the Soulrealms. A moment later, you feel inextricably linked with realm of Death."},
+    onr = "^A miasma of darkness passes over your eyes and you feel a link to the realm of Death,? form in your mind\.$",
+    off = {"You relax your link with the realm of Death.", "You are not linked with the realm of Death."}})
   defs_data_set("soulcage", { type = "necromancy",
     staysindragon = true,
     offline_defence = true,

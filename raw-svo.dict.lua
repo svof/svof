@@ -14146,7 +14146,7 @@ local function addDefs()
 
           action = "fling devil at ground",
           onstart = function ()
-            sendAll("outd 1 devil","charge devil","fling devil at ground","ind 1 devil", conf.commandecho)
+            sendAll("outd 1 devil","fling devil at ground","ind 1 devil", conf.commandecho)
           end
         }
       },

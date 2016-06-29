@@ -78,15 +78,19 @@ empty.eat_bloodroot = function()
   if not affs.stain then removeaff("slickness") end
 end
 
+empty.focuscurables = {"claustrophobia", "masochism", "dizziness", "confusion", "stupidity", "generosity", "loneliness", "agoraphobia", "recklessness", "epilepsy", "pacifism", "anorexia", "shyness", "vertigo", "unknownmental", "airdisrupt", "earthdisrupt", "waterdisrupt", "firedisrupt", "paranoia", "hallucinations", "dementia"}
+
+-- expose publicly
+focuscurables = empty.focuscurables
 empty.focus = function()
   if affs.madness then return end
 
-  removeaff({"claustrophobia", "masochism", "dizziness", "confusion", "stupidity", "generosity", "loneliness", "agoraphobia", "recklessness", "epilepsy", "pacifism", "anorexia", "shyness", "vertigo", "unknownmental", "airdisrupt", "earthdisrupt", "waterdisrupt", "firedisrupt"})
+  removeaff(empty.focuscurables)
 end
 
 -- you /can/ cure hamstring, dissonance with tree
-empty.treecurables = {"ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "claustrophobia", "clumsiness", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "generosity", "haemophilia", "hallucinations", "healthleech",  "hellsight", "hypersomnia", "hypochondria", "illness", "impatience", "inlove", "itching", "justice", "lethargy", "loneliness", "madness", "masochism","pacifism", "paralysis", "paranoia", "peace", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slickness", "stupidity", "stuttering", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voyria", "weakness", "hamstring", "shivering", "frozen", "skullfractures", "crackedribs", "wristfractures", "torntendons"}
-empty.treecurableswithmadness = {"ablaze", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "claustrophobia", "clumsiness", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "generosity", "haemophilia", "healthleech",  "hellsight", "hypochondria", "inlove", "itching", "justice", "pacifism", "paralysis", "peace", "relapsing", "selarnia", "sensitivity", "shyness", "slickness", "stuttering", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voyria", "weakness", "hamstring", "shivering", "frozen"}
+empty.treecurables = {"ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "claustrophobia", "clumsiness", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "generosity", "haemophilia", "hallucinations", "healthleech",  "hellsight", "hypersomnia", "hypochondria", "illness", "impatience", "inlove", "itching", "justice", "lethargy", "loneliness", "madness", "masochism","pacifism", "paralysis", "paranoia", "peace", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slickness", "stupidity", "stuttering", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voyria", "weakness", "hamstring", "shivering", "frozen", "skullfractures", "crackedribs", "wristfractures", "torntendons"}
+empty.treecurableswithmadness = {"ablaze", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "claustrophobia", "clumsiness", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "generosity", "haemophilia", "healthleech",  "hellsight", "hypochondria", "inlove", "itching", "justice", "pacifism", "paralysis", "peace", "relapsing", "selarnia", "sensitivity", "shyness", "slickness", "stuttering", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voyria", "weakness", "hamstring", "shivering", "frozen"}
 
 -- expose publicly
 treecurables = empty.treecurables

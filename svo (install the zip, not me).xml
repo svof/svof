@@ -41635,7 +41635,7 @@ svo.givewarning_multi({
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Hydra web</name>
-                    <script>svo.valid.proper_webbed()</script>
+                    <script>svo.valid.simpleroped()</script>
                     <triggerType>0</triggerType>
                     <conditonLineDelta>0</conditonLineDelta>
                     <mStayOpen>0</mStayOpen>
@@ -48170,8 +48170,8 @@ end</script>
                     <colorTriggerFgColor>#000000</colorTriggerFgColor>
                     <colorTriggerBgColor>#000000</colorTriggerBgColor>
                     <regexCodeList>
-                        <string>A small brown lemming scurries around you furiously, stripping your</string>
-                        <string>^A small brown lemming scurries around you furiously, stripping your (.+) defence\.$</string>
+                        <string>A small brown lemming rips apart your</string>
+                        <string>^A small brown lemming rips apart your (.+) with its claws\.$</string>
                     </regexCodeList>
                     <regexCodePropertyList>
                         <integer>2</integer>
@@ -48511,6 +48511,26 @@ svo.valid.simpleillness()</script>
                     <colorTriggerBgColor>#000000</colorTriggerBgColor>
                     <regexCodeList>
                         <string>The raven darts in and out of your line of vision, making you uneasy.</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>3</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Lemming confusion</name>
+                    <script>svo.valid.simpleconfusion()</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>The lemming races around you and between your legs, confusing you with its eratic movement.</string>
                     </regexCodeList>
                     <regexCodePropertyList>
                         <integer>3</integer>
@@ -54122,6 +54142,11 @@ function svo.gettreeableaffs()
   return table.n_intersection(svo.keystolist(svo.affl), svo.treecurables)
 end
 
+-- returns a list of affs that focus can get
+function svo.getfocusableaffs()
+  return table.n_intersection(svo.keystolist(svo.affl), svo.focuscurables)
+end
+
 -- starts the stopwatch which measures how long a balance was missing for
 function svo.startbalancewatch(balance)
   svo.watch[&quot;bal_&quot;..balance] = svo.watch[&quot;bal_&quot;..balance] or createStopWatch()
@@ -54303,7 +54328,7 @@ svo.restore.anyoneortwolimbs = {
     if svo.affl.mangledleftarm or svo.affl.mutilatedleftarm then mangledormultilated = mangledormultilated + 1 end
 
     local crippled = svo.countonlybrokenlimbs()
-    
+
     -- add mangled/mutilated limbs to count, so we don't exceed it
     -- don't go off on mangled/mutilated limbs only as well
     local total = mangledormultilated + crippled
@@ -54326,7 +54351,7 @@ svo.restore.anyoneortwolimbsprone = {
     if svo.affl.mangledleftarm or svo.affl.mutilatedleftarm then mangledormultilated = mangledormultilated + 1 end
 
     local crippled = svo.countonlybrokenlimbs()
-    
+
     -- add mangled/mutilated limbs to count, so we don't exceed it
     -- don't go off on mangled/mutilated limbs only as well
     local total = mangledormultilated + crippled
@@ -54695,7 +54720,7 @@ local aff_abbrev = {
   timeflux            = &quot;tfx&quot;,
   torntendons         = &quot;tt&quot;,
   transfixed          = &quot;transf&quot;,
-  unconsciousness     = &quot;unconc&quot;, 
+  unconsciousness     = &quot;unconc&quot;,
   unknownany          = &quot;?&quot;,
   unknowncrippledarm  = &quot;uwna&quot;,
   unknowncrippledleg  = &quot;uwnl&quot;,
