@@ -258,7 +258,84 @@ signals.gmcpiretimeupdate:connect(function()
     me.gametime[k] = v
   end
 end)
-
+signals.gmcpcharafflictionslist = luanotify.signal.new()
+signals.gmcpcharafflictionsremove = luanotify.signal.new()
+signals.gmcpcharafflictionsadd = luanotify.signal.new()
+signals.gmcpchardefenceslist = luanotify.signal.new()
+signals.gmcpchardefencesremove = luanotify.signal.new()
+signals.gmcpchardefencesadd = luanotify.signal.new()
+signals.gmcpcharafflictionsadd:connect(function()
+  local thisaff = gmcp.Char.Afflictions.Add.name
+  if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(-4) end
+  echof("Gained aff %s", thisaff)
+  if dict.sstosvoa[thisaff] then
+    addaff(dict.sstosvoa[thisaff])
+  end
+end)
+signals.gmcpcharafflictionsremove:connect(function()
+  local thisaff = gmcp.Char.Afflictions.Remove[1]
+  gaffl[thisaff] = nil
+  echof("Cured aff %s", thisaff)
+  if dict.sstosvoa[thisaff] then
+    removeaff(dict.sstosvoa[thisaff])
+  end
+end)
+signals.gmcpcharafflictionslist:connect(function()
+  for affname, have in pairs(gaffl) do
+    gaffl[affname] = nil
+    if dict.sstosvoa[thisaff] then
+      removeaff(affname)
+    end
+  end
+  for index, val in ipairs(gmcp.Char.Afflictions.List) do
+    local thisaff = val.name
+    if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(-4) end  
+    gaffl[thisaff] = true
+    if dict.sstosvoa[thisaff] then
+      addaff(dict.sstosvoa[val.name])
+    end
+  end
+end)
+signals.gmcpchardefencesadd:connect(function()
+  thisdef = gmcp.Char.Defences.Add.name
+  gdefc[thisdef] = true
+  echof("Gained def "..thisdef)
+  if dict.sstosvod[thisdef] then
+    defs["got_"..dict.sstosvod[thisdef]]()
+  end
+end)
+signals.gmcpchardefencesremove:connect(function()
+  thisdef = gmcp.Char.Defences.Remove[1]
+  gdefc[thisdef] = nil
+  echof("Lost def "..thisdef)
+  if dict.sstosvod[thisdef] then
+    defs["lost_"..dict.sstosvod[thisdef]]()
+  end
+end)
+signals.gmcpchardefenceslist:connect(function()
+  gdefc = {}
+  local predefs = table.deepcopy(defc)
+  for index, val in ipairs(gmcp.Char.Defences.List) do
+    thisdef = val.name
+    gdefc[thisdef] = true
+    if dict.sstosvod[thisdef] then
+      if predefs[dict.sstosvod[thisdef]] then
+        predefs[dict.sstosvod[thisdef]] = false
+      elseif type(defs["got_"..dict.sstosvod[thisdef]]) == "function" then
+        defs["got_"..dict.sstosvod[thisdef]]()
+      end
+    end
+  end
+  for defname, val in pairs(predefs) do
+    if val == true and dict.sstosvod[defname] then defs["lost_"..defname]() end
+  end
+end)
+signals.svogotaff:connect(function(isloki)
+  if dict.svotossa[isloki] and not gaffl[dict.svotossa[isloki]] then
+    echof("Svo caught "..isloki.." ("..dict.svotossa[isloki].."), predicting for serverside.")
+    send("CURING PREDICT "..dict.svotossa[isloki])
+  end
+end)
 -- make a 'signals bank' that remembers all gmcp events that happend before the prompt. reset on prompt. check it for stuff when necessary.
 -- have the herb out signal be remembers on it's own & verified by the syste
 
@@ -379,6 +456,12 @@ signals.healingskillchanged         = luanotify.signal.new()
 #if skills.metamorphosis then
 signals.morphskillchanged           = luanotify.signal.new()
 #end
+
+
+
+
+
+
 
 signals.saveconfig:add_post_emit(function ()
   echo"\n"
