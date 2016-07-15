@@ -277,6 +277,7 @@ signals.gmcpcharafflictionsadd:connect(function()
     addaff(dict[dict.sstosvoa[thisaff]])
   end
 end)
+
 signals.gmcpcharafflictionsremove:connect(function()
   local thisaff = gmcp.Char.Afflictions.Remove[1]
   gaffl[thisaff] = nil
@@ -285,6 +286,7 @@ signals.gmcpcharafflictionsremove:connect(function()
     removeaff(dict.sstosvoa[thisaff])
   end
 end)
+
 signals.gmcpcharafflictionslist:connect(function()
   gaffl = {}
   local preaffl = {}
@@ -295,8 +297,8 @@ signals.gmcpcharafflictionslist:connect(function()
     if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end  
     gaffl[thisaff] = true
     if preaffl[thisaff] then
-	  preaffl[thisaff] = false
-	elseif dict.sstosvoa[thisaff] then
+      preaffl[thisaff] = false
+    elseif dict.sstosvoa[thisaff] then
       addaff(dict[dict.sstosvoa[thisaff]])
     end
   end
@@ -315,6 +317,7 @@ signals.gmcpchardefencesadd:connect(function()
     defs["got_"..dict.sstosvod[thisdef]]()
   end
 end)
+
 signals.gmcpchardefencesremove:connect(function()
   thisdef = gmcp.Char.Defences.Remove[1]
   gdefc[thisdef] = nil
@@ -323,6 +326,7 @@ signals.gmcpchardefencesremove:connect(function()
     defs["lost_"..dict.sstosvod[thisdef]]()
   end
 end)
+
 signals.gmcpchardefenceslist:connect(function()
   gdefc = {}
   local predefs = table.deepcopy(defc)
@@ -470,12 +474,6 @@ signals.healingskillchanged         = luanotify.signal.new()
 #if skills.metamorphosis then
 signals.morphskillchanged           = luanotify.signal.new()
 #end
-
-
-
-
-
-
 
 signals.saveconfig:add_post_emit(function ()
   echo"\n"
