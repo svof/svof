@@ -1875,13 +1875,13 @@ config_dict = pl.OrderedMap {
     end,
     installstart = function () conf.enableclassesfor = 2 end
   }},
-  #conf_name = "gmcpaffechoes"
+#conf_name = "gmcpaffechoes"
   {$(conf_name) = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s notify you when GMCP updates your afflictions.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s notify you when GMCP updates your afflictions.", getDefaultColor()) end,
   }},
-  #conf_name = "gmcpdefechoes"
+#conf_name = "gmcpdefechoes"
   {$(conf_name) = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s notify you when GMCP updates your defences.", getDefaultColor()) end,
