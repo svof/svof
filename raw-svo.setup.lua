@@ -258,6 +258,16 @@ signals.gmcpiretimeupdate:connect(function()
     me.gametime[k] = v
   end
 end)
+
+signals.gmcpcharafflictionslist = luanotify.signal.new()
+signals.gmcpcharafflictionsremove = luanotify.signal.new()
+signals.gmcpcharafflictionsadd = luanotify.signal.new()
+
+signals.gmcpchardefenceslist = luanotify.signal.new()
+signals.gmcpchardefencesremove = luanotify.signal.new()
+signals.gmcpchardefencesadd = luanotify.signal.new()
+
+
 signals.gmcpcharafflictionsadd:connect(function()
   local thisaff = gmcp.Char.Afflictions.Add.name
   if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
