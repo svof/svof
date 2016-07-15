@@ -14763,7 +14763,7 @@ affinity = {
     weariness = "weakness",
     webbed = "webbed",
     whisperingmadness = "madness", 
-    wristfractures = "wristfractures",
+    wristfractures = "wristfractures"
   },
   sstosvod = {
     acrobatics = "acrobatics",
