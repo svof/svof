@@ -112,6 +112,9 @@ rage             = {}
 fitness          = {}
 valid            = {}
 watch            = {}
+gaffl            = {}
+gdefc            = {}
+
 
 local actions, sk, vm, cn, cnrl = false, {}, {}, {}, {}
 
