@@ -314,7 +314,11 @@ signals.gmcpchardefencesadd:connect(function()
   gdefc[thisdef] = true
   if conf.gmcpdefechoes then echof("Gained def "..thisdef) end
   if dict.sstosvod[thisdef] then
-    defs["got_"..dict.sstosvod[thisdef]]()
+    if type(defs["got_"..dict.sstosvod[thisdef]]) == "function" then
+      defs["got_"..dict.sstosvod[thisdef]]()
+    else
+      echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["lost_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+    end
   end
 end)
 
@@ -323,7 +327,11 @@ signals.gmcpchardefencesremove:connect(function()
   gdefc[thisdef] = nil
   if conf.gmcpdefechoes then echof("Lost def "..thisdef) end
   if dict.sstosvod[thisdef] then
-    defs["lost_"..dict.sstosvod[thisdef]]()
+    if type(defs["lost_"..dict.sstosvod[thisdef]]) == "function" then
+      defs["lost_"..dict.sstosvod[thisdef]]()
+    else
+      echoLink("(e!)", [[echo("The problem was: lost_ function was ]]..type(defs["lost_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+    end
   end
 end)
 
@@ -338,6 +346,8 @@ signals.gmcpchardefenceslist:connect(function()
         predefs[dict.sstosvod[thisdef]] = false
       elseif type(defs["got_"..dict.sstosvod[thisdef]]) == "function" then
         defs["got_"..dict.sstosvod[thisdef]]()
+      else
+        echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["lost_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
       end
     end
   end
