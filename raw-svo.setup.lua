@@ -317,7 +317,7 @@ signals.gmcpchardefencesadd:connect(function()
     if type(defs["got_"..dict.sstosvod[thisdef]]) == "function" then
       defs["got_"..dict.sstosvod[thisdef]]()
     else
-      echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["lost_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+      echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["got_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
     end
   end
 end)
@@ -347,12 +347,17 @@ signals.gmcpchardefenceslist:connect(function()
       elseif type(defs["got_"..dict.sstosvod[thisdef]]) == "function" then
         defs["got_"..dict.sstosvod[thisdef]]()
       else
-        echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["lost_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+        echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["got_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
       end
     end
   end
   for defname, val in pairs(predefs) do
-    if val == true and dict.sstosvod[defname] then defs["lost_"..defname]() end
+    if val == true and dict.sstosvod[defname] then 
+      if type(defs["lost_"..dict.sstosvod[defname]]) == "function" then
+        defs["lost_"..dict.sstosvod[defname]]()
+      else
+        echoLink("(e!)", [[echo("The problem was: lost_ function was ]]..type(defs["lost_"..dict.sstosvod[defname]])..[[ for defence ]]..dict.sstosvod[defname]..[[ (gmcp:]]..defname..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+      end
   end
 end)
 
