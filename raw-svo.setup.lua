@@ -337,7 +337,7 @@ end)
 
 signals.gmcpchardefenceslist:connect(function()
   gdefc = {}
-  local predefs = table.deepcopy(defc)
+  local predefs = deepcopy(defc)
   for index, val in ipairs(gmcp.Char.Defences.List) do
     thisdef = val.name
     gdefc[thisdef] = true
