@@ -358,6 +358,7 @@ signals.gmcpchardefenceslist:connect(function()
       else
         echoLink("(e!)", [[echo("The problem was: lost_ function was ]]..type(defs["lost_"..dict.sstosvod[defname]])..[[ for defence ]]..dict.sstosvod[defname]..[[ (gmcp:]]..defname..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
       end
+    end
   end
 end)
 
