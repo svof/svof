@@ -362,14 +362,6 @@ signals.gmcpchardefenceslist:connect(function()
   end
 end)
 
-
-signals.svogotaff:connect(function(isloki)
-  if dict.svotossa[isloki] and not gaffl[dict.svotossa[isloki]] then
-    echof("Svo caught "..isloki.." ("..dict.svotossa[isloki].."), predicting for serverside.")
-    send("CURING PREDICT "..dict.svotossa[isloki])
-  end
-end)
-
 -- make a 'signals bank' that remembers all gmcp events that happend before the prompt. reset on prompt. check it for stuff when necessary.
 -- have the herb out signal be remembers on it's own & verified by the syste
 
@@ -1000,6 +992,14 @@ sk.ignored_defences, sk.ignored_defences_map = {}, {}
 sk.zeromana = false
 
 pflags = {}
+
+
+signals.svogotaff:connect(function(isloki)
+  if dict.svotossa[isloki] and not gaffl[dict.svotossa[isloki]] then
+    echof("Svo caught "..isloki.." ("..dict.svotossa[isloki].."), predicting for serverside.")
+    send("CURING PREDICT "..dict.svotossa[isloki])
+  end
+end)
 
 
 local function assert(condition, msg, extra)
