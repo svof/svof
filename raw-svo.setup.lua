@@ -274,7 +274,7 @@ signals.gmcpcharafflictionsadd:connect(function()
   gaffl[thisaff] = true
   if conf.gmcpaffechoes then echof("Gained aff %s", thisaff) end
   if dict.sstosvoa[thisaff] then
-    addaff(dict[dict.sstosvoa[thisaff]])
+    addaff(dict.sstosvoa[thisaff])
   end
 end)
 
@@ -299,7 +299,7 @@ signals.gmcpcharafflictionslist:connect(function()
     if preaffl[thisaff] then
       preaffl[thisaff] = false
     elseif dict.sstosvoa[thisaff] then
-      addaff(dict[dict.sstosvoa[thisaff]])
+      addaff(dict.sstosvoa[thisaff])
     end
   end
   
