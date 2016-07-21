@@ -995,7 +995,7 @@ pflags = {}
 
 
 signals.svogotaff:connect(function(isloki)
-  if dict.svotossa[isloki] and not gaffl[dict.svotossa[isloki]] then
+  if dict.svotossa[isloki] and not gaffl[dict.svotossa[isloki]] and svo.conf.serverside then
     echof("Svo caught "..isloki.." ("..dict.svotossa[isloki].."), predicting for serverside.")
     send("CURING PREDICT "..dict.svotossa[isloki])
   end
