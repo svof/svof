@@ -378,6 +378,10 @@ cpp.compute_year = function()
   return me.gametime and me.gametime.year or ""
 end
 
+cpp.compute_battlerage = function()
+  return stats.battlerage > 0 and tostring(stats.battlerage) or ""
+end
+
 cp.definitions = {
   ["@health"]        = "svo.stats.currenthealth",
   ["@mana"]          = "svo.stats.currentmana",
@@ -418,6 +422,7 @@ cp.definitions = {
   ["@gametarget"]   = "svo.cpp.compute_gametarget()",
   ["@gametargethp"] = "svo.cpp.compute_gametargethp()",
   ["@dragonhealbal"]    = "svo.cpp.compute_dragonhealbal()",
+  ["@battlerage"]    = "svo.cpp.compute_battlerage()",
 #if skills.voicecraft then
   ["@voicebal"]      = "svo.cpp.compute_voicebal()",
 #end

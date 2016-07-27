@@ -244,6 +244,12 @@ signals.gmcpcharitemsremove:connect(function()
   end
 end)
 signals.gmcpcharvitals      = luanotify.signal.new()
+signals.gmcpcharvitals:connect(function()
+  if not gmcp.Char.Vitals.charstats then return end
+  for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+    stats.battlerage = tonumber(val:match("^Rage: (%d+)$") or stats.battlerage or 0)
+  end
+end)
 signals.gmcpiretimelist = luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
   me.gametime = deepcopy(gmcp.IRE.Time.List)
