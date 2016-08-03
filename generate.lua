@@ -25,7 +25,7 @@ local args = lapp [[
 -d,--debug  Build with debugging information enabled
 -r,--release (default false)  Build all systems
 -o,--own  Build a Svof for yourself
- <name...> (default infernal )  Class to build a system for
+ <name...> (default none )  Class to build a system for
 ]]
 
 --[[
@@ -189,8 +189,8 @@ local function dowork(systemfor, release, own)
 
   -- does the preprocessing stages and outputs into the bin/ folder
   for _,j in ipairs(files) do
-    local result, message = pcall(preprocess, {input = {"raw-".. j ..".lua"}, output = {"bin/".. j ..".lua"}, lookup = tbl})
-    if not result then print("Failed on "..j.."; "..message) return end
+    local result, message = preprocess({input = {"raw-".. j ..".lua"}, output = {"bin/".. j ..".lua"}, lookup = tbl})
+    if not result then print("Failed on "..j.."; "..message) os.exit(1) end
   end
 
   tbl.files = files
@@ -205,8 +205,12 @@ local function dowork(systemfor, release, own)
 
   -- compile new svo
   compile.dowork(tbl.addons)
-  assert(loadfile(cwd.."/bin/svo")) -- do a compile of the concatinated svo to
-                                    -- check the syntax
+  ret, message = loadfile(cwd.."/bin/svo") -- do a compile of the concatinated
+                                           -- svo to check the syntax
+  if not ret then
+    print(message)
+    os.exit(1)
+  end
 
   -- clear existing addons
   local svo_template = cwd.."/svo template"
