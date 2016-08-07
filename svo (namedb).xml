@@ -2659,10 +2659,16 @@ if not ndb.help then
       svo.echof(&quot;Didn't find the ndb-help.lua file anywhere - I can't show you the aliases!&quot;)
       return
     end
-
-  local f, m = io.open(path)
-  local s = f:read(&quot;*a&quot;)
-
+  end
+    if not system_path then 
+	fullpath = path ..&quot;/ndb-help.lua&quot; 
+	local f, m = io.open(fullpath)
+	local s = f:read(&quot;*a&quot;)
+  else
+    local f, m = io.open(path)
+	local s = f:read(&quot;*a&quot;)
+  end
+  
   local data = loadstring(&quot;return &quot;..s)()
   if not data then
     svo.echof(&quot;Couldn't load data from the ndb-help.lua file :/ maybe it is messed up.&quot;)
