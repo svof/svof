@@ -2651,7 +2651,6 @@ send(matches[2]..&quot; enemies&quot;, false)</script>
             <Alias isActive="yes" isFolder="no">
                 <name>ndb alias cheatsheet</name>
                 <script>local class = svo.me.class:title()
-
 -- load help data in
 if not ndb.help then
   local path = getMudletHomeDir()..&quot;/&quot;..class..&quot; svo/ndb-help.lua&quot;
@@ -2684,9 +2683,15 @@ if not ndb.help then
       return
     end
   end
+  if not system_path then 
+	fullpath = path ..&quot;/ndb-help.lua&quot; 
+	local f, m = io.open(fullpath)
+	local s = f:read(&quot;*a&quot;)
+  else
+    local f, m = io.open(fullpath)
+	local s = f:read(&quot;*a&quot;)
+  end
 
-  local f, m = io.open(path)
-  local s = f:read(&quot;*a&quot;)
 
   local data = loadstring(&quot;return &quot;..s)()
   if not data then
