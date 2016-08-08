@@ -2677,10 +2677,10 @@ if not ndb.help then
   if not system_path then 
 	fullpath = path ..&quot;/ndb-help.lua&quot; 
 	local f, m = io.open(fullpath)
-	local s = f:read(&quot;*a&quot;)
+	s = f:read(&quot;*a&quot;)
   else
-    local f, m = io.open(fullpath)
-	local s = f:read(&quot;*a&quot;)
+    local f, m = io.open(path)
+    s = f:read(&quot;*a&quot;)
   end
 
 
