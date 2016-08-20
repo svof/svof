@@ -4,7 +4,7 @@ lua generate.lua -r "$TRAVIS_TAG"
 stat=$?
 if [ $stat -ne 0 ]
 then
-  echo "Error compiling release, exitini."
+  echo "Error compiling release, exiting."
   exit $stat
 fi
 

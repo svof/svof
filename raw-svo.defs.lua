@@ -318,8 +318,9 @@ end
   defs_data_set("myrrh", { type = "general",
     def = "Your mind is racing with enhanced speed." })
   defs_data_set("deathsight", { type = "general",
-    def = "Your mind has been touched by Thoth, the Lord of Death.",
-    on = {"Your mind is already touched by the Deathgod.", "You shut your eyes and concentrate on Thoth, the God of Death. A moment later, you feel inextricably linked with Death itself.", "A miasma of darkness passes over your eyes and you feel a link to Thoth, the God of Death, form in your mind."},
+    def = "Your mind has been attuned to the realm of Death.",
+    on = {"Your mind is already attuned to the realm of Death.", "You shut your eyes and concentrate on the Soulrealms. A moment later, you feel inextricably linked with realm of Death."},
+    onr = "^A miasma of darkness passes over your eyes and you feel a link to the realm of Death,? form in your mind\.$",
     off = {"You relax your link with the realm of Death.", "You are not linked with the realm of Death."}})
   defs_data_set("mindseye", { type = "general",
     on = {"Touching the mindseye tattoo, your senses are suddenly heightened.", "You already possess the mindseye defence."},
@@ -338,7 +339,8 @@ end
 
       return true
     end,
-    on = {"You strum a Lasallian lyre, and a prismatic barrier forms around you.", "You deftly shape the wall of light into a barrier surrounding yourself.", "You strum a darkly glowing mandolin, and a prismatic barrier forms around you.", "You strum a glittering lyre of ice, and a prismatic barrier forms around you."},
+    on = "You deftly shape the wall of light into a barrier surrounding yourself.",
+    onr = [[^You strum .+, and a prismatic barrier forms around you\.$]],
     def = "You are standing within a prismatic barrier.",
     off = {"Your prismatic barrier dissolves into nothing.", "The stream hits your prismatic barrier, shattering it.", "The breath weapon rips apart your prismatic barrier.", "The breath weapon rips through both your shield and prismatic barrier.", "The spear shatters your prismatic barrier."}})
   defs_data_set("speed", { type = "general",
@@ -399,8 +401,8 @@ end
     defr = [[^You are riding (.+)\.$]],
     onr = {[[^You climb up on .+\.$]], [[^You easily vault onto the back of .+\.$]]},
     on = {"You step aboard the chariot and firmly grasp the reins."},
-    offr = {[[^You step down off of .+\.$]], [[^You lose purchase on .+\.$]], [[^\w+ waves (?:his|her) palm in your direction, and you can only watch as your surroundings dissolve and fade from existence\.$]], [[^You feel your blessed soul drawn toward \w+ as you are delivered out of harm's way\.$]], [[^\w+ steps into the attack, grabs your arm, and throws you violently to the ground\.$]]},
-    off = {"You are not currently riding anything.", "You are not currently riding that.", "You must be mounted to trample.", "You are thrown from the room by the sheer force of the fiery blast.", "You're drawn screaming into its hellish maw.", "The ring of shining metal carries you up into the skies.", "You clamber off of your mount.",
+    offr = {[[^You step down off of .+\.$]], [[^You lose purchase on .+\.$]], [[^\w+ waves (?:his|her) palm in your direction, and you can only watch as your surroundings dissolve and fade from existence\.$]], [[^You feel your blessed soul drawn toward \w+ as you are delivered out of harm's way\.$]], [[^\w+ steps into the attack, grabs your arm, and throws you violently to the ground\.$]], [[^You feel a strong tug in the pit of your stomach\. Your surroundings dissolve into the featureless swirl of the ether, resolving once more into a recognisable landscape as you land before \w+\.$]]},
+    off = {"You are not currently riding anything.", "You are not currently riding that.", "You must be mounted to trample.", "You are thrown from the room by the sheer force of the fiery blast.", "You're drawn screaming into its hellish maw.", "The ring of shining metal carries you up into the skies.", "You clamber off of your mount.","You need to be riding a proper mount to gallop.",
 #if skills.necromancy then
           "You call upon your dark power, and instantly a black wind descends upon you. In seconds your body begins to dissipate, and you are one with the odious vapour.",
 #end

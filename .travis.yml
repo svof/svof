@@ -1,4 +1,6 @@
-language: c
+language: ruby
+rvm: 
+- 2.2.5
 sudo: required
 install:
 - sudo apt-get update

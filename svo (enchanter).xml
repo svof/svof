@@ -1038,6 +1038,8 @@ end
 
 -- gets howMany unworn items with the same short desc as what for enchanting
 local function getSameItems(howMany, what)
+  howMany = tonumber(howMany)
+
   -- lets get the short desc first
   local shortDesc
   for _, item in ipairs(svo.me.inventory) do
