@@ -1030,14 +1030,15 @@ sk.zeromana = false
 
 pflags = {}
 
-
+--[=[
+uncommented for now: Makes svof prone to illusions with server side turned on
 signals.svogotaff:connect(function(isloki)
   if dict.svotossa[isloki] and not gaffl[dict.svotossa[isloki]] and conf.serverside then
     echof("Svo caught "..isloki.." ("..dict.svotossa[isloki].."), predicting for serverside.")
     send("CURING PREDICT "..dict.svotossa[isloki])
   end
 end)
-
+--]=]
 
 local function assert(condition, msg, extra)
   if not condition then
