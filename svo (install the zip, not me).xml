@@ -2174,12 +2174,10 @@ svo.valid.swellskin_woreoff()</script>
                     <colorTriggerFgColor>#000000</colorTriggerFgColor>
                     <colorTriggerBgColor>#000000</colorTriggerBgColor>
                     <regexCodeList>
-                        <string>You take a long drag</string>
-                        <string>^You take a long drag.*? off your pipe\.$</string>
+                        <string>^(?:You take a long drag.*? off your pipe\.|Your draw is accompanied by a deep gurgling sound before a series of shining bubbles erupt from the bowl of your pipe\.)$</string>
                         <string>1</string>
                     </regexCodeList>
                     <regexCodePropertyList>
-                        <integer>2</integer>
                         <integer>1</integer>
                         <integer>5</integer>
                     </regexCodePropertyList>
