@@ -25,4 +25,5 @@ skills = {
   serpent     = {"subterfuge", "venom", "hypnosis"},
   shaman      = {"runelore", "curses", "vodun"},
   sylvan      = {"weatherweaving", "groves", "propagation"},
+  none        = {},
 }
