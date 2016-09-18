@@ -9372,7 +9372,7 @@ then return false end
     crackedribs = "crackedribs",
     daeggerimpale = false, 
     damagedhead = "mildconcussion", 
-    damagedleftarm = "mangledrightarm", 
+    damagedleftarm = "mangledleftarm", 
     damagedleftleg = "mangledleftleg", 
     damagedrightarm = "mangledrightarm", 
     damagedrightleg = "mangledrightleg", 
