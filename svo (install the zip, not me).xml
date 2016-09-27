@@ -55086,7 +55086,7 @@ end</script>
                     <name>Check for updates</name>
                     <packageName></packageName>
                     <script>local downloadfolder = getMudletHomeDir()..&quot;/svo/downloads/&quot;
-local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, &quot;stable&quot;)
+local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
 
 -- this should get called at start and every hour after that
 function svo.checkforupdate(type)
