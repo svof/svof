@@ -1905,7 +1905,39 @@ config_dict = pl.OrderedMap {
     onenabled = function () echof("<0,250,0>Will%s notify you when GMCP updates your defences.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s notify you when GMCP updates your defences.", getDefaultColor()) end,
   }},
+#conf_name = "releasechannel"
+  {$(conf_name) = {
+    type = "string",
+    vconfig2string = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo("Will use the ")
+      fg("a_cyan")
+      echoLink(tostring(conf.releasechannel),
+        'printCmdLine("vconfig releasechannel ")',
+        "Set the release channel to use for updates.",
+        true
+      )
+      fg(defaultcolour)
+      echo(" channel for downloading updates.\n")
+    end,
+    check = function (what)
+      if what == "stable" or what == "testing" then return true end
+    end,
+    onset = function ()
+      conf.releasechannel = conf.releasechannel:lower()
+      echof("Will use the '%s' release channel for updates.",
+        conf.releasechannel)
+    end,
+    installstart = function ()
+      conf.releasechannel = "stable"
+    end
+  }},
 }
+
+if not conf.releasechannel then
+  conf.releasechannel = "stable"
+end
 
 signals.systemstart:connect(function ()
   local conf_t = {}
