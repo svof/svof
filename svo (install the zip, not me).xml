@@ -20714,11 +20714,11 @@ end)</script>
                     <colorTriggerFgColor>#808000</colorTriggerFgColor>
                     <colorTriggerBgColor>#000000</colorTriggerBgColor>
                     <regexCodeList>
-                        <string>Status  Pipe         Contents                       Puffs Months  </string>
+                        <string>Status  Pipe         Contents                       Puffs Months</string>
                         <string>FG8BG2</string>
                     </regexCodeList>
                     <regexCodePropertyList>
-                        <integer>3</integer>
+                        <integer>2</integer>
                         <integer>6</integer>
                     </regexCodePropertyList>
                     <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
