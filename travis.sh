@@ -14,8 +14,10 @@ then
   exit 0
 fi
 
+cd output
+
 # Create current_version file
-echo "${TRAVIS_TAG}" > output/current_version.txt
+echo "${TRAVIS_TAG}" > current_version.txt
 
 # upload everything here.
 for f in *
@@ -31,7 +33,7 @@ do
 done
 
 # Create documentation for the release
-cd doc/_build/html
+cd ../doc/_build/html
 touch .nojekyll
 
 mkdir stable
