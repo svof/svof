@@ -14619,6 +14619,36 @@ affinity = {
     }
   },
 #end
+#if skills.shadowmancy then
+  shadowcloak = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+      undeffable = true,
+
+      isadvisable = function ()
+        local shadowcloak = me.getitem("a grim cloak")
+        return (not defc.dragonform and not defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].shadowcloak) or (conf.keepup and defkeepup[defs.mode].shadowcloak)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and not shadowcloak and not shadowcloak.attrib and not shadowcloak.attrib:find("w") and stats.currentmana >= stats.maxmana) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("shadowcloak")
+      end,
+
+      action = "shadow cloak",
+      onstart = function ()
+        local shadowcloak = me.getitem("a grim cloak")
+        if not shadowcloak then
+          send("shadow cloak", conf.commandecho)
+        elseif not shadowcloak.attrib or not shadowcloak.attrib:find("w") then
+          send("wear " .. shadowcloak.id)
+        end
+      end
+    }
+  },
+#end
   sstosvoa = {
     addiction = "addiction",
     aeon = "aeon",
