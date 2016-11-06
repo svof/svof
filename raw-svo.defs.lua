@@ -2109,7 +2109,9 @@ defs_data = pl.OrderedMap {}
     custom_def_type = "shadowcloak",
     on = {
       "The shadows swirl about you, masking you from view.",
+      "You have already shrouded yourself in beguiling shadow."
     },
+    def = "You are masking your egress."
    })
 
 -- signals for shadowcloak tracking
@@ -2986,6 +2988,7 @@ signals.systemstart:connect(function ()
     elseif not v.nodef and v.custom_def_type then
       defs["def_"..sk.sanitize(k)] = function ()
         defences.got(k)
+        deleteLine()
       end
 
     -- additional defence (nodef)
