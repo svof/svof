@@ -14630,7 +14630,7 @@ affinity = {
 
       isadvisable = function ()
         local shadowcloak = me.getitem("a grim cloak")
-        if not defc.dragonform and not defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].shadowcloak) or (conf.keepup and defkeepup[defs.mode].shadowcloak)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone then
+        if not defc.dragonform and not defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].shadowcloak) or (conf.keepup and defkeepup[defs.mode].shadowcloak)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and stats.mp then
           if not shadowcloak then
             if stats.mp >= 100 then
               return true
