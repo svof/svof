@@ -2104,6 +2104,15 @@ defs_data = pl.OrderedMap {}
       "You remove a grim cloak."
     }
    })
+  defs_data:set("disperse", {
+    type = "shadowmancy",
+    custom_def_type = "shadowcloak",
+    on = {
+      "The shadows swirl about you, masking you from view.",
+    },
+   })
+
+-- signals for shadowcloak tracking
    signals.gmcpcharitemslist:connect(function()
      if gmcp.Char.Items.List.location ~= "inv" then
        return

@@ -14660,6 +14660,27 @@ affinity = {
       end
     }
   },
+  disperse = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return not defc.dragonform and not defc.disperse and defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].disperse) or (conf.keepup and defkeepup[defs.mode].disperse)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone
+      end,
+
+      oncompleted = function ()
+        defences.got("disperse")
+      end,
+
+      action = "shadow disperse",
+      onstart = function ()
+        send("shadow disperse", conf.commandecho)
+      end
+    }
+  },
 #end
   sstosvoa = {
     addiction = "addiction",
@@ -14852,6 +14873,7 @@ affinity = {
     devilmark = "devilmark",
     diamondskin = "diamondskin",
     distortedaura = "distortedaura",
+    disperse = "disperse",
     dodging = "dodging",
     dragonarmour = "dragonarmour",
     dragonbreath = "dragonbreath",
