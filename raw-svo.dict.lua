@@ -14036,7 +14036,7 @@ affinity = {
 
 #if skills.subterfuge then
 #basicdef("scales", "scales")
-#basicdef("hiding", "hide", false, false, true)
+#basicdef("hiding", "hide", false, "hiding", true)
 #basicdef("pacing", "pacing on")
 #basicdef("bask", "bask", false, "basking")
 #basicdef("listen", "listen", false, false, true)
@@ -14140,7 +14140,7 @@ affinity = {
 #if skills.woodlore then
 #basicdef("barkskin", "barkskin")
 #basicdef("fleetness", "fleetness")
-#basicdef("hiding", "hide")
+#basicdef("hiding", "hide", false, "hiding", true)
 #basicdef("firstaid", "firstaid on")
   impaling = {
     physical = {
@@ -14681,6 +14681,28 @@ affinity = {
       end
     }
   },
+  shadowveil = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return not defc.dragonform and not defc.shadowveil and defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].shadowveil) or (conf.keepup and defkeepup[defs.mode].shadowveil)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone
+      end,
+
+      oncompleted = function ()
+        defences.got("shadowveil")
+      end,
+
+      action = "shadow veil",
+      onstart = function ()
+        send("shadow veil", conf.commandecho)
+      end
+    }
+  },
+#basicdef("hiding", "hide", false, "hiding", true)
 #end
   sstosvoa = {
     addiction = "addiction",
@@ -14958,6 +14980,7 @@ affinity = {
     secondsight = "secondsight",
     selfishness = "selfishness",
     setweapon = "impaling",
+    shadowveil = "shadowveil",
     shield = "shield",
     shinbinding = "bind",
     shinclarity = "clarity",
