@@ -14630,7 +14630,19 @@ affinity = {
 
       isadvisable = function ()
         local shadowcloak = me.getitem("a grim cloak")
-        return (not defc.dragonform and not defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].shadowcloak) or (conf.keepup and defkeepup[defs.mode].shadowcloak)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and not shadowcloak and not shadowcloak.attrib and not shadowcloak.attrib:find("w") and stats.currentmana >= stats.maxmana) or false
+        if not defc.dragonform and not defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].shadowcloak) or (conf.keepup and defkeepup[defs.mode].shadowcloak)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone then
+          if not shadowcloak then
+            if stats.mp >= 100 then
+              return true
+            elseif not sk.gettingfullstats then
+              fullstats(true)
+              echof("Getting fullstats for Shadowcloak summoning...")
+            end
+          elseif not shadowcloak.attrib or not shadowcloak.attrib:find("w") then
+            return true
+          end
+        end
+        return false
       end,
 
       oncompleted = function ()
@@ -14643,7 +14655,7 @@ affinity = {
         if not shadowcloak then
           send("shadow cloak", conf.commandecho)
         elseif not shadowcloak.attrib or not shadowcloak.attrib:find("w") then
-          send("wear " .. shadowcloak.id)
+          send("wear " .. shadowcloak.id, conf.commandecho)
         end
       end
     }
