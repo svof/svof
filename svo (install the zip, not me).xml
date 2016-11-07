@@ -6336,6 +6336,26 @@ svo.valid.diag_corrupted()</script>
                         </regexCodePropertyList>
                     </Trigger>
                     <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>depression</name>
+                        <script>svo.valid.diag_depression()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>depressed.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                         <name>Finished</name>
                         <script>svo.valid.diagnose_end()</script>
                         <triggerType>0</triggerType>
@@ -54641,6 +54661,7 @@ local aff_abbrev = {
   deafaff             = &quot;deaf&quot;,
   dehydrated          = &quot;deh&quot;,
   dementia            = &quot;dem&quot;,
+  depression          = &quot;dep&quot;,
   disloyalty          = &quot;disl&quot;,
   disrupt             = &quot;disr&quot;,
   dissonance          = &quot;disso&quot;,

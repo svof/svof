@@ -9179,6 +9179,40 @@ dict = {
       end,
     }
   },
+  depression = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.depression or false
+      end,
+
+      oncompleted = function ()
+        removeaff("depression")
+        lostbal_herb()
+      end,
+
+      eatcure = {"goldenseal", "plumbum"},
+      onstart = function ()
+        eat(dict.depression.herb)
+      end,
+
+      empty = function()
+        empty.eat_goldenseal()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.depression)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("depression")
+      end,
+    }
+  },
   retardation = {
     waitingfor = {
       isadvisable = function ()
@@ -14660,6 +14694,7 @@ affinity = {
     dehydrated = "dehydrated",
     dementia = "dementia",
     demonstain = "stain",
+    depression = "depression",
     disloyalty = "disloyalty",
     disrupted = "disrupt",
     dissonance = "dissonance",
