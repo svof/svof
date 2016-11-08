@@ -9213,6 +9213,40 @@ dict = {
       end,
     }
   },
+  parasite = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.parasite or false
+      end,
+
+      oncompleted = function ()
+        removeaff("parasite")
+        lostbal_herb()
+      end,
+
+      eatcure = {"kelp", "aurum"},
+      onstart = function ()
+        eat(dict.parasite.herb)
+      end,
+
+      empty = function()
+        empty.eat_kelp()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.parasite)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("parasite")
+      end,
+    }
+  },
   retardation = {
     waitingfor = {
       isadvisable = function ()
@@ -14753,6 +14787,7 @@ affinity = {
     palpatarfeed = "palpatar",
     paralysis = "paralysis",
     paranoia = "paranoia",
+    parasite = "parasite",
     peace = "peace",
     penitence = false, 
     petrified = false, 
