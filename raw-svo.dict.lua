@@ -14704,6 +14704,143 @@ affinity = {
   },
 #basicdef("hiding", "hide", false, "hiding", true)
 #end
+#if skills.aeonics then
+#basicdef("blur", "chrono blur boost")
+#end
+#if skills.terminus then
+  trusad = {
+    gamename = "precision",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.trusad and ((sys.deffing and defdefup[defs.mode].trusad) or (conf.keepup and defkeepup[defs.mode].trusad)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("trusad")
+      end,
+	  
+      action = "intone trusad",
+      onstart = function ()
+	    send("intone trusad", conf.commandecho)
+      end
+    }
+  },
+  tsuura = {
+    gamename = "durability",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.tsuura and ((sys.deffing and defdefup[defs.mode].tsuura) or (conf.keepup and defkeepup[defs.mode].tsuura)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("tsuura")
+      end,
+	  
+      action = "intone tsuura",
+      onstart = function ()
+	    send("intone tsuura", conf.commandecho)
+      end
+    }
+  },
+  ukhia = {
+    gamename = "bloodquell",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.ukhia and ((sys.deffing and defdefup[defs.mode].ukhia) or (conf.keepup and defkeepup[defs.mode].ukhia)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("ukhia")
+      end,
+	  
+      action = "intone ukhia",
+      onstart = function ()
+	    send("intone ukhia", conf.commandecho)
+      end
+    }
+  },
+  qamad = {
+    gamename = "ironwill",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.qamad and ((sys.deffing and defdefup[defs.mode].qamad) or (conf.keepup and defkeepup[defs.mode].qamad)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("qamad")
+      end,
+	  
+      action = "intone qamad",
+      onstart = function ()
+	    send("intone qamad", conf.commandecho)
+      end
+    }
+  },
+  mainaas = {
+    gamename = "bodyaugment",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.mainaas and ((sys.deffing and defdefup[defs.mode].mainaas) or (conf.keepup and defkeepup[defs.mode].mainaas)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("mainaas")
+      end,
+	  
+      action = "intone mainaas",
+      onstart = function ()
+	    send("intone mainaas", conf.commandecho)
+      end
+    }
+  },
+  gaiartha = {
+    gamename = "antiforce",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.gaiartha and ((sys.deffing and defdefup[defs.mode].gaiartha) or (conf.keepup and defkeepup[defs.mode].gaiartha)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("gaiartha")
+      end,
+	  
+      action = "intone gaiartha",
+      onstart = function ()
+	    send("intone gaiartha", conf.commandecho)
+      end
+    }
+  },
+#end
   sstosvoa = {
     addiction = "addiction",
     aeon = "aeon",
@@ -14856,6 +14993,7 @@ affinity = {
     aiming = false,
     airpocket = "pear",
     alertness = "alertness",
+	antiforce = "gaiartha",
     arctar = "arctar",
     aria = "aria",
     arrowcatching = "arrowcatch",
@@ -14871,8 +15009,11 @@ affinity = {
     blessingofthegods = false,
     blindness = "blind",
     blocking = "block",
+	bloodquell = "ukhia",
     bloodshield = false,
+	blur = "blur",
     boartattoo = false,
+	bodyaugment = "mainaas",
     bodyblock = "bodyblock",
     boostedregeneration = "boosting",
     chameleon = "chameleon",
@@ -14894,12 +15035,15 @@ affinity = {
     density = "mass",
     devilmark = "devilmark",
     diamondskin = "diamondskin",
+	disassociate = false,
+	disperse = "disperse",
     distortedaura = "distortedaura",
     disperse = "disperse",
     dodging = "dodging",
     dragonarmour = "dragonarmour",
     dragonbreath = "dragonbreath",
     drunkensailor = "drunkensailor",
+	durability = "tsuura",
     earthshield = "earthblessing",
     eavesdropping = "eavesdrop",
     electricresist = "electricresist",
@@ -14923,6 +15067,7 @@ affinity = {
     gripping = "grip",
     groundwatch = "groundwatch",
     harmony = "harmony",
+	haste = false,
     heartsfury = "heartsfury",
     heldbreath = "breath",
     heresy = "heresy",
@@ -14935,12 +15080,15 @@ affinity = {
     insuflate = false,
     insulation = false,
     ironform = false,
+	ironwill = "qamad",
     kaiboost = "kaiboost",
     kaitrance = "trance",
     kola = "kola",
+	lament = false,
     lay = "lay",
     levitating = "levitation",
     lifegiver = false,
+	lifesteal = false,
     lifevision = "lifevision",
     lipreading = "lipread",
     magicresist = "magicresist",
@@ -14963,6 +15111,7 @@ affinity = {
     pinchblock = "pinchblock",
     poisonresist = "venom",
     preachblessing = false,
+	precision = "trusad",
     prismatic = "lyre",
     projectiles = "projectiles",
     promosurcoat = false,

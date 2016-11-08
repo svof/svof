@@ -2192,6 +2192,21 @@ defs_data = pl.OrderedMap {}
    end)
 #end
 
+
+#if skills.aeonics then
+  defs_data:set("blur", { type = "aeonics"})
+#end
+
+#if skills.terminus then
+  defs_data:set("trusad", { type = "terminus"})
+  defs_data:set("tsuura", { type = "terminus"})
+  defs_data:set("ukhia", { type = "terminus"})
+  defs_data:set("qamad", { type = "terminus"})
+  defs_data:set("mainaas", { type = "terminus"})
+  defs_data:set("gaiartha", { type = "terminus"})
+#end
+
+
 do
   function defences.enablelifevision()
     if dict.lifevision then return end
