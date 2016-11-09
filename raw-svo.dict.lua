@@ -9281,6 +9281,40 @@ dict = {
       end,
     }
   },
+  shadowmadness = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.shadowmadness or false
+      end,
+
+      oncompleted = function ()
+        removeaff("shadowmadness")
+        lostbal_herb()
+      end,
+
+      eatcure = {"goldenseal", "plumbum"},
+      onstart = function ()
+        eat(dict.shadowmadness.herb)
+      end,
+
+      empty = function()
+        empty.eat_goldenseal()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.shadowmadness)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("shadowmadness")
+      end,
+    }
+  },
   retardation = {
     waitingfor = {
       isadvisable = function ()
@@ -14837,6 +14871,7 @@ affinity = {
     selarnia = "selarnia",
     sensitivity = "sensitivity",
     serioustrauma = "serioustrauma",
+    shadowmadness = "shadowmadness",
     shivering = "shivering",
     shyness = "shyness",
     silver = false,
