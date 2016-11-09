@@ -9247,6 +9247,40 @@ dict = {
       end,
     }
   },
+  retribution = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.retribution or false
+      end,
+
+      oncompleted = function ()
+        removeaff("retribution")
+        lostbal_herb()
+      end,
+
+      eatcure = {"bellwort", "cuprum"},
+      onstart = function ()
+        eat(dict.retribution.herb)
+      end,
+
+      empty = function()
+        empty.eat_bellwort()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.retribution)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("retribution")
+      end,
+    }
+  },
   retardation = {
     waitingfor = {
       isadvisable = function ()
@@ -14795,6 +14829,7 @@ affinity = {
     pinshot = "pinshot",
     prone = "prone",
     recklessness = "recklessness",
+    retribution = "retribution",
     revealed = false,
     scalded = "scalded",
     scrambledbrains = false, 
