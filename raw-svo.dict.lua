@@ -9315,6 +9315,40 @@ dict = {
       end,
     }
   },
+  timeloop = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.timeloop or false
+      end,
+
+      oncompleted = function ()
+        removeaff("timeloop")
+        lostbal_herb()
+      end,
+
+      eatcure = {"bellwort", "cuprum"},
+      onstart = function ()
+        eat(dict.timeloop.herb)
+      end,
+
+      empty = function()
+        empty.eat_bellwort()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.timeloop)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("timeloop")
+      end,
+    }
+  },
   retardation = {
     waitingfor = {
       isadvisable = function ()
@@ -14888,6 +14922,7 @@ affinity = {
     temperedphlegmatic = "phlegmatichumour", 
     temperedsanguine = "sanguinehumour",
     timeflux = "timeflux",
+    timeloop = "timeloop",
     torntendons = "torntendons",
     transfixation = "transfixed",
     trueblind = false,

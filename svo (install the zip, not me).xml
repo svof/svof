@@ -6416,6 +6416,26 @@ svo.valid.diag_corrupted()</script>
                         </regexCodePropertyList>
                     </Trigger>
                     <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>timeloop</name>
+                        <script>svo.valid.diag_timeloop()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>stuck in a feedback loop.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                         <name>Finished</name>
                         <script>svo.valid.diagnose_end()</script>
                         <triggerType>0</triggerType>
@@ -54800,6 +54820,7 @@ local aff_abbrev = {
   stuttering          = &quot;stut&quot;,
   swellskin           = &quot;swsk&quot;,
   timeflux            = &quot;tfx&quot;,
+  timeloop            = &quot;tlp&quot;,
   torntendons         = &quot;tt&quot;,
   transfixed          = &quot;transf&quot;,
   unconsciousness     = &quot;unconc&quot;,
