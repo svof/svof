@@ -2194,7 +2194,9 @@ defs_data = pl.OrderedMap {}
 
 
 #if skills.aeonics then
-  defs_data:set("blur", { type = "aeonics"})
+  defs_data:set("blur", { type = "aeonics",
+    def = "Travelling the world more quickly due to time dilation."
+  })
 #end
 
 #if skills.terminus then
