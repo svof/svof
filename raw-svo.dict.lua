@@ -9368,7 +9368,7 @@ dict = {
       oncompleted = function ()
         local timeout = 0
         for _, aff in ipairs(empty.degenerateaffs) do
-          timeout = timeout + (affs[aff] and 6 or 0)
+          timeout = timeout + (affs[aff] and 7 or 0)
         end
         dict.degenerate.waitingfor.customwait = timeout
         addaff(dict.degenerate)
