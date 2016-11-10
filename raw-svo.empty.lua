@@ -78,6 +78,10 @@ empty.eat_bloodroot = function()
   if not affs.stain then removeaff("slickness") end
 end
 
+empty.degenerateaffs = {"weariness", "clumsiness", "lethargy", "nausea", "asthma", "paralysis"}
+-- expose publicly
+degenerateaffs = empty.degenerateaffs
+
 empty.focuscurables = {"claustrophobia", "masochism", "dizziness", "confusion", "stupidity", "generosity", "loneliness", "agoraphobia", "recklessness", "epilepsy", "pacifism", "anorexia", "shyness", "vertigo", "unknownmental", "airdisrupt", "earthdisrupt", "waterdisrupt", "firedisrupt", "paranoia", "hallucinations", "dementia"}
 
 -- expose publicly

@@ -9349,6 +9349,39 @@ dict = {
       end,
     }
   },
+  degenerate = {
+    waitingfor = {
+      customwait = 0, -- seems to last 6 seconds per degenerate affliction when boosted, set below
+
+      isadvisable = function ()
+        return false
+      end,
+
+      onstart = function () end,
+
+      oncompleted = function ()
+        removeaff("degenerate")
+        make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        local timeout = 0
+        for _, aff in ipairs(empty.degenerateaffs) do
+          timeout = timeout + (affs[aff] and 6 or 0)
+        end
+        dict.degenerate.waitingfor.customwait = timeout
+        addaff(dict.degenerate)
+        if not actions.degenerate_waitingfor then doaction(dict.degenerate.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("degenerate")
+        killaction (dict.degenerate.waitingfor)
+      end,
+    }
+  },
   retardation = {
     waitingfor = {
       isadvisable = function ()
@@ -14827,6 +14860,7 @@ affinity = {
     deadening = "deadening",
     deafness = false, 
     deepsleep = "sleep",
+    degenerate = "degenerate",
     dehydrated = "dehydrated",
     dementia = "dementia",
     demonstain = "stain",
