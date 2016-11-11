@@ -264,110 +264,6 @@ signals.gmcpiretimeupdate:connect(function()
     me.gametime[k] = v
   end
 end)
-
-signals.gmcpcharafflictionslist = luanotify.signal.new()
-signals.gmcpcharafflictionsremove = luanotify.signal.new()
-signals.gmcpcharafflictionsadd = luanotify.signal.new()
-
-signals.gmcpchardefenceslist = luanotify.signal.new()
-signals.gmcpchardefencesremove = luanotify.signal.new()
-signals.gmcpchardefencesadd = luanotify.signal.new()
-
-
-signals.gmcpcharafflictionsadd:connect(function()
-  local thisaff = gmcp.Char.Afflictions.Add.name
-  if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
-  gaffl[thisaff] = true
-  if conf.gmcpaffechoes then echof("Gained aff %s", thisaff) end
-  if dict.sstosvoa[thisaff] then
-    addaff(dict.sstosvoa[thisaff])
-  end
-end)
-
-signals.gmcpcharafflictionsremove:connect(function()
-  local thisaff = gmcp.Char.Afflictions.Remove[1]
-  gaffl[thisaff] = nil
-  if conf.gmcpdefechoes then echof("Cured aff %s", thisaff) end
-  if dict.sstosvoa[thisaff] then
-    removeaff(dict.sstosvoa[thisaff])
-  end
-end)
-
-signals.gmcpcharafflictionslist:connect(function()
-  gaffl = {}
-  local preaffl = {}
-  for key, val in ipairs(affl) do preaffl[val] = true end
-  
-  for index, val in ipairs(gmcp.Char.Afflictions.List) do
-    local thisaff = val.name
-    if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end  
-    gaffl[thisaff] = true
-    if preaffl[thisaff] then
-      preaffl[thisaff] = false
-    elseif dict.sstosvoa[thisaff] then
-      addaff(dict.sstosvoa[thisaff])
-    end
-  end
-  
-  for key, val in pairs(preaffl) do
-    if val and dict.svotossa[thisaff] then removeaff(key) end
-  end
-end)
-
-
-signals.gmcpchardefencesadd:connect(function()
-  thisdef = gmcp.Char.Defences.Add.name
-  gdefc[thisdef] = true
-  if conf.gmcpdefechoes then echof("Gained def "..thisdef) end
-  if dict.sstosvod[thisdef] then
-    if type(defs["got_"..dict.sstosvod[thisdef]]) == "function" then
-      defs["got_"..dict.sstosvod[thisdef]]()
-    else
-      echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["got_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
-    end
-  end
-end)
-
-signals.gmcpchardefencesremove:connect(function()
-  thisdef = gmcp.Char.Defences.Remove[1]
-  gdefc[thisdef] = nil
-  if conf.gmcpdefechoes then echof("Lost def "..thisdef) end
-  if dict.sstosvod[thisdef] then
-    if type(defs["lost_"..dict.sstosvod[thisdef]]) == "function" then
-      defs["lost_"..dict.sstosvod[thisdef]]()
-    else
-      echoLink("(e!)", [[echo("The problem was: lost_ function was ]]..type(defs["lost_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
-    end
-  end
-end)
-
-signals.gmcpchardefenceslist:connect(function()
-  gdefc = {}
-  local predefs = deepcopy(defc)
-  for index, val in ipairs(gmcp.Char.Defences.List) do
-    thisdef = val.name
-    gdefc[thisdef] = true
-    if dict.sstosvod[thisdef] then
-      if predefs[dict.sstosvod[thisdef]] then
-        predefs[dict.sstosvod[thisdef]] = false
-      elseif type(defs["got_"..dict.sstosvod[thisdef]]) == "function" then
-        defs["got_"..dict.sstosvod[thisdef]]()
-      else
-        echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["got_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
-      end
-    end
-  end
-  for defname, val in pairs(predefs) do
-    if val == true and dict.sstosvod[defname] then 
-      if type(defs["lost_"..dict.sstosvod[defname]]) == "function" then
-        defs["lost_"..dict.sstosvod[defname]]()
-      else
-        echoLink("(e!)", [[echo("The problem was: lost_ function was ]]..type(defs["lost_"..dict.sstosvod[defname]])..[[ for defence ]]..dict.sstosvod[defname]..[[ (gmcp:]]..defname..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
-      end
-    end
-  end
-end)
-
 -- make a 'signals bank' that remembers all gmcp events that happend before the prompt. reset on prompt. check it for stuff when necessary.
 -- have the herb out signal be remembers on it's own & verified by the syste
 
@@ -782,6 +678,14 @@ me.cadmusaffs = me.cadmusaffs or {
 }
 
 me.inventory = {}
+
+me.getitem = function(name)
+  for _, thing in ipairs(me.inventory) do
+    if thing.name == name then
+      return thing
+    end
+  end
+end
 ---
 
 #if not skills.shindo then
@@ -912,6 +816,12 @@ disableTrigger("Humour balance")
 enableTrigger("Humour balance")
 #end
 
+#if skills.terminus then
+enableTrigger("Word balance")
+#else
+disableTrigger("Word balance")
+#end
+
 local prompt_stats
 
 local defences = {}
@@ -926,7 +836,7 @@ local index_map = pl.tablex.index_map
 local addaff, removeaff, checkanyaffs, updateaffcount
 
 local lostbal_focus, lostbal_herb, lostbal_salve, lostbal_purgative, lostbal_sip
-sk.salvetick, sk.herbtick, sk.focustick, sk.teatick, sk.purgativetick, sk.siptick, sk.mosstick, sk.dragonhealtick, sk.smoketick, sk.voicetick = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+sk.salvetick, sk.herbtick, sk.focustick, sk.teatick, sk.purgativetick, sk.siptick, sk.mosstick, sk.dragonhealtick, sk.smoketick, sk.voicetick, sk.wordtick = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 #if skills.healing then
 sk.healingtick = 0
 #end
@@ -1018,6 +928,112 @@ local function assert(condition, msg, extra)
     end
   end
 end
+
+
+
+signals.gmcpcharafflictionslist = luanotify.signal.new()
+signals.gmcpcharafflictionsremove = luanotify.signal.new()
+signals.gmcpcharafflictionsadd = luanotify.signal.new()
+
+signals.gmcpchardefenceslist = luanotify.signal.new()
+signals.gmcpchardefencesremove = luanotify.signal.new()
+signals.gmcpchardefencesadd = luanotify.signal.new()
+
+
+signals.gmcpcharafflictionsadd:connect(function()
+  local thisaff = gmcp.Char.Afflictions.Add.name
+  if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
+  gaffl[thisaff] = true
+  if conf.gmcpaffechoes then echof("Gained aff %s", thisaff) end
+  if dict.sstosvoa[thisaff] then
+    addaff(dict[dict.sstosvoa[thisaff]])
+  end
+end)
+
+signals.gmcpcharafflictionsremove:connect(function()
+  local thisaff = gmcp.Char.Afflictions.Remove[1]
+  gaffl[thisaff] = nil
+  if conf.gmcpdefechoes then echof("Cured aff %s", thisaff) end
+  if dict.sstosvoa[thisaff] then
+    removeaff(dict.sstosvoa[thisaff])
+  end
+end)
+
+signals.gmcpcharafflictionslist:connect(function()
+  gaffl = {}
+  local preaffl = {}
+  for key, val in ipairs(affl) do preaffl[val] = true end
+  
+  for index, val in ipairs(gmcp.Char.Afflictions.List) do
+    local thisaff = val.name
+    if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end  
+    gaffl[thisaff] = true
+    if preaffl[thisaff] then
+      preaffl[thisaff] = false
+    elseif dict.sstosvoa[thisaff] then
+      addaff(dict[dict.sstosvoa[thisaff]])
+    end
+  end
+  
+  for key, val in pairs(preaffl) do
+    if val and dict.svotossa[thisaff] then removeaff(key) end
+  end
+end)
+
+
+signals.gmcpchardefencesadd:connect(function()
+  thisdef = gmcp.Char.Defences.Add.name
+  gdefc[thisdef] = true
+  if conf.gmcpdefechoes then echof("Gained def "..thisdef) end
+  if dict.sstosvod[thisdef] then
+    if type(defs["got_"..dict.sstosvod[thisdef]]) == "function" then
+      defences.got(dict.sstosvod[thisdef])
+    else
+      echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["got_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+    end
+  end
+end)
+
+signals.gmcpchardefencesremove:connect(function()
+  thisdef = gmcp.Char.Defences.Remove[1]
+  gdefc[thisdef] = nil
+  if conf.gmcpdefechoes then echof("Lost def "..thisdef) end
+  if dict.sstosvod[thisdef] then
+    if type(defs["lost_"..dict.sstosvod[thisdef]]) == "function" then
+      defences.lost(dict.sstosvod[thisdef])
+    else
+      echoLink("(e!)", [[echo("The problem was: lost_ function was ]]..type(defs["lost_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+    end
+  end
+end)
+
+signals.gmcpchardefenceslist:connect(function()
+  gdefc = {}
+  local predefs = deepcopy(defc)
+  for index, val in ipairs(gmcp.Char.Defences.List) do
+    thisdef = val.name
+    gdefc[thisdef] = true
+    if dict.sstosvod[thisdef] then
+      if predefs[dict.sstosvod[thisdef]] then
+        predefs[dict.sstosvod[thisdef]] = false
+      elseif type(defs["got_"..dict.sstosvod[thisdef]]) == "function" then
+        defences.got(dict.sstosvod[thisdef])
+      else
+        echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["got_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+      end
+    end
+  end
+  for defname, val in pairs(predefs) do
+    if val == true and dict.sstosvod[defname] then 
+      if type(defs["lost_"..dict.sstosvod[defname]]) == "function" then
+        defences.lost(dict.sstosvod[defname])
+      else
+        echoLink("(e!)", [[echo("The problem was: lost_ function was ]]..type(defs["lost_"..dict.sstosvod[defname]])..[[ for defence ]]..dict.sstosvod[defname]..[[ (gmcp:]]..defname..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+      end
+    end
+  end
+end)
+
 
 sk.checkaeony = function()
   if (affs.aeon or affs.retardation) and not sys.sync then
@@ -1546,4 +1562,3 @@ sk.arena_areas = {
   ["The Stands"]                       = true,
   ["The Pits"]                         = true,
 }
-
