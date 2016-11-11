@@ -679,14 +679,6 @@ me.cadmusaffs = me.cadmusaffs or {
 
 me.inventory = {}
 
-me.getitem = function(name)
-  for _, thing in ipairs(me.inventory) do
-    if thing.name == name then
-      return thing
-    end
-  end
-end
----
 
 #if not skills.shindo then
 disableTrigger("Shindo defences")
@@ -814,12 +806,6 @@ enableTrigger("Healing balance")
 disableTrigger("Humour balance")
 #else
 enableTrigger("Humour balance")
-#end
-
-#if skills.terminus then
-enableTrigger("Word balance")
-#else
-disableTrigger("Word balance")
 #end
 
 local prompt_stats
