@@ -78,9 +78,13 @@ empty.eat_bloodroot = function()
   if not affs.stain then removeaff("slickness") end
 end
 
-empty.degenerateaffs = {"weariness", "clumsiness", "lethargy", "nausea", "asthma", "paralysis"}
+empty.degenerateaffs = {"weakness", "clumsiness", "lethargy", "illness", "asthma", "paralysis"}
 -- expose publicly
 degenerateaffs = empty.degenerateaffs
+
+empty.deteriorateaffs = {"stupidity", "confusion", "hallucinations", "depression", "shadowmadness", "vertigo", "masochism", "agoraphobia", "claustrophobia"}
+-- expose publicly
+deteriorateaffs = empty.deteriorateaffs
 
 empty.focuscurables = {"claustrophobia", "masochism", "dizziness", "confusion", "stupidity", "generosity", "loneliness", "agoraphobia", "recklessness", "epilepsy", "pacifism", "anorexia", "shyness", "vertigo", "unknownmental", "airdisrupt", "earthdisrupt", "waterdisrupt", "firedisrupt", "paranoia", "hallucinations", "dementia"}
 
@@ -93,8 +97,8 @@ empty.focus = function()
 end
 
 -- you /can/ cure hamstring, dissonance with tree
-empty.treecurables = {"ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "claustrophobia", "clumsiness", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "generosity", "haemophilia", "hallucinations", "healthleech",  "hellsight", "hypersomnia", "hypochondria", "illness", "impatience", "inlove", "itching", "justice", "lethargy", "loneliness", "madness", "masochism","pacifism", "paralysis", "paranoia", "peace", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slickness", "stupidity", "stuttering", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voyria", "weakness", "hamstring", "shivering", "frozen", "skullfractures", "crackedribs", "wristfractures", "torntendons", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate"}
-empty.treecurableswithmadness = {"ablaze", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "claustrophobia", "clumsiness", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "generosity", "haemophilia", "healthleech",  "hellsight", "hypochondria", "inlove", "itching", "justice", "pacifism", "paralysis", "peace", "relapsing", "selarnia", "sensitivity", "shyness", "slickness", "stuttering", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voyria", "weakness", "hamstring", "shivering", "frozen", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate"}
+empty.treecurables = {"ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "claustrophobia", "clumsiness", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "generosity", "haemophilia", "hallucinations", "healthleech",  "hellsight", "hypersomnia", "hypochondria", "illness", "impatience", "inlove", "itching", "justice", "lethargy", "loneliness", "madness", "masochism","pacifism", "paralysis", "paranoia", "peace", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slickness", "stupidity", "stuttering", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voyria", "weakness", "hamstring", "shivering", "frozen", "skullfractures", "crackedribs", "wristfractures", "torntendons", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate"}
+empty.treecurableswithmadness = {"ablaze", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "claustrophobia", "clumsiness", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "generosity", "haemophilia", "healthleech",  "hellsight", "hypochondria", "inlove", "itching", "justice", "pacifism", "paralysis", "peace", "relapsing", "selarnia", "sensitivity", "shyness", "slickness", "stuttering", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voyria", "weakness", "hamstring", "shivering", "frozen", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate"}
 
 -- expose publicly
 treecurables = empty.treecurables

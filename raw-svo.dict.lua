@@ -9382,6 +9382,39 @@ dict = {
       end,
     }
   },
+  deteriorate = {
+    waitingfor = {
+      customwait = 0, -- seems to last 6 seconds per deteriorate affliction when boosted, set below
+
+      isadvisable = function ()
+        return false
+      end,
+
+      onstart = function () end,
+
+      oncompleted = function ()
+        removeaff("deteriorate")
+        make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        local timeout = 0
+        for _, aff in ipairs(empty.deteriorateaffs) do
+          timeout = timeout + (affs[aff] and 7 or 0)
+        end
+        dict.deteriorate.waitingfor.customwait = timeout
+        addaff(dict.deteriorate)
+        if not actions.deteriorate_waitingfor then doaction(dict.deteriorate.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("deteriorate")
+        killaction (dict.deteriorate.waitingfor)
+      end,
+    }
+  },
   retardation = {
     waitingfor = {
       isadvisable = function ()
@@ -14865,6 +14898,7 @@ affinity = {
     dementia = "dementia",
     demonstain = "stain",
     depression = "depression",
+	deteriorate = "deteriorate",
     disloyalty = "disloyalty",
     disrupted = "disrupt",
     dissonance = "dissonance",
