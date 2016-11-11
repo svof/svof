@@ -2200,15 +2200,30 @@ defs_data = pl.OrderedMap {}
 #end
 
 #if skills.terminus then
-  defs_data:set("trusad", { type = "terminus"})
-  defs_data:set("tsuura", { type = "terminus"})
-  defs_data:set("ukhia", { type = "terminus"})
-  defs_data:set("qamad", { type = "terminus"})
-  defs_data:set("mainaas", { type = "terminus"})
-  defs_data:set("gaiartha", { type = "terminus"})
+  defs_data:set("trusad", { type = "terminus",
+    def = "You are enhancing your precision through the power of Terminus."
+  })
+  defs_data:set("tsuura", { type = "terminus",
+	def = "You are enhancing your durability against denizens."
+  })
+  defs_data:set("ukhia", { type = "terminus",
+	defr = "^You are focus?sing on quelling your bleeding more efficiently\.$"
+  })
+  defs_data:set("qamad", { type = "terminus",
+    def = "You have a will of iron."
+  })
+  defs_data:set("mainaas", { type = "terminus",
+	def = "You have augmented your own body for enhanced defence."
+  })
+  defs_data:set("gaiartha", { type = "terminus",
+    def = "You are concentrating on maintaining control over your faculties."
+  })
+#else
+  defs_data:set("gaiartha", { nodef = true,
+    def = "You are concentrating on maintaining control over your faculties."
+  })
 #end
-
-
+  
 do
   function defences.enablelifevision()
     if dict.lifevision then return end
