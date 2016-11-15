@@ -95,10 +95,10 @@ This the order that things happen on the prompt function:
 1. add it in raw-svo.dict.lua in the dict table, with the appropriate functions and curing logic
 1. add it in raw-svo.empty.lua
 1. add it in raw-svo.diag.lua and add a new diagnose trigger for it
-1. add gaining affliction raw-svo.simple.lua, and if there's any complicated logic around it, to raw-svo.main.lua. Add triggers receiving the affliction.
-1. add losing/curing affliction in raw-svo.main.lua and the appropriate triggers
-1. add to tree curing system (touchtree action in raw-svo.dict.lua and raw-svo.main.lua)
-1. add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in raw-svo.main.lua)
+1. add gaining affliction raw-svo.valid.simple.lua, and if there's any complicated logic around it, to raw-svo.valid.main.lua. Add triggers receiving the affliction.
+1. add losing/curing affliction in raw-svo.valid.main.lua and the appropriate triggers
+1. add to tree curing system (touchtree action in raw-svo.dict.lua and raw-svo.valid.main.lua)
+1. add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in raw-svo.valid.main.lua)
 1. check failure conditions and add them, ie salves fizzling off balance
 
 ## How to update madness status of an affliction
