@@ -94,7 +94,7 @@ This the order that things happen on the prompt function:
 ## How to add a new affliction
 1. add it in raw-svo.dict.lua in the dict table, with the appropriate functions and curing logic
 1. add it in raw-svo.empty.lua
-1. add it in raw-svo.diag.lua and add a new diagnose trigger for it
+1. add it in raw-svo.valid.diag.lua and add a new diagnose trigger for it
 1. add gaining affliction raw-svo.valid.simple.lua, and if there's any complicated logic around it, to raw-svo.valid.main.lua. Add triggers receiving the affliction.
 1. add losing/curing affliction in raw-svo.valid.main.lua and the appropriate triggers
 1. add to tree curing system (touchtree action in raw-svo.dict.lua and raw-svo.valid.main.lua)
