@@ -159,3 +159,7 @@ valid.proper_crippledleftleg = simplecrippledrightleg
 valid.proper_crippledrightleg = simplecrippledrightleg
 valid.proper_crippledrightarm = simplecrippledrightarm
 valid.proper_crippledleftarm = simplecrippledleftarm
+
+valid.simpleage = function(value)
+  stats.age = tonumber(value)
+end

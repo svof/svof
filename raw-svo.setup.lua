@@ -926,6 +926,12 @@ enableTrigger("Word balance")
 disableTrigger("Word balance")
 #end
 
+#if skills.aeonics then
+enableTrigger("Age tracking")
+#else
+disableTrigger("Age tracking")
+#end
+
 local prompt_stats
 
 local defences = {}
