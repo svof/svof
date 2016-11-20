@@ -250,7 +250,7 @@ end
 
 #if skills.aeonics then
 cpp.compute_age = function()
-  return (stats.age > 0 and tostring(stats.age) or "")
+  return ((stats.age and stats.age > 0) and tostring(stats.age) or "")
 end
 #end
 
