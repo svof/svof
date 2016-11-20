@@ -9415,6 +9415,34 @@ dict = {
       end,
     }
   },
+  hatred = {
+    waitingfor = {
+      customwait = 15,
+
+      isadvisable = function ()
+        return false
+      end,
+
+      onstart = function () end,
+
+      oncompleted = function ()
+        removeaff("hatred")
+        make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.hatred)
+        if not actions.hatred_waitingfor then doaction(dict.hatred.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("hatred")
+        killaction (dict.hatred.waitingfor)
+      end,
+    }
+  },
   retardation = {
     waitingfor = {
       isadvisable = function ()
@@ -14898,7 +14926,7 @@ affinity = {
     dementia = "dementia",
     demonstain = "stain",
     depression = "depression",
-	deteriorate = "deteriorate",
+    deteriorate = "deteriorate",
     disloyalty = "disloyalty",
     disrupted = "disrupt",
     dissonance = "dissonance",
@@ -14917,6 +14945,7 @@ affinity = {
     haemophilia = "haemophilia",
     hallucinations = "hallucinations",
     hamstrung = "hamstring",
+    hatred = "hatred",
     healthleech = "healthleech",
     heartseed = "heartseed",
     hecatecurse = "hecate",

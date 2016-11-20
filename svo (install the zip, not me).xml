@@ -6476,6 +6476,26 @@ svo.valid.diag_corrupted()</script>
                         </regexCodePropertyList>
                     </Trigger>
                     <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>hatred</name>
+                        <script>svo.valid.diag_hatred()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>inspired to great heights of loathing.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                         <name>Finished</name>
                         <script>svo.valid.diagnose_end()</script>
                         <triggerType>0</triggerType>
@@ -54838,6 +54858,7 @@ local aff_abbrev = {
   haemophilia         = &quot;haem&quot;,
   hallucinations      = &quot;hall&quot;,
   hamstring           = &quot;hms&quot;,
+  hatred              = &quot;htr&quot;,
   healthleech         = &quot;hthl&quot;,
   heartseed           = &quot;heart&quot;,
   hellsight           = &quot;hell&quot;,
