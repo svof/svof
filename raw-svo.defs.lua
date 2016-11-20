@@ -340,6 +340,7 @@ defs_data = pl.OrderedMap {}
         [[^\w+ continues (?:his|his) attack, coming back around with a bone rattling blow with .+? that causes your magical shield to explode in a shower of twinkling shards\.$]],
         [[^\w+ whirls .+ over (?:her|his) head, before bringing it down upon your magical shield, shattering it instantly\.$]],
         [[^\w+ summons a blade of condensed air and shears cleanly through the magical shield surrounding you\.$]],
+        [[^The shadow of \w+ suddenly comes alive, leaping forward to hammer at your shield in a silent frenzy of blows\. Your protection lasts mere moments before exploding in a shower of prismatic shards\.$]],
     },
     def = "You are surrounded by a nearly invisible magical shield."})
   defs_data:set("riding", { type = "general",
