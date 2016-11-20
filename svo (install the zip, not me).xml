@@ -43419,6 +43419,122 @@ svo.startedfighting(&quot;shaman&quot;, matches[2])</script>
                 </Trigger>
             </TriggerGroup>
             <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Shadowmancy</name>
+                <script></script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList/>
+                <regexCodePropertyList/>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Shadowmancy attacks</name>
+                    <script>svo.startedfighting(&quot;depthswalker&quot;, matches[2])</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>^(\w+) delivers a lightning-fast strike to you with a scythe of shadows\.$</string>
+                        <string>^(\w+) lays into you with a savage blow from a scythe of shadows\.$</string>
+                        <string>^(\w+) raises an insubstantial dagger and points it at you with a sinister smile\.$</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+            </TriggerGroup>
+            <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Shindo</name>
+                <script></script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList/>
+                <regexCodePropertyList/>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Ablaze</name>
+                    <script>svo.valid.proper_ablaze()</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>Flames erupt over all over your body and begin to consume your flesh.</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>3</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Paralysis</name>
+                    <script>svo.valid.proper_paralysis()</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>99</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>Your body stiffens rapidly with paralysis.</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>3</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Prone</name>
+                    <script>svo.valid.simpleprone()</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>You are thrown from the room by the sheer force of the fiery blast.</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>3</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+            </TriggerGroup>
+            <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                 <name>Skirmishing</name>
                 <script></script>
                 <triggerType>0</triggerType>
@@ -43799,82 +43915,6 @@ svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                     </regexCodeList>
                     <regexCodePropertyList>
                         <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-            </TriggerGroup>
-            <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Shindo</name>
-                <script></script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList/>
-                <regexCodePropertyList/>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Ablaze</name>
-                    <script>svo.valid.proper_ablaze()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>Flames erupt over all over your body and begin to consume your flesh.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Paralysis</name>
-                    <script>svo.valid.proper_paralysis()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>99</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>Your body stiffens rapidly with paralysis.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Prone</name>
-                    <script>svo.valid.simpleprone()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>You are thrown from the room by the sheer force of the fiery blast.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
                     </regexCodePropertyList>
                 </Trigger>
             </TriggerGroup>
@@ -55684,24 +55724,25 @@ end</script>
                 <script>--[[ start of a class management (tn class/tn classonly) + class-specifics tricks ]]
 
 svo.classes = {
-  alchemist   = {fighting = false, skills = {&quot;transmutation&quot;, &quot;physiology&quot;, &quot;alchemy&quot;}},
-  apostate    = {fighting = false, skills = {&quot;evileye&quot;, &quot;necromancy&quot;, &quot;apostasy&quot;}},
-  bard        = {fighting = false, skills = {&quot;voicecraft&quot;, &quot;swashbuckling&quot;, &quot;harmonics&quot;}},
-  blademaster = {fighting = false, skills = {&quot;twoarts&quot;, &quot;striking&quot;, &quot;shindo&quot;}},
-  dragon      = {fighting = false, skills = {&quot;dragoncraft&quot;}},
-  druid       = {fighting = false, skills = {&quot;groves&quot;, &quot;metamorphosis&quot;, &quot;concoctions&quot;}},
-  infernal    = {fighting = false, skills = {&quot;necromancy&quot;, &quot;chivalry&quot;, &quot;forging&quot;}},
-  jester      = {fighting = false, skills = {&quot;tarot&quot;, &quot;pranks&quot;, &quot;puppetry&quot;}},
-  magi        = {fighting = false, skills = {&quot;elementalism&quot;, &quot;crystalism&quot;, &quot;enchantment&quot;}},
-  monk        = {fighting = false, skills = {&quot;tekura&quot;, &quot;kaido&quot;, &quot;telepathy&quot;}},
-  occultist   = {fighting = false, skills = {&quot;occultism&quot;, &quot;tarot&quot;, &quot;domination&quot;}},
-  paladin     = {fighting = false, skills = {&quot;chivalry&quot;, &quot;devotion&quot;, &quot;forging&quot;}},
-  priest      = {fighting = false, skills = {&quot;spirituality&quot;, &quot;devotion&quot;, &quot;healing&quot;}},
-  runewarden  = {fighting = false, skills = {&quot;runelore&quot;, &quot;chivalry&quot;, &quot;forging&quot;}},
-  sentinel    = {fighting = false, skills = {&quot;metamorphosis&quot;, &quot;woodlore&quot;, &quot;concoctions&quot;}},
-  serpent     = {fighting = false, skills = {&quot;subterfuge&quot;, &quot;venom&quot;, &quot;hypnosis&quot;}},
-  shaman      = {fighting = false, skills = {&quot;runelore&quot;, &quot;curses&quot;, &quot;vodun&quot;}},
-  sylvan      = {fighting = false, skills = {&quot;elementalism&quot;, &quot;groves&quot;, &quot;concoctions&quot;}},
+  alchemist    = {fighting = false, skills = {&quot;transmutation&quot;, &quot;physiology&quot;, &quot;alchemy&quot;}},
+  apostate     = {fighting = false, skills = {&quot;evileye&quot;, &quot;necromancy&quot;, &quot;apostasy&quot;}},
+  bard         = {fighting = false, skills = {&quot;voicecraft&quot;, &quot;swashbuckling&quot;, &quot;harmonics&quot;}},
+  blademaster  = {fighting = false, skills = {&quot;twoarts&quot;, &quot;striking&quot;, &quot;shindo&quot;}},
+  depthswalker = {fighting = false, skills = {&quot;shadowmancy&quot;, &quot;aeonics&quot;, &quot;terminus&quot;}},
+  dragon       = {fighting = false, skills = {&quot;dragoncraft&quot;}},
+  druid        = {fighting = false, skills = {&quot;groves&quot;, &quot;metamorphosis&quot;, &quot;concoctions&quot;}},
+  infernal     = {fighting = false, skills = {&quot;necromancy&quot;, &quot;chivalry&quot;, &quot;forging&quot;}},
+  jester       = {fighting = false, skills = {&quot;tarot&quot;, &quot;pranks&quot;, &quot;puppetry&quot;}},
+  magi         = {fighting = false, skills = {&quot;elementalism&quot;, &quot;crystalism&quot;, &quot;enchantment&quot;}},
+  monk         = {fighting = false, skills = {&quot;tekura&quot;, &quot;kaido&quot;, &quot;telepathy&quot;}},
+  occultist    = {fighting = false, skills = {&quot;occultism&quot;, &quot;tarot&quot;, &quot;domination&quot;}},
+  paladin      = {fighting = false, skills = {&quot;chivalry&quot;, &quot;devotion&quot;, &quot;forging&quot;}},
+  priest       = {fighting = false, skills = {&quot;spirituality&quot;, &quot;devotion&quot;, &quot;healing&quot;}},
+  runewarden   = {fighting = false, skills = {&quot;runelore&quot;, &quot;chivalry&quot;, &quot;forging&quot;}},
+  sentinel     = {fighting = false, skills = {&quot;metamorphosis&quot;, &quot;woodlore&quot;, &quot;concoctions&quot;}},
+  serpent      = {fighting = false, skills = {&quot;subterfuge&quot;, &quot;venom&quot;, &quot;hypnosis&quot;}},
+  shaman       = {fighting = false, skills = {&quot;spiritlore&quot;, &quot;curses&quot;, &quot;vodun&quot;}},
+  sylvan       = {fighting = false, skills = {&quot;elementalism&quot;, &quot;groves&quot;, &quot;concoctions&quot;}},
 }
 -- keeps track of what skills are actually enabled
 svo.enabledskills, svo.enabledclasses = svo.enabledskills or {}, svo.enabledclasses or {}
