@@ -822,7 +822,7 @@ local index_map = pl.tablex.index_map
 local addaff, removeaff, checkanyaffs, updateaffcount
 
 local lostbal_focus, lostbal_herb, lostbal_salve, lostbal_purgative, lostbal_sip
-sk.salvetick, sk.herbtick, sk.focustick, sk.teatick, sk.purgativetick, sk.siptick, sk.mosstick, sk.dragonhealtick, sk.smoketick, sk.voicetick, sk.wordtick = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+sk.salvetick, sk.herbtick, sk.focustick, sk.teatick, sk.purgativetick, sk.siptick, sk.mosstick, sk.dragonhealtick, sk.smoketick, sk.voicetick = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 #if skills.healing then
 sk.healingtick = 0
 #end
