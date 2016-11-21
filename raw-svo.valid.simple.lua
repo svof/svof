@@ -160,6 +160,9 @@ valid.proper_crippledrightleg = simplecrippledrightleg
 valid.proper_crippledrightarm = simplecrippledrightarm
 valid.proper_crippledleftarm = simplecrippledleftarm
 
+#if skills.aeonics then
 valid.simpleage = function(value)
-  stats.age = tonumber(value)
+  checkaction(dict.age.happened)
+  lifevision.add(actions.age_happened.p, nil, tonumber(value))
 end
+#end

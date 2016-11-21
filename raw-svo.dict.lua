@@ -9389,6 +9389,30 @@ dict = {
       end
     }
   },
+#if skills.aeonics then
+  age = {
+    happened = {
+      onstart = function () end,
+
+      oncompleted = function(amount)
+        if amount > 1400 then
+          echof("Age went over the possible max, illusion possible?")
+          stats.age = 0
+        elseif amount == 0 then
+          if dict.age.happened.timer then killTimer(dict.age.happened.timer) end
+          stats.age = 0
+          dict.age.happened.timer = nil
+        else
+          dic.age.happened.timer = tempTimer(6 + getping(), function()
+            echof("Age tick timed out, illusions possible?")
+            stats.age = 0
+          end)
+          stats.age = amount
+        end
+      end
+    }
+  },
+#end
 
 -- general defences
   rebounding = {
