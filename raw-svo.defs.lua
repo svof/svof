@@ -3063,14 +3063,13 @@ end
 
 process_defs = function ()
   local addback = {}
-
   for defn, deft in pairs(defc) do
     -- clear ones we don't have
     if defc[defn] and not defences.def_def_list[defn] and not (defs_data[defn] and (defs_data[defn].invisibledef or defs_data[defn].custom_def_type)) then
-      if dict[defn] and dict[defn].gone then
+      if dict[defn] and dict[defn].gone and not (dict.svotossd[defn] and gdefc[dict.svotossd[defn]]) then
         checkaction(dict[defn].gone, true)
         lifevision.add(actions[defn.."_gone"].p)
-      else
+      elseif not (dict.svotossd[defn] and gdefc[dict.svotossd[defn]]) then
         defences.lost(defn)
       end
     elseif defc[defn] and defences.def_def_list[defn] and not (defs_data[defn] and defs_data[defn].custom_def_type) then -- if we do have it, remove from def list
