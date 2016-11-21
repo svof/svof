@@ -9396,7 +9396,7 @@ dict = {
 
       oncompleted = function(amount)
         if amount > 1400 then
-          echof("Age went over the possible max, illusion possible?")
+          ignore_illusion("Age went over the possible max", true)
           stats.age = 0
         elseif amount == 0 then
           if dict.age.happened.timer then killTimer(dict.age.happened.timer) end
@@ -9405,7 +9405,7 @@ dict = {
         else
           if dict.age.happened.timer then killTimer(dict.age.happened.timer) end
           dict.age.happened.timer = tempTimer(6 + getping(), function()
-            echof("Age tick timed out, illusions possible?")
+            ignore_illusion("Age tick timed out")
             stats.age = 0
           end)
           stats.age = amount
