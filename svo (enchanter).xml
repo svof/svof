@@ -1003,11 +1003,11 @@ local function startEnchanting()
     svo.echof(&quot;Starting enchantment order&quot;)
     ouroboros1 = ourobori_data[gmcp.Room.Info.num][1]
     ouroboros2 = ourobori_data[gmcp.Room.Info.num][2]
-    hadSelfishness = svo.defc.selfishness
+    hadSelfishness = svo.defc.selfishness or false
     if hadSelfishness then
       svo.defs.keepup(&quot;selfishness&quot;, false, svo.defs.mode, false)
     end
-    hadRiding = svo.defc.riding
+    hadRiding = svo.defc.riding or false
     if hadRiding then
       svo.defs.keepup(&quot;riding&quot;, false, svo.defs.mode, false)
     end
