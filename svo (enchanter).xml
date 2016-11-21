@@ -870,7 +870,8 @@ local function getOIDs()
   checking_ourobori = true
 
   svo.echof( &quot;Don't know the ourobori IDs for this room, so going to check...&quot; )
-  send( &quot;ql&quot; )
+  sendGMCP( &quot;Char.Items.Room&quot; )
+  send(&quot;\n&quot;)
 end
 
 -- Repeats the last order
