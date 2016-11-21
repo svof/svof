@@ -9403,7 +9403,8 @@ dict = {
           stats.age = 0
           dict.age.happened.timer = nil
         else
-          dic.age.happened.timer = tempTimer(6 + getping(), function()
+          if dict.age.happened.timer then killTimer(dict.age.happened.timer) end
+          dict.age.happened.timer = tempTimer(6 + getping(), function()
             echof("Age tick timed out, illusions possible?")
             stats.age = 0
           end)
