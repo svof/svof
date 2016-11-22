@@ -9396,7 +9396,7 @@ dict = {
 
       oncompleted = function(amount)
         if amount > 1400 then
-          ignore_illusion("Age went over the possible max", true)
+          ignore_illusion("Age went over the possible max")
           stats.age = 0
         elseif amount == 0 then
           if dict.age.happened.timer then killTimer(dict.age.happened.timer) end
