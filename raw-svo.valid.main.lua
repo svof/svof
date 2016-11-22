@@ -2123,6 +2123,27 @@ function valid.litallpipes()
   end
 end
 
+function valid.paradox_aff(herb)
+  checkaction(dict.paradox.aff)
+  lifevision.add(actions.paradox_aff.p, nil, herb)
+end
+
+function valid.paradox_boosted()
+  checkaction(dict.paradox.boosted)
+  lifevision.add(actions.paradox_boosted.p)
+end
+
+function valid.paradox_weakened()
+  if find_until_last_paragraph(dict.paradox.blocked_herb, "substring") or find_until_last_paragraph(rift.herb_conversions[dict.paradox.blocked_herb], "substring") then return end
+  checkaction(dict.paradox.weakened)
+  lifevision.add(actions.paradox_weakened.p)
+end
+
+function valid.paradox_faded()
+  checkaction(dict.paradox.gone)
+  lifevision.add(actions.paradox_gone.p)
+end
+
 herb_cure = false
  -- reset the flag tracking whenever we got a cure for what we ate (herb_cure) at the start
 function valid.ate1()
@@ -2166,6 +2187,10 @@ function valid.ate2()
   tempLineTrigger(1,1,[[
     if line == "The vile curse of Cadmus leaves you." then
       svo.valid.cadmus_woreoff()
+    elseif line == "The paradox affecting you weakens." then
+      svo.valid.paradox_weakened()
+    elseif line == "The paradox fades." then
+      svo.valid.paradox_faded()
     end
   ]])
 

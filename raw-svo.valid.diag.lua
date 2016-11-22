@@ -33,7 +33,7 @@ function valid.empty_diagnose()
 end
 
 local whitelist = {}
-whitelist.lovers, whitelist.retardation, whitelist.hoisted = true, true, true
+whitelist.lovers, whitelist.retardation, whitelist.hoisted, whitelist.paradox = true, true, true, true
 #if skills.metamorphosis then
 whitelist.cantvitality = true
 #end

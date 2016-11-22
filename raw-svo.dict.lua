@@ -9443,6 +9443,37 @@ dict = {
       end,
     }
   },
+  paradox = {
+    count = 0,
+    blocked_herb = "",
+    boosted = {
+      oncompleted = function ()
+        dict.paradox.aff.count = 10
+        updateaffcount(dict.paradox)
+      end
+    },
+    weakened = {
+      oncompleted = function ()
+        codepaste.remove_stackableaff("paradox", true)
+      end
+    },
+    aff = {
+      oncompleted = function (herb)
+        dict.paradox.count = 5
+        dict.paradox.blocked_herb = herb
+        addaff(dict.paradox)  
+        affl["paradox"].herb = herb
+        updateaffcount(dict.paradox)
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("paradox")
+        dict.paradox.count = 0
+        dict.paradox.blocked_herb = ""
+      end,
+    }
+  },
   retardation = {
     waitingfor = {
       isadvisable = function ()
