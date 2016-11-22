@@ -14681,6 +14681,8 @@ affinity = {
           send("shadow cloak", conf.commandecho)
         elseif not shadowcloak.attrib or not shadowcloak.attrib:find("w") then
           send("wear " .. shadowcloak.id, conf.commandecho)
+        else
+	  defences.got("shadowcloak")
         end
       end
     }
