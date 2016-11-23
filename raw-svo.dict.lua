@@ -15024,7 +15024,6 @@ affinity = {
       end
     }
   },
-#basicdef("hiding", "hide", false, "hiding", true)
 #end
 #if skills.aeonics then
 #basicdef("blur", "chrono blur boost")
