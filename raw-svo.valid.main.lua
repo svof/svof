@@ -1462,7 +1462,7 @@ function valid.bad_legs()
 end
 
 
-for _, aff in ipairs({"hamstring", "galed", "voided", "inquisition", "burning", "icing", "phlogistication", "vitrification", "corrupted", "mucous", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "swellskin", "pinshot", "dehydrated", "timeflux", "lullaby", "numbedleftarm", "numbedrightarm", "unconsciousness",
+for _, aff in ipairs({"hamstring", "galed", "voided", "inquisition", "burning", "icing", "phlogistication", "vitrification", "corrupted", "mucous", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "swellskin", "pinshot", "dehydrated", "timeflux", "lullaby", "numbedleftarm", "numbedrightarm", "unconsciousness", "degenerate", "deteriorate", "hatred",
 #if skills.metamorphosis then
 "cantmorph",
 #end
@@ -2123,6 +2123,27 @@ function valid.litallpipes()
   end
 end
 
+function valid.paradox_aff(herb)
+  checkaction(dict.paradox.aff)
+  lifevision.add(actions.paradox_aff.p, nil, herb)
+end
+
+function valid.paradox_boosted()
+  checkaction(dict.paradox.boosted)
+  lifevision.add(actions.paradox_boosted.p)
+end
+
+function valid.paradox_weakened()
+  if find_until_last_paragraph(dict.paradox.blocked_herb, "substring") or find_until_last_paragraph(rift.herb_conversions[dict.paradox.blocked_herb], "substring") then return end
+  checkaction(dict.paradox.weakened)
+  lifevision.add(actions.paradox_weakened.p)
+end
+
+function valid.paradox_faded()
+  checkaction(dict.paradox.gone)
+  lifevision.add(actions.paradox_gone.p)
+end
+
 herb_cure = false
  -- reset the flag tracking whenever we got a cure for what we ate (herb_cure) at the start
 function valid.ate1()
@@ -2166,6 +2187,10 @@ function valid.ate2()
   tempLineTrigger(1,1,[[
     if line == "The vile curse of Cadmus leaves you." then
       svo.valid.cadmus_woreoff()
+    elseif line == "The paradox affecting you weakens." then
+      svo.valid.paradox_weakened()
+    elseif line == "The paradox fades." then
+      svo.valid.paradox_faded()
     end
   ]])
 
@@ -2849,12 +2874,12 @@ end
 -- normal herbs
 #for _, herb in pairs({
 #ash        = {"hallucinations", "hypersomnia", "confusion", "paranoia", "dementia"},
-#bellwort   = {"generosity", "pacifism", "justice", "inlove", "peace"},
+#bellwort   = {"generosity", "pacifism", "justice", "inlove", "peace", "retribution", "timeloop"},
 #bloodroot  = {"paralysis", "slickness"},
 #ginger     = {"melancholichumour", "cholerichumour", "phlegmatichumour", "sanguinehumour"},
 #ginseng    = {"haemophilia", "darkshade", "relapsing", "addiction", "illness", "lethargy"},
-#goldenseal = {"dissonance", "impatience", "stupidity", "dizziness", "epilepsy", "shyness"},
-#kelp       = {"asthma", "hypochondria", "healthleech", "sensitivity", "clumsiness", "weakness"},
+#goldenseal = {"dissonance", "impatience", "stupidity", "dizziness", "epilepsy", "shyness", "depression", "shadowmadness"},
+#kelp       = {"asthma", "hypochondria", "healthleech", "sensitivity", "clumsiness", "weakness", "parasite"},
 #lobelia    = {"claustrophobia", "recklessness", "agoraphobia", "loneliness", "masochism", "vertigo", "spiritdisrupt", "airdisrupt", "waterdisrupt", "earthdisrupt", "firedisrupt"},
 #}) do
 #local checkany_string = ""
@@ -2902,7 +2927,7 @@ end
 
 -- tree touches
 #for _, tree in pairs({
-#tree = {"ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impatience", "inlove", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "madness", "masochism","pacifism", "paranoia", "peace", "prone", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slashedthroat", "slickness", "stupidity", "stuttering",  "vertigo", "voided", "voyria", "weakness", "hamstring", "shivering", "frozen", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt"}}) do
+#tree = {"ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impatience", "inlove", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "madness", "masochism","pacifism", "paranoia", "peace", "prone", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slashedthroat", "slickness", "stupidity", "stuttering",  "vertigo", "voided", "voyria", "weakness", "hamstring", "shivering", "frozen", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate"}}) do
 
 #for _, aff in pairs(tree) do
 function valid.tree_cured_$(aff)()
@@ -3288,7 +3313,7 @@ end
 
 
 local generic_cures_data = {
-  "ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "heartseed", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impale", "impatience", "inlove", "inquisition", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "lovers", "madness", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", "masochism", "mildtrauma", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "pacifism", "paralysis", "paranoia", "peace", "prone", "recklessness", "relapsing", "roped", "selarnia", "sensitivity", "seriousconcussion", "serioustrauma", "shyness", "slashedthroat", "slickness", "stun", "stupidity", "stuttering", "transfixed", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voided", "voyria", "weakness", "webbed", "healhealth", "healmana", "hamstring", "shivering", "frozen", "hallucinations", "stain", "rixil", "palpatar", "cadmus", "hecate", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt",
+  "ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "heartseed", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impale", "impatience", "inlove", "inquisition", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "lovers", "madness", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", "masochism", "mildtrauma", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "pacifism", "paralysis", "paranoia", "peace", "prone", "recklessness", "relapsing", "roped", "selarnia", "sensitivity", "seriousconcussion", "serioustrauma", "shyness", "slashedthroat", "slickness", "stun", "stupidity", "stuttering", "transfixed", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voided", "voyria", "weakness", "webbed", "healhealth", "healmana", "hamstring", "shivering", "frozen", "hallucinations", "stain", "rixil", "palpatar", "cadmus", "hecate", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate", "hatred"
 }
 
 for i = 1, #generic_cures_data do

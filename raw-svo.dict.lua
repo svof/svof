@@ -9179,6 +9179,301 @@ dict = {
       end,
     }
   },
+  depression = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.depression or false
+      end,
+
+      oncompleted = function ()
+        removeaff("depression")
+        lostbal_herb()
+      end,
+
+      eatcure = {"goldenseal", "plumbum"},
+      onstart = function ()
+        eat(dict.depression.herb)
+      end,
+
+      empty = function()
+        empty.eat_goldenseal()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.depression)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("depression")
+      end,
+    }
+  },
+  parasite = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.parasite or false
+      end,
+
+      oncompleted = function ()
+        removeaff("parasite")
+        lostbal_herb()
+      end,
+
+      eatcure = {"kelp", "aurum"},
+      onstart = function ()
+        eat(dict.parasite.herb)
+      end,
+
+      empty = function()
+        empty.eat_kelp()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.parasite)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("parasite")
+      end,
+    }
+  },
+  retribution = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.retribution or false
+      end,
+
+      oncompleted = function ()
+        removeaff("retribution")
+        lostbal_herb()
+      end,
+
+      eatcure = {"bellwort", "cuprum"},
+      onstart = function ()
+        eat(dict.retribution.herb)
+      end,
+
+      empty = function()
+        empty.eat_bellwort()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.retribution)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("retribution")
+      end,
+    }
+  },
+  shadowmadness = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.shadowmadness or false
+      end,
+
+      oncompleted = function ()
+        removeaff("shadowmadness")
+        lostbal_herb()
+      end,
+
+      eatcure = {"goldenseal", "plumbum"},
+      onstart = function ()
+        eat(dict.shadowmadness.herb)
+      end,
+
+      empty = function()
+        empty.eat_goldenseal()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.shadowmadness)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("shadowmadness")
+      end,
+    }
+  },
+  timeloop = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.timeloop or false
+      end,
+
+      oncompleted = function ()
+        removeaff("timeloop")
+        lostbal_herb()
+      end,
+
+      eatcure = {"bellwort", "cuprum"},
+      onstart = function ()
+        eat(dict.timeloop.herb)
+      end,
+
+      empty = function()
+        empty.eat_bellwort()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.timeloop)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("timeloop")
+      end,
+    }
+  },
+  degenerate = {
+    waitingfor = {
+      customwait = 0, -- seems to last 6 seconds per degenerate affliction when boosted, set below
+
+      isadvisable = function ()
+        return false
+      end,
+
+      onstart = function () end,
+
+      oncompleted = function ()
+        removeaff("degenerate")
+        make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        local timeout = 0
+        for _, aff in ipairs(empty.degenerateaffs) do
+          timeout = timeout + (affs[aff] and 7 or 0)
+        end
+        dict.degenerate.waitingfor.customwait = timeout
+        addaff(dict.degenerate)
+        if not actions.degenerate_waitingfor then doaction(dict.degenerate.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("degenerate")
+        killaction (dict.degenerate.waitingfor)
+      end,
+    }
+  },
+  deteriorate = {
+    waitingfor = {
+      customwait = 0, -- seems to last 6 seconds per deteriorate affliction when boosted, set below
+
+      isadvisable = function ()
+        return false
+      end,
+
+      onstart = function () end,
+
+      oncompleted = function ()
+        removeaff("deteriorate")
+        make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        local timeout = 0
+        for _, aff in ipairs(empty.deteriorateaffs) do
+          timeout = timeout + (affs[aff] and 7 or 0)
+        end
+        dict.deteriorate.waitingfor.customwait = timeout
+        addaff(dict.deteriorate)
+        if not actions.deteriorate_waitingfor then doaction(dict.deteriorate.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("deteriorate")
+        killaction (dict.deteriorate.waitingfor)
+      end,
+    }
+  },
+  hatred = {
+    waitingfor = {
+      customwait = 15,
+
+      isadvisable = function ()
+        return false
+      end,
+
+      onstart = function () end,
+
+      oncompleted = function ()
+        removeaff("hatred")
+        make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.hatred)
+        if not actions.hatred_waitingfor then doaction(dict.hatred.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("hatred")
+        killaction (dict.hatred.waitingfor)
+      end,
+    }
+  },
+  paradox = {
+    count = 0,
+    blocked_herb = "",
+    boosted = {
+      oncompleted = function ()
+        dict.paradox.aff.count = 10
+        updateaffcount(dict.paradox)
+      end
+    },
+    weakened = {
+      oncompleted = function ()
+        codepaste.remove_stackableaff("paradox", true)
+      end
+    },
+    aff = {
+      oncompleted = function (herb)
+        dict.paradox.count = 5
+        dict.paradox.blocked_herb = herb
+        addaff(dict.paradox)  
+        affl["paradox"].herb = herb
+        updateaffcount(dict.paradox)
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("paradox")
+        dict.paradox.count = 0
+        dict.paradox.blocked_herb = ""
+      end,
+    }
+  },
   retardation = {
     waitingfor = {
       isadvisable = function ()
@@ -14906,9 +15201,12 @@ affinity = {
     deadening = "deadening",
     deafness = false, 
     deepsleep = "sleep",
+    degenerate = "degenerate",
     dehydrated = "dehydrated",
     dementia = "dementia",
     demonstain = "stain",
+    depression = "depression",
+    deteriorate = "deteriorate",
     disloyalty = "disloyalty",
     disrupted = "disrupt",
     dissonance = "dissonance",
@@ -14927,6 +15225,7 @@ affinity = {
     haemophilia = "haemophilia",
     hallucinations = "hallucinations",
     hamstrung = "hamstring",
+    hatred = "hatred",
     healthleech = "healthleech",
     heartseed = "heartseed",
     hecatecurse = "hecate",
@@ -14967,6 +15266,7 @@ affinity = {
     palpatarfeed = "palpatar",
     paralysis = "paralysis",
     paranoia = "paranoia",
+    parasite = "parasite",
     peace = "peace",
     penitence = false, 
     petrified = false, 
@@ -14974,6 +15274,7 @@ affinity = {
     pinshot = "pinshot",
     prone = "prone",
     recklessness = "recklessness",
+    retribution = "retribution",
     revealed = false,
     scalded = "scalded",
     scrambledbrains = false, 
@@ -14981,6 +15282,7 @@ affinity = {
     selarnia = "selarnia",
     sensitivity = "sensitivity",
     serioustrauma = "serioustrauma",
+    shadowmadness = "shadowmadness",
     shivering = "shivering",
     shyness = "shyness",
     silver = false,
@@ -14997,6 +15299,7 @@ affinity = {
     temperedphlegmatic = "phlegmatichumour", 
     temperedsanguine = "sanguinehumour",
     timeflux = "timeflux",
+    timeloop = "timeloop",
     torntendons = "torntendons",
     transfixation = "transfixed",
     trueblind = false,
