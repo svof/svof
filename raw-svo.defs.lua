@@ -2092,6 +2092,138 @@ defs_data = pl.OrderedMap {}
     def = {"You are able to scout passed obstructions.", "You are able to scout past obstructions."}})
 #end
 
+#if skills.shadowmancy then
+  defs_data:set("shadowcloak", {
+    type = "shadowmancy",
+    custom_def_type = "shadowcloak",
+    invisibledef = true,
+    on = {
+      "You are now wearing a grim cloak.",
+    },
+    off = {
+      "You remove a grim cloak."
+    }
+   })
+  defs_data:set("disperse", {
+    type = "shadowmancy",
+    custom_def_type = "shadowcloak",
+    on = {
+      "The shadows swirl about you, masking you from view.",
+      "You have already shrouded yourself in beguiling shadow."
+    },
+    def = "You are masking your egress."
+   })
+--shadowveil gives both shadowveil and hiding
+  defs_data:set("shadowveil", {
+    type = "shadowmancy",
+    custom_def_type = "shadowcloak",
+    on = {
+      "Summoning the shadows to coalesce about your person, you vanish into their stygian embrace.",
+      "You are already veiled within the shadows embrace.",
+    },
+    def = "Concealed by a shifting veil of shadow.",
+   })
+  defs_data:set("hiding", {
+    type = "shadowmancy",
+    custom_def_type = "shadowcloak",
+    secondary_def = true,
+    on = {
+      "Summoning the shadows to coalesce about your person, you vanish into their stygian embrace.",
+      "You are already veiled within the shadows embrace.",
+    },
+    def = "You have used great guile to conceal yourself.",
+    off = {
+      "You emerge from your hiding place.",
+      "You are discovered!",
+      "The flash of light illuminates you - you have been discovered!",
+      "From what do you wish to emerge?"
+    }
+   })
+
+-- signals for shadowcloak tracking
+   signals.gmcpcharitemslist:connect(function()
+     if gmcp.Char.Items.List.location ~= "inv" then
+       return
+     end
+     for _, item in ipairs(gmcp.Char.Items.List.items) do
+       if item.name == "a grim cloak" then
+         if item.attrib and item.attrib:find("w") then
+           defences.got("shadowcloak")
+	 else
+           defences.lost("shadowcloak")
+         end
+         return
+       end
+     end
+   end)
+   signals.gmcpcharitemsadd:connect(function()
+     if gmcp.Char.Items.Add.location ~= "inv" then
+       return
+     end
+     for _, item in ipairs(gmcp.Char.Items.Add.item) do
+       if item.name == "a grim cloak" then
+         if item.attrib and item.attrib:find("w") then
+           defences.got("shadowcloak")
+         end
+       end
+     end
+   end)
+   signals.gmcpcharitemsremove:connect(function()
+     if gmcp.Char.Items.Remove.location ~= "inv" then
+       return
+     end
+     for _, item in ipairs(gmcp.Char.Items.Remove.item) do
+       if item.name == "a grim cloak" then
+         defences.lost("shadowcloak")
+       end
+     end
+   end)
+   signals.gmcpcharitemsupdate:connect(function()
+     if gmcp.Char.Items.Update.location ~= "inv" then
+       return
+     end
+     for _, item in ipairs(gmcp.Char.Items.Update.item) do
+       if item.name == "a grim cloak" then
+         if item.attrib and item.attrib:find("w") then
+           defences.got("shadowcloak")
+         end
+       end
+     end
+   end)
+#end
+
+
+#if skills.aeonics then
+  defs_data:set("blur", { type = "aeonics",
+    def = "Travelling the world more quickly due to time dilation."
+  })
+#end
+
+#if skills.terminus then
+  defs_data:set("trusad", { type = "terminus",
+    def = "You are enhancing your precision through the power of Terminus."
+  })
+  defs_data:set("tsuura", { type = "terminus",
+	def = "You are enhancing your durability against denizens."
+  })
+  defs_data:set("ukhia", { type = "terminus",
+	defr = "^You are focus?sing on quelling your bleeding more efficiently\.$"
+  })
+  defs_data:set("qamad", { type = "terminus",
+    def = "You have a will of iron."
+  })
+  defs_data:set("mainaas", { type = "terminus",
+	def = "You have augmented your own body for enhanced defence."
+  })
+  defs_data:set("gaiartha", { type = "terminus",
+    def = "You are concentrating on maintaining control over your faculties."
+  })
+#else
+  defs_data:set("gaiartha", { nodef = true,
+    def = "You are concentrating on maintaining control over your faculties."
+  })
+#end
+  
 do
   function defences.enablelifevision()
     if dict.lifevision then return end
@@ -2508,7 +2640,7 @@ function defs.keepup(which, status, mode, echoback, reshow)
     return
   end
 
-  if defkeepup[mode][which] == nil then
+  if defs_data[which].secondary_def or defkeepup[mode][which] == nil then
     sendf("Don't know about a %s defence.", which)
     return
   end
@@ -2562,7 +2694,7 @@ function defs.defup(which, status, mode, echoback, reshow)
     return
   end
 
-  if defdefup[mode][which] == nil then
+  if defs_data[which].secondary_def or defdefup[mode][which] == nil then
     sendf("Don't know about a %s defence.", which)
     return
   end
@@ -2914,6 +3046,7 @@ signals.systemstart:connect(function ()
     elseif not v.nodef and v.custom_def_type then
       defs["def_"..sk.sanitize(k)] = function ()
         defences.got(k)
+        deleteLine()
       end
 
     -- additional defence (nodef)
@@ -3108,7 +3241,7 @@ local function show_defs(tbl, linkcommand, cmdname)
   local function show_em(skillset, what)
     if skillset and not sk.ignored_defences[skillset].status then echof("%s defences:", skillset:title()) end
     for c,def in ipairs(what) do
-      local disabled = ((sk.ignored_defences[skillset] and sk.ignored_defences[skillset].status) and true or (sk.ignored_defences[sk.ignored_defences_map[def]].t[def]))
+      local disabled = ((sk.ignored_defences[skillset] and sk.ignored_defences[skillset].status) and true or (sk.ignored_defences[sk.ignored_defences_map[def]].t[def]) or (linkcommand and defs_data[def] and defs_data[def].secondary_def))
 
       if not disabled and not tbl[def] and not defences.nodef_list[def] then
         if (count % 3) ~= 0 then

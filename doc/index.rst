@@ -440,6 +440,8 @@ Tag                  What it shows
 @gametarget          shows your current in-game target, as either set by attacking an NPC or using the in-game ``settarget`` alias. This will auto-update your in-game prompt to include the target name.
 @gametargethp        shows your current in-game targets health, as either set by attacking an NPC. This will auto-update your in-game prompt to include the target's health %.
 @weaponmastery       shows the weaponmastery's - either momentum or ferocity - amount
+@age                 shows the current additional age gained via aeonics
+@wordbal             adds a 'w' to the prompt, if you have word balance
 ==================== ===============
 
 Available colours are:

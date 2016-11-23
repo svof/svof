@@ -782,6 +782,14 @@ me.cadmusaffs = me.cadmusaffs or {
 }
 
 me.inventory = {}
+
+me.getitem = function(name)
+  for _, thing in ipairs(me.inventory) do
+    if thing.name == name then
+      return thing
+    end
+  end
+end
 ---
 
 #if not skills.shindo then
@@ -912,6 +920,18 @@ disableTrigger("Humour balance")
 enableTrigger("Humour balance")
 #end
 
+#if skills.terminus then
+enableTrigger("Word balance")
+#else
+disableTrigger("Word balance")
+#end
+
+#if skills.aeonics then
+enableTrigger("Age tracking")
+#else
+disableTrigger("Age tracking")
+#end
+
 local prompt_stats
 
 local defences = {}
@@ -926,7 +946,7 @@ local index_map = pl.tablex.index_map
 local addaff, removeaff, checkanyaffs, updateaffcount
 
 local lostbal_focus, lostbal_herb, lostbal_salve, lostbal_purgative, lostbal_sip
-sk.salvetick, sk.herbtick, sk.focustick, sk.teatick, sk.purgativetick, sk.siptick, sk.mosstick, sk.dragonhealtick, sk.smoketick, sk.voicetick = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+sk.salvetick, sk.herbtick, sk.focustick, sk.teatick, sk.purgativetick, sk.siptick, sk.mosstick, sk.dragonhealtick, sk.smoketick, sk.voicetick, sk.wordtick = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 #if skills.healing then
 sk.healingtick = 0
 #end

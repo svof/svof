@@ -949,6 +949,9 @@ function reset.bals(echoback)
 #if skills.physiology then
     humour = true, homunculus = true,
 #end
+#if skills.terminus then
+    word = true,
+#end
   }
 
   for balance in pairs(bals) do raiseEvent("svo got balance", balance) end
