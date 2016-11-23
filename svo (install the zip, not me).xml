@@ -37644,8 +37644,7 @@ svo.valid.simplesleep()</script>
                 <regexCodePropertyList/>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Paradox</name>
-                    <script>display(matches)
-svo.valid.paradox_aff(matches[2])</script>
+                    <script>svo.valid.paradox_aff(matches[2])</script>
                     <triggerType>0</triggerType>
                     <conditonLineDelta>0</conditonLineDelta>
                     <mStayOpen>1</mStayOpen>
