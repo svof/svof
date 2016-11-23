@@ -9684,6 +9684,31 @@ dict = {
       end
     }
   },
+#if skills.aeonics then
+  age = {
+    happened = {
+      onstart = function () end,
+
+      oncompleted = function(amount)
+        if amount > 1400 then
+          ignore_illusion("Age went over the possible max")
+          stats.age = 0
+        elseif amount == 0 then
+          if dict.age.happened.timer then killTimer(dict.age.happened.timer) end
+          stats.age = 0
+          dict.age.happened.timer = nil
+        else
+          if dict.age.happened.timer then killTimer(dict.age.happened.timer) end
+          dict.age.happened.timer = tempTimer(6 + getping(), function()
+            ignore_illusion("Age tick timed out")
+            stats.age = 0
+          end)
+          stats.age = amount
+        end
+      end
+    }
+  },
+#end
 
 -- general defences
   rebounding = {
@@ -14331,7 +14356,7 @@ affinity = {
 
 #if skills.subterfuge then
 #basicdef("scales", "scales")
-#basicdef("hiding", "hide", false, false, true)
+#basicdef("hiding", "hide", false, "hiding", true)
 #basicdef("pacing", "pacing on")
 #basicdef("bask", "bask", false, "basking")
 #basicdef("listen", "listen", false, false, true)
@@ -14435,7 +14460,7 @@ affinity = {
 #if skills.woodlore then
 #basicdef("barkskin", "barkskin")
 #basicdef("fleetness", "fleetness")
-#basicdef("hiding", "hide")
+#basicdef("hiding", "hide", false, "hiding", true)
 #basicdef("firstaid", "firstaid on")
   impaling = {
     physical = {
@@ -14914,6 +14939,230 @@ affinity = {
     }
   },
 #end
+#if skills.shadowmancy then
+  shadowcloak = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+      undeffable = true,
+
+      isadvisable = function ()
+        local shadowcloak = me.getitem("a grim cloak")
+        if not defc.dragonform and not defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].shadowcloak) or (conf.keepup and defkeepup[defs.mode].shadowcloak) or (sys.deffing and defdefup[defs.mode].disperse) or (conf.keepup and defkeepup[defs.mode].disperse) or (sys.deffing and defdefup[defs.mode].shadowveil) or (conf.keepup and defkeepup[defs.mode].shadowveil) or (sys.deffing and defdefup[defs.mode].hiding) or (conf.keepup and defkeepup[defs.mode].hiding)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and stats.mp then
+          if not shadowcloak then
+            if stats.mp >= 100 then
+              return true
+            elseif not sk.gettingfullstats then
+              fullstats(true)
+              echof("Getting fullstats for Shadowcloak summoning...")
+            end
+          else
+            return true
+          end
+        end
+        return false
+      end,
+
+      oncompleted = function ()
+        defences.got("shadowcloak")
+      end,
+
+      action = "shadow cloak",
+      onstart = function ()
+        local shadowcloak = me.getitem("a grim cloak")
+        if not shadowcloak then
+          send("shadow cloak", conf.commandecho)
+        elseif not shadowcloak.attrib or not shadowcloak.attrib:find("w") then
+          send("wear " .. shadowcloak.id, conf.commandecho)
+        else
+	  defences.got("shadowcloak")
+        end
+      end
+    }
+  },
+  disperse = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return not defc.dragonform and not defc.disperse and defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].disperse) or (conf.keepup and defkeepup[defs.mode].disperse)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone
+      end,
+
+      oncompleted = function ()
+        defences.got("disperse")
+      end,
+
+      action = "shadow disperse",
+      onstart = function ()
+        send("shadow disperse", conf.commandecho)
+      end
+    }
+  },
+  shadowveil = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return not defc.dragonform and not defc.shadowveil and defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].shadowveil) or (conf.keepup and defkeepup[defs.mode].shadowveil)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone
+      end,
+
+      oncompleted = function ()
+        defences.got("shadowveil")
+      end,
+
+      action = "shadow veil",
+      onstart = function ()
+        send("shadow veil", conf.commandecho)
+      end
+    }
+  },
+#basicdef("hiding", "hide", false, "hiding", true)
+#end
+#if skills.aeonics then
+#basicdef("blur", "chrono blur boost")
+#end
+#if skills.terminus then
+  trusad = {
+    gamename = "precision",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.trusad and ((sys.deffing and defdefup[defs.mode].trusad) or (conf.keepup and defkeepup[defs.mode].trusad)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("trusad")
+      end,
+	  
+      action = "intone trusad",
+      onstart = function ()
+	    send("intone trusad", conf.commandecho)
+      end
+    }
+  },
+  tsuura = {
+    gamename = "durability",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.tsuura and ((sys.deffing and defdefup[defs.mode].tsuura) or (conf.keepup and defkeepup[defs.mode].tsuura)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("tsuura")
+      end,
+	  
+      action = "intone tsuura",
+      onstart = function ()
+	    send("intone tsuura", conf.commandecho)
+      end
+    }
+  },
+  ukhia = {
+    gamename = "bloodquell",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.ukhia and ((sys.deffing and defdefup[defs.mode].ukhia) or (conf.keepup and defkeepup[defs.mode].ukhia)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("ukhia")
+      end,
+	  
+      action = "intone ukhia",
+      onstart = function ()
+	    send("intone ukhia", conf.commandecho)
+      end
+    }
+  },
+  qamad = {
+    gamename = "ironwill",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.qamad and ((sys.deffing and defdefup[defs.mode].qamad) or (conf.keepup and defkeepup[defs.mode].qamad)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("qamad")
+      end,
+	  
+      action = "intone qamad",
+      onstart = function ()
+	    send("intone qamad", conf.commandecho)
+      end
+    }
+  },
+  mainaas = {
+    gamename = "bodyaugment",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.mainaas and ((sys.deffing and defdefup[defs.mode].mainaas) or (conf.keepup and defkeepup[defs.mode].mainaas)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("mainaas")
+      end,
+	  
+      action = "intone mainaas",
+      onstart = function ()
+	    send("intone mainaas", conf.commandecho)
+      end
+    }
+  },
+  gaiartha = {
+    gamename = "antiforce",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.gaiartha and ((sys.deffing and defdefup[defs.mode].gaiartha) or (conf.keepup and defkeepup[defs.mode].gaiartha)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("gaiartha")
+      end,
+	  
+      action = "intone gaiartha",
+      onstart = function ()
+	    send("intone gaiartha", conf.commandecho)
+      end
+    }
+  },
+#end
   sstosvoa = {
     addiction = "addiction",
     aeon = "aeon",
@@ -15074,6 +15323,7 @@ affinity = {
     aiming = false,
     airpocket = "pear",
     alertness = "alertness",
+	antiforce = "gaiartha",
     arctar = "arctar",
     aria = "aria",
     arrowcatching = "arrowcatch",
@@ -15089,8 +15339,11 @@ affinity = {
     blessingofthegods = false,
     blindness = "blind",
     blocking = "block",
+	bloodquell = "ukhia",
     bloodshield = false,
+	blur = "blur",
     boartattoo = false,
+	bodyaugment = "mainaas",
     bodyblock = "bodyblock",
     boostedregeneration = "boosting",
     chameleon = "chameleon",
@@ -15112,11 +15365,15 @@ affinity = {
     density = "mass",
     devilmark = "devilmark",
     diamondskin = "diamondskin",
+	disassociate = false,
+	disperse = "disperse",
     distortedaura = "distortedaura",
+    disperse = "disperse",
     dodging = "dodging",
     dragonarmour = "dragonarmour",
     dragonbreath = "dragonbreath",
     drunkensailor = "drunkensailor",
+	durability = "tsuura",
     earthshield = "earthblessing",
     eavesdropping = "eavesdrop",
     electricresist = "electricresist",
@@ -15140,6 +15397,7 @@ affinity = {
     gripping = "grip",
     groundwatch = "groundwatch",
     harmony = "harmony",
+	haste = false,
     heartsfury = "heartsfury",
     heldbreath = "breath",
     heresy = "heresy",
@@ -15152,12 +15410,15 @@ affinity = {
     insuflate = false,
     insulation = false,
     ironform = false,
+	ironwill = "qamad",
     kaiboost = "kaiboost",
     kaitrance = "trance",
     kola = "kola",
+	lament = false,
     lay = "lay",
     levitating = "levitation",
     lifegiver = false,
+	lifesteal = false,
     lifevision = "lifevision",
     lipreading = "lipread",
     magicresist = "magicresist",
@@ -15180,6 +15441,7 @@ affinity = {
     pinchblock = "pinchblock",
     poisonresist = "venom",
     preachblessing = false,
+	precision = "trusad",
     prismatic = "lyre",
     projectiles = "projectiles",
     promosurcoat = false,
@@ -15197,6 +15459,7 @@ affinity = {
     secondsight = "secondsight",
     selfishness = "selfishness",
     setweapon = "impaling",
+    shadowveil = "shadowveil",
     shield = "shield",
     shinbinding = "bind",
     shinclarity = "clarity",

@@ -4423,6 +4423,19 @@ function valid.gotvoicebalance()
 end
 #end
 
+#if skills.terminus then
+function valid.usedwordbalance()
+  checkaction(dict.stolebalance.happened, true)
+  lifevision.add(actions.stolebalance_happened.p, nil, "word")
+end
+
+function valid.gotwordbalance()
+  checkaction(dict.gotbalance.happened, true)
+  dict.gotbalance.happened.tempmap[#dict.gotbalance.happened.tempmap+1] = "word" -- hack to allow multiple balances at once
+  lifevision.add(actions.gotbalance_happened.p)
+end
+#end
+
 function valid.proper_hamstring()
   checkaction(dict.hamstring.aff, true)
   lifevision.add(actions["hamstring_aff"].p, "renew")
