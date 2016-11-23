@@ -2128,6 +2128,7 @@ defs_data = pl.OrderedMap {}
     type = "shadowmancy",
     custom_def_type = "shadowcloak",
     secondary_def = true,
+    nodef = true,
     on = {
       "Summoning the shadows to coalesce about your person, you vanish into their stygian embrace.",
       "You are already veiled within the shadows embrace.",
