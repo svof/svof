@@ -15466,7 +15466,11 @@ affinity = {
     shinrejoinder = false,
     shintrance = "shintrance",
     shipwarning = "shipwarning",
+#if skills.subterfuge then
     shroud = "cloaking",
+#else
+    shroud = "shroud",
+#end
     skywatch = "skywatch",
     slippery = "slipperiness",
     softfocusing = "softfocus",
