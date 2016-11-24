@@ -2097,12 +2097,16 @@ defs_data = pl.OrderedMap {}
   defs_data:set("shadowcloak", {
     type = "shadowmancy",
     custom_def_type = "shadowcloak",
+    offline_defence = true,
     invisibledef = true,
+    stays_on_death = true,
+    staysindragon = true,
     on = {
       "You are now wearing a grim cloak.",
     },
     off = {
-      "You remove a grim cloak."
+      "You remove a grim cloak.",
+      "You must be wearing your cloak of darkness in order to perform this ability."
     }
    })
   defs_data:set("disperse", {
@@ -2143,55 +2147,55 @@ defs_data = pl.OrderedMap {}
    })
 
 -- signals for shadowcloak tracking
-   signals.gmcpcharitemslist:connect(function()
-     if gmcp.Char.Items.List.location ~= "inv" then
-       return
-     end
-     for _, item in ipairs(gmcp.Char.Items.List.items) do
-       if item.name == "a grim cloak" then
-         if item.attrib and item.attrib:find("w") then
+  signals.gmcpcharitemslist:connect(function()
+    if gmcp.Char.Items.List.location ~= "inv" then
+      return
+    end
+    for _, item in ipairs(gmcp.Char.Items.List.items) do
+      if item.name == "a grim cloak" then
+        if item.attrib and item.attrib:find("w") then
            defences.got("shadowcloak")
-	 else
+         else
            defences.lost("shadowcloak")
          end
          return
-       end
-     end
-   end)
-   signals.gmcpcharitemsadd:connect(function()
-     if gmcp.Char.Items.Add.location ~= "inv" then
-       return
-     end
-     for _, item in ipairs(gmcp.Char.Items.Add.item) do
-       if item.name == "a grim cloak" then
-         if item.attrib and item.attrib:find("w") then
-           defences.got("shadowcloak")
-         end
-       end
-     end
-   end)
-   signals.gmcpcharitemsremove:connect(function()
-     if gmcp.Char.Items.Remove.location ~= "inv" then
-       return
-     end
-     for _, item in ipairs(gmcp.Char.Items.Remove.item) do
-       if item.name == "a grim cloak" then
-         defences.lost("shadowcloak")
-       end
-     end
-   end)
-   signals.gmcpcharitemsupdate:connect(function()
-     if gmcp.Char.Items.Update.location ~= "inv" then
-       return
-     end
-     for _, item in ipairs(gmcp.Char.Items.Update.item) do
-       if item.name == "a grim cloak" then
-         if item.attrib and item.attrib:find("w") then
-           defences.got("shadowcloak")
-         end
-       end
-     end
-   end)
+      end
+    end
+  end)
+  signals.gmcpcharitemsadd:connect(function()
+    if gmcp.Char.Items.Add.location ~= "inv" then
+      return
+    end
+    for _, item in ipairs(gmcp.Char.Items.Add.item) do
+      if item.name == "a grim cloak" then
+        if item.attrib and item.attrib:find("w") then
+          defences.got("shadowcloak")
+        end
+      end
+    end
+  end)
+  signals.gmcpcharitemsremove:connect(function()
+    if gmcp.Char.Items.Remove.location ~= "inv" then
+      return
+    end
+    for _, item in ipairs(gmcp.Char.Items.Remove.item) do
+      if item.name == "a grim cloak" then
+        defences.lost("shadowcloak")
+      end
+    end
+  end)
+  signals.gmcpcharitemsupdate:connect(function()
+    if gmcp.Char.Items.Update.location ~= "inv" then
+      return
+    end
+    for _, item in ipairs(gmcp.Char.Items.Update.item) do
+      if item.name == "a grim cloak" then
+        if item.attrib and item.attrib:find("w") then
+          defences.got("shadowcloak")
+        end
+      end
+    end
+  end)
 #end
 
 
