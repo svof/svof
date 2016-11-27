@@ -2131,8 +2131,6 @@ defs_data = pl.OrderedMap {}
   defs_data:set("hiding", {
     type = "shadowmancy",
     custom_def_type = "shadowcloak",
-    secondary_def = true,
-    nodef = true,
     on = {
       "Summoning the shadows to coalesce about your person, you vanish into their stygian embrace.",
       "You are already veiled within the shadows embrace.",
@@ -2646,7 +2644,7 @@ function defs.keepup(which, status, mode, echoback, reshow)
     return
   end
 
-  if defs_data[which].secondary_def or defkeepup[mode][which] == nil then
+  if defkeepup[mode][which] == nil then
     sendf("Don't know about a %s defence.", which)
     return
   end
@@ -2700,7 +2698,7 @@ function defs.defup(which, status, mode, echoback, reshow)
     return
   end
 
-  if defs_data[which].secondary_def or defdefup[mode][which] == nil then
+  if defdefup[mode][which] == nil then
     sendf("Don't know about a %s defence.", which)
     return
   end
@@ -3247,7 +3245,7 @@ local function show_defs(tbl, linkcommand, cmdname)
   local function show_em(skillset, what)
     if skillset and not sk.ignored_defences[skillset].status then echof("%s defences:", skillset:title()) end
     for c,def in ipairs(what) do
-      local disabled = ((sk.ignored_defences[skillset] and sk.ignored_defences[skillset].status) and true or (sk.ignored_defences[sk.ignored_defences_map[def]].t[def]) or (linkcommand and defs_data[def] and defs_data[def].secondary_def))
+      local disabled = ((sk.ignored_defences[skillset] and sk.ignored_defences[skillset].status) and true or (sk.ignored_defences[sk.ignored_defences_map[def]].t[def]))
 
       if not disabled and not tbl[def] and not defences.nodef_list[def] then
         if (count % 3) ~= 0 then
