@@ -2217,9 +2217,11 @@ defs_data = pl.OrderedMap {}
     def = "You have a will of iron."
   })
   defs_data:set("mainaas", { type = "terminus",
-	def = "You have augmented your own body for enhanced defence."
+    def = "You have augmented your own body for enhanced defence."
   })
-  defs_data:set("gaiartha", { type = "terminus",
+  defs_data:set("gaiartha", {
+    type = "terminus",
+    staysindragon = true,
     def = "You are concentrating on maintaining control over your faculties."
   })
 #else
