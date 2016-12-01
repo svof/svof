@@ -15024,7 +15024,28 @@ affinity = {
       end
     }
   },
-#basicdef("hiding", "hide", false, "hiding", true)
+  hiding = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+      undeffable = true,
+
+      isadvisable = function ()
+        return not defc.dragonform and not defc.hiding and defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].hiding) or (conf.keepup and defkeepup[defs.mode].hiding)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone
+      end,
+
+      oncompleted = function ()
+        defences.got("hiding")
+      end,
+
+      action = "shadow veil",
+      onstart = function ()
+        send("shadow veil", conf.commandecho)
+      end
+    }
+  },
 #end
 #if skills.aeonics then
 #basicdef("blur", "chrono blur boost")
