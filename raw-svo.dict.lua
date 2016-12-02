@@ -15183,6 +15183,104 @@ affinity = {
       end
     }
   },
+  lyre = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+
+      isadvisable = function ()
+        return (not defc.lyre and not doingaction("lyre") and ((sys.deffing and defdefup[defs.mode].lyre) or (conf.keepup and defkeepup[defs.mode].lyre)) and not will_take_balance() and not conf.lyre_step and not affs.prone and (defc.dragonform or (conf.lyrecmd and conf.lyrecmd ~= "intone kail") or bals.word)) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("lyre")
+
+        if conf.lyre then conf.paused = true; raiseEvent("svo config changed", "paused") end
+      end,
+
+      ontimeout = function()
+        if conf.paused and not defc.lyre then
+          echof("Lyre strum didn't happen - unpausing.")
+          conf.paused = false; raiseEvent("svo config changed", "paused")
+          make_gnomes_work()
+        end
+      end,
+
+      onkill = function()
+        if conf.paused and not defc.lyre then
+          echof("Lyre strum cancelled - unpausing.")
+          conf.paused = false; raiseEvent("svo config changed", "paused")
+        end
+      end,
+
+      action = "intone kail",
+      onstart = function ()
+        sys.sendonceonly = true
+
+        -- small fix to make 'lyc' work and be in-order (as well as use batching)
+        local send = send
+        -- record in systemscommands, so it doesn't get killed later on in the controller and loop
+        if conf.batch then send = function(what, ...) sendc(what, ...) sk.systemscommands[what] = true end end
+
+        if not defc.dragonform and not conf.lyrecmd then
+          send("intone kail", conf.commandecho)
+        elseif conf.lyrecmd then
+          send(tostring(conf.lyrecmd), conf.commandecho)
+        else
+          send("strum lyre", conf.commandecho)
+        end
+        sys.sendonceonly = false
+
+        if conf.lyre then conf.paused = true; raiseEvent("svo config changed", "paused") end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        defences.lost("lyre")
+
+        -- as a special case for handling the following scenario:
+        --[[(focus)
+          Your prismatic barrier dissolves into nothing.
+          You focus your mind intently on curing your mental maladies.
+          Food is no longer repulsive to you. (7.548s)
+          H: 3294 (50%), M: 4911 (89%) 28725e, 10294w 89.3% ex|cdk- 19:24:04.719(sip health|eat bayberry|outr bayberry|eat
+          irid|outr irid)(+324h, 5.0%, -291m, 5.3%)
+          You begin to weave a melody of magical, heart-rending beauty and a beautiful barrier of prismatic light surrounds you.
+          (p) H: 3294 (50%), M: 4911 (89%) 28725e, 10194w 89.3% x|cdk- 19:24:04.897
+          Your prismatic barrier dissolves into nothing.
+          You take a drink from a purple heartwood vial.
+          The elixir heals and soothes you.
+          H: 4767 (73%), M: 4911 (89%) 28725e, 10194w 89.3% x|cdk- 19:24:05.247(+1473h, 22.7%)
+          You eat some bayberry bark.
+          Your eyes dim as you lose your sight.
+        ]]
+        -- we want to kill lyre going up when it goes down and you're off balance, because you won't get it up off-bal
+
+        -- but don't kill it if it is in lifevision - meaning we're going to get it:
+        --[[
+          (ex) 4600h|100%, 4000m|84%, 100w%, 100e%, (cdbkr)-  {9 Mayan 637}(strum lyre)
+          Your prismatic barrier dissolves into nothing.
+          You strum a Lasallian lyre, and a prismatic barrier forms around you.
+          (svo): Lyre strum cancelled - unpausing.
+          (x) 4600h|100%, 4000m|84%, 100w%, 100e%, (cdbkr)-  {9 Mayan 637}
+          You have recovered equilibrium. (3.887s)
+          (ex) 4600h|100%, 4000m|84%, 100w%, 100e%, (cdbkr)-  {9 Mayan 637}(strum lyre)
+          Your prismatic barrier dissolves into nothing.
+          You strum a Lasallian lyre, and a prismatic barrier forms around you.
+          (svo): Lyre strum cancelled - unpausing.
+        ]]
+
+        if not (bals.balance and bals.equilibrium) and actions.lyre_physical and not lifevision.l.lyre_physical then killaction(dict.lyre.physical) end
+
+        -- unpause should we lose the lyre def for some reason - but not while we're doing lyc
+        -- since we'll lose the lyre def and it'll come up right away
+        if conf.lyre and conf.paused and not actions.lyre_physical then conf.paused = false; raiseEvent("svo config changed", "paused") end
+      end,
+    }
+  },
 #end
   sstosvoa = {
     addiction = "addiction",
