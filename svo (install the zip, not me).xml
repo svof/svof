@@ -54167,6 +54167,17 @@ send(&quot;sleep&quot;)</script>
                 <packageName></packageName>
                 <regex>^vshow server(?:side)?$</regex>
             </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>toggle dilation</name>
+                <script>if svo.me.skills.aeonics then
+	svo.defs.keepup(&quot;dilation&quot;, matches[2], nil, true)
+else
+	svo.echof(&quot;You don't seem to be versed in the skill of aeonics and as such can't dilate time.&quot;)
+end</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^dil(?: (\w+))?$</regex>
+            </Alias>
         </AliasGroup>
     </AliasPackage>
     <ActionPackage>
