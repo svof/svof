@@ -1726,19 +1726,6 @@ function defs.got_speed()
   end
 end
 
-function valid.bled(howmuch)
-  local amount = tonumber(howmuch)
-
-  checkaction(dict.bleeding.aff, true)
-  if actions.bleeding_aff then
-    lifevision.add(actions.bleeding_aff.p, nil, amount)
-  end
-
-  if affs.unknownany and stats.hp == 100 and stats.mana == 100 then
-    valid.simplerecklessness()
-  end
-end
-
 function valid.clot1()
   checkaction(dict.bleeding.misc)
   if actions.bleeding_misc then
