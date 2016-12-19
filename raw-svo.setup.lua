@@ -254,7 +254,7 @@ signals.gmcpcharvitals:connect(function()
       if rage then
 	    stats.battlerage = tonumber(rage)
       else
-	    local bleed = val:match("^Bleed: (%d+)$")
+        local bleed = val:match("^Bleed: (%d+)$")
         if bleed then
           if bleed == "0" then
             removeaff("bleeding")
