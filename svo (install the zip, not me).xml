@@ -11459,7 +11459,9 @@ svo.onprompt()</script>
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>svo bled health</name>
-                    <script>if tonumber(multimatches[2][2]) &gt;= 500 then
+                    <script>svo.valid.bled()
+
+if tonumber(multimatches[2][2]) &gt;= 500 then
   selectString(multimatches[2][2], 1)
   fg(&quot;red&quot;)
   bg(&quot;white&quot;)
@@ -11487,7 +11489,8 @@ end</script>
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>svo bled mana</name>
-                    <script>svo.valid.simplecorrupted()
+                    <script>svo.valid.bled()
+svo.valid.simplecorrupted()
 
 if tonumber(multimatches[2][2]) &gt;= 500 then
   selectString(multimatches[2][2], 1)

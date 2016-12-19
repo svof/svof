@@ -1726,6 +1726,13 @@ function defs.got_speed()
   end
 end
 
+function valid.bled()
+  -- we don't actually care about the bleeding here, but we want the reckless crosscheck
+  if affs.unknownany and stats.hp == 100 and stats.mana == 100 then
+    valid.simplerecklessness()
+  end
+end
+
 function valid.clot1()
   checkaction(dict.bleeding.misc)
   if actions.bleeding_misc then
