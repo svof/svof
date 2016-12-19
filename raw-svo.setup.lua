@@ -252,7 +252,7 @@ signals.gmcpcharvitals:connect(function()
     for index, val in ipairs(gmcp.Char.Vitals.charstats) do
       local rage = val:match("^Rage: (%d+)$")
       if rage then
-	    stats.battlerage = tonumber(rage)
+        stats.battlerage = tonumber(rage)
       else
         local bleed = val:match("^Bleed: (%d+)$")
         if bleed then
