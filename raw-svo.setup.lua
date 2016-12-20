@@ -248,9 +248,25 @@ signals.gmcpcharitemsremove:connect(function()
 end)
 signals.gmcpcharvitals      = luanotify.signal.new()
 signals.gmcpcharvitals:connect(function()
-  if not gmcp.Char.Vitals.charstats then return end
-  for index, val in ipairs(gmcp.Char.Vitals.charstats) do
-    stats.battlerage = tonumber(val:match("^Rage: (%d+)$") or stats.battlerage or 0)
+  if gmcp.Char.Vitals.charstats then
+    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local rage = val:match("^Rage: (%d+)$")
+      if rage then
+        stats.battlerage = tonumber(rage)
+      else
+        local bleed = val:match("^Bleed: (%d+)$")
+        if bleed then
+          if bleed == "0" then
+            removeaff("bleeding")
+          else
+            dict.bleeding.aff.oncompleted(tonumber(bleed))
+          end
+        end
+      end
+    end
+  end
+  if not stats.battlerage then
+    stats.battlerage = 0
   end
 end)
 signals.gmcpiretimelist = luanotify.signal.new()
