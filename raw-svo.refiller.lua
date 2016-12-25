@@ -296,7 +296,6 @@ function rf_boilpot(pot)
 
   rf_wait_to_boil = tempTimer(getNetworkLatency()+1, function ()
     if not svo.defc.selfishness then
-      sendc("drop "..pot, rf_debug)
       sendc("boil "..pot.." for "..tostring(rf_refilling.currentorder), rf_debug)
     else
       sendc("generosity", rf_debug)
@@ -309,8 +308,6 @@ function rf_magichappened()
   if not rf_refilling then return end
 
   svo.doadd(function()
-    sendc("take "..conf.potid, rf_debug)
-
     if rf_refilling.currentorderdata then
       for i = 1, rf_refilling.currentorderdata.arty do
         rf_fillarty()
