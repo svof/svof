@@ -254,7 +254,7 @@ local function outr(what, amount)
     return
   end
 
-  if amount == 1 then send("outr "..what, rf_debug)
+  if amount == 1 then sendc("outr "..what, rf_debug)
   else sendc("outr "..amount.." "..what, rf_debug) end
 end
 
@@ -299,7 +299,7 @@ function rf_boilpot(pot)
       sendc("boil "..pot.." for "..tostring(rf_refilling.currentorder), rf_debug)
     else
       sendc("generosity", rf_debug)
-      rf_temptrigger = tempExactMatchTrigger("You have recovered equilibrium.", "killTrigger(svo.rf_temptrigger); send('drop "..pot.."', svo.rf_debug); send('boil "..pot.." for "..tostring(rf_refilling.currentorder).."', svo.rf_debug)")
+      rf_temptrigger = tempExactMatchTrigger("You have recovered equilibrium.", "killTrigger(svo.rf_temptrigger); svo.sendc('boil "..pot.." for "..tostring(rf_refilling.currentorder).."', svo.rf_debug)")
     end
   end)
 end
