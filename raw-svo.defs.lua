@@ -3021,12 +3021,12 @@ signals.systemstart:connect(function ()
         local bal
         for kk,vv in pairs(dict[k]) do if type(vv) == "table" and kk ~= "gone" then bal = kk break end end
         if bal then
-          defs["got_" .. k] = function ()
+          defs["got_" .. k] = function (force)
 #if skills.metamorphosis then
             if v.custom_def_type or usingbal(bal) then checkaction(dict[k][bal], true)
             else checkaction(dict[k][bal]) end
 #else
-            if not v.custom_def_type then checkaction(dict[k][bal]) else checkaction(dict[k][bal], true) end
+            if not v.custom_def_type then checkaction(dict[k][bal], force) else checkaction(dict[k][bal], true) end
 #end
             if actions[k .. "_" .. bal] then
               lifevision.add(actions[k .. "_" .. bal].p)
