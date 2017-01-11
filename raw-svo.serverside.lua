@@ -481,7 +481,11 @@ signals["svo config changed"]:connect(function(config)
   if config ~= "serverside" then return end
 
   if conf.serverside then
-    sk.priochangecache = { special = {} }
+    sk.priochangecache = {
+      special = {
+        focustoggle = conf.focus
+      }
+    }
     -- sync everything
     sk.priosbeforechange = sk.getblankbeforestateprios()
     sendcuring("PRIORITY RESET")
