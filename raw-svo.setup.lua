@@ -291,8 +291,6 @@ signals.gmcpchardefencesadd = luanotify.signal.new()
 
 
 signals.gmcpcharafflictionsadd:connect(function()
-  local gmcpai = conf.aillusion
-  conf.aillusion = false
   local thisaff = gmcp.Char.Afflictions.Add.name
   if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
   gaffl[thisaff] = true
@@ -300,24 +298,18 @@ signals.gmcpcharafflictionsadd:connect(function()
   if dict.sstosvoa[thisaff] then
     addaff(dict.sstosvoa[thisaff])
   end
-  conf.aillusion = gmcpai
 end)
 
 signals.gmcpcharafflictionsremove:connect(function()
-  local gmcpai = conf.aillusion
-  conf.aillusion = false
   local thisaff = gmcp.Char.Afflictions.Remove[1]
   gaffl[thisaff] = nil
   if conf.gmcpdefechoes then echof("Cured aff %s", thisaff) end
   if dict.sstosvoa[thisaff] then
     removeaff(dict.sstosvoa[thisaff])
   end
-  conf.aillusion = gmcpai
 end)
 
 signals.gmcpcharafflictionslist:connect(function()
-  local gmcpai = conf.aillusion
-  conf.aillusion = false
   gaffl = {}
   local preaffl = {}
   for key, val in ipairs(affl) do preaffl[val] = true end
@@ -336,13 +328,10 @@ signals.gmcpcharafflictionslist:connect(function()
   for key, val in pairs(preaffl) do
     if val and dict.svotossa[thisaff] then removeaff(key) end
   end
-  conf.aillusion = gmcpai
 end)
 
 
 signals.gmcpchardefencesadd:connect(function()
-  local gmcpai = conf.aillusion
-  conf.aillusion = false
   thisdef = gmcp.Char.Defences.Add.name
   gdefc[thisdef] = true
   if conf.gmcpdefechoes then echof("Gained def "..thisdef) end
@@ -353,12 +342,9 @@ signals.gmcpchardefencesadd:connect(function()
       echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["got_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
     end
   end
-  conf.aillusion = gmcpai
 end)
 
 signals.gmcpchardefencesremove:connect(function()
-  local gmcpai = conf.aillusion
-  conf.aillusion = false
   thisdef = gmcp.Char.Defences.Remove[1]
   gdefc[thisdef] = nil
   if conf.gmcpdefechoes then echof("Lost def "..thisdef) end
@@ -369,12 +355,9 @@ signals.gmcpchardefencesremove:connect(function()
       echoLink("(e!)", [[echo("The problem was: lost_ function was ]]..type(defs["lost_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
     end
   end
-  conf.aillusion = gmcpai
 end)
 
 signals.gmcpchardefenceslist:connect(function()
-  local gmcpai = conf.aillusion
-  conf.aillusion = false
   gdefc = {}
   local predefs = deepcopy(defc)
   for index, val in ipairs(gmcp.Char.Defences.List) do
@@ -399,7 +382,6 @@ signals.gmcpchardefenceslist:connect(function()
       end
     end
   end
-  conf.aillusion = gmcpai
 end)
 
 -- make a 'signals bank' that remembers all gmcp events that happend before the prompt. reset on prompt. check it for stuff when necessary.
