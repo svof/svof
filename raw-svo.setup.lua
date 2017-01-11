@@ -367,7 +367,7 @@ signals.gmcpchardefenceslist:connect(function()
       if predefs[dict.sstosvod[thisdef]] then
         predefs[dict.sstosvod[thisdef]] = false
       elseif type(defs["got_"..dict.sstosvod[thisdef]]) == "function" then
-        defs["got_"..dict.sstosvod[thisdef]]()
+        defs["got_"..dict.sstosvod[thisdef]](true)
       else
         echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["got_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
       end
