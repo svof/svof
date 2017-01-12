@@ -208,6 +208,18 @@ defs_data = pl.OrderedMap {}
         svo["def"..whereto][mode].meditate = false
         if echoback then echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
+      if svo["def"..whereto][mode].dilation then
+        svo["def"..whereto][mode].dilation = false
+        if echoback then echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].flame then
+        svo["def"..whereto][mode].flame = false
+        if echoback then echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].lyre then
+        svo["def"..whereto][mode].lyre = false
+        if echoback then echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
 
       return true
     end}) -- added in xml w/ conf.gagbreath
@@ -262,7 +274,7 @@ defs_data = pl.OrderedMap {}
     defr = [[^You are experiencing a (\d+) percent experience boost\.$]] })
   defs_data:set("xpbonus", { nodef = true,
     ondef = function () return "("..matches[2]..")" end,
-    defr = [[^You are benefitt?ing from a (\d+)% experience bonus\.$]] })
+    defr = {[[^You are benefitt?ing from a (\d+)% experience bonus\.$]], [[^You are benefitting from a (\d+)% bonus to experience gain\.$]] }})
   defs_data:set("deaf", { type = "general",
     def = "You are deaf.",
     off = "The unnatural sound rips through your defences against auditory attacks." })
@@ -288,6 +300,10 @@ defs_data = pl.OrderedMap {}
       if svo["def"..whereto][mode].breath then
         svo["def"..whereto][mode].breath = false
         if echoback then echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].dilation then
+        svo["def"..whereto][mode].dilation = false
+        if echoback then echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
 
       return true
@@ -316,6 +332,18 @@ defs_data = pl.OrderedMap {}
       if svo["def"..whereto][mode].breath then
         svo["def"..whereto][mode].breath = false
         if echoback then echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].dilation then
+        svo["def"..whereto][mode].dilation = false
+        if echoback then echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].flame then
+        svo["def"..whereto][mode].flame = false
+        if echoback then echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].lyre then
+        svo["def"..whereto][mode].lyre = false
+        if echoback then echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
 
       return true
@@ -2097,12 +2125,16 @@ defs_data = pl.OrderedMap {}
   defs_data:set("shadowcloak", {
     type = "shadowmancy",
     custom_def_type = "shadowcloak",
+    offline_defence = true,
     invisibledef = true,
+    stays_on_death = true,
+    staysindragon = true,
     on = {
       "You are now wearing a grim cloak.",
     },
     off = {
-      "You remove a grim cloak."
+      "You remove a grim cloak.",
+      "You must be wearing your cloak of darkness in order to perform this ability."
     }
    })
   defs_data:set("disperse", {
@@ -2127,7 +2159,6 @@ defs_data = pl.OrderedMap {}
   defs_data:set("hiding", {
     type = "shadowmancy",
     custom_def_type = "shadowcloak",
-    secondary_def = true,
     on = {
       "Summoning the shadows to coalesce about your person, you vanish into their stygian embrace.",
       "You are already veiled within the shadows embrace.",
@@ -2142,55 +2173,55 @@ defs_data = pl.OrderedMap {}
    })
 
 -- signals for shadowcloak tracking
-   signals.gmcpcharitemslist:connect(function()
-     if gmcp.Char.Items.List.location ~= "inv" then
-       return
-     end
-     for _, item in ipairs(gmcp.Char.Items.List.items) do
-       if item.name == "a grim cloak" then
-         if item.attrib and item.attrib:find("w") then
+  signals.gmcpcharitemslist:connect(function()
+    if gmcp.Char.Items.List.location ~= "inv" then
+      return
+    end
+    for _, item in ipairs(gmcp.Char.Items.List.items) do
+      if item.name == "a grim cloak" then
+        if item.attrib and item.attrib:find("w") then
            defences.got("shadowcloak")
-	 else
+         else
            defences.lost("shadowcloak")
          end
          return
-       end
-     end
-   end)
-   signals.gmcpcharitemsadd:connect(function()
-     if gmcp.Char.Items.Add.location ~= "inv" then
-       return
-     end
-     for _, item in ipairs(gmcp.Char.Items.Add.item) do
-       if item.name == "a grim cloak" then
-         if item.attrib and item.attrib:find("w") then
-           defences.got("shadowcloak")
-         end
-       end
-     end
-   end)
-   signals.gmcpcharitemsremove:connect(function()
-     if gmcp.Char.Items.Remove.location ~= "inv" then
-       return
-     end
-     for _, item in ipairs(gmcp.Char.Items.Remove.item) do
-       if item.name == "a grim cloak" then
-         defences.lost("shadowcloak")
-       end
-     end
-   end)
-   signals.gmcpcharitemsupdate:connect(function()
-     if gmcp.Char.Items.Update.location ~= "inv" then
-       return
-     end
-     for _, item in ipairs(gmcp.Char.Items.Update.item) do
-       if item.name == "a grim cloak" then
-         if item.attrib and item.attrib:find("w") then
-           defences.got("shadowcloak")
-         end
-       end
-     end
-   end)
+      end
+    end
+  end)
+  signals.gmcpcharitemsadd:connect(function()
+    if gmcp.Char.Items.Add.location ~= "inv" then
+      return
+    end
+    for _, item in ipairs(gmcp.Char.Items.Add.item) do
+      if item.name == "a grim cloak" then
+        if item.attrib and item.attrib:find("w") then
+          defences.got("shadowcloak")
+        end
+      end
+    end
+  end)
+  signals.gmcpcharitemsremove:connect(function()
+    if gmcp.Char.Items.Remove.location ~= "inv" then
+      return
+    end
+    for _, item in ipairs(gmcp.Char.Items.Remove.item) do
+      if item.name == "a grim cloak" then
+        defences.lost("shadowcloak")
+      end
+    end
+  end)
+  signals.gmcpcharitemsupdate:connect(function()
+    if gmcp.Char.Items.Update.location ~= "inv" then
+      return
+    end
+    for _, item in ipairs(gmcp.Char.Items.Update.item) do
+      if item.name == "a grim cloak" then
+        if item.attrib and item.attrib:find("w") then
+          defences.got("shadowcloak")
+        end
+      end
+    end
+  end)
 #end
 
 
@@ -2198,6 +2229,25 @@ defs_data = pl.OrderedMap {}
   defs_data:set("blur", { type = "aeonics",
     def = "Travelling the world more quickly due to time dilation."
   })
+  defs_data:set("dilation", { type = "aeonics",
+    onenable = function (mode, newdef, whereto, echoback)
+      if svo["def"..whereto][mode].breath then
+        svo["def"..whereto][mode].breath = false
+        if echoback then echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].meditate then
+        svo["def"..whereto][mode].meditate = false
+        if echoback then echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].lyre then
+        svo["def"..whereto][mode].lyre = false
+        if echoback then echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+
+      return true
+    end,
+    on = "Growing very still, you begin to manipulate the flow of time around you, drastically speeding up your rate of regression.",
+    off = {"Your concentration broken, you cease dilating time.", "Having fully regressed to your normal age, you cease dilating time."}})
 #end
 
 #if skills.terminus then
@@ -2214,9 +2264,11 @@ defs_data = pl.OrderedMap {}
     def = "You have a will of iron."
   })
   defs_data:set("mainaas", { type = "terminus",
-	def = "You have augmented your own body for enhanced defence."
+    def = "You have augmented your own body for enhanced defence."
   })
-  defs_data:set("gaiartha", { type = "terminus",
+  defs_data:set("gaiartha", {
+    type = "terminus",
+    staysindragon = true,
     def = "You are concentrating on maintaining control over your faculties."
   })
 #else
@@ -2641,7 +2693,7 @@ function defs.keepup(which, status, mode, echoback, reshow)
     return
   end
 
-  if defs_data[which].secondary_def or defkeepup[mode][which] == nil then
+  if defkeepup[mode][which] == nil then
     sendf("Don't know about a %s defence.", which)
     return
   end
@@ -2695,7 +2747,7 @@ function defs.defup(which, status, mode, echoback, reshow)
     return
   end
 
-  if defs_data[which].secondary_def or defdefup[mode][which] == nil then
+  if defdefup[mode][which] == nil then
     sendf("Don't know about a %s defence.", which)
     return
   end
@@ -3242,7 +3294,7 @@ local function show_defs(tbl, linkcommand, cmdname)
   local function show_em(skillset, what)
     if skillset and not sk.ignored_defences[skillset].status then echof("%s defences:", skillset:title()) end
     for c,def in ipairs(what) do
-      local disabled = ((sk.ignored_defences[skillset] and sk.ignored_defences[skillset].status) and true or (sk.ignored_defences[sk.ignored_defences_map[def]].t[def]) or (linkcommand and defs_data[def] and defs_data[def].secondary_def))
+      local disabled = ((sk.ignored_defences[skillset] and sk.ignored_defences[skillset].status) and true or (sk.ignored_defences[sk.ignored_defences_map[def]].t[def]))
 
       if not disabled and not tbl[def] and not defences.nodef_list[def] then
         if (count % 3) ~= 0 then

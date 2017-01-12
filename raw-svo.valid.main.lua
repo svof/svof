@@ -1726,14 +1726,8 @@ function defs.got_speed()
   end
 end
 
-function valid.bled(howmuch)
-  local amount = tonumber(howmuch)
-
-  checkaction(dict.bleeding.aff, true)
-  if actions.bleeding_aff then
-    lifevision.add(actions.bleeding_aff.p, nil, amount)
-  end
-
+function valid.bled()
+  -- we don't actually care about the bleeding here, but we want the reckless crosscheck
   if affs.unknownany and stats.hp == 100 and stats.mana == 100 then
     valid.simplerecklessness()
   end
@@ -2124,23 +2118,23 @@ function valid.litallpipes()
 end
 
 function valid.paradox_aff(herb)
-  checkaction(dict.paradox.aff)
+  checkaction(dict.paradox.aff, true)
   lifevision.add(actions.paradox_aff.p, nil, herb)
 end
 
 function valid.paradox_boosted()
-  checkaction(dict.paradox.boosted)
+  checkaction(dict.paradox.boosted, true)
   lifevision.add(actions.paradox_boosted.p)
 end
 
 function valid.paradox_weakened()
   if find_until_last_paragraph(dict.paradox.blocked_herb, "substring") or find_until_last_paragraph(rift.herb_conversions[dict.paradox.blocked_herb], "substring") then return end
-  checkaction(dict.paradox.weakened)
+  checkaction(dict.paradox.weakened, true)
   lifevision.add(actions.paradox_weakened.p)
 end
 
 function valid.paradox_faded()
-  checkaction(dict.paradox.gone)
+  checkaction(dict.paradox.gone, true)
   lifevision.add(actions.paradox_gone.p)
 end
 
