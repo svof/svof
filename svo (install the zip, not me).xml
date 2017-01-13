@@ -53848,7 +53848,15 @@ svo.toggle_ignore(matches[2])</script>
             </Alias>
             <Alias isActive="yes" isFolder="no">
                 <name>Remember vault/mount</name>
-                <script>if matches[3] == &quot;ship&quot; then send(cmd, false) end
+                <script>if matches[3] == &quot;ship&quot; then
+  send(command, false)
+  return
+end
+
+if string.starts(matches[3]:lower(), &quot;figurehead&quot;) then
+  send(command, false)
+  return
+end
 
 if svo.conf.ridingskill ~= matches[2] then
   svo.echof(&quot;Remembered your riding skill at '%s'&quot;, matches[2])
