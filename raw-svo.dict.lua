@@ -15049,6 +15049,28 @@ affinity = {
 #end
 #if skills.aeonics then
 #basicdef("blur", "chrono blur boost")
+  dilation = {
+    physical = {
+      balanceless_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+      undeffable = true,
+
+      isadvisable = function ()
+        return (((sys.deffing and defdefup[defs.mode].dilation and not defc.dilation) or (conf.keepup and defkeepup[defs.mode].dilation and not defc.dilation)) and not codepaste.balanceful_defs_codepaste() and not doingaction'dilation' and (stats.age and stats.age > 0)) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("dilation")
+      end,
+
+      actions = {"chrono dilation", "chrono dilation boost"},
+      onstart = function ()
+        send("chrono dilation", conf.commandecho)
+      end
+    }
+  },
 #end
 #if skills.terminus then
   trusad = {

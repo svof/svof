@@ -208,6 +208,18 @@ defs_data = pl.OrderedMap {}
         svo["def"..whereto][mode].meditate = false
         if echoback then echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
+      if svo["def"..whereto][mode].dilation then
+        svo["def"..whereto][mode].dilation = false
+        if echoback then echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].flame then
+        svo["def"..whereto][mode].flame = false
+        if echoback then echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].lyre then
+        svo["def"..whereto][mode].lyre = false
+        if echoback then echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
 
       return true
     end}) -- added in xml w/ conf.gagbreath
@@ -289,6 +301,10 @@ defs_data = pl.OrderedMap {}
         svo["def"..whereto][mode].breath = false
         if echoback then echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
+      if svo["def"..whereto][mode].dilation then
+        svo["def"..whereto][mode].dilation = false
+        if echoback then echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
 
       return true
     end,
@@ -316,6 +332,18 @@ defs_data = pl.OrderedMap {}
       if svo["def"..whereto][mode].breath then
         svo["def"..whereto][mode].breath = false
         if echoback then echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].dilation then
+        svo["def"..whereto][mode].dilation = false
+        if echoback then echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].flame then
+        svo["def"..whereto][mode].flame = false
+        if echoback then echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].lyre then
+        svo["def"..whereto][mode].lyre = false
+        if echoback then echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
 
       return true
@@ -2161,6 +2189,25 @@ defs_data = pl.OrderedMap {}
   defs_data:set("blur", { type = "aeonics",
     def = "Travelling the world more quickly due to time dilation."
   })
+  defs_data:set("dilation", { type = "aeonics",
+    onenable = function (mode, newdef, whereto, echoback)
+      if svo["def"..whereto][mode].breath then
+        svo["def"..whereto][mode].breath = false
+        if echoback then echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].meditate then
+        svo["def"..whereto][mode].meditate = false
+        if echoback then echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].lyre then
+        svo["def"..whereto][mode].lyre = false
+        if echoback then echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+
+      return true
+    end,
+    on = "Growing very still, you begin to manipulate the flow of time around you, drastically speeding up your rate of regression.",
+    off = {"Your concentration broken, you cease dilating time.", "Having fully regressed to your normal age, you cease dilating time."}})
 #end
 
 #if skills.terminus then

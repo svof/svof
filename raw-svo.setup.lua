@@ -248,11 +248,43 @@ signals.gmcpcharitemsremove:connect(function()
 end)
 signals.gmcpcharvitals      = luanotify.signal.new()
 signals.gmcpcharvitals:connect(function()
-  if not gmcp.Char.Vitals.charstats then return end
-  for index, val in ipairs(gmcp.Char.Vitals.charstats) do
-    stats.battlerage = tonumber(val:match("^Rage: (%d+)$") or stats.battlerage or 0)
+  if gmcp.Char.Vitals.charstats then
+    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local rage = val:match("^Rage: (%d+)$")
+      if rage then
+        stats.battlerage = tonumber(rage)
+      else
+        local bleed = val:match("^Bleed: (%d+)$")
+        if bleed then
+          if bleed == "0" then
+            removeaff("bleeding")
+          else
+            dict.bleeding.aff.oncompleted(tonumber(bleed))
+          end
+        end
+      end
+    end
+  end
+  if not stats.battlerage then
+    stats.battlerage = 0
   end
 end)
+#if skills.groves then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+      if sunlight then
+      local sunlight = val:match("^Sunlight: (%d+)$")
+        stats.sunlight = tonumber(sunlight)
+        break
+      end
+    end
+  end
+  if not stats.sunlight then
+    stats.sunlight = 0
+  end
+end)
+#end
 #if skills.metamorphosis then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then

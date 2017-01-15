@@ -308,6 +308,12 @@ cpp.compute_morph = function()
 end
 #end
 
+#if skills.groves then
+cpp.compute_sunlight = function()
+  return stats.sunlight > 0 and tostring(stats.sunlight) or ""
+end
+#end
+
 cpp.compute_promptstring = function()
  return ("<LightSlateGrey>")..
         (defc.cloak and "c" or "") ..
@@ -460,6 +466,9 @@ cp.definitions = {
 #end
 #if skills.metamorphosis then
   ["@morph"]         = "svo.cpp.compute_morph()",
+#end
+#if skills.groves then
+  ["@sunlight"]      = "svo.cpp.compute_sunlight()",
 #end
 #if skills.terminus then
   ["@wordbal"]       = "svo.cpp.compute_wordbal()",
