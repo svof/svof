@@ -236,7 +236,7 @@ svo.rt_razed = nil</script>
                 <colorTriggerFgColor>#000000</colorTriggerFgColor>
                 <colorTriggerBgColor>#000000</colorTriggerBgColor>
                 <regexCodeList>
-                    <string>^\w+ takes a long drag off (?:his|her) ?.*pipe\.$</string>
+                    <string>^\w+ takes a long drag off (?:his|her)? ?.*pipe\.$|^A great gurgling sound is heard as \w+ takes a long drag from an enamel bubble pipe\. A series of shining bubbles erupt from the bowl of (?:her|his) pipe\.$</string>
                     <string>return (svo.rt_razed and line:find(svo.rt_name, 1, true)) and true or false</string>
                 </regexCodeList>
                 <regexCodePropertyList>
