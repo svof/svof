@@ -49,9 +49,16 @@
   [18864] = { &quot;ouroboros60684&quot;,  &quot;ouroboros203598&quot; },
   [21191] = { &quot;ouroboros34462&quot;,  &quot;ouroboros49014&quot;  },
   [21192] = { &quot;ouroboros191596&quot;, &quot;ouroboros191631&quot; },
-   [5953] = { &quot;ouroboros36673&quot;,  &quot;ouroboros36838&quot;  },
-   [5954] = { &quot;ouroboros23502&quot;,  &quot;ouroboros57255&quot;  },
-   [5955] = { &quot;ouroboros1263&quot;,   &quot;ouroboros30460&quot;  }
+  [47270] = { &quot;ouroboros36673&quot;,  &quot;ouroboros36838&quot;  },
+  [47271] = { &quot;ouroboros23502&quot;,  &quot;ouroboros57255&quot;  },
+  [47272] = { &quot;ouroboros1263&quot;,   &quot;ouroboros30460&quot;  },
+  [47301] = { &quot;ouroboros205397&quot;, &quot;ouroros219350&quot;   },
+  [11016] = { &quot;ouroboros71982&quot;,  &quot;ouroboros94567&quot;  },
+  [11014] = { &quot;ouroboros54000&quot;,  &quot;ouroboros27606&quot;  },
+  [11018] = { &quot;ouroboros48748&quot;,  &quot;ouroboros69603&quot;  },
+  [11017] = { &quot;ouroboros105971&quot;, &quot;ouroboros106382&quot; },
+  [12518] = { &quot;ouroboros77138&quot;, &quot;ouroboros159812&quot;  },
+  [42336] = { &quot;ouroboros133228&quot;, &quot;ouroboros204600&quot; }
 }
 
 -- Keep track if we are already ennchating
