@@ -35957,8 +35957,6 @@ svo.valid.simpleprone()</script>
                             <colorTriggerBgColor>#000000</colorTriggerBgColor>
                             <regexCodeList>
                                 <string>Grasping his weapon tightly in both hands, Bartok Stonefist, Leader of the Blackfire clan swings the pickaxe at your knees, sweeping you off your feet.</string>
-                                <string>Lashing out with her pickaxe Grelda Stonefist smashes her weapon into your kneecap.</string>
-                                <string>Lashing out with her pickaxe Breana Ironhammer smashes her weapon into your kneecap.</string>
                                 <string>Grasping his weapon tightly in both hands, Glath Ironhammer, Leader of the Bloodstone clan swings the pickaxe at your knees, sweeping you off your feet.</string>
                             </regexCodeList>
                             <regexCodePropertyList>
