@@ -303,15 +303,8 @@ end
 
 #if skills.metamorphosis then
 cpp.compute_morph = function()
-  local morphs = {"hydra", "wyvern", "icewyrm", "gorilla", "eagle", "jaguar", "wolverine", "elephant", "nightingale", "bear", "basilisk", "sloth", "gopher", "condor", "hyena", "owl", "cheetah", "jackdaw", "turtle", "wolf", "wildcat", "squirrel"}
+  return me.morph or ""
 
-  for i = 1, #morphs do
-    local morph = morphs[i]
-
-    if defc[morph] then return morph end
-  end
-
-  return ''
 end
 #end
 
