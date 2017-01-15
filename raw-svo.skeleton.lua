@@ -1882,7 +1882,9 @@ function sk.clearmorphs()
     {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm"}
 #end
      do
-    defences.lost(morph)
+    if defc[morph] then
+      defences.lost(morph)
+    end
   end
 end
 
