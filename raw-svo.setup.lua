@@ -269,6 +269,22 @@ signals.gmcpcharvitals:connect(function()
     stats.battlerage = 0
   end
 end)
+#if skills.groves then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+      if sunlight then
+      local sunlight = val:match("^Sunlight: (%d+)$")
+        stats.sunlight = tonumber(sunlight)
+        break
+      end
+    end
+  end
+  if not stats.sunlight then
+    stats.sunlight = 0
+  end
+end)
+#end
 signals.gmcpiretimelist = luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
   me.gametime = deepcopy(gmcp.IRE.Time.List)
