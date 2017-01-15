@@ -54977,7 +54977,6 @@ svo.restore.stainlock = {
   end
 }
 
---[[
 -- restore if we have 3+ limbs damaged and at least one of them is curable with restore
 svo.restore.maybevivi = {
   desc = &quot;Use restore if you have 3+ limbs damaged and at least one of them is curable with restore&quot;,
@@ -54991,7 +54990,7 @@ svo.restore.maybevivi = {
     return svo.countbrokenlimbs() &gt;= 3
   end
 }
-]]</script>
+</script>
                     <eventHandlerList/>
                 </Script>
                 <Script isActive="yes" isFolder="no">
