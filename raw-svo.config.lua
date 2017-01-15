@@ -2093,7 +2093,7 @@ tntf_tbl = {
       sendcuring("afflictions on")
       sendcuring("sipping on")
       sendcuring("defences on")
-      sendcuring("focus on")
+      sendcuring("focus " .. (conf.focus and "on" or "off"))
       sendcuring("batch on")
       sendc("config advancedcuring on")
       sendcuring("reporting on")
