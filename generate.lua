@@ -49,6 +49,7 @@ local defaultaddons   = {
   sentinel = {"metalimbcounter"},
   sylvan = {"metalimbcounter"},
   druid = {"metalimbcounter"},
+  allclasses = {"knightlimbcounter"},
 }
 
 

@@ -77,6 +77,9 @@ end
 local dict_balanceful = {}
 local dict_balanceless = {}
 
+-- list of all keys in the dict that are possible.
+-- Useful for checking, whether some keys could be valid at some point.
+local all_dict_keys
 
 -- defence shortlists
 local dict_balanceful_def = {}
@@ -6244,13 +6247,15 @@ then return false end
             conf.parry
 #end
            ) and not codepaste.balanceful_codepaste()
-#if class ~= "blademaster" and class ~= "monk" then
+           and ((not sys.enabledgmcp or defc.dragonform)
           -- blademasters can parry with their sword sheathed
-          and ((not sys.enabledgmcp or defc.dragonform) or (next(me.wielded) and sk.have_parryable()))
+#if class ~= "blademaster" and class ~= "monk" then
+           or (next(me.wielded) and sk.have_parryable())
 #if class == "allclasses" then
-          and (haveSkill("tekura") or haveSkill("twoarts"))
+            or haveSkill("tekura") or haveSkill("twoarts")
 #end
 #end
+          )
           and not codepaste.balanceful_defs_codepaste()) or false
       end,
 
@@ -10177,43 +10182,32 @@ local function dict_setup()
     if not j.sw then j.sw = createStopWatch() end
   end -- went through the dict list once at this point
 
-  for balancename, list in pairs(unassigned_actions) do
-    if #list > 0 then
-      -- shift up by # all actions for that balance to make room @ bottom
-      for i,j in pairs(dict) do
-        for balance,l in pairs(j) do
-          if balance == balancename and type(l) == "table" and l.aspriority and l.aspriority ~= 0 then
-            l.aspriority = l.aspriority + #list
-          end
-        end
-      end
+  if not all_dict_keys then
+    all_dict_keys = {}
+    for key in pairs(dict) do
+      all_dict_keys[key] = true
+    end
+  end
 
-      -- now setup the low id's
-      for i, actionname in ipairs(list) do
-        dict[actionname][balancename].aspriority = i
+  for balancename, list in pairs(unassigned_actions) do
+    for i, actionname in ipairs(list) do
+      local priority = prio.getnumber(actionname, balancename)
+      if not priority then
+        prio.insert(actionname, balancename, 1)
+      else
+        dict[actionname][balancename].aspriority = priority
       end
     end
   end
 
-  local totalcount = 0
-  for _, list in pairs(unassigned_sync_actions) do
-    totalcount = totalcount + #list
-  end
-
   for balancename, list in pairs(unassigned_sync_actions) do
-    if totalcount > 0 then
-      -- shift up by # all actions for that balance to make room @ bottom
-      for i,j in pairs(dict) do
-        for balance,l in pairs(j) do
-          if type(l) == "table" and l.spriority and l.spriority ~= 0 then
-            l.spriority = l.spriority + totalcount
-          end
-        end
-      end
-
-      -- now setup the low id's
-      for i, actionname in ipairs(list) do
-        dict[actionname][balancename].spriority = i
+    for i, actionname in ipairs(list) do
+      local prioname = string.format("%s_%s", actionname, balancename)
+      local priority = prio.getnumber(prioname, "slowcuring")
+      if not priority then
+        prio.insert(prioname,"slowcuring", 1)
+      else
+        dict[actionname][balancename].spriority = priority
       end
     end
   end
@@ -10316,8 +10310,8 @@ local function addDefs()
       rebounding = {
         blocked = false, -- we need to block off in blackout, because otherwise we waste sips
         smoke = {
-          aspriority = 137,
-          spriority = 261,
+          aspriority = 0,
+          spriority = 0,
           def = true,
 
           isadvisable = function ()
@@ -10490,8 +10484,8 @@ local function addDefs()
       speed = {
         blocked = false, -- we need to block off in blackout, because otherwise we waste sips
         purgative = {
-          aspriority = 8,
-          spriority = 265,
+          aspriority = 0,
+          spriority = 0,
           def = true,
 
           isadvisable = function ()
@@ -10563,8 +10557,8 @@ local function addDefs()
         gamename = "fangbarrier",
         applying = "",
         misc = {
-          aspriority = 8,
-          spriority = 265,
+          aspriority = 0,
+          spriority = 0,
           def = true,
 
           isadvisable = function ()
@@ -16131,7 +16125,9 @@ local function addDefs()
   
   dict_setup()
 end
-addDefs()
+signals.systemstart:connect(function ()
+  addDefs()
+end)
 
 local function dict_validate()
   -- basic theory is to create table keys for each table within dict.#,

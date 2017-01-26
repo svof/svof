@@ -899,7 +899,9 @@ function svo.valid.check_dragonform()
   end
 end
 
-svo.defs.got_dragonform = dict.waitingfordragonform.waitingfor.oncompleted
+signals.systemstart:connect(function ()
+  svo.defs.got_dragonform = dict.waitingfordragonform.waitingfor.oncompleted
+end)
 
 function valid.proper_impale()
   if not conf.aillusion then

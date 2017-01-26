@@ -1939,7 +1939,7 @@ if not conf.releasechannel then
   conf.releasechannel = "stable"
 end
 
-do
+signals.systemstart:connect(function ()
   local conf_t = {}
   local conf_path = getMudletHomeDir() .. "/svo/config/conf"
 
@@ -2011,7 +2011,7 @@ do
       rift.update_riftlabel()
     end)
   end
-end
+end)
 
 for k,v in config_dict:iter() do
   -- pre-initialize values not declared
