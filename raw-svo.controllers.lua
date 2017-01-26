@@ -660,6 +660,12 @@ signals["svo lost balance"]:connect(function(balance)
   end)
 end)
 
+signals["svo got balance"]:connect(function(balance)
+  if balance ~= "equilibrium" then return end
+  
+  if affs.disrupt then removeaff("disrupt") end
+end)
+
 #if skills.weaponmastery then
 signals["svo got balance"]:connect(function(balance)
   if balance ~= "balance" then return end

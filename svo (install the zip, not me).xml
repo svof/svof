@@ -1974,6 +1974,46 @@ svo.valid.swellskin_woreoff()</script>
                         </regexCodePropertyList>
                     </Trigger>
                     <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>svo paradox weakened</name>
+                        <script>svo.valid.paradox_weakened()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>The paradox affecting you weakens.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>svo paradox faded</name>
+                        <script>svo.valid.paradox_faded()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>The paradox fades.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                         <name>svo ate2</name>
                         <script>svo.valid.ate2()</script>
                         <triggerType>0</triggerType>
@@ -2174,12 +2214,10 @@ svo.valid.swellskin_woreoff()</script>
                     <colorTriggerFgColor>#000000</colorTriggerFgColor>
                     <colorTriggerBgColor>#000000</colorTriggerBgColor>
                     <regexCodeList>
-                        <string>You take a long drag</string>
-                        <string>^You take a long drag.*? off your pipe\.$</string>
+                        <string>^(?:You take a long drag.*? off your pipe\.|Your draw is accompanied by a deep gurgling sound before a series of shining bubbles erupt from the bowl of your pipe\.)$</string>
                         <string>1</string>
                     </regexCodeList>
                     <regexCodePropertyList>
-                        <integer>2</integer>
                         <integer>1</integer>
                         <integer>5</integer>
                     </regexCodePropertyList>
@@ -6335,6 +6373,166 @@ svo.valid.diag_corrupted()</script>
                         </regexCodeList>
                         <regexCodePropertyList>
                             <integer>1</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>depression</name>
+                        <script>svo.valid.diag_depression()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>depressed.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>parasite</name>
+                        <script>svo.valid.diag_parasite()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>tormented by a parasitic curse.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>retribution</name>
+                        <script>svo.valid.diag_retribution()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>suffering the curse of retribution.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>shadowmadness</name>
+                        <script>svo.valid.diag_shadowmadness()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>going slowly insane.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>timeloop</name>
+                        <script>svo.valid.diag_timeloop()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>stuck in a feedback loop.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>degenerate</name>
+                        <script>svo.valid.diag_degenerate()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>weakened in body.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>deteriorate</name>
+                        <script>svo.valid.diag_deteriorate()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>weakened in mind.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>hatred</name>
+                        <script>svo.valid.diag_hatred()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>inspired to great heights of loathing.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
                         </regexCodePropertyList>
                     </Trigger>
                     <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -11261,7 +11459,7 @@ svo.onprompt()</script>
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>svo bled health</name>
-                    <script>svo.valid.bled(multimatches[2][2])
+                    <script>svo.valid.bled()
 
 if tonumber(multimatches[2][2]) &gt;= 500 then
   selectString(multimatches[2][2], 1)
@@ -11291,7 +11489,7 @@ end</script>
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>svo bled mana</name>
-                    <script>svo.valid.bled(multimatches[2][2])
+                    <script>svo.valid.bled()
 svo.valid.simplecorrupted()
 
 if tonumber(multimatches[2][2]) &gt;= 500 then
@@ -14620,28 +14818,6 @@ svo.valid.simpleprone()</script>
                         </regexCodeList>
                         <regexCodePropertyList>
                             <integer>3</integer>
-                        </regexCodePropertyList>
-                    </Trigger>
-                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                        <name>show bleeding</name>
-                        <script>svo.valid.bled(multimatches[2][2])</script>
-                        <triggerType>0</triggerType>
-                        <conditonLineDelta>0</conditonLineDelta>
-                        <mStayOpen>0</mStayOpen>
-                        <mCommand></mCommand>
-                        <packageName></packageName>
-                        <mFgColor>#ff0000</mFgColor>
-                        <mBgColor>#ffff00</mBgColor>
-                        <mSoundFile></mSoundFile>
-                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                        <regexCodeList>
-                            <string>You are bleeding for</string>
-                            <string>^You are bleeding for (\d+) health\.$</string>
-                        </regexCodeList>
-                        <regexCodePropertyList>
-                            <integer>2</integer>
-                            <integer>1</integer>
                         </regexCodePropertyList>
                     </Trigger>
                     <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -17974,7 +18150,7 @@ raiseEvent(&quot;svo got balance&quot;, &quot;homunculus&quot;)</script>
                         </regexCodePropertyList>
                     </Trigger>
                 </TriggerGroup>
-                <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Fitness balance</name>
                     <script></script>
                     <triggerType>0</triggerType>
@@ -18050,7 +18226,7 @@ raiseEvent(&quot;svo got balance&quot;, &quot;homunculus&quot;)</script>
                         </regexCodePropertyList>
                     </Trigger>
                 </TriggerGroup>
-                <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Rage balance</name>
                     <script></script>
                     <triggerType>0</triggerType>
@@ -18083,6 +18259,164 @@ raiseEvent(&quot;svo got balance&quot;, &quot;homunculus&quot;)</script>
                         </regexCodeList>
                         <regexCodePropertyList>
                             <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                </TriggerGroup>
+                <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Word balance</name>
+                    <script></script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList/>
+                    <regexCodePropertyList/>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>svo lost word</name>
+                        <script>svo.valid.usedwordbalance()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>^Imbuing your voice with power, you intone, &quot;\S+&quot;\.$</string>
+                            <string>Injecting your voice with scorn, you proclaim: &quot;Hailad&quot;.</string>
+                            <string>^Fixing your gaze upon .+, you intone, &quot;Laiad&quot;\.$</string>
+                            <string>^Turning to face \S+ you utter, &quot;Uraiad&quot;\.$</string>
+                            <string>^Locking the image of \S+ in your minds eye, you utter, &quot;[Hh]iemeth&quot;\.$</string>
+                            <string>^You speak words of power over .+\.$</string>
+                            <string>Taking a steadying breath, you turn your focus inward and proclaim, &quot;Mainaas&quot;.</string>
+                            <string>Drawing on ancestral memory, you let the lament of deSangre pour forth:</string>
+                            <string>^Directing your voice so only \S+ may hear, you command (?:her|him) to serve\.$</string>
+                            <string>Your mouth falls open as the all-consuming litany pours forth, and you know that in moments all that hear shall serve your will.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>1</integer>
+                            <integer>3</integer>
+                            <integer>1</integer>
+                            <integer>1</integer>
+                            <integer>1</integer>
+                            <integer>1</integer>
+                            <integer>3</integer>
+                            <integer>3</integer>
+                            <integer>1</integer>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>svo missing word</name>
+                        <script>if svo.bals.word then
+  svo.valid.usedwordbalance()
+end</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>You have not recovered enough to intone another word of power.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>svo got word</name>
+                        <script>svo.valid.gotwordbalance()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>You may intone another word of power.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                </TriggerGroup>
+                <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Age tracking</name>
+                    <script></script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList/>
+                    <regexCodePropertyList/>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>No additional age</name>
+                        <script>svo.valid.simpleage(0)</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>You are no longer artificially aged due to having manipulated time.</string>
+                            <string>Having fully regressed to your normal age, you cease dilating time.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>3</integer>
+                            <integer>3</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>aged</name>
+                        <script>svo.valid.simpleage(matches[2])</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>^You are now unnaturally aged by (\d+) years\.$</string>
+                            <string>^The effects of your time manipulation fade somewhat, leaving you only aged by (\d+) years\.$</string>
+                            <string>^You have now aged yourself by (\d+) years\.$</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>1</integer>
+                            <integer>1</integer>
+                            <integer>1</integer>
                         </regexCodePropertyList>
                     </Trigger>
                 </TriggerGroup>
@@ -18803,7 +19137,7 @@ echo'\n' svo.config.set(&quot;shipmode&quot;, &quot;off&quot;, true)</script>
                         </regexCodePropertyList>
                     </Trigger>
                 </TriggerGroup>
-                <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Two-hander recover footing</name>
                     <script></script>
                     <triggerType>0</triggerType>
@@ -20716,11 +21050,11 @@ end)</script>
                     <colorTriggerFgColor>#808000</colorTriggerFgColor>
                     <colorTriggerBgColor>#000000</colorTriggerBgColor>
                     <regexCodeList>
-                        <string>Status  Pipe         Contents                       Puffs Months  </string>
+                        <string>Status  Pipe         Contents                       Puffs Months</string>
                         <string>FG8BG2</string>
                     </regexCodeList>
                     <regexCodePropertyList>
-                        <integer>3</integer>
+                        <integer>2</integer>
                         <integer>6</integer>
                     </regexCodePropertyList>
                     <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -35623,8 +35957,6 @@ svo.valid.simpleprone()</script>
                             <colorTriggerBgColor>#000000</colorTriggerBgColor>
                             <regexCodeList>
                                 <string>Grasping his weapon tightly in both hands, Bartok Stonefist, Leader of the Blackfire clan swings the pickaxe at your knees, sweeping you off your feet.</string>
-                                <string>Lashing out with her pickaxe Grelda Stonefist smashes her weapon into your kneecap.</string>
-                                <string>Lashing out with her pickaxe Breana Ironhammer smashes her weapon into your kneecap.</string>
                                 <string>Grasping his weapon tightly in both hands, Glath Ironhammer, Leader of the Bloodstone clan swings the pickaxe at your knees, sweeping you off your feet.</string>
                             </regexCodeList>
                             <regexCodePropertyList>
@@ -37268,6 +37600,161 @@ svo.valid.simplesleep()</script>
                     <regexCodePropertyList>
                         <integer>3</integer>
                         <integer>3</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+            </TriggerGroup>
+            <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Aeonics</name>
+                <script></script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList/>
+                <regexCodePropertyList/>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Paradox</name>
+                    <script>svo.valid.paradox_aff(matches[2])</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>1</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>^You suddenly get the feeling that eating (kelp|goldenseal|lobelia|ash|bellwort) would be a very bad idea indeed\.$</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>1</integer>
+                    </regexCodePropertyList>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>Paradox boosted</name>
+                        <script>svo.valid.paradox_boosted()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>^\w+ grows older before your eyes\.$</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>1</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                </Trigger>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Doom started</name>
+                    <script>svo.doomer = matches[2]</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>1</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>^(\w+) grows very still, (?:his|her) unblinking gaze locking to your own\.$</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>1</integer>
+                    </regexCodePropertyList>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>boosted</name>
+                        <script>svo.givewarning({
+	initialmsg = string.format(&quot;%s started BOOSTED Doom for you! Leave within %d seconds&quot;, matches[2], svo.affl.aeon and 5 or 7),
+	prefixwarning = matches[2]..&quot; dooms you (BOOSTED)&quot;,
+	startin = 1,
+	duration = 2
+})
+svo.doomer = nil</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>^(\w+) grows older before your eyes\.$</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>1</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>unboosted</name>
+                        <script>svo.givewarning({
+	initialmsg = string.format(&quot;%s started Doom for you! Leave or hinder within %d seconds&quot;, svo.doomer, svo.affl.aeon and 7 or 10),
+	prefixwarning = svo.doomer..&quot; dooms you&quot;,
+	startin = 0,
+	duration = 2
+})
+svo.doomer = nil</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>return isPrompt()</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>4</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
+                </Trigger>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>doom continued</name>
+                    <script>svo.givewarning({
+	initialmsg = string.format(&quot;%s still dooms you!&quot;, multimatches[2][2]),
+	prefixwarning = multimatches[2][2]..&quot; dooms you&quot;,
+	startin = 1,
+	duration = 2
+})</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>You know on an instinctive level that if</string>
+                        <string>^You know on an instinctive level that if (\w+) is allowed to continue, it shall be your end\.$</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>2</integer>
+                        <integer>1</integer>
                     </regexCodePropertyList>
                 </Trigger>
             </TriggerGroup>
@@ -41635,7 +42122,7 @@ svo.givewarning_multi({
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Hydra web</name>
-                    <script>svo.valid.proper_webbed()</script>
+                    <script>svo.valid.simpleroped()</script>
                     <triggerType>0</triggerType>
                     <conditonLineDelta>0</conditonLineDelta>
                     <mStayOpen>0</mStayOpen>
@@ -43281,6 +43768,150 @@ svo.startedfighting(&quot;shaman&quot;, matches[2])</script>
                 </Trigger>
             </TriggerGroup>
             <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Shadowmancy</name>
+                <script></script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList/>
+                <regexCodePropertyList/>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Shadowmancy attacks</name>
+                    <script>svo.startedfighting(&quot;depthswalker&quot;, matches[2])</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>^(\w+) delivers a lightning-fast strike to you with .+\.$</string>
+                        <string>^(\w+) lays into you with a savage blow from .+\.$</string>
+                        <string>^(\w+) raises (?:Gattan'lier's hunger|an insubstantial dagger) and points it at you with a sinister smile\.$</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Sever warning</name>
+                    <script>svo.startedfighting(&quot;depthswalker&quot;, matches[2])
+svo.givewarning({
+	initialmsg = string.format(&quot;%s is severing you!&quot;, matches[2]),
+	prefixwarning = matches[2]..&quot; severs you&quot;,
+	startin = 1,
+	duration = 2
+})</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>^Readying (?:Gattan'lier's hunger|an insubstantial dagger), (\w+) begins to prowl towards you\.$</string>
+                        <string>^As (?:Gattan'lier's hunger|an insubstantial dagger) begins to pulse with a sinister glow, (\w+) begins to close in on you\.$</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+            </TriggerGroup>
+            <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Shindo</name>
+                <script></script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList/>
+                <regexCodePropertyList/>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Ablaze</name>
+                    <script>svo.valid.proper_ablaze()</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>Flames erupt over all over your body and begin to consume your flesh.</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>3</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Paralysis</name>
+                    <script>svo.valid.proper_paralysis()</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>99</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>Your body stiffens rapidly with paralysis.</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>3</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Prone</name>
+                    <script>svo.valid.simpleprone()</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>You are thrown from the room by the sheer force of the fiery blast.</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>3</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+            </TriggerGroup>
+            <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                 <name>Skirmishing</name>
                 <script></script>
                 <triggerType>0</triggerType>
@@ -43661,82 +44292,6 @@ svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                     </regexCodeList>
                     <regexCodePropertyList>
                         <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-            </TriggerGroup>
-            <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Shindo</name>
-                <script></script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList/>
-                <regexCodePropertyList/>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Ablaze</name>
-                    <script>svo.valid.proper_ablaze()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>Flames erupt over all over your body and begin to consume your flesh.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Paralysis</name>
-                    <script>svo.valid.proper_paralysis()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>99</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>Your body stiffens rapidly with paralysis.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Prone</name>
-                    <script>svo.valid.simpleprone()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>You are thrown from the room by the sheer force of the fiery blast.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
                     </regexCodePropertyList>
                 </Trigger>
             </TriggerGroup>
@@ -48170,8 +48725,8 @@ end</script>
                     <colorTriggerFgColor>#000000</colorTriggerFgColor>
                     <colorTriggerBgColor>#000000</colorTriggerBgColor>
                     <regexCodeList>
-                        <string>A small brown lemming scurries around you furiously, stripping your</string>
-                        <string>^A small brown lemming scurries around you furiously, stripping your (.+) defence\.$</string>
+                        <string>A small brown lemming rips apart your</string>
+                        <string>^A small brown lemming rips apart your (.+) with its claws\.$</string>
                     </regexCodeList>
                     <regexCodePropertyList>
                         <integer>2</integer>
@@ -48511,6 +49066,26 @@ svo.valid.simpleillness()</script>
                     <colorTriggerBgColor>#000000</colorTriggerBgColor>
                     <regexCodeList>
                         <string>The raven darts in and out of your line of vision, making you uneasy.</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
+                        <integer>3</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Lemming confusion</name>
+                    <script>svo.valid.simpleconfusion()</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>The lemming races around you and between your legs, confusing you with its eratic movement.</string>
                     </regexCodeList>
                     <regexCodePropertyList>
                         <integer>3</integer>
@@ -51283,6 +51858,26 @@ resetFormat()</script>
                             <integer>2</integer>
                         </regexCodePropertyList>
                     </Trigger>
+                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                        <name>distortion</name>
+                        <script>selectString(matches[1], 1) setItalics(true) fg(&quot;GhostWhite&quot;) resetFormat() deselect()</script>
+                        <triggerType>0</triggerType>
+                        <conditonLineDelta>0</conditonLineDelta>
+                        <mStayOpen>0</mStayOpen>
+                        <mCommand></mCommand>
+                        <packageName></packageName>
+                        <mFgColor>#ff0000</mFgColor>
+                        <mBgColor>#ffff00</mBgColor>
+                        <mSoundFile></mSoundFile>
+                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                        <regexCodeList>
+                            <string>The surroundings are distorted, as if viewed through water.</string>
+                        </regexCodeList>
+                        <regexCodePropertyList>
+                            <integer>0</integer>
+                        </regexCodePropertyList>
+                    </Trigger>
                 </TriggerGroup>
                 <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Inline ASCII bars</name>
@@ -53251,7 +53846,15 @@ svo.toggle_ignore(matches[2])</script>
             </Alias>
             <Alias isActive="yes" isFolder="no">
                 <name>Remember vault/mount</name>
-                <script>if matches[3] == &quot;ship&quot; then send(cmd, false) end
+                <script>if matches[3] == &quot;ship&quot; then
+  send(command, false)
+  return
+end
+
+if string.starts(matches[3]:lower(), &quot;figurehead&quot;) then
+  send(command, false)
+  return
+end
 
 if svo.conf.ridingskill ~= matches[2] then
   svo.echof(&quot;Remembered your riding skill at '%s'&quot;, matches[2])
@@ -53595,6 +54198,17 @@ send(&quot;sleep&quot;)</script>
                 <command></command>
                 <packageName></packageName>
                 <regex>^vshow server(?:side)?$</regex>
+            </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>toggle dilation</name>
+                <script>if svo.me.skills.aeonics then
+	svo.defs.keepup(&quot;dilation&quot;, matches[2], nil, true)
+else
+	svo.echof(&quot;You don't seem to be versed in the skill of aeonics and as such can't dilate time.&quot;)
+end</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^dil(?: (\w+))?$</regex>
             </Alias>
         </AliasGroup>
     </AliasPackage>
@@ -54122,6 +54736,11 @@ function svo.gettreeableaffs()
   return table.n_intersection(svo.keystolist(svo.affl), svo.treecurables)
 end
 
+-- returns a list of affs that focus can get
+function svo.getfocusableaffs()
+  return table.n_intersection(svo.keystolist(svo.affl), svo.focuscurables)
+end
+
 -- starts the stopwatch which measures how long a balance was missing for
 function svo.startbalancewatch(balance)
   svo.watch[&quot;bal_&quot;..balance] = svo.watch[&quot;bal_&quot;..balance] or createStopWatch()
@@ -54303,7 +54922,7 @@ svo.restore.anyoneortwolimbs = {
     if svo.affl.mangledleftarm or svo.affl.mutilatedleftarm then mangledormultilated = mangledormultilated + 1 end
 
     local crippled = svo.countonlybrokenlimbs()
-    
+
     -- add mangled/mutilated limbs to count, so we don't exceed it
     -- don't go off on mangled/mutilated limbs only as well
     local total = mangledormultilated + crippled
@@ -54326,7 +54945,7 @@ svo.restore.anyoneortwolimbsprone = {
     if svo.affl.mangledleftarm or svo.affl.mutilatedleftarm then mangledormultilated = mangledormultilated + 1 end
 
     local crippled = svo.countonlybrokenlimbs()
-    
+
     -- add mangled/mutilated limbs to count, so we don't exceed it
     -- don't go off on mangled/mutilated limbs only as well
     local total = mangledormultilated + crippled
@@ -54356,7 +54975,6 @@ svo.restore.stainlock = {
   end
 }
 
---[[
 -- restore if we have 3+ limbs damaged and at least one of them is curable with restore
 svo.restore.maybevivi = {
   desc = &quot;Use restore if you have 3+ limbs damaged and at least one of them is curable with restore&quot;,
@@ -54370,7 +54988,7 @@ svo.restore.maybevivi = {
     return svo.countbrokenlimbs() &gt;= 3
   end
 }
-]]</script>
+</script>
                     <eventHandlerList/>
                 </Script>
                 <Script isActive="yes" isFolder="no">
@@ -54616,8 +55234,11 @@ local aff_abbrev = {
   darkshade           = &quot;dark&quot;,
   deadening           = &quot;dea&quot;,
   deafaff             = &quot;deaf&quot;,
+  degenerate          = &quot;deg&quot;,
   dehydrated          = &quot;deh&quot;,
   dementia            = &quot;dem&quot;,
+  depression          = &quot;dep&quot;,
+  deteriorate         = &quot;det&quot;,
   disloyalty          = &quot;disl&quot;,
   disrupt             = &quot;disr&quot;,
   dissonance          = &quot;disso&quot;,
@@ -54632,6 +55253,7 @@ local aff_abbrev = {
   haemophilia         = &quot;haem&quot;,
   hallucinations      = &quot;hall&quot;,
   hamstring           = &quot;hms&quot;,
+  hatred              = &quot;htr&quot;,
   healthleech         = &quot;hthl&quot;,
   heartseed           = &quot;heart&quot;,
   hellsight           = &quot;hell&quot;,
@@ -54665,8 +55287,10 @@ local aff_abbrev = {
   numbedleftarm       = &quot;nbla&quot;,
   numbedrightarm      = &quot;nbra&quot;,
   pacifism            = &quot;pac&quot;,
+  paradox             = &quot;para&quot;,
   paralysis           = &quot;par&quot;,
   paranoia            = &quot;prn&quot;,
+  parasite            = &quot;prs&quot;,
   peace               = &quot;pea&quot;,
   phlegmatichumour    = &quot;phleH&quot;,
   phlogistication     = &quot;phlog&quot;,
@@ -54675,6 +55299,7 @@ local aff_abbrev = {
   recklessness        = &quot;reck&quot;,
   relapsing           = &quot;scy&quot;,
   retardation         = &quot;ret&quot;,
+  retribution         = &quot;reb&quot;,
   roped               = &quot;rop&quot;,
   sanguinehumour      = &quot;sanH&quot;,
   selarnia            = &quot;sel&quot;,
@@ -54682,6 +55307,7 @@ local aff_abbrev = {
   seriousconcussion   = &quot;h2&quot;,
   serioustrauma       = &quot;t2&quot;,
   severeburn          = &quot;2burn&quot;,
+  shadowmadness       = &quot;sham&quot;,
   shivering           = &quot;shiv&quot;,
   shyness             = &quot;shy&quot;,
   skullfractures      = &quot;sf&quot;,
@@ -54693,9 +55319,10 @@ local aff_abbrev = {
   stuttering          = &quot;stut&quot;,
   swellskin           = &quot;swsk&quot;,
   timeflux            = &quot;tfx&quot;,
+  timeloop            = &quot;tlp&quot;,
   torntendons         = &quot;tt&quot;,
   transfixed          = &quot;transf&quot;,
-  unconsciousness     = &quot;unconc&quot;, 
+  unconsciousness     = &quot;unconc&quot;,
   unknownany          = &quot;?&quot;,
   unknowncrippledarm  = &quot;uwna&quot;,
   unknowncrippledleg  = &quot;uwnl&quot;,
@@ -55063,6 +55690,7 @@ end</script>
                     <name>Check for updates</name>
                     <packageName></packageName>
                     <script>local downloadfolder = getMudletHomeDir()..&quot;/svo/downloads/&quot;
+local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
 
 -- this should get called at start and every hour after that
 function svo.checkforupdate(type)
@@ -55083,7 +55711,7 @@ function svo.checkforupdate(type)
     end
 
     svo.checkingupdates = true
-    downloadFile(svo.versionfile, &quot;http://svof.pathurs.com/current_version&quot;)
+    downloadFile(svo.versionfile, baseUrl .. &quot;current_version.txt&quot;)
 
     if type == &quot;checking&quot; then
       svo.echof(&quot;Checking for updates...&quot;)
@@ -55113,8 +55741,8 @@ end
 
 -- downloads the system &amp; updates the system version saved
 function svo.downloadnewsystem(newversion)
-  svo.downloadedsystem = downloadfolder..string.format(&quot;%s.Svof.current.zip&quot;, svo.forclass)
-  local downloadurl = [[http://svof.pathurs.com/]]..svo.forclass..[[.Svof.v]]..newversion..[[.zip]]
+  svo.downloadedsystem = downloadfolder..string.format(&quot;%s.Svof.current.zip&quot;, svo.me.class)
+  local downloadurl = baseUrl..svo.forclass..[[.Svof.v]]..newversion..[[.zip]]
 
   downloadFile(svo.downloadedsystem, downloadurl)
   svo.newdownloadedversion = newversion
@@ -55513,24 +56141,25 @@ end</script>
                 <script>--[[ start of a class management (tn class/tn classonly) + class-specifics tricks ]]
 
 svo.classes = {
-  alchemist   = {fighting = false, skills = {&quot;transmutation&quot;, &quot;physiology&quot;, &quot;alchemy&quot;}},
-  apostate    = {fighting = false, skills = {&quot;evileye&quot;, &quot;necromancy&quot;, &quot;apostasy&quot;}},
-  bard        = {fighting = false, skills = {&quot;voicecraft&quot;, &quot;swashbuckling&quot;, &quot;harmonics&quot;}},
-  blademaster = {fighting = false, skills = {&quot;twoarts&quot;, &quot;striking&quot;, &quot;shindo&quot;}},
-  dragon      = {fighting = false, skills = {&quot;dragoncraft&quot;}},
-  druid       = {fighting = false, skills = {&quot;groves&quot;, &quot;metamorphosis&quot;, &quot;concoctions&quot;}},
-  infernal    = {fighting = false, skills = {&quot;necromancy&quot;, &quot;chivalry&quot;, &quot;forging&quot;}},
-  jester      = {fighting = false, skills = {&quot;tarot&quot;, &quot;pranks&quot;, &quot;puppetry&quot;}},
-  magi        = {fighting = false, skills = {&quot;elementalism&quot;, &quot;crystalism&quot;, &quot;enchantment&quot;}},
-  monk        = {fighting = false, skills = {&quot;tekura&quot;, &quot;kaido&quot;, &quot;telepathy&quot;}},
-  occultist   = {fighting = false, skills = {&quot;occultism&quot;, &quot;tarot&quot;, &quot;domination&quot;}},
-  paladin     = {fighting = false, skills = {&quot;chivalry&quot;, &quot;devotion&quot;, &quot;forging&quot;}},
-  priest      = {fighting = false, skills = {&quot;spirituality&quot;, &quot;devotion&quot;, &quot;healing&quot;}},
-  runewarden  = {fighting = false, skills = {&quot;runelore&quot;, &quot;chivalry&quot;, &quot;forging&quot;}},
-  sentinel    = {fighting = false, skills = {&quot;metamorphosis&quot;, &quot;woodlore&quot;, &quot;concoctions&quot;}},
-  serpent     = {fighting = false, skills = {&quot;subterfuge&quot;, &quot;venom&quot;, &quot;hypnosis&quot;}},
-  shaman      = {fighting = false, skills = {&quot;runelore&quot;, &quot;curses&quot;, &quot;vodun&quot;}},
-  sylvan      = {fighting = false, skills = {&quot;elementalism&quot;, &quot;groves&quot;, &quot;concoctions&quot;}},
+  alchemist    = {fighting = false, skills = {&quot;transmutation&quot;, &quot;physiology&quot;, &quot;alchemy&quot;}},
+  apostate     = {fighting = false, skills = {&quot;evileye&quot;, &quot;necromancy&quot;, &quot;apostasy&quot;}},
+  bard         = {fighting = false, skills = {&quot;voicecraft&quot;, &quot;swashbuckling&quot;, &quot;harmonics&quot;}},
+  blademaster  = {fighting = false, skills = {&quot;twoarts&quot;, &quot;striking&quot;, &quot;shindo&quot;}},
+  depthswalker = {fighting = false, skills = {&quot;shadowmancy&quot;, &quot;aeonics&quot;, &quot;terminus&quot;}},
+  dragon       = {fighting = false, skills = {&quot;dragoncraft&quot;}},
+  druid        = {fighting = false, skills = {&quot;groves&quot;, &quot;metamorphosis&quot;, &quot;concoctions&quot;}},
+  infernal     = {fighting = false, skills = {&quot;necromancy&quot;, &quot;chivalry&quot;, &quot;forging&quot;}},
+  jester       = {fighting = false, skills = {&quot;tarot&quot;, &quot;pranks&quot;, &quot;puppetry&quot;}},
+  magi         = {fighting = false, skills = {&quot;elementalism&quot;, &quot;crystalism&quot;, &quot;enchantment&quot;}},
+  monk         = {fighting = false, skills = {&quot;tekura&quot;, &quot;kaido&quot;, &quot;telepathy&quot;}},
+  occultist    = {fighting = false, skills = {&quot;occultism&quot;, &quot;tarot&quot;, &quot;domination&quot;}},
+  paladin      = {fighting = false, skills = {&quot;chivalry&quot;, &quot;devotion&quot;, &quot;forging&quot;}},
+  priest       = {fighting = false, skills = {&quot;spirituality&quot;, &quot;devotion&quot;, &quot;healing&quot;}},
+  runewarden   = {fighting = false, skills = {&quot;runelore&quot;, &quot;chivalry&quot;, &quot;forging&quot;}},
+  sentinel     = {fighting = false, skills = {&quot;metamorphosis&quot;, &quot;woodlore&quot;, &quot;concoctions&quot;}},
+  serpent      = {fighting = false, skills = {&quot;subterfuge&quot;, &quot;venom&quot;, &quot;hypnosis&quot;}},
+  shaman       = {fighting = false, skills = {&quot;spiritlore&quot;, &quot;curses&quot;, &quot;vodun&quot;}},
+  sylvan       = {fighting = false, skills = {&quot;elementalism&quot;, &quot;groves&quot;, &quot;concoctions&quot;}},
 }
 -- keeps track of what skills are actually enabled
 svo.enabledskills, svo.enabledclasses = svo.enabledskills or {}, svo.enabledclasses or {}

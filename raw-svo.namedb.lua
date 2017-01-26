@@ -548,14 +548,14 @@ function ndb.updatebyhonors()
           setUnderline(true)
           echoLink("ndb honorsnew", 'ndb.manualcheck = true; ndb.updatebyhonors()', 'Click to do ndb honorsnew', true)
           setUnderline(false)
-          echo("' to check them.\n")
+          svo.echof("' to check them.\n")
         else
           svo.echofn("Got %d new names, use '", table.size(ndb.honorslist))
           setFgColor(unpack(svo.getDefaultColorNums))
           setUnderline(true)
           echoLink("ndb honorsnew", 'ndb.manualcheck = true; ndb.updatebyhonors()', 'Click to do ndb honorsnew', true)
           setUnderline(false)
-          echo("' to check them.\n")
+          svo.echof("' to check them.\n")
         end
       end
 

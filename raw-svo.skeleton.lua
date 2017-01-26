@@ -81,6 +81,9 @@ bals = bals or {
 #if skills.physiology then
   humour = true, homunculus = true,
 #end
+#if skills.terminus then
+  word = true,
+#end
 }
 -- new incoming balances that are tracked between the lines and the prompt
 newbals = {}
@@ -1710,6 +1713,27 @@ lostbal_healing = function()
 end
 #end
 
+#if skills.terminus then
+lostbal_word = function()
+  if not bals.word then return end
+
+  bals.word = false
+  startbalancewatch("word")
+  sk.wordtick = sk.wordtick + 1
+  local oldwordtick = sk.wordtick
+
+  tempTimer(17+getping(), function ()
+    if not bals.word and sk.wordtick == oldwordtick then
+      bals.word = true
+      make_gnomes_work()
+      raiseEvent("svo got balance", "word")
+    end
+  end)
+
+  raiseEvent("svo lost balance", "word")
+end
+#end
+
 function sk.doingstuff_inslowmode()
   local result
   for balance,actions in pairs(bals_in_use) do
@@ -1860,7 +1884,9 @@ function sk.clearmorphs()
     {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
 #end
      do
-    defences.lost(morph)
+    if defc[morph] then
+      defences.lost(morph)
+    end
   end
 end
 

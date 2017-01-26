@@ -2645,7 +2645,7 @@ send(matches[2]..&quot; enemies&quot;, false)</script>
 
 -- load help data in
 if not ndb.help then
-  local path = getMudletHomeDir()..&quot;/&quot;..class..&quot; svo&quot;
+  local path = getMudletHomeDir()..&quot;/&quot;..class..&quot; svo/ndb-help.lua&quot;
   if not lfs.attributes(path) then
   -- not found? Lets try the dev version
     local svo_location = getMudletHomeDir() .. _sep .. &quot;svo_location&quot;

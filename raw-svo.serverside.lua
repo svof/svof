@@ -483,7 +483,11 @@ signals.sync:connect(function ()
 end)
 
 function sk.resetservercuringpriorities()
-    sk.priochangecache = { special = {} }
+    sk.priochangecache = {
+      special = {
+        focustoggle = conf.focus
+      }
+    }
     -- sync everything
     sk.priosbeforechange = sk.getblankbeforestateprios()
     sendcuring("PRIORITY RESET")
@@ -740,7 +744,7 @@ signals["svo config changed"]:connect(function(config)
 end)
 
 
--- if we've got cadmus, and have one of of the me.cadmusaffs afflictions, then we should focus
+-- if we've got cadmus, and have one of the me.cadmusaffs afflictions, then we should focus
 function sk.canfocus()
   -- check if we haven't got cadmus
   if not affs.cadmus then return true end
@@ -753,7 +757,7 @@ function sk.canfocus()
     end
   end
 
-  return true
+  return false
 end
 
 function sk.togglefocusserver()
