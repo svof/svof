@@ -89,6 +89,7 @@ end
 local affs        = {}
 local balanceless = {}
 local cp          = {}
+local defences    = {}
 local lifevision  = {}
 local signals     = {}
 local sps         = {}
@@ -269,6 +270,45 @@ signals.gmcpcharvitals:connect(function()
     stats.battlerage = 0
   end
 end)
+#if skills.groves then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+      if sunlight then
+      local sunlight = val:match("^Sunlight: (%d+)$")
+        stats.sunlight = tonumber(sunlight)
+        break
+      end
+    end
+  end
+  if not stats.sunlight then
+    stats.sunlight = 0
+  end
+end)
+#end
+#if skills.metamorphosis then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local morph = val:match("^Morph: (%w+)$")
+      if morph then
+        morph = morph:lower()
+        me.morph = morph
+        if not defc[morph] then
+          sk.clearmorphs()
+          if morph ~= "none" then
+            defences.got(morph)
+          end
+        end
+        break
+      end
+    end
+  end
+  if not me.morph then
+    me.morph = ""
+  end
+end)
+#end
 signals.gmcpiretimelist = luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
   me.gametime = deepcopy(gmcp.IRE.Time.List)
@@ -950,7 +990,6 @@ disableTrigger("Age tracking")
 
 local prompt_stats
 
-local defences = {}
 local defs_data
 local oldsend
 local defupfinish, process_defs

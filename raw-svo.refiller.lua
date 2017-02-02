@@ -254,7 +254,7 @@ local function outr(what, amount)
     return
   end
 
-  if amount == 1 then send("outr "..what, rf_debug)
+  if amount == 1 then sendc("outr "..what, rf_debug)
   else sendc("outr "..amount.." "..what, rf_debug) end
 end
 
@@ -296,11 +296,10 @@ function rf_boilpot(pot)
 
   rf_wait_to_boil = tempTimer(getNetworkLatency()+1, function ()
     if not svo.defc.selfishness then
-      sendc("drop "..pot, rf_debug)
       sendc("boil "..pot.." for "..tostring(rf_refilling.currentorder), rf_debug)
     else
       sendc("generosity", rf_debug)
-      rf_temptrigger = tempExactMatchTrigger("You have recovered equilibrium.", "killTrigger(svo.rf_temptrigger); send('drop "..pot.."', svo.rf_debug); send('boil "..pot.." for "..tostring(rf_refilling.currentorder).."', svo.rf_debug)")
+      rf_temptrigger = tempExactMatchTrigger("You have recovered equilibrium.", "killTrigger(svo.rf_temptrigger); svo.sendc('boil "..pot.." for "..tostring(rf_refilling.currentorder).."', svo.rf_debug)")
     end
   end)
 end
@@ -309,8 +308,6 @@ function rf_magichappened()
   if not rf_refilling then return end
 
   svo.doadd(function()
-    sendc("take "..conf.potid, rf_debug)
-
     if rf_refilling.currentorderdata then
       for i = 1, rf_refilling.currentorderdata.arty do
         rf_fillarty()
