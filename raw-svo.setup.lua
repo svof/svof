@@ -89,6 +89,7 @@ end
 local affs        = {}
 local balanceless = {}
 local cp          = {}
+local defences    = {}
 local lifevision  = {}
 local signals     = {}
 local sps         = {}
@@ -989,7 +990,6 @@ disableTrigger("Age tracking")
 
 local prompt_stats
 
-local defences = {}
 local defs_data
 local oldsend
 local defupfinish, process_defs
