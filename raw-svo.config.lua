@@ -1561,6 +1561,65 @@ config_dict = pl.OrderedMap {
       end
     end
   }},
+#conf_name = "autowrithe"
+  {$(conf_name) = {
+    type = "string",
+    check = function (what)
+      if contains({"black", "white", "off", "on"}, what:sub(1,5):lower()) then sk.oldautowrithe = conf.autowrithe return true end
+    end,
+    onset = function ()
+      conf.autowrithe = string.lower(conf.autowrithe):sub(1,5)
+
+      if conf.autowrithe == "off" then
+        ignore.hoisted = true
+        conf.autowrithe = sk.oldautowrithe; sk.oldautowrithe = nil
+        echof("Disabled autowrithe completely (ie, will ignore curing hoisted aff).")
+      elseif conf.autowrithe == "on" then
+        ignore.hoisted = nil
+        conf.autowrithe = sk.oldautowrithe; sk.oldautowrithe = nil
+        echof("Enabled autowrithe (won't ignore curing hoisted anymore) - right now it's in %slist mode.", conf.autowrithe)
+      elseif conf.autowrithe == "white" then
+        local c = table.size(me.hoistlist)
+        echof("Autowrithe has been set to whitelist mode - that means we will be automatically writhing against everybody, except those on the hoist list (%d %s).", c, (c == 1 and "person" or "people"))
+      elseif conf.autowrithe == "black" then
+        local c = table.size(me.hoistlist)
+        echof("Autowrithe has been set to blacklist mode - that means we will only be writhing against people on the hoist list (%d %s).", c, (c == 1 and "person" or "people"))
+      else
+        echof("... how did you manage to set the option to '%s'?", tostring(conf.autowrithe))
+      end
+    end,
+    installstart = function ()
+      conf.autowrithe = "white" end
+  }},
+#conf_name = "hoistlist"
+  {$(conf_name) = {
+    type = "string",
+    check = function(what)
+      if what:find("^%w+$") then return true end
+    end,
+    onset = function ()
+      local name = string.title(conf.hoistlist)
+      if not me.hoistlist[name] then me.hoistlist[name] = true else me.hoistlist[name] = nil end
+
+      if me.hoistlist[name] then
+        if conf.autoreject == "black" then
+          echof("Added %s to the hoist list (so we will autowrithe against them).", name)
+        elseif conf.autoreject == "white" then
+          echof("Added %s to the hoist list (so we won't autowrithe against them).", name)
+        else
+          echof("Added %s to the hoist list.", name)
+        end
+      else
+        if conf.autoreject == "black" then
+          echof("Removed %s from the hoist list (so we will not autowrithe against them now).", name)
+        elseif conf.autoreject == "white" then
+          echof("Removed %s from the hoist list (so we will autowrithe against them).", name)
+        else
+          echof("Removed %s from the hoist list.", name)
+        end
+      end
+    end
+  }},
 #conf_name = "echotype"
   {$(conf_name) = {
     type = "string",

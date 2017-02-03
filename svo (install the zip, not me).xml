@@ -40363,7 +40363,7 @@ end</script>
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Hoist</name>
-                    <script>svo.valid.simplehoisted()
+                    <script>svo.valid.simplehoisted(matches[2])
 
 svo.startedfighting(&quot;dragon&quot;, matches[2])</script>
                     <triggerType>0</triggerType>
@@ -53691,6 +53691,20 @@ end</script>
                 <command></command>
                 <packageName></packageName>
                 <regex>^vshow lustlist$</regex>
+            </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>(vshow hoistlist) Show who's on the hoistlist</name>
+                <script>local l = (next(svo.me.hoistlist) and svo.oneconcat(svo.me.hoistlist) or &quot;(none)&quot;)
+if svo.conf.autowrithe == &quot;white&quot; then
+  svo.echof(&quot;People we're not writhing against: %s&quot;, l)
+elseif svo.conf.autowrithe == &quot;black&quot; then
+  svo.echof(&quot;The only people we're writhing against: %s&quot;, l)
+else
+  svo.echof(&quot;People on the hoistlist: %s&quot;, l)
+end</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^vshow hoistlist$</regex>
             </Alias>
             <Alias isActive="yes" isFolder="no">
                 <name>(vsave) Save system settings manually</name>

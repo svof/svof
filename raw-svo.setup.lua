@@ -769,6 +769,7 @@ me.doqueue = {repeating = false}
 me.dofreequeue = {}
 me.dopaused = false
 me.lustlist = {} -- list if names not to add lovers aff for
+me.hoistlist = {} -- list if names not to add hoisted aff for
 me.lasthitlimb = "head" -- last hit limb
 me.disableddragonhealfunc = {}
 me.disabledrestorefunc    = {}
@@ -1286,6 +1287,19 @@ signals.systemstart:connect(function ()
 end)
 
 signals.saveconfig:connect(function () table.save(getMudletHomeDir() .. "/svo/config/lustlist", me.lustlist) end)
+
+-- load the hoist list
+signals.systemstart:connect(function ()
+  local conf_path = getMudletHomeDir() .. "/svo/config/hoistlist"
+
+  if lfs.attributes(conf_path) then
+    local t = {}
+    table.load(conf_path, t)
+    update(me.hoistlist, t)
+  end
+end)
+
+signals.saveconfig:connect(function () table.save(getMudletHomeDir() .. "/svo/config/hoistlist", me.hoistlist) end)
 
 -- load the ignore list
 signals.systemstart:connect(function ()
