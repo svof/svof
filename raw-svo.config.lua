@@ -1602,17 +1602,17 @@ config_dict = pl.OrderedMap {
       if not me.hoistlist[name] then me.hoistlist[name] = true else me.hoistlist[name] = nil end
 
       if me.hoistlist[name] then
-        if conf.autoreject == "black" then
+        if conf.autowrithe == "black" then
           echof("Added %s to the hoist list (so we will autowrithe against them).", name)
-        elseif conf.autoreject == "white" then
+        elseif conf.autowrithe == "white" then
           echof("Added %s to the hoist list (so we won't autowrithe against them).", name)
         else
           echof("Added %s to the hoist list.", name)
         end
       else
-        if conf.autoreject == "black" then
+        if conf.autowrithe == "black" then
           echof("Removed %s from the hoist list (so we will not autowrithe against them now).", name)
-        elseif conf.autoreject == "white" then
+        elseif conf.autowrithe == "white" then
           echof("Removed %s from the hoist list (so we will autowrithe against them).", name)
         else
           echof("Removed %s from the hoist list.", name)
@@ -1978,6 +1978,10 @@ config_dict = pl.OrderedMap {
 
 if not conf.releasechannel then
   conf.releasechannel = "stable"
+end
+
+if not conf.autowrithe then
+  conf.autowrithe = "white"
 end
 
 do
