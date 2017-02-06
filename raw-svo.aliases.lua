@@ -584,10 +584,26 @@ echo"\n"
     echofn("People we're not autorejecting: %s ", (c ~= 0 and c or 'none'))
   end
 
-  setFgColor(unpack(getDefaultColorNums))
-  setUnderline(true)
-  echoLink("(view)", 'echo"\\n" expandAlias"vshow lustlist"', 'Click here view the names', true)
-  echo"\n"
+  if conf.autoreject ~= "off" then
+    setFgColor(unpack(getDefaultColorNums))
+    setUnderline(true)
+    echoLink("(view)", 'echo"\\n" expandAlias"vshow lustlist"', 'Click here view the names', true)
+    echo"\n"
+  end
+
+  c = table.size(me.hoistlist)
+  if conf.autowrithe == "black" then
+    echofn("People we're writhing against:  %s ", (c ~= 0 and c or 'none'))
+  elseif conf.autowrithe == "white" then
+    echofn("People we're not writhing against: %s ", (c ~= 0 and c or 'none'))
+  end
+
+  if conf.autowrithe ~= "off" then
+    setFgColor(unpack(getDefaultColorNums))
+    setUnderline(true)
+    echoLink("(view)", 'echo"\\n" expandAlias"vshow hoistlist"', 'Click here view the names', true)
+    echo"\n"
+  end
 
   if next(me.unparryables) then
     echofn("Things we can't use for parrying: %s ", oneconcat(me.unparryables))
