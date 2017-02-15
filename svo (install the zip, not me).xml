@@ -35957,8 +35957,6 @@ svo.valid.simpleprone()</script>
                             <colorTriggerBgColor>#000000</colorTriggerBgColor>
                             <regexCodeList>
                                 <string>Grasping his weapon tightly in both hands, Bartok Stonefist, Leader of the Blackfire clan swings the pickaxe at your knees, sweeping you off your feet.</string>
-                                <string>Lashing out with her pickaxe Grelda Stonefist smashes her weapon into your kneecap.</string>
-                                <string>Lashing out with her pickaxe Breana Ironhammer smashes her weapon into your kneecap.</string>
                                 <string>Grasping his weapon tightly in both hands, Glath Ironhammer, Leader of the Bloodstone clan swings the pickaxe at your knees, sweeping you off your feet.</string>
                             </regexCodeList>
                             <regexCodePropertyList>
@@ -53848,7 +53846,15 @@ svo.toggle_ignore(matches[2])</script>
             </Alias>
             <Alias isActive="yes" isFolder="no">
                 <name>Remember vault/mount</name>
-                <script>if matches[3] == &quot;ship&quot; then send(cmd, false) end
+                <script>if matches[3] == &quot;ship&quot; then
+  send(command, false)
+  return
+end
+
+if string.starts(matches[3]:lower(), &quot;figurehead&quot;) then
+  send(command, false)
+  return
+end
 
 if svo.conf.ridingskill ~= matches[2] then
   svo.echof(&quot;Remembered your riding skill at '%s'&quot;, matches[2])
@@ -54969,7 +54975,6 @@ svo.restore.stainlock = {
   end
 }
 
---[[
 -- restore if we have 3+ limbs damaged and at least one of them is curable with restore
 svo.restore.maybevivi = {
   desc = &quot;Use restore if you have 3+ limbs damaged and at least one of them is curable with restore&quot;,
@@ -54983,7 +54988,7 @@ svo.restore.maybevivi = {
     return svo.countbrokenlimbs() &gt;= 3
   end
 }
-]]</script>
+</script>
                     <eventHandlerList/>
                 </Script>
                 <Script isActive="yes" isFolder="no">

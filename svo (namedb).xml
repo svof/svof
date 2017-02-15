@@ -3278,7 +3278,7 @@ function ndb.downloaded_file(_, filename)
 end
 
 function ndb.getinfo(person)
-  downloadFile(getMudletHomeDir()..&quot;/&quot;..person..&quot;-namedb.html&quot;, &quot;http://www.ironrealms.com/game/honors/Achaea/&quot;..
+  downloadFile(getMudletHomeDir()..&quot;/&quot;..person..&quot;-namedb.html&quot;, &quot;http://oldsite.ironrealms.com/game/honors/Achaea/&quot;..
 person)
 end</script>
                     <eventHandlerList>
