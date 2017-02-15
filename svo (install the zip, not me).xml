@@ -42041,66 +42041,6 @@ svo.givewarning_multi({
                 <regexCodeList/>
                 <regexCodePropertyList/>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Gaze</name>
-                    <script></script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>1</conditonLineDelta>
-                    <mStayOpen>1</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>^\w+ gazes at you with the eyes of the basilisk\.$</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                        <name>Confusion</name>
-                        <script>svo.valid.simpleconfusion()</script>
-                        <triggerType>0</triggerType>
-                        <conditonLineDelta>0</conditonLineDelta>
-                        <mStayOpen>0</mStayOpen>
-                        <mCommand></mCommand>
-                        <packageName></packageName>
-                        <mFgColor>#ff0000</mFgColor>
-                        <mBgColor>#ffff00</mBgColor>
-                        <mSoundFile></mSoundFile>
-                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                        <regexCodeList>
-                            <string>Your mind feels suddenly confused and jumbled.</string>
-                        </regexCodeList>
-                        <regexCodePropertyList>
-                            <integer>3</integer>
-                        </regexCodePropertyList>
-                    </Trigger>
-                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                        <name>Paralysis</name>
-                        <script>svo.valid.proper_paralysis()</script>
-                        <triggerType>0</triggerType>
-                        <conditonLineDelta>0</conditonLineDelta>
-                        <mStayOpen>0</mStayOpen>
-                        <mCommand></mCommand>
-                        <packageName></packageName>
-                        <mFgColor>#ff0000</mFgColor>
-                        <mBgColor>#ffff00</mBgColor>
-                        <mSoundFile></mSoundFile>
-                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                        <regexCodeList>
-                            <string>Your body stiffens rapidly with paralysis.</string>
-                        </regexCodeList>
-                        <regexCodePropertyList>
-                            <integer>3</integer>
-                        </regexCodePropertyList>
-                    </Trigger>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Ablaze</name>
                     <script>svo.valid.proper_ablaze()</script>
                     <triggerType>0</triggerType>
@@ -42164,26 +42104,6 @@ svo.givewarning_multi({
                         <integer>1</integer>
                     </regexCodePropertyList>
                 </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Chill</name>
-                    <script>svo.valid.proper_chill()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>^\w+ opens (?:his|her) maw and exhales a blast of frigidly cold air on you\.$</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Def strip</name>
                     <script>svo.valid.defstrip(multimatches[2][2])</script>
@@ -42230,31 +42150,9 @@ svo.valid.simpleprone()</script>
                     </regexCodePropertyList>
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Glare</name>
-                    <script>svo.valid.meta_glare()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>1</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>^\w+ glares at you and your brain suddenly feels slower\.$</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Trumpet</name>
                     <script>-- only stuns when proned
-if svo.affl.prone then svo.valid.proper_stun() end
-svo.valid.simpleprone()
-svo.valid.simpledisrupt()</script>
+if svo.affl.prone then svo.valid.proper_stun() end</script>
                     <triggerType>0</triggerType>
                     <conditonLineDelta>0</conditonLineDelta>
                     <mStayOpen>0</mStayOpen>
@@ -42463,6 +42361,28 @@ svo.startedfighting(&quot;druid&quot;, multimatches[2][2])</script>
                     </regexCodeList>
                     <regexCodePropertyList>
                         <integer>2</integer>
+                        <integer>1</integer>
+                    </regexCodePropertyList>
+                </Trigger>
+                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <name>Ambush</name>
+                    <script>svo.valid.proper_stun(2)
+
+svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
+                    <triggerType>0</triggerType>
+                    <conditonLineDelta>0</conditonLineDelta>
+                    <mStayOpen>0</mStayOpen>
+                    <mCommand></mCommand>
+                    <packageName></packageName>
+                    <mFgColor>#ff0000</mFgColor>
+                    <mBgColor>#ffff00</mBgColor>
+                    <mSoundFile></mSoundFile>
+                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                    <regexCodeList>
+                        <string>^(\w+) pounces on you from an unseen hiding place, knocking you to the ground and tearing at you with teeth and claws\.$</string>
+                    </regexCodeList>
+                    <regexCodePropertyList>
                         <integer>1</integer>
                     </regexCodePropertyList>
                 </Trigger>
@@ -43927,7 +43847,7 @@ svo.givewarning({
                 <regexCodeList/>
                 <regexCodePropertyList/>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Thrust</name>
+                    <name>Lines for class tracking</name>
                     <script>svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                     <triggerType>0</triggerType>
                     <conditonLineDelta>0</conditonLineDelta>
@@ -43943,84 +43863,36 @@ svo.givewarning({
                         <string>^(\w+) deftly thrusts .+? into you</string>
                         <string>^(\w+) thrusts .+? towards you\.$</string>
                         <string>^(\w+) takes a step forward, bringing .+? in for a second quick jab\.$</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>1</integer>
-                        <integer>1</integer>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Ensnare</name>
-                    <script>svo.valid.proper_transfixed()
-
-svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
                         <string>^(\w+) flourishes .+? in front of your eyes, mesmerising you\.$</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Can't ensnare</name>
-                    <script>svo.startedfighting(&quot;sentinel&quot;, matches[2])
-
-svo.defs.lost_blind()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
                         <string>^(\w+) expertly flourishes .+? in front of your face\.$</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Lacerate</name>
-                    <script>svo.valid.skirmish_lacerate()
-
-svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
+                        <string>^Your world becomes nothing but stars as the haft of .+? slams into the side of your head, courtesy of (\w+)\.$</string>
+                        <string>^(\w+) quickly trusses you up\.$</string>
+                        <string>^Agony radiates out from the point of impact as (\w+) brings the haft of .+? down upon your head with crushing force\.$</string>
+                        <string>^(\w+) savagely gouges into you with .+?\.$</string>
+                        <string>^(\w+) locks (?:her|his) unnatural gaze to yours, and a terrible pressure begins to build behind your eyes\.$</string>
+                        <string>^(\w+) lays open your flesh with an expert lateral slice with .+?\.$</string>
+                        <string>^Terrible pain radiates from the weapon impaling you as (\w+) gives it a violent twist\.$</string>
                         <string>^(\w+) viciously lacerates you with .+?\.$</string>
                     </regexCodeList>
                     <regexCodePropertyList>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                        <integer>1</integer>
+                        <integer>1</integer>
                         <integer>1</integer>
                     </regexCodePropertyList>
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Targetted lacerate</name>
-                    <script>svo.valid.skirmish_lacerate()
-
-svo.startedfighting(&quot;sentinel&quot;, matches[2])
+                    <script>svo.startedfighting(&quot;sentinel&quot;, matches[2])
 
 svo.valid.limb_hit(matches[3], &quot;skirmish lacerate&quot;)</script>
                     <triggerType>0</triggerType>
@@ -44062,83 +43934,11 @@ svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                         <integer>1</integer>
                     </regexCodePropertyList>
                 </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Rattle</name>
-                    <script>svo.valid.simpleunconsciousness()
-
-svo.startedfighting(&quot;sentinel&quot;, multimatches[2][2])</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>1</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>Your world becomes nothing but stars as the haft of</string>
-                        <string>^Your world becomes nothing but stars as the haft of .+? slams into the side of your head, courtesy of (\w+)\.$</string>
-                        <string>Your legs collapse from under you and consciousness leaves you as you pass out.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>2</integer>
-                        <integer>1</integer>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Truss</name>
-                    <script>svo.valid.simplebound()
-
-svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>^(\w+) quickly trusses you up\.$</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Skullbash</name>
-                    <script>svo.startedfighting(&quot;sentinel&quot;, multimatches[2][2])</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>Agony radiates out from the point of impact as</string>
-                        <string>^Agony radiates out from the point of impact as (\w+) brings the haft of .+? down upon your head with crushing force\.$</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>2</integer>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Gouge</name>
                     <script>svo.startedfighting(&quot;sentinel&quot;, matches[2])
 
-if matches[3] then svo.valid.limb_hit(matches[3], &quot;skirmish gouge&quot;) end
-
-svo.valid.simplebleeding(50)</script>
+svo.valid.limb_hit(matches[3], &quot;skirmish gouge&quot;)</script>
                     <triggerType>0</triggerType>
                     <conditonLineDelta>0</conditonLineDelta>
                     <mStayOpen>2</mStayOpen>
@@ -44150,33 +43950,11 @@ svo.valid.simplebleeding(50)</script>
                     <colorTriggerFgColor>#000000</colorTriggerFgColor>
                     <colorTriggerBgColor>#000000</colorTriggerBgColor>
                     <regexCodeList>
-                        <string>^(\w+) savagely gouges into you with .+?\.$</string>
                         <string>^(\w+) viciously gouges your (.+?) with .+?\.$</string>
                     </regexCodeList>
                     <regexCodePropertyList>
                         <integer>1</integer>
-                        <integer>1</integer>
                     </regexCodePropertyList>
-                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                        <name>Sensitivity</name>
-                        <script>svo.valid.skirmish_gouge()</script>
-                        <triggerType>0</triggerType>
-                        <conditonLineDelta>0</conditonLineDelta>
-                        <mStayOpen>0</mStayOpen>
-                        <mCommand></mCommand>
-                        <packageName></packageName>
-                        <mFgColor>#ff0000</mFgColor>
-                        <mBgColor>#ffff00</mBgColor>
-                        <mSoundFile></mSoundFile>
-                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                        <regexCodeList>
-                            <string>The blade of the weapon rakes sensitive lines of fire across your skin.</string>
-                        </regexCodeList>
-                        <regexCodePropertyList>
-                            <integer>3</integer>
-                        </regexCodePropertyList>
-                    </Trigger>
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Drag</name>
@@ -44203,32 +43981,10 @@ svo.startedfighting(&quot;sentinel&quot;, multimatches[2][2])</script>
                     </regexCodePropertyList>
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Wretch</name>
-                    <script>svo.startedfighting(&quot;sentinel&quot;, multimatches[2][2])</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>Terrible pain radiates from the weapon impaling you as</string>
-                        <string>^Terrible pain radiates from the weapon impaling you as (\w+) gives it a violent twist\.$</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>2</integer>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Doublestrike</name>
                     <script>svo.startedfighting(&quot;sentinel&quot;, matches[2])
 
-if matches[3] then svo.valid.limb_hit(matches[3], &quot;skirmish doublestrike&quot;) end</script>
+svo.valid.limb_hit(matches[3], &quot;skirmish doublestrike&quot;)</script>
                     <triggerType>0</triggerType>
                     <conditonLineDelta>0</conditonLineDelta>
                     <mStayOpen>3</mStayOpen>
@@ -44240,55 +43996,7 @@ if matches[3] then svo.valid.limb_hit(matches[3], &quot;skirmish doublestrike&qu
                     <colorTriggerFgColor>#000000</colorTriggerFgColor>
                     <colorTriggerBgColor>#000000</colorTriggerBgColor>
                     <regexCodeList>
-                        <string>^(\w+) lays open your flesh with an expert lateral slice with .+?\.$</string>
                         <string>^(\w+) draws .+? in an expert lateral slice across your (.+?)\.$</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>1</integer>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                    <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                        <name>Doublestrike afflict</name>
-                        <script>if not svo.affl.impatience then
-  svo.valid.simpleimpatience()
-else
-  svo.valid.simpleepilepsy()
-end
-
-svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
-                        <triggerType>0</triggerType>
-                        <conditonLineDelta>0</conditonLineDelta>
-                        <mStayOpen>0</mStayOpen>
-                        <mCommand></mCommand>
-                        <packageName></packageName>
-                        <mFgColor>#ff0000</mFgColor>
-                        <mBgColor>#ffff00</mBgColor>
-                        <mSoundFile></mSoundFile>
-                        <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                        <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                        <regexCodeList>
-                            <string>^Turning with the motion of (?:her|his) strike, (\w+) comes back around to slam the haft of (?:her|his) weapon into your temple\.$</string>
-                        </regexCodeList>
-                        <regexCodePropertyList>
-                            <integer>1</integer>
-                        </regexCodePropertyList>
-                    </Trigger>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Extirpate</name>
-                    <script>svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>^(\w+) locks (?:her|his) unnatural gaze to yours, and a terrible pressure begins to build behind your eyes\.$</string>
                     </regexCodeList>
                     <regexCodePropertyList>
                         <integer>1</integer>
@@ -48672,26 +48380,6 @@ end</script>
                 <regexCodeList/>
                 <regexCodePropertyList/>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Slice trap</name>
-                    <script>svo.valid.simplebleeding(250)</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>You spring a trap!! A slender rope catches you in the neck as you move, slicing open your neck.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Handaxe move</name>
                     <script>svo.defs.lost_mass()</script>
                     <triggerType>0</triggerType>
@@ -48734,35 +48422,8 @@ end</script>
                     </regexCodePropertyList>
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Tangle trap</name>
-                    <script>svo.valid.simpleroped()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>You spring a trap!! A loop of rope entwines around you, pulling you off your feet.</string>
-                        <string>You gasp and choke as your entanglement impedes your breathing.</string>
-                        <string>You spring a trap!! A loop of rope entwines around you, pulling you off your feet and looping around your neck.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
-                        <integer>3</integer>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Trip</name>
-                    <script>-- parrying the limb cancels the prone
-svo.valid.trip_prone()
-
-svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
+                    <script>svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                     <triggerType>0</triggerType>
                     <conditonLineDelta>0</conditonLineDelta>
                     <mStayOpen>0</mStayOpen>
@@ -48783,7 +48444,6 @@ svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Trip dismount</name>
                     <script>svo.defs.lost_riding()
-svo.valid.trip_prone()
 
 svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                     <triggerType>0</triggerType>
@@ -48798,49 +48458,6 @@ svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                     <colorTriggerBgColor>#000000</colorTriggerBgColor>
                     <regexCodeList>
                         <string>^(\w+) deftly hooks .+ behind your foot and sends you tumbling off .+ before driving the point of the weapon into your (?:right|left) leg\.$</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Butterfly</name>
-                    <script>svo.valid.simplestupidity()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>99</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>You are bedazzled by the sight of a huge gossamer butterfly fluttering wildly.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Pounce</name>
-                    <script>svo.valid.proper_stun(2)
-svo.valid.simpleprone()
-
-svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>^(\w+) pounces on you from an unseen hiding place, knocking you to the ground and tearing at you with teeth and claws\.$</string>
                     </regexCodeList>
                     <regexCodePropertyList>
                         <integer>1</integer>
@@ -48868,7 +48485,9 @@ svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>Limb damage</name>
-                    <script>svo.valid.limb_hit(matches[2], &quot;throwingaxe&quot;)</script>
+                    <script>svo.valid.limb_hit(matches[2], &quot;throwingaxe&quot;)
+
+svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                     <triggerType>0</triggerType>
                     <conditonLineDelta>0</conditonLineDelta>
                     <mStayOpen>0</mStayOpen>
@@ -48880,7 +48499,7 @@ svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                     <colorTriggerFgColor>#000000</colorTriggerFgColor>
                     <colorTriggerBgColor>#000000</colorTriggerBgColor>
                     <regexCodeList>
-                        <string>^\w+ cocks back (?:his|her) arm and throws a throwing axe at your (.+)\.$</string>
+                        <string>^(\w+) cocks back (?:his|her) arm and throws a throwing axe at your (.+)\.$</string>
                     </regexCodeList>
                     <regexCodePropertyList>
                         <integer>1</integer>
@@ -48908,9 +48527,7 @@ svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                 </Trigger>
                 <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                     <name>ThornSpray</name>
-                    <script>svo.valid.simplebleeding(250)
-
-svo.boxDisplay(matches[2].. &quot; thornspray&quot;, &quot;blue:grey&quot;)
+                    <script>svo.boxDisplay(matches[2].. &quot; thornspray&quot;, &quot;blue:grey&quot;)
 
 svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                     <triggerType>0</triggerType>
@@ -48928,167 +48545,6 @@ svo.startedfighting(&quot;sentinel&quot;, matches[2])</script>
                     </regexCodeList>
                     <regexCodePropertyList>
                         <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Raven sensitivity</name>
-                    <script>svo.valid.proper_sensitivity()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>An ebony raven dives at your face, pecking violently at your eyes.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Badger illness</name>
-                    <script>svo.valid.simplebleeding(50)
-svo.valid.simpleillness()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>A grumpy badger sinks his claws into your lower leg, carving deep gouges into the flesh.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Fox healthleech</name>
-                    <script>svo.valid.simplehealthleech()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>A cunning red fox leaps upon you, sinking its teeth into your exposed skin.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Butterfly transfix</name>
-                    <script>svo.valid.proper_transfix()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>A gossamer butterfly goes into a frenzy of motion in front of your face, mesmerising your gaze.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Butterfly dizziness</name>
-                    <script>svo.valid.simpledizziness()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>A gossamer butterfly goes into a frenzy of motion in front of your face, confounding your sense of balance.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Wolf hallucinations</name>
-                    <script>svo.valid.simplehallucinations()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>The chilling howl of the wolf fills you with an irrational madness.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Raven paranoia</name>
-                    <script>svo.valid.simpleparanoia()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>The raven darts in and out of your line of vision, making you uneasy.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Lemming confusion</name>
-                    <script>svo.valid.simpleconfusion()</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>The lemming races around you and between your legs, confusing you with its eratic movement.</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>3</integer>
                     </regexCodePropertyList>
                 </Trigger>
             </TriggerGroup>
