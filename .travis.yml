@@ -4,8 +4,8 @@ rvm:
 sudo: required
 install:
 - sudo apt-get update
-- sudo apt-get install lua5.1 luarocks p7zip-full python-sphinx python-pip
-- sudo pip install sphinx_rtd_theme
+- sudo apt-get install lua5.1 luarocks p7zip-full python-pip
+- sudo pip install sphinx sphinx_rtd_theme
 - sudo luarocks install penlight
 - gem install github_changelog_generator
 script:
