@@ -1000,24 +1000,11 @@ dict = {
 
         anorexia 50% time
         slickness 8+
+		
+		Previous information is old. Now gives between one and four afflictions from the following: lethargy, slickness, anorexia, weariness.
+		Afflictions not hidden by gmcp, so removed from the inundated function.
       ]]
       inundated = function()
-        addaff(dict.slickness)
-
-        if dict.phlegmatichumour.count >= 3 and math.random(1,2) == 1 then
-          addaff(dict.anorexia)
-        end
-
-        if dict.phlegmatichumour.count == 8 then
-          codepaste.addunknownany(4)
-        elseif dict.phlegmatichumour.count >= 6 then
-          codepaste.addunknownany(3)
-        elseif dict.phlegmatichumour.count >= 4 then
-          codepaste.addunknownany(2)
-        else
-          codepaste.addunknownany(1)
-        end
-
         removeaff("phlegmatichumour")
         dict.phlegmatichumour.count = 0
       end,
