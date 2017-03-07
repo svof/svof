@@ -93,8 +93,8 @@ defs_data = pl.OrderedMap {}
     def = "Your skin is toughened." })
   defs_data:set("chivalry defended", { nodef = true,
     def = "You are being defended by a stalwart ally." })
-  defs_data:set("pear", { nodef = true,
-    def = "You are surrounded by a pocket of air."})
+  defs_data:set("pear", { type = "general",
+	def = "You are surrounded by a pocket of air."})
   defs_data:set("resistance", { nodef = true,
     def = "You are resisting magical damage."})
 #if not skills.alchemy then

@@ -1124,11 +1124,9 @@ dict = {
       aspriority = 0,
       spriority = 0,
       def = true,
-      -- not handled by serverside
-      undeffable = true,
 
       isadvisable = function ()
-        return false
+        return not defc.pear and ((sys.deffing and defdefup[defs.mode].pear) or (conf.keepup and defkeepup[defs.mode].pear)) and not affs.anorexia and me.is_underwater
       end,
 
       eatcure = {"pear", "calcite"},
@@ -1138,6 +1136,7 @@ dict = {
       end,
 
       oncompleted = function ()
+		defences.got("waterbubble")
       end,
 
       empty = function()

@@ -430,6 +430,14 @@ end)
 do
   local oldnum, oldarea
   signals.gmcproominfo:connect(function (...)
+	if me then
+		if table.contains(gmcp.Room.Info.details, "underwater") then
+			me.is_underwater = true
+		else
+			me.is_underwater = false
+		end
+	end
+	
     if oldnum ~= gmcp.Room.Info.num then
       signals.newroom:emit(_G.gmcp.Room.Info.name)
       oldnum = gmcp.Room.Info.num
