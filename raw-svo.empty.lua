@@ -108,6 +108,8 @@ empty.tree = function ()
   else
     removeaff(empty.treecurables)
   end
+  dict.unknownmental.count = 0
+  dict.unknownany.count = 0
 end
 
 empty.dragonheal = empty.tree
