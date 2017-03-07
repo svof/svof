@@ -105,7 +105,7 @@ treecurables = empty.treecurables
 empty.tree = function ()
   if affs.madness then
     removeaff(empty.treecurableswithmadness)
-  elseif affs.hypothermia
+  elseif affs.hypothermia then
 	removeaff(empty.treecurableswithhypothermia)
   else
     removeaff(empty.treecurables)
