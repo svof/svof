@@ -992,17 +992,14 @@ dict = {
 
       -- gives various afflictions, amount of which depends on your humour level
       --[[
-        slickness always seems to happen
-        1-2: add 1 unknown
-        3-6: add 2 unknowns
-        7-9: add 3 unknowns
-        10: add 4 unknowns
+        1-2: 1 affliction
+        3-6: 2 afflictions
+        7-9: 3 afflictions
+        10: 4 afflictions
 
-        anorexia 50% time
-        slickness 8+
-		
-		Previous information is old. Now gives between one and four afflictions from the following: lethargy, slickness, anorexia, weariness.
-		Afflictions not hidden by gmcp, so removed from the inundated function.
+        Above information is roughly accurate.
+        Gives between one and four afflictions from the following: lethargy, slickness, anorexia, weariness.
+        Afflictions not hidden by gmcp, so removed from the inundated function.
       ]]
       inundated = function()
         removeaff("phlegmatichumour")
