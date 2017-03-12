@@ -54204,7 +54204,7 @@ end
 -- returns a list of affs that tree and other basic cures can get
 function svo.gettreeableaffs()
   local a = table.n_intersection(svo.keystolist(svo.affl), svo.treecurables)
-  if svo.affl.hypochondria then
+  if svo.affl.hypothermia then
     if svo.affl.frozen then
 		table.remove(a, table.index_of(a, &quot;frozen&quot;))
     end
