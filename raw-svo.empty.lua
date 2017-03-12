@@ -97,19 +97,26 @@ empty.focus = function()
 end
 
 -- you /can/ cure hamstring, dissonance with tree
-empty.treecurables = {"ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "claustrophobia", "clumsiness", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "generosity", "haemophilia", "hallucinations", "healthleech",  "hellsight", "hypersomnia", "hypochondria", "illness", "impatience", "inlove", "itching", "justice", "lethargy", "loneliness", "madness", "masochism","pacifism", "paralysis", "paranoia", "peace", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slickness", "stupidity", "stuttering", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voyria", "weakness", "hamstring", "shivering", "frozen", "skullfractures", "crackedribs", "wristfractures", "torntendons", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate"}
+empty.treecurables = {"ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "claustrophobia", "clumsiness", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "generosity", "haemophilia", "hallucinations", "healthleech",  "hellsight", "hypersomnia", "hypochondria", "illness", "impatience", "inlove", "itching", "justice", "lethargy", "loneliness", "madness", "masochism", "pacifism", "paralysis", "paranoia", "peace", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slickness", "stupidity", "stuttering", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voyria", "weakness", "hamstring", "shivering", "frozen", "skullfractures", "crackedribs", "wristfractures", "torntendons", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate"}
 empty.treecurableswithmadness = {"ablaze", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "claustrophobia", "clumsiness", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "generosity", "haemophilia", "healthleech",  "hellsight", "hypochondria", "inlove", "itching", "justice", "pacifism", "paralysis", "peace", "relapsing", "selarnia", "sensitivity", "shyness", "slickness", "stuttering", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voyria", "weakness", "hamstring", "shivering", "frozen", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate"}
 empty.treecurableswithhypothermia = {"ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "claustrophobia", "clumsiness", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "generosity", "haemophilia", "hallucinations", "healthleech",  "hellsight", "hypersomnia", "hypochondria", "illness", "impatience", "inlove", "itching", "justice", "lethargy", "loneliness", "madness", "masochism","pacifism", "paralysis", "paranoia", "peace", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slickness", "stupidity", "stuttering", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voyria", "weakness", "hamstring", "skullfractures", "crackedribs", "wristfractures", "torntendons", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate"}
+empty.treeblocks = {
+  madness = {"madness", "dementia", "stupidity", "confusion", "hypersomnia", "paranoia", "hallucinations", "impatience", "addiction", "agoraphobia", "inlove", "loneliness", "recklessness", "masochism"},
+  hypothermia = {"frozen", "shivering"},
+}
 -- expose publicly
 treecurables = empty.treecurables
 empty.tree = function ()
-  if affs.madness then
-    removeaff(empty.treecurableswithmadness)
-  elseif affs.hypothermia then
-	removeaff(empty.treecurableswithhypothermia)
-  else
-    removeaff(empty.treecurables)
+  local a = deepcopy(empty.treecurables)
+  for blockaff, blocked in pairs(empty.treeblocks) do
+    if affs[blockaff] then
+	  for index, remaff in ipairs(blocked) do
+	    table.remove(a, table.index_of(a, remaff))
+	  end
+	end
   end
+  debugf("Tree cured nothing, removing: "..table.concat(a, ", "))
+  removeaff(a)
 end
 
 empty.dragonheal = empty.tree
