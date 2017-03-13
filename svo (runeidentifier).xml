@@ -26,7 +26,7 @@ local t = {
   [&quot;that looks like a stick man&quot;] = {
     rune = &quot;inguz&quot;, effect = &quot;paralysis&quot;},
   [&quot;shaped like a butterfly&quot;] = {
-    rune = &quot;nairat&quot;, effect = &quot;transfix&quot;},
+    rune = &quot;nairat&quot;, effect = &quot;entangle&quot;},
   [&quot;like a closed eye&quot;] = {
     rune = &quot;fehu&quot;, effect = function()
       if not svo.fehu or svo.fehu == 3 then svo.fehu = 1 return &quot;strip insomnia&quot;
@@ -110,7 +110,7 @@ svo.prompttrigger(&quot;clear fehu&quot;, function() svo.fehu = nil end)</script
   [&quot;that looks like a stick man&quot;] = {
     rune = &quot;inguz&quot;, effect = &quot;paralysis&quot;},
   [&quot;shaped like a butterfly&quot;] = {
-    rune = &quot;nairat&quot;, effect = &quot;transfix&quot;},
+    rune = &quot;nairat&quot;, effect = &quot;entangle&quot;},
   [&quot;like a closed eye&quot;] = {
     rune = &quot;fehu&quot;, effect = function()
       if not svo.fehu or svo.fehu == 3 then svo.fehu = 1 return &quot;strip insomnia&quot;
@@ -152,6 +152,8 @@ svo.prompttrigger(&quot;clear fehu&quot;, function() svo.fehu = nil end)</script
     rune = &quot;eihwaz&quot;, effect = &quot;removes vibes&quot;},
   [&quot;resembling a volcano&quot;] = {
     rune = &quot;thurisaz&quot;, effect = &quot;hits a person&quot;},
+  [&quot;resembling a mountain range&quot;] = {
+    rune = &quot;othala&quot;, effect = &quot;damage over time&quot;},
 }
 
 for i = 1, #matches, 2 do
