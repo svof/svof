@@ -94,7 +94,7 @@ defs_data = pl.OrderedMap {}
   defs_data:set("chivalry defended", { nodef = true,
     def = "You are being defended by a stalwart ally." })
   defs_data:set("pear", { type = "general",
-	def = "You are surrounded by a pocket of air."})
+    def = "You are surrounded by a pocket of air."})
   defs_data:set("resistance", { nodef = true,
     def = "You are resisting magical damage."})
 #if not skills.alchemy then
@@ -2215,10 +2215,10 @@ defs_data = pl.OrderedMap {}
     def = "You are enhancing your precision through the power of Terminus."
   })
   defs_data:set("tsuura", { type = "terminus",
-	def = "You are enhancing your durability against denizens."
+    def = "You are enhancing your durability against denizens."
   })
   defs_data:set("ukhia", { type = "terminus",
-	defr = "^You are focus?sing on quelling your bleeding more efficiently\.$"
+    defr = "^You are focus?sing on quelling your bleeding more efficiently\.$"
   })
   defs_data:set("qamad", { type = "terminus",
     def = "You have a will of iron."
