@@ -1126,7 +1126,7 @@ dict = {
       def = true,
 
       isadvisable = function ()
-        return not defc.pear and ((sys.deffing and defdefup[defs.mode].pear) or (conf.keepup and defkeepup[defs.mode].pear)) and not affs.anorexia and me.is_underwater
+        return not defc.waterbubble and ((sys.deffing and defdefup[defs.mode].waterbubble) or (conf.keepup and defkeepup[defs.mode].waterbubble)) and not affs.anorexia and me.is_underwater
       end,
 
       eatcure = {"pear", "calcite"},
@@ -15461,7 +15461,7 @@ affinity = {
     acrobatics = "acrobatics",
     affinity = "affinity",
     aiming = false,
-    airpocket = "pear",
+    airpocket = "waterbubble",
     alertness = "alertness",
     antiforce = "gaiartha",
     arctar = "arctar",
