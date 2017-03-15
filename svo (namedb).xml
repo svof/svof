@@ -742,7 +742,7 @@ raiseEvent(&quot;NameDB got new data&quot;)</script>
                             </Trigger>
                         </Trigger>
                     </Trigger>
-                    <Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                    <Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                         <name>NameDB qw</name>
                         <script>local data = string.split(line, &quot;, &quot;)
 
@@ -801,9 +801,11 @@ end
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
                             <string>^(\w+),</string>
+                            <string>return not isPromt()</string>
                         </regexCodeList>
                         <regexCodePropertyList>
                             <integer>1</integer>
+                            <integer>4</integer>
                         </regexCodePropertyList>
                     </Trigger>
                     <Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -820,6 +822,7 @@ end
 
 -- ignore yourself gemmed offplane
 if multimatches[1][1] == &quot;None.&quot; then
+  disableTrigger(&quot;NameDB qw&quot;)
   ndb.checkingqwi = nil
   commit()
   return
