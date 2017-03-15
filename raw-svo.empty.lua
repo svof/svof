@@ -104,15 +104,31 @@ empty.treeblocks = {
 }
 -- expose publicly
 treecurables = empty.treecurables
-empty.tree = function ()
+
+gettreeableaffs = function(getall)
   local a = deepcopy(empty.treecurables)
   for blockaff, blocked in pairs(empty.treeblocks) do
     if affs[blockaff] then
-	  for index, remaff in ipairs(blocked) do
-	    table.remove(a, table.index_of(a, remaff))
-	  end
-	end
+      for index, remaff in ipairs(blocked) do
+        table.remove(a, table.index_of(a, remaff))
+      end
+    end
   end
+  if not getall then
+    local i = 1
+    while #a >= i do
+      if not affs[a[i]] then
+        table.remove(a, i)
+      else
+        i = i + 1
+      end
+    end
+  end
+  return a
+end
+
+empty.tree = function ()
+  local a = gettreeableaffs(true)
   debugf("Tree cured nothing, removing: "..table.concat(a, ", "))
   removeaff(a)
 end

@@ -54201,20 +54201,6 @@ function svo.doubleRunToSend(...)
   end
 end
 
--- returns a list of affs that tree and other basic cures can get
-function svo.gettreeableaffs()
-  local a = table.n_intersection(svo.keystolist(svo.affl), svo.treecurables)
-  if svo.affl.hypothermia then
-    if svo.affl.frozen then
-		table.remove(a, table.index_of(a, &quot;frozen&quot;))
-    end
-    if svo.affl.shivering then
-		table.remove(a, table.index_of(a, &quot;shivering&quot;))
-    end
-  end
-  return a
-end
-
 -- returns a list of affs that focus can get
 function svo.getfocusableaffs()
   return table.n_intersection(svo.keystolist(svo.affl), svo.focuscurables)
