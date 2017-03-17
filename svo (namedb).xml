@@ -801,7 +801,7 @@ end
                         <colorTriggerBgColor>#000000</colorTriggerBgColor>
                         <regexCodeList>
                             <string>^(\w+),</string>
-                            <string>return not isPromt()</string>
+                            <string>return not isPrompt()</string>
                         </regexCodeList>
                         <regexCodePropertyList>
                             <integer>1</integer>
