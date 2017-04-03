@@ -267,8 +267,6 @@ codepaste.smoke_elm_pipe = function()
 
   return (not (pipes.elm.id == 0) and
     (pipes.elm.lit or pipes.elm.arty) and
-    -- can't smoke elm with inquisition and hellsight together
-    not (affs.inquisition and affs.hellsight) and
     not (pipes.elm.puffs == 0))
 end
 
@@ -280,6 +278,8 @@ codepaste.smoke_valerian_pipe = function()
 
   return (not (pipes.valerian.id == 0) and
     (pipes.valerian.lit or pipes.valerian.arty) and
+    -- can't smoke valerian with inquisition and hellsight together
+    not (affs.inquisition and affs.hellsight) and
     not (pipes.valerian.puffs == 0))
 end
 
