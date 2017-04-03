@@ -255,6 +255,12 @@ Svof by default is in *vconfig autoreject whitelist* mode - which means that any
 
 You can also set it to the blacklist mode - where it will reject names *only* on the lustlist. You can do that with *vconfig autoreject blacklist*.
 
+Hoisting
+~~~~
+Svof by default is in *vconfig autowrithe whitelist* mode - which means that any name not on its whitelist will be writhed against when they hoist you. To add/remove names on the hoistlist, do *vconfig hoistlist <name>*.
+
+You can also set it to the blacklist mode - where it will *only* writhe against names on the hoistlist. You can do that with *vconfig autowrithe blacklist*.
+
 .. _on-affliction-locks:
 
 Affliction locks
@@ -440,6 +446,8 @@ Tag                  What it shows
 @gametarget          shows your current in-game target, as either set by attacking an NPC or using the in-game ``settarget`` alias. This will auto-update your in-game prompt to include the target name.
 @gametargethp        shows your current in-game targets health, as either set by attacking an NPC. This will auto-update your in-game prompt to include the target's health %.
 @weaponmastery       shows the weaponmastery's - either momentum or ferocity - amount
+@age                 shows the current additional age gained via aeonics
+@wordbal             adds a 'w' to the prompt, if you have word balance
 ==================== ===============
 
 Available colours are:
@@ -804,6 +812,9 @@ vconfig options
 
   autoreject
     can be 'whitelist', 'blacklist', 'on' of 'off'. Setting this to on or off enables or disables autoreject. Setting it to 'whitelist' means that names on the lust list (vshow lustlist) are the ones that will *not* be autorejected, while everyone else will be. Setting it to 'blacklist' means that nobody except names on the lustlist will be autorejected. To add/remove names to the lustlist, see the *lustlist* option.
+    
+  autowrithe
+    can be 'whitelist', 'blacklist', 'on' of 'off'. Setting this to on or off enables or disables autowrithe. Setting it to 'whitelist' means that names on the hoist list (vshow hoistlist) are the ones that will *not* be writhed against, while everyone else will be. Setting it to 'blacklist' means that nobody except names on the hoistlist will be writhed against. To add/remove names to the hoistlist, see the *hoistlist* option.
 
   autorewield
     enables automatic rewielding of whatever you were wielding if it gets forcefully unwielded.
@@ -983,6 +994,9 @@ vconfig options
 
   lustlist
     adds or removes a name to the lust list. See autoreject option on how will Svof deal with the names on it.
+    
+  hoistlist
+    adds or removes a name to the hoist list. See autowrithe option on how will Svof deal with the names on it.
 
   lyre
     this enables/disables Svof's Lyre mode.
@@ -1289,6 +1303,19 @@ For example, if you'd like to check if a name was on it, you could do: ::
    else
      svo.echof("Looks like %s is pretty innocent.", matches[2])
    end
+   
+Hoist list
+^^^^^^^^^^^^^^^^^^^^^^
+If you'd like to have access to the hoist list in your triggers, then it is available via *svo.me.hoistlist*. The hoistlist mode is available via *svo.conf.autowrithe* - which can be 'black' or 'white'.
+
+For example, if you'd like to check if a name was on it, you could do: ::
+
+   -- in a trigger, check if the captured name is on our hoist list
+   if svo.me.hoistlist[matches[2]] then
+     svo.echof("%s is on our list! murder them!", matches[2])
+   else
+     svo.echof("Looks like %s is pretty innocent.", matches[2])
+   end
 
 svo.me.wielded
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -1316,7 +1343,7 @@ Here are some examples on how to make use of it: ::
 
 Other things in svo.me
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-As you might've noticed, svo.me contains a handful of data available for your scripting. To see what's all available in it, you can do display(svo.me) in an alias - currently it also stores your name, class and skills, rift and inventory herb contents, wielded items, lustlist, pipe statuses, and the do & dofree queues.
+As you might've noticed, svo.me contains a handful of data available for your scripting. To see what's all available in it, you can do display(svo.me) in an alias - currently it also stores your name, class and skills, rift and inventory herb contents, wielded items, lustlist, hoistlist, pipe statuses, and the do & dofree queues.
 
 
 =================== ===================

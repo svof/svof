@@ -89,6 +89,7 @@ end
 local affs        = {}
 local balanceless = {}
 local cp          = {}
+local defences    = {}
 local lifevision  = {}
 local signals     = {}
 local sps         = {}
@@ -248,11 +249,66 @@ signals.gmcpcharitemsremove:connect(function()
 end)
 signals.gmcpcharvitals      = luanotify.signal.new()
 signals.gmcpcharvitals:connect(function()
-  if not gmcp.Char.Vitals.charstats then return end
-  for index, val in ipairs(gmcp.Char.Vitals.charstats) do
-    stats.battlerage = tonumber(val:match("^Rage: (%d+)$") or stats.battlerage or 0)
+  if gmcp.Char.Vitals.charstats then
+    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local rage = val:match("^Rage: (%d+)$")
+      if rage then
+        stats.battlerage = tonumber(rage)
+      else
+        local bleed = val:match("^Bleed: (%d+)$")
+        if bleed then
+          if bleed == "0" then
+            removeaff("bleeding")
+          else
+            dict.bleeding.aff.oncompleted(tonumber(bleed))
+          end
+        end
+      end
+    end
+  end
+  if not stats.battlerage then
+    stats.battlerage = 0
   end
 end)
+#if skills.groves then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+      if sunlight then
+      local sunlight = val:match("^Sunlight: (%d+)$")
+        stats.sunlight = tonumber(sunlight)
+        break
+      end
+    end
+  end
+  if not stats.sunlight then
+    stats.sunlight = 0
+  end
+end)
+#end
+#if skills.metamorphosis then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local morph = val:match("^Morph: (%w+)$")
+      if morph then
+        morph = morph:lower()
+        me.morph = morph
+        if not defc[morph] then
+          sk.clearmorphs()
+          if morph ~= "none" then
+            defences.got(morph)
+          end
+        end
+        break
+      end
+    end
+  end
+  if not me.morph then
+    me.morph = ""
+  end
+end)
+#end
 signals.gmcpiretimelist = luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
   me.gametime = deepcopy(gmcp.IRE.Time.List)
@@ -321,7 +377,7 @@ signals.gmcpchardefencesadd:connect(function()
   if conf.gmcpdefechoes then echof("Gained def "..thisdef) end
   if dict.sstosvod[thisdef] then
     if type(defs["got_"..dict.sstosvod[thisdef]]) == "function" then
-      defs["got_"..dict.sstosvod[thisdef]]()
+      defs["got_"..dict.sstosvod[thisdef]](true)
     else
       echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["got_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
     end
@@ -351,7 +407,7 @@ signals.gmcpchardefenceslist:connect(function()
       if predefs[dict.sstosvod[thisdef]] then
         predefs[dict.sstosvod[thisdef]] = false
       elseif type(defs["got_"..dict.sstosvod[thisdef]]) == "function" then
-        defs["got_"..dict.sstosvod[thisdef]]()
+        defs["got_"..dict.sstosvod[thisdef]](true)
       else
         echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["got_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
       end
@@ -713,6 +769,7 @@ me.doqueue = {repeating = false}
 me.dofreequeue = {}
 me.dopaused = false
 me.lustlist = {} -- list if names not to add lovers aff for
+me.hoistlist = {} -- list if names not to add hoisted aff for
 me.lasthitlimb = "head" -- last hit limb
 me.disableddragonhealfunc = {}
 me.disabledrestorefunc    = {}
@@ -782,6 +839,14 @@ me.cadmusaffs = me.cadmusaffs or {
 }
 
 me.inventory = {}
+
+me.getitem = function(name)
+  for _, thing in ipairs(me.inventory) do
+    if thing.name == name then
+      return thing
+    end
+  end
+end
 ---
 
 #if not skills.shindo then
@@ -912,9 +977,20 @@ disableTrigger("Humour balance")
 enableTrigger("Humour balance")
 #end
 
+#if skills.terminus then
+enableTrigger("Word balance")
+#else
+disableTrigger("Word balance")
+#end
+
+#if skills.aeonics then
+enableTrigger("Age tracking")
+#else
+disableTrigger("Age tracking")
+#end
+
 local prompt_stats
 
-local defences = {}
 local defs_data
 local oldsend
 local defupfinish, process_defs
@@ -926,7 +1002,7 @@ local index_map = pl.tablex.index_map
 local addaff, removeaff, checkanyaffs, updateaffcount
 
 local lostbal_focus, lostbal_herb, lostbal_salve, lostbal_purgative, lostbal_sip
-sk.salvetick, sk.herbtick, sk.focustick, sk.teatick, sk.purgativetick, sk.siptick, sk.mosstick, sk.dragonhealtick, sk.smoketick, sk.voicetick = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+sk.salvetick, sk.herbtick, sk.focustick, sk.teatick, sk.purgativetick, sk.siptick, sk.mosstick, sk.dragonhealtick, sk.smoketick, sk.voicetick, sk.wordtick = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 #if skills.healing then
 sk.healingtick = 0
 #end
@@ -1211,6 +1287,19 @@ signals.systemstart:connect(function ()
 end)
 
 signals.saveconfig:connect(function () table.save(getMudletHomeDir() .. "/svo/config/lustlist", me.lustlist) end)
+
+-- load the hoist list
+signals.systemstart:connect(function ()
+  local conf_path = getMudletHomeDir() .. "/svo/config/hoistlist"
+
+  if lfs.attributes(conf_path) then
+    local t = {}
+    table.load(conf_path, t)
+    update(me.hoistlist, t)
+  end
+end)
+
+signals.saveconfig:connect(function () table.save(getMudletHomeDir() .. "/svo/config/hoistlist", me.hoistlist) end)
 
 -- load the ignore list
 signals.systemstart:connect(function ()

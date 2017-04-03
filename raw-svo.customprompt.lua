@@ -242,6 +242,18 @@ cpp.compute_dragonhealbal = function()
   return (bals.dragonheal and "d" or "")
 end
 
+#if skills.terminus then
+cpp.compute_wordbal = function()
+  return (bals.word and "w" or "")
+end
+#end
+
+#if skills.aeonics then
+cpp.compute_age = function()
+  return ((stats.age and stats.age > 0) and tostring(stats.age) or "")
+end
+#end
+
 cpp.compute_timestamp = function()
   return getTime(true, 'hh:mm:ss.zzz')
 end
@@ -291,15 +303,14 @@ end
 
 #if skills.metamorphosis then
 cpp.compute_morph = function()
-  local morphs = {"hydra", "wyvern", "icewyrm", "gorilla", "eagle", "jaguar", "wolverine", "elephant", "nightingale", "bear", "basilisk", "sloth", "gopher", "condor", "hyena", "owl", "cheetah", "jackdaw", "turtle", "wolf", "wildcat", "squirrel"}
+  return me.morph or ""
 
-  for i = 1, #morphs do
-    local morph = morphs[i]
+end
+#end
 
-    if defc[morph] then return morph end
-  end
-
-  return ''
+#if skills.groves then
+cpp.compute_sunlight = function()
+  return stats.sunlight > 0 and tostring(stats.sunlight) or ""
 end
 #end
 
@@ -330,6 +341,9 @@ cpp.compute_promptstring = function()
 #end
 #if skills.voicecraft then
         (bals.voice and "v" or "")..
+#end
+#if skills.terminus then
+        (bals.word and "w" or "")..
 #end
         ("-<grey>")
 end
@@ -452,6 +466,15 @@ cp.definitions = {
 #end
 #if skills.metamorphosis then
   ["@morph"]         = "svo.cpp.compute_morph()",
+#end
+#if skills.groves then
+  ["@sunlight"]      = "svo.cpp.compute_sunlight()",
+#end
+#if skills.terminus then
+  ["@wordbal"]       = "svo.cpp.compute_wordbal()",
+#end
+#if skills.aeonics then
+  ["@age"]           = "svo.cpp.compute_age()",
 #end
   ["^1"]             = "svo.cpp.compute_health_colour()",
   ["^2"]             = "svo.cpp.compute_mana_colour()",

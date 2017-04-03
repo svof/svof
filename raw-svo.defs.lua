@@ -208,6 +208,18 @@ defs_data = pl.OrderedMap {}
         svo["def"..whereto][mode].meditate = false
         if echoback then echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
+      if svo["def"..whereto][mode].dilation then
+        svo["def"..whereto][mode].dilation = false
+        if echoback then echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].flame then
+        svo["def"..whereto][mode].flame = false
+        if echoback then echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].lyre then
+        svo["def"..whereto][mode].lyre = false
+        if echoback then echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
 
       return true
     end}) -- added in xml w/ conf.gagbreath
@@ -262,7 +274,7 @@ defs_data = pl.OrderedMap {}
     defr = [[^You are experiencing a (\d+) percent experience boost\.$]] })
   defs_data:set("xpbonus", { nodef = true,
     ondef = function () return "("..matches[2]..")" end,
-    defr = [[^You are benefitt?ing from a (\d+)% experience bonus\.$]] })
+    defr = {[[^You are benefitt?ing from a (\d+)% experience bonus\.$]], [[^You are benefitting from a (\d+)% bonus to experience gain\.$]] }})
   defs_data:set("deaf", { type = "general",
     def = "You are deaf.",
     off = "The unnatural sound rips through your defences against auditory attacks." })
@@ -288,6 +300,10 @@ defs_data = pl.OrderedMap {}
       if svo["def"..whereto][mode].breath then
         svo["def"..whereto][mode].breath = false
         if echoback then echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].dilation then
+        svo["def"..whereto][mode].dilation = false
+        if echoback then echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
 
       return true
@@ -317,6 +333,18 @@ defs_data = pl.OrderedMap {}
         svo["def"..whereto][mode].breath = false
         if echoback then echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
+      if svo["def"..whereto][mode].dilation then
+        svo["def"..whereto][mode].dilation = false
+        if echoback then echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].flame then
+        svo["def"..whereto][mode].flame = false
+        if echoback then echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].lyre then
+        svo["def"..whereto][mode].lyre = false
+        if echoback then echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
 
       return true
     end,
@@ -340,6 +368,7 @@ defs_data = pl.OrderedMap {}
         [[^\w+ continues (?:his|his) attack, coming back around with a bone rattling blow with .+? that causes your magical shield to explode in a shower of twinkling shards\.$]],
         [[^\w+ whirls .+ over (?:her|his) head, before bringing it down upon your magical shield, shattering it instantly\.$]],
         [[^\w+ summons a blade of condensed air and shears cleanly through the magical shield surrounding you\.$]],
+        [[^The shadow of \w+ suddenly comes alive, leaping forward to hammer at your shield in a silent frenzy of blows\. Your protection lasts mere moments before exploding in a shower of prismatic shards\.$]],
     },
     def = "You are surrounded by a nearly invisible magical shield."})
   defs_data:set("riding", { type = "general",
@@ -968,8 +997,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "Your heart beats faster and you look about anxiously as the spirit of the Squirrel inhabits your soul.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A squirrel spirit co-habits your body." })
   defs_data:set("wildcat", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -982,8 +1009,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "You feel quick and alert as you receive the gifts of the Wildcat.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A wildcat spirit co-habits your body." })
   defs_data:set("wolf", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -996,8 +1021,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "You cast your eyes upwards towards the moon, as the howl of the Wolf rings in your ears.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A wolf spirit co-habits your body." })
   defs_data:set("turtle", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -1010,7 +1033,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "You feel the power of the oceans as the spirit of the Turtle enters you.",
     def = "A turtle spirit co-habits your body." })
   defs_data:set("jackdaw", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -1023,8 +1045,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "You feel the spirit of the Jackdaw peering cautiously out from behind your beady eyes.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A jackdaw spirit co-habits your body." })
   defs_data:set("cheetah", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -1037,7 +1057,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "You welcome the spirit of the Cheetah into your soul.",
     def = "A cheetah spirit co-habits your body." })
   defs_data:set("owl", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -1050,8 +1069,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "A sense of inner wisdom and peace spreads through your mind as the spirit of the Owl works its influence.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "An owl spirit co-habits your body." })
   defs_data:set("hyena", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -1064,8 +1081,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "You gaze impassionately at the world through cold eyes as the Hyena takes hold.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A hyena spirit co-habits your body." })
   defs_data:set("condor", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -1078,8 +1093,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "Your soul soars as the buoyant spirit of the Condor joins you.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A condor spirit co-habits your body." })
   defs_data:set("gopher", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -1092,8 +1105,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "As the spirit of the Gopher enters you, the ground begins to look quite tempting.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A gopher spirit co-habits your body." })
   defs_data:set("sloth", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -1106,8 +1117,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "You yawn and slouch about as the spirit of the Sloth permeates your being.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A sloth spirit co-habits your body." })
 #if class == "sentinel" then
   defs_data:set("basilisk", { type = "metamorphosis",
@@ -1121,7 +1130,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "Your breathing slows to a gentle whisper as the stealthy spirit of the Basilisk approaches and takes form within you.",
     def = "A basilisk spirit co-habits your body." })
 #end
   defs_data:set("bear", { type = "metamorphosis",
@@ -1135,8 +1143,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "You feel the spirit of the mighty Grizzly enter your body as your limbs grow in massive power.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A bear spirit co-habits your body." })
   defs_data:set("nightingale", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -1149,8 +1155,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "Strains of birdsong fill your ears as the spirit of the Nightingale is summoned to you.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A nightingale spirit co-habits your body." })
   defs_data:set("elephant", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -1163,8 +1167,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "The spirit of the massive Elephant enters your body, and all obstacles seem as nothing.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "An elephant spirit co-habits your body." })
   defs_data:set("wolverine", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -1177,8 +1179,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "Your muscles feel like taut steel as the spirit of the Wolverine enters you.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A wolverine spirit co-habits your body." })
 #if class == "sentinel" then
   defs_data:set("jaguar", { type = "metamorphosis",
@@ -1192,8 +1192,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "You settle back on your haunches, revelling in the natural power and confidence of the spirit of the Jaguar.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A jaguar spirit co-habits your body." })
 #end
   defs_data:set("eagle", { type = "metamorphosis",
@@ -1207,8 +1205,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "Your soul dwells resplendent in companion with the majesty of the spirit of the Eagle.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "An eagle spirit co-habits your body." })
   defs_data:set("gorilla", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -1221,8 +1217,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "Your arms fill with power and you feel nimbleness and strength imbue you as the spirit of the Gorilla enters you.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A gorilla spirit co-habits your body." })
   defs_data:set("icewyrm", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
@@ -1235,7 +1229,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "Images of cold, unseen lands drift before your mind's eye as the mysterious spirit of the Icewyrm dwells within your uneasy soul.",
     def = "An icewyrm spirit co-habits your body." })
 #if class == "druid" then
   defs_data:set("wyvern", { type = "metamorphosis",
@@ -1249,8 +1242,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "You raise your arms aloft and roar aloud a challenge to the heavens as you take on the form of ultimate power - the spirit of the Wyvern.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A wyvern spirit co-habits your body." })
 
   defs_data:set("hydra", { type = "metamorphosis",
@@ -1264,8 +1255,6 @@ defs_data = pl.OrderedMap {}
 
       return true
     end,
-    on = "You are overcome with power as the monstrous spirit of the Hydra enters you.",
-    offr = {[[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]], [[^You remain in .+ form, dolt\.$]]},
     def = "A hydra spirit co-habits your body."})
 #end
 #end
@@ -2092,6 +2081,162 @@ defs_data = pl.OrderedMap {}
     def = {"You are able to scout passed obstructions.", "You are able to scout past obstructions."}})
 #end
 
+#if skills.shadowmancy then
+  defs_data:set("shadowcloak", {
+    type = "shadowmancy",
+    custom_def_type = "shadowcloak",
+    offline_defence = true,
+    invisibledef = true,
+    stays_on_death = true,
+    staysindragon = true,
+    on = {
+      "You are now wearing a grim cloak.",
+    },
+    off = {
+      "You remove a grim cloak.",
+      "You must be wearing your cloak of darkness in order to perform this ability."
+    }
+   })
+  defs_data:set("disperse", {
+    type = "shadowmancy",
+    custom_def_type = "shadowcloak",
+    on = {
+      "The shadows swirl about you, masking you from view.",
+      "You have already shrouded yourself in beguiling shadow."
+    },
+    def = "You are masking your egress."
+   })
+--shadowveil gives both shadowveil and hiding
+  defs_data:set("shadowveil", {
+    type = "shadowmancy",
+    custom_def_type = "shadowcloak",
+    on = {
+      "Summoning the shadows to coalesce about your person, you vanish into their stygian embrace.",
+      "You are already veiled within the shadows embrace.",
+    },
+    def = "Concealed by a shifting veil of shadow.",
+   })
+  defs_data:set("hiding", {
+    type = "shadowmancy",
+    custom_def_type = "shadowcloak",
+    on = {
+      "Summoning the shadows to coalesce about your person, you vanish into their stygian embrace.",
+      "You are already veiled within the shadows embrace.",
+    },
+    def = "You have used great guile to conceal yourself.",
+    off = {
+      "You emerge from your hiding place.",
+      "You are discovered!",
+      "The flash of light illuminates you - you have been discovered!",
+      "From what do you wish to emerge?"
+    }
+   })
+
+-- signals for shadowcloak tracking
+  signals.gmcpcharitemslist:connect(function()
+    if gmcp.Char.Items.List.location ~= "inv" then
+      return
+    end
+    for _, item in ipairs(gmcp.Char.Items.List.items) do
+      if item.name == "a grim cloak" then
+        if item.attrib and item.attrib:find("w") then
+           defences.got("shadowcloak")
+         else
+           defences.lost("shadowcloak")
+         end
+         return
+      end
+    end
+  end)
+  signals.gmcpcharitemsadd:connect(function()
+    if gmcp.Char.Items.Add.location ~= "inv" then
+      return
+    end
+    for _, item in ipairs(gmcp.Char.Items.Add.item) do
+      if item.name == "a grim cloak" then
+        if item.attrib and item.attrib:find("w") then
+          defences.got("shadowcloak")
+        end
+      end
+    end
+  end)
+  signals.gmcpcharitemsremove:connect(function()
+    if gmcp.Char.Items.Remove.location ~= "inv" then
+      return
+    end
+    for _, item in ipairs(gmcp.Char.Items.Remove.item) do
+      if item.name == "a grim cloak" then
+        defences.lost("shadowcloak")
+      end
+    end
+  end)
+  signals.gmcpcharitemsupdate:connect(function()
+    if gmcp.Char.Items.Update.location ~= "inv" then
+      return
+    end
+    for _, item in ipairs(gmcp.Char.Items.Update.item) do
+      if item.name == "a grim cloak" then
+        if item.attrib and item.attrib:find("w") then
+          defences.got("shadowcloak")
+        end
+      end
+    end
+  end)
+#end
+
+
+#if skills.aeonics then
+  defs_data:set("blur", { type = "aeonics",
+    def = "Travelling the world more quickly due to time dilation."
+  })
+  defs_data:set("dilation", { type = "aeonics",
+    onenable = function (mode, newdef, whereto, echoback)
+      if svo["def"..whereto][mode].breath then
+        svo["def"..whereto][mode].breath = false
+        if echoback then echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].meditate then
+        svo["def"..whereto][mode].meditate = false
+        if echoback then echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+      if svo["def"..whereto][mode].lyre then
+        svo["def"..whereto][mode].lyre = false
+        if echoback then echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+      end
+
+      return true
+    end,
+    on = "Growing very still, you begin to manipulate the flow of time around you, drastically speeding up your rate of regression.",
+    off = {"Your concentration broken, you cease dilating time.", "Having fully regressed to your normal age, you cease dilating time."}})
+#end
+
+#if skills.terminus then
+  defs_data:set("trusad", { type = "terminus",
+    def = "You are enhancing your precision through the power of Terminus."
+  })
+  defs_data:set("tsuura", { type = "terminus",
+	def = "You are enhancing your durability against denizens."
+  })
+  defs_data:set("ukhia", { type = "terminus",
+	defr = "^You are focus?sing on quelling your bleeding more efficiently\.$"
+  })
+  defs_data:set("qamad", { type = "terminus",
+    def = "You have a will of iron."
+  })
+  defs_data:set("mainaas", { type = "terminus",
+    def = "You have augmented your own body for enhanced defence."
+  })
+  defs_data:set("gaiartha", {
+    type = "terminus",
+    staysindragon = true,
+    def = "You are concentrating on maintaining control over your faculties."
+  })
+#else
+  defs_data:set("gaiartha", { nodef = true,
+    def = "You are concentrating on maintaining control over your faculties."
+  })
+#end
+  
 do
   function defences.enablelifevision()
     if dict.lifevision then return end
@@ -2836,15 +2981,19 @@ signals.systemstart:connect(function ()
         local bal
         for kk,vv in pairs(dict[k]) do if type(vv) == "table" and kk ~= "gone" then bal = kk break end end
         if bal then
-          defs["got_" .. k] = function ()
+          defs["got_" .. k] = function (force)
 #if skills.metamorphosis then
             if v.custom_def_type or usingbal(bal) then checkaction(dict[k][bal], true)
-            else checkaction(dict[k][bal]) end
+            else checkaction(dict[k][bal], force) end
 #else
-            if not v.custom_def_type then checkaction(dict[k][bal]) else checkaction(dict[k][bal], true) end
+            if not v.custom_def_type then checkaction(dict[k][bal], force) else checkaction(dict[k][bal], true) end
 #end
             if actions[k .. "_" .. bal] then
-              lifevision.add(actions[k .. "_" .. bal].p)
+              if force then --bypass lifevision for gmcp/other "force" situations
+                actionfinished(actions[k .. "_" .. bal].p)
+              else
+                lifevision.add(actions[k .. "_" .. bal].p)
+              end
             end
           end
         end
@@ -2914,6 +3063,7 @@ signals.systemstart:connect(function ()
     elseif not v.nodef and v.custom_def_type then
       defs["def_"..sk.sanitize(k)] = function ()
         defences.got(k)
+        deleteLine()
       end
 
     -- additional defence (nodef)
