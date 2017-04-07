@@ -25,6 +25,7 @@ local args = lapp [[
 -d,--debug  Build with debugging information enabled
 -r,--release (default false)  Build all systems
 -o,--own  Build a Svof for yourself
+-n,--newlines  Remove excess newlines on Windows systems
  <name...> (default none )  Class to build a system for
 ]]
 
@@ -211,7 +212,20 @@ local function dowork(systemfor, release, own)
     print(message)
     os.exit(1)
   end
-
+  
+  if args.newlines then
+    print("Removing excess newlines.")
+    local f = io.open(cwd.."/bin/svo", "r+")
+    local s = f:read("*all")
+    f:close()
+    f = io.open(cwd.."/bin/svo", "w+")
+    local i
+    s, i = string.gsub(s, "\n", "\r")
+    print(i.." newlines replaced.")
+    f:write(s)
+    f:close()
+  end
+  
   -- clear existing addons
   local svo_template = cwd.."/svo template"
   for item in lfs.dir(svo_template) do
