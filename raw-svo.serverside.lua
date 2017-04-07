@@ -693,9 +693,9 @@ signals["svo config changed"]:connect(function(config)
 
   -- send right away, so chained commands are done in proper order
   if conf.paused then
-    send("curing off")
+    force_send("curing off")
   else
-    send("curing on")
+    force_send("curing on")
   end
 end)
 
