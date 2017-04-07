@@ -992,32 +992,16 @@ dict = {
 
       -- gives various afflictions, amount of which depends on your humour level
       --[[
-        slickness always seems to happen
-        1-2: add 1 unknown
-        3-6: add 2 unknowns
-        7-9: add 3 unknowns
-        10: add 4 unknowns
+        1-2: 1 affliction
+        3-6: 2 afflictions
+        7-9: 3 afflictions
+        10: 4 afflictions
 
-        anorexia 50% time
-        slickness 8+
+        Above information is roughly accurate.
+        Gives between one and four afflictions from the following: lethargy, slickness, anorexia, weariness.
+        Afflictions not hidden by gmcp, so removed from the inundated function.
       ]]
       inundated = function()
-        addaff(dict.slickness)
-
-        if dict.phlegmatichumour.count >= 3 and math.random(1,2) == 1 then
-          addaff(dict.anorexia)
-        end
-
-        if dict.phlegmatichumour.count == 8 then
-          codepaste.addunknownany(4)
-        elseif dict.phlegmatichumour.count >= 6 then
-          codepaste.addunknownany(3)
-        elseif dict.phlegmatichumour.count >= 4 then
-          codepaste.addunknownany(2)
-        else
-          codepaste.addunknownany(1)
-        end
-
         removeaff("phlegmatichumour")
         dict.phlegmatichumour.count = 0
       end,
