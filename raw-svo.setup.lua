@@ -430,6 +430,14 @@ end)
 do
   local oldnum, oldarea
   signals.gmcproominfo:connect(function (...)
+    if me then
+        if table.contains(gmcp.Room.Info.details, "underwater") then
+            me.is_underwater = true
+        else
+            me.is_underwater = false
+        end
+    end
+    
     if oldnum ~= gmcp.Room.Info.num then
       signals.newroom:emit(_G.gmcp.Room.Info.name)
       oldnum = gmcp.Room.Info.num
@@ -1259,20 +1267,20 @@ end)
 
 -- fix iffy table.save
 function table.save( sfile, t )
-	local tables = {}
-	table.insert( tables, t )
-	local lookup = { [t] = 1 }
-	local file, msg = io.open( sfile, "w" )
-	if not file then return nil, msg end
+    local tables = {}
+    table.insert( tables, t )
+    local lookup = { [t] = 1 }
+    local file, msg = io.open( sfile, "w" )
+    if not file then return nil, msg end
 
-	file:write( "return {" )
-	for i,v in ipairs( tables ) do
-		table.pickle( v, file, tables, lookup )
-	end
-	file:write( "}" )
-	file:close()
+    file:write( "return {" )
+    for i,v in ipairs( tables ) do
+        table.pickle( v, file, tables, lookup )
+    end
+    file:write( "}" )
+    file:close()
 
-	return true
+    return true
 end
 
 -- load the lust list
