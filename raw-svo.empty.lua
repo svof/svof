@@ -128,7 +128,7 @@ gettreeableaffs = function(getall)
 end
 
 empty.tree = function ()
-  local a = gettreeableaffs(true)
+  local a = gettreeableaffs()
   debugf("Tree cured nothing, removing: "..table.concat(a, ", "))
   removeaff(a)
 end
