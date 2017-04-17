@@ -278,8 +278,6 @@ codepaste.smoke_valerian_pipe = function()
 
   return (not (pipes.valerian.id == 0) and
     (pipes.valerian.lit or pipes.valerian.arty) and
-    -- can't smoke valerian with inquisition and hellsight together
-    not (affs.inquisition and affs.hellsight) and
     not (pipes.valerian.puffs == 0))
 end
 
@@ -3003,7 +3001,7 @@ dict = {
       spriority = 0,
 
       isadvisable = function ()
-        return (affs.hellsight and codepaste.smoke_valerian_pipe()) or false
+        return (affs.hellsight and not affs.inquisition and codepaste.smoke_valerian_pipe()) or false
       end,
 
       oncompleted = function ()
