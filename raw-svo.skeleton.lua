@@ -50,6 +50,8 @@ function sk.checking_herb_ai()
   return (doingaction"checkparalysis" or doingaction"checkasthma" or doingaction"checkimpatience") and true or false
 end
 
+force_send = send
+
 -- balances
 bals = bals or {
   herb = true, sip = true, moss = true,

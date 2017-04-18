@@ -990,32 +990,16 @@ dict = {
 
       -- gives various afflictions, amount of which depends on your humour level
       --[[
-        slickness always seems to happen
-        1-2: add 1 unknown
-        3-6: add 2 unknowns
-        7-9: add 3 unknowns
-        10: add 4 unknowns
+        1-2: 1 affliction
+        3-6: 2 afflictions
+        7-9: 3 afflictions
+        10: 4 afflictions
 
-        anorexia 50% time
-        slickness 8+
+        Above information is roughly accurate.
+        Gives between one and four afflictions from the following: lethargy, slickness, anorexia, weariness.
+        Afflictions not hidden by gmcp, so removed from the inundated function.
       ]]
       inundated = function()
-        addaff(dict.slickness)
-
-        if dict.phlegmatichumour.count >= 3 and math.random(1,2) == 1 then
-          addaff(dict.anorexia)
-        end
-
-        if dict.phlegmatichumour.count == 8 then
-          codepaste.addunknownany(4)
-        elseif dict.phlegmatichumour.count >= 6 then
-          codepaste.addunknownany(3)
-        elseif dict.phlegmatichumour.count >= 4 then
-          codepaste.addunknownany(2)
-        else
-          codepaste.addunknownany(1)
-        end
-
         removeaff("phlegmatichumour")
         dict.phlegmatichumour.count = 0
       end,
@@ -1122,11 +1106,9 @@ dict = {
       aspriority = 0,
       spriority = 0,
       def = true,
-      -- not handled by serverside
-      undeffable = true,
 
       isadvisable = function ()
-        return false
+        return not defc.waterbubble and ((sys.deffing and defdefup[defs.mode].waterbubble) or (conf.keepup and defkeepup[defs.mode].waterbubble)) and not affs.anorexia and me.is_underwater
       end,
 
       eatcure = {"pear", "calcite"},
@@ -1136,6 +1118,7 @@ dict = {
       end,
 
       oncompleted = function ()
+        defences.got("waterbubble")
       end,
 
       empty = function()
@@ -14975,7 +14958,7 @@ affinity = {
         elseif not shadowcloak.attrib or not shadowcloak.attrib:find("w") then
           send("wear " .. shadowcloak.id, conf.commandecho)
         else
-	  defences.got("shadowcloak")
+      defences.got("shadowcloak")
         end
       end
     }
@@ -15086,10 +15069,10 @@ affinity = {
       oncompleted = function ()
         defences.got("trusad")
       end,
-	  
+      
       action = "intone trusad",
       onstart = function ()
-	    send("intone trusad", conf.commandecho)
+        send("intone trusad", conf.commandecho)
       end
     }
   },
@@ -15108,10 +15091,10 @@ affinity = {
       oncompleted = function ()
         defences.got("tsuura")
       end,
-	  
+      
       action = "intone tsuura",
       onstart = function ()
-	    send("intone tsuura", conf.commandecho)
+        send("intone tsuura", conf.commandecho)
       end
     }
   },
@@ -15130,10 +15113,10 @@ affinity = {
       oncompleted = function ()
         defences.got("ukhia")
       end,
-	  
+      
       action = "intone ukhia",
       onstart = function ()
-	    send("intone ukhia", conf.commandecho)
+        send("intone ukhia", conf.commandecho)
       end
     }
   },
@@ -15152,10 +15135,10 @@ affinity = {
       oncompleted = function ()
         defences.got("qamad")
       end,
-	  
+      
       action = "intone qamad",
       onstart = function ()
-	    send("intone qamad", conf.commandecho)
+        send("intone qamad", conf.commandecho)
       end
     }
   },
@@ -15174,10 +15157,10 @@ affinity = {
       oncompleted = function ()
         defences.got("mainaas")
       end,
-	  
+      
       action = "intone mainaas",
       onstart = function ()
-	    send("intone mainaas", conf.commandecho)
+        send("intone mainaas", conf.commandecho)
       end
     }
   },
@@ -15196,10 +15179,10 @@ affinity = {
       oncompleted = function ()
         defences.got("gaiartha")
       end,
-	  
+      
       action = "intone gaiartha",
       onstart = function ()
-	    send("intone gaiartha", conf.commandecho)
+        send("intone gaiartha", conf.commandecho)
       end
     }
   },
@@ -15460,9 +15443,9 @@ affinity = {
     acrobatics = "acrobatics",
     affinity = "affinity",
     aiming = false,
-    airpocket = "pear",
+    airpocket = "waterbubble",
     alertness = "alertness",
-	antiforce = "gaiartha",
+    antiforce = "gaiartha",
     arctar = "arctar",
     aria = "aria",
     arrowcatching = "arrowcatch",
@@ -15478,11 +15461,11 @@ affinity = {
     blessingofthegods = false,
     blindness = "blind",
     blocking = "block",
-	bloodquell = "ukhia",
+    bloodquell = "ukhia",
     bloodshield = false,
-	blur = "blur",
+    blur = "blur",
     boartattoo = false,
-	bodyaugment = "mainaas",
+    bodyaugment = "mainaas",
     bodyblock = "bodyblock",
     boostedregeneration = "boosting",
     chameleon = "chameleon",
@@ -15504,15 +15487,15 @@ affinity = {
     density = "mass",
     devilmark = "devilmark",
     diamondskin = "diamondskin",
-	disassociate = false,
-	disperse = "disperse",
+    disassociate = false,
+    disperse = "disperse",
     distortedaura = "distortedaura",
     disperse = "disperse",
     dodging = "dodging",
     dragonarmour = "dragonarmour",
     dragonbreath = "dragonbreath",
     drunkensailor = "drunkensailor",
-	durability = "tsuura",
+    durability = "tsuura",
     earthshield = "earthblessing",
     eavesdropping = "eavesdrop",
     electricresist = "electricresist",
@@ -15536,7 +15519,7 @@ affinity = {
     gripping = "grip",
     groundwatch = "groundwatch",
     harmony = "harmony",
-	haste = false,
+    haste = false,
     heartsfury = "heartsfury",
     heldbreath = "breath",
     heresy = "heresy",
@@ -15549,15 +15532,15 @@ affinity = {
     insuflate = false,
     insulation = false,
     ironform = false,
-	ironwill = "qamad",
+    ironwill = "qamad",
     kaiboost = "kaiboost",
     kaitrance = "trance",
     kola = "kola",
-	lament = false,
+    lament = false,
     lay = "lay",
     levitating = "levitation",
     lifegiver = false,
-	lifesteal = false,
+    lifesteal = false,
     lifevision = "lifevision",
     lipreading = "lipread",
     magicresist = "magicresist",
@@ -15580,7 +15563,7 @@ affinity = {
     pinchblock = "pinchblock",
     poisonresist = "venom",
     preachblessing = false,
-	precision = "trusad",
+    precision = "trusad",
     prismatic = "lyre",
     projectiles = "projectiles",
     promosurcoat = false,
