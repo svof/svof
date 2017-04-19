@@ -436,7 +436,8 @@ defs_data = pl.OrderedMap {}
     def = "You are emanating an aura of death.",
     off = "Your aura of death has worn off."})
   defs_data:set("shroud", { type = "necromancy",
-    on = {"Calling on your dark power, you draw a thick shroud of concealment about yourself to cover your every action.", "You draw a Shadowcloak about you and blend into your surroundings.", "You draw a cloak of the Blood Maiden about you and blend into your surroundings."},
+    on = "Calling on your dark power, you draw a thick shroud of concealment about yourself to cover your every action.",
+    onr = "^You draw .+ about you and blend into your surroundings\.$",
     def = "Your actions are cloaked in secrecy.",
     off = {"Your shroud dissipates and you return to the realm of perception.", "The flash of light illuminates you - you have been discovered!"}})
   defs_data:set("lifevision", { type = "necromancy",
@@ -2355,7 +2356,7 @@ do
     if dict.shroud then return end
 
     defs_data:set("shroud", { type = "general",
-      on = {"You draw your Shadowcloak about you and blend into your surroundings.", "You draw a Shadowcloak about you and blend into your surroundings.", "You draw a cloak of the Blood Maiden about you and blend into your surroundings."},
+      onr = "^You draw .+ about you and blend into your surroundings\.$",
       def = "Your actions are cloaked in secrecy.",
       off = {"Your shroud dissipates and you return to the realm of perception.", "The flash of light illuminates you - you have been discovered!"}})
 
