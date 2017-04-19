@@ -2650,21 +2650,6 @@ send(matches[2]..&quot; enemies&quot;, false)</script>
 if not ndb.help then
   local path = getMudletHomeDir()..&quot;/&quot;..class..&quot; svo/ndb-help.lua&quot;
   if not lfs.attributes(path) then
-  -- not found? Lets try the dev version
-    local svo_location = getMudletHomeDir() .. _sep .. &quot;svo_location&quot;
-    local system_path -- location of the system's folder with a trailing slash
-    local f,msg
-
-    if lfs.attributes(svo_location) then
-      f,msg = io.open(svo_location, &quot;r+&quot;)
-      assert(f, msg)
-
-      -- this should give us the folder it's in
-      system_path = f:read(&quot;*l&quot;)
-
-      if string.sub(system_path, -1) == &quot;/&quot; or string.sub(system_path, -1) == [[\]] then
-        system_path = string.sub(system_path, 1, -2)
-      end
 
       -- Got a valid path?
       if lfs.attributes(system_path) then
@@ -2678,10 +2663,15 @@ if not ndb.help then
       return
     end
   end
-
-  local f, m = io.open(path)
-  local s = f:read(&quot;*a&quot;)
-
+    if not system_path then 
+	fullpath = path ..&quot;/ndb-help.lua&quot; 
+	local f, m = io.open(fullpath)
+	local s = f:read(&quot;*a&quot;)
+  else
+    local f, m = io.open(path)
+	local s = f:read(&quot;*a&quot;)
+  end
+  
   local data = loadstring(&quot;return &quot;..s)()
   if not data then
     svo.echof(&quot;Couldn't load data from the ndb-help.lua file :/ maybe it is messed up.&quot;)
