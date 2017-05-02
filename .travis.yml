@@ -1,6 +1,7 @@
 language: ruby
 rvm: 
 - 2.2.5
+dist: trusty
 sudo: required
 install:
 - sudo apt-get update
