@@ -1906,6 +1906,97 @@ defs_data = pl.OrderedMap {}
     off = "You ease yourself out of the Dragon stance."})
 #end
 
+#if skills.shikudo then
+  defs_data:set("grip", { type = "shikudo",
+    on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
+    def = "Your hands are gripping your wielded items tightly.",
+    off = "You relax your grip."})
+  defs_data:set("tykonos", { type = "shikudo",
+    onenable = function (mode, newdef, whereto, echoback)
+      for _, form in ipairs{"willow", "rain", "oak", "gaital", "maelstrom"} do
+        if morph ~= newdef and svo["def"..whereto][mode][morph] then
+          svo["def"..whereto][mode][morph] = false
+          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+        end
+      end
+
+      return true
+    end,
+
+    on = "You spin your staff in the opening sequence of the form of Tykonos, snapping into a ready stance.",
+    def = "You are enacting the Tykonos form."})
+  defs_data:set("willow", { type = "shikudo",
+    onenable = function (mode, newdef, whereto, echoback)
+      for _, form in ipairs{"tykonos", "rain", "oak", "gaital", "maelstrom"} do
+        if morph ~= newdef and svo["def"..whereto][mode][morph] then
+          svo["def"..whereto][mode][morph] = false
+          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+        end
+      end
+
+      return true
+    end,
+
+    on = "Twirling your staff, you sink into the calm required for the form of Willows Shaken by the Wind.",
+    def = "You are enacting the Willows shaken by the Wind form."})
+  defs_data:set("rain", { type = "shikudo",
+    onenable = function (mode, newdef, whereto, echoback)
+      for _, form in ipairs{"willow", "tykonos", "oak", "gaital", "maelstrom"} do
+        if morph ~= newdef and svo["def"..whereto][mode][morph] then
+          svo["def"..whereto][mode][morph] = false
+          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+        end
+      end
+
+      return true
+    end,
+
+    on = "Dropping into a lower stance, you snap your weapon into an offensive position, tensing your muscles in preparation for the form of Willows in Rain Storm.",
+    def = "You are enacting the Willows in Rain Storm form."})
+  defs_data:set("oak", { type = "shikudo",
+    onenable = function (mode, newdef, whereto, echoback)
+      for _, form in ipairs{"willow", "rain", "tykonos", "gaital", "maelstrom"} do
+        if morph ~= newdef and svo["def"..whereto][mode][morph] then
+          svo["def"..whereto][mode][morph] = false
+          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+        end
+      end
+
+      return true
+    end,
+
+    on = "Rising onto the balls of your feet, you prepare to begin the deadly form of the Live Oak.",
+    def = "You are enacting the Live Oak form."})
+  defs_data:set("gaital", { type = "shikudo",
+    onenable = function (mode, newdef, whereto, echoback)
+      for _, form in ipairs{"willow", "rain", "oak", "tykonos", "maelstrom"} do
+        if morph ~= newdef and svo["def"..whereto][mode][morph] then
+          svo["def"..whereto][mode][morph] = false
+          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+        end
+      end
+
+      return true
+    end,
+
+    on = "You let your eyes fall closed and instinct guide you as you flow into the form of Gaital.",
+    def = "You are enacting the Gaital form."})
+  defs_data:set("maelstrom", { type = "shikudo",
+    onenable = function (mode, newdef, whereto, echoback)
+      for _, form in ipairs{"willow", "rain", "oak", "gaital", "tykonos"} do
+        if morph ~= newdef and svo["def"..whereto][mode][morph] then
+          svo["def"..whereto][mode][morph] = false
+          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+        end
+      end
+
+      return true
+    end,
+
+    on = "You allow your kai to flow through you, circulating throughout your limbs and down your weapon in preparation to begin the form of the Unrelenting Storm.",
+    def = "You are enacting the Unrelenting Storm form."})
+#end
+
 #if skills.telepathy then
   defs_data:set("mindtelesense", { type = "telepathy",
     mana = "lots",
