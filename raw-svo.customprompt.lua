@@ -314,10 +314,11 @@ cpp.compute_sunlight = function()
 end
 #end
 
-if skills.tekura then
+#if skills.tekura then
 cpp.compute_monkpath = function()
   return me.path or ""
 end
+
 cpp.compute_stanceform = function()
   return me.stance or me.form or ""
 end
