@@ -26,5 +26,6 @@ skills = {
   sentinel     = {"metamorphosis", "woodlore", "skirmishing"},
   serpent      = {"subterfuge", "venom", "hypnosis"},
   shaman       = {"runelore", "curses", "vodun"},
+  shikudo      = {"shikudo", "kaido", "telepathy"},
   sylvan       = {"weatherweaving", "groves", "propagation"},
 }

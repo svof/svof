@@ -6290,13 +6290,13 @@ dict = {
       isadvisable = function ()
         return (not sys.sp_satisfied and not sys.blockparry and not affs.paralysis
           and not doingaction "doparry" and (
-#if class == "monk" then
+#if skills.tekura then
             conf.guarding
 #else
             conf.parry
 #end
            ) and not codepaste.balanceful_codepaste()
-#if class ~= "blademaster" and class ~= "monk" then
+#if class ~= "blademaster" and not skills.tekura then
           -- blademasters can parry with their sword sheathed
           and ((not sys.enabledgmcp or defc.dragonform) or (next(me.wielded) and sk.have_parryable()))
 #end
@@ -14139,6 +14139,177 @@ affinity = {
         sendAll("outd 1 devil","fling devil at ground","ind 1 devil", conf.commandecho)
       end
     }
+  },
+#end
+
+#if skills.shikudo then
+  tykonos = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt tykonos form",
+
+      isadvisable = function ()
+        return (((sys.deffing and defdefup[defs.mode].tykonos and not defc.tykonos) or (conf.keepup and defkeepup[defs.mode].tykonos and not defc.tykonos)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
+      end,
+
+      oncompleted = function ()
+        local shikudo_forms = {"tykonos", "willow", "rain", "oak", "gaital", "maelstrom"}
+
+        for _, stance in ipairs(shikudo_forms) do
+          defences.lost(stance)
+        end
+
+        defences.got("tykonos")
+      end,
+
+      onstart = function ()
+        send("adopt tykonos form", conf.commandecho)
+      end
+    },
+  },
+  willow = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt willow form",
+
+      isadvisable = function ()
+        return (((sys.deffing and defdefup[defs.mode].willow and not defc.willow) or (conf.keepup and defkeepup[defs.mode].willow and not defc.willow)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
+      end,
+
+      oncompleted = function ()
+        local shikudo_forms = {"tykonos", "willow", "rain", "oak", "gaital", "maelstrom"}
+
+        for _, stance in ipairs(shikudo_forms) do
+          defences.lost(stance)
+        end
+
+        defences.got("willow")
+      end,
+
+      onstart = function ()
+        send("adopt willow form", conf.commandecho)
+      end
+    },
+  },
+  rain = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt rain form",
+
+      isadvisable = function ()
+        return (((sys.deffing and defdefup[defs.mode].rain and not defc.rain) or (conf.keepup and defkeepup[defs.mode].rain and not defc.rain)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
+      end,
+
+      oncompleted = function ()
+        local shikudo_forms = {"tykonos", "willow", "rain", "oak", "gaital", "maelstrom"}
+
+        for _, stance in ipairs(shikudo_forms) do
+          defences.lost(stance)
+        end
+
+        defences.got("rain")
+      end,
+
+      onstart = function ()
+        send("adopt rain form", conf.commandecho)
+      end
+    },
+  },
+  oak = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt oak form",
+
+      isadvisable = function ()
+        return (((sys.deffing and defdefup[defs.mode].oak and not defc.oak) or (conf.keepup and defkeepup[defs.mode].oak and not defc.oak)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
+      end,
+
+      oncompleted = function ()
+        local shikudo_forms = {"tykonos", "willow", "rain", "oak", "gaital", "maelstrom"}
+
+        for _, stance in ipairs(shikudo_forms) do
+          defences.lost(stance)
+        end
+
+        defences.got("oak")
+      end,
+
+      onstart = function ()
+        send("adopt oak form", conf.commandecho)
+      end
+    },
+  },
+  gaital = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt gaital form",
+
+      isadvisable = function ()
+        return (((sys.deffing and defdefup[defs.mode].gaital and not defc.gaital) or (conf.keepup and defkeepup[defs.mode].gaital and not defc.gaital)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
+      end,
+
+      oncompleted = function ()
+        local shikudo_forms = {"tykonos", "willow", "rain", "oak", "gaital", "maelstrom"}
+
+        for _, stance in ipairs(shikudo_forms) do
+          defences.lost(stance)
+        end
+
+        defences.got("gaital")
+      end,
+
+      onstart = function ()
+        send("adopt gaital form", conf.commandecho)
+      end
+    },
+  },
+  maelstrom = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt maelstrom form",
+
+      isadvisable = function ()
+        return (((sys.deffing and defdefup[defs.mode].maelstrom and not defc.maelstrom) or (conf.keepup and defkeepup[defs.mode].maelstrom and not defc.maelstrom)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
+      end,
+
+      oncompleted = function ()
+        local shikudo_forms = {"tykonos", "willow", "rain", "oak", "gaital", "maelstrom"}
+
+        for _, stance in ipairs(shikudo_forms) do
+          defences.lost(stance)
+        end
+
+        defences.got("maelstrom")
+      end,
+
+      onstart = function ()
+        send("adopt maelstrom form", conf.commandecho)
+      end
+    },
   },
 #end
 
