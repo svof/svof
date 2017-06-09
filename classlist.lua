@@ -17,7 +17,7 @@ skills = {
   infernal     = {"necromancy", "chivalry", "weaponmastery"},
   jester       = {"tarot", "pranks", "puppetry"},
   magi         = {"elementalism", "crystalism", "artificing"},
-  monk         = {"tekura", "kaido", "telepathy"},
+  monk         = {"tekura", "kaido", "telepathy", "shikudo"},
   none         = {},
   occultist    = {"occultism", "tarot", "domination"},
   paladin      = {"chivalry", "devotion", "weaponmastery"},
@@ -26,6 +26,5 @@ skills = {
   sentinel     = {"metamorphosis", "woodlore", "skirmishing"},
   serpent      = {"subterfuge", "venom", "hypnosis"},
   shaman       = {"runelore", "curses", "vodun"},
-  shikudo      = {"shikudo", "kaido", "telepathy"},
   sylvan       = {"weatherweaving", "groves", "propagation"},
 }

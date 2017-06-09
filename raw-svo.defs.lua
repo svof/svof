@@ -1793,7 +1793,7 @@ defs_data = pl.OrderedMap {}
 
     return true
   end
-
+  
   defs_data:set("tykonos", { 
     type = "shikudo",
     onenable = onenable_shikudo,
@@ -1804,7 +1804,7 @@ defs_data = pl.OrderedMap {}
   defs_data:set("willow", { 
     type = "shikudo",
     onenable = onenable_shikudo,
-    def = "You are enacting the Willow form.",
+    def = "You are enacting the Willows shaken by the Wind form..",
     on = "Twirling your staff, you sink into the calm required for the form of Willows Shaken by the Wind.",
     off = [[^You clumsily transition from the form of \w+ into the form of .+]]
   })
@@ -1836,6 +1836,11 @@ defs_data = pl.OrderedMap {}
     on = "You allow your kai to flow through you, circulating throughout your limbs and down your weapon in preparation to begin the form of the Unrelenting Storm.",
     off = [[^You clumsily transition from the form of \w+ into the form of .+]]
   })
+  defs_data:set("grip", { 
+    type = "shikudo",
+    on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
+    def = "Your hands are gripping your wielded items tightly.",
+    off = "You relax your grip."})
 #end
 
 #if skills.tekura then

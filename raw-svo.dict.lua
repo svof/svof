@@ -89,6 +89,80 @@ local dict_smoke_def = {}
 
 local codepaste = {}
 
+local tekura_stance_oncompleted = function (new_stance)
+  local stances = {
+    "horse", 
+    "eagle", 
+    "cat", 
+    "bear", 
+    "rat", 
+    "scorpion", 
+    "dragon"
+  }
+
+  for _, stance in ipairs(stances) do
+    defences.lost(stance)
+  end
+
+  defences.got(new_stance)
+end
+
+local tekura_stance_isadvisable = function (new_stance)
+  return (
+    (
+      (
+        sys.deffing 
+        and defdefup[defs.mode][new_stance] 
+        and not defc[new_stance]  
+      ) 
+      or (
+        conf.keepup 
+        and defkeepup[defs.mode][new_stance] 
+        and not defc[new_stance] 
+      )
+    ) 
+    and me.path == "tekura" 
+    and not codepaste.balanceful_defs_codepaste() 
+    and not defc.riding
+  ) or false
+end
+
+local shikudo_form_isadvisable = function (new_form)
+  return (
+    (
+      (
+        sys.deffing 
+        and defdefup[defs.mode][new_form] 
+        and not defc[new_form]  
+      ) 
+      or (
+        conf.keepup 
+        and defkeepup[defs.mode][new_form] 
+        and not defc[new_form] 
+      )
+    ) 
+    and me.path == "shikudo" 
+    and not codepaste.balanceful_defs_codepaste() 
+    and not defc.riding
+  ) or false
+end
+
+local shikudo_form_oncompleted = function (new_form)
+  local shikudo_forms = {
+    "tykonos", 
+    "willow", 
+    "rain", 
+    "oak", 
+    "gaital", 
+    "maelstrom"
+  }
+
+  for _, form in ipairs(shikudo_forms) do
+    defences.lost(form)
+  end
+
+  defences.got(new_form)
+end
 
 -- used to check if we're writhing from something already
 --impale stacks below other writhes
@@ -14143,6 +14217,39 @@ affinity = {
 #end
 
 #if skills.shikudo then
+  grip = {
+    gamename = "gripping",
+    physical = {
+      balanceless_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+      action = "grip",
+
+      isadvisable = function()
+        return (
+          not defc.grip 
+          and (
+            (sys.deffing and defdefup[defs.mode].grip) 
+            or (conf.keepup and defkeepup[defs.mode].grip)
+          ) 
+          and me.path == "shikudo" 
+          and not codepaste.balanceful_defs_codepaste() 
+          and sys.canoutr 
+          and not affs.paralysis 
+          and not affs.prone
+        ) or false
+      end,
+
+      oncompleted = function()
+        defences.got("grip")
+      end,
+
+      onstart = function() 
+        send("grip", conf.commandecho)
+      end
+    }
+  },
   tykonos = {
     physical = {
       aspriority = 0,
@@ -14151,20 +14258,8 @@ affinity = {
       def = true,
       undeffable = true,
       action = "adopt tykonos form",
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].tykonos and not defc.tykonos) or (conf.keepup and defkeepup[defs.mode].tykonos and not defc.tykonos)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        local shikudo_forms = {"tykonos", "willow", "rain", "oak", "gaital", "maelstrom"}
-
-        for _, stance in ipairs(shikudo_forms) do
-          defences.lost(stance)
-        end
-
-        defences.got("tykonos")
-      end,
+      isadvisable = function() return shikudo_form_isadvisable("tykonos") end,
+      oncompleted = function() return shikudo_form_oncompleted("tykonos") end,
 
       onstart = function ()
         send("adopt tykonos form", conf.commandecho)
@@ -14179,20 +14274,8 @@ affinity = {
       def = true,
       undeffable = true,
       action = "adopt willow form",
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].willow and not defc.willow) or (conf.keepup and defkeepup[defs.mode].willow and not defc.willow)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        local shikudo_forms = {"tykonos", "willow", "rain", "oak", "gaital", "maelstrom"}
-
-        for _, stance in ipairs(shikudo_forms) do
-          defences.lost(stance)
-        end
-
-        defences.got("willow")
-      end,
+      isadvisable = function() return shikudo_form_isadvisable("willow") end,
+      oncompleted = function() return shikudo_form_oncompleted("willow") end,
 
       onstart = function ()
         send("adopt willow form", conf.commandecho)
@@ -14207,20 +14290,8 @@ affinity = {
       def = true,
       undeffable = true,
       action = "adopt rain form",
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].rain and not defc.rain) or (conf.keepup and defkeepup[defs.mode].rain and not defc.rain)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        local shikudo_forms = {"tykonos", "willow", "rain", "oak", "gaital", "maelstrom"}
-
-        for _, stance in ipairs(shikudo_forms) do
-          defences.lost(stance)
-        end
-
-        defences.got("rain")
-      end,
+      isadvisable = function() return shikudo_form_isadvisable("rain") end,
+      oncompleted = function() return shikudo_form_oncompleted("rain") end,
 
       onstart = function ()
         send("adopt rain form", conf.commandecho)
@@ -14235,20 +14306,8 @@ affinity = {
       def = true,
       undeffable = true,
       action = "adopt oak form",
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].oak and not defc.oak) or (conf.keepup and defkeepup[defs.mode].oak and not defc.oak)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        local shikudo_forms = {"tykonos", "willow", "rain", "oak", "gaital", "maelstrom"}
-
-        for _, stance in ipairs(shikudo_forms) do
-          defences.lost(stance)
-        end
-
-        defences.got("oak")
-      end,
+      isadvisable = function() return shikudo_form_isadvisable("oak") end,
+      oncompleted = function() return shikudo_form_oncompleted("oak") end,
 
       onstart = function ()
         send("adopt oak form", conf.commandecho)
@@ -14263,20 +14322,8 @@ affinity = {
       def = true,
       undeffable = true,
       action = "adopt gaital form",
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].gaital and not defc.gaital) or (conf.keepup and defkeepup[defs.mode].gaital and not defc.gaital)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        local shikudo_forms = {"tykonos", "willow", "rain", "oak", "gaital", "maelstrom"}
-
-        for _, stance in ipairs(shikudo_forms) do
-          defences.lost(stance)
-        end
-
-        defences.got("gaital")
-      end,
+      isadvisable = function() return shikudo_form_isadvisable("gaital") end,
+      oncompleted = function() return shikudo_form_oncompleted("gaital") end,
 
       onstart = function ()
         send("adopt gaital form", conf.commandecho)
@@ -14291,20 +14338,8 @@ affinity = {
       def = true,
       undeffable = true,
       action = "adopt maelstrom form",
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].maelstrom and not defc.maelstrom) or (conf.keepup and defkeepup[defs.mode].maelstrom and not defc.maelstrom)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        local shikudo_forms = {"tykonos", "willow", "rain", "oak", "gaital", "maelstrom"}
-
-        for _, stance in ipairs(shikudo_forms) do
-          defences.lost(stance)
-        end
-
-        defences.got("maelstrom")
-      end,
+      isadvisable = function() return shikudo_form_isadvisable("maelstrom") end,
+      oncompleted = function() return shikudo_form_oncompleted("maelstrom") end,
 
       onstart = function ()
         send("adopt maelstrom form", conf.commandecho)
@@ -14314,10 +14349,60 @@ affinity = {
 #end
 
 #if skills.tekura then
-#basicdef("bodyblock", "bdb")
-#basicdef("evadeblock", "evb")
-#basicdef("pinchblock", "pnb")
+  bodyblock = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      isadvisable = function() return tekura_stance_isadvisable("bodyblock") end,
+      action = "bdb",
 
+      oncompleted = function ()
+        defences.got("bodyblock")
+      end,
+
+      onstart = function ()
+        send("bdb", conf.commandecho)
+      end
+    },
+  },
+  evadeblock = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      action = "evb",
+      isadvisable = function() return tekura_stance_isadvisable("evadeblock") end,
+
+      oncompleted = function () 
+        defences.got("evadeblock") 
+      end,
+
+      onstart = function ()
+        send("evb", conf.commandecho)
+      end
+    },
+  },
+  pinchblock = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      action = "pnb",
+      isadvisable = function() return tekura_stance_isadvisable("pinchblock") end,
+
+      oncompleted = function ()
+        defences.got("pinchblock")
+      end,
+
+      onstart = function ()
+        send("pnb", conf.commandecho)
+      end
+    },
+  },
   horse = {
     physical = {
       aspriority = 0,
@@ -14325,20 +14410,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].horse and not defc.horse) or (conf.keepup and defkeepup[defs.mode].horse and not defc.horse)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("horse")
-      end,
-
       action = "hrs",
+      isadvisable = function() return tekura_stance_isadvisable("horse") end,
+      oncompleted = function() return tekura_stance_oncompleted("horse") end,
+
       onstart = function ()
         send("hrs", conf.commandecho)
       end
@@ -14351,20 +14426,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].eagle and not defc.eagle) or (conf.keepup and defkeepup[defs.mode].eagle and not defc.eagle)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("eagle")
-      end,
-
       action = "egs",
+      isadvisable = function() return tekura_stance_isadvisable("eagle") end,
+      oncompleted = function() return tekura_stance_oncompleted("eagle") end,
+
       onstart = function ()
         send("egs", conf.commandecho)
       end
@@ -14377,20 +14442,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].cat and not defc.cat) or (conf.keepup and defkeepup[defs.mode].cat and not defc.cat)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("cat")
-      end,
-
       action = "cts",
+      isadvisable = function() return tekura_stance_isadvisable("cat") end,
+      oncompleted = function() return tekura_stance_oncompleted("cat") end,
+
       onstart = function ()
         send("cts", conf.commandecho)
       end
@@ -14403,20 +14458,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].bear and not defc.bear) or (conf.keepup and defkeepup[defs.mode].bear and not defc.bear)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("bear")
-      end,
-
       action = "brs",
+      isadvisable = function() return tekura_stance_isadvisable("bear") end,
+      oncompleted = function() return tekura_stance_oncompleted("bear") end,
+
       onstart = function ()
         send("brs", conf.commandecho)
       end
@@ -14429,20 +14474,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].rat and not defc.rat) or (conf.keepup and defkeepup[defs.mode].rat and not defc.rat)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("rat")
-      end,
-
       action = "rts",
+      isadvisable = function() return tekura_stance_isadvisable("rat") end,
+      oncompleted = function() return tekura_stance_oncompleted("rat") end,
+
       onstart = function ()
         send("rts", conf.commandecho)
       end
@@ -14455,20 +14490,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].scorpion and not defc.scorpion) or (conf.keepup and defkeepup[defs.mode].scorpion and not defc.scorpion)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("scorpion")
-      end,
-
       action = "scs",
+      isadvisable = function() return tekura_stance_isadvisable("scorpion") end,
+      oncompleted = function() return tekura_stance_oncompleted("scorpion") end,
+
       onstart = function ()
         send("scs", conf.commandecho)
       end
@@ -14481,20 +14506,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].dragon and not defc.dragon) or (conf.keepup and defkeepup[defs.mode].dragon and not defc.dragon)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("dragon")
-      end,
-
       action = "drs",
+      isadvisable = function() return tekura_stance_isadvisable("dragon") end,
+      oncompleted = function() return tekura_stance_oncompleted("dragon") end,
+
       onstart = function ()
         send("drs", conf.commandecho)
       end
@@ -15754,6 +15769,7 @@ affinity = {
     setweapon = "impaling",
     shadowveil = "shadowveil",
     shield = "shield",
+    shikudoform = false,
     shinbinding = "bind",
     shinclarity = "clarity",
     shinrejoinder = false,
