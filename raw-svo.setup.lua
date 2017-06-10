@@ -321,6 +321,7 @@ signals.gmcpcharvitals:connect(function()
         me.path = "tekura"
         me.form = nil
         me.stance = stance:lower()
+        sk.ignored_defences['tekura'].status = false
         sk.ignored_defences['shikudo'].status = true
 
         break
@@ -329,6 +330,7 @@ signals.gmcpcharvitals:connect(function()
         me.form = form:lower()
         me.stance = nil
         sk.ignored_defences['tekura'].status = true
+        sk.ignored_defences['shikudo'].status = false
 
         break
       end
