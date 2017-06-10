@@ -1804,7 +1804,7 @@ defs_data = pl.OrderedMap {}
   defs_data:set("willow", { 
     type = "shikudo",
     onenable = onenable_shikudo,
-    def = "You are enacting the Willows shaken by the Wind form..",
+    def = "You are enacting the Willows shaken by the Wind form.",
     on = "Twirling your staff, you sink into the calm required for the form of Willows Shaken by the Wind.",
     off = [[^You clumsily transition from the form of \w+ into the form of]]
   })
