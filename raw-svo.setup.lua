@@ -1273,7 +1273,7 @@ color_table.a_magenta     = {255, 0, 255}
 color_table.a_cyan        = {0, 255, 255}
 color_table.a_white       = {255, 255, 255}
 color_table.a_darkwhite   = {192, 192, 192}
-color_table.a_darkyellow  = {0, 179, 0}
+color_table.a_darkyellow  = {179, 179, 0}
 -- 2D2E2E, 676562, 433020, 28BA28, 398C39, 0D790D
 color_table.a_onelevel    = {45, 46, 46}
 color_table.a_twolevel    = {103, 101, 98}
