@@ -89,25 +89,7 @@ local dict_smoke_def = {}
 
 local codepaste = {}
 
-local tekura_stance_oncompleted = function (new_stance)
-  local stances = {
-    "horse", 
-    "eagle", 
-    "cat", 
-    "bear", 
-    "rat", 
-    "scorpion", 
-    "dragon"
-  }
-
-  for _, stance in ipairs(stances) do
-    defences.lost(stance)
-  end
-
-  defences.got(new_stance)
-end
-
-local tekura_stance_isadvisable = function (new_stance)
+local tekura_ability_isadvisable = function (new_stance)
   return (
     (
       (
@@ -127,7 +109,7 @@ local tekura_stance_isadvisable = function (new_stance)
   ) or false
 end
 
-local shikudo_form_isadvisable = function (new_form)
+local shikudo_ability_isadvisable = function (new_form)
   return (
     (
       (
@@ -145,6 +127,24 @@ local shikudo_form_isadvisable = function (new_form)
     and not codepaste.balanceful_defs_codepaste() 
     and not defc.riding
   ) or false
+end
+
+local tekura_stance_oncompleted = function (new_stance)
+  local stances = {
+    "horse", 
+    "eagle", 
+    "cat", 
+    "bear", 
+    "rat", 
+    "scorpion", 
+    "dragon"
+  }
+
+  for _, stance in ipairs(stances) do
+    defences.lost(stance)
+  end
+
+  defences.got(new_stance)
 end
 
 local shikudo_form_oncompleted = function (new_form)
@@ -14258,7 +14258,7 @@ affinity = {
       def = true,
       undeffable = true,
       action = "adopt tykonos form",
-      isadvisable = function() return shikudo_form_isadvisable("tykonos") end,
+      isadvisable = function() return shikudo_ability_isadvisable("tykonos") end,
       oncompleted = function() return shikudo_form_oncompleted("tykonos") end,
 
       onstart = function ()
@@ -14274,7 +14274,7 @@ affinity = {
       def = true,
       undeffable = true,
       action = "adopt willow form",
-      isadvisable = function() return shikudo_form_isadvisable("willow") end,
+      isadvisable = function() return shikudo_ability_isadvisable("willow") end,
       oncompleted = function() return shikudo_form_oncompleted("willow") end,
 
       onstart = function ()
@@ -14290,7 +14290,7 @@ affinity = {
       def = true,
       undeffable = true,
       action = "adopt rain form",
-      isadvisable = function() return shikudo_form_isadvisable("rain") end,
+      isadvisable = function() return shikudo_ability_isadvisable("rain") end,
       oncompleted = function() return shikudo_form_oncompleted("rain") end,
 
       onstart = function ()
@@ -14306,7 +14306,7 @@ affinity = {
       def = true,
       undeffable = true,
       action = "adopt oak form",
-      isadvisable = function() return shikudo_form_isadvisable("oak") end,
+      isadvisable = function() return shikudo_ability_isadvisable("oak") end,
       oncompleted = function() return shikudo_form_oncompleted("oak") end,
 
       onstart = function ()
@@ -14322,7 +14322,7 @@ affinity = {
       def = true,
       undeffable = true,
       action = "adopt gaital form",
-      isadvisable = function() return shikudo_form_isadvisable("gaital") end,
+      isadvisable = function() return shikudo_ability_isadvisable("gaital") end,
       oncompleted = function() return shikudo_form_oncompleted("gaital") end,
 
       onstart = function ()
@@ -14338,7 +14338,7 @@ affinity = {
       def = true,
       undeffable = true,
       action = "adopt maelstrom form",
-      isadvisable = function() return shikudo_form_isadvisable("maelstrom") end,
+      isadvisable = function() return shikudo_ability_isadvisable("maelstrom") end,
       oncompleted = function() return shikudo_form_oncompleted("maelstrom") end,
 
       onstart = function ()
@@ -14355,7 +14355,7 @@ affinity = {
       spriority = 0,
       balanceful_act = true,
       def = true,
-      isadvisable = function() return tekura_stance_isadvisable("bodyblock") end,
+      isadvisable = function() return tekura_ability_isadvisable("bodyblock") end,
       action = "bdb",
 
       oncompleted = function ()
@@ -14374,7 +14374,7 @@ affinity = {
       balanceful_act = true,
       def = true,
       action = "evb",
-      isadvisable = function() return tekura_stance_isadvisable("evadeblock") end,
+      isadvisable = function() return tekura_ability_isadvisable("evadeblock") end,
 
       oncompleted = function () 
         defences.got("evadeblock") 
@@ -14392,7 +14392,7 @@ affinity = {
       balanceful_act = true,
       def = true,
       action = "pnb",
-      isadvisable = function() return tekura_stance_isadvisable("pinchblock") end,
+      isadvisable = function() return tekura_ability_isadvisable("pinchblock") end,
 
       oncompleted = function ()
         defences.got("pinchblock")
@@ -14411,7 +14411,7 @@ affinity = {
       def = true,
       undeffable = true,
       action = "hrs",
-      isadvisable = function() return tekura_stance_isadvisable("horse") end,
+      isadvisable = function() return tekura_ability_isadvisable("horse") end,
       oncompleted = function() return tekura_stance_oncompleted("horse") end,
 
       onstart = function ()
@@ -14427,7 +14427,7 @@ affinity = {
       def = true,
       undeffable = true,
       action = "egs",
-      isadvisable = function() return tekura_stance_isadvisable("eagle") end,
+      isadvisable = function() return tekura_ability_isadvisable("eagle") end,
       oncompleted = function() return tekura_stance_oncompleted("eagle") end,
 
       onstart = function ()
@@ -14443,7 +14443,7 @@ affinity = {
       def = true,
       undeffable = true,
       action = "cts",
-      isadvisable = function() return tekura_stance_isadvisable("cat") end,
+      isadvisable = function() return tekura_ability_isadvisable("cat") end,
       oncompleted = function() return tekura_stance_oncompleted("cat") end,
 
       onstart = function ()
@@ -14459,7 +14459,7 @@ affinity = {
       def = true,
       undeffable = true,
       action = "brs",
-      isadvisable = function() return tekura_stance_isadvisable("bear") end,
+      isadvisable = function() return tekura_ability_isadvisable("bear") end,
       oncompleted = function() return tekura_stance_oncompleted("bear") end,
 
       onstart = function ()
@@ -14475,7 +14475,7 @@ affinity = {
       def = true,
       undeffable = true,
       action = "rts",
-      isadvisable = function() return tekura_stance_isadvisable("rat") end,
+      isadvisable = function() return tekura_ability_isadvisable("rat") end,
       oncompleted = function() return tekura_stance_oncompleted("rat") end,
 
       onstart = function ()
@@ -14491,7 +14491,7 @@ affinity = {
       def = true,
       undeffable = true,
       action = "scs",
-      isadvisable = function() return tekura_stance_isadvisable("scorpion") end,
+      isadvisable = function() return tekura_ability_isadvisable("scorpion") end,
       oncompleted = function() return tekura_stance_oncompleted("scorpion") end,
 
       onstart = function ()
@@ -14507,7 +14507,7 @@ affinity = {
       def = true,
       undeffable = true,
       action = "drs",
-      isadvisable = function() return tekura_stance_isadvisable("dragon") end,
+      isadvisable = function() return tekura_ability_isadvisable("dragon") end,
       oncompleted = function() return tekura_stance_oncompleted("dragon") end,
 
       onstart = function ()
