@@ -309,6 +309,40 @@ signals.gmcpcharvitals:connect(function()
   end
 end)
 #end
+
+#if class == "monk" then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local stance = val:match("^Stance: (%w+)$")
+      local form = val:match("^Form: (%w+)$")
+
+      if stance then
+        me.path = "tekura"
+        me.form = nil
+        me.stance = stance:lower()
+        sk.ignored_defences['tekura'].status = false
+        sk.ignored_defences['shikudo'].status = true
+
+        break
+      elseif form then
+        me.path = "shikudo"
+        me.form = form:lower()
+        me.stance = nil
+        sk.ignored_defences['tekura'].status = true
+        sk.ignored_defences['shikudo'].status = false
+
+        break
+      end
+    end
+  end
+
+  if not me.path then
+    me.path = "tekura"
+  end
+end)
+#end
+
 signals.gmcpiretimelist = luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
   me.gametime = deepcopy(gmcp.IRE.Time.List)
