@@ -314,6 +314,16 @@ cpp.compute_sunlight = function()
 end
 #end
 
+#if skills.tekura then
+cpp.compute_monkpath = function()
+  return me.path or ""
+end
+
+cpp.compute_stanceform = function()
+  return me.stance or me.form or ""
+end
+#end
+
 cpp.compute_promptstring = function()
  return ("<LightSlateGrey>")..
         (defc.cloak and "c" or "") ..
@@ -452,6 +462,11 @@ cp.definitions = {
 #end
 #if skills.venom then
   ["@shrugging"]     = "svo.cpp.compute_shruggingbal()",
+#end
+#if skills.tekura then
+  ["@monkpath"]      = "svo.cpp.compute_monkpath()",
+  ["@stance"]        = "svo.cpp.compute_stanceform()",
+  ["@form"]          = "svo.cpp.compute_stanceform()",
 #end
 #if skills.kaido then
   ["@kai"]           = "svo.cpp.compute_kai()",

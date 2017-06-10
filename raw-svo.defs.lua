@@ -1906,6 +1906,13 @@ defs_data = pl.OrderedMap {}
     off = "You ease yourself out of the Dragon stance."})
 #end
 
+#if skills.shikudo then
+  defs_data:set("grip", { type = "shikudo",
+    on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
+    def = "Your hands are gripping your wielded items tightly.",
+    off = "You relax your grip."})
+#end
+
 #if skills.telepathy then
   defs_data:set("mindtelesense", { type = "telepathy",
     mana = "lots",
