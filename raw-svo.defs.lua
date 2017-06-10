@@ -1784,10 +1784,10 @@ defs_data = pl.OrderedMap {}
     local fail_string =
       "Removed %s from %s, it's incompatible with %s to have simultaneously up."
 
-    for _, morph in ipairs(shikudo_forms) do
-      if morph ~= newdef and svo["def"..whereto][mode][morph] then
-        svo["def"..whereto][mode][morph] = false
-        if echoback then echof(fail_string, morph, whereto, newdef) end
+    for _, shikudo_form in ipairs(shikudo_forms) do
+      if shikudo_form ~= newdef and svo["def"..whereto][mode][shikudo_form] then
+        svo["def"..whereto][mode][shikudo_form] = false
+        if echoback then echof(fail_string, shikudo_form, whereto, newdef) end
       end
     end
 
