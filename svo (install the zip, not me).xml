@@ -54201,11 +54201,6 @@ function svo.doubleRunToSend(...)
   end
 end
 
--- returns a list of affs that tree and other basic cures can get
-function svo.gettreeableaffs()
-  return table.n_intersection(svo.keystolist(svo.affl), svo.treecurables)
-end
-
 -- returns a list of affs that focus can get
 function svo.getfocusableaffs()
   return table.n_intersection(svo.keystolist(svo.affl), svo.focuscurables)

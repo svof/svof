@@ -89,6 +89,80 @@ local dict_smoke_def = {}
 
 local codepaste = {}
 
+local tekura_ability_isadvisable = function (new_stance)
+  return (
+    (
+      (
+        sys.deffing 
+        and defdefup[defs.mode][new_stance] 
+        and not defc[new_stance]  
+      ) 
+      or (
+        conf.keepup 
+        and defkeepup[defs.mode][new_stance] 
+        and not defc[new_stance] 
+      )
+    ) 
+    and me.path == "tekura" 
+    and not codepaste.balanceful_defs_codepaste() 
+    and not defc.riding
+  ) or false
+end
+
+local shikudo_ability_isadvisable = function (new_form)
+  return (
+    (
+      (
+        sys.deffing 
+        and defdefup[defs.mode][new_form] 
+        and not defc[new_form]  
+      ) 
+      or (
+        conf.keepup 
+        and defkeepup[defs.mode][new_form] 
+        and not defc[new_form] 
+      )
+    ) 
+    and me.path == "shikudo" 
+    and not codepaste.balanceful_defs_codepaste() 
+    and not defc.riding
+  ) or false
+end
+
+local tekura_stance_oncompleted = function (new_stance)
+  local stances = {
+    "horse", 
+    "eagle", 
+    "cat", 
+    "bear", 
+    "rat", 
+    "scorpion", 
+    "dragon"
+  }
+
+  for _, stance in ipairs(stances) do
+    defences.lost(stance)
+  end
+
+  defences.got(new_stance)
+end
+
+local shikudo_form_oncompleted = function (new_form)
+  local shikudo_forms = {
+    "tykonos", 
+    "willow", 
+    "rain", 
+    "oak", 
+    "gaital", 
+    "maelstrom"
+  }
+
+  for _, form in ipairs(shikudo_forms) do
+    defences.lost(form)
+  end
+
+  defences.got(new_form)
+end
 
 -- used to check if we're writhing from something already
 --impale stacks below other writhes
@@ -267,8 +341,6 @@ codepaste.smoke_elm_pipe = function()
 
   return (not (pipes.elm.id == 0) and
     (pipes.elm.lit or pipes.elm.arty) and
-    -- can't smoke elm with inquisition and hellsight together
-    not (affs.inquisition and affs.hellsight) and
     not (pipes.elm.puffs == 0))
 end
 
@@ -992,32 +1064,16 @@ dict = {
 
       -- gives various afflictions, amount of which depends on your humour level
       --[[
-        slickness always seems to happen
-        1-2: add 1 unknown
-        3-6: add 2 unknowns
-        7-9: add 3 unknowns
-        10: add 4 unknowns
+        1-2: 1 affliction
+        3-6: 2 afflictions
+        7-9: 3 afflictions
+        10: 4 afflictions
 
-        anorexia 50% time
-        slickness 8+
+        Above information is roughly accurate.
+        Gives between one and four afflictions from the following: lethargy, slickness, anorexia, weariness.
+        Afflictions not hidden by gmcp, so removed from the inundated function.
       ]]
       inundated = function()
-        addaff(dict.slickness)
-
-        if dict.phlegmatichumour.count >= 3 and math.random(1,2) == 1 then
-          addaff(dict.anorexia)
-        end
-
-        if dict.phlegmatichumour.count == 8 then
-          codepaste.addunknownany(4)
-        elseif dict.phlegmatichumour.count >= 6 then
-          codepaste.addunknownany(3)
-        elseif dict.phlegmatichumour.count >= 4 then
-          codepaste.addunknownany(2)
-        else
-          codepaste.addunknownany(1)
-        end
-
         removeaff("phlegmatichumour")
         dict.phlegmatichumour.count = 0
       end,
@@ -1124,11 +1180,9 @@ dict = {
       aspriority = 0,
       spriority = 0,
       def = true,
-      -- not handled by serverside
-      undeffable = true,
 
       isadvisable = function ()
-        return false
+        return not defc.waterbubble and ((sys.deffing and defdefup[defs.mode].waterbubble) or (conf.keepup and defkeepup[defs.mode].waterbubble)) and not affs.anorexia and me.is_underwater
       end,
 
       eatcure = {"pear", "calcite"},
@@ -1138,6 +1192,7 @@ dict = {
       end,
 
       oncompleted = function ()
+        defences.got("waterbubble")
       end,
 
       empty = function()
@@ -3003,7 +3058,7 @@ dict = {
       spriority = 0,
 
       isadvisable = function ()
-        return (affs.hellsight and codepaste.smoke_valerian_pipe()) or false
+        return (affs.hellsight and not affs.inquisition and codepaste.smoke_valerian_pipe()) or false
       end,
 
       oncompleted = function ()
@@ -6309,13 +6364,13 @@ dict = {
       isadvisable = function ()
         return (not sys.sp_satisfied and not sys.blockparry and not affs.paralysis
           and not doingaction "doparry" and (
-#if class == "monk" then
+#if skills.tekura then
             conf.guarding
 #else
             conf.parry
 #end
            ) and not codepaste.balanceful_codepaste()
-#if class ~= "blademaster" and class ~= "monk" then
+#if class ~= "blademaster" and not skills.tekura then
           -- blademasters can parry with their sword sheathed
           and ((not sys.enabledgmcp or defc.dragonform) or (next(me.wielded) and sk.have_parryable()))
 #end
@@ -14161,11 +14216,193 @@ affinity = {
   },
 #end
 
-#if skills.tekura then
-#basicdef("bodyblock", "bdb")
-#basicdef("evadeblock", "evb")
-#basicdef("pinchblock", "pnb")
+#if skills.shikudo then
+  grip = {
+    gamename = "gripping",
+    physical = {
+      balanceless_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+      action = "grip",
 
+      isadvisable = function()
+        return (
+          not defc.grip 
+          and (
+            (sys.deffing and defdefup[defs.mode].grip) 
+            or (conf.keepup and defkeepup[defs.mode].grip)
+          ) 
+          and me.path == "shikudo" 
+          and not codepaste.balanceful_defs_codepaste() 
+          and sys.canoutr 
+          and not affs.paralysis 
+          and not affs.prone
+        ) or false
+      end,
+
+      oncompleted = function()
+        defences.got("grip")
+      end,
+
+      onstart = function() 
+        send("grip", conf.commandecho)
+      end
+    }
+  },
+  tykonos = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt tykonos form",
+      isadvisable = function() return shikudo_ability_isadvisable("tykonos") end,
+      oncompleted = function() return shikudo_form_oncompleted("tykonos") end,
+
+      onstart = function ()
+        send("adopt tykonos form", conf.commandecho)
+      end
+    },
+  },
+  willow = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt willow form",
+      isadvisable = function() return shikudo_ability_isadvisable("willow") end,
+      oncompleted = function() return shikudo_form_oncompleted("willow") end,
+
+      onstart = function ()
+        send("adopt willow form", conf.commandecho)
+      end
+    },
+  },
+  rain = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt rain form",
+      isadvisable = function() return shikudo_ability_isadvisable("rain") end,
+      oncompleted = function() return shikudo_form_oncompleted("rain") end,
+
+      onstart = function ()
+        send("adopt rain form", conf.commandecho)
+      end
+    },
+  },
+  oak = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt oak form",
+      isadvisable = function() return shikudo_ability_isadvisable("oak") end,
+      oncompleted = function() return shikudo_form_oncompleted("oak") end,
+
+      onstart = function ()
+        send("adopt oak form", conf.commandecho)
+      end
+    },
+  },
+  gaital = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt gaital form",
+      isadvisable = function() return shikudo_ability_isadvisable("gaital") end,
+      oncompleted = function() return shikudo_form_oncompleted("gaital") end,
+
+      onstart = function ()
+        send("adopt gaital form", conf.commandecho)
+      end
+    },
+  },
+  maelstrom = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt maelstrom form",
+      isadvisable = function() return shikudo_ability_isadvisable("maelstrom") end,
+      oncompleted = function() return shikudo_form_oncompleted("maelstrom") end,
+
+      onstart = function ()
+        send("adopt maelstrom form", conf.commandecho)
+      end
+    },
+  },
+#end
+
+#if skills.tekura then
+  bodyblock = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      isadvisable = function() return tekura_ability_isadvisable("bodyblock") end,
+      action = "bdb",
+
+      oncompleted = function ()
+        defences.got("bodyblock")
+      end,
+
+      onstart = function ()
+        send("bdb", conf.commandecho)
+      end
+    },
+  },
+  evadeblock = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      action = "evb",
+      isadvisable = function() return tekura_ability_isadvisable("evadeblock") end,
+
+      oncompleted = function () 
+        defences.got("evadeblock") 
+      end,
+
+      onstart = function ()
+        send("evb", conf.commandecho)
+      end
+    },
+  },
+  pinchblock = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      action = "pnb",
+      isadvisable = function() return tekura_ability_isadvisable("pinchblock") end,
+
+      oncompleted = function ()
+        defences.got("pinchblock")
+      end,
+
+      onstart = function ()
+        send("pnb", conf.commandecho)
+      end
+    },
+  },
   horse = {
     physical = {
       aspriority = 0,
@@ -14173,20 +14410,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].horse and not defc.horse) or (conf.keepup and defkeepup[defs.mode].horse and not defc.horse)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("horse")
-      end,
-
       action = "hrs",
+      isadvisable = function() return tekura_ability_isadvisable("horse") end,
+      oncompleted = function() return tekura_stance_oncompleted("horse") end,
+
       onstart = function ()
         send("hrs", conf.commandecho)
       end
@@ -14199,20 +14426,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].eagle and not defc.eagle) or (conf.keepup and defkeepup[defs.mode].eagle and not defc.eagle)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("eagle")
-      end,
-
       action = "egs",
+      isadvisable = function() return tekura_ability_isadvisable("eagle") end,
+      oncompleted = function() return tekura_stance_oncompleted("eagle") end,
+
       onstart = function ()
         send("egs", conf.commandecho)
       end
@@ -14225,20 +14442,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].cat and not defc.cat) or (conf.keepup and defkeepup[defs.mode].cat and not defc.cat)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("cat")
-      end,
-
       action = "cts",
+      isadvisable = function() return tekura_ability_isadvisable("cat") end,
+      oncompleted = function() return tekura_stance_oncompleted("cat") end,
+
       onstart = function ()
         send("cts", conf.commandecho)
       end
@@ -14251,20 +14458,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].bear and not defc.bear) or (conf.keepup and defkeepup[defs.mode].bear and not defc.bear)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("bear")
-      end,
-
       action = "brs",
+      isadvisable = function() return tekura_ability_isadvisable("bear") end,
+      oncompleted = function() return tekura_stance_oncompleted("bear") end,
+
       onstart = function ()
         send("brs", conf.commandecho)
       end
@@ -14277,20 +14474,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].rat and not defc.rat) or (conf.keepup and defkeepup[defs.mode].rat and not defc.rat)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("rat")
-      end,
-
       action = "rts",
+      isadvisable = function() return tekura_ability_isadvisable("rat") end,
+      oncompleted = function() return tekura_stance_oncompleted("rat") end,
+
       onstart = function ()
         send("rts", conf.commandecho)
       end
@@ -14303,20 +14490,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].scorpion and not defc.scorpion) or (conf.keepup and defkeepup[defs.mode].scorpion and not defc.scorpion)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("scorpion")
-      end,
-
       action = "scs",
+      isadvisable = function() return tekura_ability_isadvisable("scorpion") end,
+      oncompleted = function() return tekura_stance_oncompleted("scorpion") end,
+
       onstart = function ()
         send("scs", conf.commandecho)
       end
@@ -14329,20 +14506,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].dragon and not defc.dragon) or (conf.keepup and defkeepup[defs.mode].dragon and not defc.dragon)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("dragon")
-      end,
-
       action = "drs",
+      isadvisable = function() return tekura_ability_isadvisable("dragon") end,
+      oncompleted = function() return tekura_stance_oncompleted("dragon") end,
+
       onstart = function ()
         send("drs", conf.commandecho)
       end
@@ -14977,7 +15144,7 @@ affinity = {
         elseif not shadowcloak.attrib or not shadowcloak.attrib:find("w") then
           send("wear " .. shadowcloak.id, conf.commandecho)
         else
-	  defences.got("shadowcloak")
+      defences.got("shadowcloak")
         end
       end
     }
@@ -15088,10 +15255,10 @@ affinity = {
       oncompleted = function ()
         defences.got("trusad")
       end,
-	  
+      
       action = "intone trusad",
       onstart = function ()
-	    send("intone trusad", conf.commandecho)
+        send("intone trusad", conf.commandecho)
       end
     }
   },
@@ -15110,10 +15277,10 @@ affinity = {
       oncompleted = function ()
         defences.got("tsuura")
       end,
-	  
+      
       action = "intone tsuura",
       onstart = function ()
-	    send("intone tsuura", conf.commandecho)
+        send("intone tsuura", conf.commandecho)
       end
     }
   },
@@ -15132,10 +15299,10 @@ affinity = {
       oncompleted = function ()
         defences.got("ukhia")
       end,
-	  
+      
       action = "intone ukhia",
       onstart = function ()
-	    send("intone ukhia", conf.commandecho)
+        send("intone ukhia", conf.commandecho)
       end
     }
   },
@@ -15154,10 +15321,10 @@ affinity = {
       oncompleted = function ()
         defences.got("qamad")
       end,
-	  
+      
       action = "intone qamad",
       onstart = function ()
-	    send("intone qamad", conf.commandecho)
+        send("intone qamad", conf.commandecho)
       end
     }
   },
@@ -15176,10 +15343,10 @@ affinity = {
       oncompleted = function ()
         defences.got("mainaas")
       end,
-	  
+      
       action = "intone mainaas",
       onstart = function ()
-	    send("intone mainaas", conf.commandecho)
+        send("intone mainaas", conf.commandecho)
       end
     }
   },
@@ -15198,10 +15365,10 @@ affinity = {
       oncompleted = function ()
         defences.got("gaiartha")
       end,
-	  
+      
       action = "intone gaiartha",
       onstart = function ()
-	    send("intone gaiartha", conf.commandecho)
+        send("intone gaiartha", conf.commandecho)
       end
     }
   },
@@ -15462,9 +15629,9 @@ affinity = {
     acrobatics = "acrobatics",
     affinity = "affinity",
     aiming = false,
-    airpocket = "pear",
+    airpocket = "waterbubble",
     alertness = "alertness",
-	antiforce = "gaiartha",
+    antiforce = "gaiartha",
     arctar = "arctar",
     aria = "aria",
     arrowcatching = "arrowcatch",
@@ -15480,11 +15647,11 @@ affinity = {
     blessingofthegods = false,
     blindness = "blind",
     blocking = "block",
-	bloodquell = "ukhia",
+    bloodquell = "ukhia",
     bloodshield = false,
-	blur = "blur",
+    blur = "blur",
     boartattoo = false,
-	bodyaugment = "mainaas",
+    bodyaugment = "mainaas",
     bodyblock = "bodyblock",
     boostedregeneration = "boosting",
     chameleon = "chameleon",
@@ -15506,15 +15673,15 @@ affinity = {
     density = "mass",
     devilmark = "devilmark",
     diamondskin = "diamondskin",
-	disassociate = false,
-	disperse = "disperse",
+    disassociate = false,
+    disperse = "disperse",
     distortedaura = "distortedaura",
     disperse = "disperse",
     dodging = "dodging",
     dragonarmour = "dragonarmour",
     dragonbreath = "dragonbreath",
     drunkensailor = "drunkensailor",
-	durability = "tsuura",
+    durability = "tsuura",
     earthshield = "earthblessing",
     eavesdropping = "eavesdrop",
     electricresist = "electricresist",
@@ -15538,7 +15705,7 @@ affinity = {
     gripping = "grip",
     groundwatch = "groundwatch",
     harmony = "harmony",
-	haste = false,
+    haste = false,
     heartsfury = "heartsfury",
     heldbreath = "breath",
     heresy = "heresy",
@@ -15551,15 +15718,15 @@ affinity = {
     insuflate = false,
     insulation = false,
     ironform = false,
-	ironwill = "qamad",
+    ironwill = "qamad",
     kaiboost = "kaiboost",
     kaitrance = "trance",
     kola = "kola",
-	lament = false,
+    lament = false,
     lay = "lay",
     levitating = "levitation",
     lifegiver = false,
-	lifesteal = false,
+    lifesteal = false,
     lifevision = "lifevision",
     lipreading = "lipread",
     magicresist = "magicresist",
@@ -15582,7 +15749,7 @@ affinity = {
     pinchblock = "pinchblock",
     poisonresist = "venom",
     preachblessing = false,
-	precision = "trusad",
+    precision = "trusad",
     prismatic = "lyre",
     projectiles = "projectiles",
     promosurcoat = false,
@@ -15602,6 +15769,7 @@ affinity = {
     setweapon = "impaling",
     shadowveil = "shadowveil",
     shield = "shield",
+    shikudoform = false,
     shinbinding = "bind",
     shinclarity = "clarity",
     shinrejoinder = false,

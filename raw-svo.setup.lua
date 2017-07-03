@@ -309,6 +309,40 @@ signals.gmcpcharvitals:connect(function()
   end
 end)
 #end
+
+#if class == "monk" then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local stance = val:match("^Stance: (%w+)$")
+      local form = val:match("^Form: (%w+)$")
+
+      if stance then
+        me.path = "tekura"
+        me.form = nil
+        me.stance = stance:lower()
+        sk.ignored_defences['tekura'].status = false
+        sk.ignored_defences['shikudo'].status = true
+
+        break
+      elseif form then
+        me.path = "shikudo"
+        me.form = form:lower()
+        me.stance = nil
+        sk.ignored_defences['tekura'].status = true
+        sk.ignored_defences['shikudo'].status = false
+
+        break
+      end
+    end
+  end
+
+  if not me.path then
+    me.path = "tekura"
+  end
+end)
+#end
+
 signals.gmcpiretimelist = luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
   me.gametime = deepcopy(gmcp.IRE.Time.List)
@@ -430,6 +464,14 @@ end)
 do
   local oldnum, oldarea
   signals.gmcproominfo:connect(function (...)
+    if me then
+        if table.contains(gmcp.Room.Info.details, "underwater") then
+            me.is_underwater = true
+        else
+            me.is_underwater = false
+        end
+    end
+    
     if oldnum ~= gmcp.Room.Info.num then
       signals.newroom:emit(_G.gmcp.Room.Info.name)
       oldnum = gmcp.Room.Info.num
@@ -1231,7 +1273,7 @@ color_table.a_magenta     = {255, 0, 255}
 color_table.a_cyan        = {0, 255, 255}
 color_table.a_white       = {255, 255, 255}
 color_table.a_darkwhite   = {192, 192, 192}
-color_table.a_darkyellow  = {0, 179, 0}
+color_table.a_darkyellow  = {179, 179, 0}
 -- 2D2E2E, 676562, 433020, 28BA28, 398C39, 0D790D
 color_table.a_onelevel    = {45, 46, 46}
 color_table.a_twolevel    = {103, 101, 98}
@@ -1259,20 +1301,20 @@ end)
 
 -- fix iffy table.save
 function table.save( sfile, t )
-	local tables = {}
-	table.insert( tables, t )
-	local lookup = { [t] = 1 }
-	local file, msg = io.open( sfile, "w" )
-	if not file then return nil, msg end
+    local tables = {}
+    table.insert( tables, t )
+    local lookup = { [t] = 1 }
+    local file, msg = io.open( sfile, "w" )
+    if not file then return nil, msg end
 
-	file:write( "return {" )
-	for i,v in ipairs( tables ) do
-		table.pickle( v, file, tables, lookup )
-	end
-	file:write( "}" )
-	file:close()
+    file:write( "return {" )
+    for i,v in ipairs( tables ) do
+        table.pickle( v, file, tables, lookup )
+    end
+    file:write( "}" )
+    file:close()
 
-	return true
+    return true
 end
 
 -- load the lust list
