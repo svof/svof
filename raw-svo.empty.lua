@@ -131,6 +131,8 @@ empty.tree = function ()
   local a = gettreeableaffs()
   debugf("Tree cured nothing, removing: "..table.concat(a, ", "))
   removeaff(a)
+  dict.unknownmental.count = 0
+  dict.unknownany.count = 0
 end
 
 empty.dragonheal = empty.tree

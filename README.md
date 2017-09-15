@@ -29,19 +29,19 @@ Svof is licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.
 1. Open the command-line and navigate to the Svof folder, and run:
 
        On Ubuntu:
-       ./generate.lua -o &lt;your class&gt;
+       ./generate.lua -o yourclasshere
 
        In Windows:
-       generate.lua -o &lt;your class&gt;
+       generate.lua -o yourclasshere
        
        On OSX:
-       lua5.1 generate.lua -o &lt;your class&gt;
+       lua5.1 generate.lua -o yourclasshere
 
 
-1. Replace &lt;Svof Git location&gt; with the path to the XML files, and then run this command in Mudlet (requires 3.0 - this is only needed for the development version, normal Svof can run on 2.1)
+1. Replace <Svof Git location> with the path to the XML files, and then run this command in Mudlet (requires 3.0 - this is only needed for the development version, normal Svof can run on 2.1)
 
         lua installModule([[<Svof Git location>/svo (burncounter).xml]]) installModule([[<Svof Git location>/svo (dragonlimbcounter).xml]]) installModule([[<Svof Git location>/svo (elistsorter).xml]]) installModule([[<Svof Git location>/svo (enchanter).xml]]) installModule([[<Svof Git location>/svo (fishdist).xml]]) installModule([[<Svof Git location>/svo (inker).xml]]) installModule([[<Svof Git location>/svo (install the zip, not me).xml]]) installModule([[<Svof Git location>/svo (knightlimbcounter).xml]]) installModule([[<Svof Git location>/svo (logger).xml]]) installModule([[<Svof Git location>/svo (magilimbcounter).xml]]) installModule([[<Svof Git location>/svo (metalimbcounter).xml]]) installModule([[<Svof Git location>/svo (mindnet).xml]]) installModule([[<Svof Git location>/svo (monklimbcounter).xml]]) installModule([[<Svof Git location>/svo (namedb).xml]]) installModule([[<Svof Git location>/svo (offering).xml]]) installModule([[<Svof Git location>/svo (peopletracker).xml]]) installModule([[<Svof Git location>/svo (priesthealing).xml]]) installModule([[<Svof Git location>/svo (priestlimbcounter).xml]]) installModule([[<Svof Git location>/svo (priestreport).xml]]) installModule([[<Svof Git location>/svo (reboundingsileristracker).xml]]) installModule([[<Svof Git location>/svo (refiller).xml]]) installModule([[<Svof Git location>/svo (runeidentifier).xml]]) installModule([[<Svof Git location>/svo (simple mindnet).xml]]) installModule([[<Svof Git location>/svo (sparkstracker).xml]]) installModule([[<Svof Git location>/svo (stormhammertarget).xml]])
-1. When prompted to find the Svof folder location, select the &lt;Svof Git location&gt;/own svo folder
+1. When prompted to find the Svof folder location, select the <Svof Git location>/own svo folder
 1. Go to Toolbox > Module Manager and tick all 'don't sync' boxes, so they become 'sync', for all Svof XML files.
 
 All set!
