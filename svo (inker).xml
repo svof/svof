@@ -79,11 +79,11 @@
                     <integer>1</integer>
                 </regexCodePropertyList>
             </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
                 <name>Finished inking the tattoo</name>
                 <script>svo.ti_finishedinking()</script>
                 <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
+                <conditonLineDelta>1</conditonLineDelta>
                 <mStayOpen>0</mStayOpen>
                 <mCommand></mCommand>
                 <packageName></packageName>
@@ -93,9 +93,11 @@
                 <colorTriggerFgColor>#000000</colorTriggerFgColor>
                 <colorTriggerBgColor>#000000</colorTriggerBgColor>
                 <regexCodeList>
+                    <string>As the </string>
                     <string>^As the \w+ tattoo's shape is codified on the .+ of yourself, the last of the ink leaves the air and you pause for a moment to admire your handiwork\.$</string>
                 </regexCodeList>
                 <regexCodePropertyList>
+                    <integer>2</integer>
                     <integer>1</integer>
                 </regexCodePropertyList>
             </Trigger>
