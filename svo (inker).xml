@@ -83,7 +83,7 @@
                 <name>Finished inking the tattoo</name>
                 <script>svo.ti_finishedinking()</script>
                 <triggerType>0</triggerType>
-                <conditonLineDelta>1</conditonLineDelta>
+                <conditonLineDelta>0</conditonLineDelta>
                 <mStayOpen>0</mStayOpen>
                 <mCommand></mCommand>
                 <packageName></packageName>
