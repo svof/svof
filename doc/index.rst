@@ -423,6 +423,7 @@ Tag                  What it shows
 @shin                (blademasters only) current shin amount
 @morph               (morph users only) your current morph
 @power               your shin or kai amount, or nothing if you don't use them
+@battlerage          current battlerage amount
 @promptstring        emulates the Achaean prompt string + old Vadi-M's prompt ending (contributed by Lynara)
 @timestamp           the current timestamp, in hh:mm:ss.zzz format
 @servertimestamp     timestamp as given by the game (\*s option in HELP PROMPT)
