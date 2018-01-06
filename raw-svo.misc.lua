@@ -876,3 +876,7 @@ function unsetserverignore(k)
   serverignore[k] = nil
   raiseEvent("svo serverignore changed", k)
 end
+
+function svo.haveskillset(skillset)
+  return table.contains(svo.knownskills[svo.me.class:lower()], skillset) and true or false
+end

@@ -1668,3 +1668,24 @@ sk.arena_areas = {
   ["The Pits"]                         = true,
 }
 
+svo.knownskills = {
+  alchemist    = {"transmutation", "physiology", "alchemy"},
+  apostate     = {"evileye", "necromancy", "apostasy"},
+  bard         = {"voicecraft", "swashbuckling", "harmonics"},
+  blademaster  = {"twoarts", "striking", "shindo"},
+  depthswalker = {"shadowmancy","aeonics","terminus"},
+  druid        = {"groves", "metamorphosis", "reclamation"},
+  infernal     = {"necromancy", "chivalry", "weaponmastery"},
+  jester       = {"tarot", "pranks", "puppetry"},
+  magi         = {"elementalism", "crystalism", "artificing"},
+  monk         = {"tekura", "kaido", "telepathy", "shikudo"},
+  none         = {},
+  occultist    = {"occultism", "tarot", "domination"},
+  paladin      = {"chivalry", "devotion", "weaponmastery"},
+  priest       = {"spirituality", "devotion", "healing"},
+  runewarden   = {"runelore", "chivalry", "weaponmastery"},
+  sentinel     = {"metamorphosis", "woodlore", "skirmishing"},
+  serpent      = {"subterfuge", "venom", "hypnosis"},
+  shaman       = {"runelore", "curses", "vodun"},
+  sylvan       = {"weatherweaving", "groves", "propagation"},
+}
