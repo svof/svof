@@ -62,7 +62,7 @@ bals = bals or {
 if svo.haveskillset("voicecraft") then
   bals.voice = true
 end
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
   bals.hydra = true
 end
 if svo.haveskillset("domination") then
@@ -1855,7 +1855,7 @@ end
 if svo.haveskillset("metamorphosis") then
 function sk.clearmorphs()
   local morphs
-  if svo.me.class == "druid" then
+  if svo.me.class == "Druid" then
     morphs = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
   else
     morphs = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm"}
@@ -1869,7 +1869,7 @@ end
 
 function sk.inamorph()
   local t
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
   t = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
 else
   t = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm"}
@@ -1883,7 +1883,7 @@ end
 
 function sk.validmorphskill(name)
   local morphs
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
   morphs = {"squirrel", "powers", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "bonding", "nightingale", "elephant", "transmorph", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "affinity", "wyvern", "hydra", "truemorph"}
 else
   local morphs = {"squirrel", "powers", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "bonding", "nightingale", "elephant", "transmorph", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "affinity", "truemorph"}
@@ -1908,44 +1908,44 @@ end
 
 function sk.updatemorphskill()
   sk.morphsforskill = {}
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
   sk.morphsforskill.elusiveness = { "hyena", "wolverine" }
 else
   sk.morphsforskill.elusiveness = { "basilisk", "hyena", "wolverine", "jaguar" }
 end
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
   sk.morphsforskill.fitness = { "wolf", "cheetah", "hyena", "elephant", "wyvern", "hydra" }
 else
   sk.morphsforskill.fitness = { "wolf", "cheetah", "hyena", "elephant", "jaguar"}
 end
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
   sk.morphsforskill.flame = { "wyvern" }
 else
   sk.morphsforskill.flame = { "wyvern", "basilisk" }
 end
   sk.morphsforskill.lyre = { "nightingale" }
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
   sk.morphsforskill.nightsight = { "wildcat", "wolf", "cheetah", "owl", "hyena", "condor", "wolverine", "eagle", "icewyrm", "wyvern", "hydra" }
 else
   sk.morphsforskill.nightsight = { "wildcat", "wolf", "cheetah", "owl", "hyena", "condor", "wolverine", "jaguar", "eagle", "icewyrm" }
 end
   sk.morphsforskill.rest = { "sloth" }
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
   sk.morphsforskill.resistance = { "hydra" }
 else
   sk.morphsforskill.resistance = { "basilisk", "jaguar" }
 end
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
   sk.morphsforskill.stealth = { "hyena" }
 else
   sk.morphsforskill.stealth = { "basilisk", "hyena", "jaguar" }
 end
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
   sk.morphsforskill.temperance = { "icewyrm", "wyvern", "hydra" }
 else
   sk.morphsforskill.temperance = { "icewyrm" }
 end
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
   sk.morphsforskill.vitality = { "bear", "elephant", "icewyrm", "wyvern", "hydra" }
 else
   sk.morphsforskill.vitality = { "bear", "elephant", "jaguar", "icewyrm" }
@@ -1961,7 +1961,7 @@ end
 
   local newskillmorphs = {}
   local morphlist
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
   morphlist = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
 else
   morphlist = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm"}

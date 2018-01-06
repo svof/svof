@@ -309,7 +309,7 @@ signals.gmcpcharvitals:connect(function()
 end)
 #end
 
-if svo.me.class == "monk" then
+if svo.me.class == "Monk" then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for index, val in ipairs(gmcp.Char.Vitals.charstats) do
@@ -900,7 +900,7 @@ disableTrigger("Tekura balances")
 enableTrigger("Tekura balances")
 #end
 
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
 enableTrigger("Hydra balance")
 else
 disableTrigger("Hydra balance")

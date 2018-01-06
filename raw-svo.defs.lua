@@ -1118,7 +1118,7 @@ defs_data = pl.OrderedMap {}
       return true
     end,
     def = "A sloth spirit co-habits your body." })
-if svo.me.class == "sentinel" then
+if svo.me.class == "Sentinel" then
   defs_data:set("basilisk", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"} do
@@ -1180,7 +1180,7 @@ end
       return true
     end,
     def = "A wolverine spirit co-habits your body." })
-if svo.me.class == "sentinel" then
+if svo.me.class == "Sentinel" then
   defs_data:set("jaguar", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
@@ -1230,7 +1230,7 @@ end
       return true
     end,
     def = "An icewyrm spirit co-habits your body." })
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
   defs_data:set("wyvern", { type = "metamorphosis",
     onenable = function (mode, newdef, whereto, echoback)
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"} do

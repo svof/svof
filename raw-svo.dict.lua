@@ -15678,7 +15678,7 @@ affinity = {
   svotossd = {}
 } -- end of dict
 
-if svo.me.class == "sentinel" then
+if svo.me.class == "Sentinel" then
   dict.basilisk = {
     physical = {
       balanceful_act = true,
@@ -15715,7 +15715,7 @@ if svo.me.class == "sentinel" then
     }
   }
 end
-if svo.me.class == "sentinel" then
+if svo.me.class == "Sentinel" then
   dict.jaguar = {
     physical = {
       balanceful_act = true,
@@ -15752,7 +15752,7 @@ if svo.me.class == "sentinel" then
     }
   }
 end
-if svo.me.class == "druid" then
+if svo.me.class == "Druid" then
   dict.wyvern = {
     physical = {
       balanceful_act = true,
