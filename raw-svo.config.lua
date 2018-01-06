@@ -1024,12 +1024,12 @@ config_dict = pl.OrderedMap {
     end,
     onset = function ()
       conf.morphskill = conf.morphskill:lower()
-      local t = {powers = "squirrel", bonding = "bear", transmorph = "elephant", affinity = "icewyrm",
-#if class == "druid" then
-      truemorph = "hydra"}
-#else
-      truemorph = "icewyrm"}
-#end
+      local t = {powers = "squirrel", bonding = "bear", transmorph = "elephant", affinity = "icewyrm"},
+if svo.me.class == "Druid" then
+      t.truemorph = "hydra"
+else
+      t.truemorph = "icewyrm"
+end
       if t[conf.morphskill] then
         echof("Thanks! I've set your morphskill to '%s' though, because %s isn't a morph.", t[conf.morphskill], conf.morphskill)
         conf.morphskill = t[conf.morphskill]

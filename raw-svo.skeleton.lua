@@ -31,7 +31,7 @@ function contains(t, value)
   return false
 end
 
-#if skills.healing then
+if svo.haveskillset("healing") then
   -- used by 'normal' cure functions to see if we should ignore curing this aff
   -- returns true - Healing will *not* cure, use normal
   -- returns false - Healing *will* cure, don't use normal
@@ -44,7 +44,7 @@ end
 
     return true
   end
-#end
+end
 
 function sk.checking_herb_ai()
   return (doingaction"checkparalysis" or doingaction"checkasthma" or doingaction"checkimpatience") and true or false
@@ -58,35 +58,36 @@ bals = bals or {
   purgative = true, salve = true,
   balance = true, equilibrium = true, focus = true,
   tree = true, leftarm = "unset", rightarm = "unset",
-  dragonheal = true, smoke = true,
-#if skills.voicecraft then
-  voice = true,
-#end
-#if class == "druid" then
-  hydra = true,
-#end
-#if skills.domination then
-  entities = true,
-#end
-#if skills.healing then
-  healing = true,
-#end
-#if skills.chivalry or skills.shindo or skills.kaido or skills.metamorphosis then
-  fitness = true,
-#end
-#if skills.chivalry then
-  rage = true,
-#end
-#if skills.venom then
-  shrugging = true,
-#end
-#if skills.physiology then
-  humour = true, homunculus = true,
-#end
-#if skills.terminus then
-  word = true,
-#end
-}
+  dragonheal = true, smoke = true}
+if svo.haveskillset("voicecraft") then
+  bals.voice = true
+end
+if svo.me.class == "druid" then
+  bals.hydra = true
+end
+if svo.haveskillset("domination") then
+  bals.entities = true
+end
+if svo.haveskillset("healing") then
+  bals.healing = true
+end
+if svo.haveskillset("chivalry") or svo.haveskillset("shindo") or svo.haveskillset("kaido") or svo.haveskillset("metamorphosis") then
+  bals.fitness = true
+end
+if svo.haveskillset("chivalry") then
+  bals.rage = true
+end
+if svo.haveskillset("venom") then
+  bals.shrugging = true
+end
+if svo.haveskillset("physiology") then
+  bals.humour = true
+  bals.homunculus = true
+end
+if svo.haveskillset("terminus") then
+  bals.word = true
+end
+
 -- new incoming balances that are tracked between the lines and the prompt
 newbals = {}
 
@@ -140,11 +141,10 @@ check_purgative = function(sync_mode)
   local function check(what)
     local gotsomething = false
     for i, j in pairs(what) do
-      if not (conf.serverside and serverignore[i]) and j.p.purgative and j.p.purgative.isadvisable() and not ignore[i]
-#if skills.healing then
-         and sk.wont_heal_this(i)
-#end
-      then
+      if not (conf.serverside and serverignore[i]) and j.p.purgative and j.p.purgative.isadvisable() and not ignore[i] then
+        if svo.haveskillset("healing") and not sk.wont_heal_this(i) then
+          return
+        end
 
       prios[i] = (not sync_mode) and j.p.purgative.aspriority or j.p.purgative.spriority
       gotsomething = true
@@ -182,11 +182,10 @@ check_salve = function(sync_mode)
   local prios = {}
   local function check(what)
     for i, j in pairs(what) do
-      if not (conf.serverside and serverignore[i]) and j.p.salve and j.p.salve.isadvisable() and not ignore[i]
-#if skills.healing then
-           and sk.wont_heal_this(i)
-#end
-      then
+      if not (conf.serverside and serverignore[i]) and j.p.salve and j.p.salve.isadvisable() and not ignore[i] then
+        if svo.haveskillset("healing") and not sk.wont_heal_this(i) then
+          return
+        end
         prios[i] = (not sync_mode) and j.p.salve.aspriority or j.p.salve.spriority
       end
     end
@@ -222,11 +221,10 @@ check_herb = function(sync_mode)
     for i, j in pairs(what) do
       if not (conf.serverside and serverignore[i]) and j.p.herb and j.p.herb.isadvisable() and not ignore[i]
         -- make sure that we can outrift things, or if we can't, we have the herb in our inventory
-        and (sys.canoutr or sk.can_eat_for(j.p.herb))
-#if skills.healing then
-         and sk.wont_heal_this(i)
-#end
-        then
+        and (sys.canoutr or sk.can_eat_for(j.p.herb)) then
+          if svo.haveskillset("healing") and not sk.wont_heal_this(i) then
+            return
+          end
           prios[i] = (not sync_mode) and j.p.herb.aspriority or j.p.herb.spriority
       end
     end
@@ -264,11 +262,10 @@ check_misc = function(sync_mode, onlyamnesia)
   local prios = {}
   local function check(what)
     for i, j in pairs(what) do
-      if not (conf.serverside and serverignore[i]) and j.p.misc and j.p.misc.isadvisable() and not ignore[i] and not doingaction (i) and (not affs.sleep or j.p.misc.action_name == "sleep")
-#if skills.healing then
-         and sk.wont_heal_this(i)
-#end
-      then
+      if not (conf.serverside and serverignore[i]) and j.p.misc and j.p.misc.isadvisable() and not ignore[i] and not doingaction (i) and (not affs.sleep or j.p.misc.action_name == "sleep") then
+        if svo.haveskillset("healing") and not sk.wont_heal_this(i) then
+          return
+        end
         prios[i] = (not sync_mode) and j.p.misc.aspriority or j.p.misc.spriority
       end
     end
@@ -319,11 +316,10 @@ check_smoke = function(sync_mode)
   local prios = {}
   local function check(what)
     for i, j in pairs(what) do
-      if not (conf.serverside and serverignore[i]) and j.p.smoke and j.p.smoke.isadvisable() and not ignore[i] and not doingaction(i)
-#if skills.healing then
-         and sk.wont_heal_this(i)
-#end
-      then
+      if not (conf.serverside and serverignore[i]) and j.p.smoke and j.p.smoke.isadvisable() and not ignore[i] and not doingaction(i) then
+        if svo.haveskillset("healing") and not sk.wont_heal_this(i) then
+          return
+        end
         prios[i] = (not sync_mode) and j.p.smoke.aspriority or j.p.smoke.spriority
       end
     end
@@ -387,18 +383,15 @@ check_focus = function(sync_mode)
       return
   end
 
-#if skills.healing then
   local wont_heal_this = sk.wont_heal_this
-#end
 
   -- get all prios in the list
   local prios = {}
   for i, j in pairs(affs) do
-    if not (conf.serverside and serverignore[i]) and j.p.focus and (not affs.cadmus or (conf.focuswithcadmus and me.cadmusaffs[i])) and j.p.focus.isadvisable() and not ignore[i]
-#if skills.healing then
-         and wont_heal_this(i)
-#end
-        then
+    if not (conf.serverside and serverignore[i]) and j.p.focus and (not affs.cadmus or (conf.focuswithcadmus and me.cadmusaffs[i])) and j.p.focus.isadvisable() and not ignore[i] then
+          if svo.haveskillset("healing") and not wont_heal_this(i) then
+            return
+          end
         prios[i] = (not sync_mode) and j.p.focus.aspriority or j.p.focus.spriority
     end
   end
@@ -526,10 +519,7 @@ end
 
 -- balanceful check
 check_balanceful_acts = function(sync_mode)
-  if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm
-#if class == "druid" then
-  or not bals.hydra
-#end
+  if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == "druid" and not bals.hydra)
   then return end
 
   -- get all prios in the list
@@ -561,10 +551,7 @@ end
 
 -- balanceless check
 check_balanceless_acts = function(sync_mode)
-  if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm
-#if class == "druid" then
-  or not bals.hydra
-#end
+  if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == "druid" and not bals.hydra)
    then return end
 
   -- get all prios in the list
@@ -1683,7 +1670,7 @@ lostbal_dragonheal = function()
   raiseEvent("svo lost balance", "dragonheal")
 end
 
-#if skills.healing then
+if svo.haveskillset("healing") then
 lostbal_healing = function()
   if not bals.healing then return end
 
@@ -1703,9 +1690,9 @@ lostbal_healing = function()
 
   raiseEvent("svo lost balance", "healing")
 end
-#end
+end
 
-#if skills.terminus then
+if svo.haveskillset("terminus") then
 lostbal_word = function()
   if not bals.word then return end
 
@@ -1724,7 +1711,7 @@ lostbal_word = function()
 
   raiseEvent("svo lost balance", "word")
 end
-#end
+end
 
 function sk.doingstuff_inslowmode()
   local result
@@ -1762,7 +1749,7 @@ sk.limbnames = {
   head = true
 }
 
-#if skills.healing then
+if svo.haveskillset("healing") then
   sk.updatehealingmap = function ()
     sk.healingmap = {}
     if not conf.healingskill then return end
@@ -1832,7 +1819,7 @@ sk.limbnames = {
   end
   signals.healingskillchanged:connect(sk.updatehealingmap)
   signals.systemstart:connect(sk.updatehealingmap)
-#end
+end
 
 function sk.increase_lagconf()
   -- don't go above 3, 4 is reserved for do really
@@ -1865,15 +1852,15 @@ function sk.increase_lagconf()
   end
 end
 
-#if skills.metamorphosis then
+if svo.haveskillset("metamorphosis") then
 function sk.clearmorphs()
-  for _, morph in ipairs
-#if class == "druid" then
-    {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
-#else
-    {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm"}
-#end
-     do
+  local morphs
+  if svo.me.class == "druid" then
+    morphs = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
+  else
+    morphs = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm"}
+  end
+  for _, morph in ipairs(morphs) do
     if defc[morph] then
       defences.lost(morph)
     end
@@ -1881,11 +1868,12 @@ function sk.clearmorphs()
 end
 
 function sk.inamorph()
-#if class == "druid" then
-  local t = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
-#else
-  local t = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm"}
-#end
+  local t
+if svo.me.class == "druid" then
+  t = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
+else
+  t = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm"}
+end
   for i = 1, #t do
     if defc[t[i]] then return true end
   end
@@ -1894,11 +1882,14 @@ function sk.inamorph()
 end
 
 function sk.validmorphskill(name)
-#if class == "druid" then
-  for _, morph in ipairs{"squirrel", "powers", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "bonding", "nightingale", "elephant", "transmorph", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "affinity", "wyvern", "hydra", "truemorph"} do
-#else
-  for _, morph in ipairs{"squirrel", "powers", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "bonding", "nightingale", "elephant", "transmorph", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "affinity", "truemorph"} do
-#end
+  local morphs
+if svo.me.class == "druid" then
+  morphs = {"squirrel", "powers", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "bonding", "nightingale", "elephant", "transmorph", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "affinity", "wyvern", "hydra", "truemorph"}
+else
+  local morphs = {"squirrel", "powers", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "bonding", "nightingale", "elephant", "transmorph", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "affinity", "truemorph"}
+end
+
+  for _, morph in ipairs(morphs) do
     if name:lower() == morph then return true end
   end
 
@@ -1916,50 +1907,50 @@ function sk.inamorphfor(defence)
 end
 
 function sk.updatemorphskill()
-  sk.morphsforskill = {
-#if class == "druid"   then
-    elusiveness = { "hyena", "wolverine" },
-#else
-    elusiveness = { "basilisk", "hyena", "wolverine", "jaguar" },
-#end
-#if class == "druid" then
-    fitness = { "wolf", "cheetah", "hyena", "elephant", "wyvern", "hydra" },
-#else
-    fitness = { "wolf", "cheetah", "hyena", "elephant", "jaguar"},
-#end
-#if class == "druid" then
-    flame = { "wyvern" },
-#else
-    flame = { "wyvern", "basilisk" },
-#end
-    lyre = { "nightingale" },
-#if class == "druid" then
-    nightsight = { "wildcat", "wolf", "cheetah", "owl", "hyena", "condor", "wolverine", "eagle", "icewyrm", "wyvern", "hydra" },
-#else
-    nightsight = { "wildcat", "wolf", "cheetah", "owl", "hyena", "condor", "wolverine", "jaguar", "eagle", "icewyrm" },
-#end
-    rest = { "sloth" },
-#if class == "druid" then
-    resistance = { "hydra" },
-#else
-    resistance = { "basilisk", "jaguar" },
-#end
-#if class == "druid" then
-    stealth = { "hyena" },
-#else
-    stealth = { "basilisk", "hyena", "jaguar" },
-#end
-#if class == "druid" then
-    temperance = { "icewyrm", "wyvern", "hydra" },
-#else
-    temperance = { "icewyrm" },
-#end
-#if class == "druid" then
-    vitality = { "bear", "elephant", "icewyrm", "wyvern", "hydra" }
-#else
-    vitality = { "bear", "elephant", "jaguar", "icewyrm" }
-#end
-  }
+  sk.morphsforskill = {}
+if svo.me.class == "druid" then
+  sk.morphsforskill.elusiveness = { "hyena", "wolverine" }
+else
+  sk.morphsforskill.elusiveness = { "basilisk", "hyena", "wolverine", "jaguar" }
+end
+if svo.me.class == "druid" then
+  sk.morphsforskill.fitness = { "wolf", "cheetah", "hyena", "elephant", "wyvern", "hydra" }
+else
+  sk.morphsforskill.fitness = { "wolf", "cheetah", "hyena", "elephant", "jaguar"}
+end
+if svo.me.class == "druid" then
+  sk.morphsforskill.flame = { "wyvern" }
+else
+  sk.morphsforskill.flame = { "wyvern", "basilisk" }
+end
+  sk.morphsforskill.lyre = { "nightingale" }
+if svo.me.class == "druid" then
+  sk.morphsforskill.nightsight = { "wildcat", "wolf", "cheetah", "owl", "hyena", "condor", "wolverine", "eagle", "icewyrm", "wyvern", "hydra" }
+else
+  sk.morphsforskill.nightsight = { "wildcat", "wolf", "cheetah", "owl", "hyena", "condor", "wolverine", "jaguar", "eagle", "icewyrm" }
+end
+  sk.morphsforskill.rest = { "sloth" }
+if svo.me.class == "druid" then
+  sk.morphsforskill.resistance = { "hydra" }
+else
+  sk.morphsforskill.resistance = { "basilisk", "jaguar" }
+end
+if svo.me.class == "druid" then
+  sk.morphsforskill.stealth = { "hyena" }
+else
+  sk.morphsforskill.stealth = { "basilisk", "hyena", "jaguar" }
+end
+if svo.me.class == "druid" then
+  sk.morphsforskill.temperance = { "icewyrm", "wyvern", "hydra" }
+else
+  sk.morphsforskill.temperance = { "icewyrm" }
+end
+if svo.me.class == "druid" then
+  sk.morphsforskill.vitality = { "bear", "elephant", "icewyrm", "wyvern", "hydra" }
+else
+  sk.morphsforskill.vitality = { "bear", "elephant", "jaguar", "icewyrm" }
+end
+
   sk.skillmorphs = {}
   for skill, t in pairs(sk.morphsforskill) do
     for _, morph in ipairs(t) do
@@ -1969,12 +1960,14 @@ function sk.updatemorphskill()
   end
 
   local newskillmorphs = {}
-#if class == "druid" then
-  for _, morph in pairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"} do
-#else
-  for _, morph in pairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm"} do
+  local morphlist
+if svo.me.class == "druid" then
+  morphlist = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
+else
+  morphlist = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm"}
 
-#end
+end
+  for _, morph in pairs(morphlist) do
     newskillmorphs[morph] = sk.skillmorphs[morph]
     if svo.conf.morphskill == morph then break end
   end
@@ -2001,7 +1994,7 @@ function sk.updatemorphskill()
 end
   signals.morphskillchanged:connect(sk.updatemorphskill)
   signals.systemstart:connect(sk.updatemorphskill)
-#end
+end
 
 signals.gmcpcharitemslist:connect(function ()
   if not gmcp.Char.Items.List.location then debugf("(GMCP problem) location field is missing from Achaea's response.") return end
@@ -2097,7 +2090,7 @@ for _, herb in ipairs{"elm", "valerian", "skullcap"} do
   end
 end
 
-#if skills.occultism then
+if svo.haveskillset("occultism") then
 signals.gmcpcharitemslist:connect(function ()
   if not gmcp.Char.Items.List.location or not gmcp.Char.Items.List.items then debugf("(GMCP problem) location or items field is missing from Achaea's response.") return end
 
@@ -2113,7 +2106,7 @@ signals.gmcpcharitemslist:connect(function ()
     end
   end
 end)
-#end
+end
 
 function sk.enable_single_prompt()
   if bottomprompt then bottomprompt:show() end

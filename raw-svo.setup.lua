@@ -260,6 +260,15 @@ signals.gmcpcharvitals:connect(function()
     stats.battlerage = 0
   end
 end)
+
+me = {}
+$(
+local paths = {}; paths.oldpath = package.path; package.path = package.path..";./?.lua;./bin/?.lua;"; local pretty = require "pl.pretty"; local stringx = require "pl.stringx"; local tablex = require "pl.tablex"; package.path = paths.oldpath
+
+_put(string.format("me.class = \"%s\"\n", type(class) == "string" and stringx.title(class) or table.concat(tablex.imap(stringx.title, class), ", ")))
+_put("me.skills = ".. pretty.write(skills))
+)
+
 #if skills.groves then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
@@ -300,7 +309,7 @@ signals.gmcpcharvitals:connect(function()
 end)
 #end
 
-#if class == "monk" then
+if svo.me.class == "monk" then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for index, val in ipairs(gmcp.Char.Vitals.charstats) do
@@ -331,7 +340,7 @@ signals.gmcpcharvitals:connect(function()
     me.path = "tekura"
   end
 end)
-#end
+end
 
 signals.gmcpiretimelist = luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
@@ -785,17 +794,9 @@ stats.kai = 0
 #end
 
 ---
-me = {}
 me.skills = {}
 me.wielded = {}
 me.oldhealth = 0
-
-$(
-local paths = {}; paths.oldpath = package.path; package.path = package.path..";./?.lua;./bin/?.lua;"; local pretty = require "pl.pretty"; local stringx = require "pl.stringx"; local tablex = require "pl.tablex"; package.path = paths.oldpath
-
-_put(string.format("me.class = \"%s\"\n", type(class) == "string" and stringx.title(class) or table.concat(tablex.imap(stringx.title, class), ", ")))
-_put("me.skills = ".. pretty.write(skills))
-)
 
 me.doqueue = {repeating = false}
 me.dofreequeue = {}
@@ -899,11 +900,11 @@ disableTrigger("Tekura balances")
 enableTrigger("Tekura balances")
 #end
 
-#if class == "druid" then
+if svo.me.class == "druid" then
 enableTrigger("Hydra balance")
-#else
+else
 disableTrigger("Hydra balance")
-#end
+end
 
 #if skills.voicecraft then
 enableTrigger("Voice balance")

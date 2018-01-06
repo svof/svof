@@ -12574,43 +12574,6 @@ affinity = {
       end,
     }
   },
-#if class == "sentinel" then
-  basilisk = {
-    physical = {
-      balanceful_act = true,
-      aspriority = 0,
-      spriority = 0,
-      def = true,
-      undeffable = true,
-
-      isadvisable = function ()
-        return (not defc.basilisk and ((sys.deffing and defdefup[defs.mode].basilisk) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].basilisk)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
-      end,
-
-      oncompleted = function ()
-        sk.clearmorphs()
-
-        defences.got("basilisk")
-      end,
-
-      action = "morph basilisk",
-      onstart = function ()
-        if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send("relax flame", conf.commandecho) end
-          send("human", conf.commandecho)
-        else
-          if defc.flame then send("relax flame", conf.commandecho) end
-          send("morph basilisk", conf.commandecho)
-        end
-      end
-    },
-    gone = {
-      oncompleted = function ()
-        defences.lost("basilisk")
-      end,
-    }
-  },
-#end
   bear = {
     physical = {
       balanceful_act = true,
@@ -12751,43 +12714,6 @@ affinity = {
       end,
     }
   },
-#if class == "sentinel" then
-  jaguar = {
-    physical = {
-      balanceful_act = true,
-      aspriority = 0,
-      spriority = 0,
-      def = true,
-      undeffable = true,
-
-      isadvisable = function ()
-        return (not defc.jaguar and ((sys.deffing and defdefup[defs.mode].jaguar) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].jaguar)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
-      end,
-
-      oncompleted = function ()
-        sk.clearmorphs()
-
-        defences.got("jaguar")
-      end,
-
-      action = "morph jaguar",
-      onstart = function ()
-        if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send("relax flame", conf.commandecho) end
-          send("human", conf.commandecho)
-        else
-          if defc.flame then send("relax flame", conf.commandecho) end
-          send("morph jaguar", conf.commandecho)
-        end
-      end
-    },
-    gone = {
-      oncompleted = function ()
-        defences.lost("jaguar")
-      end,
-    }
-  },
-#end
   eagle = {
     physical = {
       balanceful_act = true,
@@ -12893,78 +12819,6 @@ affinity = {
       end,
     }
   },
-#if class == "druid" then
-  wyvern = {
-    physical = {
-      balanceful_act = true,
-      aspriority = 0,
-      spriority = 0,
-      def = true,
-      undeffable = true,
-
-      isadvisable = function ()
-        return (not defc.wyvern and ((sys.deffing and defdefup[defs.mode].wyvern) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].wyvern)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
-      end,
-
-      oncompleted = function ()
-        sk.clearmorphs()
-
-        defences.got("wyvern")
-      end,
-
-      action = "morph wyvern",
-      onstart = function ()
-        if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send("relax flame", conf.commandecho) end
-          send("human", conf.commandecho)
-        else
-          if defc.flame then send("relax flame", conf.commandecho) end
-          send("morph wyvern", conf.commandecho)
-        end
-      end
-    },
-    gone = {
-      oncompleted = function ()
-        defences.lost("wyvern")
-      end,
-    }
-  },
-  hydra = {
-    physical = {
-      balanceful_act = true,
-      aspriority = 0,
-      spriority = 0,
-      def = true,
-      undeffable = true,
-
-      isadvisable = function ()
-        return (not defc.hydra and ((sys.deffing and defdefup[defs.mode].hydra) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].hydra)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
-      end,
-
-      oncompleted = function ()
-        sk.clearmorphs()
-
-        defences.got("hydra")
-      end,
-
-      action = "morph hydra",
-      onstart = function ()
-        if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send("relax flame", conf.commandecho) end
-          send("human", conf.commandecho)
-        else
-          if defc.flame then send("relax flame", conf.commandecho) end
-          send("morph hydra", conf.commandecho)
-        end
-      end
-    },
-    gone = {
-      oncompleted = function ()
-        defences.lost("hydra")
-      end,
-    }
-  },
-#end
 #end
 
 #if skills.swashbuckling then
@@ -15822,7 +15676,154 @@ affinity = {
   },
   svotossa = {},
   svotossd = {}
-}
+} -- end of dict
+
+if svo.me.class == "sentinel" then
+  dict.basilisk = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+      undeffable = true,
+
+      isadvisable = function ()
+        return (not defc.basilisk and ((sys.deffing and defdefup[defs.mode].basilisk) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].basilisk)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+      end,
+
+      oncompleted = function ()
+        sk.clearmorphs()
+
+        defences.got("basilisk")
+      end,
+
+      action = "morph basilisk",
+      onstart = function ()
+        if not conf.transmorph and sk.inamorph() then
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("human", conf.commandecho)
+        else
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph basilisk", conf.commandecho)
+        end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        defences.lost("basilisk")
+      end,
+    }
+  }
+end
+if svo.me.class == "sentinel" then
+  dict.jaguar = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+      undeffable = true,
+
+      isadvisable = function ()
+        return (not defc.jaguar and ((sys.deffing and defdefup[defs.mode].jaguar) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].jaguar)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+      end,
+
+      oncompleted = function ()
+        sk.clearmorphs()
+
+        defences.got("jaguar")
+      end,
+
+      action = "morph jaguar",
+      onstart = function ()
+        if not conf.transmorph and sk.inamorph() then
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("human", conf.commandecho)
+        else
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph jaguar", conf.commandecho)
+        end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        defences.lost("jaguar")
+      end,
+    }
+  }
+end
+if svo.me.class == "druid" then
+  dict.wyvern = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+      undeffable = true,
+
+      isadvisable = function ()
+        return (not defc.wyvern and ((sys.deffing and defdefup[defs.mode].wyvern) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].wyvern)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+      end,
+
+      oncompleted = function ()
+        sk.clearmorphs()
+
+        defences.got("wyvern")
+      end,
+
+      action = "morph wyvern",
+      onstart = function ()
+        if not conf.transmorph and sk.inamorph() then
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("human", conf.commandecho)
+        else
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph wyvern", conf.commandecho)
+        end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        defences.lost("wyvern")
+      end,
+    }
+  }
+  dict.hydra = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+      undeffable = true,
+
+      isadvisable = function ()
+        return (not defc.hydra and ((sys.deffing and defdefup[defs.mode].hydra) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].hydra)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+      end,
+
+      oncompleted = function ()
+        sk.clearmorphs()
+
+        defences.got("hydra")
+      end,
+
+      action = "morph hydra",
+      onstart = function ()
+        if not conf.transmorph and sk.inamorph() then
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("human", conf.commandecho)
+        else
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph hydra", conf.commandecho)
+        end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        defences.lost("hydra")
+      end,
+    }
+  }
+end
 
 for ssa, svoa in pairs(dict.sstosvoa) do
   if type(svoa) == "string" then dict.svotossa[svoa] = ssa end

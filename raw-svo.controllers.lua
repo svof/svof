@@ -115,9 +115,9 @@ function valid.setup_prompt()
   else
     bals.balance = false
     bals.equilibrium = false
-#if skills.healing then
+if svo.haveskillset("healing") then
     bals.healing = false
-#end
+end
     pflags = {}
   end
 end
@@ -126,11 +126,10 @@ local function check_promptflags()
   local pflags = svo.pflags
 
   if pflags.b and not defc.blind and not affs.blindaff then
-    if ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
-#if class ~= "apostate" then
-     or defc.mindseye
-#end
-     ) then
+    if ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)) then
+      if svo.me.class == "Apostate" and not defc.mindseye then
+        return
+      end
       defences.got("blind")
     else
       addaff(dict.blindaff)
@@ -163,25 +162,25 @@ local function check_promptflags()
     defences.lost("cloak")
   end
 
-#if skills.shindo then
+if svo.haveskillset("shindo") then
   stats.shin = line:match("%-(%d+)%-") or line:match("%-(%d+) Vote%-") or 0
-#end
+end
 
-#if skills.kaido then
+if svo.haveskillset("kaido") then
   stats.kai = line:match("%-(%d+)%-") or line:match("%-(%d+) Vote%-") or 0
-#end
+end
 
-#if skills.necromancy then
+if svo.haveskillset("necromancy") then
   if pflags.at then defences.got("blackwind") else defences.lost("blackwind") end
-#end
+end
 
-#if skills.occultism then
+if svo.haveskillset("occultism") then
   if pflags.at then defences.got("astralform") else defences.lost("astralform") end
-#end
+end
 
-#if skills.subterfuge then
+if svo.haveskillset("subterfuge") then
   if pflags.at then defences.got("phase") else defences.lost("phase") end
-#end
+end
 
   local oldgametarget, oldgametargethp = me.gametarget, me.gametargethp
   me.gametarget, me.gametargethp = line:match("%[(.-)%](%d+)%%")
@@ -193,9 +192,9 @@ local function check_promptflags()
     raiseEvent("svo gametargethp changed", me.gametarget, me.gametargethp)
   end
 
-#if skills.weaponmastery then
+if svo.haveskillset("weaponmastery") then
   stats.weaponmastery = line:match("k(%d+)")
-#end
+end
 
   me.servertime = line:match("-s(%d+:%d+:%d+%.%d+)")
 end
@@ -628,17 +627,17 @@ end)
 
 signals["svo got balance"]:connect(function(balance)
   if balance ~= "equilibrium" then return end
-  
+
   if affs.disrupt then removeaff("disrupt") end
 end)
 
-#if skills.weaponmastery then
+if svo.haveskillset("weaponmastery") then
 signals["svo got balance"]:connect(function(balance)
   if balance ~= "balance" then return end
 
   sk.didfootingattack = false
 end)
-#end
+end
 
 -- set a flag that we shouldn't assume disrupt on long-eq actions
 function extended_eq()
@@ -650,9 +649,9 @@ function cnrl.update_siphealth()
   if conf.mosshealth then sys.mosshealth                 = math.floor(stats.maxhealth * (conf.mosshealth/100)) end
   if conf.transmuteamount then sys.transmuteamount       = math.floor(stats.maxhealth * (conf.transmuteamount/100)) end
   if conf.corruptedhealthmin then sys.corruptedhealthmin = math.floor(stats.maxhealth * (conf.corruptedhealthmin/100)) end
-#if skills.devotion then
+if svo.haveskillset("devotion") then
   if conf.bloodswornoff then sys.bloodswornoff           = math.floor(stats.maxhealth * (conf.bloodswornoff/100)) end
-#end
+end
 end
 signals.changed_maxhealth:connect(cnrl.update_siphealth)
 
@@ -675,7 +674,7 @@ can_usemana = function()
     and (stats.wp or 0) > 1
 end
 
-#if skills.healing then
+if svo.haveskillset("healing") then
 -- string -> boolean
 -- given an affliction, returns true if we've got the available channels open for it
 havechannelsfor = function(aff)
@@ -683,7 +682,7 @@ havechannelsfor = function(aff)
     return true
   end
 end
-#end
+end
 
 cnrl.warnids = {}
 
