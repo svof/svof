@@ -339,7 +339,7 @@ local c3,s3 =
     cecho("<a_grey> mana.\n")
   end
 
-#if skills.healing then
+if svo.haveskillset("healing") then
   if not printCmdLine then
     cecho(string.format("    <a_blue>- <a_grey>Your highest Healing skill is <a_darkgrey>%s<a_grey>; using <a_darkgrey>%s<a_grey> Healing mode.\n", (conf.healingskill and conf.healingskill or "(none set)"), tostring(conf.usehealing)))
   else
@@ -349,8 +349,8 @@ local c3,s3 =
     echoLink(tostring(conf.usehealing), 'printCmdLine"vconfig usehealing "', "Click to change your healing mode - can be full, partial or none", true)
     cecho("<a_grey> Healing mode.\n")
   end
-#end
-#if skills.kaido then
+end
+if svo.haveskillset("kaido") then
   if not printCmdLine then
     cecho(string.format("    <a_blue>- <a_grey>Transmuting if below <a_cyan>%d%%<a_grey> (<a_cyan>%dh<a_grey>); using <a_darkgrey>%s<a_grey> mode.\n", (conf.transmuteamount or "?"), (sys.transmuteamount or "?"), tostring(conf.transmute)))
   else
@@ -362,8 +362,8 @@ local c3,s3 =
     echoLink(tostring(conf.transmute), 'printCmdLine"vconfig transmute "', "Set the mode in which to use transmute in - can be replaceall, replacehealth, supplement or none.  \nreplaceall means that it won't sip health nor eat moss to heal your health, but only use transmute.  \nreplacehealth will mean that it will not sip health, but use moss and transmute.  \nsupplement means that it'll use all three ways to heal you, and none means that it won't use transmute.", true)
     cecho("<a_grey> mode.\n")
   end
-#end
-#if skills.metamorphosis then
+end
+if svo.haveskillset("metamorphosis") then
   if not printCmdLine then
     cecho(string.format("    <a_blue>- <a_grey>Your highest morph skill is <a_darkgrey>%s<a_grey> (", (conf.morphskill and conf.morphskill or "(none set)")))
     echoLink("view defs you can do", 'svo.viewmetadefs()', "View defences you can put up")
@@ -375,7 +375,7 @@ local c3,s3 =
     echoLink("view defs you can do", 'svo.viewmetadefs()', "View defences you can put up")
     echo(").\n")
   end
-#end
+end
   if not conf.customprompt then
     cecho("    <a_blue>- ") fg("a_grey")
     echoLink("Standard prompt is in use.", '$(sys).config.set("customprompt", "on", true)', "Enable custom prompt", true)
@@ -415,11 +415,11 @@ local c3,s3 =
   echo"\n"
 end
 
-#if skills.metamorphosis then
+if svo.haveskillset("metamorphosis") then
 function viewmetadefs()
   echof("You can put up any of these defences, given your morph skill:\n  %s", oneconcat(sk.morphsforskill) ~= "" and oneconcat(sk.morphsforskill) or "(none, actually)")
 end
-#end
+end
 
 function asave()
   signals.saveconfig:emit()
@@ -935,40 +935,42 @@ signals.gmcpcharname:connect(function() reset.defs() end)
 function reset.bals(echoback)
   -- create a new table instead of resetting the values in the old, because if you
   -- screw up and delete some balances - you'd expect reset to restore them
-  bals = {
+  svo.bals = {
     herb = true, sip = true, moss = true,
     purgative = true, salve = true,
     balance = true, equilibrium = true, focus = true,
     tree = true, leftarm = "unset", rightarm = "unset",
-    dragonheal = true, smoke = true,
-#if skills.voicecraft then
-    voice = true,
-#end
-#if class == "druid" then
-    hydra = true,
-#end
-#if skills.domination then
-    entities = true,
-#end
-#if skills.healing then
-    healing = true,
-#end
-#if skills.venom then
-    shrugging = true,
-#end
-#if skills.chivalry or skills.shindo or skills.kaido or skills.metamorphosis then
-    fitness = true,
-#end
-#if skills.chivalry then
-    rage = true,
-#end
-#if skills.physiology then
-    humour = true, homunculus = true,
-#end
-#if skills.terminus then
-    word = true,
-#end
+    dragonheal = true, smoke = true
   }
+if svo.haveskillset("voicecraft") then
+  svo.bals.voice = true
+end
+if svo.me.class == "Druid" then
+  svo.bals.hydra = true
+end
+if svo.haveskillset("domination") then
+  svo.bals.entities = true
+end
+if svo.haveskillset("healing") then
+  svo.bals.healing = true
+end
+if svo.haveskillset("venom") then
+  svo.bals.shrugging = true
+end
+if svo.haveskillset("chivalry") or svo.haveskillset("shindo") or
+  svo.haveskillset("kaido") or svo.haveskillset("metamorphosis") then
+  svo.bals.fitness = true
+end
+if svo.haveskillset("chivalry") then
+  svo.bals.rage = true
+end
+if svo.haveskillset("physiology") then
+  svo.bals.humour = true
+  svo.bals.homunculus = true
+end
+if svo.haveskillset("terminus") then
+  svo.bals.word = true
+end
 
   for balance in pairs(bals) do raiseEvent("svo got balance", balance) end
 
@@ -1127,15 +1129,15 @@ function vrmaff(aff)
   make_gnomes_work()
 end
 
-#if skills.kaido then
+if svo.haveskillset("kaido") then
   transmute = function()
     -- custom check here, not using isadvisable because this should ignore prone
     if (not defc.dragonform and (stats.currenthealth < sys.transmuteamount) and not doingaction"healhealth" and not doingaction"transmute" and can_usemana()) then
         doaction("transmute", "physical")
     end
   end
-#else
+else
   transmute = function()
   end
-#end
+end
 
