@@ -93,18 +93,18 @@ local tekura_ability_isadvisable = function (new_stance)
   return (
     (
       (
-        sys.deffing 
-        and defdefup[defs.mode][new_stance] 
-        and not defc[new_stance]  
-      ) 
-      or (
-        conf.keepup 
-        and defkeepup[defs.mode][new_stance] 
-        and not defc[new_stance] 
+        sys.deffing
+        and defdefup[defs.mode][new_stance]
+        and not defc[new_stance]
       )
-    ) 
-    and me.path == "tekura" 
-    and not codepaste.balanceful_defs_codepaste() 
+      or (
+        conf.keepup
+        and defkeepup[defs.mode][new_stance]
+        and not defc[new_stance]
+      )
+    )
+    and me.path == "tekura"
+    and not codepaste.balanceful_defs_codepaste()
     and not defc.riding
   ) or false
 end
@@ -113,30 +113,30 @@ local shikudo_ability_isadvisable = function (new_form)
   return (
     (
       (
-        sys.deffing 
-        and defdefup[defs.mode][new_form] 
-        and not defc[new_form]  
-      ) 
-      or (
-        conf.keepup 
-        and defkeepup[defs.mode][new_form] 
-        and not defc[new_form] 
+        sys.deffing
+        and defdefup[defs.mode][new_form]
+        and not defc[new_form]
       )
-    ) 
-    and me.path == "shikudo" 
-    and not codepaste.balanceful_defs_codepaste() 
+      or (
+        conf.keepup
+        and defkeepup[defs.mode][new_form]
+        and not defc[new_form]
+      )
+    )
+    and me.path == "shikudo"
+    and not codepaste.balanceful_defs_codepaste()
     and not defc.riding
   ) or false
 end
 
 local tekura_stance_oncompleted = function (new_stance)
   local stances = {
-    "horse", 
-    "eagle", 
-    "cat", 
-    "bear", 
-    "rat", 
-    "scorpion", 
+    "horse",
+    "eagle",
+    "cat",
+    "bear",
+    "rat",
+    "scorpion",
     "dragon"
   }
 
@@ -149,11 +149,11 @@ end
 
 local shikudo_form_oncompleted = function (new_form)
   local shikudo_forms = {
-    "tykonos", 
-    "willow", 
-    "rain", 
-    "oak", 
-    "gaital", 
+    "tykonos",
+    "willow",
+    "rain",
+    "oak",
+    "gaital",
     "maelstrom"
   }
 
@@ -8231,9 +8231,7 @@ dict = {
         removeaff("stun")
 
         if dict.checkstun.templifevision then
-#if DEBUG then
           debugf("stun timed out = restoring checkstun lifevisions")
-#end
           dict.checkstun.misc.oncompleted("fromstun")
           make_gnomes_work()
         end
@@ -8246,9 +8244,7 @@ dict = {
         removeaff("stun")
 
         if dict.checkstun.templifevision then
-#if DEBUG then
           debugf("stun finished = restoring checkstun lifevisions")
-#end
           dict.checkstun.misc.oncompleted("fromstun")
         end
       end
@@ -9516,7 +9512,7 @@ dict = {
       oncompleted = function (herb)
         dict.paradox.count = 5
         dict.paradox.blocked_herb = herb
-        addaff(dict.paradox)  
+        addaff(dict.paradox)
         affl["paradox"].herb = herb
         updateaffcount(dict.paradox)
       end
@@ -14228,15 +14224,15 @@ affinity = {
 
       isadvisable = function()
         return (
-          not defc.grip 
+          not defc.grip
           and (
-            (sys.deffing and defdefup[defs.mode].grip) 
+            (sys.deffing and defdefup[defs.mode].grip)
             or (conf.keepup and defkeepup[defs.mode].grip)
-          ) 
-          and me.path == "shikudo" 
-          and not codepaste.balanceful_defs_codepaste() 
-          and sys.canoutr 
-          and not affs.paralysis 
+          )
+          and me.path == "shikudo"
+          and not codepaste.balanceful_defs_codepaste()
+          and sys.canoutr
+          and not affs.paralysis
           and not affs.prone
         ) or false
       end,
@@ -14245,7 +14241,7 @@ affinity = {
         defences.got("grip")
       end,
 
-      onstart = function() 
+      onstart = function()
         send("grip", conf.commandecho)
       end
     }
@@ -14376,8 +14372,8 @@ affinity = {
       action = "evb",
       isadvisable = function() return tekura_ability_isadvisable("evadeblock") end,
 
-      oncompleted = function () 
-        defences.got("evadeblock") 
+      oncompleted = function ()
+        defences.got("evadeblock")
       end,
 
       onstart = function ()
@@ -15255,7 +15251,7 @@ affinity = {
       oncompleted = function ()
         defences.got("trusad")
       end,
-      
+
       action = "intone trusad",
       onstart = function ()
         send("intone trusad", conf.commandecho)
@@ -15277,7 +15273,7 @@ affinity = {
       oncompleted = function ()
         defences.got("tsuura")
       end,
-      
+
       action = "intone tsuura",
       onstart = function ()
         send("intone tsuura", conf.commandecho)
@@ -15299,7 +15295,7 @@ affinity = {
       oncompleted = function ()
         defences.got("ukhia")
       end,
-      
+
       action = "intone ukhia",
       onstart = function ()
         send("intone ukhia", conf.commandecho)
@@ -15321,7 +15317,7 @@ affinity = {
       oncompleted = function ()
         defences.got("qamad")
       end,
-      
+
       action = "intone qamad",
       onstart = function ()
         send("intone qamad", conf.commandecho)
@@ -15343,7 +15339,7 @@ affinity = {
       oncompleted = function ()
         defences.got("mainaas")
       end,
-      
+
       action = "intone mainaas",
       onstart = function ()
         send("intone mainaas", conf.commandecho)
@@ -15365,7 +15361,7 @@ affinity = {
       oncompleted = function ()
         defences.got("gaiartha")
       end,
-      
+
       action = "intone gaiartha",
       onstart = function ()
         send("intone gaiartha", conf.commandecho)
@@ -15476,38 +15472,38 @@ affinity = {
     aeon = "aeon",
     agoraphobia = "agoraphobia",
     airdisrupt = "airdisrupt",
-    airfisted = "galed", 
+    airfisted = "galed",
     amnesia = "amnesia",
     anorexia = "anorexia",
     asthma = "asthma",
     blackout = "blackout",
-    blindness = false, 
+    blindness = false,
     bound = "bound",
-    brokenleftarm = "crippledleftarm", 
-    brokenleftleg = "crippledleftleg", 
-    brokenrightarm = "crippledrightarm", 
-    brokenrightleg = "crippledrightleg", 
-    bruisedribs = false, 
+    brokenleftarm = "crippledleftarm",
+    brokenleftleg = "crippledleftleg",
+    brokenrightarm = "crippledrightarm",
+    brokenrightleg = "crippledrightleg",
+    bruisedribs = false,
     burning = "ablaze",
     cadmuscurse = "cadmus",
     claustrophobia = "claustrophobia",
     clumsiness = "clumsiness",
-    concussion = "seriousconcussion", 
-    conflagration = false, 
+    concussion = "seriousconcussion",
+    conflagration = false,
     confusion = "confusion",
     corruption = "corrupted",
     crackedribs = "crackedribs",
-    daeggerimpale = false, 
-    damagedhead = "mildconcussion", 
-    damagedleftarm = "mangledleftarm", 
-    damagedleftleg = "mangledleftleg", 
-    damagedrightarm = "mangledrightarm", 
-    damagedrightleg = "mangledrightleg", 
+    daeggerimpale = false,
+    damagedhead = "mildconcussion",
+    damagedleftarm = "mangledleftarm",
+    damagedleftleg = "mangledleftleg",
+    damagedrightarm = "mangledrightarm",
+    damagedrightleg = "mangledrightleg",
     darkshade = "darkshade",
-    dazed = false, 
+    dazed = false,
     dazzled = false,
     deadening = "deadening",
-    deafness = false, 
+    deafness = false,
     deepsleep = "sleep",
     degenerate = "degenerate",
     dehydrated = "dehydrated",
@@ -15520,7 +15516,7 @@ affinity = {
     dissonance = "dissonance",
     dizziness = "dizziness",
     earthdisrupt = "earthdisrupt",
-    enlightenment = false, 
+    enlightenment = false,
     enmesh = false,
     entangled = "roped",
     entropy = false,
@@ -15538,36 +15534,36 @@ affinity = {
     heartseed = "heartseed",
     hecatecurse = "hecate",
     hellsight = "hellsight",
-    hindered = false, 
-    homunculusmercury = false, 
+    hindered = false,
+    homunculusmercury = false,
     hypersomnia = "hypersomnia",
     hypochondria = "hypochondria",
     hypothermia = "hypothermia",
-    icefisted = "icing", 
+    icefisted = "icing",
     impaled = "impale",
     impatience = "impatience",
     inquisition = "inquisition",
     insomnia = false,
-    internalbleeding = false, 
-    isolation = false, 
+    internalbleeding = false,
+    isolation = false,
     itching = "itching",
     justice = "justice",
     kaisurge = false,
     laceratedthroat = "laceratedthroat",
-    lapsingconsciousness = false, 
+    lapsingconsciousness = false,
     lethargy = "lethargy",
     loneliness = "loneliness",
     lovers = "inlove",
     manaleech = "manaleech",
-    mangledhead = "seriousconcussion", 
-    mangledleftarm = "mutilatedleftarm", 
-    mangledleftleg = "mutilatedleftleg", 
-    mangledrightarm = "mutilatedrightarm", 
-    mangledrightleg = "mutilatedrightleg", 
+    mangledhead = "seriousconcussion",
+    mangledleftarm = "mutilatedleftarm",
+    mangledleftleg = "mutilatedleftleg",
+    mangledrightarm = "mutilatedrightarm",
+    mangledrightleg = "mutilatedrightleg",
     masochism = "masochism",
     mildtrauma = "mildtrauma",
-    mindclamp = false, 
-    nausea = "illness", 
+    mindclamp = false,
+    nausea = "illness",
     numbedleftarm = "numbedleftarm",
     numbedrightarm = "numbedrightarm",
     pacified = "pacifism",
@@ -15576,17 +15572,17 @@ affinity = {
     paranoia = "paranoia",
     parasite = "parasite",
     peace = "peace",
-    penitence = false, 
-    petrified = false, 
-    phlogisticated = "phlogistication", 
+    penitence = false,
+    petrified = false,
+    phlogisticated = "phlogistication",
     pinshot = "pinshot",
     prone = "prone",
     recklessness = "recklessness",
     retribution = "retribution",
     revealed = false,
     scalded = "scalded",
-    scrambledbrains = false, 
-    scytherus = "relapsing", 
+    scrambledbrains = false,
+    scytherus = "relapsing",
     selarnia = "selarnia",
     sensitivity = "sensitivity",
     serioustrauma = "serioustrauma",
@@ -15598,13 +15594,13 @@ affinity = {
     slashedthroat = "slashedthroat",
     sleeping = "sleep",
     slickness = "slickness",
-    slimeobscure = "ninkharsag", 
+    slimeobscure = "ninkharsag",
     spiritdisrupt = "spiritdisrupt",
     stupidity = "stupidity",
     stuttering = "stuttering",
     temperedcholeric = "cholerichumour",
     temperedmelancholic = "melancholichumour",
-    temperedphlegmatic = "phlegmatichumour", 
+    temperedphlegmatic = "phlegmatichumour",
     temperedsanguine = "sanguinehumour",
     timeflux = "timeflux",
     timeloop = "timeloop",
@@ -15613,16 +15609,16 @@ affinity = {
     trueblind = false,
     unconsciousness = "unconsciousness",
     vertigo = "vertigo",
-    vinewreathed = false, 
-    vitiated = false, 
+    vinewreathed = false,
+    vitiated = false,
     vitrified = "vitrification",
-    voidfisted = "voided", 
+    voidfisted = "voided",
     voyria = "voyria",
     waterdisrupt = "waterdisrupt",
     weakenedmind = "rixil",
     weariness = "weakness",
     webbed = "webbed",
-    whisperingmadness = "madness", 
+    whisperingmadness = "madness",
     wristfractures = "wristfractures"
   },
   sstosvod = {

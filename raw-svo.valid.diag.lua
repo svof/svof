@@ -47,9 +47,7 @@ function valid.diagnose_end()
   -- clear ones we don't have
   for affn, afft in pairs(affs) do
     if not sk.diag_list[affn] and not whitelist[affn] then
-#if DEBUG_diag then
       debugf("removed %s, don't actually have it.", affn)
-#end
       if dict[affn].count then dict[affn].count = 0 end
       removeaff(affn)
     elseif not whitelist[affn] then -- if we do have the aff, remove from diag list, so we don't add it again
@@ -57,9 +55,7 @@ function valid.diagnose_end()
       if type(sk.diag_list[affn]) == "number" and dict[affn].count then
         dict[affn].count = sk.diag_list[affn]
         updateaffcount(dict[affn])
-#if DEBUG_diag then
         debugf("%s count updated to %d", affn, dict[affn].count)
-#end
       end
 
       sk.diag_list[affn] = nil
@@ -68,9 +64,7 @@ function valid.diagnose_end()
 
   -- add left over ones
   for j,k in pairs(sk.diag_list) do
-#if DEBUG_diag then
     if not dict[j].aff then debugf("svo: invalid %s in diag end", j) end
-#end
     -- skip defs
     if defc[j] == nil then
       checkaction(dict[j].aff, true)

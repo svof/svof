@@ -640,11 +640,17 @@ config_dict = pl.OrderedMap {
       if conf.log == "off" then
         echof("Logging disabled.")
       elseif conf.log == "file" then
-        echof("Logging to file enabled.")
+        if Logger then
+          echof("Will log to the file in %s.", (getMudletHomeDir() .. "/log/svof.txt"))
+        else
+          echof("Please install the Simple logger first (https://forums.mudlet.org/viewtopic.php?f=6&t=1424), then restart.")
+          svo.conf.log = "off"
+          svo.updateloggingconfig()
+        end
       elseif conf.log == "echo" then
         echof("Will log to your screen.")
       else
-        echof("Will log to both screen and file.")
+        echof("Will log to both screen and file in %s.", (getMudletHomeDir() .. "/log/svof.txt"))
       end
     end,
     installstart = function () conf.log = "off" end
@@ -2076,6 +2082,7 @@ do
       rift.update_riftlabel()
     end)
   end
+  svo.updateloggingconfig()
 end
 
 for k,v in config_dict:iter() do

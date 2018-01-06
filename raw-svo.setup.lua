@@ -8,9 +8,7 @@
 
 version = "$(version)"
 
-#if DEBUG_actions then
-  if Logger then Logger:LogSection("svof", {"timestamp", split = 5000, "keepOpen"}) end
-#end
+if Logger then Logger:LogSection("svof", {"timestamp", split = 5000, "keepOpen"}) end
 
 local luanotify = {}
 luanotify.signal = require("notify.signal")
@@ -182,20 +180,12 @@ signals.systemstart = luanotify.signal.new()
 
 signals.systemstart:connect(function() signals.canoutr:emit() end) -- setup the variables
 
-#if DEBUG then
-signals.systemstart:connect(function ()
- --~ profiler = newProfiler()
- --~ profiler:start()
-end)
-#end
 
 signals.quit = luanotify.signal.new()
 signals.connected = luanotify.signal.new()
-#if DEBUG then
 signals.quit:connect(function ()
   if Logger then Logger:CloseLog("svo") end
 end)
-#end
 signals.quit:add_pre_emit(function () signals.saveconfig:emit() end)
 signals.quit:add_pre_emit(function () raiseEvent "svo quit" end)
 signals.systemend = luanotify.signal.new()
@@ -387,10 +377,10 @@ signals.gmcpcharafflictionslist:connect(function()
   gaffl = {}
   local preaffl = {}
   for key, val in ipairs(affl) do preaffl[val] = true end
-  
+
   for index, val in ipairs(gmcp.Char.Afflictions.List) do
     local thisaff = val.name
-    if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end  
+    if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
     gaffl[thisaff] = true
     if preaffl[thisaff] then
       preaffl[thisaff] = false
@@ -398,7 +388,7 @@ signals.gmcpcharafflictionslist:connect(function()
       addaff(dict.sstosvoa[thisaff])
     end
   end
-  
+
   for key, val in pairs(preaffl) do
     if val and dict.svotossa[thisaff] then removeaff(key) end
   end
@@ -448,7 +438,7 @@ signals.gmcpchardefenceslist:connect(function()
     end
   end
   for defname, val in pairs(predefs) do
-    if val == true and dict.sstosvod[defname] then 
+    if val == true and dict.sstosvod[defname] then
       if type(defs["lost_"..dict.sstosvod[defname]]) == "function" then
         defs["lost_"..dict.sstosvod[defname]]()
       else
@@ -471,7 +461,7 @@ do
             me.is_underwater = false
         end
     end
-    
+
     if oldnum ~= gmcp.Room.Info.num then
       signals.newroom:emit(_G.gmcp.Room.Info.name)
       oldnum = gmcp.Room.Info.num

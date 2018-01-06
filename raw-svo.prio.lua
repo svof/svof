@@ -108,9 +108,7 @@ function prio.export (name, options, echoback)
   io.close()
 
   if echoback then echof("exported %s prio to %s", name, getMudletHomeDir() .. "/svo/prios/"..name) end
-#if DEBUG_prio then
   debugf("exported %s prio to %s", name, getMudletHomeDir() .. "/svo/prios/"..name)
-#end
 end
 
 function prio.list(echoback)
@@ -480,9 +478,7 @@ function prio.import(name, echoback, report_errors, use_default)
   sk.notifypriodiffs(beforestate, afterstate)
 
   if echoback then echof("Imported %s prio list.", name) end
-#if DEBUG_prio then
   debugf("imported %s prio.", name)
-#end
   return true
 end
 

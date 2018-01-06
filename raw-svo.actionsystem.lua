@@ -13,7 +13,7 @@ actions = pl.OrderedMap()
 actions_performed = actions_performed or {}
 bals_in_use       = bals_in_use or {}
 
--- does an action - call this when you'd like to execute an action. The system will setup 
+-- does an action - call this when you'd like to execute an action. The system will setup
 -- the timeout failsafes (which flow through into stupidity and lag detection), as well as
 -- record actions in per-action, per-balance tables for checking against later
 -- ie: doaction(dict.healhealth.sip)
@@ -29,15 +29,11 @@ doaction = function(act)
     and (syncdelay()+.3) -- w/ aeon, waits 1.3s and etc, w/o aeon - 0.3s and etc..
     or ((act.customwait or (act.customwaitf and act.customwaitf()) or 0) + sys.wait) + syncdelay()
 
-#if DEBUG_actions then
   debugf("expirein for %s set to %s", act.name, expirein)
-#end
 
   local timerid = tempTimer(expirein,
     function ()
-#if DEBUG_actions then
       debugf("actions: %s timed out", tostring(act.name))
-#end
       actions:set(act.name, nil)  -- remove from actions list
 
       if bals_in_use[act.balance] then -- it should always be there, even after reset - but a failsafe is in place anyway
@@ -50,9 +46,7 @@ doaction = function(act)
         if actions[act.action_name.."_"..bal] then
           actions_performed[act.action_name] = bals_in_use[bal][act.action_name.."_"..bal]
 
-#if DEBUG_actions then
           debugf("actions: added %s_%s back", act.action_name, bal)
-#end
         end
       end
 
@@ -80,23 +74,17 @@ doaction = function(act)
     timerid = timerid,
     completed = function (other_action, arg)
       killTimer(timerid)
-#if DEBUG_actions then
   if (other_action) then debugf("doaction other action: %s", tostring(other_action)) end
   if not (act[other_action or "oncompleted"]) then debugf("[error] %s does not exist for %s!", tostring(other_action or "oncompleted"), tostring(act.name)) end
-#end
       act[other_action or "oncompleted"](arg)
-#if DEBUG_actions then
       debugf("actions: %s%s completed (killed %s)", act.name, arg and (' ('..tostring(arg)..')') or "", tostring(timerid))
-#end
 
       if act.balance == "focus" then signals.curedwith_focus:emit(other_action or "oncompleted") end
     end,
     p = act
   })
 
-#if DEBUG_actions then
   if not (act.balance or act.action_name) then debugf("balance: " .. tostring(act.balance) .. ", name: " .. tostring(act.action_name) .. "what: " .. tostring(act)) end
-#end
 
   bals_in_use[act.balance] = bals_in_use[act.balance] or {}
   bals_in_use[act.balance][act.name] = act
@@ -105,14 +93,10 @@ doaction = function(act)
 
   -- lastly, do it! :)
 
-#if DEBUG_actions then
   debugf("actions: doing %s", act.name)
-#end
   local s,m = pcall(act.onstart)
   if not s then
-#if DEBUG_actions then
     debugf("error from onstart(): "..m)
-#end
     echoLink("(e!)", [[echo("The problem was: ]]..tostring(act.action_name)..[[ failed to start (]]..tostring(m)..[[). If this is curing-related, please include that your curemethod is set to ]]..tostring(conf.curemethod)..[[")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
   else
     -- action started successfully - start the stopwatch for it. It's accessible via actions.action_balance.p.actionwatch
@@ -122,31 +106,23 @@ doaction = function(act)
 
 end
 
--- used for pre-checking if we're doing an action in trigger functions. 
+-- used for pre-checking if we're doing an action in trigger functions.
 -- if anti-illusion is off, or the true argument is passed, the action
--- will get recorded as currently being done (this helps in cases where a 3rd 
+-- will get recorded as currently being done (this helps in cases where a 3rd
 -- party did an action on you and you want to record it)
 checkaction = function (act, input)
-#if DEBUG_actions then
   if not act then debugf("[svo error]: checkaction called with -nothing-") return end
-#end
   -- if doesnt exist in table, and we got ai off, make one up
   if not actions[act.name] and ((not conf.aillusion and input ~= false) or input) then
 
-#if DEBUG_actions then
   debugf("actions: force-adding %s", act.name)
-#end
 
     actions:set(act.name, {
       completed = function (other_action, arg)
-#if DEBUG_actions then
   if (other_action) then debugf("checkaction other action: %s", other_action) end
   if not (act[other_action or "oncompleted"]) then debugf("[error] %s does not exist for %s!", tostring(other_action or "oncompleted"), tostring(act.name)) end
-#end
         act[other_action or "oncompleted"](arg)
-#if DEBUG_actions then
       debugf("actions: %s%s completed", act.name, arg and tostring(arg) or "")
-#end
         if act.balance == "focus" then signals.curedwith_focus:emit(other_action or "oncompleted") end
       end,
       p = act,
@@ -165,9 +141,7 @@ checkany = function (...)
 
   for i=1,#t do
     local j = t[i]
-#if DEBUG_actions then
     if not j then debugf("missing %s, traceback: %s", j, debug.traceback()) end
-#end
     if actions[j.name] then
       return j
     end
@@ -206,9 +180,7 @@ end
 
 -- only used by lifevision system if an illusion was detected - used by lifevision system to clear actions it has seen
 actionclear = function(act)
-#if DEBUG_actions then
   debugf("actions: cleared action %s", tostring(act.name))
-#end
 
   actions:set(act.name, nil)
   if bals_in_use[act.balance] then -- it should always be there, even after reset - but a failsafe is in place anyway
@@ -221,18 +193,14 @@ actionclear = function(act)
     if actions[act.action_name.."_"..bal] then
       actions_performed[act.action_name] = bals_in_use[bal][act.action_name.."_"..bal]
 
-#if DEBUG_actions then
       debugf("actions: added %s_%s back", act.action_name, bal)
-#end
     end
   end
 
   if act.oncancel then
     local s,m = pcall(act.oncancel)
     if not s then
-#if DEBUG_actions then
       debugf("error from oncancel(): "..m)
-#end
       echoLink("(e!)", [[echo("The problem was: ]]..tostring(act.action_name)..[[ failed to cancel (]]..tostring(m)..[[). If this is curing-related, please include that your curemethod is set to ]]..tostring(conf.curemethod)..[[")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
     end
   end
@@ -241,28 +209,21 @@ end
 -- used by lifevision system to complete an action that was seen in the paragraph (when no illusion was seen)
 actionfinished = function(act, other_action, arg)
   assert(act, "$(sys).actionfinished wants an argument")
-  if not act.name or not actions[act.name] or not actions[act.name].completed then echo("(e!)")
-
-#if not DEBUG_actions then
+  if not act.name or not actions[act.name] or not actions[act.name].completed then
+    echo("(e!)")
+    debugf("actionfinished: %s", debug.traceback())
     return
-#else
-  debugf("actionfinished: %s", debug.traceback())
-#end
   end
 
-#if DEBUG_actions then
   if not act.name then debugf("$(sys) error: no name field, total: %s", pl.pretty.write(act or {})) return end
   if not actions[act.name] then debugf("$(sys) error: no such action %s being done atm", act.name) return end
   if not actions[act.name].completed then debugf("$(sys) error: no completed method on %s", act.name) return end
-#end
 
   local result, msg = pcall(actions[act.name].completed, other_action, arg)
 
   if not result then
-#if DEBUG_actions then
     debugf("error from completed() "..msg)
     if other_action then debugf("other_action was: %s", other_action) end
-#end
     echoLink("(e!)", [[$(sys).echof("The problem was: ]]..tostring(act.action_name)..[[ failed to complete: ]]..msg..[[")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
   end
 
@@ -272,19 +233,15 @@ actionfinished = function(act, other_action, arg)
   end
   actions_performed[act.action_name] = nil
 
-#if DEBUG_actions then
   if not other_action then debugf("actions: finished action %s", tostring(act.name)) else
   debugf("actions: finished action %s, with non-default action: (%s)", tostring(act.name), other_action) end
-#end
 
   -- there might be a case where actions_performed was being taken up by another action, like a cure, that was overwritten by an aff now. This needs to be rectified back.
   for bal, _ in pairs(bals_in_use) do
     if actions[act.action_name.."_"..bal] then
       actions_performed[act.action_name] = bals_in_use[bal][act.action_name.."_"..bal]
 
-#if DEBUG_actions then
       debugf("actions: added %s_%s back", act.action_name, bal)
-#end
     end
   end
 
@@ -295,12 +252,10 @@ end
 -- cancels an action entirely
 -- needs the dict+balance, ie: killaction (dict.icing.waitingfor)
 killaction = function (act)
-#if DEBUG_actions then
   if not (act and act.name) then
     debugf("%s is invalid action to kill.", tostring(act))
     return
   end
-#end
 
   assert(act, "$(sys).killaction wants an argument")
 
@@ -318,26 +273,20 @@ killaction = function (act)
   end
   actions_performed[act.action_name] = nil
 
-#if DEBUG_actions then
   debugf("actions: killed early %s", tostring(act.name))
-#end
 
   -- there might be a case where actions_performed was being taken up by another action, like a cure, that was overwritten by an aff now. This needs to be rectified back.
   for bal, _ in pairs(bals_in_use) do
     if actions[act.action_name.."_"..bal] then
       actions_performed[act.action_name] = bals_in_use[bal][act.action_name.."_"..bal]
 
-#if DEBUG_actions then
       debugf("actions: added %s_%s back", act.action_name, bal)
-#end
     end
   end
 
   if lifevision.l[act.name] then
     lifevision.l:set(act.name, nil)
-#if DEBUG_actions then
     debugf("actions: also removed it from lifevision")
-#end
   end
 
   -- slow curing? kick the next action into going then

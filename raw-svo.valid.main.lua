@@ -3333,14 +3333,12 @@ for i = 1, #generic_cures_data do
       local result
 
       for j,k in actions:iter() do
-#if DEBUG then
         if not k then
           debugf("[svo error]: no k here, j is %s. Actions list:", tostring(j))
           for m,n in actions:iter() do
             debugf("%s - %s", tostring(m), tostring(n))
           end
         end
-#end
         if k and k.p.balance ~= "waitingfor" and k.p.balance ~= "aff" and dict[aff][k.p.balance] then result = k.p break end
       end
 
@@ -3355,9 +3353,7 @@ for i = 1, #generic_cures_data do
         return
       end
 
-#if DEBUG then
       debugf("Result is %s", tostring(result.action_name))
-#end
       killaction(dict[result.action_name][result.balance])
 
       checkaction(dict[aff][result.balance], true)

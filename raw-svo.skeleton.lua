@@ -433,9 +433,7 @@ function lifevision.add(what, other_action, arg, lineguard)
     sys.lineguard = lineguard
   end
 
-#if DEBUG_lifevision then
   debugf("lifevision: %s added with '%s' call (%s)%s", tostring(what.name), other_action and other_action or "default", tostring(arg), (lineguard and " lg: "..lineguard or ""))
-#end
 
   if not sys.sync then return end
   if actions[what.name] and what.balance ~= "aff" and what.balance ~= "gone" and color_table[conf.slowcurecolour] then
@@ -455,9 +453,7 @@ function lifevision.addcust(what, where, other_action, arg)
     other_action = other_action,
     arg = arg
   })
-#if DEBUG_lifevision then
   debugf("lifevision: %s added (pos %d) with '%s' call (%s)", tostring(what.name), where, other_action and other_action or "default", tostring(arg))
-#end
 end
 
 -- returns the current lineguard that's set or nil
@@ -776,9 +772,7 @@ make_gnomes_work_sync = function()
     if balance ~= "waitingfor" and balance ~= "gone" and balance ~= "aff" and next(actions) then result = select(2, next(actions)) break end
   end
   if result then
-#if DEBUG then
     debugf("doing %s, quitting for now", result.name)
-#end
     sk.syncdebug = string.format("[%s]: Currently doing: %s", getTimestamp(getLineCount()):trim(), result.name)
 
     signals.sysdatasendrequest:unblock(cnrl.processusercommand)
@@ -1372,9 +1366,7 @@ local function update_eventaffs()
 
     -- call the onremoved handler if any. Should be called after affs is cleaned, because scripts here reply on the 'current' state
     if dict[old].onremoved then
-#if DEBUG then
       debugf("calling onremoved for %s", old)
-#end
       dict[old].onremoved()
     end
 
@@ -1395,9 +1387,7 @@ sk.onprompt_beforeaction_do = function()
   for name, func in pairs(sk.onpromptfuncs) do
     local s,m = pcall(func)
     if not s then
-#if DEBUG then
     debugf("sk.onprompt_beforeaction_do error from %s: %q", name, m)
-#end
       echoLink("(e!)", "echo([[The problem was: "..tostring(name).." prompttrigger failed to work: "..string.format("%q", m).."]])", 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw if this isn\'t your own function.')
     end
   end
