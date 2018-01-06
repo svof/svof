@@ -117,16 +117,34 @@ signals.orgchanged:connect(function ()
     ):match("<(%d+),(%d+),(%d+)>")}
 end)
 
-function debugf(...)
-#if DEBUG then
-  if not Logger then return end
+function svo.updateloggingconfig()
+  if svo.conf.log == "off" then
+    svo.debugf = function() end
+  elseif svo.conf.log == "file" then
+    svo.debugf = function(...)
+      if not Logger then return end
 
-  local args = {...}
-  if #args < 2 and args[1] and args[1]:find("%", 1, true) then Logger:Log("svof", "not enough args to debugf: "..debug.traceback()) return end
-  Logger:Log("svof", string.format(...))
-#end
+      local args = {...}
+      if #args < 2 and args[1] and args[1]:find("%", 1, true) then Logger:Log("svof", "not enough args to debugf: "..debug.traceback()) return end
+      Logger:Log("svof", string.format(...))
+    end
+  elseif svo.conf.log == "echo" then
+    svo.debugf = function(...)
+      local args = {...}
+      if #args < 2 and args[1] and args[1]:find("%", 1, true) then echof("not enough args to debugf: "..debug.traceback()) return end
+      echof(string.format(...))
+    end
+  else
+    svo.debugf = function(...)
+      if not Logger then return end
+
+      local args = {...}
+      if #args < 2 and args[1] and args[1]:find("%", 1, true) then Logger:Log("svof", "not enough args to debugf: "..debug.traceback()) return end
+      Logger:Log("svof", string.format(...))
+    end
+  end
 end
-log = debugf
+svo.updateloggingconfig()
 
 function showprompt()
   if conf.singleprompt then clearWindow"bottomprompt" end

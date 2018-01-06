@@ -629,6 +629,26 @@ config_dict = pl.OrderedMap {
     end,
     installstart = function () conf.changestype = "shortpercent" end
   }},
+#conf_name = "log"
+  {$(conf_name) = {
+    type = "string",
+    check = function (what)
+      if what == "off" or what == "file" or what == "echo" or what == "both" then return true end
+    end,
+    onset = function ()
+      svo.updateloggingconfig()
+      if conf.log == "off" then
+        echof("Logging disabled.")
+      elseif conf.log == "file" then
+        echof("Logging to file enabled.")
+      elseif conf.log == "echo" then
+        echof("Will log to your screen.")
+      else
+        echof("Will log to both screen and file.")
+      end
+    end,
+    installstart = function () conf.log = "off" end
+  }},
 #conf_name = "showbaltimes"
   {$(conf_name) = {
     type = "boolean",
