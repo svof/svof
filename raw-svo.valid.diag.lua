@@ -34,12 +34,12 @@ end
 
 local whitelist = {}
 whitelist.lovers, whitelist.retardation, whitelist.hoisted, whitelist.paradox = true, true, true, true
-#if skills.metamorphosis then
-whitelist.cantvitality = true
-#end
-#if skills.metamorphosis or skills.shindo or skills.kaido then
-whitelist.cantmorph = true
-#end
+if svo.haveskillset("metamorphosis") then
+  whitelist.cantvitality = true
+end
+if svo.haveskillset("metamorphosis") or svo.haveskillset("shindo") or svo.haveskillset("kaido") then
+  whitelist.cantmorph = true
+end
 
 function valid.diagnose_end()
   if sk.diag_list.godfeelings then sk.diag_list = {} setTriggerStayOpen("svo diag", 0) return end
@@ -85,29 +85,29 @@ function valid.diagnose_end()
   sk.diag_list = {}
 end
 
-#for i,j in ipairs({"ablaze", "severeburn", "extremeburn", "charredburn", "meltingburn", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "heartseed", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impale", "impatience", "inlove", "inquisition", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "lovers", "madness", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", "masochism", "mildtrauma", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "pacifism", "paralysis", "paranoia", "peace", "prone", "recklessness", "relapsing", "roped", "selarnia", "sensitivity", "seriousconcussion", "serioustrauma", "shyness", "slashedthroat", "slickness", "stun", "stupidity", "stuttering", "transfixed", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voided", "voyria", "weakness", "webbed", "hamstring", "shivering", "frozen", "manaleech", "voyria", "slightfluid", "elevatedfluid", "highfluid", "seriousfluid", "criticalfluid", "godfeelings", "phlogistication", "vitrification", "corrupted", "stain", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "hoisted", "swellskin", "pinshot", "hypothermia", "scalded", "dehydrated", "timeflux", "numbedleftarm", "numbedrightarm", "unconsciousness", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate", "hatred"}) do
-function valid.diag_$(j)()
-  sk.diag_list.$(j) = true
+for _,affname in ipairs({"ablaze", "severeburn", "extremeburn", "charredburn", "meltingburn", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "heartseed", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impale", "impatience", "inlove", "inquisition", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "lovers", "madness", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", "masochism", "mildtrauma", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "pacifism", "paralysis", "paranoia", "peace", "prone", "recklessness", "relapsing", "roped", "selarnia", "sensitivity", "seriousconcussion", "serioustrauma", "shyness", "slashedthroat", "slickness", "stun", "stupidity", "stuttering", "transfixed", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voided", "voyria", "weakness", "webbed", "hamstring", "shivering", "frozen", "manaleech", "voyria", "slightfluid", "elevatedfluid", "highfluid", "seriousfluid", "criticalfluid", "godfeelings", "phlogistication", "vitrification", "corrupted", "stain", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "hoisted", "swellskin", "pinshot", "hypothermia", "scalded", "dehydrated", "timeflux", "numbedleftarm", "numbedrightarm", "unconsciousness", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate", "hatred"}) do
+  valid["diag_"..affname] = function()
+    sk.diag_list[affname] = true
 
-  if not affs.$(j) then
-    decho(getDefaultColor().."(new)")
-  else
-    decho(getDefaultColor().." ("..getStopWatchTime(affs.$(j).sw).."s)")
-  end
+    if not affs[affname] then
+      decho(getDefaultColor().."(new)")
+    else
+      decho(getDefaultColor().." ("..getStopWatchTime(affs[affname].sw).."s)")
+    end
 
-  if ignore.$(j) then
-    decho(getDefaultColor().." (currently ignored)")
+    if ignore[affname] then
+      decho(getDefaultColor().." (currently ignored)")
+    end
   end
 end
-#end
 
 -- afflictions with a count
-#for _, aff in ipairs({"cholerichumour", "melancholichumour", "phlegmatichumour", "sanguinehumour", "bleeding", "skullfractures", "crackedribs", "wristfractures", "torntendons"}) do
-function valid.diag_$(aff)(howmuch)
-  sk.diag_list.$(aff) = tonumber(howmuch)
+for _, aff in ipairs({"cholerichumour", "melancholichumour", "phlegmatichumour", "sanguinehumour", "bleeding", "skullfractures", "crackedribs", "wristfractures", "torntendons"}) do
+  valid['diag_'..aff] = function(howmuch)
+    sk.diag_list[aff] = tonumber(howmuch)
 
-  if ignore.$(aff) then
-    echo(" (currently ignored)")
+    if ignore[aff] then
+      echo(" (currently ignored)")
+    end
   end
 end
-#end
