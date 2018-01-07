@@ -6,14 +6,17 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-for i,j in ipairs({"ablaze", "severeburn", "extremeburn", "charredburn", "meltingburn", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "heartseed", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impale", "impatience", "inlove", "inquisition", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "lovers", "madness", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", "masochism", "mildtrauma", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "pacifism", "paralysis", "paranoia", "peace", "prone", "recklessness", "relapsing", "roped", "selarnia", "sensitivity", "seriousconcussion", "serioustrauma", "shyness", "slashedthroat", "slickness", "stun", "stupidity", "stuttering", "transfixed", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voided", "voyria", "weakness", "webbed", "hamstring", "shivering", "frozen", "blindaff", "deafaff", "retardation", "manaleech", "sleep", "amnesia", "unknowncrippledlimb", "cholerichumour", "melancholichumour", "phlegmatichumour", "sanguinehumour", "phlogistication", "vitrification", "corrupted", "stain", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "swellskin", "pinshot", "hypothermia", "scalded", "dehydrated", "timeflux", "lullaby", "numbedleftarm", "numbedrightarm", "unconsciousness", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate", "hatred",
-#if skills.metamorphosis then
-  "cantmorph",
-#end
-}) do
-  valid["simple" .. j] = function ()
-    checkaction(dict[j].aff, true)
-    lifevision.add(actions[j .. "_aff"].p)
+do
+  local afflist = {"ablaze", "severeburn", "extremeburn", "charredburn", "meltingburn", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "heartseed", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impale", "impatience", "inlove", "inquisition", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "lovers", "madness", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", "masochism", "mildtrauma", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "pacifism", "paralysis", "paranoia", "peace", "prone", "recklessness", "relapsing", "roped", "selarnia", "sensitivity", "seriousconcussion", "serioustrauma", "shyness", "slashedthroat", "slickness", "stun", "stupidity", "stuttering", "transfixed", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voided", "voyria", "weakness", "webbed", "hamstring", "shivering", "frozen", "blindaff", "deafaff", "retardation", "manaleech", "sleep", "amnesia", "unknowncrippledlimb", "cholerichumour", "melancholichumour", "phlegmatichumour", "sanguinehumour", "phlogistication", "vitrification", "corrupted", "stain", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "swellskin", "pinshot", "hypothermia", "scalded", "dehydrated", "timeflux", "lullaby", "numbedleftarm", "numbedrightarm", "unconsciousness", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate", "hatred"}
+  if svo.haveskillset("metamorphosis") then
+    afflist[#afflist+1] = "cantmorph"
+  end
+
+  for i,j in ipairs(afflist) do
+    valid["simple" .. j] = function ()
+      checkaction(dict[j].aff, true)
+      lifevision.add(actions[j .. "_aff"].p)
+    end
   end
 end
 
@@ -149,19 +152,19 @@ valid.simpleunknownmental = function (number)
     dict.unknownmental.reckmana = true end
 end
 
-#for _, aff in ipairs({"skullfractures", "crackedribs", "wristfractures", "torntendons"}) do
-valid.simple$(aff) = function (number)
-  assert(not number or tonumber(number), "svo.valid.simple$(aff): how many affs do you want to add? Must be a number")
+for _, affname in ipairs({"skullfractures", "crackedribs", "wristfractures", "torntendons"}) do
+  valid["simple"..affname] = function (number)
+    assert(not number or tonumber(number), "svo.valid.simple"..affname..": how many affs do you want to add? Must be a number")
 
-  checkaction(dict.$(aff).aff, true)
+    checkaction(dict[affname].aff, true)
 
-  if lifevision.l.$(aff)_aff then
-    lifevision.add(actions.$(aff)_aff.p, nil, (number or 1) +(lifevision.l.$(aff)_aff.arg or 1))
-  else
-    lifevision.add(actions.$(aff)_aff.p, nil, (number or 1))
+    if lifevision.l[affname.."_aff"] then
+      lifevision.add(actions[affname.."_aff"].p, nil, (number or 1) +(lifevision.l[affname.."_aff"].arg or 1))
+    else
+      lifevision.add(actions[affname.."_aff"].p, nil, (number or 1))
+    end
   end
 end
-#end
 
 -- historical API compatibility
 valid.proper_crippledleftleg = simplecrippledrightleg
@@ -169,9 +172,9 @@ valid.proper_crippledrightleg = simplecrippledrightleg
 valid.proper_crippledrightarm = simplecrippledrightarm
 valid.proper_crippledleftarm = simplecrippledleftarm
 
-#if skills.aeonics then
-valid.simpleage = function(value)
-  checkaction(dict.age.happened, true)
-  lifevision.add(actions.age_happened.p, nil, tonumber(value))
+if svo.haveskillset("aeonics") then
+  valid.simpleage = function(value)
+    checkaction(dict.age.happened, true)
+    lifevision.add(actions.age_happened.p, nil, tonumber(value))
+  end
 end
-#end
