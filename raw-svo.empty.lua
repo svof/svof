@@ -8,45 +8,6 @@
 
 svo.empty = {}
 
-$(
-local paths = {}
-paths.oldpath = package.path
-package.path = package.path..";./?.lua;./bin/?.lua;"
-pretty = require "pl.pretty"
-package.path = paths.oldpath
-
-function _comp(a, b)
-  if type(a) ~= type(b) then return false end
-  if type(a) == 'table' then
-    for k, v in pairs(a) do
-      if not b[k] then return false end
-      if not _comp(v, b[k]) then return false end
-    end
-  else
-    if a ~= b then return false end
-  end
-  return true
-end
-function n_complement(set1, set2)
-  if not set1 and set2 then return false end
-
-  local complement = {}
-
-  for _, val1 in pairs(set1) do
-    local insert = true
-    for _, val2 in pairs(set2) do
-      if _comp(val1, val2) then
-        insert = false
-      end
-    end
-    if insert then table.insert(complement, val1) end
-  end
-
-  return complement
-end
-
-)
-
 local madness_affs = {"addiction", "confusion", "dementia", "hallucinations", "hypersomnia", "illness", "impatience", "lethargy", "loneliness", "madness", "masochism", "paranoia", "recklessness", "stupidity", "vertigo"}
 
 for herbname, herbaffs in pairs({

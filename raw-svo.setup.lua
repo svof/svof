@@ -6,7 +6,7 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-version = "$(version)"
+version = "development"
 
 if Logger then Logger:LogSection("svof", {"timestamp", split = 5000, "keepOpen"}) end
 
