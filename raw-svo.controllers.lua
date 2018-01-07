@@ -115,7 +115,7 @@ function valid.setup_prompt()
   else
     bals.balance = false
     bals.equilibrium = false
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
     bals.healing = false
 end
     pflags = {}
@@ -162,23 +162,23 @@ local function check_promptflags()
     defences.lost("cloak")
   end
 
-if svo.haveskillset("shindo") then
+if svo.haveskillset('shindo') then
   stats.shin = line:match("%-(%d+)%-") or line:match("%-(%d+) Vote%-") or 0
 end
 
-if svo.haveskillset("kaido") then
+if svo.haveskillset('kaido') then
   stats.kai = line:match("%-(%d+)%-") or line:match("%-(%d+) Vote%-") or 0
 end
 
-if svo.haveskillset("necromancy") then
+if svo.haveskillset('necromancy') then
   if pflags.at then defences.got("blackwind") else defences.lost("blackwind") end
 end
 
-if svo.haveskillset("occultism") then
+if svo.haveskillset('occultism') then
   if pflags.at then defences.got("astralform") else defences.lost("astralform") end
 end
 
-if svo.haveskillset("subterfuge") then
+if svo.haveskillset('subterfuge') then
   if pflags.at then defences.got("phase") else defences.lost("phase") end
 end
 
@@ -192,7 +192,7 @@ end
     raiseEvent("svo gametargethp changed", me.gametarget, me.gametargethp)
   end
 
-if svo.haveskillset("weaponmastery") then
+if svo.haveskillset('weaponmastery') then
   stats.weaponmastery = line:match("k(%d+)")
 end
 
@@ -631,7 +631,7 @@ signals["svo got balance"]:connect(function(balance)
   if affs.disrupt then removeaff("disrupt") end
 end)
 
-if svo.haveskillset("weaponmastery") then
+if svo.haveskillset('weaponmastery') then
 signals["svo got balance"]:connect(function(balance)
   if balance ~= "balance" then return end
 
@@ -649,7 +649,7 @@ function cnrl.update_siphealth()
   if conf.mosshealth then sys.mosshealth                 = math.floor(stats.maxhealth * (conf.mosshealth/100)) end
   if conf.transmuteamount then sys.transmuteamount       = math.floor(stats.maxhealth * (conf.transmuteamount/100)) end
   if conf.corruptedhealthmin then sys.corruptedhealthmin = math.floor(stats.maxhealth * (conf.corruptedhealthmin/100)) end
-if svo.haveskillset("devotion") then
+if svo.haveskillset('devotion') then
   if conf.bloodswornoff then sys.bloodswornoff           = math.floor(stats.maxhealth * (conf.bloodswornoff/100)) end
 end
 end
@@ -674,7 +674,7 @@ can_usemana = function()
     and (stats.wp or 0) > 1
 end
 
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
 -- string -> boolean
 -- given an affliction, returns true if we've got the available channels open for it
 havechannelsfor = function(aff)

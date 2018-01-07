@@ -31,7 +31,7 @@ function contains(t, value)
   return false
 end
 
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
   -- used by 'normal' cure functions to see if we should ignore curing this aff
   -- returns true - Healing will *not* cure, use normal
   -- returns false - Healing *will* cure, don't use normal
@@ -59,32 +59,32 @@ bals = bals or {
   balance = true, equilibrium = true, focus = true,
   tree = true, leftarm = "unset", rightarm = "unset",
   dragonheal = true, smoke = true}
-if svo.haveskillset("voicecraft") then
+if svo.haveskillset('voicecraft') then
   bals.voice = true
 end
 if svo.me.class == "Druid" then
   bals.hydra = true
 end
-if svo.haveskillset("domination") then
+if svo.haveskillset('domination') then
   bals.entities = true
 end
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
   bals.healing = true
 end
-if svo.haveskillset("chivalry") or svo.haveskillset("shindo") or svo.haveskillset("kaido") or svo.haveskillset("metamorphosis") then
+if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
   bals.fitness = true
 end
-if svo.haveskillset("chivalry") then
+if svo.haveskillset('chivalry') then
   bals.rage = true
 end
-if svo.haveskillset("venom") then
+if svo.haveskillset('venom') then
   bals.shrugging = true
 end
-if svo.haveskillset("physiology") then
+if svo.haveskillset('physiology') then
   bals.humour = true
   bals.homunculus = true
 end
-if svo.haveskillset("terminus") then
+if svo.haveskillset('terminus') then
   bals.word = true
 end
 
@@ -142,7 +142,7 @@ check_purgative = function(sync_mode)
     local gotsomething = false
     for i, j in pairs(what) do
       if not (conf.serverside and serverignore[i]) and j.p.purgative and j.p.purgative.isadvisable() and not ignore[i] then
-        if svo.haveskillset("healing") and not sk.wont_heal_this(i) then
+        if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
           return
         end
 
@@ -183,7 +183,7 @@ check_salve = function(sync_mode)
   local function check(what)
     for i, j in pairs(what) do
       if not (conf.serverside and serverignore[i]) and j.p.salve and j.p.salve.isadvisable() and not ignore[i] then
-        if svo.haveskillset("healing") and not sk.wont_heal_this(i) then
+        if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
           return
         end
         prios[i] = (not sync_mode) and j.p.salve.aspriority or j.p.salve.spriority
@@ -222,7 +222,7 @@ check_herb = function(sync_mode)
       if not (conf.serverside and serverignore[i]) and j.p.herb and j.p.herb.isadvisable() and not ignore[i]
         -- make sure that we can outrift things, or if we can't, we have the herb in our inventory
         and (sys.canoutr or sk.can_eat_for(j.p.herb)) then
-          if svo.haveskillset("healing") and not sk.wont_heal_this(i) then
+          if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
             return
           end
           prios[i] = (not sync_mode) and j.p.herb.aspriority or j.p.herb.spriority
@@ -263,7 +263,7 @@ check_misc = function(sync_mode, onlyamnesia)
   local function check(what)
     for i, j in pairs(what) do
       if not (conf.serverside and serverignore[i]) and j.p.misc and j.p.misc.isadvisable() and not ignore[i] and not doingaction (i) and (not affs.sleep or j.p.misc.action_name == "sleep") then
-        if svo.haveskillset("healing") and not sk.wont_heal_this(i) then
+        if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
           return
         end
         prios[i] = (not sync_mode) and j.p.misc.aspriority or j.p.misc.spriority
@@ -317,7 +317,7 @@ check_smoke = function(sync_mode)
   local function check(what)
     for i, j in pairs(what) do
       if not (conf.serverside and serverignore[i]) and j.p.smoke and j.p.smoke.isadvisable() and not ignore[i] and not doingaction(i) then
-        if svo.haveskillset("healing") and not sk.wont_heal_this(i) then
+        if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
           return
         end
         prios[i] = (not sync_mode) and j.p.smoke.aspriority or j.p.smoke.spriority
@@ -389,7 +389,7 @@ check_focus = function(sync_mode)
   local prios = {}
   for i, j in pairs(affs) do
     if not (conf.serverside and serverignore[i]) and j.p.focus and (not affs.cadmus or (conf.focuswithcadmus and me.cadmusaffs[i])) and j.p.focus.isadvisable() and not ignore[i] then
-          if svo.haveskillset("healing") and not wont_heal_this(i) then
+          if svo.haveskillset('healing') and not wont_heal_this(i) then
             return
           end
         prios[i] = (not sync_mode) and j.p.focus.aspriority or j.p.focus.spriority
@@ -1670,7 +1670,7 @@ lostbal_dragonheal = function()
   raiseEvent("svo lost balance", "dragonheal")
 end
 
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
 lostbal_healing = function()
   if not bals.healing then return end
 
@@ -1692,7 +1692,7 @@ lostbal_healing = function()
 end
 end
 
-if svo.haveskillset("terminus") then
+if svo.haveskillset('terminus') then
 lostbal_word = function()
   if not bals.word then return end
 
@@ -1749,7 +1749,7 @@ sk.limbnames = {
   head = true
 }
 
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
   sk.updatehealingmap = function ()
     sk.healingmap = {}
     if not conf.healingskill then return end
@@ -1852,7 +1852,7 @@ function sk.increase_lagconf()
   end
 end
 
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
 function sk.clearmorphs()
   local morphs
   if svo.me.class == "Druid" then
@@ -2090,7 +2090,7 @@ for _, herb in ipairs{"elm", "valerian", "skullcap"} do
   end
 end
 
-if svo.haveskillset("occultism") then
+if svo.haveskillset('occultism') then
 signals.gmcpcharitemslist:connect(function ()
   if not gmcp.Char.Items.List.location or not gmcp.Char.Items.List.items then debugf("(GMCP problem) location or items field is missing from Achaea's response.") return end
 

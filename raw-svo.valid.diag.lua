@@ -34,10 +34,10 @@ end
 
 local whitelist = {}
 whitelist.lovers, whitelist.retardation, whitelist.hoisted, whitelist.paradox = true, true, true, true
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
   whitelist.cantvitality = true
 end
-if svo.haveskillset("metamorphosis") or svo.haveskillset("shindo") or svo.haveskillset("kaido") then
+if svo.haveskillset('metamorphosis') or svo.haveskillset('shindo') or svo.haveskillset('kaido') then
   whitelist.cantmorph = true
 end
 

@@ -137,13 +137,13 @@ protips = {
   "You can export all priorities in a file and edit them there, see 'vshow'",
   "Svof comes with some scripting examples of the API built-in - take a look at Svof's scripts folder",
 }
-if svo.haveskillset("spirituality") then
+if svo.haveskillset('spirituality') then
   protips[#protips+1] = "You can do 'fx' or 'fxx' to fix up your angel (if you have Angels in Vision)"
 end
-if svo.haveskillset("elementalism") then
+if svo.haveskillset('elementalism') then
   protips[#protips+1] = "'rfl' toggles self-reflect mode"
 end
-if svo.haveskillset("devotion") then
+if svo.haveskillset('devotion') then
   protips[#protips+1] = "The vconfig bloodswornoff <health %> feature of Svof will automatically unlink you from Bloodswon if you call below that health amount"
 end
 

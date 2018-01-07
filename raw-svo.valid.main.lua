@@ -89,7 +89,7 @@ end
 
 
 function valid.bloodsworn_gone()
-if svo.haveskillset("devotion") then
+if svo.haveskillset('devotion') then
   checkaction(dict.bloodsworntoggle.misc)
   if actions.bloodsworntoggle_misc then
     lifevision.add(actions.bloodsworntoggle_misc.p)
@@ -183,7 +183,7 @@ function valid.smoke_have_rebounding()
   end
 end
 
-if svo.haveskillset("chivalry") or svo.haveskillset("shindo") or svo.haveskillset("kaido") or svo.haveskillset("metamorphosis") then
+if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
   function defs.got_fitness()
     checkaction(dict.fitness.physical)
     if actions.fitness_physical then
@@ -229,7 +229,7 @@ else
   function valid.fitness_allgood() end
 end
 
-if svo.haveskillset("chivalry") then
+if svo.haveskillset('chivalry') then
 function valid.gotragebalance()
   checkaction(dict.gotbalance.happened, true)
   dict.gotbalance.happened.tempmap[#dict.gotbalance.happened.tempmap+1] = "rage" -- hack to allow multiple balances at once
@@ -282,7 +282,7 @@ function defs.cancelled_dragonform()
   end
 end
 
-if svo.haveskillset("groves") then
+if svo.haveskillset('groves') then
 function valid.started_rejuvenate()
   if actions.rejuvenate_physical then
     lifevision.add(actions.rejuvenate_physical.p)
@@ -303,7 +303,7 @@ function valid.cancelled_rejuvenate()
 end
 end
 
-if svo.haveskillset("spirituality") then
+if svo.haveskillset('spirituality') then
 function defs.started_mace()
   if actions.mace_physical then
     lifevision.add(actions.mace_physical.p)
@@ -344,7 +344,7 @@ function valid.sacrificed_angel()
 end
 end
 
-if svo.haveskillset("shindo") then
+if svo.haveskillset('shindo') then
 function valid.shin_phoenix()
   if not conf.aillusion or actions.phoenix_physical then
     selectCurrentLine()
@@ -359,7 +359,7 @@ function valid.shin_phoenix()
 end
 end
 
-if svo.haveskillset("propagation") then
+if svo.haveskillset('propagation') then
 function defs.notonland_viridian()
   if actions.viridian_physical then
     lifevision.add(actions.viridian_physical.p, "notonland")
@@ -1054,26 +1054,26 @@ function svo.valid.defstrip(which)
     ["third eye"]              = 'thirdeye'
   }
 
-  if svo.haveskillset("apostasy") then
+  if svo.haveskillset('apostasy') then
     t["demon armour"]           = 'demonarmour'
   end
-  if svo.haveskillset("necromancy") then
+  if svo.haveskillset('necromancy') then
     t["death aura"]             = 'deathaura'
   end
-  if svo.haveskillset("healing") then
+  if svo.haveskillset('healing') then
     t["earth spiritshield"]     = 'earthblessing'
     t["endurance spiritshield"] = 'enduranceblessing'
     t["frost spiritshield"]     = 'frostblessing'
     t["thermal spiritshield"]   = 'thermalblessing'
     t["willpower spiritshield"] = 'willpowerblessing'
   end
-  if svo.haveskillset("pranks") or svo.haveskillset("swashbuckling") then
+  if svo.haveskillset('pranks') or svo.haveskillset('swashbuckling') then
     t["arrow catching"]         = 'arrowcatch'
   end
-  if svo.haveskillset("metamorphosis") then
+  if svo.haveskillset('metamorphosis') then
     t["spirit bonding"]         = 'bonding'
   end
-  if svo.haveskillset("groves") then
+  if svo.haveskillset('groves') then
     t["wild growth"]            = 'wildgrowth'
   end
 
@@ -1438,7 +1438,7 @@ end
 
 do
   local afflist = {"hamstring", "galed", "voided", "inquisition", "burning", "icing", "phlogistication", "vitrification", "corrupted", "mucous", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "swellskin", "pinshot", "dehydrated", "timeflux", "lullaby", "numbedleftarm", "numbedrightarm", "unconsciousness", "degenerate", "deteriorate", "hatred"}
-  if svo.haveskillset("metamorphosis") then
+  if svo.haveskillset('metamorphosis') then
     afflist[#afflist+1] = 'cantmorph'
   end
 
@@ -2980,7 +2980,7 @@ function defs.got_deaf()
   end
 end
 
-if svo.haveskillset("shindo") then
+if svo.haveskillset('shindo') then
 function defs.shindo_blind_start()
   checkaction(dict.blind.misc)
   if actions.blind_misc then
@@ -3001,7 +3001,7 @@ function defs.shindo_deaf_start()
   end
 end
 end
-if svo.haveskillset("kaido") then
+if svo.haveskillset('kaido') then
 function defs.kaido_blind_start()
   checkaction(dict.blind.misc)
   if actions.blind_misc then
@@ -3580,7 +3580,7 @@ function valid.won_arena()
   defences.lost("blind") defences.lost("deaf") defences.lost("insomnia")
 end
 
-if svo.haveskillset("necromancy") then
+if svo.haveskillset('necromancy') then
   function valid.soulcaged()
     reset.affs()
     reset.general()
@@ -3590,7 +3590,7 @@ if svo.haveskillset("necromancy") then
       defs.switch(conf.burstmode, false)
     end
   end
-elseif svo.haveskillset("occultism") then
+elseif svo.haveskillset('occultism') then
   function valid.transmogged()
     reset.affs()
     reset.general()
@@ -3903,7 +3903,7 @@ end
 
 valid.low_willpower = sk.checkwillpower
 
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
   sk.check_emptyhealingheal = function ()
     if sk.currenthealinghealcount+1 == getLineCount() then
       lifevision.add(actions.usehealing_misc.p, "empty")
@@ -3966,7 +3966,7 @@ else
   valid.bedevilheal = valid.healercure
 end
 
-if svo.haveskillset("chivalry") then
+if svo.haveskillset('chivalry') then
   sk.check_emptyrage = function ()
     if sk.currentragecount+1 == getLineCount() then
       lifevision.add(actions.rage_misc.p, "empty")
@@ -3989,7 +3989,7 @@ else
   valid.ragecure = function() end
 end
 
-if svo.haveskillset("kaido") then
+if svo.haveskillset('kaido') then
   valid.transmuted = function ()
     -- always check transmute so we can count how many we did (to cancel timer if we can)
     checkaction(dict.transmute.physical, true)
@@ -4056,7 +4056,7 @@ function valid.stripped_insomnia()
   end
 end
 
-if svo.haveskillset("elementalism") or svo.haveskillset("healing") then
+if svo.haveskillset('elementalism') or svo.haveskillset('healing') then
   function valid.lacking_channels()
     if usingbal("physical") then
       defs.lost_simultaneity()
@@ -4317,7 +4317,7 @@ function valid.pyradius()
   send("\n")
 end
 
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
 function valid.usedhealingbalance()
   checkaction(dict.stolebalance.happened, true)
   lifevision.add(actions.stolebalance_happened.p, nil, "healing")
@@ -4330,7 +4330,7 @@ function valid.gothealingbalance()
 end
 end
 
-if svo.haveskillset("venom") then
+if svo.haveskillset('venom') then
 function valid.shrugging()
   checkaction(dict.shrugging.physical)
   if actions.shrugging_physical then
@@ -4358,7 +4358,7 @@ function valid.gotshruggingbalance()
 end
 end
 
-if svo.haveskillset("voicecraft") then
+if svo.haveskillset('voicecraft') then
 function valid.usedvoicebalance()
   checkaction(dict.stolebalance.happened, true)
   lifevision.add(actions.stolebalance_happened.p, nil, "voice")
@@ -4371,7 +4371,7 @@ function valid.gotvoicebalance()
 end
 end
 
-if svo.haveskillset("terminus") then
+if svo.haveskillset('terminus') then
 function valid.usedwordbalance()
   checkaction(dict.stolebalance.happened, true)
   lifevision.add(actions.stolebalance_happened.p, nil, "word")

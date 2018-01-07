@@ -251,17 +251,17 @@ end
 -- -> boolean
 -- returns true if we're using some non-standard cure - tree, restore, class skill...
 codepaste.nonstdcure = function()
-  if svo.haveskillset("venom") then
+  if svo.haveskillset('venom') then
     return doingaction"shrugging"
   end
-  if svo.haveskillset("healing") then
+  if svo.haveskillset('healing') then
     return doingaction"usehealing"
   end
 
   return (doingaction"touchtree" or doingaction"restore")
 end
 
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
   codepaste.nonmorphdefs = function ()
     for _, def in ipairs{"flame", "lyre", "nightsight", "rest", "resistance", "stealth", "temperance", "elusiveness"} do
       if ((sys.deffing and defdefup[defs.mode][def]) or (not sys.deffing and conf.keepup and defkeepup[defs.mode][def])) and not defc[def] then return false end
@@ -403,7 +403,7 @@ dict = {
           return false
         end
 
-if not svo.haveskillset("kaido") then
+if not svo.haveskillset('kaido') then
         return ((stats.currenthealth < sys.siphealth or (sk.gettingfullstats and stats.currenthealth < stats.maxhealth)) and not actions.healhealth_sip and not shouldntsip())
 else
         return ((stats.currenthealth < sys.siphealth or (sk.gettingfullstats and stats.currenthealth < stats.maxhealth)) and not actions.healhealth_sip  and not shouldntsip() and
@@ -441,7 +441,7 @@ end
       irregular = true,
 
       isadvisable = function ()
-if not svo.haveskillset("kaido") then
+if not svo.haveskillset('kaido') then
         return ((stats.currenthealth < sys.mosshealth) and (not doingaction ("healhealth") or (stats.currenthealth < (sys.mosshealth-600)))) or false
 else
         return ((stats.currenthealth < sys.mosshealth) and (not doingaction ("healhealth") or (stats.currenthealth < (sys.mosshealth-600))) and (defc.dragonform or not can_usemana() or affs.prone or (conf.transmute ~= "replaceall" and not doingaction"transmute"))) or false
@@ -1147,7 +1147,7 @@ end
 
       isadvisable = function ()
         return (affs.pacifism and
-          not doingaction("pacifism") and (not svo.haveskillset("chivalry") or not dict.rage.misc.isadvisable())) or false
+          not doingaction("pacifism") and (not svo.haveskillset('chivalry') or not dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function ()
@@ -1170,7 +1170,7 @@ end
 
       isadvisable = function ()
         return (affs.pacifism and
-          not doingaction("pacifism") and (not svo.haveskillset("chivalry") or not dict.rage.misc.isadvisable())) or false
+          not doingaction("pacifism") and (not svo.haveskillset('chivalry') or not dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function ()
@@ -1206,7 +1206,7 @@ end
       spriority = 0,
 
       isadvisable = function ()
-        return (affs.peace and (not svo.haveskillset("chivalry") or not dict.rage.misc.isadvisable())) or false
+        return (affs.peace and (not svo.haveskillset('chivalry') or not dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function ()
@@ -1241,7 +1241,7 @@ end
       spriority = 0,
 
       isadvisable = function ()
-        return (affs.inlove and (not svo.haveskillset("chivalry") or not dict.rage.misc.isadvisable())) or false
+        return (affs.inlove and (not svo.haveskillset('chivalry') or not dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function ()
@@ -1736,7 +1736,7 @@ end
       spriority = 0,
 
       isadvisable = function ()
-        return (affs.justice and (not svo.haveskillset("chivalry") or not dict.rage.misc.isadvisable())) or false
+        return (affs.justice and (not svo.haveskillset('chivalry') or not dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function ()
@@ -1771,7 +1771,7 @@ end
 
       isadvisable = function ()
         return (affs.generosity and
-          not doingaction("generosity") and (not svo.haveskillset("chivalry") or not dict.rage.misc.isadvisable())) or false
+          not doingaction("generosity") and (not svo.haveskillset('chivalry') or not dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function ()
@@ -1794,7 +1794,7 @@ end
 
       isadvisable = function ()
         return (affs.generosity and
-          not doingaction("generosity") and (not svo.haveskillset("chivalry") or not dict.rage.misc.isadvisable())) or false
+          not doingaction("generosity") and (not svo.haveskillset('chivalry') or not dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function ()
@@ -6113,8 +6113,8 @@ end
           and (not sys.enabledgmcp or (gmcp.Room and gmcp.Room.Info.exits[conf.blockingdir]))
           and not codepaste.balanceful_codepaste()
           and not affs.prone
-          and (not svo.haveskillset("metamorphosis") or (defc.riding or defc.elephant or defc.dragonform or defc.hydra))
-          and (not svo.haveskillset("subterfuge") or not defc.phase)
+          and (not svo.haveskillset('metamorphosis') or (defc.riding or defc.elephant or defc.dragonform or defc.hydra))
+          and (not svo.haveskillset('subterfuge') or not defc.phase)
         ) or false
       end,
 
@@ -6159,9 +6159,9 @@ end
 
       isadvisable = function ()
         return (not sys.sp_satisfied and not sys.blockparry and not affs.paralysis
-          and not doingaction "doparry" and ((svo.haveskillset("tekura") and conf.guarding) or conf.parry) and not codepaste.balanceful_codepaste()
+          and not doingaction "doparry" and ((svo.haveskillset('tekura') and conf.guarding) or conf.parry) and not codepaste.balanceful_codepaste()
           -- blademasters can parry with their sword sheathed, and monks don't need to wield anything
-          and ((svo.haveskillset("tekura") or svo.me.class == "Blademaster") or ((not sys.enabledgmcp or defc.dragonform) or (next(me.wielded) and sk.have_parryable())))
+          and ((svo.haveskillset('tekura') or svo.me.class == "Blademaster") or ((not sys.enabledgmcp or defc.dragonform) or (next(me.wielded) and sk.have_parryable())))
           and not codepaste.balanceful_defs_codepaste()) or false
       end,
 
@@ -6176,7 +6176,7 @@ end
         if sps.something_to_parry() then
           for name, limb in pairs(sp_config.parry_shouldbe) do
             if limb and limb ~= sps.parry_currently[name] then
-if not svo.haveskillset("tekura") then
+if not svo.haveskillset('tekura') then
               send(string.format("%sparry %s", (not defc.dragonform and "" or "claw"), name), conf.commandecho)
 else
               send(string.format("%s %s", (not defc.dragonform and "guard" or "clawparry"), name), conf.commandecho)
@@ -6188,7 +6188,7 @@ end
           -- check if we need to unparry in manual
           for limb, status in pairs(sps.parry_currently) do
             if status ~= sp_config.parry_shouldbe[limb] then
-if not svo.haveskillset("tekura") then
+if not svo.haveskillset('tekura') then
              send(string.format("%sparry nothing", (not defc.dragonform and "" or "claw")), conf.commandecho)
 else
              send(string.format("%s nothing", (not defc.dragonform and "guard" or "clawparry")), conf.commandecho)
@@ -6200,7 +6200,7 @@ end
           -- got here? nothing to do...
           sys.sp_satisfied = true
         elseif sp_config.priority[1] and not sps.parry_currently[sp_config.priority[1]] then
-if not svo.haveskillset("tekura") then
+if not svo.haveskillset('tekura') then
           send(string.format("%sparry %s", (not defc.dragonform and "" or "claw"), sp_config.priority[1]), conf.commandecho)
 else
           send(string.format("%s %s", (not defc.dragonform and "guard" or "clawparry"), sp_config.priority[1]), conf.commandecho)
@@ -6262,7 +6262,7 @@ end
 
       isadvisable = function ()
         return (affs.prone and (not affs.paralysis or doingaction"paralysis")
-          and (svo.haveskillset("weaponmastery") and (sk.didfootingattack or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm)) or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm))
+          and (svo.haveskillset('weaponmastery') and (sk.didfootingattack or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm)) or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm))
           and not doingaction("prone") and not affs.sleep
           and not affs.impale
           and not affs.transfixed
@@ -6277,7 +6277,7 @@ end
       end,
 
       onstart = function ()
-if svo.haveskillset("weaponmastery") then
+if svo.haveskillset('weaponmastery') then
         if sk.didfootingattack and conf.recoverfooting then
           send("recover footing", conf.commandecho)
           if affs.blackout then send("recover footing", conf.commandecho) end
@@ -7075,7 +7075,7 @@ end
       dontbatch = true,
 
       isadvisable = function ()
-        return (affs.webbed and codepaste.writhe() and not (bals.balance and bals.rightarm and bals.leftarm and dict.dragonflex.misc.isadvisable()) and (not svo.haveskillset("voicecraft") or (not conf.dwinnu or not dict.dwinnu.misc.isadvisable()))) or false
+        return (affs.webbed and codepaste.writhe() and not (bals.balance and bals.rightarm and bals.leftarm and dict.dragonflex.misc.isadvisable()) and (not svo.haveskillset('voicecraft') or (not conf.dwinnu or not dict.dwinnu.misc.isadvisable()))) or false
       end,
 
       oncompleted = function ()
@@ -7133,7 +7133,7 @@ end
       dontbatch = true,
 
       isadvisable = function ()
-        return (affs.roped and codepaste.writhe() and not (bals.balance and bals.rightarm and bals.leftarm and dict.dragonflex.misc.isadvisable()) and (not svo.haveskillset("voicecraft") or (not conf.dwinnu or not dict.dwinnu.misc.isadvisable()))) or false
+        return (affs.roped and codepaste.writhe() and not (bals.balance and bals.rightarm and bals.leftarm and dict.dragonflex.misc.isadvisable()) and (not svo.haveskillset('voicecraft') or (not conf.dwinnu or not dict.dwinnu.misc.isadvisable()))) or false
       end,
 
       oncompleted = function ()
@@ -9457,7 +9457,7 @@ end
 
       oncompleted = function ()
         defences.got("frost")
-        if svo.haveskillset("metamorphosis") then
+        if svo.haveskillset('metamorphosis') then
           defences.got("temperance")
         end
       end,
@@ -9478,7 +9478,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        if svo.haveskillset("metamorphosis") then
+        if svo.haveskillset('metamorphosis') then
           defences.lost("temperance")
         end
       end
@@ -10055,8 +10055,8 @@ end
       -- no blind skill: ignore serverside if it's not to be deffed up atm
       -- with blind skill: ignore serverside can use skill, or if it's not to be deffed up atm
       return
-        (not svo.haveskillset("shindo") or (conf.shindoblind and not defc.dragonform)) or
-        (not svo.haveskillset("kaido") or (conf.kaidoblind and not defc.dragonform)) or
+        (not svo.haveskillset('shindo') or (conf.shindoblind and not defc.dragonform)) or
+        (not svo.haveskillset('kaido') or (conf.kaidoblind and not defc.dragonform)) or
         not ((sys.deffing and defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind))
     end,
     herb = {
@@ -10066,8 +10066,8 @@ end
 
       isadvisable = function ()
         return (not affs.scalded and
-          (not svo.haveskillset("shindo") or (defc.dragonform or (not conf.shindoblind))) and
-          (not svo.haveskillset("kaido") or (defc.dragonform or (not conf.kaidoblind))) and
+          (not svo.haveskillset('shindo') or (defc.dragonform or (not conf.shindoblind))) and
+          (not svo.haveskillset('kaido') or (defc.dragonform or (not conf.kaidoblind))) and
           ((sys.deffing and defdefup[defs.mode].blind and not defc.blind) or (conf.keepup and defkeepup[defs.mode].blind and not defc.blind)) and
           not doingaction"waitingonblind") or false
       end,
@@ -10117,8 +10117,8 @@ end
     onservereignore = function()
       -- no deaf skill: ignore serverside if it's not to be deffed up atm
       -- with deaf skill: ignore serverside can use skill, or if it's not to be deffed up atm
-      return (not svo.haveskillset("shindo") or (conf.shindodeaf and not defc.dragonform)) or
-        (not svo.haveskillset("kaido") or (conf.kaidodeaf and not defc.dragonform)) or
+      return (not svo.haveskillset('shindo') or (conf.shindodeaf and not defc.dragonform)) or
+        (not svo.haveskillset('kaido') or (conf.kaidodeaf and not defc.dragonform)) or
         not ((sys.deffing and defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf))
     end,
     herb = {
@@ -10128,8 +10128,8 @@ end
 
       isadvisable = function ()
         return (not defc.deaf and
-          (not svo.haveskillset("shindo") or (defc.dragonform or not conf.shindodeaf)) and
-          (not svo.haveskillset("kaido") or (defc.dragonform or not conf.kaidodeaf)) and
+          (not svo.haveskillset('shindo') or (defc.dragonform or not conf.shindodeaf)) and
+          (not svo.haveskillset('kaido') or (defc.dragonform or not conf.kaidodeaf)) and
          ((sys.deffing and defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf)) and not doingaction("waitingondeaf")) or false
       end,
 
@@ -10322,7 +10322,7 @@ end
       -- user commands catching needs this check
         if not (bals.balance and bals.equilibrium) then return end
 
-        if defc.flame and svo.haveskillset("metamorphosis") then
+        if defc.flame and svo.haveskillset('metamorphosis') then
           send("relax flame", conf.commandecho)
         end
         send("dragonform", conf.commandecho)
@@ -10361,7 +10361,7 @@ end
         end
 
         -- lifevision, via artefact, has to be removed as well
-        if defc.lifevision and not svo.haveskillset("necromancy") then
+        if defc.lifevision and not svo.haveskillset('necromancy') then
           defences.lost("lifevision")
         end
 
@@ -10698,7 +10698,7 @@ end
           sys.canoutr and
           not affs.prone and
           not doingaction'nightsight'
-          and (not svo.haveskillset("metamorphosis") or ((not affs.cantmorph and sk.morphsforskill.nightsight) or defc.dragonform))) or false
+          and (not svo.haveskillset('metamorphosis') or ((not affs.cantmorph and sk.morphsforskill.nightsight) or defc.dragonform))) or false
       end,
 
       oncompleted = function ()
@@ -10707,7 +10707,7 @@ end
 
       action = "nightsight on",
       onstart = function ()
-if not svo.haveskillset("metamorphosis") then
+if not svo.haveskillset('metamorphosis') then
         send("nightsight on", conf.commandecho)
 else
         if not defc.dragonform and (not conf.transmorph and sk.inamorph() and not sk.inamorphfor"nightsight") then
@@ -10743,7 +10743,7 @@ end
 
       actions = {"touch shield", "angel aura"},
       onstart = function ()
-if svo.haveskillset("spirituality") then
+if svo.haveskillset('spirituality') then
         if defc.dragonform or not defc.summon or stats.currentwillpower <= 10 then
           send("touch shield", conf.commandecho)
         else
@@ -11112,24 +11112,24 @@ end
   svotossd = {}
 } -- end of dict
 
-if svo.haveskillset("subterfuge") then
+if svo.haveskillset('subterfuge') then
   dict.sstosvod.shroud = "cloaking"
 else
   dict.sstosvod.shroud = "shroud"
 end
 
-if svo.haveskillset("weaponmastery") then
+if svo.haveskillset('weaponmastery') then
   dict.prone.misc.actions = {"stand", "recover footing"}
 else
   dict.prone.misc.action = "stand"
 end
 
 -- undeffable since serverside can't morph to get a specific defence up
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
   dict.nightsight.physical.undeffable = true
 end
 
-if svo.haveskillset("shindo") then
+if svo.haveskillset('shindo') then
   dict.deaf.misc = {
     aspriority = 0,
     spriority = 0,
@@ -11149,7 +11149,7 @@ if svo.haveskillset("shindo") then
     end
   }
 end
-if svo.haveskillset("kaido") then
+if svo.haveskillset('kaido') then
   dict.deaf.misc = {
     aspriority = 0,
     spriority = 0,
@@ -11169,7 +11169,7 @@ if svo.haveskillset("kaido") then
     end
   }
 end
-if svo.haveskillset("shindo") then
+if svo.haveskillset('shindo') then
   dict.blind.misc = {
       aspriority = 0,
       spriority = 0,
@@ -11189,7 +11189,7 @@ if svo.haveskillset("shindo") then
       end
     }
 end
-if svo.haveskillset("kaido") then
+if svo.haveskillset('kaido') then
   dict.blind.misc = {
       aspriority = 0,
       spriority = 0,
@@ -11212,7 +11212,7 @@ end
 
 
 -- skillset-specific defences
-if svo.haveskillset("necromancy") then
+if svo.haveskillset('necromancy') then
   dict.lifevision = {
     physical = {
       balanceful_act = true,
@@ -11237,7 +11237,7 @@ if svo.haveskillset("necromancy") then
 end
 
 
-if svo.haveskillset("devotion") then
+if svo.haveskillset('devotion') then
   dict.frostblessing = {
     physical = {
       balanceful_act = true,
@@ -11348,7 +11348,7 @@ if svo.haveskillset("devotion") then
   }
 end
 
-if svo.haveskillset("spirituality") then
+if svo.haveskillset('spirituality') then
   dict.mace = {
     physical = {
       aspriority = 0,
@@ -11537,7 +11537,7 @@ if svo.haveskillset("spirituality") then
   }
 end
 
-if svo.haveskillset("shindo") then
+if svo.haveskillset('shindo') then
   dict.phoenix = {
     description = "tracks whenever you've sent the shindo phoenix command - so an illusion on shindo phoenix won't trick the system into clearing all affs",
     physical = {
@@ -11561,7 +11561,7 @@ if svo.haveskillset("shindo") then
   }
 end
 
-if svo.haveskillset("twoarts") then
+if svo.haveskillset('twoarts') then
   doya = {
     physical = {
       aspriority = 0,
@@ -11694,7 +11694,7 @@ if svo.haveskillset("twoarts") then
   }
 end
 
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
   dict.affinity = {
     physical = {
       balanceful_act = true,
@@ -12670,7 +12670,7 @@ if svo.haveskillset("metamorphosis") then
   }
 end
 
-if svo.haveskillset("swashbuckling") then
+if svo.haveskillset('swashbuckling') then
   drunkensailor = {
     physical = {
       aspriority = 0,
@@ -12715,7 +12715,7 @@ if svo.haveskillset("swashbuckling") then
   }
 end
 
-if svo.haveskillset("voicecraft") then
+if svo.haveskillset('voicecraft') then
   dict.lay = {
     physical = {
       aspriority = 0,
@@ -12785,7 +12785,7 @@ if svo.haveskillset("voicecraft") then
 end
 
 
-if svo.haveskillset("occultism") then
+if svo.haveskillset('occultism') then
   dict.astralform = {
     physical = {
       balanceful_act = true,
@@ -12810,7 +12810,7 @@ if svo.haveskillset("occultism") then
   }
 end
 
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
   dict.bedevil = {
     gamename = "bedevilaura",
     physical = {
@@ -12835,7 +12835,7 @@ if svo.haveskillset("healing") then
   }
 end
 
-if svo.haveskillset("healing") or svo.haveskillset("elementalism") or svo.haveskillset("weatherweaving") then
+if svo.haveskillset('healing') or svo.haveskillset('elementalism') or svo.haveskillset('weatherweaving') then
   dict.simultaneity = {
     physical = {
       balanceful_act = true,
@@ -12872,8 +12872,8 @@ if svo.haveskillset("healing") or svo.haveskillset("elementalism") or svo.havesk
 
       oncompleted = function ()
         defences.got("air")
-        if defc.air and defc.earth and defc.water and (not svo.haveskillset("healing") or defc.spirit)
-        and (svo.haveskillset("weatherweaving") or defc.fire) then
+        if defc.air and defc.earth and defc.water and (not svo.haveskillset('healing') or defc.spirit)
+        and (svo.haveskillset('weatherweaving') or defc.fire) then
           defences.got("simultaneity")
         end
       end,
@@ -12904,8 +12904,8 @@ if svo.haveskillset("healing") or svo.haveskillset("elementalism") or svo.havesk
 
       oncompleted = function ()
         defences.got("water")
-        if defc.air and defc.earth and defc.water and (not svo.haveskillset("healing") or defc.spirit)
-        and (svo.haveskillset("weatherweaving") or defc.fire) then
+        if defc.air and defc.earth and defc.water and (not svo.haveskillset('healing') or defc.spirit)
+        and (svo.haveskillset('weatherweaving') or defc.fire) then
           defences.got("simultaneity")
         end
       end,
@@ -12936,8 +12936,8 @@ if svo.haveskillset("healing") or svo.haveskillset("elementalism") or svo.havesk
 
       oncompleted = function ()
         defences.got("earth")
-        if defc.air and defc.earth and defc.water and (not svo.haveskillset("healing") or defc.spirit)
-        and (svo.haveskillset("weatherweaving") or defc.fire) then
+        if defc.air and defc.earth and defc.water and (not svo.haveskillset('healing') or defc.spirit)
+        and (svo.haveskillset('weatherweaving') or defc.fire) then
           defences.got("simultaneity")
         end
       end,
@@ -12954,7 +12954,7 @@ if svo.haveskillset("healing") or svo.haveskillset("elementalism") or svo.havesk
       end
     }
   }
-if not svo.haveskillset("weatherweaving") then
+if not svo.haveskillset('weatherweaving') then
   dict.fire = {
     physical = {
       balanceful_act = true,
@@ -12969,7 +12969,7 @@ if not svo.haveskillset("weatherweaving") then
 
       oncompleted = function ()
         defences.got("fire")
-        if defc.air and defc.fire and defc.earth and defc.water and (not svo.haveskillset("healing") or defc.spirit) then
+        if defc.air and defc.fire and defc.earth and defc.water and (not svo.haveskillset('healing') or defc.spirit) then
           defences.got("simultaneity")
         end
       end,
@@ -12987,7 +12987,7 @@ if not svo.haveskillset("weatherweaving") then
     }
   }
 end
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
   dict.spirit = {
     physical = {
       balanceful_act = true,
@@ -13029,8 +13029,8 @@ end
       undeffable = true,
 
       isadvisable = function ()
-        return (((((sys.deffing and defdefup[defs.mode].bindall and not defc.bindall) or (conf.keepup and defkeepup[defs.mode].bindall and not defc.bindall))) or (conf.keepup and defkeepup[defs.mode].bindall and not defc.bindall)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana >= 750 and defc.air and defc.earth and defc.water and (not svo.haveskillset("healing") or defc.spirit)
-        and (svo.haveskillset("weatherweaving") or defc.fire)) or false
+        return (((((sys.deffing and defdefup[defs.mode].bindall and not defc.bindall) or (conf.keepup and defkeepup[defs.mode].bindall and not defc.bindall))) or (conf.keepup and defkeepup[defs.mode].bindall and not defc.bindall)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana >= 750 and defc.air and defc.earth and defc.water and (not svo.haveskillset('healing') or defc.spirit)
+        and (svo.haveskillset('weatherweaving') or defc.fire)) or false
       end,
 
       oncompleted = function ()
@@ -13057,7 +13057,7 @@ end
 
       oncompleted = function ()
         defences.got("boundair")
-        if defc.boundair and defc.boundearth and defc.boundwater and (not svo.haveskillset("healing") or defc.boundspirit) and (svo.haveskillset("weatherweaving") or defc.boundfire) then
+        if defc.boundair and defc.boundearth and defc.boundwater and (not svo.haveskillset('healing') or defc.boundspirit) and (svo.haveskillset('weatherweaving') or defc.boundfire) then
           defences.got("bindall")
         end
       end,
@@ -13088,7 +13088,7 @@ end
 
       oncompleted = function ()
         defences.got("boundwater")
-        if defc.boundair and defc.boundearth and defc.boundwater and (not svo.haveskillset("healing") or defc.boundspirit) and (svo.haveskillset("weatherweaving") or defc.boundfire) then
+        if defc.boundair and defc.boundearth and defc.boundwater and (not svo.haveskillset('healing') or defc.boundspirit) and (svo.haveskillset('weatherweaving') or defc.boundfire) then
           defences.got("bindall")
         end
       end,
@@ -13105,7 +13105,7 @@ end
       end
     }
   }
-  if not svo.haveskillset("weatherweaving") then
+  if not svo.haveskillset('weatherweaving') then
     dict.boundfire = {
       physical = {
         balanceful_act = true,
@@ -13120,7 +13120,7 @@ end
 
         oncompleted = function ()
           defences.got("boundfire")
-          if defc.boundair and defc.boundfire and defc.boundearth and defc.boundwater and (not svo.haveskillset("healing") or defc.boundspirit) then
+          if defc.boundair and defc.boundfire and defc.boundearth and defc.boundwater and (not svo.haveskillset('healing') or defc.boundspirit) then
             defences.got("bindall")
           end
         end,
@@ -13152,7 +13152,7 @@ end
 
       oncompleted = function ()
         defences.got("boundearth")
-        if defc.boundair and defc.boundearth and defc.boundwaterand (not svo.haveskillset("healing") or defc.boundspirit) and (svo.haveskillset("weatherweaving") or defc.boundfire) then
+        if defc.boundair and defc.boundearth and defc.boundwaterand (not svo.haveskillset('healing') or defc.boundspirit) and (svo.haveskillset('weatherweaving') or defc.boundfire) then
           defences.got("bindall")
         end
       end,
@@ -13169,7 +13169,7 @@ end
       end
     }
   }
-  if svo.haveskillset("healing") then
+  if svo.haveskillset('healing') then
     dict.boundspirit = {
       physical = {
         balanceful_act = true,
@@ -13211,7 +13211,7 @@ end
       undeffable = true,
 
       isadvisable = function ()
-        return (((((sys.deffing and defdefup[defs.mode].fortifyall and not defc.fortifyall) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall))) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana >= 600 and defc.air and defc.earth and defc.water and (not svo.haveskillset("healing") or defc.spirit) and (svo.haveskillset("weatherweaving") or defc.fire)) or false
+        return (((((sys.deffing and defdefup[defs.mode].fortifyall and not defc.fortifyall) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall))) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana >= 600 and defc.air and defc.earth and defc.water and (not svo.haveskillset('healing') or defc.spirit) and (svo.haveskillset('weatherweaving') or defc.fire)) or false
       end,
 
       oncompleted = function ()
@@ -13238,7 +13238,7 @@ end
 
       oncompleted = function ()
         defences.got("fortifiedair")
-        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwaterand and (not svo.haveskillset("healing") or defc.fortifiedspirit) and (svo.haveskillset("weatherweaving") or defc.fortifiedfire) then
+        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwaterand and (not svo.haveskillset('healing') or defc.fortifiedspirit) and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
           defences.got("fortifyall")
         end
       end,
@@ -13269,7 +13269,7 @@ end
 
       oncompleted = function ()
         defences.got("fortifiedwater")
-        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and (not svo.haveskillset("healing") or defc.fortifiedspirit) and (svo.haveskillset("weatherweaving") or defc.fortifiedfire) then
+        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and (not svo.haveskillset('healing') or defc.fortifiedspirit) and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
           defences.got("fortifyall")
         end
       end,
@@ -13286,7 +13286,7 @@ end
       end
     }
   }
-  if not svo.haveskillset("weatherweaving") then
+  if not svo.haveskillset('weatherweaving') then
     dict.fortifiedfire = {
       physical = {
         balanceful_act = true,
@@ -13301,7 +13301,7 @@ end
 
         oncompleted = function ()
           defences.got("fortifiedfire")
-          if defc.fortifiedair and defc.fortifiedfire and defc.fortifiedearth and defc.fortifiedwater and (not svo.haveskillset("healing") or defc.fortifiedspirit) then
+          if defc.fortifiedair and defc.fortifiedfire and defc.fortifiedearth and defc.fortifiedwater and (not svo.haveskillset('healing') or defc.fortifiedspirit) then
             defences.got("fortifyall")
           end
         end,
@@ -13333,7 +13333,7 @@ end
 
       oncompleted = function ()
         defences.got("fortifiedearth")
-        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and (not svo.haveskillset("healing") or defc.fortifiedspirit) and (svo.haveskillset("weatherweaving") or defc.fortifiedfire) then
+        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and (not svo.haveskillset('healing') or defc.fortifiedspirit) and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
           defences.got("fortifyall")
         end
       end,
@@ -13350,7 +13350,7 @@ end
       end
     }
   }
-  if svo.haveskillset("healing") then
+  if svo.haveskillset('healing') then
     dict.fortifiedspirit = {
       physical = {
         balanceful_act = true,
@@ -13385,7 +13385,7 @@ end
   end
 end
 
-if svo.haveskillset("elementalism") then
+if svo.haveskillset('elementalism') then
   dict.waterweird = {
     physical = {
       balanceful_act = true,
@@ -13493,7 +13493,7 @@ if svo.haveskillset("elementalism") then
     }
   }
 end
-if svo.haveskillset("elementalism") or svo.haveskillset("weatherweaving") then
+if svo.haveskillset('elementalism') or svo.haveskillset('weatherweaving') then
   dict.reflection = {
     gamename = "reflections",
     physical = {
@@ -13518,7 +13518,7 @@ if svo.haveskillset("elementalism") or svo.haveskillset("weatherweaving") then
   }
 end
 
-if svo.haveskillset("apostasy") then
+if svo.haveskillset('apostasy') then
   dict.baalzadeen = {
     physical = {
       balanceful_act = true,
@@ -13617,7 +13617,7 @@ if svo.haveskillset("apostasy") then
   }
 end
 
-if svo.haveskillset("weatherweaving") then
+if svo.haveskillset('weatherweaving') then
   dict.circulate = {
     physical = {
       balanceful_act = true,
@@ -13646,7 +13646,7 @@ end
 
 
 
-if svo.haveskillset("kaido") then
+if svo.haveskillset('kaido') then
   dict.boosting = {
     gamename = "boostedregeneration",
     physical = {
@@ -13729,7 +13729,7 @@ end
 
 
 
-if svo.haveskillset("tarot") then
+if svo.haveskillset('tarot') then
   devil = {
     physical = {
       balanceful_act = true,
@@ -13754,7 +13754,7 @@ if svo.haveskillset("tarot") then
   }
 end
 
-if svo.haveskillset("shikudo") then
+if svo.haveskillset('shikudo') then
   dict.grip = {
     gamename = "gripping",
     physical = {
@@ -13886,7 +13886,7 @@ if svo.haveskillset("shikudo") then
   }
 end
 
-if svo.haveskillset("tekura") then
+if svo.haveskillset('tekura') then
   dict.bodyblock = {
     physical = {
       aspriority = 0,
@@ -14057,7 +14057,7 @@ end
 
 
 
-if svo.haveskillset("venom") then
+if svo.haveskillset('venom') then
   dict.shrugging = {
     physical = {
       aspriority = 0,
@@ -14099,7 +14099,7 @@ if svo.haveskillset("venom") then
   }
 end
 
-if svo.haveskillset("alchemy") then
+if svo.haveskillset('alchemy') then
   dict.extispicy = {
     physical = {
       balanceful_act = true,
@@ -14140,7 +14140,7 @@ if svo.haveskillset("alchemy") then
   }
 end
 
-if svo.haveskillset("woodlore") then
+if svo.haveskillset('woodlore') then
   dict.impaling = {
     physical = {
       balanceful_act = true,
@@ -14185,7 +14185,7 @@ if svo.haveskillset("woodlore") then
   }
 end
 
-if svo.haveskillset("propagation") then
+if svo.haveskillset('propagation') then
   dict.barkskin = {
     physical = {
       balanceful_act = true,
@@ -14304,7 +14304,7 @@ if svo.haveskillset("propagation") then
   }
 end
 
-if svo.haveskillset("groves") then
+if svo.haveskillset('groves') then
   dict.flail = {
     physical = {
       balanceful_act = true,
@@ -14485,7 +14485,7 @@ if svo.haveskillset("groves") then
 end
 
 -- override groves lyre, as druids can get 2 types of lyre (groves and nightingale)
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
   dict.lyre = {
     physical = {
       aspriority = 0,
@@ -14602,7 +14602,7 @@ if svo.haveskillset("metamorphosis") then
   }
 end
 
-if svo.haveskillset("domination") then
+if svo.haveskillset('domination') then
   dict.arctar = {
     physical = {
       balanceful_act = true,
@@ -14626,7 +14626,7 @@ if svo.haveskillset("domination") then
     }
   }
 end
-if svo.haveskillset("shadowmancy") then
+if svo.haveskillset('shadowmancy') then
   dict.shadowcloak = {
     physical = {
       balanceful_act = true,
@@ -14734,7 +14734,7 @@ if svo.haveskillset("shadowmancy") then
     }
   }
 end
-if svo.haveskillset("aeonics") then
+if svo.haveskillset('aeonics') then
   dilation = {
     physical = {
       balanceless_act = true,
@@ -14758,7 +14758,7 @@ if svo.haveskillset("aeonics") then
     }
   }
 end
-if svo.haveskillset("terminus") then
+if svo.haveskillset('terminus') then
   dict.trusad = {
     gamename = "precision",
     physical = {
@@ -15137,7 +15137,7 @@ if svo.me.class == "Druid" then
     }
   }
 end
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
   dict.usehealing = {
     misc = {
       aspriority = 0,
@@ -15238,7 +15238,7 @@ if svo.haveskillset("healing") then
     }
   }
 end
-if svo.haveskillset("kaido") then
+if svo.haveskillset('kaido') then
   dict.transmute = {
     -- transmutespam is used to throttle bleed spamming so it doesn't get out of control
     transmutespam = false,
@@ -15289,7 +15289,7 @@ if svo.haveskillset("kaido") then
     }
   }
 end
-if svo.haveskillset("voicecraft") then
+if svo.haveskillset('voicecraft') then
   dict.dwinnu = {
     misc = {
       aspriority = 0,
@@ -15312,7 +15312,7 @@ if svo.haveskillset("voicecraft") then
   }
 end
 
-if svo.haveskillset("chivalry") then
+if svo.haveskillset('chivalry') then
   dict.rage = {
     misc = {
       aspriority = 0,
@@ -15346,7 +15346,7 @@ if svo.haveskillset("chivalry") then
     },
   }
 end
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
   dict.cantmorph = {
     waitingfor = {
       customwait = 30,
@@ -15377,7 +15377,7 @@ if svo.haveskillset("metamorphosis") then
     }
   }
 end
-if svo.haveskillset("metamorphosis") or svo.haveskillset("kaido") then
+if svo.haveskillset('metamorphosis') or svo.haveskillset('kaido') then
   dict.cantvitality = {
     waitingfor = {
       customwait = 122,
@@ -15405,7 +15405,7 @@ if svo.haveskillset("metamorphosis") or svo.haveskillset("kaido") then
     }
   }
 end
-if svo.haveskillset("weaponmastery") then
+if svo.haveskillset('weaponmastery') then
   dict.footingattack = {
     description = "Tracks attacks suitable for use with balanceless recover footing",
     happened = {
@@ -15415,7 +15415,7 @@ if svo.haveskillset("weaponmastery") then
     }
   }
 end
-if svo.haveskillset("aeonics") then
+if svo.haveskillset('aeonics') then
   dict.age = {
     happened = {
       onstart = function () end,
@@ -15440,7 +15440,7 @@ if svo.haveskillset("aeonics") then
     }
   }
 end
-if svo.haveskillset("chivalry") or svo.haveskillset("striking") or svo.haveskillset("kaido") then
+if svo.haveskillset('chivalry') or svo.haveskillset('striking') or svo.haveskillset('kaido') then
   dict.fitness = {
     physical = {
       aspriority = 0,
@@ -15487,7 +15487,7 @@ if svo.haveskillset("chivalry") or svo.haveskillset("striking") or svo.haveskill
     },
   }
 end
-if svo.haveskillset("devotion") then
+if svo.haveskillset('devotion') then
   dict.bloodsworntoggle = {
     misc = {
       aspriority = 0,
@@ -15560,14 +15560,14 @@ basicdef("bell", "touch bell", true, "belltattoo")
 basicdef("hypersight", "hypersight on")
 basicdef("curseward", "curseward")
 basicdef("clinging", "cling")
-if svo.haveskillset("necromancy") then
+if svo.haveskillset('necromancy') then
   basicdef("putrefaction", "putrefaction")
   basicdef("shroud", "shroud")
   basicdef("vengeance", "vengeance on")
   basicdef("deathaura", "deathaura on")
   basicdef("soulcage", "soulcage activate")
 end
-if svo.haveskillset("chivalry") then
+if svo.haveskillset('chivalry') then
   basicdef("mastery", "mastery on", true, "blademastery")
   basicdef("sturdiness", "stand firm", false, "standingfirm")
   basicdef("weathering", "weathering", true)
@@ -15575,14 +15575,14 @@ if svo.haveskillset("chivalry") then
   basicdef("grip", "grip", true, "gripping")
   basicdef("fury", "fury on")
 end
-if svo.haveskillset("devotion") then
+if svo.haveskillset('devotion') then
   basicdef("inspiration", "perform inspiration")
   basicdef("bliss", "perform bliss", nil, nil, true)
 end
-if svo.haveskillset("spirituality") then
+if svo.haveskillset('spirituality') then
   basicdef("heresy", "hunt heresy")
 end
-if svo.haveskillset("shindo") then
+if svo.haveskillset('shindo') then
   basicdef("clarity", "clarity", nil, nil, true)
   basicdef("sturdiness", "stand firm", false, "standingfirm")
   basicdef("weathering", "weathering", true)
@@ -15599,20 +15599,20 @@ if svo.haveskillset("shindo") then
   basicdef("dodging", "dodging on")
   basicdef("immunity", "immunity")
 end
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
   basicdef("bonding", "bond spirit", nil, nil, true)
 end
-if svo.haveskillset("swashbuckling") then
+if svo.haveskillset('swashbuckling') then
   basicdef("arrowcatch", "arrowcatch on", nil, "arrowcatching")
   basicdef("balancing", "balancing on")
   basicdef("acrobatics", "acrobatics on")
   basicdef("dodging", "dodging on")
   basicdef("grip", "grip", true, "gripping")
 end
-if svo.haveskillset("voicecraft") then
+if svo.haveskillset('voicecraft') then
   basicdef("songbird", "whistle for songbird")
 end
-if svo.haveskillset("harmonics") then
+if svo.haveskillset('harmonics') then
   basicdef("lament", "play lament", nil, nil, true)
   basicdef("anthem", "play anthem", nil, nil, true)
   basicdef("harmonius", "play harmonius", nil, nil, true)
@@ -15628,7 +15628,7 @@ if svo.haveskillset("harmonics") then
   basicdef("reel", "play reel", nil, nil, true)
   basicdef("hallelujah", "play hallelujah", nil, nil, true)
 end
-if svo.haveskillset("occultism") then
+if svo.haveskillset('occultism') then
   basicdef("shroud", "shroud")
   basicdef("astralvision", "astralvision", nil, nil, true)
   basicdef("distortedaura", "distortaura")
@@ -15638,29 +15638,29 @@ if svo.haveskillset("occultism") then
   basicdef("simulacrum", "simulacrum", nil, nil, true)
   basicdef("transmogrify", "transmogrify activate", nil, nil, true)
 end
-if svo.haveskillset("elementalism") then
+if svo.haveskillset('elementalism') then
   basicdef("efreeti", "cast efreeti", nil, nil, true)
 end
-if svo.haveskillset("apostasy") then
+if svo.haveskillset('apostasy') then
   basicdef("daegger", "summon daegger", nil, nil, true)
   basicdef("pentagram", "carve pentagram", nil, nil, true)
 end
-if svo.haveskillset("evileye") then
+if svo.haveskillset('evileye') then
   basicdef("truestare", "truestare")
 end
-if svo.haveskillset("pranks") then
+if svo.haveskillset('pranks') then
   basicdef("arrowcatch", "arrowcatch on", nil, "arrowcatching")
   basicdef("balancing", "balancing on")
   basicdef("acrobatics", "acrobatics on")
   basicdef("slipperiness", "slipperiness", nil, "slippery")
 end
-if svo.haveskillset("puppetry") or svo.haveskillset("vodun") then
+if svo.haveskillset('puppetry') or svo.haveskillset('vodun') then
   basicdef("grip", "grip", true, "gripping")
 end
-if svo.haveskillset("curses") then
+if svo.haveskillset('curses') then
   basicdef("swiftcurse", "swiftcurse")
 end
-if svo.haveskillset("kaido") then
+if svo.haveskillset('kaido') then
   basicdef("numb", "numb", nil, nil, true)
   basicdef("weathering", "weathering", true)
   basicdef("nightsight", "nightsight on", true)
@@ -15676,19 +15676,19 @@ if svo.haveskillset("kaido") then
   basicdef("splitmind", "split mind")
   basicdef("sturdiness", "stand firm", false, "standingfirm")
 end
-if svo.haveskillset("telepathy") then
+if svo.haveskillset('telepathy') then
   basicdef("mindtelesense", "mind telesense on", true)
   basicdef("hypersense", "mind hypersense on")
   basicdef("mindnet", "mindnet on", true)
   basicdef("mindcloak", "mind cloak on", true)
 end
-if svo.haveskillset("skirmishing") then
+if svo.haveskillset('skirmishing') then
   basicdef("scout", "scout", nil, "scouting")
 end
-if svo.haveskillset("weaponmastery") then
+if svo.haveskillset('weaponmastery') then
   basicdef("deflect", "deflect", true)
 end
-if svo.haveskillset("subterfuge") then
+if svo.haveskillset('subterfuge') then
   basicdef("scales", "scales")
   basicdef("hiding", "hide", false, "hiding", true)
   basicdef("pacing", "pacing on")
@@ -15702,20 +15702,20 @@ if svo.haveskillset("subterfuge") then
   basicdef("phase", "phase", false, "phased", true)
   basicdef("secondsight", "secondsight")
 end
-if svo.haveskillset("alchemy") then
+if svo.haveskillset('alchemy') then
   basicdef("lead", "educe lead", nil, nil, true)
   basicdef("tin", "educe tin")
   basicdef("sulphur", "educe sulphur")
   basicdef("mercury", "educe mercury")
   basicdef("empower", "astronomy empower me", nil, nil, true)
 end
-if svo.haveskillset("woodlore") then
+if svo.haveskillset('woodlore') then
   basicdef("barkskin", "barkskin")
   basicdef("fleetness", "fleetness")
   basicdef("hiding", "hide", false, "hiding", true)
   basicdef("firstaid", "firstaid on")
 end
-if svo.haveskillset("groves") then
+if svo.haveskillset('groves') then
   basicdef("panacea", "evoke panacea", false, false, true)
   basicdef("vigour", "evoke vigour", false, false, true)
   basicdef("roots", "grove roots", false, false, true)
@@ -15728,7 +15728,7 @@ if svo.haveskillset("groves") then
   basicdef("swarm", "call new swarm", false, false, true)
   basicdef("harmony", "evoke harmony me", false, false, true)
 end
-if svo.haveskillset("domination") then
+if svo.haveskillset('domination') then
   basicdef("golgotha", "summon golgotha", nil, "golgothagrace")
 end
 
@@ -16166,7 +16166,7 @@ sk.check_retardation = function (...)
   end
 end
 
-if svo.haveskillset("subterfuge") then
+if svo.haveskillset('subterfuge') then
 signals.newroom:connect(function()
   if defc.listen then defences.lost("listen") end
 end)

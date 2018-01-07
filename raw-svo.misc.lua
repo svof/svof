@@ -834,9 +834,9 @@ end)
 
 
 function setdefaultprompt()
-  if svo.haveskillset("shindo") then
+  if svo.haveskillset('shindo') then
     config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@shin^w-]], false)
-  elseif svo.haveskillset("kaido") then
+  elseif svo.haveskillset('kaido') then
     config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@kai^W-]], false)
   else
     config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^W-]], false)

@@ -828,7 +828,7 @@ config_dict = pl.OrderedMap {
     min = 0,
     onset = function () echof("Will diagnose after we have %d or more unknown, but focusable afflictions.", conf.unknownfocus) end,
     installstart = function ()
-      if svo.haveskillset("healing") then
+      if svo.haveskillset('healing') then
         conf.unknownfocus = 1
       else
         conf.unknownfocus = 2
@@ -840,7 +840,7 @@ config_dict = pl.OrderedMap {
     min = 0,
     onset = function () echof("Will diagnose after we have %d or more unknown affs.", conf.unknownany) end,
     installstart = function ()
-      if svo.haveskillset("healing") then
+      if svo.haveskillset('healing') then
         conf.unknownany = 1
       else
         conf.unknownany = 2
@@ -1328,9 +1328,9 @@ config_dict = pl.OrderedMap {
     onshow = function (defaultcolour)
       local tooltip
 
-      if svo.haveskillset("necromancy") then
+      if svo.haveskillset('necromancy') then
         tooltip = "Set the defences mode system should autoswitch to upon starburst/soulcage"
-      elseif svo.haveskillset("occultism") then
+      elseif svo.haveskillset('occultism') then
         tooltip = "Set the defences mode system should autoswitch to upon starburst/transmog"
       else
         tooltip = "Set the defences mode system should autoswitch to upon starburst"
@@ -1343,9 +1343,9 @@ config_dict = pl.OrderedMap {
     end,
     onset = function ()
       conf.burstmode = conf.burstmode:lower()
-      if svo.haveskillset("necromancy") then
+      if svo.haveskillset('necromancy') then
             echof("Upon starburst/soulcage, will go into %s defences mode.", conf.burstmode)
-      elseif svo.haveskillset("occultism") then
+      elseif svo.haveskillset('occultism') then
             echof("Upon starburst/transmogrify, will go into %s defences mode.", conf.burstmode)
       else
             echof("Upon starburst, will go into %s defences mode.", conf.burstmode)
@@ -1494,7 +1494,7 @@ config_dict = pl.OrderedMap {
   }},
 }
 
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
   config_dict:insert(1, "healingskill", {
     type = "string",
     check = function (what)
@@ -1528,7 +1528,7 @@ if svo.haveskillset("healing") then
       echof("Do you want to use Healing skillset in the full, partial or none mode? Full would mean that it'll use Healing for everything that it can and supplement it with normal cures. Partial would mean that it'll use normal cures and supplement it with Healing, while none means it won't make use of Healing at all.") end
   })
 end
-if svo.haveskillset("kaido") then
+if svo.haveskillset('kaido') then
   config_dict:insert(1, "transmute", {
     type = "string",
     check = function (what)
@@ -1572,7 +1572,7 @@ if svo.haveskillset("kaido") then
       installstart = function () conf.transsipprone = true end
     })
 end
-if svo.haveskillset("voicecraft") then
+if svo.haveskillset('voicecraft') then
   config_dict:insert(1, "dwinnu", {
     type = "boolean",
     vconfig1 = "dwinnu",
@@ -1582,7 +1582,7 @@ if svo.haveskillset("voicecraft") then
     installcheck = function () echof("Can you make use of the Wwinnu skill?") end
   })
 end
-if svo.haveskillset("weaponmastery") then
+if svo.haveskillset('weaponmastery') then
   config_dict:insert(1, "recoverfooting", {
       type = "boolean",
       vconfig1 = "recover footing",
@@ -1592,7 +1592,7 @@ if svo.haveskillset("weaponmastery") then
       installcheck = function () echof("Can you make use of the Recover Footing skill?") end
     })
 end
-if svo.haveskillset("venom") then
+if svo.haveskillset('venom') then
   config_dict:insert(1, "shruggingfunc", {
     type = "custom",
     onmenu = function ()
@@ -1631,7 +1631,7 @@ if svo.haveskillset("venom") then
     end
   })
 end
-if svo.haveskillset("devotion") then
+if svo.haveskillset('devotion') then
   config_dict:insert(1, "bloodswornoff", {
     type = "number",
     percentage = true,
@@ -1646,7 +1646,7 @@ if svo.haveskillset("devotion") then
     installstart = function () conf.bloodswornoff = 30 end
   })
 end
-if svo.haveskillset("woodlore") then
+if svo.haveskillset('woodlore') then
   config_dict:insert(1, "weapon", {
     type = "string",
     onset = function ()
@@ -1661,7 +1661,7 @@ if svo.haveskillset("woodlore") then
       echof("Are you using a spear or a trident as a weapon?") end
   })
 end
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
   config_dict:insert(1, "transmorph", {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Have%s transmorph - won't go human between morphing.", getDefaultColor()) end,
@@ -1694,7 +1694,7 @@ if svo.haveskillset("metamorphosis") then
     installcheck = function () echof("What is the highest available morph that you can go into?") end
   })
 end
-if not svo.haveskillset("tekura") then
+if not svo.haveskillset('tekura') then
   config_dict:insert(1, "parry", {
     type = "boolean",
     vconfig1 = "parry",
@@ -1713,7 +1713,7 @@ else
     installcheck = function () echof("Are you able to use guarding?") end
   })
 end
-if svo.haveskillset("shindo") then
+if svo.haveskillset('shindo') then
   config_dict:insert(1, "shindodeaf", {
     type = "boolean",
     vconfig1 = "shindodeaf",
@@ -1731,7 +1731,7 @@ if svo.haveskillset("shindo") then
     installcheck = function () echof("Would you like to use Shindo blind for blindness?") end
   })
 end
-if svo.haveskillset("kaido") then
+if svo.haveskillset('kaido') then
   config_dict:insert(1, "kaidodeaf", {
     type = "boolean",
     vconfig1 = "kaidodeaf",
@@ -1749,7 +1749,7 @@ if svo.haveskillset("kaido") then
     installcheck = function () echof("Would you like to use kaido blind for blindness?") end
   })
 end
-if svo.haveskillset("chivalry") or svo.haveskillset("shindo") or svo.haveskillset("kaido") or svo.haveskillset("metamorphosis") then
+if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
   config_dict:insert(1, "fitness", {
     type = "boolean",
     vconfig2 = true,
@@ -1804,7 +1804,7 @@ if svo.haveskillset("chivalry") or svo.haveskillset("shindo") or svo.haveskillse
     end
   })
 end
-if svo.haveskillset("venom") then
+if svo.haveskillset('venom') then
   config_dict:insert(1, "shrugging", {
     type = "boolean",
     vconfig2 = true,
@@ -1821,7 +1821,7 @@ if svo.haveskillset("venom") then
     installcheck = function () echof("Can you make use of the shrugging?") end
   })
 end
-if svo.haveskillset("chivalry") then
+if svo.haveskillset('chivalry') then
   config_dict:insert(1, "rage", {
     type = "boolean",
     vconfig2 = true,

@@ -303,7 +303,7 @@ do
   end
 end
 
-if svo.haveskillset("groves") then
+if svo.haveskillset('groves') then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for index, val in ipairs(gmcp.Char.Vitals.charstats) do
@@ -319,7 +319,7 @@ signals.gmcpcharvitals:connect(function()
   end
 end)
 end
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for index, val in ipairs(gmcp.Char.Vitals.charstats) do
@@ -613,10 +613,10 @@ signals.loadconfig                  = luanotify.signal.new()
 signals.orgchanged                  = luanotify.signal.new()
 signals.saveconfig                  = luanotify.signal.new()
 signals.sysdatasendrequest          = luanotify.signal.new()
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
 signals.healingskillchanged         = luanotify.signal.new()
 end
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
 signals.morphskillchanged           = luanotify.signal.new()
 end
 
@@ -655,7 +655,7 @@ conf.ai_resetsipbal       = 7 -- was 5 before, but started overrunning
 conf.ai_resetherbbal      = 2.5 -- normally at 1.6
 conf.ai_resetsalvebal     = 5
 conf.ai_resetmossbal      = 10  -- resets at 6
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
 conf.ai_resethealingbal        = 7   -- resets at 2s for healing allies, near 4s for healing yourself, and offensive skills as inbetween
 end
 conf.ai_resetpurgativebal = 10 -- it's 7s for voyria
@@ -730,16 +730,16 @@ conf.autoclasses          = true
 conf.ccto                 = "pt"
 conf.repeatcmd            = 0
 
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
 conf.usehealing           = "partial"
 end
 
-if svo.haveskillset("kaido") then
+if svo.haveskillset('kaido') then
 conf.transmute            = "supplement"
 conf.transmuteamount      = 70
 end
 
-if svo.haveskillset("devotion") then
+if svo.haveskillset('devotion') then
 conf.bloodswornoff        = 30
 end
 
@@ -789,7 +789,7 @@ sys.sp_satisfied, sys.blockparry = false, false
 sys.canoutr = true
 
 -- the in-game custom prompt needs to show the game target and game target hp, since that isn't available in GMCP at the moment, as well as any class-specific balances and values
-if not svo.haveskillset("weaponmastery") then
+if not svo.haveskillset('weaponmastery') then
 sys.ingamecustomprompt ="CONFIG PROMPT CUSTOM *hh, *mm, *ee, *ww *t*T *b*d*c-*r-s*s-"
 else
 -- account for ferocity
@@ -823,7 +823,7 @@ stats.currentmana, stats.maxmana,
 stats.currentendurance, stats.maxendurance,
 stats.currentwillpower, stats.maxwillpower = 1,1,1,1,1,1,1,1,1
 
-if svo.haveskillset("kaido") then
+if svo.haveskillset('kaido') then
 stats.kai = 0
 end
 
@@ -839,7 +839,7 @@ me.hoistlist = {} -- list if names not to add hoisted aff for
 me.lasthitlimb = "head" -- last hit limb
 me.disableddragonhealfunc = {}
 me.disabledrestorefunc    = {}
-if svo.haveskillset("venom") then
+if svo.haveskillset('venom') then
 me.disabledshruggingfunc  = {}
 end
 me.disabledtreefunc       = {}
@@ -915,19 +915,19 @@ me.getitem = function(name)
 end
 ---
 
-if not svo.haveskillset("shindo") then
+if not svo.haveskillset('shindo') then
 disableTrigger("Shindo defences")
 else
 enableTrigger("Shindo defences")
 end
 
-if not svo.haveskillset("kaido") then
+if not svo.haveskillset('kaido') then
 disableTrigger("Kaido defences")
 else
 enableTrigger("Kaido defences")
 end
 
-if not svo.haveskillset("tekura") then
+if not svo.haveskillset('tekura') then
 disableTrigger("Tekura balances")
 else
 enableTrigger("Tekura balances")
@@ -939,55 +939,55 @@ else
 disableTrigger("Hydra balance")
 end
 
-if svo.haveskillset("voicecraft") then
+if svo.haveskillset('voicecraft') then
 enableTrigger("Voice balance")
 else
 disableTrigger("Voice balance")
 end
 
-if svo.haveskillset("chivalry") or svo.haveskillset("shindo") or svo.haveskillset("kaido") or svo.haveskillset("metamorphosis") then
+if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
 enableTrigger("Fitness balance")
 else
 disableTrigger("Fitness balance")
 end
 
-if svo.haveskillset("chivalry") then
+if svo.haveskillset('chivalry') then
 enableTrigger("Rage balance")
 else
 disableTrigger("Rage balance")
 end
 
-if svo.haveskillset("weaponmastery") then
+if svo.haveskillset('weaponmastery') then
 enableTrigger("Two-hander recover footing")
 else
 disableTrigger("Two-hander recover footing")
 end
 
-if svo.haveskillset("domination") then
+if svo.haveskillset('domination') then
 enableTrigger("Domination entities balance")
 else
 disableTrigger("Domination entities balance")
 end
 
-if svo.haveskillset("venom") then
+if svo.haveskillset('venom') then
 enableTrigger("Shrugging balance")
 else
 disableTrigger("Shrugging balance")
 end
 
-if svo.haveskillset("healing") or svo.haveskillset("elementalism") then
+if svo.haveskillset('healing') or svo.haveskillset('elementalism') then
 enableTrigger("Healing + Elementalism channels")
 else
 disableTrigger("Healing + Elementalism channels")
 end
 
-if svo.haveskillset("elementalism") then
+if svo.haveskillset('elementalism') then
 enableAlias("Elementalism aliases")
 else
 disableAlias("Elementalism aliases")
 end
 
-if svo.haveskillset("spirituality") then
+if svo.haveskillset('spirituality') then
 enableTrigger("Spirituality defences")
 enableAlias("Spirituality aliases")
 else
@@ -995,61 +995,61 @@ disableTrigger("Spirituality defences")
 disableAlias("Spirituality aliases")
 end
 
-if svo.haveskillset("propagation") then
+if svo.haveskillset('propagation') then
 enableTrigger("Propagation defences")
 else
 disableTrigger("Propagation defences")
 end
 
-if svo.haveskillset("necromancy") then
+if svo.haveskillset('necromancy') then
 enableTrigger("Necromancy defences")
 else
 disableTrigger("Necromancy defences")
 end
 
-if not svo.haveskillset("occultism") then
+if not svo.haveskillset('occultism') then
 disableTrigger("Occultism defences")
 else
 enableTrigger("Occultism defences")
 end
 
-if not svo.haveskillset("alchemy") then
+if not svo.haveskillset('alchemy') then
 disableTrigger("Alchemy defences")
 else
 enableTrigger("Alchemy defences")
 end
 
-if not svo.haveskillset("groves") then
+if not svo.haveskillset('groves') then
 disableTrigger("Groves defences")
 else
 enableTrigger("Groves defences")
 end
 
-if not svo.haveskillset("harmonics") then
+if not svo.haveskillset('harmonics') then
 disableTrigger("Harmonics defences")
 else
 enableTrigger("Harmonics defences")
 end
 
-if not svo.haveskillset("healing") then
+if not svo.haveskillset('healing') then
 disableTrigger("Healing balance")
 else
 enableTrigger("Healing balance")
 end
 
-if not svo.haveskillset("physiology") then
+if not svo.haveskillset('physiology') then
 disableTrigger("Humour balance")
 else
 enableTrigger("Humour balance")
 end
 
-if svo.haveskillset("terminus") then
+if svo.haveskillset('terminus') then
 enableTrigger("Word balance")
 else
 disableTrigger("Word balance")
 end
 
-if svo.haveskillset("aeonics") then
+if svo.haveskillset('aeonics') then
 enableTrigger("Age tracking")
 else
 disableTrigger("Age tracking")
@@ -1069,19 +1069,19 @@ local addaff, removeaff, checkanyaffs, updateaffcount
 
 local lostbal_focus, lostbal_herb, lostbal_salve, lostbal_purgative, lostbal_sip
 sk.salvetick, sk.herbtick, sk.focustick, sk.teatick, sk.purgativetick, sk.siptick, sk.mosstick, sk.dragonhealtick, sk.smoketick, sk.voicetick, sk.wordtick = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
 sk.healingtick = 0
 end
-if svo.haveskillset("venom") then
+if svo.haveskillset('venom') then
 sk.shruggingtick = 0
 end
-if svo.haveskillset("chivalry") or svo.haveskillset("shindo") or svo.haveskillset("kaido") or svo.haveskillset("metamorphosis") then
+if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
 sk.fitnesstick = 0
 end
-if svo.haveskillset("chivalry") then
+if svo.haveskillset('chivalry') then
 sk.ragetick = 0
 end
-if svo.haveskillset("weaponmastery") then
+if svo.haveskillset('weaponmastery') then
 sk.didfootingattack = false
 end
 
@@ -1242,7 +1242,7 @@ signals.systemstart:connect(function ()
     [[svo.valid.symp_transfixed()]]);
 end);
 
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
   (tempExactMatchTrigger or tempTrigger)("You take a deep breath and realise your error - you sputter and engulf yourself in fire!",
     [[svo.valid.simpleablaze()]]);
 
@@ -1520,7 +1520,7 @@ for _, config in ipairs{
 end
 
 
-if svo.haveskillset("venom") then
+if svo.haveskillset('venom') then
 -- load the shrugging func list
 signals.systemstart:connect(function ()
   local conf_path = getMudletHomeDir() .. "/svo/config/shrugging"

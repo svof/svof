@@ -8,7 +8,7 @@
 
 do
   local afflist = {"ablaze", "severeburn", "extremeburn", "charredburn", "meltingburn", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "heartseed", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impale", "impatience", "inlove", "inquisition", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "lovers", "madness", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", "masochism", "mildtrauma", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "pacifism", "paralysis", "paranoia", "peace", "prone", "recklessness", "relapsing", "roped", "selarnia", "sensitivity", "seriousconcussion", "serioustrauma", "shyness", "slashedthroat", "slickness", "stun", "stupidity", "stuttering", "transfixed", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voided", "voyria", "weakness", "webbed", "hamstring", "shivering", "frozen", "blindaff", "deafaff", "retardation", "manaleech", "sleep", "amnesia", "unknowncrippledlimb", "cholerichumour", "melancholichumour", "phlegmatichumour", "sanguinehumour", "phlogistication", "vitrification", "corrupted", "stain", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "swellskin", "pinshot", "hypothermia", "scalded", "dehydrated", "timeflux", "lullaby", "numbedleftarm", "numbedrightarm", "unconsciousness", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate", "hatred"}
-  if svo.haveskillset("metamorphosis") then
+  if svo.haveskillset('metamorphosis') then
     afflist[#afflist+1] = "cantmorph"
   end
 
@@ -172,7 +172,7 @@ valid.proper_crippledrightleg = simplecrippledrightleg
 valid.proper_crippledrightarm = simplecrippledrightarm
 valid.proper_crippledleftarm = simplecrippledleftarm
 
-if svo.haveskillset("aeonics") then
+if svo.haveskillset('aeonics') then
   valid.simpleage = function(value)
     checkaction(dict.age.happened, true)
     lifevision.add(actions.age_happened.p, nil, tonumber(value))

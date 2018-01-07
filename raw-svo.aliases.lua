@@ -339,7 +339,7 @@ local c3,s3 =
     cecho("<a_grey> mana.\n")
   end
 
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
   if not printCmdLine then
     cecho(string.format("    <a_blue>- <a_grey>Your highest Healing skill is <a_darkgrey>%s<a_grey>; using <a_darkgrey>%s<a_grey> Healing mode.\n", (conf.healingskill and conf.healingskill or "(none set)"), tostring(conf.usehealing)))
   else
@@ -350,7 +350,7 @@ if svo.haveskillset("healing") then
     cecho("<a_grey> Healing mode.\n")
   end
 end
-if svo.haveskillset("kaido") then
+if svo.haveskillset('kaido') then
   if not printCmdLine then
     cecho(string.format("    <a_blue>- <a_grey>Transmuting if below <a_cyan>%d%%<a_grey> (<a_cyan>%dh<a_grey>); using <a_darkgrey>%s<a_grey> mode.\n", (conf.transmuteamount or "?"), (sys.transmuteamount or "?"), tostring(conf.transmute)))
   else
@@ -363,7 +363,7 @@ if svo.haveskillset("kaido") then
     cecho("<a_grey> mode.\n")
   end
 end
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
   if not printCmdLine then
     cecho(string.format("    <a_blue>- <a_grey>Your highest morph skill is <a_darkgrey>%s<a_grey> (", (conf.morphskill and conf.morphskill or "(none set)")))
     echoLink("view defs you can do", 'svo.viewmetadefs()', "View defences you can put up")
@@ -415,7 +415,7 @@ end
   echo"\n"
 end
 
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
 function viewmetadefs()
   echof("You can put up any of these defences, given your morph skill:\n  %s", oneconcat(sk.morphsforskill) ~= "" and oneconcat(sk.morphsforskill) or "(none, actually)")
 end
@@ -942,33 +942,33 @@ function reset.bals(echoback)
     tree = true, leftarm = "unset", rightarm = "unset",
     dragonheal = true, smoke = true
   }
-if svo.haveskillset("voicecraft") then
+if svo.haveskillset('voicecraft') then
   svo.bals.voice = true
 end
 if svo.me.class == "Druid" then
   svo.bals.hydra = true
 end
-if svo.haveskillset("domination") then
+if svo.haveskillset('domination') then
   svo.bals.entities = true
 end
-if svo.haveskillset("healing") then
+if svo.haveskillset('healing') then
   svo.bals.healing = true
 end
-if svo.haveskillset("venom") then
+if svo.haveskillset('venom') then
   svo.bals.shrugging = true
 end
-if svo.haveskillset("chivalry") or svo.haveskillset("shindo") or
-  svo.haveskillset("kaido") or svo.haveskillset("metamorphosis") then
+if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or
+  svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
   svo.bals.fitness = true
 end
-if svo.haveskillset("chivalry") then
+if svo.haveskillset('chivalry') then
   svo.bals.rage = true
 end
-if svo.haveskillset("physiology") then
+if svo.haveskillset('physiology') then
   svo.bals.humour = true
   svo.bals.homunculus = true
 end
-if svo.haveskillset("terminus") then
+if svo.haveskillset('terminus') then
   svo.bals.word = true
 end
 
@@ -1129,7 +1129,7 @@ function vrmaff(aff)
   make_gnomes_work()
 end
 
-if svo.haveskillset("kaido") then
+if svo.haveskillset('kaido') then
   transmute = function()
     -- custom check here, not using isadvisable because this should ignore prone
     if (not defc.dragonform and (stats.currenthealth < sys.transmuteamount) and not doingaction"healhealth" and not doingaction"transmute" and can_usemana()) then

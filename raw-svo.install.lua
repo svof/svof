@@ -55,31 +55,31 @@ local installdata = {
   }
 }
 
-if svo.haveskillset("chivalry") then
+if svo.haveskillset('chivalry') then
   installdata.fitness = {
     command = "ab chivalry fitness",
     gmcp = {group = "chivalry", name = "fitness"}}
-elseif svo.haveskillset("kaido") then
+elseif svo.haveskillset('kaido') then
   installdata.fitness = {
     command = "ab kaido fitness",
     gmcp = {group = "kaido", name = "fitness"}}
-elseif svo.haveskillset("shindo") then
+elseif svo.haveskillset('shindo') then
   installdata.fitness = {
     command = "ab striking fitness",
     gmcp = {group = "striking", name = "fitness"}}
 end
 
-if svo.haveskillset("venom") then
+if svo.haveskillset('venom') then
   installdata.shrugging = {
     gmcp = {group = "venom", name = "shrugging"}
   }
 end
-if svo.haveskillset("voicecraft") then
+if svo.haveskillset('voicecraft') then
   installdata.dwinnu = {
     gmcp = {group = "voicecraft", name = "dwinnu"},
   }
 end
-if not svo.haveskillset("tekura") then
+if not svo.haveskillset('tekura') then
   installdata.parry = {
     gmcp = {group = "weaponry", name = "parrying"},
   }
@@ -88,12 +88,12 @@ else
     gmcp = {group = "tekura", name = "guarding"},
   }
 end
-if svo.haveskillset("chivalry") then
+if svo.haveskillset('chivalry') then
   installdata.rage = {
     gmcp = {group = "chivalry", name = "rage"},
   }
 end
-if svo.haveskillset("shindo") then
+if svo.haveskillset('shindo') then
   installdata.shindodeaf = {
     gmcp = {group = "shindo", name = "deaf"},
   }
@@ -101,7 +101,7 @@ if svo.haveskillset("shindo") then
     gmcp = {group = "shindo", name = "blind"},
   }
 end
-if svo.haveskillset("weaponmastery") then
+if svo.haveskillset('weaponmastery') then
   installdata.recoverfooting = {
     gmcp = {group = "weaponmastery", name = "recover"},
   }
@@ -187,7 +187,7 @@ function installstart(fresh)
 
     sendGMCP("Char.Skills.Get "..yajl.to_string{group = "survival"})
     sendGMCP("Char.Items.Inv")
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
     sendGMCP("Char.Skills.Get "..yajl.to_string{group = "metamorphosis"})
 end
     signals.gmcpcharskillsinfo:unblock(install.checkskillgmcp)
@@ -349,7 +349,7 @@ function install.checkskilllist()
       end
     end
 
-if svo.haveskillset("metamorphosis") then
+if svo.haveskillset('metamorphosis') then
   elseif t.group == "metamorphosis" then
     for _, k in ipairs{"truemorph", "hydra", "wyvern", "affinity", "icewyrm", "gorilla", "eagle", "jaguar", "wolverine", "transmorph", "elephant", "nightingale", "bonding", "bear", "basilisk", "sloth", "gopher", "condor", "hyena", "owl", "cheetah", "jackdaw", "turtle", "wolf", "wildcat", "powers", "squirrel"} do
     if contains(t.list, k:title()) then
