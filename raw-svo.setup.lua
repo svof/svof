@@ -19,7 +19,7 @@ local debug = require "debug"
 
 openURL = openURL or openUrl
 -- !!
-local pl = {}
+pl = {}
 pl.pretty     = require "pl.pretty"
 pl.config     = require "pl.config"
 pl.dir        = require "pl.dir"
@@ -84,14 +84,14 @@ local function deepcopy(object)
   return _copy(object)
 end
 
-local affs        = {}
-local balanceless = {}
-local cp          = {}
-local defences    = {}
-local lifevision  = {}
-local signals     = {}
-local sps         = {}
-local sys         = {}
+affs        = {}
+balanceless = {}
+cp          = {}
+defences    = {}
+lifevision  = {}
+signals     = {}
+sps         = {}
+sys         = {}
 
 conf             = {}
 config           = {}
@@ -141,8 +141,7 @@ affl = affl or {}
 serverignore = {}
 ignore = {}
 
--- has to be here, before the first dict reference in code, so it counts it as a local and uses this one properly
-local dict
+dict = dict or {}
 
 local oldecho = conf.commandecho
 signals.aeony = luanotify.signal.new()
