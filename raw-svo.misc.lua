@@ -344,7 +344,7 @@ function oneconcatwithval(tbl)
 end
 
 function concatand(t)
-  assert(type(t) == "table", "$(sys).concatand: argument must be a table")
+  assert(type(t) == "table", "svo.concatand: argument must be a table")
 
   if #t == 0 then return ""
   elseif #t == 1 then return t[1]
@@ -354,7 +354,7 @@ function concatand(t)
 end
 
 function concatandf(t, f)
-  assert(type(t) == "table", "$(sys).concatandf: argument must be a table")
+  assert(type(t) == "table", "svo.concatandf: argument must be a table")
 
   return concatand(pl.tablex.map(f, t))
 end
@@ -389,7 +389,7 @@ end
 
 
 function safeconcat(t, separator)
-  assert(type(t) == "table", "$(sys).safeconcat: argument must be a table")
+  assert(type(t) == "table", "svo.safeconcat: argument must be a table")
 
   if #t == 0 then return ""
   elseif #t == 1 then return tostring(t[1])

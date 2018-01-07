@@ -2582,10 +2582,10 @@ defences.print_def_list = function ()
 
     if defmode ~= defs.mode then
       setFgColor(unpack(getDefaultColorNums))
-      setUnderline(true) echoLink(defmode, '$(sys).defs.switch("'..defmode..'", true)', 'Switch to '..defmode..' defences mode', true) setUnderline(false)
+      setUnderline(true) echoLink(defmode, 'svo.defs.switch("'..defmode..'", true)', 'Switch to '..defmode..' defences mode', true) setUnderline(false)
     else
       fg"a_darkgreen"
-      setUnderline(true) echoLink(defmode, '$(sys).defs.switch("'..defmode..'", true)', 'Currently in this defence mode. Click to redo defup', true) setUnderline(false)
+      setUnderline(true) echoLink(defmode, 'svo.defs.switch("'..defmode..'", true)', 'Currently in this defence mode. Click to redo defup', true) setUnderline(false)
     end
 
     if sys.deffing and defmode == defs.mode then
@@ -2593,7 +2593,7 @@ defences.print_def_list = function ()
     end
 
     echo" ("
-    fg"orange_red"setUnderline(true) echoLink('-', '$(sys).delete_defmode("'..defmode..'", true)', 'Delete '..defmode.. ' defences mode', true) setUnderline(false) setFgColor(unpack(getDefaultColorNums))
+    fg"orange_red"setUnderline(true) echoLink('-', 'svo.delete_defmode("'..defmode..'", true)', 'Delete '..defmode.. ' defences mode', true) setUnderline(false) setFgColor(unpack(getDefaultColorNums))
     echo", "
     fg"a_darkgreen" setUnderline(true) echoLink("c", 'printCmdLine("vcopy defmode '..defmode..' TO ")', "Copy "..defmode.." into a new or existing defence mode", true) setUnderline(false) setFgColor(unpack(getDefaultColorNums))
     echo")"

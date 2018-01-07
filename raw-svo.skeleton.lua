@@ -630,8 +630,8 @@ function sk.balance_controller()
 end
 
 function addbalanceless(name, func)
-  assert(name and func, "$(sys).addbalanceless: both name and function are required")
-  assert(type(func) == 'function', "$(sys).addbalanceless: function needs to be an actual function, while you gave it a "..type(func))
+  assert(name and func, "svo.addbalanceless: both name and function are required")
+  assert(type(func) == 'function', "svo.addbalanceless: function needs to be an actual function, while you gave it a "..type(func))
 
   balanceless[name] = func
 end
@@ -641,8 +641,8 @@ function removebalanceless(name)
 end
 
 function addbalanceful(name, func)
-  assert(name and func, "$(sys).addbalanceful: both name and function are required")
-  assert(type(func) == "function", "$(sys).addbalanceful: second argument has to be a function (you gave it a "..type(func)..")")
+  assert(name and func, "svo.addbalanceful: both name and function are required")
+  assert(type(func) == "function", "svo.addbalanceful: second argument has to be a function (you gave it a "..type(func)..")")
 
   balanceful[name] = func
 end

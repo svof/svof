@@ -281,7 +281,7 @@ local c3,s3 =
   echo"\n"
 
   cecho("    <a_blue>- <a_grey>Using ") setFgColor(unpack(getDefaultColorNums))
-  echoLink(tostring(conf.echotype and conf.echotype or conf.org), '$(sys).config.showcolours()', "View other available styles", true)
+  echoLink(tostring(conf.echotype and conf.echotype or conf.org), 'svo.config.showcolours()', "View other available styles", true)
   cecho("<a_grey>-style echos.\n")
 
   if not printCmdLine then
@@ -378,11 +378,11 @@ if svo.haveskillset('metamorphosis') then
 end
   if not conf.customprompt then
     cecho("    <a_blue>- ") fg("a_grey")
-    echoLink("Standard prompt is in use.", '$(sys).config.set("customprompt", "on", true)', "Enable custom prompt", true)
+    echoLink("Standard prompt is in use.", 'svo.config.set("customprompt", "on", true)', "Enable custom prompt", true)
     echo("\n")
   else
     cecho("    <a_blue>- ") fg("a_grey")
-    echoLink("Custom prompt is in use", '$(sys).config.set("customprompt", "off", true)', "Disable custom prompt", true)
+    echoLink("Custom prompt is in use", 'svo.config.set("customprompt", "off", true)', "Disable custom prompt", true)
     echo(" (")
     echoLink("view", 'svo.config.showprompt(); printCmdLine("vconfig customprompt "..tostring(svo.conf.customprompt))', "View the custom prompt you've currently set")
     echo(")")
@@ -439,11 +439,11 @@ function ashow()
   echofn("View priorities (")
   setFgColor(unpack(getDefaultColorNums))
   setUnderline(true)
-  echoLink("reset all to default", '$(sys).prio.usedefault(true)', "Click here to reset all of the systems curing/defup priorities back to default", true)
+  echoLink("reset all to default", 'svo.prio.usedefault(true)', "Click here to reset all of the systems curing/defup priorities back to default", true)
   setUnderline(false)
   echo(", ")
   setUnderline(true)
-  echoLink("import", '$(sys).prio.list(true); printCmdLine"vimportprio "', "Click here select a priority list to import", true)
+  echoLink("import", 'svo.prio.list(true); printCmdLine"vimportprio "', "Click here select a priority list to import", true)
   setUnderline(false)
   echo(", ")
   setUnderline(true)
@@ -477,7 +477,7 @@ function ashow()
   echofn("Serverside use:   ")
   setFgColor(unpack(getDefaultColorNums))
   setUnderline(true)
-  echoLink(conf.serverside and "enabled" or "disabled", "$(sys).tntf_set('serverside', "..(conf.serverside and "false" or "true").. ', false); svo.ashow()', (conf.serverside and "Disable" or "Enable")..' use of serverside by Svof', true)
+  echoLink(conf.serverside and "enabled" or "disabled", "svo.tntf_set('serverside', "..(conf.serverside and "false" or "true").. ', false); svo.ashow()', (conf.serverside and "Disable" or "Enable")..' use of serverside by Svof', true)
   resetFormat()
   echo"\n"
 
@@ -485,28 +485,28 @@ function ashow()
   echofn("Anti-illusion:    ")
   setFgColor(unpack(getDefaultColorNums))
   setUnderline(true)
-  echoLink(conf.aillusion and "enabled" or "disabled", "$(sys).tntf_set('ai', "..(conf.aillusion and "false" or "true").. ', false); svo.ashow()', (conf.aillusion and "Disable" or "Enable")..' anti-illusion', true)
+  echoLink(conf.aillusion and "enabled" or "disabled", "svo.tntf_set('ai', "..(conf.aillusion and "false" or "true").. ', false); svo.ashow()', (conf.aillusion and "Disable" or "Enable")..' anti-illusion', true)
   resetFormat()
   echo"\n"
 
   echofn("Defence keepup:   ")
   setFgColor(unpack(getDefaultColorNums))
   setUnderline(true)
-  echoLink(conf.keepup and "enabled" or "disabled", "$(sys).tntf_set('keepup', "..(conf.keepup and "false" or "true").. ', false); svo.ashow()', (conf.keepup and "Disable" or "Enable")..' keepup', true)
+  echoLink(conf.keepup and "enabled" or "disabled", "svo.tntf_set('keepup', "..(conf.keepup and "false" or "true").. ', false); svo.ashow()', (conf.keepup and "Disable" or "Enable")..' keepup', true)
   resetFormat()
   echo"\n"
 
   echofn("Bashing triggers: ")
   setFgColor(unpack(getDefaultColorNums))
   setUnderline(true)
-  echoLink(conf.bashing and "enabled" or "disabled", "$(sys).tntf_set('bashing', "..(conf.bashing and "false" or "true").. ', false); svo.ashow()', (conf.bashing and "Disable" or "Enable")..' bashing triggers', true)
+  echoLink(conf.bashing and "enabled" or "disabled", "svo.tntf_set('bashing', "..(conf.bashing and "false" or "true").. ', false); svo.ashow()', (conf.bashing and "Disable" or "Enable")..' bashing triggers', true)
   resetFormat()
   echo"\n"
 
   echofn("Arena mode:       ")
   setFgColor(unpack(getDefaultColorNums))
   setUnderline(true)
-  echoLink(conf.arena and "enabled" or "disabled", "$(sys).tntf_set('arena', "..(conf.arena and "false" or "true").. ', false); svo.ashow()', (conf.arena and "Disable" or "Enable")..' arena triggers', true)
+  echoLink(conf.arena and "enabled" or "disabled", "svo.tntf_set('arena', "..(conf.arena and "false" or "true").. ', false); svo.ashow()', (conf.arena and "Disable" or "Enable")..' arena triggers', true)
   resetFormat()
   echo"\n"
 

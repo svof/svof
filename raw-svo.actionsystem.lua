@@ -18,7 +18,7 @@ bals_in_use       = bals_in_use or {}
 -- record actions in per-action, per-balance tables for checking against later
 -- ie: doaction(dict.healhealth.sip)
 doaction = function(act)
-  assert(act, "$(sys).doaction requires an argument")
+  assert(act, "svo.doaction requires an argument")
   --it'll be in format of dict.what.#somebalance
   -- add to a table, create timers and store id's in there
   -- if ai is on, enable the relevant triggers <- maybe we should do
@@ -208,23 +208,23 @@ end
 
 -- used by lifevision system to complete an action that was seen in the paragraph (when no illusion was seen)
 actionfinished = function(act, other_action, arg)
-  assert(act, "$(sys).actionfinished wants an argument")
+  assert(act, "svo.actionfinished wants an argument")
   if not act.name or not actions[act.name] or not actions[act.name].completed then
     echo("(e!)")
     debugf("actionfinished: %s", debug.traceback())
     return
   end
 
-  if not act.name then debugf("$(sys) error: no name field, total: %s", pl.pretty.write(act or {})) return end
-  if not actions[act.name] then debugf("$(sys) error: no such action %s being done atm", act.name) return end
-  if not actions[act.name].completed then debugf("$(sys) error: no completed method on %s", act.name) return end
+  if not act.name then debugf("svo error: no name field, total: %s", pl.pretty.write(act or {})) return end
+  if not actions[act.name] then debugf("svo error: no such action %s being done atm", act.name) return end
+  if not actions[act.name].completed then debugf("svo error: no completed method on %s", act.name) return end
 
   local result, msg = pcall(actions[act.name].completed, other_action, arg)
 
   if not result then
     debugf("error from completed() "..msg)
     if other_action then debugf("other_action was: %s", other_action) end
-    echoLink("(e!)", [[$(sys).echof("The problem was: ]]..tostring(act.action_name)..[[ failed to complete: ]]..msg..[[")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+    echoLink("(e!)", [[svo.echof("The problem was: ]]..tostring(act.action_name)..[[ failed to complete: ]]..msg..[[")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
   end
 
   actions:set(act.name, nil)
@@ -257,7 +257,7 @@ killaction = function (act)
     return
   end
 
-  assert(act, "$(sys).killaction wants an argument")
+  assert(act, "svo.killaction wants an argument")
 
   if not actions[act.name] then return end
 
@@ -303,7 +303,7 @@ usingbalance = usingbal
 
 -- slight problem with this - it uses the short name, without the balance/action - so some misc things such as sleep, which can happen at once, are a problem. workaround is to combine doingaction with usingbal in there.
 doingaction = function (which)
-  assert(which, "$(sys).doingaction wants an argument")
+  assert(which, "svo.doingaction wants an argument")
 
   return actions_performed[which] and true or false
 end

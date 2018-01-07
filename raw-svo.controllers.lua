@@ -300,9 +300,9 @@ signals.after_prompt_processing:connect(function ()
     end
 
     if sacid then
-      insertLink("a", '$(sys).echof[[You\'re currently overriding the system]]', 'You were overriding the system at this point', true)
+      insertLink("a", 'svo.echof[[You\'re currently overriding the system]]', 'You were overriding the system at this point', true)
     elseif sk.syncdebug then
-      insertLink("a", '$(sys).echof[['..sk.syncdebug..']]', 'Click to see actions we were considering doing at this point', true)
+      insertLink("a", 'svo.echof[['..sk.syncdebug..']]', 'Click to see actions we were considering doing at this point', true)
     else
       insertText("a")
     end
@@ -1030,10 +1030,10 @@ function printordersync(limited_around)
   for i,j in pairs(orderly) do
     if not limited_around or not (counter > (center+6) or counter < (center-6)) then
       setFgColor(255,147,107) echo"  "
-      echoLink("^^", '$(sys).prio_slowswap("'..string.format("%s_%s", string.match(data[j], "(%w+) %((%w+)%)"))..'", '..(j+1)..', false, $(sys).printordersync, '..(j+1)..')', 'shuffle '..data[j]..' up', true)
+      echoLink("^^", 'svo.prio_slowswap("'..string.format("%s_%s", string.match(data[j], "(%w+) %((%w+)%)"))..'", '..(j+1)..', false, svo.printordersync, '..(j+1)..')', 'shuffle '..data[j]..' up', true)
       echo(" ")
       setFgColor(148,148,255)
-      echoLink("vv", '$(sys).prio_slowswap("'..string.format("%s_%s", string.match(data[j], "(%w+) %((%w+)%)"))..'", '..(j-1)..', false, $(sys).printordersync, '..(j-1)..')', 'shuffle '..data[j]..' up', true)
+      echoLink("vv", 'svo.prio_slowswap("'..string.format("%s_%s", string.match(data[j], "(%w+) %((%w+)%)"))..'", '..(j-1)..', false, svo.printordersync, '..(j-1)..')', 'shuffle '..data[j]..' up', true)
       setFgColor(112,112,112)
       echo(" (" .. j..") "..data[j])
       echo("\n")
@@ -1202,8 +1202,8 @@ function fullstats(newstatus, callback, echoback)
 end
 
 prompttrigger = function (name, func)
-  assert(name, "$(sys).prompttrigger: the name needs to be provided")
-  assert(type(func) == "function" or type(func) == "nil", "$(sys).prompttrigger: the second argument needs to be a Lua function or nil")
+  assert(name, "svo.prompttrigger: the name needs to be provided")
+  assert(type(func) == "function" or type(func) == "nil", "svo.prompttrigger: the second argument needs to be a Lua function or nil")
 
   sk.onprompt_beforeaction_add(name, func)
 end

@@ -166,11 +166,11 @@ config_dict = pl.OrderedMap {
         local focusaff, nextaff = t[i], t[i+1]
 
         if me.cadmusaffs[focusaff] then
-          dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[$(sys).me.cadmusaffs["]]..focusaff..[["] = false; $(sys).config.set'cadmusaffs']], "Click to stop focusing for "..focusaff.." when you have camus", true)
+          dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[svo.me.cadmusaffs["]]..focusaff..[["] = false; svo.config.set'cadmusaffs']], "Click to stop focusing for "..focusaff.." when you have camus", true)
           setFgColor(unpack(getDefaultColorNums))
           echo(string.format(" %s", focusaff))
         else
-          dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[$(sys).me.cadmusaffs["]]..focusaff..[["] = true; $(sys).config.set'cadmusaffs']], "Click to start focusing for "..focusaff.." when you have camus and are able to focus", true)
+          dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[svo.me.cadmusaffs["]]..focusaff..[["] = true; svo.config.set'cadmusaffs']], "Click to start focusing for "..focusaff.." when you have camus and are able to focus", true)
           setFgColor(unpack(getDefaultColorNums))
           echo(string.format(" %s", focusaff))
         end
@@ -179,11 +179,11 @@ config_dict = pl.OrderedMap {
         echo((" "):rep(30-#focusaff))
 
         if nextaff and me.cadmusaffs[nextaff] then
-          dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[$(sys).me.cadmusaffs["]]..nextaff..[["] = false; $(sys).config.set'cadmusaffs']], "Click to stop focusing for "..nextaff.." when you have camus", true)
+          dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[svo.me.cadmusaffs["]]..nextaff..[["] = false; svo.config.set'cadmusaffs']], "Click to stop focusing for "..nextaff.." when you have camus", true)
           setFgColor(unpack(getDefaultColorNums))
           echo(string.format(" %s\n", nextaff))
         elseif nextaff then
-          dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[$(sys).me.cadmusaffs["]]..nextaff..[["] = true; $(sys).config.set'cadmusaffs']], "Click to start focusing for "..nextaff.." when you have camus and are able to focus", true)
+          dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[svo.me.cadmusaffs["]]..nextaff..[["] = true; svo.config.set'cadmusaffs']], "Click to start focusing for "..nextaff.." when you have camus and are able to focus", true)
           setFgColor(unpack(getDefaultColorNums))
           echo(string.format(" %s\n", nextaff))
         end
@@ -913,7 +913,7 @@ config_dict = pl.OrderedMap {
 
         if not me.disabledtreefunc[fname] then
           if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[$(sys).me.disabledtreefunc["]]..fname..[["] = true; svo.config.set'treefunc']], "Disable "..fname, true)
+            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[svo.me.disabledtreefunc["]]..fname..[["] = true; svo.config.set'treefunc']], "Disable "..fname, true)
           else
             decho("  <153,204,204>[<0,204,0>X<153,204,204>]")
           end
@@ -921,7 +921,7 @@ config_dict = pl.OrderedMap {
           echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
         else
           if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[$(sys).me.disabledtreefunc["]]..fname..[["] = false; svo.config.set'treefunc']], "Enable "..fname, true)
+            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[svo.me.disabledtreefunc["]]..fname..[["] = false; svo.config.set'treefunc']], "Enable "..fname, true)
           else
             decho("  <153,204,204>[<0,204,0> <153,204,204>]")
           end
@@ -951,7 +951,7 @@ config_dict = pl.OrderedMap {
 
         if not me.disabledrestorefunc[fname] then
           if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[$(sys).me.disabledrestorefunc["]]..fname..[["] = true; svo.config.set'restorefunc']], "Disable "..fname, true)
+            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[svo.me.disabledrestorefunc["]]..fname..[["] = true; svo.config.set'restorefunc']], "Disable "..fname, true)
           else
             decho("  <153,204,204>[<0,204,0>X<153,204,204>]")
           end
@@ -959,7 +959,7 @@ config_dict = pl.OrderedMap {
           echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
         else
           if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[$(sys).me.disabledrestorefunc["]]..fname..[["] = false; svo.config.set'restorefunc']], "Enable "..fname, true)
+            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[svo.me.disabledrestorefunc["]]..fname..[["] = false; svo.config.set'restorefunc']], "Enable "..fname, true)
           else
             decho("  <153,204,204>[<0,204,0> <153,204,204>]")
           end
@@ -988,7 +988,7 @@ config_dict = pl.OrderedMap {
         local t = dragonheal[fname]
         if not me.disableddragonhealfunc[fname] then
           if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[$(sys).me.disableddragonhealfunc["]]..fname..[["] = true; svo.config.set'dragonhealfunc']], "Disable "..fname, true)
+            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[svo.me.disableddragonhealfunc["]]..fname..[["] = true; svo.config.set'dragonhealfunc']], "Disable "..fname, true)
           else
             decho("  <153,204,204>[<0,204,0>X<153,204,204>]")
           end
@@ -996,7 +996,7 @@ config_dict = pl.OrderedMap {
           echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
         else
           if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[$(sys).me.disableddragonhealfunc["]]..fname..[["] = false; svo.config.set'dragonhealfunc']], "Enable "..fname, true)
+            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[svo.me.disableddragonhealfunc["]]..fname..[["] = false; svo.config.set'dragonhealfunc']], "Enable "..fname, true)
           else
             decho("  <153,204,204>[<0,204,0> <153,204,204>]")
           end
@@ -1610,7 +1610,7 @@ if svo.haveskillset('venom') then
 
         if not me.disabledshruggingfunc[fname] then
           if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[$(sys).me.disabledshruggingfunc["]]..fname..[["] = true; svo.config.set'shruggingfunc']], "Disable "..fname, true)
+            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[svo.me.disabledshruggingfunc["]]..fname..[["] = true; svo.config.set'shruggingfunc']], "Disable "..fname, true)
           else
             decho("  <153,204,204>[<0,204,0>X<153,204,204>]")
           end
@@ -1618,7 +1618,7 @@ if svo.haveskillset('venom') then
           echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
         else
           if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[$(sys).me.disabledshruggingfunc["]]..fname..[["] = false; svo.config.set'shruggingfunc']], "Enable "..fname, true)
+            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[svo.me.disabledshruggingfunc["]]..fname..[["] = false; svo.config.set'shruggingfunc']], "Enable "..fname, true)
           else
             decho("  <153,204,204>[<0,204,0> <153,204,204>]")
           end
@@ -1781,7 +1781,7 @@ if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillse
 
         if not me.disabledfitnessfunc[fname] then
           if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[$(sys).me.disabledfitnessfunc["]]..fname..[["] = true; svo.config.set'fitnessfunc']], "Disable "..fname, true)
+            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[svo.me.disabledfitnessfunc["]]..fname..[["] = true; svo.config.set'fitnessfunc']], "Disable "..fname, true)
           else
             decho("  <153,204,204>[<0,204,0>X<153,204,204>]")
           end
@@ -1789,7 +1789,7 @@ if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillse
           echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
         else
           if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[$(sys).me.disabledfitnessfunc["]]..fname..[["] = false; svo.config.set'fitnessfunc']], "Enable "..fname, true)
+            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[svo.me.disabledfitnessfunc["]]..fname..[["] = false; svo.config.set'fitnessfunc']], "Enable "..fname, true)
           else
             decho("  <153,204,204>[<0,204,0> <153,204,204>]")
           end
@@ -1853,7 +1853,7 @@ if svo.haveskillset('chivalry') then
 
         if not me.disabledragefunc[fname] then
           if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[$(sys).me.disabledragefunc["]]..fname..[["] = true; svo.config.set'ragefunc']], "Disable "..fname, true)
+            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[svo.me.disabledragefunc["]]..fname..[["] = true; svo.config.set'ragefunc']], "Disable "..fname, true)
           else
             decho("  <153,204,204>[<0,204,0>X<153,204,204>]")
           end
@@ -1861,7 +1861,7 @@ if svo.haveskillset('chivalry') then
           echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
         else
           if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[$(sys).me.disabledragefunc["]]..fname..[["] = false; svo.config.set'ragefunc']], "Enable "..fname, true)
+            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[svo.me.disabledragefunc["]]..fname..[["] = false; svo.config.set'ragefunc']], "Enable "..fname, true)
           else
             decho("  <153,204,204>[<0,204,0> <153,204,204>]")
           end
@@ -2270,7 +2270,7 @@ function config.showcolours()
   for name, f in pairs(echos) do
     local s = "  pick "..tostring(name).." -  "
     echo("  pick ")
-    echoLink(tostring(name), '$(sys).config.set("echotype", "'.. tostring(name) ..'", true)', 'Set it to '..tostring(name)..' colour style.', true)
+    echoLink(tostring(name), 'svo.config.set("echotype", "'.. tostring(name) ..'", true)', 'Set it to '..tostring(name)..' colour style.', true)
     echo(" -  ")
     echo((" "):rep(30-#s)) f(true, "this is how it'll look")
   end

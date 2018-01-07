@@ -9316,7 +9316,7 @@ end
             if cnrl.warnids[tbl.prefixwarning] then killTrigger(cnrl.warnids[tbl.prefixwarning]) end
 
               cnrl.warnids[tbl.prefixwarning] = tempRegexTrigger('^', [[
-                if (($(sys).conf.warningtype == "prompt" and isPrompt()) or $(sys).conf.warningtype == "all" or $(sys).conf.warningtype == "right") and getCurrentLine() ~= "" and not $(sys).gagline then
+                if ((svo.conf.warningtype == "prompt" and isPrompt()) or svo.conf.warningtype == "all" or svo.conf.warningtype == "right") and getCurrentLine() ~= "" and not svo.gagline then
                   svo.prefixwarning()
                 end
               ]])
@@ -9331,7 +9331,7 @@ end
   stolebalance = {
     happened = {
       oncompleted = function (balance)
-        $(sys)["lostbal_"..balance]()
+        svo["lostbal_"..balance]()
       end
     }
   },

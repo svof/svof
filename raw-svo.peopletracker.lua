@@ -66,9 +66,9 @@ config.setoption("labelcolor", {
   end,
   onshow = function (defaultcolour)
     fg("gold")
-    echoLink("ppl: ", "", "$(sys) People Tracker", true)
+    echoLink("ppl: ", "", "svo People Tracker", true)
     fg(defaultcolour) echo("People tracker ")
-    fg("a_cyan") echoLink((conf.peopletracker and "on" or "off"), "$(sys).config.set('peopletracker', "..(conf.peopletracker and "false" or "true")..", true)", "Click to "..(conf.peopletracker and "disable" or "enable").." people tracking on the map", true)
+    fg("a_cyan") echoLink((conf.peopletracker and "on" or "off"), "svo.config.set('peopletracker', "..(conf.peopletracker and "false" or "true")..", true)", "Click to "..(conf.peopletracker and "disable" or "enable").." people tracking on the map", true)
     fg(defaultcolour) echo("; using")
     fg(conf.labelcolor or "a_cyan") echoLink(" "..(conf.labelcolor or '?'), "printCmdLine'vconfig labelcolor '", "Click to change the color", true)
     fg(defaultcolour) echo(" map labels (")
