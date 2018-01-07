@@ -519,7 +519,7 @@ end
 
 -- balanceful check
 check_balanceful_acts = function(sync_mode)
-  if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == "druid" and not bals.hydra)
+  if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == "Druid" and not bals.hydra)
   then return end
 
   -- get all prios in the list
@@ -551,7 +551,7 @@ end
 
 -- balanceless check
 check_balanceless_acts = function(sync_mode)
-  if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == "druid" and not bals.hydra)
+  if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == "Druid" and not bals.hydra)
    then return end
 
   -- get all prios in the list
