@@ -269,6 +269,40 @@ _put(string.format("me.class = \"%s\"\n", type(class) == "string" and stringx.ti
 _put("me.skills = ".. pretty.write(skills))
 )
 
+svo.knownskills = {
+  alchemist    = {"transmutation", "physiology", "alchemy"},
+  apostate     = {"evileye", "necromancy", "apostasy"},
+  bard         = {"voicecraft", "swashbuckling", "harmonics"},
+  blademaster  = {"twoarts", "striking", "shindo"},
+  depthswalker = {"shadowmancy","aeonics","terminus"},
+  druid        = {"groves", "metamorphosis", "reclamation"},
+  infernal     = {"necromancy", "chivalry", "weaponmastery"},
+  jester       = {"tarot", "pranks", "puppetry"},
+  magi         = {"elementalism", "crystalism", "artificing"},
+  monk         = {"tekura", "kaido", "telepathy", "shikudo"},
+  none         = {},
+  occultist    = {"occultism", "tarot", "domination"},
+  paladin      = {"chivalry", "devotion", "weaponmastery"},
+  priest       = {"spirituality", "devotion", "healing"},
+  runewarden   = {"runelore", "chivalry", "weaponmastery"},
+  sentinel     = {"metamorphosis", "woodlore", "skirmishing"},
+  serpent      = {"subterfuge", "venom", "hypnosis"},
+  shaman       = {"runelore", "curses", "vodun"},
+  sylvan       = {"weatherweaving", "groves", "propagation"},
+}
+-- optimised haveskillset, since it gets called often: compute a key-value table
+-- with all of the skills we have
+do
+  local available_skills = {}
+  for _, skill in ipairs(svo.knownskills[svo.me.class:lower()]) do
+    available_skills[skill] = true
+  end
+
+  function svo.haveskillset(skillset)
+    return available_skills[skillset] and true or false
+  end
+end
+
 if svo.haveskillset("groves") then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
@@ -1666,26 +1700,4 @@ sk.arena_areas = {
   ["The Stadium"]                      = true,
   ["The Stands"]                       = true,
   ["The Pits"]                         = true,
-}
-
-svo.knownskills = {
-  alchemist    = {"transmutation", "physiology", "alchemy"},
-  apostate     = {"evileye", "necromancy", "apostasy"},
-  bard         = {"voicecraft", "swashbuckling", "harmonics"},
-  blademaster  = {"twoarts", "striking", "shindo"},
-  depthswalker = {"shadowmancy","aeonics","terminus"},
-  druid        = {"groves", "metamorphosis", "reclamation"},
-  infernal     = {"necromancy", "chivalry", "weaponmastery"},
-  jester       = {"tarot", "pranks", "puppetry"},
-  magi         = {"elementalism", "crystalism", "artificing"},
-  monk         = {"tekura", "kaido", "telepathy", "shikudo"},
-  none         = {},
-  occultist    = {"occultism", "tarot", "domination"},
-  paladin      = {"chivalry", "devotion", "weaponmastery"},
-  priest       = {"spirituality", "devotion", "healing"},
-  runewarden   = {"runelore", "chivalry", "weaponmastery"},
-  sentinel     = {"metamorphosis", "woodlore", "skirmishing"},
-  serpent      = {"subterfuge", "venom", "hypnosis"},
-  shaman       = {"runelore", "curses", "vodun"},
-  sylvan       = {"weatherweaving", "groves", "propagation"},
 }

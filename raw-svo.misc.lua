@@ -870,16 +870,3 @@ function unsetserverignore(k)
   serverignore[k] = nil
   raiseEvent("svo serverignore changed", k)
 end
-
--- optimisation haveskillset, since it gets called often: compute a key-value table
--- with all of the skills we have
-do
-  local available_skills = {}
-  for _, skill in ipairs(svo.knownskills[svo.me.class:lower()]) do
-    available_skills[skill] = true
-  end
-
-  function svo.haveskillset(skillset)
-    return available_skills[skillset] and true or false
-  end
-end
