@@ -2965,209 +2965,208 @@ signals.systemstart:connect(function ()
   end
 
 
-  for k,v in defs_data:iter() do
+  for defname, defdata in defs_data:iter() do
     -- sort into def types if applicable
-    if v.custom_def_type then
-      defences.custom_types[v.custom_def_type] = defences.custom_types[v.custom_def_type] or {}
-      defences.custom_types[v.custom_def_type][k] = true
+    if defdata.custom_def_type then
+      defences.custom_types[defdata.custom_def_type] = defences.custom_types[defdata.custom_def_type] or {}
+      defences.custom_types[defdata.custom_def_type][defname] = true
     end
 
-    if v.onr and type(v.onr) == "table" then
-      for n,m in ipairs(v.onr) do
-        tempRegexTrigger(m, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
+    if defdata.onr and type(defdata.onr) == "table" then
+      for n,m in ipairs(defdata.onr) do
+        tempRegexTrigger(m, 'svo.defs.got_' .. sk.sanitize(defname) .. '()')
       end
-    elseif v.onr then
-      tempRegexTrigger(v.onr, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
+    elseif defdata.onr then
+      tempRegexTrigger(defdata.onr, 'svo.defs.got_' .. sk.sanitize(defname) .. '()')
     end
 
-    if v.on and type(v.on) == "table" then
-      for n,m in ipairs(v.on) do
-        (tempExactMatchTrigger or tempTrigger)(m, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
+    if defdata.on and type(defdata.on) == "table" then
+      for n,m in ipairs(defdata.on) do
+        (tempExactMatchTrigger or tempTrigger)(m, 'svo.defs.got_' .. sk.sanitize(defname) .. '()')
       end
-    elseif v.on then
-      (tempExactMatchTrigger or tempTrigger)(v.on, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
+    elseif defdata.on then
+      (tempExactMatchTrigger or tempTrigger)(defdata.on, 'svo.defs.got_' .. sk.sanitize(defname) .. '()')
     end
 
-    if v.on_only and type(v.on_only) == "table" then
-      for n,m in ipairs(v.on_only) do
-        (tempExactMatchTrigger or tempTrigger)(m, 'svo.defs.gotonly_' .. sk.sanitize(k) .. '()')
+    if defdata.on_only and type(defdata.on_only) == "table" then
+      for n,m in ipairs(defdata.on_only) do
+        (tempExactMatchTrigger or tempTrigger)(m, 'svo.defs.gotonly_' .. sk.sanitize(defname) .. '()')
       end
-    elseif v.on_only then
-      (tempExactMatchTrigger or tempTrigger)(v.on_only, 'svo.defs.gotonly_' .. sk.sanitize(k) .. '()')
+    elseif defdata.on_only then
+      (tempExactMatchTrigger or tempTrigger)(defdata.on_only, 'svo.defs.gotonly_' .. sk.sanitize(defname) .. '()')
     end
 
-    if v.on_free then (tempExactMatchTrigger or tempTrigger)(v.on_free, 'svo.defs.got_' .. sk.sanitize(k) .. '()') end
+    if defdata.on_free then (tempExactMatchTrigger or tempTrigger)(defdata.on_free, 'svo.defs.got_' .. sk.sanitize(defname) .. '()') end
 
-    if v.offr and type(v.offr) == "string" then
-        tempRegexTrigger(v.offr, 'svo.defs.lost_' .. sk.sanitize(k) .. '()')
-    elseif v.offr then
-      for n,m in ipairs(v.offr) do
-        tempRegexTrigger(m, 'svo.defs.lost_' .. sk.sanitize(k) .. '()')
+    if defdata.offr and type(defdata.offr) == "string" then
+        tempRegexTrigger(defdata.offr, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
+    elseif defdata.offr then
+      for n,m in ipairs(defdata.offr) do
+        tempRegexTrigger(m, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
       end
     end
 
-    if v.off and type(v.off) == "string" then
-        (tempExactMatchTrigger or tempTrigger)(v.off, 'svo.defs.lost_' .. sk.sanitize(k) .. '()')
-    elseif v.off then
-      for n,m in ipairs(v.off) do
-        (tempExactMatchTrigger or tempTrigger)(m, 'svo.defs.lost_' .. sk.sanitize(k) .. '()')
+    if defdata.off and type(defdata.off) == "string" then
+        (tempExactMatchTrigger or tempTrigger)(defdata.off, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
+    elseif defdata.off then
+      for n,m in ipairs(defdata.off) do
+        (tempExactMatchTrigger or tempTrigger)(m, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
       end
     end
 
     -- this is EXACTLY for substring
-    if v.offs and type(v.offs) == "string" then
-        tempTrigger(v.offs, 'svo.defs.lost_' .. sk.sanitize(k) .. '()')
-    elseif v.offs then
-      for n,m in ipairs(v.offs) do
-        tempTrigger(m, 'svo.defs.lost_' .. sk.sanitize(k) .. '()')
+    if defdata.offs and type(defdata.offs) == "string" then
+        tempTrigger(defdata.offs, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
+    elseif defdata.offs then
+      for n,m in ipairs(defdata.offs) do
+        tempTrigger(m, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
       end
     end
 
-    if v.off_free then (tempExactMatchTrigger or tempTrigger)(v.off_free, 'svo.defs.lost_' .. sk.sanitize(k) .. '()') end
+    if defdata.off_free then (tempExactMatchTrigger or tempTrigger)(defdata.off_free, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()') end
 
-    if v.def and type(v.def) == "table" then
-      for n,m in ipairs(v.def) do
-        (tempExactMatchTrigger or tempTrigger)(m, 'svo.defs.def_' .. sk.sanitize(k) .. '()')
+    if defdata.def and type(defdata.def) == "table" then
+      for n,m in ipairs(defdata.def) do
+        (tempExactMatchTrigger or tempTrigger)(m, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
       end
-    elseif v.def then
-      (tempExactMatchTrigger or tempTrigger)(v.def, 'svo.defs.def_' .. sk.sanitize(k) .. '()')
+    elseif defdata.def then
+      (tempExactMatchTrigger or tempTrigger)(defdata.def, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
     end
 
-    if v.defr and type(v.defr) == "table" then
-      for n,m in ipairs(v.defr) do
-        tempRegexTrigger(m, 'svo.defs.def_' .. sk.sanitize(k) .. '()')
+    if defdata.defr and type(defdata.defr) == "table" then
+      for n,m in ipairs(defdata.defr) do
+        tempRegexTrigger(m, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
       end
-    elseif v.defr then
-      tempRegexTrigger(v.defr, 'svo.defs.def_' .. sk.sanitize(k) .. '()')
+    elseif defdata.defr then
+      tempRegexTrigger(defdata.defr, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
     end
 
-    if not defs["got_" .. k] then
-      if dict[k] then
+    if not defs["got_" .. defname] then
+      if dict[defname] then
         -- rely on the fact that defs only have 1 item in them
         local bal
-        for kk,vv in pairs(dict[k]) do if type(vv) == "table" and kk ~= "gone" then bal = kk break end end
+        for kk,vv in pairs(dict[defname]) do if type(vv) == "table" and kk ~= "gone" then bal = kk break end end
         if bal then
-          defs["got_" .. k] = function (force)
+          defs["got_" .. defname] = function (force)
             if svo.haveskillset("metamorphosis") then
-              if v.custom_def_type or usingbal(bal) then checkaction(dict[k][bal], true)
-              else checkaction(dict[k][bal], force) end
+              if defdata.custom_def_type or usingbal(bal) then checkaction(dict[defname][bal], true)
+              else checkaction(dict[defname][bal], force) end
             else
-              if not v.custom_def_type then checkaction(dict[k][bal], force) else checkaction(dict[k][bal], true) end
+              if not defdata.custom_def_type then checkaction(dict[defname][bal], force) else checkaction(dict[defname][bal], true) end
             end
-            if actions[k .. "_" .. bal] then
+            if actions[defname .. "_" .. bal] then
               if force then --bypass lifevision for gmcp/other "force" situations
-                actionfinished(actions[k .. "_" .. bal].p)
+                actionfinished(actions[defname .. "_" .. bal].p)
               else
-                lifevision.add(actions[k .. "_" .. bal].p)
+                lifevision.add(actions[defname .. "_" .. bal].p)
               end
             end
           end
         end
       end
 
-      if not defs["got_" .. k] then
-        defs["got_" .. k] = function ()
-          defences.got(k)
+      if not defs["got_" .. defname] then
+        defs["got_" .. defname] = function ()
+          defences.got(defname)
         end
       end
     end
 
-    if v.on_only and not defs["gotonly_" .. k] then
-      if dict[k] then
+    if defdata.on_only and not defs["gotonly_" .. defname] then
+      if dict[defname] then
         -- rely on the fact that defs only have 1 item in them
         local bal
-        for kk,vv in pairs(dict[k]) do
+        for kk,vv in pairs(dict[defname]) do
           if type(vv) == "table" and kk ~= "gone" then bal = kk break end
         end
-        defs["gotonly_" .. k] = function ()
-          checkaction(dict[k][bal], false)
-          if actions[k .. "_" .. bal] then
-            lifevision.add(actions[k .. "_" .. bal].p)
+        defs["gotonly_" .. defname] = function ()
+          checkaction(dict[defname][bal], false)
+          if actions[defname .. "_" .. bal] then
+            lifevision.add(actions[defname .. "_" .. bal].p)
           end
         end
       else
-        defs["gotonly_" .. k] = function ()
-          defences.got(k)
+        defs["gotonly_" .. defname] = function ()
+          defences.got(defname)
         end
       end
     end
 
-    if not defs["lost_" .. sk.sanitize(k)] then
-      if dict[k] and dict[k].gone then
-        defs["lost_" .. k] = function ()
-          checkaction(dict[k].gone, true)
-          if actions[k .. "_gone"] then
-            lifevision.add(actions[k .. "_gone"].p)
+    if not defs["lost_" .. sk.sanitize(defname)] then
+      if dict[defname] and dict[defname].gone then
+        defs["lost_" .. defname] = function ()
+          checkaction(dict[defname].gone, true)
+          if actions[defname .. "_gone"] then
+            lifevision.add(actions[defname .. "_gone"].p)
           end
         end
       else
-        defs["lost_" .. k] = function ()
-          defences.lost(k)
+        defs["lost_" .. defname] = function ()
+          defences.lost(defname)
         end
       end
     end
 
-    if not v.nodef and not v.custom_def_type then
-      defs["def_"..sk.sanitize(k)] = function ()
+    if not defdata.nodef and not defdata.custom_def_type then
+      defs["def_"..sk.sanitize(defname)] = function ()
 
         -- if we're in dragonform and this isn't a general or a dragoncraft def, then remember it as an additional def - not a class skill one, since those are not shown in Dragon
-        if defc.dragonform and v.type ~= "general" and v.type ~= "dragoncraft" then
-          if not v.ondef then
-            defences.nodef_list[k] = true
+        if defc.dragonform and defdata.type ~= "general" and defdata.type ~= "dragoncraft" then
+          if not defdata.ondef then
+            defences.nodef_list[defname] = true
           else
-            defences.nodef_list[k] = v.ondef()
+            defences.nodef_list[defname] = defdata.ondef()
           end
         else
-          if not v.ondef then
-            defences.def_def_list[k] = true
+          if not defdata.ondef then
+            defences.def_def_list[defname] = true
           else
-            defences.def_def_list[k] = v.ondef()
+            defences.def_def_list[defname] = defdata.ondef()
           end
         end
         deleteLine()
       end
-    elseif not v.nodef and v.custom_def_type then
-      defs["def_"..sk.sanitize(k)] = function ()
-        defences.got(k)
+    elseif not defdata.nodef and defdata.custom_def_type then
+      defs["def_"..sk.sanitize(defname)] = function ()
+        defences.got(defname)
         deleteLine()
       end
 
     -- additional defence (nodef)
     else
-      defs["def_"..sk.sanitize(k)] = function ()
+      defs["def_"..sk.sanitize(defname)] = function ()
       -- only accept the def line if we know that we're parsing the def list currently, so lines similar to ones on the DEFENCES list that show up elsewhere don't mess things up
         if not actions.defcheck_physical then return end
 
         deleteLine()
-        if not v.ondef then
-          defences.nodef_list[k] = true
+        if not defdata.ondef then
+          defences.nodef_list[defname] = true
         else
-          defences.nodef_list[k] = v.ondef()
+          defences.nodef_list[defname] = defdata.ondef()
         end
       end
     end
 
     -- fill up our defences.def_types
-    if v.type then
-      defences.def_types[v.type] = defences.def_types[v.type] or {}
-      defences.def_types[v.type][#defences.def_types[v.type]+1] = k
+    if defdata.type then
+      defences.def_types[defdata.type] = defences.def_types[defdata.type] or {}
+      defences.def_types[defdata.type][#defences.def_types[defdata.type]+1] = defname
     end
 
     -- create blanks for defup and keepup
-    if not v.nodef then
+    if not defdata.nodef then
       for mode,modet in pairs(defdefup) do
-        defdefup[mode][k] = false
-        defkeepup[mode][k] = false
+        defdefup[mode][defname] = false
+        defkeepup[mode][defname] = false
       end
     end
 
-
-    if v.type then
-      sk.ignored_defences[v.type] = sk.ignored_defences[v.type] or {status = false, t = {}}
-      sk.ignored_defences[v.type].t[k] = sk.ignored_defences[v.type].t[k] or false
-      sk.ignored_defences_map[k] = v.type
+    if defdata.type then
+      sk.ignored_defences[defdata.type] = sk.ignored_defences[defdata.type] or {status = false, t = {}}
+      sk.ignored_defences[defdata.type].t[defname] = sk.ignored_defences[defdata.type].t[defname] or false
+      sk.ignored_defences_map[defname] = defdata.type
     end
-  end
+  end -- end of the whole defences dict iteration
 
   update(defdefup, defdefup_t)
   update(defkeepup, defkeepup_t)
@@ -3322,6 +3321,10 @@ local function show_defs(tbl, linkcommand, cmdname)
   end
 
   local function show_em(skillset, what)
+    if skillset and not sk.ignored_defences[skillset] then
+      if not skillset then echof("no fucking skillset! %s", debug.traceback()) end
+      echof("what, %s is not in ignored_defences: %s", skillset, pl.pretty.write(sk.ignored_defences))
+    end
     if skillset and not sk.ignored_defences[skillset].status then echof("%s defences:", skillset:title()) end
     for c,def in ipairs(what) do
       local disabled = ((sk.ignored_defences[skillset] and sk.ignored_defences[skillset].status) and true or (sk.ignored_defences[sk.ignored_defences_map[def]].t[def]))

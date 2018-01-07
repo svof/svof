@@ -115,7 +115,7 @@ gaffl            = {}
 gdefc            = {}
 
 
-local actions, sk, vm, cn, cnrl = false, {}, {}, {}, {}
+actions, sk, vm, cn, cnrl = false, {}, {}, {}, {}
 
 reset = {}
 prio = {}
@@ -828,8 +828,7 @@ stats.kai = 0
 end
 
 ---
-me.skills = {}
-me.wielded = {}
+me.wielded = me.wielded or {}
 me.oldhealth = 0
 
 me.doqueue = {repeating = false}
@@ -1496,9 +1495,9 @@ signals.saveconfig:connect(function ()
 end)
 
 for _, config in ipairs{
- {location = "serverignore", localtable = "serverignore", errormsg = "re-set all of the server ignore strats"},
- {location = "cadmusaffs", localtable = "me.cadmusaffs", errormsg = "re-set all of the cadmus affs"},
- {location = "prefercustom", localtable = "me.curelist", errormsg = "re-set all of the custom curelist"},
+ {location = "serverignore", localtable = serverignore, errormsg = "re-set all of the server ignore strats"},
+ {location = "cadmusaffs", localtable = me.cadmusaffs, errormsg = "re-set all of the cadmus affs"},
+ {location = "prefercustom", localtable = me.curelist, errormsg = "re-set all of the custom curelist"},
 } do
   -- load the config.location list
   signals.systemstart:connect(function ()
