@@ -677,18 +677,12 @@ end
 -- things line blind/deaf can be either afflictions or defences. This function is called whenever their status as a defence might change, and you have them - hence they need to be changed to a defence now or back
 function sk.fix_affs_and_defs()
   if affs.blindaff and ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
-#if class ~= "apostate" then
-   or defc.mindseye
-#end
-   ) then
+    or (svo.me.class ~= "Apostate" and defc.mindseye)) then
     removeaff("blindaff")
     defences.got("blind")
     echof("blindness is now considered a defence.")
   elseif defc.blind and not ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
-#if class ~= "apostate" then
-   or defc.mindseye
-#end
-   ) then
+   or (svo.me.class ~= "Apostate" and defc.mindseye)) then
     defences.lost("blind")
     addaff(dict.blindaff)
     echof("blindness is now considered an affliction, will cure it.")
@@ -840,13 +834,13 @@ end)
 
 
 function setdefaultprompt()
-#if skills.shindo then
-  config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@shin^w-]], false)
-#elseif skills.kaido then
-  config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@kai^W-]], false)
-#else
-  config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^W-]], false)
-#end
+  if svo.haveskillset("shindo") then
+    config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@shin^w-]], false)
+  elseif svo.haveskillset("kaido") then
+    config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@kai^W-]], false)
+  else
+    config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^W-]], false)
+  end
 end
 
 signals.enablegmcp:connect(function()
