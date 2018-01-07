@@ -15871,13 +15871,26 @@ local function dict_setup()
       end
     end
 
-#for _, balance in ipairs{"focus", "salve", "herb", "smoke"} do
-    if balance.$(balance) and not balance.$(balance).offbalance then
-      balance.$(balance).offbalance = function()
-        lostbal_$(balance)()
+    if balance.focus and not balance.focus.offbalance then
+      balance.focus.offbalance = function()
+        lostbal_focus()
       end
     end
-#end
+    if balance.salve and not balance.salve.offbalance then
+      balance.salve.offbalance = function()
+        lostbal_salve()
+      end
+    end
+    if balance.herb and not balance.herb.offbalance then
+      balance.herb.offbalance = function()
+        lostbal_herb()
+      end
+    end
+    if balance.smoke and not balance.smoke.offbalance then
+      balance.smoke.offbalance = function()
+        lostbal_smoke()
+      end
+    end
 
     if balance.focus and not balance.focus.nomana then
       balance.focus.nomana = function ()
