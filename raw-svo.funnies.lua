@@ -92,9 +92,6 @@ protips = {
   "va (and va on, va off) is a shortcut for vkeep riding - toggles auto-mounting or auto-dismounting. If you'd like to disable this, you can do vignore riding",
   "Disabling clotting against an Apostate might be a good idea - this'll save you precious mana. Just keep tabs on how much you're bleeding for",
   "Noticed an opponent stopped hitting certain limbs of yours? They're likely prepped now. You could break them yourself by bouncing off their rebounding aura on that limb",
-#if skills.spirituality then
-   "You can do 'fx' or 'fxx' to fix up your angel (if you have Angels in Vision)",
-#end
   "You can use svo.boxDisplay(\"message here\", \"foreground color:background color\") to make giant echoes",
   "The system is your tool; it's in your interest to master it",
   "You can use vconfig manause # to mod the % of mana below which the system won't be using mana skills and will be trying for alternatives. You want to be upping this against Apostates, Alchemists, Priests",
@@ -105,13 +102,6 @@ protips = {
   "Need to catch a breather in retardation and cure up? Tumble out - Svof will send all curing commands right when you get out of the room. Good chance you'll get braziered back in though",
   "You can use svo.concatand(mytable) to bring all the items together in a list, with a proper 'and' at the end",
   "You can use svo.deleteLineP() to completely gag the line and the prompt coming after it",
-#if skills.elementalism then
-  "'rfl' toggles self-reflect mode",
-#end
-  "Svof comes with some scripting examples of the API built-in - take a look at Svof's scripts folder",
-#if skills.devotion then
-  "The vconfig bloodswornoff <health %> feature of Svof will automatically unlink you from Bloodswon if you call below that health amount",
-#end
   "'vshow herbstat' shows what Svof thinks of your herb inventory and updates real-time!",
   "You can do \"vlua svo.protips\" to see all of the protips",
   "The extra Svof's in the Package Manager are OK - those are the addons",
@@ -144,9 +134,18 @@ protips = {
   "'qwic' shows ungemmed Infamous on qw. 'qwi' re-checks all people and then shows the ungemmed Infamous",
   "You can toggle vconfig gagservercuring to show/hide [CURING] messages from serverside",
   "You can use 'ndb delete unranked' to wipe unranked (dormant / newbies) players from NameDB",
-  "You can export all priorities in a file and edit them there, see 'vshow'"
+  "You can export all priorities in a file and edit them there, see 'vshow'",
+  "Svof comes with some scripting examples of the API built-in - take a look at Svof's scripts folder",
 }
-
+if svo.haveskillset("spirituality") then
+  protips[#protips+1] = "You can do 'fx' or 'fxx' to fix up your angel (if you have Angels in Vision)"
+end
+if svo.haveskillset("elementalism") then
+  protips[#protips+1] = "'rfl' toggles self-reflect mode"
+end
+if svo.haveskillset("devotion") then
+  protips[#protips+1] = "The vconfig bloodswornoff <health %> feature of Svof will automatically unlink you from Bloodswon if you call below that health amount"
+end
 
 lifep.sayhello = function()
   for _, id in ipairs(life.hellotrigs) do
