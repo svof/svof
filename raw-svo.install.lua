@@ -11,15 +11,6 @@ install.ids = install.ids or {}
 -- same name as conf
 -- function to say have/don't have
 local installdata = {
-#if not skills.tekura then
-  parry = {
-    gmcp = {group = "weaponry", name = "parrying"},
-  },
-#else
-  parry = {
-    gmcp = {group = "tekura", name = "guarding"},
-  },
-#end
   thirdeye = {
     gmcp = {group = "vision", name = "thirdeye"},
   },
@@ -61,50 +52,60 @@ local installdata = {
   },
   clot = {
     gmcp = {group = "survival", name = "clotting"},
-  },
-#if skills.venom then
-  shrugging = {
-    gmcp = {group = "venom", name = "shrugging"}
-  },
-#end
-#if skills.voicecraft then
-  dwinnu = {
-    gmcp = {group = "voicecraft", name = "dwinnu"},
-  },
-#end
-#if skills.chivalry or skills.shindo or skills.kaido then
-  fitness = {
-#if skills.chivalry then
-    command = "ab chivalry fitness",
-    gmcp = {group = "chivalry", name = "fitness"},
-#elseif skills.kaido then
-    command = "ab kaido fitness",
-    gmcp = {group = "kaido", name = "fitness"},
-#elseif skills.shindo then
-    command = "ab striking fitness",
-    gmcp = {group = "striking", name = "fitness"},
-#end
-  },
-#end
-#if skills.chivalry then
-  rage = {
-    gmcp = {group = "chivalry", name = "rage"},
-  },
-#end
-#if skills.shindo then
-  shindodeaf = {
-    gmcp = {group = "shindo", name = "deaf"},
-  },
-  shindoblind = {
-    gmcp = {group = "shindo", name = "blind"},
-  },
-#end
-#if skills.weaponmastery then
-  recoverfooting = {
-    gmcp = {group = "weaponmastery", name = "recover"},
-  },
-#end
+  }
 }
+
+if svo.haveskillset("chivalry") then
+  installdata.fitness = {
+    command = "ab chivalry fitness",
+    gmcp = {group = "chivalry", name = "fitness"}}
+elseif svo.haveskillset("kaido") then
+  installdata.fitness = {
+    command = "ab kaido fitness",
+    gmcp = {group = "kaido", name = "fitness"}}
+elseif svo.haveskillset("shindo") then
+  installdata.fitness = {
+    command = "ab striking fitness",
+    gmcp = {group = "striking", name = "fitness"}}
+end
+
+if svo.haveskillset("venom") then
+  installdata.shrugging = {
+    gmcp = {group = "venom", name = "shrugging"}
+  }
+end
+if svo.haveskillset("voicecraft") then
+  installdata.dwinnu = {
+    gmcp = {group = "voicecraft", name = "dwinnu"},
+  }
+end
+if not svo.haveskillset("tekura") then
+  installdata.parry = {
+    gmcp = {group = "weaponry", name = "parrying"},
+  }
+else
+  installdata.parry = {
+    gmcp = {group = "tekura", name = "guarding"},
+  }
+end
+if svo.haveskillset("chivalry") then
+  installdata.rage = {
+    gmcp = {group = "chivalry", name = "rage"},
+  }
+end
+if svo.haveskillset("shindo") then
+  installdata.shindodeaf = {
+    gmcp = {group = "shindo", name = "deaf"},
+  }
+  installdata.shindoblind = {
+    gmcp = {group = "shindo", name = "blind"},
+  }
+end
+if svo.haveskillset("weaponmastery") then
+  installdata.recoverfooting = {
+    gmcp = {group = "weaponmastery", name = "recover"},
+  }
+end
 
 function installclear(what)
   if type(install.ids[what]) == "table" then
@@ -186,9 +187,9 @@ function installstart(fresh)
 
     sendGMCP("Char.Skills.Get "..yajl.to_string{group = "survival"})
     sendGMCP("Char.Items.Inv")
-#if skills.metamorphosis then
+if svo.haveskillset("metamorphosis") then
     sendGMCP("Char.Skills.Get "..yajl.to_string{group = "metamorphosis"})
-#end
+end
     signals.gmcpcharskillsinfo:unblock(install.checkskillgmcp)
     signals.gmcpcharitemslist:unblock(install.checkinvgmcp)
     signals.gmcpcharskillslist:unblock(install.checkskilllist)
@@ -348,7 +349,7 @@ function install.checkskilllist()
       end
     end
 
-#if skills.metamorphosis then
+if svo.haveskillset("metamorphosis") then
   elseif t.group == "metamorphosis" then
     for _, k in ipairs{"truemorph", "hydra", "wyvern", "affinity", "icewyrm", "gorilla", "eagle", "jaguar", "wolverine", "transmorph", "elephant", "nightingale", "bonding", "bear", "basilisk", "sloth", "gopher", "condor", "hyena", "owl", "cheetah", "jackdaw", "turtle", "wolf", "wildcat", "powers", "squirrel"} do
     if contains(t.list, k:title()) then
@@ -358,7 +359,7 @@ function install.checkskilllist()
   end
 
   installclear("morphskill")
-#end
+end
   end
 end
 signals.gmcpcharskillslist:connect(install.checkskilllist)
