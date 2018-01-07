@@ -502,15 +502,15 @@ signals["svo config changed"]:connect(function(config)
 
     -- initial sync of some config options.
     local option
-#for _, conf in ipairs({"healthaffsabove", "mosshealth", "mossmana"}) do
-    if conf.$(conf) == true then option = "on"
-    elseif conf.$(conf) == false then option = "off"
-    else
-      option = conf.$(conf)
-    end
+    for _, conf in ipairs({"healthaffsabove", "mosshealth", "mossmana"}) do
+      if conf[conf] == true then option = "on"
+      elseif conf[conf] == false then option = "off"
+      else
+        option = conf[conf]
+      end
 
-    sendcuring("$(conf) "..option)
-#end
+      sendcuring(conf.. " "..option)
+    end
 
     if conf.keepup then
       sendcuring("defences on")
@@ -568,24 +568,24 @@ signals["svo config changed"]:connect(function(config)
   sendcuring("healthaffsabove "..option)
 end)
 
-#for _, conf in ipairs({"mosshealth", "mossmana"}) do
-signals["svo config changed"]:connect(function(config)
-  if not (conf.serverside and config == "$(conf)") then return end
-  
-  if conf.moss then
-    option = conf.$(conf)
-  else
-    option = "0"
-  end
+for _, conf in ipairs({"mosshealth", "mossmana"}) do
+  signals["svo config changed"]:connect(function(config)
+    if not (conf.serverside and config == conf) then return end
 
-  sendcuring("$(conf) "..option)
-end)
-#end
+    if conf.moss then
+      option = conf[conf]
+    else
+      option = "0"
+    end
+
+    sendcuring(conf .." "..option)
+  end)
+end
 
 -- vconfig moss
 signals["svo config changed"]:connect(function(config)
   if not (conf.serverside and config == "moss") then return end
-  
+
   if conf.moss then
     sendcuring("mosshealth "..conf.mosshealth)
     sendcuring("mossmana "..conf.mossmana)
