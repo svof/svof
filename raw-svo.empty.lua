@@ -6,7 +6,7 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-local empty = {}
+svo.empty = {}
 
 $(
 local paths = {}
@@ -47,27 +47,27 @@ end
 
 )
 
-#madness_affs = {"addiction", "confusion", "dementia", "hallucinations", "hypersomnia", "illness", "impatience", "lethargy", "loneliness", "madness", "masochism", "paranoia", "recklessness", "stupidity", "vertigo"}
+local madness_affs = {"addiction", "confusion", "dementia", "hallucinations", "hypersomnia", "illness", "impatience", "lethargy", "loneliness", "madness", "masochism", "paranoia", "recklessness", "stupidity", "vertigo"}
 
-#for herbname, herb in pairs({
-#goldenseal = {"dissonance", "impatience", "stupidity", "dizziness", "epilepsy", "shyness", "depression", "shadowmadness"},
-#kelp = {"asthma", "hypochondria", "healthleech", "sensitivity", "clumsiness", "weakness"},
-#lobelia = {"claustrophobia", "recklessness", "agoraphobia", "loneliness", "masochism", "vertigo", "spiritdisrupt", "airdisrupt", "waterdisrupt", "earthdisrupt", "firedisrupt"},
-#ginseng = {"haemophilia", "darkshade", "relapsing", "addiction", "illness", "lethargy"},
-#ash = {"hallucinations", "hypersomnia", "confusion", "paranoia", "dementia"},
-#bellwort = {"generosity", "pacifism", "justice", "inlove", "peace", "retribution", "timeloop"},
-#}) do
-empty.eat_$(herbname) = function()
-  lostbal_herb()
+for herbname, herbaffs in pairs({
+  goldenseal = {"dissonance", "impatience", "stupidity", "dizziness", "epilepsy", "shyness", "depression", "shadowmadness"},
+  kelp = {"asthma", "hypochondria", "healthleech", "sensitivity", "clumsiness", "weakness"},
+  lobelia = {"claustrophobia", "recklessness", "agoraphobia", "loneliness", "masochism", "vertigo", "spiritdisrupt", "airdisrupt", "waterdisrupt", "earthdisrupt", "firedisrupt"},
+  ginseng = {"haemophilia", "darkshade", "relapsing", "addiction", "illness", "lethargy"},
+  ash = {"hallucinations", "hypersomnia", "confusion", "paranoia", "dementia"},
+  bellwort = {"generosity", "pacifism", "justice", "inlove", "peace", "retribution", "timeloop"}
+}) do
+  empty["eat_"..herbname] = function()
+    lostbal_herb()
 
-  if not affs.madness then
-# _put("    removeaff(".. pretty.write(herb, "")..")\n")
-  else
-# _put("    removeaff(".. pretty.write(n_complement(herb, madness_affs), "")..")\n")
+    if not affs.madness then
+      removeaff(herbaffs)
+    else
+      removeaff(table.n_complement(herbaffs, madness_affs))
+    end
+
   end
-
 end
-#end
 
 -- handle affs with madness separately
 
