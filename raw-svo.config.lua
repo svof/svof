@@ -280,61 +280,6 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.deathsight = nil end,
     installcheck = function () echof("Have you got the deathsight skill?") end
   }},
-#if skills.chivalry then
-  {rage = {
-    type = "boolean",
-    vconfig2 = true,
-    onshow = function (defaultcolour)
-      fg(defaultcolour)
-      echo "Use rage       ("
-      echoLink("view scenarios", "svo.config.set'ragefunc'", "View, enable and disable scenarios in which rage will be used")
-      fg(defaultcolour) echo ")\n"
-      resetFormat()
-    end,
-    onenabled = function () echof("<0,250,0>Will%s use of Rage.", getDefaultColor()) end,
-    ondisabled = function () echof("<250,0,0>Won't%s use of Rage.", getDefaultColor()) end,
-    installstart = function () conf.rage = nil end,
-    installcheck = function () echof("Can you make use of the Rage skill?") end
-  }},
-  {ragefunc = {
-    type = "custom",
-    onmenu = function ()
-      local underline = setUnderline; _G.setUnderline = function () end
-
-      echof("Scenarios to use rage in:")
-      local sortednames = keystolist(rage)
-      table.sort(sortednames)
-      local longestfname = longeststring(sortednames)
-
-      for i = 1, #sortednames do
-        local fname = sortednames[i]
-        local t = rage[fname]
-
-        if not me.disabledragefunc[fname] then
-          if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[$(sys).me.disabledragefunc["]]..fname..[["] = true; svo.config.set'ragefunc']], "Disable "..fname, true)
-          else
-            decho("  <153,204,204>[<0,204,0>X<153,204,204>]")
-          end
-          setFgColor(unpack(getDefaultColorNums))
-          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
-        else
-          if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[$(sys).me.disabledragefunc["]]..fname..[["] = false; svo.config.set'ragefunc']], "Enable "..fname, true)
-          else
-            decho("  <153,204,204>[<0,204,0> <153,204,204>]")
-          end
-          setFgColor(unpack(getDefaultColorNums))
-          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
-        end
-      end
-
-      _G.setUnderline = underline
-
-      showprompt()
-    end
-  }},
-#end
   {tree = {
     type = "boolean",
     vconfig2 = true,
@@ -393,23 +338,6 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.dragonheal = nil end,
     installcheck = function () echof("Can you make use of the Dragonheal?") end
   }},
-#if skills.venom then
-  {shrugging = {
-    type = "boolean",
-    vconfig2 = true,
-    onshow = function (defaultcolour)
-      fg(defaultcolour)
-      echo "Use shrugging  ("
-      echoLink("view scenarios", "svo.config.set'shruggingfunc'", "View, enable and disable scenarios in which shrugging will be used")
-      fg(defaultcolour) echo ")\n"
-      resetFormat()
-    end,
-    onenabled = function () echof("<0,250,0>Will%s use shrugging to cure when necessary.", getDefaultColor()) end,
-    ondisabled = function () echof("<250,0,0>Won't%s use shrugging to cure.", getDefaultColor()) end,
-    installstart = function () conf.shrugging = nil end,
-    installcheck = function () echof("Can you make use of the shrugging?") end
-  }},
-#end
   {breath = {
     type = "boolean",
     vconfig2 = true,
@@ -466,97 +394,6 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.thirdeye = nil end,
     installcheck = function () echof("Can you make use of the Thirdeye skill?") end
   }},
-#if skills.shindo then
-  {shindodeaf = {
-    type = "boolean",
-    vconfig1 = "shindodeaf",
-    onenabled = function () echof("<0,250,0>Will%s use the Shindo deaf skill for deaf.", getDefaultColor()) end,
-    ondisabled = function () echof("<250,0,0>Won't%s use the Shindo deaf skill for deaf.", getDefaultColor()) end,
-    installstart = function () conf.shindodeaf = nil end,
-    installcheck = function () echof("Would you like to use Shindo deaf for deafness?") end
-  }},
-  {shindoblind = {
-    type = "boolean",
-    vconfig1 = "shindoblind",
-    onenabled = function () echof("<0,250,0>Will%s use the Shindo blind skill for blind.", getDefaultColor()) end,
-    ondisabled = function () echof("<250,0,0>Won't%s use the Shindo blind skill for blind.", getDefaultColor()) end,
-    installstart = function () conf.shindoblind = nil end,
-    installcheck = function () echof("Would you like to use Shindo blind for blindness?") end
-  }},
-#end
-#if skills.kaido then
-  {kaidodeaf = {
-    type = "boolean",
-    vconfig1 = "kaidodeaf",
-    onenabled = function () echof("<0,250,0>Will%s use the kaido deaf skill for deaf.", getDefaultColor()) end,
-    ondisabled = function () echof("<250,0,0>Won't%s use the kaido deaf skill for deaf.", getDefaultColor()) end,
-    installstart = function () conf.kaidodeaf = nil end,
-    installcheck = function () echof("Would you like to use kaido deaf for deafness?") end
-  }},
-  {kaidoblind = {
-    type = "boolean",
-    vconfig1 = "kaidoblind",
-    onenabled = function () echof("<0,250,0>Will%s use the kaido blind skill for blind.", getDefaultColor()) end,
-    ondisabled = function () echof("<250,0,0>Won't%s use the kaido blind skill for blind.", getDefaultColor()) end,
-    installstart = function () conf.kaidoblind = nil end,
-    installcheck = function () echof("Would you like to use kaido blind for blindness?") end
-  }},
-#end
-#if skills.chivalry or skills.shindo or skills.kaido or skills.metamorphosis then
-  {fitness = {
-    type = "boolean",
-    vconfig2 = true,
-    onshow = function (defaultcolour)
-      fg(defaultcolour)
-      echo "Use fitness       ("
-      echoLink("view scenarios", "svo.config.set'fitnessfunc'", "View, enable and disable scenarios in which fitness will be used")
-      fg(defaultcolour) echo ")\n"
-      resetFormat()
-    end,
-    onenabled = function () echof("<0,250,0>Will%s use of Fitness.", getDefaultColor()) end,
-    ondisabled = function () echof("<250,0,0>Won't%s use of Fitness.", getDefaultColor()) end,
-    installstart = function () conf.fitness = nil end,
-    installcheck = function () echof("Can you make use of the Fitness skill?") end
-  }},
-  {fitnessfunc = {
-    type = "custom",
-    onmenu = function ()
-      local underline = setUnderline; _G.setUnderline = function () end
-
-      echof("Scenarios to use fitness in:")
-      local sortednames = keystolist(fitness)
-      table.sort(sortednames)
-      local longestfname = longeststring(sortednames)
-
-      for i = 1, #sortednames do
-        local fname = sortednames[i]
-        local t = fitness[fname]
-
-        if not me.disabledfitnessfunc[fname] then
-          if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[$(sys).me.disabledfitnessfunc["]]..fname..[["] = true; svo.config.set'fitnessfunc']], "Disable "..fname, true)
-          else
-            decho("  <153,204,204>[<0,204,0>X<153,204,204>]")
-          end
-          setFgColor(unpack(getDefaultColorNums))
-          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
-        else
-          if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[$(sys).me.disabledfitnessfunc["]]..fname..[["] = false; svo.config.set'fitnessfunc']], "Enable "..fname, true)
-          else
-            decho("  <153,204,204>[<0,204,0> <153,204,204>]")
-          end
-          setFgColor(unpack(getDefaultColorNums))
-          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
-        end
-      end
-
-      _G.setUnderline = underline
-
-      showprompt()
-    end
-  }},
-#end
   {moss = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s make use of moss/potash to heal.", getDefaultColor()) end,
@@ -651,25 +488,6 @@ config_dict = pl.OrderedMap {
     end end,
     installstart = function () conf.repeatcmd = 0 end
   }},
-#if not skills.tekura then
-  {parry = {
-    type = "boolean",
-    vconfig1 = "parry",
-    onenabled = function () echof("<0,250,0>Will%s make use of parry.", getDefaultColor()) end,
-    ondisabled = function () echof("<250,0,0>Won't%s make use of parry.", getDefaultColor()) end,
-    installstart = function () conf.parry = nil end,
-    installcheck = function () echof("Are you able to use parry?") end
-  }},
-#else
-  {guarding = {
-    type = "boolean",
-    vconfig1 = "guarding",
-    onenabled = function () echof("<0,250,0>Will%s make use of guarding.", getDefaultColor()) end,
-    ondisabled = function () echof("<250,0,0>Won't%s make use of guarding.", getDefaultColor()) end,
-    installstart = function () conf.guarding = nil end,
-    installcheck = function () echof("Are you able to use guarding?") end
-  }},
-#end
   {singleprompt = {
     type = "boolean",
     vconfig2 = true,
@@ -923,54 +741,6 @@ config_dict = pl.OrderedMap {
     installstart = function ()
       conf.ccto = "pt" end
   }},
-#if skills.woodlore then
-  {weapon = {
-    type = "string",
-    onset = function ()
-      conf.weapon = conf.weapon:lower()
-      echof("Set your weapon to '%s'.", conf.weapon)
-    end,
-    vconfig2 = true,
-    onshow = string.format("Using a %s as a weapon", (conf.weapon and tostring(conf.weapon) or "(nothing)")),
-    installstart = function ()
-      conf.weapon = nil end,
-    installcheck = function ()
-      echof("Are you using a spear or a trident as a weapon?") end
-  }},
-#end
-#if skills.metamorphosis then
-  {transmorph = {
-    type = "boolean",
-    onenabled = function () echof("<0,250,0>Have%s transmorph - won't go human between morphing.", getDefaultColor()) end,
-    ondisabled = function () echof("<250,0,0>Don't%s have transmorph - will go human between morphing.", getDefaultColor()) end,
-    onshow = "Have transmorph",
-    installstart = function () conf.transmorph = nil end,
-    installcheck = function () echof("Do you have the Metamorphosis Transmorph skill?") end
-  }},
-  {morphskill = {
-    type = "string",
-    check = function (what)
-      return sk.validmorphskill(what)
-    end,
-    onset = function ()
-      conf.morphskill = conf.morphskill:lower()
-      local t = {powers = "squirrel", bonding = "bear", transmorph = "elephant", affinity = "icewyrm"}
-if svo.me.class == "Druid" then
-      t.truemorph = "hydra"
-else
-      t.truemorph = "icewyrm"
-end
-      if t[conf.morphskill] then
-        echof("Thanks! I've set your morphskill to '%s' though, because %s isn't a morph.", t[conf.morphskill], conf.morphskill)
-        conf.morphskill = t[conf.morphskill]
-      end
-      signals.morphskillchanged:emit()
-      echof("Given your morph skill, these are all defences you can put up: %s.", concatand(keystolist(sk.morphsforskill)) ~= "" and concatand(keystolist(sk.morphsforskill)) or "(... none, actually. Nevermind!)")
-    end,
-    installstart = function () sp_config.morphskill = nil end,
-    installcheck = function () echof("What is the highest available morph that you can go into?") end
-  }},
-#end
   {mosshealth = {
     type = "number",
     percentage = true,
@@ -1030,21 +800,6 @@ end
     installstart = function () conf.sipmana = nil end,
     installcheck = function () echof("At what %% of mana do you want to start sipping mana?") end
   }},
-#if skills.devotion then
-  {bloodswornoff = {
-    type = "number",
-    percentage = true,
-    min = 0,
-    max = 100,
-    vconfig2 = true,
-    onshow = function (defaultcolour)
-      fg(defaultcolour)
-      echo(string.format("Unlinking Bloodsworn at %s%% (%sh).\n", conf.bloodswornoff or '?', sys.bloodswornoff or '?'))
-    end,
-    onset = function () signals.changed_maxhealth:emit() echof("Will unlink from bloodsworn if below %d%% (%dh).", conf.bloodswornoff, sys.bloodswornoff) end,
-    installstart = function () conf.bloodswornoff = 30 end
-  }},
-#end
   {refillat = {
     type = "number",
     min = 0,
@@ -1073,11 +828,11 @@ end
     min = 0,
     onset = function () echof("Will diagnose after we have %d or more unknown, but focusable afflictions.", conf.unknownfocus) end,
     installstart = function ()
-#if skills.healing then
-    conf.unknownfocus = 1
-#else
-    conf.unknownfocus = 2
-#end
+      if svo.haveskillset("healing") then
+        conf.unknownfocus = 1
+      else
+        conf.unknownfocus = 2
+      end
     end,
   }},
   {unknownany = {
@@ -1085,11 +840,11 @@ end
     min = 0,
     onset = function () echof("Will diagnose after we have %d or more unknown affs.", conf.unknownany) end,
     installstart = function ()
-#if skills.healing then
-    conf.unknownany = 1
-#else
-    conf.unknownany = 2
-#end
+      if svo.haveskillset("healing") then
+        conf.unknownany = 1
+      else
+        conf.unknownany = 2
+      end
     end,
   }},
   {bleedamount = {
@@ -1253,45 +1008,6 @@ end
       _G.setUnderline = underline
     end
   }},
-#if skills.venom then
-  {shruggingfunc = {
-    type = "custom",
-    onmenu = function ()
-      local underline = setUnderline; _G.setUnderline = function () end
-
-      echof("Scenarios to use shrugging in:")
-
-      local sortednames = keystolist(shrugging)
-      table.sort(sortednames)
-      local longestfname = longeststring(sortednames)
-
-      for i = 1, #sortednames do
-        local fname = sortednames[i]
-        local t = shrugging[fname]
-
-        if not me.disabledshruggingfunc[fname] then
-          if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[$(sys).me.disabledshruggingfunc["]]..fname..[["] = true; svo.config.set'shruggingfunc']], "Disable "..fname, true)
-          else
-            decho("  <153,204,204>[<0,204,0>X<153,204,204>]")
-          end
-          setFgColor(unpack(getDefaultColorNums))
-          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
-        else
-          if dechoLink then
-            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[$(sys).me.disabledshruggingfunc["]]..fname..[["] = false; svo.config.set'shruggingfunc']], "Enable "..fname, true)
-          else
-            decho("  <153,204,204>[<0,204,0> <153,204,204>]")
-          end
-          setFgColor(unpack(getDefaultColorNums))
-          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
-        end
-      end
-
-      _G.setUnderline = underline
-    end
-  }},
-#end
   {elmid = {
     type = "number",
     min = 0,
@@ -1557,104 +1273,6 @@ end
     installstart = function ()
       conf.org = nil end,
   }},
-#if skills.healing then
-  {healingskill = {
-    type = "string",
-    check = function (what)
-      if table.contains({"blindness", "paralysis", "deafness", "fear", "confusion", "insomnia", "slickness", "stuttering", "paranoia", "shyness", "hallucinations", "generosity", "loneliness", "impatience", "unconsciousness", "claustrophobia", "vertigo", "sensitivity", "dizziness", "arms", "dementia", "clumsiness", "ablaze", "recklessness", "anorexia", "agoraphobia", "disloyalty", "hypersomnia", "darkshade", "masochism", "epilepsy", "asthma", "stupidity", "vomiting", "weariness", "haemophilia", "legs", "hypochondria"}, what:lower()) then return true end
-    end,
-    onset = function ()
-      conf.healingskill = conf.healingskill:lower()
-      signals.healingskillchanged:emit()
-      echof("Thanks! That means that you can now cure:  \n%s", oneconcat(sk.healingmap))
-    end,
-    vconfig2 = true,
-    installstart = function ()
-      conf.healingskill = nil end,
-    installcheck = function ()
-      echof("What is the highest possible affliction that you can cure with Healing? If you don't have it yet, answer with 'blindness' and set 'none' for the 'usehealing' option.") end
-  }},
-  {usehealing = {
-    type = "string",
-    check = function (what)
-      if table.contains({"full", "partial", "none", "off"}, what:lower()) then return true end
-    end,
-    onset = function ()
-      conf.usehealing = conf.usehealing:lower()
-      if conf.usehealing == "off" then conf.usehealing = "none" end
-      echof("Will use Healing in the '%s' mode.", conf.usehealing)
-    end,
-    vconfig2 = true,
-    installstart = function ()
-      conf.usehealing = nil end,
-    installcheck = function ()
-      echof("Do you want to use Healing skillset in the full, partial or none mode? Full would mean that it'll use Healing for everything that it can and supplement it with normal cures. Partial would mean that it'll use normal cures and supplement it with Healing, while none means it won't make use of Healing at all.") end
-  }},
-#end
-#if skills.kaido then
-  {transmute = {
-    type = "string",
-    check = function (what)
-      if convert_string(what) == false then return true end
-      if table.contains({"replaceall", "replacehealth", "supplement", "none", "off"}, what:lower()) then return true end
-    end,
-    onset = function ()
-      conf.transmute = conf.transmute:lower()
-      if convert_string(conf.transmute) == false or conf.transmute == "none" then
-        conf.transmute = "none"
-      end
-
-      if conf.transmute == "off" then conf.transmute = "none" end
-
-      if conf.transmute == "none" then
-        echof("Won't use transmute for anything.")
-      else
-        echof("Will use transmute in the '%s' mode.", conf.transmute) end
-    end,
-    vconfig2 = true,
-    installstart = function () conf.transmute = nil end,
-    installcheck = function ()
-      echof("Do you want to use transmute skill in the replaceall, replacehealth, supplement or none mode? replaceall means that it won't sip health nor eat moss/potash to heal your health, but only use transmute. replacehealth will mean that it will not sip health, but use moss/potash and transmute. supplement means that it'll use all three ways to heal you, and none means that it won't use transmute.") end
-  }},
-  {transmuteamount = {
-    type = "number",
-    percentage = true,
-    min = 0,
-    max = 100,
-    onset = function () signals.changed_maxhealth:emit()
-      echof("Will start transmuting for health if it falls below %d%% (%dh)%s.", conf.transmuteamount, sys.transmuteamount, (conf.transmute ~= "none" and "" or ", when you enable a transmute mode"))
-    end,
-    installstart = function () conf.transmuteamount = nil end,
-    installcheck = function () echof("At what %% of health do you want to start transmuting for health?") end
-  }},
-  {transsipprone = {
-      type = "boolean",
-      vconfig2 = "Transmute while prone",
-      onenabled = function () echof("If you're prone and using transmute in a replaceall or replacehealth mode, we <0,250,0>will%s sip health or vitality instead of waiting on transmute to be usable. This is most optimal for PK.", getDefaultColor()) end,
-      ondisabled = function () echof("If you're prone and using transmute in a replaceall or replacehealth mode, we'll keep sipping mana and wait until we can use transmute again to heal our health. This is mainly good for bashing.", getDefaultColor()) end,
-      installstart = function () conf.transsipprone = true end
-    }},
-#end
-#if skills.voicecraft then
-  {dwinnu = {
-    type = "boolean",
-    vconfig1 = "dwinnu",
-    onenabled = function () echof("<0,250,0>Will%s use dwinnu for writhing.", getDefaultColor()) end,
-    ondisabled = function () echof("<250,0,0>Won't%s use dwinnu.", getDefaultColor()) end,
-    installstart = function () conf.dwinnu = nil end,
-    installcheck = function () echof("Can you make use of the Wwinnu skill?") end
-  }},
-#end
-#if skills.weaponmastery then
-  {recoverfooting = {
-      type = "boolean",
-      vconfig1 = "recover footing",
-      onenabled = function () echof("<0,250,0>Will%s use Recover Footing to get up faster when we can.", getDefaultColor()) end,
-      ondisabled = function () echof("<250,0,0>Won't%s use Recover Footing.", getDefaultColor()) end,
-      installstart = function () conf.recoverfooting = nil end,
-      installcheck = function () echof("Can you make use of the Recover Footing skill?") end
-    }},
-#end
   {dragonflex = {
     type = "boolean",
     vconfig1 = "dragonflex",
@@ -1708,28 +1326,30 @@ end
       if defdefup[what:lower()] then return true end
     end,
     onshow = function (defaultcolour)
+      local tooltip
+
+      if svo.haveskillset("necromancy") then
+        tooltip = "Set the defences mode system should autoswitch to upon starburst/soulcage"
+      elseif svo.haveskillset("occultism") then
+        tooltip = "Set the defences mode system should autoswitch to upon starburst/transmog"
+      else
+        tooltip = "Set the defences mode system should autoswitch to upon starburst"
+      end
+
       fg(defaultcolour)
       echo("Upon starbursting, will go into ") fg("a_cyan")
-      echoLink(tostring(conf.burstmode), 'printCmdLine"vconfig burstmode "',
-#if skills.necromancy then
-      "Set the defences mode system should autoswitch to upon starburst/soulcage",
-#elseif skills.occultism then
-      "Set the defences mode system should autoswitch to upon starburst/transmog",
-#else
-      "Set the defences mode system should autoswitch to upon starburst",
-#end
-       true)
+      echoLink(tostring(conf.burstmode), 'printCmdLine"vconfig burstmode "', tooltip, true)
       cecho("<a_grey> defences mode.\n")
     end,
     onset = function ()
       conf.burstmode = conf.burstmode:lower()
-#if skills.necromancy then
-      echof("Upon starburst/soulcage, will go into %s defences mode.", conf.burstmode)
-#elseif skills.occultism then
-      echof("Upon starburst/transmogrify, will go into %s defences mode.", conf.burstmode)
-#else
-      echof("Upon starburst, will go into %s defences mode.", conf.burstmode)
-#end
+      if svo.haveskillset("necromancy") then
+            echof("Upon starburst/soulcage, will go into %s defences mode.", conf.burstmode)
+      elseif svo.haveskillset("occultism") then
+            echof("Upon starburst/transmogrify, will go into %s defences mode.", conf.burstmode)
+      else
+            echof("Upon starburst, will go into %s defences mode.", conf.burstmode)
+      end
     end,
     installstart = function ()
       conf.burstmode = "empty" end
@@ -1873,6 +1493,389 @@ end
     end
   }},
 }
+
+if svo.haveskillset("healing") then
+  config_dict:insert(1, "healingskill", {
+    type = "string",
+    check = function (what)
+      if table.contains({"blindness", "paralysis", "deafness", "fear", "confusion", "insomnia", "slickness", "stuttering", "paranoia", "shyness", "hallucinations", "generosity", "loneliness", "impatience", "unconsciousness", "claustrophobia", "vertigo", "sensitivity", "dizziness", "arms", "dementia", "clumsiness", "ablaze", "recklessness", "anorexia", "agoraphobia", "disloyalty", "hypersomnia", "darkshade", "masochism", "epilepsy", "asthma", "stupidity", "vomiting", "weariness", "haemophilia", "legs", "hypochondria"}, what:lower()) then return true end
+    end,
+    onset = function ()
+      conf.healingskill = conf.healingskill:lower()
+      signals.healingskillchanged:emit()
+      echof("Thanks! That means that you can now cure:  \n%s", oneconcat(sk.healingmap))
+    end,
+    vconfig2 = true,
+    installstart = function ()
+      conf.healingskill = nil end,
+    installcheck = function ()
+      echof("What is the highest possible affliction that you can cure with Healing? If you don't have it yet, answer with 'blindness' and set 'none' for the 'usehealing' option.") end
+  })
+  config_dict:insert(1, "usehealing", {
+    type = "string",
+    check = function (what)
+      if table.contains({"full", "partial", "none", "off"}, what:lower()) then return true end
+    end,
+    onset = function ()
+      conf.usehealing = conf.usehealing:lower()
+      if conf.usehealing == "off" then conf.usehealing = "none" end
+      echof("Will use Healing in the '%s' mode.", conf.usehealing)
+    end,
+    vconfig2 = true,
+    installstart = function ()
+      conf.usehealing = nil end,
+    installcheck = function ()
+      echof("Do you want to use Healing skillset in the full, partial or none mode? Full would mean that it'll use Healing for everything that it can and supplement it with normal cures. Partial would mean that it'll use normal cures and supplement it with Healing, while none means it won't make use of Healing at all.") end
+  })
+end
+if svo.haveskillset("kaido") then
+  config_dict:insert(1, "transmute", {
+    type = "string",
+    check = function (what)
+      if convert_string(what) == false then return true end
+      if table.contains({"replaceall", "replacehealth", "supplement", "none", "off"}, what:lower()) then return true end
+    end,
+    onset = function ()
+      conf.transmute = conf.transmute:lower()
+      if convert_string(conf.transmute) == false or conf.transmute == "none" then
+        conf.transmute = "none"
+      end
+
+      if conf.transmute == "off" then conf.transmute = "none" end
+
+      if conf.transmute == "none" then
+        echof("Won't use transmute for anything.")
+      else
+        echof("Will use transmute in the '%s' mode.", conf.transmute) end
+    end,
+    vconfig2 = true,
+    installstart = function () conf.transmute = nil end,
+    installcheck = function ()
+      echof("Do you want to use transmute skill in the replaceall, replacehealth, supplement or none mode? replaceall means that it won't sip health nor eat moss/potash to heal your health, but only use transmute. replacehealth will mean that it will not sip health, but use moss/potash and transmute. supplement means that it'll use all three ways to heal you, and none means that it won't use transmute.") end
+  })
+  config_dict:insert(1, "transmuteamount", {
+    type = "number",
+    percentage = true,
+    min = 0,
+    max = 100,
+    onset = function () signals.changed_maxhealth:emit()
+      echof("Will start transmuting for health if it falls below %d%% (%dh)%s.", conf.transmuteamount, sys.transmuteamount, (conf.transmute ~= "none" and "" or ", when you enable a transmute mode"))
+    end,
+    installstart = function () conf.transmuteamount = nil end,
+    installcheck = function () echof("At what %% of health do you want to start transmuting for health?") end
+  })
+  config_dict:insert(1, "transsipprone", {
+      type = "boolean",
+      vconfig2 = "Transmute while prone",
+      onenabled = function () echof("If you're prone and using transmute in a replaceall or replacehealth mode, we <0,250,0>will%s sip health or vitality instead of waiting on transmute to be usable. This is most optimal for PK.", getDefaultColor()) end,
+      ondisabled = function () echof("If you're prone and using transmute in a replaceall or replacehealth mode, we'll keep sipping mana and wait until we can use transmute again to heal our health. This is mainly good for bashing.", getDefaultColor()) end,
+      installstart = function () conf.transsipprone = true end
+    })
+end
+if svo.haveskillset("voicecraft") then
+  config_dict:insert(1, "dwinnu", {
+    type = "boolean",
+    vconfig1 = "dwinnu",
+    onenabled = function () echof("<0,250,0>Will%s use dwinnu for writhing.", getDefaultColor()) end,
+    ondisabled = function () echof("<250,0,0>Won't%s use dwinnu.", getDefaultColor()) end,
+    installstart = function () conf.dwinnu = nil end,
+    installcheck = function () echof("Can you make use of the Wwinnu skill?") end
+  })
+end
+if svo.haveskillset("weaponmastery") then
+  config_dict:insert(1, "recoverfooting", {
+      type = "boolean",
+      vconfig1 = "recover footing",
+      onenabled = function () echof("<0,250,0>Will%s use Recover Footing to get up faster when we can.", getDefaultColor()) end,
+      ondisabled = function () echof("<250,0,0>Won't%s use Recover Footing.", getDefaultColor()) end,
+      installstart = function () conf.recoverfooting = nil end,
+      installcheck = function () echof("Can you make use of the Recover Footing skill?") end
+    })
+end
+if svo.haveskillset("venom") then
+  config_dict:insert(1, "shruggingfunc", {
+    type = "custom",
+    onmenu = function ()
+      local underline = setUnderline; _G.setUnderline = function () end
+
+      echof("Scenarios to use shrugging in:")
+
+      local sortednames = keystolist(shrugging)
+      table.sort(sortednames)
+      local longestfname = longeststring(sortednames)
+
+      for i = 1, #sortednames do
+        local fname = sortednames[i]
+        local t = shrugging[fname]
+
+        if not me.disabledshruggingfunc[fname] then
+          if dechoLink then
+            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[$(sys).me.disabledshruggingfunc["]]..fname..[["] = true; svo.config.set'shruggingfunc']], "Disable "..fname, true)
+          else
+            decho("  <153,204,204>[<0,204,0>X<153,204,204>]")
+          end
+          setFgColor(unpack(getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        else
+          if dechoLink then
+            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[$(sys).me.disabledshruggingfunc["]]..fname..[["] = false; svo.config.set'shruggingfunc']], "Enable "..fname, true)
+          else
+            decho("  <153,204,204>[<0,204,0> <153,204,204>]")
+          end
+          setFgColor(unpack(getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        end
+      end
+
+      _G.setUnderline = underline
+    end
+  })
+end
+if svo.haveskillset("devotion") then
+  config_dict:insert(1, "bloodswornoff", {
+    type = "number",
+    percentage = true,
+    min = 0,
+    max = 100,
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo(string.format("Unlinking Bloodsworn at %s%% (%sh).\n", conf.bloodswornoff or '?', sys.bloodswornoff or '?'))
+    end,
+    onset = function () signals.changed_maxhealth:emit() echof("Will unlink from bloodsworn if below %d%% (%dh).", conf.bloodswornoff, sys.bloodswornoff) end,
+    installstart = function () conf.bloodswornoff = 30 end
+  })
+end
+if svo.haveskillset("woodlore") then
+  config_dict:insert(1, "weapon", {
+    type = "string",
+    onset = function ()
+      conf.weapon = conf.weapon:lower()
+      echof("Set your weapon to '%s'.", conf.weapon)
+    end,
+    vconfig2 = true,
+    onshow = string.format("Using a %s as a weapon", (conf.weapon and tostring(conf.weapon) or "(nothing)")),
+    installstart = function ()
+      conf.weapon = nil end,
+    installcheck = function ()
+      echof("Are you using a spear or a trident as a weapon?") end
+  })
+end
+if svo.haveskillset("metamorphosis") then
+  config_dict:insert(1, "transmorph", {
+    type = "boolean",
+    onenabled = function () echof("<0,250,0>Have%s transmorph - won't go human between morphing.", getDefaultColor()) end,
+    ondisabled = function () echof("<250,0,0>Don't%s have transmorph - will go human between morphing.", getDefaultColor()) end,
+    onshow = "Have transmorph",
+    installstart = function () conf.transmorph = nil end,
+    installcheck = function () echof("Do you have the Metamorphosis Transmorph skill?") end
+  })
+  config_dict:insert(1, "morphskill", {
+    type = "string",
+    check = function (what)
+      return sk.validmorphskill(what)
+    end,
+    onset = function ()
+      conf.morphskill = conf.morphskill:lower()
+      local t = {powers = "squirrel", bonding = "bear", transmorph = "elephant", affinity = "icewyrm"}
+if svo.me.class == "Druid" then
+      t.truemorph = "hydra"
+else
+      t.truemorph = "icewyrm"
+end
+      if t[conf.morphskill] then
+        echof("Thanks! I've set your morphskill to '%s' though, because %s isn't a morph.", t[conf.morphskill], conf.morphskill)
+        conf.morphskill = t[conf.morphskill]
+      end
+      signals.morphskillchanged:emit()
+      echof("Given your morph skill, these are all defences you can put up: %s.", concatand(keystolist(sk.morphsforskill)) ~= "" and concatand(keystolist(sk.morphsforskill)) or "(... none, actually. Nevermind!)")
+    end,
+    installstart = function () sp_config.morphskill = nil end,
+    installcheck = function () echof("What is the highest available morph that you can go into?") end
+  })
+end
+if not svo.haveskillset("tekura") then
+  config_dict:insert(1, "parry", {
+    type = "boolean",
+    vconfig1 = "parry",
+    onenabled = function () echof("<0,250,0>Will%s make use of parry.", getDefaultColor()) end,
+    ondisabled = function () echof("<250,0,0>Won't%s make use of parry.", getDefaultColor()) end,
+    installstart = function () conf.parry = nil end,
+    installcheck = function () echof("Are you able to use parry?") end
+  })
+else
+  config_dict:insert(1, "guarding", {
+    type = "boolean",
+    vconfig1 = "guarding",
+    onenabled = function () echof("<0,250,0>Will%s make use of guarding.", getDefaultColor()) end,
+    ondisabled = function () echof("<250,0,0>Won't%s make use of guarding.", getDefaultColor()) end,
+    installstart = function () conf.guarding = nil end,
+    installcheck = function () echof("Are you able to use guarding?") end
+  })
+end
+if svo.haveskillset("shindo") then
+  config_dict:insert(1, "shindodeaf", {
+    type = "boolean",
+    vconfig1 = "shindodeaf",
+    onenabled = function () echof("<0,250,0>Will%s use the Shindo deaf skill for deaf.", getDefaultColor()) end,
+    ondisabled = function () echof("<250,0,0>Won't%s use the Shindo deaf skill for deaf.", getDefaultColor()) end,
+    installstart = function () conf.shindodeaf = nil end,
+    installcheck = function () echof("Would you like to use Shindo deaf for deafness?") end
+  })
+  config_dict:insert(1, "shindoblind", {
+    type = "boolean",
+    vconfig1 = "shindoblind",
+    onenabled = function () echof("<0,250,0>Will%s use the Shindo blind skill for blind.", getDefaultColor()) end,
+    ondisabled = function () echof("<250,0,0>Won't%s use the Shindo blind skill for blind.", getDefaultColor()) end,
+    installstart = function () conf.shindoblind = nil end,
+    installcheck = function () echof("Would you like to use Shindo blind for blindness?") end
+  })
+end
+if svo.haveskillset("kaido") then
+  config_dict:insert(1, "kaidodeaf", {
+    type = "boolean",
+    vconfig1 = "kaidodeaf",
+    onenabled = function () echof("<0,250,0>Will%s use the kaido deaf skill for deaf.", getDefaultColor()) end,
+    ondisabled = function () echof("<250,0,0>Won't%s use the kaido deaf skill for deaf.", getDefaultColor()) end,
+    installstart = function () conf.kaidodeaf = nil end,
+    installcheck = function () echof("Would you like to use kaido deaf for deafness?") end
+  })
+  config_dict:insert(1, "kaidoblind", {
+    type = "boolean",
+    vconfig1 = "kaidoblind",
+    onenabled = function () echof("<0,250,0>Will%s use the kaido blind skill for blind.", getDefaultColor()) end,
+    ondisabled = function () echof("<250,0,0>Won't%s use the kaido blind skill for blind.", getDefaultColor()) end,
+    installstart = function () conf.kaidoblind = nil end,
+    installcheck = function () echof("Would you like to use kaido blind for blindness?") end
+  })
+end
+if svo.haveskillset("chivalry") or svo.haveskillset("shindo") or svo.haveskillset("kaido") or svo.haveskillset("metamorphosis") then
+  config_dict:insert(1, "fitness", {
+    type = "boolean",
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo "Use fitness       ("
+      echoLink("view scenarios", "svo.config.set'fitnessfunc'", "View, enable and disable scenarios in which fitness will be used")
+      fg(defaultcolour) echo ")\n"
+      resetFormat()
+    end,
+    onenabled = function () echof("<0,250,0>Will%s use of Fitness.", getDefaultColor()) end,
+    ondisabled = function () echof("<250,0,0>Won't%s use of Fitness.", getDefaultColor()) end,
+    installstart = function () conf.fitness = nil end,
+    installcheck = function () echof("Can you make use of the Fitness skill?") end
+  })
+  config_dict:insert(1, "fitnessfunc", {
+    type = "custom",
+    onmenu = function ()
+      local underline = setUnderline; _G.setUnderline = function () end
+
+      echof("Scenarios to use fitness in:")
+      local sortednames = keystolist(fitness)
+      table.sort(sortednames)
+      local longestfname = longeststring(sortednames)
+
+      for i = 1, #sortednames do
+        local fname = sortednames[i]
+        local t = fitness[fname]
+
+        if not me.disabledfitnessfunc[fname] then
+          if dechoLink then
+            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[$(sys).me.disabledfitnessfunc["]]..fname..[["] = true; svo.config.set'fitnessfunc']], "Disable "..fname, true)
+          else
+            decho("  <153,204,204>[<0,204,0>X<153,204,204>]")
+          end
+          setFgColor(unpack(getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        else
+          if dechoLink then
+            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[$(sys).me.disabledfitnessfunc["]]..fname..[["] = false; svo.config.set'fitnessfunc']], "Enable "..fname, true)
+          else
+            decho("  <153,204,204>[<0,204,0> <153,204,204>]")
+          end
+          setFgColor(unpack(getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        end
+      end
+
+      _G.setUnderline = underline
+
+      showprompt()
+    end
+  })
+end
+if svo.haveskillset("venom") then
+  config_dict:insert(1, "shrugging", {
+    type = "boolean",
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo "Use shrugging  ("
+      echoLink("view scenarios", "svo.config.set'shruggingfunc'", "View, enable and disable scenarios in which shrugging will be used")
+      fg(defaultcolour) echo ")\n"
+      resetFormat()
+    end,
+    onenabled = function () echof("<0,250,0>Will%s use shrugging to cure when necessary.", getDefaultColor()) end,
+    ondisabled = function () echof("<250,0,0>Won't%s use shrugging to cure.", getDefaultColor()) end,
+    installstart = function () conf.shrugging = nil end,
+    installcheck = function () echof("Can you make use of the shrugging?") end
+  })
+end
+if svo.haveskillset("chivalry") then
+  config_dict:insert(1, "rage", {
+    type = "boolean",
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo "Use rage       ("
+      echoLink("view scenarios", "svo.config.set'ragefunc'", "View, enable and disable scenarios in which rage will be used")
+      fg(defaultcolour) echo ")\n"
+      resetFormat()
+    end,
+    onenabled = function () echof("<0,250,0>Will%s use of Rage.", getDefaultColor()) end,
+    ondisabled = function () echof("<250,0,0>Won't%s use of Rage.", getDefaultColor()) end,
+    installstart = function () conf.rage = nil end,
+    installcheck = function () echof("Can you make use of the Rage skill?") end
+  })
+  config_dict:insert(1, "ragefunc", {
+    type = "custom",
+    onmenu = function ()
+      local underline = setUnderline; _G.setUnderline = function () end
+
+      echof("Scenarios to use rage in:")
+      local sortednames = keystolist(rage)
+      table.sort(sortednames)
+      local longestfname = longeststring(sortednames)
+
+      for i = 1, #sortednames do
+        local fname = sortednames[i]
+        local t = rage[fname]
+
+        if not me.disabledragefunc[fname] then
+          if dechoLink then
+            dechoLink("  <153,204,204>[<0,204,0>X<153,204,204>]", [[$(sys).me.disabledragefunc["]]..fname..[["] = true; svo.config.set'ragefunc']], "Disable "..fname, true)
+          else
+            decho("  <153,204,204>[<0,204,0>X<153,204,204>]")
+          end
+          setFgColor(unpack(getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        else
+          if dechoLink then
+            dechoLink("  <153,204,204>[<0,204,0> <153,204,204>]", [[$(sys).me.disabledragefunc["]]..fname..[["] = false; svo.config.set'ragefunc']], "Enable "..fname, true)
+          else
+            decho("  <153,204,204>[<0,204,0> <153,204,204>]")
+          end
+          setFgColor(unpack(getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        end
+      end
+
+      _G.setUnderline = underline
+
+      showprompt()
+    end
+  })
+end
 
 if not conf.releasechannel then
   conf.releasechannel = "stable"
