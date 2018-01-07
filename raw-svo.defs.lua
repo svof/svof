@@ -97,17 +97,17 @@ defs_data = pl.OrderedMap {}
     def = "You are surrounded by a pocket of air."})
   defs_data:set("resistance", { nodef = true,
     def = "You are resisting magical damage."})
-#if not skills.alchemy then
+if not svo.haveskillset("alchemy") then
   defs_data:set("empower", { nodef = true,
     ondef = function () return "("..matches[2]..")" end,
     on = "You are already empowered by astronomical energies.",
     defr = [[^You are resonating with (?:the )?(?:Nebula )?(\w+)'s energy\.$]]})
-#end
-#if not skills.elementalism then
+end
+if not svo.haveskillset("elementalism") then
   defs_data:set("reflection", { nodef = true,
     def = "You are surrounded by one reflection of youself.",
     defr = [[^You are surrounded by \d+ reflections? of yourself\.$]]})
-#end
+end
   defs_data:set("shipwarning", { nodef = true,
     def = "You are aware of all nearby ship movements."})
   defs_data:set("constitution", { nodef = true,
@@ -122,11 +122,11 @@ defs_data = pl.OrderedMap {}
     def = "You are protected by the power of a Thermal Spiritshield."})
   defs_data:set("earthblessing", { nodef = true,
     def = "You are protected by the power of an Earth Spiritshield."})
-#if not skills.groves then
+if not svo.haveskillset("groves") then
   defs_data:set("harmony", { nodef = true,
     ondef = function () return "("..matches[2]..")" end,
     defr = [[^You are under the blessing of the (\w+) environment\.$]]})
-#end
+end
   defs_data:set("enduranceblessing", { nodef = true,
     def = "You are regenerating endurance at an increased rate.",})
   defs_data:set("thirdeye", { type = "general", def = "You possess the sight of the third eye.",
@@ -384,19 +384,12 @@ defs_data = pl.OrderedMap {}
     onr = {[[^You climb up on .+\.$]], [[^You easily vault onto the back of .+\.$]]},
     on = {"You step aboard the chariot and firmly grasp the reins."},
     offr = {[[^You step down off of .+\.$]], [[^You lose purchase on .+\.$]], [[^\w+ waves (?:his|her) palm in your direction, and you can only watch as your surroundings dissolve and fade from existence\.$]], [[^You feel your blessed soul drawn toward \w+ as you are delivered out of harm's way\.$]], [[^\w+ steps into the attack, grabs your arm, and throws you violently to the ground\.$]], [[^You feel a strong tug in the pit of your stomach\. Your surroundings dissolve into the featureless swirl of the ether, resolving once more into a recognisable landscape as you land before \w+\.$]]},
-    off = {"You are not currently riding anything.", "You are not currently riding that.", "You must be mounted to trample.", "You are thrown from the room by the sheer force of the fiery blast.", "You're drawn screaming into its hellish maw.", "The ring of shining metal carries you up into the skies.", "You clamber off of your mount.","You need to be riding a proper mount to gallop.",
-#if skills.necromancy then
-          "You call upon your dark power, and instantly a black wind descends upon you. In seconds your body begins to dissipate, and you are one with the odious vapour.",
-#end
-#if skills.tarot then
-          "You vaguely make out a large, square doorway of light and you step through it.",
-#end
-    }})
+    off = {"You are not currently riding anything.", "You are not currently riding that.", "You must be mounted to trample.", "You are thrown from the room by the sheer force of the fiery blast.", "You're drawn screaming into its hellish maw.", "The ring of shining metal carries you up into the skies.", "You clamber off of your mount.","You need to be riding a proper mount to gallop.", "You call upon your dark power, and instantly a black wind descends upon you. In seconds your body begins to dissipate, and you are one with the odious vapour.", "You vaguely make out a large, square doorway of light and you step through it."}})
 
-#if not skills.groves then
+if not svo.haveskillset("groves") then
   defs_data:set("grove vigour", { nodef = true,
     def = "You are bathed in an aura of radiant sunlight."})
-#end
+end
 
 -- Dragoncraft: everyone gets it
   defs_data:set("dragonform", { type = "dragoncraft",
@@ -416,7 +409,7 @@ defs_data = pl.OrderedMap {}
     off = {"You have not summoned your breath weapon.", "As the strain on your inflated lungs reaches extremity, you open your glistening, tooth-lined maw wide and rain a great tempest of venom down upon the ground below."},
     offr = {[[^As the strain on your inflated lungs reaches extremity, you open your glistening, tooth-lined maw wide and rain .+]], [[^Focusing your breath into a concentrated stream, you direct a blast of]], [[^Opening your great maw, you unleash an overpowering blast of flesh-searing lightning at .+, whose body goes rigid as s?he screams in agony\.$]], [[^Opening your dragon's mouth to its fullest, you blast .+ with your toxic wrath, damaging (?:her|his) very essence\.$]], [[^Opening your massive maw, you throw your head forward and blast wave after wave of deadly, all-consuming cold at .+\.$]], [[^Opening your maw, you force out a tremendous stream of acid, blasting the flesh from the very bones of .+\.$]], [[^Drawing a mighty breath to fill your lungs, you crane your neck backwards and send a screaming volley of \w+-infused vapour into the air\.$]], [[^You rear back your head, and with a keening roar unleash incandescent hell upon]], [[^With a roar of triumph, you unleash a cataclysm of crushing psi energy, laying waste to .+'s mind\.]], [[^Summoning a torpid cloud of \w+ deep within your belly, you expel your breath toward]] }})
 
-#if skills.necromancy then
+if svo.haveskillset("necromancy") then
   defs_data:set("deathsight", { type = "necromancy",
     staysindragon = true,
     availableindragon = true,
@@ -452,9 +445,9 @@ defs_data = pl.OrderedMap {}
     on = {"You swear to yourself that you will wreak vengeance on your slayer.", "Vengeance already burns within your heart, Necromancer."},
     def = "You have sworn vengeance upon those who would slay you.",
     off = {"You forswear your previous oath for vengeance, sudden forgiveness entering your heart.", "You have sworn vengeance against none, Necromancer."}})
-#end
+end
 
-#if skills.chivalry then
+if svo.haveskillset("chivalry") then
   defs_data:set("weathering", { type = "chivalry",
     on = "A brief shiver runs through your body.",
     def = "Your body is weathering the storm of life a little better."})
@@ -477,21 +470,21 @@ defs_data = pl.OrderedMap {}
   defs_data:set("resistance", { type = "chivalry",
     on = "You call aloud and feel an aura of resistance shroud itself silently about you.",
     def = "You are resisting magical damage."})
-#end
+end
 
-#if skills.evileye then
+if svo.haveskillset("evileye") then
   defs_data:set("truestare", { type = "evileye",
     on = {"A sharp pain spikes through your skull, before settling into a dull throbbing just behind your eyes.", "You are already enhancing your ocular prowess. Lost: Your truestare defence erodes away."},
     def = "You are enhancing your ocular prowess."})
-#end
+end
 
-#if skills.weaponmastery then
+if svo.haveskillset("weaponmastery") then
   defs_data:set("deflect", { type = "weaponmastery",
     on = "You will now attempt to deflect arrows toward less vital areas.",
     def = "You are attempting to deflect arrows toward less vital areas."})
-#end
+end
 
-#if skills.shindo then
+if svo.haveskillset("shindo") then
   defs_data:set("weathering", { type = "shindo",
     on = "A brief shiver runs through your body.",
     def = "Your body is weathering the storm of life a little better."})
@@ -542,9 +535,9 @@ defs_data = pl.OrderedMap {}
   defs_data:set("immunity", { type = "shindo",
     on = "You close your eyes and grit your teeth, feeling the heat of the blood pumping through your veins.",
     off = "You cease concentrating on immunity."})
-#end
+end
 
-#if skills.twoarts then
+if svo.haveskillset("twoarts") then
   defs_data:set("retaliationstrike", { type = "twoarts",
     def = "You are performing retaliatory strikes against your attackers.",
     off = "You will no longer strike in retaliation.",
@@ -634,9 +627,9 @@ defs_data = pl.OrderedMap {}
     specialskip = function ()
       return (defc.thyr or defc.mir or defc.arash or defc.doya)
     end })
-#end
+end
 
-#if skills.subterfuge then
+if svo.haveskillset("subterfuge") then
   defs_data:set("phase", { type = "subterfuge",
     on = {"A short burst of azure light fills your vision and when it is gone, you find yourself phased out of sync with the rest of reality." , "You are already phased!"},
     def = "Phased slightly out of reality, you are effectively untouchable.",
@@ -701,9 +694,9 @@ defs_data = pl.OrderedMap {}
   defs_data:set("secondsight", { type = "subterfuge",
     on = {"You narrow your eyes, allowing your vision to extend beyond the normal spectrum.", "You already possess the second sight."},
     def = "You are able to detect wormholes due to possessing the second sight.",})
-#end
+end
 
-#if skills.swashbuckling then
+if svo.haveskillset("swashbuckling") then
   defs_data:set("drunkensailor", { type = "swashbuckling",
     on = {"You start swaying to and fro seemingly unpredictably as you enter the stance of the Drunken Sailor.", "You are already in the stance of the Drunken Sailor."},
     def = "The Drunken Sailor stance protects you.",
@@ -761,9 +754,9 @@ defs_data = pl.OrderedMap {}
     on = "You will now attempt to parry attacks on your arms", --arms replaceable with legs/centre/right/left
     def = {"You will attempt to parry attacks to your left arm.", "You will attempt to parry attacks to your right arm."} --DEF shows both limbs being parried when trueparrying
     off = "You cease your attempts at parrying."]]
-#end
+end
 
-#if skills.voicecraft then
+if svo.haveskillset("voicecraft") then
   defs_data:set("lay", { type = "voicecraft",
     on = {"You sing a powerful Lay of distortion, protecting against the creation of physical images of yourself.", "You sing a powerful Lay of distortion."},
     def = "You are protected from the creation of physical images of yourself.",
@@ -779,9 +772,9 @@ defs_data = pl.OrderedMap {}
     on = {"Your voice rises to the heavens with your instrument as you sing an Aria of healing to yourself.", "Your voice rises to the heavens with your instrument, but without your audience, as you sing an Aria of healing to yourself."},
     def = "Your health is enhanced by the beauties of an Aria.",
     off = "The heavenly strains of the Aria slowly fall silent."})
-#end
+end
 
-#if skills.harmonics then
+if svo.haveskillset("harmonics") then
   defs_data:set("lament", {type = "harmonics", custom_def_type = "harmonic",
     on = "Slowly you take up the dark and sombre tones of a Lament.",
     off = "A burdensome sense of oppression lifts as the Lament arrives at its mournful conclusion."})
@@ -824,9 +817,9 @@ defs_data = pl.OrderedMap {}
   defs_data:set("hallelujah", {type = "harmonics", custom_def_type = "harmonic",
     on = "With a powerful fanfare, you begin a resounding Hallelujah.",
     off = "The Hallelujah's final amen fills you with awe at its power, and sorrow for the ending of this uplifting piece."})
-#end
+end
 
-#if skills.devotion then
+if svo.haveskillset("devotion") then
   defs_data:set("inspiration", { type = "devotion",
     on = {"You bow your head and, praying to the gods for inspiration, you are soon rewarded as your body is suffused with strength."},
     def = "Your limbs are suffused with divinely-inspired strength.",
@@ -841,9 +834,9 @@ defs_data = pl.OrderedMap {}
     on = "The true power of the bloodsworn begins to rage in your veins.",
     invisibledef = true,
     off = "The power of the bloodsworn leaves you." })
-#end
+end
 
-#if skills.spirituality then
+if svo.haveskillset("spirituality") then
   defs_data:set("mace", { type = "spirituality",
     invisibledef = true})
   defs_data:set("heresy", { type = "spirituality",
@@ -870,9 +863,9 @@ defs_data = pl.OrderedMap {}
     off = {"You order your angel to cease tracking the movements of your enemies.", "Your guardian angel is not currently watching your enemies.", "Your guardian ceases to watch."},
     custom_def_type = "angel",
     })
-#end
+end
 
-#if skills.metamorphosis then
+if svo.haveskillset("metamorphosis") then
   defs_data:set("affinity", { type = "metamorphosis",
     on = {"You are already embracing the spirit that dwells within you.", "You embrace the spirit that dwells within you and are overcome with the joy of true unity."},
     def = "You have a great affinity with your spirit form." })
@@ -1257,9 +1250,9 @@ if svo.me.class == "Druid" then
     end,
     def = "A hydra spirit co-habits your body."})
 end
-#end
+end
 
-#if skills.occultism then
+if svo.haveskillset("occultism") then
   defs_data:set("shroud", { type = "occultism",
     on = "Calling on your dark power, you draw a thick shroud of concealment about yourself to cover your every action.",
     off = {"Your shroud dissipates and you return to the realm of perception.", "The flash of light illuminates you - you have been discovered!"},
@@ -1300,18 +1293,18 @@ end
       off = {"You carefully raise a barrier between your soul and the Chaos Lord spirit within you."},
       on = {"You lower the barrier separating your soul from the Chaos Lord spirit within you."},
       defr = [[The spirit of a Chaos (?:Lord|Lady) lies dormant in your soul\.$]] })
-#end
+end
 
-#if skills.tarot then
+if svo.haveskillset("tarot") then
   defs_data:set("devil", { type = "tarot",
       on = {[[You fling the card at the ground, and a red, horned Devil rises from the bowels of the earth to say, "I will serve you but once...Master."]], "You bend your will to the task of tracing the mark of the devil over your heart, but the presence of a devil waiting in service nullifies its effect.", [[The Devil in your service says, "Your will demands I serve you again, and so it shall be."]]},
       off = {"You feel the Devil leave you.", "You lick your finger and then bend your will to the task of tracing the mark of the devil over your heart. There is a slight burning and a black mark forms where you've traced.", "You draw your hand across your heart, releasing any devils in your service and erasing their mark from your skin."},
       invisibledef = true,
       offr = {[[^You quickly fling a Lust card at \w+ and (?:his|her) eyes light up\.$]], [[^You toss the Hanged Man tarot card at \d+ and as it reaches (?:him|her), a huge mass of rope bursts out of it to entrap and hinder (?:him|her)\.$]], [[^As you fling the Moon tarot at \w+, it turns an ominous, sickly red, before striking (?:him|her) in the head\.$]], [[^With a prayer to Miramar, the Just, you fling your tarot card at \w+\. A set of scales appears above (?:his|her) head and one side of the scale quickly descends\. Justice will be done\.$]], [[^You stand an Aeon tarot on your palm, and blow it lightly at \w+\.$]], [[^Standing the Aeon on your open palm, you blow it lightly at \w+ and watch as it seems to slow (?:his|her) movement through the time stream\.$]]},
     })
-#end
+end
 
-#if skills.domination then
+if svo.haveskillset("domination") then
   defs_data:set("arctar", { type = "domination",
     on = {"You command your chaos orb to grant you protection; it pulses once before detonating in a soundless conflagration.", "You cannot summon Arctar, the Defender for you have no pact with that entity."},
     on_only = "The Entity refuses to send another minion to aid you.",
@@ -1320,9 +1313,9 @@ end
   defs_data:set("golgotha", { type = "domination",
     on = {"You cannot summon Jy'Barrak Golgotha, Emperor of Chaos for you have no pact with that entity.", "Closing your eyes, you focus on your contract with Jy'Barrak Golgotha, Emperor of Chaos, beseeching Him for His aide. For the briefest instant the overpowering stench of sulphur fills your nostrils, then a flash of acknowledgement passes to you. Your skin comes alight with a furious burning, and a dire, inhuman sense of vicious amusement fills you as you are suffused with the power of the Emperor of Darkness. Your muscles lock and a scream claws at your throat, but you can do nothing until the pain leaves you except convulse in abject agony."},
     def = "You are acknowledged by Jy'Barrak Golgotha, Emperor of Chaos."})
-#end
+end
 
-#if skills.healing then
+if svo.haveskillset("healing") then
   defs_data:set("simultaneity", {
     type = "healing",
     custom_def_type = "channel"
@@ -1431,9 +1424,9 @@ end
     on = {"You manipulate the elements to lash at those who would do you harm.", "You are already protected by the bedeviling aura."},
     def = "An aura of bedevilment has been established about your person.",
     off = "The elemental aura surrounding you sputters and dies."})
-#end
+end
 
-#if skills.elementalism then
+if svo.haveskillset("elementalism") then
   defs_data:set("stoneskin", {
     type = "elementalism",
     specialskip = function () return not defc.earth end,
@@ -1545,9 +1538,9 @@ end
     type = "elementalism",
     custom_def_type = "channel",
     on = {"You bind all your open elemental channels to you.", "You bind the element of Earth to your superior will."}})
-#end
+end
 
-#if skills.apostasy then
+if svo.haveskillset("apostasy") then
   defs_data:set("armour", {
     type = "apostasy",
     stays_on_death = true,
@@ -1577,9 +1570,9 @@ end
     invisibledef = true,
     stays_on_death = true,
   })
-#end
+end
 
-#if skills.weatherweaving then
+if svo.haveskillset("weatherweaving") then
   defs_data:set("simultaneity", {
     type = "weatherweaving",
     custom_def_type = "channel"
@@ -1646,9 +1639,9 @@ end
     defr = [[^You are surrounded by \d+ reflections? of yourself\.$]],
     on = {"You cast a spell of reflection over yourself.", "This spell may only be used to cast one reflection on someone. If he or she already has one, it may not be used."},
     off = {"One of your reflections has been destroyed! You have 0 left.", "All your reflections wink out of existence!"}})
-#end
+end
 
-#if skills.pranks then
+if svo.haveskillset("pranks") then
   defs_data:set("arrowcatch", { type = "pranks",
     mana = "lots",
     on = {"You have begun to look for arrows to pluck from the air.", "You already have arrowcatching on."},
@@ -1667,31 +1660,31 @@ end
     on = {"You're quite the slippery little fellow aren't you?", "You're already quite slippery.", "You're quite the slippery little gal aren't you?"},
     def = "You are looking a little shady today.",
     })
-#end
+end
 
-#if skills.puppetry then
+if svo.haveskillset("puppetry") then
   defs_data:set("grip", { type = "puppetry",
     on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
     def = "Your hands are gripping your wielded items tightly.",
     off = "You relax your grip."})
-#end
+end
 
 
-#if skills.vodun then
+if svo.haveskillset("vodun") then
   defs_data:set("grip", { type = "vodun",
     on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
     def = "Your hands are gripping your wielded items tightly.",
     off = "You relax your grip."})
-#end
+end
 
-#if skills.curses then
+if svo.haveskillset("curses") then
   defs_data:set("swiftcurse", { type = "curses",
     on = "You weave your fingers together, calling upon the swiftcurse to aid you.",
     def = "The swiftcurse is upon you.",
     off = "The swiftcurse leaves you."})
-#end
+end
 
-#if skills.kaido then
+if svo.haveskillset("kaido") then
   defs_data:set("weathering", { type = "kaido",
     on = "A brief shiver runs through your body.",
     def = "Your body is weathering the storm of life a little better."})
@@ -1768,9 +1761,9 @@ end
   defs_data:set("immunity", { type = "kaido",
     on = "You close your eyes and grit your teeth, feeling the heat of the blood pumping through your veins.",
     off = "You cease concentrating on immunity."})
-#end
+end
 
-#if skills.shikudo then
+if svo.haveskillset("shikudo") then
   local onenable_shikudo = function (mode, newdef, whereto, echoback)
     local shikudo_forms = {
       "tykonos",
@@ -1841,9 +1834,9 @@ end
     on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
     def = "Your hands are gripping your wielded items tightly.",
     off = "You relax your grip."})
-#end
+end
 
-#if skills.tekura then
+if svo.haveskillset("tekura") then
   defs_data:set("guarding", { nodef = true,
     ondef = function ()
       local t = sps.parry_currently
@@ -1977,9 +1970,9 @@ end
     on = "You allow the form of the Dragon to fill your mind and govern your actions.",
     def = "You are in the Dragon stance.",
     off = "You ease yourself out of the Dragon stance."})
-#end
+end
 
-#if skills.telepathy then
+if svo.haveskillset("telepathy") then
   defs_data:set("mindtelesense", { type = "telepathy",
     mana = "lots",
     on = "You attune your mind to tampering from telepathy.",
@@ -1999,9 +1992,9 @@ end
     on = "You begin detecting mindlock attempts in your local area.",
     off = "You turn hypersense off.",
     def = "You are using your hypersense."})
-#end
+end
 
-#if skills.woodlore then
+if svo.haveskillset("woodlore") then
   defs_data:set("barkskin", { type = "woodlore",
     on = {"You concentrate for a moment, and your skin becomes rough and thick like tree bark.", "Your skin is already covered in protective bark.", "Your skin is already as tough as bark."},
     def = "Your skin is hard and tough like the bark of an oak tree."})
@@ -2027,18 +2020,18 @@ end
   defs_data:set("fleetness", { type = "woodlore",
     on = "You will seek out the best paths through the forest.",
     def = "You are able to navigate forests more easily."})
-#end
+end
 
-#if skills.propagation then
+if svo.haveskillset("propagation") then
   defs_data:set("barkskin", { type = "propagation",
     on = {"You concentrate for a moment, and your skin becomes rough and thick like tree bark.", "Your skin is already covered in protective bark.", "Your skin is already as tough as bark."},
     def = "Your skin is hard and tough like the bark of an oak tree."})
   defs_data:set("viridian", { type = "propagation",
     def = "You have taken the form of the Viridian.",
     off = "You will the vines to retreat, and you shed the form of the Viridian."})
-#end
+end
 
-#if skills.groves then
+if svo.haveskillset("groves") then
   defs_data:set("panacea", { type = "groves",
     on = {"You call on the curative powers of Nature. A spiralling helix of wildflowers and lush leaves races up the length of your quarterstaff, before sublimating into a cool mist that drifts about your body.", "A healing mist already surrounds you, Forestwalker."},
     on_only = "You find your sunlight reserves too low to attempt that.",
@@ -2110,9 +2103,9 @@ end
   defs_data:set("harmony", { nodef = true,
     ondef = function () return "("..matches[2]..")" end,
     defr = [[^You are under the blessing of the (\w+) environment\.$]]})
-#end
+end
 
-#if skills.alchemy then
+if svo.haveskillset("alchemy") then
   defs_data:set("lead", { type = "alchemy",
     on = "Directing the energy of lead, you increase your mass and weigh yourself down.",
     off = "You feel your density return to normal.",
@@ -2146,15 +2139,15 @@ end
 
     ondef = function () return "("..matches[2]..")" end,
     defr = [[^You are resonating with (?:the )?(?:Nebula )?(\w+)'s energy\.$]]})
-#end
+end
 
-#if skills.skirmishing then
+if svo.haveskillset("skirmishing") then
   defs_data:set("scout", { type = "skirmishing",
     on = "You begin scouting ahead for danger.",
     def = {"You are able to scout passed obstructions.", "You are able to scout past obstructions."}})
-#end
+end
 
-#if skills.shadowmancy then
+if svo.haveskillset("shadowmancy") then
   defs_data:set("shadowcloak", {
     type = "shadowmancy",
     custom_def_type = "shadowcloak",
@@ -2255,10 +2248,10 @@ end
       end
     end
   end)
-#end
+end
 
 
-#if skills.aeonics then
+if svo.haveskillset("aeonics") then
   defs_data:set("blur", { type = "aeonics",
     def = "Travelling the world more quickly due to time dilation."
   })
@@ -2281,9 +2274,9 @@ end
     end,
     on = "Growing very still, you begin to manipulate the flow of time around you, drastically speeding up your rate of regression.",
     off = {"Your concentration broken, you cease dilating time.", "Having fully regressed to your normal age, you cease dilating time."}})
-#end
+end
 
-#if skills.terminus then
+if svo.haveskillset("terminus") then
   defs_data:set("trusad", { type = "terminus",
     def = "You are enhancing your precision through the power of Terminus."
   })
@@ -2304,11 +2297,11 @@ end
     staysindragon = true,
     def = "You are concentrating on maintaining control over your faculties."
   })
-#else
+else
   defs_data:set("gaiartha", { nodef = true,
     def = "You are concentrating on maintaining control over your faculties."
   })
-#end
+end
 
 do
   function defences.enablelifevision()
@@ -3055,12 +3048,12 @@ signals.systemstart:connect(function ()
         for kk,vv in pairs(dict[k]) do if type(vv) == "table" and kk ~= "gone" then bal = kk break end end
         if bal then
           defs["got_" .. k] = function (force)
-#if skills.metamorphosis then
-            if v.custom_def_type or usingbal(bal) then checkaction(dict[k][bal], true)
-            else checkaction(dict[k][bal], force) end
-#else
-            if not v.custom_def_type then checkaction(dict[k][bal], force) else checkaction(dict[k][bal], true) end
-#end
+            if svo.haveskillset("metamorphosis") then
+              if v.custom_def_type or usingbal(bal) then checkaction(dict[k][bal], true)
+              else checkaction(dict[k][bal], force) end
+            else
+              if not v.custom_def_type then checkaction(dict[k][bal], force) else checkaction(dict[k][bal], true) end
+            end
             if actions[k .. "_" .. bal] then
               if force then --bypass lifevision for gmcp/other "force" situations
                 actionfinished(actions[k .. "_" .. bal].p)
