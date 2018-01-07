@@ -269,7 +269,7 @@ _put(string.format("me.class = \"%s\"\n", type(class) == "string" and stringx.ti
 _put("me.skills = ".. pretty.write(skills))
 )
 
-#if skills.groves then
+if svo.haveskillset("groves") then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for index, val in ipairs(gmcp.Char.Vitals.charstats) do
@@ -284,8 +284,8 @@ signals.gmcpcharvitals:connect(function()
     stats.sunlight = 0
   end
 end)
-#end
-#if skills.metamorphosis then
+end
+if svo.haveskillset("metamorphosis") then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for index, val in ipairs(gmcp.Char.Vitals.charstats) do
@@ -307,7 +307,7 @@ signals.gmcpcharvitals:connect(function()
     me.morph = ""
   end
 end)
-#end
+end
 
 if svo.me.class == "Monk" then
 signals.gmcpcharvitals:connect(function()
@@ -579,12 +579,12 @@ signals.loadconfig                  = luanotify.signal.new()
 signals.orgchanged                  = luanotify.signal.new()
 signals.saveconfig                  = luanotify.signal.new()
 signals.sysdatasendrequest          = luanotify.signal.new()
-#if skills.healing then
+if svo.haveskillset("healing") then
 signals.healingskillchanged         = luanotify.signal.new()
-#end
-#if skills.metamorphosis then
+end
+if svo.haveskillset("metamorphosis") then
 signals.morphskillchanged           = luanotify.signal.new()
-#end
+end
 
 signals.saveconfig:add_post_emit(function ()
   echo"\n"
@@ -621,9 +621,9 @@ conf.ai_resetsipbal       = 7 -- was 5 before, but started overrunning
 conf.ai_resetherbbal      = 2.5 -- normally at 1.6
 conf.ai_resetsalvebal     = 5
 conf.ai_resetmossbal      = 10  -- resets at 6
-#if skills.healing then
+if svo.haveskillset("healing") then
 conf.ai_resethealingbal        = 7   -- resets at 2s for healing allies, near 4s for healing yourself, and offensive skills as inbetween
-#end
+end
 conf.ai_resetpurgativebal = 10 -- it's 7s for voyria
 conf.ai_resetdragonhealbal = 20 -- 20s for dragonheal
 conf.ai_resetsmokebal = 2 -- ~1.5s for smoking bal
@@ -696,18 +696,18 @@ conf.autoclasses          = true
 conf.ccto                 = "pt"
 conf.repeatcmd            = 0
 
-#if skills.healing then
+if svo.haveskillset("healing") then
 conf.usehealing           = "partial"
-#end
+end
 
-#if skills.kaido then
+if svo.haveskillset("kaido") then
 conf.transmute            = "supplement"
 conf.transmuteamount      = 70
-#end
+end
 
-#if skills.devotion then
+if svo.haveskillset("devotion") then
 conf.bloodswornoff        = 30
-#end
+end
 
 conf.gagclot              = true
 conf.gagrelight           = false
@@ -755,12 +755,12 @@ sys.sp_satisfied, sys.blockparry = false, false
 sys.canoutr = true
 
 -- the in-game custom prompt needs to show the game target and game target hp, since that isn't available in GMCP at the moment, as well as any class-specific balances and values
-#if not skills.weaponmastery then
+if not svo.haveskillset("weaponmastery") then
 sys.ingamecustomprompt ="CONFIG PROMPT CUSTOM *hh, *mm, *ee, *ww *t*T *b*d*c-*r-s*s-"
-#else
+else
 -- account for ferocity
 sys.ingamecustomprompt ="CONFIG PROMPT CUSTOM *hh, *mm, *ee, *ww *t*T *b*d*c-*r-k*k-s*s-"
-#end
+end
 -- used in lyre actions to prevent doubledo from activating - since that'd destroy the lyre right away
 sys.sendonceonly = false
 
@@ -789,9 +789,9 @@ stats.currentmana, stats.maxmana,
 stats.currentendurance, stats.maxendurance,
 stats.currentwillpower, stats.maxwillpower = 1,1,1,1,1,1,1,1,1
 
-#if skills.kaido then
+if svo.haveskillset("kaido") then
 stats.kai = 0
-#end
+end
 
 ---
 me.skills = {}
@@ -806,9 +806,9 @@ me.hoistlist = {} -- list if names not to add hoisted aff for
 me.lasthitlimb = "head" -- last hit limb
 me.disableddragonhealfunc = {}
 me.disabledrestorefunc    = {}
-#if skills.venom then
+if svo.haveskillset("venom") then
 me.disabledshruggingfunc  = {}
-#end
+end
 me.disabledtreefunc       = {}
 me.disabledragefunc       = {}
 me.disabledfitnessfunc       = {}
@@ -882,23 +882,23 @@ me.getitem = function(name)
 end
 ---
 
-#if not skills.shindo then
+if not svo.haveskillset("shindo") then
 disableTrigger("Shindo defences")
-#else
+else
 enableTrigger("Shindo defences")
-#end
+end
 
-#if not skills.kaido then
+if not svo.haveskillset("kaido") then
 disableTrigger("Kaido defences")
-#else
+else
 enableTrigger("Kaido defences")
-#end
+end
 
-#if not skills.tekura then
+if not svo.haveskillset("tekura") then
 disableTrigger("Tekura balances")
-#else
+else
 enableTrigger("Tekura balances")
-#end
+end
 
 if svo.me.class == "Druid" then
 enableTrigger("Hydra balance")
@@ -906,121 +906,121 @@ else
 disableTrigger("Hydra balance")
 end
 
-#if skills.voicecraft then
+if svo.haveskillset("voicecraft") then
 enableTrigger("Voice balance")
-#else
+else
 disableTrigger("Voice balance")
-#end
+end
 
-#if skills.chivalry or skills.shindo or skills.kaido or skills.metamorphosis then
+if svo.haveskillset("chivalry") or svo.haveskillset("shindo") or svo.haveskillset("kaido") or svo.haveskillset("metamorphosis") then
 enableTrigger("Fitness balance")
-#else
+else
 disableTrigger("Fitness balance")
-#end
+end
 
-#if skills.chivalry then
+if svo.haveskillset("chivalry") then
 enableTrigger("Rage balance")
-#else
+else
 disableTrigger("Rage balance")
-#end
+end
 
-#if skills.weaponmastery then
+if svo.haveskillset("weaponmastery") then
 enableTrigger("Two-hander recover footing")
-#else
+else
 disableTrigger("Two-hander recover footing")
-#end
+end
 
-#if skills.domination then
+if svo.haveskillset("domination") then
 enableTrigger("Domination entities balance")
-#else
+else
 disableTrigger("Domination entities balance")
-#end
+end
 
-#if skills.venom then
+if svo.haveskillset("venom") then
 enableTrigger("Shrugging balance")
-#else
+else
 disableTrigger("Shrugging balance")
-#end
+end
 
-#if skills.healing or skills.elementalism then
+if svo.haveskillset("healing") or svo.haveskillset("elementalism") then
 enableTrigger("Healing + Elementalism channels")
-#else
+else
 disableTrigger("Healing + Elementalism channels")
-#end
+end
 
-#if skills.elementalism then
+if svo.haveskillset("elementalism") then
 enableAlias("Elementalism aliases")
-#else
+else
 disableAlias("Elementalism aliases")
-#end
+end
 
-#if skills.spirituality then
+if svo.haveskillset("spirituality") then
 enableTrigger("Spirituality defences")
 enableAlias("Spirituality aliases")
-#else
+else
 disableTrigger("Spirituality defences")
 disableAlias("Spirituality aliases")
-#end
+end
 
-#if skills.propagation then
+if svo.haveskillset("propagation") then
 enableTrigger("Propagation defences")
-#else
+else
 disableTrigger("Propagation defences")
-#end
+end
 
-#if skills.necromancy then
+if svo.haveskillset("necromancy") then
 enableTrigger("Necromancy defences")
-#else
+else
 disableTrigger("Necromancy defences")
-#end
+end
 
-#if not skills.occultism then
+if not svo.haveskillset("occultism") then
 disableTrigger("Occultism defences")
-#else
+else
 enableTrigger("Occultism defences")
-#end
+end
 
-#if not skills.alchemy then
+if not svo.haveskillset("alchemy") then
 disableTrigger("Alchemy defences")
-#else
+else
 enableTrigger("Alchemy defences")
-#end
+end
 
-#if not skills.groves then
+if not svo.haveskillset("groves") then
 disableTrigger("Groves defences")
-#else
+else
 enableTrigger("Groves defences")
-#end
+end
 
-#if not skills.harmonics then
+if not svo.haveskillset("harmonics") then
 disableTrigger("Harmonics defences")
-#else
+else
 enableTrigger("Harmonics defences")
-#end
+end
 
-#if not skills.healing then
+if not svo.haveskillset("healing") then
 disableTrigger("Healing balance")
-#else
+else
 enableTrigger("Healing balance")
-#end
+end
 
-#if not skills.physiology then
+if not svo.haveskillset("physiology") then
 disableTrigger("Humour balance")
-#else
+else
 enableTrigger("Humour balance")
-#end
+end
 
-#if skills.terminus then
+if svo.haveskillset("terminus") then
 enableTrigger("Word balance")
-#else
+else
 disableTrigger("Word balance")
-#end
+end
 
-#if skills.aeonics then
+if svo.haveskillset("aeonics") then
 enableTrigger("Age tracking")
-#else
+else
 disableTrigger("Age tracking")
-#end
+end
 
 local prompt_stats
 
@@ -1036,21 +1036,21 @@ local addaff, removeaff, checkanyaffs, updateaffcount
 
 local lostbal_focus, lostbal_herb, lostbal_salve, lostbal_purgative, lostbal_sip
 sk.salvetick, sk.herbtick, sk.focustick, sk.teatick, sk.purgativetick, sk.siptick, sk.mosstick, sk.dragonhealtick, sk.smoketick, sk.voicetick, sk.wordtick = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-#if skills.healing then
+if svo.haveskillset("healing") then
 sk.healingtick = 0
-#end
-#if skills.venom then
+end
+if svo.haveskillset("venom") then
 sk.shruggingtick = 0
-#end
-#if skills.chivalry or skills.shindo or skills.kaido or skills.metamorphosis then
+end
+if svo.haveskillset("chivalry") or svo.haveskillset("shindo") or svo.haveskillset("kaido") or svo.haveskillset("metamorphosis") then
 sk.fitnesstick = 0
-#end
-#if skills.chivalry then
+end
+if svo.haveskillset("chivalry") then
 sk.ragetick = 0
-#end
-#if skills.weaponmastery then
+end
+if svo.haveskillset("weaponmastery") then
 sk.didfootingattack = false
-#end
+end
 
 sk.diag_list = {}
 sk.priosbeforechange = {}
@@ -1209,7 +1209,7 @@ signals.systemstart:connect(function ()
     [[svo.valid.symp_transfixed()]]);
 end);
 
-#if skills.metamorphosis then
+if svo.haveskillset("metamorphosis") then
   (tempExactMatchTrigger or tempTrigger)("You take a deep breath and realise your error - you sputter and engulf yourself in fire!",
     [[svo.valid.simpleablaze()]]);
 
@@ -1246,7 +1246,7 @@ end);
 
   (tempExactMatchTrigger or tempTrigger)("You feel your bond with the animal spirits strengthen, allowing you to morph once again.",
     [[svo.valid.cantmorph_woreoff()]]);
-#end
+end
 
 color_table.a_darkred     = {128, 0, 0}
 color_table.a_darkgreen   = {0, 179, 0}
@@ -1461,34 +1461,33 @@ signals.saveconfig:connect(function ()
   table.save(getMudletHomeDir() .. "/svo/config/dragonheal", me.disableddragonhealfunc)
 end)
 
-#for _, config in ipairs{
-# {location = "serverignore", localtable = "serverignore", errormsg = "re-set all of the shrugging strats"},
-# {location = "cadmusaffs", localtable = "me.cadmusaffs", errormsg = "re-set all of the cadmus affs"},
-# {location = "prefercustom", localtable = "me.curelist", errormsg = "re-set all of the custom curelist"},
-#} do
--- load the $(config.location) list
-signals.systemstart:connect(function ()
-  local conf_path = getMudletHomeDir() .. "/svo/config/$(config.location)"
+for _, config in ipairs{
+ {location = "serverignore", localtable = "serverignore", errormsg = "re-set all of the server ignore strats"},
+ {location = "cadmusaffs", localtable = "me.cadmusaffs", errormsg = "re-set all of the cadmus affs"},
+ {location = "prefercustom", localtable = "me.curelist", errormsg = "re-set all of the custom curelist"},
+} do
+  -- load the config.location list
+  signals.systemstart:connect(function ()
+    local conf_path = getMudletHomeDir() .. "/svo/config/"..config.location
 
-  if lfs.attributes(conf_path) then
-    local ok, msg = pcall(table.load, conf_path, $(config.localtable))
-    if not ok then
-      os.remove(conf_path)
-      tempTimer(10, function()
-        echof("Your $(config.location) serverignore file got corrupted for some reason - I've deleted it so the system can load other stuff OK. You'll need to $(config.errormsg), though. (%q)", msg)
-      end)
+    if lfs.attributes(conf_path) then
+      local ok, msg = pcall(table.load, conf_path, config.localtable)
+      if not ok then
+        os.remove(conf_path)
+        tempTimer(10, function()
+          echof("Your %s serverignore file got corrupted for some reason - I've deleted it so the system can load other stuff OK. You'll need to %s, though. (%q)", config.location, config.errormsg, msg)
+        end)
+      end
     end
-  end
-end)
--- save the $(config.location) list
-signals.saveconfig:connect(function ()
-  table.save(getMudletHomeDir() .. "/svo/config/$(config.location)", $(config.localtable))
-end)
-
-#end
+  end)
+  -- save the config.location list
+  signals.saveconfig:connect(function ()
+    table.save(getMudletHomeDir() .. "/svo/config/"..config.location, config.localtable)
+  end)
+end
 
 
-#if skills.venom then
+if svo.haveskillset("venom") then
 -- load the shrugging func list
 signals.systemstart:connect(function ()
   local conf_path = getMudletHomeDir() .. "/svo/config/shrugging"
@@ -1510,7 +1509,7 @@ signals.saveconfig:connect(function ()
 
   table.save(getMudletHomeDir() .. "/svo/config/shrugging", me.disabledshruggingfunc)
 end)
-#end
+end
 
 -- data for normal/trans sipping
 es_categories = {
