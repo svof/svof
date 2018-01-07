@@ -48,8 +48,7 @@ local conf_installhint = function (which)
 end
 
 config_dict = pl.OrderedMap {
-#conf_name = "blockcommands"
-  {$(conf_name) = {
+  {blockcommands = {
     vconfig2 = true,
     type = "boolean",
     onenabled = function ()
@@ -67,8 +66,7 @@ config_dict = pl.OrderedMap {
     end,
     installstart = function () conf.blockcommands = true end,
   }},
-#conf_name = "autoslick"
-  {$(conf_name) = {
+  {autoslick = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Automatically prioritise slickness",
@@ -83,8 +81,7 @@ config_dict = pl.OrderedMap {
       echof("<250,0,0>Won't%s automatically swap asthma herb priority in times of danger.", getDefaultColor()) end,
     installstart = function () conf.autoslick = true end
   }},
-#conf_name = "focus"
-  {$(conf_name) = {
+  {focus = {
     type = "boolean",
     vconfig1 = "focus",
     onenabled = function () echof("<0,250,0>Will%s use Focus to cure.", getDefaultColor()) end,
@@ -92,14 +89,12 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.focus = nil end,
     installcheck = function () echof("Can you make use of the Focus skill?") end
   }},
-#conf_name = "siprandom"
-  {$(conf_name) = {
+  {siprandom = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s sip by random vial IDs of a potion - note that this requires the elist sorter to know which vial IDs have which potions - and you'll need to check 'elist' after a vial runs out.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s make use of random vials - will be sipping the first available one by name.", getDefaultColor()) end,
   }},
-#conf_name = "autoclasses"
-    {$(conf_name) = {
+  {autoclasses = {
       type = "boolean",
       onenabled = function () echof("<0,250,0>Will%s automatically enable the classes you seem to be fighting (used for class tricks).", getDefaultColor()) end,
       ondisabled = function () echof("<250,0,0>Won't%s automatically enable classes that you seem to be fighting (you can use tn/tf class instead).", getDefaultColor()) end,
@@ -114,26 +109,22 @@ config_dict = pl.OrderedMap {
         end
       end,
     }},
-#conf_name = "havelifevision"
-  {$(conf_name) = {
+  {havelifevision = {
     type = "boolean",
     onenabled = function () defences.enablelifevision() echof("<0,250,0>Have%s Lifevision mask - added it to defup/keepup.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Don't%s have Lifevision mask - won't be adding it to defup/keepup.", getDefaultColor()) end,
   }},
-#conf_name = "autoarena"
-  {$(conf_name) = {
+  {autoarena = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s automatically enable/disable arena mode as you enter into the arena.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s automatically enable/disable arena mode as you enter/leave the arena..", getDefaultColor()) end,
   }},
-#conf_name = "haveshroud"
-  {$(conf_name) = {
+  {haveshroud = {
     type = "boolean",
     onenabled = function () defences.enableshroud() echof("<0,250,0>Have%s a Shroudcloak - added it to defup/keepup.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Don't%s have a Shroudcloak - won't be adding it to defup/keepup.", getDefaultColor()) end,
   }},
-#conf_name = "focuswithcadmus"
-  {$(conf_name) = {
+  {focuswithcadmus = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Use Focus while you have cadmus",
@@ -151,8 +142,7 @@ config_dict = pl.OrderedMap {
     onenabled = function () echof("<0,250,0>Will%s focus for mental afflictions when you've got cadmus (this'll give you a physical affliction when you do).", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s focus when you've got cadmus.", getDefaultColor()) end,
   }},
-#conf_name = "cadmusaffs"
-  {$(conf_name) = {
+  {cadmusaffs = {
     type = "custom",
     onmenu = function ()
       local underline = setUnderline; _G.setUnderline = function () end
@@ -203,47 +193,41 @@ config_dict = pl.OrderedMap {
       echo'\n'
     end
   }},
-#conf_name = "lyre"
-  {$(conf_name) = {
+  {lyre = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Lyre mode",
     onenabled = function () defs.keepup("lyre", "on") echof("Lyre mode <0,250,0>ON%s.", getDefaultColor()) end,
     ondisabled = function () defs.keepup("lyre", "off") app("off", true) echof("Lyre mode <250,0,0>OFF%s.", getDefaultColor()) end,
   }},
-#conf_name = "ninkharsag"
-  {$(conf_name) = {
+  {ninkharsag = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Experimental Nin'kharsag tracking",
     onenabled = function () echof("Experimental Nin'kharsag tracking <0,250,0>enabled%s - will attempt to work out which affs Nin'kharsag hides, and diagnose otherwise.", getDefaultColor()) end,
     ondisabled = function () echof("Experimental Nin'kharsag <250,0,0>disabled%s.", getDefaultColor()) end,
   }},
-#conf_name = "shipmode"
-  {$(conf_name) = {
+  {shipmode = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Ship mode",
     onenabled = function () signals.newroom:connect(sk.check_shipmode) echof("Ship mode <0,250,0>enabled%s - this will allow the system to work properly with the 2-3 line prompts.", getDefaultColor()) end,
     ondisabled = function () signals.newroom:disconnect(sk.check_shipmode) echof("Ship mode <250,0,0>disabled%s.", getDefaultColor()) end,
   }},
-#conf_name = "lyrecmd"
-  {$(conf_name) = {
+  {lyrecmd = {
     type = "string",
     onset = function ()
       dict.lyre.physical.action = conf.lyrecmd
       echof("Will use the '%s' for the Lyre mode.", tostring(conf.lyrecmd))
     end
   }},
-#conf_name = "commandseparator"
-  {$(conf_name) = {
+  {commandseparator = {
     type = "string",
     onset = function ()
       echof("Will use <0,250,0>%s%s as the in-game command separator.", tostring(conf.commandseparator), getDefaultColor())
     end
   }},
-#conf_name = "buckawns"
-  {$(conf_name) = {
+  {buckawns = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Have buckawns",
@@ -252,15 +236,13 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.buckawns = nil end,
     installcheck = function () echof("Have you got the buckawns artifact?") end
   }},
-#conf_name = "burrowpause"
-  {$(conf_name) = {
+  {burrowpause = {
     type = "boolean",
     onenabled = function () signals.gmcproominfo:connect(sk.check_burrow_pause) echof("<0,250,0>Will%s auto-pause when we burrow.", getDefaultColor()) end,
     ondisabled = function () signals.gmcproominfo:disconnect(sk.check_burrow_pause) echof("<250,0,0>Won't%s auto-pause when we burrow.", getDefaultColor()) end,
     installstart = function () conf.burrowpause = true end,
   }},
-#conf_name = "freevault"
-  {$(conf_name) = {
+  {freevault = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Vaulting doesn't take balance",
@@ -289,8 +271,7 @@ config_dict = pl.OrderedMap {
       echof("<250,0,0>Don't%s have balanceless vaulting.", getDefaultColor())
     end,
   }},
-#conf_name = "deathsight"
-  {$(conf_name) = {
+  {deathsight = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Have deathsight",
@@ -300,8 +281,7 @@ config_dict = pl.OrderedMap {
     installcheck = function () echof("Have you got the deathsight skill?") end
   }},
 #if skills.chivalry then
-#conf_name = "rage"
-  {$(conf_name) = {
+  {rage = {
     type = "boolean",
     vconfig2 = true,
     onshow = function (defaultcolour)
@@ -316,8 +296,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.rage = nil end,
     installcheck = function () echof("Can you make use of the Rage skill?") end
   }},
-#conf_name = "ragefunc"
-  {$(conf_name) = {
+  {ragefunc = {
     type = "custom",
     onmenu = function ()
       local underline = setUnderline; _G.setUnderline = function () end
@@ -356,8 +335,7 @@ config_dict = pl.OrderedMap {
     end
   }},
 #end
-#conf_name = "tree"
-  {$(conf_name) = {
+  {tree = {
     type = "boolean",
     vconfig2 = true,
     onshow = function (defaultcolour)
@@ -372,8 +350,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.tree = nil end,
     installcheck = function () echof("Do you have a Tree tattoo?") end
   }},
-#conf_name = "treebalance"
-  {$(conf_name) = {
+  {treebalance = {
     type = "number",
     min = 0,
     max = 100000,
@@ -386,8 +363,7 @@ config_dict = pl.OrderedMap {
     end,
     installstart = function () conf.treebalance = 0 end
   }},
-#conf_name = "restore"
-  {$(conf_name) = {
+  {restore = {
     type = "boolean",
     vconfig2 = true,
     onshow = function (defaultcolour)
@@ -402,8 +378,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.restore = nil end,
     installcheck = function () echof("Can you make use of the Restore skill?") end
   }},
-#conf_name = "dragonheal"
-  {$(conf_name) = {
+  {dragonheal = {
     type = "boolean",
     vconfig2 = true,
     onshow = function (defaultcolour)
@@ -419,8 +394,7 @@ config_dict = pl.OrderedMap {
     installcheck = function () echof("Can you make use of the Dragonheal?") end
   }},
 #if skills.venom then
-#conf_name = "shrugging"
-  {$(conf_name) = {
+  {shrugging = {
     type = "boolean",
     vconfig2 = true,
     onshow = function (defaultcolour)
@@ -436,8 +410,7 @@ config_dict = pl.OrderedMap {
     installcheck = function () echof("Can you make use of the shrugging?") end
   }},
 #end
-#conf_name = "breath"
-  {$(conf_name) = {
+  {breath = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Auto-enable breathing on Kai Choke",
@@ -446,24 +419,21 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.breath = nil end,
     installcheck = function () echof("Can you make use of the survival breath skill?") end
   }},
-#conf_name = "ignoresinglebites"
-  {$(conf_name) = {
+  {ignoresinglebites = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Ignore single serpent bites",
     onenabled = function () echof("<0,250,0>Will%s ignore all serpent bites that deliver only one affliction - most likely they'll be illusions, but may also be not against a smart Serpent who realizes that you're ignoring. So if you see them only biting, that's a warning sign that they're *really* biting, and you'd want to toggle this off & diagnose.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s ignore serpent bites that deliver only one affliction.", getDefaultColor()) end
   }},
-#conf_name = "ignoresinglestabs"
-  {$(conf_name) = {
+  {ignoresinglestabs = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Ignore single serpent doublestabs",
     onenabled = function () echof("<0,250,0>Will%s ignore all serpent doublestabs that deliver only one affliction (most likely they'll be illusions, but may also be not).", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s ignore serpent doublestabs that deliver only one affliction.", getDefaultColor()) end
   }},
-#conf_name = "efficiency"
-  {$(conf_name) = {
+  {efficiency = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Have survival efficiency",
@@ -472,8 +442,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.efficiency = nil end,
     installcheck = function () echof("Do you have the survival efficiency skill?") end
   }},
-#conf_name = "clot"
-  {$(conf_name) = {
+  {clot = {
     type = "boolean",
     vconfig1 = "clot",
     onenabled = function () echof("<0,250,0>Will%s use clot to control bleeding.", getDefaultColor()) end,
@@ -481,8 +450,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.clot = nil end,
     installcheck = function () echof("Can you make use of the Clot skill?") end
   }},
-#conf_name = "insomnia"
-  {$(conf_name) = {
+  {insomnia = {
     type = "boolean",
     vconfig1 = "insomnia",
     onenabled = function () echof("<0,250,0>Will%s use the Insomnia skill for insomnia.", getDefaultColor()) end,
@@ -490,8 +458,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.insomnia = nil end,
     installcheck = function () echof("Can you make use of the Insomnia skill?") end
   }},
-#conf_name = "thirdeye"
-  {$(conf_name) = {
+  {thirdeye = {
     type = "boolean",
     vconfig1 = "thirdeye",
     onenabled = function () echof("<0,250,0>Will%s use the thirdeye skill for thirdeye instead of echinacea.", getDefaultColor()) end,
@@ -500,8 +467,7 @@ config_dict = pl.OrderedMap {
     installcheck = function () echof("Can you make use of the Thirdeye skill?") end
   }},
 #if skills.shindo then
-#conf_name = "shindodeaf"
-  {$(conf_name) = {
+  {shindodeaf = {
     type = "boolean",
     vconfig1 = "shindodeaf",
     onenabled = function () echof("<0,250,0>Will%s use the Shindo deaf skill for deaf.", getDefaultColor()) end,
@@ -509,8 +475,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.shindodeaf = nil end,
     installcheck = function () echof("Would you like to use Shindo deaf for deafness?") end
   }},
-#conf_name = "shindoblind"
-  {$(conf_name) = {
+  {shindoblind = {
     type = "boolean",
     vconfig1 = "shindoblind",
     onenabled = function () echof("<0,250,0>Will%s use the Shindo blind skill for blind.", getDefaultColor()) end,
@@ -520,8 +485,7 @@ config_dict = pl.OrderedMap {
   }},
 #end
 #if skills.kaido then
-#conf_name = "kaidodeaf"
-  {$(conf_name) = {
+  {kaidodeaf = {
     type = "boolean",
     vconfig1 = "kaidodeaf",
     onenabled = function () echof("<0,250,0>Will%s use the kaido deaf skill for deaf.", getDefaultColor()) end,
@@ -529,8 +493,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.kaidodeaf = nil end,
     installcheck = function () echof("Would you like to use kaido deaf for deafness?") end
   }},
-#conf_name = "kaidoblind"
-  {$(conf_name) = {
+  {kaidoblind = {
     type = "boolean",
     vconfig1 = "kaidoblind",
     onenabled = function () echof("<0,250,0>Will%s use the kaido blind skill for blind.", getDefaultColor()) end,
@@ -540,8 +503,7 @@ config_dict = pl.OrderedMap {
   }},
 #end
 #if skills.chivalry or skills.shindo or skills.kaido or skills.metamorphosis then
-#conf_name = "fitness"
-  {$(conf_name) = {
+  {fitness = {
     type = "boolean",
     vconfig2 = true,
     onshow = function (defaultcolour)
@@ -556,8 +518,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.fitness = nil end,
     installcheck = function () echof("Can you make use of the Fitness skill?") end
   }},
-#conf_name = "fitnessfunc"
-  {$(conf_name) = {
+  {fitnessfunc = {
     type = "custom",
     onmenu = function ()
       local underline = setUnderline; _G.setUnderline = function () end
@@ -596,8 +557,7 @@ config_dict = pl.OrderedMap {
     end
   }},
 #end
-#conf_name = "moss"
-  {$(conf_name) = {
+  {moss = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s make use of moss/potash to heal.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s make use of moss/potash to heal.", getDefaultColor()) end,
@@ -606,8 +566,7 @@ config_dict = pl.OrderedMap {
     installcheck = function ()
       echof("Do you want to make use of moss/potash to heal?") end,
   }},
-#conf_name = "showchanges"
-  {$(conf_name) = {
+  {showchanges = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s show changes in health/mana on the prompt.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s show changes in health/mana on the prompt.", getDefaultColor()) end,
@@ -618,8 +577,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.showchanges = nil end,
     installcheck = function () echof("Do you want to show changes about your health/mana in the prompt?") end
   }},
-#conf_name = "changestype"
-  {$(conf_name) = {
+  {changestype = {
     type = "string",
     check = function (what)
       if what == "full" or what == "short" or what == "fullpercent" or what == "shortpercent" then return true end
@@ -629,8 +587,7 @@ config_dict = pl.OrderedMap {
     end,
     installstart = function () conf.changestype = "shortpercent" end
   }},
-#conf_name = "log"
-  {$(conf_name) = {
+  {log = {
     type = "string",
     check = function (what)
       if what == "off" or what == "file" or what == "echo" or what == "both" then return true end
@@ -655,8 +612,7 @@ config_dict = pl.OrderedMap {
     end,
     installstart = function () conf.log = "off" end
   }},
-#conf_name = "showbaltimes"
-  {$(conf_name) = {
+  {showbaltimes = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s show balance times for balance, equilibrium and herbs.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s show balance times.", getDefaultColor()) end,
@@ -667,8 +623,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.showbaltimes = true end,
     -- installcheck = function () echof("Do you want to show how long your balances take?") end
   }},
-#conf_name = "showafftimes"
-  {$(conf_name) = {
+  {showafftimes = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s show how long afflictions took to cure.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s show times for curing afflictions.", getDefaultColor()) end,
@@ -678,16 +633,14 @@ config_dict = pl.OrderedMap {
     end,
     installstart = function () conf.showafftimes = true end,
   }},
-#conf_name = "doubledo"
-  {$(conf_name) = {
+  {doubledo = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s do actions twice under stupidity.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s do actions twice under stupidity.", getDefaultColor()) end,
     onshow = "Double do actions in stupidity",
     vconfig2 = true
   }},
-#conf_name = "repeatcmd"
-  {$(conf_name) = {
+  {repeatcmd = {
     type = "number",
     min = 0,
     max = 100000,
@@ -699,8 +652,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.repeatcmd = 0 end
   }},
 #if not skills.tekura then
-#conf_name = "parry"
-  {$(conf_name) = {
+  {parry = {
     type = "boolean",
     vconfig1 = "parry",
     onenabled = function () echof("<0,250,0>Will%s make use of parry.", getDefaultColor()) end,
@@ -709,8 +661,7 @@ config_dict = pl.OrderedMap {
     installcheck = function () echof("Are you able to use parry?") end
   }},
 #else
-#conf_name = "guarding"
-  {$(conf_name) = {
+  {guarding = {
     type = "boolean",
     vconfig1 = "guarding",
     onenabled = function () echof("<0,250,0>Will%s make use of guarding.", getDefaultColor()) end,
@@ -719,8 +670,7 @@ config_dict = pl.OrderedMap {
     installcheck = function () echof("Are you able to use guarding?") end
   }},
 #end
-#conf_name = "singleprompt"
-  {$(conf_name) = {
+  {singleprompt = {
     type = "boolean",
     vconfig2 = true,
     onshow = function (defaultcolour)
@@ -746,8 +696,7 @@ config_dict = pl.OrderedMap {
       bottom_border = 0
     end
   }},
-#conf_name = "singlepromptsize"
-  {$(conf_name) = {
+  {singlepromptsize = {
     type = "number",
     min = 0,
     max = 100,
@@ -771,8 +720,7 @@ config_dict = pl.OrderedMap {
       echof("Will be displaying the font at size %d.", conf.singlepromptsize)
     end
   }},
-#conf_name = "singlepromptblank"
-  {$(conf_name) = {
+  {singlepromptblank = {
     type = "boolean",
     onenabled = function ()
       echof("<0,250,0>Enabled%s the single prompt to show a blank line for the prompt.", getDefaultColor())
@@ -782,8 +730,7 @@ config_dict = pl.OrderedMap {
       echof("<250,0,0>Disabled%s the blank line, will be deleting the prompt instead.", getDefaultColor())
     end
   }},
-#conf_name = "singlepromptkeep"
-  {$(conf_name) = {
+  {singlepromptkeep = {
     type = "boolean",
     onenabled = function ()
       echof("<0,250,0>Enabled%s the single prompt to keep the prompt%s.", getDefaultColor(), (conf.singleprompt and '' or ' (when vconfig singleprompt is on)'))
@@ -793,8 +740,7 @@ config_dict = pl.OrderedMap {
       echof("<250,0,0>Disabled%s keeping the prompt, will be removing it.", getDefaultColor())
     end
   }},
-#conf_name = "waitherbai"
-  {$(conf_name) = {
+  {waitherbai = {
     type = "boolean",
     vconfig2 = true,
     onenabled = function () echof("<0,250,0>Will%s pause eating of herbs while checking herb-cured illusions.", getDefaultColor()) end,
@@ -804,8 +750,7 @@ config_dict = pl.OrderedMap {
     end,
     installstart = function () conf.waitherbai = true end
   }},
-#conf_name = "waitparalysisai"
-  {$(conf_name) = {
+  {waitparalysisai = {
     type = "boolean",
     vconfig2 = true,
     onenabled = function () echof("<0,250,0>Will%s wait for balance/eq to confirm a suspect paralysis instead of accepting it - so if we get a suspect paralysis while off bal/eq, we'll cure other things and check the paralysis when we can.", getDefaultColor()) end,
@@ -815,8 +760,7 @@ config_dict = pl.OrderedMap {
     end,
     installstart = function () conf.waitparalysisai = false end
   }},
-#conf_name = "commandecho"
-  {$(conf_name) = {
+  {commandecho = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s show commands the system is doing.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s show commands the system is doing.", getDefaultColor()) end,
@@ -825,8 +769,7 @@ config_dict = pl.OrderedMap {
     end,
     installstart = function () conf.commandecho = true end
   }},
-#conf_name = "commandechotype"
-  {$(conf_name) = {
+  {commandechotype = {
     type = "string",
     check = function (what)
       if what == "plain" or what == "fancy" or what == "fancynewline" then return true end
@@ -836,8 +779,7 @@ config_dict = pl.OrderedMap {
     end,
     installstart = function () conf.commandechotype = "fancy" end
   }},
-#conf_name = "curemethod"
-  {$(conf_name) = {
+  {curemethod = {
     type = "string",
     check = function (what)
       if table.contains({"conconly", "transonly", "preferconc", "prefertrans", "prefercustom"}, what) then return true end
@@ -862,8 +804,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.curemethod = nil end,
     installcheck = function () echof("Would you like to use Concoctions or Transmutation cures?\n\n  You can answer with 'conconly' - which'll mean that you'd like to use Concoctions cures only, 'transonly' - which'll mean that you'd like to use Transmutation cures only, 'preferconc' - prefer Concoctions cures, but fall back to Transmutation cures should you run out, and lastly, 'prefertrans' - prefer Transmutation cures, but fall back to Concoctions should you run out.") end
   }},
-#conf_name = "customprompt"
-  {$(conf_name) = {
+  {customprompt = {
     type = "string",
     vconfig2 = true,
     onset = function ()
@@ -891,16 +832,14 @@ config_dict = pl.OrderedMap {
     end,
     installstart = function () conf.customprompt = nil; conf.setdefaultprompt = nil end
   }},
-#conf_name = "relight"
-  {$(conf_name) = {
+  {relight = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s auto-relight non-artifact pipes.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s auto-relight pipes.", getDefaultColor()) end,
     installstart = function () conf.relight = true end,
     installcheck = function () echof("Should we keep non-artifact pipes lit?") end
   }},
-#conf_name = "gagrelight"
-  {$(conf_name) = {
+  {gagrelight = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s hide relighting of pipes.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s hide relighting pipes.", getDefaultColor()) end,
@@ -911,16 +850,14 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.gagrelight = true end,
     installcheck = function () echof("Should we hide it when pipes are relit (it can get spammy)?") end
   }},
-#conf_name = "gagotherbreath"
-  {$(conf_name) = {
+  {gagotherbreath = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s hide others breathing.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s hide others breathing.", getDefaultColor()) end,
     onshow = "Completely gag others breathing",
     installstart = function () conf.gagotherbreath = true end
   }},
-#conf_name = "gagbreath"
-  {$(conf_name) = {
+  {gagbreath = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s hide the breathing defence.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s hide the breathing defence.", getDefaultColor()) end,
@@ -928,8 +865,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.gagbreath = true end,
     -- installcheck = function () echof("Should we hide it when you use the breathing defence?") end
   }},
-#conf_name = "gageqbal"
-  {$(conf_name) = {
+  {gageqbal = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s hide the 'you're off eq/bal' messages.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s hide the 'you're off eq/bal' messages.", getDefaultColor()) end,
@@ -937,8 +873,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.gageqbal = true end,
     installcheck = function () echof("Should we hide the messages you get when you try and spam something off balance or equilibrium?") end
   }},
-#conf_name = "gagserverside"
-  {$(conf_name) = {
+  {gagserverside = {
     type = "boolean",
     onshow = function (defaultcolour)
       fg(defaultcolour)
@@ -948,8 +883,7 @@ config_dict = pl.OrderedMap {
     ondisabled = function () echof("<250,0,0>Won't%s hide info lines from the serverside curing system.", getDefaultColor()) end,
     installstart = function () conf.gagserverside = true end,
   }},
-#conf_name = "gagservercuring"
-  {$(conf_name) = {
+  {gagservercuring = {
     type = "boolean",
     onshow = function (defaultcolour)
       fg(defaultcolour)
@@ -959,8 +893,7 @@ config_dict = pl.OrderedMap {
     ondisabled = function () echof("<250,0,0>Won't%s hide serverside's [CURING] messages.", getDefaultColor()) end,
     installstart = function () conf.gagservercuring = false end,
   }},
-#conf_name = "ccto"
-  {$(conf_name) = {
+  {ccto = {
     type = "string",
     onset = function ()
       conf.ccto = conf.ccto:lower()
@@ -991,8 +924,7 @@ config_dict = pl.OrderedMap {
       conf.ccto = "pt" end
   }},
 #if skills.woodlore then
-#conf_name = "weapon"
-  {$(conf_name) = {
+  {weapon = {
     type = "string",
     onset = function ()
       conf.weapon = conf.weapon:lower()
@@ -1007,8 +939,7 @@ config_dict = pl.OrderedMap {
   }},
 #end
 #if skills.metamorphosis then
-#conf_name = "transmorph"
-  {$(conf_name) = {
+  {transmorph = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Have%s transmorph - won't go human between morphing.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Don't%s have transmorph - will go human between morphing.", getDefaultColor()) end,
@@ -1016,8 +947,7 @@ config_dict = pl.OrderedMap {
     installstart = function () conf.transmorph = nil end,
     installcheck = function () echof("Do you have the Metamorphosis Transmorph skill?") end
   }},
-#conf_name = "morphskill"
-  {$(conf_name) = {
+  {morphskill = {
     type = "string",
     check = function (what)
       return sk.validmorphskill(what)
@@ -1041,8 +971,7 @@ end
     installcheck = function () echof("What is the highest available morph that you can go into?") end
   }},
 #end
-#conf_name = "mosshealth"
-  {$(conf_name) = {
+  {mosshealth = {
     type = "number",
     percentage = true,
     min = 0,
@@ -1051,8 +980,7 @@ end
     installstart = function () conf.mosshealth = nil end,
     installcheck = function () echof("At what %% of health do you want to start using moss/potash to heal, if enabled?") end
   }},
-#conf_name = "pagelength"
-  {$(conf_name) = {
+  {pagelength = {
     type = "number",
     vconfig2string = true,
     min = 1,
@@ -1068,16 +996,14 @@ end
       cecho("<a_grey> lines.\n")
     end,
   }},
-#conf_name = "herbstatsize"
-  {$(conf_name) = {
+  {herbstatsize = {
     type = "number",
     min = 1,
     max = 100,
     onset = function () rift.update_riftlabel(); echof("Set the font size in the herbstat window to %d.", conf.herbstatsize) end,
     installstart = function () conf.herbstatsize = 9 end
   }},
-#conf_name = "mossmana"
-  {$(conf_name) = {
+  {mossmana = {
     type = "number",
     percentage = true,
     min = 0,
@@ -1086,8 +1012,7 @@ end
     installstart = function () conf.mossmana = nil end,
     installcheck = function () echof("At what %% of mana do you want to start using moss/potash to heal, if enabled?") end
   }},
-#conf_name = "siphealth"
-  {$(conf_name) = {
+  {siphealth = {
     type = "number",
     percentage = true,
     min = 0,
@@ -1096,8 +1021,7 @@ end
     installstart = function () conf.siphealth = nil end,
     installcheck = function () echof("At what %% of health do you want to start sipping health?") end
   }},
-#conf_name = "sipmana"
-  {$(conf_name) = {
+  {sipmana = {
     type = "number",
     percentage = true,
     min = 0,
@@ -1107,8 +1031,7 @@ end
     installcheck = function () echof("At what %% of mana do you want to start sipping mana?") end
   }},
 #if skills.devotion then
-#conf_name = "bloodswornoff"
-  {$(conf_name) = {
+  {bloodswornoff = {
     type = "number",
     percentage = true,
     min = 0,
@@ -1122,16 +1045,14 @@ end
     installstart = function () conf.bloodswornoff = 30 end
   }},
 #end
-#conf_name = "refillat"
-  {$(conf_name) = {
+  {refillat = {
     type = "number",
     min = 0,
     max = 30,
     onset = function () echof("Will start refilling pipes when they're at %d puffs.", conf.refillat) end,
     installstart = function () conf.refillat = 1 end
   }},
-#conf_name = "manause"
-  {$(conf_name) = {
+  {manause = {
     type = "number",
     percentage = true,
     min = 0,
@@ -1140,16 +1061,14 @@ end
     installstart = function () conf.manause = 35 end,
     installcheck = function () echof("Above which %% of mana is the system allowed to use mana skills? Like focus, insomnia, etc. If you got below this %%, it'll revert to normal cures.") end
   }},
-#conf_name = "lag"
-  {$(conf_name) = {
+  {lag = {
     type = "number",
     min = 0,
     max = 4,
     onset = function () cnrl.update_wait() echof(wait_tbl[conf.lag].m) end,
     installstart = function () conf.lag = 0 end
   }},
-#conf_name = "unknownfocus"
-  {$(conf_name) = {
+  {unknownfocus = {
     type = "number",
     min = 0,
     onset = function () echof("Will diagnose after we have %d or more unknown, but focusable afflictions.", conf.unknownfocus) end,
@@ -1161,8 +1080,7 @@ end
 #end
     end,
   }},
-#conf_name = "unknownany"
-  {$(conf_name) = {
+  {unknownany = {
     type = "number",
     min = 0,
     onset = function () echof("Will diagnose after we have %d or more unknown affs.", conf.unknownany) end,
@@ -1174,8 +1092,7 @@ end
 #end
     end,
   }},
-#conf_name = "bleedamount"
-  {$(conf_name) = {
+  {bleedamount = {
     type = "number",
     vconfig2string = true,
     min = 0,
@@ -1192,16 +1109,14 @@ end
       fg(defaultcolour) echo(" health)\n")
     end,
   }},
-#conf_name = "manableedamount"
-  {$(conf_name) = {
+  {manableedamount = {
     type = "number",
     vconfig2string = true,
     min = 0,
     onset = function () echof("Will start clotting if bleeding for more than %d mana.", conf.manableedamount) end,
     installstart = function () conf.manableedamount = 60 end,
   }},
-#conf_name = "corruptedhealthmin"
-  {$(conf_name) = {
+  {corruptedhealthmin = {
     type = "number",
     percentage = true,
     min = 0,
@@ -1209,8 +1124,7 @@ end
     onset = function () signals.changed_maxhealth:emit() echof("Will not clot your mana bleeding if your health falls below %d%% (%dh).", conf.corruptedhealthmin, sys.corruptedhealthmin) end,
     installstart = function () conf.corruptedhealthmin = 70 end
   }},
-#conf_name = "valerianid"
-  {$(conf_name) = {
+  {valerianid = {
     type = "number",
     min = 0,
     installstart = function () conf.valerianid = nil; pipes.valerian.id = 0 end,
@@ -1219,8 +1133,7 @@ end
       pipes.valerian.id = tonumber(conf.valerianid)
       echof("Set the valerian pipe id to %d.", pipes.valerian.id) end,
   }},
-#conf_name = "skullcapid"
-  {$(conf_name) = {
+  {skullcapid = {
     type = "number",
     min = 0,
     installstart = function () conf.skullcapid = nil; pipes.skullcap.id = 0 end,
@@ -1229,8 +1142,7 @@ end
       pipes.skullcap.id = tonumber(conf.skullcapid)
       echof("Set the skullcap pipe id to %d.", pipes.skullcap.id) end,
   }},
-#conf_name = "treefunc"
-  {$(conf_name) = {
+  {treefunc = {
     type = "custom",
     onmenu = function ()
       local underline = setUnderline; _G.setUnderline = function () end
@@ -1268,8 +1180,7 @@ end
       showprompt()
     end
   }},
-#conf_name = "restorefunc"
-  {$(conf_name) = {
+  {restorefunc = {
     type = "custom",
     onmenu = function ()
       local underline = setUnderline; _G.setUnderline = function () end
@@ -1306,8 +1217,7 @@ end
       showprompt()
     end
   }},
-#conf_name = "dragonhealfunc"
-  {$(conf_name) = {
+  {dragonhealfunc = {
     type = "custom",
     onmenu = function ()
       local underline = setUnderline; _G.setUnderline = function () end
@@ -1344,8 +1254,7 @@ end
     end
   }},
 #if skills.venom then
-#conf_name = "shruggingfunc"
-  {$(conf_name) = {
+  {shruggingfunc = {
     type = "custom",
     onmenu = function ()
       local underline = setUnderline; _G.setUnderline = function () end
@@ -1383,8 +1292,7 @@ end
     end
   }},
 #end
-#conf_name = "elmid"
-  {$(conf_name) = {
+  {elmid = {
     type = "number",
     min = 0,
     installstart = function () conf.elmid = nil; pipes.elm.id = 0 end,
@@ -1393,8 +1301,7 @@ end
       pipes.elm.id = tonumber(conf.elmid)
       echof("Set the elm pipe id to %d.", pipes.elm.id) end,
   }},
-#conf_name = "eventaffs"
-  {$(conf_name) = {
+  {eventaffs = {
     type = "boolean",
     -- vconfig2 = true,
     -- onshow = "Raise Mudlet events on each affliction",
@@ -1402,8 +1309,7 @@ end
     ondisabled = function () conf.eventaffs = true; update_eventaffs() echof("eventaffs are on by default now - and this option is depreciated; there's no point in turning it off.") end,
     installstart = function () conf.eventaffs = true; update_eventaffs() end
   }},
-#conf_name = "gagclot"
-  {$(conf_name) = {
+  {gagclot = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Gag clotting",
@@ -1411,8 +1317,7 @@ end
     ondisabled = function () echof("<250,0,0>Won't%s gag the clotting spam.", getDefaultColor()) end,
     installstart = function () conf.gagclot = true end,
   }},
-#conf_name = "autorewield"
-  {$(conf_name) = {
+  {autorewield = {
     type = "boolean",
     vconfig2 = true,
     onshow = function (defaultcolour)
@@ -1432,8 +1337,7 @@ end
     end,
     ondisabled = function () echof("<250,0,0>Won't%s automatically rewield things.", getDefaultColor()) end
   }},
-#conf_name = "preclot"
-  {$(conf_name) = {
+  {preclot = {
     type = "boolean",
     vconfig2 = true,
     onshow = function (defaultcolour)
@@ -1451,8 +1355,7 @@ end
     installstart = function () conf.preclot = true end,
     installcheck = function () echof("Should the system do preclotting? Doing so will save you from some bleeding damage, at the cost of more willpower.") end
   }},
-#conf_name = "org"
-  {$(conf_name) = {
+  {org = {
     type = "string",
     check = function (what)
       if contains({"Ashtan", "Hashan", "Mhaldor", "Targossas", "Cyrene", "Eleusis", "None", "Rogue"}, what:title()) then return true end
@@ -1484,8 +1387,7 @@ end
     installcheck = function ()
       echof("What city do you live in? Select from: Ashtan, Hashan, Mhaldor, Targossas, Cyrene, Eleusis or none.") end
   }},
-#conf_name = "slowcurecolour"
-  {$(conf_name) = {
+  {slowcurecolour = {
     type = "string",
     vconfig2string = true,
     check = function (what)
@@ -1506,8 +1408,7 @@ end
     installstart = function ()
       conf.slowcurecolour = "blue" end
   }},
-#conf_name = "hinderpausecolour"
-  {$(conf_name) = {
+  {hinderpausecolour = {
     type = "string",
     vconfig2string = true,
     check = function (what)
@@ -1528,8 +1429,7 @@ end
     installstart = function ()
       conf.hinderpausecolour = "orange" end
   }},
-#conf_name = "autoreject"
-  {$(conf_name) = {
+  {autoreject = {
     type = "string",
     check = function (what)
       if contains({"black", "white", "off", "on"}, what:sub(1,5):lower()) then sk.oldautoreject = conf.autoreject return true end
@@ -1558,8 +1458,7 @@ end
     installstart = function ()
       conf.autoreject = "white" end
   }},
-#conf_name = "lustlist"
-  {$(conf_name) = {
+  {lustlist = {
     type = "string",
     check = function(what)
       if what:find("^%w+$") then return true end
@@ -1587,8 +1486,7 @@ end
       end
     end
   }},
-#conf_name = "autowrithe"
-  {$(conf_name) = {
+  {autowrithe = {
     type = "string",
     check = function (what)
       if contains({"black", "white", "off", "on"}, what:sub(1,5):lower()) then sk.oldautowrithe = conf.autowrithe return true end
@@ -1617,8 +1515,7 @@ end
     installstart = function ()
       conf.autowrithe = "white" end
   }},
-#conf_name = "hoistlist"
-  {$(conf_name) = {
+  {hoistlist = {
     type = "string",
     check = function(what)
       if what:find("^%w+$") then return true end
@@ -1646,8 +1543,7 @@ end
       end
     end
   }},
-#conf_name = "echotype"
-  {$(conf_name) = {
+  {echotype = {
     type = "string",
     check = function (what)
       if echos[what:title()] or echos[what] then return true end
@@ -1662,8 +1558,7 @@ end
       conf.org = nil end,
   }},
 #if skills.healing then
-#conf_name = "healingskill"
-  {$(conf_name) = {
+  {healingskill = {
     type = "string",
     check = function (what)
       if table.contains({"blindness", "paralysis", "deafness", "fear", "confusion", "insomnia", "slickness", "stuttering", "paranoia", "shyness", "hallucinations", "generosity", "loneliness", "impatience", "unconsciousness", "claustrophobia", "vertigo", "sensitivity", "dizziness", "arms", "dementia", "clumsiness", "ablaze", "recklessness", "anorexia", "agoraphobia", "disloyalty", "hypersomnia", "darkshade", "masochism", "epilepsy", "asthma", "stupidity", "vomiting", "weariness", "haemophilia", "legs", "hypochondria"}, what:lower()) then return true end
@@ -1679,8 +1574,7 @@ end
     installcheck = function ()
       echof("What is the highest possible affliction that you can cure with Healing? If you don't have it yet, answer with 'blindness' and set 'none' for the 'usehealing' option.") end
   }},
-#conf_name = "usehealing"
-  {$(conf_name) = {
+  {usehealing = {
     type = "string",
     check = function (what)
       if table.contains({"full", "partial", "none", "off"}, what:lower()) then return true end
@@ -1698,8 +1592,7 @@ end
   }},
 #end
 #if skills.kaido then
-#conf_name = "transmute"
-  {$(conf_name) = {
+  {transmute = {
     type = "string",
     check = function (what)
       if convert_string(what) == false then return true end
@@ -1723,8 +1616,7 @@ end
     installcheck = function ()
       echof("Do you want to use transmute skill in the replaceall, replacehealth, supplement or none mode? replaceall means that it won't sip health nor eat moss/potash to heal your health, but only use transmute. replacehealth will mean that it will not sip health, but use moss/potash and transmute. supplement means that it'll use all three ways to heal you, and none means that it won't use transmute.") end
   }},
-#conf_name = "transmuteamount"
-  {$(conf_name) = {
+  {transmuteamount = {
     type = "number",
     percentage = true,
     min = 0,
@@ -1735,8 +1627,7 @@ end
     installstart = function () conf.transmuteamount = nil end,
     installcheck = function () echof("At what %% of health do you want to start transmuting for health?") end
   }},
-#conf_name = "transsipprone"
-    {$(conf_name) = {
+  {transsipprone = {
       type = "boolean",
       vconfig2 = "Transmute while prone",
       onenabled = function () echof("If you're prone and using transmute in a replaceall or replacehealth mode, we <0,250,0>will%s sip health or vitality instead of waiting on transmute to be usable. This is most optimal for PK.", getDefaultColor()) end,
@@ -1745,8 +1636,7 @@ end
     }},
 #end
 #if skills.voicecraft then
-#conf_name = "dwinnu"
-  {$(conf_name) = {
+  {dwinnu = {
     type = "boolean",
     vconfig1 = "dwinnu",
     onenabled = function () echof("<0,250,0>Will%s use dwinnu for writhing.", getDefaultColor()) end,
@@ -1756,8 +1646,7 @@ end
   }},
 #end
 #if skills.weaponmastery then
-#conf_name = "recoverfooting"
-    {$(conf_name) = {
+  {recoverfooting = {
       type = "boolean",
       vconfig1 = "recover footing",
       onenabled = function () echof("<0,250,0>Will%s use Recover Footing to get up faster when we can.", getDefaultColor()) end,
@@ -1766,8 +1655,7 @@ end
       installcheck = function () echof("Can you make use of the Recover Footing skill?") end
     }},
 #end
-#conf_name = "dragonflex"
-  {$(conf_name) = {
+  {dragonflex = {
     type = "boolean",
     vconfig1 = "dragonflex",
     onenabled = function () echof("<0,250,0>Will%s use dragonflex when we have balance.", getDefaultColor()) end,
@@ -1775,8 +1663,7 @@ end
     installstart = function () conf.dragonflex = nil end,
     installcheck = function () echof("Can you make use of the Dragonflex skill?") end
   }},
-#conf_name = "assumestats"
-  {$(conf_name) = {
+  {assumestats = {
     type = "number",
     vconfig2 = true,
     min = 0,
@@ -1784,8 +1671,7 @@ end
     onset = function () echof("Will assume we're at %d%% of health and mana when under blackout or recklessness.", conf.assumestats) end,
     installstart = function () conf.assumestats = 15 end,
   }},
-#conf_name = "healthaffsabove"
-  {$(conf_name) = {
+  {healthaffsabove = {
     type = "number",
     vconfig2 = true,
     min = 0,
@@ -1793,8 +1679,7 @@ end
     onset = function () echof("Will apply health to cure afflictions only when above %d%% health.", conf.healthaffsabove) end,
     installstart = function () conf.healthaffsabove = 70 end,
   }},
-#conf_name = "warningtype"
-  {$(conf_name) = {
+  {warningtype = {
     type = "string",
     vconfig2 = true,
     check = function (what)
@@ -1816,8 +1701,7 @@ end
     installstart = function ()
       conf.warningtype = "right" end,
   }},
-#conf_name = "burstmode"
-  {$(conf_name) = {
+  {burstmode = {
     type = "string",
     vconfig2string = true,
     check = function (what)
@@ -1850,8 +1734,7 @@ end
     installstart = function ()
       conf.burstmode = "empty" end
   }},
-#conf_name = "oldts"
-  {$(conf_name) = {
+  {oldts = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Touch shield only once on ts",
@@ -1860,8 +1743,7 @@ end
     installstart = function () conf.oldts = false end,
     installcheck = function () echof("In Svof, <0,255,0>ts%s is a toggle for <0,255,0>vkeep shield%s - it'll reshield you if the shield gets stripped. Previously it used to shield you once only. Would you like to be a toggle (<0,255,0>vconfig oldts no%s) or a one-time thing (<0,255,0>vconfig oldts yes%s)?", getDefaultColor(), getDefaultColor(), getDefaultColor(), getDefaultColor()) end
   }},
-#conf_name = "batch"
-  {$(conf_name) = {
+  {batch = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Batch multiple curing commands",
@@ -1869,8 +1751,7 @@ end
     ondisabled = function () echof("<250,0,0>Won't%s batch curing commands to be done at once, but instead send them separately at once.", getDefaultColor()) end,
     installstart = function () conf.batch = true end,
   }},
-#conf_name = "steedfollow"
-  {$(conf_name) = {
+  {steedfollow = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Auto-order steed to follow us",
@@ -1878,16 +1759,14 @@ end
     ondisabled = function () echof("<250,0,0>Won't%s make the steed follow us anymore when we dismount (via va).", getDefaultColor()) end,
     installstart = function () conf.steedfollow = true end
   }},
-#conf_name = "autotsc"
-  {$(conf_name) = {
+  {autotsc = {
     type = "boolean",
     vconfig2 = true,
     onshow = "Automatically toggle tsc in aeon/ret",
     onenabled = function () echof("<0,250,0>Will%s automatically toggle tsc - overrides in retardation and denies in aeon.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s automatically toggle tsc.", getDefaultColor()) end,
   }},
-#conf_name = "medprone"
-  {$(conf_name) = {
+  {medprone = {
     type = "boolean",
     vconfig2string = true,
     onshow = function (defaultcolour)
@@ -1908,15 +1787,13 @@ end
     onenabled = function () echof("<0,250,0>Will%s put prone on ignore when meditating, so you can be sitting.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s put prone on ignore when meditating.", getDefaultColor()) end,
   }},
-#conf_name = "unmed"
-  {$(conf_name) = {
+  {unmed = {
     type = "boolean",
     onshow = "Automatically disable med with full wp",
     onenabled = function () echof("<0,250,0>Will%s take meditate off keepup when you reach full willpower.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s take meditate off keepup when you reach full willpower - so we'll meditate again if you lose any mana/willpower.", getDefaultColor()) end,
   }},
-#conf_name = "classattacksamount"
-  {$(conf_name) = {
+  {classattacksamount = {
     type = "number",
     min = 0,
     vconfig2string = true,
@@ -1936,15 +1813,13 @@ end
     end,
     installstart = function () conf.classattacksamount = 3 end
   }},
-#conf_name = "classattackswithin"
-  {$(conf_name) = {
+  {classattackswithin = {
     type = "number",
     min = 0,
     onset = function () echof("Will enable a class when they hit us within %d seconds (with %d attacks).", conf.classattackswithin, conf.classattacksamount) end,
     installstart = function () conf.classattackswithin = 15 end
   }},
-#conf_name = "enableclassesfor"
-  {$(conf_name) = {
+  {enableclassesfor = {
     type = "number",
     min = 0,
     vconfig2string = true,
@@ -1960,20 +1835,17 @@ end
     end,
     installstart = function () conf.enableclassesfor = 2 end
   }},
-#conf_name = "gmcpaffechoes"
-  {$(conf_name) = {
+  {gmcpaffechoes = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s notify you when GMCP updates your afflictions.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s notify you when GMCP updates your afflictions.", getDefaultColor()) end,
   }},
-#conf_name = "gmcpdefechoes"
-  {$(conf_name) = {
+  {gmcpdefechoes = {
     type = "boolean",
     onenabled = function () echof("<0,250,0>Will%s notify you when GMCP updates your defences.", getDefaultColor()) end,
     ondisabled = function () echof("<250,0,0>Won't%s notify you when GMCP updates your defences.", getDefaultColor()) end,
   }},
-#conf_name = "releasechannel"
-  {$(conf_name) = {
+  {releasechannel = {
     type = "string",
     vconfig2string = true,
     onshow = function (defaultcolour)
