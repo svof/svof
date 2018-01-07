@@ -6,31 +6,6 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-
-#local function encode (what)
-#  return "dict." .. what .. ".herb"
-#end
-
-#local function encodesm (what)
-#  return "dict." .. what .. ".smoke"
-#end
-
-#local function encodes (what)
-#  return "dict." .. what .. ".salve"
-#end
-
-#local function encodef (what)
-#  return "dict." .. what .. ".focus"
-#end
-
-#local function encodep (what)
-#  return "dict." .. what .. ".purgative"
-#end
-
-#local function encodew (what)
-#  return "dict." .. what .. ".waitingfor"
-#end
-
 function valid.caught_illusion()
   sys.flawedillusion = true
   me.haveillusion = true
@@ -114,12 +89,12 @@ end
 
 
 function valid.bloodsworn_gone()
-#if skills.devotion then
+if svo.haveskillset("devotion") then
   checkaction(dict.bloodsworntoggle.misc)
   if actions.bloodsworntoggle_misc then
     lifevision.add(actions.bloodsworntoggle_misc.p)
   end
-#end
+end
 end
 
 function defs.sileris_start()
@@ -208,59 +183,59 @@ function valid.smoke_have_rebounding()
   end
 end
 
-#if skills.chivalry or skills.shindo or skills.kaido or skills.metamorphosis then
-function defs.got_fitness()
-  checkaction(dict.fitness.physical)
-  if actions.fitness_physical then
-    lifevision.add(actions.fitness_physical.p)
+if svo.haveskillset("chivalry") or svo.haveskillset("shindo") or svo.haveskillset("kaido") or svo.haveskillset("metamorphosis") then
+  function defs.got_fitness()
+    checkaction(dict.fitness.physical)
+    if actions.fitness_physical then
+      lifevision.add(actions.fitness_physical.p)
+    end
   end
-end
 
-function valid.fitness_cured_asthma()
-  checkaction(dict.fitness.physical)
-  if actions.fitness_physical then
-    lifevision.add(actions.fitness_physical.p, "curedasthma")
+  function valid.fitness_cured_asthma()
+    checkaction(dict.fitness.physical)
+    if actions.fitness_physical then
+      lifevision.add(actions.fitness_physical.p, "curedasthma")
+    end
   end
-end
 
-function valid.fitness_weakness()
-  checkaction(dict.fitness.physical)
-  if actions.fitness_physical then
-    lifevision.add(actions.fitness_physical.p, "weakness")
+  function valid.fitness_weakness()
+    checkaction(dict.fitness.physical)
+    if actions.fitness_physical then
+      lifevision.add(actions.fitness_physical.p, "weakness")
+    end
   end
-end
 
-function valid.fitness_allgood()
-  checkaction(dict.fitness.physical)
-  if actions.fitness_physical then
-    lifevision.add(actions.fitness_physical.p, "allgood")
+  function valid.fitness_allgood()
+    checkaction(dict.fitness.physical)
+    if actions.fitness_physical then
+      lifevision.add(actions.fitness_physical.p, "allgood")
+    end
   end
+
+  function valid.usedfitnessbalance()
+    checkaction(dict.stolebalance.happened, true)
+    lifevision.add(actions.stolebalance_happened.p, nil, "fitness")
+  end
+
+  function valid.gotfitnessbalance()
+    checkaction(dict.gotbalance.happened, true)
+    dict.gotbalance.happened.tempmap[#dict.gotbalance.happened.tempmap+1] = "fitness" -- hack to allow multiple balances at once
+    lifevision.add(actions.gotbalance_happened.p)
+  end
+else
+  function defs.got_fitness() end
+  function valid.fitness_cured_asthma() end
+  function valid.fitness_weariness() end
+  function valid.fitness_allgood() end
 end
 
-function valid.usedfitnessbalance()
-  checkaction(dict.stolebalance.happened, true)
-  lifevision.add(actions.stolebalance_happened.p, nil, "fitness")
-end
-
-function valid.gotfitnessbalance()
-  checkaction(dict.gotbalance.happened, true)
-  dict.gotbalance.happened.tempmap[#dict.gotbalance.happened.tempmap+1] = "fitness" -- hack to allow multiple balances at once
-  lifevision.add(actions.gotbalance_happened.p)
-end
-#else
-function defs.got_fitness() end
-function valid.fitness_cured_asthma() end
-function valid.fitness_weariness() end
-function valid.fitness_allgood() end
-#end
-
-#if skills.chivalry then
+if svo.haveskillset("chivalry") then
 function valid.gotragebalance()
   checkaction(dict.gotbalance.happened, true)
   dict.gotbalance.happened.tempmap[#dict.gotbalance.happened.tempmap+1] = "rage" -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
-#end
+end
 
 function valid.dragonform_riding()
   if actions.riding_physical then
@@ -307,7 +282,7 @@ function defs.cancelled_dragonform()
   end
 end
 
-#if skills.groves then
+if svo.haveskillset("groves") then
 function valid.started_rejuvenate()
   if actions.rejuvenate_physical then
     lifevision.add(actions.rejuvenate_physical.p)
@@ -326,9 +301,9 @@ function valid.cancelled_rejuvenate()
     lifevision.add(actions.waitingforrejuvenate_waitingfor.p, "cancelled")
   end
 end
-#end
+end
 
-#if skills.spirituality then
+if svo.haveskillset("spirituality") then
 function defs.started_mace()
   if actions.mace_physical then
     lifevision.add(actions.mace_physical.p)
@@ -367,9 +342,9 @@ function valid.sacrificed_angel()
     ignore_illusion("Didn't send the 'angel sacrifice' command recently.")
   end
 end
-#end
+end
 
-#if skills.shindo then
+if svo.haveskillset("shindo") then
 function valid.shin_phoenix()
   if not conf.aillusion or actions.phoenix_physical then
     selectCurrentLine()
@@ -382,9 +357,9 @@ function valid.shin_phoenix()
     ignore_illusion("Didn't send the 'shin phoenix' command recently.")
   end
 end
-#end
+end
 
-#if skills.propagation then
+if svo.haveskillset("propagation") then
 function defs.notonland_viridian()
   if actions.viridian_physical then
     lifevision.add(actions.viridian_physical.p, "notonland")
@@ -415,7 +390,7 @@ function defs.alreadyhave_viridian()
     lifevision.add(actions.viridian_physical.p, "alreadyhave")
   end
 end
-#end
+end
 
 function valid.alreadyhave_dragonbreath()
   if actions.dragonbreath_physical then
@@ -1076,32 +1051,31 @@ function svo.valid.defstrip(which)
     ["soft focusing"]          = 'softfocus',
     ["speed defence"]          = 'speed', -- typo in game was showing 'speed defence defence'
     ["temperance"]             = 'frost',
-    ["third eye"]              = 'thirdeye',
-
-#if skills.apostasy then
-    ["demon armour"]           = 'demonarmour',
-#end
-#if skills.necromancy then
-    ["death aura"]             = 'deathaura',
-#end
-#if skills.healing then
-    ["earth spiritshield"]     = 'earthblessing',
-    ["endurance spiritshield"] = 'enduranceblessing',
-    ["frost spiritshield"]     = 'frostblessing',
-    ["thermal spiritshield"]   = 'thermalblessing',
-    ["willpower spiritshield"] = 'willpowerblessing',
-#end
-#if skills.pranks or skills.swashbuckling then
-    ["arrow catching"]         = 'arrowcatch',
-#end
-#if skills.metamorphosis then
-    ["spirit bonding"]         = 'bonding',
-#end
-#if skills.groves then
-    ["wild growth"]            = 'wildgrowth',
-
-#end
+    ["third eye"]              = 'thirdeye'
   }
+
+  if svo.haveskillset("apostasy") then
+    t["demon armour"]           = 'demonarmour'
+  end
+  if svo.haveskillset("necromancy") then
+    t["death aura"]             = 'deathaura'
+  end
+  if svo.haveskillset("healing") then
+    t["earth spiritshield"]     = 'earthblessing'
+    t["endurance spiritshield"] = 'enduranceblessing'
+    t["frost spiritshield"]     = 'frostblessing'
+    t["thermal spiritshield"]   = 'thermalblessing'
+    t["willpower spiritshield"] = 'willpowerblessing'
+  end
+  if svo.haveskillset("pranks") or svo.haveskillset("swashbuckling") then
+    t["arrow catching"]         = 'arrowcatch'
+  end
+  if svo.haveskillset("metamorphosis") then
+    t["spirit bonding"]         = 'bonding'
+  end
+  if svo.haveskillset("groves") then
+    t["wild growth"]            = 'wildgrowth'
+  end
 
   if t[which] then which = t[which] end
 
@@ -1462,15 +1436,18 @@ function valid.bad_legs()
 end
 
 
-for _, aff in ipairs({"hamstring", "galed", "voided", "inquisition", "burning", "icing", "phlogistication", "vitrification", "corrupted", "mucous", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "swellskin", "pinshot", "dehydrated", "timeflux", "lullaby", "numbedleftarm", "numbedrightarm", "unconsciousness", "degenerate", "deteriorate", "hatred",
-#if skills.metamorphosis then
-"cantmorph",
-#end
-}) do
-  valid[aff.."_woreoff"] = function()
-    checkaction(dict[aff].waitingfor, true)
-    if actions[aff.."_waitingfor"] then
-      lifevision.add(actions[aff.."_waitingfor"].p)
+do
+  local afflist = {"hamstring", "galed", "voided", "inquisition", "burning", "icing", "phlogistication", "vitrification", "corrupted", "mucous", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "swellskin", "pinshot", "dehydrated", "timeflux", "lullaby", "numbedleftarm", "numbedrightarm", "unconsciousness", "degenerate", "deteriorate", "hatred"}
+  if svo.haveskillset("metamorphosis") then
+    afflist[#afflist+1] = 'cantmorph'
+  end
+
+  for _, aff in ipairs(afflist) do
+    valid[aff.."_woreoff"] = function()
+      checkaction(dict[aff].waitingfor, true)
+      if actions[aff.."_waitingfor"] then
+        lifevision.add(actions[aff.."_waitingfor"].p)
+      end
     end
   end
 end
@@ -1485,14 +1462,14 @@ function valid.stun_woreoff()
   end
 end
 
-#for _, aff in ipairs({"heartseed", "hypothermia"}) do
-function valid.$(aff)_cured()
-  checkaction(dict.curing$(aff).waitingfor)
-  if actions.curing$(aff)_waitingfor then
-    lifevision.add(actions.curing$(aff)_waitingfor.p)
+for _, aff in ipairs({"heartseed", "hypothermia"}) do
+valid[aff.."_cured"] = function()
+  checkaction(dict["curing"..aff].waitingfor)
+  if actions["curing"..aff.."_waitingfor"] then
+    lifevision.add(actions["curing"..aff.."_waitingfor"].p)
   end
 end
-#end
+end
 
 function valid.aeon_woreoff()
   local result = checkany(dict.aeon.smoke)
@@ -1637,13 +1614,13 @@ function valid.gotherb()
   end
 end
 
-#for _, balance in ipairs{"moss", "focus", "sip", "purgative", "dragonheal", "smoke", "tree"} do
-function valid.got$(balance)()
+for _, balance in ipairs{"moss", "focus", "sip", "purgative", "dragonheal", "smoke", "tree"} do
+valid["got"..balance] = function()
   checkaction(dict.gotbalance.happened, true)
-    dict.gotbalance.happened.tempmap[#dict.gotbalance.happened.tempmap+1] = "$(balance)" -- hack to allow multiple balances at once
+    dict.gotbalance.happened.tempmap[#dict.gotbalance.happened.tempmap+1] = balance -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
-#end
+end
 
 function valid.gotsalve()
   if conf.aillusion and paragraph_length ~= 1 then
@@ -1898,21 +1875,21 @@ function valid.phlegmatic_inundate()
   end
 end
 
-#for _, aff in ipairs({"skullfractures", "crackedribs", "wristfractures", "torntendons"}) do
-function valid.$(aff)_apply()
+for _, aff in ipairs({"skullfractures", "crackedribs", "wristfractures", "torntendons"}) do
+valid[aff.."_apply"] = function()
   applyelixir_cure = true
 
-  checkaction(dict.$(aff).sip, true)
-  lifevision.add(actions.$(aff)_sip.p)
+  checkaction(dict[aff].sip, true)
+  lifevision.add(actions[aff.."_sip"].p)
 end
 
-function valid.$(aff)_cured()
+valid[aff.."_cured"] = function()
   applyelixir_cure = true
 
-  checkaction(dict.$(aff).sip, true)
-  lifevision.add(actions.$(aff)_sip.p, "cured")
+  checkaction(dict[aff].sip, true)
+  lifevision.add(actions[aff.."_sip"].p, "cured")
 end
-#end
+end
 
 function valid.tarot_aeon()
   -- speed -can- be stripped in blackout
@@ -2672,25 +2649,25 @@ function valid.empty_light()
 end
 
 -- bindings
-#for _,aff in ipairs({"bound", "webbed", "roped", "transfixed", "impale", "hoisted"}) do
-function valid.writhed$(aff)()
-  if not affs.$(aff) then return end
+for _,aff in ipairs({"bound", "webbed", "roped", "transfixed", "impale", "hoisted"}) do
+valid["writhed"..aff] = function()
+  if not affs[aff] then return end
 
   local result = checkany(dict.curingbound.waitingfor, dict.curingwebbed.waitingfor, dict.curingroped.waitingfor, dict.curingtransfixed.waitingfor, dict.curingimpale.waitingfor, dict.curinghoisted.waitingfor)
 
   if not result then return end
 
   -- if we were writhing what we expected from to writhe, continue
-  if actions.curing$(aff)_waitingfor then
-    lifevision.add(dict.curing$(aff).waitingfor)
+  if actions["curing"..aff.."_waitingfor"] then
+    lifevision.add(dict["curing"..aff].waitingfor)
   -- otherwise if we writhed from something we were not - kill if we were doing anything else and add the new
   else
     killaction(dict[result.action_name].waitingfor)
-    checkaction(dict.curing$(aff).waitingfor, true)
-    lifevision.add(dict.curing$(aff).waitingfor)
+    checkaction(dict["curing"..aff].waitingfor, true)
+    lifevision.add(dict["curing"..aff].waitingfor)
   end
 end
-#end
+end
 
 function valid.writhe()
   local result = checkany(dict.bound.misc, dict.webbed.misc, dict.roped.misc, dict.transfixed.misc, dict.hoisted.misc, dict.impale.misc)
@@ -2724,261 +2701,242 @@ function valid.writhe_helpless()
 end
 
 -- restoration cures
-#for _, restoration in pairs({
-#  restorationlegs = {"mutilatedrightleg", "mutilatedleftleg", "mangledrightleg", "mangledleftleg", "parestolegs"},
-#  restorationarms = {"mutilatedrightarm", "mutilatedleftarm", "mangledrightarm", "mangledleftarm", "parestoarms"},
-#  restorationother = {"mildtrauma", "serioustrauma", "mildconcussion", "seriousconcussion", "laceratedthroat", "heartseed"}
-#}) do
-#  local checkany_string = ""
-#  local temp = {}
+for _, restoration in pairs({
+  restorationlegs = {"mutilatedrightleg", "mutilatedleftleg", "mangledrightleg", "mangledleftleg", "parestolegs"},
+  restorationarms = {"mutilatedrightarm", "mutilatedleftarm", "mangledrightarm", "mangledleftarm", "parestoarms"},
+  restorationother = {"mildtrauma", "serioustrauma", "mildconcussion", "seriousconcussion", "laceratedthroat", "heartseed"}}) do
+  local other_restoration_affs = {}
 
-#  for _, aff in pairs(restoration) do
-#    temp[#temp+1] = encodew("curing"..aff)
-#  end
-#  checkany_string = table.concat(temp, ", ")
+  -- compile a list of other things we can cure but aren't intending to with this action
+  for _, aff in pairs(restoration) do
+    other_restoration_affs[#other_restoration_affs+1] = dict["curing"..aff].waitingfor
+  end
 
-#  for _, aff in pairs(restoration) do
-function valid.curing$(aff)()
-  local result = checkany(dict.curing$(aff).waitingfor, $(checkany_string))
+  for _, aff in pairs(restoration) do
+    valid["curing"..aff] = function()
+      local result = checkany(dict["curing"..aff].waitingfor, unpack(other_restoration_affs))
 
-  if not result then return end
+      if not result then return end
 
-  if result.name == "curing$(aff)_waitingfor" then
-    lifevision.add(actions["curing$(aff)_waitingfor"].p)
-#if aff:find("leg")  then
-  elseif (not conf.aillusion or affs.$(aff) or affs.parestolegs) then
-#else
-  elseif (not conf.aillusion or affs.$(aff) or affs.parestoarms) then
-#end
-    checkaction(dict["curing$(aff)"].waitingfor, true)
-    lifevision.add(dict["curing$(aff)"].waitingfor)
-  else
-    ignore_illusion("We don't have a $(aff) right now.")
+      if result.name == "curing"..aff.."_waitingfor" then
+        lifevision.add(actions["curing"..aff.."_waitingfor"].p)
+      elseif (aff:find("leg") and (not conf.aillusion or affs[aff] or affs.parestolegs)) or
+        (aff:find("arm") and (not conf.aillusion or affs[aff] or affs.parestoarms)) then
+        checkaction(dict["curing"..aff].waitingfor, true)
+        lifevision.add(dict["curing"..aff].waitingfor)
+      else
+        ignore_illusion("We don't have a "..aff.." right now.")
+      end
+    end
   end
 end
-#  end
-#end
 
 -- salve cures - instantaneous only
-#for _, regeneration in pairs({
-#caloric   = {"frozen", "shivering", "caloric"},
-#epidermal = {"anorexia", "itching", "stuttering", "slashedthroat", "blindaff", "deafaff", "scalded"},
-#mending   = {"selarnia", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "ablaze", "unknowncrippledarm", "unknowncrippledleg", "unknowncrippledlimb"},
-#}) do
-#local checkany_string = ""
-#local temp = {}
+for _, regeneration in pairs({
+  caloric   = {"frozen", "shivering", "caloric"},
+  epidermal = {"anorexia", "itching", "stuttering", "slashedthroat", "blindaff", "deafaff", "scalded"},
+  mending   = {"selarnia", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "ablaze", "unknowncrippledarm", "unknowncrippledleg", "unknowncrippledlimb"}}) do
+  local other_regeneration_affs = {}
 
-#for _, aff in pairs(regeneration) do
-#temp[#temp+1] = encodes(aff)
-#end
-#checkany_string = table.concat(temp, ", ")
+  for _, aff in pairs(regeneration) do
+    other_regeneration_affs[#other_regeneration_affs+1] = dict[aff].salve
+  end
 
-#for _, aff in pairs(regeneration) do
-function valid.salve_cured_$(aff)()
-  local result = checkany(dict.$(aff).salve, $(checkany_string))
+  for _, aff in pairs(regeneration) do
+    valid['salve_cured_'..aff] = function()
+      local result = checkany(dict[aff].salve, unpack(other_regeneration_affs))
 
-  if not result then return end
+      if not result then return end
 
-  apply_cure = true
-  if result.name == "$(aff)_salve" then
-    lifevision.add(actions.$(aff)_salve.p)
-  else
-    killaction(dict[result.action_name].salve)
-    checkaction(dict.$(aff).salve, true)
-    lifevision.add(dict.$(aff).salve)
+      apply_cure = true
+      if result.name == aff..'_salve' then
+        lifevision.add(actions[aff..'_salve'].p)
+      else
+        killaction(dict[result.action_name].salve)
+        checkaction(dict[aff].salve, true)
+        lifevision.add(dict[aff].salve)
+      end
+    end
   end
 end
-#end
-#end
 
 
 -- focus
-#do
-#local afflist = {"claustrophobia", "masochism", "dizziness", "confusion", "stupidity", "generosity", "loneliness", "agoraphobia", "recklessness", "epilepsy", "pacifism", "anorexia", "shyness", "vertigo", "fear", "airdisrupt", "firedisrupt", "waterdisrupt", "dementia", "paranoia", "hallucinations"}
-#local checkany_string = ""
-#local temp = {}
+do
+  local afflist = {"claustrophobia", "masochism", "dizziness", "confusion", "stupidity", "generosity", "loneliness", "agoraphobia", "recklessness", "epilepsy", "pacifism", "anorexia", "shyness", "vertigo", "fear", "airdisrupt", "firedisrupt", "waterdisrupt", "dementia", "paranoia", "hallucinations"}
+  local other_focus_affs = {}
 
-#for _, aff in pairs(afflist) do
-#temp[#temp+1] = encodef(aff)
-#end
-#checkany_string = table.concat(temp, ", ")
+  for _, aff in pairs(afflist) do
+    other_focus_affs[#other_focus_affs+1] = dict[aff].focus
+  end
 
-#for _, aff in pairs(afflist) do
-function valid.focus_cured_$(aff)()
-  local result = checkany(dict.$(aff).focus, $(checkany_string))
-  if not result then return end
+  for _, aff in pairs(afflist) do
+    valid['focus_cured_'..aff] = function()
+      local result = checkany(dict[aff].focus, unpack(other_focus_affs))
+      if not result then return end
 
-  focus_cure = true
+      focus_cure = true
 
-  if result.name == "$(aff)_focus" then
-    lifevision.add(actions.$(aff)_focus.p)
+      if result.name == aff.."_focus" then
+        lifevision.add(actions[aff.."_focus"].p)
 
-    -- check timers here! should not be less than half of getping(). Check *action*, not affliction timer as well
-    if conf.aillusion and not conf.serverside then
-      local time, lat = getStopWatchTime(actions.$(aff)_focus.p.actionwatch), getping()
+        -- check timers here! should not be less than half of getping(). Check *action*, not affliction timer as well
+        if conf.aillusion and not conf.serverside then
+          local time, lat = getStopWatchTime(actions[aff.."_focus"].p.actionwatch), getping()
 
-      if time < (lat/2) then
-        ignore_illusion("This 'cure' looks fake - finished way too quickly, in "..time.."s, while our ping is "..lat)
-        return
+          if time < (lat/2) then
+            ignore_illusion("This 'cure' looks fake - finished way too quickly, in "..time.."s, while our ping is "..lat)
+            return
+          end
+        end
+      else
+        killaction(dict[result.action_name].focus)
+        checkaction(dict[aff].focus, true)
+        lifevision.add(dict[aff].focus)
       end
     end
-  else
-    killaction(dict[result.action_name].focus)
-    checkaction(dict.$(aff).focus, true)
-    lifevision.add(dict.$(aff).focus)
+
   end
 end
-
-#end
-#end
 
 
 -- normal smokes
-#for _, smoke in pairs({
-#valerian = {"disloyalty", "slickness", "manaleech"},
-#elm = {"deadening", "hellsight", "madness", "aeon"}}) do
-#local checkany_string = ""
-#local temp = {}
+for _, smoke in pairs({
+  valerian = {"disloyalty", "slickness", "manaleech"},
+  elm = {"deadening", "hellsight", "madness", "aeon"}}) do
+  local other_smoke_cures = {}
 
-#for _, aff in pairs(smoke) do
-#temp[#temp+1] = encodesm(aff)
-#end
-#checkany_string = table.concat(temp, ", ")
+  for _, aff in pairs(smoke) do
+    other_smoke_cures[#other_smoke_cures+1] = dict[aff].smoke
+  end
 
-#for _, aff in pairs(smoke) do
-function valid.smoke_cured_$(aff)()
-  local result = checkany(dict.$(aff).smoke, $(checkany_string))
-# -- $aff twice, first so most cases it gets returned first when it's the only aff
+  for _, aff in pairs(smoke) do
+    valid["smoke_cured_"..aff] = function()
+      local result = checkany(dict[aff].smoke, unpack(other_smoke_cures))
+     -- aff twice in the checkany list, first so most cases it gets returned first when it's the only aff
 
-  if not result then return end
+      if not result then return end
 
-  smoke_cure = true
-  if result.name == "$(aff)_smoke" then
-    lifevision.add(actions.$(aff)_smoke.p)
-  else
-    killaction(dict[result.action_name].smoke)
-    checkaction(dict.$(aff).smoke, true)
-    lifevision.add(dict.$(aff).smoke)
+      smoke_cure = true
+      if result.name == aff".._smoke" then
+        lifevision.add(actions[aff.."_smoke"].p)
+      else
+        killaction(dict[result.action_name].smoke)
+        checkaction(dict[aff].smoke, true)
+        lifevision.add(dict[aff].smoke)
+      end
+    end
+
   end
 end
-
-#end
-#end
 
 -- normal herbs
-#for _, herb in pairs({
-#ash        = {"hallucinations", "hypersomnia", "confusion", "paranoia", "dementia"},
-#bellwort   = {"generosity", "pacifism", "justice", "inlove", "peace", "retribution", "timeloop"},
-#bloodroot  = {"paralysis", "slickness"},
-#ginger     = {"melancholichumour", "cholerichumour", "phlegmatichumour", "sanguinehumour"},
-#ginseng    = {"haemophilia", "darkshade", "relapsing", "addiction", "illness", "lethargy"},
-#goldenseal = {"dissonance", "impatience", "stupidity", "dizziness", "epilepsy", "shyness", "depression", "shadowmadness"},
-#kelp       = {"asthma", "hypochondria", "healthleech", "sensitivity", "clumsiness", "weakness", "parasite"},
-#lobelia    = {"claustrophobia", "recklessness", "agoraphobia", "loneliness", "masochism", "vertigo", "spiritdisrupt", "airdisrupt", "waterdisrupt", "earthdisrupt", "firedisrupt"},
-#}) do
-#local checkany_string = ""
-#local temp = {}
+for _, herb in pairs({
+  ash        = {"hallucinations", "hypersomnia", "confusion", "paranoia", "dementia"},
+  bellwort   = {"generosity", "pacifism", "justice", "inlove", "peace", "retribution", "timeloop"},
+  bloodroot  = {"paralysis", "slickness"},
+  ginger     = {"melancholichumour", "cholerichumour", "phlegmatichumour", "sanguinehumour"},
+  ginseng    = {"haemophilia", "darkshade", "relapsing", "addiction", "illness", "lethargy"},
+  goldenseal = {"dissonance", "impatience", "stupidity", "dizziness", "epilepsy", "shyness", "depression", "shadowmadness"},
+  kelp       = {"asthma", "hypochondria", "healthleech", "sensitivity", "clumsiness", "weakness", "parasite"},
+  lobelia    = {"claustrophobia", "recklessness", "agoraphobia", "loneliness", "masochism", "vertigo", "spiritdisrupt", "airdisrupt", "waterdisrupt", "earthdisrupt", "firedisrupt"}}) do
+  local other_herb_cures = {}
 
-#for _, aff in pairs(herb) do
-#temp[#temp+1] = encode(aff)
-#end
-#checkany_string = table.concat(temp, ", ")
+  for _, aff in pairs(herb) do
+    other_herb_cures[#other_herb_cures+1] = dict[aff].herb
+  end
 
-#for _, aff in pairs(herb) do
-function valid.herb_cured_$(aff)()
-  local result = checkany(dict.$(aff).herb, $(checkany_string))
+  for _, aff in pairs(herb) do
+    valid["herb_cured_"..aff] = function()
+      local result = checkany(dict[aff].herb, unpack(other_herb_cures))
 
-  if not result then return end
+      if not result then return end
 
-  herb_cure = true
-  if result.name == "$(aff)_herb" then
-    -- check timers here! should not be less than half of getping(). Check *action*, not affliction timer as well
-    if conf.aillusion and not conf.serverside then
-      local time, lat = getStopWatchTime(actions.$(aff)_herb.p.actionwatch), getping()
+      herb_cure = true
+      if result.name == aff..'_herb' then
+        -- check timers here! should not be less than half of getping(). Check *action*, not affliction timer as well
+        if conf.aillusion and not conf.serverside then
+          local time, lat = getStopWatchTime(actions[aff.."_herb"].p.actionwatch), getping()
 
-      if time < (lat/2) then
-        ignore_illusion("This 'cure' looks fake - finished way too quickly, in "..time.."s, while our ping is "..lat)
-        return
+          if time < (lat/2) then
+            ignore_illusion("This 'cure' looks fake - finished way too quickly, in "..time.."s, while our ping is "..lat)
+            return
+          end
+        end
+
+        lifevision.add(actions[aff.."_herb"].p)
+      -- with AI on, don't accept cures for affs that we don't have (although do consider check*s)
+      elseif (not conf.aillusion or (conf.aillusion and (affs[aff] or affs.unknownany or affs.unknownmental or affsp[aff]))) then
+        killaction(dict[result.action_name].herb)
+        checkaction(dict[aff].herb, true)
+        lifevision.add(dict[aff].herb)
+      elseif not sk.sawcuringcommand then
+        moveCursor(0, getLineNumber()-1)
+        moveCursor(#getCurrentLine(), getLineNumber())
+        insertLink(" (i)", '', "Ignored the "..aff.." herb cure, because I don't think we have this affliction atm, and we don't have any unknown affs either - so seems it's an illusion.")
+        moveCursorEnd()
       end
     end
 
-    lifevision.add(actions.$(aff)_herb.p)
-  -- with AI on, don't accept cures for affs that we don't have (although do consider check*s)
-  elseif (not conf.aillusion or (conf.aillusion and (affs.$(aff) or affs.unknownany or affs.unknownmental or affsp.$(aff)))) then
-    killaction(dict[result.action_name].herb)
-    checkaction(dict.$(aff).herb, true)
-    lifevision.add(dict.$(aff).herb)
-  elseif not sk.sawcuringcommand then
-    moveCursor(0, getLineNumber()-1)
-    moveCursor(#getCurrentLine(), getLineNumber())
-    insertLink(" (i)", '', "Ignored the $(aff) herb cure, because I don't think we have this affliction atm, and we don't have any unknown affs either - so seems it's an illusion.")
-    moveCursorEnd()
   end
 end
-
-#end
-#end
 
 -- tree touches
-#for _, tree in pairs({
-#tree = {"ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impatience", "inlove", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "madness", "masochism","pacifism", "paranoia", "peace", "prone", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slashedthroat", "slickness", "stupidity", "stuttering",  "vertigo", "voided", "voyria", "weakness", "hamstring", "shivering", "frozen", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate"}}) do
+for _, tree in pairs({
+  tree = {"ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impatience", "inlove", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "madness", "masochism","pacifism", "paranoia", "peace", "prone", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slashedthroat", "slickness", "stupidity", "stuttering",  "vertigo", "voided", "voyria", "weakness", "hamstring", "shivering", "frozen", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate"}}) do
 
-#for _, aff in pairs(tree) do
-function valid.tree_cured_$(aff)()
-  checkaction(dict.touchtree.misc)
-  if actions.touchtree_misc then
-    lifevision.add(actions.touchtree_misc.p, nil, "$(aff)")
-    tree_cure = true
+  for _, aff in pairs(tree) do
+    valid["tree_cured_"..aff] = function()
+      checkaction(dict.touchtree.misc)
+      if actions.touchtree_misc then
+        lifevision.add(actions.touchtree_misc.p, nil, aff)
+        tree_cure = true
+      end
+    end
   end
 end
-#end
-#end
 
 -- humour cures
-#for _, herb in pairs({
-#ginger     = {"melancholichumour", "cholerichumour", "phlegmatichumour", "sanguinehumour"},
-#}) do
-#local checkany_string = ""
-#local temp = {}
+for _, herb in pairs({
+  ginger     = {"melancholichumour", "cholerichumour", "phlegmatichumour", "sanguinehumour"}}) do
+  local other_humour_cures = {}
+  for _, aff in pairs(herb) do
+    other_humour_cures[#other_humour_cures+1] = dict[aff].herb
+  end
 
-#for _, aff in pairs(herb) do
-#temp[#temp+1] = encode(aff)
-#end
-#checkany_string = table.concat(temp, ", ")
+  for _, aff in pairs(herb) do
+    valid["herb_helped_"..aff] = function()
+      local result = checkany(dict[aff].herb, unpack(other_humour_cures))
 
-#for _, aff in pairs(herb) do
-function valid.herb_helped_$(aff)()
-  local result = checkany(dict.$(aff).herb, $(checkany_string))
+      if not result then return end
 
-  if not result then return end
+      herb_cure = true
+      if result.name == aff..'_herb' then
+        -- check timers here! should not be less than half of getping(). Check *action*, not affliction timer as well
+        if conf.aillusion and not conf.serverside then
+          local time, lat = getStopWatchTime(actions[aff.."_herb"].p.actionwatch), getping()
 
-  herb_cure = true
-  if result.name == "$(aff)_herb" then
-    -- check timers here! should not be less than half of getping(). Check *action*, not affliction timer as well
-    if conf.aillusion and not conf.serverside then
-      local time, lat = getStopWatchTime(actions.$(aff)_herb.p.actionwatch), getping()
+          if time < (lat/2) then
+            ignore_illusion("This 'cure' looks fake - finished way too quickly, in "..time.."s, while our ping is "..lat)
+            return
+          end
+        end
 
-      if time < (lat/2) then
-        ignore_illusion("This 'cure' looks fake - finished way too quickly, in "..time.."s, while our ping is "..lat)
-        return
+        lifevision.add(actions[aff.."_herb"].p, "cured")
+      elseif (not conf.aillusion or (conf.aillusion and (affs[aff] or (affs.unknownany or affs.unknownmental)))) then -- with AI on, don't accept cures for affs that we don't have
+        killaction(dict[result.action_name].herb)
+        checkaction(dict[aff].herb, true)
+        lifevision.add(dict[aff].herb, "cured")
+      else
+        moveCursor(0, getLineNumber()-1)
+        moveCursor(#getCurrentLine(), getLineNumber())
+        insertLink(" (i)", '', "Ignored the "..aff.." herb cure, because I don't think we have this affliction atm, and we don't have any unknown affs either - so seems it's an illusion.")
+        moveCursorEnd()
       end
     end
 
-    lifevision.add(actions.$(aff)_herb.p, "cured")
-  elseif (not conf.aillusion or (conf.aillusion and (affs.$(aff) or (affs.unknownany or affs.unknownmental)))) then -- with AI on, don't accept cures for affs that we don't have
-    killaction(dict[result.action_name].herb)
-    checkaction(dict.$(aff).herb, true)
-    lifevision.add(dict.$(aff).herb, "cured")
-  else
-    moveCursor(0, getLineNumber()-1)
-    moveCursor(#getCurrentLine(), getLineNumber())
-    insertLink(" (i)", '', "Ignored the $(aff) herb cure, because I don't think we have this affliction atm, and we don't have any unknown affs either - so seems it's an illusion.")
-    moveCursorEnd()
   end
 end
-
-#end
-#end
 
 -- common ninkharsag code across tree and passive cures
 function sk.ninkharsag()
@@ -3022,7 +2980,7 @@ function defs.got_deaf()
   end
 end
 
-#if skills.shindo then
+if svo.haveskillset("shindo") then
 function defs.shindo_blind_start()
   checkaction(dict.blind.misc)
   if actions.blind_misc then
@@ -3042,8 +3000,8 @@ function defs.shindo_deaf_start()
     lifevision.add(actions.deaf_misc.p)
   end
 end
-#end
-#if skills.kaido then
+end
+if svo.haveskillset("kaido") then
 function defs.kaido_blind_start()
   checkaction(dict.blind.misc)
   if actions.blind_misc then
@@ -3063,7 +3021,7 @@ function defs.kaido_deaf_start()
     lifevision.add(actions.deaf_misc.p)
   end
 end
-#end
+end
 
 function defs.got_blind()
   local r = checkany(dict.blind.herb)
@@ -3622,30 +3580,30 @@ function valid.won_arena()
   defences.lost("blind") defences.lost("deaf") defences.lost("insomnia")
 end
 
-#if skills.necromancy then
-function valid.soulcaged()
-  reset.affs()
-  reset.general()
-  reset.defs()
-  if type(conf.burstmode) == "string" then
-    echo"\n"echof("Auto-switching to %s defences mode.", conf.burstmode)
-    defs.switch(conf.burstmode, false)
+if svo.haveskillset("necromancy") then
+  function valid.soulcaged()
+    reset.affs()
+    reset.general()
+    reset.defs()
+    if type(conf.burstmode) == "string" then
+      echo"\n"echof("Auto-switching to %s defences mode.", conf.burstmode)
+      defs.switch(conf.burstmode, false)
+    end
   end
-end
-#elseif skills.occultism then
-function valid.transmogged()
-  reset.affs()
-  reset.general()
-  reset.defs()
-  if type(conf.burstmode) == "string" then
-    echo"\n"echof("Auto-switching to %s defences mode.", conf.burstmode)
-    defs.switch(conf.burstmode, false)
+elseif svo.haveskillset("occultism") then
+  function valid.transmogged()
+    reset.affs()
+    reset.general()
+    reset.defs()
+    if type(conf.burstmode) == "string" then
+      echo"\n"echof("Auto-switching to %s defences mode.", conf.burstmode)
+      defs.switch(conf.burstmode, false)
+    end
   end
+else
+  function valid.soulcaged() end
+  function valid.transmogged() end
 end
-#else
-function valid.soulcaged() end
-function valid.transmogged() end
-#end
 
 function valid.died()
   if line == "Your starburst tattoo flares as the world is momentarily tinted red." then
@@ -3945,101 +3903,101 @@ end
 
 valid.low_willpower = sk.checkwillpower
 
-#if skills.healing then
-sk.check_emptyhealingheal = function ()
-  if sk.currenthealinghealcount+1 == getLineCount() then
-    lifevision.add(actions.usehealing_misc.p, "empty")
-  else
-    lifevision.add(actions.usehealing_misc.p)
+if svo.haveskillset("healing") then
+  sk.check_emptyhealingheal = function ()
+    if sk.currenthealinghealcount+1 == getLineCount() then
+      lifevision.add(actions.usehealing_misc.p, "empty")
+    else
+      lifevision.add(actions.usehealing_misc.p)
+    end
+
+    signals.before_prompt_processing:disconnect(sk.check_emptyhealingheal)
   end
 
-  signals.before_prompt_processing:disconnect(sk.check_emptyhealingheal)
-end
-
-valid.healercure = function ()
-  checkaction(dict.usehealing.misc)
-  if actions.usehealing_misc then
-    sk.currenthealinghealcount = getLineCount()
-    signals.before_prompt_processing:connect(sk.check_emptyhealingheal)
-    valid.passive_cure()
-  end
-end
-
-
-valid.emptyheal = function ()
-  if actions.usehealing_misc then
-    lifevision.add(actions.usehealing_misc.p, "empty")
-  end
-end
-
-valid.healing_cured_insomnia = function ()
-  checkaction(dict.usehealing.misc)
-  if actions.usehealing_misc then
-    defs.lost_insomnia()
-    lifevision.add(actions.usehealing_misc.p, "empty")
-  end
-end
-
--- valid.healercure = function ()
---   checkaction(dict.usehealing.misc)
---   if actions.usehealing_misc then
---     valid.passive_cure()
---     lifevision.add(actions.usehealing_misc.p)
---   end
--- end
-
-valid.nohealbalance = function ()
-  checkaction(dict.usehealing.misc)
-  if actions.usehealing_misc then
-    lifevision.add(actions.usehealing_misc.p, "nobalance")
-  end
-end
-
-valid.bedevilheal = function ()
-  checkaction(dict.usehealing.misc)
-  if actions.usehealing_misc then
-    lifevision.add(actions.usehealing_misc.p, "bedevilheal")
-  end
-end
-#else
-valid.healercure = function () end
-valid.healing_cured_insomnia = valid.healercure
-valid.nohealbalance = valid.healercure
-valid.bedevilheal = valid.healercure
-#end
-
-#if skills.chivalry then
-sk.check_emptyrage = function ()
-  if sk.currentragecount+1 == getLineCount() then
-    lifevision.add(actions.rage_misc.p, "empty")
-  else
-    lifevision.add(actions.rage_misc.p)
+  valid.healercure = function ()
+    checkaction(dict.usehealing.misc)
+    if actions.usehealing_misc then
+      sk.currenthealinghealcount = getLineCount()
+      signals.before_prompt_processing:connect(sk.check_emptyhealingheal)
+      valid.passive_cure()
+    end
   end
 
-  signals.before_prompt_processing:disconnect(sk.check_emptyrage)
-end
 
-valid.ragecure = function ()
-  checkaction(dict.rage.misc)
-  if actions.rage_misc then
-    sk.currentragecount = getLineCount()
-    signals.before_prompt_processing:connect(sk.check_emptyrage)
-    valid.passive_cure()
+  valid.emptyheal = function ()
+    if actions.usehealing_misc then
+      lifevision.add(actions.usehealing_misc.p, "empty")
+    end
   end
-end
-#else
-valid.ragecure = function() end
-#end
 
-#if skills.kaido then
-valid.transmuted = function ()
-  -- always check transmute so we can count how many we did (to cancel timer if we can)
-  checkaction(dict.transmute.physical, true)
-  lifevision.add(actions.transmute_physical.p)
+  valid.healing_cured_insomnia = function ()
+    checkaction(dict.usehealing.misc)
+    if actions.usehealing_misc then
+      defs.lost_insomnia()
+      lifevision.add(actions.usehealing_misc.p, "empty")
+    end
+  end
+
+  -- valid.healercure = function ()
+  --   checkaction(dict.usehealing.misc)
+  --   if actions.usehealing_misc then
+  --     valid.passive_cure()
+  --     lifevision.add(actions.usehealing_misc.p)
+  --   end
+  -- end
+
+  valid.nohealbalance = function ()
+    checkaction(dict.usehealing.misc)
+    if actions.usehealing_misc then
+      lifevision.add(actions.usehealing_misc.p, "nobalance")
+    end
+  end
+
+  valid.bedevilheal = function ()
+    checkaction(dict.usehealing.misc)
+    if actions.usehealing_misc then
+      lifevision.add(actions.usehealing_misc.p, "bedevilheal")
+    end
+  end
+else
+  valid.healercure = function () end
+  valid.healing_cured_insomnia = valid.healercure
+  valid.nohealbalance = valid.healercure
+  valid.bedevilheal = valid.healercure
 end
-#else
-valid.transmuted = function() end
-#end
+
+if svo.haveskillset("chivalry") then
+  sk.check_emptyrage = function ()
+    if sk.currentragecount+1 == getLineCount() then
+      lifevision.add(actions.rage_misc.p, "empty")
+    else
+      lifevision.add(actions.rage_misc.p)
+    end
+
+    signals.before_prompt_processing:disconnect(sk.check_emptyrage)
+  end
+
+  valid.ragecure = function ()
+    checkaction(dict.rage.misc)
+    if actions.rage_misc then
+      sk.currentragecount = getLineCount()
+      signals.before_prompt_processing:connect(sk.check_emptyrage)
+      valid.passive_cure()
+    end
+  end
+else
+  valid.ragecure = function() end
+end
+
+if svo.haveskillset("kaido") then
+  valid.transmuted = function ()
+    -- always check transmute so we can count how many we did (to cancel timer if we can)
+    checkaction(dict.transmute.physical, true)
+    lifevision.add(actions.transmute_physical.p)
+  end
+else
+  valid.transmuted = function() end
+end
 
 -- possibly suspectible to sylvans double-doing it, or a sylvan doing & illusioning it?
 function valid.sylvan_heartseed()
@@ -4098,15 +4056,15 @@ function valid.stripped_insomnia()
   end
 end
 
-#if skills.elementalism or skills.healing then
-function valid.lacking_channels()
-  if usingbal("physical") then
-    defs.lost_simultaneity()
+if svo.haveskillset("elementalism") or svo.haveskillset("healing") then
+  function valid.lacking_channels()
+    if usingbal("physical") then
+      defs.lost_simultaneity()
+    end
   end
+else
+  valid.lacking_channels = function() end
 end
-#else
-valid.lacking_channels = function() end
-#end
 
 function valid.bubbleout()
   if not conf.aillusion then eat(dict.waterbubble.herb) end
@@ -4359,7 +4317,7 @@ function valid.pyradius()
   send("\n")
 end
 
-#if skills.healing then
+if svo.haveskillset("healing") then
 function valid.usedhealingbalance()
   checkaction(dict.stolebalance.happened, true)
   lifevision.add(actions.stolebalance_happened.p, nil, "healing")
@@ -4370,9 +4328,9 @@ function valid.gothealingbalance()
   dict.gotbalance.happened.tempmap[#dict.gotbalance.happened.tempmap+1] = "healing" -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
-#end
+end
 
-#if skills.venom then
+if svo.haveskillset("venom") then
 function valid.shrugging()
   checkaction(dict.shrugging.physical)
   if actions.shrugging_physical then
@@ -4398,9 +4356,9 @@ function valid.gotshruggingbalance()
   dict.gotbalance.happened.tempmap[#dict.gotbalance.happened.tempmap+1] = "shrugging" -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
-#end
+end
 
-#if skills.voicecraft then
+if svo.haveskillset("voicecraft") then
 function valid.usedvoicebalance()
   checkaction(dict.stolebalance.happened, true)
   lifevision.add(actions.stolebalance_happened.p, nil, "voice")
@@ -4411,9 +4369,9 @@ function valid.gotvoicebalance()
   dict.gotbalance.happened.tempmap[#dict.gotbalance.happened.tempmap+1] = "voice" -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
-#end
+end
 
-#if skills.terminus then
+if svo.haveskillset("terminus") then
 function valid.usedwordbalance()
   checkaction(dict.stolebalance.happened, true)
   lifevision.add(actions.stolebalance_happened.p, nil, "word")
@@ -4424,7 +4382,7 @@ function valid.gotwordbalance()
   dict.gotbalance.happened.tempmap[#dict.gotbalance.happened.tempmap+1] = "word" -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
-#end
+end
 
 function valid.proper_hamstring()
   checkaction(dict.hamstring.aff, true)
@@ -4523,37 +4481,37 @@ function valid.tree_cured_burns()
   end
 end
 
-#for _, aff in ipairs({"skullfractures", "crackedribs", "wristfractures", "torntendons"}) do
-function valid.tree_cure_$(aff)()
-  checkaction(dict.touchtree.misc)
-  if actions.touchtree_misc then
-    tree_cure = true
-    lifevision.add(actions.touchtree_misc.p, nil, "$(aff)")
+for _, aff in ipairs({"skullfractures", "crackedribs", "wristfractures", "torntendons"}) do
+  valid["tree_cure_"..aff] = function()
+    checkaction(dict.touchtree.misc)
+    if actions.touchtree_misc then
+      tree_cure = true
+      lifevision.add(actions.touchtree_misc.p, nil, aff)
+    end
+  end
+
+  valid["tree_cured_"..aff] = function()
+    checkaction(dict.touchtree.misc)
+    if actions.touchtree_misc then
+      lifevision.add(actions.touchtree_misc.p, nil, aff.." cured")
+      tree_cure = true
+    end
+  end
+
+  valid["generic_cure_"..aff] = function()
+    checkaction(dict[aff].gone, true)
+    if lifevision.l[aff.."_gone"] then
+      lifevision.add(actions[aff.."_gone"].p, "general_cure", (number or 1) + (lifevision.l[aff.."_gone"].arg or 1))
+    else
+      lifevision.add(actions[aff.."_gone"].p, "general_cure", (number or 1))
+    end
+  end
+
+  valid["generic_cured_"..aff] = function()
+    checkaction(dict[aff].gone, true)
+    lifevision.add(actions[aff.."_gone"].p, "general_cured")
   end
 end
-
-function valid.tree_cured_$(aff)()
-  checkaction(dict.touchtree.misc)
-  if actions.touchtree_misc then
-    lifevision.add(actions.touchtree_misc.p, nil, "$(aff) cured")
-    tree_cure = true
-  end
-end
-
-function valid.generic_cure_$(aff)()
-  checkaction(dict.$(aff).gone, true)
-  if lifevision.l.$(aff)_gone then
-    lifevision.add(actions.$(aff)_gone.p, "general_cure", (number or 1) + (lifevision.l.$(aff)_gone.arg or 1))
-  else
-    lifevision.add(actions.$(aff)_gone.p, "general_cure", (number or 1))
-  end
-end
-
-function valid.generic_cured_$(aff)()
-  checkaction(dict.$(aff).gone, true)
-  lifevision.add(actions.$(aff)_gone.p, "general_cured")
-end
-#end
 
 function valid.expend_torso()
   checkaction(dict.waitingonrebounding.waitingfor)
