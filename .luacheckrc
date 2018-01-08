@@ -5,37 +5,43 @@ files["raw-svo.actionsystem.lua"] =
   {
   read_globals = {
     svo = {
-    fields = {
-      "pl", "affs", "sys", "syncdelay", "debugf", "dict", "sk", "echof", "make_gnomes_work",
-      "conf", "signals", "codepaste",
-      doaction = {
-        read_only = false
-      },
-      actions = {
-        read_only = false,
-        fields = {"set"}
-      },
-      actions_performed = {
-        read_only = false,
-        fields = {"?"}
-      },
-      bals_in_use = {
-        read_only = false,
-        other_fields = true
-      },
-      checkaction = {
-        read_only = false,
-      },
-      checkany = {
-        read_only = false,
-      },
-      findbybal = {
-        read_only = false
-      },
-      will_take_balance = { read_only = false },
-      codepaste = {
-        fields = {
-          balanceful_codepaste = { read_only = false }
+      fields = {
+        "pl", "affs", "sys", "syncdelay", "debugf", "dict", "sk", "echof", "make_gnomes_work",
+        "conf", "signals", "codepaste", "lifevision", "addaff",
+        doaction = {
+          read_only = false
+        },
+        actions = {
+          read_only = false,
+          fields = {"set"}
+        },
+        actions_performed = {
+          read_only = false,
+          fields = {"?"}
+        },
+        bals_in_use = {
+          read_only = false,
+          other_fields = true
+        },
+        checkaction       = { read_only = false },
+        checkany          = { read_only = false },
+        findbybal         = { read_only = false },
+        findbybals        = { read_only = false },
+        actionclear       = { read_only = false },
+        will_take_balance = { read_only = false },
+        actionfinished = { read_only = false },
+        killaction = { read_only = false },
+        usingbal = { read_only = false },
+        usingbalance = { read_only = false },
+        doingaction = { read_only = false },
+        doing = { read_only = false },
+        haveorwill = { read_only = false },
+        valid_sync_action = { read_only = false },
+        codepaste = {
+          fields = {
+            balanceful_codepaste = { read_only = false }
+          }
+        }
       }
     }
   }
