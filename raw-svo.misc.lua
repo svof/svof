@@ -6,90 +6,92 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
+local signals, sk, defs, deepcopy, echos, echosd = svo.signals, svo.sk, svo.defs, svo.deepcopy, svo.echos, svo.echosd
+local conf = svo.conf
 
-vecho = function(newline, what)
+svo.vecho = function(newline, what)
   decho("<206,222,215>(<214,206,221>svof<206,222,215>)<252,251,254>: <249,244,254>" .. what)
   if newline then echo"\n" end
 end
 
-function echos.Eleusis(newline, what)
+function svo.echos.Eleusis(newline, what)
   decho("<157,60,60>(<55,145,55>svof<157,60,60>)<212,245,112>: <62,245,62>" .. what)
   if newline then echo"\n" end
 end
 
-function echosd.Eleusis()
+function svo.echosd.Eleusis()
   return "<62,245,62>"
 end
 
-function echos.LightGreen(newline, what)
+function svo.echos.LightGreen(newline, what)
   decho("<255,231,179>(<170,154,118>svof<255,231,179>)<255,241,210>: <255,219,140>" .. what)
   if newline then echo"\n" end
 end
 
-function echosd.LightGreen()
+function svo.echosd.LightGreen()
   return "<255,219,140>"
 end
 
-function echos.Mhaldor(newline, what)
+function svo.echos.Mhaldor(newline, what)
   decho("<157,60,60>(<255,0,0>svof<157,60,60>)<255,65,65>: <255,117,117>" .. what)
   if newline then echo"\n" end
 end
 
-function echosd.Mhaldor()
+function svo.echosd.Mhaldor()
   return "<255,117,117>"
 end
 
-function echos.Ashtan(newline, what)
+function svo.echos.Ashtan(newline, what)
   decho("<80,66,80>(<107,79,125>svof<80,66,80>)<87,85,89>: <159,128,180>" .. what)
   if newline then echo"\n" end
 end
 
-function echosd.Ashtan()
+function svo.echosd.Ashtan()
   return "<159,128,180>"
 end
 
-function echos.Shallam(newline, what)
+function svo.echos.Shallam(newline, what)
   decho("<32,128,94>(<53,213,157>svof<32,128,94>)<53,213,157>: <0,171,111>" .. what)
   if newline then echo"\n" end
 end
 
-function echosd.Shallam()
+function svo.echosd.Shallam()
   return "<0,171,111>"
 end
 
-function echos.Targossas(newline, what)
+function svo.echos.Targossas(newline, what)
   decho("<32,128,94>(<53,213,157>svof<32,128,94>)<53,213,157>: <0,171,111>" .. what)
   if newline then echo"\n" end
 end
 
-function echosd.Targossas()
+function svo.echosd.Targossas()
   return "<0,171,111>"
 end
 
-function echos.Hashan(newline, what)
+function svo.echos.Hashan(newline, what)
   decho("<206,222,215>(<170,175,175>svof<206,222,215>)<252,251,254>: <237,244,244>" .. what)
   if newline then echo"\n" end
 end
 
-function echosd.Hashan()
+function svo.echosd.Hashan()
   return "<237,244,244>"
 end
 
-function echos.Cyrene(newline, what)
+function svo.echos.Cyrene(newline, what)
   decho("<253,63,73>(<251,0,13>svof<253,63,73>): <253,114,121>" .. what)
   if newline then echo"\n" end
 end
 
-function echosd.Cyrene()
+function svo.echosd.Cyrene()
   return "<253,114,121>"
 end
 
-function echos.default(newline, what)
+function svo.echos.default(newline, what)
   decho("<206,222,215>(<214,206,221>svof<206,222,215>)<252,251,254>: <249,244,254>" .. what)
   if newline then echo"\n" end
 end
 
-function echosd.default()
+function svo.echosd.default()
   return "<249,244,254>"
 end
 
@@ -493,7 +495,7 @@ local function convert_string(which)
 
   return nil
 end
-toboolean = convert_string
+svo.toboolean = convert_string
 
 function convert_boolean(which)
   if which == true then return "on"

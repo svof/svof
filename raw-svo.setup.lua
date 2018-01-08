@@ -66,7 +66,7 @@ function svo.ripairs(t)
   return ripairs_it, t, #t+1
 end
 
-local function deepcopy(object)
+function svo.deepcopy(object)
   local lookup_table = {}
   local function _copy(object)
       if type(object) ~= "table" then
