@@ -465,8 +465,8 @@ local function contains(t, value)
   return false
 end
 
--- longer priorities take thhe first order
-local function syncdelay()
+-- longer priorities take the first order
+function svo.syncdelay()
   if not sys.sync then
     return 0
   elseif affs.aeon or affs.retardation then

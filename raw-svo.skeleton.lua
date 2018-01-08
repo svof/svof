@@ -1305,64 +1305,93 @@ updateaffcount = function (which)
   raiseEvent("svo updated aff", which.name, "count", which.count)
 end
 
-local function update_eventaffs()
-  -- adds an affliction for the system to be tracking (ie - you are afflicted with it)
-  -- does not mess with aff.<affliction>s table if the aff is already registered
-  addaff = function (new)
+-- adds an affliction for the system to be tracking (ie - you are afflicted with it)
+-- does not mess with aff.<affliction>s table if the aff is already registered.
+-- this is the old internal 'addaff' function that Svof used when it was out of Mudlet
+local old_internal_addaff = function (new)
   if not new then debugf("no new, log: %s", debug.traceback()) end
-    if affs[new.name] then return end
+  if affs[new.name] then return end
 
-    local name = new.name
+  local name = new.name
 
-    affs[name] = {
-      p = new,
-      sw = new.sw or createStopWatch()
-    }
-    startStopWatch(affs[name].sw)
+  affs[name] = {
+    p = new,
+    sw = new.sw or createStopWatch()
+  }
+  startStopWatch(affs[name].sw)
 
-    -- call the onadded handler if any
-    if dict[name].onadded then dict[name].onadded() end
+  -- call the onadded handler if any
+  if dict[name].onadded then dict[name].onadded() end
 
-    if not affl[name] then
-      affl[name] = { sw = affs[name].sw }
-      signals.svogotaff:emit(name)
-      raiseEvent("svo got aff", name)
-    end
-  end
-
-  -- removeaff
-  removeaff = function (old)
-    if type(old) == "table" then
-      for _,aff in pairs(old) do
-        removeaff(aff)
-      end
-      return
-    end
-
-    if not affs[old] then return end
-
-    if affl[old] then
-      affl[old] = nil
-      signals.svolostaff:emit(old)
-      raiseEvent("svo lost aff", old)
-    end
-
-    -- removeaff can be called on affs that don't exist, that's valid
-    local sw = (affs[old] and affs[old].sw or nil)
-    affs[old] = nil
-
-    -- call the onremoved handler if any. Should be called after affs is cleaned, because scripts here reply on the 'current' state
-    if dict[old].onremoved then
-      debugf("calling onremoved for %s", old)
-      dict[old].onremoved()
-    end
-
-    if conf.showafftimes and sw then
-      echoafftime(stopStopWatch(sw), old)
-    end
+  if not affl[name] then
+    affl[name] = { sw = affs[name].sw }
+    signals.svogotaff:emit(name)
+    raiseEvent("svo got aff", name)
   end
 end
-signals.systemstart:connect(update_eventaffs)
+-- this is the old public 'addaff' function that Svof enabled when it was out of Mudlet
+local old_public_addaff = function (which)
+  assert(type(which) == "string", "svo.addaff: what aff would you like to add? name must be a string")
+  assert(dict[which] and dict[which].aff, "svo.addaff: "..which.." isn't a known aff name")
+
+  if affs[which] then
+    return false
+  else
+    if dict[which].aff and dict[which].aff.forced then
+      dict[which].aff.forced()
+    elseif dict[which].aff then
+      dict[which].aff.oncompleted()
+    else
+      addaff(dict[which])
+    end
+
+    signals.after_lifevision_processing:unblock(cnrl.checkwarning)
+    sk.checkaeony()
+    signals.aeony:emit()
+    codepaste.badaeon()
+
+    return true
+  end
+end
+svo.addaff = function(what)
+  if type(what) == "table" then
+    old_internal_addaff(what)
+  else
+    old_public_addaff(what)
+  end
+end
+
+-- removeaff
+local old_internal_removeaff = function (old)
+  if type(old) == "table" then
+    for _,aff in pairs(old) do
+      removeaff(aff)
+    end
+    return
+  end
+
+  if not affs[old] then return end
+
+  if affl[old] then
+    affl[old] = nil
+    signals.svolostaff:emit(old)
+    raiseEvent("svo lost aff", old)
+  end
+
+  -- removeaff can be called on affs that don't exist, that's valid
+  local sw = (affs[old] and affs[old].sw or nil)
+  affs[old] = nil
+
+  -- call the onremoved handler if any. Should be called after affs is cleaned, because scripts here reply on the 'current' state
+  if dict[old].onremoved then
+    debugf("calling onremoved for %s", old)
+    dict[old].onremoved()
+  end
+
+  if conf.showafftimes and sw then
+    echoafftime(stopStopWatch(sw), old)
+  end
+end
 
 -- externally available as svo.prompttrigger
 sk.onpromptfuncs = {}

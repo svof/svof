@@ -27,7 +27,7 @@ local dict_purgative = {}
 local dict_salve_def = {}
 local dict_smoke_def = {}
 
-local codepaste = {}
+codepaste = {}
 
 local tekura_ability_isadvisable = function (new_stance)
   return (

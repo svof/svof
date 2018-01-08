@@ -1102,29 +1102,6 @@ signals.systemstart:connect(function()
     return removed
   end
 
-  _G.svo.addaff = function (which)
-    assert(type(which) == "string", "svo.addaff: what aff would you like to add? name must be a string")
-    assert(dict[which] and dict[which].aff, "svo.addaff: "..which.." isn't a known aff name")
-
-    if affs[which] then
-      return false
-    else
-      if dict[which].aff and dict[which].aff.forced then
-        dict[which].aff.forced()
-      elseif dict[which].aff then
-        dict[which].aff.oncompleted()
-      else
-        addaff(dict[which])
-      end
-
-      signals.after_lifevision_processing:unblock(cnrl.checkwarning)
-      sk.checkaeony()
-      signals.aeony:emit()
-      codepaste.badaeon()
-
-      return true
-    end
-  end
 end)
 
 function sk.check_fullstats()
@@ -1231,16 +1208,6 @@ function lyre_step()
 
   if sys.sync then sk.gnomes_are_working = false end
 end
-
--- register doaction after system load, so doaction internally is defined by then
-signals.systemstart:connect(function()
-  _G.svo.doaction = function(which, balance)
-    assert(dict[which], "svo.doaction: "..which.." action doesn't exist. See 'vshow ignorelist' for a list of them.")
-    assert(dict[which][balance], "svo.doaction: "..which.." doesn't have a "..balance.. " balance.")
-
-    doaction(dict[which][balance])
-  end
-end)
 
 -- capture the incoming values for gmcp balance and eq
 signals.gmcpcharvitals:connect(function()

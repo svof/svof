@@ -1059,7 +1059,6 @@ local prompt_stats
 local defs_data
 local oldsend
 local defupfinish, process_defs
-local doingaction, checkaction, checkany, killaction, actions_performed, bals_in_use, usingbal, doaction, actionfinished
 local wait_tbl
 
 local index_map = pl.tablex.index_map
