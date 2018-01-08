@@ -6,7 +6,7 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-version = "development"
+svo.version = "development"
 
 if Logger then Logger:LogSection("svof", {"timestamp", split = 5000, "keepOpen"}) end
 
@@ -17,9 +17,10 @@ local lfs = require "lfs"
 
 local debug = require "debug"
 
-openURL = openURL or openUrl
 -- !!
-pl = {}
+svo.pl = {}
+local pl = svo.pl
+
 pl.pretty     = require "pl.pretty"
 pl.config     = require "pl.config"
 pl.dir        = require "pl.dir"
@@ -27,8 +28,7 @@ pl.string     = require "pl.stringx"
 pl.OrderedMap = require "pl.OrderedMap"
 pl.tablex     = require "pl.tablex"
 
-local phpTable
-phpTable = function (...) -- abuse to: http://richard.warburton.it
+svo.phpTable = function (...) -- abuse to: http://richard.warburton.it
   local newTable,keys,values={},{},{}
   newTable.pairs=function(self) -- pairs iterator
     local count=0
@@ -56,7 +56,7 @@ phpTable = function (...) -- abuse to: http://richard.warburton.it
   return newTable
 end
 
-function ripairs(t)
+function svo.ripairs(t)
   local function ripairs_it(t,i)
     i=i-1
     local v=t[i]
@@ -84,41 +84,53 @@ local function deepcopy(object)
   return _copy(object)
 end
 
-affs        = {}
-balanceless = {}
-cp          = {}
-defences    = {}
-lifevision  = {}
-signals     = {}
-sps         = {}
-sys         = {}
+svo.affs             = {}
+local affs = svo.affs
+svo.balanceless      = {}
+svo.cp               = {}
+svo.defences         = {}
+local defences = svo.defences
+svo.lifevision       = {}
+svo.signals          = {}
+local signals        = svo.signals
+svo.sps              = {}
+svo.sys              = {}
+local sys = svo.sys
+svo.conf             = {}
+local conf = svo.conf
+svo.config           = {}
+svo.defc             = {} -- current defences
+local defc = svo.defc
+svo.defs             = {}
+svo.dragonheal       = {} -- stores dragonheal curing strats
+svo.lifep            = {}
+svo.lifevision.l     = pl.OrderedMap()
+svo.paragraph_length = 0
+svo.restore          = {}
+svo.shrugging        = {} -- stores shrugging curing strats
+svo.sp               = {} -- parry
+svo.sp_config        = {}
+svo.stats            = {}
+local stats = svo.stats
+svo.tree             = {}
+svo.rage             = {}
+svo.fitness          = {}
+svo.valid            = {}
+svo.watch            = {}
+svo.gaffl            = {}
+local gaffl = svo.gaffl
+svo.gdefc            = {}
+svo.me               = {}
+local me             = svo.me
+svo.actions          = false
+svo.sk               = {}
+local sk = svo.sk
+svo.vm               = {}
+svo.cn               = {}
+svo.cnrl             = {}
 
-conf             = {}
-config           = {}
-defc             = {} -- current defences
-defs             = {}
-dragonheal       = {} -- stores dragonheal curing strats
-lifep            = {}
-lifevision.l     = pl.OrderedMap()
-paragraph_length = 0
-restore          = {}
-shrugging        = {} -- stores shrugging curing strats
-sp               = {} -- parry
-sp_config        = {}
-stats            = {}
-tree             = {}
-rage             = {}
-fitness          = {}
-valid            = {}
-watch            = {}
-gaffl            = {}
-gdefc            = {}
-
-
-actions, sk, vm, cn, cnrl = false, {}, {}, {}, {}
-
-reset = {}
-prio = {}
+svo.reset            = {}
+svo.prio             = {}
 local affmt = {
   __tostring = function (self)
       local result = {}
@@ -133,28 +145,24 @@ local affmt = {
       return table.concat(result, ", ")
   end
 }
-setmetatable(affs, affmt)
+setmetatable(svo.affs, affmt)
 
-affl = affl or {}
+svo.affl = svo.affl or {}
+svo.serverignore = {}
+svo.ignore = {}
+svo.dict = svo.dict or {}
 
-
-serverignore = {}
-ignore = {}
-
-dict = dict or {}
-
-local oldecho = conf.commandecho
+local oldecho = svo.conf.commandecho
 signals.aeony = luanotify.signal.new()
 signals.sync = luanotify.signal.new()
-
 signals.dragonform = luanotify.signal.new()
 
 local haddragonform = false
 signals.dragonform:add_post_emit(function()
-  if defc.dragonform and not haddragonform then
+  if svo.defc.dragonform and not haddragonform then
     raiseEvent"svo got dragonform"
     haddragonform = true
-  elseif not defc.dragonform and haddragonform then
+  elseif not svo.defc.dragonform and haddragonform then
     raiseEvent"svo lost dragonform"
     haddragonform = false
   end
@@ -162,24 +170,22 @@ end)
 
 signals.canoutr = luanotify.signal.new()
 signals.canoutr:connect(function()
-  if (affs.webbed or affs.bound or affs.transfixed or affs.roped or affs.impale or ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))) then
-    sys.canoutr = false
-    me.canoutr = false
+  if (affs.webbed or affs.bound or affs.transfixed or affs.roped or affs.impale or
+    ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and
+      (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))) then
+    svo.sys.canoutr = false
+    svo.me.canoutr = false
   else
-    sys.canoutr = true
-    me.canoutr = true
+    svo.sys.canoutr = true
+    svo.me.canoutr = true
   end
 end)
 
 
 signals.removed_from_rift = luanotify.signal.new()
 signals.moved = luanotify.signal.new()
-
 signals.systemstart = luanotify.signal.new()
-
 signals.systemstart:connect(function() signals.canoutr:emit() end) -- setup the variables
-
-
 signals.quit = luanotify.signal.new()
 signals.connected = luanotify.signal.new()
 signals.quit:connect(function ()
@@ -200,13 +206,19 @@ signals.gmcproominfo        = luanotify.signal.new()
 signals.gmcpcharstatus      = luanotify.signal.new()
 signals.gmcpcharitemslist   = luanotify.signal.new()
 signals.gmcpcharitemslist:connect(function()
-  if not gmcp.Char.Items.List.location then debugf("(GMCP problem) location field is missing from Achaea's response.") return end
+  if not gmcp.Char.Items.List.location then
+    svo.debugf("(GMCP problem) location field is missing from Achaea's response.")
+    return
+  end
   if gmcp.Char.Items.List.location ~= "inv" then return end
   me.inventory = deepcopy(gmcp.Char.Items.List.items)
 end)
 signals.gmcpcharitemsadd    = luanotify.signal.new()
 signals.gmcpcharitemsadd:connect(function()
-  if not gmcp.Char.Items.Add.location then debugf("(GMCP problem) location field is missing from Achaea's response.") return end
+  if not gmcp.Char.Items.Add.location then
+    svo.debugf("(GMCP problem) location field is missing from Achaea's response.")
+    return
+  end
   if gmcp.Char.Items.Add.location ~= "inv" then return end
   me.inventory[#me.inventory + 1] = deepcopy(gmcp.Char.Items.Add.item)
 end)
@@ -214,7 +226,10 @@ signals.gmcpcharskillsinfo  = luanotify.signal.new()
 signals.gmcpcharskillslist  = luanotify.signal.new()
 signals.gmcpcharitemsupdate = luanotify.signal.new()
 signals.gmcpcharitemsupdate:connect(function()
-  if not gmcp.Char.Items.Update.location then debugf("(GMCP problem) location field is missing from Achaea's response.") return end
+  if not gmcp.Char.Items.Update.location then
+    svo.debugf("(GMCP problem) location field is missing from Achaea's response.")
+    return
+  end
   if gmcp.Char.Items.Update.location ~= "inv" then return end
   local update = gmcp.Char.Items.Update.item
   for i, item in ipairs(me.inventory) do
@@ -226,7 +241,10 @@ signals.gmcpcharitemsupdate:connect(function()
 end)
 signals.gmcpcharitemsremove = luanotify.signal.new()
 signals.gmcpcharitemsremove:connect(function()
-  if not gmcp.Char.Items.Remove.location then debugf("(GMCP problem) location field is missing from Achaea's response.") return end
+  if not gmcp.Char.Items.Update.location then
+    svo.debugf("(GMCP problem) location field is missing from Achaea's response.")
+    return
+  end
   if gmcp.Char.Items.Remove.location ~= "inv" then return end
   local remove = gmcp.Char.Items.Remove.item
   for i, item in ipairs(me.inventory) do
@@ -239,7 +257,7 @@ end)
 signals.gmcpcharvitals      = luanotify.signal.new()
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
-    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
       local rage = val:match("^Rage: (%d+)$")
       if rage then
         stats.battlerage = tonumber(rage)
@@ -247,9 +265,9 @@ signals.gmcpcharvitals:connect(function()
         local bleed = val:match("^Bleed: (%d+)$")
         if bleed then
           if bleed == "0" then
-            removeaff("bleeding")
+            svo.removeaff("bleeding")
           else
-            dict.bleeding.aff.oncompleted(tonumber(bleed))
+            svo.dict.bleeding.aff.oncompleted(tonumber(bleed))
           end
         end
       end
@@ -260,13 +278,18 @@ signals.gmcpcharvitals:connect(function()
   end
 end)
 
-me = {}
-$(
-local paths = {}; paths.oldpath = package.path; package.path = package.path..";./?.lua;./bin/?.lua;"; local pretty = require "pl.pretty"; local stringx = require "pl.stringx"; local tablex = require "pl.tablex"; package.path = paths.oldpath
+-- $(
+-- local paths = {}; paths.oldpath = package.path; package.path = package.path..";./?.lua;./bin/?.lua;"; local pretty = require "pl.pretty"; local stringx = require "pl.stringx"; local tablex = require "pl.tablex"; package.path = paths.oldpath
 
-_put(string.format("me.class = \"%s\"\n", type(class) == "string" and stringx.title(class) or table.concat(tablex.imap(stringx.title, class), ", ")))
-_put("me.skills = ".. pretty.write(skills))
-)
+-- _put(string.format("me.class = \"%s\"\n", type(class) == "string" and stringx.title(class) or table.concat(tablex.imap(stringx.title, class), ", ")))
+-- _put("me.skills = ".. pretty.write(skills))
+-- )
+me.class = "Infernal"
+me.skills = {
+  weaponmastery = true,
+  necromancy = true,
+  chivalry = true
+}
 
 svo.knownskills = {
   alchemist    = {"transmutation", "physiology", "alchemy"},
@@ -290,7 +313,7 @@ svo.knownskills = {
   sylvan       = {"weatherweaving", "groves", "propagation"},
 }
 -- optimised haveskillset, since it gets called often: compute a key-value table
--- with all of the skills we have
+-- with all of the skills we have.
 do
   local available_skills = {}
   for _, skill in ipairs(svo.knownskills[svo.me.class:lower()]) do
@@ -305,9 +328,9 @@ end
 if svo.haveskillset('groves') then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
-    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
-      if sunlight then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
       local sunlight = val:match("^Sunlight: (%d+)$")
+      if sunlight then
         stats.sunlight = tonumber(sunlight)
         break
       end
@@ -321,7 +344,7 @@ end
 if svo.haveskillset('metamorphosis') then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
-    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
       local morph = val:match("^Morph: (%w+)$")
       if morph then
         morph = morph:lower()
@@ -345,7 +368,7 @@ end
 if svo.me.class == "Monk" then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
-    for index, val in ipairs(gmcp.Char.Vitals.charstats) do
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
       local stance = val:match("^Stance: (%w+)$")
       local form = val:match("^Form: (%w+)$")
 
@@ -400,102 +423,122 @@ signals.gmcpcharafflictionsadd:connect(function()
   local thisaff = gmcp.Char.Afflictions.Add.name
   if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
   gaffl[thisaff] = true
-  if conf.gmcpaffechoes then echof("Gained aff %s", thisaff) end
-  if dict.sstosvoa[thisaff] then
-    addaff(dict.sstosvoa[thisaff])
+  if conf.gmcpaffechoes then svo.echof("Gained aff %s", thisaff) end
+  if svo.dict.sstosvoa[thisaff] then
+    svo.addaff(svo.dict.sstosvoa[thisaff])
   end
 end)
 
 signals.gmcpcharafflictionsremove:connect(function()
   local thisaff = gmcp.Char.Afflictions.Remove[1]
   gaffl[thisaff] = nil
-  if conf.gmcpdefechoes then echof("Cured aff %s", thisaff) end
-  if dict.sstosvoa[thisaff] then
-    removeaff(dict.sstosvoa[thisaff])
+  if conf.gmcpdefechoes then svo.echof("Cured aff %s", thisaff) end
+  if svo.dict.sstosvoa[thisaff] then
+    svo.removeaff(svo.dict.sstosvoa[thisaff])
   end
 end)
 
 signals.gmcpcharafflictionslist:connect(function()
-  gaffl = {}
+  svo.gaffl = {}
   local preaffl = {}
-  for key, val in ipairs(affl) do preaffl[val] = true end
+  for _, val in ipairs(svo.affl) do preaffl[val] = true end
 
-  for index, val in ipairs(gmcp.Char.Afflictions.List) do
+  for _, val in ipairs(gmcp.Char.Afflictions.List) do
     local thisaff = val.name
     if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
     gaffl[thisaff] = true
-    if preaffl[thisaff] then
-      preaffl[thisaff] = false
-    elseif dict.sstosvoa[thisaff] then
-      addaff(dict.sstosvoa[thisaff])
+    local svoAffliction = svo.dict.sstosvoa[thisaff]
+    if svoAffliction then
+      if preaffl[svoAffliction] then
+        preaffl[svoAffliction] = false
+      else
+        svo.addaff(svoAffliction)
+      end
     end
   end
 
   for key, val in pairs(preaffl) do
-    if val and dict.svotossa[thisaff] then removeaff(key) end
+    if val then svo.removeaff(key) end
   end
 end)
 
 
 signals.gmcpchardefencesadd:connect(function()
-  thisdef = gmcp.Char.Defences.Add.name
-  gdefc[thisdef] = true
-  if conf.gmcpdefechoes then echof("Gained def "..thisdef) end
-  if dict.sstosvod[thisdef] then
-    if type(defs["got_"..dict.sstosvod[thisdef]]) == "function" then
-      defs["got_"..dict.sstosvod[thisdef]](true)
+  local thisdef = gmcp.Char.Defences.Add.name
+  svo.gdefc[thisdef] = true
+  if conf.gmcpdefechoes then svo.echof("Gained def "..thisdef) end
+  if svo.dict.sstosvod[thisdef] then
+    if type(svo.defs["got_"..svo.dict.sstosvod[thisdef]]) == "function" then
+      svo.defs["got_"..svo.dict.sstosvod[thisdef]](true)
     else
-      echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["got_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+      echoLink("(e!)",
+        [[echo("The problem was: got_ function was ]]..type(svo.defs["got_"..svo.dict.sstosvod[thisdef]])..
+        [[ for defence ]]..svo.dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]],
+        'Oy - there was a problem. Click on this link and submit a bug report with what it says along with '
+        ..'a copy/paste of what you saw.')
     end
   end
 end)
 
 signals.gmcpchardefencesremove:connect(function()
-  thisdef = gmcp.Char.Defences.Remove[1]
-  gdefc[thisdef] = nil
-  if conf.gmcpdefechoes then echof("Lost def "..thisdef) end
-  if dict.sstosvod[thisdef] then
-    if type(defs["lost_"..dict.sstosvod[thisdef]]) == "function" then
-      defs["lost_"..dict.sstosvod[thisdef]]()
+  local thisdef = gmcp.Char.Defences.Remove[1]
+  svo.gdefc[thisdef] = nil
+  if conf.gmcpdefechoes then svo.echof("Lost def "..thisdef) end
+  if svo.dict.sstosvod[thisdef] then
+    if type(svo.defs["lost_"..svo.dict.sstosvod[thisdef]]) == "function" then
+      svo.defs["lost_"..svo.dict.sstosvod[thisdef]]()
     else
-      echoLink("(e!)", [[echo("The problem was: lost_ function was ]]..type(defs["lost_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+      echoLink("(e!)",
+        [[echo("The problem was: lost_ function was ]]..type(svo.defs["lost_"..svo.dict.sstosvod[thisdef]])..
+        [[ for defence ]]..svo.dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]],
+        'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a '
+        ..'copy/paste of what you saw.')
     end
   end
 end)
 
 signals.gmcpchardefenceslist:connect(function()
-  gdefc = {}
+  svo.gdefc = {}
   local predefs = deepcopy(defc)
-  for index, val in ipairs(gmcp.Char.Defences.List) do
-    thisdef = val.name
-    gdefc[thisdef] = true
-    if dict.sstosvod[thisdef] then
-      if predefs[dict.sstosvod[thisdef]] then
-        predefs[dict.sstosvod[thisdef]] = false
-      elseif type(defs["got_"..dict.sstosvod[thisdef]]) == "function" then
-        defs["got_"..dict.sstosvod[thisdef]](true)
+  for _, val in ipairs(gmcp.Char.Defences.List) do
+    local thisdef = val.name
+    svo.gdefc[thisdef] = true
+    if svo.dict.sstosvod[thisdef] then
+      if predefs[svo.dict.sstosvod[thisdef]] then
+        predefs[svo.dict.sstosvod[thisdef]] = false
+      elseif type(svo.defs["got_"..svo.dict.sstosvod[thisdef]]) == "function" then
+        svo.defs["got_"..svo.dict.sstosvod[thisdef]](true)
       else
-        echoLink("(e!)", [[echo("The problem was: got_ function was ]]..type(defs["got_"..dict.sstosvod[thisdef]])..[[ for defence ]]..dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+        echoLink("(e!)",
+          [[echo("The problem was: got_ function was ]]..type(svo.defs["got_"..svo.dict.sstosvod[thisdef]])..
+          [[ for defence ]]..svo.dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)")]],
+          'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a '
+          ..'copy/paste of what you saw.')
       end
     end
   end
   for defname, val in pairs(predefs) do
-    if val == true and dict.sstosvod[defname] then
-      if type(defs["lost_"..dict.sstosvod[defname]]) == "function" then
-        defs["lost_"..dict.sstosvod[defname]]()
+    if val == true and svo.dict.sstosvod[defname] then
+      if type(svo.defs["lost_"..svo.dict.sstosvod[defname]]) == "function" then
+        svo.defs["lost_"..svo.dict.sstosvod[defname]]()
       else
-        echoLink("(e!)", [[echo("The problem was: lost_ function was ]]..type(defs["lost_"..dict.sstosvod[defname]])..[[ for defence ]]..dict.sstosvod[defname]..[[ (gmcp:]]..defname..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+        echoLink("(e!)",
+          [[echo("The problem was: lost_ function was ]]..type(svo.defs["lost_"..svo.dict.sstosvod[defname]])..
+          [[ for defence ]]..svo.dict.sstosvod[defname]..[[ (gmcp:]]..defname..[[)")]],
+          'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a '
+          ..'copy/paste of what you saw.')
       end
     end
   end
 end)
 
--- make a 'signals bank' that remembers all gmcp events that happend before the prompt. reset on prompt. check it for stuff when necessary.
+-- make a 'signals bank' that remembers all gmcp events that happend before the prompt.
+-- reset on prompt. check it for stuff when necessary.
 -- have the herb out signal be remembers on it's own & verified by the syste
 
 do
   local oldnum, oldarea
-  signals.gmcproominfo:connect(function (...)
+  signals.gmcproominfo:connect(function ()
     if me then
         if table.contains(gmcp.Room.Info.details, "underwater") then
             me.is_underwater = true
@@ -538,19 +581,19 @@ end
 signals.relogin = luanotify.signal.new()
 signals.enablegmcp = luanotify.signal.new()
 signals.enablegmcp:add_post_emit(function ()
-  logging_in = false
+  svo.logging_in = false
   if not sys.enabledgmcp then
     sys.enabledgmcp = true
   else
     signals.relogin:emit()
-    echof("Welcome back!")
-    -- defs.quietswitch("basic")
+    svo.echof("Welcome back!")
+    -- svo.defs.quietswitch("basic")
   end
-  -- app("off", true) -- this triggers a dict() run too early before login
-  if dont_unpause_login then dont_unpause_login = nil
+  -- app("off", true) -- this triggers a svo.dict() run too early before login
+  if svo.dont_unpause_login then svo.dont_unpause_login = nil
   else conf.paused = false end
 
-  innews = false
+  svo.innews = false
 end)
 tempBeginOfLineTrigger("Rapture Runtime Environment", [[svo.logging_in = true]])
 
@@ -561,18 +604,18 @@ signals.changed_maxhealth = luanotify.signal.new()
 signals.changed_maxhealth:connect(function (old, new) -- can't use add_post_emit, as that doesn't pass arguments down
   if not string.find(debug.traceback(), "Alias", 1, true) then
     if not (old and new) or (old and old == 1) then
-      echof("Your max health changed to %dh.", stats.maxhealth)
+      svo.echof("Your max health changed to %dh.", stats.maxhealth)
     elseif old > new then
-      echof("Your max health decreased by %dh/%d%% to %d.", (old-new), 100-math.floor((100/old)*new), new)
+      svo.echof("Your max health decreased by %dh/%d%% to %d.", (old-new), 100-math.floor((100/old)*new), new)
     else
-      echof("Your max health increased by %dh/%d%% to %d.", (new-old), (math.floor((100/old)*new)-100), new)
+      svo.echof("Your max health increased by %dh/%d%% to %d.", (new-old), (math.floor((100/old)*new)-100), new)
 
       -- track stain
       sk.gotmaxhealth = true
-      prompttrigger("check stain expiring", function()
-        if paragraph_length == 0 and sk.gotmaxhealth and sk.gotmaxmana and affs.stain then
-          removeaff("stain")
-          echof("I think stain faded.")
+      svo.prompttrigger("check stain expiring", function()
+        if svo.paragraph_length == 0 and sk.gotmaxhealth and sk.gotmaxmana and svo.affs.stain then
+          svo.removeaff("stain")
+          svo.echof("I think stain faded.")
         end
         sk.gotmaxhealth, sk.gotmaxmana = nil, nil
       end)
@@ -583,17 +626,17 @@ signals.changed_maxmana = luanotify.signal.new()
 signals.changed_maxmana:connect(function (old, new)
   if not string.find(debug.traceback(), "Alias", 1, true) then
     if not (old and new) or (old and old == 1) then
-      echof("Your max mana changed to %dm.", stats.maxmana)
+      svo.echof("Your max mana changed to %dm.", stats.maxmana)
     elseif old > new then
-      echof("Your max mana decreased by %dm/%d%% to %d.", (old-new), 100-math.floor((100/old)*new), new)
+      svo.echof("Your max mana decreased by %dm/%d%% to %d.", (old-new), 100-math.floor((100/old)*new), new)
     else
-      echof("Your max mana increased by %dm/%d%% to %d.", (new-old), (math.floor((100/old)*new)-100), new)
+      svo.echof("Your max mana increased by %dm/%d%% to %d.", (new-old), (math.floor((100/old)*new)-100), new)
 
       sk.gotmaxmana = true
-      prompttrigger("check stain expiring", function()
-        if paragraph_length == 0 and sk.gotmaxhealth and sk.gotmaxmana and affs.stain then
-          removeaff("stain")
-          echof("I think stain faded.")
+      svo.prompttrigger("check stain expiring", function()
+        if svo.paragraph_length == 0 and sk.gotmaxhealth and sk.gotmaxmana and svo.affs.stain then
+          svo.removeaff("stain")
+          svo.echof("I think stain faded.")
         end
         sk.gotmaxhealth, sk.gotmaxmana = nil, nil
       end)
@@ -621,7 +664,7 @@ end
 
 signals.saveconfig:add_post_emit(function ()
   echo"\n"
-  echof("Saved system settings.")
+  svo.echof("Saved system settings.")
 end)
 
 signals.loadedconfig                 = luanotify.signal.new()
@@ -655,7 +698,8 @@ conf.ai_resetherbbal      = 2.5 -- normally at 1.6
 conf.ai_resetsalvebal     = 5
 conf.ai_resetmossbal      = 10  -- resets at 6
 if svo.haveskillset('healing') then
-conf.ai_resethealingbal        = 7   -- resets at 2s for healing allies, near 4s for healing yourself, and offensive skills as inbetween
+  -- resets at 2s for healing allies, near 4s for healing yourself, and offensive skills as inbetween
+  conf.ai_resethealingbal        = 7
 end
 conf.ai_resetpurgativebal = 10 -- it's 7s for voyria
 conf.ai_resetdragonhealbal = 20 -- 20s for dragonheal
@@ -787,7 +831,8 @@ sys.transmuteamount = 0
 sys.sp_satisfied, sys.blockparry = false, false
 sys.canoutr = true
 
--- the in-game custom prompt needs to show the game target and game target hp, since that isn't available in GMCP at the moment, as well as any class-specific balances and values
+-- the in-game custom prompt needs to show the game target and game target hp, since
+-- that isn't available in GMCP at the moment, as well as any class-specific balances and values
 if not svo.haveskillset('weaponmastery') then
 sys.ingamecustomprompt ="CONFIG PROMPT CUSTOM *hh, *mm, *ee, *ww *t*T *b*d*c-*r-s*s-"
 else
@@ -797,22 +842,16 @@ end
 -- used in lyre actions to prevent doubledo from activating - since that'd destroy the lyre right away
 sys.sendonceonly = false
 
--- a map that has possible commands linked to dict.action.balance entries
+-- a map that has possible commands linked to svo.dict.action.balance entries
 sys.input_to_actions = {}
--- a map that stores dict.action.balance.name
+-- a map that stores svo.dict.action.balance.name
 sys.last_used = {}
-
-$(
-local paths = {}; paths.oldpath = package.path; package.path = package.path..";./?.lua;./bin/?.lua;"; local pretty = require "pl.pretty"; package.path = paths.oldpath
-
-_put("sys.downloadurl = ".. pretty.write(url))
-)
 
 ---
 
-danaeusaffs = {"agoraphobia", "claustrophobia", "dizziness", "epilepsy", "hypersomnia", "vertigo"}
-nemesisaffs = {"agoraphobia", "recklessness", "confusion", "masochism", "loneliness"}
-scragaffs   = {"clumsiness", "healthleech", "lethargy", "sensitivity", "haemophilia", "darkshade"}
+svo.danaeusaffs = {"agoraphobia", "claustrophobia", "dizziness", "epilepsy", "hypersomnia", "vertigo"}
+svo.nemesisaffs = {"agoraphobia", "recklessness", "confusion", "masochism", "loneliness"}
+svo.scragaffs   = {"clumsiness", "healthleech", "lethargy", "sensitivity", "haemophilia", "darkshade"}
 
 ---
 
@@ -944,7 +983,8 @@ else
 disableTrigger("Voice balance")
 end
 
-if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
+if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido')
+  or svo.haveskillset('metamorphosis') then
 enableTrigger("Fitness balance")
 else
 disableTrigger("Fitness balance")
@@ -1054,26 +1094,27 @@ else
 disableTrigger("Age tracking")
 end
 
-local prompt_stats
+-- local oldsend
+-- local defupfinish, process_defs
+-- local wait_tbl
 
-local defs_data
-local oldsend
-local defupfinish, process_defs
-local wait_tbl
+svo.index_map = pl.tablex.index_map
 
-local index_map = pl.tablex.index_map
+-- local addaff, removeaff, checkanyaffs, updateaffcount
 
-local addaff, removeaff, checkanyaffs, updateaffcount
+-- lostbal_focus, lostbal_herb, lostbal_salve, lostbal_purgative, lostbal_sip
+sk.salvetick, sk.herbtick, sk.focustick, sk.teatick = 0, 0, 0, 0
+sk.purgativetick, sk.siptick, sk.mosstick, sk.dragonhealtick = 0, 0, 0, 0
+sk.smoketick, sk.voicetick, sk.wordtick =  0, 0, 0
 
-local lostbal_focus, lostbal_herb, lostbal_salve, lostbal_purgative, lostbal_sip
-sk.salvetick, sk.herbtick, sk.focustick, sk.teatick, sk.purgativetick, sk.siptick, sk.mosstick, sk.dragonhealtick, sk.smoketick, sk.voicetick, sk.wordtick = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 if svo.haveskillset('healing') then
 sk.healingtick = 0
 end
 if svo.haveskillset('venom') then
 sk.shruggingtick = 0
 end
-if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
+if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido')
+  or svo.haveskillset('metamorphosis') then
 sk.fitnesstick = 0
 end
 if svo.haveskillset('chivalry') then
@@ -1096,55 +1137,57 @@ sk.achaea_command_max_length = 2048
 -- a buffer to keep track of the commands the system has sent
 sk.systemscommands = {}
 
-local clear_balance_prios, clear_sync_prios
+-- local clear_balance_prios, clear_sync_prios
 
-local herb_cure, smoke_cure, focus_cure, sip_cure
-local promptcount, lastpromptnumber = 0, 0
+-- local herb_cure, smoke_cure, focus_cure, sip_cure
+svo.promptcount, svo.lastpromptnumber = 0, 0
 
-local config_dict, vecho
+-- local config_dict, vecho
 
-local make_prio_table, make_sync_prio_table
+-- local make_prio_table, make_sync_prio_table
 
-local findbybal, findbybals, will_take_balance
+-- local findbybal, findbybals, will_take_balance
 
 
-local make_gnomes_work, send_in_the_gnomes, make_gnomes_work_async, make_gnomes_work_sync
+-- local make_gnomes_work, send_in_the_gnomes, make_gnomes_work_async, make_gnomes_work_sync
 
-local apply_cure, sacid, eat, sip, apply
+-- local apply_cure, sacid, eat, sip, apply
 
-local send = _G.send
+svo.send = _G.send
 
-local update
+-- local update
 
 -- possible afflictions that need to go through a check first
-local affsp = {}
+svo.affsp = {}
 
-local rift, pipes = {}, {}
+svo.rift, svo.pipes = {}, {}
 
-local check_focus, check_salve, check_sip, check_purgative, check_herb, check_moss, check_misc, check_balanceless_acts, check_balanceful_acts, check_smoke
+-- local check_focus, check_salve, check_sip, check_purgative, check_herb, check_moss
+-- local check_misc, check_balanceless_acts, check_balanceful_acts, check_smoke
 
-local generics_enabled, generics_enabled_for_blackout, generics_enabled_for_passive, enable_generic_trigs, disable_generic_trigs, check_generics
+-- local generics_enabled, generics_enabled_for_blackout, generics_enabled_for_passive
+-- local enable_generic_trigs, disable_generic_trigs, check_generics
 
-local passive_cure_paragraph
+-- local passive_cure_paragraph
 
-local sp_checksp, sp_limbs
+-- local sp_checksp, sp_limbs
 
-local install = {}
+svo.install = {}
 
-local life = {}
-echos, echosd = {}, {}
+svo.life = {}
+svo.echos, svo.echosd = {}, {}
 
 sk.ignored_defences, sk.ignored_defences_map = {}, {}
 sk.zeromana = false
 
-pflags = {}
+svo.pflags = {}
 
 --[=[
 uncommented for now: Makes svof prone to illusions with server side turned on
 signals.svogotaff:connect(function(isloki)
-  if dict.svotossa[isloki] and not gaffl[dict.svotossa[isloki]] and conf.serverside then
-    echof("Svo caught "..isloki.." ("..dict.svotossa[isloki].."), predicting for serverside.")
-    send("CURING PREDICT "..dict.svotossa[isloki])
+  if svo.dict.svotossa[isloki] and not gaffl[svo.dict.svotossa[isloki]] and conf.serverside then
+    svo.echof("Svo caught "..isloki.." ("..svo.dict.svotossa[isloki].."), predicting for serverside.")
+    send("CURING PREDICT "..svo.dict.svotossa[isloki])
   end
 end)
 --]=]
@@ -1165,13 +1208,13 @@ sk.checkaeony = function()
     conf.commandecho = true
     sys.sync = true
     signals.sync:emit()
-    signals.sysdatasendrequest:unblock(cnrl.processcommand)
+    signals.sysdatasendrequest:unblock(svo.cnrl.processcommand)
 
     -- kill actions prior to this, so we can do aeon
     local to_kill = {}
     for k,v in actions:iter() do
       if v.p.balance ~= "waitingfor" and v.p.balance ~= "aff" and v.p.balance ~= "gone" and v.p.name ~= "aeon_smoke" and v.p.name ~= "checkslows_misc" and v.p.name ~= "touchtree_misc" then -- don't kill aeon_smoke: if we do, we double-smoke. instead, since smoke is started before sync is set: add a customwait delay. Don't kill tree touching either, could help for asthma
-        to_kill[#to_kill+1] = dict[v.p.action_name][v.p.balance]
+        to_kill[#to_kill+1] = svo.dict[v.p.action_name][v.p.balance]
       end
     end
 
@@ -1180,24 +1223,24 @@ sk.checkaeony = function()
     end
 
     echo("\n")
-    echof("%s mode enabled.", (math.random(1, 20) == 20 and "Matrix" or "Slow curing"))
+    svo.echof("%s mode enabled.", (math.random(1, 20) == 20 and "Matrix" or "Slow curing"))
 
     if conf.autotsc then
       if affs.retardation then
         conf.blockcommands = false -- bypass config.set, because that calls gnomes for us
-        echo"\n" echof(" (autotsc) - command overrides enabled.")
+        echo"\n" svo.echof(" (autotsc) - command overrides enabled.")
       elseif affs.aeon then
         conf.blockcommands = true
-        echo"\n" echof(" (autotsc) - command denies enabled.")
+        echo"\n" svo.echof(" (autotsc) - command denies enabled.")
       end
     end
   elseif sys.sync and not (affs.aeon or affs.retardation) then
     conf.commandecho = oldecho
     sys.sync = false
     signals.sync:emit()
-    signals.sysdatasendrequest:block(cnrl.processcommand)
+    signals.sysdatasendrequest:block(svo.cnrl.processcommand)
     echo("\n")
-    echof("Slow curing mode disabled.")
+    svo.echof("Slow curing mode disabled.")
   end
 end
 
@@ -1241,33 +1284,43 @@ signals.systemstart:connect(function ()
 end);
 
 if svo.haveskillset('metamorphosis') then
-  (tempExactMatchTrigger or tempTrigger)("You take a deep breath and realise your error - you sputter and engulf yourself in fire!",
+  (tempExactMatchTrigger or tempTrigger)(
+    "You take a deep breath and realise your error - you sputter and engulf yourself in fire!",
     [[svo.valid.simpleablaze()]]);
 
   tempRegexTrigger([[^Your soul quakes and shifts as the spirits depart, leaving you .+ once more\.$]],
     [[
-      for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"} do
+      for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor",
+        "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla",
+         "icewyrm", "wyvern", "hydra"} do
         if svo.defc[morph] then svo.defs["lost_"..morph]() end
       end
     ]]);
 
   tempRegexTrigger([[^You remain in .+ form, dolt\.$]],
     [[
-      for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"} do
+      for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor",
+        "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla",
+        "icewyrm", "wyvern", "hydra"} do
         if svo.defc[morph] then svo.defs["lost_"..morph]() end
       end
     ]]);
 
   tempRegexTrigger([[^You are already in .+ form\.$]],
     [[
-      for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"} do
+      for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor",
+        "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla",
+        "icewyrm", "wyvern", "hydra"} do
         if svo.defc[morph] then svo.defs["lost_"..morph]() end
       end
     ]]);
 
-  tempRegexTrigger([[^You writhe in spiritual torment as the creature spirit is torn from your soul \- you are .+ once more\.$]],
+  tempRegexTrigger(
+    [[^You writhe in spiritual torment as the creature spirit is torn from your soul \- you are .+ once more\.$]],
     [[
-      for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"} do
+      for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor",
+        "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla",
+        "icewyrm", "wyvern", "hydra"} do
         if svo.defc[morph] then svo.defs["lost_"..morph]() end
         svo.valid.simplecantmorph()
       end
@@ -1275,7 +1328,8 @@ if svo.haveskillset('metamorphosis') then
 
   (tempExactMatchTrigger or tempTrigger)("You cannot possibly morph again so soon.", "svo.valid.simplecantmorph()");
 
-  (tempExactMatchTrigger or tempTrigger)("You feel your bond with the animal spirits strengthen, allowing you to morph once again.",
+  (tempExactMatchTrigger or tempTrigger)(
+    "You feel your bond with the animal spirits strengthen, allowing you to morph once again.",
     [[svo.valid.cantmorph_woreoff()]]);
 end
 
@@ -1318,26 +1372,10 @@ signals.systemstart:connect(function ()
 
   if #toomany == 0 then return end
 
-  tempTimer(10, function () echof("Warning! You have multiple %s svo folders while you only should have one per aliases, triggers, etc. Delete the extra ones.", table.concat(toomany, ", ")) end)
+  tempTimer(10, function ()
+    svo.echof("Warning! You have multiple %s svo folders while you only should have one per aliases, triggers, etc."
+      .." Delete the extra ones.", table.concat(toomany, ", ")) end)
 end)
-
--- fix iffy table.save
-function table.save( sfile, t )
-    local tables = {}
-    table.insert( tables, t )
-    local lookup = { [t] = 1 }
-    local file, msg = io.open( sfile, "w" )
-    if not file then return nil, msg end
-
-    file:write( "return {" )
-    for i,v in ipairs( tables ) do
-        table.pickle( v, file, tables, lookup )
-    end
-    file:write( "}" )
-    file:close()
-
-    return true
-end
 
 -- load the lust list
 signals.systemstart:connect(function ()
@@ -1346,7 +1384,7 @@ signals.systemstart:connect(function ()
   if lfs.attributes(conf_path) then
     local t = {}
     table.load(conf_path, t)
-    update(me.lustlist, t)
+    svo.update(me.lustlist, t)
   end
 end)
 
@@ -1359,7 +1397,7 @@ signals.systemstart:connect(function ()
   if lfs.attributes(conf_path) then
     local t = {}
     table.load(conf_path, t)
-    update(me.hoistlist, t)
+    svo.update(me.hoistlist, t)
   end
 end)
 
@@ -1372,13 +1410,13 @@ signals.systemstart:connect(function ()
   if lfs.attributes(conf_path) then
     local t = {}
     table.load(conf_path, t)
-    update(ignore, t)
+    svo.update(svo.ignore, t)
   end
 
-  ignore.checkparalysis = true
+  svo.ignore.checkparalysis = true
 end)
 
-signals.saveconfig:connect(function () table.save(getMudletHomeDir() .. "/svo/config/ignore", ignore) end)
+signals.saveconfig:connect(function () table.save(getMudletHomeDir() .. "/svo/config/ignore", svo.ignore) end)
 
 -- load the locatelist
 signals.systemstart:connect(function ()
@@ -1388,10 +1426,12 @@ signals.systemstart:connect(function ()
     local t = {}
     table.load(conf_path, t)
     me.locatelist = me.locatelist or {} -- make sure it's initialized
-    update(me.locatelist, t)
+    svo.update(me.locatelist, t)
   end
 end)
-signals.saveconfig:connect(function () me.locatelist = me.locatelist or {}; table.save(getMudletHomeDir() .. "/svo/config/locatelist", me.locatelist) end)
+signals.saveconfig:connect(function () me.locatelist = me.locatelist or {}
+  table.save(getMudletHomeDir() .. "/svo/config/locatelist", me.locatelist)
+end)
 
 -- load the watchfor list
 signals.systemstart:connect(function ()
@@ -1401,10 +1441,12 @@ signals.systemstart:connect(function ()
     local t = {}
     table.load(conf_path, t)
     me.watchfor = me.watchfor or {} -- make sure it's initialized
-    update(me.watchfor, t)
+    svo.update(me.watchfor, t)
   end
 end)
-signals.saveconfig:connect(function () me.watchfor = me.watchfor or {}; table.save(getMudletHomeDir() .. "/svo/config/watchfor", me.watchfor) end)
+signals.saveconfig:connect(function () me.watchfor = me.watchfor or {}
+  table.save(getMudletHomeDir() .. "/svo/config/watchfor", me.watchfor)
+end)
 
 -- load the tree list
 signals.systemstart:connect(function ()
@@ -1493,9 +1535,9 @@ signals.saveconfig:connect(function ()
 end)
 
 for _, config in ipairs{
- {location = "serverignore", localtable = serverignore, errormsg = "re-set all of the server ignore strats"},
- {location = "cadmusaffs", localtable = me.cadmusaffs, errormsg = "re-set all of the cadmus affs"},
- {location = "prefercustom", localtable = me.curelist, errormsg = "re-set all of the custom curelist"},
+ {location = "serverignore", localtable = svo.serverignore, errormsg = "re-set all of the server ignore strats"},
+ {location = "cadmusaffs", localtable = svo.me.cadmusaffs, errormsg = "re-set all of the cadmus affs"},
+ {location = "prefercustom", localtable = svo.me.curelist, errormsg = "re-set all of the custom curelist"},
 } do
   -- load the config.location list
   signals.systemstart:connect(function ()
@@ -1506,7 +1548,9 @@ for _, config in ipairs{
       if not ok then
         os.remove(conf_path)
         tempTimer(10, function()
-          echof("Your %s serverignore file got corrupted for some reason - I've deleted it so the system can load other stuff OK. You'll need to %s, though. (%q)", config.location, config.errormsg, msg)
+          svo.echof("Your %s serverignore file got corrupted for some reason - "
+            .."I've deleted it so the system can load other stuff OK. You'll need to %s, though. (%q)",
+            config.location, config.errormsg, msg)
         end)
       end
     end
@@ -1528,7 +1572,9 @@ signals.systemstart:connect(function ()
     if not ok then
       os.remove(conf_path)
       tempTimer(10, function()
-        echof("Your shrugging strats file got corrupted for some reason - I've deleted it so the system can load other stuff OK. You'll need to re-set all of the shrugging strats again, though. (%q)", msg)
+        svo.echof("Your shrugging strats file got corrupted for some reason - "
+          .."I've deleted it so the system can load other stuff OK. "
+          .."You'll need to re-set all of the shrugging strats again, though. (%q)", msg)
       end)
     end
   else
@@ -1543,7 +1589,7 @@ end)
 end
 
 -- data for normal/trans sipping
-es_categories = {
+svo.es_categories = {
   ["a caloric salve"]         = "salve",
   ["a salve of mass"]         = "salve",
   ["a salve of mending"]      = "salve",
@@ -1582,13 +1628,12 @@ es_categories = {
   ["the venom selarnia"]      = "venom",
   ["the venom slike"]         = "venom",
   ["the venom sumac"]         = "venom",
-  ["the venom sumac"]         = "venom",
   ["the venom vardrax"]       = "venom",
   ["the venom vernalius"]     = "venom",
   ["the venom voyria"]        = "venom",
   ["the venom xentio"]        = "venom",
 }
-es_shortnames = {
+svo.es_shortnames = {
   aconite        = "the venom aconite",
   caloric        = "a caloric salve",
   camus          = "the venom camus",
@@ -1625,7 +1670,6 @@ es_shortnames = {
   slike          = "the venom slike",
   speed          = "an elixir of speed",
   sumac          = "the venom sumac",
-  sumac          = "the venom sumac",
   vardrax        = "the venom vardrax",
   venom          = "an elixir of venom",
   vernalius      = "the venom vernalius",
@@ -1633,14 +1677,15 @@ es_shortnames = {
   xentio         = "the venom xentio",
   empty          = "empty", -- so changing desired amounts knows what to use
 }
-es_shortnamesr = {}
-for k,v in pairs(es_shortnames) do es_shortnamesr[v] = k end
+svo.es_shortnamesr = {}
+for k,v in pairs(svo.es_shortnames) do svo.es_shortnamesr[v] = k end
 
 -- initialize this for the sipping tracking (the thing that decides what to fallback to)
-es_potions = es_potions or {}
+svo.es_potions = svo.es_potions or {}
+local es_potions = svo.es_potions
 
 -- load defaults
-for thing, category in pairs(es_categories) do
+for thing, category in pairs(svo.es_categories) do
   es_potions[category] = es_potions[category] or {}
   -- consider 1 so we don't drink the aternative on prefer* right away
   if category == "venom" then

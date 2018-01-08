@@ -372,7 +372,7 @@ end
       filtering is done.
   ]]
 
-dict = {
+svo.dict = {
   gamename = nil, -- (string) what serverside calls this by - names can be different as they were revealed years after Svof was made
   onservereignore = nil, -- (function) a function which'll return true if this needs to be ignored serverside
   healhealth = {

@@ -56,7 +56,7 @@ defs.mode = "basic"
 -- defc = current defs
 
 -- specialskip: if this function returns true, that defence will be ignored for defup
-defs_data = pl.OrderedMap {}
+svo.defs_data = pl.OrderedMap {}
   defs_data:set("softfocus", { type = "general",
     mana = "lots",
     def = "You have softened the focus of your eyes.",

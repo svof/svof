@@ -1342,7 +1342,7 @@ local old_public_addaff = function (which)
     elseif dict[which].aff then
       dict[which].aff.oncompleted()
     else
-      addaff(dict[which])
+      old_internal_addaff(dict[which])
     end
 
     signals.after_lifevision_processing:unblock(cnrl.checkwarning)
