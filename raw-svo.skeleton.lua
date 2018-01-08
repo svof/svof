@@ -1308,15 +1308,15 @@ end
 -- adds an affliction for the system to be tracking (ie - you are afflicted with it)
 -- does not mess with aff.<affliction>s table if the aff is already registered.
 -- this is the old internal 'addaff' function that Svof used when it was out of Mudlet
-local old_internal_addaff = function (new)
-  if not new then debugf("no new, log: %s", debug.traceback()) end
-  if affs[new.name] then return end
+local old_internal_addaff = function (new_aff)
+  if not new_aff then debugf("no new, log: %s", debug.traceback()) end
+  if affs[new_aff.name] then return end
 
-  local name = new.name
+  local name = new_aff.name
 
   affs[name] = {
-    p = new,
-    sw = new.sw or createStopWatch()
+    p = new_aff,
+    sw = new_aff.sw or createStopWatch()
   }
   startStopWatch(affs[name].sw)
 
@@ -1330,19 +1330,19 @@ local old_internal_addaff = function (new)
   end
 end
 -- this is the old public 'addaff' function that Svof enabled when it was out of Mudlet
-local old_public_addaff = function (which)
-  svo.assert(type(which) == "string", "svo.addaff: what aff would you like to add? name must be a string")
-  svo.assert(dict[which] and dict[which].aff, "svo.addaff: "..which.." isn't a known aff name")
+local old_public_addaff = function (new_aff)
+  svo.assert(type(new_aff) == "string", "svo.addaff: what aff would you like to add? name must be a string")
+  svo.assert(dict[new_aff] and dict[new_aff].aff, "svo.addaff: "..new_aff.." isn't a known aff name")
 
-  if affs[which] then
+  if affs[new_aff] then
     return false
   else
-    if dict[which].aff and dict[which].aff.forced then
-      dict[which].aff.forced()
-    elseif dict[which].aff then
-      dict[which].aff.oncompleted()
+    if dict[new_aff].aff and dict[new_aff].aff.forced then
+      dict[new_aff].aff.forced()
+    elseif dict[new_aff].aff then
+      dict[new_aff].aff.oncompleted()
     else
-      old_internal_addaff(dict[which])
+      old_internal_addaff(dict[new_aff])
     end
 
     signals.after_lifevision_processing:unblock(cnrl.checkwarning)
@@ -1353,11 +1353,11 @@ local old_public_addaff = function (which)
     return true
   end
 end
-svo.addaff = function(what)
-  if type(what) == "table" then
-    old_internal_addaff(what)
+svo.addaff = function(aff_string_or_table)
+  if type(aff_string_or_table) == "table" then
+    old_internal_addaff(aff_string_or_table)
   else
-    old_public_addaff(what)
+    old_public_addaff(aff_string_or_table)
   end
 end
 
