@@ -1021,9 +1021,9 @@ config_dict = pl.OrderedMap {
     type = "boolean",
     -- vconfig2 = true,
     -- onshow = "Raise Mudlet events on each affliction",
-    onenabled = function () update_eventaffs() echof("<0,250,0>Will%s raise Mudlet events for gained/lost afflictions.", getDefaultColor()) end,
-    ondisabled = function () conf.eventaffs = true; update_eventaffs() echof("eventaffs are on by default now - and this option is depreciated; there's no point in turning it off.") end,
-    installstart = function () conf.eventaffs = true; update_eventaffs() end
+    onenabled = function () echof("<0,250,0>Will%s raise Mudlet events for gained/lost afflictions.", getDefaultColor()) end,
+    ondisabled = function () conf.eventaffs = true echof("eventaffs are on by default now - and this option is depreciated; there's no point in turning it off.") end,
+    installstart = function () conf.eventaffs = true end
   }},
   {gagclot = {
     type = "boolean",
@@ -1916,7 +1916,6 @@ do
   if conf.ai_resetpurgativebal == 5 then conf.ai_resetpurgativebal = 10 end
 
   conf.eventaffs = true
-  update_eventaffs()
 
   cnrl.update_wait()
 
