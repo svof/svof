@@ -1032,7 +1032,7 @@ function svo.valid.bloodleech()
 end
 
 function svo.valid.defstrip(which)
-  assert(which, "svo.valid.defstrip: which defence was stripped?")
+  svo.assert(which, "svo.valid.defstrip: which defence was stripped?")
 
   local t = {
     ["anti-weapon field"]      = 'rebounding',
@@ -1795,7 +1795,7 @@ function valid.humour_truewrack()
 end
 
 function valid.got_humour(which)
-  assert(dict[which.."humour"], "svo.valid.got_humour: which humour to add?")
+  svo.assert(dict[which.."humour"], "svo.valid.got_humour: which humour to add?")
 
   local function countaffs(humour)
     local affs_in_a_humour = 3
@@ -2425,7 +2425,7 @@ function valid.no_refill_herb()
 end
 
 function valid.no_outr_herb(what)
-  assert(what, "svo.valid.no_outr_herb: requires a single argument")
+  svo.assert(what, "svo.valid.no_outr_herb: requires a single argument")
   if actions.doprecache_misc and rift.precache[what] ~= 0 and rift.riftcontents[what] ~= 0 and (rift.invcontents[what] < rift.precache[what]) then
     rift.riftcontents[what] = 0
     echo"\n" echof("Apparently we're out of %s! Can't precache it.", what)
@@ -3890,7 +3890,7 @@ for _, name in ipairs({"serioustrauma", "mildtrauma", "mildconcussion", "serious
 end
 
 valid.generic_burn = function (number)
-  assert(not number or tonumber(number), "svo.valid.simpleburn: how many removals do you want to do? Must be a number")
+  svo.assert(not number or tonumber(number), "svo.valid.simpleburn: how many removals do you want to do? Must be a number")
 
   checkaction(dict.ablaze.gone, true)
 

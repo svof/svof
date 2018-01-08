@@ -358,7 +358,7 @@ local old500p = false
 
 
 function prio_makefirst(action, balance)
-  assert(action and dict[action], "svo.prio_makefirst: " .. (action and action or "nil") .. " isn't a valid action.")
+  svo.assert(action and dict[action], "svo.prio_makefirst: " .. (action and action or "nil") .. " isn't a valid action.")
 
   local act = dict[action]
 
@@ -368,14 +368,14 @@ function prio_makefirst(action, balance)
     if act.aff then count = count - 1 end
     if act.waitingfor then count = count - 1 end
 
-    assert(count == 1, "svo.prio_makefirst: " .. action .. " uses more than one balance, which one do you want to move?")
+    svo.assert(count == 1, "svo.prio_makefirst: " .. action .. " uses more than one balance, which one do you want to move?")
     local balance = false
     for k,j in pairs(act) do
       if k ~= "aff" and k ~= "waitingfor" then balance = k end
     end
   end
 
-  assert(act[balance] and act[balance] ~= "aff" and act[balance] ~= "waitingfor", "svo.prio_makefirst: " .. action .. " doesn't use the " .. (balance and balance or "nil") .. " balance.")
+  svo.assert(act[balance] and act[balance] ~= "aff" and act[balance] ~= "waitingfor", "svo.prio_makefirst: " .. action .. " doesn't use the " .. (balance and balance or "nil") .. " balance.")
 
   local beforestate = sk.getbeforestateprios()
 
@@ -409,7 +409,7 @@ function prio_slowswap(what, arg3, echoback, callback, ...)
   local what, balance = what:match("(%w+)_(%w+)")
   local balance2
   if not tonumber(arg3) then
-    assert(balance and balance2, "What balances do you want to use for swapping?", sendf)
+    svo.assert(balance and balance2, "What balances do you want to use for swapping?", sendf)
     arg3, balance2 = arg3:match("(%w+)_(%w+)")
   end
 
@@ -447,7 +447,7 @@ end
 
 function prio_swap(what, balance, arg2, arg3, echoback, callback, ...)
   local sendf; if echoback then sendf = echof else sendf = errorf end
-  assert(what and dict[what] and balance and dict[what][balance] and balance ~= "aff" and balance ~= "waitingfor", "what item and balance do you want to swap?", sendf)
+  svo.assert(what and dict[what] and balance and dict[what][balance] and balance ~= "aff" and balance ~= "waitingfor", "what item and balance do you want to swap?", sendf)
 
   local function swaptwo(what, name, balance, ...)
     if dict[what][balance].aspriority < dict[name][balance].aspriority then
@@ -468,7 +468,7 @@ function prio_swap(what, balance, arg2, arg3, echoback, callback, ...)
   -- we want our 'what' to be at this arg2 number, swap what was there with its previous position
   if not arg3 then
 
-    assert(tonumber(arg2), "what number do you want to swap " .. what .. " with?", sendf)
+    svo.assert(tonumber(arg2), "what number do you want to swap " .. what .. " with?", sendf)
     local to_num = tonumber(arg2)
     local name = prio.getaction(to_num, balance)
 
@@ -491,7 +491,7 @@ function prio_swap(what, balance, arg2, arg3, echoback, callback, ...)
   end
 
   -- we want to swap two affs
-  assert(dict[arg2] and dict[arg2][arg3], "what balance of "..arg2.." do you want to swap with?", sendf)
+  svo.assert(dict[arg2] and dict[arg2][arg3], "what balance of "..arg2.." do you want to swap with?", sendf)
   swaptwo(what, arg2, arg3, ...)
 
   local afterstate = sk.getafterstateprios()
@@ -895,7 +895,7 @@ function printorder(balance, limited_around)
   -- translate the obvious 'balance' to 'physical'
   if balance == "balance" then balance = "physical" end
   local sendf; if echoback then sendf = echof else sendf = errorf end
-  assert(type(balance) == "string", "svo.printorder: what balance do you want to print for?", sendf)
+  svo.assert(type(balance) == "string", "svo.printorder: what balance do you want to print for?", sendf)
 
   -- get into table...
   local data = make_prio_table(balance)
@@ -1049,8 +1049,8 @@ end
 
 signals.systemstart:connect(function()
   _G.svo.removeaff = function (which)
-    assert(type(which) == "string", "svo.removeaff: what aff would you like to remove? name must be a string")
-    assert(dict[which] and dict[which].aff, "svo.removeaff: "..which.." isn't a known aff name")
+    svo.assert(type(which) == "string", "svo.removeaff: what aff would you like to remove? name must be a string")
+    svo.assert(dict[which] and dict[which].aff, "svo.removeaff: "..which.." isn't a known aff name")
 
     local removed = false
     if lifevision.l[which.."_aff"] then
@@ -1076,8 +1076,8 @@ signals.systemstart:connect(function()
   end
 
   _G.svo.removeafflevel = function (which, amount, keep)
-    assert(type(which) == "string", "svo.removeafflevel: what aff would you like to remove? name must be a string")
-    assert(dict[which] and dict[which].aff, "svo.removeafflevel: "..which.." isn't a known aff name")
+    svo.assert(type(which) == "string", "svo.removeafflevel: what aff would you like to remove? name must be a string")
+    svo.assert(dict[which] and dict[which].aff, "svo.removeafflevel: "..which.." isn't a known aff name")
 
     local removed = false
     if lifevision.l[which.."_aff"] then
@@ -1179,8 +1179,8 @@ function fullstats(newstatus, callback, echoback)
 end
 
 prompttrigger = function (name, func)
-  assert(name, "svo.prompttrigger: the name needs to be provided")
-  assert(type(func) == "function" or type(func) == "nil", "svo.prompttrigger: the second argument needs to be a Lua function or nil")
+  svo.assert(name, "svo.prompttrigger: the name needs to be provided")
+  svo.assert(type(func) == "function" or type(func) == "nil", "svo.prompttrigger: the second argument needs to be a Lua function or nil")
 
   sk.onprompt_beforeaction_add(name, func)
 end

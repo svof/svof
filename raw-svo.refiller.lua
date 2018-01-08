@@ -273,18 +273,18 @@ local function inpot(what, amount, pot)
 end
 
 function rf_fillpot(potion, fills, pot)
-  assert(potion and fills, "rf_fillpot: need to supply both what to brew and what amount to brew")
+  svo.assert(potion and fills, "rf_fillpot: need to supply both what to brew and what amount to brew")
 
   -- 1 set of ingredients = 1 fill
-  
+
   -- Have to change this. If I don't, it's going to be a massive
   -- rewrite of the entire refilling system, with lots of duplicate functions
   -- just to accomodate toxins.
-  --assert(concoctions[potion], "rf_fillpot: don't know about such a potion")
+  --svo.assert(concoctions[potion], "rf_fillpot: don't know about such a potion")
   if not concoctions[potion] and not toxins[potion] then
-    assert(false, "rf_fillpot: don't know about such a potion")
+    svo.assert(false, "rf_fillpot: don't know about such a potion")
   end
-  
+
   for item, amount in pairs(concoctions[potion]) do
     outr(item, amount * fills)
     inpot(item, amount * fills, pot or conf.potid)
@@ -405,14 +405,14 @@ function rf_nextpotion()
     raiseEvent("svo done refilling")
   else
     svo.echof("Going to work on refilling %s.", tostring(rf_refilling.currentorder))
-    
+
     -- change which trans to check based on what we're brewing
     if concoctions[rf_refilling.currentorder] then
       rf_currenttrans = svo.rf_transrefiller
     else
       rf_currenttrans = svo.rf_transtoxicology
     end
-    
+
     rf_fillpot(rf_refilling.currentorder,
       -- refill 5 health 2 arty means 3 normal + 2 arty!
       (rf_refilling.p[rf_refilling.currentorder].normal - rf_refilling.p[rf_refilling.currentorder].arty) * (rf_currenttrans and 4 or 5) +
@@ -425,9 +425,9 @@ function rf_nextpotion()
 end
 
 function rf_undopot(potion, fills, pot)
-  assert(potion and fills, "rf_undopot: need to supply potion and how many fills went in")
+  svo.assert(potion and fills, "rf_undopot: need to supply potion and how many fills went in")
 
-  assert(concoctions[potion], "rf_undopot: don't know about such a potion")
+  svo.assert(concoctions[potion], "rf_undopot: don't know about such a potion")
   for item, amount in pairs(concoctions[potion]) do
     doadd("get "..amount * fills.." "..item.." from "..(pot or conf.potid))
   end

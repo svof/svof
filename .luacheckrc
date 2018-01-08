@@ -23,13 +23,14 @@ files["raw-svo.setup.lua"] = {
          "knownskills", "haveskillset", "logging_in", "dont_unpause_login", "innews", "danaeusaffs", "nemesisaffs",
          "scragaffs", "index_map", "lastpromptnumber", "promptcount", "send", "pipes", "affsp", "rift", "install",
          "echosd", "echos", "life", "pflags", "paragraph_length", "es_categories", "es_shortnames", "es_shortnamesr",
-         "es_potions", "es_categories",
+         "es_potions", "es_categories", "assert",
         debugf        = { read_only = true },
         removeaff     = { read_only = true },
         echof         = { read_only = true },
         addaff        = { read_only = true },
         prompttrigger = { read_only = true },
         update        = { read_only = true },
+        killaction        = { read_only = true },
       }
     },
     Logger = {

@@ -21,7 +21,7 @@ do
 end
 
 valid.simplehoisted = function(name)
-  assert(name)
+  svo.assert(name)
 
   if (conf.autowrithe == "white" and me.hoistlist[name]) or (conf.autowrithe == "black" and not me.hoistlist[name]) then return end
 
@@ -71,7 +71,7 @@ valid.simplebleeding = function (amount)
 end
 
 valid.simplelovers = function (name)
-  assert(name)
+  svo.assert(name)
 
   if (conf.autoreject == "white" and me.lustlist[name]) or (conf.autoreject == "black" and not me.lustlist[name]) then return end
 
@@ -81,7 +81,7 @@ valid.simplelovers = function (name)
 end
 
 valid.simpleunknowncrippledleg = function (number)
-  assert(not number or tonumber(number), "svo.valid.simpleunknowncrippledleg: how many affs do you want to add? Must be a number")
+  svo.assert(not number or tonumber(number), "svo.valid.simpleunknowncrippledleg: how many affs do you want to add? Must be a number")
 
   checkaction(dict.unknowncrippledleg.aff, true)
 
@@ -93,7 +93,7 @@ valid.simpleunknowncrippledleg = function (number)
 end
 
 valid.simpleunknowncrippledarm = function (number)
-  assert(not number or tonumber(number), "svo.valid.simpleunknowncrippledarm: how many affs do you want to add? Must be a number")
+  svo.assert(not number or tonumber(number), "svo.valid.simpleunknowncrippledarm: how many affs do you want to add? Must be a number")
 
   checkaction(dict.unknowncrippledarm.aff, true)
 
@@ -105,7 +105,7 @@ valid.simpleunknowncrippledarm = function (number)
 end
 
 valid.simpleunknowncrippledlimb = function (number)
-  assert(not number or tonumber(number), "svo.valid.simpleunknowncrippledlimb: how many affs do you want to add? Must be a number")
+  svo.assert(not number or tonumber(number), "svo.valid.simpleunknowncrippledlimb: how many affs do you want to add? Must be a number")
 
   checkaction(dict.unknowncrippledlimb.aff, true)
 
@@ -117,8 +117,8 @@ valid.simpleunknowncrippledlimb = function (number)
 end
 
 valid.simpleunknownany = function (number)
-  assert(not number or tonumber(number), "svo.valid.simpleunknownany: how many affs do you want to add? Must be a number")
-  if number then assert(number > 0, "svo.valid.simpleunknownany: number must be positive") end
+  svo.assert(not number or tonumber(number), "svo.valid.simpleunknownany: how many affs do you want to add? Must be a number")
+  if number then svo.assert(number > 0, "svo.valid.simpleunknownany: number must be positive") end
 
   checkaction(dict.unknownany.aff, true)
   if lifevision.l.unknownany_aff then
@@ -135,8 +135,8 @@ valid.simpleunknownany = function (number)
 end
 
 valid.simpleunknownmental = function (number)
-  assert(not number or tonumber(number), "svo.valid.simpleunknownany: how many affs do you want to add? Must be a number")
-  if number then assert(number > 0, "svo.valid.simpleunknownmental: number must be positive") end
+  svo.assert(not number or tonumber(number), "svo.valid.simpleunknownany: how many affs do you want to add? Must be a number")
+  if number then svo.assert(number > 0, "svo.valid.simpleunknownmental: number must be positive") end
 
   checkaction(dict.unknownmental.aff, true)
   if lifevision.l.unknownmental_aff then
@@ -154,7 +154,7 @@ end
 
 for _, affname in ipairs({"skullfractures", "crackedribs", "wristfractures", "torntendons"}) do
   valid["simple"..affname] = function (number)
-    assert(not number or tonumber(number), "svo.valid.simple"..affname..": how many affs do you want to add? Must be a number")
+    svo.assert(not number or tonumber(number), "svo.valid.simple"..affname..": how many affs do you want to add? Must be a number")
 
     checkaction(dict[affname].aff, true)
 

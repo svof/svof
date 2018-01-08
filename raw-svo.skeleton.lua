@@ -20,7 +20,7 @@ function echon(...)
 end
 
 function contains(t, value)
-  assert(type(t) == "table", "svo.contains wants a table!")
+  svo.assert(type(t) == "table", "svo.contains wants a table!")
 
   for k, v in pairs(t) do
     if v == value then
@@ -440,7 +440,7 @@ end
 -- special: adds something where required, ie, first position in the queue
 -- was necessary to have blackout be above everything else so stun AI doesn't slow it down 'till next prompt
 function lifevision.addcust(what, where, other_action, arg)
-  assert(what, "svo.lifevision.addcust wants an argument")
+  svo.assert(what, "svo.lifevision.addcust wants an argument")
   lifevision.l:insert(where, what.name, {
     p = what,
     other_action = other_action,
@@ -630,8 +630,8 @@ function sk.balance_controller()
 end
 
 function addbalanceless(name, func)
-  assert(name and func, "svo.addbalanceless: both name and function are required")
-  assert(type(func) == 'function', "svo.addbalanceless: function needs to be an actual function, while you gave it a "..type(func))
+  svo.assert(name and func, "svo.addbalanceless: both name and function are required")
+  svo.assert(type(func) == 'function', "svo.addbalanceless: function needs to be an actual function, while you gave it a "..type(func))
 
   balanceless[name] = func
 end
@@ -641,8 +641,8 @@ function removebalanceless(name)
 end
 
 function addbalanceful(name, func)
-  assert(name and func, "svo.addbalanceful: both name and function are required")
-  assert(type(func) == "function", "svo.addbalanceful: second argument has to be a function (you gave it a "..type(func)..")")
+  svo.assert(name and func, "svo.addbalanceful: both name and function are required")
+  svo.assert(type(func) == "function", "svo.addbalanceful: second argument has to be a function (you gave it a "..type(func)..")")
 
   balanceful[name] = func
 end
@@ -1331,8 +1331,8 @@ local old_internal_addaff = function (new)
 end
 -- this is the old public 'addaff' function that Svof enabled when it was out of Mudlet
 local old_public_addaff = function (which)
-  assert(type(which) == "string", "svo.addaff: what aff would you like to add? name must be a string")
-  assert(dict[which] and dict[which].aff, "svo.addaff: "..which.." isn't a known aff name")
+  svo.assert(type(which) == "string", "svo.addaff: what aff would you like to add? name must be a string")
+  svo.assert(dict[which] and dict[which].aff, "svo.addaff: "..which.." isn't a known aff name")
 
   if affs[which] then
     return false

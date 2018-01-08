@@ -31,8 +31,8 @@ svo.doaction = function(arg1, arg2)
   else
     which = arg1
     balance = arg2
-    assert(dict[which], "svo.doaction: "..which.." action doesn't exist. See 'vshow ignorelist' for a list of them.")
-    assert(dict[which][balance], "svo.doaction: "..which.." doesn't have a "..balance.. " balance.")
+    svo.assert(dict[which], "svo.doaction: "..which.." action doesn't exist. See 'vshow ignorelist' for a list of them.")
+    svo.assert(dict[which][balance], "svo.doaction: "..which.." doesn't have a "..balance.. " balance.")
   end
   --it'll be in format of dict.what.#somebalance
   -- add to a table, create timers and store id's in there
@@ -243,7 +243,7 @@ end
 
 -- used by lifevision system to complete an action that was seen in the paragraph (when no illusion was seen)
 svo.actionfinished = function(act, other_action, arg)
-  assert(act, "svo.actionfinished wants an argument")
+  svo.assert(act, "svo.actionfinished wants an argument")
   if not act.name or not actions[act.name] or not actions[act.name].completed then
     echo("(e!)")
     debugf("actionfinished: %s", debug.traceback())
@@ -295,7 +295,7 @@ svo.killaction = function (act)
     return
   end
 
-  assert(act, "svo.killaction wants an argument")
+  svo.assert(act, "svo.killaction wants an argument")
 
   if not actions[act.name] then return end
 
@@ -343,7 +343,7 @@ svo.usingbalance = svo.usingbal
 -- slight problem with this - it uses the short name, without the balance/action - so some misc things such as sleep,
 --  which can happen at once, are a problem. workaround is to combine doingaction with usingbal in there.
 svo.doingaction = function (which)
-  assert(which, "svo.doingaction wants an argument")
+  svo.assert(which, "svo.doingaction wants an argument")
 
   return actions_performed[which] and true or false
 end

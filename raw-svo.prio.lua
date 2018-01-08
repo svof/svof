@@ -12,7 +12,7 @@ pl.dir.makepath(getMudletHomeDir() .. "/svo/prios")
 
 function prio.export (name, options, echoback)
   local sendf; if echoback then sendf = echof end
-  assert(name, "what name do you want to save this list as?", sendf)
+  svo.assert(name, "what name do you want to save this list as?", sendf)
 
   -- kv table of what to export
   local to_export = {
@@ -179,8 +179,8 @@ end
 
 -- returns a sorted list of actions in a balance by priority
 function prio.sortlist(actions, balance)
-  assert(type(actions) == "table", "svo.prio.sortlist: actions must be an indexed table (a list)")
-  assert(balance, "svo.prio.sortlist: in which balance do you want to check these actions in?")
+  svo.assert(type(actions) == "table", "svo.prio.sortlist: actions must be an indexed table (a list)")
+  svo.assert(balance, "svo.prio.sortlist: in which balance do you want to check these actions in?")
 
   table.sort(actions, function(a,b)
     return dict[a] and dict[a][balance] and dict[b] and dict[b][balance] and
@@ -191,13 +191,13 @@ function prio.sortlist(actions, balance)
 end
 
 function prio.getaction(num, balance)
-  assert(num and balance, "What number and balance to use?")
+  svo.assert(num and balance, "What number and balance to use?")
   local data = make_prio_table(balance)
   return data[num]
 end
 
 function prio.getslowaction(num)
-  assert(num, "What number to use?")
+  svo.assert(num, "What number to use?")
   local data = make_sync_prio_table("%s_%s")
   if data[num] then
     return data[num]:match("(%w+)_(%w+)")
@@ -301,7 +301,7 @@ function prio.insert(action, balance, number, echoback)
 end
 
 function prio.getnumber(aff, balance)
-  assert(aff and balance and dict[aff] and dict[aff][balance], "Such affliction/defence or balance doesn't exist")
+  svo.assert(aff and balance and dict[aff] and dict[aff][balance], "Such affliction/defence or balance doesn't exist")
   return dict[aff][balance].aspriority
 end
 
@@ -416,7 +416,7 @@ function prio.import(name, echoback, report_errors, use_default)
         _put(string.format("%q", prios))
         )
   else
-    assert(lfs.attributes(path), name .. " prio doesn't exist.", sendf)
+    svo.assert(lfs.attributes(path), name .. " prio doesn't exist.", sendf)
 
     io.input(path)
     s = io.read("*all")

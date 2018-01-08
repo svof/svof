@@ -7,7 +7,7 @@
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 function togglesip(what)
-  assert(what == nil or what == "health" or what == "mana", "svo.togglesip wants 'health' or 'mana' as an argument")
+  svo.assert(what == nil or what == "health" or what == "mana", "svo.togglesip wants 'health' or 'mana' as an argument")
 
   local beforestate = sk.getbeforestateprios()
 
@@ -812,7 +812,7 @@ end
 
 
 function app(what, quiet)
-  assert(what == nil or what == "on" or what == "off" or type(what) == "boolean", "svo.app wants 'on' or 'off' as an argument")
+  svo.assert(what == nil or what == "on" or what == "off" or type(what) == "boolean", "svo.app wants 'on' or 'off' as an argument")
 
   if what == "on" or what == true or (what == nil and not conf.paused) then
     conf.paused = true
@@ -828,7 +828,7 @@ function app(what, quiet)
 end
 
 function dop(what, echoback)
-  assert(what == nil or what == "on" or what == "off" or type(what) == "boolean", "svo.dop wants 'on' or 'off' as an argument")
+  svo.assert(what == nil or what == "on" or what == "off" or type(what) == "boolean", "svo.dop wants 'on' or 'off' as an argument")
 
   if what == "on" or what == true or (what == nil and not me.dopaused) then
     me.dopaused = true
@@ -1085,7 +1085,7 @@ function afflist()
 end
 
 function adddefinition(tag, func)
-  assert(type(tag) == "string" and type(func) == "string", "svo.adddefinition: need both tag and function to be strings")
+  svo.assert(type(tag) == "string" and type(func) == "string", "svo.adddefinition: need both tag and function to be strings")
   cp.adddefinition(tag, func)
 end
 

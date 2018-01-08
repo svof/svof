@@ -213,7 +213,7 @@ function sp_setparry(what, echoback)
     n = "nothing"
   }
 
-  assert(t[what], "invalid short letter for svo.sp_setparry", sendf)
+  svo.assert(t[what], "invalid short letter for svo.sp_setparry", sendf)
 
   for limb, _ in pairs(sp_limbs) do
     if limb == t[what] then sp_config.parry_shouldbe[limb] = true

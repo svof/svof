@@ -504,7 +504,7 @@ if svo.haveskillset('shindo') then
     off = "You cease concentration and your mind net vanishes."})
   defs_data:set("constitution", { type = "shindo",
     def = "You are using your superior constitution to prevent nausea.",
-    on = {"You clench the muscles in your stomach, determined to assert your superior constitution.", "You are using your superior constitution to prevent nausea."}})
+    on = {"You clench the muscles in your stomach, determined to svo.assert your superior constitution.", "You are using your superior constitution to prevent nausea."}})
   defs_data:set("waterwalk", { type = "shindo",
     def = "You are poised to glide across the surface of water.",
     on = {"You are already poised to glide across the surface of water.", "Dancing lightly on your feet, you prepare to run across the surface of water."}})
@@ -1741,7 +1741,7 @@ if svo.haveskillset('kaido') then
     off = {"You are not using Shindo Dodging.", "You cease watching the skies."}})
   defs_data:set("constitution", { type = "kaido",
     def = "You are using your superior constitution to prevent nausea.",
-    on = {"You clench the muscles in your stomach, determined to assert your superior constitution.", "You are using your superior constitution to prevent nausea."}})
+    on = {"You clench the muscles in your stomach, determined to svo.assert your superior constitution.", "You are using your superior constitution to prevent nausea."}})
   defs_data:set("splitmind", { type = "kaido",
     on = {"You begin to devote a portion of your Kaido-trained mind to constant, unconscious meditation.", "Your mind is already split."},
     def = "Your mind is split, allowing constant meditation.",
@@ -2815,8 +2815,8 @@ end
 function create_defmode(which, echoback)
   local sendf; if echoback then sendf = echof end
 
-  assert(which, "Which defences mode do you want to create?", sendf)
-  assert(not (defdefup[which] and defkeepup[which]), which .. " defences mode already exists.", sendf)
+  svo.assert(which, "Which defences mode do you want to create?", sendf)
+  svo.assert(not (defdefup[which] and defkeepup[which]), which .. " defences mode already exists.", sendf)
 
   defdefup[which] = {}
   defkeepup[which] = {}
@@ -2840,9 +2840,9 @@ end
 function copy_defmode(which, newname, echoback)
   local sendf; if echoback then sendf = echof end
 
-  assert(which, "Which defences mode do you want to copy?", sendf)
-  assert(defdefup[which] and defkeepup[which], which .. " defences mode doesn't exist.", sendf)
-  assert(newname, "To which name do you want to rename " .. which .. " to?", sendf)
+  svo.assert(which, "Which defences mode do you want to copy?", sendf)
+  svo.assert(defdefup[which] and defkeepup[which], which .. " defences mode doesn't exist.", sendf)
+  svo.assert(newname, "To which name do you want to rename " .. which .. " to?", sendf)
 
   defdefup[newname] = deepcopy(defdefup[which])
   defkeepup[newname] = deepcopy(defkeepup[which])
@@ -2853,9 +2853,9 @@ end
 function rename_defmode(which, newmode, echoback)
   local sendf; if echoback then sendf = echof end
 
-  assert(which, "Which defences mode do you want to rename?", sendf)
-  assert(defdefup[which] and defkeepup[which], which .. " defences mode doesn't exist.", sendf)
-  assert(newmode, "To which name do you want to rename " .. which .. " to?", sendf)
+  svo.assert(which, "Which defences mode do you want to rename?", sendf)
+  svo.assert(defdefup[which] and defkeepup[which], which .. " defences mode doesn't exist.", sendf)
+  svo.assert(newmode, "To which name do you want to rename " .. which .. " to?", sendf)
 
   if defs.mode == which then
     defs.mode = newmode
@@ -2873,9 +2873,9 @@ end
 function delete_defmode(which, echoback)
   local sendf; if echoback then sendf = echof end
 
-  assert(which, "Which defences mode do you want to delete?", sendf)
-  assert(defdefup[which] and defkeepup[which], which .. " defences mode doesn't exist.", sendf)
-  assert(which ~= defs.mode, "You're currently in " .. which .. " defmode already - switch to another one first, and then delete this one.", sendf)
+  svo.assert(which, "Which defences mode do you want to delete?", sendf)
+  svo.assert(defdefup[which] and defkeepup[which], which .. " defences mode doesn't exist.", sendf)
+  svo.assert(which ~= defs.mode, "You're currently in " .. which .. " defmode already - switch to another one first, and then delete this one.", sendf)
 
   defdefup[which], defkeepup[which], rift.precachedata[which] = nil, nil, nil
 

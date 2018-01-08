@@ -16023,7 +16023,7 @@ local function dict_validate()
   table.sort(sorted_dupes, function(a,b) return a.prio < b.prio end)
 
   local function a(tbl)
-    assert(type(tbl) == "table")
+    svo.assert(type(tbl) == "table")
     local result = {}
     for i,j in pairs(tbl) do
       result[#result+1] = j.name .. "(" .. j.prio .. ")"

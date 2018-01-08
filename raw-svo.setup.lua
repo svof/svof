@@ -1192,7 +1192,7 @@ signals.svogotaff:connect(function(isloki)
 end)
 --]=]
 
-local function assert(condition, msg, extra)
+function svo.assert(condition, msg, extra)
   if not condition then
     if extra then
       extra(msg)
@@ -1212,12 +1212,16 @@ sk.checkaeony = function()
 
     -- kill actions prior to this, so we can do aeon
     local to_kill = {}
-    for k,v in actions:iter() do
-      if v.p.balance ~= "waitingfor" and v.p.balance ~= "aff" and v.p.balance ~= "gone" and v.p.name ~= "aeon_smoke" and v.p.name ~= "checkslows_misc" and v.p.name ~= "touchtree_misc" then -- don't kill aeon_smoke: if we do, we double-smoke. instead, since smoke is started before sync is set: add a customwait delay. Don't kill tree touching either, could help for asthma
+    for _,v in svo.actions:iter() do
+      if v.p.balance ~= "waitingfor" and v.p.balance ~= "aff" and v.p.balance ~= "gone" and
+        v.p.name ~= "aeon_smoke" and v.p.name ~= "checkslows_misc" and v.p.name ~= "touchtree_misc" then
+      -- don't kill aeon_smoke: if we do, we double-smoke. instead, since smoke is started before sync is set:
+      -- add a customwait delay. Don't kill tree touching either, could help for asthma
         to_kill[#to_kill+1] = svo.dict[v.p.action_name][v.p.balance]
       end
     end
 
+    local killaction = svo.killaction
     for _, action in ipairs(to_kill) do
       killaction(action)
     end

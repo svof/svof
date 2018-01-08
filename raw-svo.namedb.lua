@@ -82,7 +82,7 @@ end
 
 function ndb.setclass(name, class)
   class = class:lower()
-  assert(ndb.isvalidclass(class), "ndb.setclass: invalid class given")
+  svo.assert(ndb.isvalidclass(class), "ndb.setclass: invalid class given")
 
   ndb.fixed_set(ndb.db.people.class, class, db:eq(ndb.db.people.name, name))
 end
@@ -140,7 +140,7 @@ function ndb.setinfamous(name, infamy)
 end
 
 function ndb.isdragon(name)
-  assert(name, "ndb.isdragon() requires a name")
+  svo.assert(name, "ndb.isdragon() requires a name")
 
   name = name:title()
   local r = db:fetch(ndb.db.people, db:eq(ndb.db.people.name, name))
@@ -150,7 +150,7 @@ function ndb.isdragon(name)
 end
 
 function ndb.getcityrank(name)
-  assert(name, "ndb.getcityrank() requires a name")
+  svo.assert(name, "ndb.getcityrank() requires a name")
 
   name = name:title()
   local r = db:fetch(ndb.db.people, db:eq(ndb.db.people.name, name))
@@ -344,7 +344,7 @@ local function getcolor(name)
 end
 
 function ndb.getcolor(name)
-  assert(type(name) == "string", "ndb.getcolor: name to get a color of is required")
+  svo.assert(type(name) == "string", "ndb.getcolor: name to get a color of is required")
 
   local color = getcolor(name)
 
@@ -352,7 +352,7 @@ function ndb.getcolor(name)
 end
 
 function ndb.getcolorn(name)
-  assert(type(name) == "string", "ndb.getcolorn: name to get a color of is required")
+  svo.assert(type(name) == "string", "ndb.getcolorn: name to get a color of is required")
 
   local color = getcolor(name)
 
@@ -360,7 +360,7 @@ function ndb.getcolorn(name)
 end
 
 function ndb.getcolorp(name)
-  assert(type(name) == "string", "ndb.getcolorp: name to get a color of is required")
+  svo.assert(type(name) == "string", "ndb.getcolorp: name to get a color of is required")
 
   local color = getcolor(name)
 
@@ -369,7 +369,7 @@ end
 
 for _, format in ipairs{"bold", "underline", "italicize"} do
   ndb["should"..format] = function(name)
-    assert(type(name) == "string", "ndb.should"..format..": name to get a color of is required")
+    svo.assert(type(name) == "string", "ndb.should"..format..": name to get a color of is required")
 
     local person = ndb.getname(name)
 

@@ -799,7 +799,7 @@ function setprecache(herb, amount, flag, echoback, show_list)
   local sendf
   if echoback then sendf = echof else sendf = errorf end
 
-  assert(rift.precache[herb], "what herb do you want to set a precache amount for?", sendf)
+  svo.assert(rift.precache[herb], "what herb do you want to set a precache amount for?", sendf)
 
   if flag == "add" then
     rift.precache[herb] = rift.precache[herb] + amount

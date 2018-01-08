@@ -323,7 +323,7 @@ local function getBoundary(tbl)
 end
 
 function oneconcat(tbl)
-  assert(type(tbl) == "table", "svo.oneconcat wants a table as an argument.")
+  svo.assert(type(tbl) == "table", "svo.oneconcat wants a table as an argument.")
   local result = {}
   for i,_ in pairs(tbl) do
     result[#result+1] = i
@@ -333,7 +333,7 @@ function oneconcat(tbl)
 end
 
 function oneconcatwithval(tbl)
-  assert(type(tbl) == "table", "svo.oneconcatwithval wants a table as an argument.")
+  svo.assert(type(tbl) == "table", "svo.oneconcatwithval wants a table as an argument.")
   local result = {}
   local sformat = string.format
   for i,v in pairs(tbl) do
@@ -344,7 +344,7 @@ function oneconcatwithval(tbl)
 end
 
 function concatand(t)
-  assert(type(t) == "table", "svo.concatand: argument must be a table")
+  svo.assert(type(t) == "table", "svo.concatand: argument must be a table")
 
   if #t == 0 then return ""
   elseif #t == 1 then return t[1]
@@ -354,7 +354,7 @@ function concatand(t)
 end
 
 function concatandf(t, f)
-  assert(type(t) == "table", "svo.concatandf: argument must be a table")
+  svo.assert(type(t) == "table", "svo.concatandf: argument must be a table")
 
   return concatand(pl.tablex.map(f, t))
 end
@@ -389,7 +389,7 @@ end
 
 
 function safeconcat(t, separator)
-  assert(type(t) == "table", "svo.safeconcat: argument must be a table")
+  svo.assert(type(t) == "table", "svo.safeconcat: argument must be a table")
 
   if #t == 0 then return ""
   elseif #t == 1 then return tostring(t[1])
@@ -442,7 +442,7 @@ function deleteAllP(count)
 end
 
 local function containsbyname(t, value)
-  assert(type(t) == "table", "svo.containsbyname wants a table!")
+  svo.assert(type(t) == "table", "svo.containsbyname wants a table!")
   for k, v in pairs(t) do
     if v == value then return k end
   end
@@ -451,7 +451,7 @@ local function containsbyname(t, value)
 end
 
 local function contains(t, value)
-  assert(type(t) == "table", "svo.contains wants a table!")
+  svo.assert(type(t) == "table", "svo.contains wants a table!")
   for k, v in pairs(t) do
     if v == value then
       return true

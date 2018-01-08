@@ -19,7 +19,7 @@ wait_tbl = {
 }
 
 local conf_printinstallhint = function (which)
-  assert(config_dict[which] and config_dict[which].type, which.." is missing a type")
+  svo.assert(config_dict[which] and config_dict[which].type, which.." is missing a type")
 
   if config_dict[which].type == "boolean" then
     echof("Use %s to answer.", tostring(green("vconfig "..which.." yep/nope")))
@@ -33,7 +33,7 @@ local conf_printinstallhint = function (which)
 end
 
 local conf_installhint = function (which)
-  assert(config_dict[which] and config_dict[which].type, which.." is missing a type")
+  svo.assert(config_dict[which] and config_dict[which].type, which.." is missing a type")
 
   if config_dict[which].type == "boolean" then
     return "Use vconfig "..which.." yep/nope to answer."
@@ -2087,7 +2087,7 @@ function tntf_set(what, option, echoback)
   if echoback then sendf = echof else sendf = errorf end
 
   option = convert_string(option)
-  assert(what and (option ~= nil), "syntax is: svo.tntf(what, option)", sendf)
+  svo.assert(what and (option ~= nil), "syntax is: svo.tntf(what, option)", sendf)
 
   if not tntf_tbl[what] then
     if echoback ~= "noerrors" then sendf("%s isn't something you can change.", what) end
