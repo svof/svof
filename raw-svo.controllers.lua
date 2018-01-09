@@ -1046,64 +1046,6 @@ function printordersync(limited_around)
   showprompt()
 end
 
-
-signals.systemstart:connect(function()
-  _G.svo.removeaff = function (which)
-    svo.assert(type(which) == "string", "svo.removeaff: what aff would you like to remove? name must be a string")
-    svo.assert(dict[which] and dict[which].aff, "svo.removeaff: "..which.." isn't a known aff name")
-
-    local removed = false
-    if lifevision.l[which.."_aff"] then
-      lifevision.l:set(which.."_aff", nil)
-      removed = true
-    end
-
-    if affs[which] then
-      if dict[which].gone then
-        dict[which].gone.oncompleted()
-      else
-        removeaff(which)
-      end
-
-      removed = true
-    end
-
-    signals.after_lifevision_processing:unblock(cnrl.checkwarning)
-    sk.checkaeony()
-    signals.aeony:emit()
-
-    return removed
-  end
-
-  _G.svo.removeafflevel = function (which, amount, keep)
-    svo.assert(type(which) == "string", "svo.removeafflevel: what aff would you like to remove? name must be a string")
-    svo.assert(dict[which] and dict[which].aff, "svo.removeafflevel: "..which.." isn't a known aff name")
-
-    local removed = false
-    if lifevision.l[which.."_aff"] then
-      lifevision.l:set(which.."_aff", nil)
-      removed = true
-    end
-
-    if affs[which] then
-      if dict[which].gone then
-        dict[which].gone.general_cure(amount or 1, not keep)
-      else
-        removeaff(which)
-      end
-
-      removed = true
-    end
-
-    signals.after_lifevision_processing:unblock(cnrl.checkwarning)
-    sk.checkaeony()
-    signals.aeony:emit()
-
-    return removed
-  end
-
-end)
-
 function sk.check_fullstats()
   if stats.currenthealth >= stats.maxhealth and stats.currentmana >= stats.maxmana and not affs.recklessness then
     sk.gettingfullstats = false

@@ -1393,6 +1393,7 @@ local old_internal_removeaff = function (old)
   end
 end
 
+
 -- externally available as svo.prompttrigger
 sk.onpromptfuncs = {}
 function sk.onprompt_beforeaction_add(name, what)
