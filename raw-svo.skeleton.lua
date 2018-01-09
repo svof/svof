@@ -1361,7 +1361,7 @@ svo.addaff = function(aff_string_or_table)
   end
 end
 
--- rmaff
+-- old internal version of removeaff
 svo.rmaff = function (old)
   if type(old) == "table" then
     for _,aff in pairs(old) do
@@ -1393,6 +1393,7 @@ svo.rmaff = function (old)
   end
 end
 
+-- public version of removeaff. The two should be merged.
 svo.removeaff = function (which)
   svo.assert(type(which) == "string", "svo.removeaff: what aff would you like to remove? name must be a string")
   svo.assert(dict[which] and dict[which].aff, "svo.removeaff: "..which.." isn't a known aff name")
