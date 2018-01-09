@@ -1002,9 +1002,9 @@ signals.enablegmcp:connect(function()
 end)
 
 signals.saveconfig:connect(function ()
-  table.save(getMudletHomeDir() .. "/svo/rift+inv/rift", rift.riftcontents)
-  table.save(getMudletHomeDir() .. "/svo/rift+inv/inv", rift.invcontents)
-  table.save(getMudletHomeDir() .. "/svo/rift+inv/precachedata", rift.precachedata)
+  svo.tablesave(getMudletHomeDir() .. "/svo/rift+inv/rift", rift.riftcontents)
+  svo.tablesave(getMudletHomeDir() .. "/svo/rift+inv/inv", rift.invcontents)
+  svo.tablesave(getMudletHomeDir() .. "/svo/rift+inv/precachedata", rift.precachedata)
 end)
 
 

@@ -1381,6 +1381,25 @@ signals.systemstart:connect(function ()
       .." Delete the extra ones.", table.concat(toomany, ", ")) end)
 end)
 
+-- table.save() before Mudlet 3.7.1 didn't return the error, so we have a patched copy
+-- fix has been contributed upstream
+function svo.tablesave( sfile, t )
+    local tables = {}
+    table.insert( tables, t )
+    local lookup = { [t] = 1 }
+    local file, msg = io.open( sfile, "w" )
+    if not file then return nil, msg end
+
+    file:write( "return {" )
+    for i,v in ipairs( tables ) do
+        table.pickle( v, file, tables, lookup )
+    end
+    file:write( "}" )
+    file:close()
+
+    return true
+end
+
 -- load the lust list
 signals.systemstart:connect(function ()
   local conf_path = getMudletHomeDir() .. "/svo/config/lustlist"
@@ -1392,7 +1411,7 @@ signals.systemstart:connect(function ()
   end
 end)
 
-signals.saveconfig:connect(function () table.save(getMudletHomeDir() .. "/svo/config/lustlist", me.lustlist) end)
+signals.saveconfig:connect(function () svo.tablesave(getMudletHomeDir() .. "/svo/config/lustlist", me.lustlist) end)
 
 -- load the hoist list
 signals.systemstart:connect(function ()
@@ -1405,7 +1424,7 @@ signals.systemstart:connect(function ()
   end
 end)
 
-signals.saveconfig:connect(function () table.save(getMudletHomeDir() .. "/svo/config/hoistlist", me.hoistlist) end)
+signals.saveconfig:connect(function () svo.tablesave(getMudletHomeDir() .. "/svo/config/hoistlist", me.hoistlist) end)
 
 -- load the ignore list
 signals.systemstart:connect(function ()
@@ -1420,7 +1439,7 @@ signals.systemstart:connect(function ()
   svo.ignore.checkparalysis = true
 end)
 
-signals.saveconfig:connect(function () table.save(getMudletHomeDir() .. "/svo/config/ignore", svo.ignore) end)
+signals.saveconfig:connect(function () svo.tablesave(getMudletHomeDir() .. "/svo/config/ignore", svo.ignore) end)
 
 -- load the locatelist
 signals.systemstart:connect(function ()
@@ -1434,7 +1453,7 @@ signals.systemstart:connect(function ()
   end
 end)
 signals.saveconfig:connect(function () me.locatelist = me.locatelist or {}
-  table.save(getMudletHomeDir() .. "/svo/config/locatelist", me.locatelist)
+  svo.tablesave(getMudletHomeDir() .. "/svo/config/locatelist", me.locatelist)
 end)
 
 -- load the watchfor list
@@ -1449,7 +1468,7 @@ signals.systemstart:connect(function ()
   end
 end)
 signals.saveconfig:connect(function () me.watchfor = me.watchfor or {}
-  table.save(getMudletHomeDir() .. "/svo/config/watchfor", me.watchfor)
+  svo.tablesave(getMudletHomeDir() .. "/svo/config/watchfor", me.watchfor)
 end)
 
 -- load the tree list
@@ -1469,7 +1488,7 @@ signals.systemstart:connect(function ()
 end)
 -- save the tree func list
 signals.saveconfig:connect(function ()
-  table.save(getMudletHomeDir() .. "/svo/config/tree", me.disabledtreefunc)
+  svo.tablesave(getMudletHomeDir() .. "/svo/config/tree", me.disabledtreefunc)
 end)
 
 -- load the fitness list
@@ -1486,7 +1505,7 @@ signals.systemstart:connect(function ()
 end)
 -- save the fitness func list
 signals.saveconfig:connect(function ()
-  table.save(getMudletHomeDir() .. "/svo/config/fitness", me.disabledfitnessfunc)
+  svo.tablesave(getMudletHomeDir() .. "/svo/config/fitness", me.disabledfitnessfunc)
 end)
 
 -- load the rage list
@@ -1503,7 +1522,7 @@ signals.systemstart:connect(function ()
 end)
 -- save the rage func list
 signals.saveconfig:connect(function ()
-  table.save(getMudletHomeDir() .. "/svo/config/rage", me.disabledragefunc)
+  svo.tablesave(getMudletHomeDir() .. "/svo/config/rage", me.disabledragefunc)
 end)
 
 -- load the restore func list
@@ -1519,7 +1538,7 @@ end)
 -- save the restore func list
 signals.saveconfig:connect(function ()
 
-  table.save(getMudletHomeDir() .. "/svo/config/restore", me.disabledrestorefunc)
+  svo.tablesave(getMudletHomeDir() .. "/svo/config/restore", me.disabledrestorefunc)
 end)
 
 -- load the dragonheal func list
@@ -1535,7 +1554,7 @@ end)
 -- save the dragonheal func list
 signals.saveconfig:connect(function ()
 
-  table.save(getMudletHomeDir() .. "/svo/config/dragonheal", me.disableddragonhealfunc)
+  svo.tablesave(getMudletHomeDir() .. "/svo/config/dragonheal", me.disableddragonhealfunc)
 end)
 
 for _, config in ipairs{
@@ -1561,7 +1580,7 @@ for _, config in ipairs{
   end)
   -- save the config.location list
   signals.saveconfig:connect(function ()
-    table.save(getMudletHomeDir() .. "/svo/config/"..config.location, config.localtable)
+    svo.tablesave(getMudletHomeDir() .. "/svo/config/"..config.location, config.localtable)
   end)
 end
 
@@ -1588,7 +1607,7 @@ end)
 -- save the shrugging func list
 signals.saveconfig:connect(function ()
 
-  table.save(getMudletHomeDir() .. "/svo/config/shrugging", me.disabledshruggingfunc)
+  svo.tablesave(getMudletHomeDir() .. "/svo/config/shrugging", me.disabledshruggingfunc)
 end)
 end
 

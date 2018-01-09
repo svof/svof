@@ -26,12 +26,12 @@ signals.systemstart:connect(function ()
 	end
   end
 end)
-signals.saveconfig:connect(function () me.highlightignore = me.highlightignore or {}; table.save(getMudletHomeDir() .. "/svo/config/highlightignore", me.highlightignore) end)
+signals.saveconfig:connect(function () me.highlightignore = me.highlightignore or {}; svo.tablesave(getMudletHomeDir() .. "/svo/config/highlightignore", me.highlightignore) end)
 
 
 -- save the ndb.conf.citypolitics list
 
-signals.saveconfig:connect(function () ndb.conf.citypolitics = ndb.conf.citypolitics or {}; table.save(getMudletHomeDir() .. "/svo/namedb/citypolitics", ndb.conf.citypolitics) end)
+signals.saveconfig:connect(function () ndb.conf.citypolitics = ndb.conf.citypolitics or {}; svo.tablesave(getMudletHomeDir() .. "/svo/namedb/citypolitics", ndb.conf.citypolitics) end)
 
 signals.saveconfig:connect(function ()
 	-- this can error out if the connection is closed
@@ -604,14 +604,14 @@ function ndb.doexport()
     end
   end
 
-  -- build the final table that we'll table.save()
+  -- build the final table that we'll svo.tablesave()
   local exportable = {
     meta = { author = gmcp.Char.Status.name, date = os.date("%A %d, %b '%y"), fields =  ndb.exportdata.fields },
     data = alldata
   }
 
   local location = string.format("%s/%s's namedb, %s", ndb.exportdata.location, gmcp.Char.Status.name,os.date("%A %d, %b '%y"))
-  table.save(location, exportable)
+  svo.tablesave(location, exportable)
   echo'\n' svo.echof("Data exported okay, it's in %s.", location)
 end
 

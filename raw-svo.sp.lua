@@ -354,7 +354,7 @@ sps.something_to_parry = function ()
   return false -- don't unparry if we have all zero's as shouldparry
 end
 
-signals.saveconfig:connect(function () table.save(getMudletHomeDir() .. "/svo/config/sp_config", sp_config) end)
+signals.saveconfig:connect(function () svo.tablesave(getMudletHomeDir() .. "/svo/config/sp_config", sp_config) end)
 
 local sp_config_path = getMudletHomeDir() .. "/svo/config/sp_config"
 

@@ -2937,13 +2937,13 @@ signals.charname:connect(sk.loginonbasic)
 signals.gmcpcharname:connect(sk.loginonbasic)
 
 signals.saveconfig:connect(function ()
-  table.save(getMudletHomeDir() .. "/svo/defup+keepup/defup", defdefup)
-  table.save(getMudletHomeDir() .. "/svo/defup+keepup/keepup", defkeepup)
-  table.save(getMudletHomeDir() .. "/svo/defup+keepup/ignored_defences", sk.ignored_defences)
+  svo.tablesave(getMudletHomeDir() .. "/svo/defup+keepup/defup", defdefup)
+  svo.tablesave(getMudletHomeDir() .. "/svo/defup+keepup/keepup", defkeepup)
+  svo.tablesave(getMudletHomeDir() .. "/svo/defup+keepup/ignored_defences", sk.ignored_defences)
 
   local t = {}
   for k,v in defs_data:iter() do if v.offline_defence and defc[k] then t[#t+1] = k end end
-  table.save(getMudletHomeDir() .. "/svo/defup+keepup/offline_defences", t)
+  svo.tablesave(getMudletHomeDir() .. "/svo/defup+keepup/offline_defences", t)
 end)
 
 function sk.sanitize(self)

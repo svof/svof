@@ -295,7 +295,7 @@ function es_dispose(cmd)
   send("elist", false)
 end
 
-signals.saveconfig:connect(function () table.save(getMudletHomeDir() .. "/svo/config/es_knownstuff", es_knownstuff) end)
+signals.saveconfig:connect(function () svo.tablesave(getMudletHomeDir() .. "/svo/config/es_knownstuff", es_knownstuff) end)
 signals.systemstart:connect(function ()
   local conf_path = getMudletHomeDir() .. "/svo/config/es_knownstuff"
 
@@ -329,7 +329,7 @@ signals.systemstart:connect(function ()
   es_potions.balm = nil
 end)
 
-signals.saveconfig:connect(function () table.save(getMudletHomeDir() .. "/svo/config/es_potions", es_potions) end)
+signals.saveconfig:connect(function () svo.tablesave(getMudletHomeDir() .. "/svo/config/es_potions", es_potions) end)
 
 echof("Loaded svo Elist Sorter, version %s.", tostring(es_version))
 

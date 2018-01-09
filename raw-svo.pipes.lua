@@ -272,7 +272,7 @@ signals.connected:connect(function ()
 end)
 
 signals.saveconfig:connect(function ()
-  local s,m = table.save(getMudletHomeDir() .. "/svo/pipes/conf", pipes)
+  local s,m = svo.tablesave(getMudletHomeDir() .. "/svo/pipes/conf", pipes)
   if not s then
     echof("Couldn't save settings; %s", m)
   end

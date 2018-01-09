@@ -2261,7 +2261,7 @@ function config.set(what, option, echoback)
   make_gnomes_work()
 end
 
-signals.saveconfig:connect(function () table.save(getMudletHomeDir() .. "/svo/config/conf", conf) end)
+signals.saveconfig:connect(function () svo.tablesave(getMudletHomeDir() .. "/svo/config/conf", conf) end)
 
 function config.showcolours()
   echof("Here's a list of available colors you can pick. To select, click on the name or use the %s command.", green("vconfig echotype <name>"))
