@@ -211,7 +211,7 @@ signals.gmcpcharitemslist:connect(function()
     return
   end
   if gmcp.Char.Items.List.location ~= "inv" then return end
-  me.inventory = deepcopy(gmcp.Char.Items.List.items)
+  me.inventory = svo.deepcopy(gmcp.Char.Items.List.items)
 end)
 signals.gmcpcharitemsadd    = luanotify.signal.new()
 signals.gmcpcharitemsadd:connect(function()
@@ -220,7 +220,7 @@ signals.gmcpcharitemsadd:connect(function()
     return
   end
   if gmcp.Char.Items.Add.location ~= "inv" then return end
-  me.inventory[#me.inventory + 1] = deepcopy(gmcp.Char.Items.Add.item)
+  me.inventory[#me.inventory + 1] = svo.deepcopy(gmcp.Char.Items.Add.item)
 end)
 signals.gmcpcharskillsinfo  = luanotify.signal.new()
 signals.gmcpcharskillslist  = luanotify.signal.new()
@@ -234,7 +234,7 @@ signals.gmcpcharitemsupdate:connect(function()
   local update = gmcp.Char.Items.Update.item
   for i, item in ipairs(me.inventory) do
     if item.id == update.id then
-      me.inventory[i] = deepcopy(gmcp.Char.Items.Update.item)
+      me.inventory[i] = svo.deepcopy(gmcp.Char.Items.Update.item)
       break
     end
   end
@@ -400,7 +400,7 @@ end
 
 signals.gmcpiretimelist = luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
-  me.gametime = deepcopy(gmcp.IRE.Time.List)
+  me.gametime = svo.deepcopy(gmcp.IRE.Time.List)
 end)
 signals.gmcpiretimeupdate = luanotify.signal.new()
 signals.gmcpiretimeupdate:connect(function()
@@ -499,7 +499,7 @@ end)
 
 signals.gmcpchardefenceslist:connect(function()
   svo.gdefc = {}
-  local predefs = deepcopy(defc)
+  local predefs = svo.deepcopy(defc)
   for _, val in ipairs(gmcp.Char.Defences.List) do
     local thisdef = val.name
     svo.gdefc[thisdef] = true
@@ -1391,7 +1391,7 @@ function svo.tablesave( sfile, t )
     if not file then return nil, msg end
 
     file:write( "return {" )
-    for i,v in ipairs( tables ) do
+    for _,v in ipairs( tables ) do
         table.pickle( v, file, tables, lookup )
     end
     file:write( "}" )

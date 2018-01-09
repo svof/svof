@@ -38,7 +38,7 @@ files["raw-svo.setup.lua"] = {
          "knownskills", "haveskillset", "logging_in", "dont_unpause_login", "innews", "danaeusaffs", "nemesisaffs",
          "scragaffs", "index_map", "lastpromptnumber", "promptcount", "send", "pipes", "affsp", "rift", "install",
          "echosd", "echos", "life", "pflags", "paragraph_length", "es_categories", "es_shortnames", "es_shortnamesr",
-         "es_potions", "es_categories", "assert", "deepcopy",
+         "es_potions", "es_categories", "assert", "deepcopy", "tablesave",
         debugf        = { read_only = true },
         removeaff     = { read_only = true },
         echof         = { read_only = true },
@@ -53,8 +53,15 @@ files["raw-svo.setup.lua"] = {
       other_fields = true
     },
     gmcp = {
-      read_only,
+      read_only = true,
       other_fields = true,
+    },
+    table = {
+      fields = {
+        pickle = {
+          read_only = true
+        }
+      }
     }
   }
 }
