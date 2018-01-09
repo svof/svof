@@ -2370,3 +2370,60 @@ svo["9multicmd_cleared"] = function()
 
   reenabled9multi = tempTimer(5, function() reenabled9multi = nil end)
 end
+
+-- things line blind/deaf can be either afflictions or defences.
+-- This function is called whenever their status as a defence might change, and you have them - hence they need to be
+-- changed to a defence now or back
+function svo.sk.fix_affs_and_defs()
+  if affs.blindaff and ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
+    or (svo.me.class ~= "Apostate" and defc.mindseye)) then
+    removeaff("blindaff")
+    defences.got("blind")
+    echof("blindness is now considered a defence.")
+  elseif defc.blind and not ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
+   or (svo.me.class ~= "Apostate" and defc.mindseye)) then
+    defences.lost("blind")
+    addaff(dict.blindaff)
+    echof("blindness is now considered an affliction, will cure it.")
+  end
+
+  if affs.deafaff and ((defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye) then
+    removeaff("deafaff")
+    defences.got("deaf")
+    echof("deafness is now considered a defence.")
+  elseif defc.deaf and not ((defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye) then
+    defences.lost("deaf")
+    addaff(dict.deafaff)
+    echof("deafness is now considered an affliction, will cure it.")
+  end
+end
+
+
+function svo.sk.checkrewield()
+  local s,m = pcall(function()
+    if svo.paragraph_length > 1 and not find_until_last_paragraph("You cease to prop up a tall totem pole.", "exact") and
+      not find_until_last_paragraph("You lob", "substring") and not svo.lifevision.l.breath_gone and
+      not find_until_last_paragraph("You begin to wield", "substring") then
+      -- we wish to rewield wieldables!
+      svo.dict.rewield.rewieldables = deepcopy(sk.rewielddables)
+      debugf("dict.rewield.rewieldables - %s", pl.pretty.write(dict.rewield.rewieldables))
+      echof("Need to rewield %s%s!", tostring(dict.rewield.rewieldables[1].name),
+        tostring(((dict.rewield.rewieldables[2] and dict.rewield.rewieldables[2].name) and
+          (" and "..dict.rewield.rewieldables[2].name) or "")))
+    end
+  end)
+  if not s then
+    echoLink("(e!)", [[echo("The problem was: ']]..tostring(m)..[['")]], 'Oy - there was a problem. Click on this link '
+      ..'and submit a bug report with what it says along with a copy/paste of what you saw.')
+  end
+
+  sk.rewielddables = nil
+  signals.before_prompt_processing:disconnect(sk.checkrewield)
+end
+
+signals.gmcpcharitemsremove:connect(function ()
+  sk.removed_something = true
+  sk.onprompt_beforeaction_add("gmcpcharitemsremove", function ()
+    sk.removed_something = nil
+  end)
+end)

@@ -6,7 +6,7 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-local signals, sk, defs, deepcopy, echos, echosd = svo.signals, svo.sk, svo.defs, svo.deepcopy, svo.echos, svo.echosd
+local signals, sk, deepcopy, echos, echosd = svo.signals, svo.sk, svo.deepcopy, svo.echos, svo.echosd
 local conf, affs, me, cp = svo.conf, svo.affs, svo.me, svo.cp
 
 svo.vecho = function(newline, what)
@@ -237,14 +237,14 @@ function svo.echof(...)
     decho, echo = ofs.windowdecho, ofs.windowecho
 
     moveCursorEnd(t[1])
-    vecho(true, string.format(select(2, ...)))
+    svo.vecho(true, string.format(select(2, ...)))
 
     decho, echo = olddecho, oldecho
   else
     moveCursorEnd("main")
     local successful, s = pcall(string.format, ...)
     if successful then
-      vecho(true, s)
+      svo.vecho(true, s)
     else
       error(s, 2)
     end
@@ -253,7 +253,7 @@ end
 
 function svo.echofn(...)
   moveCursorEnd("main")
-  vecho(false, string.format(...) or "")
+  svo.vecho(false, string.format(...) or "")
 end
 
 function svo.echon(...)
@@ -261,7 +261,11 @@ function svo.echon(...)
 end
 
 function svo.itf(...)
-  dinsertText(((echosd[conf.echotype] and echosd[conf.echotype]()) or (echosd[conf.org] and echosd[conf.org]()) or echosd.default()) .. string.format(...) or "")
+  dinsertText(
+    (
+      (echosd[conf.echotype] and echosd[conf.echotype]()) or
+      (echosd[conf.org] and echosd[conf.org]())or echosd.default()
+    ) .. string.format(...) or "")
   -- debugf((echosd[conf.echotype] and echosd[conf.echotype]() or echosd.default()) .. string.format(...) or "")
 end
 
@@ -273,7 +277,9 @@ end
 function svo.snd(what, show)
   for _,w in ipairs(string.split(what, "%$")) do
     _G.send(w, show or false)
-    if (affs.seriousconcussion or (conf.doubledo and affs.stupidity)) and not sys.sync then _G.send(w, show or false) end
+    if (affs.seriousconcussion or (conf.doubledo and affs.stupidity)) and not svo.sys.sync then
+      _G.send(w, show or false)
+    end
   end
 end
 
@@ -305,12 +311,10 @@ function svo.getLowestKey(tbl)
 end
 
 function svo.getHighestValue(tbl)
-  local result
   local highest = 0
-  for i,j in pairs(tbl) do
+  for _,j in pairs(tbl) do
     if j > highest then
       highest = j
-      result = i
     end
   end
 
@@ -318,12 +322,10 @@ function svo.getHighestValue(tbl)
 end
 
 function svo.getBoundary(tbl)
-  local result
   local highest, lowest = 0, select(2, next(tbl))
-  for i,j in pairs(tbl) do
+  for _,j in pairs(tbl) do
     if j > highest then
       highest = j
-      result = i
     elseif j < lowest then
       lowest = j
     end
@@ -366,13 +368,13 @@ end
 function svo.concatandf(t, f)
   svo.assert(type(t) == "table", "svo.concatandf: argument must be a table")
 
-  return concatand(pl.tablex.map(f, t))
+  return svo.concatand(svo.pl.tablex.map(f, t))
 end
 
 function svo.keystolist(t)
   local r = {}
 
-  for k,v in pairs(t) do
+  for k,_ in pairs(t) do
     r[#r+1] = k
   end
 
@@ -385,7 +387,7 @@ function svo.longeststring(input)
   local longest, found = 0
 
   local type = type
-  for k,v in pairs(input) do
+  for _,v in pairs(input) do
     if type(v) == "string" then
       found = true
       local length = #v
@@ -413,19 +415,21 @@ end
 
 function svo.deleteLineP()
   deleteLine()
-  gagline = true -- used for not echoing things on lines that'll be deleted
-  sk.onprompt_beforeaction_add("deleteLine", function()
-    gagline = false
+  svo.gagline = true -- used for not echoing things on lines that'll be deleted
+  svo.sk.onprompt_beforeaction_add("deleteLine", function()
+    svo.gagline = false
   end)
 
-  if not conf.shipmode or not svo.me.shippromptn then -- if not on shipmode, or in shipmode but didn't actually see the ship prompt...
+  -- if not on shipmode, or in shipmode but didn't actually see the ship prompt...
+  if not conf.shipmode or not svo.me.shippromptn then
     tempLineTrigger(1,1,[[
       if isPrompt() then
         deleteLine()
       end
     ]])
   else
-    sk.requested_deletelineP = getLineCount() -- remember when the deletion was requested, to work out if we should delete the prompt or not
+    -- remember when the deletion was requested, to work out if we should delete the prompt or not
+    sk.requested_deletelineP = getLineCount()
     sk.onprompt_beforeaction_add("deleteLineP shipmode", function()
       if svo.conf.shipmode and svo.me.shippromptn and sk.requested_deletelineP+1 == svo.me.shippromptn then
         local from, to = svo.me.shippromptn , getLineCount()
@@ -467,7 +471,7 @@ function svo.contains(t, value)
     elseif k == value then
       return true
     elseif type(v) == "table" then
-      if contains(v, value) then return true end
+      if svo.contains(v, value) then return true end
     end
   end
 
@@ -476,7 +480,7 @@ end
 
 -- longer priorities take the first order
 function svo.syncdelay()
-  if not sys.sync then
+  if not svo.sys.sync then
     return 0
   elseif affs.aeon or affs.retardation then
     return 1
@@ -497,8 +501,8 @@ end
 local yes = {"yes", "yep", "yup", "oui", "on", "y", "da"}
 local no = {"no", "nope", "non", "off", "n", "net"}
 function svo.convert_string(which)
-  if contains(yes, which) or which == true then return true end
-  if contains(no, which) or which == false then return false end
+  if svo.contains(yes, which) or which == true then return true end
+  if svo.contains(no, which) or which == false then return false end
 
   return nil
 end
@@ -525,7 +529,6 @@ function svo.find_until_last_paragraph (pattern, type)
 
   return false
 end
-local find_until_last_paragraph = svo.find_until_last_paragraph
 
 -- returns the count of matches from the current line until the start of the paragraph
 function svo.count_until_last_paragraph (pattern, type)
@@ -574,15 +577,16 @@ svo.oldsend = _G.send
 local fancy_send_commands = {}
 
 function svo.fancysend(what, store)
-  if conf.batch then sendc(what); sk.systemscommands[what] = true else oldsend(what, false) end
+  if conf.batch then svo.sendc(what); sk.systemscommands[what] = true else svo.oldsend(what, false) end
 
-  if (affs.seriousconcussion or (conf.doubledo and affs.stupidity)) and not sys.sync and not sys.sendonceonly then
-    if conf.batch then sendc(what); sk.systemscommands[what] = true else oldsend(what, false) end
+  if (affs.seriousconcussion or (conf.doubledo and affs.stupidity)) and not svo.sys.sync and
+    not svo.sys.sendonceonly then
+    if conf.batch then svo.sendc(what); sk.systemscommands[what] = true else svo.oldsend(what, false) end
   end
 
   if conf.repeatcmd > 0 then
-    for i = 1, conf.repeatcmd do
-      if conf.batch then sendc(what); sk.systemscommands[what] = true else oldsend(what, false) end
+    for _ = 1, conf.repeatcmd do
+      if conf.batch then svo.sendc(what); sk.systemscommands[what] = true else svo.oldsend(what, false) end
     end
   end
 
@@ -595,56 +599,26 @@ function svo.fancysendall()
   if #fancy_send_commands == 0 then return end
 
   if conf.commandechotype == "fancynewline" then echo'\n' end
-  decho(string.format("<51,0,255>(<242,234,233>%s<51,0,255>)", table.concat(fancy_send_commands, "<102,98,97>|<242,234,233>")))
+  decho(string.format("<51,0,255>(<242,234,233>%s<51,0,255>)",
+    table.concat(fancy_send_commands, "<102,98,97>|<242,234,233>"))
+  )
   fancy_send_commands = {}
 end
 
--- check if we need to adjust parrying on any limbs or not
-function svo.check_sp_satisfied()
-  if sps.something_to_parry() then -- have we asked for any limbs to be parried?
-    for name, limb in pairs(sp_config.parry_shouldbe) do
-      if limb ~= sps.parry_currently[name] then
-       sys.sp_satisfied = false; return
-      end
-    end
-  elseif type(sp_config.parry) == "string" and sp_config.parry == "manual" then
-    -- check if we need to unparry in manual
-    for limb, status in pairs(sps.parry_currently) do
-      if status ~= sp_config.parry_shouldbe[limb] then
-       sys.sp_satisfied = false; return
-      end
-    end
-  elseif sp_config.priority[1] and not sps.parry_currently[sp_config.priority[1]] then
-    sp_config.parry_shouldbe[sp_config.priority[1]] = true
-    sys.sp_satisfied = false; return
-  end
-  sys.sp_satisfied = true
-end
-
-svo.sp_limbs = {
-  head = true,
-  torso = true,
-  ["right arm"] = true,
-  ["left arm"] = true,
-  ["right leg"] = true,
-  ["left leg"] = true
-}
-
-
 function svo.yep ()
-  return "<0,250,0>Yep" .. getDefaultColor()
+  return "<0,250,0>Yep" .. svo.getDefaultColor()
 end
 
 function svo.nope ()
-  return "<250,0,0>Nope" .. getDefaultColor()
+  return "<250,0,0>Nope" .. svo.getDefaultColor()
 end
 
 function svo.red (what)
-  return "<250,0,0>" .. what .. getDefaultColor()
+  return "<250,0,0>" .. what .. svo.getDefaultColor()
 end
 
 function svo.green (what)
-  return "<0,250,0>" .. what .. getDefaultColor()
+  return "<0,250,0>" .. what .. svo.getDefaultColor()
 end
 
 function svo.sk.reverse(a)
@@ -674,33 +648,6 @@ function svo.sk.anytoshort(exit)
   end
 
   return rt[exit]
-end
-
--- things line blind/deaf can be either afflictions or defences.
--- This function is called whenever their status as a defence might change, and you have them - hence they need to be
--- changed to a defence now or back
-function svo.sk.fix_affs_and_defs()
-  if affs.blindaff and ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
-    or (svo.me.class ~= "Apostate" and defc.mindseye)) then
-    removeaff("blindaff")
-    defences.got("blind")
-    echof("blindness is now considered a defence.")
-  elseif defc.blind and not ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
-   or (svo.me.class ~= "Apostate" and defc.mindseye)) then
-    defences.lost("blind")
-    addaff(dict.blindaff)
-    echof("blindness is now considered an affliction, will cure it.")
-  end
-
-  if affs.deafaff and ((defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye) then
-    removeaff("deafaff")
-    defences.got("deaf")
-    echof("deafness is now considered a defence.")
-  elseif defc.deaf and not ((defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye) then
-    defences.lost("deaf")
-    addaff(dict.deafaff)
-    echof("deafness is now considered an affliction, will cure it.")
-  end
 end
 
 -- rewielding
@@ -758,24 +705,6 @@ function svo.ceased_wielding(what)
   end
 end
 
-function svo.sk.checkrewield()
-  local s,m = pcall(function()
-    if paragraph_length > 1 and not find_until_last_paragraph("You cease to prop up a tall totem pole.", "exact") and not find_until_last_paragraph("You lob", "substring") and not lifevision.l.breath_gone and not find_until_last_paragraph("You begin to wield", "substring") then
-      -- we wish to rewield wieldables!
-      dict.rewield.rewieldables = deepcopy(sk.rewielddables)
-      debugf("dict.rewield.rewieldables - %s", pl.pretty.write(dict.rewield.rewieldables))
-      echof("Need to rewield %s%s!", tostring(dict.rewield.rewieldables[1].name), tostring(((dict.rewield.rewieldables[2] and dict.rewield.rewieldables[2].name) and (" and "..dict.rewield.rewieldables[2].name) or "")))
-      -- echoLink("(info)", 'printCmdLine([[If the system decided that you\'ve unwielded out of the blue for no reason, copy/paste this in an submit a bug report with: '..pl.pretty.write(gmcp.Char.Items.Update):gsub("\n", " ")..']])', 'Click here if the system decided that you\'ve unwieled for no reason at all')
-    end
-  end)
-  if not s then
-    echoLink("(e!)", [[echo("The problem was: ']]..tostring(m)..[['")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
-  end
-
-  sk.rewielddables = nil
-  signals.before_prompt_processing:disconnect(sk.checkrewield)
-end
-
 function svo.unwielded(itemid, name)
   sk.rewielddables = sk.rewielddables or {}
   if not (sk.rewielddables[1] and sk.rewielddables[1].id == itemid) then
@@ -797,11 +726,14 @@ function ()
   if t.location ~= "inv" or type(me.wielded) ~= "table" then return end
 
   -- unwielded?
-  if t.item.id and me.wielded[t.item.id] and t.item.name and (not t.item.attrib or (not string.find(t.item.attrib, 'l', 1, true) and not string.find(t.item.attrib, 'L', 1, true))) then
-    unwielded(t.item.id, t.item.name)
+  if t.item.id and me.wielded[t.item.id] and t.item.name and
+    (not t.item.attrib or (not string.find(t.item.attrib, 'l', 1, true) and
+      not string.find(t.item.attrib, 'L', 1, true))) then
+    svo.unwielded(t.item.id, t.item.name)
 
   -- wielded? allow for a re-update on the wielding data as well
-  elseif t.item.attrib and t.item.id and (string.find(t.item.attrib, 'l', 1, true) or string.find(t.item.attrib, 'L', 1, true)) then
+  elseif t.item.attrib and t.item.id and (string.find(t.item.attrib, 'l', 1, true) or
+    string.find(t.item.attrib, 'L', 1, true)) then
     local lefthand, righthand = string.find(t.item.attrib, 'l', 1, true), string.find(t.item.attrib, 'L', 1, true)
 
     me.wielded[t.item.id] = deepcopy(t.item)
@@ -814,9 +746,9 @@ function ()
       me.wielded[t.item.id].hand = "right"
     end
 
-    checkaction(dict.rewield.physical)
-    if actions.rewield_physical then
-      lifevision.add(actions.rewield_physical.p, nil, t.item.id)
+    svo.checkaction(svo.dict.rewield.physical)
+    if svo.actions.rewield_physical then
+      svo.lifevision.add(svo.actions.rewield_physical.p, nil, t.item.id)
     end
     raiseEvent("svo me.wielded updated")
   end
@@ -827,24 +759,20 @@ signals.gmcpcharitemsremove:connect(function ()
   if t.location ~= "inv" or type(me.wielded) ~= "table" then return end
   local itemid = tostring(t.item.id)
   if me.wielded[itemid] then
-    unwielded(itemid, me.wielded[itemid].name or "")
+    svo.unwielded(itemid, me.wielded[itemid].name or "")
   end
-end)
-
-signals.gmcpcharitemsremove:connect(function ()
-  sk.removed_something = true
-  sk.onprompt_beforeaction_add("gmcpcharitemsremove", function ()
-    sk.removed_something = nil
-  end)
 end)
 
 function svo.setdefaultprompt()
   if svo.haveskillset('shindo') then
-    config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@shin^w-]], false)
+    svo.config.set("customprompt",
+      [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@shin^w-]], false)
   elseif svo.haveskillset('kaido') then
-    config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@kai^W-]], false)
+    svo.config.set("customprompt",
+      [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@kai^W-]], false)
   else
-    config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^W-]], false)
+    svo.config.set("customprompt",
+      [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^W-]], false)
   end
 end
 
@@ -857,21 +785,21 @@ function svo.setignore(k,v)
   -- default to true, use unsetignore to clear
   if v == nil then v = true end
 
-  ignore[k] = v
+  svo.ignore[k] = v
   raiseEvent("svo ignore changed", k)
 end
 
 function svo.unsetignore(k)
-  ignore[k] = nil
+  svo.ignore[k] = nil
   raiseEvent("svo ignore changed", k)
 end
 
 function svo.setserverignore(k)
-  serverignore[k] = true
+  svo.serverignore[k] = true
   raiseEvent("svo serverignore changed", k)
 end
 
 function svo.unsetserverignore(k)
-  serverignore[k] = nil
+  svo.serverignore[k] = nil
   raiseEvent("svo serverignore changed", k)
 end

@@ -8,6 +8,38 @@
 
 pl.dir.makepath(getMudletHomeDir() .. "/svo/config")
 
+-- check if we need to adjust parrying on any limbs or not
+function svo.check_sp_satisfied()
+  if sps.something_to_parry() then -- have we asked for any limbs to be parried?
+    for name, limb in pairs(sp_config.parry_shouldbe) do
+      if limb ~= sps.parry_currently[name] then
+       sys.sp_satisfied = false; return
+      end
+    end
+  elseif type(sp_config.parry) == "string" and sp_config.parry == "manual" then
+    -- check if we need to unparry in manual
+    for limb, status in pairs(sps.parry_currently) do
+      if status ~= sp_config.parry_shouldbe[limb] then
+       sys.sp_satisfied = false; return
+      end
+    end
+  elseif sp_config.priority[1] and not sps.parry_currently[sp_config.priority[1]] then
+    sp_config.parry_shouldbe[sp_config.priority[1]] = true
+    sys.sp_satisfied = false; return
+  end
+  sys.sp_satisfied = true
+end
+
+svo.sp_limbs = {
+  head = true,
+  torso = true,
+  ["right arm"] = true,
+  ["left arm"] = true,
+  ["right leg"] = true,
+  ["left leg"] = true
+}
+
+
 sps.sp_fillup = function ()
   local t = {}
   for limb, _ in pairs(sp_limbs) do
