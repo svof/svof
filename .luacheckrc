@@ -22,7 +22,7 @@ files["raw-svo.empty.lua"] = {
   read_globals = {
     svo = {
       fields = {
-        "lostbal_herb", "affs", "rmaff", "dict", "deepcopy", "debugf", "defences",
+        "lostbal_herb", "affs", "rmaff", "dict", "deepcopy", "debugf", "defences", "rmaff",
         empty = {
           read_only = false,
           other_fields = true
