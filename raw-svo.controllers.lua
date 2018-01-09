@@ -135,7 +135,7 @@ local function check_promptflags()
       addaff(dict.blindaff)
     end
   elseif not pflags.b and (defc.blind or affs.blindaff) then
-    removeaff("blindaff")
+    rmaff("blindaff")
     defences.lost("blind")
   end
 
@@ -146,7 +146,7 @@ local function check_promptflags()
       addaff(dict.deafaff)
     end
   elseif not pflags.d and (defc.deaf or affs.deafaff) then
-    removeaff("deafaff")
+    rmaff("deafaff")
     defences.lost("deaf")
   end
 
@@ -628,7 +628,7 @@ end)
 signals["svo got balance"]:connect(function(balance)
   if balance ~= "equilibrium" then return end
 
-  if affs.disrupt then removeaff("disrupt") end
+  if affs.disrupt then rmaff("disrupt") end
 end)
 
 if svo.haveskillset('weaponmastery') then
@@ -834,7 +834,7 @@ function cnrl.processcommand(what)
     sk.sluggishtimer = tempTimer(time, function ()
       if type(sk.sawsluggish) == "number" and sk.sawsluggish ~= getLastLineNumber("main") and (affs.retardation or affsp.retardation) then
         if affs.retardation then echo"\n" echof("Retardation seems to have went away.") end
-        removeaff("retardation")
+        rmaff("retardation")
       end
 
       sk.sluggishtimer = nil

@@ -715,7 +715,7 @@ function valid.transfixily()
 
   -- special workaround for waking up not showing up in blackout: clear sleep if we saw this msg
   -- it's an issue otherwise to miss the sleep msg from a totem while in blackout and think you're still asleep
-  if affs.asleep then removeaff("asleep") end
+  if affs.asleep then rmaff("asleep") end
 end
 
 function valid.symp_roped()
@@ -3378,11 +3378,11 @@ function valid.passive_cure()
     if affn == table.size(affs) then
       if affs.unknownmental then
         dict.unknownmental.count = dict.unknownmental.count - 1
-        if dict.unknownmental.count <= 0 then removeaff("unknownmental"); dict.unknownmental.count = 0
+        if dict.unknownmental.count <= 0 then rmaff("unknownmental"); dict.unknownmental.count = 0
         else updateaffcount(dict.unknownmental) end
       elseif affs.unknownany then
         dict.unknownany.count = dict.unknownany.count - 1
-        if dict.unknownany.count <= 0 then removeaff("unknownany"); dict.unknownany.count = 0 else
+        if dict.unknownany.count <= 0 then rmaff("unknownany"); dict.unknownany.count = 0 else
           updateaffcount(dict.unknownany)
         end
       end
@@ -3712,7 +3712,7 @@ function valid.check_recklessness()
 
   -- check against GMCP, as Svof modifies them
   if affs.recklessness and (vitals.mp < vitals.maxmp or vitals.hp < vitals.maxhp) then
-    removeaff("recklessness")
+    rmaff("recklessness")
   end
 end
 signals.before_prompt_processing:connect(valid.check_recklessness)
@@ -4536,13 +4536,13 @@ function valid.devastate_arms_mangle()
   lifevision.add(actions.wristfractures_gone.p)
 
   if affs.mangledrightarm then
-    removeaff("mangledrightarm")
+    rmaff("mangledrightarm")
     valid.simplemutilatedrightarm()
   else
     valid.simplemangledrightarm()
   end
   if affs.mangledleftarm then
-    removeaff("mangledleftarm")
+    rmaff("mangledleftarm")
     valid.simplemutilatedleftarm()
   else
     valid.simplemangledleftarm()
@@ -4575,13 +4575,13 @@ function valid.devastate_legs_mangle()
 
 
   if affs.mangledrightleg then
-    removeaff("mangledrightleg")
+    rmaff("mangledrightleg")
     valid.simplemutilatedrightleg()
   else
     valid.simplemangledrightleg()
   end
   if affs.mangledleftleg then
-    removeaff("mangledleftleg")
+    rmaff("mangledleftleg")
     valid.simplemutilatedleftleg()
   else
     valid.simplemangledleftleg()

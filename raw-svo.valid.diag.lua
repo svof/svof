@@ -49,7 +49,7 @@ function valid.diagnose_end()
     if not sk.diag_list[affn] and not whitelist[affn] then
       debugf("removed %s, don't actually have it.", affn)
       if dict[affn].count then dict[affn].count = 0 end
-      removeaff(affn)
+      rmaff(affn)
     elseif not whitelist[affn] then -- if we do have the aff, remove from diag list, so we don't add it again
       -- but update the current count!
       if type(sk.diag_list[affn]) == "number" and dict[affn].count then

@@ -22,7 +22,7 @@ files["raw-svo.empty.lua"] = {
   read_globals = {
     svo = {
       fields = {
-        "lostbal_herb", "affs", "removeaff", "dict", "deepcopy", "debugf", "defences",
+        "lostbal_herb", "affs", "rmaff", "dict", "deepcopy", "debugf", "defences",
         empty = {
           read_only = false,
           other_fields = true
@@ -159,7 +159,7 @@ files["raw-svo.setup.lua"] = {
          "echosd", "echos", "life", "pflags", "paragraph_length", "es_categories", "es_shortnames", "es_shortnamesr",
          "es_potions", "es_categories", "assert", "deepcopy", "tablesave", "sps",
         debugf        = { read_only = true },
-        removeaff     = { read_only = true },
+        rmaff         = { read_only = true },
         echof         = { read_only = true },
         addaff        = { read_only = true },
         prompttrigger = { read_only = true },

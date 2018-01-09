@@ -226,7 +226,7 @@ codepaste.remove_focusable = function ()
   if not affs.unknownmental then return end
   affs.unknownmental.p.count = affs.unknownmental.p.count - 1
   if affs.unknownmental.p.count <= 0 then
-    removeaff("unknownmental")
+    rmaff("unknownmental")
     dict.unknownmental.count = 0
   else
     updateaffcount(dict.unknownmental)
@@ -241,7 +241,7 @@ codepaste.remove_stackableaff = function (aff, keep)
   if keep and dict[aff].count <= 0 then dict[aff].count = 1 end
 
   if dict[aff].count <= 0 then
-    removeaff(aff)
+    rmaff(aff)
     dict[aff].count = 0
   else
     updateaffcount(dict[aff])
@@ -329,7 +329,7 @@ codepaste.remove_burns = function(skipaff)
     table.remove(burns, table.index_of(burns, skipaff))
   end
 
-  removeaff(burns)
+  rmaff(burns)
 end
 
 sk.next_burn = function()
@@ -540,7 +540,7 @@ end
 
       cured = function()
         lostbal_sip()
-        removeaff("skullfractures")
+        rmaff("skullfractures")
         dict.skullfractures.count = 0
       end,
 
@@ -579,7 +579,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("skullfractures")
+        rmaff("skullfractures")
         dict.skullfractures.count = 0
       end,
 
@@ -595,7 +595,7 @@ end
       end,
 
       general_cured = function(amount)
-        removeaff("skullfractures")
+        rmaff("skullfractures")
         dict.skullfractures.count = 0
       end,
     }
@@ -622,7 +622,7 @@ end
 
       cured = function()
         lostbal_sip()
-        removeaff("crackedribs")
+        rmaff("crackedribs")
         dict.crackedribs.count = 0
       end,
 
@@ -661,7 +661,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("crackedribs")
+        rmaff("crackedribs")
         dict.crackedribs.count = 0
       end,
 
@@ -677,7 +677,7 @@ end
       end,
 
       general_cured = function(amount)
-        removeaff("crackedribs")
+        rmaff("crackedribs")
         dict.crackedribs.count = 0
       end,
     }
@@ -704,7 +704,7 @@ end
 
       cured = function()
         lostbal_sip()
-        removeaff("wristfractures")
+        rmaff("wristfractures")
         dict.wristfractures.count = 0
       end,
 
@@ -743,7 +743,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("wristfractures")
+        rmaff("wristfractures")
         dict.wristfractures.count = 0
       end,
 
@@ -759,7 +759,7 @@ end
       end,
 
       general_cured = function(amount)
-        removeaff("wristfractures")
+        rmaff("wristfractures")
         dict.wristfractures.count = 0
       end,
     }
@@ -786,7 +786,7 @@ end
 
       cured = function()
         lostbal_sip()
-        removeaff("torntendons")
+        rmaff("torntendons")
         dict.torntendons.count = 0
       end,
 
@@ -825,7 +825,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("torntendons")
+        rmaff("torntendons")
         dict.torntendons.count = 0
       end,
 
@@ -841,7 +841,7 @@ end
       end,
 
       general_cured = function(amount)
-        removeaff("torntendons")
+        rmaff("torntendons")
         dict.torntendons.count = 0
       end,
     }
@@ -869,7 +869,7 @@ end
 
       cured = function()
         lostbal_herb()
-        removeaff("cholerichumour")
+        rmaff("cholerichumour")
         dict.cholerichumour.count = 0
       end,
 
@@ -879,7 +879,7 @@ end
 
       -- does damage based on humour count
       inundated = function()
-        removeaff("cholerichumour")
+        rmaff("cholerichumour")
         dict.cholerichumour.count = 0
       end,
 
@@ -903,7 +903,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("cholerichumour")
+        rmaff("cholerichumour")
         dict.cholerichumour.count = 0
       end
     }
@@ -931,7 +931,7 @@ end
 
       cured = function()
         lostbal_herb()
-        removeaff("melancholichumour")
+        rmaff("melancholichumour")
         dict.melancholichumour.count = 0
       end,
 
@@ -941,7 +941,7 @@ end
 
       -- does mana damage based on humour count
       inundated = function()
-        removeaff("melancholichumour")
+        rmaff("melancholichumour")
         dict.melancholichumour.count = 0
       end,
 
@@ -965,7 +965,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("melancholichumour")
+        rmaff("melancholichumour")
         dict.melancholichumour.count = 0
       end
     }
@@ -994,7 +994,7 @@ end
 
       cured = function()
         lostbal_herb()
-        removeaff("phlegmatichumour")
+        rmaff("phlegmatichumour")
         dict.phlegmatichumour.count = 0
       end,
 
@@ -1014,7 +1014,7 @@ end
         Afflictions not hidden by gmcp, so removed from the inundated function.
       ]]
       inundated = function()
-        removeaff("phlegmatichumour")
+        rmaff("phlegmatichumour")
         dict.phlegmatichumour.count = 0
       end,
 
@@ -1038,7 +1038,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("phlegmatichumour")
+        rmaff("phlegmatichumour")
         dict.phlegmatichumour.count = 0
       end
     }
@@ -1066,7 +1066,7 @@ end
 
       cured = function()
         lostbal_herb()
-        removeaff("sanguinehumour")
+        rmaff("sanguinehumour")
         dict.sanguinehumour.count = 0
       end,
 
@@ -1085,7 +1085,7 @@ end
         dict.bleeding.count = bledfor
         updateaffcount(dict.bleeding)
 
-        removeaff("sanguinehumour")
+        rmaff("sanguinehumour")
         dict.sanguinehumour.count = 0
       end,
 
@@ -1109,7 +1109,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("sanguinehumour")
+        rmaff("sanguinehumour")
         dict.sanguinehumour.count = 0
       end
     }
@@ -1151,7 +1151,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("pacifism")
+        rmaff("pacifism")
         lostbal_herb()
       end,
 
@@ -1174,7 +1174,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("pacifism")
+        rmaff("pacifism")
         lostbal_focus()
       end,
 
@@ -1195,7 +1195,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("pacifism")
+        rmaff("pacifism")
         codepaste.remove_focusable()
       end,
     }
@@ -1210,7 +1210,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("peace")
+        rmaff("peace")
         lostbal_herb()
       end,
 
@@ -1230,7 +1230,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("peace")
+        rmaff("peace")
       end,
     }
   },
@@ -1245,7 +1245,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("inlove")
+        rmaff("inlove")
         lostbal_herb()
       end,
 
@@ -1265,7 +1265,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("inlove")
+        rmaff("inlove")
       end,
     }
   },
@@ -1279,7 +1279,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("dissonance")
+        rmaff("dissonance")
         lostbal_herb()
       end,
 
@@ -1299,7 +1299,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("dissonance")
+        rmaff("dissonance")
       end,
     }
   },
@@ -1314,7 +1314,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("dizziness")
+        rmaff("dizziness")
         lostbal_herb()
       end,
 
@@ -1337,7 +1337,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("dizziness")
+        rmaff("dizziness")
         lostbal_focus()
       end,
 
@@ -1359,7 +1359,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("dizziness")
+        rmaff("dizziness")
         codepaste.remove_focusable()
       end,
     }
@@ -1375,7 +1375,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("shyness")
+        rmaff("shyness")
         lostbal_herb()
       end,
 
@@ -1398,7 +1398,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("shyness")
+        rmaff("shyness")
         lostbal_focus()
       end,
 
@@ -1420,7 +1420,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("shyness")
+        rmaff("shyness")
         codepaste.remove_focusable()
       end,
     }
@@ -1436,7 +1436,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("epilepsy")
+        rmaff("epilepsy")
         lostbal_herb()
       end,
 
@@ -1459,7 +1459,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("epilepsy")
+        rmaff("epilepsy")
         lostbal_focus()
       end,
 
@@ -1481,7 +1481,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("epilepsy")
+        rmaff("epilepsy")
         codepaste.remove_focusable()
       end,
     }
@@ -1497,7 +1497,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("impatience")
+        rmaff("impatience")
         lostbal_herb()
 
         -- if serverside cures impatience before we can even validate it, cancel it
@@ -1522,7 +1522,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("impatience")
+        rmaff("impatience")
       end,
     }
   },
@@ -1537,7 +1537,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("stupidity")
+        rmaff("stupidity")
         lostbal_herb()
       end,
 
@@ -1560,7 +1560,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("stupidity")
+        rmaff("stupidity")
         lostbal_focus()
       end,
 
@@ -1584,7 +1584,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("stupidity")
+        rmaff("stupidity")
         codepaste.remove_focusable()
       end,
     }
@@ -1600,7 +1600,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("masochism")
+        rmaff("masochism")
         lostbal_herb()
       end,
 
@@ -1623,7 +1623,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("masochism")
+        rmaff("masochism")
         lostbal_focus()
       end,
 
@@ -1645,7 +1645,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("masochism")
+        rmaff("masochism")
         codepaste.remove_focusable()
       end,
     }
@@ -1661,7 +1661,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("recklessness")
+        rmaff("recklessness")
         lostbal_herb()
       end,
 
@@ -1684,7 +1684,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("recklessness")
+        rmaff("recklessness")
         lostbal_focus()
       end,
 
@@ -1715,7 +1715,7 @@ end
     },
     gone = {
       oncompleted = function()
-        removeaff("recklessness")
+        rmaff("recklessness")
         codepaste.remove_focusable()
       end,
     },
@@ -1740,7 +1740,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("justice")
+        rmaff("justice")
         lostbal_herb()
       end,
 
@@ -1760,7 +1760,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("justice")
+        rmaff("justice")
       end,
     }
   },
@@ -1775,7 +1775,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("generosity")
+        rmaff("generosity")
         lostbal_herb()
       end,
 
@@ -1798,7 +1798,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("generosity")
+        rmaff("generosity")
         lostbal_focus()
       end,
 
@@ -1820,7 +1820,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("generosity")
+        rmaff("generosity")
         codepaste.remove_focusable()
       end,
     }
@@ -1837,7 +1837,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("weakness")
+        rmaff("weakness")
         lostbal_herb()
       end,
 
@@ -1857,7 +1857,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("weakness")
+        rmaff("weakness")
         codepaste.remove_focusable()
       end,
     }
@@ -1873,7 +1873,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("vertigo")
+        rmaff("vertigo")
         lostbal_herb()
       end,
 
@@ -1896,7 +1896,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("vertigo")
+        rmaff("vertigo")
         lostbal_focus()
       end,
 
@@ -1918,7 +1918,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("vertigo")
+        rmaff("vertigo")
         codepaste.remove_focusable()
       end,
     }
@@ -1933,7 +1933,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("loneliness")
+        rmaff("loneliness")
         lostbal_herb()
       end,
 
@@ -1955,7 +1955,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("loneliness")
+        rmaff("loneliness")
         lostbal_focus()
       end,
 
@@ -1977,7 +1977,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("loneliness")
+        rmaff("loneliness")
         codepaste.remove_focusable()
       end,
     }
@@ -1992,7 +1992,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("dementia")
+        rmaff("dementia")
         lostbal_herb()
       end,
 
@@ -2014,7 +2014,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("dementia")
+        rmaff("dementia")
         lostbal_focus()
       end,
 
@@ -2036,7 +2036,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("dementia")
+        rmaff("dementia")
       end,
     }
   },
@@ -2050,7 +2050,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("paranoia")
+        rmaff("paranoia")
         lostbal_herb()
       end,
 
@@ -2072,7 +2072,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("paranoia")
+        rmaff("paranoia")
         lostbal_focus()
       end,
 
@@ -2094,7 +2094,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("paranoia")
+        rmaff("paranoia")
       end,
     }
   },
@@ -2108,7 +2108,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("hypersomnia")
+        rmaff("hypersomnia")
         lostbal_herb()
       end,
 
@@ -2128,7 +2128,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("hypersomnia")
+        rmaff("hypersomnia")
       end,
     }
   },
@@ -2142,7 +2142,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("hallucinations")
+        rmaff("hallucinations")
         lostbal_herb()
       end,
 
@@ -2164,7 +2164,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("hallucinations")
+        rmaff("hallucinations")
         lostbal_focus()
       end,
 
@@ -2186,7 +2186,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("hallucinations")
+        rmaff("hallucinations")
       end,
     }
   },
@@ -2201,7 +2201,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("confusion")
+        rmaff("confusion")
         lostbal_herb()
       end,
 
@@ -2224,7 +2224,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("confusion")
+        rmaff("confusion")
         lostbal_focus()
       end,
 
@@ -2247,7 +2247,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("confusion")
+        rmaff("confusion")
         codepaste.remove_focusable()
       end,
     }
@@ -2263,7 +2263,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("agoraphobia")
+        rmaff("agoraphobia")
         lostbal_herb()
       end,
 
@@ -2286,7 +2286,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("agoraphobia")
+        rmaff("agoraphobia")
         lostbal_focus()
       end,
 
@@ -2309,7 +2309,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("agoraphobia")
+        rmaff("agoraphobia")
       end,
     }
   },
@@ -2324,7 +2324,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("claustrophobia")
+        rmaff("claustrophobia")
         lostbal_herb()
       end,
 
@@ -2347,7 +2347,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("claustrophobia")
+        rmaff("claustrophobia")
         lostbal_focus()
       end,
 
@@ -2369,7 +2369,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("claustrophobia")
+        rmaff("claustrophobia")
         codepaste.remove_focusable()
       end,
     }
@@ -2384,7 +2384,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("paralysis")
+        rmaff("paralysis")
         lostbal_herb()
         killaction(dict.checkparalysis.misc)
       end,
@@ -2406,7 +2406,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("paralysis")
+        rmaff("paralysis")
       end,
     },
     onremoved = function () affsp.paralysis = nil donext() end
@@ -2421,7 +2421,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("asthma")
+        rmaff("asthma")
         lostbal_herb()
       end,
 
@@ -2448,7 +2448,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("asthma")
+        rmaff("asthma")
       end,
     }
   },
@@ -2462,7 +2462,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("clumsiness")
+        rmaff("clumsiness")
         lostbal_herb()
       end,
 
@@ -2482,7 +2482,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("clumsiness")
+        rmaff("clumsiness")
       end,
     }
   },
@@ -2496,7 +2496,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("sensitivity")
+        rmaff("sensitivity")
         lostbal_herb()
       end,
 
@@ -2530,7 +2530,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("sensitivity")
+        rmaff("sensitivity")
       end,
     }
   },
@@ -2544,7 +2544,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("healthleech")
+        rmaff("healthleech")
         lostbal_herb()
       end,
 
@@ -2564,7 +2564,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("healthleech")
+        rmaff("healthleech")
       end,
     }
   },
@@ -2581,7 +2581,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("relapsing")
+        rmaff("relapsing")
         lostbal_herb()
       end,
 
@@ -2689,7 +2689,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("relapsing")
+        rmaff("relapsing")
         dict.relapsing.saw_with_checkable = nil
       end,
     }
@@ -2704,7 +2704,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("darkshade")
+        rmaff("darkshade")
         lostbal_herb()
       end,
 
@@ -2730,7 +2730,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("darkshade")
+        rmaff("darkshade")
       end,
     }
   },
@@ -2745,7 +2745,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("lethargy")
+        rmaff("lethargy")
         lostbal_herb()
       end,
 
@@ -2765,7 +2765,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("lethargy")
+        rmaff("lethargy")
       end,
     }
   },
@@ -2781,7 +2781,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("illness")
+        rmaff("illness")
         lostbal_herb()
       end,
 
@@ -2803,7 +2803,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("illness")
+        rmaff("illness")
       end,
     }
   },
@@ -2818,7 +2818,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("addiction")
+        rmaff("addiction")
         lostbal_herb()
       end,
 
@@ -2838,7 +2838,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("addiction")
+        rmaff("addiction")
       end,
     },
     onremoved = function ()
@@ -2855,7 +2855,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("haemophilia")
+        rmaff("haemophilia")
         lostbal_herb()
       end,
 
@@ -2875,7 +2875,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("haemophilia")
+        rmaff("haemophilia")
       end,
     }
   },
@@ -2889,7 +2889,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("hypochondria")
+        rmaff("hypochondria")
         lostbal_herb()
       end,
 
@@ -2909,7 +2909,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("hypochondria")
+        rmaff("hypochondria")
       end,
     }
   },
@@ -2925,7 +2925,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("aeon")
+        rmaff("aeon")
         lostbal_smoke()
         sk.elm_smokepuff()
       end,
@@ -2954,7 +2954,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("aeon")
+        rmaff("aeon")
       end,
     },
     onremoved = function ()
@@ -2974,7 +2974,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("hellsight")
+        rmaff("hellsight")
         lostbal_smoke()
         sk.valerian_smokepuff()
       end,
@@ -3002,7 +3002,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("hellsight")
+        rmaff("hellsight")
       end,
     }
   },
@@ -3016,7 +3016,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("deadening")
+        rmaff("deadening")
         lostbal_smoke()
         sk.elm_smokepuff()
       end,
@@ -3039,7 +3039,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("deadening")
+        rmaff("deadening")
       end,
     }
   },
@@ -3054,7 +3054,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("madness")
+        rmaff("madness")
         lostbal_smoke()
         sk.elm_smokepuff()
       end,
@@ -3081,7 +3081,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("madness")
+        rmaff("madness")
       end,
     }
   },
@@ -3096,7 +3096,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("slickness")
+        rmaff("slickness")
         lostbal_smoke()
         sk.valerian_smokepuff()
       end,
@@ -3121,7 +3121,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("slickness")
+        rmaff("slickness")
         lostbal_herb()
       end,
 
@@ -3142,7 +3142,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("slickness")
+        rmaff("slickness")
       end,
     }
   },
@@ -3156,7 +3156,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("disloyalty")
+        rmaff("disloyalty")
         lostbal_smoke()
         sk.valerian_smokepuff()
       end,
@@ -3179,7 +3179,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("disloyalty")
+        rmaff("disloyalty")
       end,
     }
   },
@@ -3193,7 +3193,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("manaleech")
+        rmaff("manaleech")
         lostbal_smoke()
         sk.valerian_smokepuff()
       end,
@@ -3216,7 +3216,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("manaleech")
+        rmaff("manaleech")
       end,
     }
   },
@@ -3256,7 +3256,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("heartseed")
+        rmaff("heartseed")
       end,
     }
   },
@@ -3266,15 +3266,15 @@ end
       customwait = 6, -- 4 to cure
 
       oncompleted = function ()
-        removeaff("heartseed")
+        rmaff("heartseed")
       end,
 
       ontimeout = function ()
-        removeaff("heartseed")
+        rmaff("heartseed")
       end,
 
       noeffect = function ()
-        removeaff("heartseed")
+        rmaff("heartseed")
       end,
 
       onstart = function ()
@@ -3315,7 +3315,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("hypothermia")
+        rmaff("hypothermia")
       end,
     }
   },
@@ -3325,15 +3325,15 @@ end
       customwait = 6, -- 4 to cure
 
       oncompleted = function ()
-        removeaff("hypothermia")
+        rmaff("hypothermia")
       end,
 
       ontimeout = function ()
-        removeaff("hypothermia")
+        rmaff("hypothermia")
       end,
 
       noeffect = function ()
-        removeaff("hypothermia")
+        rmaff("hypothermia")
       end,
 
       onstart = function ()
@@ -3387,7 +3387,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("mutilatedrightleg")
+        rmaff("mutilatedrightleg")
       end,
     }
   },
@@ -3397,7 +3397,7 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("mutilatedrightleg")
+        rmaff("mutilatedrightleg")
         addaff(dict.mangledrightleg)
 
         local result = checkany(dict.curingmutilatedleftleg.waitingfor, dict.curingmangledrightleg.waitingfor, dict.curingmangledleftleg.waitingfor, dict.curingparestolegs.waitingfor)
@@ -3409,7 +3409,7 @@ end
 
       ontimeout = function ()
         if affs.mutilatedrightleg then
-          removeaff("mutilatedrightleg")
+          rmaff("mutilatedrightleg")
           addaff(dict.mangledrightleg)
         end
       end,
@@ -3418,12 +3418,12 @@ end
       end,
 
       oncuredleft = function()
-        removeaff("mutilatedrightleg")
+        rmaff("mutilatedrightleg")
         addaff(dict.mangledrightleg)
       end,
 
       noeffect = function ()
-        removeaff("mutilatedrightleg")
+        rmaff("mutilatedrightleg")
       end
     }
   },
@@ -3465,7 +3465,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("parestolegs")
+        rmaff("parestolegs")
       end,
     }
   },
@@ -3474,7 +3474,7 @@ end
       customwait = 4,
 
       oncompleted = function ()
-        removeaff("parestolegs")
+        rmaff("parestolegs")
 
         local result = checkany(dict.curingmutilatedrightleg.waitingfor, dict.curingmutilatedleftleg.waitingfor, dict.curingmangledrightleg.waitingfor, dict.curingmangledleftleg.waitingfor)
 
@@ -3487,11 +3487,11 @@ end
       end,
 
       ontimeout = function ()
-        removeaff("parestolegs")
+        rmaff("parestolegs")
       end,
 
       noeffect = function ()
-        removeaff("parestolegs")
+        rmaff("parestolegs")
       end
     }
   },
@@ -3540,7 +3540,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("mangledrightleg")
+        rmaff("mangledrightleg")
       end,
     }
   },
@@ -3550,8 +3550,8 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("parestolegs")
-        removeaff("mangledrightleg")
+        rmaff("parestolegs")
+        rmaff("mangledrightleg")
         addaff(dict.crippledrightleg)
 
         local result = checkany(dict.curingmutilatedrightleg.waitingfor, dict.curingmutilatedleftleg.waitingfor, dict.curingmangledleftleg.waitingfor, dict.curingparestolegs.waitingfor)
@@ -3563,7 +3563,7 @@ end
 
       ontimeout = function ()
         if affs.mangledrightleg then
-          removeaff("mangledrightleg")
+          rmaff("mangledrightleg")
           addaff(dict.crippledrightleg)
         end
       end,
@@ -3572,12 +3572,12 @@ end
       end,
 
       oncuredleft = function()
-        removeaff("mangledrightleg")
+        rmaff("mangledrightleg")
         addaff(dict.crippledrightleg)
       end,
 
       noeffect = function ()
-        removeaff("mangledrightleg")
+        rmaff("mangledrightleg")
       end
     }
   },
@@ -3593,16 +3593,16 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("crippledrightleg")
+        rmaff("crippledrightleg")
 
         if affs.unknowncrippledlimb then
           dict.unknowncrippledlimb.count = dict.unknowncrippledlimb.count - 1
-          if dict.unknowncrippledlimb.count <= 0 then removeaff"unknowncrippledlimb" else updateaffcount(dict.unknowncrippledlimb) end
+          if dict.unknowncrippledlimb.count <= 0 then rmaff"unknowncrippledlimb" else updateaffcount(dict.unknowncrippledlimb) end
         end
 
         if not affs.unknowncrippledleg then return end
         dict.unknowncrippledleg.count = dict.unknowncrippledleg.count - 1
-        if dict.unknowncrippledleg.count <= 0 then removeaff"unknowncrippledleg" else updateaffcount(dict.unknowncrippledleg) end
+        if dict.unknowncrippledleg.count <= 0 then rmaff"unknowncrippledleg" else updateaffcount(dict.unknowncrippledleg) end
       end,
 
       applycure = {"mending", "renewal"},
@@ -3631,7 +3631,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("crippledrightleg")
+        rmaff("crippledrightleg")
       end,
     }
   },
@@ -3680,7 +3680,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("mutilatedleftleg")
+        rmaff("mutilatedleftleg")
       end,
     }
   },
@@ -3690,7 +3690,7 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("mutilatedleftleg")
+        rmaff("mutilatedleftleg")
         addaff(dict.mangledleftleg)
 
         local result = checkany(dict.curingmutilatedrightleg.waitingfor, dict.curingmangledrightleg.waitingfor, dict.curingmangledleftleg.waitingfor, dict.curingparestolegs.waitingfor)
@@ -3702,7 +3702,7 @@ end
 
       ontimeout = function ()
         if affs.mutilatedleftleg then
-          removeaff("mutilatedleftleg")
+          rmaff("mutilatedleftleg")
           addaff(dict.mangledleftleg)
         end
       end,
@@ -3711,12 +3711,12 @@ end
       end,
 
       oncuredleft = function()
-        removeaff("mutilatedleftleg")
+        rmaff("mutilatedleftleg")
         addaff(dict.mangledleftleg)
       end,
 
       noeffect = function ()
-        removeaff("mutilatedleftleg")
+        rmaff("mutilatedleftleg")
       end
     }
   },
@@ -3765,7 +3765,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("mangledleftleg")
+        rmaff("mangledleftleg")
       end,
     }
   },
@@ -3775,8 +3775,8 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("parestolegs")
-        removeaff("mangledleftleg")
+        rmaff("parestolegs")
+        rmaff("mangledleftleg")
         addaff(dict.crippledleftleg)
 
         local result = checkany(dict.curingmutilatedrightleg.waitingfor, dict.curingmutilatedleftleg.waitingfor, dict.curingmangledrightleg.waitingfor, dict.curingparestolegs.waitingfor)
@@ -3788,7 +3788,7 @@ end
 
       ontimeout = function ()
         if affs.mangledleftleg then
-          removeaff("mangledleftleg")
+          rmaff("mangledleftleg")
           addaff(dict.crippledleftleg)
         end
       end,
@@ -3797,12 +3797,12 @@ end
       end,
 
       oncuredleft = function()
-        removeaff("mangledleftleg")
+        rmaff("mangledleftleg")
         addaff(dict.crippledleftleg)
       end,
 
       noeffect = function ()
-        removeaff("mangledleftleg")
+        rmaff("mangledleftleg")
       end
     }
   },
@@ -3818,16 +3818,16 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("crippledleftleg")
+        rmaff("crippledleftleg")
 
         if affs.unknowncrippledlimb then
           dict.unknowncrippledlimb.count = dict.unknowncrippledlimb.count - 1
-          if dict.unknowncrippledlimb.count <= 0 then removeaff"unknowncrippledlimb" else updateaffcount(dict.unknowncrippledlimb) end
+          if dict.unknowncrippledlimb.count <= 0 then rmaff"unknowncrippledlimb" else updateaffcount(dict.unknowncrippledlimb) end
         end
 
         if not affs.unknowncrippledleg then return end
         dict.unknowncrippledleg.count = dict.unknowncrippledleg.count - 1
-        if dict.unknowncrippledleg.count <= 0 then removeaff"unknowncrippledleg" else updateaffcount(dict.unknowncrippledleg) end
+        if dict.unknowncrippledleg.count <= 0 then rmaff"unknowncrippledleg" else updateaffcount(dict.unknowncrippledleg) end
       end,
 
       applycure = {"mending", "renewal"},
@@ -3856,7 +3856,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("crippledleftleg")
+        rmaff("crippledleftleg")
       end,
     }
   },
@@ -3898,7 +3898,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("parestoarms")
+        rmaff("parestoarms")
       end,
     }
   },
@@ -3907,7 +3907,7 @@ end
       customwait = 4,
 
       oncompleted = function ()
-        removeaff("parestoarms")
+        rmaff("parestoarms")
 
         local result = checkany(dict.curingmutilatedrightarm.waitingfor, dict.curingmutilatedleftarm.waitingfor, dict.curingmangledrightarm.waitingfor, dict.curingmangledleftarm.waitingfor)
 
@@ -3920,11 +3920,11 @@ end
       end,
 
       ontimeout = function ()
-        removeaff("parestoarms")
+        rmaff("parestoarms")
       end,
 
       noeffect = function ()
-        removeaff("parestoarms")
+        rmaff("parestoarms")
       end
     }
   },
@@ -3966,7 +3966,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("mutilatedleftarm")
+        rmaff("mutilatedleftarm")
       end,
     },
     onremoved = function () signals.canoutr:emit() end
@@ -3977,7 +3977,7 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("mutilatedleftarm")
+        rmaff("mutilatedleftarm")
         addaff(dict.mangledleftarm)
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
 
@@ -3990,7 +3990,7 @@ end
 
       ontimeout = function ()
         if affs.mutilatedleftarm then
-          removeaff("mutilatedleftarm")
+          rmaff("mutilatedleftarm")
           addaff(dict.mangledleftarm)
         end
       end,
@@ -3999,12 +3999,12 @@ end
       end,
 
       oncuredleft = function()
-        removeaff("mutilatedleftarm")
+        rmaff("mutilatedleftarm")
         addaff(dict.mangledleftarm)
       end,
 
       noeffect = function ()
-        removeaff("mutilatedleftarm")
+        rmaff("mutilatedleftarm")
       end
     }
   },
@@ -4046,7 +4046,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("mangledleftarm")
+        rmaff("mangledleftarm")
       end,
     },
     onremoved = function () signals.canoutr:emit() end
@@ -4057,8 +4057,8 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("parestoarms")
-        removeaff("mangledleftarm")
+        rmaff("parestoarms")
+        rmaff("mangledleftarm")
         addaff(dict.crippledleftarm)
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
 
@@ -4071,7 +4071,7 @@ end
 
       ontimeout = function ()
         if affs.mangledleftarm then
-          removeaff("mangledleftarm")
+          rmaff("mangledleftarm")
           addaff(dict.crippledleftarm)
           signals.after_lifevision_processing:unblock(cnrl.checkwarning)
         end
@@ -4081,13 +4081,13 @@ end
       end,
 
       oncuredleft = function()
-        removeaff("mangledleftarm")
+        rmaff("mangledleftarm")
         addaff(dict.crippledleftarm)
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
       end,
 
       noeffect = function ()
-        removeaff("mangledleftarm")
+        rmaff("mangledleftarm")
       end
     }
   },
@@ -4103,16 +4103,16 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("crippledleftarm")
+        rmaff("crippledleftarm")
 
         if affs.unknowncrippledlimb then
           dict.unknowncrippledlimb.count = dict.unknowncrippledlimb.count - 1
-          if dict.unknowncrippledlimb.count <= 0 then removeaff"unknowncrippledlimb" else updateaffcount(dict.unknowncrippledlimb) end
+          if dict.unknowncrippledlimb.count <= 0 then rmaff"unknowncrippledlimb" else updateaffcount(dict.unknowncrippledlimb) end
         end
 
         if not affs.unknowncrippledarm then return end
         dict.unknowncrippledarm.count = dict.unknowncrippledarm.count - 1
-        if dict.unknowncrippledarm.count <= 0 then removeaff"unknowncrippledarm" else updateaffcount(dict.unknowncrippledarm) end
+        if dict.unknowncrippledarm.count <= 0 then rmaff"unknowncrippledarm" else updateaffcount(dict.unknowncrippledarm) end
       end,
 
       applycure = {"mending", "renewal"},
@@ -4140,7 +4140,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("crippledleftarm")
+        rmaff("crippledleftarm")
       end,
     },
     onremoved = function () signals.canoutr:emit() end
@@ -4183,7 +4183,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("mutilatedrightarm")
+        rmaff("mutilatedrightarm")
       end,
     },
     onremoved = function () signals.canoutr:emit() end
@@ -4194,7 +4194,7 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("mutilatedrightarm")
+        rmaff("mutilatedrightarm")
         addaff(dict.mangledrightarm)
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
 
@@ -4207,7 +4207,7 @@ end
 
       ontimeout = function ()
         if affs.mutilatedrightarm then
-          removeaff("mutilatedrightarm")
+          rmaff("mutilatedrightarm")
           addaff(dict.mangledrightarm)
         end
       end,
@@ -4216,12 +4216,12 @@ end
       end,
 
       oncuredleft = function()
-        removeaff("mutilatedleftarm")
+        rmaff("mutilatedleftarm")
         addaff(dict.mangledleftarm)
       end,
 
       noeffect = function ()
-        removeaff("mutilatedrightarm")
+        rmaff("mutilatedrightarm")
       end
     }
   },
@@ -4263,7 +4263,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("mangledrightarm")
+        rmaff("mangledrightarm")
       end,
     },
     onremoved = function () signals.canoutr:emit() end
@@ -4274,8 +4274,8 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("mangledrightarm")
-        removeaff("parestoarms")
+        rmaff("mangledrightarm")
+        rmaff("parestoarms")
         addaff(dict.crippledrightarm)
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
 
@@ -4288,7 +4288,7 @@ end
 
       ontimeout = function ()
         if affs.mangledrightarm then
-          removeaff("mangledrightarm")
+          rmaff("mangledrightarm")
           addaff(dict.crippledrightarm)
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
         end
@@ -4298,13 +4298,13 @@ end
       end,
 
       oncuredleft = function()
-        removeaff("mangledleftarm")
+        rmaff("mangledleftarm")
         addaff(dict.crippledleftarm)
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
       end,
 
       noeffect = function ()
-        removeaff("mangledrightarm")
+        rmaff("mangledrightarm")
       end
     }
   },
@@ -4320,16 +4320,16 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("crippledrightarm")
+        rmaff("crippledrightarm")
 
         if affs.unknowncrippledlimb then
           dict.unknowncrippledlimb.count = dict.unknowncrippledlimb.count - 1
-          if dict.unknowncrippledlimb.count <= 0 then removeaff"unknowncrippledlimb" else updateaffcount(dict.unknowncrippledlimb) end
+          if dict.unknowncrippledlimb.count <= 0 then rmaff"unknowncrippledlimb" else updateaffcount(dict.unknowncrippledlimb) end
         end
 
         if not affs.unknowncrippledarm then return end
         dict.unknowncrippledarm.count = dict.unknowncrippledarm.count - 1
-        if dict.unknowncrippledarm.count <= 0 then removeaff"unknowncrippledarm" else updateaffcount(dict.unknowncrippledarm) end
+        if dict.unknowncrippledarm.count <= 0 then rmaff"unknowncrippledarm" else updateaffcount(dict.unknowncrippledarm) end
       end,
 
       applycure = {"mending", "renewal"},
@@ -4357,7 +4357,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("crippledrightarm")
+        rmaff("crippledrightarm")
       end,
     },
     onremoved = function () signals.canoutr:emit() end
@@ -4402,7 +4402,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("laceratedthroat")
+        rmaff("laceratedthroat")
       end,
     }
   },
@@ -4412,7 +4412,7 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("laceratedthroat")
+        rmaff("laceratedthroat")
         addaff(dict.slashedthroat)
       end,
 
@@ -4420,12 +4420,12 @@ end
       end,
 
       noeffect = function()
-        removeaff("laceratedthroat")
+        rmaff("laceratedthroat")
         addaff(dict.slashedthroat)
       end,
 
       noeffect = function ()
-        removeaff("laceratedthroat")
+        rmaff("laceratedthroat")
       end
     }
   },
@@ -4440,7 +4440,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("slashedthroat")
+        rmaff("slashedthroat")
       end,
 
       noeffect = function ()
@@ -4471,7 +4471,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("slashedthroat")
+        rmaff("slashedthroat")
       end,
     }
   },
@@ -4504,19 +4504,19 @@ end
     aff = {
       oncompleted = function (oldhp)
         if not conf.aillusion or not oldhp or oldhp > stats.currenthealth or paragraph_length >= 3 then
-          if affs.mildtrauma then removeaff("mildtrauma") end
+          if affs.mildtrauma then rmaff("mildtrauma") end
           addaff(dict.serioustrauma)
         end
       end,
 
       forced = function ()
-        if affs.mildtrauma then removeaff("mildtrauma") end
+        if affs.mildtrauma then rmaff("mildtrauma") end
         addaff(dict.serioustrauma)
       end
     },
     gone = {
       oncompleted = function ()
-        removeaff("serioustrauma")
+        rmaff("serioustrauma")
       end,
     }
   },
@@ -4526,13 +4526,13 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("serioustrauma")
+        rmaff("serioustrauma")
         addaff(dict.mildtrauma)
       end,
 
       ontimeout = function ()
         if affs.serioustrauma then
-          removeaff("serioustrauma")
+          rmaff("serioustrauma")
           addaff(dict.mildtrauma)
         end
       end,
@@ -4541,8 +4541,8 @@ end
       end,
 
       noeffect = function ()
-        removeaff("serioustrauma")
-        removeaff("mildtrauma")
+        rmaff("serioustrauma")
+        rmaff("mildtrauma")
       end
     }
   },
@@ -4581,7 +4581,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("mildtrauma")
+        rmaff("mildtrauma")
       end,
     }
   },
@@ -4591,18 +4591,18 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("mildtrauma")
+        rmaff("mildtrauma")
       end,
 
       ontimeout = function ()
-        removeaff("mildtrauma")
+        rmaff("mildtrauma")
       end,
 
       onstart = function ()
       end,
 
       noeffect = function ()
-        removeaff("mildtrauma")
+        rmaff("mildtrauma")
       end
     }
   },
@@ -4636,20 +4636,20 @@ end
     aff = {
       oncompleted = function (oldhp)
         if not conf.aillusion or not oldhp or oldhp > stats.currenthealth or paragraph_length >= 3 then
-          if affs.mildconcussion then removeaff("mildconcussion") end
+          if affs.mildconcussion then rmaff("mildconcussion") end
           addaff(dict.seriousconcussion)
           signals.after_lifevision_processing:unblock(cnrl.checkwarning)
         end
       end,
 
       forced = function ()
-        if affs.mildconcussion then removeaff("mildconcussion") end
+        if affs.mildconcussion then rmaff("mildconcussion") end
         addaff(dict.seriousconcussion)
       end
     },
     gone = {
       oncompleted = function ()
-        removeaff("seriousconcussion")
+        rmaff("seriousconcussion")
       end,
     },
     onadded = function()
@@ -4664,13 +4664,13 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("seriousconcussion")
+        rmaff("seriousconcussion")
         addaff(dict.mildconcussion)
       end,
 
       ontimeout = function ()
         if affs.seriousconcussion then
-          removeaff("seriousconcussion")
+          rmaff("seriousconcussion")
           addaff(dict.mildconcussion)
         end
       end,
@@ -4679,8 +4679,8 @@ end
       end,
 
       noeffect = function ()
-        removeaff("seriousconcussion")
-        removeaff("mildconcussion")
+        rmaff("seriousconcussion")
+        rmaff("mildconcussion")
       end
     }
   },
@@ -4725,7 +4725,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("mildconcussion")
+        rmaff("mildconcussion")
       end,
     }
   },
@@ -4735,18 +4735,18 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("mildconcussion")
+        rmaff("mildconcussion")
       end,
 
       ontimeout = function ()
-        removeaff("mildconcussion")
+        rmaff("mildconcussion")
       end,
 
       onstart = function ()
       end,
 
       noeffect = function ()
-        removeaff("mildconcussion")
+        rmaff("mildconcussion")
       end
     }
   },
@@ -4764,7 +4764,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("anorexia")
+        rmaff("anorexia")
       end,
 
       noeffect = function ()
@@ -4792,7 +4792,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("anorexia")
+        rmaff("anorexia")
         lostbal_focus()
       end,
 
@@ -4816,7 +4816,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("anorexia")
+        rmaff("anorexia")
         codepaste.remove_focusable()
       end,
     }
@@ -4833,7 +4833,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("ablaze")
+        rmaff("ablaze")
       end,
 
       all = function()
@@ -4866,7 +4866,7 @@ end
     gone = {
       oncompleted = function ()
         local currentburn = sk.current_burn()
-        removeaff(currentburn)
+        rmaff(currentburn)
       end,
 
       -- used in blackout and passive curing where multiple levels could be cured at once
@@ -4875,11 +4875,11 @@ end
         if not amount then
           local reduceto, currentburn = sk.previous_burn(), sk.current_burn()
 
-          removeaff(currentburn)
+          rmaff(currentburn)
           addaff(dict[reduceto])
         else -- amount is specified
           local reduceto, currentburn = sk.previous_burn(amount), sk.current_burn()
-          removeaff(currentburn)
+          rmaff(currentburn)
 
           if not reduceto then reduceto = "ablaze" end
           addaff(dict[reduceto])
@@ -4899,7 +4899,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("severeburn")
+        rmaff("severeburn")
         addaff(dict.ablaze)
       end,
 
@@ -4932,7 +4932,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("severeburn")
+        rmaff("severeburn")
       end,
     }
   },
@@ -4948,7 +4948,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("extremeburn")
+        rmaff("extremeburn")
         addaff(dict.severeburn)
       end,
 
@@ -4981,7 +4981,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("extremeburn")
+        rmaff("extremeburn")
       end,
     }
   },
@@ -4997,7 +4997,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("charredburn")
+        rmaff("charredburn")
         addaff(dict.extremeburn)
       end,
 
@@ -5030,7 +5030,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("charredburn")
+        rmaff("charredburn")
       end,
     }
   },
@@ -5046,7 +5046,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("meltingburn")
+        rmaff("meltingburn")
         addaff(dict.charredburn)
       end,
 
@@ -5081,7 +5081,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("meltingburn")
+        rmaff("meltingburn")
       end,
     }
   },
@@ -5096,7 +5096,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("selarnia")
+        rmaff("selarnia")
       end,
 
       noeffect = function ()
@@ -5122,7 +5122,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("selarnia")
+        rmaff("selarnia")
       end,
     }
   },
@@ -5137,7 +5137,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("itching")
+        rmaff("itching")
       end,
 
       noeffect = function ()
@@ -5161,7 +5161,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("itching")
+        rmaff("itching")
       end,
     }
   },
@@ -5176,7 +5176,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("stuttering")
+        rmaff("stuttering")
       end,
 
       noeffect = function ()
@@ -5200,7 +5200,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("stuttering")
+        rmaff("stuttering")
       end,
     }
   },
@@ -5215,7 +5215,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("scalded")
+        rmaff("scalded")
       end,
 
       noeffect = function ()
@@ -5239,7 +5239,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("scalded")
+        rmaff("scalded")
       end,
     }
   },
@@ -5254,12 +5254,12 @@ end
       onstart = function () end,
 
       ontimeout = function()
-        removeaff("numbedleftarm")
+        rmaff("numbedleftarm")
         make_gnomes_work()
       end,
 
       oncompleted = function ()
-        removeaff("numbedleftarm")
+        rmaff("numbedleftarm")
         make_gnomes_work()
       end
     },
@@ -5271,7 +5271,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("numbedleftarm")
+        rmaff("numbedleftarm")
         killaction (dict.numbedleftarm.waitingfor)
       end,
     }
@@ -5287,12 +5287,12 @@ end
       onstart = function () end,
 
       ontimeout = function()
-        removeaff("numbedrightarm")
+        rmaff("numbedrightarm")
         make_gnomes_work()
       end,
 
       oncompleted = function ()
-        removeaff("numbedrightarm")
+        rmaff("numbedrightarm")
         make_gnomes_work()
       end
     },
@@ -5304,7 +5304,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("numbedrightarm")
+        rmaff("numbedrightarm")
         killaction (dict.numbedrightarm.waitingfor)
       end,
     }
@@ -5324,7 +5324,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("blindaff")
+        rmaff("blindaff")
         defences.lost("blind")
 
         local restoreaff, restoredef
@@ -5362,7 +5362,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("blindaff")
+        rmaff("blindaff")
         defences.lost("blind")
       end,
     }
@@ -5382,7 +5382,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("deafaff")
+        rmaff("deafaff")
         defences.lost("deaf")
       end,
 
@@ -5411,7 +5411,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("deafaff")
+        rmaff("deafaff")
         defences.lost("deaf")
       end,
     }
@@ -5428,7 +5428,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("shivering")
+        rmaff("shivering")
       end,
 
       noeffect = function()
@@ -5436,7 +5436,7 @@ end
       end,
 
       gotcaloricdef = function (hypothermia)
-        if not hypothermia then removeaff({"frozen", "shivering"}) end
+        if not hypothermia then rmaff({"frozen", "shivering"}) end
         dict.caloric.salve.oncompleted ()
       end,
 
@@ -5448,7 +5448,7 @@ end
 
       empty = function ()
         lostbal_salve()
-        removeaff("shivering")
+        rmaff("shivering")
       end
     },
     aff = {
@@ -5459,7 +5459,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("shivering")
+        rmaff("shivering")
       end,
     }
   },
@@ -5474,7 +5474,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("frozen")
+        rmaff("frozen")
         addaff(dict.shivering)
       end,
 
@@ -5483,7 +5483,7 @@ end
       end,
 
       gotcaloricdef = function (hypothermia)
-        if not hypothermia then removeaff({"frozen", "shivering"}) end
+        if not hypothermia then rmaff({"frozen", "shivering"}) end
         dict.caloric.salve.oncompleted ()
       end,
 
@@ -5495,7 +5495,7 @@ end
 
       empty = function ()
         lostbal_salve()
-        removeaff("frozen")
+        rmaff("frozen")
       end
     },
     aff = {
@@ -5506,7 +5506,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("frozen")
+        rmaff("frozen")
       end
     }
   },
@@ -5523,7 +5523,7 @@ end
 
       oncompleted = function ()
         lostbal_purgative()
-        removeaff("voyria")
+        rmaff("voyria")
       end,
 
       sipcure = {"immunity", "antigen"},
@@ -5532,7 +5532,7 @@ end
       end,
 
       noeffect = function()
-        removeaff("voyria")
+        rmaff("voyria")
         lostbal_purgative()
       end,
 
@@ -5548,7 +5548,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("voyria")
+        rmaff("voyria")
       end
     }
   },
@@ -5571,7 +5571,7 @@ end
       oncompleted = function (whom)
         dict.lovers.map[whom] = nil
         if not next(dict.lovers.map) then
-          removeaff("lovers")
+          rmaff("lovers")
         end
       end,
 
@@ -5586,14 +5586,14 @@ end
         end
 
         if not next(dict.lovers.map) then
-          removeaff("lovers")
+          rmaff("lovers")
         end
       end,
 
       onstart = function ()
         dict.lovers.rejecting = next(dict.lovers.map)
         if not dict.lovers.rejecting then -- if we added it via some manual way w/o a name, this failsafe will catch & remove it
-          removeaff("lovers")
+          rmaff("lovers")
           return
         end
 
@@ -5619,7 +5619,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("lovers")
+        rmaff("lovers")
         dict.lovers.map = {}
       end,
     }
@@ -5634,7 +5634,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("fear")
+        rmaff("fear")
       end,
 
       action = "compose",
@@ -5653,7 +5653,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("fear")
+        rmaff("fear")
         lostbal_focus()
       end,
 
@@ -5675,7 +5675,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("fear")
+        rmaff("fear")
         codepaste.remove_focusable()
       end
     }
@@ -5724,7 +5724,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("sleep")
+        rmaff("sleep")
       end,
     }
   },
@@ -5734,7 +5734,7 @@ end
       customwait = 999,
 
       oncompleted = function ()
-        removeaff("sleep")
+        rmaff("sleep")
 
         -- reset sleep so we try waking up again after being awoken and slept at once (like in a dsl or a delph snipe)
         if actions.sleep_misc then
@@ -5777,7 +5777,7 @@ end
       -- oncured in this case means that we actually cured it; don't have any more bleeding
       oncured = function ()
         if affs.bleeding and affs.bleeding.spammingbleed then killTimer(affs.bleeding.spammingbleed); affs.bleeding.spammingbleed = nil end
-        removeaff("bleeding")
+        rmaff("bleeding")
         dict.bleeding.count = 0
         dict.bleeding.saw_haemophilia = nil
       end,
@@ -5835,14 +5835,14 @@ end
           if not affs.bleeding then return end
 
           if dict.bleeding.count <= conf.bleedamount or dict.bleeding.count <= conf.manableedamount then
-            removeaff("bleeding")
+            rmaff("bleeding")
           end
         end)
       end
     },
     gone = {
       oncompleted = function ()
-        removeaff("bleeding")
+        rmaff("bleeding")
       end,
     },
     onremoved = function()
@@ -5873,7 +5873,7 @@ end
       oncompleted = function (aff)
         -- small heuristic - shivering can be upgraded to frozen
         if aff == "shivering" and not affs.shivering and affs.frozen then
-          removeaff("frozen")
+          rmaff("frozen")
         -- handle levels of burns
 
         elseif aff == "all burns" then
@@ -5885,7 +5885,7 @@ end
           if not burn then
             codepaste.remove_burns()
           else
-            removeaff(currentburn)
+            rmaff(currentburn)
             addaff(dict[previousburn])
           end
 
@@ -5898,7 +5898,7 @@ end
           end
 
         elseif aff == "skullfractures cured" then
-          removeaff("skullfractures")
+          rmaff("skullfractures")
           dict.skullfractures.count = 0
 
         elseif aff == "crackedribs" then
@@ -5910,7 +5910,7 @@ end
           end
 
         elseif aff == "crackedribs cured" then
-          removeaff("crackedribs")
+          rmaff("crackedribs")
           dict.crackedribs.count = 0
 
         elseif aff == "wristfractures" then
@@ -5922,7 +5922,7 @@ end
           end
 
         elseif aff == "wristfractures cured" then
-          removeaff("wristfractures")
+          rmaff("wristfractures")
           dict.wristfractures.count = 0
 
         elseif aff == "torntendons" then
@@ -5934,11 +5934,11 @@ end
           end
 
         elseif aff == "torntendons cured" then
-          removeaff("torntendons")
+          rmaff("torntendons")
           dict.torntendons.count = 0
 
         else
-          removeaff(aff)
+          rmaff(aff)
         end
 
         lostbal_tree()
@@ -5984,7 +5984,7 @@ end
             dict.unknowncrippledlimb.count = 0
             dict.unknowncrippledarm.count = 0
             dict.unknowncrippledleg.count = 0
-            removeaff({"crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "unknowncrippledarm", "unknowncrippledleg", "unknowncrippledlimb"})
+            rmaff({"crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "unknowncrippledarm", "unknowncrippledleg", "unknowncrippledlimb"})
           end
         end
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
@@ -6077,8 +6077,8 @@ end
       oncompleted = function ()
         sys.manualdiag = false
         sk.diag_list = {}
-        removeaff("unknownmental")
-        removeaff("unknownany")
+        rmaff("unknownmental")
+        rmaff("unknownany")
         dict.unknownmental.count = 0
         dict.unknownany.count = 0
         dict.bleeding.saw_haemophilia = nil
@@ -6273,7 +6273,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("prone")
+        rmaff("prone")
       end,
 
       onstart = function ()
@@ -6298,7 +6298,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("prone")
+        rmaff("prone")
       end
     },
     onremoved = function () donext() end,
@@ -6320,11 +6320,11 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("disrupt")
+        rmaff("disrupt")
       end,
 
       oncured = function ()
-        removeaff("disrupt")
+        rmaff("disrupt")
       end,
 
       action = "concentrate",
@@ -6340,7 +6340,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("disrupt")
+        rmaff("disrupt")
       end
     }
   },
@@ -6583,11 +6583,11 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("blackout")
+        rmaff("blackout")
       end,
 
       ontimeout = function ()
-        removeaff("blackout")
+        rmaff("blackout")
       end
     },
     aff = {
@@ -6615,7 +6615,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("blackout")
+        rmaff("blackout")
       end,
     },
     onremoved = function ()
@@ -6714,7 +6714,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("unknownany")
+        rmaff("unknownany")
         dict.unknownany.count = 0
       end,
 
@@ -6723,7 +6723,7 @@ end
         if not affs.unknownany then return end
         affs.unknownany.p.count = affs.unknownany.p.count - 1
         if affs.unknownany.p.count <= 0 then
-          removeaff("unknownany")
+          rmaff("unknownany")
           dict.unknownany.count = 0
         else
           updateaffcount(dict.unknownany)
@@ -6749,7 +6749,7 @@ end
         if not affs.unknownmental then return end
         affs.unknownmental.p.count = affs.unknownmental.p.count - 1
         if affs.unknownmental.p.count <= 0 then
-          removeaff("unknownmental")
+          rmaff("unknownmental")
           dict.unknownmental.count = 0
         else
           updateaffcount(dict.unknownmental)
@@ -6765,7 +6765,7 @@ end
       empty = function ()
         lostbal_focus()
 
-        removeaff("unknownmental")
+        rmaff("unknownmental")
       end
     },
     aff = {
@@ -6798,7 +6798,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("unknownmental")
+        rmaff("unknownmental")
         dict.unknownmental.count = 0
       end,
 
@@ -6807,7 +6807,7 @@ end
         if not affs.unknownmental then return end
         affs.unknownmental.p.count = affs.unknownmental.p.count - 1
         if affs.unknownmental.p.count <= 0 then
-          removeaff("unknownmental")
+          rmaff("unknownmental")
           dict.unknownmental.count = 0
         else
           updateaffcount(dict.unknownmental)
@@ -6828,7 +6828,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("unknowncrippledlimb")
+        rmaff("unknowncrippledlimb")
       end,
 
       applycure = {"mending", "renewal"},
@@ -6846,7 +6846,7 @@ end
         lostbal_salve()
         -- if it fizzled, then it means we've got a resto break on arms or legs
         -- applying resto without targetting a limb doesn't work, so try mending on both, see what happens
-        removeaff("unknowncrippledlimb")
+        rmaff("unknowncrippledlimb")
         addaff(dict.unknowncrippledarm)
         addaff(dict.unknowncrippledleg)
         tempTimer(0, function() show_info("some limb broken?", "It would seem an arm or a leg of yours is broken (the salve fizzled), not just crippled - going to work out which is it and fix it") end)
@@ -6863,7 +6863,7 @@ end
     gone = {
       oncompleted = function ()
         dict.unknowncrippledlimb.count = 0
-        removeaff("unknowncrippledlimb")
+        rmaff("unknowncrippledlimb")
       end,
     },
     onremoved = function ()
@@ -6888,7 +6888,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("unknowncrippledarm")
+        rmaff("unknowncrippledarm")
       end,
 
       actions = {"apply mending to arms", "apply mending", "apply renewal to arms", "apply renewal"},
@@ -6918,7 +6918,7 @@ end
     gone = {
       oncompleted = function ()
         dict.unknowncrippledarm.count = 0
-        removeaff("unknowncrippledarm")
+        rmaff("unknowncrippledarm")
       end,
     },
     onremoved = function ()
@@ -6943,7 +6943,7 @@ end
 
       oncompleted = function ()
         lostbal_salve()
-        removeaff("unknowncrippledleg")
+        rmaff("unknowncrippledleg")
       end,
 
       actions = {"apply mending to legs", "apply mending", "apply renewal to legs", "apply renewal"},
@@ -6973,7 +6973,7 @@ end
     gone = {
       oncompleted = function ()
         dict.unknowncrippledleg.count = 0
-        removeaff("unknowncrippledleg")
+        rmaff("unknowncrippledleg")
       end,
     },
     onremoved = function ()
@@ -7007,7 +7007,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("unknowncure")
+        rmaff("unknowncure")
         dict.unknowncure.count = 0
       end
     }
@@ -7050,7 +7050,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("bound")
+        rmaff("bound")
       end,
     },
     onremoved = function () signals.canoutr:emit() end
@@ -7061,7 +7061,7 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("bound")
+        rmaff("bound")
       end,
 
       onstart = function ()
@@ -7108,7 +7108,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("webbed")
+        rmaff("webbed")
       end,
     },
     onremoved = function () signals.canoutr:emit() donext() end
@@ -7119,7 +7119,7 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("webbed")
+        rmaff("webbed")
       end,
 
       onstart = function ()
@@ -7161,7 +7161,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("roped")
+        rmaff("roped")
       end,
     },
     onremoved = function () signals.canoutr:emit() donext() end
@@ -7172,7 +7172,7 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("roped")
+        rmaff("roped")
       end,
 
       onstart = function ()
@@ -7214,7 +7214,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("hoisted")
+        rmaff("hoisted")
       end,
     }
   },
@@ -7224,7 +7224,7 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("hoisted")
+        rmaff("hoisted")
       end,
 
       onstart = function ()
@@ -7271,7 +7271,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("transfixed")
+        rmaff("transfixed")
       end,
     },
     onremoved = function () signals.canoutr:emit() donext() end
@@ -7282,7 +7282,7 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("transfixed")
+        rmaff("transfixed")
       end,
 
       onstart = function ()
@@ -7315,7 +7315,7 @@ end
       end,
 
       dragged = function()
-        removeaff("impale")
+        rmaff("impale")
       end,
     },
     aff = {
@@ -7326,7 +7326,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("impale")
+        rmaff("impale")
       end,
     },
     onremoved = function () signals.canoutr:emit() end
@@ -7337,15 +7337,15 @@ end
       customwait = 6,
 
       oncompleted = function ()
-        removeaff("impale")
+        rmaff("impale")
       end,
 
       withdrew = function ()
-        removeaff("impale")
+        rmaff("impale")
       end,
 
       dragged = function()
-        removeaff("impale")
+        rmaff("impale")
       end,
 
       onstart = function ()
@@ -7363,7 +7363,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff{"webbed", "roped"}
+        rmaff{"webbed", "roped"}
       end,
 
       action = "dragonflex",
@@ -7902,7 +7902,7 @@ end
 
       onstart = function ()
         send("touch stuff", conf.commandecho)
-        removeaff("amnesia")
+        rmaff("amnesia")
       end
     },
     aff = {
@@ -7927,7 +7927,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("amnesia")
+        rmaff("amnesia")
       end,
     }
   },
@@ -7942,7 +7942,7 @@ end
       end,
 
       ontimeout = function ()
-        removeaff("stun")
+        rmaff("stun")
 
         if dict.checkstun.templifevision then
           debugf("stun timed out = restoring checkstun lifevisions")
@@ -7955,7 +7955,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("stun")
+        rmaff("stun")
 
         if dict.checkstun.templifevision then
           debugf("stun finished = restoring checkstun lifevisions")
@@ -7974,7 +7974,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("stun")
+        rmaff("stun")
         killaction (dict.stun.waitingfor)
       end,
     },
@@ -7991,12 +7991,12 @@ end
       onstart = function () end,
 
       ontimeout = function()
-        removeaff("unconsciousness")
+        rmaff("unconsciousness")
         make_gnomes_work()
       end,
 
       oncompleted = function ()
-        removeaff("unconsciousness")
+        rmaff("unconsciousness")
         make_gnomes_work()
       end
     },
@@ -8008,7 +8008,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("unconsciousness")
+        rmaff("unconsciousness")
         killaction (dict.unconsciousness.waitingfor)
       end,
     },
@@ -8025,7 +8025,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("swellskin")
+        rmaff("swellskin")
         make_gnomes_work()
       end
     },
@@ -8037,7 +8037,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("swellskin")
+        rmaff("swellskin")
         killaction (dict.swellskin.waitingfor)
       end,
     }
@@ -8053,12 +8053,12 @@ end
       onstart = function () end,
 
       ontimeout = function()
-        removeaff("pinshot")
+        rmaff("pinshot")
         make_gnomes_work()
       end,
 
       oncompleted = function ()
-        removeaff("pinshot")
+        rmaff("pinshot")
         make_gnomes_work()
       end
     },
@@ -8070,7 +8070,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("pinshot")
+        rmaff("pinshot")
         killaction (dict.pinshot.waitingfor)
       end,
     }
@@ -8086,12 +8086,12 @@ end
       onstart = function () end,
 
       ontimeout = function()
-        removeaff("dehydrated")
+        rmaff("dehydrated")
         make_gnomes_work()
       end,
 
       oncompleted = function ()
-        removeaff("dehydrated")
+        rmaff("dehydrated")
         make_gnomes_work()
       end
     },
@@ -8103,7 +8103,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("dehydrated")
+        rmaff("dehydrated")
         killaction (dict.dehydrated.waitingfor)
       end,
     }
@@ -8119,12 +8119,12 @@ end
       onstart = function () end,
 
       ontimeout = function()
-        removeaff("timeflux")
+        rmaff("timeflux")
         make_gnomes_work()
       end,
 
       oncompleted = function ()
-        removeaff("timeflux")
+        rmaff("timeflux")
         make_gnomes_work()
       end
     },
@@ -8136,7 +8136,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("timeflux")
+        rmaff("timeflux")
         killaction (dict.timeflux.waitingfor)
       end,
     }
@@ -8152,7 +8152,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("inquisition")
+        rmaff("inquisition")
         make_gnomes_work()
       end
     },
@@ -8164,7 +8164,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("inquisition")
+        rmaff("inquisition")
         killaction (dict.inquisition.waitingfor)
       end,
     }
@@ -8180,7 +8180,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("lullaby")
+        rmaff("lullaby")
         make_gnomes_work()
       end
     },
@@ -8192,7 +8192,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("lullaby")
+        rmaff("lullaby")
         killaction (dict.lullaby.waitingfor)
       end,
     }
@@ -8208,7 +8208,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("corrupted")
+        rmaff("corrupted")
       end
     },
     aff = {
@@ -8219,7 +8219,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("corrupted")
+        rmaff("corrupted")
         killaction (dict.corrupted.waitingfor)
       end,
     }
@@ -8235,11 +8235,11 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("mucous")
+        rmaff("mucous")
       end,
 
       ontimeout = function()
-        removeaff("mucous")
+        rmaff("mucous")
         make_gnomes_work()
       end
     },
@@ -8256,7 +8256,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("mucous")
+        rmaff("mucous")
         killaction (dict.mucous.waitingfor)
       end,
     }
@@ -8272,7 +8272,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("phlogistication")
+        rmaff("phlogistication")
         make_gnomes_work()
       end
     },
@@ -8284,7 +8284,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("phlogistication")
+        rmaff("phlogistication")
         killaction (dict.phlogistication.waitingfor)
       end,
     }
@@ -8300,7 +8300,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("vitrification")
+        rmaff("vitrification")
         make_gnomes_work()
       end
     },
@@ -8312,7 +8312,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("vitrification")
+        rmaff("vitrification")
         killaction (dict.vitrification.waitingfor)
       end,
     }
@@ -8329,7 +8329,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("icing")
+        rmaff("icing")
         make_gnomes_work()
       end
     },
@@ -8341,7 +8341,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("icing")
+        rmaff("icing")
         killaction (dict.icing.waitingfor)
       end,
     }
@@ -8357,7 +8357,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("burning")
+        rmaff("burning")
         make_gnomes_work()
       end
     },
@@ -8369,7 +8369,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("burning")
+        rmaff("burning")
         killaction (dict.burning.waitingfor)
       end,
     }
@@ -8385,7 +8385,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("voided")
+        rmaff("voided")
         make_gnomes_work()
       end
     },
@@ -8398,7 +8398,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("voided")
+        rmaff("voided")
         killaction (dict.voided.waitingfor)
       end,
     }
@@ -8415,13 +8415,13 @@ end
 
       ontimeout = function()
         if affs.hamstring then
-          removeaff("hamstring")
+          rmaff("hamstring")
           echof("Hamstring should have worn off by now, removing it.")
         end
       end,
 
       oncompleted = function ()
-        removeaff("hamstring")
+        rmaff("hamstring")
         make_gnomes_work()
       end
     },
@@ -8443,7 +8443,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("hamstring")
+        rmaff("hamstring")
         killaction (dict.hamstring.waitingfor)
       end,
     }
@@ -8459,7 +8459,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("galed")
+        rmaff("galed")
         make_gnomes_work()
       end
     },
@@ -8471,7 +8471,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("galed")
+        rmaff("galed")
         killaction (dict.galed.waitingfor)
       end,
     }
@@ -8491,7 +8491,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("rixil")
+        rmaff("rixil")
         killaction (dict.rixil.waitingfor)
       end
     },
@@ -8504,7 +8504,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("rixil")
+        rmaff("rixil")
         killaction (dict.rixil.waitingfor)
       end,
     }
@@ -8518,14 +8518,14 @@ end
       end,
 
       ontimeout = function()
-        removeaff("hecate")
+        rmaff("hecate")
         killaction (dict.hecate.waitingfor)
       end,
 
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("hecate")
+        rmaff("hecate")
         killaction (dict.hecate.waitingfor)
       end
     },
@@ -8538,7 +8538,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("hecate")
+        rmaff("hecate")
         killaction (dict.hecate.waitingfor)
       end,
     }
@@ -8557,7 +8557,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("palpatar")
+        rmaff("palpatar")
         killaction (dict.palpatar.waitingfor)
       end
     },
@@ -8570,7 +8570,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("palpatar")
+        rmaff("palpatar")
         killaction (dict.palpatar.waitingfor)
       end,
     }
@@ -8585,13 +8585,13 @@ end
       end,
 
       ontimeout = function()
-        removeaff("ninkharsag")
+        rmaff("ninkharsag")
       end,
 
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("ninkharsag")
+        rmaff("ninkharsag")
         killaction (dict.ninkharsag.waitingfor)
       end,
 
@@ -8605,7 +8605,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("ninkharsag")
+        rmaff("ninkharsag")
         killaction (dict.ninkharsag.waitingfor)
       end,
 
@@ -8615,7 +8615,7 @@ end
 
         -- if we saw more ninkharsag lines than affs we've got, we can remove the affs safely
         if amount >= #curableaffs then
-          removeaff(curableaffs)
+          rmaff(curableaffs)
         else
           -- otherwise add an unknown aff - so we eventually diagnose to see what is our actual aff status like.
           -- this does mess with the aff counts, but it is better than not diagnosing ever.
@@ -8639,7 +8639,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("cadmus")
+        rmaff("cadmus")
         killaction (dict.cadmus.waitingfor)
       end
     },
@@ -8652,7 +8652,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("cadmus")
+        rmaff("cadmus")
         killaction (dict.cadmus.waitingfor)
       end,
     }
@@ -8668,7 +8668,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("spiritdisrupt")
+        rmaff("spiritdisrupt")
         lostbal_herb()
       end,
 
@@ -8688,7 +8688,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("spiritdisrupt")
+        rmaff("spiritdisrupt")
         codepaste.remove_focusable()
       end,
     }
@@ -8703,7 +8703,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("airdisrupt")
+        rmaff("airdisrupt")
         lostbal_focus()
       end,
 
@@ -8727,7 +8727,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("airdisrupt")
+        rmaff("airdisrupt")
         lostbal_herb()
       end,
 
@@ -8747,7 +8747,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("airdisrupt")
+        rmaff("airdisrupt")
         codepaste.remove_focusable()
       end,
     }
@@ -8762,7 +8762,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("earthdisrupt")
+        rmaff("earthdisrupt")
         lostbal_herb()
       end,
 
@@ -8782,7 +8782,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("earthdisrupt")
+        rmaff("earthdisrupt")
         codepaste.remove_focusable()
       end,
     }
@@ -8797,7 +8797,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("waterdisrupt")
+        rmaff("waterdisrupt")
         lostbal_focus()
       end,
 
@@ -8821,7 +8821,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("waterdisrupt")
+        rmaff("waterdisrupt")
         lostbal_herb()
       end,
 
@@ -8841,7 +8841,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("waterdisrupt")
+        rmaff("waterdisrupt")
         codepaste.remove_focusable()
       end,
     }
@@ -8856,7 +8856,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("firedisrupt")
+        rmaff("firedisrupt")
         lostbal_focus()
       end,
 
@@ -8880,7 +8880,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("firedisrupt")
+        rmaff("firedisrupt")
         lostbal_herb()
       end,
 
@@ -8900,7 +8900,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("firedisrupt")
+        rmaff("firedisrupt")
         codepaste.remove_focusable()
       end,
     }
@@ -8914,14 +8914,14 @@ end
       end,
 
       ontimeout = function()
-        removeaff("stain")
+        rmaff("stain")
         echof("Taking a guess, I think stain expired by now.")
       end,
 
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("stain")
+        rmaff("stain")
         make_gnomes_work()
       end
     },
@@ -8939,7 +8939,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("stain")
+        rmaff("stain")
         killaction (dict.stain.waitingfor)
       end,
     }
@@ -8954,7 +8954,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("depression")
+        rmaff("depression")
         lostbal_herb()
       end,
 
@@ -8974,7 +8974,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("depression")
+        rmaff("depression")
       end,
     }
   },
@@ -8988,7 +8988,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("parasite")
+        rmaff("parasite")
         lostbal_herb()
       end,
 
@@ -9008,7 +9008,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("parasite")
+        rmaff("parasite")
       end,
     }
   },
@@ -9022,7 +9022,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("retribution")
+        rmaff("retribution")
         lostbal_herb()
       end,
 
@@ -9042,7 +9042,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("retribution")
+        rmaff("retribution")
       end,
     }
   },
@@ -9056,7 +9056,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("shadowmadness")
+        rmaff("shadowmadness")
         lostbal_herb()
       end,
 
@@ -9076,7 +9076,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("shadowmadness")
+        rmaff("shadowmadness")
       end,
     }
   },
@@ -9090,7 +9090,7 @@ end
       end,
 
       oncompleted = function ()
-        removeaff("timeloop")
+        rmaff("timeloop")
         lostbal_herb()
       end,
 
@@ -9110,7 +9110,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("timeloop")
+        rmaff("timeloop")
       end,
     }
   },
@@ -9125,7 +9125,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("degenerate")
+        rmaff("degenerate")
         make_gnomes_work()
       end
     },
@@ -9142,7 +9142,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("degenerate")
+        rmaff("degenerate")
         killaction (dict.degenerate.waitingfor)
       end,
     }
@@ -9158,7 +9158,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("deteriorate")
+        rmaff("deteriorate")
         make_gnomes_work()
       end
     },
@@ -9175,7 +9175,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("deteriorate")
+        rmaff("deteriorate")
         killaction (dict.deteriorate.waitingfor)
       end,
     }
@@ -9191,7 +9191,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("hatred")
+        rmaff("hatred")
         make_gnomes_work()
       end
     },
@@ -9203,7 +9203,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("hatred")
+        rmaff("hatred")
         killaction (dict.hatred.waitingfor)
       end,
     }
@@ -9233,7 +9233,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("paradox")
+        rmaff("paradox")
         dict.paradox.count = 0
         dict.paradox.blocked_herb = ""
       end,
@@ -9248,7 +9248,7 @@ end
       onstart = function () end,
 
       oncompleted = function ()
-        removeaff("retardation")
+        rmaff("retardation")
       end
     },
     aff = {
@@ -9263,7 +9263,7 @@ end
     },
     gone = {
       oncompleted = function ()
-        removeaff("retardation")
+        rmaff("retardation")
       end,
     },
     onremoved = function ()
@@ -9883,7 +9883,7 @@ end
         if aff and aff == "unknownany" then
           dict.unknownany.count = dict.unknownany.count - 1
           if dict.unknownany.count <= 0 then
-            removeaff("unknownany")
+            rmaff("unknownany")
             dict.unknownany.count = 0
           else
             updateaffcount(dict.unknownany)
@@ -9891,7 +9891,7 @@ end
         elseif aff and aff == "unknownmental" then
           dict.unknownmental.count = dict.unknownmental.count - 1
           if dict.unknownmental.count <= 0 then
-            removeaff("unknownmental")
+            rmaff("unknownmental")
             dict.unknownmental.count = 0
           else
             updateaffcount(dict.unknownmental)
@@ -10019,7 +10019,7 @@ end
 
       -- called from shivering or frozen cure
       gotcaloricdef = function (hypothermia)
-        if not hypothermia then removeaff({"frozen", "shivering"}) end
+        if not hypothermia then rmaff({"frozen", "shivering"}) end
         dict.caloric.salve.oncompleted ()
       end,
 
@@ -10036,13 +10036,13 @@ end
         if aff and aff == "unknownany" then
           dict.unknownany.count = dict.unknownany.count - 1
           if dict.unknownany.count <= 0 then
-            removeaff("unknownany")
+            rmaff("unknownany")
             dict.unknownany.count = 0
           end
         elseif aff and aff == "unknownmental" then
           dict.unknownmental.count = dict.unknownmental.count - 1
           if dict.unknownmental.count <= 0 then
-            removeaff("unknownmental")
+            rmaff("unknownmental")
             dict.unknownmental.count = 0
           end
         end
@@ -10612,7 +10612,7 @@ end
         -- check if we need to re-classify deaf
         if (defc.deaf or affs.deafaff) and (defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye then
           defences.got("deaf")
-          removeaff("deafaff")
+          rmaff("deafaff")
         elseif (defc.deaf or affs.deafaff) then
           defences.lost("deaf")
           addaff(dict.deafaff)
@@ -10621,7 +10621,7 @@ end
         -- check if we need to re-classify blind
         if (defc.blind or affs.blindaff) and (defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind) and (svo.me.class == "Apostate" or defc.mindseye) then
           defences.got("blind")
-          removeaff("blindaff")
+          rmaff("blindaff")
         elseif (defc.blind or affs.blindaff) then
           defences.lost("blind")
           addaff(dict.blindaff)
@@ -11748,12 +11748,12 @@ if svo.haveskillset('metamorphosis') then
       end,
 
       oncompleted = function ()
-        removeaff("asthma")
+        rmaff("asthma")
         lostbal_fitness()
       end,
 
       curedasthma = function ()
-        removeaff("asthma")
+        rmaff("asthma")
       end,
 
       weakness = function ()
@@ -11761,7 +11761,7 @@ if svo.haveskillset('metamorphosis') then
       end,
 
       allgood = function()
-        removeaff("asthma")
+        rmaff("asthma")
       end,
 
       actions = {"fitness"},
@@ -15185,7 +15185,7 @@ if svo.haveskillset('healing') then
         end
 
         if not dict.usehealing.curingaff then return end
-        removeaff(dict.usehealing.curingaff)
+        rmaff(dict.usehealing.curingaff)
         dict.usehealing.curingaff = nil
       end,
 
@@ -15300,7 +15300,7 @@ if svo.haveskillset('voicecraft') then
       end,
 
       oncompleted = function ()
-        removeaff{"webbed", "roped"}
+        rmaff{"webbed", "roped"}
         lostbal_voice()
       end,
 
@@ -15335,7 +15335,7 @@ if svo.haveskillset('chivalry') then
       end,
 
       empty = function ()
-        removeaff{"inlove", "justice", "generosity", "pacifism", "peace"}
+        rmaff{"inlove", "justice", "generosity", "pacifism", "peace"}
         lostbal_rage()
       end,
 
@@ -15357,12 +15357,12 @@ if svo.haveskillset('metamorphosis') then
 
       onstart = function () end,
       ontimeout = function ()
-        removeaff("cantmorph")
+        rmaff("cantmorph")
         echo"\n"echof("We can probably morph again now.")
       end,
 
       oncompleted = function ()
-        removeaff("cantmorph")
+        rmaff("cantmorph")
       end
     },
     aff = {
@@ -15372,7 +15372,7 @@ if svo.haveskillset('metamorphosis') then
     },
     gone = {
       oncompleted = function ()
-        removeaff("cantmorph")
+        rmaff("cantmorph")
       end,
     }
   }
@@ -15462,12 +15462,12 @@ if svo.haveskillset('chivalry') or svo.haveskillset('striking') or svo.haveskill
       end,
 
       oncompleted = function ()
-        removeaff("asthma")
+        rmaff("asthma")
         lostbal_fitness()
       end,
 
       curedasthma = function ()
-        removeaff("asthma")
+        rmaff("asthma")
         lostbal_fitness()
       end,
 
@@ -15477,7 +15477,7 @@ if svo.haveskillset('chivalry') or svo.haveskillset('striking') or svo.haveskill
       end,
 
       allgood = function()
-        removeaff("asthma")
+        rmaff("asthma")
       end,
 
       actions = {"fitness"},
@@ -16162,7 +16162,7 @@ end)
 
 sk.check_retardation = function (...)
   if affs.retardation then
-    removeaff("retardation")
+    rmaff("retardation")
   end
 end
 
@@ -16190,7 +16190,7 @@ signals.newroom:connect(function()
   for i = 1, #removables do
     if affs[removables[i]] then
       escaped[#escaped+1] = removables[i]
-      removeaff(removables[i])
+      rmaff(removables[i])
     end
   end
 

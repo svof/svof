@@ -28,9 +28,9 @@ for herbname, herbaffs in pairs({
     svo.lostbal_herb()
 
     if not affs.madness then
-      svo.removeaff(herbaffs)
+      svo.rmaff(herbaffs)
     else
-      svo.removeaff(table.n_complement(herbaffs, madness_affs))
+      svo.rmaff(table.n_complement(herbaffs, madness_affs))
     end
 
   end
@@ -40,9 +40,9 @@ end
 
 empty.eat_bloodroot = function()
   svo.lostbal_herb()
-  svo.removeaff("paralysis")
+  svo.rmaff("paralysis")
 
-  if not affs.stain then svo.removeaff("slickness") end
+  if not affs.stain then svo.rmaff("slickness") end
 end
 
 empty.degenerateaffs = {"weakness", "clumsiness", "lethargy", "illness", "asthma", "paralysis"}
@@ -63,7 +63,7 @@ svo.focuscurables = empty.focuscurables
 empty.focus = function()
   if affs.madness then return end
 
-  svo.removeaff(empty.focuscurables)
+  svo.rmaff(empty.focuscurables)
 end
 
 -- you /can/ cure hamstring, dissonance with tree
@@ -109,7 +109,7 @@ end
 empty.tree = function ()
   local a = svo.gettreeableaffs()
   svo.debugf("Tree cured nothing, removing: "..table.concat(a, ", "))
-  svo.removeaff(a)
+  svo.rmaff(a)
   svo.dict.unknownmental.count = 0
   svo.dict.unknownany.count = 0
 end
@@ -120,73 +120,73 @@ empty.dragonheal = empty.tree
 empty.shrugging  = empty.tree
 
 empty.smoke_elm = function()
-  svo.removeaff({"deadening", "madness", "aeon"})
+  svo.rmaff({"deadening", "madness", "aeon"})
 end
 
 empty.smoke_valerian = function()
-  svo.removeaff({"disloyalty", "manaleech", "slickness", "hellsight"})
+  svo.rmaff({"disloyalty", "manaleech", "slickness", "hellsight"})
 end
 
 
 empty.writhe = function()
-  svo.removeaff({"impale", "bound", "webbed", "roped", "transfixed", "hoisted"})
+  svo.rmaff({"impale", "bound", "webbed", "roped", "transfixed", "hoisted"})
 end
 
 empty.apply_epidermal_head = function ()
-  svo.removeaff({"anorexia", "itching", "stuttering", "slashedthroat", "blindaff", "deafaff", "scalded"})
+  svo.rmaff({"anorexia", "itching", "stuttering", "slashedthroat", "blindaff", "deafaff", "scalded"})
   svo.defences.lost("blind")
   svo.defences.lost("deaf")
 end
 
 empty.apply_epidermal_body = function ()
-  svo.removeaff({"anorexia", "itching"})
+  svo.rmaff({"anorexia", "itching"})
 end
 
 empty.apply_mending = function()
   svo.dict.unknowncrippledlimb.count = 0
   svo.dict.unknowncrippledarm.count = 0
   svo.dict.unknowncrippledleg.count = 0
-  svo.removeaff({"selarnia", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "ablaze",
+  svo.rmaff({"selarnia", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "ablaze",
     "severeburn", "extremeburn", "charredburn", "meltingburn", "unknowncrippledarm", "unknowncrippledleg",
     "unknowncrippledlimb"})
 end
 
 empty.noeffect_mending_arms = function()
-  svo.removeaff({"crippledrightarm", "crippledleftarm", "unknowncrippledarm"})
+  svo.rmaff({"crippledrightarm", "crippledleftarm", "unknowncrippledarm"})
   svo.dict.unknowncrippledarm.count = 0
 end
 
 empty.noeffect_mending_legs = function()
-  svo.removeaff({"crippledrightleg", "crippledleftleg", "unknowncrippledleg"})
+  svo.rmaff({"crippledrightleg", "crippledleftleg", "unknowncrippledleg"})
   svo.dict.unknowncrippledleg.count = 0
 end
 
 empty.apply_health_head = function()
-  svo.removeaff({"skullfractures"})
+  svo.rmaff({"skullfractures"})
   svo.dict.skullfractures.count = 0
 end
 
 empty.apply_health_torso = function()
-  svo.removeaff({"crackedribs"})
+  svo.rmaff({"crackedribs"})
   svo.dict.crackedribs.count = 0
 end
 
 empty.apply_health_arms = function()
-  svo.removeaff({"wristfractures"})
+  svo.rmaff({"wristfractures"})
   svo.dict.wristfractures.count = 0
 end
 
 empty.apply_health_legs = function()
-  svo.removeaff({"torntendons"})
+  svo.rmaff({"torntendons"})
   svo.dict.torntendons.count = 0
 end
 
 empty.sip_immunity = function ()
-  svo.removeaff("voyria")
+  svo.rmaff("voyria")
 end
 
 empty.eat_ginger = function ()
-  svo.removeaff({"cholerichumour", "melancholichumour", "phlegmatichumour", "sanguinehumour"})
+  svo.rmaff({"cholerichumour", "melancholichumour", "phlegmatichumour", "sanguinehumour"})
   svo.dict.cholerichumour.count = 0
   svo.dict.melancholichumour.count = 0
   svo.dict.phlegmatichumour.count = 0

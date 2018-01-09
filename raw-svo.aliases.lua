@@ -882,7 +882,7 @@ end
 function reset.affs(echoback)
   for aff in pairs(affs) do
     if aff ~= "lovers" then
-      removeaff(aff)
+      rmaff(aff)
     end
   end
 
@@ -1103,7 +1103,7 @@ function vaff(aff)
       addaff(dict[aff])
     end
 
-    if aff == "aeon" then removeaff("retardation") end
+    if aff == "aeon" then rmaff("retardation") end
     signals.after_lifevision_processing:unblock(cnrl.checkwarning)
     sk.checkaeony()
     signals.aeony:emit()
@@ -1121,7 +1121,7 @@ function vrmaff(aff)
   if dict[aff].gone then
     dict[aff].gone.oncompleted()
   else
-    removeaff(aff)
+    rmaff(aff)
   end
   signals.after_lifevision_processing:unblock(cnrl.checkwarning)
   sk.checkaeony()

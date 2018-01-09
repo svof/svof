@@ -1361,11 +1361,11 @@ svo.addaff = function(aff_string_or_table)
   end
 end
 
--- removeaff
-local old_internal_removeaff = function (old)
+-- rmaff
+svo.rmaff = function (old)
   if type(old) == "table" then
     for _,aff in pairs(old) do
-      removeaff(aff)
+      rmaff(aff)
     end
     return
   end
@@ -1378,7 +1378,7 @@ local old_internal_removeaff = function (old)
     raiseEvent("svo lost aff", old)
   end
 
-  -- removeaff can be called on affs that don't exist, that's valid
+  -- rmaff can be called on affs that don't exist, that's valid
   local sw = (affs[old] and affs[old].sw or nil)
   affs[old] = nil
 
@@ -1393,6 +1393,59 @@ local old_internal_removeaff = function (old)
   end
 end
 
+svo.removeaff = function (which)
+  svo.assert(type(which) == "string", "svo.removeaff: what aff would you like to remove? name must be a string")
+  svo.assert(dict[which] and dict[which].aff, "svo.removeaff: "..which.." isn't a known aff name")
+
+  local removed = false
+  if lifevision.l[which.."_aff"] then
+    lifevision.l:set(which.."_aff", nil)
+    removed = true
+  end
+
+  if affs[which] then
+    if dict[which].gone then
+      dict[which].gone.oncompleted()
+    else
+      removeaff(which)
+    end
+
+    removed = true
+  end
+
+  signals.after_lifevision_processing:unblock(cnrl.checkwarning)
+  sk.checkaeony()
+  signals.aeony:emit()
+
+  return removed
+end
+
+svo.removeafflevel = function (which, amount, keep)
+  svo.assert(type(which) == "string", "svo.removeafflevel: what aff would you like to remove? name must be a string")
+  svo.assert(dict[which] and dict[which].aff, "svo.removeafflevel: "..which.." isn't a known aff name")
+
+  local removed = false
+  if lifevision.l[which.."_aff"] then
+    lifevision.l:set(which.."_aff", nil)
+    removed = true
+  end
+
+  if affs[which] then
+    if dict[which].gone then
+      dict[which].gone.general_cure(amount or 1, not keep)
+    else
+      removeaff(which)
+    end
+
+    removed = true
+  end
+
+  signals.after_lifevision_processing:unblock(cnrl.checkwarning)
+  sk.checkaeony()
+  signals.aeony:emit()
+
+  return removed
+end
 
 -- externally available as svo.prompttrigger
 sk.onpromptfuncs = {}
@@ -2378,7 +2431,7 @@ end
 function svo.sk.fix_affs_and_defs()
   if affs.blindaff and ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
     or (svo.me.class ~= "Apostate" and defc.mindseye)) then
-    removeaff("blindaff")
+    rmaff("blindaff")
     defences.got("blind")
     echof("blindness is now considered a defence.")
   elseif defc.blind and not ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
@@ -2389,7 +2442,7 @@ function svo.sk.fix_affs_and_defs()
   end
 
   if affs.deafaff and ((defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye) then
-    removeaff("deafaff")
+    rmaff("deafaff")
     defences.got("deaf")
     echof("deafness is now considered a defence.")
   elseif defc.deaf and not ((defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye) then

@@ -266,7 +266,7 @@ signals.gmcpcharvitals:connect(function()
         local bleed = val:match("^Bleed: (%d+)$")
         if bleed then
           if bleed == "0" then
-            svo.removeaff("bleeding")
+            svo.rmaff("bleeding")
           else
             svo.dict.bleeding.aff.oncompleted(tonumber(bleed))
           end
@@ -435,7 +435,7 @@ signals.gmcpcharafflictionsremove:connect(function()
   gaffl[thisaff] = nil
   if conf.gmcpdefechoes then svo.echof("Cured aff %s", thisaff) end
   if svo.dict.sstosvoa[thisaff] then
-    svo.removeaff(svo.dict.sstosvoa[thisaff])
+    svo.rmaff(svo.dict.sstosvoa[thisaff])
   end
 end)
 
@@ -459,7 +459,7 @@ signals.gmcpcharafflictionslist:connect(function()
   end
 
   for key, val in pairs(preaffl) do
-    if val then svo.removeaff(key) end
+    if val then svo.rmaff(key) end
   end
 end)
 
@@ -615,7 +615,7 @@ signals.changed_maxhealth:connect(function (old, new) -- can't use add_post_emit
       sk.gotmaxhealth = true
       svo.prompttrigger("check stain expiring", function()
         if svo.paragraph_length == 0 and sk.gotmaxhealth and sk.gotmaxmana and svo.affs.stain then
-          svo.removeaff("stain")
+          svo.rmaff("stain")
           svo.echof("I think stain faded.")
         end
         sk.gotmaxhealth, sk.gotmaxmana = nil, nil
@@ -636,7 +636,7 @@ signals.changed_maxmana:connect(function (old, new)
       sk.gotmaxmana = true
       svo.prompttrigger("check stain expiring", function()
         if svo.paragraph_length == 0 and sk.gotmaxhealth and sk.gotmaxmana and svo.affs.stain then
-          svo.removeaff("stain")
+          svo.rmaff("stain")
           svo.echof("I think stain faded.")
         end
         sk.gotmaxhealth, sk.gotmaxmana = nil, nil
@@ -1101,7 +1101,7 @@ end
 
 svo.index_map = pl.tablex.index_map
 
--- local addaff, removeaff, checkanyaffs, updateaffcount
+-- local addaff, rmaff, checkanyaffs, updateaffcount
 
 -- lostbal_focus, lostbal_herb, lostbal_salve, lostbal_purgative, lostbal_sip
 sk.salvetick, sk.herbtick, sk.focustick, sk.teatick = 0, 0, 0, 0
