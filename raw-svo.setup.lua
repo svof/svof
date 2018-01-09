@@ -242,7 +242,7 @@ signals.gmcpcharitemsupdate:connect(function()
 end)
 signals.gmcpcharitemsremove = luanotify.signal.new()
 signals.gmcpcharitemsremove:connect(function()
-  if not gmcp.Char.Items.Update.location then
+  if not gmcp.Char.Items.Remove.location then
     svo.debugf("(GMCP problem) location field is missing from Achaea's response.")
     return
   end
