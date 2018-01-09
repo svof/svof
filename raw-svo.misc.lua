@@ -7,7 +7,7 @@
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 local signals, sk, defs, deepcopy, echos, echosd = svo.signals, svo.sk, svo.defs, svo.deepcopy, svo.echos, svo.echosd
-local conf = svo.conf
+local conf, affs, me, cp = svo.conf, svo.affs, svo.me, svo.cp
 
 svo.vecho = function(newline, what)
   decho("<206,222,215>(<214,206,221>svof<206,222,215>)<252,251,254>: <249,244,254>" .. what)
@@ -96,11 +96,11 @@ function svo.echosd.default()
 end
 
 signals.systemstart:connect(function ()
-  vecho = echos[conf.echotype] or echos[conf.org] or echos.default
-  getDefaultColor = echosd[conf.echotype] or echosd[conf.org] or echosd.default
+  svo.vecho = echos[conf.echotype] or echos[conf.org] or echos.default
+  svo.getDefaultColor = echosd[conf.echotype] or echosd[conf.org] or echosd.default
 
   -- create an r,g,b table that we can setFgColor(unpack(getDefaultColorNums)) later
-  getDefaultColorNums = {
+  svo.getDefaultColorNums = {
     ((echosd[conf.echotype] and echosd[conf.echotype]())
       or (echosd[conf.org] and echosd[conf.org]()) or
       echosd.default()
@@ -108,11 +108,11 @@ signals.systemstart:connect(function ()
 end)
 
 signals.orgchanged:connect(function ()
-  vecho = echos[conf.echotype] or echos[conf.org] or echos.default
-  getDefaultColor = echosd[conf.echotype] or echosd[conf.org] or echosd.default
+  svo.vecho = echos[conf.echotype] or echos[conf.org] or echos.default
+  svo.getDefaultColor = echosd[conf.echotype] or echosd[conf.org] or echosd.default
 
   -- create an r,g,b table that we can setFgColor(unpack(getDefaultColorNums)) later
-  getDefaultColorNums = {
+  svo.getDefaultColorNums = {
     ((echosd[conf.echotype] and echosd[conf.echotype]())
       or (echosd[conf.org] and echosd[conf.org]()) or
       echosd.default()
@@ -127,28 +127,37 @@ function svo.updateloggingconfig()
       if not Logger then return end
 
       local args = {...}
-      if #args < 2 and args[1] and args[1]:find("%", 1, true) then Logger:Log("svof", "not enough args to debugf: "..debug.traceback()) return end
+      if #args < 2 and args[1] and args[1]:find("%", 1, true) then
+        Logger:Log("svof", "not enough args to debugf: "..debug.traceback())
+        return
+      end
       Logger:Log("svof", string.format(...))
     end
   elseif svo.conf.log == "echo" then
     svo.debugf = function(...)
       local args = {...}
-      if #args < 2 and args[1] and args[1]:find("%", 1, true) then echof("not enough args to debugf: "..debug.traceback()) return end
-      echof(string.format(...))
+      if #args < 2 and args[1] and args[1]:find("%", 1, true) then
+        svo.echof("not enough args to debugf: "..debug.traceback())
+        return
+      end
+      svo.echof(string.format(...))
     end
   else
     svo.debugf = function(...)
       if not Logger then return end
 
       local args = {...}
-      if #args < 2 and args[1] and args[1]:find("%", 1, true) then Logger:Log("svof", "not enough args to debugf: "..debug.traceback()) return end
+      if #args < 2 and args[1] and args[1]:find("%", 1, true) then
+        Logger:Log("svof", "not enough args to debugf: "..debug.traceback())
+        return
+      end
       Logger:Log("svof", string.format(...))
     end
   end
 end
 svo.updateloggingconfig()
 
-function showprompt()
+function svo.showprompt()
   if conf.singleprompt then clearWindow"bottomprompt" end
 
   -- https://bugs.launchpad.net/mudlet/+bug/982720 disallows (conf.singleprompt and 'bottomprompt' or 'main')
@@ -160,7 +169,7 @@ function showprompt()
   --   end
   -- end
 
-  if not conf.customprompt or affs.blackout or innews then
+  if not conf.customprompt or affs.blackout or svo.innews then
     moveCursor("svo_prompt",0,getLastLineNumber("svo_prompt")-1)
     selectCurrentLine("svo_prompt")
     copy("svo_prompt")
@@ -218,7 +227,7 @@ function ofs.windowecho(text)
   else ofs.origecho(sk.echofwindow, text) end
 end
 
-function echof(...)
+function svo.echof(...)
   local t = {...}
   -- see if we want this to go to a window!
   local sfind = string.find
@@ -238,31 +247,30 @@ function echof(...)
       vecho(true, s)
     else
       error(s, 2)
-      -- echoLink("(e!)", [[echo("The problem was: svo.echof couldn't build the text, because: ]]..tostring(s)..[[")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
     end
   end
 end
 
-function echofn(...)
+function svo.echofn(...)
   moveCursorEnd("main")
   vecho(false, string.format(...) or "")
 end
 
-function echon(...)
+function svo.echon(...)
   echo(string.format(...))
 end
 
-function itf(...)
+function svo.itf(...)
   dinsertText(((echosd[conf.echotype] and echosd[conf.echotype]()) or (echosd[conf.org] and echosd[conf.org]()) or echosd.default()) .. string.format(...) or "")
   -- debugf((echosd[conf.echotype] and echosd[conf.echotype]() or echosd.default()) .. string.format(...) or "")
 end
 
-local function errorf(...)
+function svo.errorf(...)
    error(string.format(...))
 end
 
 -- used in public API to allow $'s
-function snd(what, show)
+function svo.snd(what, show)
   for _,w in ipairs(string.split(what, "%$")) do
     _G.send(w, show or false)
     if (affs.seriousconcussion or (conf.doubledo and affs.stupidity)) and not sys.sync then _G.send(w, show or false) end
@@ -270,7 +278,7 @@ function snd(what, show)
 end
 
 -- given a table of keys and values as integers, return the key with highest value
-local function getHighestKey(tbl)
+function svo.getHighestKey(tbl)
   local result
   local highest = -1
   for i,j in pairs(tbl) do
@@ -283,7 +291,7 @@ local function getHighestKey(tbl)
   return result
 end
 
-local function getLowestKey(tbl)
+function svo.getLowestKey(tbl)
   local result = select(1, next(tbl))
   local lowest = select(2, next(tbl))
   for i,j in pairs(tbl) do
@@ -296,7 +304,7 @@ local function getLowestKey(tbl)
   return result
 end
 
-local function getHighestValue(tbl)
+function svo.getHighestValue(tbl)
   local result
   local highest = 0
   for i,j in pairs(tbl) do
@@ -309,7 +317,7 @@ local function getHighestValue(tbl)
   return highest
 end
 
-local function getBoundary(tbl)
+function svo.getBoundary(tbl)
   local result
   local highest, lowest = 0, select(2, next(tbl))
   for i,j in pairs(tbl) do
@@ -324,7 +332,7 @@ local function getBoundary(tbl)
   return highest, lowest
 end
 
-function oneconcat(tbl)
+function svo.oneconcat(tbl)
   svo.assert(type(tbl) == "table", "svo.oneconcat wants a table as an argument.")
   local result = {}
   for i,_ in pairs(tbl) do
@@ -334,7 +342,7 @@ function oneconcat(tbl)
   return table.concat(result, ", ")
 end
 
-function oneconcatwithval(tbl)
+function svo.oneconcatwithval(tbl)
   svo.assert(type(tbl) == "table", "svo.oneconcatwithval wants a table as an argument.")
   local result = {}
   local sformat = string.format
@@ -345,7 +353,7 @@ function oneconcatwithval(tbl)
   return table.concat(result, ", ")
 end
 
-function concatand(t)
+function svo.concatand(t)
   svo.assert(type(t) == "table", "svo.concatand: argument must be a table")
 
   if #t == 0 then return ""
@@ -355,13 +363,13 @@ function concatand(t)
   end
 end
 
-function concatandf(t, f)
+function svo.concatandf(t, f)
   svo.assert(type(t) == "table", "svo.concatandf: argument must be a table")
 
   return concatand(pl.tablex.map(f, t))
 end
 
-function keystolist(t)
+function svo.keystolist(t)
   local r = {}
 
   for k,v in pairs(t) do
@@ -373,7 +381,7 @@ end
 
 -- table -> number
 -- given a shallow key-value table of items, returns the length of the biggest string value in it
-function longeststring(input)
+function svo.longeststring(input)
   local longest, found = 0
 
   local type = type
@@ -389,8 +397,7 @@ function longeststring(input)
   if found then return longest else return nil, "no strings found in the given table" end
 end
 
-
-function safeconcat(t, separator)
+function svo.safeconcat(t, separator)
   svo.assert(type(t) == "table", "svo.safeconcat: argument must be a table")
 
   if #t == 0 then return ""
@@ -404,7 +411,7 @@ function safeconcat(t, separator)
   end
 end
 
-function deleteLineP()
+function svo.deleteLineP()
   deleteLine()
   gagline = true -- used for not echoing things on lines that'll be deleted
   sk.onprompt_beforeaction_add("deleteLine", function()
@@ -433,7 +440,7 @@ function deleteLineP()
   end
 end
 
-function deleteAllP(count)
+function svo.deleteAllP(count)
   if not count then deleteLine() end
   tempLineTrigger(count or 1,1,[[
   deleteLine()
@@ -443,7 +450,7 @@ function deleteAllP(count)
 ]])
 end
 
-local function containsbyname(t, value)
+function svo.containsbyname(t, value)
   svo.assert(type(t) == "table", "svo.containsbyname wants a table!")
   for k, v in pairs(t) do
     if v == value then return k end
@@ -452,7 +459,7 @@ local function containsbyname(t, value)
   return false
 end
 
-local function contains(t, value)
+function svo.contains(t, value)
   svo.assert(type(t) == "table", "svo.contains wants a table!")
   for k, v in pairs(t) do
     if v == value then
@@ -477,35 +484,35 @@ function svo.syncdelay()
   end
 end
 
-function events(event, ...)
+function svo.events(event, ...)
   local name = event:lower()
   if signals[name] then signals[name]:emit(...) end
 end
 
-function gevents(parent, key)
+function svo.gevents(_, key)
   local name = key:gsub("%.",""):lower()
   if signals[name] then signals[name]:emit() end
 end
 
 local yes = {"yes", "yep", "yup", "oui", "on", "y", "da"}
 local no = {"no", "nope", "non", "off", "n", "net"}
-local function convert_string(which)
+function svo.convert_string(which)
   if contains(yes, which) or which == true then return true end
   if contains(no, which) or which == false then return false end
 
   return nil
 end
-svo.toboolean = convert_string
+svo.toboolean = svo.convert_string
 
-function convert_boolean(which)
+function svo.convert_boolean(which)
   if which == true then return "on"
   else return "off" end
 end
 
 -- this should also cache to prevent a lot of getLines() calls from the tekura function
 -- warning, wrapped lines -will- be split up here
-function find_until_last_paragraph (pattern, type)
-  local t = getLines(lastpromptnumber, getLastLineNumber("main"))
+function svo.find_until_last_paragraph (pattern, type)
+  local t = getLines(svo.lastpromptnumber, getLastLineNumber("main"))
 
   local find = string.find
   for i = 1, #t do
@@ -518,11 +525,11 @@ function find_until_last_paragraph (pattern, type)
 
   return false
 end
-local find_until_last_paragraph = find_until_last_paragraph
+local find_until_last_paragraph = svo.find_until_last_paragraph
 
 -- returns the count of matches from the current line until the start of the paragraph
-function count_until_last_paragraph (pattern, type)
-  local t = getLines(lastpromptnumber, getLastLineNumber("main"))
+function svo.count_until_last_paragraph (pattern, type)
+  local t = getLines(svo.lastpromptnumber, getLastLineNumber("main"))
 
   local find, count = string.find, 0
   for i = 1, #t do
@@ -537,10 +544,10 @@ function count_until_last_paragraph (pattern, type)
 end
 
 -- merge table2 into table1
-update = function (t1, t2)
+svo.update = function (t1, t2)
   for k,v in pairs(t2) do
     if type(v) == "table" then
-      t1[k] = update(t1[k] or {}, v)
+      t1[k] = svo.update(t1[k] or {}, v)
     else
       t1[k] = v
     end
@@ -548,8 +555,9 @@ update = function (t1, t2)
   return t1
 end
 
--- assumes two table are of same length and does not recurse. Returns the value-key list of differences as the values are in t2
-basictableindexdiff = function (t1, t2)
+-- assumes two table are of same length and does not recurse
+-- Returns the value-key list of differences as the values are in t2
+svo.basictableindexdiff = function (t1, t2)
   local diff = {}
   -- have to use pairs to cover holes
   for k,v in pairs(t1) do
@@ -562,18 +570,10 @@ basictableindexdiff = function (t1, t2)
   return diff
 end
 
-local function emptyphp(what)
-  for _, _ in what:pairs() do
-    return false
-  end
-
-  return true
-end
-
-oldsend = _G.send
+svo.oldsend = _G.send
 local fancy_send_commands = {}
 
-local function fancysend(what, store)
+function svo.fancysend(what, store)
   if conf.batch then sendc(what); sk.systemscommands[what] = true else oldsend(what, false) end
 
   if (affs.seriousconcussion or (conf.doubledo and affs.stupidity)) and not sys.sync and not sys.sendonceonly then
@@ -591,7 +591,7 @@ local function fancysend(what, store)
   fancy_send_commands[#fancy_send_commands+1] = what
 end
 
-local function fancysendall()
+function svo.fancysendall()
   if #fancy_send_commands == 0 then return end
 
   if conf.commandechotype == "fancynewline" then echo'\n' end
@@ -600,7 +600,7 @@ local function fancysendall()
 end
 
 -- check if we need to adjust parrying on any limbs or not
-local function check_sp_satisfied()
+function svo.check_sp_satisfied()
   if sps.something_to_parry() then -- have we asked for any limbs to be parried?
     for name, limb in pairs(sp_config.parry_shouldbe) do
       if limb ~= sps.parry_currently[name] then
@@ -621,7 +621,7 @@ local function check_sp_satisfied()
   sys.sp_satisfied = true
 end
 
-sp_limbs = {
+svo.sp_limbs = {
   head = true,
   torso = true,
   ["right arm"] = true,
@@ -631,29 +631,29 @@ sp_limbs = {
 }
 
 
-local yep = function ()
+function svo.yep ()
   return "<0,250,0>Yep" .. getDefaultColor()
 end
 
-local nope = function ()
+function svo.nope ()
   return "<250,0,0>Nope" .. getDefaultColor()
 end
 
-local red = function (what)
+function svo.red (what)
   return "<250,0,0>" .. what .. getDefaultColor()
 end
 
-local green = function (what)
+function svo.green (what)
   return "<0,250,0>" .. what .. getDefaultColor()
 end
 
-function sk.reverse(a)
+function svo.sk.reverse(a)
   return (a:gsub("().", function (p)
     return a:sub(#a-p+1,#a-p+1);
   end))
 end
 
-function sk.anytoshort(exit)
+function svo.sk.anytoshort(exit)
   local t = {
     n = "north",
     e = "east",
@@ -676,8 +676,10 @@ function sk.anytoshort(exit)
   return rt[exit]
 end
 
--- things line blind/deaf can be either afflictions or defences. This function is called whenever their status as a defence might change, and you have them - hence they need to be changed to a defence now or back
-function sk.fix_affs_and_defs()
+-- things line blind/deaf can be either afflictions or defences.
+-- This function is called whenever their status as a defence might change, and you have them - hence they need to be
+-- changed to a defence now or back
+function svo.sk.fix_affs_and_defs()
   if affs.blindaff and ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
     or (svo.me.class ~= "Apostate" and defc.mindseye)) then
     removeaff("blindaff")
@@ -706,9 +708,11 @@ end
 basis:
   we re-wield items only we know we had wielded, that we unwielded involuntarily
 
-  received items.update - if it doesn't have an 'l' or an 'r' attribute, then it means we unwielded it, or picked it up, or whatever. So, check if we had it wielded - if we did, then this was unwielded. needs rewielding.
+  received items.update - if it doesn't have an 'l' or an 'r' attribute, then it means we unwielded it, or picked it up,
+  or whatever. So, check if we had it wielded - if we did, then this was unwielded. needs rewielding.
 
-  received items.updateif it does have an 'l' or an 'r' attribute, remember this as wielded - save in mm.me.wielding_left or mm.me.wielding_right.
+  received items.updateif it does have an 'l' or an 'r' attribute, remember this as wielded - save in
+  svo.me.wielding_left or svo.me.wielding_right.
 ]]
 
 signals.gmcpcharname:connect(function ()
@@ -744,7 +748,7 @@ signals.gmcpcharitemslist:connect(function()
   raiseEvent("svo me.wielded updated")
 end)
 
-function ceased_wielding(what)
+function svo.ceased_wielding(what)
   for itemid, item in pairs(me.wielded) do
     if item.name and item.name == what then
       me.wielded[itemid] = nil
@@ -754,7 +758,7 @@ function ceased_wielding(what)
   end
 end
 
-function sk.checkrewield()
+function svo.sk.checkrewield()
   local s,m = pcall(function()
     if paragraph_length > 1 and not find_until_last_paragraph("You cease to prop up a tall totem pole.", "exact") and not find_until_last_paragraph("You lob", "substring") and not lifevision.l.breath_gone and not find_until_last_paragraph("You begin to wield", "substring") then
       -- we wish to rewield wieldables!
@@ -772,7 +776,7 @@ function sk.checkrewield()
   signals.before_prompt_processing:disconnect(sk.checkrewield)
 end
 
-function unwielded(itemid, name)
+function svo.unwielded(itemid, name)
   sk.rewielddables = sk.rewielddables or {}
   if not (sk.rewielddables[1] and sk.rewielddables[1].id == itemid) then
     sk.rewielddables[#sk.rewielddables+1] = {id = itemid, name = name}
@@ -834,8 +838,7 @@ signals.gmcpcharitemsremove:connect(function ()
   end)
 end)
 
-
-function setdefaultprompt()
+function svo.setdefaultprompt()
   if svo.haveskillset('shindo') then
     config.set("customprompt", [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@shin^w-]], false)
   elseif svo.haveskillset('kaido') then
@@ -850,7 +853,7 @@ signals.enablegmcp:connect(function()
   sendGMCP("IRE.Time.Request")
 end)
 
-function setignore(k,v)
+function svo.setignore(k,v)
   -- default to true, use unsetignore to clear
   if v == nil then v = true end
 
@@ -858,17 +861,17 @@ function setignore(k,v)
   raiseEvent("svo ignore changed", k)
 end
 
-function unsetignore(k)
+function svo.unsetignore(k)
   ignore[k] = nil
   raiseEvent("svo ignore changed", k)
 end
 
-function setserverignore(k)
+function svo.setserverignore(k)
   serverignore[k] = true
   raiseEvent("svo serverignore changed", k)
 end
 
-function unsetserverignore(k)
+function svo.unsetserverignore(k)
   serverignore[k] = nil
   raiseEvent("svo serverignore changed", k)
 end

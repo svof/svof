@@ -6,8 +6,6 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-cpp = {}
-
 for _, stat in ipairs {"health", "mana", "endurance", "willpower"} do
   cpp["compute_"..stat.."_percent"] = function()
     return math.floor((stats["current"..stat]/stats["max"..stat])*100)

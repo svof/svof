@@ -88,6 +88,7 @@ svo.affs             = {}
 local affs = svo.affs
 svo.balanceless      = {}
 svo.cp               = {}
+svo.cpp              = {}
 svo.defences         = {}
 local defences = svo.defences
 svo.lifevision       = {}
