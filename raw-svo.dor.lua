@@ -65,7 +65,7 @@ function doaddfree(what, echoback)
   raiseEvent("svo dofree changed")
 end
 
-function donext()
+function svo.donext()
   sys.balancetick = sys.balancetick + 1
   if sys.actiontimeoutid then
     killTimer(sys.actiontimeoutid)

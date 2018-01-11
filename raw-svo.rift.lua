@@ -349,7 +349,7 @@ end
 
 -- determine the sip method. gets a table as arg with two things - the conc and trans cure
 signals.curemethodchanged:connect(function ()
-  sip = function (what)
+  svo.sip = function (what)
     local use = what.sipcure[1]
     if conf.siprandom then use = siprandom(use) end
     send("sip "..use, conf.commandecho)
@@ -359,7 +359,7 @@ end)
 
 -- determine the apply method
 signals.curemethodchanged:connect(function ()
-  apply = function (what, whereto)
+  svo.apply = function (what, whereto)
     whereto = whereto or ""
     local use = what.applycure[1]
     send("apply "..use..whereto, conf.commandecho)
@@ -712,9 +712,9 @@ end
 
 signals.aeony:connect(function ()
   if sys.sync then
-    fillpipe = sk.syncfill
+    svo.fillpipe = sk.syncfill
   else
-    fillpipe = sk.asyncfill
+    svo.fillpipe = sk.asyncfill
   end
 end)
 

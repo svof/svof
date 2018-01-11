@@ -98,6 +98,7 @@ svo.sps              = {}
 svo.sys              = {}
 local sys = svo.sys
 svo.conf             = {}
+svo.empty            = {}
 local conf = svo.conf
 svo.config           = {}
 svo.defc             = {} -- current defences
@@ -132,6 +133,18 @@ svo.cnrl             = {}
 
 svo.reset            = {}
 svo.prio             = {}
+svo.defdefup = {
+  basic  = {},
+  combat = {},
+  empty  = {},
+}
+svo.defkeepup = {
+  basic  = {},
+  combat = {},
+  empty  = {},
+}
+
+
 local affmt = {
   __tostring = function (self)
       local result = {}
@@ -426,7 +439,7 @@ signals.gmcpcharafflictionsadd:connect(function()
   gaffl[thisaff] = true
   if conf.gmcpaffechoes then svo.echof("Gained aff %s", thisaff) end
   if svo.dict.sstosvoa[thisaff] then
-    svo.addaff(svo.dict.sstosvoa[thisaff])
+    svo.svo.addaffdict(svo.dict.sstosvoa[thisaff])
   end
 end)
 
@@ -453,7 +466,7 @@ signals.gmcpcharafflictionslist:connect(function()
       if preaffl[svoAffliction] then
         preaffl[svoAffliction] = false
       else
-        svo.addaff(svoAffliction)
+        svo.svo.addaffdict(svoAffliction)
       end
     end
   end
@@ -1161,7 +1174,8 @@ svo.send = _G.send
 -- possible afflictions that need to go through a check first
 svo.affsp = {}
 
-svo.rift, svo.pipes = {}, {}
+svo.rift = {}
+svo.pipes = {}
 
 -- local check_focus, check_salve, check_sip, check_purgative, check_herb, check_moss
 -- local check_misc, check_balanceless_acts, check_balanceful_acts, check_smoke

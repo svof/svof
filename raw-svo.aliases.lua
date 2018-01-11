@@ -1100,7 +1100,7 @@ function vaff(aff)
     elseif dict[aff].aff then
       dict[aff].aff.oncompleted()
     else
-      addaff(dict[aff])
+      svo.addaffdict(dict[aff])
     end
 
     if aff == "aeon" then rmaff("retardation") end

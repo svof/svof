@@ -132,7 +132,7 @@ local function check_promptflags()
       end
       defences.got("blind")
     else
-      addaff(dict.blindaff)
+      svo.addaffdict(dict.blindaff)
     end
   elseif not pflags.b and (defc.blind or affs.blindaff) then
     rmaff("blindaff")
@@ -143,7 +143,7 @@ local function check_promptflags()
     if ((defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye) then
       defences.got("deaf")
     else
-      addaff(dict.deafaff)
+      svo.addaffdict(dict.deafaff)
     end
   elseif not pflags.d and (defc.deaf or affs.deafaff) then
     rmaff("deafaff")
@@ -612,12 +612,12 @@ signals["svo lost balance"]:connect(function(balance)
   if sys.misseddisrupt then killTimer(sys.misseddisrupt) end
   sys.misseddisrupt = tempTimer(conf.noeqtimeout, function()
     if not bals.equilibrium and not sys.extended_eq and not innews and not affs.disrupt then
-      addaff(dict.disrupt)
+      svo.addaffdict(dict.disrupt)
       if not me.passive_eqloss then
         echof("didn't get eq back in %ss - assuming disrupt", tostring(conf.noeqtimeout))
       else
         echof("didn't get eq back in %ss - assuming disrupt and confusion", tostring(conf.noeqtimeout))
-        addaff(dict.confusion)
+        svo.addaffdict(dict.confusion)
       end
 
       make_gnomes_work()

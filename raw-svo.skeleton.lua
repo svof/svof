@@ -1305,6 +1305,7 @@ updateaffcount = function (which)
   raiseEvent("svo updated aff", which.name, "count", which.count)
 end
 
+
 -- adds an affliction for the system to be tracking (ie - you are afflicted with it)
 -- does not mess with aff.<affliction>s table if the aff is already registered.
 -- this is the old internal 'addaff' function that Svof used when it was out of Mudlet
@@ -1360,6 +1361,7 @@ svo.addaff = function(aff_string_or_table)
     old_public_addaff(aff_string_or_table)
   end
 end
+svo.addaffdict = old_public_addaff
 
 -- old internal version of removeaff
 svo.rmaff = function (old)
@@ -1633,7 +1635,7 @@ lostbal_sip = function()
   raiseEvent("svo lost balance", "sip")
 end
 
-lostbal_herb = function(noeffect, mickey)
+svo.lostbal_herb = function(noeffect, mickey)
   bals.herb = false
   startbalancewatch("herb")
   sk.herbtick = sk.herbtick + 1
@@ -1665,7 +1667,7 @@ lostbal_herb = function(noeffect, mickey)
   raiseEvent("svo lost balance", "herb")
 end
 
-lostbal_salve = function()
+svo.lostbal_salve = function()
   bals.salve = false
   startbalancewatch("salve")
   sk.salvetick = sk.salvetick + 1
@@ -2438,7 +2440,7 @@ function svo.sk.fix_affs_and_defs()
   elseif defc.blind and not ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
    or (svo.me.class ~= "Apostate" and defc.mindseye)) then
     defences.lost("blind")
-    addaff(dict.blindaff)
+    svo.addaffdict(dict.blindaff)
     echof("blindness is now considered an affliction, will cure it.")
   end
 
@@ -2448,7 +2450,7 @@ function svo.sk.fix_affs_and_defs()
     echof("deafness is now considered a defence.")
   elseif defc.deaf and not ((defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye) then
     defences.lost("deaf")
-    addaff(dict.deafaff)
+    svo.addaffdict(dict.deafaff)
     echof("deafness is now considered an affliction, will cure it.")
   end
 end

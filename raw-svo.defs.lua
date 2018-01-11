@@ -38,18 +38,6 @@ defences.custom_types = {}
 
 defences.nodef_list = phpTable()
 
-defdefup = {
-  basic  = {},
-  combat = {},
-  empty  = {},
-}
-
-defkeepup = {
-  basic  = {},
-  combat = {},
-  empty  = {},
-}
-
 -- set an initial mode to something, as it always needs to be a valid mode
 defs.mode = "basic"
 
@@ -2377,7 +2365,7 @@ do
     local beforestate = sk.getbeforestateprios()
 
     dict_setup()
-    dict_validate()
+    svo.dict_validate()
 
     -- notify any prio diffs
     local afterstate = sk.getafterstateprios()
@@ -2893,7 +2881,9 @@ function defload()
 
   if lfs.attributes(defup_path) then table.load(defup_path, defdefup_t) end
   if lfs.attributes(keepup_path) then table.load(keepup_path, defkeepup_t) end
-  if lfs.attributes(getMudletHomeDir() .."/svo/defup+keepup/ignored_defences") then table.load(getMudletHomeDir() .."/svo/defup+keepup/ignored_defences", sk.ignored_defences) end
+  if lfs.attributes(getMudletHomeDir() .."/svo/defup+keepup/ignored_defences") then
+    table.load(getMudletHomeDir() .."/svo/defup+keepup/ignored_defences", sk.ignored_defences)
+  end
 
   if lfs.attributes(getMudletHomeDir() .."/svo/defup+keepup/offline_defences") then
     local t = {}
@@ -3276,7 +3266,7 @@ function defs.defline()
   end
 end
 
-process_defs = function ()
+svo.process_defs = function ()
   local addback = {}
 
   for defn, deft in pairs(defc) do

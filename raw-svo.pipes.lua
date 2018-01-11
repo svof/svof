@@ -28,7 +28,7 @@ pipes.expectations = {"valerian", "skullcap", "elm"}
 
 pipes.empties = {}
 
-function lastlit (which)
+function svo.lastlit(which)
   for i = 1, #pipes.expectations do
     local v = pipes.expectations[i]
     if v == which then

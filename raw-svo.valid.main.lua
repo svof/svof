@@ -935,7 +935,7 @@ function valid.voicecraft_tremolo(name, side)
         killTimer(sk["delayvenom_"..side.."leg"])
         sk["delayvenom_"..side.."leg"] = nil
         -- we can't use valid here, but we can use addaff
-        addaff(dict["crippled"..side.."leg"])
+        svo.addaffdict(dict["crippled"..side.."leg"])
 
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
         signals.canoutr:emit()
@@ -965,7 +965,7 @@ function valid.swashbuckling_poison()
 
         sk["delayvenom_"..limb] = tempTimer(.25, function()
           if not affs["mangled"..limb] then
-            addaff(dict["crippled"..limb])
+            svo.addaffdict(dict["crippled"..limb])
 
             signals.after_lifevision_processing:unblock(cnrl.checkwarning)
             signals.canoutr:emit()
@@ -985,7 +985,7 @@ function svo.valid.swashbuckling_acciaccatura(side, limb)
 
   sk["delayacciaccatura_"..aff] = tempTimer(.25, function()
     if not affs["mangled"..aff] then
-      addaff(dict["crippled"..aff])
+      svo.addaffdict(dict["crippled"..aff])
 
       signals.after_lifevision_processing:unblock(cnrl.checkwarning)
       signals.canoutr:emit()
@@ -1009,7 +1009,7 @@ signals.limbhit:connect(function(which, attacktype)
       for _, aff in ipairs{"rightleg", "rightarm", "leftarm", "leftleg"} do
         if sk["delayvenom_"..aff] then
           if not affs["mangled"..aff] then
-            addaff(dict["crippled"..aff])
+            svo.addaffdict(dict["crippled"..aff])
             signals.after_lifevision_processing:unblock(cnrl.checkwarning)
             signals.canoutr:emit()
           end
@@ -3845,7 +3845,7 @@ for _,name in ipairs({"rightarm", "leftarm", "leftleg", "rightleg"}) do
             if sk.delaying_break then
               killTimer(sk.delaying_break); sk.delaying_break = nil
               for _, aff in ipairs(sk.tekura_mangles) do
-                addaff(dict[aff])
+                svo.addaffdict(dict[aff])
               end
               sk.tekura_mangles = nil
             end
@@ -3856,7 +3856,7 @@ for _,name in ipairs({"rightarm", "leftarm", "leftleg", "rightleg"}) do
                 sk.delaying_break = nil
 
                 for _, aff in ipairs(sk.tekura_mangles) do
-                  addaff(dict[aff])
+                  svo.addaffdict(dict[aff])
                 end
                 sk.tekura_mangles = nil
                 signals.after_lifevision_processing:unblock(cnrl.checkwarning)
@@ -4410,9 +4410,9 @@ end
 function valid.meta_glare()
   prompttrigger("check for stupidity or impatience", function()
     if find_until_last_paragraph("You shuffle your feet noisily, suddenly bored.", "exact") then
-      addaff(dict.impatience)
+      svo.addaffdict(dict.impatience)
     else
-      addaff(dict.stupidity)
+      svo.addaffdict(dict.stupidity)
     end
   end)
 end

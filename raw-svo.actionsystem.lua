@@ -75,7 +75,7 @@ svo.doaction = function(arg1, arg2)
 
         -- if we have a stupidity counted and we timed out, then stupidity might be real
         if sk.stupidity_count and sk.stupidity_count > 0 and not affs.stupidity then
-          addaff(dict.stupidity)
+          svo.addaffdict(dict.stupidity)
           echof("I suspect we've got stupidity.")
         end
 
