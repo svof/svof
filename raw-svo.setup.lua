@@ -130,6 +130,7 @@ local sk = svo.sk
 svo.vm               = {}
 svo.cn               = {}
 svo.cnrl             = {}
+svo.bals             = {}
 
 svo.reset            = {}
 svo.prio             = {}

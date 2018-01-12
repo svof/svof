@@ -56,42 +56,6 @@ end
 
 svo.force_send = send
 
--- balances
-bals = bals or {
-  herb = true, sip = true, moss = true,
-  purgative = true, salve = true,
-  balance = true, equilibrium = true, focus = true,
-  tree = true, leftarm = "unset", rightarm = "unset",
-  dragonheal = true, smoke = true}
-if svo.haveskillset('voicecraft') then
-  bals.voice = true
-end
-if svo.me.class == "Druid" then
-  bals.hydra = true
-end
-if svo.haveskillset('domination') then
-  bals.entities = true
-end
-if svo.haveskillset('healing') then
-  bals.healing = true
-end
-if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
-  bals.fitness = true
-end
-if svo.haveskillset('chivalry') then
-  bals.rage = true
-end
-if svo.haveskillset('venom') then
-  bals.shrugging = true
-end
-if svo.haveskillset('physiology') then
-  bals.humour = true
-  bals.homunculus = true
-end
-if svo.haveskillset('terminus') then
-  bals.word = true
-end
-
 -- new incoming balances that are tracked between the lines and the prompt
 svo.newbals = {}
 

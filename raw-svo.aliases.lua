@@ -932,16 +932,23 @@ end
 signals.charname:connect(function() reset.defs() end)
 signals.gmcpcharname:connect(function() reset.defs() end)
 
-function reset.bals(echoback)
+function svo.reset.bals(echoback)
   -- create a new table instead of resetting the values in the old, because if you
   -- screw up and delete some balances - you'd expect reset to restore them
-  svo.bals = {
-    herb = true, sip = true, moss = true,
-    purgative = true, salve = true,
-    balance = true, equilibrium = true, focus = true,
-    tree = true, leftarm = "unset", rightarm = "unset",
-    dragonheal = true, smoke = true
-  }
+  svo.bals.herb = true
+  svo.bals.sip = true
+  svo.bals.moss = true
+  svo.bals.purgative = true
+  svo.bals.salve = true
+  svo.bals.balance = true
+  svo.bals.equilibrium = true
+  svo.bals.focus = true
+  svo.bals.tree = true
+  svo.bals.leftarm = "unset"
+  svo.bals.rightarm = "unset"
+  svo.bals.dragonheal = true
+  svo.bals.smoke = true
+
 if svo.haveskillset('voicecraft') then
   svo.bals.voice = true
 end
@@ -972,10 +979,11 @@ if svo.haveskillset('terminus') then
   svo.bals.word = true
 end
 
-  for balance in pairs(bals) do raiseEvent("svo got balance", balance) end
+  for balance in pairs(svo.bals) do raiseEvent("svo got balance", balance) end
 
   if echoback then echof("All balances reset.") end
 end
+signals.systemstart:connect(svo.reset.bals)
 
 function ignorelist()
   local t = {}
