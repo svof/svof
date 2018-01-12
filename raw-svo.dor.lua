@@ -140,7 +140,7 @@ end
 
 signals.systemstart:connect(function () addbalanceful("svo check do", sk.check_do) end)
 
-function check_dofree()
+function svo.check_dofree()
   if not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or dofreeworking then return end
 
   if #me.dofreequeue == 0 then return end

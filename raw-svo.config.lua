@@ -10,7 +10,7 @@ pl.dir.makepath(getMudletHomeDir() .. "/svo/config")
 
 -- conf has actual values, config data for them
 
-wait_tbl = {
+svo.wait_tbl = {
   [0] = {n = 0.7, m = "Systems lag tolerance level set to normal."},
   [1] = {n = 1.1, m = "The lag level was set to \"decent\" - make sure to set it to normal when it clears up."},
   [2] = {n = 1.9, m = "The lag level was set to \"severe\" - make sure to set it to normal when it clears up."},

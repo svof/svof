@@ -6,20 +6,24 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
+local sys, affs, defdefup, defkeepup, signals = svo.sys, svo.affs, svo.defdefup, svo.defkeepup, svo.signals
+local deepcopy, conf, sk, me, defs, defc = svo.deepcopy, svo.conf, svo.sk, svo.me, svo.defs, svo.defc
+local defences, stats, cnrl, rift = svo.defences, svo.stats, svo.cnrl, svo.rift
+local bals, pipes, watch = svo.bals, svo.pipes, svo.watch
 
 -- misc functions
-function errorf(...)
+function svo.errorf(...)
   error(string.format(...))
 end
 
-function echon(...)
+function svo.echon(...)
   local function wrapper(...) decho(string.format(...)) end
   local status, result = pcall(wrapper, ...)
   if not status then error(result, 2) end
   echo("\n")
 end
 
-function contains(t, value)
+function svo.contains(t, value)
   svo.assert(type(t) == "table", "svo.contains wants a table!")
 
   for k, v in pairs(t) do
@@ -36,7 +40,7 @@ if svo.haveskillset('healing') then
   -- returns true - Healing will *not* cure, use normal
   -- returns false - Healing *will* cure, don't use normal
   function sk.wont_heal_this(aff)
-    if type(conf.usehealing) ~= "string" or conf.usehealing ~= "full" or not can_usemana() then return true end
+    if type(conf.usehealing) ~= "string" or conf.usehealing ~= "full" or not svo.can_usemana() then return true end
 
     if sk.healingmap[aff] and sk.healingmap[aff]() then
       return false
@@ -46,11 +50,11 @@ if svo.haveskillset('healing') then
   end
 end
 
-function sk.checking_herb_ai()
-  return (doingaction"checkparalysis" or doingaction"checkasthma" or doingaction"checkimpatience") and true or false
+svo.sk.checking_herb_ai = function()
+  return (svo.doingaction"checkparalysis" or svo.doingaction"checkasthma" or svo.doingaction"checkimpatience") and true or false
 end
 
-force_send = send
+svo.force_send = send
 
 -- balances
 bals = bals or {
@@ -89,21 +93,21 @@ if svo.haveskillset('terminus') then
 end
 
 -- new incoming balances that are tracked between the lines and the prompt
-newbals = {}
+svo.newbals = {}
 
 -- checks
 
 -- sip check
 local healthchecks = {
-  healhealth = {p = dict.healhealth},
-  healmana = {p = dict.healmana}
+  healhealth = {p = svo.dict.healhealth},
+  healmana = {p = svo.dict.healmana}
 }
 
 -- build a table of all the things we need to do with their priority numbers,
 -- sort it, and do the topmost thing.
-check_sip = function(sync_mode)
+svo.check_sip = function(sync_mode)
   -- can we even sip?
-  if not bals.sip or usingbal("sip") or affs.stun or affs.unconsciousness or affs.sleep or affs.anorexia then
+  if not bals.sip or svo.usingbal("sip") or affs.stun or affs.unconsciousness or affs.sleep or affs.anorexia then
       return
   end
 
@@ -111,7 +115,7 @@ check_sip = function(sync_mode)
   local prios = {}
   local function check(what)
     for i, j in pairs(what) do
-      if not (conf.serverside and serverignore[i]) and j.p.sip and j.p.sip.isadvisable() and not ignore[i] then
+      if not (conf.serverside and svo.serverignore[i]) and j.p.sip and j.p.sip.isadvisable() and not svo.ignore[i] then
         prios[i] = (not sync_mode) and j.p.sip.aspriority or j.p.sip.spriority
       end
     end
@@ -125,14 +129,14 @@ check_sip = function(sync_mode)
 
   -- otherwise, do the highest!
   if not sync_mode then
-    doaction(dict[getHighestKey(prios)].sip) else
-    return dict[getHighestKey(prios)].sip end
+    svo.doaction(svo.dict[svo.getHighestKey(prios)].sip) else
+    return svo.dict[svo.getHighestKey(prios)].sip end
 end
 
 -- purgative check: needs to be asynced as well
-check_purgative = function(sync_mode)
+svo.check_purgative = function(sync_mode)
   -- can we even sip?
-  if not bals.purgative or usingbal("purgative") or affs.stun or affs.unconsciousness or affs.sleep or affs.anorexia then
+  if not bals.purgative or svo.usingbal("purgative") or affs.stun or affs.unconsciousness or affs.sleep or affs.anorexia then
       return
   end
 
@@ -141,7 +145,7 @@ check_purgative = function(sync_mode)
   local function check(what)
     local gotsomething = false
     for i, j in pairs(what) do
-      if not (conf.serverside and serverignore[i]) and j.p.purgative and j.p.purgative.isadvisable() and not ignore[i] then
+      if not (conf.serverside and svo.serverignore[i]) and j.p.purgative and j.p.purgative.isadvisable() and not svo.ignore[i] then
         if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
           return
         end
@@ -157,7 +161,7 @@ check_purgative = function(sync_mode)
   check(affs)
 
   if sys.deffing or conf.keepup then
-    check(dict_purgative)
+    check(svo.dict_purgative)
   end
 
   -- have nada?
@@ -165,15 +169,15 @@ check_purgative = function(sync_mode)
 
   -- otherwise, do the highest!
   if not sync_mode then
-    doaction(dict[getHighestKey(prios)].purgative) else
-    return dict[getHighestKey(prios)].purgative end
+    svo.doaction(svo.dict[svo.getHighestKey(prios)].purgative) else
+    return svo.dict[svo.getHighestKey(prios)].purgative end
 end
 
 
 -- salve check
-check_salve = function(sync_mode)
+svo.check_salve = function(sync_mode)
   -- can we even use salves?
-  if not bals.salve or usingbal("salve") or
+  if not bals.salve or svo.usingbal("salve") or
     affs.sleep or affs.stun or affs.unconsciousness or affs.slickness then
       return
   end
@@ -182,7 +186,7 @@ check_salve = function(sync_mode)
   local prios = {}
   local function check(what)
     for i, j in pairs(what) do
-      if not (conf.serverside and serverignore[i]) and j.p.salve and j.p.salve.isadvisable() and not ignore[i] then
+      if not (conf.serverside and svo.serverignore[i]) and j.p.salve and j.p.salve.isadvisable() and not svo.ignore[i] then
         if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
           return
         end
@@ -192,25 +196,25 @@ check_salve = function(sync_mode)
   end
 
   check(affs)
-  if sys.deffing or conf.keepup then check(dict_salve_def) end
+  if sys.deffing or conf.keepup then check(svo.dict_salve_def) end
 
   -- have nada?
   if not next(prios) then return false end
 
   -- otherwise, do the highest!
   if not sync_mode then
-    doaction(dict[getHighestKey(prios)].salve) else
-    return dict[getHighestKey(prios)].salve end
+    svo.doaction(svo.dict[svo.getHighestKey(prios)].salve) else
+    return svo.dict[svo.getHighestKey(prios)].salve end
 end
 
 -- herb check
 
 -- build a table of all the things we need to do with their priority numbers,
 -- sort it, and do the topmost thing.
-check_herb = function(sync_mode)
+svo.check_herb = function(sync_mode)
   -- can we even eat?
-  if not bals.herb or usingbal("herb") or affs.sleep
-    or affs.stun or affs.unconsciousness or sacid or affs.anorexia
+  if not bals.herb or svo.usingbal("herb") or affs.sleep
+    or affs.stun or affs.unconsciousness or svo.sacid or affs.anorexia
     or (conf.aillusion and conf.waitherbai and sk.checking_herb_ai()) then
       return
   end
@@ -219,7 +223,7 @@ check_herb = function(sync_mode)
   local prios = {}
   local function check (what)
     for i, j in pairs(what) do
-      if not (conf.serverside and serverignore[i]) and j.p.herb and j.p.herb.isadvisable() and not ignore[i]
+      if not (conf.serverside and svo.serverignore[i]) and j.p.herb and j.p.herb.isadvisable() and not svo.ignore[i]
         -- make sure that we can outrift things, or if we can't, we have the herb in our inventory
         and (sys.canoutr or sk.can_eat_for(j.p.herb)) then
           if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
@@ -231,15 +235,15 @@ check_herb = function(sync_mode)
   end
 
   check(affs)
-  if sys.deffing or conf.keepup then check(dict_herb) end
+  if sys.deffing or conf.keepup then check(svo.dict_herb) end
 
   -- have nada?
   if not next(prios) then return false end
 
   -- otherwise, do the highest!
   if not sync_mode then
-    doaction(dict[getHighestKey(prios)].herb) else
-    return dict[getHighestKey(prios)].herb end
+    svo.doaction(svo.dict[svo.getHighestKey(prios)].herb) else
+    return svo.dict[svo.getHighestKey(prios)].herb end
 end
 
 -- misc check
@@ -249,10 +253,10 @@ end
 
 -- this is just in case we're checking amnesia only
 local amnesias = {
-  amnesia = {p = dict.amnesia},
-  fear    = {p = dict.fear},
+  amnesia = {p = svo.dict.amnesia},
+  fear    = {p = svo.dict.fear},
 }
-check_misc = function(sync_mode, onlyamnesia)
+svo.check_misc = function(sync_mode, onlyamnesia)
   -- we -don't- check for sleep here, but a bit lower down - so waking can be on a misc
   if affs.stun or affs.unconsciousness then
     return
@@ -262,7 +266,7 @@ check_misc = function(sync_mode, onlyamnesia)
   local prios = {}
   local function check(what)
     for i, j in pairs(what) do
-      if not (conf.serverside and serverignore[i]) and j.p.misc and j.p.misc.isadvisable() and not ignore[i] and not doingaction (i) and (not affs.sleep or j.p.misc.action_name == "sleep") then
+      if not (conf.serverside and svo.serverignore[i]) and j.p.misc and j.p.misc.isadvisable() and not svo.ignore[i] and not svo.doingaction (i) and (not affs.sleep or j.p.misc.action_name == "sleep") then
         if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
           return
         end
@@ -273,8 +277,8 @@ check_misc = function(sync_mode, onlyamnesia)
 
   if not onlyamnesia then
     check(affs)
-    check(dict_misc)
-    if sys.deffing or conf.keepup then check(dict_misc_def) end
+    check(svo.dict_misc)
+    if sys.deffing or conf.keepup then check(svo.dict_misc_def) end
   else
     check(amnesias)
   end
@@ -284,30 +288,30 @@ check_misc = function(sync_mode, onlyamnesia)
 
   -- otherwise, do the highest! Also go down the list in priorities in case you need to dontbatch
   if not sync_mode then
-    local set = index_map(prios)
+    local set = svo.index_map(prios)
 
-    local highest, lowest = getBoundary(prios)
+    local highest, lowest = svo.getBoundary(prios)
 
     local dontbatch
     for i = highest, lowest, -1 do
       if set[i] then
-        if not dict[set[i]].misc.dontbatch or not dontbatch then
-          doaction(dict[set[i]].misc)
+        if not svo.dict[set[i]].misc.dontbatch or not dontbatch then
+          svo.doaction(svo.dict[set[i]].misc)
 
-          if dict[set[i]].misc.dontbatch then dontbatch = true end
+          if svo.dict[set[i]].misc.dontbatch then dontbatch = true end
         end
       end
     end
   else
     -- otherwise, do the highest!
-    return dict[getHighestKey(prios)].misc
+    return svo.dict[svo.getHighestKey(prios)].misc
   end
 end
 
 local check_for_asthma = {
-  checkasthma = {p = dict.checkasthma}
+  checkasthma = {p = svo.dict.checkasthma}
 }
-check_smoke = function(sync_mode)
+svo.check_smoke = function(sync_mode)
   if not bals.smoke or affs.stun or affs.unconsciousness or affs.sleep or affs.asthma or affs.mucous then
     return
   end
@@ -316,7 +320,7 @@ check_smoke = function(sync_mode)
   local prios = {}
   local function check(what)
     for i, j in pairs(what) do
-      if not (conf.serverside and serverignore[i]) and j.p.smoke and j.p.smoke.isadvisable() and not ignore[i] and not doingaction(i) then
+      if not (conf.serverside and svo.serverignore[i]) and j.p.smoke and j.p.smoke.isadvisable() and not svo.ignore[i] and not svo.doingaction(i) then
         if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
           return
         end
@@ -326,30 +330,30 @@ check_smoke = function(sync_mode)
   end
 
   check(affs)
-  if affsp.asthma then check(check_for_asthma) end
-  if sys.deffing or conf.keepup then check(dict_smoke_def) end
+  if svo.affsp.asthma then check(check_for_asthma) end
+  if sys.deffing or conf.keepup then check(svo.dict_smoke_def) end
 
   -- have nada?
   if not next(prios) then return end
 
   if not sync_mode then
-    local set = index_map(prios)
+    local set = svo.index_map(prios)
 
-    local highest, lowest = getBoundary(prios)
+    local highest, lowest = svo.getBoundary(prios)
     for i = highest, lowest, -1 do
       if set[i] then
-        doaction(dict[set[i]].smoke)
+        svo.doaction(svo.dict[set[i]].smoke)
       end
     end
   else
     -- otherwise, do the highest!
-    return dict[getHighestKey(prios)].smoke
+    return svo.dict[svo.getHighestKey(prios)].smoke
   end
 end
 
-check_moss = function(sync_mode)
+svo.check_moss = function(sync_mode)
   -- can we even sip?
-  if not conf.moss or usingbal("moss") or affs.stun or affs.unconsciousness or not bals.moss
+  if not conf.moss or svo.usingbal("moss") or affs.stun or affs.unconsciousness or not bals.moss
     or affs.sleep or affs.anorexia then
       return
   end
@@ -358,7 +362,7 @@ check_moss = function(sync_mode)
   local prios = {}
   local function check(what)
     for i, j in pairs(what) do
-      if not (conf.serverside and serverignore[i]) and j.p.moss and j.p.moss.isadvisable() and not ignore[i] then
+      if not (conf.serverside and svo.serverignore[i]) and j.p.moss and j.p.moss.isadvisable() and not svo.ignore[i] then
         prios[i] = (not sync_mode) and j.p.moss.aspriority or j.p.moss.spriority
       end
     end
@@ -371,14 +375,14 @@ check_moss = function(sync_mode)
 
   -- otherwise, do the highest!
   if not sync_mode then
-    doaction(dict[getHighestKey(prios)].moss) else
-    return dict[getHighestKey(prios)].moss end
+    svo.doaction(svo.dict[svo.getHighestKey(prios)].moss) else
+    return svo.dict[svo.getHighestKey(prios)].moss end
 end
 
-check_focus = function(sync_mode)
+svo.check_focus = function(sync_mode)
   -- can we even focus?
-  if not next(affs) or usingbal("focus") or affs.stun or affs.unconsciousness or not bals.focus
-    or affs.sleep or not can_usemana() or not conf.focus or stats.currentwillpower <= 75
+  if not next(affs) or svo.usingbal("focus") or affs.stun or affs.unconsciousness or not bals.focus
+    or affs.sleep or not svo.can_usemana() or not conf.focus or stats.currentwillpower <= 75
     or affs.impatience or affs.inquisition or (affs.cadmus and not conf.focuswithcadmus) then
       return
   end
@@ -388,7 +392,7 @@ check_focus = function(sync_mode)
   -- get all prios in the list
   local prios = {}
   for i, j in pairs(affs) do
-    if not (conf.serverside and serverignore[i]) and j.p.focus and (not affs.cadmus or (conf.focuswithcadmus and me.cadmusaffs[i])) and j.p.focus.isadvisable() and not ignore[i] then
+    if not (conf.serverside and svo.serverignore[i]) and j.p.focus and (not affs.cadmus or (conf.focuswithcadmus and me.cadmusaffs[i])) and j.p.focus.isadvisable() and not svo.ignore[i] then
           if svo.haveskillset('healing') and not wont_heal_this(i) then
             return
           end
@@ -401,8 +405,8 @@ check_focus = function(sync_mode)
 
   -- otherwise, do the highest!
   if not sync_mode then
-    doaction(dict[getHighestKey(prios)].focus) else
-    return dict[getHighestKey(prios)].focus end
+    svo.doaction(svo.dict[svo.getHighestKey(prios)].focus) else
+    return svo.dict[svo.getHighestKey(prios)].focus end
 end
 
 
@@ -415,8 +419,8 @@ end
 -- other_action means do something else than default when done
 -- arg is the argument to pass either to the default action
 -- lineguard is how many lines this should be across - ineffective with vconfig batch
-function lifevision.add(what, other_action, arg, lineguard)
-  lifevision.l:set(what.name, {
+function svo.lifevision.add(what, other_action, arg, lineguard)
+  svo.lifevision.l:set(what.name, {
     p = what,
     other_action = other_action,
     arg = arg
@@ -426,10 +430,10 @@ function lifevision.add(what, other_action, arg, lineguard)
     sys.lineguard = lineguard
   end
 
-  debugf("lifevision: %s added with '%s' call (%s)%s", tostring(what.name), other_action and other_action or "default", tostring(arg), (lineguard and " lg: "..lineguard or ""))
+  svo.debugf("svo.lifevision: %s added with '%s' call (%s)%s", tostring(what.name), other_action and other_action or "default", tostring(arg), (lineguard and " lg: "..lineguard or ""))
 
   if not sys.sync then return end
-  if actions[what.name] and what.balance ~= "aff" and what.balance ~= "gone" and color_table[conf.slowcurecolour] then
+  if svo.actions[what.name] and what.balance ~= "aff" and what.balance ~= "gone" and color_table[conf.slowcurecolour] then
     selectCurrentLine()
     fg(conf.slowcurecolour)
     resetFormat()
@@ -439,44 +443,44 @@ end
 
 -- special: adds something where required, ie, first position in the queue
 -- was necessary to have blackout be above everything else so stun AI doesn't slow it down 'till next prompt
-function lifevision.addcust(what, where, other_action, arg)
+function svo.lifevision.addcust(what, where, other_action, arg)
   svo.assert(what, "svo.lifevision.addcust wants an argument")
-  lifevision.l:insert(where, what.name, {
+  svo.lifevision.l:insert(where, what.name, {
     p = what,
     other_action = other_action,
     arg = arg
   })
-  debugf("lifevision: %s added (pos %d) with '%s' call (%s)", tostring(what.name), where, other_action and other_action or "default", tostring(arg))
+  svo.debugf("svo.lifevision: %s added (pos %d) with '%s' call (%s)", tostring(what.name), where, other_action and other_action or "default", tostring(arg))
 end
 
 -- returns the current lineguard that's set or nil
-function lifevision.getlineguard()
+function svo.lifevision.getlineguard()
   return sys.lineguard
 end
 
-function lifevision.clearlineguard()
+function svo.lifevision.clearlineguard()
   sys.lineguard = nil
 end
 
 local function run_through_actions()
-  for i,j in lifevision.l:iter() do
+  for _,j in svo.lifevision.l:iter() do
     if not sk.stopprocessing then
-      actionfinished(j.p, j.other_action, j.arg)
+      svo.actionfinished(j.p, j.other_action, j.arg)
     else
-      actionclear(j.p)
+      svo.actionclear(j.p)
     end
   end
 end
 
-function lifevision.validate()
+function svo.lifevision.validate()
   -- take a line off the paragraph_length if the game's curing went off, as it is a "meta" message and shouldn't be counted
-  local paragraph_length = paragraph_length
+  local paragraph_length = svo.paragraph_length
   if sk.sawcuring() then paragraph_length = paragraph_length - 1 end
 
   -- batch needs to disable lineguard, as commands come at once then. Plus, illusions aren't as prevalent anymore since serverside curing is completely immune to them
   if sys.flawedillusion or (not conf.batch and sys.lineguard and paragraph_length > sys.lineguard) then
     if sys.not_illusion then
-      debugf("cancelled illusion")
+      svo.debugf("cancelled illusion")
       run_through_actions()
 
       moveCursor(0, getLineNumber()-1)
@@ -484,14 +488,14 @@ function lifevision.validate()
       insertLink(" (!i)", '', (type(sys.not_illusion) == "string" and sys.not_illusion or "Cancelled detected 'illusion' due to script override."))
       sys.not_illusion = false
     else
-      debugf("got an illusion")
+      svo.debugf("got an illusion")
 
-      for i,j in lifevision.l:iter() do
-        actionclear(j.p)
+      for _,j in svo.lifevision.l:iter() do
+        svo.actionclear(j.p)
       end
 
       if sys.lineguard and not sys.flawedillusion then
-        debugf("lifevision.validate: paragraph_length %d, sys.lineguard %d", paragraph_length, sys.lineguard)
+        svo.debugf("svo.lifevision.validate: paragraph_length %d, sys.lineguard %d", paragraph_length, sys.lineguard)
         moveCursor(0, getLineNumber()-1)
         moveCursor(#getCurrentLine(), getLineNumber())
         insertLink(" (i)", '', "Ignored this whole illusion because the line(s) present need to be in their own.")
@@ -502,12 +506,12 @@ function lifevision.validate()
   else
     run_through_actions()
   end
-  lifevision.l = pl.OrderedMap()
+  svo.lifevision.l = svo.pl.OrderedMap()
   sk.stopprocessing = nil
   sys.lineguard = false
 end
 
-checkanyaffs = function (...)
+svo.checkanyaffs = function (...)
   local t = {...}
   for i=1,#t do
     local j = t[i]
@@ -518,7 +522,7 @@ checkanyaffs = function (...)
 end
 
 -- balanceful check
-check_balanceful_acts = function(sync_mode)
+svo.check_balanceful_acts = function(sync_mode)
   if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == "Druid" and not bals.hydra)
   then return end
 
@@ -526,16 +530,16 @@ check_balanceful_acts = function(sync_mode)
   local prios = {}
   local function check(what)
     for i, j in pairs(what) do
-      if not (conf.serverside and serverignore[i]) and j.p.physical.balanceful_act and j.p.physical.isadvisable() and not ignore[i] then
+      if not (conf.serverside and svo.serverignore[i]) and j.p.physical.balanceful_act and j.p.physical.isadvisable() and not svo.ignore[i] then
         prios[i] = (not sync_mode) and j.p.physical.aspriority or j.p.physical.spriority
       end
     end
   end
 
-  check(dict_balanceful)
+  check(svo.dict_balanceful)
 
   if sys.deffing or conf.keepup then
-    check(dict_balanceful_def)
+    check(svo.dict_balanceful_def)
   end
 
   -- have nada?
@@ -543,14 +547,14 @@ check_balanceful_acts = function(sync_mode)
 
   -- otherwise, do the highest!
   if not sync_mode then
-    doaction(dict[getHighestKey(prios)].physical) else
-    return dict[getHighestKey(prios)].physical end
+    svo.doaction(svo.dict[svo.getHighestKey(prios)].physical) else
+    return svo.dict[svo.getHighestKey(prios)].physical end
 
   return true
 end
 
 -- balanceless check
-check_balanceless_acts = function(sync_mode)
+svo.check_balanceless_acts = function(sync_mode)
   if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == "Druid" and not bals.hydra)
    then return end
 
@@ -560,7 +564,7 @@ check_balanceless_acts = function(sync_mode)
     local gotsomething = false
 
     for i, j in pairs(what) do
-      if not (conf.serverside and serverignore[i]) and j.p.physical.balanceless_act and j.p.physical.isadvisable() and not ignore[i] then
+      if not (conf.serverside and svo.serverignore[i]) and j.p.physical.balanceless_act and j.p.physical.isadvisable() and not svo.ignore[i] then
         prios[i] = (not sync_mode) and j.p.physical.aspriority or j.p.physical.spriority
         gotsomething = true
       end
@@ -569,10 +573,10 @@ check_balanceless_acts = function(sync_mode)
     return gotsomething
   end
 
-  check(dict_balanceless)
+  check(svo.dict_balanceless)
 
   if sys.deffing or conf.keepup then
-    check(dict_balanceless_def)
+    check(svo.dict_balanceless_def)
   end
 
   -- have nada?
@@ -580,47 +584,47 @@ check_balanceless_acts = function(sync_mode)
 
   -- otherwise, do the highest!
   if not sync_mode then
-    local set = index_map(prios)
+    local set = svo.index_map(prios)
 
-    local highest, lowest = getBoundary(prios)
+    local highest, lowest = svo.getBoundary(prios)
     for i = highest, lowest, -1 do
       if set[i] then
-        doaction(dict[set[i]].physical)
+        svo.doaction(svo.dict[set[i]].physical)
       end
     end
   else
-    return dict[getHighestKey(prios)].physical
+    return svo.dict[svo.getHighestKey(prios)].physical
   end
 
   return true
 end
 
-local balanceless = balanceless or {}
-local balanceful = balanceful or {}
+local balanceless = svo.balanceless or {}
+local balanceful = svo.balanceful or {}
 
-function sk.balance_controller()
+function svo.sk.balance_controller()
   if sys.balanceid == sys.balancetick then return end
 
   if not (bals.balance and bals.equilibrium) or (affs.webbed or affs.bound or affs.transfixed or affs.roped or affs.impale or affs.paralysis or affs.sleep) then return end
 
   -- loop through all balanceless functions
-  for k, f in pairs(balanceless) do
+  for _, f in pairs(balanceless) do
     f()
   end
 
 -- loop through balanceful actions until we get one that takes bal or eq
   local r
-  for k,f in pairs(balanceful) do
+  for _,f in pairs(balanceful) do
     r = f()
     if r then
       if sys.actiontimeoutid then killTimer(sys.actiontimeoutid) end
       if type(r) == "number" then
-        sys.actiontimeoutid = tempTimer(r, function () sys.balancetick = sys.balancetick + 1; make_gnomes_work() end)
+        sys.actiontimeoutid = tempTimer(r, function () sys.balancetick = sys.balancetick + 1; svo.make_gnomes_work() end)
       elseif conf.lag and conf.lag == 4 then
         -- 24 does it right away!
-        sys.actiontimeoutid = tempTimer(60*60*23, function () sys.balancetick = sys.balancetick + 1; make_gnomes_work() end)
+        sys.actiontimeoutid = tempTimer(60*60*23, function () sys.balancetick = sys.balancetick + 1; svo.make_gnomes_work() end)
       else
-        sys.actiontimeoutid = tempTimer(sys.actiontimeout, function () sys.balancetick = sys.balancetick + 1; make_gnomes_work() end)
+        sys.actiontimeoutid = tempTimer(sys.actiontimeout, function () sys.balancetick = sys.balancetick + 1; svo.make_gnomes_work() end)
       end
 
       sys.balanceid = sys.balancetick
@@ -629,37 +633,37 @@ function sk.balance_controller()
   end
 end
 
-function addbalanceless(name, func)
+function svo.addbalanceless(name, func)
   svo.assert(name and func, "svo.addbalanceless: both name and function are required")
   svo.assert(type(func) == 'function', "svo.addbalanceless: function needs to be an actual function, while you gave it a "..type(func))
 
   balanceless[name] = func
 end
 
-function removebalanceless(name)
+function svo.removebalanceless(name)
   balanceless[name] = nil
 end
 
-function addbalanceful(name, func)
+function svo.addbalanceful(name, func)
   svo.assert(name and func, "svo.addbalanceful: both name and function are required")
   svo.assert(type(func) == "function", "svo.addbalanceful: second argument has to be a function (you gave it a "..type(func)..")")
 
   balanceful[name] = func
 end
 
-function removebalanceful(name)
+function svo.removebalanceful(name)
   balanceful[name] = nil
 end
 
-function clearbalanceful()
+function svo.clearbalanceful()
   balanceful = {}
-  addbalanceful("svo check do", sk.check_do)
+  svo.addbalanceful("svo check do", sk.check_do)
   raiseEvent("svo balanceful ready")
 end
 
-function clearbalanceless()
+function svo.clearbalanceless()
   balanceless = {}
-  addbalanceless("svo check dofree", check_dofree)
+  svo.addbalanceless("svo check dofree", svo.check_dofree)
   raiseEvent("svo balanceless ready")
 end
 
@@ -685,56 +689,56 @@ local function find_highest_action(tbl)
   return result
 end
 
-local workload = {check_salve, check_focus, check_sip, check_purgative,
-            check_smoke, check_herb, check_moss, check_misc,
-            check_balanceless_acts, check_balanceful_acts}
+local workload = {svo.check_salve, svo.check_focus, svo.check_sip, svo.check_purgative,
+            svo.check_smoke, svo.check_herb, svo.check_moss, svo.check_misc,
+            svo.check_balanceless_acts, svo.check_balanceful_acts}
 
 -- real functions
 local function work_slaves_work()
   -- in async, ask each bal to do its action
 
-  check_misc(false, true) -- amnesia & fear only
+  svo.check_misc(false, true) -- amnesia & fear only
 
-  check_focus()
-  check_salve()
+  svo.check_focus()
+  svo.check_salve()
 
-  check_sip()
-  check_purgative()
-  check_smoke()
-  check_herb()
+  svo.check_sip()
+  svo.check_purgative()
+  svo.check_smoke()
+  svo.check_herb()
 
-  check_misc() -- fails for amnesia, but works for Priest Healing...
+  svo.check_misc() -- fails for amnesia, but works for Priest Healing...
 
-  check_moss()
+  svo.check_moss()
 
-  check_balanceless_acts()
+  svo.check_balanceless_acts()
 
   -- if the system didn't use bal, let it be used for other things.
-  if not check_balanceful_acts() and not will_take_balance() then sk.balance_controller() end
+  if not svo.check_balanceful_acts() and not svo.will_take_balance() then sk.balance_controller() end
 
   -- serverside prios: eat, apply, smoke, focus
 end
 
-make_gnomes_work_async = function()
+svo.make_gnomes_work_async = function()
   if conf.paused then return end
 
   signals.sysdatasendrequest:block(cnrl.processusercommand)
 
   if conf.commandecho and (conf.commandechotype == "fancy" or conf.commandechotype == "fancynewline") then
-    send = fancysend
+    send = svo.fancysend
 
     -- insert expandAlias (used in dofree, dor and similar) into the current batch, breaking the batch up in the process
     local oldexpandAlias = expandAlias
     if conf.batch then
       expandAlias = function(command, show)
-        sendc({ func = oldexpandAlias, args = {command, show} })
+        svo.sendc({ func = oldexpandAlias, args = {command, show} })
       end
     end
 
     work_slaves_work()
-    -- commands are echoed by fancysendall() in onpromptr() in case of a prompt from the game, otherwise echo them right away if from a forced make_gnomes_work()
-    if not sk.processing_prompt then fancysendall() end
-    send = oldsend
+    -- commands are echoed by fancysendall() in onpromptr() in case of a prompt from the game, otherwise echo them right away if from a forced svo.make_gnomes_work()
+    if not sk.processing_prompt then svo.fancysendall() end
+    send = svo.oldsend
 
     if conf.batch then
       expandAlias = oldexpandAlias
@@ -746,20 +750,20 @@ make_gnomes_work_async = function()
   signals.sysdatasendrequest:unblock(cnrl.processusercommand)
 end
 
-make_gnomes_work_sync = function()
+svo.make_gnomes_work_sync = function()
   sk.syncdebug = false
-  if conf.paused or sacid then return end
+  if conf.paused or svo.sacid then return end
 
   signals.sysdatasendrequest:block(cnrl.processusercommand)
 
   -- if we're already doing an action that is not of an "waitingfor" type, don't do anything!
   -- logic: if next returns nil,
   local result
-  for balance,actions in pairs(bals_in_use) do
+  for balance,actions in pairs(svo.bals_in_use) do
     if balance ~= "waitingfor" and balance ~= "gone" and balance ~= "aff" and next(actions) then result = select(2, next(actions)) break end
   end
   if result then
-    debugf("doing %s, quitting for now", result.name)
+    svo.debugf("doing %s, quitting for now", result.name)
     sk.syncdebug = string.format("[%s]: Currently doing: %s", getTimestamp(getLineCount()):trim(), result.name)
 
     signals.sysdatasendrequest:unblock(cnrl.processusercommand)
@@ -769,21 +773,20 @@ make_gnomes_work_sync = function()
   sk.gnomes_are_working = true
 
   local action_list = {}
-  result = false
 
   --... check for all bals.
   -- in sync, only return values
-  for i,j in pairs(workload) do
+  for _,j in pairs(workload) do
     result = j(true)
     if result then action_list[result.name] = result end
   end
 
-  local actions = pl.tablex.keys(action_list)
+  local actions = svo.pl.tablex.keys(action_list)
   table.sort(actions, function(a,b)
     return action_list[a].spriority > action_list[b].spriority
   end)
 
-  sk.syncdebug = string.format('[%s]: Feasible actions we\'re currently considering doing (in order): %s', getTimestamp(getLineCount()):trim(), (not next(action_list) and '(none)' or concatand(actions)))
+  sk.syncdebug = string.format('[%s]: Feasible actions we\'re currently considering doing (in order): %s', getTimestamp(getLineCount()):trim(), (not next(action_list) and '(none)' or svo.concatand(actions)))
 
   -- nothing to do =)
   if not next(action_list) then
@@ -794,16 +797,16 @@ make_gnomes_work_sync = function()
   end
 
   if conf.commandecho and conf.commandechotype == "fancy" then
-    send = fancysend
+    send = svo.fancysend
     local oldbatch = conf.batch
     conf.batch = false
-    doaction(find_highest_action(action_list))
-    -- commands are echoed by fancysendall() in onpromptr() in case of a prompt from the game, otherwise echo them right away if from a forced make_gnomes_work()
-    if not sk.processing_prompt then fancysendall() end
-    send = oldsend
+    svo.doaction(find_highest_action(action_list))
+    -- commands are echoed by fancysendall() in onpromptr() in case of a prompt from the game, otherwise echo them right away if from a forced svo.make_gnomes_work()
+    if not sk.processing_prompt then svo.fancysendall() end
+    send = svo.oldsend
     conf.batch = oldbatch
   else
-    doaction(find_highest_action(action_list))
+    svo.doaction(find_highest_action(action_list))
   end
   sk.gnomes_are_working = false
 
@@ -813,51 +816,51 @@ end
 -- default is async
 signals.aeony:connect(function()
   if sys.sync then
-    make_gnomes_work = make_gnomes_work_sync
+    svo.make_gnomes_work = svo.make_gnomes_work_sync
   else
-    make_gnomes_work = make_gnomes_work_async
+    svo.make_gnomes_work = svo.make_gnomes_work_async
   end
 end)
 sk.checkaeony()
 signals.aeony:emit()
 
-function send_in_the_gnomes()
+function svo.send_in_the_gnomes()
   -- at first, deal with lifevision.
-  lifevision.validate()
+  svo.lifevision.validate()
   signals.after_lifevision_processing:emit()
 
-  make_gnomes_work()
+  svo.make_gnomes_work()
 end
 
-function update_rift_view()
-  local status, msg = pcall(function () mm_create_riftlabel() end)
+function svo.update_rift_view()
+  local status, msg = pcall(function () svo.mm_create_riftlabel() end)
 
   if not status then error(msg) end
 end
 
 -- retrieve all lines until the last prompt, not including it
-function sk.getuntilprompt()
+function svo.sk.getuntilprompt()
   -- lastpromptnumber would include the prompt, -1 doesn't
-  return getLines(lastpromptnumber+1, getLastLineNumber("main"))
+  return getLines(svo.lastpromptnumber+1, getLastLineNumber("main"))
 end
 
-function sk.makewarnings()
-  sk.warnings = {
+function svo.sk.makewarnings()
+  svo.sk.warnings = {
     lowwillpower = {
       time = 30,
-      msg = "Warning: your <253,63,73>willpower is too low"..getDefaultColor().."! Need to regen some - otherwise you can't fight well (no clot, focus, and so on)."
+      msg = "Warning: your <253,63,73>willpower is too low"..svo.getDefaultColor().."! Need to regen some - otherwise you can't fight well (no clot, focus, and so on)."
     },
     somewhatreavable = {
       time = 10,
-      msg = "Warning: you have two humours - an Alchemists <253,63,73>Reave"..getDefaultColor().." will take 10s",
+      msg = "Warning: you have two humours - an Alchemists <253,63,73>Reave"..svo.getDefaultColor().." will take 10s",
     },
     nearlyreavable = {
       time = 5,
-      msg = "Warning: you have three humours - an Alchemists <253,63,73>Reave"..getDefaultColor().." will take 8s",
+      msg = "Warning: you have three humours - an Alchemists <253,63,73>Reave"..svo.getDefaultColor().." will take 8s",
     },
     reavable = {
       time = 5,
-      msg = "Warning: you have all four humours - an Alchemists <253,63,73>Reave"..getDefaultColor().." will only take 4s",
+      msg = "Warning: you have all four humours - an Alchemists <253,63,73>Reave"..svo.getDefaultColor().." will only take 4s",
     },
     dismemberable = {
       time = 5,
@@ -878,7 +881,7 @@ function sk.makewarnings()
     badaeon = {
       time = 5,
       msg = function()
-        echof("Warning: your aeon situation is looking bad, you might want to %swalk out%s",
+        svo.echof("Warning: your aeon situation is looking bad, you might want to %swalk out%s",
           (not conf.blockcommands and '' or "tsc off and "),
           (conf.org == "Ashtan" and " and ask for an empress") or
           (conf.org == "Targossas" and " and ask for a deliver") or
@@ -892,86 +895,86 @@ function sk.makewarnings()
   if conf.curemethod == "transonly" then
     sk.warnings.noelmid = {
       time = 20,
-      msg = "Warning: need to use your <31,31,153>cinnabar"..getDefaultColor().." pipe and you don't have one!",
+      msg = "Warning: need to use your <31,31,153>cinnabar"..svo.getDefaultColor().." pipe and you don't have one!",
     }
     sk.warnings.novalerianid = {
       time = 20,
-      msg = "Warning: need to use your <31,31,153>realgar"..getDefaultColor().." pipe and you don't have one!",
+      msg = "Warning: need to use your <31,31,153>realgar"..svo.getDefaultColor().." pipe and you don't have one!",
     }
     sk.warnings.noskullcapid = {
       time = 20,
-      msg = "Warning: need to use your <31,31,153>malachite"..getDefaultColor().." pipe and you don't have one!",
+      msg = "Warning: need to use your <31,31,153>malachite"..svo.getDefaultColor().." pipe and you don't have one!",
     }
     sk.warnings.emptyvalerianpipe = {
       time = 10,
-      msg = "Warning: need to refill your <31,31,153>realgar"..getDefaultColor().." pipe and it's empty! Don't chase balance for a bit",
+      msg = "Warning: need to refill your <31,31,153>realgar"..svo.getDefaultColor().." pipe and it's empty! Don't chase balance for a bit",
     }
     sk.warnings.emptyvalerianpipenorefill = {
       time = 10,
-      msg = "Warning: need to refill your <31,31,153>realgar"..getDefaultColor().." pipe, it's empty, but can't due to blocking afflictions :(",
+      msg = "Warning: need to refill your <31,31,153>realgar"..svo.getDefaultColor().." pipe, it's empty, but can't due to blocking afflictions :(",
     }
   elseif conf.curemethod == "preferconc" then
     sk.warnings.noelmid = {
       time = 20,
-      msg = "Warning: need to use your <31,31,153>elm"..getDefaultColor().."/<31,31,153>cinnabar"..getDefaultColor().." pipe and you don't have one!",
+      msg = "Warning: need to use your <31,31,153>elm"..svo.getDefaultColor().."/<31,31,153>cinnabar"..svo.getDefaultColor().." pipe and you don't have one!",
     }
     sk.warnings.novalerianid = {
       time = 20,
-      msg = "Warning: need to use your <31,31,153>valerian"..getDefaultColor().."/<31,31,153>realgar"..getDefaultColor().." pipe and you don't have one!",
+      msg = "Warning: need to use your <31,31,153>valerian"..svo.getDefaultColor().."/<31,31,153>realgar"..svo.getDefaultColor().." pipe and you don't have one!",
     }
     sk.warnings.noskullcapid = {
       time = 20,
-      msg = "Warning: need to use your <31,31,153>skullcap"..getDefaultColor().."/<31,31,153>malachite"..getDefaultColor().." pipe and you don't have one!",
+      msg = "Warning: need to use your <31,31,153>skullcap"..svo.getDefaultColor().."/<31,31,153>malachite"..svo.getDefaultColor().." pipe and you don't have one!",
     }
     sk.warnings.emptyvalerianpipe = {
       time = 10,
-      msg = "Warning: need to refill your <31,31,153>valerian"..getDefaultColor().."/<31,31,153>realgar"..getDefaultColor().." pipe and it's empty! Don't chase balance for a bit",
+      msg = "Warning: need to refill your <31,31,153>valerian"..svo.getDefaultColor().."/<31,31,153>realgar"..svo.getDefaultColor().." pipe and it's empty! Don't chase balance for a bit",
     }
     sk.warnings.emptyvalerianpipenorefill = {
       time = 10,
-      msg = "Warning: need to refill your <31,31,153>valerian"..getDefaultColor().."/<31,31,153>realgar"..getDefaultColor().." pipe, it's empty, but can't due to blocking afflictions :(",
+      msg = "Warning: need to refill your <31,31,153>valerian"..svo.getDefaultColor().."/<31,31,153>realgar"..svo.getDefaultColor().." pipe, it's empty, but can't due to blocking afflictions :(",
     }
   elseif conf.curemethod == "prefertrans" then
     sk.warnings.noelmid = {
       time = 20,
-      msg = "Warning: need to use your <31,31,153>cinnabar"..getDefaultColor().."/<31,31,153>elm"..getDefaultColor().." pipe and you don't have one!",
+      msg = "Warning: need to use your <31,31,153>cinnabar"..svo.getDefaultColor().."/<31,31,153>elm"..svo.getDefaultColor().." pipe and you don't have one!",
     }
     sk.warnings.novalerianid = {
       time = 20,
-      msg = "Warning: need to use your <31,31,153>realgar"..getDefaultColor().."/<31,31,153>valerian"..getDefaultColor().." pipe and you don't have one!",
+      msg = "Warning: need to use your <31,31,153>realgar"..svo.getDefaultColor().."/<31,31,153>valerian"..svo.getDefaultColor().." pipe and you don't have one!",
     }
     sk.warnings.noskullcapid = {
       time = 20,
-      msg = "Warning: need to use your <31,31,153>malachite"..getDefaultColor().."/<31,31,153>skullcap"..getDefaultColor().." pipe and you don't have one!",
+      msg = "Warning: need to use your <31,31,153>malachite"..svo.getDefaultColor().."/<31,31,153>skullcap"..svo.getDefaultColor().." pipe and you don't have one!",
     }
     sk.warnings.emptyvalerianpipe = {
       time = 10,
-      msg = "Warning: need to refill your <31,31,153>realgar"..getDefaultColor().."/<31,31,153>valerian"..getDefaultColor().." pipe and it's empty! Don't chase balance for a bit",
+      msg = "Warning: need to refill your <31,31,153>realgar"..svo.getDefaultColor().."/<31,31,153>valerian"..svo.getDefaultColor().." pipe and it's empty! Don't chase balance for a bit",
     }
     sk.warnings.emptyvalerianpipenorefill = {
       time = 10,
-      msg = "Warning: need to refill your <31,31,153>realgar"..getDefaultColor().."/<31,31,153>valerian"..getDefaultColor().." pipe, it's empty, but can't due to blocking afflictions :(",
+      msg = "Warning: need to refill your <31,31,153>realgar"..svo.getDefaultColor().."/<31,31,153>valerian"..svo.getDefaultColor().." pipe, it's empty, but can't due to blocking afflictions :(",
     }
   else
     sk.warnings.noelmid = {
         time = 20,
-        msg = "Warning: need to use your <31,31,153>elm"..getDefaultColor().." pipe and you don't have one!",
+        msg = "Warning: need to use your <31,31,153>elm"..svo.getDefaultColor().." pipe and you don't have one!",
       }
     sk.warnings.novalerianid = {
       time = 20,
-      msg = "Warning: need to use your <31,31,153>valerian"..getDefaultColor().." pipe and you don't have one!",
+      msg = "Warning: need to use your <31,31,153>valerian"..svo.getDefaultColor().." pipe and you don't have one!",
     }
     sk.warnings.noskullcapid = {
       time = 20,
-      msg = "Warning: need to use your <31,31,153>skullcap"..getDefaultColor().." pipe and you don't have one!",
+      msg = "Warning: need to use your <31,31,153>skullcap"..svo.getDefaultColor().." pipe and you don't have one!",
     }
     sk.warnings.emptyvalerianpipe = {
       time = 10,
-      msg = "Warning: need to refill your <31,31,153>valerian"..getDefaultColor().." pipe and it's empty! Don't chase balance for a bit",
+      msg = "Warning: need to refill your <31,31,153>valerian"..svo.getDefaultColor().." pipe and it's empty! Don't chase balance for a bit",
     }
     sk.warnings.emptyvalerianpipenorefill = {
       time = 10,
-      msg = "Warning: need to refill your <31,31,153>valerian"..getDefaultColor().." pipe, it's empty, but can't due to blocking afflictions :(",
+      msg = "Warning: need to refill your <31,31,153>valerian"..svo.getDefaultColor().." pipe, it's empty, but can't due to blocking afflictions :(",
     }
   end
 end
@@ -980,7 +983,7 @@ signals.systemstart:add_post_emit(sk.makewarnings)
 signals.orgchanged:add_post_emit(sk.makewarnings)
 signals.curemethodchanged:connect(sk.makewarnings)
 
-sk.warn = function (what)
+svo.sk.warn = function (what)
   if sk.warnings[what].warned then return end
 
   tempTimer(sk.warnings[what].time, function() sk.warnings[what].warned = false end)
@@ -991,42 +994,42 @@ sk.warn = function (what)
 
   if type(sk.warnings[what].msg) == 'function' then
     sk.warnings[what].msg()
-  else echof(sk.warnings[what].msg) end
+  else svo.echof(sk.warnings[what].msg) end
 
   echo("\n")
 end
 
 sk.retardation_count = 0
-function sk.retardation_symptom()
-  if (affs.retardation or affs.aeon or affsp.retardation or affsp.aeon or affsp.truename) then return end
+function svo.sk.retardation_symptom()
+  if (affs.retardation or affs.aeon or svo.affsp.retardation or svo.affsp.aeon or svo.affsp.truename) then return end
 
   sk.retardation_count = sk.retardation_count + 1
   if sk.retardation_count >= 4 then
     if not affs.blackout then
       if not conf.aillusion then
-        valid.simpleretardation()
-        echo"\n" echof("auto-detected retardation.")
+        svo.valid.simpleretardation()
+        echo"\n" svo.echof("auto-detected retardation.")
       else
-        checkaction(dict.checkslows.aff, true)
-        lifevision.add(actions.checkslows_aff.p, nil, "retardation")
-        echo"\n" echof("Maybe we're in retardation - checking it.")
+        svo.checkaction(svo.dict.checkslows.aff, true)
+        svo.lifevision.add(svo.actions.checkslows_aff.p, nil, "retardation")
+        echo"\n" svo.echof("Maybe we're in retardation - checking it.")
       end
     else
-      valid.simpleunknownany(conf.unknownany)
-      echo"\n" echof("auto-detection aeon or retardation (going to diagnose to check which)")
+      svo.valid.simpleunknownany(conf.unknownany)
+      echo"\n" svo.echof("auto-detection aeon or retardation (going to diagnose to check which)")
     end
     sk.retardation_count = 0
     return
   end
 
-  tempTimer(syncdelay() + sys.wait * 3, function ()
+  tempTimer(svo.syncdelay() + sys.wait * 3, function ()
     sk.retardation_count = sk.retardation_count - 1
     if sk.retardation_count < 0 then sk.retardation_count = 0 end
   end)
 end
 
 sk.stupidity_count = 0
-function sk.stupidity_symptom()
+function svo.sk.stupidity_symptom()
 
   if conf.serverside then return end
 
@@ -1035,20 +1038,20 @@ function sk.stupidity_symptom()
   sk.stupidity_count = sk.stupidity_count + 1
 
   if sk.stupidity_count >= 3 then
-    valid.simplestupidity()
-    echo"\n" echof("auto-detected stupidity.")
+    svo.valid.simplestupidity()
+    echo"\n" svo.echof("auto-detected stupidity.")
     sk.stupidity_count = 0
     return
   end
 
-  tempTimer(syncdelay() + 2, function ()
+  tempTimer(svo.syncdelay() + 2, function ()
     sk.stupidity_count = sk.stupidity_count - 1
     if sk.stupidity_count < 0 then sk.stupidity_count = 0 end
   end)
 end
 
 sk.illness_constitution_count = 0
-function sk.illness_constitution_symptom()
+function svo.sk.illness_constitution_symptom()
   if not defc.constitution then return end
   if conf.serverside then return end
 
@@ -1057,22 +1060,22 @@ function sk.illness_constitution_symptom()
   sk.illness_constitution_count = sk.illness_constitution_count + 1
 
   if sk.illness_constitution_count >= 2 then
-    valid.simplehypochondria()
+    svo.valid.simplehypochondria()
 
-    echo"\n" echof("auto-detected hypochondria.")
+    echo"\n" svo.echof("auto-detected hypochondria.")
 
     sk.illness_constitution_count = 0
     return
   end
 
-  tempTimer(syncdelay() + sys.wait * 3, function ()
+  tempTimer(svo.syncdelay() + sys.wait * 3, function ()
     sk.illness_constitution_count = sk.illness_constitution_count - 1
     if sk.illness_constitution_count < 0 then sk.illness_constitution_count = 0 end
   end)
 end
 
 sk.transfixed_count = 0
-function sk.transfixed_symptom()
+function svo.sk.transfixed_symptom()
   if affs.transfixed then return end
   if conf.serverside then return end
 
@@ -1081,43 +1084,43 @@ function sk.transfixed_symptom()
   sk.transfixed_count = sk.transfixed_count + 1
 
   if sk.transfixed_count >= 2 then
-    valid.simpletransfixed()
+    svo.valid.simpletransfixed()
 
     -- supress echo when got hit with it before ai went off
-    if not affsp.transfixed then
-      echo"\n" echof("auto-detected transfix.")
+    if not svo.affsp.transfixed then
+      echo"\n" svo.echof("auto-detected transfix.")
     end
     sk.transfixed_count = 0
     return
   end
 
-  tempTimer(syncdelay() + sys.wait * 3, function ()
+  tempTimer(svo.syncdelay() + sys.wait * 3, function ()
     sk.transfixed_count = sk.transfixed_count - 1
     if sk.transfixed_count < 0 then sk.transfixed_count = 0 end
   end)
 end
 
 sk.stun_count = 0
-function sk.stun_symptom()
+function svo.sk.stun_symptom()
   if affs.stun then return end
 
   sk.stun_count = sk.stun_count + 1
 
   if sk.stun_count >= 3 then
-    valid.simplestun()
-    echo"\n" echof("auto-detected stun.")
+    svo.valid.simplestun()
+    echo"\n" svo.echof("auto-detected stun.")
     sk.stun_count = 0
     return
   end
 
-  tempTimer(syncdelay() + sys.wait * 2, function ()
+  tempTimer(svo.syncdelay() + sys.wait * 2, function ()
     sk.stun_count = sk.stun_count - 1
     if sk.stun_count < 0 then sk.stun_count = 0 end
   end)
 end
 
 sk.impale_count = 0
-function sk.impale_symptom()
+function svo.sk.impale_symptom()
   if conf.serverside then return end
 
   if affs.impale then return end
@@ -1125,40 +1128,40 @@ function sk.impale_symptom()
   sk.impale_count = sk.impale_count + 1
 
   if sk.impale_count >= 2 then
-    valid.simpleimpale()
-    echo"\n" echof("auto-detected impale.")
+    svo.valid.simpleimpale()
+    echo"\n" svo.echof("auto-detected impale.")
     sk.impale_count = 0
     return
   end
 
-  tempTimer(syncdelay() + sys.wait * 2, function ()
+  tempTimer(svo.syncdelay() + sys.wait * 2, function ()
     sk.impale_count = sk.impale_count - 1
     if sk.impale_count < 0 then sk.impale_count = 0 end
   end)
 end
 
 sk.aeon_count = 0
-function sk.aeon_symptom()
+function svo.sk.aeon_symptom()
   if affs.aeon then return end
 
   sk.aeon_count = sk.aeon_count + 1
 
   if sk.aeon_count >= 2 then
-    valid.simpleaeon()
+    svo.valid.simpleaeon()
     defs.lost_speed()
-    echo"\n" echof("auto-detected aeon.")
+    echo"\n" svo.echof("auto-detected aeon.")
     sk.aeon_count = 0
     return
   end
 
-  tempTimer(syncdelay() + sys.wait * 2, function ()
+  tempTimer(svo.syncdelay() + sys.wait * 2, function ()
     sk.aeon_count = sk.aeon_count - 1
     if sk.aeon_count < 0 then sk.aeon_count = 0 end
   end)
 end
 
 sk.paralysis_count = 0
-function sk.paralysis_symptom()
+function svo.sk.paralysis_symptom()
   if conf.serverside then return end
 
   if affs.paralysis then return end
@@ -1166,60 +1169,60 @@ function sk.paralysis_symptom()
   sk.paralysis_count = sk.paralysis_count + 1
 
   if sk.paralysis_count >= 2 then
-    valid.simpleparalysis()
-    echo"\n" echof("auto-detected paralysis.")
+    svo.valid.simpleparalysis()
+    echo"\n" svo.echof("auto-detected paralysis.")
     sk.paralysis_count = 0
     return
   end
 
-  tempTimer(syncdelay() + sys.wait * 2, function ()
+  tempTimer(svo.syncdelay() + sys.wait * 2, function ()
     sk.paralysis_count = sk.paralysis_count - 1
     if sk.paralysis_count < 0 then sk.paralysis_count = 0 end
   end)
 end
 
 sk.haemophilia_count = 0
-function sk.haemophilia_symptom()
+function svo.sk.haemophilia_symptom()
  if affs.haemophilia then return end
 
   sk.haemophilia_count = sk.haemophilia_count + 1
 
   if sk.haemophilia_count >= 2 then
-    valid.simplehaemophilia()
-    echo"\n" echof("haemophilia seems to be real.")
+    svo.valid.simplehaemophilia()
+    echo"\n" svo.echof("haemophilia seems to be real.")
     sk.haemophilia_count = 0
     return
   end
 
   -- special # 1 - so haemophilia illusions 'can't' happen within 1s
-  tempTimer(syncdelay() + 1, function ()
+  tempTimer(svo.syncdelay() + 1, function ()
     sk.haemophilia_count = sk.haemophilia_count - 1
     if sk.haemophilia_count < 0 then sk.haemophilia_count = 0 end
   end)
 end
 
 sk.webbed_count = 0
-function sk.webbed_symptom()
+function svo.sk.webbed_symptom()
   if conf.serverside then return end
 
   if affs.webbed then return end
 
   sk.webbed_count = sk.webbed_count + 1
   if sk.webbed_count >= 2 then
-    valid.simplewebbed()
-    echo"\n" echof("auto-detected web.")
+    svo.valid.simplewebbed()
+    echo"\n" svo.echof("auto-detected web.")
     sk.webbed_count = 0
     return
   end
 
-  tempTimer(syncdelay() + sys.wait * 2, function ()
+  tempTimer(svo.syncdelay() + sys.wait * 2, function ()
     sk.webbed_count = sk.webbed_count - 1
     if sk.webbed_count < 0 then sk.webbed_count = 0 end
   end)
 end
 
 sk.roped_count = 0
-function sk.roped_symptom()
+function svo.sk.roped_symptom()
   if conf.serverside then return end
 
   if affs.roped then return end
@@ -1227,21 +1230,20 @@ function sk.roped_symptom()
   sk.roped_count = sk.roped_count + 1
 
   if sk.roped_count >= 2 then
-    valid.simpleroped()
-    echo"\n" echof("auto-detected roped.")
+    svo.valid.simpleroped()
+    echo"\n" svo.echof("auto-detected roped.")
     sk.roped_count = 0
     return
   end
 
-  tempTimer(syncdelay() + sys.wait * 2, function ()
+  tempTimer(svo.syncdelay() + sys.wait * 2, function ()
     sk.roped_count = sk.roped_count - 1
     if sk.roped_count < 0 then sk.roped_count = 0 end
   end)
 end
 
-
 sk.impaled_count = 0
-function sk.impaled_symptom()
+function svo.sk.impaled_symptom()
   if conf.serverside then return end
 
   if affs.impale then return end
@@ -1249,13 +1251,13 @@ function sk.impaled_symptom()
   sk.impaled_count = sk.impaled_count + 1
 
   if sk.impaled_count >= 2 then
-    valid.simpleimpale()
-    echo"\n" echof("auto-detected impale.")
+    svo.valid.simpleimpale()
+    echo"\n" svo.echof("auto-detected impale.")
     sk.impaled_count = 0
     return
   end
 
-  tempTimer(syncdelay() + sys.wait * 2, function ()
+  tempTimer(svo.syncdelay() + sys.wait * 2, function ()
     sk.impaled_count = sk.impaled_count - 1
     if sk.impaled_count < 0 then sk.impaled_count = 0 end
   end)
@@ -1263,13 +1265,13 @@ end
 
 
 sk.hypochondria_count = 0
-function sk.hypochondria_symptom()
-  if find_until_last_paragraph(line, "exact") or affs.hypochondria then return end
+function svo.sk.hypochondria_symptom()
+  if svo.find_until_last_paragraph(line, "exact") or affs.hypochondria then return end
 
   sk.hypochondria_count = sk.hypochondria_count + 1
 
   if sk.hypochondria_count >= 3 then
-    valid.simplehypochondria()
+    svo.valid.simplehypochondria()
     sk.hypochondria_count = 0
   end
 
@@ -1280,9 +1282,9 @@ function sk.hypochondria_symptom()
 end
 
 sk.unparryable_count = 0
-function sk.unparryable_symptom()
-  if conf.aillusion and paragraph_length ~= 1 and not find_until_last_paragraph("Your scabbard does not contain your blade, Warrior.", "exact") and not find_until_last_paragraph("You have not positioned a scabbard on your hip, Warrior.", "exact") then
-    ignore_illusion("not first") return
+function svo.sk.unparryable_symptom()
+  if conf.aillusion and svo.paragraph_length ~= 1 and not svo.find_until_last_paragraph("Your scabbard does not contain your blade, Warrior.", "exact") and not svo.find_until_last_paragraph("You have not positioned a scabbard on your hip, Warrior.", "exact") then
+    svo.ignore_illusion("not first") return
   elseif affs.unparryable then return end
 
   sk.unparryable_count = sk.unparryable_count + 1
@@ -1293,14 +1295,14 @@ function sk.unparryable_symptom()
     return
   end
 
-  tempTimer(syncdelay() + sys.wait * 2, function ()
+  tempTimer(svo.syncdelay() + sys.wait * 2, function ()
     sk.unparryable_count = sk.unparryable_count - 1
     if sk.unparryable_count < 0 then sk.unparryable_count = 0 end
   end)
 end
 
-updateaffcount = function (which)
-  affl[which.name].count = which.count
+svo.updateaffcount = function (which)
+  svo.affl[which.name].count = which.count
 
   raiseEvent("svo updated aff", which.name, "count", which.count)
 end
@@ -1310,22 +1312,22 @@ end
 -- does not mess with aff.<affliction>s table if the aff is already registered.
 -- this is the old internal 'addaff' function that Svof used when it was out of Mudlet
 local old_internal_addaff = function (new_aff)
-  if not new_aff then debugf("no new, log: %s", debug.traceback()) end
+  if not new_aff then svo.debugf("no new, log: %s", debug.traceback()) end
   if affs[new_aff.name] then return end
 
   local name = new_aff.name
 
-  affs[name] = {
+  svo.affs[name] = {
     p = new_aff,
     sw = new_aff.sw or createStopWatch()
   }
   startStopWatch(affs[name].sw)
 
   -- call the onadded handler if any
-  if dict[name].onadded then dict[name].onadded() end
+  if svo.dict[name].onadded then svo.dict[name].onadded() end
 
-  if not affl[name] then
-    affl[name] = { sw = affs[name].sw }
+  if not svo.affl[name] then
+    svo.affl[name] = { sw = affs[name].sw }
     signals.svogotaff:emit(name)
     raiseEvent("svo got aff", name)
   end
@@ -1333,23 +1335,23 @@ end
 -- this is the old public 'addaff' function that Svof enabled when it was out of Mudlet
 local old_public_addaff = function (new_aff)
   svo.assert(type(new_aff) == "string", "svo.addaff: what aff would you like to add? name must be a string")
-  svo.assert(dict[new_aff] and dict[new_aff].aff, "svo.addaff: "..new_aff.." isn't a known aff name")
+  svo.assert(svo.dict[new_aff] and svo.dict[new_aff].aff, "svo.addaff: "..new_aff.." isn't a known aff name")
 
   if affs[new_aff] then
     return false
   else
-    if dict[new_aff].aff and dict[new_aff].aff.forced then
-      dict[new_aff].aff.forced()
-    elseif dict[new_aff].aff then
-      dict[new_aff].aff.oncompleted()
+    if svo.dict[new_aff].aff and svo.dict[new_aff].aff.forced then
+      svo.dict[new_aff].aff.forced()
+    elseif svo.dict[new_aff].aff then
+      svo.dict[new_aff].aff.oncompleted()
     else
-      old_internal_addaff(dict[new_aff])
+      old_internal_addaff(svo.dict[new_aff])
     end
 
     signals.after_lifevision_processing:unblock(cnrl.checkwarning)
     sk.checkaeony()
     signals.aeony:emit()
-    codepaste.badaeon()
+    svo.codepaste.badaeon()
 
     return true
   end
@@ -1367,15 +1369,15 @@ svo.addaffdict = old_public_addaff
 svo.rmaff = function (old)
   if type(old) == "table" then
     for _,aff in pairs(old) do
-      rmaff(aff)
+      svo.rmaff(aff)
     end
     return
   end
 
   if not affs[old] then return end
 
-  if affl[old] then
-    affl[old] = nil
+  if svo.affl[old] then
+    svo.affl[old] = nil
     signals.svolostaff:emit(old)
     raiseEvent("svo lost aff", old)
   end
@@ -1385,32 +1387,32 @@ svo.rmaff = function (old)
   affs[old] = nil
 
   -- call the onremoved handler if any. Should be called after affs is cleaned, because scripts here reply on the 'current' state
-  if dict[old].onremoved then
-    debugf("calling onremoved for %s", old)
-    dict[old].onremoved()
+  if svo.dict[old].onremoved then
+    svo.debugf("calling onremoved for %s", old)
+    svo.dict[old].onremoved()
   end
 
   if conf.showafftimes and sw then
-    echoafftime(stopStopWatch(sw), old)
+    svo.echoafftime(stopStopWatch(sw), old)
   end
 end
 
 -- public version of removeaff. The two should be merged.
 svo.removeaff = function (which)
   svo.assert(type(which) == "string", "svo.removeaff: what aff would you like to remove? name must be a string")
-  svo.assert(dict[which] and dict[which].aff, "svo.removeaff: "..which.." isn't a known aff name")
+  svo.assert(svo.dict[which] and svo.dict[which].aff, "svo.removeaff: "..which.." isn't a known aff name")
 
   local removed = false
-  if lifevision.l[which.."_aff"] then
-    lifevision.l:set(which.."_aff", nil)
+  if svo.lifevision.l[which.."_aff"] then
+    svo.lifevision.l:set(which.."_aff", nil)
     removed = true
   end
 
   if affs[which] then
-    if dict[which].gone then
-      dict[which].gone.oncompleted()
+    if svo.dict[which].gone then
+      svo.dict[which].gone.oncompleted()
     else
-      removeaff(which)
+      svo.removeaff(which)
     end
 
     removed = true
@@ -1425,19 +1427,19 @@ end
 
 svo.removeafflevel = function (which, amount, keep)
   svo.assert(type(which) == "string", "svo.removeafflevel: what aff would you like to remove? name must be a string")
-  svo.assert(dict[which] and dict[which].aff, "svo.removeafflevel: "..which.." isn't a known aff name")
+  svo.assert(svo.dict[which] and svo.dict[which].aff, "svo.removeafflevel: "..which.." isn't a known aff name")
 
   local removed = false
-  if lifevision.l[which.."_aff"] then
-    lifevision.l:set(which.."_aff", nil)
+  if svo.lifevision.l[which.."_aff"] then
+    svo.lifevision.l:set(which.."_aff", nil)
     removed = true
   end
 
   if affs[which] then
-    if dict[which].gone then
-      dict[which].gone.general_cure(amount or 1, not keep)
+    if svo.dict[which].gone then
+      svo.dict[which].gone.general_cure(amount or 1, not keep)
     else
-      removeaff(which)
+      svo.removeaff(which)
     end
 
     removed = true
@@ -1460,7 +1462,7 @@ sk.onprompt_beforeaction_do = function()
   for name, func in pairs(sk.onpromptfuncs) do
     local s,m = pcall(func)
     if not s then
-    debugf("sk.onprompt_beforeaction_do error from %s: %q", name, m)
+    svo.debugf("sk.onprompt_beforeaction_do error from %s: %q", name, m)
       echoLink("(e!)", "echo([[The problem was: "..tostring(name).." prompttrigger failed to work: "..string.format("%q", m).."]])", 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw if this isn\'t your own function.')
     end
   end
@@ -1485,15 +1487,15 @@ sk.onprompt_beforelifevision_do = function()
 end
 signals.before_prompt_processing:connect(sk.onprompt_beforelifevision_do)
 
-lostbal_tree = function()
+svo.lostbal_tree = function()
   if bals.tree then tempTimer(0, [[raiseEvent("svo lost balance", "tree")]]) end
   bals.tree = false
-  startbalancewatch("tree")
+  svo.startbalancewatch("tree")
   if sys.treetimer then killTimer(sys.treetimer) end
   -- if conf.treebalance is set, use that - otherwise use the defaults as setup by conf.efficiency + hardcoded numbers
   local timeout
   if not conf.treebalance or conf.treebalance == 0 then
-    timeout = conf.efficiency and (16+getping()) or (40+getping())
+    timeout = conf.efficiency and (16+svo.getping()) or (40+svo.getping())
   else
     timeout = conf.treebalance
   end
@@ -1505,11 +1507,11 @@ lostbal_tree = function()
     raiseEvent("svo got balance", "tree")]])
 end
 
-lostbal_focus = function()
+svo.lostbal_focus = function()
   if not bals.focus then return end
 
   bals.focus = false
-  startbalancewatch("focus")
+  svo.startbalancewatch("focus")
   sk.focustick = sk.focustick + 1
   local oldfocustick = sk.focustick
 
@@ -1526,7 +1528,7 @@ lostbal_focus = function()
   tempTimer(timeout, function ()
     if not bals.focus and sk.focustick == oldfocustick then
       bals.focus = true
-      make_gnomes_work()
+      svo.make_gnomes_work()
       raiseEvent("svo got balance", "focus")
     end
   end)
@@ -1534,18 +1536,18 @@ lostbal_focus = function()
   raiseEvent("svo lost balance", "focus")
 end
 
-lostbal_shrugging = function()
+svo.lostbal_shrugging = function()
   if not bals.shrugging then return end
 
   bals.shrugging = false
-  startbalancewatch("shrugging")
+  svo.startbalancewatch("shrugging")
   sk.shruggingtick = sk.shruggingtick + 1
   local oldshruggingtick = sk.shruggingtick
 
-  tempTimer(10+getping(), function ()
+  tempTimer(10+svo.getping(), function ()
     if not bals.shrugging and sk.shruggingtick == oldshruggingtick then
       bals.shrugging = true
-      make_gnomes_work()
+      svo.make_gnomes_work()
       raiseEvent("svo got balance", "shrugging")
     end
   end)
@@ -1553,19 +1555,19 @@ lostbal_shrugging = function()
   raiseEvent("svo lost balance", "shrugging")
 end
 
-lostbal_fitness = function()
+svo.lostbal_fitness = function()
   if not bals.fitness then return end
 
   bals.fitness = false
-  startbalancewatch("fitness")
+  svo.startbalancewatch("fitness")
   sk.fitnesstick = sk.fitnesstick + 1
   local oldfitnesstick = sk.fitnesstick
 
   -- takes 9s to recover
-  tempTimer(15+getping(), function ()
+  tempTimer(15+svo.getping(), function ()
     if not bals.fitness and sk.fitnesstick == oldfitnesstick then
       bals.fitness = true
-      make_gnomes_work()
+      svo.make_gnomes_work()
       raiseEvent("svo got balance", "fitness")
     end
   end)
@@ -1573,19 +1575,19 @@ lostbal_fitness = function()
   raiseEvent("svo lost balance", "fitness")
 end
 
-lostbal_rage = function()
+svo.lostbal_rage = function()
   if not bals.rage then return end
 
   bals.rage = false
-  startbalancewatch("rage")
+  svo.startbalancewatch("rage")
   sk.ragetick = sk.ragetick + 1
   local oldragetick = sk.ragetick
 
   -- takes 9s to recover
-  tempTimer(15+getping(), function ()
+  tempTimer(15+svo.getping(), function ()
     if not bals.rage and sk.ragetick == oldragetick then
       bals.rage = true
-      make_gnomes_work()
+      svo.make_gnomes_work()
       raiseEvent("svo got balance", "rage")
     end
   end)
@@ -1593,18 +1595,18 @@ lostbal_rage = function()
   raiseEvent("svo lost balance", "rage")
 end
 
-lostbal_voice = function()
+svo.lostbal_voice = function()
   if not bals.voice then return end
 
   bals.voice = false
-  startbalancewatch("voice")
+  svo.startbalancewatch("voice")
   sk.voicetick = sk.voicetick + 1
   local oldvoicetick = sk.voicetick
 
-  tempTimer(10+getping(), function ()
+  tempTimer(10+svo.getping(), function ()
     if not bals.voice and sk.voicetick == oldvoicetick then
       bals.voice = true
-      make_gnomes_work()
+      svo.make_gnomes_work()
       raiseEvent("svo got balance", "voice")
     end
   end)
@@ -1612,9 +1614,9 @@ lostbal_voice = function()
   raiseEvent("svo lost balance", "voice")
 end
 
-lostbal_sip = function()
+svo.lostbal_sip = function()
   bals.sip = false
-  startbalancewatch("sip")
+  svo.startbalancewatch("sip")
   sk.siptick = sk.siptick + 1
   local oldsiptick = sk.siptick
 
@@ -1627,7 +1629,7 @@ lostbal_sip = function()
   tempTimer(lostbalance, function ()
     if not bals.sip and sk.siptick == oldsiptick then
       bals.sip = true
-      make_gnomes_work()
+      svo.make_gnomes_work()
       raiseEvent("svo got balance", "sip")
     end
   end)
@@ -1637,14 +1639,14 @@ end
 
 svo.lostbal_herb = function(noeffect, mickey)
   bals.herb = false
-  startbalancewatch("herb")
+  svo.startbalancewatch("herb")
   sk.herbtick = sk.herbtick + 1
   local oldherbtick = sk.herbtick
 
   tempTimer(conf.ai_resetherbbal, function ()
     if not bals.herb and sk.herbtick == oldherbtick then
       bals.herb = true
-      make_gnomes_work()
+      svo.make_gnomes_work()
       raiseEvent("svo got balance", "herb")
     end
   end)
@@ -1669,14 +1671,14 @@ end
 
 svo.lostbal_salve = function()
   bals.salve = false
-  startbalancewatch("salve")
+  svo.startbalancewatch("salve")
   sk.salvetick = sk.salvetick + 1
   local oldsalvetick = sk.salvetick
 
   tempTimer(conf.ai_resetsalvebal, function ()
     if not bals.salve and sk.salvetick == oldsalvetick then
       bals.salve = true
-      make_gnomes_work()
+      svo.make_gnomes_work()
       raiseEvent("svo got balance", "salve")
     end
   end)
@@ -1684,16 +1686,16 @@ svo.lostbal_salve = function()
   raiseEvent("svo lost balance", "salve")
 end
 
-lostbal_moss = function()
+svo.lostbal_moss = function()
   bals.moss = false
-  startbalancewatch("moss")
+  svo.startbalancewatch("moss")
   sk.mosstick = sk.mosstick + 1
   local oldmosstick = sk.mosstick
 
   tempTimer(conf.ai_resetmossbal, function ()
     if not bals.moss and sk.mosstick == oldmosstick then
       bals.moss = true
-      make_gnomes_work()
+      svo.make_gnomes_work()
       raiseEvent("svo got balance", "moss")
     end
   end)
@@ -1701,16 +1703,16 @@ lostbal_moss = function()
   raiseEvent("svo lost balance", "moss")
 end
 
-lostbal_purgative = function()
+svo.lostbal_purgative = function()
   bals.purgative = false
-  startbalancewatch("purgative")
+  svo.startbalancewatch("purgative")
   sk.purgativetick = sk.purgativetick + 1
   local oldpurgativetick = sk.purgativetick
 
   tempTimer(conf.ai_resetpurgativebal, function ()
     if not bals.purgative and sk.purgativetick == oldpurgativetick then
       bals.purgative = true
-      make_gnomes_work()
+      svo.make_gnomes_work()
       raiseEvent("svo got balance", "purgative")
     end
   end)
@@ -1718,16 +1720,16 @@ lostbal_purgative = function()
   raiseEvent("svo lost balance", "purgative")
 end
 
-lostbal_smoke = function()
+svo.lostbal_smoke = function()
   bals.smoke = false
-  startbalancewatch("smoke")
+  svo.startbalancewatch("smoke")
   sk.smoketick = sk.smoketick + 1
   local oldsmoketick = sk.smoketick
 
   tempTimer(conf.ai_resetsmokebal, function ()
     if not bals.smoke and sk.smoketick == oldsmoketick then
       bals.smoke = true
-      make_gnomes_work()
+      svo.make_gnomes_work()
       raiseEvent("svo got balance", "smoke")
     end
   end)
@@ -1738,17 +1740,17 @@ lostbal_smoke = function()
   raiseEvent("svo lost balance", "smoke")
 end
 
-lostbal_dragonheal = function()
+svo.lostbal_dragonheal = function()
   bals.dragonheal = false
-  startbalancewatch("dragonheal")
+  svo.startbalancewatch("dragonheal")
   sk.dragonhealtick = sk.dragonhealtick + 1
   local olddragonhealtick = sk.dragonhealtick
 
   -- dragonheal bal is quite long, add a bit of variation on it
-  tempTimer(conf.ai_resetdragonhealbal+getping(), function ()
+  tempTimer(conf.ai_resetdragonhealbal+svo.getping(), function ()
     if not bals.dragonheal and sk.dragonhealtick == olddragonhealtick then
       bals.dragonheal = true
-      make_gnomes_work()
+      svo.make_gnomes_work()
       raiseEvent("svo got balance", "dragonheal")
     end
   end)
@@ -1757,11 +1759,11 @@ lostbal_dragonheal = function()
 end
 
 if svo.haveskillset('healing') then
-lostbal_healing = function()
+svo.lostbal_healing = function()
   if not bals.healing then return end
 
   bals.healing = false
-  startbalancewatch("healing")
+  svo.startbalancewatch("healing")
   sk.healingtick = sk.healingtick + 1
   local oldhealingtick = sk.healingtick
 
@@ -1769,7 +1771,7 @@ lostbal_healing = function()
     if not bals.healing and sk.healingtick == oldhealingtick then
       svo.endbalancewatch("healing")
       bals.healing = true
-      make_gnomes_work()
+      svo.make_gnomes_work()
       raiseEvent("svo got balance", "healing")
     end
   end)
@@ -1779,18 +1781,18 @@ end
 end
 
 if svo.haveskillset('terminus') then
-lostbal_word = function()
+svo.lostbal_word = function()
   if not bals.word then return end
 
   bals.word = false
-  startbalancewatch("word")
+  svo.startbalancewatch("word")
   sk.wordtick = sk.wordtick + 1
   local oldwordtick = sk.wordtick
 
-  tempTimer(17+getping(), function ()
+  tempTimer(17+svo.getping(), function ()
     if not bals.word and sk.wordtick == oldwordtick then
       bals.word = true
-      make_gnomes_work()
+      svo.make_gnomes_work()
       raiseEvent("svo got balance", "word")
     end
   end)
@@ -1801,7 +1803,7 @@ end
 
 function sk.doingstuff_inslowmode()
   local result
-  for balance,actions in pairs(bals_in_use) do
+  for balance,actions in pairs(svo.bals_in_use) do
     if balance ~= "waitingfor" and balance ~= "gone" and balance ~= "aff" and next(actions) then result = select(2, next(actions)) break end
   end
   if result then return true end
@@ -1812,16 +1814,16 @@ function sk.checkwillpower()
     sk.lowwillpower = true
     sk.warn("lowwillpower")
 
-    can_usemana = function()
-      return (stats.currentmana > sys.manause and stats.currentwillpower >= 100 and not doingaction ("nomana"))
+    svo.can_usemana = function()
+      return (stats.currentmana > sys.manause and stats.currentwillpower >= 100 and not svo.doingaction ("nomana"))
     end
 
   -- amounts differ so we don't toggle often
   elseif stats.currentwillpower > 1500 and sk.lowwillpower then
     sk.lowwillpower = false
 
-    can_usemana = function()
-      return (stats.currentmana > sys.manause and not doingaction ("nomana"))
+    svo.can_usemana = function()
+      return (stats.currentmana > sys.manause and not svo.doingaction ("nomana"))
     end
   end
 end
@@ -1840,7 +1842,7 @@ if svo.haveskillset('healing') then
     sk.healingmap = {}
     if not conf.healingskill then return end
 
-    local healdata = pl.OrderedMap {}
+    local healdata = svo.pl.OrderedMap{}
     -- afflictions sorted in order of learning the Healing skillset - so not sort this list!
     -- healdata:set("blind", function() return defc.earth end)
     healdata:set("blindaff", function() return defc.earth end)
@@ -1907,27 +1909,27 @@ if svo.haveskillset('healing') then
   signals.systemstart:connect(sk.updatehealingmap)
 end
 
-function sk.increase_lagconf()
+function svo.sk.increase_lagconf()
   -- don't go above 3, 4 is reserved for do really
   if conf.lag >= 3 then return end
 
   if sk.lag_tickedonce and not sk.increasedlag then
     conf.lag = conf.lag+1
-    echo"\n" echof("auto-increased the lag tolerance level to %d.", conf.lag)
+    echo"\n" svo.echof("auto-increased the lag tolerance level to %d.", conf.lag)
     raiseEvent("svo config changed", "lag")
     sk.increasedlag = true
     cnrl.update_wait()
 
     if sys.reset_laglevel then killTimer(sys.reset_laglevel) end
     sys.reset_laglevel = tempTimer(30, function ()
-      if not wait_tbl[conf.lag-1] then return end
+      if not svo.wait_tbl[conf.lag-1] then return end
 
       local variance = getNetworkLatency()*2+getNetworkLatency()
-      for i = 0, #wait_tbl do
-        if variance <= wait_tbl[i].n then
+      for i = 0, #svo.wait_tbl do
+        if variance <= svo.wait_tbl[i].n then
           conf.lag = i
           cnrl.update_wait()
-          echo"\n" echof("automatically reset lag tolerance down to %d.", conf.lag)
+          echo"\n" svo.echof("automatically reset lag tolerance down to %d.", conf.lag)
           raiseEvent("svo config changed", "lag")
           break
         end
@@ -1939,7 +1941,7 @@ function sk.increase_lagconf()
 end
 
 if svo.haveskillset('metamorphosis') then
-function sk.clearmorphs()
+function svo.sk.clearmorphs()
   local morphs
   if svo.me.class == "Druid" then
     morphs = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
@@ -1953,7 +1955,7 @@ function sk.clearmorphs()
   end
 end
 
-function sk.inamorph()
+function svo.sk.inamorph()
   local t
 if svo.me.class == "Druid" then
   t = {"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"}
@@ -1967,12 +1969,12 @@ end
   return false
 end
 
-function sk.validmorphskill(name)
+function svo.sk.validmorphskill(name)
   local morphs
 if svo.me.class == "Druid" then
   morphs = {"squirrel", "powers", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "bonding", "nightingale", "elephant", "transmorph", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "affinity", "wyvern", "hydra", "truemorph"}
 else
-  local morphs = {"squirrel", "powers", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "bonding", "nightingale", "elephant", "transmorph", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "affinity", "truemorph"}
+  morphs = {"squirrel", "powers", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "bonding", "nightingale", "elephant", "transmorph", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "affinity", "truemorph"}
 end
 
   for _, morph in ipairs(morphs) do
@@ -1982,7 +1984,7 @@ end
   return false
 end
 
-function sk.inamorphfor(defence)
+function svo.sk.inamorphfor(defence)
   if not sk.morphsforskill[defence] then return false end
 
   for i = 1, #sk.morphsforskill[defence] do
@@ -1992,7 +1994,7 @@ function sk.inamorphfor(defence)
   return false
 end
 
-function sk.updatemorphskill()
+function svo.sk.updatemorphskill()
   sk.morphsforskill = {}
 if svo.me.class == "Druid" then
   sk.morphsforskill.elusiveness = { "hyena", "wolverine" }
@@ -2073,7 +2075,7 @@ end
       morphdefs[morph] = table.size(t)
     end
 
-    for def, t in pairs(sk.morphsforskill) do
+    for _, t in pairs(sk.morphsforskill) do
       table.sort(t, function(a,b) if morphdefs[a] and morphdefs[b] then return morphdefs[a] > morphdefs[b] end end)
     end
   end
@@ -2083,7 +2085,7 @@ end
 end
 
 signals.gmcpcharitemslist:connect(function ()
-  if not gmcp.Char.Items.List.location then debugf("(GMCP problem) location field is missing from Achaea's response.") return end
+  if not gmcp.Char.Items.List.location then svo.debugf("(GMCP problem) location field is missing from Achaea's response.") return end
   if not sk.inring or gmcp.Char.Items.List.location ~= "inv" then return end
 
   local hadsomething = {}
@@ -2096,31 +2098,31 @@ signals.gmcpcharitemslist:connect(function ()
         local check = function(value,input) return input:find("a group of "..value) end
 
         -- check herbs table
-        local found_plural = next(pl.tablex.map(check, rift.herbs_plural, t.name or ""))
+        local found_plural = next(svo.pl.tablex.map(check, rift.herbs_plural, t.name or ""))
         -- check other riftable items table
-        found_plural = found_plural or next(pl.tablex.map(check, rift.items_plural, t.name or ""))
+        found_plural = found_plural or next(svo.pl.tablex.map(check, rift.items_plural, t.name or ""))
 
         if found_plural and not hadsomething[found_plural] then
-          sendc("inr all "..found_plural, false)
+          svo.sendc("inr all "..found_plural, false)
           hadsomething[found_plural] = true
         elseif not found_plural and not hadsomething[t.id] then
-          sendc("inr "..t.id, false)
+          svo.sendc("inr "..t.id, false)
           hadsomething[t.id] = true
         end
 
       -- singular herb items that we know of
       elseif t.name and rift.herbs_singular[t.name] and not hadsomething[rift.herbs_singular[t.name]] then
         hadsomething[rift.herbs_singular[t.name]] = true
-        sendc("inr all "..rift.herbs_singular[t.name], false)
+        svo.sendc("inr all "..rift.herbs_singular[t.name], false)
 
       -- singular non-herb items
       elseif t.name and rift.items_singular[t.name] and not hadsomething[rift.items_singular[t.name]] then
         hadsomething[rift.items_singular[t.name]] = true
-        sendc("inr all "..rift.items_singular[t.name], false)
+        svo.sendc("inr all "..rift.items_singular[t.name], false)
 
       -- all the rest
       elseif not rift.items_singular[t.name] and not rift.herbs_singular[t.name] and not hadsomething[t.id] and t.attrib and t.attrib:find("r", 1, true) then
-        sendc("inr "..t.id, true)
+        svo.sendc("inr "..t.id, true)
         hadsomething[t.id] = true
       end
     end
@@ -2128,9 +2130,9 @@ signals.gmcpcharitemslist:connect(function ()
 
   sk.inring = nil
   if next(hadsomething) then
-    echof("Stuffing everything away...")
+    svo.echof("Stuffing everything away...")
   else
-    echof("There's nothing to stuff away.")
+    svo.echof("There's nothing to stuff away.")
   end
 end)
 
@@ -2139,15 +2141,15 @@ signals.gmcpcharitemslist:connect(function()
 
   for _, t in pairs(gmcp.Char.Items.List.items) do
     if rift.herbs_singular[t.name] then
-      doaddfree("get "..t.id)
+      svo.doaddfree("get "..t.id)
     end
 
     -- tally up rift.herbs_plural items
-    for k,l in pairs(rift.herbs_plural) do
+    for _,l in pairs(rift.herbs_plural) do
       local result = t.name:match(l)
       if result then
-        for i = 1, tonumber(result) do -- getting group # only gets 1 item, have to repeatedly cycle it
-          doaddfree("get "..t.id)
+        for _ = 1, tonumber(result) do -- getting group # only gets 1 item, have to repeatedly cycle it
+          svo.doaddfree("get "..t.id)
         end
       end
     end
@@ -2169,7 +2171,7 @@ for _, herb in ipairs{"elm", "valerian", "skullcap"} do
 
     moveCursor(0, getLineNumber()-1)
     moveCursor(#getCurrentLine(), getLineNumber())
-    setFgColor(unpack(getDefaultColorNums))
+    setFgColor(unpack(svo.getDefaultColorNums))
     insertText(string.format(" (%s %s left)", pipes[herb].puffs, pipes[herb].filledwith))
     resetFormat()
     moveCursorEnd()
@@ -2178,7 +2180,7 @@ end
 
 if svo.haveskillset('occultism') then
 signals.gmcpcharitemslist:connect(function ()
-  if not gmcp.Char.Items.List.location or not gmcp.Char.Items.List.items then debugf("(GMCP problem) location or items field is missing from Achaea's response.") return end
+  if not gmcp.Char.Items.List.location or not gmcp.Char.Items.List.items then svo.debugf("(GMCP problem) location or items field is missing from Achaea's response.") return end
 
   if gmcp.Char.Items.List.location ~= "inv" then return end
 
@@ -2194,38 +2196,37 @@ signals.gmcpcharitemslist:connect(function ()
 end)
 end
 
-function sk.enable_single_prompt()
-  if bottomprompt then bottomprompt:show() end
-  bottomprompt = Geyser.MiniConsole:new({
-    name="bottomprompt",
+function svo.sk.enable_single_prompt()
+  if svo.bottomprompt then svo.bottomprompt:show() end
+  svo.bottomprompt = Geyser.MiniConsole:new({
+    name="svo.bottomprompt",
     x=0, y="100%",
     width="98%", height="1c",
     fontSize = conf.singlepromptsize or 11
   })
-  bottomprompt:setFontSize(conf.singlepromptsize or 11)
+  svo.bottomprompt:setFontSize(conf.singlepromptsize or 11)
 
-  function bottomprompt:reposition()
-     local width,height = calcFontSize(conf.singlepromptsize or 11)
+  function svo.bottomprompt:reposition()
+     local _,height = calcFontSize(conf.singlepromptsize or 11)
 
-     if not bottom_border or bottom_border ~= height then
-       bottom_border = height
+     if not svo.bottom_border or svo.bottom_border ~= height then
+       svo.bottom_border = height
        tempTimer(0, function() setBorderBottom(height) end)
      end
 
-     local x,y,w,h = self:get_x(), self:get_y(), self:get_width(), self:get_height()
      moveWindow(self.name, self:get_x(), self:get_y()-(height+(height/3)))
      resizeWindow(self.name, self:get_width(), self:get_height())
   end
-  setBackgroundColor("bottomprompt",0,0,0,255)
-  bottomprompt:reposition()
+  setBackgroundColor("svo.bottomprompt",0,0,0,255)
+  svo.bottomprompt:reposition()
 
-  if moveprompt then killTrigger(moveprompt) end
+  if svo.moveprompt then killTrigger(svo.moveprompt) end
   -- moveprompt = tempRegexTrigger('^', [[
   --   if not isPrompt() then return end
   --   selectCurrentLine()
   --   copy()
-  --   clearWindow("bottomprompt")
-  --   paste("bottomprompt")
+  --   clearWindow("svo.bottomprompt")
+  --   paste("svo.bottomprompt")
   --   if svo.conf.singlepromptblank then
   --     replace("")
   --   elseif not svo.conf.singlepromptkeep then deleteLine() end
@@ -2233,7 +2234,7 @@ function sk.enable_single_prompt()
   -- ]])
 end
 
-function sk.showstatchanges()
+function svo.sk.showstatchanges()
   local t = sk.statchanges
   if #t > 0 then
     if conf.singleprompt then
@@ -2250,7 +2251,7 @@ function sk.showstatchanges()
 end
 
 -- logic: if something we are wielding does not show up unparryables, then we can wield
-function sk.have_parryable()
+function svo.sk.have_parryable()
   me.unparryables = me.unparryables or {}
 
   for _, item in pairs(me.wielded) do
@@ -2258,7 +2259,7 @@ function sk.have_parryable()
   end
 end
 
-function sk.cant_parry()
+function svo.sk.cant_parry()
   local t = {}
   me.unparryables = me.unparryables or {}
   for _, item in pairs(me.wielded) do
@@ -2279,7 +2280,7 @@ function sk.cant_parry()
       "And %s won't work, either."
     }
 
-    echof(lines[math.random(#lines)], table.concat(t, ' or '))
+    svo.echof(lines[math.random(#lines)], table.concat(t, ' or '))
   end
 end
 
@@ -2295,16 +2296,16 @@ signals.newroom:connect(function ()
   if t[area] and not conf.arena then
     conf.arena = true
     raiseEvent("svo config changed", "arena")
-    prompttrigger("arena echo", function()
+    svo.prompttrigger("arena echo", function()
       local echos = {"Arena mode enabled. Good luck!", "Beat 'em up! Arena mode enabled.", "Arena mode on.", "Arena mode enabled. Kill them all!"}
-      itf(echos[math.random(#echos)]..'\n')
+      svo.itf(echos[math.random(#echos)]..'\n')
     end)
   elseif conf.arena and not t[area] then
     conf.arena = false
     raiseEvent("svo config changed", "arena`")
     tempTimer(0, function()
       local echos = {"Arena mode disabled."}
-      echof(echos[math.random(#echos)]..'\n')
+      svo.echof(echos[math.random(#echos)]..'\n')
 
       -- the game resets armbals quietly
       if not bals.rightarm then bals.rightarm = true end
@@ -2322,37 +2323,37 @@ sk.check_burrow_pause = function()
   end
 end
 
-function sk.check_shipmode()
+function svo.sk.check_shipmode()
   -- failsafe for disabling captain control - since there are a few ways in which you can lose it without an explicit line.
   if conf.shipmode and gmcp.Room.Info.environment ~= "Vessel" then
-    config.set("shipmode", "off", true)
+    svo.config.set("shipmode", "off", true)
   end
 end
 
-function balanceful_used()
+function svo.balanceful_used()
   return (sys.balanceid == sys.balancetick) and true or false
 end
 
 -- getNetworkLatency, with a cap
-function getping(cap)
-  local cap = cap or .500
+function svo.getping(caparg)
+  local cap = caparg or .500
   local lat = getNetworkLatency()
 
   return (lat < cap) and lat or cap
 end
 
 -- returns true if a curing command was seen in this paragraph
-function sk.sawcuring()
+function svo.sk.sawcuring()
   -- don't search the buffer, but set a flag, because people could be gagging the line and buffer search will thus fail
   return sk.sawcuringcommand and true or false
 end
 
-function sk.sawqueueing()
+function svo.sk.sawqueueing()
   return sk.sawqueueingcommand and true or false
 end
 
-function amiwielding(what)
-  for id, item in pairs(svo.me.wielded) do
+function svo.amiwielding(what)
+  for _, item in pairs(svo.me.wielded) do
     if item.name:find("%f[%a]"..what.."%f[%A]") then return true end
   end
 
@@ -2385,16 +2386,16 @@ function sk.sendqueuecmd(...)
   end
 end
 
-function sendcuring(what)
+function svo.sendcuring(what)
   what = "curing "..what
 
   sk.sendqueuecmd(what)
 end
 
 -- public function
-sendc = sk.sendqueuecmd
+svo.sendc = sk.sendqueuecmd
 
-function sk.dosendqueue()
+function svo.sk.dosendqueue()
   if sk.sendcuringtimer then killTimer(sk.sendcuringtimer) end
 
   if #sk.sendqueue <= 1 then
@@ -2413,7 +2414,7 @@ function sk.dosendqueue()
   sk.sendcuringtimer = nil
 end
 
-function sk.setup9multicmd()
+function svo.sk.setup9multicmd()
   send("setalias 9multicmd %1/%2/%3/%4/%5/%6/%7/%8/%9", false)
 end
 signals.charname:connect(sk.setup9multicmd)
@@ -2423,9 +2424,9 @@ svo["9multicmd_cleared"] = function()
   send("setalias 9multicmd %1/%2/%3/%4/%5/%6/%7/%8/%9")
 
   echo("\n")
-  echof("Oy! I need that! This is for vconfig batch to work.")
+  svo.echof("Oy! I need that! This is for vconfig batch to work.")
 
-  reenabled9multi = tempTimer(5, function() reenabled9multi = nil end)
+  svo.reenabled9multi = tempTimer(5, function() svo.reenabled9multi = nil end)
 end
 
 -- things line blind/deaf can be either afflictions or defences.
@@ -2434,39 +2435,39 @@ end
 function svo.sk.fix_affs_and_defs()
   if affs.blindaff and ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
     or (svo.me.class ~= "Apostate" and defc.mindseye)) then
-    rmaff("blindaff")
+    svo.rmaff("blindaff")
     defences.got("blind")
-    echof("blindness is now considered a defence.")
+    svo.echof("blindness is now considered a defence.")
   elseif defc.blind and not ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)
    or (svo.me.class ~= "Apostate" and defc.mindseye)) then
     defences.lost("blind")
-    svo.addaffdict(dict.blindaff)
-    echof("blindness is now considered an affliction, will cure it.")
+    svo.addaffdict(svo.dict.blindaff)
+    svo.echof("blindness is now considered an affliction, will cure it.")
   end
 
   if affs.deafaff and ((defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye) then
-    rmaff("deafaff")
+    svo.rmaff("deafaff")
     defences.got("deaf")
-    echof("deafness is now considered a defence.")
+    svo.echof("deafness is now considered a defence.")
   elseif defc.deaf and not ((defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye) then
     defences.lost("deaf")
-    svo.addaffdict(dict.deafaff)
-    echof("deafness is now considered an affliction, will cure it.")
+    svo.addaffdict(svo.dict.deafaff)
+    svo.echof("deafness is now considered an affliction, will cure it.")
   end
 end
 
 
 function svo.sk.checkrewield()
   local s,m = pcall(function()
-    if svo.paragraph_length > 1 and not find_until_last_paragraph("You cease to prop up a tall totem pole.", "exact") and
-      not find_until_last_paragraph("You lob", "substring") and not svo.lifevision.l.breath_gone and
-      not find_until_last_paragraph("You begin to wield", "substring") then
+    if svo.paragraph_length > 1 and not svo.find_until_last_paragraph("You cease to prop up a tall totem pole.", "exact") and
+      not svo.find_until_last_paragraph("You lob", "substring") and not svo.lifevision.l.breath_gone and
+      not svo.find_until_last_paragraph("You begin to wield", "substring") then
       -- we wish to rewield wieldables!
       svo.dict.rewield.rewieldables = deepcopy(sk.rewielddables)
-      debugf("dict.rewield.rewieldables - %s", pl.pretty.write(dict.rewield.rewieldables))
-      echof("Need to rewield %s%s!", tostring(dict.rewield.rewieldables[1].name),
-        tostring(((dict.rewield.rewieldables[2] and dict.rewield.rewieldables[2].name) and
-          (" and "..dict.rewield.rewieldables[2].name) or "")))
+      svo.debugf("dict.rewield.rewieldables - %s", svo.pl.pretty.write(svo.dict.rewield.rewieldables))
+      svo.echof("Need to rewield %s%s!", tostring(svo.dict.rewield.rewieldables[1].name),
+        tostring(((svo.dict.rewield.rewieldables[2] and svo.dict.rewield.rewieldables[2].name) and
+          (" and "..svo.dict.rewield.rewieldables[2].name) or "")))
     end
   end)
   if not s then
@@ -2484,3 +2485,4 @@ signals.gmcpcharitemsremove:connect(function ()
     sk.removed_something = nil
   end)
 end)
+
