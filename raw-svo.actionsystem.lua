@@ -15,7 +15,7 @@ svo.bals_in_use       = svo.bals_in_use or {}
 local actions, dict, affs, sys, syncdelay = svo.actions, svo.dict, svo.affs, svo.sys, svo.syncdelay
 local debugf, actions_performed, bals_in_use = svo.debugf, svo.actions_performed, svo.bals_in_use
 local sk, echof, make_gnomes_work, conf, signals = svo.sk, svo.echof, svo.make_gnomes_work, svo.conf, svo.signals
-local lifevision, addaff = svo.lifevision, svo.addaff
+local lifevision = svo.lifevision
 
 -- does an action - call this when you'd like to execute an action. The system will setup
 -- the timeout failsafes (which flow through into stupidity and lag detection), as well as

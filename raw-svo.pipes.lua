@@ -6,9 +6,11 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-pl.dir.makepath(getMudletHomeDir() .. "/svo/pipes")
+svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/pipes")
 
-me.pipes = me.pipes or {}
+svo.me.pipes = svo.me.pipes or {}
+
+local pipes, me = svo.pipes, svo.me
 
 pipes.valerian = pipes.valerian or
   {lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = "valerian", filledwith2 = "valerian", maxpuffs = 10, maxpuffs2 = 10}
@@ -39,14 +41,14 @@ function svo.lastlit(which)
   end
 end
 
-function pipeout()
+function svo.pipeout()
   local what = pipes.expectations[1]
   pipes[what].lit = false
   table.remove(pipes.expectations, 1)
   pipes.expectations[#pipes.expectations+1] = what
 end
 
-function pipestart()
+function svo.pipestart()
   local oldvalerianmaxpuffs, oldelmmaxpuffs, oldskullcapmaxpuffs = pipes.valerian.maxpuffs, pipes.elm.maxpuffs, pipes.skullcap.maxpuffs
   local oldvalerianmaxpuffs2, oldelmmaxpuffs2, oldskullcapmaxpuffs2 = pipes.valerian.maxpuffs2, pipes.elm.maxpuffs2, pipes.skullcap.maxpuffs2
 
@@ -60,7 +62,7 @@ function pipestart()
   me.pipes.skullcap = pipes.skullcap
 end
 
-function parseplist()
+function svo.parseplist()
   local pipenames = {
     ["slippery elm"]                = "elm",
     ["a valerian leaf"]             = "valerian",
@@ -89,7 +91,7 @@ function parseplist()
   local filled,lit,arty,puffskey, maxpuffs
   if pipes[herb].id == 0 then
     pipes[herb].id = id
-    firstpipe = true
+    svo.firstpipe = true
     filled = "filledwith"
     lit = "lit"
     arty = "arty"
@@ -97,7 +99,7 @@ function parseplist()
     maxpuffs = "maxpuffs"
   else
     pipes[herb].id2 = id
-    firstpipe = false
+    svo.firstpipe = false
     filled = "filledwith2"
     lit = "lit2"
     arty = "arty2"
@@ -123,22 +125,22 @@ function parseplist()
   if puffs > 10 then
     pipes[herb][maxpuffs] = 20
     echo(" ")
-    setFgColor(unpack(getDefaultColorNums))
+    setFgColor(unpack(svo.getDefaultColorNums))
     echo("(a 20-puff pipe)")
   end
 
   -- warn if relighting any pipes is on ignore, to make it more obvious - people tended to miss the original line
-  if ignore["light"..herb] then
-    decho(" "..getDefaultColor().."(")
-    setFgColor(unpack(getDefaultColorNums))
+  if svo.ignore["light"..herb] then
+    decho(" "..svo.getDefaultColor().."(")
+    setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
-    echoLink("re-enable lighting", 'svo.ignore.light'..herb..' = nil; svo.echof("Re-enabled lighting of the '..pipes[herb].filledwith..' pipe."); if not svo.conf.relight then svo.config.set("relight", "on", true) end', 'Re-lighting the '..pipes[herb].filledwith..' pipe was put on ignore because '..ignore["light"..herb].because..' - click the link to re-enable it', true)
+    echoLink("re-enable lighting", 'svo.ignore.light'..herb..' = nil; svo.echof("Re-enabled lighting of the '..pipes[herb].filledwith..' pipe."); if not svo.conf.relight then svo.config.set("relight", "on", true) end', 'Re-lighting the '..pipes[herb].filledwith..' pipe was put on ignore because '..svo.ignore["light"..herb].because..' - click the link to re-enable it', true)
     setUnderline(false)
-    decho(getDefaultColor()..")")
+    decho(svo.getDefaultColor()..")")
   end
 end
 
-function parseplistempty()
+function svo.parseplistempty()
   local id = tonumber(matches[3])
   local status = matches[2]
   if not (id and status) then return end
@@ -147,7 +149,7 @@ function parseplistempty()
   pipes.empties[#pipes.empties+1] = {id = id, arty = (status == "artf" and true or false), status = status}
 end
 
-function parseplistend()
+function svo.parseplistend()
   -- fill up at least one of each first
   for id = 1, #pipes.pnames do
     local i = pipes.pnames[id]
@@ -187,25 +189,25 @@ function parseplistend()
   end
 
   pipes.empties = {}
-  signals.after_lifevision_processing:unblock(cnrl.checkwarning) -- check for stain lock
-  make_gnomes_work()
+  svo.signals.after_lifevision_processing:unblock(svo.cnrl.checkwarning) -- check for stain lock
+  svo.make_gnomes_work()
 end
 
 -- assumes that we set some pipe to 0 already. This is used during install only
-function pipe_assignid(newid)
+function svo.pipe_assignid(newid)
   newid = tonumber(newid)
   for id = 1, #pipes.pnames do
     local i = pipes.pnames[id]
     if pipes[i].id == 0 then
       pipes[i].id = newid
-      conf[i.."id"] = newid
+      svo.conf[i.."id"] = newid
       pipes[i].lit = false
       send("empty "..newid, false)
       raiseEvent("svo config changed", i.."id")
       return i
     elseif pipes[i].id2 == 0 then
       pipes[i].id2 = newid
-      conf[i.."id2"] = newid
+      svo.conf[i.."id2"] = newid
       pipes[i].lit2 = false
       send("empty "..newid, false)
       raiseEvent("svo config changed", i.."id2")
@@ -253,7 +255,7 @@ if lfs.attributes(getMudletHomeDir() .. "/svo/pipes/conf") then
   end
 end
 
-signals.connected:connect(function ()
+svo.signals.connected:connect(function ()
   if not pipes.valerian.arty then pipes.valerian.lit   = false end
   if not pipes.elm.arty then pipes.elm.lit             = false end
   if not pipes.skullcap.arty then pipes.skullcap.lit   = false end
@@ -271,10 +273,10 @@ signals.connected:connect(function ()
   if not pipes.skullcap.filledwith2 then pipes.skullcap.filledwith2 = "skullcap" end
 end)
 
-signals.saveconfig:connect(function ()
+svo.signals.saveconfig:connect(function ()
   local s,m = svo.tablesave(getMudletHomeDir() .. "/svo/pipes/conf", pipes)
   if not s then
-    echof("Couldn't save settings; %s", m)
+    svo.echof("Couldn't save settings; %s", m)
   end
 end)
 
