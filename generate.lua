@@ -39,16 +39,16 @@ local release         = not args.debug
 local own             = args.own
 local version         = args.release
 local defaultaddons   = {
-  "dragonlimbcounter", "elistsorter", "enchanter", "fishdist", "inker", "logger", "offering", "peopletracker", "reboundingsileristracker", "refiller", "runeidentifier", "namedb",
-  priest = {"priestreport", "priesthealing", "priestlimbcounter"},
-  magi = {"burncounter", "magilimbcounter", "stormhammertarget"},
-  monk = {"mindnet", "monklimbcounter"}, blademaster = "mindnet",
-  infernal = {"knightlimbcounter"},
-  runewarden = {"knightlimbcounter"},
-  paladin = {"knightlimbcounter"},
-  sentinel = {"metalimbcounter"},
-  sylvan = {"metalimbcounter"},
-  druid = {"metalimbcounter"},
+  -- "dragonlimbcounter", "elistsorter", "enchanter", "fishdist", "inker", "logger", "offering", "peopletracker", "reboundingsileristracker", "refiller", "runeidentifier", "namedb",
+  -- priest = {"priestreport", "priesthealing", "priestlimbcounter"},
+  -- magi = {"burncounter", "magilimbcounter", "stormhammertarget"},
+  -- monk = {"mindnet", "monklimbcounter"}, blademaster = "mindnet",
+  -- infernal = {"knightlimbcounter"},
+  -- runewarden = {"knightlimbcounter"},
+  -- paladin = {"knightlimbcounter"},
+  -- sentinel = {"metalimbcounter"},
+  -- sylvan = {"metalimbcounter"},
+  -- druid = {"metalimbcounter"},
 }
 
 
