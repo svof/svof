@@ -6,6 +6,10 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
+local sys, signals = svo.sys, svo.signals
+local conf, sk = svo.conf, svo.sk
+local pipes, install = svo.pipes, svo.install
+
 install.ids = install.ids or {}
 
 -- same name as conf
@@ -107,7 +111,7 @@ if svo.haveskillset('weaponmastery') then
   }
 end
 
-function installclear(what)
+function svo.installclear(what)
   if type(install.ids[what]) == "table" then
 
     for _, id in pairs(install.ids[what]) do
@@ -120,57 +124,57 @@ function installclear(what)
     install.ids[what] = nil
   end
 
-  if installtimer then killTimer(installtimer) end
+  if svo.installtimer then killTimer(svo.installtimer) end
   tempTimer(5+getNetworkLatency(), function ()
     if next(install.ids) then
       for thing, _ in pairs(install.ids) do
-        if config_dict[thing] and config_dict[thing].type == "boolean" then
-          config.set(thing, false, true)
+        if svo.config_dict[thing] and svo.config_dict[thing].type == "boolean" then
+          svo.config.set(thing, false, true)
         end
 
-        installclear(thing)
+        svo.installclear(thing)
       end
     end
 
-    installtimer = nil
+    svo.installtimer = nil
 
     if not next(install.ids) and not install.installing_system then
       echo"\n"
-      echof("auto-configuration done. :) question time!")
+      svo.echof("auto-configuration done. :) question time!")
       echo"\n"
       install.ask_install_questions()
     end
   end)
 end
 
-function installstart(fresh)
+function svo.installstart(fresh)
   if fresh and not sk.installwarning then
-    echof("Are you really sure you want to wipe everything (all remove all non-default defence modes, clear basic+combat defup/keepup to blank, remove all configuration options)? If yes, do vinstall fresh again.")
+    svo.echof("Are you really sure you want to wipe everything (all remove all non-default defence modes, clear basic+combat defup/keepup to blank, remove all configuration options)? If yes, do vinstall fresh again.")
     if selectString("really", 1) ~= -1 then setUnderline(true) resetFormat() end
-    sk.installwarning = true
+    svo.sk.installwarning = true
     return
   elseif fresh and sk.installwarning then
     local s, m = os.remove(getMudletHomeDir() .. "/svo")
-    if not s then echof("Couldn't remove svo folder because of: %s", m) end
+    if not s then svo.echof("Couldn't remove svo folder because of: %s", m) end
 
-    defdefup = {
+    svo.defdefup = {
       basic = {},
       combat = {},
     }
 
-    defkeepup = {
+    svo.defkeepup = {
       basic = {},
       combat = {},
     }
 
-    echof("Vacuumed everything up!")
-    sk.installwarning = nil
+    svo.echof("Vacuumed everything up!")
+    svo.sk.installwarning = nil
   end
 
   for _, skill in pairs(install.ids) do
     if type(skill) == "table" then
       for _, id in pairs(skill) do
-        installclear(id)
+        svo.installclear(id)
       end
     end
   end
@@ -196,11 +200,11 @@ end
 
 
   if sys.enabledgmcp then
-    echof("Starting auto-configuration - going to detect which skills and pipes you've got. Please wait 5 seconds for the questions to start.")
+    svo.echof("Starting auto-configuration - going to detect which skills and pipes you've got. Please wait 5 seconds for the questions to start.")
     printCmdLine("Please wait, doing auto-configuration...")
     echo"\n"
   else
-    echof("Please enable GMCP in Mudlet settings and restart before installing.")
+    svo.echof("Please enable GMCP in Mudlet settings and restart before installing.")
 
     signals.gmcpcharskillsinfo:block(install.checkskillgmcp)
     signals.gmcpcharitemslist:block(install.checkinvgmcp)
@@ -209,7 +213,7 @@ end
     for _, skill in pairs(install.ids) do
       if type(skill) == "table" then
         for _, id in pairs(skill) do
-          installclear(id)
+          svo.installclear(id)
         end
       end
     end
@@ -226,40 +230,40 @@ end
   send(sys.ingamecustomprompt, false)
 
   -- defaults/reset
-  for name, tbl in config_dict:iter() do
+  for name, tbl in svo.config_dict:iter() do
     if tbl.installstart then tbl.installstart(); raiseEvent("svo config changed", name) end
   end
   pipes.elm.id, pipes.skullcap.id, pipes.valerian.id = 0,0,0
 
   if sys.enabledgmcp then
     local city = gmcp.Char.Status.city:match("^(%w+)")
-    if city then config.set("org", city, true) end
+    if city then svo.config.set("org", city, true) end
 
     if gmcp.Char.Status.level and tonumber(gmcp.Char.Status.level:match("^(%d+)")) >= 99 then
-      config.set("dragonflex", true, true)
-      config.set("dragonheal", true, true)
+      svo.config.set("dragonflex", true, true)
+      svo.config.set("dragonheal", true, true)
     else
-      config.set("dragonflex", false, true)
-      config.set("dragonheal", false, true)
+      svo.config.set("dragonflex", false, true)
+      svo.config.set("dragonheal", false, true)
     end
   end
 end
 
 -- logic: set relevant conf's to nil, go through a table of specific ones - if one is nil, ask the relevant question for it. inside alias to toggle it, call install again.
 
-install.ask_install_questions = function ()
+svo.install.ask_install_questions = function ()
   if install.installing_system then return end
 
   install.installing_system = true
   install.check_install_step()
 end
 
-install.check_install_step = function()
-  for name, tbl in config_dict:iter() do
+svo.install.check_install_step = function()
+  for name, tbl in svo.config_dict:iter() do
     if conf[name] == nil and tbl.installcheck then
       echo "\n"
       tbl.installcheck()
-      conf_printinstallhint(name)
+      svo.conf_printinstallhint(name)
 
       if printCmdLine then
         printCmdLine("vconfig "..name.." ")
@@ -274,32 +278,32 @@ install.check_install_step = function()
   signals.gmcpcharitemslist:block(install.checkinvgmcp)
   signals.gmcpcharskillslist:block(install.checkskilllist)
   echo"\n"
-  echof("All done installing! Congrats.")
+  svo.echof("All done installing! Congrats.")
   signals.saveconfig:emit()
 
-  decho(getDefaultColor().."If you'd like, you can also optionally setup the ")
+  decho(svo.getDefaultColor().."If you'd like, you can also optionally setup the ")
   echoLink("parry", 'svo.sp.setup()', 'parry')
-  decho(getDefaultColor().." system and the ")
+  decho(svo.getDefaultColor().." system and the ")
   echoLink("herb precache", 'svo.showprecache()', 'herb precache')
-  decho(getDefaultColor().." system. You can adjust the ")
+  decho(svo.getDefaultColor().." system. You can adjust the ")
   echoLink("echo colours", 'svo.config.showcolours()', 'echo colours')
-  decho(getDefaultColor().." as well!")
+  decho(svo.getDefaultColor().." as well!")
   echo "\n"
-  echof("I'd recommend that you at least glimpse through my docs as well so you sort of know what are you doing :)")
+  svo.echof("I'd recommend that you at least glimpse through my docs as well so you sort of know what are you doing :)")
 
   if not conf.customprompt and not conf.setdefaultprompt then
-    conf.setdefaultprompt = true
-    setdefaultprompt()
-    echo"\n" echof("I've setup a custom prompt for you that mimics the normal Achaean one, but also displays which afflictions have you got. See http://doc.svo.vadisystems.com/#setting-a-custom-prompt on how to customize it if you'd like, or if you don't like it, do 'vconfig customprompt off' to disable it.")
+    svo.conf.setdefaultprompt = true
+    svo.setdefaultprompt()
+    echo"\n" svo.echof("I've setup a custom prompt for you that mimics the normal Achaean one, but also displays which afflictions have you got. See http://doc.svo.vadisystems.com/#setting-a-custom-prompt on how to customize it if you'd like, or if you don't like it, do 'vconfig customprompt off' to disable it.")
   end
 
   tempTimer(math.random(1,2), function ()
     echo"\n"
-    echof("Oh, and one last thing - QQ, restart Mudlet and login again, so all changes can take effect properly.")
+    svo.echof("Oh, and one last thing - QQ, restart Mudlet and login again, so all changes can take effect properly.")
   end)
 end
 
-function install.checkskillgmcp()
+function svo.install.checkskillgmcp()
   local t = _G.gmcp.Char.Skills.Info
   if not t then return end
 
@@ -308,20 +312,20 @@ function install.checkskillgmcp()
 
   if conf[t.skill] == nil and (t.info == "" or t.info:find("You have not yet learned this ability")) then
     conf[t.skill] = false
-    echof("Don't have %s, so <250,0,0>won't%s be using it whenever possible.", t.skill, getDefaultColor())
+    svo.echof("Don't have %s, so <250,0,0>won't%s be using it whenever possible.", t.skill, svo.getDefaultColor())
     raiseEvent("svo config changed", t.skill)
   elseif conf[t.skill] == nil then
     conf[t.skill] = true
-    echof("Have %s, so <0,250,0>will%s be using it whenever possible.", t.skill, getDefaultColor())
+    svo.echof("Have %s, so <0,250,0>will%s be using it whenever possible.", t.skill, svo.getDefaultColor())
     raiseEvent("svo config changed", t.skill)
   end
 
-  installclear(t.skill)
+  svo.installclear(t.skill)
 end
 signals.gmcpcharskillsinfo:connect(install.checkskillgmcp)
 signals.gmcpcharskillsinfo:block(install.checkskillgmcp)
 
-function install.checkinvgmcp()
+function svo.install.checkinvgmcp()
   local t = _G.gmcp.Char.Items.List
   if not t.location == "inv" then return end
 
@@ -329,8 +333,8 @@ function install.checkinvgmcp()
   -- If list enlarges, fix appopriately.
   for _, it in pairs(t.items) do
     if string.find(it.name, "%f[%a]pipe%f[%A]") then
-      local r = pipe_assignid(it.id)
-      if r then echof("Set the %s pipe id to %d.", r, it.id) end
+      local r = svo.pipe_assignid(it.id)
+      if r then svo.echof("Set the %s pipe id to %d.", r, it.id) end
     end
   end
 
@@ -339,26 +343,27 @@ signals.gmcpcharitemslist:connect(install.checkinvgmcp)
 signals.gmcpcharitemslist:block(install.checkinvgmcp)
 
 
-function install.checkskilllist()
+function svo.install.checkskilllist()
   local t = _G.gmcp.Char.Skills.List
   if t.group == "survival" then
     for _, k in ipairs{{"focus", "focusing"}, {"restore", "restoration"}, {"insomnia", "insomnia"}, {"clot", "clotting"}, {"breath", "breathing"}, {"efficiency", "efficiency"}} do
-      if contains(t.list, k[2]:title()) then
-        config.set(k[1], true, true)
-        installclear(k[1])
+      if svo.contains(t.list, k[2]:title()) then
+        svo.config.set(k[1], true, true)
+        svo.installclear(k[1])
       end
     end
+  end
 
 if svo.haveskillset('metamorphosis') then
-  elseif t.group == "metamorphosis" then
+  if t.group == "metamorphosis" then
     for _, k in ipairs{"truemorph", "hydra", "wyvern", "affinity", "icewyrm", "gorilla", "eagle", "jaguar", "wolverine", "transmorph", "elephant", "nightingale", "bonding", "bear", "basilisk", "sloth", "gopher", "condor", "hyena", "owl", "cheetah", "jackdaw", "turtle", "wolf", "wildcat", "powers", "squirrel"} do
-    if contains(t.list, k:title()) then
-      config.set("morphskill", k, true)
+    if svo.contains(t.list, k:title()) then
+      svo.config.set("morphskill", k, true)
       break
     end
   end
 
-  installclear("morphskill")
+  svo.installclear("morphskill")
 end
   end
 end
