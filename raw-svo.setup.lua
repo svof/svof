@@ -131,6 +131,7 @@ svo.vm               = {}
 svo.cn               = {}
 svo.cnrl             = {}
 svo.bals             = {}
+svo.actions          = pl.OrderedMap()
 
 svo.reset            = {}
 svo.prio             = {}

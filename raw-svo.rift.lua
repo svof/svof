@@ -268,7 +268,7 @@ rift.vial_conversions = {
   venom       = "toxin",
 }
 
-function intlen(number)
+function svo.intlen(number)
   return number == 0 and 1 or math.floor(math.log10(number)+1)
 end
 

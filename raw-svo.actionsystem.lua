@@ -8,7 +8,6 @@
 
 -- action system
 local pl = svo.pl
-svo.actions = pl.OrderedMap()
  -- a map of balances, with a map of actions in each
 svo.actions_performed = svo.actions_performed or {}
 svo.bals_in_use       = svo.bals_in_use or {}
