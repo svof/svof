@@ -20,6 +20,53 @@ read_globals = {
   },
   "display", "matches", "lfs", "color_table", "fg", "sendAll", "cinsertText", "dinsertText", "cecho", "decho", "expandAlias", "echo", "selectString", "selectSection", "replace", "setBgColor", "setFgColor", "tempTimer", "tempTrigger", "tempRegexTrigger", "closeMudlet", "loadWindowLayout", "saveWindowLayout", "setFontSize", "getFontSize", "openUserWindow", "echoUserWindow", "enableTimer", "disableTimer", "enableKey", "disableKey", "killKey", "clearUserWindow", "clearWindow", "killTimer", "moveCursor", "getLines", "getLineNumber", "insertHTML", "insertText", "enableTrigger", "disableTrigger", "killTrigger", "getLineCount", "getColumnNumber", "send", "selectCaptureGroup", "tempLineTrigger", "raiseEvent", "deleteLine", "copy", "cut", "paste", "pasteWindow", "debugc", "setWindowWrap", "setWindowWrapIndent", "resetFormat", "moveCursorEnd", "getLastLineNumber", "getNetworkLatency", "createMiniConsole", "createLabel", "raiseWindow", "lowerWindow", "hideWindow", "showWindow", "createBuffer", "createStopWatch", "getStopWatchTime", "stopStopWatch", "startStopWatch", "resetStopWatch", "closeUserWindow", "resizeWindow", "appendBuffer", "setBackgroundImage", "setBackgroundColor", "createButton", "setLabelClickCallback", "setLabelDoubleClickCallback", "setLabelReleaseCallback", "setLabelMoveCallback", "setLabelWheelCallback", "setLabelOnEnter", "setLabelOnLeave", "moveWindow", "setTextFormat", "getMainWindowSize", "getMousePosition", "getCurrentLine", "setMiniConsoleFontSize", "selectCurrentLine", "spawn", "getButtonState", "showToolBar", "hideToolBar", "loadRawFile", "setBold", "setItalics", "setUnderline", "setStrikeOut", "disconnect", "tempButtonToolbar", "tempButton", "setButtonStyleSheet", "reconnect", "getMudletHomeDir", "getMudletLuaDefaultPaths", "setTriggerStayOpen", "wrapLine", "getFgColor", "getBgColor", "tempColorTrigger", "isAnsiFgColor", "isAnsiBgColor", "stopSounds", "playSoundFile", "setBorderTop", "setBorderBottom", "setBorderLeft", "setBorderRight", "setBorderColor", "setConsoleBufferSize", "enableScrollBar", "disableScrollBar", "startLogging", "calcFontSize", "permRegexTrigger", "permSubstringTrigger", "permBeginOfLineStringTrigger", "tempComplexRegexTrigger", "permTimer", "permAlias", "permKey", "tempKey", "exists", "isActive", "enableAlias", "tempAlias", "disableAlias", "killAlias", "setLabelStyleSheet", "getTime", "invokeFileDialog", "getTimestamp", "setLink", "deselect", "insertLink", "echoLink", "echoPopup", "insertPopup", "setPopup", "sendATCP", "hasFocus", "isPrompt", "feedTriggers", "sendTelnetChannel102", "setRoomWeight", "getRoomWeight", "gotoRoom", "setMapperView", "getRoomExits", "lockRoom", "createMapper", "getMainConsoleWidth", "resetProfile", "printCmdLine", "searchRoom", "clearCmdLine", "getAreaTable", "getAreaTableSwap", "getAreaRooms", "getPath", "centerview", "denyCurrentSend", "tempBeginOfLineTrigger", "tempExactMatchTrigger", "sendGMCP", "roomExists", "addRoom", "setExit", "setRoomCoordinates", "getRoomCoordinates", "createRoomID", "getRoomArea", "setRoomArea", "resetRoomArea", "setAreaName", "roomLocked", "setCustomEnvColor", "getCustomEnvColorTable", "setRoomEnv", "setRoomName", "getRoomName", "setGridMode", "solveRoomCollisions", "addSpecialExit", "removeSpecialExit", "getSpecialExits", "getSpecialExitsSwap", "clearSpecialExits", "getRoomEnv", "getRoomUserData", "setRoomUserData", "searchRoomUserData", "getRoomsByPosition", "clearRoomUserData", "clearRoomUserDataItem", "downloadFile", "appendCmdLine", "getCmdLine", "openUrl", "sendSocket", "setRoomIDbyHash", "getRoomIDbyHash", "addAreaName", "getRoomAreaName", "deleteArea", "deleteRoom", "setRoomChar", "getRoomChar", "registerAnonymousEventHandler", "saveMap", "loadMap", "setMainWindowSize", "setAppStyleSheet", "sendIrc", "getIrcNick", "getIrcServer", "getIrcChannels", "getIrcConnectedHost", "setIrcNick", "setIrcServer", "setIrcChannels", "restartIrc", "connectToServer", "getRooms", "createMapLabel", "deleteMapLabel", "highlightRoom", "unHighlightRoom", "getMapLabels", "getMapLabel", "lockExit", "hasExitLock", "lockSpecialExit", "hasSpecialExitLock", "setExitStub", "connectExitStub", "getExitStubs", "getExitStubs1", "setModulePriority", "getModulePriority", "updateMap", "addMapEvent", "removeMapEvent", "getMapEvents", "addMapMenu", "removeMapMenu", "getMapMenus", "installPackage", "installModule", "uninstallModule", "reloadModule", "exportAreaImage", "createMapImageLabel", "setMapZoom", "uninstallPackage", "setExitWeight", "setDoor", "getDoors", "getExitWeights", "addSupportedTelnetOption", "setMergeTables", "getModulePath", "getAreaExits", "auditAreas", "sendMSDP", "handleWindowResizeEvent", "addCustomLine", "getCustomLines", "getMudletVersion", "openWebPage", "getAllRoomEntrances", "getRoomUserDataKeys", "getAllRoomUserData", "searchAreaUserData", "getMapUserData", "getAreaUserData", "setMapUserData", "setAreaUserData", "getAllAreaUserData", "getAllMapUserData", "clearAreaUserData", "clearAreaUserDataItem", "clearMapUserData", "clearMapUserDataItem", "setDefaultAreaVisible", "getProfileName", "raiseGlobalEvent", "saveProfile", "setServerEncoding", "getServerEncoding", "getServerEncodingsList", "alert", "tempPromptTrigger", "permPromptTrigger", "getColumnCount", "getRowCount"}
 
+files["raw-svo.valid.simple.lua"] = {
+  read_globals = {
+    createLabel = { read_only = false },
+    svo = {
+      fields = {
+        "assert", "haveskillset", "sys", "defdefup", "defkeepup", "signals", "deepcopy", "conf", "sk", "me", "defs", "defc", "defences", "stats", "empty", "cnrl", "rift", "bals",
+        "doingaction", "usingbal", "serverignore", "ignore", "getHighestKey", "doaction",
+        "dict_purgative", "dict_salve_def", "dict_herb", "dict_misc", "dict_misc_def",
+        "dict_smoke_def", "dict_balanceful", "dict_balanceful_def", "dict_balanceless",
+        "dict_balanceless_def", "index_map", "getBoundary", "debugf", "valid", "pl", "oldsend",
+        "echof", "affsp", "actions", "actionfinished", "actionclear", "paragraph_length",
+        "make_gnomes_work", "check_dofree", "will_take_balance", "fancysend", "fancysendall",
+        "bals_in_use", "concatand", "mm_create_riftlabel", "getDefaultColor",
+        "syncdelay", "checkaction", "find_until_last_paragraph", "ignore_illusion",
+        "rmaff", "codepaste", "echoafftime", "startbalancewatch",  "endbalancewatch", "app", "config",
+        "wait_tbl", "doaddfree", "getDefaultColorNums", "prompttrigger", "itf",
+        "defdefup", "defkeepup", "signals", "deepcopy", "rmaff", "apply", "lostbal_salve", "getHighestKey",
+        "lostbal_herb", "eat", "me", "defs", "defences", "doingaction", "enabledclasses", "paragraph_length",
+        "make_gnomes_work", "lostbal_purgative", "lostbal_focus", "lostbal_sip", "empty", "lostbal_healing",
+        "lostbal_moss", "find_until_last_paragraph", "echof", "debugf", "lostbal_tree", "haveskillset",
+        "sip", "doaction", "killaction", "checkany", "lostbal_smoke", "updateaffcount", "addaffdict", "oneconcatwithval",
+        "can_usemana", "getping", "lostbal_voice", "lostbal_rage", "lostbal_fitness", "fullstats", "shrugging",
+        "lostbal_shrugging", "usingbal", "check_generics", "reset", "sendcuring", "ignore_illusion",
+        "fitness",  "containsbyname", "assert", "defs_data", "concatand", "prio", "enabledskills", "show_info",
+        "donext", "findbybal", "send_in_the_gnomes", "bals_in_use", "gettreeableaffs", "endbalancewatch", "valid",
+        "tree", "restore", "dragonheal", "lostbal_dragonheal", "process_defs", "check_sp_satisfied", "sp_config",
+        "will_take_balance", "lastlit", "fillpipe", "pflags", "pl", "syncdelay", "sendc", "config", "rage",
+        "lostbal_herb", "affs", "rmaff", "dict", "deepcopy", "debugf", "defences", "rmaff",
+        "version", "pl", "phpTable", "ripairs", "affs", "balanceless", "cp", "cpp", "defences", "lifevision", "signals",
+         "sys", "conf", "config", "defc", "defs", "dragonheal", "lifep", "lifevision", "paragraph_length", "restore",
+         "shrugging", "sp", "sp_config", "stats", "tree", "rage", "fitness", "valid", "watch", "gaffl", "gdefc",
+         "actions", "sk", "vm", "cn", "cnrl", "prio", "reset", "affl", "serverignore", "ignore", "dict", "me",
+         "knownskills", "haveskillset", "logging_in", "dont_unpause_login", "danaeusaffs", "nemesisaffs",
+         "scragaffs", "index_map", "lastpromptnumber", "promptcount", "send", "pipes", "affsp", "rift", "install",
+         "echosd", "echos", "life", "pflags", "paragraph_length", "es_categories", "es_shortnames", "es_shortnamesr",
+         "es_potions", "es_categories", "assert", "deepcopy", "tablesave", "sps", "defdefup", "defkeepup", "empty",
+          "defupfinish", "bottomprompt", "showprompt", "make_prio_table", "errorf", "echofn", "make_sync_prio_table",
+          "inra", "intlen", "update",
+          affsp = { read_only = false },
+          valid = { read_only = false, other_fields = true },
+          sk    = { read_only = false, other_fields = true },
+          dict  = { read_only = false, other_fields = true },
+      }
+    }
+  }
+}
+
 files["raw-svo.valid.diag.lua"] = {
   read_globals = {
     createLabel = { read_only = false },
