@@ -11,7 +11,10 @@
 
       otherwise just eat
   ]]
-pl.dir.makepath(getMudletHomeDir() .. "/svo/rift+inv")
+svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/rift+inv")
+
+local rift, me, sys, sk, conf = svo.rift, svo.me, svo.sys, svo.sk, svo.conf
+local pipes = svo.pipes
 
 rift.riftcontents = {}
 rift.invcontents = {}
@@ -42,7 +45,7 @@ rift.resetriftcontents = function()
     rift.riftcontents[herb] = 0
   end
 
-  myrift = rift.riftcontents
+  svo.myrift = rift.riftcontents
 end
 
 rift.resetinvcontents = function()
@@ -50,7 +53,7 @@ rift.resetinvcontents = function()
     rift.invcontents[herb] = 0
   end
 
-  myinv = rift.invcontents
+  svo.myinv = rift.invcontents
 end
 
 rift.resetriftcontents()
@@ -273,7 +276,7 @@ function svo.intlen(number)
 end
 
 rift.update_riftlabel = function()
-  if not riftlabel or riftlabel.hidden then return end
+  if not svo.riftlabel or svo.riftlabel.hidden then return end
 
   local count = 0
   local tbl = {}
@@ -283,7 +286,7 @@ rift.update_riftlabel = function()
   for _, j in pairs(rift.herbsminerals) do
     count = count + 1
 
-    tbl[#tbl+1] = string.format([[<font style="color:grey;">%s</font>%s%d<font style="color:grey;">/</font>%d ]], j, string.rep("&nbsp;", charwidth - #j- intlen(rift.invcontents[j]) - intlen(rift.riftcontents[j])), rift.invcontents[j], rift.riftcontents[j])
+    tbl[#tbl+1] = string.format([[<font style="color:grey;">%s</font>%s%d<font style="color:grey;">/</font>%d ]], j, string.rep("&nbsp;", charwidth - #j- svo.intlen(rift.invcontents[j]) - svo.intlen(rift.riftcontents[j])), rift.invcontents[j], rift.riftcontents[j])
     if count % columncount == 0 then tbl[#tbl+1] = "<br />" end
   end
 
@@ -294,30 +297,30 @@ rift.update_riftlabel = function()
     tbl[#tbl+1] = string.rep("&nbsp;", spacesneeded)
   end
 
-  echo("svo.riftlabel", string.format([[<center><p style="font-size: ]]..(conf.herbstatsize and conf.herbstatsize or 9)..[[px; color:white; font-weight:;">%s</p></center>]], table.concat(tbl)))
+  echo("svo.riftlabel", string.format([[<center><p style="font-size: ]]..(svo.conf.herbstatsize and svo.conf.herbstatsize or 9)..[[px; color:white; font-weight:;">%s</p></center>]], table.concat(tbl)))
 end
 
 rift.outr = function (what)
   if not sys.canoutr then return end
 
   if (rift.precache[what] and rift.precache[what] == 0) or not rift.invcontents[what] or not rift.precache[what] or (rift.invcontents[what] and rift.precache[what] and (rift.invcontents[what] - 1 >= rift.precache[what])) then
-    send("outr " .. what, conf.commandecho)
+    send("outr " .. what, svo.conf.commandecho)
   else
-    send("outr " .. (rift.precache[what] - rift.invcontents[what] + 1) .. " " .. what, conf.commandecho)
+    send("outr " .. (rift.precache[what] - rift.invcontents[what] + 1) .. " " .. what, svo.conf.commandecho)
   end
 
   -- allow other outrs to catch up, then re-check again
   if sys.blockoutr then killTimer(sys.blockoutr); sys.blockoutr = nil end
-  sys.blockoutr = tempTimer(sys.wait + syncdelay(), function () sys.blockoutr = nil; debugf("sys.blockoutr expired") make_gnomes_work() end)
-  debugf("sys.blockoutr setup: ", debug.traceback())
+  sys.blockoutr = tempTimer(sys.wait + svo.syncdelay(), function () sys.blockoutr = nil; svo.debugf("sys.blockoutr expired") svo.make_gnomes_work() end)
+  svo.debugf("sys.blockoutr setup: ", debug.traceback())
 end
 
 rift.checkprecache = function()
   rift.doprecache = false
 
-  for herb, amount in pairs(rift.precache) do
+  for herb, _ in pairs(rift.precache) do
     -- if we have addiction, then only precache 1, otherwise, however much is needed
-    if rift.precache[herb] ~= 0 and rift.riftcontents[herb] ~= 0 and (not affs.addiction and (rift.invcontents[herb] < rift.precache[herb]) or (rift.invcontents[herb] == 0)) then
+    if rift.precache[herb] ~= 0 and rift.riftcontents[herb] ~= 0 and (not svo.affs.addiction and (rift.invcontents[herb] < rift.precache[herb]) or (rift.invcontents[herb] == 0)) then
       rift.doprecache = true; return
     end
   end
@@ -325,12 +328,12 @@ end
 
 -- used by skeleton's check_herb to see that you can eat something. It checks the appropriate herb in inv if we can't outr
 -- takes in dict.<aff>.herb as an argument
-signals.curemethodchanged:connect(function ()
-  if conf.curemethod == "conconly" then
+svo.signals.curemethodchanged:connect(function ()
+  if svo.conf.curemethod == "conconly" then
     sk.can_eat_for = function (aff)
       return (rift.invcontents[aff.eatcure[1]] > 0)
     end
-  elseif conf.curemethod == "transonly" then
+  elseif svo.conf.curemethod == "transonly" then
     sk.can_eat_for = function (aff)
       return (rift.invcontents[aff.eatcure[2]] > 0)
     end
@@ -342,13 +345,13 @@ signals.curemethodchanged:connect(function ()
 end)
 
 local function siprandom(what)
-  if not es_vialids or not es_vialids[what] or not es_vialids[what][1] then return what end
+  if not svo.es_vialids or not svo.es_vialids[what] or not svo.es_vialids[what][1] then return what end
 
-  return es_vialids[what][math.random(#es_vialids[what])]
+  return svo.es_vialids[what][math.random(#svo.es_vialids[what])]
 end
 
 -- determine the sip method. gets a table as arg with two things - the conc and trans cure
-signals.curemethodchanged:connect(function ()
+svo.signals.curemethodchanged:connect(function ()
   svo.sip = function (what)
     local use = what.sipcure[1]
     if conf.siprandom then use = siprandom(use) end
@@ -358,7 +361,7 @@ signals.curemethodchanged:connect(function ()
 end)
 
 -- determine the apply method
-signals.curemethodchanged:connect(function ()
+svo.signals.curemethodchanged:connect(function ()
   svo.apply = function (what, whereto)
     whereto = whereto or ""
     local use = what.applycure[1]
@@ -368,7 +371,7 @@ signals.curemethodchanged:connect(function ()
 end)
 
 -- used to determine what to eat, and set what we've eaten
-signals.curemethodchanged:connect(function ()
+svo.signals.curemethodchanged:connect(function ()
   if conf.curemethod == "conconly" then
     sk.synceat = function(what)
       local use = what.eatcure[1]
@@ -591,18 +594,18 @@ signals.curemethodchanged:connect(function ()
 
   -- update the actual 'eat' function
   sk.checkaeony()
-  signals.aeony:emit()
+  svo.signals.aeony:emit()
 end)
 
-signals.systemstart:connect(function()
-  signals.curemethodchanged:emit()
+svo.signals.systemstart:connect(function()
+  svo.signals.curemethodchanged:emit()
 end)
 
-signals.aeony:connect(function ()
+svo.signals.aeony:connect(function ()
   if sys.sync then
-    eat = sk.synceat
+    svo.eat = sk.synceat
   else
-    eat = sk.asynceat
+    svo.eat = sk.asynceat
   end
 end)
 
@@ -646,10 +649,10 @@ function sk.asyncfill(what, where)
 
   if rift.invcontents[what] > 0 then
     if pipes[orig].puffs > 0 then
-      if not defc.selfishness then
+      if not svo.defc.selfishness then
         send("empty "..where, conf.commandecho)
       else
-        for i = 1, (pipes[orig].puffs + 1) do
+        for _ = 1, (pipes[orig].puffs + 1) do
           send("smoke "..where, conf.commandecho)
         end
       end
@@ -660,10 +663,10 @@ function sk.asyncfill(what, where)
   else
     rift.outr(what)
     if pipes[orig].puffs > 0 then
-      if not defc.selfishness then
+      if not svo.defc.selfishness then
         send("empty "..where, conf.commandecho)
       else
-        for i = 1, (pipes[orig].puffs + 1) do
+        for _ = 1, (pipes[orig].puffs + 1) do
           send("smoke "..where, conf.commandecho)
         end
       end
@@ -701,7 +704,7 @@ function sk.syncfill(what, where)
   pipes[orig].filledwith = what
 
   if pipes[orig].puffs > 0 then
-    if defc.selfishness then echof("Problem - can't refill while selfish :/") return end
+    if svo.defc.selfishness then svo.echof("Problem - can't refill while selfish :/") return end
     send("empty "..where, conf.commandecho)
   elseif rift.invcontents[what] > 0 then
     send("put " .. what .. " in " .. where, conf.commandecho)
@@ -710,7 +713,7 @@ function sk.syncfill(what, where)
   end
 end
 
-signals.aeony:connect(function ()
+svo.signals.aeony:connect(function ()
   if sys.sync then
     svo.fillpipe = sk.syncfill
   else
@@ -719,7 +722,7 @@ signals.aeony:connect(function ()
 end)
 
 
-function riftline()
+function svo.riftline()
   for i = 1, #matches, 3 do
     local amount = tonumber(matches[i+1])
     local rawherbstring, herb = matches[i+2], false
@@ -741,15 +744,15 @@ function riftline()
   rift.update_riftlabel()
 end
 
-function showrift()
+function svo.showrift()
   display(rift.riftcontents)
 end
 
-function showinv()
+function svo.showinv()
   display(rift.invcontents)
 end
 
-function showprecache()
+function svo.showprecache()
   local count = 1
 
   local function makelink(herb, sign)
@@ -773,14 +776,14 @@ function showprecache()
     for i = 1, 1000 do deleteLine()
     debugf("deleting") end
   end]]
-  echof("Herb pre-cache list (%s defences):", defs.mode)
+  svo.echof("Herb pre-cache list (%s defences):", svo.defs.mode)
 
   local t = {}; for herb in pairs(rift.precache) do t[#t+1] = herb end; table.sort(t)
   for i = 1, #t do
     local herb, amount = t[i], rift.precache[t[i]]
   -- for herb, amount in pairs(rift.precache) do
     if count % 3 ~= 0 then
-      decho(string.format("<153,204,204>[<91,134,214>%d<153,204,204>%s%s] %-"..(intlen(amount) == 1 and "23" or "22").."s", amount, makelink(herb, "+"), makelink(herb, "-"), herb))
+      decho(string.format("<153,204,204>[<91,134,214>%d<153,204,204>%s%s] %-"..(svo.intlen(amount) == 1 and "23" or "22").."s", amount, makelink(herb, "+"), makelink(herb, "-"), herb))
     else
       decho(string.format("<153,204,204>[<91,134,214>%d<153,204,204>%s%s] %s", amount, makelink(herb, "+"), makelink(herb, "-"), herb)) end
 
@@ -792,12 +795,12 @@ function showprecache()
   moveCursor("main", #getCurrentLine(), getLastLineNumber("main"))
   insertText("\n-\n")]]
   echo"\n"
-  showprompt()
+  svo.showprompt()
 end
 
-function setprecache(herb, amount, flag, echoback, show_list)
+function svo.setprecache(herb, amount, flag, echoback, show_list)
   local sendf
-  if echoback then sendf = echof else sendf = errorf end
+  if echoback then sendf = svo.echof else sendf = svo.errorf end
 
   svo.assert(rift.precache[herb], "what herb do you want to set a precache amount for?", sendf)
 
@@ -811,14 +814,14 @@ function setprecache(herb, amount, flag, echoback, show_list)
   end
 
   if echoback then
-    echof("Will keep at least %d of %s out in the inventory now.", rift.precache[herb], herb)
+    svo.echof("Will keep at least %d of %s out in the inventory now.", rift.precache[herb], herb)
   elseif show_list then
-    showprecache()
+    svo.showprecache()
   end
   rift.checkprecache()
 end
 
-function invline()
+function svo.invline()
   rift.resetinvcontents()
 
   -- lowercase as the first letter is capitalised
@@ -853,7 +856,7 @@ function invline()
   rift.checkprecache()
 end
 
-function riftremoved()
+function svo.riftremoved()
   local removed = tonumber(matches[2])
   local what = rift.herbs_singular_sansprefix[matches[3]]
   local inrift = tonumber(matches[4])
@@ -865,16 +868,16 @@ function riftremoved()
 
   rift.update_riftlabel()
 
-  signals.removed_from_rift:emit(removed, what, inrift)
+  svo.signals.removed_from_rift:emit(removed, what, inrift)
 
   -- don't add if not doing it
-  checkaction(dict.doprecache.misc, false)
-  if actions.doprecache_misc then
-    lifevision.add(actions.doprecache_misc.p)
+  svo.checkaction(svo.dict.doprecache.misc, false)
+  if svo.actions.doprecache_misc then
+    svo.lifevision.add(svo.actions.doprecache_misc.p)
   end
 end
 
-function pocketbelt_added()
+function svo.pocketbelt_added()
   local removedamount = tonumber(matches[2])
   local what = matches[3]
   if not rift.invcontents[what] then return end
@@ -882,7 +885,7 @@ function pocketbelt_added()
   rift.invcontents[what] = rift.invcontents[what] - removedamount
 end
 
-function pocketbelt_removed()
+function svo.pocketbelt_removed()
   local removedamount = tonumber(matches[2])
   local what = matches[3]
   if not rift.invcontents[what] then return end
@@ -890,7 +893,7 @@ function pocketbelt_removed()
   rift.invcontents[what] = rift.invcontents[what] + removedamount
 end
 
-function riftadded()
+function svo.riftadded()
   local removed = tonumber(matches[2])
   local what = rift.herbs_singular_sansprefix[matches[3]]
   if not what then return end
@@ -904,7 +907,7 @@ function riftadded()
   rift.checkprecache()
 end
 
-function riftnada()
+function svo.riftnada()
   local what = matches[2]
   if rift.invcontents[what] then rift.invcontents[what] = 0 end
 
@@ -912,7 +915,7 @@ function riftnada()
   rift.checkprecache()
 end
 
-function riftate()
+function svo.riftate()
   -- if conf.aillusion and not (usingbal"herb" or usingbal"moss") then
   --   resetFormat()
   --   echoLink(" (i)", '', "Precache considered this to be an illusion (because the system isn't eating anything right now) and didn't count the herb used", true)
@@ -923,7 +926,7 @@ function riftate()
 
   if not rift.herbs_singular[what] then return end
 
-  if not conf.arena then
+  if not svo.conf.arena then
     rift.invcontents[rift.herbs_singular[what]] = rift.invcontents[rift.herbs_singular[what]] - 1
     if rift.invcontents[rift.herbs_singular[what]] < 0 then rift.invcontents[rift.herbs_singular[what]] = 0 end
   end
@@ -941,22 +944,22 @@ do
   end
 end
 
-function toggle_riftlabel(toggle)
-  if (type(toggle) == 'nil' and riftlabel.hidden) or (type(toggle) ~= 'nil' and toggle) then
-    riftlabel:show()
+function svo.toggle_riftlabel(toggle)
+  if (type(toggle) == 'nil' and svo.riftlabel.hidden) or (type(toggle) ~= 'nil' and toggle) then
+    svo.riftlabel:show()
     rift.update_riftlabel()
-    echof("Spawned the herbstat window.")
-    conf.riftlabel = true
+    svo.echof("Spawned the herbstat window.")
+    svo.conf.riftlabel = true
     raiseEvent("svo config changed", "riftlabel")
-  elseif (type(toggle) == 'nil' and not riftlabel.hidden) or (type(toggle) ~= 'nil' and not toggle) then
-    riftlabel:hide()
-    echof("Hid the herbstat window.")
-    conf.riftlabel = false
+  elseif (type(toggle) == 'nil' and not svo.riftlabel.hidden) or (type(toggle) ~= 'nil' and not toggle) then
+    svo.riftlabel:hide()
+    svo.echof("Hid the herbstat window.")
+    svo.conf.riftlabel = false
     raiseEvent("svo config changed", "riftlabel")
   end
 end
 
-signals.systemstart:add_post_emit(function ()
+svo.signals.systemstart:add_post_emit(function ()
   if lfs.attributes(getMudletHomeDir() .. "/svo/rift+inv/rift") then
     table.load(getMudletHomeDir() .. "/svo/rift+inv/rift", rift.riftcontents)
   end
@@ -967,7 +970,7 @@ signals.systemstart:add_post_emit(function ()
   -- reset, because we can't have herbs in inv at login
   rift.resetinvcontents()
 
-  for mode, _ in pairs(defdefup) do
+  for mode, _ in pairs(svo.defdefup) do
     rift.precachedata[mode] = {}
 
     for _,herb in pairs(rift.herbsminerals) do
@@ -986,22 +989,22 @@ signals.systemstart:add_post_emit(function ()
   local tmp = {}
   if lfs.attributes(getMudletHomeDir() .. "/svo/rift+inv/precachedata") then
     table.load(getMudletHomeDir() .. "/svo/rift+inv/precachedata", tmp)
-    update(rift.precachedata, tmp)
-    rift.precache = rift.precachedata[defs.mode]
+    svo.update(rift.precachedata, tmp)
+    rift.precache = rift.precachedata[svo.defs.mode]
 
     -- moss was removed, get rid of it
-    for mode, m in pairs(rift.precachedata) do
+    for _, m in pairs(rift.precachedata) do
       if m.moss then m.moss = nil end
     end
   end
   rift.update_riftlabel()
 end)
 
-signals.enablegmcp:connect(function()
+svo.signals.enablegmcp:connect(function()
   sendGMCP([[Core.Supports.Add ["IRE.Rift 1"] ]])
 end)
 
-signals.saveconfig:connect(function ()
+svo.signals.saveconfig:connect(function ()
   svo.tablesave(getMudletHomeDir() .. "/svo/rift+inv/rift", rift.riftcontents)
   svo.tablesave(getMudletHomeDir() .. "/svo/rift+inv/inv", rift.invcontents)
   svo.tablesave(getMudletHomeDir() .. "/svo/rift+inv/precachedata", rift.precachedata)
@@ -1009,5 +1012,5 @@ end)
 
 
 sk.checkaeony()
-signals.aeony:emit()
+svo.signals.aeony:emit()
 
