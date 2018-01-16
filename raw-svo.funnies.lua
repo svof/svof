@@ -6,29 +6,30 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
+local life = svo.life
 life.hellotrigs = {}
 
 life.hellodata = {
   ["Dusk has overtaken the light in Achaea."] = function ()
-    local t = {"Good evening.", "Good evening, " .. sys.charname..".", "Hello!"}
-    echof(t[math.random(1, #t)])
+    local t = {"Good evening.", "Good evening, " .. svo.sys.charname..".", "Hello!"}
+    svo.echof(t[math.random(1, #t)])
   end,
   ["It is dusk in Achaea."] = function ()
-    local t = {"Good evening.", "Good evening, " .. sys.charname..".", "Hello!"}
-    echof(t[math.random(1, #t)])
+    local t = {"Good evening.", "Good evening, " .. svo.sys.charname..".", "Hello!"}
+    svo.echof(t[math.random(1, #t)])
   end,
 
   ["It is deep night in Achaea, before midnight."] = function ()
     local t = {"*yawn*. Hi.", "Ello. It's a lovely night tonight.", "What a night. Look at the stars!"}
-    echof(t[math.random(1, #t)])
+    svo.echof(t[math.random(1, #t)])
   end,
   ["It is early morning in Achaea."] = function ()
-    local t = {"*yawn*. Morning!", "Gooood morning, " .. sys.charname .. "!", "Hello!", "Morning!"}
-    echof(t[math.random(1, #t)])
+    local t = {"*yawn*. Morning!", "Gooood morning, " .. svo.sys.charname .. "!", "Hello!", "Morning!"}
+    svo.echof(t[math.random(1, #t)])
   end,
   ["It is early afternoon in Achaea."] = function ()
-    local t = {"Good afternoon.", "Good afternoon, " .. sys.charname .. ".", "Hello!", "hi!"}
-    echof(t[math.random(1, #t)])
+    local t = {"Good afternoon.", "Good afternoon, " .. svo.sys.charname .. ".", "Hello!", "hi!"}
+    svo.echof(t[math.random(1, #t)])
   end,
 }
 
@@ -42,7 +43,7 @@ life.hellodata["The sun has awakened from its long slumber. It is dawn."] = life
 life.hellodata["The sun sits at its apex. It is exactly noon."] = life.hellodata["It is early afternoon in Achaea."]
 life.hellodata["You think that it is currently day-time up above."] = life.hellodata["It is early afternoon in Achaea."]
 
-protips = {
+svo.protips = {
   "You can do 'vconfig warningtype right' to have the instakill warnings be less spammy",
   "You can toggle sbites and stabs to ignore bites or doublestabs with only one venom from Serpents",
   "You can toggle 'tsc' to toggle command overriding or denying in aeon or retardation. The autotsc will also automatically toggle this for you",
@@ -103,7 +104,7 @@ protips = {
   "You can use svo.concatand(mytable) to bring all the items together in a list, with a proper 'and' at the end",
   "You can use svo.deleteLineP() to completely gag the line and the prompt coming after it",
   "'vshow herbstat' shows what Svof thinks of your herb inventory and updates real-time!",
-  "You can do \"vlua svo.protips\" to see all of the protips",
+  "You can do \"vlua svo.protips\" to see all of the svo.protips",
   "The extra Svof's in the Package Manager are OK - those are the addons",
   [[When you're scripting, you can make Svof do an action for you in the proper way via the svo.doaction("<action>", "<balance>") function - for example svo.doaction("healmana", "sip") will properly sip mana or mentality, depending on the users settings and what they actually have]],
   [[vconfig lag 4 - for those times when you're on a hawaiian mountainside catching DSL wifi through a rain catchment tank during a heavy jungle rain]],
@@ -138,27 +139,27 @@ protips = {
   "Svof comes with some scripting examples of the API built-in - take a look at Svof's scripts folder",
 }
 if svo.haveskillset('spirituality') then
-  protips[#protips+1] = "You can do 'fx' or 'fxx' to fix up your angel (if you have Angels in Vision)"
+  svo.protips[#svo.protips+1] = "You can do 'fx' or 'fxx' to fix up your angel (if you have Angels in Vision)"
 end
 if svo.haveskillset('elementalism') then
-  protips[#protips+1] = "'rfl' toggles self-reflect mode"
+  svo.protips[#svo.protips+1] = "'rfl' toggles self-reflect mode"
 end
 if svo.haveskillset('devotion') then
-  protips[#protips+1] = "The vconfig bloodswornoff <health %> feature of Svof will automatically unlink you from Bloodswon if you call below that health amount"
+  svo.protips[#svo.protips+1] = "The vconfig bloodswornoff <health %> feature of Svof will automatically unlink you from Bloodswon if you call below that health amount"
 end
 
-lifep.sayhello = function()
+svo.lifep.sayhello = function()
   for _, id in ipairs(life.hellotrigs) do
     killTrigger(tostring(id))
   end
   life.hellotrigs = nil
-  deleteAllP()
+  svo.deleteAllP()
 
   for pattern, func in pairs(life.hellodata) do
     if line:find(pattern) then
-      tempTimer(.1, function () func() showprompt() end)
+      tempTimer(.1, function () func() svo.showprompt() end)
 
-      tempTimer(math.random(2,5), function () math.randomseed(os.time()) echof("protip: ".. protips[math.random(1, #protips)]..".") showprompt() end)
+      tempTimer(math.random(2,5), function () math.randomseed(os.time()) svo.echof("protip: ".. svo.protips[math.random(1, #svo.protips)]..".") svo.showprompt() end)
       break
     end
   end
@@ -167,14 +168,14 @@ end
 life.sayhello = function ()
 
   tempTimer(math.random(2, 7), function ()
-    if conf.paused then echof("Hey!") return end
+    if svo.conf.paused then svo.echof("Hey!") return end
 
     life.hellotrigs = {}
-    for pattern, func in pairs(life.hellodata) do
+    for pattern, _ in pairs(life.hellodata) do
       life.hellotrigs[#life.hellotrigs+1] = (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.lifep.sayhello()')
     end
     send("time raw", false)
   end)
 end
-signals.charname:connect(life.sayhello)
-signals.gmcpcharname:connect(life.sayhello)
+svo.signals.charname:connect(life.sayhello)
+svo.signals.gmcpcharname:connect(life.sayhello)
