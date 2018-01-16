@@ -131,6 +131,9 @@ svo.vm               = {}
 svo.cn               = {}
 svo.cnrl             = {}
 svo.bals             = {}
+-- table to keep original functions for when
+-- we override Mudlet defaults
+svo.ofs = {}
 svo.actions          = pl.OrderedMap()
 
 svo.reset            = {}

@@ -6,7 +6,12 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-pl.dir.makepath(getMudletHomeDir() .. "/svo/defup+keepup")
+local sys, affs, defdefup, defkeepup, signals = svo.sys, svo.affs, svo.defdefup, svo.defkeepup, svo.signals
+local conf, sk, me, defs, defc = svo.conf, svo.sk, svo.me, svo.defs, svo.defc
+local defences, rift = svo.defences, svo.rift
+local actions, lifevision = svo.actions, svo.lifevision
+
+svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/defup+keepup")
 
 --[[ a small dictionary to know which defences belong to which skillset ]]
 defences.def_types = {}
@@ -18,7 +23,7 @@ defences.defup_timer = createStopWatch()
 function defences.gettime(defence, max)
   if not defc[defence] then return "" end
 
-  local time = max-math.ceil(getStopWatchTime(dict[defence].stopwatch)/max)
+  local time = max-math.ceil(getStopWatchTime(svo.dict[defence].stopwatch)/max)
   if time < 0 then return "" else
     return time.."m"
   end
@@ -36,15 +41,16 @@ end
 -- custom def types like channels
 defences.custom_types = {}
 
-defences.nodef_list = phpTable()
+defences.nodef_list = svo.phpTable()
 
 -- set an initial mode to something, as it always needs to be a valid mode
-defs.mode = "basic"
+svo.defs.mode = "basic"
 
 -- defc = current defs
 
 -- specialskip: if this function returns true, that defence will be ignored for defup
-svo.defs_data = pl.OrderedMap {}
+svo.defs_data = svo.pl.OrderedMap {}
+local defs_data = svo.defs_data
   defs_data:set("softfocus", { type = "general",
     mana = "lots",
     def = "You have softened the focus of your eyes.",
@@ -159,10 +165,10 @@ end
     off = {"You cease to concentrate on hypersight.", "You are already not concentrating on hypersight."}})
   defs_data:set("parry", { nodef = true,
     ondef = function ()
-      local t = sps.parry_currently
+      local t = svo.sps.parry_currently
       for limb, _ in pairs(t) do t[limb] = false end
       t[matches[2]] = true
-      check_sp_satisfied()
+      svo.check_sp_satisfied()
 
       return "("..matches[2]..")"
     end,
@@ -179,8 +185,8 @@ end
       return (not sys.enabledgmcp) or not (gmcp.Room and gmcp.Room.Info.exits[conf.blockingdir])
     end,
     ondef = function ()
-      dict.block.physical.blockingdir = sk.anytoshort(matches[2])
-      return "("..dict.block.physical.blockingdir..")"
+      svo.dict.block.physical.blockingdir = sk.anytoshort(matches[2])
+      return "("..svo.dict.block.physical.blockingdir..")"
     end,
     defr = [[^You are blocking the exit (.+)\.$]],
     off = {"You stop blocking.", "You were not blocking.", "You cease blocking the exit.", "You begin to flap your wings powerfully, and rise quickly up into the firmament."},
@@ -194,19 +200,19 @@ end
     onenable = function (mode, newdef, whereto, echoback)
       if svo["def"..whereto][mode].meditate then
         svo["def"..whereto][mode].meditate = false
-        if echoback then echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
       if svo["def"..whereto][mode].dilation then
         svo["def"..whereto][mode].dilation = false
-        if echoback then echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
       if svo["def"..whereto][mode].flame then
         svo["def"..whereto][mode].flame = false
-        if echoback then echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
       if svo["def"..whereto][mode].lyre then
         svo["def"..whereto][mode].lyre = false
-        if echoback then echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
 
       return true
@@ -225,10 +231,10 @@ end
     off = "You cease your clinging behaviour and release the tree.",
     def = {"You are clinging tightly to the trees.", "You are clinging tightly to a ship's rigging."}})
   defs_data:set("selfishness", { type = "general", def = "You are feeling quite selfish.",
-    onenable = function (mode, newdef, whereto, echoback)
+    onenable = function ()
       if conf.serverside and svo.serverignore.selfishness then
         svo.serverignore.selfishness = nil
-        echof("Setting Selfishness to be handled by Svof - serverside can't auto-generosity.")
+        svo.echof("Setting Selfishness to be handled by Svof - serverside can't auto-generosity.")
       end
 
       return true
@@ -273,7 +279,7 @@ end
   defs_data:set("deathsight", { type = "general",
     def = "Your mind has been attuned to the realm of Death.",
     on = {"Your mind is already attuned to the realm of Death.", "You shut your eyes and concentrate on the Soulrealms. A moment later, you feel inextricably linked with the realm of Death."},
-    onr = "^A miasma of darkness passes over your eyes and you feel a link to the realm of Death,? form in your mind\.$",
+    onr = "^A miasma of darkness passes over your eyes and you feel a link to the realm of Death,? form in your mind\\.$",
     off = {"You relax your link with the realm of Death.", "You are not linked with the realm of Death."}})
   defs_data:set("mindseye", { type = "general",
     on = {"Touching the mindseye tattoo, your senses are suddenly heightened.", "You already possess the mindseye defence."},
@@ -283,15 +289,15 @@ end
     onenable = function (mode, newdef, whereto, echoback)
       if svo["def"..whereto][mode].meditate then
         svo["def"..whereto][mode].meditate = false
-        if echoback then echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
       if svo["def"..whereto][mode].breath then
         svo["def"..whereto][mode].breath = false
-        if echoback then echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
       if svo["def"..whereto][mode].dilation then
         svo["def"..whereto][mode].dilation = false
-        if echoback then echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
 
       return true
@@ -319,19 +325,19 @@ end
     onenable = function (mode, newdef, whereto, echoback)
       if svo["def"..whereto][mode].breath then
         svo["def"..whereto][mode].breath = false
-        if echoback then echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
       if svo["def"..whereto][mode].dilation then
         svo["def"..whereto][mode].dilation = false
-        if echoback then echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed dilation from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
       if svo["def"..whereto][mode].flame then
         svo["def"..whereto][mode].flame = false
-        if echoback then echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
       if svo["def"..whereto][mode].lyre then
         svo["def"..whereto][mode].lyre = false
-        if echoback then echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
 
       return true
@@ -403,7 +409,7 @@ if svo.haveskillset('necromancy') then
     availableindragon = true,
     def = "Your mind has been attuned to the realm of Death.",
     on = {"Your mind is already attuned to the realm of Death.", "You shut your eyes and concentrate on the Soulrealms. A moment later, you feel inextricably linked with realm of Death."},
-    onr = "^A miasma of darkness passes over your eyes and you feel a link to the realm of Death,? form in your mind\.$",
+    onr = "^A miasma of darkness passes over your eyes and you feel a link to the realm of Death,? form in your mind\\.$",
     off = {"You relax your link with the realm of Death.", "You are not linked with the realm of Death."}})
   defs_data:set("soulcage", { type = "necromancy",
     staysindragon = true,
@@ -538,7 +544,7 @@ if svo.haveskillset('twoarts') then
       for _, stance in ipairs{"thyr", "mir", "arash", "sanya", "doya"} do
         if stance ~= newdef and svo["def"..whereto][mode][stance] then
           svo["def"..whereto][mode][stance] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", stance, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", stance, whereto, newdef) end
         end
       end
 
@@ -555,7 +561,7 @@ if svo.haveskillset('twoarts') then
       for _, stance in ipairs{"thyr", "mir", "arash", "sanya", "doya"} do
         if stance ~= newdef and svo["def"..whereto][mode][stance] then
           svo["def"..whereto][mode][stance] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", stance, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", stance, whereto, newdef) end
         end
       end
 
@@ -572,7 +578,7 @@ if svo.haveskillset('twoarts') then
       for _, stance in ipairs{"thyr", "mir", "arash", "sanya", "doya"} do
         if stance ~= newdef and svo["def"..whereto][mode][stance] then
           svo["def"..whereto][mode][stance] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", stance, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", stance, whereto, newdef) end
         end
       end
 
@@ -589,7 +595,7 @@ if svo.haveskillset('twoarts') then
       for _, stance in ipairs{"thyr", "mir", "arash", "sanya", "doya"} do
         if stance ~= newdef and svo["def"..whereto][mode][stance] then
           svo["def"..whereto][mode][stance] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", stance, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", stance, whereto, newdef) end
         end
       end
 
@@ -606,7 +612,7 @@ if svo.haveskillset('twoarts') then
       for _, stance in ipairs{"thyr", "mir", "arash", "sanya", "doya"} do
         if stance ~= newdef and svo["def"..whereto][mode][stance] then
           svo["def"..whereto][mode][stance] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", stance, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", stance, whereto, newdef) end
         end
       end
 
@@ -643,7 +649,7 @@ if svo.haveskillset('subterfuge') then
     onenable = function (mode, newdef, whereto, echoback)
       if svo["def"..whereto][mode].eavesdrop then
         svo["def"..whereto][mode].eavesdrop = false
-        if echoback then echof("Removed eavesdrop from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed eavesdrop from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
 
       return true
@@ -692,7 +698,7 @@ if svo.haveskillset('swashbuckling') then
     onenable = function (mode, newdef, whereto, echoback)
       if svo["def"..whereto][mode].heartsfury then
         svo["def"..whereto][mode].heartsfury = false
-        if echoback then echof("Removed heartsfury from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed heartsfury from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
 
       return true
@@ -729,7 +735,7 @@ if svo.haveskillset('swashbuckling') then
     onenable = function (mode, newdef, whereto, echoback)
       if svo["def"..whereto][mode].drunkensailor then
         svo["def"..whereto][mode].drunkensailor = false
-        if echoback then echof("Removed drunkensailor from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed drunkensailor from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
 
       return true
@@ -879,7 +885,7 @@ if svo.haveskillset('metamorphosis') then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "hydra"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -898,15 +904,15 @@ if svo.haveskillset('metamorphosis') then
     onenable = function (mode, newdef, whereto, echoback)
       if svo["def"..whereto][mode].meditate then
         svo["def"..whereto][mode].meditate = false
-        if echoback then echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
       if svo["def"..whereto][mode].breath then
         svo["def"..whereto][mode].breath = false
-        if echoback then echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
       if svo["def"..whereto][mode].flame then
         svo["def"..whereto][mode].flame = false
-        if echoback then echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
 
       return true
@@ -929,7 +935,7 @@ if svo.haveskillset('metamorphosis') then
     onenable = function (mode, newdef, whereto, echoback)
       if svo["def"..whereto][mode].flame then
         svo["def"..whereto][mode].flame = false
-        if echoback then echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
 
       return true
@@ -972,7 +978,7 @@ if svo.haveskillset('metamorphosis') then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -984,7 +990,7 @@ if svo.haveskillset('metamorphosis') then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -996,7 +1002,7 @@ if svo.haveskillset('metamorphosis') then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1008,7 +1014,7 @@ if svo.haveskillset('metamorphosis') then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1020,7 +1026,7 @@ if svo.haveskillset('metamorphosis') then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1032,7 +1038,7 @@ if svo.haveskillset('metamorphosis') then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1044,7 +1050,7 @@ if svo.haveskillset('metamorphosis') then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1056,7 +1062,7 @@ if svo.haveskillset('metamorphosis') then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1068,7 +1074,7 @@ if svo.haveskillset('metamorphosis') then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1080,7 +1086,7 @@ if svo.haveskillset('metamorphosis') then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1092,7 +1098,7 @@ if svo.haveskillset('metamorphosis') then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1105,7 +1111,7 @@ if svo.me.class == "Sentinel" then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1118,7 +1124,7 @@ end
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1130,7 +1136,7 @@ end
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1142,7 +1148,7 @@ end
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1154,7 +1160,7 @@ end
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1167,7 +1173,7 @@ if svo.me.class == "Sentinel" then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1180,7 +1186,7 @@ end
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1192,7 +1198,7 @@ end
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1204,7 +1210,7 @@ end
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1217,7 +1223,7 @@ if svo.me.class == "Druid" then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1230,7 +1236,7 @@ if svo.me.class == "Druid" then
       for _, morph in ipairs{"squirrel", "wildcat", "wolf", "turtle", "jackdaw", "cheetah", "owl", "hyena", "condor", "gopher", "sloth", "basilisk", "bear", "nightingale", "elephant", "wolverine", "jaguar", "eagle", "gorilla", "icewyrm", "wyvern", "hydra", "flame"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1691,7 +1697,7 @@ if svo.haveskillset('kaido') then
     onenable = function (mode, newdef, whereto, echoback)
       if not svo["def"..whereto][mode].regeneration then
         svo["def"..whereto][mode].heartsfury = true
-        if echoback then echof("Added regeneration to %s, it's necessary for %s.", whereto, newdef) end
+        if echoback then svo.echof("Added regeneration to %s, it's necessary for %s.", whereto, newdef) end
       end
 
       return true
@@ -1768,7 +1774,7 @@ if svo.haveskillset('shikudo') then
     for _, shikudo_form in ipairs(shikudo_forms) do
       if shikudo_form ~= newdef and svo["def"..whereto][mode][shikudo_form] then
         svo["def"..whereto][mode][shikudo_form] = false
-        if echoback then echof(fail_string, shikudo_form, whereto, newdef) end
+        if echoback then svo.echof(fail_string, shikudo_form, whereto, newdef) end
       end
     end
 
@@ -1827,10 +1833,10 @@ end
 if svo.haveskillset('tekura') then
   defs_data:set("guarding", { nodef = true,
     ondef = function ()
-      local t = sps.parry_currently
+      local t = svo.sps.parry_currently
       for limb, _ in pairs(t) do t[limb] = false end
       t[matches[2]] = true
-      check_sp_satisfied()
+      svo.check_sp_satisfied()
 
       return "("..matches[2]..")"
     end,
@@ -1858,7 +1864,7 @@ if svo.haveskillset('tekura') then
       for _, morph in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1873,7 +1879,7 @@ if svo.haveskillset('tekura') then
       for _, morph in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1888,7 +1894,7 @@ if svo.haveskillset('tekura') then
       for _, morph in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1903,7 +1909,7 @@ if svo.haveskillset('tekura') then
       for _, morph in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1918,7 +1924,7 @@ if svo.haveskillset('tekura') then
       for _, morph in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1933,7 +1939,7 @@ if svo.haveskillset('tekura') then
       for _, morph in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -1948,7 +1954,7 @@ if svo.haveskillset('tekura') then
       for _, morph in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
         if morph ~= newdef and svo["def"..whereto][mode][morph] then
           svo["def"..whereto][mode][morph] = false
-          if echoback then echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
 
@@ -2069,15 +2075,15 @@ if svo.haveskillset('groves') then
     onenable = function (mode, newdef, whereto, echoback)
       if svo["def"..whereto][mode].meditate then
         svo["def"..whereto][mode].meditate = false
-        if echoback then echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
       if svo["def"..whereto][mode].breath then
         svo["def"..whereto][mode].breath = false
-        if echoback then echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
       if svo["def"..whereto][mode].flame then
         svo["def"..whereto][mode].flame = false
-        if echoback then echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed flame from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
 
       return true
@@ -2247,15 +2253,15 @@ if svo.haveskillset('aeonics') then
     onenable = function (mode, newdef, whereto, echoback)
       if svo["def"..whereto][mode].breath then
         svo["def"..whereto][mode].breath = false
-        if echoback then echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed breath from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
       if svo["def"..whereto][mode].meditate then
         svo["def"..whereto][mode].meditate = false
-        if echoback then echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed meditate from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
       if svo["def"..whereto][mode].lyre then
         svo["def"..whereto][mode].lyre = false
-        if echoback then echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
+        if echoback then svo.echof("Removed lyre from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
       end
 
       return true
@@ -2272,7 +2278,7 @@ if svo.haveskillset('terminus') then
     def = "You are enhancing your durability against denizens."
   })
   defs_data:set("ukhia", { type = "terminus",
-    defr = "^You are focus?sing on quelling your bleeding more efficiently\.$"
+    defr = "^You are focus?sing on quelling your bleeding more efficiently\\.$"
   })
   defs_data:set("qamad", { type = "terminus",
     def = "You have a will of iron."
@@ -2293,13 +2299,13 @@ end
 
 do
   function defences.enablelifevision()
-    if dict.lifevision then return end
+    if svo.dict.lifevision then return end
 
     defs_data:set("lifevision", { type = "general",
       on = {"You narrow your eyes and blink rapidly, enhancing your vision to seek out sources of lifeforce in others.", "You already possess enhanced vision."},
       def = "You have enhanced your vision to be able to see traces of lifeforce."})
 
-    dict.lifevision = {
+    svo.dict.lifevision = {
       physical = {
         name = "lifevision_physical",
         balance = "physical",
@@ -2310,7 +2316,7 @@ do
         def = true,
 
         isadvisable = function ()
-          return (not defc.lifevision and ((sys.deffing and defdefup[defs.mode].lifevision) or (conf.keepup and defkeepup[defs.mode].lifevision)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.prone) or false
+          return (not defc.lifevision and ((sys.deffing and defdefup[defs.mode].lifevision) or (conf.keepup and defkeepup[defs.mode].lifevision)) and not svo.codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.prone) or false
         end,
 
         oncompleted = function ()
@@ -2324,7 +2330,7 @@ do
       }
     }
 
-    for mode,modet in pairs(defdefup) do
+    for mode, _ in pairs(defdefup) do
       defdefup[mode].lifevision = defdefup[mode].lifevision or false
       defkeepup[mode].lifevision = defkeepup[mode].lifevision or false
     end
@@ -2337,8 +2343,8 @@ do
     local v = defs_data.lifevision;
     local k = "lifevision";
     if v.on and type(v.on) == "table" then
-      for n,m in ipairs(v.on) do
-        (tempExactMatchTrigger or tempTrigger)(m, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
+      for _,pattern in ipairs(v.on) do
+        (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
       end
     elseif v.on then
       (tempExactMatchTrigger or tempTrigger)(v.on, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
@@ -2361,10 +2367,10 @@ do
       defences.lost(k)
     end
 
-    -- create a snapshot of the before state for all balances, since dict_setup might mess with any
+    -- create a snapshot of the before state for all balances, since svo.dict_setup might mess with any
     local beforestate = sk.getbeforestateprios()
 
-    dict_setup()
+    svo.dict_setup()
     svo.dict_validate()
 
     -- notify any prio diffs
@@ -2373,7 +2379,7 @@ do
 
     signals.dragonform:emit()
 
-    echof("Have lifevision mask - enabled it for defup/keepup.")
+    svo.echof("Have lifevision mask - enabled it for defup/keepup.")
   end
 
   function defences.checklifevision()
@@ -2406,14 +2412,14 @@ end
 
 do
   function defences.enableshroud()
-    if dict.shroud then return end
+    if svo.dict.shroud then return end
 
     defs_data:set("shroud", { type = "general",
       on = {"You draw your Shadowcloak about you and blend into your surroundings.", "You draw a Shadowcloak about you and blend into your surroundings.", "You draw a cloak of the Blood Maiden about you and blend into your surroundings."},
       def = "Your actions are cloaked in secrecy.",
       off = {"Your shroud dissipates and you return to the realm of perception.", "The flash of light illuminates you - you have been discovered!"}})
 
-    dict.shroud = {
+    svo.dict.shroud = {
       physical = {
         name = "shroud_physical",
         balance = "physical",
@@ -2424,7 +2430,7 @@ do
         def = true,
 
         isadvisable = function ()
-          return (not defc.shroud and ((sys.deffing and defdefup[defs.mode].shroud) or (conf.keepup and defkeepup[defs.mode].shroud)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.prone) or false
+          return (not defc.shroud and ((sys.deffing and defdefup[defs.mode].shroud) or (conf.keepup and defkeepup[defs.mode].shroud)) and not svo.codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.prone) or false
         end,
 
         oncompleted = function ()
@@ -2438,7 +2444,7 @@ do
       }
     }
 
-    for mode,modet in pairs(defdefup) do
+    for mode,_ in pairs(defdefup) do
       defdefup[mode].shroud = defdefup[mode].shroud or false
       defkeepup[mode].shroud = defkeepup[mode].shroud or false
     end
@@ -2472,11 +2478,11 @@ do
       defences.lost(k)
     end
 
-    -- create a snapshot of the before state for all balances, since dict_setup might mess with any
+    -- create a snapshot of the before state for all balances, since svo.dict_setup might mess with any
     local beforestate = sk.getbeforestateprios()
 
-    dict_setup()
-    dict_validate()
+    svo.dict_setup()
+    svo.dict_validate()
 
     -- notify any prio diffs
     local afterstate = sk.getafterstateprios()
@@ -2484,8 +2490,8 @@ do
 
     signals.dragonform:emit()
 
-    echofn("Have Shadowcloak - enabled it for defup/keepup (")
-    setFgColor(unpack(getDefaultColorNums))
+    svo.echofn("Have Shadowcloak - enabled it for defup/keepup (")
+    setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
     echoLink("disable", [[svo.conf.haveshroud = nil; svo.echof("Alright - won't add shroud to defup/keepup next time.") raiseEvent("svo config changed", "haveshroud")]], 'Click to disable shroud from getting added to defup/keepup next time', true)
     setUnderline(false)
@@ -2518,7 +2524,7 @@ do
 end
 
 -- check for both shadowcloak and mask of lifevision
-function detect_lifevision()
+function svo.detect_lifevision()
   sendGMCP("Char.Items.Inv")
   send("")
 end
@@ -2544,7 +2550,7 @@ end
 
 defences.complete_def = function(tbl)
   local name, def, defr, tooltip = tbl.name, tbl.def, tbl.defr, tbl.tooltip
-  local name = name:lower()
+  name = name:lower()
 
   if not defs_data[name] then return end
 
@@ -2554,7 +2560,7 @@ defences.complete_def = function(tbl)
 end
 
 sk.showwaitingdefup = function()
-  return concatand(select(2, sk.have_defup_defs()))
+  return svo.concatand(select(2, sk.have_defup_defs()))
 end
 
 -- def setup & def-related controllers
@@ -2569,7 +2575,7 @@ defences.print_def_list = function ()
     local defmode = t[i]
 
     if defmode ~= defs.mode then
-      setFgColor(unpack(getDefaultColorNums))
+      setFgColor(unpack(svo.getDefaultColorNums))
       setUnderline(true) echoLink(defmode, 'svo.defs.switch("'..defmode..'", true)', 'Switch to '..defmode..' defences mode', true) setUnderline(false)
     else
       fg"a_darkgreen"
@@ -2581,9 +2587,9 @@ defences.print_def_list = function ()
     end
 
     echo" ("
-    fg"orange_red"setUnderline(true) echoLink('-', 'svo.delete_defmode("'..defmode..'", true)', 'Delete '..defmode.. ' defences mode', true) setUnderline(false) setFgColor(unpack(getDefaultColorNums))
+    fg"orange_red"setUnderline(true) echoLink('-', 'svo.delete_defmode("'..defmode..'", true)', 'Delete '..defmode.. ' defences mode', true) setUnderline(false) setFgColor(unpack(svo.getDefaultColorNums))
     echo", "
-    fg"a_darkgreen" setUnderline(true) echoLink("c", 'printCmdLine("vcopy defmode '..defmode..' TO ")', "Copy "..defmode.." into a new or existing defence mode", true) setUnderline(false) setFgColor(unpack(getDefaultColorNums))
+    fg"a_darkgreen" setUnderline(true) echoLink("c", 'printCmdLine("vcopy defmode '..defmode..' TO ")', "Copy "..defmode.." into a new or existing defence mode", true) setUnderline(false) setFgColor(unpack(svo.getDefaultColorNums))
     echo")"
 
     if i == #t then echo " " else
@@ -2594,7 +2600,7 @@ defences.print_def_list = function ()
   -- then an add the (+ add new), if we can
   if printCmdLine then
     echo("(")
-    fg"a_darkgreen" setUnderline(true) echoLink("+ add new", 'printCmdLine("vcreate defmode ")', "Create a new defences mode", true) setUnderline(false) setFgColor(unpack(getDefaultColorNums))
+    fg"a_darkgreen" setUnderline(true) echoLink("+ add new", 'printCmdLine("vcreate defmode ")', "Create a new defences mode", true) setUnderline(false) setFgColor(unpack(svo.getDefaultColorNums))
     echo(")")
   end
 
@@ -2602,32 +2608,32 @@ defences.print_def_list = function ()
 end
 
 defences.get_def_list = function ()
-  local s = oneconcat(defdefup)
+  local s = svo.oneconcat(defdefup)
 
   if sys.deffing then
-    s = string.gsub(s, "("..defs.mode..")", "(currently deffing) <0,250,0>%1" .. getDefaultColor())
+    s = string.gsub(s, "("..defs.mode..")", "(currently deffing) <0,250,0>%1" .. svo.getDefaultColor())
   else
-    s = string.gsub(s, "("..defs.mode..")", "<0,250,0>%1" .. getDefaultColor())
+    s = string.gsub(s, "("..defs.mode..")", "<0,250,0>%1" .. svo.getDefaultColor())
   end
   return s
 end
 
 -- nodefup is useful for relogging in, where you don't do defup, but you want keepup to be active
 function defs.switch(which, echoback, nodefup)
-  local sendf; if echoback then sendf = echof else sendf = errorf end
+  local sendf; if echoback then sendf = svo.echof else sendf = svo.errorf end
 
   if not which then
     sendf("To which mode do you want to switch to?") return
   end
 
   if not defdefup[which] then
-    sendf("%s defence mode doesn't exist - the list is: %s", which, oneconcat(defdefup)) return
+    sendf("%s defence mode doesn't exist - the list is: %s", which, svo.oneconcat(defdefup)) return
   end
 
   defs.mode = which
 
   if not nodefup and echoback then
-    echof("Deffing up in %s defence mode.", defs.mode)
+    svo.echof("Deffing up in %s defence mode.", defs.mode)
   end
 
   rift.precache = rift.precachedata[defs.mode]
@@ -2638,32 +2644,32 @@ function defs.switch(which, echoback, nodefup)
   raiseEvent("svo switched defence mode", defs.mode)
   if not nodefup then raiseEvent("svo started defup", defs.mode) end
 
-  make_gnomes_work()
-  if not nodefup then defupfinish() end
+  svo.make_gnomes_work()
+  if not nodefup then svo.defupfinish() end
 end
 
 function defs.quietswitch(which, echoback)
-  local sendf; if echoback then sendf = echof else sendf = errorf end
+  local sendf; if echoback then sendf = svo.echof else sendf = svo.errorf end
 
   if not which then
     sendf("To which mode do you want to switch to?") return
   end
 
   if not defdefup[which] then
-    sendf("%s defence mode doesn't exist - the list is: %s", which, oneconcat(defdefup)) return
+    sendf("%s defence mode doesn't exist - the list is: %s", which, svo.oneconcat(defdefup)) return
   end
 
   defs.mode = which
 
   if echoback then
-    echof("Deffing up in %s defence mode.", defs.mode)
+    svo.echof("Deffing up in %s defence mode.", defs.mode)
   end
 
   rift.precache = rift.precachedata[defs.mode]
   sk.fix_affs_and_defs()
 end
 
-defupfinish = function ()
+svo.defupfinish = function ()
   if not sys.deffing then return end
 
   -- serverside doesn't support defup and Svof doesn't emulate it at the moment
@@ -2679,26 +2685,26 @@ defupfinish = function ()
     end
 
     echo"\n"
-    echof("Ready for combat! (%s defences mode, took %s)", defs.mode, (timestring == "0.0s" and "no time" or timestring))
+    svo.echof("Ready for combat! (%s defences mode, took %s)", defs.mode, (timestring == "0.0s" and "no time" or timestring))
     raiseEvent("svo done defup", defs.mode)
     signals.donedefup:emit()
-    showprompt()
+    svo.showprompt()
   end
 end
 
-defupcancel = function(echoback)
+svo.defupcancel = function(echoback)
   if sys.deffing then
     sys.deffing = false
-    if echoback then echof("Cancelled defup.") end
+    if echoback then svo.echof("Cancelled defup.") end
   else
-    if echoback then echof("Weren't doing defup already.") end
+    if echoback then svo.echof("Weren't doing defup already.") end
   end
 
   stopStopWatch(defences.defup_timer)
 end
 
 function defs.keepup(which, status, mode, echoback, reshow)
-  local sendf; if echoback then sendf = echof else sendf = sendf end
+  local sendf; if echoback then sendf = svo.echof else sendf = svo.errorf end
 
   if not mode then mode = defs.mode end
 
@@ -2714,7 +2720,7 @@ function defs.keepup(which, status, mode, echoback, reshow)
 
   -- if we were given an explicit option...
   if type(status) == "string" then
-    status = convert_string(status)
+    status = svo.convert_string(status)
   end
 
   -- if it's invalid or wasn't given to us, toggle
@@ -2725,7 +2731,7 @@ function defs.keepup(which, status, mode, echoback, reshow)
 
   if status == true and defs_data[which].onenable then
     local s,m = defs_data[which].onenable(mode, which, "keepup", echoback)
-    if not s then echof(m) return end
+    if not s then svo.echof(m) return end
   end
 
   defkeepup[mode][which] = status
@@ -2733,26 +2739,26 @@ function defs.keepup(which, status, mode, echoback, reshow)
 
   if echoback then
     if defkeepup[mode][which] then
-      echof("Will keep %s up%s.", which, (ignore[which] and ' (however it\'s on ignore right now)' or ''))
+      svo.echof("Will keep %s up%s.", which, (svo.ignore[which] and ' (however it\'s on ignore right now)' or ''))
     else
-      echof("Won't keep %s up anymore.", which)
+      svo.echof("Won't keep %s up anymore.", which)
     end
 
     if sys.deffing then
-      echof("You're still in defup however, and keepup is after defup. Still waiting on: %s to be put up.", sk.showwaitingdefup())
+      svo.echof("You're still in defup however, and keepup is after defup. Still waiting on: %s to be put up.", sk.showwaitingdefup())
     elseif not conf.keepup and status == true then
-      echof("Keepup needs to be on, though.")
+      svo.echof("Keepup needs to be on, though.")
     end
   end
 
   sk.fix_affs_and_defs()
-  make_gnomes_work()
+  svo.make_gnomes_work()
 
-  if reshow then show_keepup() echo"\n" end
+  if reshow then svo.show_keepup() echo"\n" end
 end
 
 function defs.defup(which, status, mode, echoback, reshow)
-  local sendf; if echoback then sendf = echof else sendf = errorf end
+  local sendf; if echoback then sendf = svo.echof else sendf = svo.errorf end
 
   if not mode then mode = defs.mode end
 
@@ -2768,7 +2774,7 @@ function defs.defup(which, status, mode, echoback, reshow)
 
   -- if we were given an explicit option...
   if type(status) == "string" then
-    status = convert_string(status)
+    status = svo.convert_string(status)
   end
 
   -- if it's invalid or wasn't given to us, toggle
@@ -2779,7 +2785,7 @@ function defs.defup(which, status, mode, echoback, reshow)
 
   if status == true and defs_data[which].onenable then
     local s,m = defs_data[which].onenable(mode, which, "defup", echoback)
-    if not s then echof(m) return end
+    if not s then svo.echof(m) return end
   end
 
   defdefup[mode][which] = status
@@ -2787,21 +2793,20 @@ function defs.defup(which, status, mode, echoback, reshow)
 
   if echoback then
     if defdefup[mode][which] then
-      echof("Will put %s up in %s mode.", which, mode)
+      svo.echof("Will put %s up in %s mode.", which, mode)
     else
-      echof("Won't put %s up anymore in %s mode.", which, mode)
+      svo.echof("Won't put %s up anymore in %s mode.", which, mode)
     end
   end
 
-  if reshow then show_defup() echo"\n" end
+  if reshow then svo.show_defup() echo"\n" end
 
   sk.fix_affs_and_defs()
-  make_gnomes_work()
+  svo.make_gnomes_work()
 end
 
-
-function create_defmode(which, echoback)
-  local sendf; if echoback then sendf = echof end
+function svo.create_defmode(which, echoback)
+  local sendf; if echoback then sendf = svo.echof end
 
   svo.assert(which, "Which defences mode do you want to create?", sendf)
   svo.assert(not (defdefup[which] and defkeepup[which]), which .. " defences mode already exists.", sendf)
@@ -2809,7 +2814,7 @@ function create_defmode(which, echoback)
   defdefup[which] = {}
   defkeepup[which] = {}
 
-  for k,v in defs_data:iter() do
+  for k,_ in defs_data:iter() do
     defdefup[which][k] = false
     defkeepup[which][k] = false
   end
@@ -2825,21 +2830,21 @@ function create_defmode(which, echoback)
   end
 end
 
-function copy_defmode(which, newname, echoback)
-  local sendf; if echoback then sendf = echof end
+function svo.copy_defmode(which, newname, echoback)
+  local sendf; if echoback then sendf = svo.echof end
 
   svo.assert(which, "Which defences mode do you want to copy?", sendf)
   svo.assert(defdefup[which] and defkeepup[which], which .. " defences mode doesn't exist.", sendf)
   svo.assert(newname, "To which name do you want to rename " .. which .. " to?", sendf)
 
-  defdefup[newname] = deepcopy(defdefup[which])
-  defkeepup[newname] = deepcopy(defkeepup[which])
-  rift.precachedata[newname] = deepcopy(rift.precachedata[which])
-  if echoback then echof("Copied %s to %s.", which, newname) end
+  defdefup[newname] = svo.deepcopy(defdefup[which])
+  defkeepup[newname] = svo.deepcopy(defkeepup[which])
+  rift.precachedata[newname] = svo.deepcopy(rift.precachedata[which])
+  if echoback then svo.echof("Copied %s to %s.", which, newname) end
 end
 
-function rename_defmode(which, newmode, echoback)
-  local sendf; if echoback then sendf = echof end
+function svo.rename_defmode(which, newmode, echoback)
+  local sendf; if echoback then sendf = svo.echof end
 
   svo.assert(which, "Which defences mode do you want to rename?", sendf)
   svo.assert(defdefup[which] and defkeepup[which], which .. " defences mode doesn't exist.", sendf)
@@ -2848,18 +2853,18 @@ function rename_defmode(which, newmode, echoback)
   if defs.mode == which then
     defs.mode = newmode
     if echoback then
-      echof("Changed your current defence mode to %s", defs.mode)
+      svo.echof("Changed your current defence mode to %s", defs.mode)
     end
   end
 
   defdefup[newmode], defdefup[which] = defdefup[which], defdefup[newmode]
   defkeepup[newmode], defkeepup[which] = defkeepup[which], defkeepup[newmode]
-  rift.precachedata[which], rift.precachedata[newmode] = rift.precachedata[newname], rift.precachedata[which]
-  if echoback then echof("Renamed %s to %s.", which, newmode) end
+  rift.precachedata[which], rift.precachedata[newmode] = rift.precachedata[newmode], rift.precachedata[which]
+  if echoback then svo.echof("Renamed %s to %s.", which, newmode) end
 end
 
-function delete_defmode(which, echoback)
-  local sendf; if echoback then sendf = echof end
+function svo.delete_defmode(which, echoback)
+  local sendf; if echoback then sendf = svo.echof end
 
   svo.assert(which, "Which defences mode do you want to delete?", sendf)
   svo.assert(defdefup[which] and defkeepup[which], which .. " defences mode doesn't exist.", sendf)
@@ -2868,14 +2873,12 @@ function delete_defmode(which, echoback)
   defdefup[which], defkeepup[which], rift.precachedata[which] = nil, nil, nil
 
   if math.random(1, 10) == 1 then
-    echof("Deleted '%s' defences mode.", which)
+    svo.echof("Deleted '%s' defences mode.", which)
   else
-    echof("Deleted '%s' defences mode. Forever!", which) end
+    svo.echof("Deleted '%s' defences mode. Forever!", which) end
 end
 
-
-
-function defload()
+function svo.defload()
   local defdefup_t, defkeepup_t = {}, {}
   local defup_path, keepup_path = getMudletHomeDir() .. "/svo/defup+keepup/defup", getMudletHomeDir() .. "/svo/defup+keepup/keepup"
 
@@ -2945,11 +2948,10 @@ function sk.desanitize(self)
 end
 
 signals.systemstart:connect(function ()
-  local defdefup_t, defkeepup_t = {}, {}
-  defdefup_t, defkeepup_t = defload()
+  local defdefup_t, defkeepup_t = svo.defload()
 
   -- create blank defup modes
-  for k,v in pairs(defdefup_t) do
+  for k,_ in pairs(defdefup_t) do
     defdefup[k] = defdefup[k] or {}
     defkeepup[k] = defkeepup[k] or {}
   end
@@ -2963,24 +2965,24 @@ signals.systemstart:connect(function ()
     end
 
     if defdata.onr and type(defdata.onr) == "table" then
-      for n,m in ipairs(defdata.onr) do
-        tempRegexTrigger(m, 'svo.defs.got_' .. sk.sanitize(defname) .. '()')
+      for _, pattern in ipairs(defdata.onr) do
+        tempRegexTrigger(pattern, 'svo.defs.got_' .. sk.sanitize(defname) .. '()')
       end
     elseif defdata.onr then
       tempRegexTrigger(defdata.onr, 'svo.defs.got_' .. sk.sanitize(defname) .. '()')
     end
 
     if defdata.on and type(defdata.on) == "table" then
-      for n,m in ipairs(defdata.on) do
-        (tempExactMatchTrigger or tempTrigger)(m, 'svo.defs.got_' .. sk.sanitize(defname) .. '()')
+      for _, pattern in ipairs(defdata.on) do
+        (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.defs.got_' .. sk.sanitize(defname) .. '()')
       end
     elseif defdata.on then
       (tempExactMatchTrigger or tempTrigger)(defdata.on, 'svo.defs.got_' .. sk.sanitize(defname) .. '()')
     end
 
     if defdata.on_only and type(defdata.on_only) == "table" then
-      for n,m in ipairs(defdata.on_only) do
-        (tempExactMatchTrigger or tempTrigger)(m, 'svo.defs.gotonly_' .. sk.sanitize(defname) .. '()')
+      for _,pattern in ipairs(defdata.on_only) do
+        (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.defs.gotonly_' .. sk.sanitize(defname) .. '()')
       end
     elseif defdata.on_only then
       (tempExactMatchTrigger or tempTrigger)(defdata.on_only, 'svo.defs.gotonly_' .. sk.sanitize(defname) .. '()')
@@ -2991,16 +2993,16 @@ signals.systemstart:connect(function ()
     if defdata.offr and type(defdata.offr) == "string" then
         tempRegexTrigger(defdata.offr, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
     elseif defdata.offr then
-      for n,m in ipairs(defdata.offr) do
-        tempRegexTrigger(m, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
+      for _,pattern in ipairs(defdata.offr) do
+        tempRegexTrigger(pattern, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
       end
     end
 
     if defdata.off and type(defdata.off) == "string" then
         (tempExactMatchTrigger or tempTrigger)(defdata.off, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
     elseif defdata.off then
-      for n,m in ipairs(defdata.off) do
-        (tempExactMatchTrigger or tempTrigger)(m, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
+      for _,pattern in ipairs(defdata.off) do
+        (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
       end
     end
 
@@ -3008,45 +3010,45 @@ signals.systemstart:connect(function ()
     if defdata.offs and type(defdata.offs) == "string" then
         tempTrigger(defdata.offs, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
     elseif defdata.offs then
-      for n,m in ipairs(defdata.offs) do
-        tempTrigger(m, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
+      for _,pattern in ipairs(defdata.offs) do
+        tempTrigger(pattern, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
       end
     end
 
     if defdata.off_free then (tempExactMatchTrigger or tempTrigger)(defdata.off_free, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()') end
 
     if defdata.def and type(defdata.def) == "table" then
-      for n,m in ipairs(defdata.def) do
-        (tempExactMatchTrigger or tempTrigger)(m, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
+      for _,pattern in ipairs(defdata.def) do
+        (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
       end
     elseif defdata.def then
       (tempExactMatchTrigger or tempTrigger)(defdata.def, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
     end
 
     if defdata.defr and type(defdata.defr) == "table" then
-      for n,m in ipairs(defdata.defr) do
-        tempRegexTrigger(m, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
+      for _,pattern in ipairs(defdata.defr) do
+        tempRegexTrigger(pattern, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
       end
     elseif defdata.defr then
       tempRegexTrigger(defdata.defr, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
     end
 
     if not defs["got_" .. defname] then
-      if dict[defname] then
+      if svo.dict[defname] then
         -- rely on the fact that defs only have 1 item in them
         local bal
-        for kk,vv in pairs(dict[defname]) do if type(vv) == "table" and kk ~= "gone" then bal = kk break end end
+        for kk,vv in pairs(svo.dict[defname]) do if type(vv) == "table" and kk ~= "gone" then bal = kk break end end
         if bal then
           defs["got_" .. defname] = function (force)
             if svo.haveskillset('metamorphosis') then
-              if defdata.custom_def_type or usingbal(bal) then checkaction(dict[defname][bal], true)
-              else checkaction(dict[defname][bal], force) end
+              if defdata.custom_def_type or svo.usingbal(bal) then svo.checkaction(svo.dict[defname][bal], true)
+              else svo.checkaction(svo.dict[defname][bal], force) end
             else
-              if not defdata.custom_def_type then checkaction(dict[defname][bal], force) else checkaction(dict[defname][bal], true) end
+              if not defdata.custom_def_type then svo.checkaction(svo.dict[defname][bal], force) else svo.checkaction(svo.dict[defname][bal], true) end
             end
             if actions[defname .. "_" .. bal] then
               if force then --bypass lifevision for gmcp/other "force" situations
-                actionfinished(actions[defname .. "_" .. bal].p)
+                svo.actionfinished(actions[defname .. "_" .. bal].p)
               else
                 lifevision.add(actions[defname .. "_" .. bal].p)
               end
@@ -3063,14 +3065,14 @@ signals.systemstart:connect(function ()
     end
 
     if defdata.on_only and not defs["gotonly_" .. defname] then
-      if dict[defname] then
+      if svo.dict[defname] then
         -- rely on the fact that defs only have 1 item in them
         local bal
-        for kk,vv in pairs(dict[defname]) do
+        for kk,vv in pairs(svo.dict[defname]) do
           if type(vv) == "table" and kk ~= "gone" then bal = kk break end
         end
         defs["gotonly_" .. defname] = function ()
-          checkaction(dict[defname][bal], false)
+          svo.checkaction(svo.dict[defname][bal], false)
           if actions[defname .. "_" .. bal] then
             lifevision.add(actions[defname .. "_" .. bal].p)
           end
@@ -3083,9 +3085,9 @@ signals.systemstart:connect(function ()
     end
 
     if not defs["lost_" .. sk.sanitize(defname)] then
-      if dict[defname] and dict[defname].gone then
+      if svo.dict[defname] and svo.dict[defname].gone then
         defs["lost_" .. defname] = function ()
-          checkaction(dict[defname].gone, true)
+          svo.checkaction(svo.dict[defname].gone, true)
           if actions[defname .. "_gone"] then
             lifevision.add(actions[defname .. "_gone"].p)
           end
@@ -3145,7 +3147,7 @@ signals.systemstart:connect(function ()
 
     -- create blanks for defup and keepup
     if not defdata.nodef then
-      for mode,modet in pairs(defdefup) do
+      for mode, _ in pairs(defdefup) do
         defdefup[mode][defname] = false
         defkeepup[mode][defname] = false
       end
@@ -3156,10 +3158,10 @@ signals.systemstart:connect(function ()
       sk.ignored_defences[defdata.type].t[defname] = sk.ignored_defences[defdata.type].t[defname] or false
       sk.ignored_defences_map[defname] = defdata.type
     end
-  end -- end of the whole defences dict iteration
+  end -- end of the whole defences svo.dict iteration
 
-  update(defdefup, defdefup_t)
-  update(defkeepup, defkeepup_t)
+  svo.update(defdefup, defdefup_t)
+  svo.update(defkeepup, defkeepup_t)
 
   -- remove skillsets from ignorelist that we don't have, for people that change
   for skillset, _ in pairs(sk.ignored_defences) do
@@ -3170,7 +3172,7 @@ signals.systemstart:connect(function ()
 
 
   -- simple way of removing all and adding per line
-  for name, data in pairs(defences.custom_types) do
+  for name, _ in pairs(defences.custom_types) do
     defs["def"..name.."start"] = function()
       for def, _ in pairs(defences.custom_types[name]) do
         defences.lost(def)
@@ -3181,7 +3183,7 @@ end)
 
 -- customize for gag
 defs["lost_shield"] = function ()
-  checkaction(dict.shield.gone, true)
+  svo.checkaction(svo.dict.shield.gone, true)
   if actions["shield_gone"] then
     lifevision.add(actions["shield_gone"].p)
   end
@@ -3198,21 +3200,21 @@ end
 -- customize for riding_physical
 defs["lost_riding"] = function()
   -- force it so unwilling dismount is counted
-  checkaction(dict.riding.physical, true)
+  svo.checkaction(svo.dict.riding.physical, true)
   if actions["riding_physical"] then
     lifevision.add(actions["riding_physical"].p, "dismount")
   end
 end
 
 defs["block_failed"] = function()
-  checkaction(dict.block.physical, true)
+  svo.checkaction(svo.dict.block.physical, true)
   if actions["block_physical"] then
     lifevision.add(actions["block_physical"].p, "failed")
   end
 end
 
 function defs.defprompt()
-  show_current_defs()
+  svo.show_current_defs()
 
   -- see if we need to show any additional defences
   local function check_additionals()
@@ -3222,7 +3224,7 @@ function defs.defprompt()
   end
 
   if check_additionals() then
-    echof("Additional defences:")
+    svo.echof("Additional defences:")
     local count = 1
     for def, value in defences.nodef_list:pairs() do
       if defs_data[def] and (defs_data[def].nodef or (defc.dragonform and defs_data[def].type ~= "dragoncraft" and defs_data[def].type ~= "general")) then
@@ -3236,29 +3238,29 @@ function defs.defprompt()
         count = count + 1
       end
     end
-    count = 1 echo("\n")
+    echo("\n")
 
   end
-  defences.nodef_list = phpTable()
+  defences.nodef_list = svo.phpTable()
   defences.def_def_list = {}
-  showprompt()
+  svo.showprompt()
 end
 
 function defs.defstart()
-  checkaction(dict.defcheck.physical)
+  svo.checkaction(svo.dict.defcheck.physical)
   if actions.defcheck_physical then
     deleteLine()
 
     -- reset parry, as no parry won't show a line
-    local t = sps.parry_currently
+    local t = svo.sps.parry_currently
     for limb, _ in pairs(t) do t[limb] = false end
-    check_sp_satisfied()
+    svo.check_sp_satisfied()
   end
 end
 
 -- last line of 'def' that shows your count
 function defs.defline()
-  checkaction(dict.defcheck.physical)
+  svo.checkaction(svo.dict.defcheck.physical)
   if actions.defcheck_physical then
     deleteLine()
     tempLineTrigger(1, 1, 'selectString(line, 1) replace""')
@@ -3269,29 +3271,29 @@ end
 svo.process_defs = function ()
   local addback = {}
 
-  for defn, deft in pairs(defc) do
+  for defname, _ in pairs(defc) do
     -- clear ones we don't have
-    if defc[defn] and not defences.def_def_list[defn] and not (defs_data[defn] and (defs_data[defn].invisibledef or defs_data[defn].custom_def_type)) then
-      if dict[defn] and dict[defn].gone then
-        checkaction(dict[defn].gone, true)
-        lifevision.add(actions[defn.."_gone"].p)
+    if defc[defname] and not defences.def_def_list[defname] and not (defs_data[defname] and (defs_data[defname].invisibledef or defs_data[defname].custom_def_type)) then
+      if svo.dict[defname] and svo.dict[defname].gone then
+        svo.checkaction(svo.dict[defname].gone, true)
+        lifevision.add(actions[defname.."_gone"].p)
       else
-        defences.lost(defn)
+        defences.lost(defname)
       end
-    elseif defc[defn] and defences.def_def_list[defn] and not (defs_data[defn] and defs_data[defn].custom_def_type) then -- if we do have it, remove from def list
-      addback[defn] = defences.def_def_list[defn]
-      defences.def_def_list[defn] = nil
+    elseif defc[defname] and defences.def_def_list[defname] and not (defs_data[defname] and defs_data[defname].custom_def_type) then -- if we do have it, remove from def list
+      addback[defname] = defences.def_def_list[defname]
+      defences.def_def_list[defname] = nil
     end
   end
 
   -- add left over ones
-  for j,k in pairs(defences.def_def_list) do
+  for defname,_ in pairs(defences.def_def_list) do
     local bal
-    for kk,vv in pairs(dict[j] or {}) do if type(vv) == "table" and kk ~= "gone" then bal = kk break end end
-    if bal and dict[j][bal].oncompleted then
-        dict[j][bal].oncompleted(true)
+    for kk,vv in pairs(svo.dict[defname] or {}) do if type(vv) == "table" and kk ~= "gone" then bal = kk break end end
+    if bal and svo.dict[defname][bal].oncompleted then
+        svo.dict[defname][bal].oncompleted(true)
     else
-      defences.got(j)
+      defences.got(defname)
     end
   end
 
@@ -3312,11 +3314,11 @@ local function show_defs(tbl, linkcommand, cmdname)
 
   local function show_em(skillset, what)
     if skillset and not sk.ignored_defences[skillset] then
-      if not skillset then echof("no fucking skillset! %s", debug.traceback()) end
-      echof("what, %s is not in ignored_defences: %s", skillset, pl.pretty.write(sk.ignored_defences))
+      if not skillset then svo.echof("no fucking skillset! %s", debug.traceback()) end
+      svo.echof("what, %s is not in ignored_defences: %s", skillset, svo.pl.pretty.write(sk.ignored_defences))
     end
-    if skillset and not sk.ignored_defences[skillset].status then echof("%s defences:", skillset:title()) end
-    for c,def in ipairs(what) do
+    if skillset and not sk.ignored_defences[skillset].status then svo.echof("%s defences:", skillset:title()) end
+    for _,def in ipairs(what) do
       local disabled = ((sk.ignored_defences[skillset] and sk.ignored_defences[skillset].status) and true or (sk.ignored_defences[sk.ignored_defences_map[def]].t[def]))
 
       if not disabled and not tbl[def] and not defences.nodef_list[def] then
@@ -3445,11 +3447,11 @@ local function show_defs(tbl, linkcommand, cmdname)
   _G.setUnderline = underline
 end
 
-function show_current_defs(window)
+function svo.show_current_defs(window)
   svo.echof(window or "main", "Your current defences (%d):", (function ()
     local count = 0
-    for k,v in pairs(defc) do if v then count = count + 1 end end
-    for k,v in defences.nodef_list:pairs() do
+    for _,v in pairs(defc) do if v then count = count + 1 end end
+    for _,v in defences.nodef_list:pairs() do
       if v then count = count + 1 end end
     return count
   end)())
@@ -3459,34 +3461,34 @@ function show_current_defs(window)
   else
     sk.echofwindow = window
     local olddecho, oldecho = decho, echo
-    decho, echo = ofs.windowdecho, ofs.windowecho
+    _G.decho, _G.echo = svo.ofs.windowdecho, svo.ofs.windowecho
 
     show_defs(defc)
 
-    decho, echo = olddecho, oldecho
+    _G.decho, _G.echo = olddecho, oldecho
   end
 end
 
-function show_defup()
+function svo.show_defup()
   svo.echof("%s defup defences (click to toggle):", defs.mode:title())
   show_defs(defdefup[defs.mode], "svo.defs.defup", "defup")
-  showprompt()
+  svo.showprompt()
 end
 
-function show_keepup()
+function svo.show_keepup()
   if not conf.serverside then
-    echof("%s keepup defences (click to toggle):", defs.mode:title())
+    svo.echof("%s keepup defences (click to toggle):", defs.mode:title())
   else
-    echofn("%s keepup defences (click to toggle) (", defs.mode:title())
+    svo.echofn("%s keepup defences (click to toggle) (", defs.mode:title())
 
-    setFgColor(unpack(getDefaultColorNums))
+    setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
     echoLink("view serverside keepup", [[send'CURING PRIORITY DEFENCE LIST']], "Click to view serverside's keepup list - which'll be the same as Svof's", true)
     setUnderline(false)
     echo(")\n")
   end
   show_defs(defkeepup[defs.mode], "svo.defs.keepup", "keepup")
-  showprompt()
+  svo.showprompt()
 end
 
 -- can't just check if we need and don't have, because some might have conflicts.
@@ -3499,11 +3501,11 @@ function sk.have_defup_defs()
      -- if we have to skip it
     and not ((deft.specialskip and deft.specialskip())
      -- or if it's ignored
-    or ignore[def]
+    or svo.ignore[def]
       -- or it's not a general or dragon defence and we're in dragon
     or (defc.dragonform and not (deft.type == "general" or deft.type == "dragoncraft"))) and not deft.nodef then
-      if dict[def] then
-        if dict[def].physical and not dict_balanceful_def[def] and not dict_balanceless_def[def] then
+      if svo.dict[def] then
+        if svo.dict[def].physical and not svo.dict_balanceful_def[def] and not svo.dict_balanceless_def[def] then
           waitingon[#waitingon+1] = string.format("%s (?)", def)
         else
           waitingon[#waitingon+1] = def
@@ -3517,8 +3519,8 @@ function sk.have_defup_defs()
   -- sort them according to aspriority
   table.sort(waitingon,
     function(a,b)
-      if dict[a] and dict[b] and dict[a].physical and dict[b].physical then
-        return dict[a].physical.aspriority > dict[b].physical.aspriority
+      if svo.dict[a] and svo.dict[b] and svo.dict[a].physical and svo.dict[b].physical then
+        return svo.dict[a].physical.aspriority > svo.dict[b].physical.aspriority
       end
     end)
 
@@ -3526,13 +3528,13 @@ function sk.have_defup_defs()
   else return true end
 end;
 
-function ignoreskill(skill, newstatus, echoback)
-  local skill = skill:lower()
+function svo.ignoreskill(skill, newstatus)
+  skill = skill:lower()
 
   -- first, check if this is a group we're disabling as a whole
   if sk.ignored_defences[skill] then
     sk.ignored_defences[skill].status = newstatus
-    showhidelist() return
+    svo.showhidelist() return
   end
 
   -- otherwise, loop through all skillsets, looking for the skill
@@ -3540,13 +3542,13 @@ function ignoreskill(skill, newstatus, echoback)
     for skills, _ in pairs(group.t) do
       if skills == skill then
         group.t[skill] = newstatus
-        showhidelist() return
+        svo.showhidelist() return
       end
     end
   end
 end
 
-function showhidelist()
+function svo.showhidelist()
   local enabled_c, disabled_c = "<242,218,218>", "<156,140,140>"
 
   -- adds in the link with a proper tooltip
@@ -3599,7 +3601,7 @@ function showhidelist()
     count = 1
   end
 
-  echof("Select which skillsets or skills to show in defence display lists:")
+  svo.echof("Select which skillsets or skills to show in defence display lists:")
   show_em("general", sk.ignored_defences.general)
 
   local function f()
@@ -3609,5 +3611,5 @@ function showhidelist()
   end
 
   local s,_ = pcall(f)
-  if not s then echof("Your Mudlet version doesn't seem to be new enough to display this; please update to latest (http://forums.mudlet.org/viewtopic.php?f=5&t=1874)") end
+  if not s then svo.echof("Your Mudlet version doesn't seem to be new enough to display this; please update to latest (http://forums.mudlet.org/viewtopic.php?f=5&t=1874)") end
 end

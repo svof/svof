@@ -212,7 +212,7 @@ function svo.showprompt()
   end
 end
 
-local ofs = {} -- original functions
+local ofs = svo.ofs
 ofs.origdecho = decho
 function ofs.windowdecho(text)
   if sk.echofwindow == 'main' then -- workaround for https://github.com/vadi2/mudlet-lua/issues/1
