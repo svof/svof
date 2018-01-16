@@ -6,7 +6,11 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-pl.dir.makepath(getMudletHomeDir() .. "/svo/config")
+local sys, affs, signals = svo.sys, svo.affs, svo.signals
+local me, sps, sp_config = svo.me, svo.sps, svo.sp_config
+local sp = svo.sp
+
+svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/config")
 
 -- check if we need to adjust parrying on any limbs or not
 function svo.check_sp_satisfied()
@@ -38,7 +42,7 @@ svo.sp_limbs = {
   ["right leg"] = true,
   ["left leg"] = true
 }
-
+local sp_limbs = svo.sp_limbs
 
 sps.sp_fillup = function ()
   local t = {}
@@ -66,8 +70,8 @@ sps.install = {
   {
     check = function () return #sp_config.priority == table.size(sp_limbs) end,
     act = function (step)
-      echof("Step %d - assign priorities to the limbs. Click on the following in the order of most important, or use the %s command:", step, green("vp nextprio <limb>"))
-      echo("  " .. oneconcat(sp_limbs))
+      svo.echof("Step %d - assign priorities to the limbs. Click on the following in the order of most important, or use the %s command:", step, svo.green("vp nextprio <limb>"))
+      echo("  " .. svo.oneconcat(sp_limbs))
           resetFormat()
           deselect()
       for name, _ in pairs(sp_limbs) do
@@ -106,7 +110,7 @@ sps.install = {
       end
 
 
-      echof("Step %d - assign a level above which parry should act for for each limb by right-clicking, or use the %s command:", step, green("vp parrylevel <limb> <amount, or 'none'>"))
+      svo.echof("Step %d - assign a level above which parry should act for for each limb by right-clicking, or use the %s command:", step, svo.green("vp parrylevel <limb> <amount, or 'none'>"))
       echo "  "
       for name, _ in pairs(sp_limbs) do
         echoPopup(name, makecodestrings(name), maketooltipstrings(name))
@@ -118,7 +122,7 @@ sps.install = {
   {
     check = function () return sp_config.parry ~= "" end,
     act = function (step)
-      echof("Step %d - decide what parry strategy to use when a limb is over the limit by clicking on it, or using the %s command:", step, green("vp parrystrat <strategy>"))
+      svo.echof("Step %d - decide what parry strategy to use when a limb is over the limit by clicking on it, or using the %s command:", step, svo.green("vp parrystrat <strategy>"))
       echo "  "
       for name, tooltip in pairs(sps.parry_options) do
         echoLink(name, 'svo.sp.setparry ("' .. name .. '", true)', tooltip)
@@ -140,7 +144,7 @@ sps.installnext = function()
   end
 
   sps.settingup = nil
-  echof("Parry setup done :)")
+  svo.echof("Parry setup done :)")
 end
 
 
@@ -153,19 +157,19 @@ end
 
 function sp.nextprio(limb, echoback)
   local sendf
-  if echoback then sendf = echof else sendf = errorf end
+  if echoback then sendf = svo.echof else sendf = svo.errorf end
   local prios = sp_config.priority
 
   if not sp_limbs[limb] then
-    sendf("Sorry, %s isn't a proper limb name. They are:\n  %s", limb, oneconcat(sp_limbs))
+    sendf("Sorry, %s isn't a proper limb name. They are:\n  %s", limb, svo.oneconcat(sp_limbs))
     return; end
 
-  if contains(prios, limb) then
+  if svo.contains(prios, limb) then
     sendf("%s is already in the list.", limb); return; end
 
   prios[#prios+1] = limb
   if echoback then
-    echof("%s added; current list: %s", limb, table.concat(prios, ", "))
+    svo.echof("%s added; current list: %s", limb, table.concat(prios, ", "))
   end
 
   if #prios == table.size(sp_limbs) then sps.installnext() end
@@ -173,7 +177,7 @@ end
 
 function sp.setparry(option, echoback)
   local sendf
-  if echoback then sendf = echof else sendf = errorf end
+  if echoback then sendf = svo.echof else sendf = svo.errorf end
 
   if not option then
     sendf("Possible options are:")
@@ -183,7 +187,7 @@ function sp.setparry(option, echoback)
       echo "   "
     end
     echo'\n'
-    showprompt()
+    svo.showprompt()
     return
   elseif not sps.parry_options[option] then
     sendf("Sorry, %s isn't a valid option for parry. They are:")
@@ -193,26 +197,26 @@ function sp.setparry(option, echoback)
       echo "   "
     end
     echo'\n'
-    showprompt()
+    svo.showprompt()
     return
   end
 
   sp_config.parry = option
   if echoback then
-    echof("Will use the %s strategy for parry.", sp_config.parry)
-    showprompt()
+    svo.echof("Will use the %s strategy for parry.", sp_config.parry)
+    svo.showprompt()
   end
 
-  sp_checksp()
+  svo.sp_checksp()
   sps.installnext()
 end
 
 function sp.setparrylevel(limb, amount, echoback)
   local sendf
-  if echoback then sendf = echof else sendf = errorf end
+  if echoback then sendf = svo.echof else sendf = svo.errorf end
 
   if not sp_limbs[limb] then
-    sendf("Sorry, %s isn't a proper limb name. They are:\n  %s", limb, oneconcat(sp_limbs))
+    sendf("Sorry, %s isn't a proper limb name. They are:\n  %s", limb, svo.oneconcat(sp_limbs))
     return; end
 
   if not tonumber(amount) and amount ~= false then
@@ -222,18 +226,18 @@ function sp.setparrylevel(limb, amount, echoback)
   sp_config.parry_actionlevel[limb] = tonumber(amount)
 
   if echoback then
-    echof("Set the %s parry action level to %s", limb, amount and tostring(amount) or "none")
+    svo.echof("Set the %s parry action level to %s", limb, amount and tostring(amount) or "none")
   end
 
-  for limb,_ in pairs(sp_limbs) do
-    if sp_config.parry_actionlevel[limb] == nil then return end
+  for limbname,_ in pairs(sp_limbs) do
+    if sp_config.parry_actionlevel[limbname] == nil then return end
   end
   sps.installnext()
 end
 
-function sp_setparry(what, echoback)
+function svo.sp_setparry(what, echoback)
   local sendf
-  if echoback then sendf = echof else sendf = errorf end
+  if echoback then sendf = svo.echof else sendf = svo.errorf end
 
   local t = {
     h = "head",
@@ -252,20 +256,20 @@ function sp_setparry(what, echoback)
       else sp_config.parry_shouldbe[limb] = false end
   end
 
-  sp_checksp()
-  make_gnomes_work()
+  svo.sp_checksp()
+  svo.make_gnomes_work()
 end
 
 sp.show = function ()
-  echof("Parry report:")
+  svo.echof("Parry report:")
 
-  --[[echof("Action levels:")
+  --[[svo.echof("Action levels:")
   for limb, level in pairs(sp_config.parry_actionlevel) do
-    echo"  " echof("%s: parry %s", limb, tostring(level))
+    echo"  " svo.echof("%s: parry %s", limb, tostring(level))
   end]]
 
-  echof("Limb priorities: %s", table.concat(sp_config.priority, ", "))
-  echof("Parry strategy: %s (currently parrying: %s)", type(sp_config.parry) == "string" and sp_config.parry or "custom function",
+  svo.echof("Limb priorities: %s", table.concat(sp_config.priority, ", "))
+  svo.echof("Parry strategy: %s (currently parrying: %s)", type(sp_config.parry) == "string" and sp_config.parry or "custom function",
 
   (function ()
     local parrying_list = {}
@@ -276,7 +280,7 @@ sp.show = function ()
     return table.concat(parrying_list, ", ") end)())
 end
 
-sp_checksp = function ()
+svo.sp_checksp = function ()
   -- check parry
   -- see if any priories have been set for strategies that require them
   local prios, priosset = sp_config.priority, true
@@ -288,7 +292,7 @@ sp_checksp = function ()
     local alreadyset
     for i = 1, #prios do
       local limb = prios[i]
-      if not alreadyset and type(sp_config.parry_actionlevel[limb]) == "number" and (affs["mangled"..limb] or (limb == head and (affs.serioustrauma or affs.mildtrauma)) or (limb == "torso" and (affs.mildconcussion or affs.seriousconcussion))) then
+      if not alreadyset and type(sp_config.parry_actionlevel[limb]) == "number" and (affs["mangled"..limb] or (limb == "head" and (affs.serioustrauma or affs.mildtrauma)) or (limb == "torso" and (affs.mildconcussion or affs.seriousconcussion))) then
         sp_config.parry_shouldbe[limb] = true
         alreadyset = true
       else
@@ -351,32 +355,32 @@ sp_checksp = function ()
 
   elseif type(sp_config.parry) == "function" then
     local s,m = pcall(sp_config.parry)
-    if not s then echof("Your custom parry function had a problem:\n  %s", m) end
+    if not s then svo.echof("Your custom parry function had a problem:\n  %s", m) end
   end
 
   -- check if we need to adjust our parry
-  check_sp_satisfied()
+  svo.check_sp_satisfied()
 
-  signals.after_lifevision_processing:block(sp_checksp)
+  signals.after_lifevision_processing:block(svo.sp_checksp)
 end
 
 -- check custom parry functions whenever we gain or lose an aff
--- implemented in another function and not sp_checksp, because of https://github.com/katcipis/luanotify/issues/24
+-- implemented in another function and not svo.sp_checksp, because of https://github.com/katcipis/luanotify/issues/24
 sps.checkcustomparry = function()
   if type(sp_config.parry) == "function" then
     sp_config.parry()
 
     -- check if we need to adjust our parry
-    check_sp_satisfied()
+    svo.check_sp_satisfied()
   end
 end
 signals.svogotaff:connect(sps.checkcustomparry)
 signals.svolostaff:connect(sps.checkcustomparry)
 -- public API
-checkcustomparry = sps.checkcustomparry
+svo.checkcustomparry = sps.checkcustomparry
 
-signals.after_lifevision_processing:connect(sp_checksp)
-signals.after_lifevision_processing:block(sp_checksp)
+signals.after_lifevision_processing:connect(svo.sp_checksp)
+signals.after_lifevision_processing:block(svo.sp_checksp)
 
 sps.something_to_parry = function ()
   for _, shouldparry in pairs(sp_config.parry_shouldbe) do
@@ -391,11 +395,11 @@ signals.saveconfig:connect(function () svo.tablesave(getMudletHomeDir() .. "/svo
 local sp_config_path = getMudletHomeDir() .. "/svo/config/sp_config"
 
 if lfs.attributes(sp_config_path) then
-  local ok = pcall(table.load,sp_config_path, sp_config)
+  local ok, msg = pcall(table.load,sp_config_path, sp_config)
   if not ok then
     os.remove(sp_config_path)
     tempTimer(10, function()
-      echof("Your parry config file was corrupted - I've deleted it so the system can load other stuff OK. You'll need to set the parry options again with vconfig sp. (%q)", msg)
+      svo.echof("Your parry config file was corrupted - I've deleted it so the system can load other stuff OK. You'll need to set the parry options again with vconfig sp. (%q)", msg)
     end)
   end
 end
