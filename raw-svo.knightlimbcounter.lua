@@ -6,13 +6,13 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-kl_version = "1.0"
+svo.kl_version = "1.0"
+local conf, sk = svo.conf, svo.sk
 
-kl_list = {}
+svo.kl_list = {}
 local limbs = {"head", "torso", "rightarm", "leftarm", "rightleg", "leftleg"}
 local hittable = {}
-local kl_last_endurance
-kl_break_at = 10
+svo.kl_break_at = 10
 
 enableTrigger("svo Knight limbcounter")
 enableAlias("svo Knight limbcounter")
@@ -25,7 +25,7 @@ local function get_other_prepped(t)
   end
 
   if #s == 0 then return ""
-  else return string.format("Their %s %s now prepped.", concatand(s), (#s == 1 and "is" or "are")) end
+  else return string.format("Their %s %s now prepped.", svo.concatand(s), (#s == 1 and "is" or "are")) end
 end
 
 function svo.kl_ignore()
@@ -38,19 +38,19 @@ function sk.kl_checklimbcounter()
   if conf.aillusion and not sk.sawqueueing() then
     -- bals is not updated until the prompt, so bals. atm has the old value
 
-    if not affs.blackout and not (kl_had_balance and not newbals.balance) then
-      ignore_illusion("This doesn't look like an attack from you, it's fake!")
+    if not svo.affs.blackout and not (svo.kl_had_balance and not svo.newbals.balance) then
+      svo.ignore_illusion("This doesn't look like an attack from you, it's fake!")
 
       -- turn things off
       hittable = {}
       disableTrigger("svokl Don't register")
-      signals.after_prompt_processing:block(sk.kl_checklimbcounter)
+      svo.signals.after_prompt_processing:block(sk.kl_checklimbcounter)
       return
     end
   end
 
   -- make the announces work with a singleprompt
-  local echof = itf
+  local echof = svo.itf
   moveCursor(0, getLineNumber())
 
   -- we'll only ever have one name here so far. Actually add up the hits here and store them
@@ -61,30 +61,30 @@ function sk.kl_checklimbcounter()
     local dmg
     where, dmg = next(t[i])
     -- bad capture? don't break
-    if kl_list[who][where] then
-      kl_list[who][where] = kl_list[who][where] + dmg
+    if svo.kl_list[who][where] then
+      svo.kl_list[who][where] = svo.kl_list[who][where] + dmg
       raiseEvent("svo limbcounter hit", who, where)
       if not table.contains(limbshit, where) then limbshit[#limbshit+1] = where end
     end
   end
 
   if not where then
-    echof("Failed to connect.%s\n", get_other_prepped(kl_list[who], ""))
+    echof("Failed to connect.%s\n", get_other_prepped(svo.kl_list[who], ""))
   else
     local text = {}
     for _, where in pairs(limbshit) do
-      if kl_list[who][where] >= kl_list[who].kl_break_at then
+      if svo.kl_list[who][where] >= svo.kl_list[who].kl_break_at then
         raiseEvent("svo limb broke", who, where)
         text[#text+1] = string.format("%s's %s broke.", who, where)
-        kl_list[who][where] = 0
-      elseif kl_list[who][where] >= kl_list[who].kl_break_at - conf.limbprep then
+        svo.kl_list[who][where] = 0
+      elseif svo.kl_list[who][where] >= svo.kl_list[who].kl_break_at - conf.limbprep then
         -- text[#text+1] = string.format("%s's %s is prepped.", who, where)
       else
-        text[#text+1] = string.format("%s's %s is now at %s/%s.", who, where, kl_list[who][where], kl_list[who].kl_break_at)
+        text[#text+1] = string.format("%s's %s is now at %s/%s.", who, where, svo.kl_list[who][where], svo.kl_list[who].kl_break_at)
       end
     end
 
-    text[#text+1] = get_other_prepped(kl_list[who])
+    text[#text+1] = get_other_prepped(svo.kl_list[who])
 
     echof(table.concat(text, ' ').."\n")
   end
@@ -92,32 +92,32 @@ function sk.kl_checklimbcounter()
   -- turn things off
   hittable = {}
   disableTrigger("svokl Don't register")
-  signals.after_prompt_processing:block(sk.kl_checklimbcounter)
+  svo.signals.after_prompt_processing:block(sk.kl_checklimbcounter)
 end
 
-function kl_hit(who, where, howmuch)
-  kl_had_balance = bals.balance
+function svo.kl_hit(who, where, howmuch)
+  svo.kl_had_balance = svo.bals.balance
 
-  kl_list[who] = kl_list[who] or {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0, kl_break_at = kl_break_at}
-  local where = where:gsub(" ", "")
-  lasthit = who
+  svo.kl_list[who] = svo.kl_list[who] or {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0, kl_break_at = svo.kl_break_at}
+  where = where:gsub(" ", "")
+  svo.lasthit = who
 
   hittable[who] = hittable[who] or {}
   hittable[who][#hittable[who] + 1] = {[where] = (howmuch and howmuch or 1)}
   -- sk.onprompt_beforeaction_add("knight limbcounter", sk.kl_checklimbcounter)
-  signals.after_prompt_processing:unblock(sk.kl_checklimbcounter)
+  svo.signals.after_prompt_processing:unblock(sk.kl_checklimbcounter)
   enableTrigger("svokl Don't register")
-  kl_last_endurance = stats.currentendurance
+  svo.kl_last_endurance = svo.stats.currentendurance
 end
 
-signals.after_prompt_processing:connect(sk.kl_checklimbcounter)
-signals.after_prompt_processing:block(sk.kl_checklimbcounter)
+svo.signals.after_prompt_processing:connect(sk.kl_checklimbcounter)
+svo.signals.after_prompt_processing:block(sk.kl_checklimbcounter)
 
-function kl_reset(whom, quiet)
-  if defc.dragonform then return end
+function svo.kl_reset(whom, quiet)
+  if svo.defc.dragonform then return end
 
   if whom then whom = string.title(whom) end
-  local echof = echof
+  local echof = svo.echof
   if quiet then echof = function() end end
 
   local t = {
@@ -130,21 +130,21 @@ function kl_reset(whom, quiet)
   }
 
   if whom == "All" then
-    kl_list = {}
+    svo.kl_list = {}
     echof("Reset everyone's limb status.")
-  elseif not whom and lasthit then
-    kl_list[lasthit] = {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0, kl_break_at = kl_break_at}
-    echof("Reset %s's limb status.", lasthit)
+  elseif not whom and svo.lasthit then
+    svo.kl_list[svo.lasthit] = {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0, kl_break_at = svo.kl_break_at}
+    echof("Reset %s's limb status.", svo.lasthit)
   elseif t[whom:lower()] then
-    if not lasthit or not kl_list[lasthit] then
+    if not svo.lasthit or not svo.kl_list[svo.lasthit] then
       echof("Not keeping track of anyone yet to reset their limb.")
     else
-      kl_list[lasthit][t[whom:lower()]] = 0
-      echof("Reset %s %s's status.", lasthit, t[whom:lower()])
+      svo.kl_list[svo.lasthit][t[whom:lower()]] = 0
+      echof("Reset %s %s's status.", svo.lasthit, t[whom:lower()])
     end
   elseif whom then
-    if kl_list[whom] then
-      kl_list[whom] = nil
+    if svo.kl_list[whom] then
+      svo.kl_list[whom] = nil
       echof("Reset %s's limb status.", whom)
     else
       echof("Weren't keeping track of %s anyway.", whom)
@@ -155,21 +155,21 @@ function kl_reset(whom, quiet)
   raiseEvent("svo limbcounter reset")
 end
 
-function kl_show()
-  if not next(kl_list) then echof("knight limbcounter: Not keeping track of anyone yet."); return end
+function svo.kl_show()
+  if not next(svo.kl_list) then svo.echof("knight limbcounter: Not keeping track of anyone yet."); return end
 
-  setFgColor(unpack(getDefaultColorNums))
-  for person, limbt in pairs(kl_list) do
+  setFgColor(unpack(svo.getDefaultColorNums))
+  for person, limbt in pairs(svo.kl_list) do
     echo("---"..person.." ") fg("a_darkgrey")
     echoLink("(reset)", 'svo.kl_reset"'..person..'"', "Reset limb status for "..person, true)
-    setFgColor(unpack(getDefaultColorNums))
+    setFgColor(unpack(svo.getDefaultColorNums))
     echo(string.format(" -- prep at %s -- break at %s --", limbt.kl_break_at - conf.limbprep, limbt.kl_break_at))
     echo(string.rep("-", (52-#person-#tostring(limbt.kl_break_at - conf.limbprep)-#tostring(limbt.kl_break_at))))
     echo"\n|"
     for i = 1, #limbs do
       if limbt[limbs[i]] >= limbt.kl_break_at - conf.limbprep then fg("green") end
       echo(string.format("%14s", (limbt[limbs[i]] >= limbt.kl_break_at - conf.limbprep and limbs[i].." prep" or limbs[i].. " "..limbt[limbs[i]])))
-      if limbt[limbs[i]] >= limbt.kl_break_at - conf.limbprep then setFgColor(unpack(getDefaultColorNums)) end
+      if limbt[limbs[i]] >= limbt.kl_break_at - conf.limbprep then setFgColor(unpack(svo.getDefaultColorNums)) end
       echo"|"
     end
     echo"\n"
@@ -177,71 +177,71 @@ function kl_show()
   echo(string.rep("-", 91))
 end
 
-function kl_sethitsneeded(person, hits)
-  if not tonumber(hits) then echof("At how many hits do you want to set the breaking point at?") return end
+function svo.kl_sethitsneeded(person, hits)
+  if not tonumber(hits) then svo.echof("At how many hits do you want to set the breaking point at?") return end
 
-  kl_break_at = hits
+  svo.kl_break_at = hits
 
   if person then
     person = string.title(person)
-    kl_list[person] = kl_list[person] or {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0}
+    svo.kl_list[person] = svo.kl_list[person] or {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0}
 
-    kl_list[person].kl_break_at = hits
-    echof("Set the breaking point for %s at %s.", person, hits)
+    svo.kl_list[person].kl_break_at = hits
+    svo.echof("Set the breaking point for %s at %s.", person, hits)
 
     for i = 1, #limbs do
-      if kl_list[person][limbs[i]] > hits then
-        raiseEvent("svo limb broke", kl_list[person], limbs[i])
-        kl_list[person][limbs[i]] = 0
-        echof("Reset %s's %s limb (it's over hits needed).", kl_list[person], limbs[i])
-        raiseEvent("svo limb reset", kl_list[person], limbs[i])
+      if svo.kl_list[person][limbs[i]] > hits then
+        raiseEvent("svo limb broke", svo.kl_list[person], limbs[i])
+        svo.kl_list[person][limbs[i]] = 0
+        svo.echof("Reset %s's %s limb (it's over hits needed).", svo.kl_list[person], limbs[i])
+        raiseEvent("svo limb reset", svo.kl_list[person], limbs[i])
       end
     end
-  elseif lasthit and kl_list[lasthit] then
-    kl_list[lasthit].kl_break_at = kl_break_at
-    echof("Set the breaking point for %s at %s.", lasthit, kl_break_at)
+  elseif svo.lasthit and svo.kl_list[svo.lasthit] then
+    svo.kl_list[svo.lasthit].kl_break_at = svo.kl_break_at
+    svo.echof("Set the breaking point for %s at %s.", svo.lasthit, svo.kl_break_at)
 
     for i = 1, #limbs do
-      if kl_list[lasthit][limbs[i]] > hits then
-        raiseEvent("svo limb broke", kl_list[person], limbs[i])
-        kl_list[person][limbs[i]] = 0
-        echof("Reset %s's %s limb (it's over hits needed).", kl_list[lasthit], limbs[i])
-        raiseEvent("svo limb reset", kl_list[person], limbs[i])
+      if svo.kl_list[svo.lasthit][limbs[i]] > hits then
+        raiseEvent("svo limb broke", svo.kl_list[person], limbs[i])
+        svo.kl_list[person][limbs[i]] = 0
+        svo.echof("Reset %s's %s limb (it's over hits needed).", svo.kl_list[svo.lasthit], limbs[i])
+        raiseEvent("svo limb reset", svo.kl_list[person], limbs[i])
       end
     end
   else
-    kl_break_at = tonumber(hits)
-    echof("Set the breaking points for future targets at %s.", kl_break_at)
+    svo.kl_break_at = tonumber(hits)
+    svo.echof("Set the breaking points for future targets at %s.", svo.kl_break_at)
   end
 end
 
-function kl_synchits()
-  if not lasthit or not kl_list[lasthit] then echof("Not tracking anybody to sync their hits.") return end
+function svo.kl_synchits()
+  if not svo.lasthit or not svo.kl_list[svo.lasthit] then svo.echof("Not tracking anybody to sync their hits.") return end
 
-  local t = kl_list[lasthit]
+  local t = svo.kl_list[svo.lasthit]
   local highestnum = 0
   for i = 1, #limbs do
     if t[limbs[i]] > highestnum then highestnum = t[limbs[i]] end
   end
 
   t.kl_break_at = highestnum
-  echof("Set %s's breakpoint at %s.", lasthit, highestnum)
+  svo.echof("Set %s's breakpoint at %s.", svo.lasthit, highestnum)
 
   for i = 1, #limbs do
     if t[limbs[i]] >= highestnum then
       local limb = limbs[i]
       t[limb] = 0
-      echof("Reset %s - it was over the hits needed.", limb)
-      raiseEvent("svo limb reset", lasthit, limb)
+      svo.echof("Reset %s - it was over the hits needed.", limb)
+      raiseEvent("svo limb reset", svo.lasthit, limb)
     end
   end
 end
 
-config.setoption("weaponone",
+svo.config.setoption("weaponone",
 {
   vconfig2string = true,
   type = "number",
-  onset = function () echof("Set the damage of your first weapon to %s.", conf.weaponone) end,
+  onset = function () svo.echof("Set the damage of your first weapon to %s.", conf.weaponone) end,
   onshow = function (defaultcolour)
     fg("gold")
     echoLink("kl:", "", "svo Knight limbcounter", true)
@@ -255,16 +255,16 @@ config.setoption("weaponone",
     echo(".\n")
   end
 })
-config.setoption("weapontwo",
+svo.config.setoption("weapontwo",
 {
   type = "string",
-  onset = function () echof("Set the damage of your second weapon to %s.", conf.weapontwo) end
+  onset = function () svo.echof("Set the damage of your second weapon to %s.", conf.weapontwo) end
 })
-config.setoption("limbprep",
+svo.config.setoption("limbprep",
 {
   type = "number",
-  onset = function () echof("Will consider a limb to be prepped when it's %s hits away from breaking.", conf.limbprep) end,
+  onset = function () svo.echof("Will consider a limb to be prepped when it's %s hits away from breaking.", conf.limbprep) end,
 })
 
 conf.limbprep = conf.limbprep or 2
-echof("Loaded svo Knight limbcounter, version %s.", tostring(kl_version))
+svo.echof("Loaded svo Knight limbcounter, version %s.", tostring(svo.kl_version))
