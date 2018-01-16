@@ -444,7 +444,7 @@ signals.gmcpcharafflictionsadd:connect(function()
   gaffl[thisaff] = true
   if conf.gmcpaffechoes then svo.echof("Gained aff %s", thisaff) end
   if svo.dict.sstosvoa[thisaff] then
-    svo.svo.addaffdict(svo.dict.sstosvoa[thisaff])
+    svo.addaffdict(svo.dict.sstosvoa[thisaff])
   end
 end)
 
@@ -471,7 +471,7 @@ signals.gmcpcharafflictionslist:connect(function()
       if preaffl[svoAffliction] then
         preaffl[svoAffliction] = false
       else
-        svo.svo.addaffdict(svoAffliction)
+        svo.addaffdict(svoAffliction)
       end
     end
   end
