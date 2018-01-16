@@ -7,7 +7,7 @@
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 
-signals.systemstart:emit()
-tempTimer(0, function() systemloaded = true; raiseEvent("svo system loaded") end)
+svo.signals.systemstart:emit()
+tempTimer(0, function() svo.systemloaded = true; raiseEvent("svo system loaded") end)
 
 return _M;
