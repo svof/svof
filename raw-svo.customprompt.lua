@@ -6,6 +6,11 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
+local sys, affs, signals = svo.sys, svo.affs, svo.signals
+local conf, sk, me, defc = svo.conf, svo.sk, svo.me, svo.defc
+local stats = svo.defences
+local bals, cp, cpp = svo.bals, svo.cp, svo.cpp
+
 for _, stat in ipairs {"health", "mana", "endurance", "willpower"} do
   cpp["compute_"..stat.."_percent"] = function()
     return math.floor((stats["current"..stat]/stats["max"..stat])*100)
@@ -37,7 +42,7 @@ cpp.compute_slowcuring = function()
   local s = {}
   s[#s+1] = "<red>("
 
-  if sacid then
+  if svo.sacid then
     s[#s+1] = "<green>a"
   elseif sk.doingstuff_inslowmode() then
     s[#s+1] = "<red>a"
@@ -186,7 +191,7 @@ cpp.compute_gametarget_colour = function()
 
   local hp = me.gametargethp or 0
   if hp == 0 then
-      -- default colour
+        colour = "blanched_almond"
   elseif hp < 5 then
         colour = "red" -- nearly dead
   elseif hp < 25 then
@@ -532,7 +537,7 @@ if svo.haveskillset('shindo') then
 end
 
 function cp.adddefinition(tag, func)
-  local func = string.format("tostring(%s)", func)
+  func = string.format("tostring(%s)", func)
 
   cp.definitions[tag] = func
   cp.makefunction()
@@ -546,7 +551,7 @@ function cp.makefunction()
   local display, error = loadstring("return table.concat({"..table.concat(t, ", ").."})")
   if display then cp.display = display else
     cp.display = function() return '' end
-    debugf("Couldn't compile the custom prompt: %s", error)
+    svo.debugf("Couldn't compile the custom prompt: %s", error)
   end
 
   -- set the prompt we require within the game for these tags to work
