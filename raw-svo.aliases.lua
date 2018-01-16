@@ -6,20 +6,26 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-function togglesip(what)
+local sys, affs, signals = svo.sys, svo.affs, svo.signals
+local conf, sk, me, defc = svo.conf, svo.sk, svo.me, svo.defc
+local defences, stats, cnrl, rift = svo.defences, svo.stats, svo.cnrl, svo.rift
+local bals, pipes, valid = svo.bals, svo.pipes, svo.valid
+local lifevision = svo.lifevision
+
+function svo.togglesip(what)
   svo.assert(what == nil or what == "health" or what == "mana", "svo.togglesip wants 'health' or 'mana' as an argument")
 
   local beforestate = sk.getbeforestateprios()
 
-  local hp = dict.healhealth.sip.aspriority
-  local mp = dict.healmana.sip.aspriority
+  local hp = svo.dict.healhealth.sip.aspriority
+  local mp = svo.dict.healmana.sip.aspriority
   if what == nil or
     what == "health" and hp < mp or
     what == "mana" and mp < hp then
       hp, mp = mp, hp
   end
-  dict.healhealth.sip.aspriority = hp
-  dict.healmana.sip.aspriority = mp
+  svo.dict.healhealth.sip.aspriority = hp
+  svo.dict.healmana.sip.aspriority = mp
 
   local function getstring(name)
     if name == "healmana_sip" then return "<13,19,180>mana"
@@ -28,63 +34,61 @@ function togglesip(what)
   end
 
   local prios = {}
-  local links = {}
-  for _, j in ipairs({dict.healhealth.sip, dict.healmana.sip}) do
+  for _, j in ipairs({svo.dict.healhealth.sip, svo.dict.healmana.sip}) do
     prios[j.name] = j.aspriority
-    links[j.name] = j
   end
 
-  local result = getHighestKey(prios)
+  local result = svo.getHighestKey(prios)
 
-  echof("Swapped to "  .. getstring(result) .. getDefaultColor() .. " sipping priority.")
+  svo.echof("Swapped to "  .. getstring(result) .. svo.getDefaultColor() .. " sipping priority.")
 
-  make_gnomes_work()
+  svo.make_gnomes_work()
 
   local afterstate = sk.getafterstateprios()
   sk.notifypriodiffs(beforestate, afterstate)
 end
 
-function aupdate()
-  (openUrl or openURL)("http://doc.svo.vadisystems.com/#updating-the-system")
-  -- echof("While we can't automatically update yet, here's the URL for you to download it at:")
+function svo.aupdate()
+  openUrl("http://doc.svo.vadisystems.com/#updating-the-system")
+  -- svo.echof("While we can't automatically update yet, here's the URL for you to download it at:")
 
-  -- setFgColor(unpack(getDefaultColorNums))
+  -- setFgColor(unpack(svo.getDefaultColorNums))
   -- for os, url in pairs(sys.downloadurl) do
   --   echo("  "..os.." - ")
   --   setUnderline(true) echoLink(url, [[(openURL or openUrl)("]]..url..[[")]], "Download "..os.." version", true) setUnderline(false)
   -- end
   -- resetFormat()
-  -- showprompt()
+  -- svo.showprompt()
 end
 
-function toggle_ignore(action)
-  if not dict[action] then
-    echofn("%s isn't something you can ignore - see ", action)
-    setFgColor(unpack(getDefaultColorNums))
+function svo.toggle_ignore(action)
+  if not svo.dict[action] then
+    svo.echofn("%s isn't something you can ignore - see ", action)
+    setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
     echoLink("vshow ignorelist", 'svo.ignorelist()', 'Click to see things you can ignore', true)
     setUnderline(false)
     echo(".\n")
-    showprompt()
+    svo.showprompt()
     return
   end
 
   if svo.ignore[action] then
-    unsetignore(action)
+    svo.unsetignore(action)
     svo.echof("Won't ignore %s anymore.", action)
   else
-    setignore(action)
+    svo.setignore(action)
     svo.echof("Will ignore curing %s now.", action)
   end
   svo.showprompt()
-  make_gnomes_work()
+  svo.make_gnomes_work()
 end
 
-function show_ignore()
-  echof("Things we're ignoring:%s", not next(svo.ignore) and " (none)" or '')
+function svo.show_ignore()
+  svo.echof("Things we're ignoring:%s", not next(svo.ignore) and " (none)" or '')
 
-  setFgColor(unpack(getDefaultColorNums))
-  for key in pairs(ignore) do
+  setFgColor(unpack(svo.getDefaultColorNums))
+  for key in pairs(svo.ignore) do
     echo(string.format("  %-18s", tostring(key)))
     echo("(")
     setUnderline(true)
@@ -92,28 +96,28 @@ function show_ignore()
     setUnderline(false)
     echo(")")
 
-    if dict[key] and dict[key].description then
-      echo(" - "..dict[key].description)
+    if svo.dict[key] and svo.dict[key].description then
+      echo(" - "..svo.dict[key].description)
 
-      if type(ignore[key]) == 'table' and ignore[key].because then
-        echo(", ignoring because "..ignore[key].because)
+      if type(svo.ignore[key]) == 'table' and svo.ignore[key].because then
+        echo(", ignoring because "..svo.ignore[key].because)
       end
       echo("\n")
     else
-      if type(ignore[key]) == "table" and ignore[key].because then
-        echo(" - because "..ignore[key].because)
+      if type(svo.ignore[key]) == "table" and svo.ignore[key].because then
+        echo(" - because "..svo.ignore[key].because)
       end
       echo("\n")
     end
   end
-  showprompt()
+  svo.showprompt()
 end
 
-function aconfigs()
-  echof("Doesn't do anything yet!")
+function svo.aconfigs()
+  svo.echof("Doesn't do anything yet!")
 end
 
-function aconfig()
+function svo.aconfig()
   cecho("<a_darkblue>--<purple>(svo) <a_grey>Configuration<a_darkblue>" .. ("-"):rep(59) .. "\n")
 
   cecho("<a_darkcyan>  Automated healing:\n")
@@ -137,7 +141,7 @@ function aconfig()
 
   cecho("<a_darkcyan>  Curing status:\n")
 
-  for k,v in config_dict:iter() do
+  for k,v in svo.config_dict:iter() do
     if v.vconfig1 and conf[k] and not v.vconfig2 then
       cecho("  ") fg("a_green")
       echoLink('  o  ', 'svo.config.set("'..k..'", false, true)', 'Click to disable '..k, true)
@@ -151,7 +155,7 @@ function aconfig()
 
   echo"\n"
 
-  for k,v in config_dict:iter() do
+  for k,v in svo.config_dict:iter() do
     if not v.vconfig1 and type(v.onshow) == "string" and conf[k] and not v.vconfig2 and not v.vconfig2string then
       cecho("  ") fg("a_green")
       echoLink('  o  ', 'svo.config.set("'..k..'", false, true)', 'Click to disable '..k, true)
@@ -194,11 +198,11 @@ function aconfig()
   fg("a_darkblue") echo(string.rep("-", 9))
   resetFormat()
   echo"\n"
-  showprompt()
+  svo.showprompt()
   echo"\n"
 end
 
-function aconfig2()
+function svo.aconfig2()
   cecho("<a_darkblue>--<purple>(svo) <a_grey>Configuration, continued<a_darkblue>" .. string.rep("-", 48) .. "\n")
 
   cecho("<a_darkcyan>  Pipes:\n")
@@ -258,7 +262,7 @@ local c3,s3 =
 
   cecho("<a_darkcyan>  Advanced options:\n")
 
-  for k,v in config_dict:iter() do
+  for k,v in svo.config_dict:iter() do
     if not v.vconfig1 and type(v.onshow) == "string" and conf[k] and v.vconfig2 and not v.vconfig2string then
       cecho("  ") fg("a_green")
       echoLink('  o  ', 'svo.config.set("'..k..'", false, true)', 'Click to disable '..k, true)
@@ -280,7 +284,7 @@ local c3,s3 =
 
   echo"\n"
 
-  cecho("    <a_blue>- <a_grey>Using ") setFgColor(unpack(getDefaultColorNums))
+  cecho("    <a_blue>- <a_grey>Using ") setFgColor(unpack(svo.getDefaultColorNums))
   echoLink(tostring(conf.echotype and conf.echotype or conf.org), 'svo.config.showcolours()', "View other available styles", true)
   cecho("<a_grey>-style echos.\n")
 
@@ -384,15 +388,15 @@ end
     cecho("    <a_blue>- ") fg("a_grey")
     echoLink("Custom prompt is in use", 'svo.config.set("customprompt", "off", true)', "Disable custom prompt", true)
     echo(" (")
-    echoLink("view", 'svo.config.showprompt(); printCmdLine("vconfig customprompt "..tostring(svo.conf.customprompt))', "View the custom prompt you've currently set")
+    echoLink("view", 'svo.config.svo.showprompt(); printCmdLine("vconfig customprompt "..tostring(svo.conf.customprompt))', "View the custom prompt you've currently set")
     echo(")")
 
     echo(" (")
-    echoLink("reset", 'svo.setdefaultprompt(); svo.echof("Default custom prompt restored.")', "Reset the custom prompt to default")
+    echoLink("svo.reset", 'svo.setdefaultprompt(); svo.echof("Default custom prompt restored.")', "svo.reset the custom prompt to default")
     cecho("<a_grey>)\n")
   end
 
-  for k,v in config_dict:iter() do
+  for _,v in svo.config_dict:iter() do
     if v.vconfig2string and type(v.onshow) == "string" then
       cecho("    <a_blue>- ")
       cecho("<a_grey>"..v.onshow..".\n")
@@ -411,35 +415,35 @@ end
   resetFormat()
 
   echo"\n"
-  showprompt()
+  svo.showprompt()
   echo"\n"
 end
 
 if svo.haveskillset('metamorphosis') then
-function viewmetadefs()
-  echof("You can put up any of these defences, given your morph skill:\n  %s", oneconcat(sk.morphsforskill) ~= "" and oneconcat(sk.morphsforskill) or "(none, actually)")
+function svo.viewmetadefs()
+  svo.echof("You can put up any of these defences, given your morph skill:\n  %s", svo.oneconcat(sk.morphsforskill) ~= "" and svo.oneconcat(sk.morphsforskill) or "(none, actually)")
 end
 end
 
-function asave()
+function svo.asave()
   signals.saveconfig:emit()
-  showprompt()
+  svo.showprompt()
 end
 
-function ashow()
-  echof("Defence modes:")
+function svo.ashow()
+  svo.echof("Defence modes:")
   echo "  " defences.print_def_list()
 
   if sys.deffing then
-    echof("Currently deffing up; waiting on %s to come up.", sk.showwaitingdefup())
+    svo.echof("Currently deffing up; waiting on %s to come up.", sk.showwaitingdefup())
   end
 
   echo"\n"
 
-  echofn("View priorities (")
-  setFgColor(unpack(getDefaultColorNums))
+  svo.echofn("View priorities (")
+  setFgColor(unpack(svo.getDefaultColorNums))
   setUnderline(true)
-  echoLink("reset all to default", 'svo.prio.usedefault(true)', "Click here to reset all of the systems curing/defup priorities back to default", true)
+  echoLink("svo.reset all to default", 'svo.prio.usedefault(true)', "Click here to svo.reset all of the systems curing/defup priorities back to default", true)
   setUnderline(false)
   echo(", ")
   setUnderline(true)
@@ -474,45 +478,45 @@ function ashow()
   resetFormat()
   echo"\n"
 
-  echofn("Serverside use:   ")
-  setFgColor(unpack(getDefaultColorNums))
+  svo.echofn("Serverside use:   ")
+  setFgColor(unpack(svo.getDefaultColorNums))
   setUnderline(true)
   echoLink(conf.serverside and "enabled" or "disabled", "svo.tntf_set('serverside', "..(conf.serverside and "false" or "true").. ', false); svo.ashow()', (conf.serverside and "Disable" or "Enable")..' use of serverside by Svof', true)
   resetFormat()
   echo"\n"
 
 
-  echofn("Anti-illusion:    ")
-  setFgColor(unpack(getDefaultColorNums))
+  svo.echofn("Anti-illusion:    ")
+  setFgColor(unpack(svo.getDefaultColorNums))
   setUnderline(true)
   echoLink(conf.aillusion and "enabled" or "disabled", "svo.tntf_set('ai', "..(conf.aillusion and "false" or "true").. ', false); svo.ashow()', (conf.aillusion and "Disable" or "Enable")..' anti-illusion', true)
   resetFormat()
   echo"\n"
 
-  echofn("Defence keepup:   ")
-  setFgColor(unpack(getDefaultColorNums))
+  svo.echofn("Defence keepup:   ")
+  setFgColor(unpack(svo.getDefaultColorNums))
   setUnderline(true)
   echoLink(conf.keepup and "enabled" or "disabled", "svo.tntf_set('keepup', "..(conf.keepup and "false" or "true").. ', false); svo.ashow()', (conf.keepup and "Disable" or "Enable")..' keepup', true)
   resetFormat()
   echo"\n"
 
-  echofn("Bashing triggers: ")
-  setFgColor(unpack(getDefaultColorNums))
+  svo.echofn("Bashing triggers: ")
+  setFgColor(unpack(svo.getDefaultColorNums))
   setUnderline(true)
   echoLink(conf.bashing and "enabled" or "disabled", "svo.tntf_set('bashing', "..(conf.bashing and "false" or "true").. ', false); svo.ashow()', (conf.bashing and "Disable" or "Enable")..' bashing triggers', true)
   resetFormat()
   echo"\n"
 
-  echofn("Arena mode:       ")
-  setFgColor(unpack(getDefaultColorNums))
+  svo.echofn("Arena mode:       ")
+  setFgColor(unpack(svo.getDefaultColorNums))
   setUnderline(true)
   echoLink(conf.arena and "enabled" or "disabled", "svo.tntf_set('arena', "..(conf.arena and "false" or "true").. ', false); svo.ashow()', (conf.arena and "Disable" or "Enable")..' arena triggers', true)
   resetFormat()
   echo"\n"
 
 echo"\n"
-  echofn("Cure method: ")
-  setFgColor(unpack(getDefaultColorNums))
+  svo.echofn("Cure method: ")
+  setFgColor(unpack(svo.getDefaultColorNums))
   setUnderline(true)
   echoLink(tostring(conf.curemethod), [=[
     svo.echof([[Possible options are:
@@ -526,25 +530,25 @@ echo"\n"
 
   if conf.curemethod and conf.curemethod == "prefercustom" then
     echo(" (")
-    setFgColor(unpack(getDefaultColorNums))
+    setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
     echoLink("configure it", 'svo.showcurelist()', "Setup which cures would you prefer over which for prefercustom - also accessible via vshow curelist", true)
     setUnderline(false)
-    setFgColor(unpack(getDefaultColorNums))
+    setFgColor(unpack(svo.getDefaultColorNums))
     echo(")")
   end
   echo"\n"
 
-  echofn("Current parry strategy is:  ")
-  setFgColor(unpack(getDefaultColorNums))
+  svo.echofn("Current parry strategy is:  ")
+  setFgColor(unpack(svo.getDefaultColorNums))
   setUnderline(true)
   local spname
-  if not sp_config.parry or sp_config.parry == '' then
+  if not svo.sp_config.parry or svo.sp_config.parry == '' then
     spname = "(none)"
-  elseif type(sp_config.parry) == "function" then
-    spname = "(custom "..tostring(sp_config.parry)..")"
+  elseif type(svo.sp_config.parry) == "function" then
+    spname = "(custom "..tostring(svo.sp_config.parry)..")"
   else
-    spname = tostring(sp_config.parry)
+    spname = tostring(svo.sp_config.parry)
   end
 
   echoLink(spname, 'svo.sp.setparry(nil, true)', 'Click to change the parry strategy. When in "manual", use the p* (pra, pla, ph, etc...) alises to parry/guard with', true)
@@ -552,14 +556,14 @@ echo"\n"
   echo'\n'
 
   if me.doqueue.repeating then
-    echof("Do-Repeat is enabled: %s", tostring(me.doqueue[1]) or "(nothing yet)") end
+    svo.echof("Do-Repeat is enabled: %s", tostring(me.doqueue[1]) or "(nothing yet)") end
 
 
   if conf.curemethod and (conf.curemethod == "preferconc" or conf.curemethod == "prefertrans") then
-    echofn("Cure method is %s: ", tostring(conf.curemethod))
-    setFgColor(unpack(getDefaultColorNums))
+    svo.echofn("Cure method is %s: ", tostring(conf.curemethod))
+    setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
-    echoLink("reset sip alternatives", [[
+    echoLink("svo.reset sip alternatives", [[
       svo.es_potions = svo.es_potions or {}
       for thing, category in pairs(svo.es_categories) do
         svo.es_potions[category] = svo.es_potions[category] or {}
@@ -567,25 +571,25 @@ echo"\n"
           svo.es_potions[category][thing] = {sips = 1, vials = 1, decays = 0}
         end
       end
-      svo.echof("Reset alternatives, will use the preferred potions now.")
-    ]], 'Reset sipping alternatives for '..tostring(conf.curemethod)  , true)
+      svo.echof("svo.reset alternatives, will use the preferred potions now.")
+    ]], 'svo.reset sipping alternatives for '..tostring(conf.curemethod)  , true)
     setUnderline(false)
     echo("\n")
   end
 
   if conf.lag ~= 0 then
-    echof("Lag tolerance level: %d", conf.lag)
+    svo.echof("Lag tolerance level: %d", conf.lag)
   end
 
   local c = table.size(me.lustlist)
   if conf.autoreject == "black" then
-    echofn("People we're autorejecting:  %s ", (c ~= 0 and c or 'none'))
+    svo.echofn("People we're autorejecting:  %s ", (c ~= 0 and c or 'none'))
   elseif conf.autoreject == "white" then
-    echofn("People we're not autorejecting: %s ", (c ~= 0 and c or 'none'))
+    svo.echofn("People we're not autorejecting: %s ", (c ~= 0 and c or 'none'))
   end
 
   if conf.autoreject ~= "off" then
-    setFgColor(unpack(getDefaultColorNums))
+    setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
     echoLink("(view)", 'echo"\\n" expandAlias"vshow lustlist"', 'Click here view the names', true)
     echo"\n"
@@ -593,127 +597,127 @@ echo"\n"
 
   c = table.size(me.hoistlist)
   if conf.autowrithe == "black" then
-    echofn("People we're writhing against:  %s ", (c ~= 0 and c or 'none'))
+    svo.echofn("People we're writhing against:  %s ", (c ~= 0 and c or 'none'))
   elseif conf.autowrithe == "white" then
-    echofn("People we're not writhing against: %s ", (c ~= 0 and c or 'none'))
+    svo.echofn("People we're not writhing against: %s ", (c ~= 0 and c or 'none'))
   end
 
   if conf.autowrithe ~= "off" then
-    setFgColor(unpack(getDefaultColorNums))
+    setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
     echoLink("(view)", 'echo"\\n" expandAlias"vshow hoistlist"', 'Click here view the names', true)
     echo"\n"
   end
 
   if next(me.unparryables) then
-    echofn("Things we can't use for parrying: %s ", oneconcat(me.unparryables))
+    svo.echofn("Things we can't use for parrying: %s ", svo.oneconcat(me.unparryables))
 
-    setFgColor(unpack(getDefaultColorNums))
+    setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
-    echoLink("(reset)", 'echo"\\n" svo.me.unparryables = {} svo.echof"Cleared list of stuff we can\'t parry with."', 'Click here to reset', true)
+    echoLink("(svo.reset)", 'echo"\\n" svo.me.unparryables = {} svo.echof"Cleared list of stuff we can\'t parry with."', 'Click here to svo.reset', true)
     echo"\n"
   end
 
   do
-    local c = 0
-    for herb, count in pairs(rift.precache) do
-      c = c + count
+    local herbcount = 0
+    for _, count in pairs(rift.precache) do
+      herbcount = herbcount + count
     end
 
-    echofn("# of herbs we're precaching: %d ", c)
+    svo.echofn("# of herbs we're precaching: %d ", herbcount)
 
-    setFgColor(unpack(getDefaultColorNums))
+    setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
     echoLink("(view)", 'echo"\\n" svo.showprecache()', 'Click here open the menu for precache', true)
     echo"\n"
   end
 
   do
-    local c = table.size(ignore)
+    local ignorecount = table.size(svo.ignore)
 
-    echofn("# of things we're ignoring:  %d ", c)
+    svo.echofn("# of things we're ignoring:  %d ", ignorecount)
 
-    setFgColor(unpack(getDefaultColorNums))
+    setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
     echoLink("(view)", 'echo"\\n" svo.show_ignore()', 'Click here open the ignore list menu', true)
     echo"\n"
   end
 
   if next(affs) then
-    showaffs()
+    svo.showaffs()
   end
 
-  if conf.customprompt and (affs.blackout or innews) then
-    echofn("Custom prompt is enabled, but not showing due to %s. ",
+  if conf.customprompt and (affs.blackout or svo.innews) then
+    svo.echofn("Custom prompt is enabled, but not showing due to %s. ",
       (function ()
         local t = {}
         if affs.blackout then t[#t+1] = "blackout" end
-        if innews then t[#t+1] = "being in the editor" end
-        return concatand(t)
+        if svo.innews then t[#t+1] = "being in the editor" end
+        return svo.concatand(t)
       end
     )())
-    setFgColor(unpack(getDefaultColorNums))
+    setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
-    echoLink("(reset)", 'svo.config.set("customprompt", "on")', 'Click here to re-enable the custom prompt', true)
+    echoLink("(svo.reset)", 'svo.config.set("customprompt", "on")', 'Click here to re-enable the custom prompt', true)
     echo"\n"
   end
 
   if conf.paused then
-    echof("System is currently paused.") end
+    svo.echof("System is currently paused.") end
   if me.dopaused then
-    echof("Do system is currently paused.") end
+    svo.echof("Do system is currently paused.") end
 
   if sk.gettingfullstats then
-    echof("Healing health and mana to up to full stats (cancel).") end
+    svo.echof("Healing health and mana to up to full stats (cancel).") end
 
   -- warn people if they have mana above health as sip priority by accident
-  if prio.getnumber("healmana", "sip") > prio.getnumber("healhealth", "sip") then
-    echofn("Your mana sip priority is above health sipping (")
-    setFgColor(unpack(getDefaultColorNums))
+  if svo.prio.getnumber("healmana", "sip") > svo.prio.getnumber("healhealth", "sip") then
+    svo.echofn("Your mana sip priority is above health sipping (")
+    setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true) echoLink("change", 'svo.togglesip("health")', 'Click to change to health', true) setUnderline(false)
     echo(")\n")
   end
 
   raiseEvent("svo onshow")
 
-  showprompt()
+  svo.showprompt()
 end
 
 
-function showaffs(window)
-  if sys.sync then echof(window or "main", "Slow curing mode enabled.") end
-  echof(window or "main", "Current list of affs: " .. tostring(affs))
+function svo.showaffs(window)
+  if sys.sync then svo.echof(window or "main", "Slow curing mode enabled.") end
+  svo.echof(window or "main", "Current list of affs: " .. tostring(affs))
 end
 
-function showbals(window)
-  echof(window or "main", "Balance state: " ..
+function svo.showbals(window)
+  svo.echof(window or "main", "Balance state: " ..
     (function (tbl)
       local result = {}
       for i,j in pairs(tbl) do
         if j then
-          result[#result+1] = string.format("<50,205,50>%s%s", i,getDefaultColor())
+          result[#result+1] = string.format("<50,205,50>%s%s", i,svo.getDefaultColor())
         else
-          result[#result+1] = string.format("<205,201,201>%s (off)%s", i,getDefaultColor())
+          result[#result+1] = string.format("<205,201,201>%s (off)%s", i,svo.getDefaultColor())
         end
       end
 
       table.sort(result)
       return table.concat(result, ", ")
     end)(bals))
-    showprompt()
+    svo.showprompt()
 end
 
-function showserverside()
+function svo.showserverside()
   local function echoaction(action, last)
     dechoLink(string.format("<153,204,204>[<0,204,0>%s<153,204,204>] %"..(last and '' or '-23').."s",
-      serverignore[action] and ' ' or 'x', action),
-      string.format([[svo.%ssetserverignore("%s"); svo.showserverside()]], serverignore[action] and 'un' or '', action),
-      serverignore[action] and ('Make Svof handle '..action..' instead of serverside') or ('Make serverside handle '..action..' instead of Svof'), true)
+      svo.serverignore[action] and ' ' or 'x', action),
+      string.format([[svo.%ssetserverignore("%s"); svo.showserverside()]], svo.serverignore[action] and 'un' or '', action),
+      svo.serverignore[action] and ('Make Svof handle '..action..' instead of serverside') or ('Make serverside handle '..action..' instead of Svof'), true)
   end
 
   local actions = sk.getallserversideactions()
 
-  echof("Things serverside can do but Svof will be handling instead:")
+  svo.echof("Things serverside can do but Svof will be handling instead:")
   for i = 1, #actions, 3 do
     local action1, action2, action3 = actions[i], actions[i+1], actions[i+2]
 
@@ -726,14 +730,14 @@ function showserverside()
   echo'\n'
 
   if not conf.serverside then
-    dechoLink(getDefaultColor().."  (enable serverside use)", 'svo.tntf_set("serverside", true)', 'Serverside use is disabled - click here to enable it', true)
+    dechoLink(svo.getDefaultColor().."  (enable serverside use)", 'svo.tntf_set("serverside", true)', 'Serverside use is disabled - click here to enable it', true)
     echo'\n'
   end
 
-  dechoLink(getDefaultColor().."  (disable all)", 'svo.enableallserverside()', 'Click here to make serverside handle everything', true)
-  dechoLink(getDefaultColor().."  (restore defaults)", 'svo.enabledefaultserverside()', 'Click here to restore default options', true)
+  dechoLink(svo.getDefaultColor().."  (disable all)", 'svo.enableallserverside()', 'Click here to make serverside handle everything', true)
+  dechoLink(svo.getDefaultColor().."  (restore defaults)", 'svo.enabledefaultserverside()', 'Click here to restore default options', true)
   echo'\n'
-  showprompt()
+  svo.showprompt()
 end
 
 function svo.enableallserverside()
@@ -742,30 +746,28 @@ function svo.enableallserverside()
   for i = 1, #actions do
     local action = actions[i]
 
-    setserverignore(action)
+    svo.setserverignore(action)
   end
 
-  echof("Disabled all serverside overrides; serverside will now handle everything.")
-  showprompt()
+  svo.echof("Disabled all serverside overrides; serverside will now handle everything.")
+  svo.showprompt()
 end
 
 function svo.enabledefaultserverside()
-  unsetserverignore"impale"
-  unsetserverignore"lovers"
-  unsetserverignore"roped"
-  unsetserverignore"transfixed"
-  unsetserverignore"webbed"
-  unsetserverignore"selfishness"
+  svo.unsetserverignore"impale"
+  svo.unsetserverignore"lovers"
+  svo.unsetserverignore"roped"
+  svo.unsetserverignore"transfixed"
+  svo.unsetserverignore"webbed"
+  svo.unsetserverignore"selfishness"
 
-  echof("Restored defaults on what should Svof handle instead of serverside.")
-  showprompt()
+  svo.echof("Restored defaults on what should Svof handle instead of serverside.")
+  svo.showprompt()
 end
 
-function showcurelist()
+function svo.showcurelist()
   local herb_list  = rift.curativeherbs
   local herbs      = rift.herb_conversions
-  local vials_list = rift.forestalvials
-  local vials      = rift.vial_conversions
 
   local function showfor(list, conversion)
     for i = 1, #list do
@@ -790,16 +792,16 @@ function showcurelist()
     end
   end
 
-  echof("Click on what you'd like to be preferred in prefercustom curemethod:\n")
-  decho(string.format("%s            herbs/minerals\n", getDefaultColor()))
+  svo.echof("Click on what you'd like to be preferred in prefercustom curemethod:\n")
+  decho(string.format("%s            herbs/minerals\n", svo.getDefaultColor()))
 
   showfor(herb_list, herbs)
 
   if conf.curemethod ~= "prefercustom" then
     echo"\n"
-    echofn("This is the setup for the prefercustom curemethod - which you aren't currently using (you're using %s).\n  Do you want to change to prefercustom? Click here if so: ", conf.curemethod)
+    svo.echofn("This is the setup for the prefercustom curemethod - which you aren't currently using (you're using %s).\n  Do you want to change to prefercustom? Click here if so: ", conf.curemethod)
 
-    setFgColor(unpack(getDefaultColorNums))
+    setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
     echoLink("vconfig curemethod prefercustom", 'svo.config.set("curemethod", "prefercustom", true); svo.showcurelist()', 'Click to change the curemethod from '..conf.curemethod..' to prefercustom, which allows you to individually specify which cures you prefer', true)
     setUnderline(false)
@@ -807,11 +809,11 @@ function showcurelist()
   end
 
   echo"\n"
-  showprompt()
+  svo.showprompt()
 end
 
 
-function app(what, quiet)
+function svo.app(what, quiet)
   svo.assert(what == nil or what == "on" or what == "off" or type(what) == "boolean", "svo.app wants 'on' or 'off' as an argument")
 
   if what == "on" or what == true or (what == nil and not conf.paused) then
@@ -821,13 +823,13 @@ function app(what, quiet)
     sk.paused_for_burrow = nil
   end
 
-  if not quiet then echof("System " .. (conf.paused and "paused" or "unpaused") .. ".") end
+  if not quiet then svo.echof("System " .. (conf.paused and "paused" or "unpaused") .. ".") end
   raiseEvent("svo config changed", "paused")
 
-  make_gnomes_work()
+  svo.make_gnomes_work()
 end
 
-function dop(what, echoback)
+function svo.dop(what, echoback)
   svo.assert(what == nil or what == "on" or what == "off" or type(what) == "boolean", "svo.dop wants 'on' or 'off' as an argument")
 
   if what == "on" or what == true or (what == nil and not me.dopaused) then
@@ -836,105 +838,105 @@ function dop(what, echoback)
     me.dopaused = false
   end
 
-  if echoback then echof("Do system " .. (me.dopaused and "paused" or "unpaused") .. ".") end
+  if echoback then svo.echof("Do system " .. (me.dopaused and "paused" or "unpaused") .. ".") end
 
-  make_gnomes_work()
+  svo.make_gnomes_work()
 end
 
-function dv()
+function svo.dv()
   sys.manualdiag = true
-  make_gnomes_work()
+  svo.make_gnomes_work()
 end
 
-function inra()
-  if not sys.enabledgmcp then echof("You need to enable GMCP for this alias to work.") return end
+function svo.inra()
+  if not sys.enabledgmcp then svo.echof("You need to enable GMCP for this alias to work.") return end
 
   sk.inring = true
   sendGMCP("Char.Items.Inv")
   sendSocket"\n"
 end
 
-function get_herbs()
-  if not sys.enabledgmcp then echof("You need to enable GMCP for this alias to work.") return end
+function svo.get_herbs()
+  if not sys.enabledgmcp then svo.echof("You need to enable GMCP for this alias to work.") return end
 
-  if (affs.blindaff or defc.blind) and not defc.mindseye then echof("vget herbs doesn't work when you're true blind (if you do have mindseye, perhaps check def?)") return end
+  if (affs.blindaff or defc.blind) and not defc.mindseye then svo.echof("vget herbs doesn't work when you're true blind (if you do have mindseye, perhaps check def?)") return end
 
   sk.retrieving_herbs = true
   send("ql", false)
 end
 
-function adf()
+function svo.adf()
   me.manualdefcheck = true
-  make_gnomes_work()
+  svo.make_gnomes_work()
 end
 
-function manualdef()
-  doaction(dict.defcheck.physical)
+function svo.manualdef()
+  svo.doaction(svo.dict.defcheck.physical)
 end
 
-function manualdiag()
+function svo.manualdiag()
   if sys.sync then sk.gnomes_are_working = true end
-  killaction(dict.diag.physical)
-  doaction(dict.diag.physical)
+  svo.killaction(svo.dict.diag.physical)
+  svo.doaction(svo.dict.diag.physical)
   if sys.sync then sk.gnomes_are_working = false end
 end
 
-function reset.affs(echoback)
+function svo.reset.affs(echoback)
   for aff in pairs(affs) do
     if aff ~= "lovers" then
-      rmaff(aff)
+      svo.rmaff(aff)
     end
   end
 
-  affsp = {}
+  svo.affsp = {}
 
   if echoback then
     if math.random(10) == 1 then
-      echof("BEEP BEEP! Affs reset.")
+      svo.echof("BEEP BEEP! Affs svo.reset.")
     else
-      echof("All afflictions reset.")
+      svo.echof("All afflictions svo.reset.")
     end
   end
 end
 
-function reset.general()
-  actions = pl.OrderedMap()
-  lifevision.l = pl.OrderedMap()
+function svo.reset.general()
+  svo.actions = svo.pl.OrderedMap()
+  svo.lifevision.l = svo.pl.OrderedMap()
 
-  for bal in pairs(bals_in_use) do
-    bals_in_use[bal] = {}
+  for bal in pairs(svo.bals_in_use) do
+    svo.bals_in_use[bal] = {}
   end
 
-  actions_performed = {}
+  svo.actions_performed = {}
   sk.onpromptfuncs = {}
   sk.checkaeony()
   signals.aeony:emit()
   signals.canoutr:emit()
-  innews = false
-  passive_cure_paragraph = false
-  check_generics()
+  svo.innews = false
+  svo.passive_cure_paragraph = false
+  svo.check_generics()
 end
 
-function reset.defs(echoback)
-  for def, status in pairs(defc) do
-    if not defs_data[def] or (defs_data[def] and not defs_data[def].stays_on_death) then
-      defc[def] = nil
+function svo.reset.defs(echoback)
+  for def, _ in pairs(defc) do
+    if not svo.defs_data[def] or (svo.defs_data[def] and not svo.defs_data[def].stays_on_death) then
+      svo.defc[def] = nil
     end
   end
 
-  -- parry is also counted as a def and is reset on burst/death, so clear it here as well
-  local t = sps.parry_currently
+  -- parry is also counted as a def and is svo.reset on burst/death, so clear it here as well
+  local t = svo.sps.parry_currently
   for limb, _ in pairs(t) do t[limb] = false end
 
-  if echoback then echof("all defences reset.") end
+  if echoback then svo.echof("all defences svo.reset.") end
 end
 
-signals.charname:connect(function() reset.defs() end)
-signals.gmcpcharname:connect(function() reset.defs() end)
+svo.signals.charname:connect(function() svo.reset.defs() end)
+svo.signals.gmcpcharname:connect(function() svo.reset.defs() end)
 
 function svo.reset.bals(echoback)
   -- create a new table instead of resetting the values in the old, because if you
-  -- screw up and delete some balances - you'd expect reset to restore them
+  -- screw up and delete some balances - you'd expect svo.reset to restore them
   svo.bals.herb = true
   svo.bals.sip = true
   svo.bals.moss = true
@@ -981,16 +983,16 @@ end
 
   for balance in pairs(svo.bals) do raiseEvent("svo got balance", balance) end
 
-  if echoback then echof("All balances reset.") end
+  if echoback then svo.echof("All balances svo.reset.") end
 end
-signals.systemstart:connect(svo.reset.bals)
+svo.signals.systemstart:connect(svo.reset.bals)
 
-function ignorelist()
+function svo.ignorelist()
   local t = {}
   local count = 0
 
   local skip
-  for k,v in pairs(dict) do
+  for k,v in pairs(svo.dict) do
     for balance, _ in pairs(v) do
       if balance == "waitingfor" or balance == "happened" then skip = true end
     end
@@ -999,21 +1001,21 @@ function ignorelist()
     skip = false
   end
   table.sort(t)
-  echof("Things we can ignore:") echo"  "
+  svo.echof("Things we can ignore:") echo"  "
 
   for _, name in ipairs(t) do
     echo(string.format("%-20s", name))
     count = count + 1
     if count % 4 == 0 then echo "\n  " end
   end
-  echo'\n' showprompt()
+  echo'\n' svo.showprompt()
 end
 
-function afflist()
+function svo.afflist()
   local function getaffs()
     local t = {}
 
-    for k,v in pairs(dict) do
+    for k,v in pairs(svo.dict) do
       if v.aff and not v.aff.notagameaff then t[#t+1] = k end
     end
     table.sort(t)
@@ -1022,19 +1024,19 @@ function afflist()
   end
 
   -- key-value table with an explanation message
-  local function getuncurables(affs)
+  local function getuncurables(afflictions)
     local uncurables = {}
     local type = type
 
     -- check all balances, and if any get flagged, add with a message listing all balances
-    for _, affname in ipairs(affs) do
+    for _, affname in ipairs(afflictions) do
       local uncurablebalances = {}
-      for balancename, balancedata in pairs(dict[affname]) do
+      for balancename, balancedata in pairs(svo.dict[affname]) do
         if type(balancedata) == "table" and balancedata.uncurable then uncurablebalances[#uncurablebalances+1] = balancename end
       end
 
       if uncurablebalances[1] then
-        uncurables[affname] = string.format("%s affliction doesn't have a cure on the %s balance%s", affname, concatand(uncurablebalances), (#uncurablebalances > 1 and 's' or ''))
+        uncurables[affname] = string.format("%s affliction doesn't have a cure on the %s balance%s", affname, svo.concatand(uncurablebalances), (#uncurablebalances > 1 and 's' or ''))
       end
     end
 
@@ -1045,7 +1047,7 @@ function afflist()
   local uncurables = getuncurables(t)
   local count = 0
 
-  echof("Affliction list (%d):", #t) echo"  "
+  svo.echof("Affliction list (%d):", #t) echo"  "
 
   local underline = setUnderline; _G.setUnderline = function () end
 
@@ -1088,64 +1090,64 @@ function afflist()
     if count % 3 == 0 then echo "\n  " end
   end
   if count % 3 == 0 then echo "\n  " end
-  echo'\n' showprompt()
+  echo'\n' svo.showprompt()
   _G.setUnderline = underline
 end
 
-function adddefinition(tag, func)
+function svo.adddefinition(tag, func)
   svo.assert(type(tag) == "string" and type(func) == "string", "svo.adddefinition: need both tag and function to be strings")
-  cp.adddefinition(tag, func)
+  svo.cp.adddefinition(tag, func)
 end
 
-function vaff(aff)
-  if not dict[aff] or not dict[aff].aff then echof(aff.." isn't a known affliction to add.") return end
+function svo.vaff(aff)
+  if not svo.dict[aff] or not svo.dict[aff].aff then svo.echof(aff.." isn't a known affliction to add.") return end
 
   if debug.traceback():find("Trigger", 1, true) then
     (svo.valid["proper_"..aff] or svo.valid["simple"..aff])()
   else
-    if dict[aff].aff and dict[aff].aff.forced then
-      dict[aff].aff.forced()
-    elseif dict[aff].aff then
-      dict[aff].aff.oncompleted()
+    if svo.dict[aff].aff and svo.dict[aff].aff.forced then
+      svo.dict[aff].aff.forced()
+    elseif svo.dict[aff].aff then
+      svo.dict[aff].aff.oncompleted()
     else
-      svo.addaffdict(dict[aff])
+      svo.addaffdict(svo.dict[aff])
     end
 
-    if aff == "aeon" then rmaff("retardation") end
+    if aff == "aeon" then svo.rmaff("retardation") end
     signals.after_lifevision_processing:unblock(cnrl.checkwarning)
     sk.checkaeony()
     signals.aeony:emit()
-    make_gnomes_work()
+    svo.make_gnomes_work()
   end
 end
 
-function vrmaff(aff)
-  if not dict[aff] or not dict[aff].aff then echof(aff.." isn't a known affliction to remove.") return end
+function svo.vrmaff(aff)
+  if not svo.dict[aff] or not svo.dict[aff].aff then svo.echof(aff.." isn't a known affliction to remove.") return end
 
   if lifevision.l[aff.."_aff"] then
     lifevision.l:set(aff.."_aff", nil)
   end
 
-  if dict[aff].gone then
-    dict[aff].gone.oncompleted()
+  if svo.dict[aff].gone then
+    svo.dict[aff].gone.oncompleted()
   else
-    rmaff(aff)
+    svo.rmaff(aff)
   end
   signals.after_lifevision_processing:unblock(cnrl.checkwarning)
   sk.checkaeony()
   signals.aeony:emit()
-  make_gnomes_work()
+  svo.make_gnomes_work()
 end
 
 if svo.haveskillset('kaido') then
-  transmute = function()
+  svo.transmute = function()
     -- custom check here, not using isadvisable because this should ignore prone
-    if (not defc.dragonform and (stats.currenthealth < sys.transmuteamount) and not doingaction"healhealth" and not doingaction"transmute" and can_usemana()) then
-        doaction("transmute", "physical")
+    if (not defc.dragonform and (stats.currenthealth < sys.transmuteamount) and not svo.doingaction"healhealth" and not svo.doingaction"transmute" and svo.can_usemana()) then
+        svo.doaction("transmute", "physical")
     end
   end
 else
-  transmute = function()
+  svo.transmute = function()
   end
 end
 
