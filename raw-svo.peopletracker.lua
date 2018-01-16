@@ -17,6 +17,9 @@ handling multiple rooms ideas:
  * label by single letters for groups, with only the rightmost room having the full list of names with letter) prepended
 ]]
 
+local sys, signals = svo.sys, svo.signals
+local conf, sk = svo.conf, svo.sk
+
 -- area = {labels}
 local labels = {}
 
@@ -25,40 +28,40 @@ local labels = {}
 local multiplegroups = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
 
 conf.peopletracker = type(conf.peopletracker) == 'nil' and true or conf.peopletracker
-config.setoption("peopletracker", {
+svo.config.setoption("peopletracker", {
   type = "boolean",
   onenabled = function ()
     if not deleteMapLabel or not createMapLabel then
-      echof("I'm sorry, but your Mudlet is too old and can't make labels on the map yet - update it!")
+      svo.echof("I'm sorry, but your Mudlet is too old and can't make labels on the map yet - update it!")
       conf.peopletracker = false
       raiseEvent("svo config changed", "peopletracker")
       return
     end
 
-    echof("People tracker <0,250,0>enabled%s.", getDefaultColor())
+    svo.echof("People tracker <0,250,0>enabled%s.", svo.getDefaultColor())
   end,
-  ondisabled = function () sys.clean_old_labels() echof("People tracker <250,0,0>disabled%s.", getDefaultColor()) end,
+  ondisabled = function () sys.clean_old_labels() svo.echof("People tracker <250,0,0>disabled%s.", svo.getDefaultColor()) end,
   installstart = function () conf.peopletracker = true end,
 })
 
 conf.clearlabels = type(conf.clearlabels) == 'nil' and true or conf.clearlabels
-config.setoption("clearlabels", {
+svo.config.setoption("clearlabels", {
   type = "boolean",
-  onenabled = function () signals.newarea:connect(sys.clear_labels) echof("<0,250,0>Will%s automatically clear map labels that are surrounded by ().", getDefaultColor()) end,
-  ondisabled = function ()signals.newarea:disconnect(sys.clear_labels) echof("<250,0,0>Won't%s automatically clear map labels that are surrounded by ().", getDefaultColor()) end,
+  onenabled = function () signals.newarea:connect(sys.clear_labels) svo.echof("<0,250,0>Will%s automatically clear map labels that are surrounded by ().", svo.getDefaultColor()) end,
+  ondisabled = function ()signals.newarea:disconnect(sys.clear_labels) svo.echof("<250,0,0>Won't%s automatically clear map labels that are surrounded by ().", svo.getDefaultColor()) end,
   installstart = function () conf.clearlabels = true end,
 })
 
 conf.labelsfont = type(conf.labelsfont) == 'nil' and 10 or conf.labelsfont
-config.setoption("labelsfont", {
+svo.config.setoption("labelsfont", {
   type = "number",
-  onset = function () sys.update_people_labels() echof("Labels set to draw at %dpt.", conf.labelsfont) end,
+  onset = function () sys.update_people_labels() svo.echof("Labels set to draw at %dpt.", conf.labelsfont) end,
   installstart = function () conf.labelsfont = 10 end,
 })
 
 conf.labelcolor = conf.labelcolor or "white"
 conf.maxdupes = conf.maxdupes or 20
-config.setoption("labelcolor", {
+svo.config.setoption("labelcolor", {
   type = "string",
   vconfig2string = true,
   check = function (what)
@@ -81,7 +84,7 @@ config.setoption("labelcolor", {
   onset = function ()
     local r,g,b = unpack(color_table[conf.labelcolor])
     sys.update_people_labels()
-    echof("Okay, will color the map labels in <%s,%s,%s>%s%s now.", r,g,b, conf.labelcolor, getDefaultColor())
+    svo.echof("Okay, will color the map labels in <%s,%s,%s>%s%s now.", r,g,b, conf.labelcolor, svo.getDefaultColor())
   end,
   installstart = function ()
     conf.labelcolor = "blue"
@@ -90,7 +93,7 @@ config.setoption("labelcolor", {
 
 -- check for old Mudlet versions
 if not deleteMapLabel or not createMapLabel then
-  echof("I'm sorry, but your Mudlet is too old and can't make labels on the map yet - update it!")
+  svo.echof("I'm sorry, but your Mudlet is too old and can't make labels on the map yet - update it!")
   return
 end
 
@@ -205,7 +208,7 @@ sys.update_people_labels = function ()
     echoLink("(e!)", string.format("echo([=[The problem was: %q]=])", m), 'Oy - there was a problem with the peopletracker. Click on this link and submit a bug report with what it says.')
   end
 
-  -- echof("update took %s", stopStopWatch(drawwatch))
+  -- svo.echof("update took %s", stopStopWatch(drawwatch))
 end
 
 signals["mmapper updated pdb"]:connect(function()
