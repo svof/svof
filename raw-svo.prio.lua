@@ -6,12 +6,15 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
---[[ Logic: keep the prios embedded in the dict.*.*.spriority/dict.*.*.aspriority, don't keep a table
+--[[ Logic: keep the prios embedded in the svo.dict.*.*.spriority/svo.dict.*.*.aspriority, don't keep a table
       of it's own. When exporting/importing, create such tables.]]
-pl.dir.makepath(getMudletHomeDir() .. "/svo/prios")
+
+local sys, signals, sk, prio = svo.sys, svo.signals, svo.sk, svo.prio
+
+svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/prios")
 
 function prio.export (name, options, echoback)
-  local sendf; if echoback then sendf = echof end
+  local sendf; if echoback then sendf = svo.echof end
   svo.assert(name, "what name do you want to save this list as?", sendf)
 
   -- kv table of what to export
@@ -49,7 +52,7 @@ function prio.export (name, options, echoback)
   }
 
   if not options or options == "" or options == " " then
-    for k, v in pairs(to_export) do
+    for _, v in pairs(to_export) do
       v.o = true
     end
   elseif type(options) == "string" then
@@ -57,7 +60,7 @@ function prio.export (name, options, echoback)
       if to_export[w] then to_export[w].o = true end
     end
   elseif type(options) == "table" then
-    for i, w in ipairs(options) do
+    for _, w in ipairs(options) do
       if to_export[w] then to_export[w].o = true end
     end
   end
@@ -90,25 +93,25 @@ function prio.export (name, options, echoback)
   for priority, priotbl in pairs(to_export) do
     if priotbl.o then
       if priority == "slowcuring" then
-        data = make_sync_prio_table("%s_%s")
+        data = svo.make_sync_prio_table("%s_%s")
       else
-        data = make_prio_table(priority)
+        data = svo.make_prio_table(priority)
       end
 
       s[#s+1] = "\n-- " .. priotbl.prewrite
-      s[#s+1] = priority .. " = " .. pl.pretty.write(data)
+      s[#s+1] = priority .. " = " .. svo.pl.pretty.write(data)
     end
   end
 
   s = table.concat(s, "\n")
 
-  pl.dir.makepath(getMudletHomeDir() .. "/svo/prios")
+  svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/prios")
   io.output(getMudletHomeDir() .. "/svo/prios/"..name, "w")
   io.write(s)
   io.close()
 
-  if echoback then echof("exported %s prio to %s", name, getMudletHomeDir() .. "/svo/prios/"..name) end
-  debugf("exported %s prio to %s", name, getMudletHomeDir() .. "/svo/prios/"..name)
+  if echoback then svo.echof("exported %s prio to %s", name, getMudletHomeDir() .. "/svo/prios/"..name) end
+  svo.debugf("exported %s prio to %s", name, getMudletHomeDir() .. "/svo/prios/"..name)
 end
 
 function prio.list(echoback)
@@ -122,7 +125,7 @@ function prio.list(echoback)
   end
 
   if echoback then
-    echof("Priorities that we've got stored in '%s':\n  %s", dir, concatand(list))
+    svo.echof("Priorities that we've got stored in '%s':\n  %s", dir, svo.concatand(list))
   else
     return list
   end
@@ -130,7 +133,7 @@ end
 
 -- returns the table of actions in a balance
 function prio.getlist(balance)
-  return make_prio_table(balance)
+  return svo.make_prio_table(balance)
 end
 
 -- returns a table of actions in a balance, sorted most important first, without gaps
@@ -138,14 +141,14 @@ function prio.getsortedlist(balance)
   -- get into table...
   local data
   if balance ~= "slowcuring" then
-    data = make_prio_table(balance)
+    data = svo.make_prio_table(balance)
   else
-    data = make_sync_prio_table("%s_%s")
+    data = svo.make_sync_prio_table("%s_%s")
   end
   local orderly = {}
 
   -- create an indexed list of just the priorities only
-  for i,j in pairs(data) do
+  for i,_ in pairs(data) do
     orderly[#orderly+1] = i
   end
 
@@ -154,8 +157,8 @@ function prio.getsortedlist(balance)
 
   -- sort original keys usin the new sorting
   local sortedprios = {}
-  for _, prio in ipairs(orderly) do
-    sortedprios[#sortedprios+1] = data[prio]
+  for _, sortedprio in ipairs(orderly) do
+    sortedprios[#sortedprios+1] = data[sortedprio]
   end
 
   return sortedprios
@@ -163,13 +166,13 @@ end
 
 -- returns the highest number used, and what uses it, in a balance
 function prio.gethighest(balance)
-  local t = make_prio_table(balance)
+  local t = svo.make_prio_table(balance)
 
   -- there could be holes - can't use #
   local maxprio, maxaction = 0
-  for prio, action in pairs(t) do
-    if prio > maxprio then
-      maxprio = prio
+  for prioname, action in pairs(t) do
+    if prioname > maxprio then
+      maxprio = prioname
       maxaction = action
     end
   end
@@ -183,8 +186,8 @@ function prio.sortlist(actions, balance)
   svo.assert(balance, "svo.prio.sortlist: in which balance do you want to check these actions in?")
 
   table.sort(actions, function(a,b)
-    return dict[a] and dict[a][balance] and dict[b] and dict[b][balance] and
-      dict[a][balance].aspriority > dict[b][balance].aspriority
+    return svo.dict[a] and svo.dict[a][balance] and svo.dict[b] and svo.dict[b][balance] and
+      svo.dict[a][balance].aspriority > svo.dict[b][balance].aspriority
   end)
 
   return actions
@@ -192,13 +195,13 @@ end
 
 function prio.getaction(num, balance)
   svo.assert(num and balance, "What number and balance to use?")
-  local data = make_prio_table(balance)
+  local data = svo.make_prio_table(balance)
   return data[num]
 end
 
 function prio.getslowaction(num)
   svo.assert(num, "What number to use?")
-  local data = make_sync_prio_table("%s_%s")
+  local data = svo.make_sync_prio_table("%s_%s")
   if data[num] then
     return data[num]:match("(%w+)_(%w+)")
   end
@@ -215,31 +218,31 @@ function prio.insert(action, balance, number, echoback)
   if balance == "balance" then balance = "physical" end
 
   if balance == "slowcuring" then
-    local validaction, plainaction, plainbalance = valid_sync_action(action)
+    local validaction, plainaction = svo.valid_sync_action(action)
 
     if not validaction then return false, plainaction end
   end
 
-  local function getpriotable(balance)
-    if balance ~= "slowcuring" then
-      return make_prio_table(balance)
+  local function getpriotable(balancename)
+    if balancename ~= "slowcuring" then
+      return svo.make_prio_table(balancename)
     else
-      return make_sync_prio_table("%s_%s")
+      return svo.make_sync_prio_table("%s_%s")
     end
   end
 
-  local function insertat(action, balance, number)
-    if balance ~= "slowcuring" then
-      dict[action][balance].aspriority = number
+  local function insertat(actionname, balancename, newprio)
+    if balancename ~= "slowcuring" then
+      svo.dict[actionname][balancename].aspriority = newprio
     else
-      dict[plainaction][plainbalance].spriority = number
+      svo.dict[actionname][balancename].spriority = newprio
     end
-    if echoback then echof("Set %s's priority in %s balance to %d.", action, balance, number) end
-    raiseEvent("svo prio changed", action, balance, number, (balance == "slowcuring" and "slowcuring"))
+    if echoback then svo.echof("Set %s's priority in %s balance to %d.", actionname, balancename, newprio) end
+    raiseEvent("svo prio changed", actionname, balancename, newprio, (balancename == "slowcuring" and "slowcuring"))
   end
 
   local t = getpriotable(balance)
-  local originalt = deepcopy(t)
+  local originalt = svo.deepcopy(t)
 
   if balance ~= "slowcuring" and not t then return nil, "no such balance: "..balance end
 
@@ -282,36 +285,36 @@ function prio.insert(action, balance, number, echoback)
     for k,v in pairs(l) do action_prio[v] = k end
 
     -- then read off our diff of new list and store away new prios.
-    local diff = basictableindexdiff(originalt, l) -- obtain an indexed list of all the different positions
+    local diff = svo.basictableindexdiff(originalt, l) -- obtain an indexed list of all the different positions
     for _, a in pairs(diff) do
       if balance ~= "slowcuring" then
-        dict[a][balance].aspriority = action_prio[a]
+        svo.dict[a][balance].aspriority = action_prio[a]
         raiseEvent("svo prio changed", a, balance, action_prio[a])
       else
-        local _, action, balance = valid_sync_action(a)
-        dict[action][balance].spriority = action_prio[a]
-        raiseEvent("svo prio changed", action, balance, action_prio[a], "slowcuring")
+        local _, syncaction, syncbalance = svo.valid_sync_action(a)
+        svo.dict[syncaction][syncbalance].spriority = action_prio[a]
+        raiseEvent("svo prio changed", syncaction, syncbalance, action_prio[a], "slowcuring")
       end
     end
 
-    if echoback then echof("Set %s's priority in %s balance to %d.", action, balance, number) end
+    if echoback then svo.echof("Set %s's priority in %s balance to %d.", action, balance, number) end
   end
 
   return true
 end
 
 function prio.getnumber(aff, balance)
-  svo.assert(aff and balance and dict[aff] and dict[aff][balance], "Such affliction/defence or balance doesn't exist")
-  return dict[aff][balance].aspriority
+  svo.assert(aff and balance and svo.dict[aff] and svo.dict[aff][balance], "Such affliction/defence or balance doesn't exist")
+  return svo.dict[aff][balance].aspriority
 end
 
 function prio.cleargaps(balance, echoback)
   -- sync mode
   if balance == "slowcuring" then
-    local data = make_sync_prio_table("%s_%s")
+    local data = svo.make_sync_prio_table("%s_%s")
 
     local max=0
-    for k,v in pairs(data) do
+    for k,_ in pairs(data) do
       if k>max then max=k end
     end
 
@@ -326,22 +329,22 @@ function prio.cleargaps(balance, echoback)
     for i = 1, #t do action_prio[t[i]] = i end
 
     -- create a diff, using the old table first as it has no holes
-    local diff = basictableindexdiff(t, data)
+    local diff = svo.basictableindexdiff(t, data)
 
     -- now only change & notify for the delta differences
     for _, a in pairs(diff) do
-      local _, action, balance = valid_sync_action(a)
-      dict[action][balance].spriority = action_prio[a]
-      raiseEvent("svo prio changed", action, balance, action_prio[a], "slowcuring")
+      local _, syncaction, syncbalance = svo.valid_sync_action(a)
+      svo.dict[syncaction][syncbalance].spriority = action_prio[a]
+      raiseEvent("svo prio changed", syncaction, syncbalance, action_prio[a], "slowcuring")
     end
 
-    if echoback then echof("Cleared all gaps for the slow curing prio.") end
+    if echoback then svo.echof("Cleared all gaps for the slow curing prio.") end
   -- normal modes
   else
-    local data = make_prio_table(balance)
+    local data = svo.make_prio_table(balance)
 
     local max=0
-    for k,v in pairs(data) do
+    for k,_ in pairs(data) do
       if k>max then max=k end
     end
 
@@ -355,33 +358,33 @@ function prio.cleargaps(balance, echoback)
     local action_prio = {}
     for i = 1, #t do action_prio[t[i]] = i end
 
-    local diff = basictableindexdiff(t, data)
+    local diff = svo.basictableindexdiff(t, data)
 
     for _, a in pairs(diff) do
-      dict[a][balance].aspriority = action_prio[a]
+      svo.dict[a][balance].aspriority = action_prio[a]
       raiseEvent("svo prio changed", a, balance, action_prio[a])
     end
 
-    if echoback then echof("Cleared all gaps for the %s prio.", balance) end
+    if echoback then svo.echof("Cleared all gaps for the %s prio.", balance) end
   end
-  showprompt()
+  svo.showprompt()
 end
 
 function prio.usedefault(echoback)
-  local sendf; if echoback then sendf = echof else sendf = errorf end
+  local sendf; if echoback then sendf = svo.echof else sendf = function() end end
 
   -- um. this fails for some reason on Windows.
 --[[  local s,m = os.remove(getMudletHomeDir() .. "/svo/prios/current")
-  if not s then echof("Couldn't update because of: "..tostring(m)) return end]]
+  if not s then svo.echof("Couldn't update because of: "..tostring(m)) return end]]
 
   if prio.import("current", false, false, true) then
-    echof("Updated to default priorities.")
+    sendf("Updated to default priorities.")
   else
-    echof("Couldn't update to default priorities :|") end
+    sendf("Couldn't update to default priorities :|") end
 end
 
 function prio.import(name, echoback, report_errors, use_default)
-  local sendf; if echoback then sendf = echof else sendf = errorf end
+  local sendf; if echoback then sendf = svo.echof else sendf = function() end end
 
   local filename
   if not name then
@@ -409,12 +412,13 @@ function prio.import(name, echoback, report_errors, use_default)
 
   local s
   if name == "current" and (use_default or not lfs.attributes(path)) then
+    s = ""
     -- adds in the default prios here at compile-time
-    s = $(
-        io.input("bin/default_prios")
-        local prios = io.read("*a")
-        _put(string.format("%q", prios))
-        )
+    -- s = $(
+    --     io.input("bin/default_prios")
+    --     local prios = io.read("*a")
+    --     _put(string.format("%q", prios))
+    --     )
   else
     svo.assert(lfs.attributes(path), name .. " prio doesn't exist.", sendf)
 
@@ -432,17 +436,17 @@ function prio.import(name, echoback, report_errors, use_default)
     return pcall(untrusted_function)
   end
 
-  local s, m = run (s)
-  if not s then sendf("There's a syntax problem in the prios file, we couldn't load it:\n  %s", m) return end
+  local ok, m = run(s)
+  if not ok then sendf("There's a syntax problem in the prios file, we couldn't load it:\n  %s", m) return end
 
   local function set(num, action, balance, priority)
-    if not (dict[action] and dict[action][balance]) then
+    if not (svo.dict[action] and svo.dict[action][balance]) then
       if report_errors then
-        if not dict[action] then sendf("Skipping %s, don't know such thing.", action) else
+        if not svo.dict[action] then sendf("Skipping %s, don't know such thing.", action) else
           sendf("Skipping %s, it doesn't use %s balance.", action, balance) end
       end
     else
-      dict[action][balance][priority] = num
+      svo.dict[action][balance][priority] = num
     end
   end
 
@@ -455,30 +459,30 @@ function prio.import(name, echoback, report_errors, use_default)
     if contains(importables, balance) then
       if balance == "slowcuring" then
         -- reset all current ones to zero
-        clear_sync_prios ()
+        svo.clear_sync_prios()
 
         for num, action in pairs(balancet) do
           -- have to weed out action name _ balance name first
-          local _,_, action, balance = sfind(action, '(%w+)_(%w+)')
-          set(num, action, balance, "spriority")
+          local _,_, actionname, balancename = sfind(action, '(%w+)_(%w+)')
+          set(num, actionname, balancename, "spriority")
         end
       else
         -- reset all current ones to zero
-        clear_balance_prios(balance)
+        svo.clear_balance_prios(balance)
         for num, action in pairs(balancet) do
           set(num, action, balance, "aspriority")
         end
       end
     end
   end
-  dict_setup()
-  dict_validate()
+  svo.dict_setup()
+  svo.dict_validate()
 
   local afterstate = sk.getafterstateprios()
   sk.notifypriodiffs(beforestate, afterstate)
 
-  if echoback then echof("Imported %s prio list.", name) end
-  debugf("imported %s prio.", name)
+  if echoback then svo.echof("Imported %s prio list.", name) end
+  svo.debugf("imported %s prio.", name)
   return true
 end
 
