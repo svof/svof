@@ -6,9 +6,12 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
+local sk = svo.sk
 
-bl_list = {}
-burn_levels = {
+local hittable
+
+svo.bl_list = {}
+svo.burn_levels = {
   "ablaze",
   "severe",
   "extreme",
@@ -16,9 +19,11 @@ burn_levels = {
   "melting"
 }
 
+local bl_list, burn_levels = svo.bl_list, svo.burn_levels
+
 function sk.bl_checkburncounter()
   -- make the announces work with a singleprompt
-  local echof = itf
+  local echof = svo.itf
   moveCursor(0, getLineNumber())
 
   -- we'll only ever have one name here so far. Actually add up the hits here and store them
@@ -37,7 +42,7 @@ function sk.bl_checkburncounter()
   elseif action == "only ablaze" and bl_list[who].level == 0 then
     bl_list[who].level = 1
   elseif action == "add to all" then
-    for person, data in pairs(bl_list) do
+    for _, data in pairs(bl_list) do
       if data.dehydrate ~= 0 or data.level == 0 then
         data.level = data.level + 1
         if data.level > #burn_levels then data.level = #burn_levels end
@@ -54,10 +59,10 @@ function sk.bl_checkburncounter()
       killTimer(bl_list[who].dehydrate)
     end
 
-    bl_list[who].dehydrate = tempTimer(45+getping(), function()
+    bl_list[who].dehydrate = tempTimer(45+svo.getping(), function()
       bl_list[who].dehydrate = 0
       echof("\n%s's dehydrate wore off.\n", who)
-      showprompt()
+      svo.showprompt()
     end)
   elseif action == "lost dehydrate" then
     if bl_list[who].dehydrate ~= 0 then
@@ -70,7 +75,7 @@ function sk.bl_checkburncounter()
       bl_list[who].level = 0
     end
   else
-    debugf("bl_checkburncounter: unknown action '%s'", action)
+    svo.debugf("bl_checkburncounter: unknown action '%s'", action)
   end
 
   raiseEvent("svo burncounter hit", who)
@@ -90,7 +95,7 @@ function sk.bl_checkburncounter()
         end
       end
 
-      return concatand(t)
+      return svo.concatand(t)
     end
 
     local burnsstring = getburnlevels()
@@ -102,42 +107,42 @@ function sk.bl_checkburncounter()
   -- turn things off
   hittable = {}
   disableTrigger("svobl Don't register")
-  signals.after_prompt_processing:block(sk.bl_checkburncounter)
+  svo.signals.after_prompt_processing:block(sk.bl_checkburncounter)
 end
 
-function bl_count(who, what)
+function svo.bl_count(who, what)
   bl_list[who] = bl_list[who] or {level = 0, dehydrate = 0}
-  lasthit = who
+  svo.lasthit = who
 
   hittable[who] = what
-  signals.after_prompt_processing:unblock(sk.bl_checkburncounter)
+  svo.signals.after_prompt_processing:unblock(sk.bl_checkburncounter)
   enableTrigger("svokl Don't register")
 end
 
-signals.after_prompt_processing:connect(sk.bl_checkburncounter)
-signals.after_prompt_processing:block(sk.bl_checkburncounter)
+svo.signals.after_prompt_processing:connect(sk.bl_checkburncounter)
+svo.signals.after_prompt_processing:block(sk.bl_checkburncounter)
 
-function bl_ignore()
+function svo.bl_ignore()
   if not next(hittable) then return end
   table.remove(select(2, next(hittable)))
 end
 
-function bl_reset(whom, quiet)
-  if defc.dragonform then return end
+function svo.bl_reset(whom, quiet)
+  if svo.defc.dragonform then return end
 
   if whom then whom = string.title(whom) end
-  local echof = echof
+  local echof = svo.echof
   if quiet then echof = function() end end
 
 
   if whom == "All" then
     bl_list = {}
     echof("Reset everyone's burn status.")
-  elseif not whom and lasthit then
-    bl_list[lasthit] = {level = 0, dehydrate = 0}
-    echof("Reset %s's burn status.", lasthit)
-  elseif t[whom:lower()] then
-    if not lasthit or not bl_list[lasthit] then
+  elseif not whom and svo.lasthit then
+    bl_list[svo.lasthit] = {level = 0, dehydrate = 0}
+    echof("Reset %s's burn status.", svo.lasthit)
+  elseif bl_list[whom:lower()] then
+    if not svo.lasthit or not bl_list[svo.lasthit] then
       echof("Not keeping track of anyone yet to reset their burn.")
     end
   elseif whom then
@@ -153,14 +158,14 @@ function bl_reset(whom, quiet)
   raiseEvent("svo burncounter reset")
 end
 
-function bl_show()
-  if not next(bl_list) then echof("burncounter: Not keeping track of anyone yet."); return end
+function svo.bl_show()
+  if not next(bl_list) then svo.echof("burncounter: Not keeping track of anyone yet."); return end
 
-  setFgColor(unpack(getDefaultColorNums))
+  setFgColor(unpack(svo.getDefaultColorNums))
   for person, burnt in pairs(bl_list) do
     echo("---"..person.." ") fg("a_darkgrey")
     echoLink("(reset)", 'svo.bl_reset"'..person..'"', "Reset burn status for "..person, true)
-    setFgColor(unpack(getDefaultColorNums))
+    setFgColor(unpack(svo.getDefaultColorNums))
     echo(string.rep("-", (92-#person-12))) -- 12 for the 'reset' link
     echo"\n"
     echo(string.format(" burn level: %s (%s), dehydrated: %s", burn_levels[burnt.level] or 'none', burnt.level, (burnt.dehydrate == 0 and "no" or "yes")))
@@ -169,4 +174,4 @@ function bl_show()
   echo(string.rep("-", 91))
 end
 
-echof("Loaded svo Knight burncounter.")
+svo.echof("Loaded svo Knight burncounter.")
