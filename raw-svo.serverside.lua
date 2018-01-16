@@ -6,6 +6,10 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
+local sys, affs, defdefup, defkeepup, signals = svo.sys, svo.affs, svo.defdefup, svo.defkeepup, svo.signals
+local conf, sk, me, defs = svo.conf, svo.sk, svo.me, svo.defs
+local stats, serverignore = svo.stats, svo.serverignore
+
 -- update serverside prios in general
 signals["svo prio changed"]:connect(function()
   if not conf.serverside then return end
@@ -15,11 +19,11 @@ signals["svo prio changed"]:connect(function()
   end
 end)
 
--- update serverside prios with custom dict overrides, ie for health which is not on serverside prios
+-- update serverside prios with custom svo.dict overrides, ie for health which is not on serverside prios
 signals["svo prio changed"]:connect(function(action, balance, newprio, slowcuring)
-  if not (conf.serverside and dict[action][balance].onprioswitch) then return end
+  if not (conf.serverside and svo.dict[action][balance].onprioswitch) then return end
 
-  dict[action][balance].onprioswitch(newprio, slowcuring)
+  svo.dict[action][balance].onprioswitch(newprio, slowcuring)
 end)
 
 -- start out with blank prios, so a diff on switch to basic has the right stuff
@@ -31,14 +35,14 @@ end)
 function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache)
   local isdefence, priority, gamename
 
-  if dict[action][balance].def then
+  if svo.dict[action][balance].def then
     isdefence = "defence "
     priority = rdefs[action]
-  elseif dict[action].aff then
+  elseif svo.dict[action].aff then
     isdefence = ""
     priority = raffs[action]
   else -- an action that's not an aff or a def - ignore
-    debugf("(e!) sk.sendpriorityswitch: quitting, not an aff or a def")
+    svo.debugf("(e!) sk.sendpriorityswitch: quitting, not an aff or a def")
     return
   end
 
@@ -47,46 +51,46 @@ function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache)
 
   -- if already in cache at same priority, don't send
   if cache[action] == priority then
-    debugf("%s is already on %s, ignoring", action, cache[action])
+    svo.debugf("%s is already on %s, ignoring", action, cache[action])
     return
   else
     cache[action] = priority
   end
 
-  gamename = dict[action].gamename and dict[action].gamename or action
+  gamename = svo.dict[action].gamename and svo.dict[action].gamename or action
 
   local command = string.format("priority %s%s %s", isdefence, gamename, priority)
 
-  sendcuring(command)
+  svo.sendcuring(command)
 end
 
 function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache)
   local isdefence, priority, gamename
 
-  if dict[action][balance].def then
+  if svo.dict[action][balance].def then
     isdefence = "defence "
     priority = "reset"
-  elseif dict[action].aff then
+  elseif svo.dict[action].aff then
     isdefence = ""
     priority = 26
   else -- an action that's not an aff or a def - ignore
-    debugf("(e!) sk.sendpriorityignore: quitting, not an aff or a def")
+    svo.debugf("(e!) sk.sendpriorityignore: quitting, not an aff or a def")
     return
   end
 
   -- if already in cache at same priority, don't send
   if cache[action] == "ignore" then
-    debugf("%s is already on %s, ignoring", action, cache[action])
+    svo.debugf("%s is already on %s, ignoring", action, cache[action])
     return
   else
     cache[action] = "ignore"
   end
 
-  gamename = dict[action].gamename and dict[action].gamename or action
+  gamename = svo.dict[action].gamename and svo.dict[action].gamename or action
 
   local command = string.format("priority %s%s %s", isdefence, gamename, priority)
 
-  sendcuring(command)
+  svo.sendcuring(command)
 end
 
 function sk.updateserversideprios()
@@ -95,12 +99,12 @@ function sk.updateserversideprios()
   startStopWatch(sk.updateserverwatch)
 
   -- don't notify of prio changes until the system is loaded, as they can get shuffled around a bit
-  if not systemloaded then return end
+  if not svo.systemloaded then return end
 
   local afterstate = sk.getafterstateprios()
-  debugf("sk.updateserverwatch sk.getafterstateprios: %s", getStopWatchTime(sk.updateserverwatch))
+  svo.debugf("sk.updateserverwatch sk.getafterstateprios: %s", getStopWatchTime(sk.updateserverwatch))
 
-  local basictableindexdiff, valid_sync_action = basictableindexdiff, valid_sync_action
+  local basictableindexdiff = svo.basictableindexdiff
 
   for balance, data in pairs(sk.priosbeforechange) do
     if balance == "slowcuring" then
@@ -113,7 +117,7 @@ function sk.updateserversideprios()
       local diff = sk.splitbals(diffslow)
 
       -- get the new list of prios, sorted in importance
-      local neworderslow = prio.getsortedlist(balance)
+      local neworderslow = svo.prio.getsortedlist(balance)
       -- split the action_balance actions into separate balances
       local neworderbals = sk.splitbals(neworderslow)
 
@@ -137,11 +141,11 @@ function sk.updateserversideprios()
           for _, action in pairs(diff[balance]) do
             -- check if this is something actually on prios. an aff could be ignored, a def not on keepup
             if raffs[action] or rdefs[action] then
-              if needtoswitch then sendc("curingset switch slowcuring"); needtoswitch = false; needtoswitchback = true end
+              if needtoswitch then svo.sendc("curingset switch slowcuring"); needtoswitch = false; needtoswitchback = true end
 
               sk.sendpriorityswitch(action, balance, raffs, rdefs, priochangecache[balance])
             elseif rignoreaffs[action] or rignoredefs[action] then
-              if needtoswitch then sendc("curingset switch slowcuring"); needtoswitch = false; needtoswitchback = true end
+              if needtoswitch then svo.sendc("curingset switch slowcuring"); needtoswitch = false; needtoswitchback = true end
 
               sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, priochangecache[balance])
             end
@@ -150,16 +154,16 @@ function sk.updateserversideprios()
       end
 
       if needtoswitchback then
-        sendc("curingset switch normal")
+        svo.sendc("curingset switch normal")
       end
     else
       sk.priochangecache[balance] = sk.priochangecache[balance] or {}
 
       -- make the diff of snapshots
       local diff = basictableindexdiff(data.data, afterstate[balance].newdata)
-      -- if next(diff) then debugf("%s diff: %s", balance, pl.pretty.write(diff)) end
+      -- if next(diff) then svo.debugf("%s diff: %s", balance, pl.pretty.write(diff)) end
       -- get the new list of prios, sorted in importance
-      local neworder = prio.getsortedlist(balance)
+      local neworder = svo.prio.getsortedlist(balance)
       local affs, defs, ignoreaffs, ignoredefs = sk.splitdefs(balance, neworder)
       local raffs, rdefs, rignoreaffs, rignoredefs = {}, {}, {}, {}
       for index, aff in pairs(affs) do raffs[aff] = index end
@@ -177,18 +181,18 @@ function sk.updateserversideprios()
       for _, action in pairs(diff) do
         -- check if this is something actually on prios. an aff could be ignored, a def not on keepup
         if raffs[action] or rdefs[action] then
-          if needtoswitch then sendc("curingset switch normal"); needtoswitch = false; needtoswitchback = true end
+          if needtoswitch then svo.sendc("curingset switch normal"); needtoswitch = false; needtoswitchback = true end
 
           sk.sendpriorityswitch(action, balance, raffs, rdefs, sk.priochangecache[balance])
         elseif rignoreaffs[action] or rignoredefs[action] then
-          if needtoswitch then sendc("curingset switch normal"); needtoswitch = false; needtoswitchback = true end
+          if needtoswitch then svo.sendc("curingset switch normal"); needtoswitch = false; needtoswitchback = true end
 
           sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, sk.priochangecache[balance])
         end
       end
 
       if needtoswitchback then
-        sendc("curingset switch slowcuring")
+        svo.sendc("curingset switch slowcuring")
       end
     end
   end
@@ -196,15 +200,15 @@ function sk.updateserversideprios()
   sk.priochangetimer = nil
 
   -- save new state for next change
-  debugf("sk.updateserverwatch sk.getbeforestateprios: %s", getStopWatchTime(sk.updateserverwatch))
+  svo.debugf("sk.updateserverwatch sk.getbeforestateprios: %s", getStopWatchTime(sk.updateserverwatch))
   sk.priosbeforechange = sk.getbeforestateprios()
 
-  debugf("sk.updateserverwatch: %s", stopStopWatch(sk.updateserverwatch))
+  svo.debugf("sk.updateserverwatch: %s", stopStopWatch(sk.updateserverwatch))
 end
 
 -- splits slowcuring prios by balance
 function sk.splitbals(list)
-  local balances, valid_sync_action = {}, valid_sync_action
+  local balances, valid_sync_action = {}, svo.valid_sync_action
 
   for i = 1, #list do
     local action_balance = list[i]
@@ -226,14 +230,14 @@ end
 -- its custom onservereignore function returns true
 function sk.shouldignoreserverside(action)
   return conf.serverside and (
-    ignore[action] or
+    svo.ignore[action] or
     not serverignore[action] or
     (not sys.deffing and defkeepup[defs.mode][action] == false) or
     (sys.deffing and defdefup[defs.mode][action] == false) or
-    (dict[action].onservereignore and dict[action].onservereignore())
+    (svo.dict[action].onservereignore and svo.dict[action].onservereignore())
   ) -- false so afflictions are okay, which are a nil
 end
-shouldignoreserverside = sk.shouldignoreserverside
+svo.shouldignoreserverside = sk.shouldignoreserverside
 
 function sk.handleserversideswitch()
   if not sk.priochangetimer then
@@ -242,7 +246,7 @@ function sk.handleserversideswitch()
 end
 
 function sk.handleserversideswitch_keepup(defmode, action)
-  if not dict[action] then return end
+  if not svo.dict[action] then return end
 
   -- don't do anything for the current defences mode
   if defmode ~= defs.mode then return end
@@ -256,7 +260,7 @@ end
 -- also remove uncurable actions that aren't affs, and defs that
 -- aren't on defup or keepup
 function sk.splitdefs(balance, list)
-  local defs, disableddefs, disabledaffs, dict, defmode, tremove = {}, {}, {}, dict, svo.defs.mode, table.remove
+  local defslist, disableddefs, disabledaffs, dict, defmode = {}, {}, {}, svo.dict, svo.defs.mode
 
   -- prune list to only be a list of affs, save defs and disable defs into another list
   -- iterate backwards, so we can remove items from the list safely
@@ -267,7 +271,7 @@ function sk.splitdefs(balance, list)
     if dict[action][balance].def then
       -- check that it's not undeffable in-game and on keepup
       if not dict[action][balance].undeffable and ((sys.deffing and defdefup[defmode][action]) or (not sys.deffing and defkeepup[defmode][action])) and not sk.shouldignoreserverside(action) then
-        defs[i] = list[i]
+        defslist[i] = list[i]
         list[i] = nil
       -- if it's off keepup, send to another list so those defs get ignored
       elseif not dict[action][balance].undeffable and sk.shouldignoreserverside(action) then
@@ -289,7 +293,7 @@ function sk.splitdefs(balance, list)
     end
   end
 
-  return list, defs, disabledaffs, disableddefs
+  return list, defslist, disabledaffs, disableddefs
 end
 
 
@@ -307,14 +311,15 @@ function sk.getbeforestateprios()
     "misc",
     "slowcuring",
   }
-  local make_prio_tablef = make_prio_tablef
+
+  local make_prio_tablef = svo.make_prio_tablef
 
   for _, balance in ipairs(importables) do
     beforestate[balance] = {}
 
     if balance == "slowcuring" then
       -- get the before state for diffing
-      local data = make_sync_prio_tablef("%s_%s", function(action)
+      local data = svo.make_sync_prio_tablef("%s_%s", function(action)
         return not sk.shouldignoreserverside(action)
       end, { focus = true })
       beforestate[balance] = {data = data}
@@ -344,24 +349,24 @@ function sk.getblankbeforestateprios()
     "misc",
     "slowcuring",
   }
-  local make_prio_tablef = make_prio_tablef
+  local make_prio_tablef = svo.make_prio_tablef
 
   for _, balance in ipairs(importables) do
     beforestate[balance] = {}
 
     if balance == "slowcuring" then
       -- get the before state for diffing
-      local data = make_sync_prio_tablef("%s_%s", nil, { focus = true })
+      local data = svo.make_sync_prio_tablef("%s_%s", nil, { focus = true })
       -- set all prios to negative, so things get set or ignored serverside properly
       local nullify, c = {}, -1
-      for k,v in pairs(data) do nullify[c] = v; c = c - 1 end
+      for _,v in pairs(data) do nullify[c] = v; c = c - 1 end
       beforestate[balance] = {data = nullify}
     else
       -- get the before state for diffing
       local data = make_prio_tablef(balance)
       -- set all prios to negative, so things get set or ignored serverside properly
       local nullify, c = {}, -1
-      for k,v in pairs(data) do nullify[c] = v; c = c - 1 end
+      for _,v in pairs(data) do nullify[c] = v; c = c - 1 end
       beforestate[balance] = {data = nullify}
     end
   end
@@ -382,14 +387,15 @@ function sk.getafterstateprios()
     "misc",
     "slowcuring",
   }
-  local make_prio_tablef = make_prio_tablef
+
+  local make_prio_tablef = svo.make_prio_tablef
 
   for _, balance in ipairs(importables) do
     afterstate[balance] = {}
 
     if balance == "slowcuring" then
       -- get the new state
-      local newdata = make_sync_prio_tablef("%s_%s", function(action)
+      local newdata = svo.make_sync_prio_tablef("%s_%s", function(action)
         return not sk.shouldignoreserverside(action)
       end, { focus = true })
       -- create an action - prio table for retrieval of location using diffs
@@ -412,16 +418,16 @@ function sk.getafterstateprios()
 end
 
 function sk.notifypriodiffs(beforestate, afterstate)
-  local basictableindexdiff = basictableindexdiff
+  local basictableindexdiff = svo.basictableindexdiff
 
   -- don't notify of prio changes until the system is loaded, as they can get shuffled around a bit
-  if not systemloaded then return end
+  if not svo.systemloaded then return end
 
   for balance, data in pairs(beforestate) do
     if balance == "slowcuring" then
       -- make the diff of snapshots
       local diff = basictableindexdiff(data.data, afterstate[balance].newdata)
-      local valid_sync_action = valid_sync_action
+      local valid_sync_action = svo.valid_sync_action
 
       -- now only notify for the differences
       for _, a in pairs(diff) do
@@ -446,7 +452,7 @@ function sk.getallserversideactions()
   local type = type
 
   local actions = {}
-  for action, balances in pairs(dict) do
+  for action, balances in pairs(svo.dict) do
     for balance, data in pairs(balances) do
       if type(data) == "table" and balance ~= "waitingfor" and balance ~= "aff" and balance ~= "gone" and balance ~= "happened" and not data.uncurable and not data.undeffable then
         actions[action] = true
@@ -455,7 +461,7 @@ function sk.getallserversideactions()
   end
 
   local actionslist = {}
-  for k,v in pairs(actions) do
+  for k,_ in pairs(actions) do
     actionslist[#actionslist+1] = k
   end
 
@@ -470,9 +476,9 @@ signals.sync:connect(function ()
   if not conf.serverside then return end
 
   if sys.sync then
-    sendc("curingset switch slowcuring")
+    svo.sendc("curingset switch slowcuring")
   else
-    sendc("curingset switch normal")
+    svo.sendc("curingset switch normal")
   end
 end)
 
@@ -488,12 +494,12 @@ signals["svo config changed"]:connect(function(config)
     }
     -- sync everything
     sk.priosbeforechange = sk.getblankbeforestateprios()
-    sendcuring("PRIORITY RESET")
+    svo.sendcuring("PRIORITY RESET")
     sk.priochangetimer = true
     sk.updateserversideprios()
     -- sync all special things like health
-    for action, actiont in pairs(dict) do
-      for balance, balancet in pairs(actiont) do
+    for _, actiont in pairs(svo.dict) do
+      for _, balancet in pairs(actiont) do
         if type(balancet) == "table" and balancet.onprioswitch then
           balancet.onprioswitch()
         end
@@ -502,83 +508,85 @@ signals["svo config changed"]:connect(function(config)
 
     -- initial sync of some config options.
     local option
-    for _, conf in ipairs({"healthaffsabove", "mosshealth", "mossmana"}) do
-      if conf[conf] == true then option = "on"
-      elseif conf[conf] == false then option = "off"
+    for _, optionname in ipairs({"healthaffsabove", "mosshealth", "mossmana"}) do
+      if conf[optionname] == true then option = "on"
+      elseif conf[optionname] == false then option = "off"
       else
-        option = conf[conf]
+        option = conf[optionname]
       end
 
-      sendcuring(conf.. " "..option)
+      svo.sendcuring(optionname.. " "..option)
     end
 
     if conf.keepup then
-      sendcuring("defences on")
+      svo.sendcuring("defences on")
     else
-      sendcuring("defences off")
+      svo.sendcuring("defences off")
     end
 
     sk.togglefocusserver()
     sk.toggleclotserver()
     sk.toggleinsomniaserver()
 
-    if sk.canclot() and conf.clot then sendcuring("clot on") else sendcuring("clot off") end
-    sendcuring("clotat "..conf.bleedamount)
+    if sk.canclot() and conf.clot then svo.sendcuring("clot on") else svo.sendcuring("clot off") end
+    svo.sendcuring("clotat "..conf.bleedamount)
 
     if not serverignore.healhealth then
-      sendcuring("siphealth 0")
+      svo.sendcuring("siphealth 0")
       sk.priochangecache.special.healhealth = 0
     elseif serverignore.healhealth then
-      sendcuring("siphealth "..conf.siphealth)
+      svo.sendcuring("siphealth "..conf.siphealth)
       sk.priochangecache.special.healhealth = conf.siphealth
     end
 
     if not serverignore.healmana then
-      sendcuring("sipmana 0")
+      svo.sendcuring("sipmana 0")
       sk.priochangecache.special.healmana = 0
     elseif serverignore.healmana then
-      sendcuring("sipmana "..conf.sipmana)
+      svo.sendcuring("sipmana "..conf.sipmana)
       sk.priochangecache.special.healmana = conf.sipmana
     end
 
     if conf.curemethod == "transonly" then
-      sendcuring("transmutation on")
+      svo.sendcuring("transmutation on")
     elseif conf.curemethod == "conconly" then
-      sendcuring("transmutation off")
+      svo.sendcuring("transmutation off")
     elseif conf.curemethod == "prefertrans" then
-      sendcuring("transmutation on")
-      echof("Setting in-game curemethod to 'transmutation cures only', as serverside doesn't support mixed cures.")
+      svo.sendcuring("transmutation on")
+      svo.echof("Setting in-game curemethod to 'transmutation cures only', as serverside doesn't support mixed cures.")
     elseif conf.curemethod == "preferconc" then
-       sendcuring("transmutation off")
-       echof("Setting in-game curemethod to 'concoctions cures only', as serverside doesn't support mixed cures.")
+       svo.sendcuring("transmutation off")
+       svo.echof("Setting in-game curemethod to 'concoctions cures only', as serverside doesn't support mixed cures.")
     end
 
-    sendcuring("manathreshold "..conf.manause)
+    svo.sendcuring("manathreshold "..conf.manause)
   end
 end)
 signals["svo config changed"]:connect(function(config)
   if not (conf.serverside and config == "healthaffsabove") then return end
 
+  local option
   if conf.healthaffsabove == true then option = "on"
   elseif conf.healthaffsabove == false then option = "off"
   else
     option = conf.healthaffsabove
   end
 
-  sendcuring("healthaffsabove "..option)
+  svo.sendcuring("healthaffsabove "..option)
 end)
 
-for _, conf in ipairs({"mosshealth", "mossmana"}) do
+for _, optionname in ipairs({"mosshealth", "mossmana"}) do
   signals["svo config changed"]:connect(function(config)
-    if not (conf.serverside and config == conf) then return end
+    if not (conf.serverside and config == optionname) then return end
 
+    local option
     if conf.moss then
-      option = conf[conf]
+      option = conf[optionname]
     else
       option = "0"
     end
 
-    sendcuring(conf .." "..option)
+    svo.sendcuring(optionname .." "..option)
   end)
 end
 
@@ -587,11 +595,11 @@ signals["svo config changed"]:connect(function(config)
   if not (conf.serverside and config == "moss") then return end
 
   if conf.moss then
-    sendcuring("mosshealth "..conf.mosshealth)
-    sendcuring("mossmana "..conf.mossmana)
+    svo.sendcuring("mosshealth "..conf.mosshealth)
+    svo.sendcuring("mossmana "..conf.mossmana)
   else
-    sendcuring("mosshealth 0")
-    sendcuring("mossmana 0")
+    svo.sendcuring("mosshealth 0")
+    svo.sendcuring("mossmana 0")
   end
 
 end)
@@ -600,10 +608,10 @@ signals["svo config changed"]:connect(function(config)
   if not (conf.serverside and config == "clot") then return end
 
   if sk.canclot() and conf.clot and not sk.clotting_on_serverside then
-    sendcuring("clot on")
+    svo.sendcuring("clot on")
     sk.clotting_on_serverside = true
   elseif not (sk.canclot() and conf.clot) and sk.clotting_on_serverside then
-    sendcuring("clot off")
+    svo.sendcuring("clot off")
     sk.clotting_on_serverside = false
   end
 end)
@@ -613,10 +621,10 @@ signals["svo config changed"]:connect(function(config)
   if not (conf.serverside and config == "siphealth") then return end
 
   if not serverignore.healhealth and sk.priochangecache.special.healhealth ~= 0 then
-    sendcuring("siphealth 0")
+    svo.sendcuring("siphealth 0")
     sk.priochangecache.special.healhealth = 0
   elseif serverignore.healhealth and sk.priochangecache.special.healhealth ~= conf.siphealth then
-    sendcuring("siphealth "..conf.siphealth)
+    svo.sendcuring("siphealth "..conf.siphealth)
     sk.priochangecache.special.healhealth = conf.siphealth
   end
 end)
@@ -624,10 +632,10 @@ signals["svo serverignore changed"]:connect(function(config)
   if not (conf.serverside and config == "healhealth") then return end
 
   if not serverignore.healhealth and sk.priochangecache.special.healhealth ~= 0 then
-    sendcuring("siphealth 0")
+    svo.sendcuring("siphealth 0")
     sk.priochangecache.special.healhealth = 0
   elseif serverignore.healhealth and sk.priochangecache.special.healhealth ~= conf.siphealth then
-    sendcuring("siphealth "..conf.siphealth)
+    svo.sendcuring("siphealth "..conf.siphealth)
     sk.priochangecache.special.healhealth = conf.siphealth
   end
 end)
@@ -637,10 +645,10 @@ signals["svo config changed"]:connect(function(config)
   if not (conf.serverside and config == "sipmana") then return end
 
   if not serverignore.healmana and sk.priochangecache.special.healmana ~= 0 then
-    sendcuring("sipmana 0")
+    svo.sendcuring("sipmana 0")
     sk.priochangecache.special.healmana = 0
   elseif serverignore.healmana and sk.priochangecache.special.healmana ~= conf.sipmana then
-    sendcuring("sipmana "..conf.sipmana)
+    svo.sendcuring("sipmana "..conf.sipmana)
     sk.priochangecache.special.healmana = conf.sipmana
   end
 end)
@@ -648,10 +656,10 @@ signals["svo serverignore changed"]:connect(function(config)
   if not (conf.serverside and config == "healmana") then return end
 
   if not serverignore.healmana and sk.priochangecache.special.healmana ~= 0 then
-    sendcuring("sipmana 0")
+    svo.sendcuring("sipmana 0")
     sk.priochangecache.special.healmana = 0
   elseif serverignore.healmana and sk.priochangecache.special.healmana ~= conf.sipmana then
-    sendcuring("sipmana "..conf.sipmana)
+    svo.sendcuring("sipmana "..conf.sipmana)
     sk.priochangecache.special.healmana = conf.sipmana
   end
 end)
@@ -660,53 +668,53 @@ end)
 signals["svo config changed"]:connect(function(config)
   if not (conf.serverside and config == "bleedamount") then return end
 
-  sendcuring("clotat "..conf.bleedamount)
+  svo.sendcuring("clotat "..conf.bleedamount)
 end)
 
 -- manause
 signals["svo config changed"]:connect(function(config)
   if not (conf.serverside and config == "manause") then return end
 
-  sendcuring("manathreshold "..conf.manause)
+  svo.sendcuring("manathreshold "..conf.manause)
 end)
 
 -- curemethod
 signals["svo config changed"]:connect(function(config)
-  if not (conf.serverside and config == "curemethod" and not logging_in) then return end
+  if not (conf.serverside and config == "curemethod" and not svo.logging_in) then return end
 
   if conf.curemethod == "transonly" then
-    sendcuring("transmutation on")
+    svo.sendcuring("transmutation on")
   elseif conf.curemethod == "conconly" then
-    sendcuring("transmutation off")
+    svo.sendcuring("transmutation off")
   elseif conf.curemethod == "prefertrans" then
-    sendcuring("transmutation on")
-    echof("Setting in-game curemethod to 'transmutation cures only', as serverside doesn't support mixed cures.")
+    svo.sendcuring("transmutation on")
+    svo.echof("Setting in-game curemethod to 'transmutation cures only', as serverside doesn't support mixed cures.")
   elseif conf.curemethod == "preferconc" then
-     sendcuring("transmutation off")
-     echof("Setting in-game curemethod to 'concoctions cures only', as serverside doesn't support mixed cures.")
+     svo.sendcuring("transmutation off")
+     svo.echof("Setting in-game curemethod to 'concoctions cures only', as serverside doesn't support mixed cures.")
   end
 end)
 
 -- pause
 signals["svo config changed"]:connect(function(config)
-  if not (conf.serverside and config == "paused" and not logging_in) then return end
+  if not (conf.serverside and config == "paused" and not svo.logging_in) then return end
 
   -- send right away, so chained commands are done in proper order
   if conf.paused then
-    force_send("curing off")
+    svo.force_send("curing off")
   else
-    force_send("curing on")
+    svo.force_send("curing on")
   end
 end)
 
 -- keepup
 signals["svo config changed"]:connect(function(config)
-  if not (conf.serverside and config == "keepup" and not logging_in) then return end
+  if not (conf.serverside and config == "keepup" and not svo.logging_in) then return end
 
   if conf.keepup then
-    sendcuring("defences on")
+    svo.sendcuring("defences on")
   else
-    sendcuring("defences off")
+    svo.sendcuring("defences off")
   end
 end)
 
@@ -779,10 +787,10 @@ function sk.togglefocusserver()
   if not (conf.serverside and sk.logged_in) then return end
 
   if sk.canfocus() and conf.focus and not sk.priochangecache.special.focustoggle then
-    sendcuring("focus on")
+    svo.sendcuring("focus on")
     sk.priochangecache.special.focustoggle = true
   elseif (not conf.focus or (conf.focus and not sk.canfocus())) and sk.priochangecache.special.focustoggle then
-    sendcuring("focus off")
+    svo.sendcuring("focus off")
     sk.priochangecache.special.focustoggle = false
   end
 end
@@ -803,10 +811,10 @@ function sk.toggleclotserver()
   if not conf.serverside then return end
 
   if sk.canclot() and conf.clot and not sk.clotting_on_serverside then
-    sendcuring("clot on")
+    svo.sendcuring("clot on")
     sk.clotting_on_serverside = true
   elseif not (sk.canclot() and conf.clot) and sk.clotting_on_serverside then
-    sendcuring("clot off")
+    svo.sendcuring("clot off")
     sk.clotting_on_serverside = false
   end
 end
@@ -819,10 +827,10 @@ function sk.toggleinsomniaserver()
   if not (conf.serverside and sk.logged_in) then return end
 
   if conf.insomnia and not sk.priochangecache.special.insomniatoggle then
-    sendcuring("insomnia on")
+    svo.sendcuring("insomnia on")
     sk.priochangecache.special.insomniatoggle = true
   elseif not conf.insomnia and sk.priochangecache.special.insomniatoggle then
-    sendcuring("insomnia off")
+    svo.sendcuring("insomnia off")
     sk.priochangecache.special.insomniatoggle = false
   end
 end
@@ -831,28 +839,28 @@ signals["svo config changed"]:connect(sk.toggleinsomniaserver)
 --
 
 
-function setupserverside()
+function svo.setupserverside()
   if not conf.serverside then return end
 
-  sendc("curingset new normal")
-  sendc("curingset new slowcuring")
+  svo.sendc("curingset new normal")
+  svo.sendc("curingset new slowcuring")
 
-  if serversidesetup then killTimer(serversidesetup) end
-  serversidesetup = tempTimer(5+getping(), function()
-    serversidesetup = nil
+  if svo.serversidesetup then killTimer(svo.serversidesetup) end
+  svo.serversidesetup = tempTimer(5+svo.getping(), function()
+    svo.serversidesetup = nil
   end)
 end
-signals.charname:connect(setupserverside)
-signals.gmcpcharname:connect(setupserverside)
+signals.charname:connect(svo.setupserverside)
+signals.gmcpcharname:connect(svo.setupserverside)
 
-function hitcuringsetlimit()
-  if not serversidesetup then return end
+function svo.hitcuringsetlimit()
+  if not svo.serversidesetup then return end
 
   if not svo.conf.serverside then return end
 
   echo("\n")
-  echofn("You don't have enough curingset slots to enable serverside use - Svof requires two. View your curingsets with ")
-  setFgColor(unpack(getDefaultColorNums))
+  svo.echofn("You don't have enough curingset slots to enable serverside use - Svof requires two. View your curingsets with ")
+  setFgColor(unpack(svo.getDefaultColorNums))
   setUnderline(true)
   echoLink("CURINGSET LIST", 'send"curingset list"', "CURINGSET LIST", true)
   setUnderline(false)
@@ -862,17 +870,17 @@ function hitcuringsetlimit()
   setUnderline(false)
   echo(".\n")
 
-  tntf_set("serverside", "off", true)
+  svo.tntf_set("serverside", "off", true)
 end
 
-function hitaliaslimit()
-  if not serversidesetup then return end
+function svo.hitaliaslimit()
+  if not svo.serversidesetup then return end
 
   if not svo.conf.serverside then return end
 
   echo("\n")
-  echofn("You haven't got enough space for Svof's two serverside aliases - view list with ")
-  setFgColor(unpack(getDefaultColorNums))
+  svo.echofn("You haven't got enough space for Svof's two serverside aliases - view list with ")
+  setFgColor(unpack(svo.getDefaultColorNums))
   setUnderline(true)
   echoLink("ALIAS LIST", 'send"alias list"', "ALIAS LIST", true)
   setUnderline(false)
@@ -882,5 +890,5 @@ function hitaliaslimit()
   setUnderline(false)
   echo(".\n")
 
-  tntf_set("serverside", "off", true)
+  svo.tntf_set("serverside", "off", true)
 end

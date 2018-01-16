@@ -54,7 +54,7 @@ svo.sk.checking_herb_ai = function()
   return (svo.doingaction"checkparalysis" or svo.doingaction"checkasthma" or svo.doingaction"checkimpatience") and true or false
 end
 
-svo.force_send = send
+svo.force_send = _G.send
 
 -- new incoming balances that are tracked between the lines and the prompt
 svo.newbals = {}
