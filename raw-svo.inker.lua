@@ -1,4 +1,4 @@
--- Svof (c) 2011-2015 by Vadim Peretokin
+-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -6,7 +6,7 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-ti_version = "1.1"
+svo.ti_version = "1.1"
 
 local limb_order = {"head", "torso", "right arm", "left arm", "right leg", "left leg", "back"}
 local tattoos = {
@@ -264,11 +264,11 @@ svo.ti_inking = false
 function svo.ti_ink(order)
   local anotherperson = order:match(" on (%w+)$")
   if anotherperson then order = order:sub(1, #order-#anotherperson-4) end
-  local tattoos = string.split(order, ",")
-  for i = 1, #tattoos do tattoos[i] = string.trim(tattoos[i]) end
+  local tattoosorder = string.split(order, ",")
+  for i = 1, #tattoosorder do tattoosorder[i] = string.trim(tattoosorder[i]) end
 
-  svo.ti_inking = {on = anotherperson or "me", tattoos = tattoos, ink_counter = 1, tattoo_counter = 1}
-  svo.echof("Going to ink %s on %s.", concatand(ti_inking.tattoos), svo.ti_inking.on)
+  svo.ti_inking = {on = anotherperson or "me", tattoos = tattoosorder, ink_counter = 1, tattoo_counter = 1}
+  svo.echof("Going to ink %s on %s.", svo.concatand(svo.ti_inking.tattoos), svo.ti_inking.on)
   svo.showprompt() echo"\n"
   svo.app("on")
 
@@ -283,7 +283,7 @@ local function doneinking()
     end
     if #needtotouch > 0 then
       if svo.ti_inking.on ~= "me" then
-        if svo.conf.telltouch then send(string.format("say to %s you should now touch your %s tattoo%s", svo.ti_inking.on, concatand(needtotouch), (#needtotouch == 1 and "" or "s"))) end
+        if svo.conf.telltouch then send(string.format("say to %s you should now touch your %s tattoo%s", svo.ti_inking.on, svo.concatand(needtotouch), (#needtotouch == 1 and "" or "s"))) end
       end
     end
 
@@ -307,7 +307,7 @@ function svo.ti_cantink(limb)
 end
 
 function svo.ti_finishedinking()
-  if not ti_inking then return end
+  if not svo.ti_inking then return end
 
   if table.contains({"moss", "moon", "boar", "megalith", "ox"}, svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter]) then
     send("touch "..svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter])
@@ -331,11 +331,11 @@ function svo.ti_inknext()
     svo.showprompt()
   elseif svo.ti_inking.ink_counter == 1 then
     for _, t in pairs(tattoos[svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter]]) do
-      sendc(string.format("outr %d %s", t[1], t[2]), false)
+      svo.sendc(string.format("outr %d %s", t[1], t[2]), false)
     end
   end
 
-  sendc(string.format("ink %s on %s of %s", svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter], limb_order[svo.ti_inking.ink_counter], svo.ti_inking.on))
+  svo.sendc(string.format("ink %s on %s of %s", svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter], limb_order[svo.ti_inking.ink_counter], svo.ti_inking.on))
 end
 
 function svo.ti_interrupted()
@@ -360,7 +360,7 @@ function svo.ti_noinks()
   end
 end
 
-config.setoption("telltouch",
+svo.config.setoption("telltouch",
 {
   type = "boolean",
   vconfig2string = true,
@@ -377,9 +377,9 @@ config.setoption("telltouch",
     echo(".\n")
   end,
   onenabled = function ()
-    echof("<0,250,0>Will%s tell people to touch tattoos they need to after inking.", getDefaultColor())
+    svo.echof("<0,250,0>Will%s tell people to touch tattoos they need to after inking.", svo.getDefaultColor())
   end,
-  ondisabled = function () echof("<250,0,0>Won't%s tell people to touch tattoos they need to after inking.", getDefaultColor()) end
+  ondisabled = function () svo.echof("<250,0,0>Won't%s tell people to touch tattoos they need to after inking.", svo.getDefaultColor()) end
 })
 
-echof("Loaded svo Tattoo Inker, version %s.", tostring(ti_version))
+svo.echof("Loaded svo Tattoo Inker, version %s.", tostring(svo.ti_version))

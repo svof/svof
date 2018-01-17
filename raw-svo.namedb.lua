@@ -1,4 +1,4 @@
--- Svof (c) 2011-2015 by Vadim Peretokin
+-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -6,10 +6,12 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-pl.dir.makepath(getMudletHomeDir() .. "/svo/namedb")
+local me = svo.me
+
+svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/namedb")
 
 -- load the highlightignore list
-signals.systemstart:connect(function ()
+svo.signals.systemstart:connect(function ()
   local conf_path = getMudletHomeDir() .. "/svo/config/highlightignore"
 
   if lfs.attributes(conf_path) then
@@ -17,23 +19,23 @@ signals.systemstart:connect(function ()
     local ok, msg = pcall(table.load, conf_path, t)
     if ok then
 	    me.highlightignore = me.highlightignore or {} -- make sure it's initialized
-	    update(me.highlightignore, t)
+	    svo.update(me.highlightignore, t)
 	else
 		os.remove(conf_path)
 		tempTimer(10, function()
-		  echof("Your NameDB highlights ignored file got corrupted for some reason - I've deleted it so the system can load other stuff OK. You'll need to re-do all the names to ignore highlighting, though. (%q)", msg)
+		  svo.echof("Your NameDB highlights ignored file got corrupted for some reason - I've deleted it so the system can load other stuff OK. You'll need to re-do all the names to ignore highlighting, though. (%q)", msg)
 		end)
 	end
   end
 end)
-signals.saveconfig:connect(function () me.highlightignore = me.highlightignore or {}; svo.tablesave(getMudletHomeDir() .. "/svo/config/highlightignore", me.highlightignore) end)
+svo.signals.saveconfig:connect(function () me.highlightignore = me.highlightignore or {}; svo.tablesave(getMudletHomeDir() .. "/svo/config/highlightignore", me.highlightignore) end)
 
 
 -- save the ndb.conf.citypolitics list
 
-signals.saveconfig:connect(function () ndb.conf.citypolitics = ndb.conf.citypolitics or {}; svo.tablesave(getMudletHomeDir() .. "/svo/namedb/citypolitics", ndb.conf.citypolitics) end)
+svo.signals.saveconfig:connect(function () ndb.conf.citypolitics = ndb.conf.citypolitics or {}; svo.tablesave(getMudletHomeDir() .. "/svo/namedb/citypolitics", ndb.conf.citypolitics) end)
 
-signals.saveconfig:connect(function ()
+svo.signals.saveconfig:connect(function ()
 	-- this can error out if the connection is closed
   pcall(function() db.__conn["namedb"]:execute("VACUUM") end)
 end)
@@ -266,8 +268,6 @@ local plural_city = {
   Cyrene = "Cyrenians"
 }
 
-local singular_class = {}
-
 local plural_class = {
   Apostate    = "Apostates",
   Bard        = "Bards",
@@ -309,7 +309,7 @@ local function getcolor(name)
 
   if not person then return "" end -- in case the person doesn't exist
 
-  local city, conf, color = person.city, svo.conf
+  local city, order, conf, color = person.city, person.order, svo.conf
 
   -- order of priority: watchfor > divine > city > order > house > citizens.
   if (city == "" or city == "rogue") then city = "" else city = city:lower() end -- known rogues are returned as ""
@@ -375,7 +375,7 @@ for _, format in ipairs{"bold", "underline", "italicize"} do
 
     if not person then return false end -- in case the person doesn't exist
 
-    local city, conf, color = person.city, svo.conf
+    local city, order, conf = person.city, person.order, svo.conf
 
     return (conf[format.."watchfor"] and svo.me.watchfor[name])    or
            (conf[format.."city"] and person.cityenemy == 1)        or
@@ -405,13 +405,13 @@ function ndb.addname(name)
 end
 
 function ndb.setiff(name, status)
-  local name = name:lower():title()
+  name = name:lower():title()
 
   local category = "iff"
   local towhat
 
   -- -1 autodetected, 1 enemy, 2 ally
-  local status = status:lower()
+  status = status:lower()
   if status == "enemy" then
     towhat = 1
   elseif status == "ally" then
@@ -470,7 +470,7 @@ function ndb.showinfamous()
     table.sort(people)
     echo(string.format("  %s: %s\n", ndb.valid.shortinfamous[cat], svo.concatand(people)))
   end
-  showprompt()
+  svo.showprompt()
 end
 
 function ndb.showhelp(entry)
@@ -531,7 +531,7 @@ function ndb.updatebyhonors()
 
   ndb.honorslist = (function ()
     local t = {}
-    for i,j in ipairs(data) do
+    for _,j in ipairs(data) do
       -- sanity check for weird names
       if j.name:find("^%u%l+$") then t[j.name] = true
       else db:delete(ndb.db.people, db:eq(ndb.db.people.name, j.name)) end
@@ -600,7 +600,7 @@ function ndb.doexport()
         end
       end
 
-      for i = 1, #removekeys do p[removekeys[i]] = nil end
+      for _ = 1, #removekeys do p[removekeys[i]] = nil end
     end
   end
 
@@ -624,7 +624,7 @@ function ndb.getimportfields()
   table.load(ndb.importdata.location, ndb.importdata.data)
   if not ndb.importdata.data then svo.echof("Couldn't read the file - maybe it's corrupted? Try another.") return end
 
-  for k,v in pairs(ndb.importdata.data.meta.fields) do if ndb.schema.people[k] then ndb.importdata.fields[k] = true end end
+  for k,_ in pairs(ndb.importdata.data.meta.fields) do if ndb.schema.people[k] then ndb.importdata.fields[k] = true end end
 end
 
 function ndb.doimport()
@@ -772,7 +772,7 @@ function ndb.cleartriggers()
   if not ndb.highlightIDs or not next(ndb.highlightIDs) then return end
 
   local killTrigger = killTrigger
-  for k,v in pairs(ndb.highlightIDs) do
+  for _,v in pairs(ndb.highlightIDs) do
     killTrigger(v)
   end
 
@@ -804,7 +804,7 @@ end
 
 function ndb.finished_honors(event, name, type)
   if svo.conf.paused or not ndb.honorslist then return end
-  local type = gaghonours and "quiet" or "manual"
+  local type = ndb.gaghonours and "quiet" or "manual"
 
   local name = next(ndb.honorslist or {})
   if not name then
@@ -865,13 +865,15 @@ function ndb.honors_next(argument)
 
   ndb.showhonorswindow(string.format("Checking %s, %s name%s%s left to check...\n", name, left, (left == 1 and '' or 's'), (next(timeleft) and '('..table.concat(timeleft)..')' or '')))
 end
-signals["svo got balance"]:connect(ndb.honors_next)
-signals["namedb finished honors"] = luanotify.signal.new()
-signals["namedb finished honors"]:connect(ndb.honors_next)
+svo.signals["svo got balance"]:connect(ndb.honors_next)
+local luanotify = {}
+luanotify.signal = require("notify.signal")
+svo.signals["namedb finished honors"] = luanotify.signal.new()
+svo.signals["namedb finished honors"]:connect(ndb.honors_next)
 
 -- sk.togglehonors = function()
 --   if svo.conf.usehonors then
---     signals["namedb finished honors"]:block(ndb.honors_next)
+--     svo.signals["namedb finished honors"]:block(ndb.honors_next)
 
 -- end
--- signals["svo config changed"]:connect(sk.togglehonors)
+-- svo.signals["svo config changed"]:connect(sk.togglehonors)

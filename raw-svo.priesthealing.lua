@@ -1,4 +1,4 @@
--- Svof (c) 2011-2015 by Vadim Peretokin
+-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -6,7 +6,9 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-function ph_diag(aff)
+local sk = svo.sk
+
+function svo.ph_diag(aff)
   if not sk.healingmap[aff] then
     echo(" (your Healing skills don't know how to cure "..aff..")")
     return
@@ -22,8 +24,8 @@ end
 
 -- called on the prompt to determine, and heal, the most important affliction
 -- as determined by sync prio
-function healothersaff()
-  local syncprios = make_sync_prio_table("%s")
+function svo.healothersaff()
+  local syncprios = svo.make_sync_prio_table("%s")
 
   -- syncprios is now a sparse table with priorities - afflictions
   -- trasverse the table to find the highest priotized affliction
@@ -63,4 +65,4 @@ function healothersaff()
   echo(" (healing "..(svonames[aff] or aff)..")")
 end
 
-echof("Loaded svo Priest Healer.")
+svo.echof("Loaded svo Priest Healer.")
