@@ -2280,7 +2280,7 @@ function svo.config.showcolours()
   end
 end
 
-function svo.config.svo.showprompt()
+function svo.config.showprompt()
   if not conf.customprompt then
     svo.echof("You don't have a custom prompt set currently.")
   else

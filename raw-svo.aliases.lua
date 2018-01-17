@@ -382,11 +382,11 @@ if svo.haveskillset('metamorphosis') then
 end
   if not conf.customprompt then
     cecho("    <a_blue>- ") fg('a_grey')
-    echoLink("Standard prompt is in use.", 'svo.config.set('customprompt', 'on', true)', "Enable custom prompt", true)
+    echoLink("Standard prompt is in use.", 'svo.config.set([[customprompt]], [[on]], true)', "Enable custom prompt", true)
     echo("\n")
   else
     cecho("    <a_blue>- ") fg('a_grey')
-    echoLink("Custom prompt is in use", 'svo.config.set('customprompt', 'off', true)', "Disable custom prompt", true)
+    echoLink("Custom prompt is in use", 'svo.config.set([[customprompt]], [[off]], true)', "Disable custom prompt", true)
     echo(" (")
     echoLink('view', 'svo.config.svo.showprompt(); printCmdLine("vconfig customprompt "..tostring(svo.conf.customprompt))', "View the custom prompt you've currently set")
     echo(")")
@@ -456,21 +456,21 @@ function svo.ashow()
   echo("):\n")
   echo("  ")
   setUnderline(true)
-  echoLink('herb', 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder('herb')]])', 'View herb balance priorities', true)
+  echoLink('herb', 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder("herb")]])', 'View herb balance priorities', true)
   setUnderline(false) setUnderline(false) echo", " setUnderline(true) setUnderline(true)
-  echoLink('focus', 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder('focus')]])', 'View focus balance priorities', true)
+  echoLink('focus', 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder("focus")]])', 'View focus balance priorities', true)
   setUnderline(false) echo", " setUnderline(true)
-  echoLink('salve', 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder('salve')]])', 'View salve balance priorities', true)
+  echoLink('salve', 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder("salve")]])', 'View salve balance priorities', true)
   setUnderline(false) echo", " setUnderline(true)
-  echoLink('purgative', 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder('purgative')]])', 'View purgative balance priorities', true)
+  echoLink('purgative', 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder("purgative")]])', 'View purgative balance priorities', true)
   setUnderline(false) echo", " setUnderline(true)
-  echoLink('smoke', 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder('smoke')]])', 'View smoke priorities', true)
+  echoLink('smoke', 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder("smoke")]])', 'View smoke priorities', true)
   setUnderline(false) echo", " setUnderline(true)
-  echoLink('sip', 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder('sip')]])', 'View sip balance priorities', true)
+  echoLink('sip', 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder("sip")]])', 'View sip balance priorities', true)
   setUnderline(false) echo", " setUnderline(true)
-  echoLink("balance/equilibrium", 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder('physical')]])', 'View balance priorities', true)
+  echoLink("balance/equilibrium", 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder("physical")]])', 'View balance priorities', true)
   setUnderline(false) echo", " setUnderline(true)
-  echoLink('misc', 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder('misc')]])', 'View miscellaneous priorities', true)
+  echoLink('misc', 'tempTimer(0, [[echo([=[ \n]=]); svo.printorder("misc")]])', 'View miscellaneous priorities', true)
   setUnderline(false) echo", " setUnderline(true)
   echoLink("aeon/retardation", 'tempTimer(0, [[echo([=[ \n]=]); svo.printordersync()]])', 'View slow curing priorities', true)
   setUnderline(false) echo", " setUnderline(true)
@@ -551,7 +551,7 @@ echo"\n"
     spname = tostring(svo.sp_config.parry)
   end
 
-  echoLink(spname, 'svo.sp.setparry(nil, true)', 'Click to change the parry strategy. When in 'manual', use the p* (pra, pla, ph, etc...) alises to parry/guard with', true)
+  echoLink(spname, 'svo.sp.setparry(nil, true)', 'Click to change the parry strategy. When in "manual", use the p* (pra, pla, ph, etc...) alises to parry/guard with', true)
   setUnderline(false)
   echo'\n'
 
@@ -658,7 +658,7 @@ echo"\n"
     )())
     setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
-    echoLink("(svo.reset)", 'svo.config.set('customprompt', 'on')', 'Click here to re-enable the custom prompt', true)
+    echoLink("(svo.reset)", 'svo.config.set("customprompt", "on")', 'Click here to re-enable the custom prompt', true)
     echo"\n"
   end
 
@@ -674,7 +674,7 @@ echo"\n"
   if svo.prio.getnumber('healmana', 'sip') > svo.prio.getnumber('healhealth', 'sip') then
     svo.echofn("Your mana sip priority is above health sipping (")
     setFgColor(unpack(svo.getDefaultColorNums))
-    setUnderline(true) echoLink('change', 'svo.togglesip('health')', 'Click to change to health', true) setUnderline(false)
+    setUnderline(true) echoLink('change', 'svo.togglesip("health")', 'Click to change to health', true) setUnderline(false)
     echo(")\n")
   end
 
@@ -730,7 +730,7 @@ function svo.showserverside()
   echo'\n'
 
   if not conf.serverside then
-    dechoLink(svo.getDefaultColor().."  (enable serverside use)", 'svo.tntf_set('serverside', true)', 'Serverside use is disabled - click here to enable it', true)
+    dechoLink(svo.getDefaultColor().."  (enable serverside use)", 'svo.tntf_set("serverside", true)', 'Serverside use is disabled - click here to enable it', true)
     echo'\n'
   end
 
@@ -803,7 +803,7 @@ function svo.showcurelist()
 
     setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
-    echoLink("vconfig curemethod prefercustom", 'svo.config.set('curemethod', 'prefercustom', true); svo.showcurelist()', 'Click to change the curemethod from '..conf.curemethod..' to prefercustom, which allows you to individually specify which cures you prefer', true)
+    echoLink("vconfig curemethod prefercustom", 'svo.config.set("curemethod", "prefercustom", true); svo.showcurelist()', 'Click to change the curemethod from '..conf.curemethod..' to prefercustom, which allows you to individually specify which cures you prefer', true)
     setUnderline(false)
     echo'\n'
   end
