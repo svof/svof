@@ -25,16 +25,16 @@ local labels = {}
 
 -- default to numerals when we run out
 -- while defining this as a function would be nicer, it's easier for most people to mod if it's in this format
-local multiplegroups = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+local multiplegroups = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'}
 
 conf.peopletracker = type(conf.peopletracker) == 'nil' and true or conf.peopletracker
-svo.config.setoption("peopletracker", {
-  type = "boolean",
+svo.config.setoption('peopletracker', {
+  type = 'boolean',
   onenabled = function ()
     if not deleteMapLabel or not createMapLabel then
       svo.echof("I'm sorry, but your Mudlet is too old and can't make labels on the map yet - update it!")
       conf.peopletracker = false
-      raiseEvent("svo config changed", "peopletracker")
+      raiseEvent("svo config changed", 'peopletracker')
       return
     end
 
@@ -45,40 +45,40 @@ svo.config.setoption("peopletracker", {
 })
 
 conf.clearlabels = type(conf.clearlabels) == 'nil' and true or conf.clearlabels
-svo.config.setoption("clearlabels", {
-  type = "boolean",
+svo.config.setoption('clearlabels', {
+  type = 'boolean',
   onenabled = function () signals.newarea:connect(sys.clear_labels) svo.echof("<0,250,0>Will%s automatically clear map labels that are surrounded by ().", svo.getDefaultColor()) end,
   ondisabled = function ()signals.newarea:disconnect(sys.clear_labels) svo.echof("<250,0,0>Won't%s automatically clear map labels that are surrounded by ().", svo.getDefaultColor()) end,
   installstart = function () conf.clearlabels = true end,
 })
 
 conf.labelsfont = type(conf.labelsfont) == 'nil' and 10 or conf.labelsfont
-svo.config.setoption("labelsfont", {
-  type = "number",
+svo.config.setoption('labelsfont', {
+  type = 'number',
   onset = function () sys.update_people_labels() svo.echof("Labels set to draw at %dpt.", conf.labelsfont) end,
   installstart = function () conf.labelsfont = 10 end,
 })
 
-conf.labelcolor = conf.labelcolor or "white"
+conf.labelcolor = conf.labelcolor or 'white'
 conf.maxdupes = conf.maxdupes or 20
-svo.config.setoption("labelcolor", {
-  type = "string",
+svo.config.setoption('labelcolor', {
+  type = 'string',
   vconfig2string = true,
   check = function (what)
     if color_table[what] then return true end
   end,
   onshow = function (defaultcolour)
-    fg("gold")
+    fg('gold')
     echoLink("ppl: ", "", "svo People Tracker", true)
     fg(defaultcolour) echo("People tracker ")
-    fg("a_cyan") echoLink((conf.peopletracker and "on" or "off"), "svo.config.set('peopletracker', "..(conf.peopletracker and "false" or "true")..", true)", "Click to "..(conf.peopletracker and "disable" or "enable").." people tracking on the map", true)
+    fg('a_cyan') echoLink((conf.peopletracker and 'on' or 'off'), "svo.config.set('peopletracker', "..(conf.peopletracker and 'false' or 'true')..", true)", "Click to "..(conf.peopletracker and 'disable' or 'enable').." people tracking on the map", true)
     fg(defaultcolour) echo("; using")
-    fg(conf.labelcolor or "a_cyan") echoLink(" "..(conf.labelcolor or '?'), "printCmdLine'vconfig labelcolor '", "Click to change the color", true)
+    fg(conf.labelcolor or 'a_cyan') echoLink(" "..(conf.labelcolor or '?'), "printCmdLine'vconfig labelcolor '", "Click to change the color", true)
     fg(defaultcolour) echo(" map labels (")
-    fg("a_cyan") echoLink("view all", "showColors()", "Click to view possible color names that you can use for customizing the label colors", true)
+    fg('a_cyan') echoLink("view all", "showColors()", "Click to view possible color names that you can use for customizing the label colors", true)
     fg(defaultcolour)
     echo("); font size is ")
-    fg("a_cyan") echoLink(tostring(conf.labelsfont), "printCmdLine'vconfig labelsfont '", "Click to set the font size for peopletracker labels", true)
+    fg('a_cyan') echoLink(tostring(conf.labelsfont), "printCmdLine'vconfig labelsfont '", "Click to set the font size for peopletracker labels", true)
     echo(".\n")
   end,
   onset = function ()
@@ -87,7 +87,7 @@ svo.config.setoption("labelcolor", {
     svo.echof("Okay, will color the map labels in <%s,%s,%s>%s%s now.", r,g,b, conf.labelcolor, svo.getDefaultColor())
   end,
   installstart = function ()
-    conf.labelcolor = "blue"
+    conf.labelcolor = 'blue'
   end
 })
 
@@ -111,7 +111,7 @@ sys.clear_labels = function()
   if not mmp then return end
   local function clearlabels(areaid)
     local t = getMapLabels(areaid)
-    if type(t) ~= "table" then return end
+    if type(t) ~= 'table' then return end
 
     local starts, ends = string.starts, string.ends
     for labelid, text in pairs(t) do
@@ -141,7 +141,7 @@ sys.update_people_labels = function ()
     -- keeps track at which index of multiplegroups are we at
     local multiplescount = 1
 
-    local fr,fg,fb = unpack(color_table[conf.labelcolor or "white"])
+    local fr,fg,fb = unpack(color_table[conf.labelcolor or 'white'])
     local br,bg,bb = unpack(color_table.black)
 
     for k,v in pairs(mmp.pdb) do
@@ -215,7 +215,7 @@ signals["mmapper updated pdb"]:connect(function()
   if isPrompt() then
     sys.update_people_labels()
   else
-    sk.onprompt_beforeaction_add("update_labels", sys.update_people_labels)
+    sk.onprompt_beforeaction_add('update_labels', sys.update_people_labels)
   end
 end)
 

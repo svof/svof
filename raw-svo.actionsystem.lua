@@ -25,7 +25,7 @@ svo.doaction = function(arg1, arg2)
   local act, which, balance
   -- do action used to be available in 2 modes - internal and external. Internal API took a dict[action][balance] and
   -- the external API took 2 strings as the action and balance. This is a compatibility layer for the merged result
-  if type(arg1) == "table" then
+  if type(arg1) == 'table' then
     act = arg1
   else
     which = arg1
@@ -59,8 +59,8 @@ svo.doaction = function(arg1, arg2)
       -- there might be a case where actions_performed was being taken up by another action, like a cure,
       -- that was overwritten by an aff now. This needs to be rectified back.
       for bal, _ in pairs(bals_in_use) do
-        if actions[act.action_name.."_"..bal] then
-          actions_performed[act.action_name] = bals_in_use[bal][act.action_name.."_"..bal]
+        if actions[act.action_name..'_'..bal] then
+          actions_performed[act.action_name] = bals_in_use[bal][act.action_name..'_'..bal]
 
           debugf("actions: added %s_%s back", act.action_name, bal)
         end
@@ -92,14 +92,14 @@ svo.doaction = function(arg1, arg2)
     completed = function (other_action, arg)
       killTimer(timerid)
       if (other_action) then debugf("doaction other action: %s", tostring(other_action)) end
-      if not (act[other_action or "oncompleted"]) then
-        debugf("[error] %s does not exist for %s!", tostring(other_action or "oncompleted"), tostring(act.name))
+      if not (act[other_action or 'oncompleted']) then
+        debugf("[error] %s does not exist for %s!", tostring(other_action or 'oncompleted'), tostring(act.name))
       end
-      act[other_action or "oncompleted"](arg)
+      act[other_action or 'oncompleted'](arg)
       debugf("actions: %s%s completed (killed %s)", act.name, arg and (' ('..tostring(arg)..')') or "",
         tostring(timerid))
 
-      if act.balance == "focus" then signals.curedwith_focus:emit(other_action or "oncompleted") end
+      if act.balance == 'focus' then signals.curedwith_focus:emit(other_action or 'oncompleted') end
     end,
     p = act
   })
@@ -146,12 +146,12 @@ svo.checkaction = function (act, input)
     actions:set(act.name, {
       completed = function (other_action, arg)
         if (other_action) then debugf("checkaction other action: %s", other_action) end
-        if not (act[other_action or "oncompleted"]) then
-          debugf("[error] %s does not exist for %s!", tostring(other_action or "oncompleted"), tostring(act.name))
+        if not (act[other_action or 'oncompleted']) then
+          debugf("[error] %s does not exist for %s!", tostring(other_action or 'oncompleted'), tostring(act.name))
         end
-        act[other_action or "oncompleted"](arg)
+        act[other_action or 'oncompleted'](arg)
       debugf("actions: %s%s completed", act.name, arg and tostring(arg) or "")
-        if act.balance == "focus" then signals.curedwith_focus:emit(other_action or "oncompleted") end
+        if act.balance == 'focus' then signals.curedwith_focus:emit(other_action or 'oncompleted') end
       end,
       p = act,
     })
@@ -220,8 +220,8 @@ svo.actionclear = function(act)
   -- there might be a case where actions_performed was being taken up by another action,
   -- like a cure, that was overwritten by an aff now. This needs to be rectified back.
   for bal, _ in pairs(bals_in_use) do
-    if actions[act.action_name.."_"..bal] then
-      actions_performed[act.action_name] = bals_in_use[bal][act.action_name.."_"..bal]
+    if actions[act.action_name..'_'..bal] then
+      actions_performed[act.action_name] = bals_in_use[bal][act.action_name..'_'..bal]
 
       debugf("actions: added %s_%s back", act.action_name, bal)
     end
@@ -275,8 +275,8 @@ svo.actionfinished = function(act, other_action, arg)
   -- there might be a case where actions_performed was being taken up by another action, like a cure,
   -- that was overwritten by an aff now. This needs to be rectified back.
   for bal, _ in pairs(bals_in_use) do
-    if actions[act.action_name.."_"..bal] then
-      actions_performed[act.action_name] = bals_in_use[bal][act.action_name.."_"..bal]
+    if actions[act.action_name..'_'..bal] then
+      actions_performed[act.action_name] = bals_in_use[bal][act.action_name..'_'..bal]
 
       debugf("actions: added %s_%s back", act.action_name, bal)
     end
@@ -315,8 +315,8 @@ svo.killaction = function (act)
   -- there might be a case where actions_performed was being taken up by another action, like a cure,
   -- that was overwritten by an aff now. This needs to be rectified back.
   for bal, _ in pairs(bals_in_use) do
-    if actions[act.action_name.."_"..bal] then
-      actions_performed[act.action_name] = bals_in_use[bal][act.action_name.."_"..bal]
+    if actions[act.action_name..'_'..bal] then
+      actions_performed[act.action_name] = bals_in_use[bal][act.action_name..'_'..bal]
 
       debugf("actions: added %s_%s back", act.action_name, bal)
     end
@@ -353,7 +353,7 @@ svo.doing = svo.doingaction
 -- String -> Action/Aff/Nil
 -- returns true if we currently have or will register (after this prompt and no illusions) an affliction
 svo.haveorwill = function (aff)
-  return actions[aff.."_aff"] or affs[aff]
+  return actions[aff..'_aff'] or affs[aff]
 end
 
 -- string -> boolean

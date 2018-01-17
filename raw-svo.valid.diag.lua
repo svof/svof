@@ -52,7 +52,7 @@ function svo.valid.diagnose_end()
       svo.rmaff(affn)
     elseif not whitelist[affn] then -- if we do have the aff, remove from diag list, so we don't add it again
       -- but update the current count!
-      if type(svo.sk.diag_list[affn]) == "number" and svo.dict[affn].count then
+      if type(svo.sk.diag_list[affn]) == 'number' and svo.dict[affn].count then
         svo.dict[affn].count = svo.sk.diag_list[affn]
         svo.updateaffcount(svo.dict[affn])
         svo.debugf("%s count updated to %d", affn, svo.dict[affn].count)
@@ -68,12 +68,12 @@ function svo.valid.diagnose_end()
     -- skip defs
     if svo.defc[j] == nil then
       svo.checkaction(svo.dict[j].aff, true)
-      if type(k) == "number" and not svo.dict[j].count then
-        for _ = 1, k do svo.lifevision.add(svo.actions[j .. "_aff"].p) end
-      elseif type(k) == "number" and svo.dict[j].count then
-        svo.lifevision.add(svo.actions[j .. "_aff"].p, nil, k)
+      if type(k) == 'number' and not svo.dict[j].count then
+        for _ = 1, k do svo.lifevision.add(svo.actions[j .. '_aff'].p) end
+      elseif type(k) == 'number' and svo.dict[j].count then
+        svo.lifevision.add(svo.actions[j .. '_aff'].p, nil, k)
       else
-        svo.lifevision.add(svo.actions[j .. "_aff"].p)
+        svo.lifevision.add(svo.actions[j .. '_aff'].p)
       end
     end
   end
@@ -85,8 +85,8 @@ function svo.valid.diagnose_end()
   svo.sk.diag_list = {}
 end
 
-for _,affname in ipairs({"ablaze", "severeburn", "extremeburn", "charredburn", "meltingburn", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "heartseed", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impale", "impatience", "inlove", "inquisition", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "lovers", "madness", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", "masochism", "mildtrauma", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "pacifism", "paralysis", "paranoia", "peace", "prone", "recklessness", "relapsing", "roped", "selarnia", "sensitivity", "seriousconcussion", "serioustrauma", "shyness", "slashedthroat", "slickness", "stun", "stupidity", "stuttering", "transfixed", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voided", "voyria", "weakness", "webbed", "hamstring", "shivering", "frozen", "manaleech", "voyria", "slightfluid", "elevatedfluid", "highfluid", "seriousfluid", "criticalfluid", "godfeelings", "phlogistication", "vitrification", "corrupted", "stain", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "hoisted", "swellskin", "pinshot", "hypothermia", "scalded", "dehydrated", "timeflux", "numbedleftarm", "numbedrightarm", "unconsciousness", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate", "hatred"}) do
-  svo.valid["diag_"..affname] = function()
+for _,affname in ipairs({'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'bleeding', 'bound', 'burning', 'claustrophobia', 'clumsiness', 'mildconcussion', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade', 'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'galed', 'generosity', 'haemophilia', 'hallucinations', 'healthleech', 'heartseed', 'hellsight', 'hypersomnia', 'hypochondria', 'icing', 'illness', 'impale', 'impatience', 'inlove', 'inquisition', 'itching', 'justice', 'laceratedthroat', 'lethargy', 'loneliness', 'lovers', 'madness', 'mangledleftarm', 'mangledleftleg', 'mangledrightarm', 'mangledrightleg', 'masochism', 'mildtrauma', 'mutilatedleftarm', 'mutilatedleftleg', 'mutilatedrightarm', 'mutilatedrightleg', 'pacifism', 'paralysis', 'paranoia', 'peace', 'prone', 'recklessness', 'relapsing', 'roped', 'selarnia', 'sensitivity', 'seriousconcussion', 'serioustrauma', 'shyness', 'slashedthroat', 'slickness', 'stun', 'stupidity', 'stuttering', 'transfixed', 'unknownany', 'unknowncrippledarm', 'unknowncrippledleg', 'unknownmental', 'vertigo', 'voided', 'voyria', 'weakness', 'webbed', 'hamstring', 'shivering', 'frozen', 'manaleech', 'voyria', 'slightfluid', 'elevatedfluid', 'highfluid', 'seriousfluid', 'criticalfluid', 'godfeelings', 'phlogistication', 'vitrification', 'corrupted', 'stain', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'spiritdisrupt', 'airdisrupt', 'firedisrupt', 'earthdisrupt', 'waterdisrupt', 'hoisted', 'swellskin', 'pinshot', 'hypothermia', 'scalded', 'dehydrated', 'timeflux', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'depression', 'parasite', 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'hatred'}) do
+  svo.valid['diag_'..affname] = function()
     svo.sk.diag_list[affname] = true
 
     if not svo.affs[affname] then
@@ -102,7 +102,7 @@ for _,affname in ipairs({"ablaze", "severeburn", "extremeburn", "charredburn", "
 end
 
 -- afflictions with a count
-for _, aff in ipairs({"cholerichumour", "melancholichumour", "phlegmatichumour", "sanguinehumour", "bleeding", "skullfractures", "crackedribs", "wristfractures", "torntendons"}) do
+for _, aff in ipairs({'cholerichumour', 'melancholichumour', 'phlegmatichumour', 'sanguinehumour', 'bleeding', 'skullfractures', 'crackedribs', 'wristfractures', 'torntendons'}) do
   svo.valid['diag_'..aff] = function(howmuch)
     svo.sk.diag_list[aff] = tonumber(howmuch)
 

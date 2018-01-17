@@ -12,15 +12,15 @@ local valid, actions = svo.valid, svo.actions
 local lifevision = svo.lifevision
 
 do
-  local afflist = {"ablaze", "severeburn", "extremeburn", "charredburn", "meltingburn", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "heartseed", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impale", "impatience", "inlove", "inquisition", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "lovers", "madness", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", "masochism", "mildtrauma", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "pacifism", "paralysis", "paranoia", "peace", "prone", "recklessness", "relapsing", "roped", "selarnia", "sensitivity", "seriousconcussion", "serioustrauma", "shyness", "slashedthroat", "slickness", "stun", "stupidity", "stuttering", "transfixed", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voided", "voyria", "weakness", "webbed", "hamstring", "shivering", "frozen", "blindaff", "deafaff", "retardation", "manaleech", "sleep", "amnesia", "unknowncrippledlimb", "cholerichumour", "melancholichumour", "phlegmatichumour", "sanguinehumour", "phlogistication", "vitrification", "corrupted", "stain", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "swellskin", "pinshot", "hypothermia", "scalded", "dehydrated", "timeflux", "lullaby", "numbedleftarm", "numbedrightarm", "unconsciousness", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate", "hatred"}
+  local afflist = {'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'bleeding', 'bound', 'burning', 'claustrophobia', 'clumsiness', 'mildconcussion', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade', 'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'galed', 'generosity', 'haemophilia', 'hallucinations', 'healthleech', 'heartseed', 'hellsight', 'hypersomnia', 'hypochondria', 'icing', 'illness', 'impale', 'impatience', 'inlove', 'inquisition', 'itching', 'justice', 'laceratedthroat', 'lethargy', 'loneliness', 'lovers', 'madness', 'mangledleftarm', 'mangledleftleg', 'mangledrightarm', 'mangledrightleg', 'masochism', 'mildtrauma', 'mutilatedleftarm', 'mutilatedleftleg', 'mutilatedrightarm', 'mutilatedrightleg', 'pacifism', 'paralysis', 'paranoia', 'peace', 'prone', 'recklessness', 'relapsing', 'roped', 'selarnia', 'sensitivity', 'seriousconcussion', 'serioustrauma', 'shyness', 'slashedthroat', 'slickness', 'stun', 'stupidity', 'stuttering', 'transfixed', 'unknownany', 'unknowncrippledarm', 'unknowncrippledleg', 'unknownmental', 'vertigo', 'voided', 'voyria', 'weakness', 'webbed', 'hamstring', 'shivering', 'frozen', 'blindaff', 'deafaff', 'retardation', 'manaleech', 'sleep', 'amnesia', 'unknowncrippledlimb', 'cholerichumour', 'melancholichumour', 'phlegmatichumour', 'sanguinehumour', 'phlogistication', 'vitrification', 'corrupted', 'stain', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'spiritdisrupt', 'airdisrupt', 'firedisrupt', 'earthdisrupt', 'waterdisrupt', 'swellskin', 'pinshot', 'hypothermia', 'scalded', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'depression', 'parasite', 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'hatred'}
   if svo.haveskillset('metamorphosis') then
-    afflist[#afflist+1] = "cantmorph"
+    afflist[#afflist+1] = 'cantmorph'
   end
 
   for _,j in ipairs(afflist) do
-    valid["simple" .. j] = function ()
+    valid['simple' .. j] = function ()
       svo.checkaction(svo.dict[j].aff, true)
-      lifevision.add(actions[j .. "_aff"].p)
+      lifevision.add(actions[j .. '_aff'].p)
     end
   end
 end
@@ -28,7 +28,7 @@ end
 svo.valid.simplehoisted = function(name)
   svo.assert(name)
 
-  if (conf.autowrithe == "white" and me.hoistlist[name]) or (conf.autowrithe == "black" and not me.hoistlist[name]) then return end
+  if (conf.autowrithe == 'white' and me.hoistlist[name]) or (conf.autowrithe == 'black' and not me.hoistlist[name]) then return end
 
   svo.checkaction(svo.dict.hoisted.aff, true)
   lifevision.add(actions.hoisted_aff.p)
@@ -78,7 +78,7 @@ end
 svo.valid.simplelovers = function (name)
   svo.assert(name)
 
-  if (conf.autoreject == "white" and me.lustlist[name]) or (conf.autoreject == "black" and not me.lustlist[name]) then return end
+  if (conf.autoreject == 'white' and me.lustlist[name]) or (conf.autoreject == 'black' and not me.lustlist[name]) then return end
 
   svo.checkaction(svo.dict.lovers.aff, true)
   svo.dict.lovers.tempmap[#svo.dict.lovers.tempmap+1] = name -- hack to allow multiple names on ALLIES
@@ -157,16 +157,16 @@ svo.valid.simpleunknownmental = function (number)
     svo.dict.unknownmental.reckmana = true end
 end
 
-for _, affname in ipairs({"skullfractures", "crackedribs", "wristfractures", "torntendons"}) do
-  valid["simple"..affname] = function (number)
+for _, affname in ipairs({'skullfractures', 'crackedribs', 'wristfractures', 'torntendons'}) do
+  valid['simple'..affname] = function (number)
     svo.assert(not number or tonumber(number), "svo.valid.simple"..affname..": how many affs do you want to add? Must be a number")
 
     svo.checkaction(svo.dict[affname].aff, true)
 
-    if lifevision.l[affname.."_aff"] then
-      lifevision.add(actions[affname.."_aff"].p, nil, (number or 1) +(lifevision.l[affname.."_aff"].arg or 1))
+    if lifevision.l[affname..'_aff'] then
+      lifevision.add(actions[affname..'_aff'].p, nil, (number or 1) +(lifevision.l[affname..'_aff'].arg or 1))
     else
-      lifevision.add(actions[affname.."_aff"].p, nil, (number or 1))
+      lifevision.add(actions[affname..'_aff'].p, nil, (number or 1))
     end
   end
 end

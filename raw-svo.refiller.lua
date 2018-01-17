@@ -14,23 +14,23 @@ svo.rf_debug = false
 -- this stores the total order that we need to do
 svo.rf_refilling = false
 
--- format: "potion"
+-- format: 'potion'
 -- this stores the current potion that we're doing of the whole order
 
 -- need a variable to handle either remedies or toxicology transcendence
 svo.rf_currenttrans = svo.rf_currenttrans or false
 
-conf.potid = conf.potid or "pot"
-svo.config.setoption("potid", {
-  type = "string",
+conf.potid = conf.potid or 'pot'
+svo.config.setoption('potid', {
+  type = 'string',
   vconfig2string = true,
   onshow = function (defaultcolour)
-    fg("gold")
+    fg('gold')
     echoLink("refiller: ", "", "svo Refiller", true)
     fg(defaultcolour) echo("Pot to use is ")
-    fg("a_cyan") echoLink((conf.potid or "pot"), "printCmdLine 'vconfig potid pot###'", "Click to set the pot ID to use for brewing in", true)
+    fg('a_cyan') echoLink((conf.potid or 'pot'), "printCmdLine 'vconfig potid pot###'", "Click to set the pot ID to use for brewing in", true)
     fg(defaultcolour) echo("; storing your vials in")
-    fg("a_cyan") echoLink(" "..(conf.packid or 'pack'), "printCmdLine'vconfig packid '", "Click to set the pack ID to stuff your vials into when you do 'putvials'", true)
+    fg('a_cyan') echoLink(" "..(conf.packid or 'pack'), "printCmdLine'vconfig packid '", "Click to set the pack ID to stuff your vials into when you do 'putvials'", true)
     fg(defaultcolour) echo(".\n")
   end,
   onset = function ()
@@ -38,9 +38,9 @@ svo.config.setoption("potid", {
   end
 })
 
-conf.packid = conf.packid or "pack"
-svo.config.setoption("packid", {
-  type = "string",
+conf.packid = conf.packid or 'pack'
+svo.config.setoption('packid', {
+  type = 'string',
   onset = function ()
     svo.echof("Okay, will store vials in %s when you do 'putvials'. Doing 'getvials' will get them back out.", conf.packid)
   end
@@ -48,210 +48,210 @@ svo.config.setoption("packid", {
 
 local concoctions = {
   epidermal = {
-    ["kuzu"] = 2,
-    ["bloodroot"] = 1,
-    ["hawthorn"] = 1,
-    ["ginseng"] = 1
+    ['kuzu'] = 2,
+    ['bloodroot'] = 1,
+    ['hawthorn'] = 1,
+    ['ginseng'] = 1
   },
   immunity = {
-    ["sac"] = 1,
-    ["ash"] = 1,
-    ["echinacea"] = 2,
+    ['sac'] = 1,
+    ['ash'] = 1,
+    ['echinacea'] = 2,
   },
   mana = {
-    ["slipper"] = 1,
-    ["bellwort"] = 1,
-    ["hawthorn"] = 1,
-    ["bloodroot"] = 1,
+    ['slipper'] = 1,
+    ['bellwort'] = 1,
+    ['hawthorn'] = 1,
+    ['bloodroot'] = 1,
   },
   health = {
-    ["valerian"] = 1,
-    ["goldenseal"] = 1,
-    ["ginseng"] = 1,
-    ["myrrh"] = 1,
+    ['valerian'] = 1,
+    ['goldenseal'] = 1,
+    ['ginseng'] = 1,
+    ['myrrh'] = 1,
   },
   venom = {
-    ["sac"] = 1,
-    ["cohosh"] = 1,
-    ["kelp"] = 1,
-    ["skullcap"] = 1,
+    ['sac'] = 1,
+    ['cohosh'] = 1,
+    ['kelp'] = 1,
+    ['skullcap'] = 1,
   },
   frost = {
-    ["kelp"] = 1,
-    ["pear"] = 1,
-    ["ginseng"] = 1,
+    ['kelp'] = 1,
+    ['pear'] = 1,
+    ['ginseng'] = 1,
   },
   levitation = {
-    ["kelp"] = 2,
-    ["pear"] = 1,
-    ["eaglefeather"] = 1,
+    ['kelp'] = 2,
+    ['pear'] = 1,
+    ['eaglefeather'] = 1,
   },
   mending = {
-    ["ginger"] = 2,
-    ["diamonddust"] = 1,
-    ["kelp"] = 1,
-    ["kuzu"] = 1,
+    ['ginger'] = 2,
+    ['diamonddust'] = 1,
+    ['kelp'] = 1,
+    ['kuzu'] = 1,
   },
   mass = {
-    ["moss"] = 1,
-    ["bloodroot"] = 1,
-    ["diamonddust"] = 1,
-    ["kuzu"] = 1,
+    ['moss'] = 1,
+    ['bloodroot'] = 1,
+    ['diamonddust'] = 1,
+    ['kuzu'] = 1,
   },
   speed = {
-    ["skin"] = 2,
-    ["goldenseal"] = 1,
-    ["kuzu"] = 1,
-    ["ginger"] = 1,
+    ['skin'] = 2,
+    ['goldenseal'] = 1,
+    ['kuzu'] = 1,
+    ['ginger'] = 1,
   },
   restoration = {
-    ["kuzu"] = 2,
-    ["valerian"] = 1,
-    ["bellwort"] = 1,
-    ["gold"] = 2,
+    ['kuzu'] = 2,
+    ['valerian'] = 1,
+    ['bellwort'] = 1,
+    ['gold'] = 2,
   },
   caloric = {
-    ["kuzu"] = 2,
-    ["kelp"] = 2,
-    ["valerian"] = 1,
-    ["bellwort"] = 1
+    ['kuzu'] = 2,
+    ['kelp'] = 2,
+    ['valerian'] = 1,
+    ['bellwort'] = 1
   }
 }
 
 local toxins = {
   xentio = {
-    ["kelp"] = 2,
-    ["bloodroot"] = 1,
-    ["blueink"] = 1
+    ['kelp'] = 2,
+    ['bloodroot'] = 1,
+    ['blueink'] = 1
   },
   oleander = {
-    ["bayberry"] = 1,
-    ["ginseng"] = 1,
-    ["blueink"] = 1
+    ['bayberry'] = 1,
+    ['ginseng'] = 1,
+    ['blueink'] = 1
   },
   eurypteria = {
-    ["lobelia"] = 1,
-    ["goldenseal"] = 1,
-    ["redink"] = 1
+    ['lobelia'] = 1,
+    ['goldenseal'] = 1,
+    ['redink'] = 1
   },
   kalmia = {
-    ["bloodroot"] = 1,
-    ["ginseng"] = 1,
-    ["moss"] = 1,
-    ["redink"] = 1,
-    ["blueink"] = 1
+    ['bloodroot'] = 1,
+    ['ginseng'] = 1,
+    ['moss'] = 1,
+    ['redink'] = 1,
+    ['blueink'] = 1
   },
   digitalis = {
-    ["bellwort"] = 1,
-    ["lobelia"] = 1,
-    ["redink"] = 1
+    ['bellwort'] = 1,
+    ['lobelia'] = 1,
+    ['redink'] = 1
   },
   darkshade = {
-    ["bloodroot"] = 1,
-    ["ginseng"] = 1,
-    ["kelp"] = 1,
-    ["redink"] = 1
+    ['bloodroot'] = 1,
+    ['ginseng'] = 1,
+    ['kelp'] = 1,
+    ['redink'] = 1
   },
   curare = {
-    ["bloodroot"] = 1,
-    ["bellwort"] = 1,
-    ["greenink"] = 1
+    ['bloodroot'] = 1,
+    ['bellwort'] = 1,
+    ['greenink'] = 1
   },
   epteth = {
-    ["valerian"] = 1,
-    ["bellwort"] = 1,
-    ["yellowink"] = 1
+    ['valerian'] = 1,
+    ['bellwort'] = 1,
+    ['yellowink'] = 1
   },
   prefarar = {
-    ["bloodroot"] = 1,
-    ["ginseng"] = 1,
-    ["purpleink"] = 1
+    ['bloodroot'] = 1,
+    ['ginseng'] = 1,
+    ['purpleink'] = 1
   },
   monkshood = {
-    ["valerian"] = 1,
-    ["bellwort"] = 1,
-    ["redink"] = 1
+    ['valerian'] = 1,
+    ['bellwort'] = 1,
+    ['redink'] = 1
   },
   euphorbia = {
-    ["kelp"] = 1,
-    ["goldenseal"] = 1,
-    ["greenink"] = 1
+    ['kelp'] = 1,
+    ['goldenseal'] = 1,
+    ['greenink'] = 1
   },
   colocasia = {
-    ["bayberry"] = 1,
-    ["hawthorn"] = 1,
-    ["blueink"] = 1
+    ['bayberry'] = 1,
+    ['hawthorn'] = 1,
+    ['blueink'] = 1
   },
   oculus = {
-    ["bayberry"] = 1,
-    ["goldenseal"] = 1,
-    ["redink"] = 1
+    ['bayberry'] = 1,
+    ['goldenseal'] = 1,
+    ['redink'] = 1
   },
   vernalius = {
-    ["kelp"] = 2,
-    ["goldenseal"] = 1,
-    ["purpleink"] = 1
+    ['kelp'] = 2,
+    ['goldenseal'] = 1,
+    ['purpleink'] = 1
   },
   epseth = {
-    ["valerian"] = 1,
-    ["bellwort"] = 1,
-    ["purpleink"] = 1
+    ['valerian'] = 1,
+    ['bellwort'] = 1,
+    ['purpleink'] = 1
   },
   larkspur = {
-    ["goldenseal"] = 2,
-    ["kelp"] = 1,
-    ["blueink"] = 1
+    ['goldenseal'] = 2,
+    ['kelp'] = 1,
+    ['blueink'] = 1
   },
   slike = {
-    ["ginseng"] = 2,
-    ["elm"] = 1,
-    ["greenink"] = 1
+    ['ginseng'] = 2,
+    ['elm'] = 1,
+    ['greenink'] = 1
   },
   voyria = {
-    ["ginseng"] = 3,
-    ["skullcap"] = 2,
-    ["goldenseal"] = 2,
-    ["goldink"] = 1,
-    ["redink"] = 1
+    ['ginseng'] = 3,
+    ['skullcap'] = 2,
+    ['goldenseal'] = 2,
+    ['goldink'] = 1,
+    ['redink'] = 1
   },
   delphinium = {
-    ["bellwort"] = 2,
-    ["goldenseal"] = 1,
-    ["blueink"] = 1
+    ['bellwort'] = 2,
+    ['goldenseal'] = 1,
+    ['blueink'] = 1
   },
   vardrax = {
-    ["skullcap"] = 1,
-    ["elm"] = 1,
-    ["ginseng"] = 1,
-    ["greenink"] = 1
+    ['skullcap'] = 1,
+    ['elm'] = 1,
+    ['ginseng'] = 1,
+    ['greenink'] = 1
   },
   loki = {
-    ["goldenseal"] = 2,
-    ["kelp"] = 2,
-    ["bloodroot"] = 2,
-    ["ginseng"] = 1,
-    ["yellowink"] = 2
+    ['goldenseal'] = 2,
+    ['kelp'] = 2,
+    ['bloodroot'] = 2,
+    ['ginseng'] = 1,
+    ['yellowink'] = 2
   },
   aconite = {
-    ["goldenseal"] = 2,
-    ["lobelia"] = 1,
-    ["yellowink"] = 1
+    ['goldenseal'] = 2,
+    ['lobelia'] = 1,
+    ['yellowink'] = 1
   },
   selarnia = {
-    ["lobelia"] = 1,
-    ["bloodroot"] = 1,
-    ["goldink"] = 1
+    ['lobelia'] = 1,
+    ['bloodroot'] = 1,
+    ['goldink'] = 1
   },
   gecko = {
-    ["valerian"] = 1,
-    ["bloodroot"] = 1,
-    ["kelp"] = 1,
-    ["purpleink"] = 1
+    ['valerian'] = 1,
+    ['bloodroot'] = 1,
+    ['kelp'] = 1,
+    ['purpleink'] = 1
   }
 }
 
 local function outr(what, amount)
-  if what == "gold" then
+  if what == 'gold' then
     svo.sendc("get "..amount.." gold from "..conf.packid, svo.rf_debug)
     return
   end
@@ -300,7 +300,7 @@ function svo.rf_boilpot(pot)
     if not svo.defc.selfishness then
       svo.sendc("boil "..pot.." for "..tostring(svo.rf_refilling.currentorder), svo.rf_debug)
     else
-      svo.sendc("generosity", svo.rf_debug)
+      svo.sendc('generosity', svo.rf_debug)
       svo.rf_temptrigger = tempExactMatchTrigger("You have recovered equilibrium.", "killTrigger(svo.svo.rf_temptrigger); svo.sendc('boil "..pot.." for "..tostring(svo.rf_refilling.currentorder).."', svo.svo.rf_debug)")
     end
   end)

@@ -120,20 +120,20 @@ signals.orgchanged:connect(function ()
 end)
 
 function svo.updateloggingconfig()
-  if svo.conf.log == "off" then
+  if svo.conf.log == 'off' then
     svo.debugf = function() end
-  elseif svo.conf.log == "file" then
+  elseif svo.conf.log == 'file' then
     svo.debugf = function(...)
       if not Logger then return end
 
       local args = {...}
       if #args < 2 and args[1] and args[1]:find("%", 1, true) then
-        Logger:Log("svof", "not enough args to debugf: "..debug.traceback())
+        Logger:Log('svof', "not enough args to debugf: "..debug.traceback())
         return
       end
-      Logger:Log("svof", string.format(...))
+      Logger:Log('svof', string.format(...))
     end
-  elseif svo.conf.log == "echo" then
+  elseif svo.conf.log == 'echo' then
     svo.debugf = function(...)
       local args = {...}
       if #args < 2 and args[1] and args[1]:find("%", 1, true) then
@@ -148,17 +148,17 @@ function svo.updateloggingconfig()
 
       local args = {...}
       if #args < 2 and args[1] and args[1]:find("%", 1, true) then
-        Logger:Log("svof", "not enough args to debugf: "..debug.traceback())
+        Logger:Log('svof', "not enough args to debugf: "..debug.traceback())
         return
       end
-      Logger:Log("svof", string.format(...))
+      Logger:Log('svof', string.format(...))
     end
   end
 end
 svo.updateloggingconfig()
 
 function svo.showprompt()
-  if conf.singleprompt then clearWindow"bottomprompt" end
+  if conf.singleprompt then clearWindow'bottomprompt' end
 
   -- https://bugs.launchpad.net/mudlet/+bug/982720 disallows (conf.singleprompt and 'bottomprompt' or 'main')
   -- if conf.paused then
@@ -170,31 +170,31 @@ function svo.showprompt()
   -- end
 
   if not conf.customprompt or affs.blackout or svo.innews then
-    moveCursor("svo_prompt",0,getLastLineNumber("svo_prompt")-1)
-    selectCurrentLine("svo_prompt")
-    copy("svo_prompt")
+    moveCursor('svo_prompt',0,getLastLineNumber('svo_prompt')-1)
+    selectCurrentLine('svo_prompt')
+    copy('svo_prompt')
 
     if conf.singleprompt then
-      clearWindow("bottomprompt")
+      clearWindow('bottomprompt')
 
       if conf.paused then
-        cecho("bottomprompt", "<a_red>(<a_darkgrey>p<a_red>)<black> ")
+        cecho('bottomprompt', "<a_red>(<a_darkgrey>p<a_red>)<black> ")
       end
       appendBuffer('bottomprompt')
     else
       if conf.paused then
         local currentline = getLineCount()
         deselect()
-        moveCursor("main", 0, currentline)
+        moveCursor('main', 0, currentline)
         setFgColor(255, 0, 0)
         insertText("(")
-        moveCursor("main", 1, currentline)
+        moveCursor('main', 1, currentline)
         setFgColor(128, 128, 128)
-        insertText("p")
-        moveCursor("main", 2, currentline)
+        insertText('p')
+        moveCursor('main', 2, currentline)
         setFgColor(255, 0, 0)
         insertText(")")
-        moveCursor("main", 3, currentline)
+        moveCursor('main', 3, currentline)
         setFgColor(0,0,0)
         insertText(" ")
         moveCursorEnd()
@@ -241,7 +241,7 @@ function svo.echof(...)
 
     decho, echo = olddecho, oldecho
   else
-    moveCursorEnd("main")
+    moveCursorEnd('main')
     local successful, s = pcall(string.format, ...)
     if successful then
       svo.vecho(true, s)
@@ -252,7 +252,7 @@ function svo.echof(...)
 end
 
 function svo.echofn(...)
-  moveCursorEnd("main")
+  moveCursorEnd('main')
   svo.vecho(false, string.format(...) or "")
 end
 
@@ -335,7 +335,7 @@ function svo.getBoundary(tbl)
 end
 
 function svo.oneconcat(tbl)
-  svo.assert(type(tbl) == "table", "svo.oneconcat wants a table as an argument.")
+  svo.assert(type(tbl) == 'table', "svo.oneconcat wants a table as an argument.")
   local result = {}
   for i,_ in pairs(tbl) do
     result[#result+1] = i
@@ -345,7 +345,7 @@ function svo.oneconcat(tbl)
 end
 
 function svo.oneconcatwithval(tbl)
-  svo.assert(type(tbl) == "table", "svo.oneconcatwithval wants a table as an argument.")
+  svo.assert(type(tbl) == 'table', "svo.oneconcatwithval wants a table as an argument.")
   local result = {}
   local sformat = string.format
   for i,v in pairs(tbl) do
@@ -356,7 +356,7 @@ function svo.oneconcatwithval(tbl)
 end
 
 function svo.concatand(t)
-  svo.assert(type(t) == "table", "svo.concatand: argument must be a table")
+  svo.assert(type(t) == 'table', "svo.concatand: argument must be a table")
 
   if #t == 0 then return ""
   elseif #t == 1 then return t[1]
@@ -366,7 +366,7 @@ function svo.concatand(t)
 end
 
 function svo.concatandf(t, f)
-  svo.assert(type(t) == "table", "svo.concatandf: argument must be a table")
+  svo.assert(type(t) == 'table', "svo.concatandf: argument must be a table")
 
   return svo.concatand(svo.pl.tablex.map(f, t))
 end
@@ -388,7 +388,7 @@ function svo.longeststring(input)
 
   local type = type
   for _,v in pairs(input) do
-    if type(v) == "string" then
+    if type(v) == 'string' then
       found = true
       local length = #v
 
@@ -400,7 +400,7 @@ function svo.longeststring(input)
 end
 
 function svo.safeconcat(t, separator)
-  svo.assert(type(t) == "table", "svo.safeconcat: argument must be a table")
+  svo.assert(type(t) == 'table', "svo.safeconcat: argument must be a table")
 
   if #t == 0 then return ""
   elseif #t == 1 then return tostring(t[1])
@@ -416,7 +416,7 @@ end
 function svo.deleteLineP()
   deleteLine()
   svo.gagline = true -- used for not echoing things on lines that'll be deleted
-  svo.sk.onprompt_beforeaction_add("deleteLine", function()
+  svo.sk.onprompt_beforeaction_add('deleteLine', function()
     svo.gagline = false
   end)
 
@@ -455,7 +455,7 @@ function svo.deleteAllP(count)
 end
 
 function svo.containsbyname(t, value)
-  svo.assert(type(t) == "table", "svo.containsbyname wants a table!")
+  svo.assert(type(t) == 'table', "svo.containsbyname wants a table!")
   for k, v in pairs(t) do
     if v == value then return k end
   end
@@ -464,13 +464,13 @@ function svo.containsbyname(t, value)
 end
 
 function svo.contains(t, value)
-  svo.assert(type(t) == "table", "svo.contains wants a table!")
+  svo.assert(type(t) == 'table', "svo.contains wants a table!")
   for k, v in pairs(t) do
     if v == value then
       return true
     elseif k == value then
       return true
-    elseif type(v) == "table" then
+    elseif type(v) == 'table' then
       if svo.contains(v, value) then return true end
     end
   end
@@ -498,8 +498,8 @@ function svo.gevents(_, key)
   if signals[name] then signals[name]:emit() end
 end
 
-local yes = {"yes", "yep", "yup", "oui", "on", "y", "da"}
-local no = {"no", "nope", "non", "off", "n", "net"}
+local yes = {'yes', 'yep', 'yup', 'oui', 'on', 'y', 'da'}
+local no = {'no', 'nope', 'non', 'off', 'n', 'net'}
 function svo.convert_string(which)
   if svo.contains(yes, which) or which == true then return true end
   if svo.contains(no, which) or which == false then return false end
@@ -509,22 +509,22 @@ end
 svo.toboolean = svo.convert_string
 
 function svo.convert_boolean(which)
-  if which == true then return "on"
-  else return "off" end
+  if which == true then return 'on'
+  else return 'off' end
 end
 
 -- this should also cache to prevent a lot of getLines() calls from the tekura function
 -- warning, wrapped lines -will- be split up here
 function svo.find_until_last_paragraph (pattern, type)
-  local t = getLines(svo.lastpromptnumber, getLastLineNumber("main"))
+  local t = getLines(svo.lastpromptnumber, getLastLineNumber('main'))
 
   local find = string.find
   for i = 1, #t do
     local line = t[i]
 
-    if type == "exact" and line == pattern then return true
-    elseif type == "pattern" and find(line, pattern) then return true
-    elseif type == "substring" and find(line, pattern, 1, true) then return true end
+    if type == 'exact' and line == pattern then return true
+    elseif type == 'pattern' and find(line, pattern) then return true
+    elseif type == 'substring' and find(line, pattern, 1, true) then return true end
   end
 
   return false
@@ -532,15 +532,15 @@ end
 
 -- returns the count of matches from the current line until the start of the paragraph
 function svo.count_until_last_paragraph (pattern, type)
-  local t = getLines(svo.lastpromptnumber, getLastLineNumber("main"))
+  local t = getLines(svo.lastpromptnumber, getLastLineNumber('main'))
 
   local find, count = string.find, 0
   for i = 1, #t do
     local line = t[i]
 
-    if type == "exact" and line == pattern then count = count + 1
-    elseif type == "pattern" and find(line, pattern) then count = count + 1
-    elseif type == "substring" and find(line, pattern, 1, true) then count = count + 1 end
+    if type == 'exact' and line == pattern then count = count + 1
+    elseif type == 'pattern' and find(line, pattern) then count = count + 1
+    elseif type == 'substring' and find(line, pattern, 1, true) then count = count + 1 end
   end
 
   return count
@@ -549,7 +549,7 @@ end
 -- merge table2 into table1
 svo.update = function (t1, t2)
   for k,v in pairs(t2) do
-    if type(v) == "table" then
+    if type(v) == 'table' then
       t1[k] = svo.update(t1[k] or {}, v)
     else
       t1[k] = v
@@ -598,7 +598,7 @@ end
 function svo.fancysendall()
   if #fancy_send_commands == 0 then return end
 
-  if conf.commandechotype == "fancynewline" then echo'\n' end
+  if conf.commandechotype == 'fancynewline' then echo'\n' end
   decho(string.format("<51,0,255>(<242,234,233>%s<51,0,255>)",
     table.concat(fancy_send_commands, "<102,98,97>|<242,234,233>"))
   )
@@ -629,18 +629,18 @@ end
 
 function svo.sk.anytoshort(exit)
   local t = {
-    n = "north",
-    e = "east",
-    s = "south",
-    w = "west",
-    ne = "northeast",
-    se = "southeast",
-    sw = "southwest",
-    nw = "northwest",
-    u = "up",
-    d = "down",
-    ["in"] = "in",
-    out = "out"
+    n = 'north',
+    e = 'east',
+    s = 'south',
+    w = 'west',
+    ne = 'northeast',
+    se = 'southeast',
+    sw = 'southwest',
+    nw = 'northwest',
+    u = 'up',
+    d = 'down',
+    ['in'] = 'in',
+    out = 'out'
   }
   local rt = {}
   for s,l in pairs(t) do
@@ -670,7 +670,7 @@ end)
 signals.gmcpcharitemslist:connect(function()
   -- catch what is wielded
   local t = gmcp.Char.Items.List
-  if t.location ~= "inv" then return end
+  if t.location ~= 'inv' then return end
 
   me.wielded = {}
 
@@ -682,11 +682,11 @@ signals.gmcpcharitemslist:connect(function()
         me.wielded[item.id] = deepcopy(item)
 
         if lefthand and righthand then
-          me.wielded[item.id].hand = "both"
+          me.wielded[item.id].hand = 'both'
         elseif lefthand then
-          me.wielded[item.id].hand = "left"
+          me.wielded[item.id].hand = 'left'
         else
-          me.wielded[item.id].hand = "right"
+          me.wielded[item.id].hand = 'right'
         end
       end
     end
@@ -723,7 +723,7 @@ signals.gmcpcharitemsupdate:connect(
 function ()
   local t = gmcp.Char.Items.Update
 
-  if t.location ~= "inv" or type(me.wielded) ~= "table" then return end
+  if t.location ~= 'inv' or type(me.wielded) ~= 'table' then return end
 
   -- unwielded?
   if t.item.id and me.wielded[t.item.id] and t.item.name and
@@ -739,11 +739,11 @@ function ()
     me.wielded[t.item.id] = deepcopy(t.item)
 
     if lefthand and righthand then
-      me.wielded[t.item.id].hand = "both"
+      me.wielded[t.item.id].hand = 'both'
     elseif lefthand then
-      me.wielded[t.item.id].hand = "left"
+      me.wielded[t.item.id].hand = 'left'
     else
-      me.wielded[t.item.id].hand = "right"
+      me.wielded[t.item.id].hand = 'right'
     end
 
     svo.checkaction(svo.dict.rewield.physical)
@@ -756,7 +756,7 @@ end)
 
 signals.gmcpcharitemsremove:connect(function ()
   local t = gmcp.Char.Items.Remove
-  if t.location ~= "inv" or type(me.wielded) ~= "table" then return end
+  if t.location ~= 'inv' or type(me.wielded) ~= 'table' then return end
   local itemid = tostring(t.item.id)
   if me.wielded[itemid] then
     svo.unwielded(itemid, me.wielded[itemid].name or "")
@@ -765,13 +765,13 @@ end)
 
 function svo.setdefaultprompt()
   if svo.haveskillset('shindo') then
-    svo.config.set("customprompt",
+    svo.config.set('customprompt',
       [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@shin^w-]], false)
   elseif svo.haveskillset('kaido') then
-    svo.config.set("customprompt",
+    svo.config.set('customprompt',
       [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^6@kai^W-]], false)
   else
-    svo.config.set("customprompt",
+    svo.config.set('customprompt',
       [[^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw @promptstringorig@affs^W-]], false)
   end
 end

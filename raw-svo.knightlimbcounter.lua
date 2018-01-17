@@ -10,7 +10,7 @@ svo.kl_version = "1.0"
 local conf, sk = svo.conf, svo.sk
 
 svo.kl_list = {}
-local limbs = {"head", "torso", "rightarm", "leftarm", "rightleg", "leftleg"}
+local limbs = {'head', 'torso', 'rightarm', 'leftarm', 'rightleg', 'leftleg'}
 local hittable = {}
 svo.kl_break_at = 10
 
@@ -25,7 +25,7 @@ local function get_other_prepped(t)
   end
 
   if #s == 0 then return ""
-  else return string.format("Their %s %s now prepped.", svo.concatand(s), (#s == 1 and "is" or "are")) end
+  else return string.format("Their %s %s now prepped.", svo.concatand(s), (#s == 1 and 'is' or 'are')) end
 end
 
 function svo.kl_ignore()
@@ -121,15 +121,15 @@ function svo.kl_reset(whom, quiet)
   if quiet then echof = function() end end
 
   local t = {
-    h = "head",
-    t = "torso",
-    rl = "rightleg",
-    ll = "leftleg",
-    ra = "rightarm",
-    la = "leftarm",
+    h = 'head',
+    t = 'torso',
+    rl = 'rightleg',
+    ll = 'leftleg',
+    ra = 'rightarm',
+    la = 'leftarm',
   }
 
-  if whom == "All" then
+  if whom == 'All' then
     svo.kl_list = {}
     echof("Reset everyone's limb status.")
   elseif not whom and svo.lasthit then
@@ -160,14 +160,14 @@ function svo.kl_show()
 
   setFgColor(unpack(svo.getDefaultColorNums))
   for person, limbt in pairs(svo.kl_list) do
-    echo("---"..person.." ") fg("a_darkgrey")
+    echo("---"..person.." ") fg('a_darkgrey')
     echoLink("(reset)", 'svo.kl_reset"'..person..'"', "Reset limb status for "..person, true)
     setFgColor(unpack(svo.getDefaultColorNums))
     echo(string.format(" -- prep at %s -- break at %s --", limbt.kl_break_at - conf.limbprep, limbt.kl_break_at))
     echo(string.rep("-", (52-#person-#tostring(limbt.kl_break_at - conf.limbprep)-#tostring(limbt.kl_break_at))))
     echo"\n|"
     for i = 1, #limbs do
-      if limbt[limbs[i]] >= limbt.kl_break_at - conf.limbprep then fg("green") end
+      if limbt[limbs[i]] >= limbt.kl_break_at - conf.limbprep then fg('green') end
       echo(string.format("%14s", (limbt[limbs[i]] >= limbt.kl_break_at - conf.limbprep and limbs[i].." prep" or limbs[i].. " "..limbt[limbs[i]])))
       if limbt[limbs[i]] >= limbt.kl_break_at - conf.limbprep then setFgColor(unpack(svo.getDefaultColorNums)) end
       echo"|"
@@ -237,32 +237,32 @@ function svo.kl_synchits()
   end
 end
 
-svo.config.setoption("weaponone",
+svo.config.setoption('weaponone',
 {
   vconfig2string = true,
-  type = "number",
+  type = 'number',
   onset = function () svo.echof("Set the damage of your first weapon to %s.", conf.weaponone) end,
   onshow = function (defaultcolour)
-    fg("gold")
+    fg('gold')
     echoLink("kl:", "", "svo Knight limbcounter", true)
     fg(defaultcolour)
     echo(" 1st weapons damage is at ")
-    fg("a_cyan") echoLink((conf.weaponone and conf.weaponone or "(not set)"), 'printCmdLine"vconfig weaponone "', "Set the damage on the first weapon", true) fg(defaultcolour)
+    fg('a_cyan') echoLink((conf.weaponone and conf.weaponone or "(not set)"), 'printCmdLine"vconfig weaponone "', "Set the damage on the first weapon", true) fg(defaultcolour)
     echo(", 2nd weapons at ")
-    fg("a_cyan") echoLink((conf.weapontwo and conf.weapontwo or "(not set)"), 'printCmdLine"vconfig weapontwo "', "Set the damage on the second weapon", true) fg(defaultcolour)
+    fg('a_cyan') echoLink((conf.weapontwo and conf.weapontwo or "(not set)"), 'printCmdLine"vconfig weapontwo "', "Set the damage on the second weapon", true) fg(defaultcolour)
     echo(", prepped at ")
-    fg("a_cyan") echoLink((conf.limbprep and conf.limbprep or "(not set)"), 'printCmdLine"vconfig limbprep "', "Set amount of hits at which a limb is away from breaking, ie prepped. This is generally 2 for knights and 1 for single-hitters", true) fg(defaultcolour)
+    fg('a_cyan') echoLink((conf.limbprep and conf.limbprep or "(not set)"), 'printCmdLine"vconfig limbprep "', "Set amount of hits at which a limb is away from breaking, ie prepped. This is generally 2 for knights and 1 for single-hitters", true) fg(defaultcolour)
     echo(".\n")
   end
 })
-svo.config.setoption("weapontwo",
+svo.config.setoption('weapontwo',
 {
-  type = "string",
+  type = 'string',
   onset = function () svo.echof("Set the damage of your second weapon to %s.", conf.weapontwo) end
 })
-svo.config.setoption("limbprep",
+svo.config.setoption('limbprep',
 {
-  type = "number",
+  type = 'number',
   onset = function () svo.echof("Will consider a limb to be prepped when it's %s hits away from breaking.", conf.limbprep) end,
 })
 

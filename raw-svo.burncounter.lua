@@ -12,11 +12,11 @@ local hittable
 
 svo.bl_list = {}
 svo.burn_levels = {
-  "ablaze",
-  "severe",
-  "extreme",
-  "charred",
-  "melting"
+  'ablaze',
+  'severe',
+  'extreme',
+  'charred',
+  'melting'
 }
 
 local bl_list, burn_levels = svo.bl_list, svo.burn_levels
@@ -54,7 +54,7 @@ function sk.bl_checkburncounter()
   elseif action == "remove level" then
     bl_list[who].level = bl_list[who].level - 1
     if bl_list[who].level < 0 then bl_list[who].level = 0 end
-  elseif action == "dehydrate" then
+  elseif action == 'dehydrate' then
     if bl_list[who].dehydrate ~= 0 then
       killTimer(bl_list[who].dehydrate)
     end
@@ -81,10 +81,10 @@ function sk.bl_checkburncounter()
   raiseEvent("svo burncounter hit", who)
 
   -- if a specific person and they are ablaze
-  if who ~= "all" and bl_list[who].level > 0 then
+  if who ~= 'all' and bl_list[who].level > 0 then
     echof("%ss burn is %s (%s).%s\n", who, burn_levels[bl_list[who].level], bl_list[who].level, (bl_list[who].dehydrate == 0 and '' or ' They are also dehydrated.'))
   -- if a specific person and their ablaze was cured
-  elseif who ~= "all" and bl_list[who].level == 0 then
+  elseif who ~= 'all' and bl_list[who].level == 0 then
     echof("%s isn't on fire%s.\n", who, (bl_list[who].dehydrate == 0 and '' or ' (but they are dehydrated)'))
   else
     local function getburnlevels()
@@ -135,7 +135,7 @@ function svo.bl_reset(whom, quiet)
   if quiet then echof = function() end end
 
 
-  if whom == "All" then
+  if whom == 'All' then
     bl_list = {}
     echof("Reset everyone's burn status.")
   elseif not whom and svo.lasthit then
@@ -163,12 +163,12 @@ function svo.bl_show()
 
   setFgColor(unpack(svo.getDefaultColorNums))
   for person, burnt in pairs(bl_list) do
-    echo("---"..person.." ") fg("a_darkgrey")
+    echo("---"..person.." ") fg('a_darkgrey')
     echoLink("(reset)", 'svo.bl_reset"'..person..'"', "Reset burn status for "..person, true)
     setFgColor(unpack(svo.getDefaultColorNums))
     echo(string.rep("-", (92-#person-12))) -- 12 for the 'reset' link
     echo"\n"
-    echo(string.format(" burn level: %s (%s), dehydrated: %s", burn_levels[burnt.level] or 'none', burnt.level, (burnt.dehydrate == 0 and "no" or "yes")))
+    echo(string.format(" burn level: %s (%s), dehydrated: %s", burn_levels[burnt.level] or 'none', burnt.level, (burnt.dehydrate == 0 and 'no' or 'yes')))
     echo"\n"
   end
   echo(string.rep("-", 91))

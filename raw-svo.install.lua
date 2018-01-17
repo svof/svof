@@ -16,22 +16,22 @@ install.ids = install.ids or {}
 -- function to say have/don't have
 local installdata = {
   thirdeye = {
-    gmcp = {group = "vision", name = "thirdeye"},
+    gmcp = {group = 'vision', name = 'thirdeye'},
   },
   deathsight = {
-    gmcp = {group = "vision", name = "deathsight"},
+    gmcp = {group = 'vision', name = 'deathsight'},
   },
   focus = {
-    gmcp = {group = "survival", name = "focusing"},
+    gmcp = {group = 'survival', name = 'focusing'},
   },
   efficiency = {
-    gmcp = {group = "survival", name = "efficiency"}
+    gmcp = {group = 'survival', name = 'efficiency'}
   },
   restore = {
-    gmcp = {group = "survival", name = "restoration"},
+    gmcp = {group = 'survival', name = 'restoration'},
   },
   breath = {
-    gmcp = {group = "survival", name = "breathing"},
+    gmcp = {group = 'survival', name = 'breathing'},
   },
   pipes = {
     command = "ii pipe",
@@ -52,67 +52,67 @@ local installdata = {
     }
   },
   insomnia = {
-    gmcp = {group = "survival", name = "insomnia"},
+    gmcp = {group = 'survival', name = 'insomnia'},
   },
   clot = {
-    gmcp = {group = "survival", name = "clotting"},
+    gmcp = {group = 'survival', name = 'clotting'},
   }
 }
 
 if svo.haveskillset('chivalry') then
   installdata.fitness = {
     command = "ab chivalry fitness",
-    gmcp = {group = "chivalry", name = "fitness"}}
+    gmcp = {group = 'chivalry', name = 'fitness'}}
 elseif svo.haveskillset('kaido') then
   installdata.fitness = {
     command = "ab kaido fitness",
-    gmcp = {group = "kaido", name = "fitness"}}
+    gmcp = {group = 'kaido', name = 'fitness'}}
 elseif svo.haveskillset('shindo') then
   installdata.fitness = {
     command = "ab striking fitness",
-    gmcp = {group = "striking", name = "fitness"}}
+    gmcp = {group = 'striking', name = 'fitness'}}
 end
 
 if svo.haveskillset('venom') then
   installdata.shrugging = {
-    gmcp = {group = "venom", name = "shrugging"}
+    gmcp = {group = 'venom', name = 'shrugging'}
   }
 end
 if svo.haveskillset('voicecraft') then
   installdata.dwinnu = {
-    gmcp = {group = "voicecraft", name = "dwinnu"},
+    gmcp = {group = 'voicecraft', name = 'dwinnu'},
   }
 end
 if not svo.haveskillset('tekura') then
   installdata.parry = {
-    gmcp = {group = "weaponry", name = "parrying"},
+    gmcp = {group = 'weaponry', name = 'parrying'},
   }
 else
   installdata.parry = {
-    gmcp = {group = "tekura", name = "guarding"},
+    gmcp = {group = 'tekura', name = 'guarding'},
   }
 end
 if svo.haveskillset('chivalry') then
   installdata.rage = {
-    gmcp = {group = "chivalry", name = "rage"},
+    gmcp = {group = 'chivalry', name = 'rage'},
   }
 end
 if svo.haveskillset('shindo') then
   installdata.shindodeaf = {
-    gmcp = {group = "shindo", name = "deaf"},
+    gmcp = {group = 'shindo', name = 'deaf'},
   }
   installdata.shindoblind = {
-    gmcp = {group = "shindo", name = "blind"},
+    gmcp = {group = 'shindo', name = 'blind'},
   }
 end
 if svo.haveskillset('weaponmastery') then
   installdata.recoverfooting = {
-    gmcp = {group = "weaponmastery", name = "recover"},
+    gmcp = {group = 'weaponmastery', name = 'recover'},
   }
 end
 
 function svo.installclear(what)
-  if type(install.ids[what]) == "table" then
+  if type(install.ids[what]) == 'table' then
 
     for _, id in pairs(install.ids[what]) do
       killTrigger(id)
@@ -128,7 +128,7 @@ function svo.installclear(what)
   tempTimer(5+getNetworkLatency(), function ()
     if next(install.ids) then
       for thing, _ in pairs(install.ids) do
-        if svo.config_dict[thing] and svo.config_dict[thing].type == "boolean" then
+        if svo.config_dict[thing] and svo.config_dict[thing].type == 'boolean' then
           svo.config.set(thing, false, true)
         end
 
@@ -150,7 +150,7 @@ end
 function svo.installstart(fresh)
   if fresh and not sk.installwarning then
     svo.echof("Are you really sure you want to wipe everything (all remove all non-default defence modes, clear basic+combat defup/keepup to blank, remove all configuration options)? If yes, do vinstall fresh again.")
-    if selectString("really", 1) ~= -1 then setUnderline(true) resetFormat() end
+    if selectString('really', 1) ~= -1 then setUnderline(true) resetFormat() end
     svo.sk.installwarning = true
     return
   elseif fresh and sk.installwarning then
@@ -172,7 +172,7 @@ function svo.installstart(fresh)
   end
 
   for _, skill in pairs(install.ids) do
-    if type(skill) == "table" then
+    if type(skill) == 'table' then
       for _, id in pairs(skill) do
         svo.installclear(id)
       end
@@ -189,10 +189,10 @@ function svo.installstart(fresh)
       end
     end
 
-    sendGMCP("Char.Skills.Get "..yajl.to_string{group = "survival"})
+    sendGMCP("Char.Skills.Get "..yajl.to_string{group = 'survival'})
     sendGMCP("Char.Items.Inv")
 if svo.haveskillset('metamorphosis') then
-    sendGMCP("Char.Skills.Get "..yajl.to_string{group = "metamorphosis"})
+    sendGMCP("Char.Skills.Get "..yajl.to_string{group = 'metamorphosis'})
 end
     signals.gmcpcharskillsinfo:unblock(install.checkskillgmcp)
     signals.gmcpcharitemslist:unblock(install.checkinvgmcp)
@@ -211,7 +211,7 @@ end
     signals.gmcpcharskillslist:block(install.checkskilllist)
 
     for _, skill in pairs(install.ids) do
-      if type(skill) == "table" then
+      if type(skill) == 'table' then
         for _, id in pairs(skill) do
           svo.installclear(id)
         end
@@ -237,14 +237,14 @@ end
 
   if sys.enabledgmcp then
     local city = gmcp.Char.Status.city:match("^(%w+)")
-    if city then svo.config.set("org", city, true) end
+    if city then svo.config.set('org', city, true) end
 
     if gmcp.Char.Status.level and tonumber(gmcp.Char.Status.level:match("^(%d+)")) >= 99 then
-      svo.config.set("dragonflex", true, true)
-      svo.config.set("dragonheal", true, true)
+      svo.config.set('dragonflex', true, true)
+      svo.config.set('dragonheal', true, true)
     else
-      svo.config.set("dragonflex", false, true)
-      svo.config.set("dragonheal", false, true)
+      svo.config.set('dragonflex', false, true)
+      svo.config.set('dragonheal', false, true)
     end
   end
 end
@@ -282,7 +282,7 @@ svo.install.check_install_step = function()
   signals.saveconfig:emit()
 
   decho(svo.getDefaultColor().."If you'd like, you can also optionally setup the ")
-  echoLink("parry", 'svo.sp.setup()', 'parry')
+  echoLink('parry', 'svo.sp.setup()', 'parry')
   decho(svo.getDefaultColor().." system and the ")
   echoLink("herb precache", 'svo.showprecache()', 'herb precache')
   decho(svo.getDefaultColor().." system. You can adjust the ")
@@ -307,8 +307,8 @@ function svo.install.checkskillgmcp()
   local t = _G.gmcp.Char.Skills.Info
   if not t then return end
 
-  if t.skill == "clotting" then t.skill = "clot" end
-  if t.skill == "parrying" then t.skill = "parry" end
+  if t.skill == 'clotting' then t.skill = 'clot' end
+  if t.skill == 'parrying' then t.skill = 'parry' end
 
   if conf[t.skill] == nil and (t.info == "" or t.info:find("You have not yet learned this ability")) then
     conf[t.skill] = false
@@ -327,7 +327,7 @@ signals.gmcpcharskillsinfo:block(install.checkskillgmcp)
 
 function svo.install.checkinvgmcp()
   local t = _G.gmcp.Char.Items.List
-  if not t.location == "inv" then return end
+  if not t.location == 'inv' then return end
 
   -- feh! Easier to hardcode it for such a miniscule amount of items.
   -- If list enlarges, fix appopriately.
@@ -345,8 +345,8 @@ signals.gmcpcharitemslist:block(install.checkinvgmcp)
 
 function svo.install.checkskilllist()
   local t = _G.gmcp.Char.Skills.List
-  if t.group == "survival" then
-    for _, k in ipairs{{"focus", "focusing"}, {"restore", "restoration"}, {"insomnia", "insomnia"}, {"clot", "clotting"}, {"breath", "breathing"}, {"efficiency", "efficiency"}} do
+  if t.group == 'survival' then
+    for _, k in ipairs{{'focus', 'focusing'}, {'restore', 'restoration'}, {'insomnia', 'insomnia'}, {'clot', 'clotting'}, {'breath', 'breathing'}, {'efficiency', 'efficiency'}} do
       if svo.contains(t.list, k[2]:title()) then
         svo.config.set(k[1], true, true)
         svo.installclear(k[1])
@@ -355,15 +355,15 @@ function svo.install.checkskilllist()
   end
 
 if svo.haveskillset('metamorphosis') then
-  if t.group == "metamorphosis" then
-    for _, k in ipairs{"truemorph", "hydra", "wyvern", "affinity", "icewyrm", "gorilla", "eagle", "jaguar", "wolverine", "transmorph", "elephant", "nightingale", "bonding", "bear", "basilisk", "sloth", "gopher", "condor", "hyena", "owl", "cheetah", "jackdaw", "turtle", "wolf", "wildcat", "powers", "squirrel"} do
+  if t.group == 'metamorphosis' then
+    for _, k in ipairs{'truemorph', 'hydra', 'wyvern', 'affinity', 'icewyrm', 'gorilla', 'eagle', 'jaguar', 'wolverine', 'transmorph', 'elephant', 'nightingale', 'bonding', 'bear', 'basilisk', 'sloth', 'gopher', 'condor', 'hyena', 'owl', 'cheetah', 'jackdaw', 'turtle', 'wolf', 'wildcat', 'powers', 'squirrel'} do
     if svo.contains(t.list, k:title()) then
-      svo.config.set("morphskill", k, true)
+      svo.config.set('morphskill', k, true)
       break
     end
   end
 
-  svo.installclear("morphskill")
+  svo.installclear('morphskill')
 end
   end
 end

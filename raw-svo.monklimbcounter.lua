@@ -11,7 +11,7 @@ local conf, sk = svo.conf, svo.sk
 svo.ml_version = "1.0"
 
 svo.ml_list = {}
-local limbs = {"head", "torso", "rightarm", "leftarm", "rightleg", "leftleg"}
+local limbs = {'head', 'torso', 'rightarm', 'leftarm', 'rightleg', 'leftleg'}
 local hittable = {}
 
 -- flag used to block a limb on a person from taking damage after it was recently broken
@@ -31,7 +31,7 @@ local function get_other_prepped(t, limbhit)
   end
 
   if #s == 0 then return ""
-  else return string.format(" Their %s %s also prepped.", svo.concatand(s), (#s == 1 and "is" or "are")) end
+  else return string.format(" Their %s %s also prepped.", svo.concatand(s), (#s == 1 and 'is' or 'are')) end
 end
 
 function sk.ml_checklimbcounter()
@@ -89,11 +89,11 @@ function svo.ml_hit(who, where, location)
   -- if a limb was recently broken, prevent it from taking on damage - restoration will reset it at the end of 4s anyway
   if block_limb and block_limb.who == who and block_limb.where == where then return end
 
-  if location == "arm" then
+  if location == 'arm' then
     hittable[who][#hittable[who] + 1] = {[where] = conf.armdamage}
-  elseif location == "leg" then
+  elseif location == 'leg' then
     hittable[who][#hittable[who] + 1] = {[where] = conf.legdamage}
-  elseif location == "AXK" then
+  elseif location == 'AXK' then
     hittable[who][#hittable[who] + 1] = {[where] = svo.ml_break_at}
   end
   svo.signals.after_prompt_processing:unblock(sk.ml_checklimbcounter)
@@ -104,15 +104,15 @@ svo.signals.after_prompt_processing:block(sk.ml_checklimbcounter)
 function svo.ml_reset(whom)
   whom = string.title(whom)
   local t = {
-    h = "head",
-    t = "torso",
-    rl = "rightleg",
-    ll = "leftleg",
-    ra = "rightarm",
-    la = "leftarm",
+    h = 'head',
+    t = 'torso',
+    rl = 'rightleg',
+    ll = 'leftleg',
+    ra = 'rightarm',
+    la = 'leftarm',
   }
 
-  if whom == "All" then
+  if whom == 'All' then
     svo.ml_list = {}
     svo.echof("Reset everyone's limb status.")
   elseif not whom and svo.lasthit then
@@ -143,14 +143,14 @@ function svo.ml_show()
 
   setFgColor(unpack(svo.getDefaultColorNums))
   for person, limbt in pairs(svo.ml_list) do
-    echo("---"..person.." ") fg("a_darkgrey")
+    echo("---"..person.." ") fg('a_darkgrey')
     echoLink("(reset)", 'svo.ml_reset"'..person..'"', "Reset limb status for "..person, true)
     setFgColor(unpack(svo.getDefaultColorNums))
     echo(string.format(" --            -- break at %s --", limbt.ml_break_at))
     echo(string.rep("-", (52-#person-#tostring(limbt.ml_break_at)-#tostring(limbt.ml_break_at))))
     echo"\n|"
     for i = 1, #limbs do
-      if limbt[limbs[i]] >= limbt.ml_break_at then fg("green") end
+      if limbt[limbs[i]] >= limbt.ml_break_at then fg('green') end
       echo(string.format("%14s", (limbt[limbs[i]] >= limbt.ml_break_at and limbs[i].." prep" or limbs[i].. " "..limbt[limbs[i]])))
       if limbt[limbs[i]] >= limbt.ml_break_at then setFgColor(unpack(svo.getDefaultColorNums)) end
       echo"|"
@@ -217,32 +217,32 @@ end
 conf.limbprep = conf.limbprep or 7
 conf.armdamage = conf.armdamage or 3
 conf.legdamage = conf.legdamage or 4
-svo.config.setoption("armdamage",
+svo.config.setoption('armdamage',
 {
   vconfig2string = true,
-  type = "number",
+  type = 'number',
   onset = function () svo.echof("Set the damage that your punches do to %s points.", conf.armdamage) end,
   onshow = function (defaultcolour)
-    fg("gold")
+    fg('gold')
     echoLink("ml:", "", "svo Monk limbcounter", true)
     fg(defaultcolour)
     echo(" arm damage is at ")
-    fg("a_cyan") echoLink((conf.armdamage and conf.armdamage or "(not set)"), 'printCmdLine"vconfig armdamage "', "Set the damage your punches do", true) fg(defaultcolour)
+    fg('a_cyan') echoLink((conf.armdamage and conf.armdamage or "(not set)"), 'printCmdLine"vconfig armdamage "', "Set the damage your punches do", true) fg(defaultcolour)
     echo(", leg damage at ")
-    fg("a_cyan") echoLink((conf.legdamage and conf.legdamage or "(not set)"), 'printCmdLine"vconfig legdamage "', "Set the damage your kicks do", true) fg(defaultcolour)
+    fg('a_cyan') echoLink((conf.legdamage and conf.legdamage or "(not set)"), 'printCmdLine"vconfig legdamage "', "Set the damage your kicks do", true) fg(defaultcolour)
     echo(", prepped at ")
-    fg("a_cyan") echoLink((conf.limbprep and conf.limbprep or "(not set)"), 'printCmdLine"vconfig limbprep "', "Set amount of hits at which a limb is away from breaking, ie prepped. This should generally be arm damage + arm damage + leg damage", true) fg(defaultcolour)
+    fg('a_cyan') echoLink((conf.limbprep and conf.limbprep or "(not set)"), 'printCmdLine"vconfig limbprep "', "Set amount of hits at which a limb is away from breaking, ie prepped. This should generally be arm damage + arm damage + leg damage", true) fg(defaultcolour)
     echo(".\n")
   end
 })
-svo.config.setoption("legdamage",
+svo.config.setoption('legdamage',
 {
-  type = "string",
+  type = 'string',
   onset = function () svo.echof("Set the damage that your kicks do to %s points.", conf.legdamage) end
 })
-svo.config.setoption("limbprep",
+svo.config.setoption('limbprep',
 {
-  type = "number",
+  type = 'number',
   onset = function () svo.echof("Will consider a limb to be prepped when it's %s points away from breaking.", conf.limbprep) end,
 })
 

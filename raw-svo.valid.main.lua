@@ -39,7 +39,7 @@ function svo.ignore_illusion(reason, moveback)
     insertText(" ") moveCursor(#getCurrentLine(), currentline) insertLink("(i)", '', reason or '')
   end
 
-  moveCursorEnd("main")
+  moveCursorEnd('main')
   svo.debugf("svo.ignore_illusion()")
 end
 
@@ -48,7 +48,7 @@ function svo.show_info(shortmsg, message, moveback)
   moveCursor(#getCurrentLine(), getLineNumber())
   insertText(" ") moveCursor(#getCurrentLine(), getLineNumber())
   deselect()
-  fg("green")
+  fg('green')
   insertLink("("..shortmsg..")", '', message or '') -- can't format, https://bugs.launchpad.net/mudlet/+bug/1027732
   resetFormat()
 end
@@ -66,13 +66,13 @@ function svo.valid.symp_asleep()
 
   if not affs.sleep and not actions.sleep_aff then
     svo.checkaction(svo.dict.sleep.aff, true)
-    lifevision.add(actions["sleep_aff"].p, "symptom", nil, 1)
+    lifevision.add(actions['sleep_aff'].p, 'symptom', nil, 1)
   end
 
   -- svo.reset non-wait things we were doing, because they got cancelled by the sleep
   if affs.asleep or actions.asleep_aff then
     for _,v in actions:iter() do
-      if v.p.balance ~= "waitingfor" and v.p.balance ~= "aff" then
+      if v.p.balance ~= 'waitingfor' and v.p.balance ~= 'aff' then
         svo.killaction(svo.dict[v.p.action_name][v.p.balance])
       end
     end
@@ -89,7 +89,7 @@ end
 function svo.valid.cured_lovers_nobody()
   svo.checkaction(svo.dict.lovers.physical)
   if actions.lovers_physical then
-    lifevision.add(actions.lovers_physical.p, "nobody")
+    lifevision.add(actions.lovers_physical.p, 'nobody')
   end
 end
 
@@ -120,12 +120,12 @@ end
 function svo.defs.sileris_slickness()
   svo.checkaction(svo.dict.sileris.misc)
   if actions.sileris_misc then
-    if svo.dict.sileris.applying == "quicksilver" and not line:find("quicksilver", 1, true) then
+    if svo.dict.sileris.applying == 'quicksilver' and not line:find('quicksilver', 1, true) then
       svo.ignore_illusion("Ignored this illusion because we're applying quicksilver, not sileris right now (or we were forced).")
-    elseif svo.dict.sileris.applying == "sileris" and not line:find("berry", 1, true) then
+    elseif svo.dict.sileris.applying == 'sileris' and not line:find('berry', 1, true) then
       svo.ignore_illusion("Ignored this illusion because we're applying sileris, not quicksilver right now (or we were forced).")
     else
-      lifevision.add(actions.sileris_misc.p, "slick", nil, 1)
+      lifevision.add(actions.sileris_misc.p, 'slick', nil, 1)
     end
   end
 end
@@ -135,7 +135,7 @@ function svo.valid.sileris_flayed()
     defs.lost_sileris()
   elseif svo.paragraph_length == 1 then
     svo.checkaction(svo.dict.sileris.gone, true)
-    lifevision.add(actions.sileris_gone.p, nil, getLastLineNumber("main"), 1)
+    lifevision.add(actions.sileris_gone.p, nil, getLastLineNumber('main'), 1)
   else
     svo.ignore_illusion("not first")
   end
@@ -146,7 +146,7 @@ function svo.valid.insomnia_relaxed()
     defs.lost_insomnia()
   else
     svo.checkaction(svo.dict.insomnia.gone, true)
-    lifevision.add(actions.insomnia_gone.p, "relaxed", getLastLineNumber("main"))
+    lifevision.add(actions.insomnia_gone.p, 'relaxed', getLastLineNumber('main'))
   end
 end
 
@@ -170,14 +170,14 @@ end
 function svo.valid.smoke_stillgot_inquisition()
   svo.checkaction(svo.dict.hellsight.smoke)
   if actions.hellsight_smoke then
-    lifevision.add(actions.hellsight_smoke.p, "inquisition")
+    lifevision.add(actions.hellsight_smoke.p, 'inquisition')
   end
 end
 
 function svo.valid.smoke_stillhave_madness()
   svo.checkaction(svo.dict.madness.smoke)
   if actions.madness_smoke then
-    lifevision.add(actions.madness_smoke.p, "hecate")
+    lifevision.add(actions.madness_smoke.p, 'hecate')
   end
 end
 
@@ -185,7 +185,7 @@ function svo.valid.smoke_have_rebounding()
   svo.checkaction(svo.dict.rebounding.smoke)
   if actions.rebounding_smoke then
     svo.smoke_cure = true
-    lifevision.add(actions.rebounding_smoke.p, "alreadygot")
+    lifevision.add(actions.rebounding_smoke.p, 'alreadygot')
   end
 end
 
@@ -200,32 +200,32 @@ if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillse
   function svo.valid.fitness_cured_asthma()
     svo.checkaction(svo.dict.fitness.physical)
     if actions.fitness_physical then
-      lifevision.add(actions.fitness_physical.p, "curedasthma")
+      lifevision.add(actions.fitness_physical.p, 'curedasthma')
     end
   end
 
   function svo.valid.fitness_weakness()
     svo.checkaction(svo.dict.fitness.physical)
     if actions.fitness_physical then
-      lifevision.add(actions.fitness_physical.p, "weakness")
+      lifevision.add(actions.fitness_physical.p, 'weakness')
     end
   end
 
   function svo.valid.fitness_allgood()
     svo.checkaction(svo.dict.fitness.physical)
     if actions.fitness_physical then
-      lifevision.add(actions.fitness_physical.p, "allgood")
+      lifevision.add(actions.fitness_physical.p, 'allgood')
     end
   end
 
   function svo.valid.usedfitnessbalance()
     svo.checkaction(svo.dict.stolebalance.happened, true)
-    lifevision.add(actions.stolebalance_happened.p, nil, "fitness")
+    lifevision.add(actions.stolebalance_happened.p, nil, 'fitness')
   end
 
   function svo.valid.gotfitnessbalance()
     svo.checkaction(svo.dict.gotbalance.happened, true)
-    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = "fitness" -- hack to allow multiple balances at once
+    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'fitness' -- hack to allow multiple balances at once
     lifevision.add(actions.gotbalance_happened.p)
   end
 else
@@ -238,14 +238,14 @@ end
 if svo.haveskillset('chivalry') then
 function svo.valid.gotragebalance()
   svo.checkaction(svo.dict.gotbalance.happened, true)
-  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = "rage" -- hack to allow multiple balances at once
+  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'rage' -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
 end
 
 function svo.valid.dragonform_riding()
   if actions.riding_physical then
-    lifevision.add(actions.riding_physical.p, "dragonform")
+    lifevision.add(actions.riding_physical.p, 'dragonform')
   end
 end
 
@@ -261,17 +261,17 @@ function svo.valid.dragonformingcolour(colour)
     colour = colour:lower()
 
     local t = {
-       ["red"] = 'dragonfire',
-       ["black"] = 'acid',
-       ["silver"] = 'lightning',
+       ['red'] = 'dragonfire',
+       ['black'] = 'acid',
+       ['silver'] = 'lightning',
        -- it is 'golden' and not 'gold' for this message
-       ["golden"] = 'psi',
-       ["blue"] = 'ice',
-       ["green"] = 'venom'
+       ['golden'] = 'psi',
+       ['blue'] = 'ice',
+       ['green'] = 'venom'
     }
 
     conf.dragonbreath = t[colour]
-    raiseEvent("svo config changed", "dragonbreath")
+    raiseEvent("svo config changed", 'dragonbreath')
   end
 end
 
@@ -284,7 +284,7 @@ end
 
 function svo.defs.cancelled_dragonform()
   if actions.waitingfordragonform_waitingfor then
-    lifevision.add(actions.waitingfordragonform_waitingfor.p, "cancelled")
+    lifevision.add(actions.waitingfordragonform_waitingfor.p, 'cancelled')
   end
 end
 
@@ -304,7 +304,7 @@ end
 
 function svo.valid.cancelled_rejuvenate()
   if actions.waitingforrejuvenate_waitingfor then
-    lifevision.add(actions.waitingforrejuvenate_waitingfor.p, "cancelled")
+    lifevision.add(actions.waitingforrejuvenate_waitingfor.p, 'cancelled')
   end
 end
 end
@@ -318,7 +318,7 @@ end
 
 function svo.defs.have_mace()
   if actions.mace_physical then
-    lifevision.add(actions.mace_physical.p, "alreadyhave")
+    lifevision.add(actions.mace_physical.p, 'alreadyhave')
   end
 end
 
@@ -331,7 +331,7 @@ end
 
 function svo.defs.cancelled_mace()
   if actions.waitingformace_waitingfor then
-    lifevision.add(actions.waitingformace_waitingfor.p, "cancelled")
+    lifevision.add(actions.waitingformace_waitingfor.p, 'cancelled')
   end
 end
 
@@ -368,17 +368,17 @@ end
 if svo.haveskillset('propagation') then
 function svo.defs.notonland_viridian()
   if actions.viridian_physical then
-    lifevision.add(actions.viridian_physical.p, "notonland")
+    lifevision.add(actions.viridian_physical.p, 'notonland')
   end
 end
 function svo.defs.viridian_inside()
   if actions.viridian_physical then
-    lifevision.add(actions.viridian_physical.p, "indoors")
+    lifevision.add(actions.viridian_physical.p, 'indoors')
   end
 end
 function svo.defs.viridian_cancelled()
   if actions.waitingforviridian_waitingfor then
-    lifevision.add(actions.waitingforviridian_waitingfor.p, "cancelled")
+    lifevision.add(actions.waitingforviridian_waitingfor.p, 'cancelled')
   end
 end
 function svo.defs.got_viridian()
@@ -393,20 +393,20 @@ function svo.defs.started_viridian()
 end
 function svo.defs.alreadyhave_viridian()
   if actions.viridian_physical then
-    lifevision.add(actions.viridian_physical.p, "alreadyhave")
+    lifevision.add(actions.viridian_physical.p, 'alreadyhave')
   end
 end
 end
 
 function svo.valid.alreadyhave_dragonbreath()
   if actions.dragonbreath_physical then
-    lifevision.add(actions.dragonbreath_physical.p, "alreadygot")
+    lifevision.add(actions.dragonbreath_physical.p, 'alreadygot')
   end
 end
 
 function svo.defs.alreadyhave_dragonform()
   if actions.dragonform_physical then
-    lifevision.add(actions.dragonform_physical.p, "alreadyhave")
+    lifevision.add(actions.dragonform_physical.p, 'alreadyhave')
   end
 end
 
@@ -425,7 +425,7 @@ end
 -- hallucinations symptoms
 function svo.valid.swandive()
   local have_pflag = svo.pflags.p
-  sk.onprompt_beforeaction_add("swandive", function ()
+  sk.onprompt_beforeaction_add('swandive', function ()
     if not have_pflag and svo.pflags.p then
       valid.simpleprone()
       valid.simplehallucinations()
@@ -435,14 +435,14 @@ end
 
 -- detect conf/dizzy, or amnesia/amnesia at worst
 function sk.check_evileye()
-  if svo.find_until_last_paragraph("Your curseward has been breached!", "exact") then
+  if svo.find_until_last_paragraph("Your curseward has been breached!", 'exact') then
     sk.tempevileye.count = sk.tempevileye.count - 1
   end
 
   -- fails when they give the same aff twice
   --[[local affcount = 0
   for action in lifevision.l:iter() do
-    if string.ends(action, "_aff") or string.find(action, "check") then affcount = affcount + 1 end
+    if string.ends(action, '_aff') or string.find(action, 'check') then affcount = affcount + 1 end
   end
 
   local diff = sk.tempevileye.count - affcount]]
@@ -472,12 +472,12 @@ end
 function svo.valid.evileye()
   -- check next line to see if it's
   if sk.tempevileye then sk.tempevileye.count = sk.tempevileye.count + 1 return end -- don't set it if the first line already did
-  sk.tempevileye = {startline = getLastLineNumber("main"), count = 1}
+  sk.tempevileye = {startline = getLastLineNumber('main'), count = 1}
   signals.before_prompt_processing:connect(sk.check_evileye)
 end
 
 function sk.check_trip()
-  if not svo.find_until_last_paragraph("You parry the attack with a deft manoeuvre.", "exact") and not svo.find_until_last_paragraph("You step into the attack,", "substring") then
+  if not svo.find_until_last_paragraph("You parry the attack with a deft manoeuvre.", 'exact') and not svo.find_until_last_paragraph("You step into the attack,", 'substring') then
     valid.simpleprone()
   end
 
@@ -537,7 +537,7 @@ function svo.valid.symp_paralysis()
   end
 
   if actions.checkparalysis_misc then
-    lifevision.add(actions.checkparalysis_misc.p, "paralysed")
+    lifevision.add(actions.checkparalysis_misc.p, 'paralysed')
     decho(svo.getDefaultColor().." (paralysis confirmed)")
   elseif not conf.aillusion then
     valid.simpleparalysis()
@@ -555,7 +555,7 @@ function svo.valid.symp_paralysis()
   end
 
   -- in slowcuring only (for AI safety for now), count all balanceful actions for paralysis
-  if sys.sync and svo.usingbal"physical" then
+  if sys.sync and svo.usingbal'physical' then
     valid.simpleparalysis()
   end
 end
@@ -572,7 +572,7 @@ function svo.valid.symp_stun()
   -- svo.reset non-wait things we were doing, because they got cancelled by the stun
   if affs.stun or actions.stun_aff then
     for _,v in actions:iter() do
-      if v.p.balance ~= "waitingfor" and v.p.balance ~= "aff" then
+      if v.p.balance ~= 'waitingfor' and v.p.balance ~= 'aff' then
         svo.killaction(svo.dict[v.p.action_name][v.p.balance])
       end
     end
@@ -586,7 +586,7 @@ end
 function svo.valid.saidnothing()
   if actions.checkslows_misc then
     svo.deleteLineP()
-    lifevision.add(actions.checkslows_misc.p, "onclear")
+    lifevision.add(actions.checkslows_misc.p, 'onclear')
   elseif affs.aeon or affs.retardation or affs.stun then
     svo.deleteLineP()
   end
@@ -595,19 +595,19 @@ valid.silence_vibe = valid.saidnothing
 
 function svo.valid.jump()
   if actions.checkparalysis_misc then
-    lifevision.add(actions.checkparalysis_misc.p, "onclear")
+    lifevision.add(actions.checkparalysis_misc.p, 'onclear')
     svo.deleteLineP()
   end
 end
 
 function svo.valid.nobalance()
   if actions.checkparalysis_misc then
-    lifevision.add(actions.checkparalysis_misc.p, "paralysed")
+    lifevision.add(actions.checkparalysis_misc.p, 'paralysed')
     svo.deleteLineP()
   end
 
   if actions.checkasthma_misc then
-    lifevision.add(actions.checkasthma_misc.p, "weakbreath", nil, 1)
+    lifevision.add(actions.checkasthma_misc.p, 'weakbreath', nil, 1)
   end
 
   -- cancel standing if we can't due to no balance
@@ -615,38 +615,38 @@ function svo.valid.nobalance()
     svo.killaction(svo.dict.prone.misc)
     if bals.balance then
       bals.balance = false -- unset balance, in case of blackout, where we don't see prompt
-      raiseEvent("svo lost balance", "balance")
+      raiseEvent("svo lost balance", 'balance')
     end
   end
 
   -- this might not be necessary for this case of getting hit off balance
   -- elseif actions.breath_physical and not affs.asthma and svo.affsp.asthma then
   --   svo.checkaction(svo.dict.checkasthma.misc, true)
-  --   lifevision.add(actions.checkasthma_misc.p, "weakbreath", nil, 1)
+  --   lifevision.add(actions.checkasthma_misc.p, 'weakbreath', nil, 1)
   -- end
 end
 
 function svo.valid.nothingtowield()
   if actions.checkparalysis_misc then
     svo.deleteLineP()
-    lifevision.add(actions.checkparalysis_misc.p, "onclear")
+    lifevision.add(actions.checkparalysis_misc.p, 'onclear')
   end
 end
 
 function svo.valid.nosymptom()
   if actions.checkwrithes_misc then
     tempLineTrigger(0,3,[[deleteLine()]])
-    lifevision.add(actions.checkwrithes_misc.p, "onclear")
+    lifevision.add(actions.checkwrithes_misc.p, 'onclear')
   end
 end
 
 function svo.valid.nothingtoeat()
   if actions.checkanorexia_misc then
     svo.deleteLineP()
-    lifevision.add(actions.checkanorexia_misc.p, "onclear")
+    lifevision.add(actions.checkanorexia_misc.p, 'onclear')
   elseif actions.checkstun_misc then
     svo.deleteLineP()
-    lifevision.add(actions.checkstun_misc.p, "onclear")
+    lifevision.add(actions.checkstun_misc.p, 'onclear')
   elseif affs.anorexia or affs.stun then
     svo.deleteLineP()
   end
@@ -655,14 +655,14 @@ end
 function svo.valid.lungsokay()
   if actions.checkasthma_misc then
     svo.deleteLineP()
-    lifevision.add(actions.checkasthma_misc.p, "onclear")
+    lifevision.add(actions.checkasthma_misc.p, 'onclear')
   end
 end
 
 -- given a sluggish symptom, either confirms sluggish if we're checking for it already
 -- or goes out and tests it
 function svo.valid.webeslow()
-  sk.sawsluggish = getLastLineNumber("main") -- for retardation going away auto-detection
+  sk.sawsluggish = getLastLineNumber('main') -- for retardation going away auto-detection
   if sk.sluggishtimer then killTimer(sk.sluggishtimer); sk.sluggishtimer = nil end
 
   -- if triggered by curing, don't consider it retardation
@@ -675,7 +675,7 @@ function svo.valid.webeslow()
 
   -- confirm that we're sluggish if we were checking for slows
   if actions.checkslows_misc then
-    lifevision.add(actions.checkslows_misc.p, "sluggish")
+    lifevision.add(actions.checkslows_misc.p, 'sluggish')
     return
   end
 
@@ -687,14 +687,14 @@ function svo.valid.webeslow()
   elseif not affs.retardation then
     -- confirm aeon out of the blue, treat it as retardation over aeon
     svo.checkaction(svo.dict.checkslows.aff, true)
-    lifevision.add(actions.checkslows_aff.p, nil, "retardation")
+    lifevision.add(actions.checkslows_aff.p, nil, 'retardation')
     -- sk.retardation_symptom()
   end
 end
 
 function svo.valid.webbily()
   if actions.checkwrithes_misc then
-    lifevision.add(actions.checkwrithes_misc.p, "webbily")
+    lifevision.add(actions.checkwrithes_misc.p, 'webbily')
   end
 end
 
@@ -716,12 +716,12 @@ end
 
 function svo.valid.transfixily()
   if actions.checkwrithes_misc then
-    lifevision.add(actions.checkwrithes_misc.p, "transfixily")
+    lifevision.add(actions.checkwrithes_misc.p, 'transfixily')
   end
 
   -- special workaround for waking up not showing up in blackout: clear sleep if we saw this msg
   -- it's an issue otherwise to miss the sleep msg from a totem while in blackout and think you're still asleep
-  if affs.asleep then svo.rmaff("asleep") end
+  if affs.asleep then svo.rmaff('asleep') end
 end
 
 function svo.valid.symp_roped()
@@ -742,10 +742,10 @@ end
 
 function svo.valid.weakbreath()
   if actions.checkasthma_misc then
-    lifevision.add(actions.checkasthma_misc.p, "weakbreath", nil, 1)
+    lifevision.add(actions.checkasthma_misc.p, 'weakbreath', nil, 1)
   elseif actions.breath_physical and not affs.asthma then
     svo.checkaction(svo.dict.checkasthma.misc, true)
-    lifevision.add(actions.checkasthma_misc.p, "weakbreath", nil, 1)
+    lifevision.add(actions.checkasthma_misc.p, 'weakbreath', nil, 1)
   elseif conf.aillusion and (not actions.breath_physical and not affs.asthma) then
     svo.ignore_illusion("Ignored this illusion because we aren't trying to hold breath right now (or we were forced).")
   else
@@ -756,7 +756,7 @@ end
 
 function svo.valid.impaly()
   if actions.checkwrithes_misc then
-    lifevision.add(actions.checkwrithes_misc.p, "impaly")
+    lifevision.add(actions.checkwrithes_misc.p, 'impaly')
   end
 end
 
@@ -805,7 +805,7 @@ end
 function svo.valid.nodragonheal()
   svo.checkaction(svo.dict.dragonheal.physical)
   if actions.dragonheal_physical then
-    lifevision.add(actions.dragonheal_physical.p, "nobalance")
+    lifevision.add(actions.dragonheal_physical.p, 'nobalance')
   end
 end
 
@@ -815,11 +815,11 @@ function svo.valid.knighthood_disembowel()
   -- we won't get curing* if we didn't even start to writhe, so fake it for these purposes
   if not result and affs.impale then
     svo.checkaction(svo.dict.curingimpale.waitingfor, true)
-    result = { name = "curingimpale_waitingfor" }
+    result = { name = 'curingimpale_waitingfor' }
   end
 
   if result and actions[result.name] then
-    lifevision.add(actions[result.name].p, "withdrew")
+    lifevision.add(actions[result.name].p, 'withdrew')
   end
 end
 
@@ -847,7 +847,7 @@ end
 
 function svo.valid.disruptingshiver()
   if conf.aillusion and bals.equilibrium then
-    sk.onprompt_beforeaction_add("disruptingshiver", function ()
+    sk.onprompt_beforeaction_add('disruptingshiver', function ()
       if not bals.equilibrium  then
         svo.checkaction(svo.dict.shivering.aff, true)
         svo.checkaction(svo.dict.disrupt.aff, true)
@@ -867,14 +867,14 @@ end
 
 function svo.valid.check_dragonform()
   -- show xp? ignore!
-  if svo.lastpromptnumber+1 == getLastLineNumber("main") or not svo.find_until_last_paragraph(me.name, "substring") then return end
+  if svo.lastpromptnumber+1 == getLastLineNumber('main') or not svo.find_until_last_paragraph(me.name, 'substring') then return end
 
-  if defc.dragonform and not svo.find_until_last_paragraph("Dragon)", "substring") then
+  if defc.dragonform and not svo.find_until_last_paragraph("Dragon)", 'substring') then
     echo"\n" svo.echof("Apparently we aren't in Dragon.")
     svo.defs.lost_dragonform()
     svo.defs.lost_dragonarmour()
     svo.defs.lost_dragonbreath()
-  elseif not defc.dragonform and svo.find_until_last_paragraph("Dragon)", "substring") then
+  elseif not defc.dragonform and svo.find_until_last_paragraph("Dragon)", 'substring') then
     echo"\n" svo.echof("Apparently we're in Dragon.")
     svo.defs.got_dragonform()
   end
@@ -887,12 +887,12 @@ function svo.valid.proper_impale()
     valid.simpleimpale()
   else
     svo.checkaction(svo.dict.checkwrithes.aff, true)
-    lifevision.add(actions.checkwrithes_aff.p, "impale", stats.currenthealth)
+    lifevision.add(actions.checkwrithes_aff.p, 'impale', stats.currenthealth)
   end
 end
 
 function svo.valid.swachbuckling_pesante()
-  if (not svo.find_until_last_paragraph("The attack rebounds back onto", "substring")) and (svo.find_until_last_paragraph("jabs", "substring")) and (svo.find_until_last_paragraph("you", "substring")) then
+  if (not svo.find_until_last_paragraph("The attack rebounds back onto", 'substring')) and (svo.find_until_last_paragraph('jabs', 'substring')) and (svo.find_until_last_paragraph('you', 'substring')) then
     if (not conf.aillusion) or (defc.deaf or affs.deafaff) then
       valid.simplestun(.5)
     end
@@ -910,10 +910,10 @@ end
 
 ]]
 function svo.valid.swachbuckling_martellato()
-  if not svo.find_until_last_paragraph("The attack rebounds back onto", "substring") and
-     svo.find_until_last_paragraph("jabs", "substring") and
-     svo.find_until_last_paragraph("you", "substring") and
-     not svo.find_until_last_paragraph("^%w+ viciously jabs", "pattern") then
+  if not svo.find_until_last_paragraph("The attack rebounds back onto", 'substring') and
+     svo.find_until_last_paragraph('jabs', 'substring') and
+     svo.find_until_last_paragraph('you', 'substring') and
+     not svo.find_until_last_paragraph("^%w+ viciously jabs", 'pattern') then
     valid.simpleprone()
   end
 end
@@ -927,7 +927,7 @@ end
 
 function svo.valid.voicecraft_tremolo(name, side)
   local known_class = (ndb and ndb.getclass(name))
-  if not conf.aillusion or ((affs["crippled"..side.."leg"] or sk["delayvenom_"..side.."leg"] or sk["delayacciaccatura_"..side.."leg"]) and ((sk.swashbuckling_jab and last_jabber == name) or known_class == "bard")) then
+  if not conf.aillusion or ((affs['crippled'..side..'leg'] or sk['delayvenom_'..side..'leg'] or sk['delayacciaccatura_'..side..'leg']) and ((sk.swashbuckling_jab and last_jabber == name) or known_class == 'bard')) then
 
     -- when we've accepted that the Tremolo is legitimate, record the side - to be checked later in the mangle trigger for verification
     sk.tremoloside = sk.tremoloside or {}
@@ -937,11 +937,11 @@ function svo.valid.voicecraft_tremolo(name, side)
       -- so if we still have tremoloside setup, it means no mangle happened as the
       -- mangle would have cleared it. Hence, make the venom timer go off at the
       -- earlist possible time.
-      if sk.tremoloside and sk.tremoloside[side] and sk["delayvenom_"..side.."leg"] then
-        killTimer(sk["delayvenom_"..side.."leg"])
-        sk["delayvenom_"..side.."leg"] = nil
+      if sk.tremoloside and sk.tremoloside[side] and sk['delayvenom_'..side..'leg'] then
+        killTimer(sk['delayvenom_'..side..'leg'])
+        sk['delayvenom_'..side..'leg'] = nil
         -- we can't use valid here, but we can use addaff
-        svo.addaffdict(svo.dict["crippled"..side.."leg"])
+        svo.addaffdict(svo.dict['crippled'..side..'leg'])
 
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
         signals.canoutr:emit()
@@ -954,8 +954,8 @@ end
 
 function svo.valid.voicecraft_vibrato(name, side)
   local known_class = (ndb and ndb.getclass(name))
-  if not conf.aillusion or ((affs["crippled"..side.."arm"] or sk["delayvenom_"..side.."arm"] or sk["delayacciaccatura_"..side.."arm"]) and ((sk.swashbuckling_jab and last_jabber == name) or known_class == "bard")) then
-    valid["simplemangled"..side.."arm"]()
+  if not conf.aillusion or ((affs['crippled'..side..'arm'] or sk['delayvenom_'..side..'arm'] or sk['delayacciaccatura_'..side..'arm']) and ((sk.swashbuckling_jab and last_jabber == name) or known_class == 'bard')) then
+    valid['simplemangled'..side..'arm']()
   end
 end
 
@@ -966,20 +966,20 @@ end
 -- or vibrato
 function svo.valid.swashbuckling_poison()
   if not conf.aillusion or (svo.paragraph_length == 2 and not conf.batch) then
-    for _, limb in ipairs{"rightleg", "rightarm", "leftarm", "leftleg"} do
-      if actions["crippled"..limb.."_aff"] then
-        svo.killaction(svo.dict["crippled"..limb].aff)
+    for _, limb in ipairs{'rightleg', 'rightarm', 'leftarm', 'leftleg'} do
+      if actions['crippled'..limb..'_aff'] then
+        svo.killaction(svo.dict['crippled'..limb].aff)
 
-        sk["delayvenom_"..limb] = tempTimer(.25, function()
-          if not affs["mangled"..limb] then
-            svo.addaffdict(svo.dict["crippled"..limb])
+        sk['delayvenom_'..limb] = tempTimer(.25, function()
+          if not affs['mangled'..limb] then
+            svo.addaffdict(svo.dict['crippled'..limb])
 
             signals.after_lifevision_processing:unblock(cnrl.checkwarning)
             signals.canoutr:emit()
             svo.make_gnomes_work()
           end
 
-          sk["delayvenom_"..limb] = nil
+          sk['delayvenom_'..limb] = nil
         end)
         break
       end
@@ -990,16 +990,16 @@ end
 function svo.valid.swashbuckling_acciaccatura(side, limb)
   local aff = side..limb
 
-  sk["delayacciaccatura_"..aff] = tempTimer(.25, function()
-    if not affs["mangled"..aff] then
-      svo.addaffdict(svo.dict["crippled"..aff])
+  sk['delayacciaccatura_'..aff] = tempTimer(.25, function()
+    if not affs['mangled'..aff] then
+      svo.addaffdict(svo.dict['crippled'..aff])
 
       signals.after_lifevision_processing:unblock(cnrl.checkwarning)
       signals.canoutr:emit()
       svo.make_gnomes_work()
     end
 
-    sk["delayacciaccatura_"..aff] = nil
+    sk['delayacciaccatura_'..aff] = nil
   end)
 end
 
@@ -1007,22 +1007,22 @@ end
 -- apply the cripples right away, so the cure of a potential mangled limb in the
 -- dsl, the venoms and the limb break get computed for cure at once on the prompt
 signals.limbhit:connect(function(attacktype)
-  if attacktype ~= "weapon" then return end
+  if attacktype ~= 'weapon' then return end
 
   sk.weapon_hits = (sk.weapon_hits or 0) + 1
   sk.onprompt_beforeaction_add("track a dsl", function()
     -- if we got a DSL, apply the delayvenoms right now
     if sk.weapon_hits == 2 then
-      for _, aff in ipairs{"rightleg", "rightarm", "leftarm", "leftleg"} do
-        if sk["delayvenom_"..aff] then
-          if not affs["mangled"..aff] then
-            svo.addaffdict(svo.dict["crippled"..aff])
+      for _, aff in ipairs{'rightleg', 'rightarm', 'leftarm', 'leftleg'} do
+        if sk['delayvenom_'..aff] then
+          if not affs['mangled'..aff] then
+            svo.addaffdict(svo.dict['crippled'..aff])
             signals.after_lifevision_processing:unblock(cnrl.checkwarning)
             signals.canoutr:emit()
           end
 
-          killTimer(sk["delayvenom_"..aff])
-          sk["delayvenom_"..aff] = nil
+          killTimer(sk['delayvenom_'..aff])
+          sk['delayvenom_'..aff] = nil
         end
       end
     end
@@ -1045,19 +1045,19 @@ function svo.valid.defstrip(which)
     ["anti-weapon field"]      = 'rebounding',
     ["caloric salve"]          = 'caloric',
     ["cold resistance"]        = 'coldresist',
-    ["density"]                = 'mass',
+    ['density']                = 'mass',
     ["electricity resistance"] = 'electricresist',
     ["fire resistance"]        = 'fireresist',
-    ["gripping"]               = 'grip',
+    ['gripping']               = 'grip',
     ["held breath"]            = 'breath',
-    ["insulation"]             = 'caloric',
-    ["levitating"]             = 'levitation',
+    ['insulation']             = 'caloric',
+    ['levitating']             = 'levitation',
     ["magic resistance"]       = 'magicresist',
-    ["scholasticism"]          = 'myrrh',
+    ['scholasticism']          = 'myrrh',
     ["soft focus"]             = 'softfocus',
     ["soft focusing"]          = 'softfocus',
     ["speed defence"]          = 'speed', -- typo in game was showing 'speed defence defence'
-    ["temperance"]             = 'frost',
+    ['temperance']             = 'frost',
     ["third eye"]              = 'thirdeye'
   }
 
@@ -1086,8 +1086,8 @@ function svo.valid.defstrip(which)
 
   if t[which] then which = t[which] end
 
-  if defs["lost_"..which] then
-    defs["lost_"..which]()
+  if defs['lost_'..which] then
+    defs['lost_'..which]()
   end
 end
 
@@ -1095,9 +1095,9 @@ function svo.valid.truename()
   if not conf.aillusion then
     valid.simpleaeon()
     defs.lost_lyre()
-  elseif (svo.paragraph_length == 1 or (svo.find_until_last_paragraph("is unable to resist the force of your faith", "substring") or svo.find_until_last_paragraph("aura of weapons rebounding disappears", "substring"))) then
+  elseif (svo.paragraph_length == 1 or (svo.find_until_last_paragraph("is unable to resist the force of your faith", 'substring') or svo.find_until_last_paragraph("aura of weapons rebounding disappears", 'substring'))) then
     svo.checkaction(svo.dict.checkslows.aff, true)
-    lifevision.add(actions.checkslows_aff.p, "truename")
+    lifevision.add(actions.checkslows_aff.p, 'truename')
     defs.lost_lyre()
   else
     svo.ignore_illusion("not first")
@@ -1106,7 +1106,7 @@ end
 
 function svo.valid.just_aeon()
   svo.checkaction(svo.dict.checkslows.aff, true)
-  lifevision.add(actions.checkslows_aff.p, nil, "aeon")
+  lifevision.add(actions.checkslows_aff.p, nil, 'aeon')
 end
 
 function svo.valid.proper_aeon()
@@ -1116,7 +1116,7 @@ function svo.valid.proper_aeon()
     valid.simpleaeon()
   else
     svo.checkaction(svo.dict.checkslows.aff, true)
-    lifevision.add(actions.checkslows_aff.p, nil, "aeon")
+    lifevision.add(actions.checkslows_aff.p, nil, 'aeon')
   end
 end
 valid.bashing_aeon = valid.proper_aeon
@@ -1124,7 +1124,7 @@ valid.bashing_aeon = valid.proper_aeon
 function svo.valid.proper_retardation()
   if conf.aillusion then
     svo.checkaction(svo.dict.checkslows.aff, true)
-    lifevision.add(actions.checkslows_aff.p, nil, "retardation")
+    lifevision.add(actions.checkslows_aff.p, nil, 'retardation')
   else
     valid.simpleretardation()
   end
@@ -1193,7 +1193,7 @@ function svo.valid.darkshade_paralysis()
     valid.simpledarkshade()
   else
     svo.checkaction(svo.dict.checkparalysis.aff, true)
-    lifevision.add(actions.checkparalysis_aff.p, nil, "darkshade")
+    lifevision.add(actions.checkparalysis_aff.p, nil, 'darkshade')
   end
 end
 
@@ -1206,7 +1206,7 @@ end
 
 function svo.valid.maybe_impatience()
   svo.checkaction(svo.dict.checkimpatience.aff, true)
-  lifevision.add(actions.checkimpatience_aff.p, nil, "quiet")
+  lifevision.add(actions.checkimpatience_aff.p, nil, 'quiet')
 end
 
 function svo.valid.proper_impatience()
@@ -1215,7 +1215,7 @@ function svo.valid.proper_impatience()
   else
      -- limerick because songbirds will make lg 2
      -- maggots isn't a full line, because on sw80 it will wrap
-    local previousline = (svo.find_until_last_paragraph("glares at you and your brain suddenly feels slower", "substring") or svo.find_until_last_paragraph("evil eye", "substring") or svo.find_until_last_paragraph("wracks", "substring") or svo.find_until_last_paragraph("You recoil in horror as countless maggots squirm over your flesh", "substring") or line:find("jaunty limerick", 1, true) or svo.find_until_last_paragraph("points an imperious finger at you", "substring") or svo.find_until_last_paragraph("glowers at you with a look of repressed disgust before making a slight gesture toward you.", "substring") or svo.find_until_last_paragraph("hand at you, a wash of cold causing your blood to evolve into something new.", "substring") or svo.find_until_last_paragraph("Horror overcomes you as you realise that the curse of impatience", "substring") or svo.find_until_last_paragraph("palm towards your face.", "substring")) and true or false
+    local previousline = (svo.find_until_last_paragraph("glares at you and your brain suddenly feels slower", 'substring') or svo.find_until_last_paragraph("evil eye", 'substring') or svo.find_until_last_paragraph('wracks', 'substring') or svo.find_until_last_paragraph("You recoil in horror as countless maggots squirm over your flesh", 'substring') or line:find("jaunty limerick", 1, true) or svo.find_until_last_paragraph("points an imperious finger at you", 'substring') or svo.find_until_last_paragraph("glowers at you with a look of repressed disgust before making a slight gesture toward you.", 'substring') or svo.find_until_last_paragraph("hand at you, a wash of cold causing your blood to evolve into something new.", 'substring') or svo.find_until_last_paragraph("Horror overcomes you as you realise that the curse of impatience", 'substring') or svo.find_until_last_paragraph("palm towards your face.", 'substring')) and true or false
     if svo.paragraph_length == 1 or previousline then
       svo.checkaction(svo.dict.checkimpatience.aff, true)
       if previousline then
@@ -1235,12 +1235,12 @@ function svo.valid.curse_dispel()
 end
 
 function svo.valid.subterfuge_hallucinations()
-  if getLineNumber("main") ~= svo.lastpromptnumber+2 then return end
+  if getLineNumber('main') ~= svo.lastpromptnumber+2 then return end
   valid.simplehallucinations()
 end
 
 function svo.valid.subterfuge_confusion()
-  if getLineNumber("main") ~= svo.lastpromptnumber+2 then return end
+  if getLineNumber('main') ~= svo.lastpromptnumber+2 then return end
   valid.simpleconfusion()
 end
 
@@ -1250,12 +1250,12 @@ end
 
 function svo.valid.subterfuge_camus()
   svo.checkaction(svo.dict.sileris.gone, true)
-  lifevision.add(actions.sileris_gone.p, "camusbite", stats.currenthealth)
+  lifevision.add(actions.sileris_gone.p, 'camusbite', stats.currenthealth)
 end
 
 function svo.valid.subterfuge_sumac()
   svo.checkaction(svo.dict.sileris.gone, true)
-  lifevision.add(actions.sileris_gone.p, "sumacbite", stats.currenthealth)
+  lifevision.add(actions.sileris_gone.p, 'sumacbite', stats.currenthealth)
 end
 
 function svo.valid.proper_relapsing()
@@ -1269,12 +1269,12 @@ end
 
 function svo.valid.relapsing_camus()
   svo.checkaction(svo.dict.relapsing.aff, true)
-  lifevision.add(actions.relapsing_aff.p, "camus", stats.currenthealth)
+  lifevision.add(actions.relapsing_aff.p, 'camus', stats.currenthealth)
 end
 
 function svo.valid.relapsing_sumac()
   svo.checkaction(svo.dict.relapsing.aff, true)
-  lifevision.add(actions.relapsing_aff.p, "sumac", stats.currenthealth)
+  lifevision.add(actions.relapsing_aff.p, 'sumac', stats.currenthealth)
 end
 
 function svo.valid.relapsing_vitality()
@@ -1283,32 +1283,32 @@ end
 
 function svo.valid.relapsing_oleander()
   svo.checkaction(svo.dict.relapsing.aff, true)
-  lifevision.add(actions.relapsing_aff.p, "oleander", (defc.blind or affs.blindaff))
+  lifevision.add(actions.relapsing_aff.p, 'oleander', (defc.blind or affs.blindaff))
 end
 
 function svo.valid.relapsing_colocasia()
   svo.checkaction(svo.dict.relapsing.aff, true)
-  lifevision.add(actions.relapsing_aff.p, "colocasia", (defc.blind or affs.blindaff or defc.deaf or affs.deafaff))
+  lifevision.add(actions.relapsing_aff.p, 'colocasia', (defc.blind or affs.blindaff or defc.deaf or affs.deafaff))
 end
 
 function svo.valid.relapsing_oculus()
   svo.checkaction(svo.dict.relapsing.aff, true)
-  lifevision.add(actions.relapsing_aff.p, "oculus", (defc.blind or affs.blindaff or defc.deaf or affs.deafaff))
+  lifevision.add(actions.relapsing_aff.p, 'oculus', (defc.blind or affs.blindaff or defc.deaf or affs.deafaff))
 end
 
 function svo.valid.relapsing_oculus()
   svo.checkaction(svo.dict.relapsing.aff, true)
-  lifevision.add(actions.relapsing_aff.p, "oculus", (defc.blind or affs.blindaff))
+  lifevision.add(actions.relapsing_aff.p, 'oculus', (defc.blind or affs.blindaff))
 end
 
 function svo.valid.relapsing_prefarar()
   svo.checkaction(svo.dict.relapsing.aff, true)
-  lifevision.add(actions.relapsing_aff.p, "prefarar", (defc.deaf or affs.deafaff))
+  lifevision.add(actions.relapsing_aff.p, 'prefarar', (defc.deaf or affs.deafaff))
 end
 
 function svo.valid.relapsing_asthma()
   svo.checkaction(svo.dict.relapsing.aff, true)
-  lifevision.add(actions.relapsing_aff.p, "asthma")
+  lifevision.add(actions.relapsing_aff.p, 'asthma')
 end
 
 function svo.valid.subterfuge_bind()
@@ -1319,7 +1319,7 @@ end
 
 function svo.valid.kaido_choke()
   if conf.breath and conf.keepup and not defkeepup[defs.mode].breath then
-    defs.keepup("breath", true)
+    defs.keepup('breath', true)
     echo("\n")
     if math.random(1, 10) == 1 then
       svo.echof("Run away! Run away! ('br' to turn off breath)")
@@ -1335,7 +1335,7 @@ valid.vodun_throttle = valid.kaido
 
 function svo.valid.proper_sensitivity()
   svo.checkaction(svo.dict.sensitivity.aff, true)
-  lifevision.add(actions.sensitivity_aff.p, "checkdeaf")
+  lifevision.add(actions.sensitivity_aff.p, 'checkdeaf')
 end
 
 function svo.valid.webbed_buckawns()
@@ -1345,7 +1345,7 @@ function svo.valid.webbed_buckawns()
       valid.simplewebbed()
     else
       svo.checkaction(svo.dict.checkwrithes.aff, true)
-      lifevision.add(actions.checkwrithes_aff.p, nil, "webbed", 1)
+      lifevision.add(actions.checkwrithes_aff.p, nil, 'webbed', 1)
     end
   end
 end
@@ -1355,7 +1355,7 @@ function svo.valid.proper_webbed()
     valid.simplewebbed()
   else
     svo.checkaction(svo.dict.checkwrithes.aff, true)
-    lifevision.add(actions.checkwrithes_aff.p, nil, "webbed")
+    lifevision.add(actions.checkwrithes_aff.p, nil, 'webbed')
   end
 end
 
@@ -1364,11 +1364,11 @@ function svo.valid.proper_chill()
 
   if defc.caloric then defs.lost_caloric() return end
 
-  if not affs.shivering then aff = "shivering" else aff = "frozen" end
+  if not affs.shivering then aff = 'shivering' else aff = 'frozen' end
 
   svo.checkaction(svo.dict[aff].aff, true)
-  if actions[aff .. "_aff"] then
-    lifevision.add(actions[aff .. "_aff"].p)
+  if actions[aff .. '_aff'] then
+    lifevision.add(actions[aff .. '_aff'].p)
   end
 end
 
@@ -1388,7 +1388,7 @@ function svo.valid.proper_transfix()
     valid.simpletransfixed()
   else
     svo.checkaction(svo.dict.checkwrithes.aff, true)
-    lifevision.add(actions.checkwrithes_aff.p, nil, "transfixed")
+    lifevision.add(actions.checkwrithes_aff.p, nil, 'transfixed')
   end
 end
 
@@ -1400,7 +1400,7 @@ function svo.valid.failed_transfix()
   if actions.transfixed_aff then
     svo.killaction(svo.dict.transfixed.aff)
   end
-  if actions.checkwrithes_aff and lifevision.l.checkwrithes_aff and lifevision.l.checkwrithes_aff.arg == "transfixed" then
+  if actions.checkwrithes_aff and lifevision.l.checkwrithes_aff and lifevision.l.checkwrithes_aff.arg == 'transfixed' then
     svo.killaction(svo.dict.checkwrithes.aff)
   end
 end
@@ -1408,7 +1408,7 @@ end
 function svo.valid.parry_limb(limb)
   if not svo.sp_limbs[limb] then return end
 
-  if svo.find_until_last_paragraph("You feel your will manipulated by the soulmaster entity.", "exact") or svo.find_until_last_paragraph("You cannot help but obey.", "exact") then
+  if svo.find_until_last_paragraph("You feel your will manipulated by the soulmaster entity.", 'exact') or svo.find_until_last_paragraph("You cannot help but obey.", 'exact') then
     svo.checkaction(svo.dict.doparry.physical, true)
   else
     svo.checkaction(svo.dict.doparry.physical)
@@ -1422,7 +1422,7 @@ end
 function svo.valid.parry_none()
   svo.checkaction(svo.dict.doparry.physical)
   if actions.doparry_physical then
-    lifevision.add(actions.doparry_physical.p, "none")
+    lifevision.add(actions.doparry_physical.p, 'none')
   end
 end
 
@@ -1444,16 +1444,16 @@ end
 
 
 do
-  local afflist = {"hamstring", "galed", "voided", "inquisition", "burning", "icing", "phlogistication", "vitrification", "corrupted", "mucous", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "swellskin", "pinshot", "dehydrated", "timeflux", "lullaby", "numbedleftarm", "numbedrightarm", "unconsciousness", "degenerate", "deteriorate", "hatred"}
+  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'burning', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'mucous', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred'}
   if svo.haveskillset('metamorphosis') then
     afflist[#afflist+1] = 'cantmorph'
   end
 
   for _, aff in ipairs(afflist) do
-    valid[aff.."_woreoff"] = function()
+    valid[aff..'_woreoff'] = function()
       svo.checkaction(svo.dict[aff].waitingfor, true)
-      if actions[aff.."_waitingfor"] then
-        lifevision.add(actions[aff.."_waitingfor"].p)
+      if actions[aff..'_waitingfor'] then
+        lifevision.add(actions[aff..'_waitingfor'].p)
       end
     end
   end
@@ -1465,15 +1465,15 @@ function svo.valid.stun_woreoff()
   if actions.stun_waitingfor then
     lifevision.add(actions.stun_waitingfor.p)
   elseif actions.checkstun_misc then
-    lifevision.add(actions.checkstun_misc.p, nil, "fromstun")
+    lifevision.add(actions.checkstun_misc.p, nil, 'fromstun')
   end
 end
 
-for _, aff in ipairs({"heartseed", "hypothermia"}) do
-valid[aff.."_cured"] = function()
-  svo.checkaction(svo.dict["curing"..aff].waitingfor)
-  if actions["curing"..aff.."_waitingfor"] then
-    lifevision.add(actions["curing"..aff.."_waitingfor"].p)
+for _, aff in ipairs({'heartseed', 'hypothermia'}) do
+valid[aff..'_cured'] = function()
+  svo.checkaction(svo.dict['curing'..aff].waitingfor)
+  if actions['curing'..aff..'_waitingfor'] then
+    lifevision.add(actions['curing'..aff..'_waitingfor'].p)
   end
 end
 end
@@ -1482,12 +1482,12 @@ function svo.valid.aeon_woreoff()
   local result = svo.checkany(svo.dict.aeon.smoke)
 
   if not result then
-    if conf.aillusion and not svo.passive_cure_paragraph and not svo.find_until_last_paragraph("You touch the tree of life tattoo.", "exact") then
+    if conf.aillusion and not svo.passive_cure_paragraph and not svo.find_until_last_paragraph("You touch the tree of life tattoo.", 'exact') then
       svo.checkaction(svo.dict.aeon.gone, true)
       lifevision.add(actions.aeon_gone.p, nil, nil, 1)
     else
       -- clear the lineguard if we previously set it via aeon_gone
-      if table.contains(lifevision.l:keys(), "aeon_gone") and lifevision.getlineguard() then
+      if table.contains(lifevision.l:keys(), 'aeon_gone') and lifevision.getlineguard() then
         lifevision.clearlineguard()
       end
       svo.checkaction(svo.dict.aeon.gone, true)
@@ -1541,48 +1541,48 @@ function svo.valid.cured_fear()
 end
 
 function svo.valid.tootired_focus()
-  local r = svo.findbybal("focus")
+  local r = svo.findbybal('focus')
   if not r then return end
 
   svo.focus_cure = true
 
   -- in case of double-applies, don't overwrite the first successful application
   if not lifevision.l[r.name] then
-    lifevision.add(actions[r.name].p, "offbalance")
+    lifevision.add(actions[r.name].p, 'offbalance')
   end
 end
 
 function svo.valid.mickey()
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
 
-  local r = svo.findbybal("herb")
+  local r = svo.findbybal('herb')
   if not r then return end
 
-  lifevision.add(actions[r.name].p, "mickey")
+  lifevision.add(actions[r.name].p, 'mickey')
 end
 
 function svo.valid.focus_choleric()
-  local r = svo.findbybal("focus")
+  local r = svo.findbybal('focus')
   if not r then svo.ignore_illusion("Ignored the illusion because we aren't actually focusing right now (or we were forced).") return end
 
   svo.checkaction(svo.dict.stolebalance.happened, true)
-  lifevision.add(actions.stolebalance_happened.p, nil, "focus")
+  lifevision.add(actions.stolebalance_happened.p, nil, 'focus')
 
   svo.focus_cure = true
   svo.killaction(svo.dict[r.action_name].focus)
 end
 
 function svo.valid.nomana_focus()
-  local r = svo.findbybal("focus")
+  local r = svo.findbybal('focus')
   if not r then return end
 
-  lifevision.add(actions[r.name].p, "nomana")
+  lifevision.add(actions[r.name].p, 'nomana')
 end
 
 function svo.valid.nomana_clot()
   svo.checkaction(svo.dict.bleeding.misc)
   if actions.bleeding_misc then
-    lifevision.add(actions.bleeding_misc.p, "nomana")
+    lifevision.add(actions.bleeding_misc.p, 'nomana')
   end
 end
 
@@ -1611,7 +1611,7 @@ end
 function svo.valid.gotherb()
   if not conf.aillusion or not sk.blockherbbal then
     svo.checkaction(svo.dict.gotbalance.happened, true)
-    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = "herb" -- hack to allow multiple balances at once
+    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'herb' -- hack to allow multiple balances at once
     lifevision.add(actions.gotbalance_happened.p)
     selectCurrentLine()
     setFgColor(0, 170, 0)
@@ -1621,8 +1621,8 @@ function svo.valid.gotherb()
   end
 end
 
-for _, balance in ipairs{"moss", "focus", "sip", "purgative", "dragonheal", "smoke", "tree"} do
-valid["got"..balance] = function()
+for _, balance in ipairs{'moss', 'focus', 'sip', 'purgative', 'dragonheal', 'smoke', 'tree'} do
+valid['got'..balance] = function()
   svo.checkaction(svo.dict.gotbalance.happened, true)
     svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = balance -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
@@ -1634,17 +1634,17 @@ function svo.valid.gotsalve()
     local lastline = getLines(getLineNumber()-1, getLineNumber())[1]
 
     local lines = {
-      ["Your left leg feels stronger and healthier."] = {affs = {"curingmutilatedrightleg", "curingmutilatedleftleg", "curingmangledrightleg", "curingmangledleftleg", "curingparestolegs"}, location = "legs"},
-      ["Your right leg feels stronger and healthier."] = {affs = {"curingmutilatedrightleg", "curingmutilatedleftleg", "curingmangledrightleg", "curingmangledleftleg", "curingparestolegs"}, location = "legs"},
-      ["Your left arm feels stronger and healthier."] = {affs = {"curingmutilatedrightarm", "curingmutilatedleftarm", "curingmangledrightarm", "curingmangledleftarm", "curingparestoarms"}, location = "arms"},
-      ["Your right arm feels stronger and healthier."] = {affs = {"curingmutilatedrightarm", "curingmutilatedleftarm", "curingmangledrightarm", "curingmangledleftarm", "curingparestoarms"}, location = "arms"},
+      ["Your left leg feels stronger and healthier."] = {affs = {'curingmutilatedrightleg', 'curingmutilatedleftleg', 'curingmangledrightleg', 'curingmangledleftleg', 'curingparestolegs'}, location = 'legs'},
+      ["Your right leg feels stronger and healthier."] = {affs = {'curingmutilatedrightleg', 'curingmutilatedleftleg', 'curingmangledrightleg', 'curingmangledleftleg', 'curingparestolegs'}, location = 'legs'},
+      ["Your left arm feels stronger and healthier."] = {affs = {'curingmutilatedrightarm', 'curingmutilatedleftarm', 'curingmangledrightarm', 'curingmangledleftarm', 'curingparestoarms'}, location = 'arms'},
+      ["Your right arm feels stronger and healthier."] = {affs = {'curingmutilatedrightarm', 'curingmutilatedleftarm', 'curingmangledrightarm', 'curingmangledleftarm', 'curingparestoarms'}, location = 'arms'},
     }
 
     if lines[lastline] then
       local had
       for _, aff in ipairs(lines[lastline].affs) do
-        if actions[aff.."_waitingfor"] then
-          local afftime = getStopWatchTime(actions[aff.."_waitingfor"].p.actionwatch)
+        if actions[aff..'_waitingfor'] then
+          local afftime = getStopWatchTime(actions[aff..'_waitingfor'].p.actionwatch)
           if afftime >= conf.ai_minrestorecure then
             had = true; break
           else
@@ -1660,31 +1660,31 @@ function svo.valid.gotsalve()
     end
   end
   svo.checkaction(svo.dict.gotbalance.happened, true)
-    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = "salve" -- hack to allow multiple balances at once
+    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'salve' -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
 
 function svo.valid.gotpurgative()
   svo.checkaction(svo.dict.gotbalance.happened, true)
-    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = "purgative" -- hack to allow multiple balances at once
+    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'purgative' -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
 
 function svo.valid.forcesalve()
   svo.checkaction(svo.dict.gotbalance.happened, true)
-    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = "salve" -- hack to allow multiple balances at once
+    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'salve' -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
 
 function svo.valid.forcefocus()
   svo.checkaction(svo.dict.gotbalance.happened, true)
-    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = "focus" -- hack to allow multiple balances at once
+    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'focus' -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
 
 function svo.valid.forceherb()
   svo.checkaction(svo.dict.gotbalance.happened, true)
-    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = "herb" -- hack to allow multiple balances at once
+    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'herb' -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
 
@@ -1698,7 +1698,7 @@ end
 function svo.valid.rebounding_deathtarot()
   svo.checkaction(svo.dict.waitingonrebounding.waitingfor, false)
   if actions.waitingonrebounding_waitingfor then
-    lifevision.add(actions.waitingonrebounding_waitingfor.p, "deathtarot")
+    lifevision.add(actions.waitingonrebounding_waitingfor.p, 'deathtarot')
   end
 end
 
@@ -1729,7 +1729,7 @@ end
 function svo.valid.clot2()
   svo.checkaction(svo.dict.bleeding.misc)
   if actions.bleeding_misc then
-    lifevision.add(actions.bleeding_misc.p, "oncured")
+    lifevision.add(actions.bleeding_misc.p, 'oncured')
   end
 
   if conf.gagclot and not sys.sync then svo.deleteLineP() end
@@ -1737,13 +1737,13 @@ end
 
 function svo.valid.symp_haemophilia()
   if not conf.aillusion and actions.bleeding_misc then
-    valid.remove_unknownany("haemophilia")
+    valid.remove_unknownany('haemophilia')
     valid.simplehaemophilia()
   else
     svo.checkaction(svo.dict.bleeding.misc, false)
     if actions.bleeding_misc then
-      valid.remove_unknownany("haemophilia")
-      lifevision.add(actions.bleeding_misc.p, "haemophilia", nil, 1)
+      valid.remove_unknownany('haemophilia')
+      lifevision.add(actions.bleeding_misc.p, 'haemophilia', nil, 1)
     elseif not affs.haemophilia then
       svo.ignore_illusion("Ignored this illusion because we aren't trying to clot right now (or we were forced).")
     end
@@ -1753,14 +1753,14 @@ end
 function svo.valid.proper_haemophilia()
   if not conf.aillusion then
     valid.simplehaemophilia()
-  elseif svo.find_until_last_paragraph("wracks", "substring") and svo.paragraph_length >= 3 then
+  elseif svo.find_until_last_paragraph('wracks', 'substring') and svo.paragraph_length >= 3 then
     valid.simplehaemophilia()
-  elseif svo.find_until_last_paragraph("glowers at you with a look of repressed disgust", "substring") or svo.find_until_last_paragraph("stares menacingly at you, its eyes flashing brightly.", "substring") then
+  elseif svo.find_until_last_paragraph("glowers at you with a look of repressed disgust", 'substring') or svo.find_until_last_paragraph("stares menacingly at you, its eyes flashing brightly.", 'substring') then
     valid.simplehaemophilia()
-  elseif svo.find_until_last_paragraph("points an imperious finger at you.", "substring") then
+  elseif svo.find_until_last_paragraph("points an imperious finger at you.", 'substring') then
     -- shamanism
     valid.simplehaemophilia()
-  elseif svo.find_until_last_paragraph("makes a quick, sharp gesture toward you.", "substring") then
+  elseif svo.find_until_last_paragraph("makes a quick, sharp gesture toward you.", 'substring') then
     -- occultism instill
     valid.simplehaemophilia()
   elseif line:starts("A bloodleech leaps at you, clamping with teeth onto exposed flesh and secreting some foul toxin into your bloodstream. You stumble as you are afflicted") then
@@ -1773,7 +1773,7 @@ end
 
 function svo.valid.humour_wrack()
   svo.checkaction(svo.dict.unknownany.aff, true)
-  lifevision.add(actions["unknownany_aff"].p, "wrack", nil)
+  lifevision.add(actions['unknownany_aff'].p, 'wrack', nil)
 
   -- to check if we got reckless!
   if stats.currenthealth ~= stats.maxhealth then
@@ -1787,7 +1787,7 @@ end
 function svo.valid.humour_truewrack()
   local sawaffs = 0
   for _, action in pairs(lifevision.l:keys()) do
-    if action:find("_aff", 1, true) then
+    if action:find('_aff', 1, true) then
       sawaffs = sawaffs + 1
     end
   end
@@ -1802,16 +1802,16 @@ function svo.valid.humour_truewrack()
 end
 
 function svo.valid.got_humour(which)
-  svo.assert(svo.dict[which.."humour"], "svo.valid.got_humour: which humour to add?")
+  svo.assert(svo.dict[which..'humour'], "svo.valid.got_humour: which humour to add?")
 
   local function countaffs(humour)
     local affs_in_a_humour = 3
 
     local t = {
-      choleric    = {"illness", "sensitivity", "slickness"},
-      melancholic = {"anorexia", "impatience", "stupidity"},
-      phlegmatic  = {"asthma", "clumsiness", "disloyalty"},
-      sanguine    = {"haemophilia", "recklessness",  "paralysis"}
+      choleric    = {'illness', 'sensitivity', 'slickness'},
+      melancholic = {'anorexia', 'impatience', 'stupidity'},
+      phlegmatic  = {'asthma', 'clumsiness', 'disloyalty'},
+      sanguine    = {'haemophilia', 'recklessness',  'paralysis'}
     }
 
     -- add the amount of focusables in a humour as the 4th argument, to check for as well
@@ -1850,51 +1850,51 @@ function svo.valid.got_humour(which)
   -- trim the max we counted down to 3, which is the most possible right now
   if humourlevels > 3 then humourlevels = 3 end
 
-  svo.checkaction(svo.dict[which.."humour"].aff, true)
-  lifevision.add(actions[which.."humour_aff"].p, nil, humourlevels)
+  svo.checkaction(svo.dict[which..'humour'].aff, true)
+  lifevision.add(actions[which..'humour_aff'].p, nil, humourlevels)
 end
 
 function svo.valid.sanguine_inundate()
   svo.checkaction(svo.dict.sanguinehumour.herb, true)
   if actions.sanguinehumour_herb then
-    lifevision.add(actions.sanguinehumour_herb.p, "inundated")
+    lifevision.add(actions.sanguinehumour_herb.p, 'inundated')
   end
 end
 
 function svo.valid.choleric_inundate()
   svo.checkaction(svo.dict.cholerichumour.herb, true)
   if actions.cholerichumour_herb then
-    lifevision.add(actions.cholerichumour_herb.p, "inundated")
+    lifevision.add(actions.cholerichumour_herb.p, 'inundated')
   end
 end
 
 function svo.valid.melancholic_inundate()
   svo.checkaction(svo.dict.melancholichumour.herb, true)
   if actions.melancholichumour_herb then
-    lifevision.add(actions.melancholichumour_herb.p, "inundated")
+    lifevision.add(actions.melancholichumour_herb.p, 'inundated')
   end
 end
 
 function svo.valid.phlegmatic_inundate()
   svo.checkaction(svo.dict.phlegmatichumour.herb, true)
   if actions.phlegmatichumour_herb then
-    lifevision.add(actions.phlegmatichumour_herb.p, "inundated")
+    lifevision.add(actions.phlegmatichumour_herb.p, 'inundated')
   end
 end
 
-for _, aff in ipairs({"skullfractures", "crackedribs", "wristfractures", "torntendons"}) do
-valid[aff.."_apply"] = function()
+for _, aff in ipairs({'skullfractures', 'crackedribs', 'wristfractures', 'torntendons'}) do
+valid[aff..'_apply'] = function()
   svo.applyelixir_cure = true
 
   svo.checkaction(svo.dict[aff].sip, true)
-  lifevision.add(actions[aff.."_sip"].p)
+  lifevision.add(actions[aff..'_sip'].p)
 end
 
-valid[aff.."_cured"] = function()
+valid[aff..'_cured'] = function()
   svo.applyelixir_cure = true
 
   svo.checkaction(svo.dict[aff].sip, true)
-  lifevision.add(actions[aff.."_sip"].p, "cured")
+  lifevision.add(actions[aff..'_sip'].p, 'cured')
 end
 end
 
@@ -1906,13 +1906,13 @@ function svo.valid.tarot_aeon()
     valid.simpleaeon()
   else
     svo.checkaction(svo.dict.checkslows.aff, true)
-    lifevision.add(actions.checkslows_aff.p, nil, "aeon")
+    lifevision.add(actions.checkslows_aff.p, nil, 'aeon')
   end
 end
 
 function svo.valid.refilled(what)
   local shortname = svo.es_shortnamesr[what]
-  if not shortname or svo.es_categories[what] == "venom" then return end
+  if not shortname or svo.es_categories[what] == 'venom' then return end
 
   if svo.es_potions[svo.es_categories[what]][what].sips == 0 then
     svo.es_potions[svo.es_categories[what]][what].sips = svo.es_potions[svo.es_categories[what]][what].sips + 50
@@ -1924,13 +1924,13 @@ end
 function svo.valid.missing_herb()
   if actions.checkstun_misc then
     svo.deleteLineP()
-    lifevision.add(actions.checkstun_misc.p, "onclear")
+    lifevision.add(actions.checkstun_misc.p, 'onclear')
   end
 
   -- don't echo anything for serverside failing to svo.eat a herb
   if conf.serverside then return end
 
-  local eating = svo.findbybals ({"herb", "moss"})
+  local eating = svo.findbybals ({'herb', 'moss'})
   if not eating then return end
   local action = select(2, next(eating))
   eating = next(eating)
@@ -1953,14 +1953,14 @@ function svo.valid.symp_anorexia()
     return
   end
 
-  local eating = svo.findbybal ("herb")
+  local eating = svo.findbybal ('herb')
   if eating then
     valid.simpleanorexia()
     svo.killaction(svo.dict[eating.action_name].herb)
-  elseif svo.findbybals({"sip", "purgative", "herb", "moss"}) then
+  elseif svo.findbybals({'sip', 'purgative', 'herb', 'moss'}) then
     valid.simpleanorexia()
   elseif actions.checkanorexia_misc then
-    lifevision.add(actions.checkanorexia_misc.p, "blehfood")
+    lifevision.add(actions.checkanorexia_misc.p, 'blehfood')
   end
 end
 
@@ -1971,7 +1971,7 @@ function svo.valid.salve_fizzled(limb)
   svo.apply_cure = true
 
   if not lifevision.l[r.name] then
-    lifevision.add(actions[r.name].p, "fizzled", limb)
+    lifevision.add(actions[r.name].p, 'fizzled', limb)
   end
 end
 
@@ -1982,7 +1982,7 @@ function svo.valid.health_fizzled()
   svo.applyelixir_cure = true
 
   if not lifevision.l[r.name] then
-    lifevision.add(actions[r.name].p, "fizzled")
+    lifevision.add(actions[r.name].p, 'fizzled')
   end
 end
 
@@ -1992,7 +1992,7 @@ function svo.valid.health_noeffect()
 
   svo.applyelixir_cure = true
   if not lifevision.l[r.name] then
-    lifevision.add(actions[r.name].p, "noeffect")
+    lifevision.add(actions[r.name].p, 'noeffect')
   end
 end
 
@@ -2003,36 +2003,36 @@ function svo.valid.update_break(limb)
   if not r and not actions.restore_physical then return end
 
   if actions.restore_physical then
-    if not affs["mangled"..limb] then
-      valid.simple["mangled"..limb]()
+    if not affs['mangled'..limb] then
+      valid.simple['mangled'..limb]()
     end
   else
     svo.apply_cure = true
     if not lifevision.l[r.name] then
-      lifevision.add(actions[r.name].p, "fizzled", limb)
+      lifevision.add(actions[r.name].p, 'fizzled', limb)
     end
   end
 end
 
 function svo.valid.salve_offbalance()
-  local r = svo.findbybal("salve")
+  local r = svo.findbybal('salve')
   if not r then return end
 
   svo.apply_cure = true
 
   -- in case of double-applies, don't overwrite the first successful application
   if not lifevision.l[r.name] then
-    lifevision.add(actions[r.name].p, "offbalance")
+    lifevision.add(actions[r.name].p, 'offbalance')
   end
 end
 
 function svo.valid.force_aeon()
-  svo.vaff("aeon")
+  svo.vaff('aeon')
 end
 
 function svo.valid.herb_cured_insomnia()
   local r = svo.checkany(svo.dict.dissonance.herb, svo.dict.impatience.herb, svo.dict.stupidity.herb, svo.dict.dizziness.herb, svo.dict.epilepsy.herb, svo.dict.shyness.herb)
-  if conf.aillusion and not (r or svo.find_until_last_paragraph("You feel irresistibly compelled", "substring") or svo.find_until_last_paragraph("You cannot help but obey.", "exact")) then svo.ignore_illusion("We aren't eating goldenseal at the moment.") return end
+  if conf.aillusion and not (r or svo.find_until_last_paragraph("You feel irresistibly compelled", 'substring') or svo.find_until_last_paragraph("You cannot help but obey.", 'exact')) then svo.ignore_illusion("We aren't eating goldenseal at the moment.") return end
 
   if r then
     svo.killaction(svo.dict[r.action_name].herb)
@@ -2043,11 +2043,11 @@ function svo.valid.herb_cured_insomnia()
 
   if r then
     svo.checkaction(svo.dict[r.action_name].gone, true)
-    lifevision.add(actions[r.action_name.."_gone"].p)
+    lifevision.add(actions[r.action_name..'_gone'].p)
   end
 
   svo.checkaction(svo.dict.checkimpatience.misc, true)
-  lifevision.add(actions.checkimpatience_misc.p, "onclear")
+  lifevision.add(actions.checkimpatience_misc.p, 'onclear')
 end
 
 function svo.valid.fillskullcap()
@@ -2112,7 +2112,7 @@ function svo.valid.paradox_boosted()
 end
 
 function svo.valid.paradox_weakened()
-  if svo.find_until_last_paragraph(svo.dict.paradox.blocked_herb, "substring") or svo.find_until_last_paragraph(rift.herb_conversions[svo.dict.paradox.blocked_herb], "substring") then return end
+  if svo.find_until_last_paragraph(svo.dict.paradox.blocked_herb, 'substring') or svo.find_until_last_paragraph(rift.herb_conversions[svo.dict.paradox.blocked_herb], 'substring') then return end
   svo.checkaction(svo.dict.paradox.weakened, true)
   lifevision.add(actions.paradox_weakened.p)
 end
@@ -2134,24 +2134,24 @@ function svo.valid.ate1()
   local area = atcp.RoomArea or (gmcp.Room and gmcp.Room.Info and gmcp.Room.Info.area)
   if area and t[area] and not conf.arena then
     conf.arena = true
-    raiseEvent("svo config changed", "arena")
+    raiseEvent("svo config changed", 'arena')
     svo.prompttrigger("arena echo", function()
       echo'\n'svo.echof("Looks like you're actually in the arena - enabled arena mode.\n") svo.showprompt()
     end)
   end
 
   -- check anti-illusion with GMCP's herb removal
-  if conf.aillusion and not conf.arena and not affs.dementia and sys.enabledgmcp and not sk.removed_something and not svo.find_until_last_paragraph("You feel irresistibly compelled", "substring") and not svo.find_until_last_paragraph("You cannot help but obey.", "exact") then
+  if conf.aillusion and not conf.arena and not affs.dementia and sys.enabledgmcp and not sk.removed_something and not svo.find_until_last_paragraph("You feel irresistibly compelled", 'substring') and not svo.find_until_last_paragraph("You cannot help but obey.", 'exact') then
     -- let nicer tooltips come first before this one
     svo.aiprompt("nothing removed, but ate", function() svo.ignore_illusion("We didn't svo.eat that!", true) end)
   end
 
   -- check if we need to add or remove addiction - but not if we are ginseng/ferrum as that doesn't go off on addiction
-  if (not conf.aillusion or svo.findbybal("herb")) and not svo.find_until_last_paragraph("ginseng root", "substring") and not svo.find_until_last_paragraph("ferrum flake", "substring") then
+  if (not conf.aillusion or svo.findbybal('herb')) and not svo.find_until_last_paragraph("ginseng root", 'substring') and not svo.find_until_last_paragraph("ferrum flake", 'substring') then
     sk.onprompt_beforelifevision_add("add/remove addiction", function()
-      if not affs.addiction and svo.find_until_last_paragraph("Your addiction can never be sated.", "exact") then
+      if not affs.addiction and svo.find_until_last_paragraph("Your addiction can never be sated.", 'exact') then
         valid.simpleaddiction()
-      elseif affs.addiction and not svo.find_until_last_paragraph("Your addiction can never be sated.", "exact") then
+      elseif affs.addiction and not svo.find_until_last_paragraph("Your addiction can never be sated.", 'exact') then
         svo.checkaction(svo.dict.addiction.gone, true)
         lifevision.add(actions.addiction_gone.p)
       end
@@ -2176,7 +2176,7 @@ function svo.valid.ate2()
   if line == "Your addiction can never be sated." or line == "Eating is suddenly less difficult again." then return end
 
   if not svo.herb_cure then
-    local eating = svo.findbybal("herb")
+    local eating = svo.findbybal('herb')
     if not eating then return end
 
     -- check timers here! should not be less than half of svo.getping(). Check *action*, not affliction timer as well
@@ -2192,9 +2192,9 @@ function svo.valid.ate2()
     -- addiction needs to stretch the lineguard to 2, since it is You svo.eat/Your addiction/prompt.
     -- [Curing] does not show up for svo.find_until_last_paragraph when it is gagged, so track it otherwise
     if conf.aillusion then
-      lifevision.add(actions[eating.name].p, "empty", nil, ((svo.find_until_last_paragraph("Your addiction can never be sated.", "exact") or svo.find_until_last_paragraph("Eating is suddenly less difficult again.", "exact") or sk.sawcuringcommand) and 2 or 1))
+      lifevision.add(actions[eating.name].p, 'empty', nil, ((svo.find_until_last_paragraph("Your addiction can never be sated.", 'exact') or svo.find_until_last_paragraph("Eating is suddenly less difficult again.", 'exact') or sk.sawcuringcommand) and 2 or 1))
     else
-      lifevision.add(actions[eating.name].p, "empty")
+      lifevision.add(actions[eating.name].p, 'empty')
     end
   end
 
@@ -2209,16 +2209,16 @@ end
 
 function svo.valid.sip2()
   if not svo.sip_cure then
-  local sipping = svo.findbybal("purgative")
+  local sipping = svo.findbybal('purgative')
 
   if not sipping then
     -- special case for speed, which is a sip but balanceless
-    if svo.doingaction"speed" then
+    if svo.doingaction'speed' then
       lifevision.add(actions.speed_purgative.p)
     end
   return end
 
-    lifevision.add(actions[sipping.name].p, "empty")
+    lifevision.add(actions[sipping.name].p, 'empty')
   end
 
   svo.sip_cure = false
@@ -2250,7 +2250,7 @@ function svo.valid.tree2()
     svo.checkaction(svo.dict.touchtree.misc, true)
 
     -- add it anyway, as the illusion could get cancelled later on
-    lifevision.add(actions.touchtree_misc.p, "empty")
+    lifevision.add(actions.touchtree_misc.p, 'empty')
   end
 
   tree_cure = false
@@ -2264,10 +2264,10 @@ end
 
 function svo.valid.apply2()
   if not svo.apply_cure then
-  local r = svo.findbybal("salve")
+  local r = svo.findbybal('salve')
   if not r then return end
 
-    lifevision.add(actions[r.name].p, "empty")
+    lifevision.add(actions[r.name].p, 'empty')
   end
 
   svo.apply_cure = false
@@ -2281,11 +2281,11 @@ end
 
 function svo.valid.smoke2()
   if not svo.smoke_cure then
-    local r = svo.findbybal("smoke")
+    local r = svo.findbybal('smoke')
     if r then
-      lifevision.add(actions[r.name].p, "empty")
+      lifevision.add(actions[r.name].p, 'empty')
     elseif actions.checkasthma_smoke then
-      lifevision.add(actions.checkasthma_smoke.p, "onclear")
+      lifevision.add(actions.checkasthma_smoke.p, 'onclear')
     end
   end
 
@@ -2300,10 +2300,10 @@ end
 
 function svo.valid.applyelixir2()
   if not svo.applyelixir_cure then
-    local r = svo.findbybal("sip")
+    local r = svo.findbybal('sip')
     if not r then return end
 
-      lifevision.add(actions[r.name].p, "empty")
+      lifevision.add(actions[r.name].p, 'empty')
   end
 
   svo.applyelixir_cure = false
@@ -2330,13 +2330,13 @@ function svo.valid.focus2()
   if table.contains(spiritdisrupt, line) then return end
 
   if actions.checkimpatience_misc then
-    lifevision.add(actions.checkimpatience_misc.p, "onclear")
+    lifevision.add(actions.checkimpatience_misc.p, 'onclear')
   end
 
   if not svo.focus_cure then
     svo.focus_cure = false
 
-    local r = svo.findbybal("focus")
+    local r = svo.findbybal('focus')
 
     if not r then return end
 
@@ -2350,33 +2350,33 @@ function svo.valid.focus2()
       end
     end
 
-    lifevision.add(actions[r.name].p, "empty")
+    lifevision.add(actions[r.name].p, 'empty')
   end
 end
 
 function svo.valid.salve_had_no_effect()
-  local r = svo.findbybal("salve")
+  local r = svo.findbybal('salve')
   if not r then return end
 
   svo.apply_cure = true
   if not lifevision.l[r.name] then
-    lifevision.add(actions[r.name].p, "noeffect")
+    lifevision.add(actions[r.name].p, 'noeffect')
   end
 end
 
 function svo.valid.plant_had_no_effect()
-  local r = svo.findbybal("herb")
+  local r = svo.findbybal('herb')
   if not r then return end
 
   svo.herb_cure = true
 
   if not lifevision.l[r.name] then
-    lifevision.add(actions[r.name].p, "noeffect")
+    lifevision.add(actions[r.name].p, 'noeffect')
   end
 end
 
 function svo.valid.salve_slickness()
-  local r = svo.findbybal("salve")
+  local r = svo.findbybal('salve')
   if not r then return end
 
   svo.apply_cure = true
@@ -2385,7 +2385,7 @@ function svo.valid.salve_slickness()
 end
 
 function svo.valid.potion_slickness()
-  local r = svo.findbybal("salve")
+  local r = svo.findbybal('salve')
   if not r then return end
 
   svo.apply_cure = true
@@ -2397,13 +2397,13 @@ function svo.valid.sip_had_no_effect()
   local function kill(r)
     svo.sip_cure = true
     if not lifevision.l[r.name] then
-      lifevision.add(actions[r.name].p, "noeffect")
+      lifevision.add(actions[r.name].p, 'noeffect')
     end
   end
 
-  local r = svo.findbybal("sip")
+  local r = svo.findbybal('sip')
   if r then kill(r) else
-    r = svo.findbybal("purgative")
+    r = svo.findbybal('purgative')
     if not r then return end
 
     kill(r)
@@ -2414,19 +2414,19 @@ function svo.valid.removed_from_rift()
   -- we're only interested in this while in sync mode
   if not sys.sync then return end
 
-  local eating = svo.findbybal("herb")
+  local eating = svo.findbybal('herb')
   if eating then svo.killaction(eating) return end
 
-  local outring = svo.findbybal("physical")
+  local outring = svo.findbybal('physical')
   if outring then svo.killaction(outring) end
 end
 signals.removed_from_rift:connect(valid.removed_from_rift)
 
 function svo.valid.no_refill_herb()
-  for _, herb in ipairs{"elm", "valerian", "skullcap"} do
-    if actions["fill"..herb.."_physical"] then
+  for _, herb in ipairs{'elm', 'valerian', 'skullcap'} do
+    if actions['fill'..herb..'_physical'] then
       rift.invcontents[pipes[herb].filledwith] = 0
-      svo.killaction(svo.dict["fill"..herb].physical)
+      svo.killaction(svo.dict['fill'..herb].physical)
     end
   end
 end
@@ -2437,7 +2437,7 @@ function svo.valid.no_outr_herb(what)
     rift.riftcontents[what] = 0
     echo"\n" svo.echof("Apparently we're out of %s! Can't precache it.", what)
   else
-    local eating = svo.findbybals ({"herb", "moss", "misc"})
+    local eating = svo.findbybals ({'herb', 'moss', 'misc'})
     if not eating then
       -- check pipes instead
       local r = svo.checkany(svo.dict.fillskullcap.physical, svo.dict.fillelm.physical, svo.dict.fillvalerian.physical)
@@ -2479,12 +2479,12 @@ end
 
 function svo.valid.failed_focus_impatience()
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
-  local r = svo.findbybal("focus")
+  local r = svo.findbybal('focus')
   if r or not conf.aillusion or actions.checkimpatience_misc then
     if r then svo.killaction(svo.dict[r.action_name].focus) end
 
     if actions.checkimpatience_misc then
-      lifevision.add(actions.checkimpatience_misc.p, "impatient", nil, 1)
+      lifevision.add(actions.checkimpatience_misc.p, 'impatient', nil, 1)
     else
       valid.simpleimpatience()
     end
@@ -2498,15 +2498,15 @@ function svo.valid.smoke_failed_asthma()
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
 
   if actions.checkasthma_smoke then
-    lifevision.add(actions.checkasthma_smoke.p, "badlungs", nil, 1)
+    lifevision.add(actions.checkasthma_smoke.p, 'badlungs', nil, 1)
   end
 
-  local r = svo.findbybal("smoke")
+  local r = svo.findbybal('smoke')
   if r or not conf.aillusion then
 
     if not affs.asthma then
       svo.checkaction(svo.dict.asthma.aff, true)
-      lifevision.add(actions["asthma_aff"].p, nil, nil, 1)
+      lifevision.add(actions['asthma_aff'].p, nil, nil, 1)
       svo.affsp.asthma = nil
     end
   elseif conf.aillusion and not affs.asthma then -- don't show (i) on delays + already have valid asthma
@@ -2518,15 +2518,15 @@ function svo.valid.got_mucous()
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
 
   if actions.checkasthma_smoke then
-    lifevision.add(actions.checkasthma_smoke.p, "mucous", nil, 1)
+    lifevision.add(actions.checkasthma_smoke.p, 'mucous', nil, 1)
   end
 
-  local r = svo.findbybal("smoke")
+  local r = svo.findbybal('smoke')
   if r or not conf.aillusion then
 
     if not affs.mucous then
       svo.checkaction(svo.dict.mucous.aff, true)
-      lifevision.add(actions["mucous_aff"].p, nil, nil, 1)
+      lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
     end
   elseif conf.aillusion then
     svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
@@ -2536,12 +2536,12 @@ end
 function svo.valid.have_mucous()
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
 
-  local r = svo.findbybal("smoke")
+  local r = svo.findbybal('smoke')
   if r or not conf.aillusion then
 
     if not affs.mucous then
       svo.checkaction(svo.dict.mucous.aff, true)
-      lifevision.add(actions["mucous_aff"].p, nil, nil, 1)
+      lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
     end
   elseif conf.aillusion then
     svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
@@ -2549,7 +2549,7 @@ function svo.valid.have_mucous()
 end
 
 function svo.valid.unlit_pipe()
-  local r = svo.findbybal("smoke")
+  local r = svo.findbybal('smoke')
   if not r then return end
 
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then
@@ -2557,11 +2557,11 @@ function svo.valid.unlit_pipe()
     return
   end
 
-  if type(svo.dict[r.action_name].smoke.smokecure) == "string" then
+  if type(svo.dict[r.action_name].smoke.smokecure) == 'string' then
     pipes[svo.dict[r.action_name].smoke.smokecure].lit = false
     svo.show_info("unlit "..svo.dict[r.action_name].smoke.smokecure, "Apparently the "..svo.dict[r.action_name].smoke.smokecure.." pipe was out")
     svo.killaction(svo.dict[r.action_name].smoke)
-  elseif type(svo.dict[r.action_name].smoke.smokecure) == "table" then
+  elseif type(svo.dict[r.action_name].smoke.smokecure) == 'table' then
     for _, herb in pairs(svo.dict[r.action_name].smoke.smokecure) do
       if pipes[herb] and pipes[herb].lit then
         pipes[herb].lit = false
@@ -2577,7 +2577,7 @@ function svo.valid.unlit_pipe()
 end
 
 function svo.valid.necromancy_shrivel()
-  valid["simplecrippled"..matches[2]..matches[3]]()
+  valid['simplecrippled'..matches[2]..matches[3]]()
 end
 
 function svo.valid.got_aeon()
@@ -2588,7 +2588,7 @@ function svo.valid.got_aeon()
       valid.simpleaeon()
     else
       svo.checkaction(svo.dict.checkslows.aff, true)
-      lifevision.add(actions.checkslows_aff.p, nil, "aeon")
+      lifevision.add(actions.checkslows_aff.p, nil, 'aeon')
     end
 
     defs.lost_speed()
@@ -2596,7 +2596,7 @@ function svo.valid.got_aeon()
 end
 
 function svo.valid.empty_pipe()
-  local r = svo.findbybal("smoke")
+  local r = svo.findbybal('smoke')
   if not r then
     if conf.aillusion and not (actions.fillskullcap_physical or actions.fillelm_physical or actions.fillvalerian_physical)
       then svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).") end
@@ -2609,9 +2609,9 @@ function svo.valid.empty_pipe()
   end
 
 -- TODO: turn this into a svo.dict. action validated by lifevision w/ a lifeguard
-  if type(svo.dict[r.action_name].smoke.smokecure) == "string" then
+  if type(svo.dict[r.action_name].smoke.smokecure) == 'string' then
     pipes[svo.dict[r.action_name].smoke.smokecure].puffs = 0
-  elseif type(svo.dict[r.action_name].smoke.smokecure) == "table" then
+  elseif type(svo.dict[r.action_name].smoke.smokecure) == 'table' then
     for _, herb in pairs(svo.dict[r.action_name].smoke.smokecure) do
       if pipes[herb] and pipes[herb].puffs then
         pipes[herb].puffs = 0
@@ -2621,8 +2621,8 @@ function svo.valid.empty_pipe()
 
   svo.killaction(svo.dict[r.action_name].smoke)
 
-  if svo.dict[r.action_name].smoke.smokecure[1] == "valerian" and not (bals.balance and bals.equilibrium) then
-    sk.warn("emptyvalerianpipe")
+  if svo.dict[r.action_name].smoke.smokecure[1] == 'valerian' and not (bals.balance and bals.equilibrium) then
+    sk.warn('emptyvalerianpipe')
   end
 end
 
@@ -2656,8 +2656,8 @@ function svo.valid.empty_light()
 end
 
 -- bindings
-for _,aff in ipairs({"bound", "webbed", "roped", "transfixed", "impale", "hoisted"}) do
-valid["writhed"..aff] = function()
+for _,aff in ipairs({'bound', 'webbed', 'roped', 'transfixed', 'impale', 'hoisted'}) do
+valid['writhed'..aff] = function()
   if not affs[aff] then return end
 
   local result = svo.checkany(svo.dict.curingbound.waitingfor, svo.dict.curingwebbed.waitingfor, svo.dict.curingroped.waitingfor, svo.dict.curingtransfixed.waitingfor, svo.dict.curingimpale.waitingfor, svo.dict.curinghoisted.waitingfor)
@@ -2665,13 +2665,13 @@ valid["writhed"..aff] = function()
   if not result then return end
 
   -- if we were writhing what we expected from to writhe, continue
-  if actions["curing"..aff.."_waitingfor"] then
-    lifevision.add(svo.dict["curing"..aff].waitingfor)
+  if actions['curing'..aff..'_waitingfor'] then
+    lifevision.add(svo.dict['curing'..aff].waitingfor)
   -- otherwise if we writhed from something we were not - kill if we were doing anything else and add the new
   else
     svo.killaction(svo.dict[result.action_name].waitingfor)
-    svo.checkaction(svo.dict["curing"..aff].waitingfor, true)
-    lifevision.add(svo.dict["curing"..aff].waitingfor)
+    svo.checkaction(svo.dict['curing'..aff].waitingfor, true)
+    lifevision.add(svo.dict['curing'..aff].waitingfor)
   end
 end
 end
@@ -2691,10 +2691,10 @@ function svo.valid.writheimpale()
 
   if not result then return end
 
-  if result.name == "impale_misc" then
+  if result.name == 'impale_misc' then
     lifevision.add(actions[result.name].p)
   else
-    lifevision.add(actions[result.name].p, "impale")
+    lifevision.add(actions[result.name].p, 'impale')
   end
 end
 
@@ -2703,34 +2703,34 @@ function svo.valid.writhe_helpless()
 
   if not result then svo.ignore_illusion("We aren't actually writhing from anything right now (or we were forced).") return end
   if actions[result.name] then
-    lifevision.add(actions[result.name].p, "helpless")
+    lifevision.add(actions[result.name].p, 'helpless')
   end
 end
 
 -- restoration cures
 for _, restoration in pairs({
-  restorationlegs = {"mutilatedrightleg", "mutilatedleftleg", "mangledrightleg", "mangledleftleg", "parestolegs"},
-  restorationarms = {"mutilatedrightarm", "mutilatedleftarm", "mangledrightarm", "mangledleftarm", "parestoarms"},
-  restorationother = {"mildtrauma", "serioustrauma", "mildconcussion", "seriousconcussion", "laceratedthroat", "heartseed"}}) do
+  restorationlegs = {'mutilatedrightleg', 'mutilatedleftleg', 'mangledrightleg', 'mangledleftleg', 'parestolegs'},
+  restorationarms = {'mutilatedrightarm', 'mutilatedleftarm', 'mangledrightarm', 'mangledleftarm', 'parestoarms'},
+  restorationother = {'mildtrauma', 'serioustrauma', 'mildconcussion', 'seriousconcussion', 'laceratedthroat', 'heartseed'}}) do
   local other_restoration_affs = {}
 
   -- compile a list of other things we can cure but aren't intending to with this action
   for _, aff in pairs(restoration) do
-    other_restoration_affs[#other_restoration_affs+1] = svo.dict["curing"..aff].waitingfor
+    other_restoration_affs[#other_restoration_affs+1] = svo.dict['curing'..aff].waitingfor
   end
 
   for _, aff in pairs(restoration) do
-    valid["curing"..aff] = function()
-      local result = svo.checkany(svo.dict["curing"..aff].waitingfor, unpack(other_restoration_affs))
+    valid['curing'..aff] = function()
+      local result = svo.checkany(svo.dict['curing'..aff].waitingfor, unpack(other_restoration_affs))
 
       if not result then return end
 
-      if result.name == "curing"..aff.."_waitingfor" then
-        lifevision.add(actions["curing"..aff.."_waitingfor"].p)
-      elseif (aff:find("leg") and (not conf.aillusion or affs[aff] or affs.parestolegs)) or
-        (aff:find("arm") and (not conf.aillusion or affs[aff] or affs.parestoarms)) then
-        svo.checkaction(svo.dict["curing"..aff].waitingfor, true)
-        lifevision.add(svo.dict["curing"..aff].waitingfor)
+      if result.name == 'curing'..aff..'_waitingfor' then
+        lifevision.add(actions['curing'..aff..'_waitingfor'].p)
+      elseif (aff:find('leg') and (not conf.aillusion or affs[aff] or affs.parestolegs)) or
+        (aff:find('arm') and (not conf.aillusion or affs[aff] or affs.parestoarms)) then
+        svo.checkaction(svo.dict['curing'..aff].waitingfor, true)
+        lifevision.add(svo.dict['curing'..aff].waitingfor)
       else
         svo.ignore_illusion("We don't have a "..aff.." right now.")
       end
@@ -2740,9 +2740,9 @@ end
 
 -- salve cures - instantaneous only
 for _, regeneration in pairs({
-  caloric   = {"frozen", "shivering", "caloric"},
-  epidermal = {"anorexia", "itching", "stuttering", "slashedthroat", "blindaff", "deafaff", "scalded"},
-  mending   = {"selarnia", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "ablaze", "unknowncrippledarm", "unknowncrippledleg", "unknowncrippledlimb"}}) do
+  caloric   = {'frozen', 'shivering', 'caloric'},
+  epidermal = {'anorexia', 'itching', 'stuttering', 'slashedthroat', 'blindaff', 'deafaff', 'scalded'},
+  mending   = {'selarnia', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'ablaze', 'unknowncrippledarm', 'unknowncrippledleg', 'unknowncrippledlimb'}}) do
   local other_regeneration_affs = {}
 
   for _, aff in pairs(regeneration) do
@@ -2770,7 +2770,7 @@ end
 
 -- focus
 do
-  local afflist = {"claustrophobia", "masochism", "dizziness", "confusion", "stupidity", "generosity", "loneliness", "agoraphobia", "recklessness", "epilepsy", "pacifism", "anorexia", "shyness", "vertigo", "fear", "airdisrupt", "firedisrupt", "waterdisrupt", "dementia", "paranoia", "hallucinations"}
+  local afflist = {'claustrophobia', 'masochism', 'dizziness', 'confusion', 'stupidity', 'generosity', 'loneliness', 'agoraphobia', 'recklessness', 'epilepsy', 'pacifism', 'anorexia', 'shyness', 'vertigo', 'fear', 'airdisrupt', 'firedisrupt', 'waterdisrupt', 'dementia', 'paranoia', 'hallucinations'}
   local other_focus_affs = {}
 
   for _, aff in pairs(afflist) do
@@ -2784,12 +2784,12 @@ do
 
       svo.focus_cure = true
 
-      if result.name == aff.."_focus" then
-        lifevision.add(actions[aff.."_focus"].p)
+      if result.name == aff..'_focus' then
+        lifevision.add(actions[aff..'_focus'].p)
 
         -- check timers here! should not be less than half of svo.getping(). Check *action*, not affliction timer as well
         if conf.aillusion and not conf.serverside then
-          local time, lat = getStopWatchTime(actions[aff.."_focus"].p.actionwatch), svo.getping()
+          local time, lat = getStopWatchTime(actions[aff..'_focus'].p.actionwatch), svo.getping()
 
           if time < (lat/2) then
             svo.ignore_illusion("This 'cure' looks fake - finished way too quickly, in "..time.."s, while our ping is "..lat)
@@ -2809,8 +2809,8 @@ end
 
 -- normal smokes
 for _, smoke in pairs({
-  valerian = {"disloyalty", "slickness", "manaleech"},
-  elm = {"deadening", "hellsight", "madness", "aeon"}}) do
+  valerian = {'disloyalty', 'slickness', 'manaleech'},
+  elm = {'deadening', 'hellsight', 'madness', 'aeon'}}) do
   local other_smoke_cures = {}
 
   for _, aff in pairs(smoke) do
@@ -2818,7 +2818,7 @@ for _, smoke in pairs({
   end
 
   for _, aff in pairs(smoke) do
-    valid["smoke_cured_"..aff] = function()
+    valid['smoke_cured_'..aff] = function()
       local result = svo.checkany(svo.dict[aff].smoke, unpack(other_smoke_cures))
      -- aff twice in the svo.checkany list, first so most cases it gets returned first when it's the only aff
 
@@ -2826,7 +2826,7 @@ for _, smoke in pairs({
 
       svo.smoke_cure = true
       if result.name == aff".._smoke" then
-        lifevision.add(actions[aff.."_smoke"].p)
+        lifevision.add(actions[aff..'_smoke'].p)
       else
         svo.killaction(svo.dict[result.action_name].smoke)
         svo.checkaction(svo.dict[aff].smoke, true)
@@ -2839,14 +2839,14 @@ end
 
 -- normal herbs
 for _, herb in pairs({
-  ash        = {"hallucinations", "hypersomnia", "confusion", "paranoia", "dementia"},
-  bellwort   = {"generosity", "pacifism", "justice", "inlove", "peace", "retribution", "timeloop"},
-  bloodroot  = {"paralysis", "slickness"},
-  ginger     = {"melancholichumour", "cholerichumour", "phlegmatichumour", "sanguinehumour"},
-  ginseng    = {"haemophilia", "darkshade", "relapsing", "addiction", "illness", "lethargy"},
-  goldenseal = {"dissonance", "impatience", "stupidity", "dizziness", "epilepsy", "shyness", "depression", "shadowmadness"},
-  kelp       = {"asthma", "hypochondria", "healthleech", "sensitivity", "clumsiness", "weakness", "parasite"},
-  lobelia    = {"claustrophobia", "recklessness", "agoraphobia", "loneliness", "masochism", "vertigo", "spiritdisrupt", "airdisrupt", "waterdisrupt", "earthdisrupt", "firedisrupt"}}) do
+  ash        = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia'},
+  bellwort   = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'},
+  bloodroot  = {'paralysis', 'slickness'},
+  ginger     = {'melancholichumour', 'cholerichumour', 'phlegmatichumour', 'sanguinehumour'},
+  ginseng    = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy'},
+  goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression', 'shadowmadness'},
+  kelp       = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'parasite'},
+  lobelia    = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'spiritdisrupt', 'airdisrupt', 'waterdisrupt', 'earthdisrupt', 'firedisrupt'}}) do
   local other_herb_cures = {}
 
   for _, aff in pairs(herb) do
@@ -2854,7 +2854,7 @@ for _, herb in pairs({
   end
 
   for _, aff in pairs(herb) do
-    valid["herb_cured_"..aff] = function()
+    valid['herb_cured_'..aff] = function()
       local result = svo.checkany(svo.dict[aff].herb, unpack(other_herb_cures))
 
       if not result then return end
@@ -2863,7 +2863,7 @@ for _, herb in pairs({
       if result.name == aff..'_herb' then
         -- check timers here! should not be less than half of svo.getping(). Check *action*, not affliction timer as well
         if conf.aillusion and not conf.serverside then
-          local time, lat = getStopWatchTime(actions[aff.."_herb"].p.actionwatch), svo.getping()
+          local time, lat = getStopWatchTime(actions[aff..'_herb'].p.actionwatch), svo.getping()
 
           if time < (lat/2) then
             svo.ignore_illusion("This 'cure' looks fake - finished way too quickly, in "..time.."s, while our ping is "..lat)
@@ -2871,7 +2871,7 @@ for _, herb in pairs({
           end
         end
 
-        lifevision.add(actions[aff.."_herb"].p)
+        lifevision.add(actions[aff..'_herb'].p)
       -- with AI on, don't accept cures for affs that we don't have (although do consider check*s)
       elseif (not conf.aillusion or (conf.aillusion and (affs[aff] or affs.unknownany or affs.unknownmental or svo.affsp[aff]))) then
         svo.killaction(svo.dict[result.action_name].herb)
@@ -2890,10 +2890,10 @@ end
 
 -- tree touches
 for _, tree in pairs({
-  tree = {"ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impatience", "inlove", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "madness", "masochism","pacifism", "paranoia", "peace", "prone", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slashedthroat", "slickness", "stupidity", "stuttering",  "vertigo", "voided", "voyria", "weakness", "hamstring", "shivering", "frozen", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate"}}) do
+  tree = {'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'bleeding', 'bound', 'burning', 'claustrophobia', 'clumsiness', 'mildconcussion', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade', 'deadening', 'dementia', 'disloyalty', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'galed', 'generosity', 'haemophilia', 'hallucinations', 'healthleech', 'hellsight', 'hypersomnia', 'hypochondria', 'icing', 'illness', 'impatience', 'inlove', 'itching', 'justice', 'laceratedthroat', 'lethargy', 'loneliness', 'madness', 'masochism','pacifism', 'paranoia', 'peace', 'prone', 'recklessness', 'relapsing', 'selarnia', 'sensitivity', 'shyness', 'slashedthroat', 'slickness', 'stupidity', 'stuttering',  'vertigo', 'voided', 'voyria', 'weakness', 'hamstring', 'shivering', 'frozen', 'spiritdisrupt', 'airdisrupt', 'firedisrupt', 'earthdisrupt', 'waterdisrupt', 'depression', 'parasite', 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate'}}) do
 
   for _, aff in pairs(tree) do
-    valid["tree_cured_"..aff] = function()
+    valid['tree_cured_'..aff] = function()
       svo.checkaction(svo.dict.touchtree.misc)
       if actions.touchtree_misc then
         lifevision.add(actions.touchtree_misc.p, nil, aff)
@@ -2905,14 +2905,14 @@ end
 
 -- humour cures
 for _, herb in pairs({
-  ginger     = {"melancholichumour", "cholerichumour", "phlegmatichumour", "sanguinehumour"}}) do
+  ginger     = {'melancholichumour', 'cholerichumour', 'phlegmatichumour', 'sanguinehumour'}}) do
   local other_humour_cures = {}
   for _, aff in pairs(herb) do
     other_humour_cures[#other_humour_cures+1] = svo.dict[aff].herb
   end
 
   for _, aff in pairs(herb) do
-    valid["herb_helped_"..aff] = function()
+    valid['herb_helped_'..aff] = function()
       local result = svo.checkany(svo.dict[aff].herb, unpack(other_humour_cures))
 
       if not result then return end
@@ -2921,7 +2921,7 @@ for _, herb in pairs({
       if result.name == aff..'_herb' then
         -- check timers here! should not be less than half of svo.getping(). Check *action*, not affliction timer as well
         if conf.aillusion and not conf.serverside then
-          local time, lat = getStopWatchTime(actions[aff.."_herb"].p.actionwatch), svo.getping()
+          local time, lat = getStopWatchTime(actions[aff..'_herb'].p.actionwatch), svo.getping()
 
           if time < (lat/2) then
             svo.ignore_illusion("This 'cure' looks fake - finished way too quickly, in "..time.."s, while our ping is "..lat)
@@ -2929,11 +2929,11 @@ for _, herb in pairs({
           end
         end
 
-        lifevision.add(actions[aff.."_herb"].p, "cured")
+        lifevision.add(actions[aff..'_herb'].p, 'cured')
       elseif (not conf.aillusion or (conf.aillusion and (affs[aff] or (affs.unknownany or affs.unknownmental)))) then -- with AI on, don't accept cures for affs that we don't have
         svo.killaction(svo.dict[result.action_name].herb)
         svo.checkaction(svo.dict[aff].herb, true)
-        lifevision.add(svo.dict[aff].herb, "cured")
+        lifevision.add(svo.dict[aff].herb, 'cured')
       else
         moveCursor(0, getLineNumber()-1)
         moveCursor(#getCurrentLine(), getLineNumber())
@@ -2950,9 +2950,9 @@ function sk.ninkharsag()
   svo.checkaction(svo.dict.ninkharsag.gone, true)
 
   if lifevision.l.ninkharsag_gone then
-    lifevision.add(actions.ninkharsag_gone.p, "hiddencures", 1 + (lifevision.l.ninkharsag_gone.arg or 1))
+    lifevision.add(actions.ninkharsag_gone.p, 'hiddencures', 1 + (lifevision.l.ninkharsag_gone.arg or 1))
   else
-    lifevision.add(actions.ninkharsag_gone.p, "hiddencures", 1)
+    lifevision.add(actions.ninkharsag_gone.p, 'hiddencures', 1)
   end
 end
 
@@ -2975,7 +2975,7 @@ end
 function svo.valid.touched_treeoffbal()
   svo.checkaction(svo.dict.touchtree.misc)
   if actions.touchtree_misc then
-    lifevision.add(actions.touchtree_misc.p, "offbal")
+    lifevision.add(actions.touchtree_misc.p, 'offbal')
   end
 end
 
@@ -3046,7 +3046,7 @@ function svo.defs.already_blind()
 
   svo.herb_cure = true
   if not lifevision.l[r.name] then
-    lifevision.add(actions[r.name].p, "noeffect")
+    lifevision.add(actions[r.name].p, 'noeffect')
   end
 end
 
@@ -3054,14 +3054,14 @@ end
 function svo.missing_enchant()
   -- find out which actions are we doing, sort them - and see which one is missing (the top one)
   local t = {}
-  if actions.magicresist_physical then t[#t+1] = "magicresist" end
-  if actions.fireresist_physical then t[#t+1] = "fireresist" end
-  if actions.coldresist_physical then t[#t+1] = "coldresist" end
-  if actions.electricresist_physical then t[#t+1] = "electricresist" end
+  if actions.magicresist_physical then t[#t+1] = 'magicresist' end
+  if actions.fireresist_physical then t[#t+1] = 'fireresist' end
+  if actions.coldresist_physical then t[#t+1] = 'coldresist' end
+  if actions.electricresist_physical then t[#t+1] = 'electricresist' end
 
   if #t == 0 then return end
 
-  t = svo.prio.sortlist(t, "physical")
+  t = svo.prio.sortlist(t, 'physical')
 
   local result = t[1]
 
@@ -3103,10 +3103,10 @@ function svo.missing_tinderbox()
   local realthing, assumedname = {}, {}
   for id = 1, #pipes.pnames do
     local herb, pipe = pipes.pnames[id], pipes[pipes.pnames[id]]
-    if not pipe.arty and not svo.ignore["light"..herb] then
-      realthing[#realthing+1] = "light"..herb
+    if not pipe.arty and not svo.ignore['light'..herb] then
+      realthing[#realthing+1] = 'light'..herb
       assumedname[#assumedname+1] = pipe.filledwith
-      svo.setignore("light"..herb, { because = "you were missing a tinderbox" })
+      svo.setignore('light'..herb, { because = "you were missing a tinderbox" })
     end
   end
 
@@ -3122,7 +3122,7 @@ function svo.valid.restoration_noeffect()
   if not r then return end
 
   if not lifevision.l[r.name] then
-    lifevision.add(actions[r.name].p, "noeffect")
+    lifevision.add(actions[r.name].p, 'noeffect')
   end
 end
 
@@ -3142,7 +3142,7 @@ function svo.valid.noeffect_moss()
 
   svo.herb_cure = true
   if not lifevision.l[r.name] then
-    lifevision.add(actions[r.name].p, "noeffect")
+    lifevision.add(actions[r.name].p, 'noeffect')
   end
 end
 
@@ -3216,7 +3216,7 @@ end
 
 function svo.defs.gotskill_insomnia()
   if actions.checkhypersomnia_misc then
-    lifevision.add(actions.checkhypersomnia_misc.p, "onclear")
+    lifevision.add(actions.checkhypersomnia_misc.p, 'onclear')
   end
 
 
@@ -3240,9 +3240,9 @@ function svo.valid.insomnia_hypersomnia()
 
   if r then
     svo.herb_cure = true
-    lifevision.add(actions[r.name].p, "hypersomnia")
+    lifevision.add(actions[r.name].p, 'hypersomnia')
   elseif actions.checkhypersomnia_misc then
-    lifevision.add(actions.checkhypersomnia_misc.p, "hypersomnia")
+    lifevision.add(actions.checkhypersomnia_misc.p, 'hypersomnia')
     decho(svo.getDefaultColor().." (hypersomnia confirmed)")
   elseif not conf.aillusion then
     valid.simplehypersomnia()
@@ -3258,8 +3258,8 @@ function svo.defs.salve_got_caloric()
   if not r then return end
 
   svo.apply_cure = true
-  local hypothermia = svo.find_until_last_paragraph("You are far too frozen to relieve your shivers.", "exact")
-  lifevision.add(actions[r.name].p, "gotcaloricdef", hypothermia)
+  local hypothermia = svo.find_until_last_paragraph("You are far too frozen to relieve your shivers.", 'exact')
+  lifevision.add(actions[r.name].p, 'gotcaloricdef', hypothermia)
 end
 
 function svo.defs.salve_got_mass()
@@ -3272,19 +3272,19 @@ end
 
 
 local generic_cures_data = {
-  "ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "heartseed", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impale", "impatience", "inlove", "inquisition", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "lovers", "madness", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", "masochism", "mildtrauma", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "pacifism", "paralysis", "paranoia", "peace", "prone", "recklessness", "relapsing", "roped", "selarnia", "sensitivity", "seriousconcussion", "serioustrauma", "shyness", "slashedthroat", "slickness", "stun", "stupidity", "stuttering", "transfixed", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voided", "voyria", "weakness", "webbed", "healhealth", "healmana", "hamstring", "shivering", "frozen", "hallucinations", "stain", "rixil", "palpatar", "cadmus", "hecate", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate", "hatred"
+  'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'bleeding', 'bound', 'burning', 'claustrophobia', 'clumsiness', 'mildconcussion', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade', 'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'galed', 'generosity', 'haemophilia', 'hallucinations', 'healthleech', 'heartseed', 'hellsight', 'hypersomnia', 'hypochondria', 'icing', 'illness', 'impale', 'impatience', 'inlove', 'inquisition', 'itching', 'justice', 'laceratedthroat', 'lethargy', 'loneliness', 'lovers', 'madness', 'mangledleftarm', 'mangledleftleg', 'mangledrightarm', 'mangledrightleg', 'masochism', 'mildtrauma', 'mutilatedleftarm', 'mutilatedleftleg', 'mutilatedrightarm', 'mutilatedrightleg', 'pacifism', 'paralysis', 'paranoia', 'peace', 'prone', 'recklessness', 'relapsing', 'roped', 'selarnia', 'sensitivity', 'seriousconcussion', 'serioustrauma', 'shyness', 'slashedthroat', 'slickness', 'stun', 'stupidity', 'stuttering', 'transfixed', 'unknownany', 'unknowncrippledarm', 'unknowncrippledleg', 'unknownmental', 'vertigo', 'voided', 'voyria', 'weakness', 'webbed', 'healhealth', 'healmana', 'hamstring', 'shivering', 'frozen', 'hallucinations', 'stain', 'rixil', 'palpatar', 'cadmus', 'hecate', 'spiritdisrupt', 'airdisrupt', 'firedisrupt', 'earthdisrupt', 'waterdisrupt', 'depression', 'parasite', 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'hatred'
 }
 
 for i = 1, #generic_cures_data do
   local aff = generic_cures_data[i]
 
-  valid["generic_"..aff] = function ()
+  valid['generic_'..aff] = function ()
 
     -- passive curing...
     if svo.passive_cure_paragraph and svo.dict[aff].gone then
       svo.checkaction(svo.dict[aff].gone, true)
-      if actions[aff .. "_gone"] then
-        lifevision.add(actions[aff .. "_gone"].p)
+      if actions[aff .. '_gone'] then
+        lifevision.add(actions[aff .. '_gone'].p)
       end
       return
     end
@@ -3304,7 +3304,7 @@ for i = 1, #generic_cures_data do
             svo.debugf("%s - %s", tostring(m), tostring(n))
           end
         end
-        if k and k.p.balance ~= "waitingfor" and k.p.balance ~= "aff" and svo.dict[aff][k.p.balance] then result = k.p break end
+        if k and k.p.balance ~= 'waitingfor' and k.p.balance ~= 'aff' and svo.dict[aff][k.p.balance] then result = k.p break end
       end
 
       if not result then -- maybe tree?
@@ -3329,19 +3329,19 @@ end
 
 svo.disable_generic_trigs = function ()
   disableTrigger("General cures")
-  enableTrigger("Ate")
-  enableTrigger("Sip")
-  enableTrigger("Applied")
-  enableTrigger("Smoke")
+  enableTrigger('Ate')
+  enableTrigger('Sip')
+  enableTrigger('Applied')
+  enableTrigger('Smoke')
   enableTrigger("Focus mind")
 end
 
 svo.enable_generic_trigs = function ()
   enableTrigger("General cures")
-  disableTrigger("Ate")
-  disableTrigger("Sip")
-  disableTrigger("Applied")
-  disableTrigger("Smoke")
+  disableTrigger('Ate')
+  disableTrigger('Sip')
+  disableTrigger('Applied')
+  disableTrigger('Smoke')
   disableTrigger("Focus mind")
 end
 
@@ -3385,11 +3385,11 @@ function svo.valid.passive_cure()
     if affn == table.size(affs) then
       if affs.unknownmental then
         svo.dict.unknownmental.count = svo.dict.unknownmental.count - 1
-        if svo.dict.unknownmental.count <= 0 then svo.rmaff("unknownmental"); svo.dict.unknownmental.count = 0
+        if svo.dict.unknownmental.count <= 0 then svo.rmaff('unknownmental'); svo.dict.unknownmental.count = 0
         else svo.updateaffcount(svo.dict.unknownmental) end
       elseif affs.unknownany then
         svo.dict.unknownany.count = svo.dict.unknownany.count - 1
-        if svo.dict.unknownany.count <= 0 then svo.rmaff("unknownany"); svo.dict.unknownany.count = 0 else
+        if svo.dict.unknownany.count <= 0 then svo.rmaff('unknownany'); svo.dict.unknownany.count = 0 else
           svo.updateaffcount(svo.dict.unknownany)
         end
       end
@@ -3429,7 +3429,7 @@ function svo.valid.dwinnu()
 end
 
 function svo.valid.got_blind()
-  sk.onprompt_beforeaction_add("hypochondria_blind", function ()
+  sk.onprompt_beforeaction_add('hypochondria_blind', function ()
     if not affs.blindaff and not defs.blind then
       valid.simplehypochondria()
     end
@@ -3476,7 +3476,7 @@ function svo.valid.proper_illness()
   end
 end
 function svo.valid.proper_lethargy()
-  if svo.paragraph_length ~= 1 or affs.torntendons or svo.find_until_last_paragraph("You stumble as you are afflicted with", "substring") then
+  if svo.paragraph_length ~= 1 or affs.torntendons or svo.find_until_last_paragraph("You stumble as you are afflicted with", 'substring') then
     valid.simplelethargy()
   else
     sk.hypochondria_symptom()
@@ -3492,7 +3492,7 @@ function svo.valid.proper_addiction()
 end
 function svo.valid.proper_anorexia()
   if not conf.aillusion then
-    if svo.paragraph_length ~= 1 or svo.find_until_last_paragraph("With a characteristic Jaziran trill", "substring") then
+    if svo.paragraph_length ~= 1 or svo.find_until_last_paragraph("With a characteristic Jaziran trill", 'substring') then
       valid.simpleanorexia()
     else
       sk.hypochondria_symptom()
@@ -3517,7 +3517,7 @@ function svo.valid.proper_recklessness(attacktype)
   else
     svo.checkaction(svo.dict.recklessness.aff, true)
     if actions.recklessness_aff then
-      lifevision.add(actions.recklessness_aff.p, nil, {oldhp = stats.currenthealth, oldmana = stats.currentmana, attacktype = attacktype, atline = getLastLineNumber("main")})
+      lifevision.add(actions.recklessness_aff.p, nil, {oldhp = stats.currenthealth, oldmana = stats.currentmana, attacktype = attacktype, atline = getLastLineNumber('main')})
     end
   end
 end
@@ -3527,10 +3527,10 @@ function svo.valid.proper_recklessness2(attacktype)
   else
     svo.checkaction(svo.dict.recklessness.aff, true)
     if actions.recklessness_aff then
-      if svo.find_until_last_paragraph("wracks", "substring") or svo.find_until_last_paragraph("points an imperious finger at you", "substring") or svo.find_until_last_paragraph("A heavy burden descends upon your soul as", "substring") or svo.find_until_last_paragraph("stares at you, giving you the evil eye", "substring") or svo.find_until_last_paragraph("glowers at you with a look of repressed disgust before making a slight gesture toward you.", "substring") or svo.find_until_last_paragraph("smashing your temple with a backhanded blow", "substring") then
-        lifevision.add(actions.recklessness_aff.p, nil, {oldhp = stats.currenthealth, attacktype = attacktype, atline = getLastLineNumber("main")})
+      if svo.find_until_last_paragraph('wracks', 'substring') or svo.find_until_last_paragraph("points an imperious finger at you", 'substring') or svo.find_until_last_paragraph("A heavy burden descends upon your soul as", 'substring') or svo.find_until_last_paragraph("stares at you, giving you the evil eye", 'substring') or svo.find_until_last_paragraph("glowers at you with a look of repressed disgust before making a slight gesture toward you.", 'substring') or svo.find_until_last_paragraph("smashing your temple with a backhanded blow", 'substring') then
+        lifevision.add(actions.recklessness_aff.p, nil, {oldhp = stats.currenthealth, attacktype = attacktype, atline = getLastLineNumber('main')})
       else
-        lifevision.add(actions.recklessness_aff.p, nil, {oldhp = stats.currenthealth, attacktype = attacktype, atline = getLastLineNumber("main")}, 1)
+        lifevision.add(actions.recklessness_aff.p, nil, {oldhp = stats.currenthealth, attacktype = attacktype, atline = getLastLineNumber('main')}, 1)
       end
     end
   end
@@ -3561,7 +3561,7 @@ end
 
 function svo.valid.lost_ffa()
   local oldroom = (atcp.RoomNum or gmcp.Room.Info.num)
-  sk.onprompt_beforeaction_add("arena_death",
+  sk.onprompt_beforeaction_add('arena_death',
     function ()
       if oldroom ~= (atcp.RoomNum or gmcp.Room.Info.num) then
         svo.reset.affs()
@@ -3584,7 +3584,7 @@ function svo.valid.won_arena()
   svo.reset.affs()
 
   -- blind/insomnia/deaf get svo.reset too
-  defences.lost("blind") defences.lost("deaf") defences.lost("insomnia")
+  defences.lost('blind') defences.lost('deaf') defences.lost('insomnia')
 end
 
 if svo.haveskillset('necromancy') then
@@ -3592,7 +3592,7 @@ if svo.haveskillset('necromancy') then
     svo.reset.affs()
     svo.reset.general()
     svo.reset.defs()
-    if type(conf.burstmode) == "string" then
+    if type(conf.burstmode) == 'string' then
       echo"\n"svo.echof("Auto-switching to %s defences mode.", conf.burstmode)
       defs.switch(conf.burstmode, false)
     end
@@ -3602,7 +3602,7 @@ elseif svo.haveskillset('occultism') then
     svo.reset.affs()
     svo.reset.general()
     svo.reset.defs()
-    if type(conf.burstmode) == "string" then
+    if type(conf.burstmode) == 'string' then
       echo"\n"svo.echof("Auto-switching to %s defences mode.", conf.burstmode)
       defs.switch(conf.burstmode, false)
     end
@@ -3614,7 +3614,7 @@ end
 
 function svo.valid.died()
   if line == "Your starburst tattoo flares as the world is momentarily tinted red." then
-    sk.onprompt_beforeaction_add("death",
+    sk.onprompt_beforeaction_add('death',
       function ()
         if affs.recklessness or (stats.currenthealth == stats.maxhealth and stats.currentmana == stats.maxmana) then
           svo.reset.affs()
@@ -3623,7 +3623,7 @@ function svo.valid.died()
           rift.resetinvcontents()
           echo "\n" svo.echof("We hit starburst!")
           signals.before_prompt_processing:unblock(valid.check_life)
-          if type(conf.burstmode) == "string" then
+          if type(conf.burstmode) == 'string' then
             svo.echof("Auto-switching to %s defences mode.", conf.burstmode)
             defs.switch(conf.burstmode, false)
           end
@@ -3631,11 +3631,11 @@ function svo.valid.died()
           -- rebounding coming up gets cancelled
           if actions.waitingonrebounding_waitingfor then svo.killaction(svo.dict.waitingonrebounding.waitingfor) end
 
-          raiseEvent("svo died", "starburst")
+          raiseEvent("svo died", 'starburst')
         end
       end)
   elseif not conf.paused then
-    sk.onprompt_beforeaction_add("death",
+    sk.onprompt_beforeaction_add('death',
       function ()
         if affs.recklessness or stats.currenthealth == 0 then
           svo.reset.affs()
@@ -3680,8 +3680,8 @@ function svo.valid.died()
           conf.paused = true
           signals.before_prompt_processing:unblock(valid.check_life)
           raiseEvent("svo died")
-          raiseEvent("svo config changed", "paused")
-        elseif stats.currenthealth == stats.maxhealth and stats.currentmana == stats.maxmana and svo.find_until_last_paragraph("Your starburst tattoo flares as the world is momentarily tinted red.", "exact") then -- in case something else came between "you died" and starburst
+          raiseEvent("svo config changed", 'paused')
+        elseif stats.currenthealth == stats.maxhealth and stats.currentmana == stats.maxmana and svo.find_until_last_paragraph("Your starburst tattoo flares as the world is momentarily tinted red.", 'exact') then -- in case something else came between "you died" and starburst
           svo.reset.affs()
           svo.reset.general()
           svo.reset.defs()
@@ -3692,11 +3692,11 @@ function svo.valid.died()
 
           echo "\n" svo.echof("We hit starburst!")
           signals.before_prompt_processing:unblock(valid.check_life)
-          if type(conf.burstmode) == "string" then
+          if type(conf.burstmode) == 'string' then
             svo.echof("Auto-switching to %s defences mode.", conf.burstmode)
             defs.switch(conf.burstmode, false)
           end
-          raiseEvent("svo died", "starburst")
+          raiseEvent("svo died", 'starburst')
         end
       end)
   end
@@ -3706,7 +3706,7 @@ function svo.valid.check_life()
   if stats.currenthealth ~= 0 then
     echo"\n" svo.echof("Welcome back to life! System unpaused.")
     conf.paused = false
-    raiseEvent("svo config changed", "paused")
+    raiseEvent("svo config changed", 'paused')
     signals.before_prompt_processing:block(valid.check_life)
   end
 end
@@ -3719,7 +3719,7 @@ function svo.valid.check_recklessness()
 
   -- check against GMCP, as Svof modifies them
   if affs.recklessness and (vitals.mp < vitals.maxmp or vitals.hp < vitals.maxhp) then
-    svo.rmaff("recklessness")
+    svo.rmaff('recklessness')
   end
 end
 signals.before_prompt_processing:connect(valid.check_recklessness)
@@ -3738,7 +3738,7 @@ function svo.valid.limb_hit(which, attacktype)
     deselect()
     resetFormat()
   else -- things like BM slashes don't say the limb, but say the plural name of it - legs, arms.
-    local plural = which:sub(-3).."s"
+    local plural = which:sub(-3)..'s'
 
     if selectString(plural, 1) ~= -1 then
       fg(conf.highlightparryfg)
@@ -3756,54 +3756,54 @@ end
 local function saw_tekura_in_paragraph()
   return
     -- punches
-    svo.find_until_last_paragraph("balls up one fist and hammerfists you", "substring") or
-    svo.find_until_last_paragraph("forms a spear hand and stabs out at you", "substring") or
-    svo.find_until_last_paragraph("launches a powerful uppercut at you", "substring") or
-    svo.find_until_last_paragraph("unleashes a powerful hook towards you", "substring") or
+    svo.find_until_last_paragraph("balls up one fist and hammerfists you", 'substring') or
+    svo.find_until_last_paragraph("forms a spear hand and stabs out at you", 'substring') or
+    svo.find_until_last_paragraph("launches a powerful uppercut at you", 'substring') or
+    svo.find_until_last_paragraph("unleashes a powerful hook towards you", 'substring') or
 
     -- kicks
-    svo.find_until_last_paragraph("lets fly at you with a snap kick", "substring") or
-    svo.find_until_last_paragraph("towards you with a lightning-fast moon kick", "substring") or
-    svo.find_until_last_paragraph("leg high and scythes downwards at you", "substring") or
-    svo.find_until_last_paragraph("pumps out at you with a powerful side kick", "substring") or
-    svo.find_until_last_paragraph("spins into the air and throws a whirlwind kick towards you", "substring") or
-    svo.find_until_last_paragraph("The blow sends a shock of pain through you, your muscles reflexively locking in response.", "exact")
+    svo.find_until_last_paragraph("lets fly at you with a snap kick", 'substring') or
+    svo.find_until_last_paragraph("towards you with a lightning-fast moon kick", 'substring') or
+    svo.find_until_last_paragraph("leg high and scythes downwards at you", 'substring') or
+    svo.find_until_last_paragraph("pumps out at you with a powerful side kick", 'substring') or
+    svo.find_until_last_paragraph("spins into the air and throws a whirlwind kick towards you", 'substring') or
+    svo.find_until_last_paragraph("The blow sends a shock of pain through you, your muscles reflexively locking in response.", 'exact')
 end
 
 -- count up how much tekura stuff have we seen in the paragraph so far. If more than two things, then count this as a combo.
 local function all_in_one_tekura()
   local c =
     -- punches
-    svo.count_until_last_paragraph("balls up one fist and hammerfists you", "substring") +
-    svo.count_until_last_paragraph("forms a spear hand and stabs out at you", "substring") +
-    svo.count_until_last_paragraph("launches a powerful uppercut at you", "substring") +
-    svo.count_until_last_paragraph("unleashes a powerful hook towards you", "substring") +
+    svo.count_until_last_paragraph("balls up one fist and hammerfists you", 'substring') +
+    svo.count_until_last_paragraph("forms a spear hand and stabs out at you", 'substring') +
+    svo.count_until_last_paragraph("launches a powerful uppercut at you", 'substring') +
+    svo.count_until_last_paragraph("unleashes a powerful hook towards you", 'substring') +
 
     -- kicks
-    svo.count_until_last_paragraph("lets fly at you with a snap kick", "substring") +
-    svo.count_until_last_paragraph("drops to the floor and sweeps his legs round at you.", "substring") +
-    svo.count_until_last_paragraph("drops to the floor and sweeps her legs round at you.", "substring") +
-    svo.count_until_last_paragraph("knocks your legs out from under you and sends you sprawling to the floor.", "substring") +
-    svo.count_until_last_paragraph("towards you with a lightning-fast moon kick", "substring") +
-    svo.count_until_last_paragraph("leg high and scythes downwards at you", "substring") +
-    svo.count_until_last_paragraph("pumps out at you with a powerful side kick", "substring") +
-    svo.count_until_last_paragraph("spins into the air and throws a whirlwind kick towards you", "substring") +
-    svo.count_until_last_paragraph("The blow sends a shock of pain through you, your muscles reflexively locking in response.", "exact")
+    svo.count_until_last_paragraph("lets fly at you with a snap kick", 'substring') +
+    svo.count_until_last_paragraph("drops to the floor and sweeps his legs round at you.", 'substring') +
+    svo.count_until_last_paragraph("drops to the floor and sweeps her legs round at you.", 'substring') +
+    svo.count_until_last_paragraph("knocks your legs out from under you and sends you sprawling to the floor.", 'substring') +
+    svo.count_until_last_paragraph("towards you with a lightning-fast moon kick", 'substring') +
+    svo.count_until_last_paragraph("leg high and scythes downwards at you", 'substring') +
+    svo.count_until_last_paragraph("pumps out at you with a powerful side kick", 'substring') +
+    svo.count_until_last_paragraph("spins into the air and throws a whirlwind kick towards you", 'substring') +
+    svo.count_until_last_paragraph("The blow sends a shock of pain through you, your muscles reflexively locking in response.", 'exact')
 
     return (c >= 2) and true or false
 end
 
 
-for _,name in ipairs({"rightarm", "leftarm", "leftleg", "rightleg"}) do
-  for _, status in ipairs({"mangled", "mutilated"}) do
-    valid["proper_"..status..name] = function ()
+for _,name in ipairs({'rightarm', 'leftarm', 'leftleg', 'rightleg'}) do
+  for _, status in ipairs({'mangled', 'mutilated'}) do
+    valid['proper_'..status..name] = function ()
       -- idea: see if any previous lines contain the limb name; it would have to be included in the msg
       if conf.aillusion then
         local limb = string.format("%s %s", string.match(name, "(%w+)(%w%w%w)"))
-        local plural = name:sub(-3).."s"
+        local plural = name:sub(-3)..'s'
 
         -- last line doesn't work with stuff like bm breaks, where it is limb\anothermsg\actualbreak. So go until the prompt.
-        local previouslinenumber, currentlinenumber = svo.lastpromptnumber+1, getLastLineNumber("main")
+        local previouslinenumber, currentlinenumber = svo.lastpromptnumber+1, getLastLineNumber('main')
 
         -- workaround for deleteLine() making svo.lastpromptnumber's tracking get invalidated
         if currentlinenumber <= previouslinenumber then
@@ -3822,14 +3822,14 @@ for _,name in ipairs({"rightarm", "leftarm", "leftleg", "rightleg"}) do
           -- special exception for blademaster breaks, which do so little damage, you can regen it:
           --[[Spinning to the right as he draws 11 11 from its sheath, 11 delivers a precise slash across your arms.
               Your left arm is greatly damaged from the beating. (+65h, 0.8%, +75m, 1.1%) ]]
-          if svo.find_until_last_paragraph("^Spinning to the right as s?he draws %w+ %w+ from its sheath, %w+ delivers a precise slash across your arms%.$", "pattern") then
-            valid["simple"..status..name]()
+          if svo.find_until_last_paragraph("^Spinning to the right as s?he draws %w+ %w+ from its sheath, %w+ delivers a precise slash across your arms%.$", 'pattern') then
+            valid['simple'..status..name]()
           elseif saw_tekura_in_paragraph() then
             svo.checkaction(svo.dict[status..name].aff, true)
-            lifevision.add(actions[status..name.."_aff"].p, "tekura", stats.currenthealth)
+            lifevision.add(actions[status..name..'_aff'].p, 'tekura', stats.currenthealth)
           else
             svo.checkaction(svo.dict[status..name].aff, true)
-            lifevision.add(actions[status..name.."_aff"].p, nil, stats.currenthealth)
+            lifevision.add(actions[status..name..'_aff'].p, nil, stats.currenthealth)
           end
 
           tempLineTrigger(1,1, [[
@@ -3846,7 +3846,7 @@ for _,name in ipairs({"rightarm", "leftarm", "leftleg", "rightleg"}) do
           -- if this is an all-in-one combo, don't queue up the hits
           if all_in_one_tekura() then
             svo.checkaction(svo.dict[status..name].aff, true)
-            lifevision.add(actions[status..name.."_aff"].p, nil, stats.currenthealth)
+            lifevision.add(actions[status..name..'_aff'].p, nil, stats.currenthealth)
 
             -- clear a delayed break if there was one
             if sk.delaying_break then
@@ -3877,17 +3877,17 @@ for _,name in ipairs({"rightarm", "leftarm", "leftleg", "rightleg"}) do
           end
         else
           svo.checkaction(svo.dict[status..name].aff, true)
-          lifevision.add(actions[status..name.."_aff"].p, nil, stats.currenthealth)
+          lifevision.add(actions[status..name..'_aff'].p, nil, stats.currenthealth)
         end
       end
     end
   end
 end
 
-for _, name in ipairs({"serioustrauma", "mildtrauma", "mildconcussion", "seriousconcussion"}) do
-  valid["proper_"..name] = function ()
+for _, name in ipairs({'serioustrauma', 'mildtrauma', 'mildconcussion', 'seriousconcussion'}) do
+  valid['proper_'..name] = function ()
     svo.checkaction(svo.dict[name].aff, true)
-    lifevision.add(actions[name.."_aff"].p, nil, stats.currenthealth)
+    lifevision.add(actions[name..'_aff'].p, nil, stats.currenthealth)
     tempLineTrigger(1,1, [[
       if line == "Your shield completely absorbs the damage." then
         svo.valid.simple]]..name..[[()
@@ -3902,9 +3902,9 @@ valid.generic_burn = function (number)
   svo.checkaction(svo.dict.ablaze.gone, true)
 
   if lifevision.l.ablaze_gone then
-    lifevision.add(actions.ablaze_gone.p, "generic_reducelevel", (number or 1) +(lifevision.l.ablaze_gone.arg or 1))
+    lifevision.add(actions.ablaze_gone.p, 'generic_reducelevel', (number or 1) +(lifevision.l.ablaze_gone.arg or 1))
   else
-    lifevision.add(actions.ablaze_gone.p, "generic_reducelevel", (number or 1))
+    lifevision.add(actions.ablaze_gone.p, 'generic_reducelevel', (number or 1))
   end
 end
 
@@ -3913,7 +3913,7 @@ valid.low_willpower = sk.checkwillpower
 if svo.haveskillset('healing') then
   sk.check_emptyhealingheal = function ()
     if sk.currenthealinghealcount+1 == getLineCount() then
-      lifevision.add(actions.usehealing_misc.p, "empty")
+      lifevision.add(actions.usehealing_misc.p, 'empty')
     else
       lifevision.add(actions.usehealing_misc.p)
     end
@@ -3933,7 +3933,7 @@ if svo.haveskillset('healing') then
 
   valid.emptyheal = function ()
     if actions.usehealing_misc then
-      lifevision.add(actions.usehealing_misc.p, "empty")
+      lifevision.add(actions.usehealing_misc.p, 'empty')
     end
   end
 
@@ -3941,7 +3941,7 @@ if svo.haveskillset('healing') then
     svo.checkaction(svo.dict.usehealing.misc)
     if actions.usehealing_misc then
       defs.lost_insomnia()
-      lifevision.add(actions.usehealing_misc.p, "empty")
+      lifevision.add(actions.usehealing_misc.p, 'empty')
     end
   end
 
@@ -3956,14 +3956,14 @@ if svo.haveskillset('healing') then
   valid.nohealbalance = function ()
     svo.checkaction(svo.dict.usehealing.misc)
     if actions.usehealing_misc then
-      lifevision.add(actions.usehealing_misc.p, "nobalance")
+      lifevision.add(actions.usehealing_misc.p, 'nobalance')
     end
   end
 
   valid.bedevilheal = function ()
     svo.checkaction(svo.dict.usehealing.misc)
     if actions.usehealing_misc then
-      lifevision.add(actions.usehealing_misc.p, "bedevilheal")
+      lifevision.add(actions.usehealing_misc.p, 'bedevilheal')
     end
   end
 else
@@ -3976,7 +3976,7 @@ end
 if svo.haveskillset('chivalry') then
   sk.check_emptyrage = function ()
     if sk.currentragecount+1 == getLineCount() then
-      lifevision.add(actions.rage_misc.p, "empty")
+      lifevision.add(actions.rage_misc.p, 'empty')
     else
       lifevision.add(actions.rage_misc.p)
     end
@@ -4029,12 +4029,12 @@ end
 
 function svo.valid.sylvan_lacerate1()
   svo.checkaction(svo.dict.slashedthroat.aff, true)
-  lifevision.add(actions.slashedthroat_aff.p, "sylvanhit", stats.currenthealth)
+  lifevision.add(actions.slashedthroat_aff.p, 'sylvanhit', stats.currenthealth)
 end
 
 function svo.valid.sylvan_lacerate2()
   svo.checkaction(svo.dict.laceratedthroat.aff, true)
-  lifevision.add(actions.laceratedthroat_aff.p, "sylvanhit", stats.currenthealth)
+  lifevision.add(actions.laceratedthroat_aff.p, 'sylvanhit', stats.currenthealth)
 end
 
 function svo.connected()
@@ -4044,9 +4044,9 @@ end
 function svo.valid.stripped_caloric()
   svo.checkaction(svo.dict.caloric.gone, true)
   if actions.unknownany_aff then
-    lifevision.add(actions.caloric_gone.p, nil, "unknownany")
+    lifevision.add(actions.caloric_gone.p, nil, 'unknownany')
   elseif actions.unknownmental_aff then
-    lifevision.add(actions.caloric_gone.p, nil, "unknownmental")
+    lifevision.add(actions.caloric_gone.p, nil, 'unknownmental')
   else
     lifevision.add(actions.caloric_gone.p)
   end
@@ -4055,9 +4055,9 @@ end
 function svo.valid.stripped_insomnia()
   svo.checkaction(svo.dict.insomnia.gone, true)
   if actions.unknownany_aff then
-    lifevision.add(actions.insomnia_gone.p, nil, "unknownany")
+    lifevision.add(actions.insomnia_gone.p, nil, 'unknownany')
   elseif actions.unknownmental_aff then
-    lifevision.add(actions.insomnia_gone.p, nil, "unknownmental")
+    lifevision.add(actions.insomnia_gone.p, nil, 'unknownmental')
   else
     lifevision.add(actions.insomnia_gone.p)
   end
@@ -4065,7 +4065,7 @@ end
 
 if svo.haveskillset('elementalism') or svo.haveskillset('healing') then
   function svo.valid.lacking_channels()
-    if svo.usingbal("physical") then
+    if svo.usingbal('physical') then
       defs.lost_simultaneity()
     end
   end
@@ -4087,12 +4087,12 @@ function svo.valid.aeon_card()
   -- account for lag between shuffle and throw, try and check for aeon
   tempTimer(0.2, function()
     svo.checkaction(svo.dict.checkslows.aff, true)
-    lifevision.add(actions.checkslows_aff.p, nil, "aeon")
+    lifevision.add(actions.checkslows_aff.p, nil, 'aeon')
   end)
 
   tempTimer(0.7, function()
     svo.checkaction(svo.dict.checkslows.aff, true)
-    lifevision.add(actions.checkslows_aff.p, nil, "aeon")
+    lifevision.add(actions.checkslows_aff.p, nil, 'aeon')
   end)
 end
 
@@ -4104,7 +4104,7 @@ function svo.valid.lust_card()
 
   -- account for lag between shuffle and throw, try and check for aeon
   tempTimer(0.2+getNetworkLatency(), function()
-    if not sys.sync then svo.echof("Checking allies for potential lust...") send("allies", conf.commandecho) end
+    if not sys.sync then svo.echof("Checking allies for potential lust...") send('allies', conf.commandecho) end
   end)
 
   svo.dict.blackout.check_lust = true
@@ -4115,13 +4115,13 @@ function svo.defs.cant_empower()
     local off = {}
 
     if defkeepup[defs.mode].empower then
-      svo.defs.keepup("empower", false)
-      off[#off+1] = "keepup"
+      svo.defs.keepup('empower', false)
+      off[#off+1] = 'keepup'
     end
 
     if defdefup[defs.mode].empower then
-      svo.defs.defup("empower", false)
-      off[#off+1] = "defup"
+      svo.defs.defup('empower', false)
+      off[#off+1] = 'defup'
     end
 
     echo"\n" svo.echof("Seems that you can't empower yet - so I took it off %s for you.", table.concat(off, ", "))
@@ -4129,15 +4129,15 @@ function svo.defs.cant_empower()
 end
 
 function svo.ignore_snake_bite()
-  if not svo.find_until_last_paragraph("You scream out in agony as a vicious venom tears through your body.", "exact")
-    and not svo.find_until_last_paragraph("You gasp as a terrible aching strikes all your limbs.", "exact")
+  if not svo.find_until_last_paragraph("You scream out in agony as a vicious venom tears through your body.", 'exact')
+    and not svo.find_until_last_paragraph("You gasp as a terrible aching strikes all your limbs.", 'exact')
    then svo.ignore_illusion("Ignored the single-aff bite (vconfig ignoresinglebites is on)", true) return end
 end
 
 function svo.valid.stop_wielding()
   svo.checkaction(svo.dict.rewield.physical)
   if actions.rewield_physical then
-    lifevision.add(actions.rewield_physical.p, "clear")
+    lifevision.add(actions.rewield_physical.p, 'clear')
   end
 end
 
@@ -4145,12 +4145,12 @@ function svo.valid.reflection_cancelled()
   if conf.aillusion and svo.paragraph_length == 1 and not conf.batch then return end
 
   for _, action in pairs(lifevision.l:keys()) do
-    if action:find("_aff", 1, true) then
+    if action:find('_aff', 1, true) then
       svo.killaction(svo.dict[action:match("(%w+)_")].aff)
 
       -- typically, you'd only have one aff per prompt - so no need to complicate by optimizing
       selectCurrentLine()
-      fg("MediumSlateBlue")
+      fg('MediumSlateBlue')
       deselect()
       resetFormat()
     end
@@ -4165,19 +4165,19 @@ end
 
 function svo.valid.retardation_gone()
   svo.checkaction(svo.dict.retardation.gone, true)
-  lifevision.add(actions["retardation_gone"].p)
+  lifevision.add(actions['retardation_gone'].p)
 
   -- re-check to make sure it's true
   if conf.aillusion then
     svo.checkaction(svo.dict.checkslows.aff, true)
-    lifevision.add(actions.checkslows_aff.p, nil, "retardation")
+    lifevision.add(actions.checkslows_aff.p, nil, 'retardation')
   end
 end
 
 function svo.valid.soa()
   if not conf.aillusion then return end
 
-  if svo.paragraph_length == 2 and (svo.find_until_last_paragraph("greatly damaged from the beating", "substring") or svo.find_until_last_paragraph("has been mutilated beyond repair by ordinary means", "substring")) then
+  if svo.paragraph_length == 2 and (svo.find_until_last_paragraph("greatly damaged from the beating", 'substring') or svo.find_until_last_paragraph("has been mutilated beyond repair by ordinary means", 'substring')) then
     svo.ignore_illusion("This looks pretty fake - can't get a limb-break and an SoA hit without anyone poking it", true)
   end
 end
@@ -4206,7 +4206,7 @@ function svo.valid.chaosrays()
   if not conf.aillusion then return end
 
   -- first and easiest case: you got hit by it directly, nobody died and bugged the game out
-  if svo.find_until_last_paragraph("Seven rays of different coloured light spring out from", "substring") then return end
+  if svo.find_until_last_paragraph("Seven rays of different coloured light spring out from", 'substring') then return end
 
   -- second, more difficult case - somebody died, go back until the previous prompt, see if anyone else died too
   if svo.paragraph_length == 1 then
@@ -4243,7 +4243,7 @@ end
 function svo.valid.dcurse_hit(aff)
   if conf.aillusion and not sk.dcurse_start then return end
 
-  (valid["proper_"..aff] or valid["simple"..aff])()
+  (valid['proper_'..aff] or valid['simple'..aff])()
 end
 
 function svo.valid.broken_legs()
@@ -4263,13 +4263,13 @@ valid.remove_unknownmental = function (affliction)
   if affs[affliction] then return end
 
   svo.checkaction(svo.dict.unknownmental.gone, true)
-  lifevision.add(actions.unknownmental_gone.p, "lost_level")
+  lifevision.add(actions.unknownmental_gone.p, 'lost_level')
 end
 valid.remove_unknownany = function (affliction)
   if affs[affliction] then return end
 
   svo.checkaction(svo.dict.unknownany.gone, true)
-  lifevision.add(actions.unknownany_gone.p, "lost_level")
+  lifevision.add(actions.unknownany_gone.p, 'lost_level')
 end
 
 function svo.valid.loki()
@@ -4289,12 +4289,12 @@ it came, but you feel suddenly lightheaded. (i)
 -- Clumsiness to Shyness - Lethargy to Recklessness - Haemophilia to Claustrophobia - Health Leech to Agoraphobia - Sensitivity to Paranoia - Darkshade to Confusion
 function svo.valid.pyradius()
   local affmap = {
-    ["clumsiness"]  = "shyness",
-    ["darkshade"]   = "confusion",
-    ["haemophilia"] = "claustrophobia",
-    ["healthleech"] = "agoraphobia",
-    ["lethargy"]    = "recklessness",
-    ["sensitivity"] = "paranoia",
+    ['clumsiness']  = 'shyness',
+    ['darkshade']   = 'confusion',
+    ['haemophilia'] = 'claustrophobia',
+    ['healthleech'] = 'agoraphobia',
+    ['lethargy']    = 'recklessness',
+    ['sensitivity'] = 'paranoia',
   }
 
   local cures = sk.getuntilprompt()
@@ -4315,7 +4315,7 @@ function svo.valid.pyradius()
     for _, action in pairs(lifevision.l:keys()) do
       local aff = action:match("^(%w+)")
       if affmap[aff] then
-        (valid["proper_"..affmap[aff]] or valid["simple"..affmap[aff]])()
+        (valid['proper_'..affmap[aff]] or valid['simple'..affmap[aff]])()
       end
     end
   end)
@@ -4327,12 +4327,12 @@ end
 if svo.haveskillset('healing') then
 function svo.valid.usedhealingbalance()
   svo.checkaction(svo.dict.stolebalance.happened, true)
-  lifevision.add(actions.stolebalance_happened.p, nil, "healing")
+  lifevision.add(actions.stolebalance_happened.p, nil, 'healing')
 end
 
 function svo.valid.gothealingbalance()
   svo.checkaction(svo.dict.gotbalance.happened, true)
-  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = "healing" -- hack to allow multiple balances at once
+  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'healing' -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
 end
@@ -4354,13 +4354,13 @@ end
 function svo.valid.noshruggingbalance()
   svo.checkaction(svo.dict.shrugging.physical)
   if actions.shrugging_physical then
-    lifevision.add(actions.shrugging_physical.p, "offbal")
+    lifevision.add(actions.shrugging_physical.p, 'offbal')
   end
 end
 
 function svo.valid.gotshruggingbalance()
   svo.checkaction(svo.dict.gotbalance.happened, true)
-  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = "shrugging" -- hack to allow multiple balances at once
+  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'shrugging' -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
 end
@@ -4368,12 +4368,12 @@ end
 if svo.haveskillset('voicecraft') then
 function svo.valid.usedvoicebalance()
   svo.checkaction(svo.dict.stolebalance.happened, true)
-  lifevision.add(actions.stolebalance_happened.p, nil, "voice")
+  lifevision.add(actions.stolebalance_happened.p, nil, 'voice')
 end
 
 function svo.valid.gotvoicebalance()
   svo.checkaction(svo.dict.gotbalance.happened, true)
-  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = "voice" -- hack to allow multiple balances at once
+  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'voice' -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
 end
@@ -4381,19 +4381,19 @@ end
 if svo.haveskillset('terminus') then
 function svo.valid.usedwordbalance()
   svo.checkaction(svo.dict.stolebalance.happened, true)
-  lifevision.add(actions.stolebalance_happened.p, nil, "word")
+  lifevision.add(actions.stolebalance_happened.p, nil, 'word')
 end
 
 function svo.valid.gotwordbalance()
   svo.checkaction(svo.dict.gotbalance.happened, true)
-  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = "word" -- hack to allow multiple balances at once
+  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'word' -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
 end
 
 function svo.valid.proper_hamstring()
   svo.checkaction(svo.dict.hamstring.aff, true)
-  lifevision.add(actions["hamstring_aff"].p, "renew")
+  lifevision.add(actions['hamstring_aff'].p, 'renew')
 end
 
 function svo.valid.alreadyprone()
@@ -4405,7 +4405,7 @@ end
 function svo.valid.negation_gem()
   if not conf.aillusion then
     me.manualdefcheck = true
-    defences.lost("shield")
+    defences.lost('shield')
   else
     svo.prompttrigger("check negation gem", function()
       -- in cases where classes have +con/health adjusting buffs, test the line for a max health drop
@@ -4416,7 +4416,7 @@ end
 
 function svo.valid.meta_glare()
   svo.prompttrigger("check for stupidity or impatience", function()
-    if svo.find_until_last_paragraph("You shuffle your feet noisily, suddenly bored.", "exact") then
+    if svo.find_until_last_paragraph("You shuffle your feet noisily, suddenly bored.", 'exact') then
       svo.addaffdict(svo.dict.impatience)
     else
       svo.addaffdict(svo.dict.stupidity)
@@ -4447,7 +4447,7 @@ function svo.valid.skirmish_drag()
   local result = svo.checkany(svo.dict.impale.misc, svo.dict.curingimpale.waitingfor)
 
   if not result then return end
-  lifevision.add(actions[result.name].p, "dragged")
+  lifevision.add(actions[result.name].p, 'dragged')
 end
 
 function svo.valid.cured_burn_health()
@@ -4468,14 +4468,14 @@ function svo.valid.cured_burns_health()
 
   svo.apply_cure = true
   if actions[result.name] then
-    lifevision.add(actions[result.name].p, "all")
+    lifevision.add(actions[result.name].p, 'all')
   end
 end
 
 function svo.valid.tree_cured_burn()
   svo.checkaction(svo.dict.touchtree.misc)
   if actions.touchtree_misc then
-    lifevision.add(actions.touchtree_misc.p, nil, "burn")
+    lifevision.add(actions.touchtree_misc.p, nil, 'burn')
     tree_cure = true
   end
 end
@@ -4488,8 +4488,8 @@ function svo.valid.tree_cured_burns()
   end
 end
 
-for _, aff in ipairs({"skullfractures", "crackedribs", "wristfractures", "torntendons"}) do
-  valid["tree_cure_"..aff] = function()
+for _, aff in ipairs({'skullfractures', 'crackedribs', 'wristfractures', 'torntendons'}) do
+  valid['tree_cure_'..aff] = function()
     svo.checkaction(svo.dict.touchtree.misc)
     if actions.touchtree_misc then
       tree_cure = true
@@ -4497,7 +4497,7 @@ for _, aff in ipairs({"skullfractures", "crackedribs", "wristfractures", "tornte
     end
   end
 
-  valid["tree_cured_"..aff] = function()
+  valid['tree_cured_'..aff] = function()
     svo.checkaction(svo.dict.touchtree.misc)
     if actions.touchtree_misc then
       lifevision.add(actions.touchtree_misc.p, nil, aff.." cured")
@@ -4505,25 +4505,25 @@ for _, aff in ipairs({"skullfractures", "crackedribs", "wristfractures", "tornte
     end
   end
 
-  valid["generic_cure_"..aff] = function()
+  valid['generic_cure_'..aff] = function()
     svo.checkaction(svo.dict[aff].gone, true)
-    if lifevision.l[aff.."_gone"] then
-      lifevision.add(actions[aff.."_gone"].p, "general_cure", 1 + (lifevision.l[aff.."_gone"].arg or 1))
+    if lifevision.l[aff..'_gone'] then
+      lifevision.add(actions[aff..'_gone'].p, 'general_cure', 1 + (lifevision.l[aff..'_gone'].arg or 1))
     else
-      lifevision.add(actions[aff.."_gone"].p, "general_cure", 1)
+      lifevision.add(actions[aff..'_gone'].p, 'general_cure', 1)
     end
   end
 
-  valid["generic_cured_"..aff] = function()
+  valid['generic_cured_'..aff] = function()
     svo.checkaction(svo.dict[aff].gone, true)
-    lifevision.add(actions[aff.."_gone"].p, "general_cured")
+    lifevision.add(actions[aff..'_gone'].p, 'general_cured')
   end
 end
 
 function svo.valid.expend_torso()
   svo.checkaction(svo.dict.waitingonrebounding.waitingfor)
   if actions.waitingonrebounding_waitingfor then
-    lifevision.add(actions.waitingonrebounding_waitingfor.p, "expend")
+    lifevision.add(actions.waitingonrebounding_waitingfor.p, 'expend')
   end
 end
 
@@ -4543,13 +4543,13 @@ function svo.valid.devastate_arms_mangle()
   lifevision.add(actions.wristfractures_gone.p)
 
   if affs.mangledrightarm then
-    svo.rmaff("mangledrightarm")
+    svo.rmaff('mangledrightarm')
     valid.simplemutilatedrightarm()
   else
     valid.simplemangledrightarm()
   end
   if affs.mangledleftarm then
-    svo.rmaff("mangledleftarm")
+    svo.rmaff('mangledleftarm')
     valid.simplemutilatedleftarm()
   else
     valid.simplemangledleftarm()
@@ -4582,13 +4582,13 @@ function svo.valid.devastate_legs_mangle()
 
 
   if affs.mangledrightleg then
-    svo.rmaff("mangledrightleg")
+    svo.rmaff('mangledrightleg')
     valid.simplemutilatedrightleg()
   else
     valid.simplemangledrightleg()
   end
   if affs.mangledleftleg then
-    svo.rmaff("mangledleftleg")
+    svo.rmaff('mangledleftleg')
     valid.simplemutilatedleftleg()
   else
     valid.simplemangledleftleg()
@@ -4616,7 +4616,7 @@ end
 
 function svo.valid.riding_alreadyon()
   svo.checkaction(svo.dict.riding.physical, true)
-  lifevision.add(actions.riding_physical.p, "alreadyon")
+  lifevision.add(actions.riding_physical.p, 'alreadyon')
 end
 
 function svo.valid.recoverable_attack()
@@ -4639,7 +4639,7 @@ end
 
 function svo.valid.skirmish_lacerate()
   svo.prompttrigger("check lacerate rebounding", function()
-    if not svo.find_until_last_paragraph("The attack rebounds back onto", "substring") then
+    if not svo.find_until_last_paragraph("The attack rebounds back onto", 'substring') then
       valid.simplehaemophilia()
     end
   end)
@@ -4647,7 +4647,7 @@ end
 
 function svo.valid.skirmish_gouge()
   svo.prompttrigger("check gouge deafness", function()
-    if not svo.find_until_last_paragraph("Your hearing is suddenly restored.", "exact") then
+    if not svo.find_until_last_paragraph("Your hearing is suddenly restored.", 'exact') then
       valid.simplesensitivity()
     end
   end)

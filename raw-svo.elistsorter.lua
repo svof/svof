@@ -26,8 +26,8 @@ local conf = svo.conf
 
 function svo.es_capture()
   -- reset only what we're actually capturing
-  if line:find("Venom", 1, true) then
-    svo.es_capturing = "venoms"
+  if line:find('Venom', 1, true) then
+    svo.es_capturing = 'venoms'
 
     for vial, _ in pairs(svo.es_potions.venom) do
       svo.es_potions.venom[vial] = {sips = 0, vials = 0, decays = 0}
@@ -44,10 +44,10 @@ function svo.es_capture()
       svo.es_vials[wipevenom[i]] = nil
     end
   else
-    svo.es_capturing = "potions"
+    svo.es_capturing = 'potions'
 
     for catn,cat in pairs(svo.es_potions) do
-      if catn ~= "venom" then
+      if catn ~= 'venom' then
         for vial, _ in pairs(cat) do
           cat[vial] = {sips = 0, vials = 0, decays = 0}
         end
@@ -67,17 +67,17 @@ function svo.es_capture()
   end
 end
 
-svo.config.setoption("elist",
+svo.config.setoption('elist',
 {
-  type = "custom",
+  type = 'custom',
   vconfig2string = true,
   onshow = function (defaultcolour)
-    fg("gold")
+    fg('gold')
     echoLink("es:", "", "svo Elist Sorter", true)
     -- change desired amounts; considering vials about to decay at 5 or less months
-    fg("a_cyan") echoLink(" set vial amounts", "svo.config.set'elist'", "Click to change the minimum amounts of vials you'd like to have", true)
+    fg('a_cyan') echoLink(" set vial amounts", "svo.config.set'elist'", "Click to change the minimum amounts of vials you'd like to have", true)
     fg(defaultcolour) echo("; considering vials about to decay at")
-    fg("a_cyan") echoLink(" "..(conf.decaytime or '?'), "printCmdLine'vconfig decaytime '", "Click to change the amount of months at which a vial will be considered for throwing away", true)
+    fg('a_cyan') echoLink(" "..(conf.decaytime or '?'), "printCmdLine'vconfig decaytime '", "Click to change the amount of months at which a vial will be considered for throwing away", true)
     fg(defaultcolour)
     echo(" month"..(conf.decaytime == 1 and '' or 's')..".\n")
 
@@ -85,17 +85,17 @@ svo.config.setoption("elist",
   onmenu = function ()
     -- sort into categories
     local t = {}
-    for k,_ in pairs(svo.es_categories) do t[svo.es_categories[k] or "unknown"] = t[svo.es_categories[k] or "unknown"] or {}; t[svo.es_categories[k] or "unknown"][#t[svo.es_categories[k] or "unknown"]+1] = k end
+    for k,_ in pairs(svo.es_categories) do t[svo.es_categories[k] or 'unknown'] = t[svo.es_categories[k] or 'unknown'] or {}; t[svo.es_categories[k] or 'unknown'][#t[svo.es_categories[k] or 'unknown']+1] = k end
 
     svo.echof("Set the desired amount for each potion by clicking on the number:")
     for catn, catt in pairs(t) do
-      svo.echof("%s%s:", catn:title():sub(1, -2), (catn:sub(-1) == "y" and "ies" or catn:sub(-1).."s"))
+      svo.echof("%s%s:", catn:title():sub(1, -2), (catn:sub(-1) == 'y' and 'ies' or catn:sub(-1)..'s'))
 
       for _, potion in pairs(catt) do
         local amount = (svo.es_knownstuff[potion] or 0)
         echo(string.format("  %30s ", potion))
-        fg("blue")
-        echoLink(" "..amount.." ", 'printCmdLine"vconfig setpotion '..(svo.es_shortnamesr[potion] and svo.es_shortnamesr[potion] or "unknown").. ' '..amount..'"', "Change how many vials of "..potion.." you'd like to have", true)
+        fg('blue')
+        echoLink(" "..amount.." ", 'printCmdLine"vconfig setpotion '..(svo.es_shortnamesr[potion] and svo.es_shortnamesr[potion] or 'unknown').. ' '..amount..'"', "Change how many vials of "..potion.." you'd like to have", true)
         resetFormat()
         echo"\n"
       end
@@ -104,43 +104,43 @@ svo.config.setoption("elist",
 })
 
 conf.decaytime = conf.decaytime or 3
-svo.config.setoption("decaytime",
+svo.config.setoption('decaytime',
 {
-  type = "number",
+  type = 'number',
   vconfig2string = true,
   onset = function () svo.echof("Will consider vials available for disposal when they decay time is at or less than %d months.", conf.decaytime) end,
   onshow = function (defaultcolour)
-    fg("gold")
+    fg('gold')
     echoLink("es:", "", "svo Elist Sorter", true)
 
     -- obfuscated vials: store vials at less than %d sips into %container
     fg(defaultcolour) echo(" obfuscated vials: store at less than")
-    fg("a_cyan") echoLink(" "..(conf.obfsips or '?'), "printCmdLine'vconfig obfsips '", "Click to change the # of sips below which obfuscated vials will be stored in a container", true)
+    fg('a_cyan') echoLink(" "..(conf.obfsips or '?'), "printCmdLine'vconfig obfsips '", "Click to change the # of sips below which obfuscated vials will be stored in a container", true)
     fg(defaultcolour)
     echo(" sip"..(conf.obfuscated == 1 and '' or 's').." into ")
-    fg("a_cyan") echoLink((conf.obfcontainer or '?'), "printCmdLine'vconfig obfcontainer '", "Click to change container into which obfuscated vials will be stored", true)
+    fg('a_cyan') echoLink((conf.obfcontainer or '?'), "printCmdLine'vconfig obfcontainer '", "Click to change container into which obfuscated vials will be stored", true)
     echo(".\n")
   end
 })
 
 conf.obfsips = conf.obfsips or 20
-svo.config.setoption("obfsips",
+svo.config.setoption('obfsips',
 {
-  type = "number",
+  type = 'number',
   onset = function () svo.echof("Will put obfuscated vials away into %s when they're at %d or below sips.", tostring(conf.obfcontainer), conf.obfsips) end
 })
 
 
-conf.obfcontainer = conf.obfcontainer or "pack"
-svo.config.setoption("obfcontainer",
+conf.obfcontainer = conf.obfcontainer or 'pack'
+svo.config.setoption('obfcontainer',
 {
-  type = "string",
+  type = 'string',
   onset = function () svo.echof("Will put obfuscated vials away into %s.", tostring(conf.obfcontainer)) end
 })
 
-svo.config.setoption("setpotion",
+svo.config.setoption('setpotion',
 {
-  type = "string",
+  type = 'string',
   onset = function()
     if not conf.setpotion:find("^.+ %d+$") then svo.echof("What amount do you want to set?") return end
 
@@ -164,7 +164,7 @@ function svo.es_appendrequest(whatfor)
   local t = {}
   for _, catt in pairs(svo.es_potions) do
     for potn, pott in pairs(catt) do
-      if ((whatfor ~= "venoms" and not potn:find("the venom", 1, true)) or (whatfor == "venoms" and potn:find("the venom", 1, true))) and svo.es_knownstuff[potn] and pott.vials < svo.es_knownstuff[potn] then
+      if ((whatfor ~= 'venoms' and not potn:find("the venom", 1, true)) or (whatfor == 'venoms' and potn:find("the venom", 1, true))) and svo.es_knownstuff[potn] and pott.vials < svo.es_knownstuff[potn] then
         t[#t+1] = (svo.es_knownstuff[potn] - pott.vials) .. " ".. (svo.es_shortnamesr[potn] and svo.es_shortnamesr[potn] or potn)
       end
     end
@@ -178,7 +178,7 @@ function svo.es_refillfromkeg()
   local t = {}
   for _, catt in pairs(svo.es_potions) do
     for potn, pott in pairs(catt) do
-      if svo.es_knownstuff[potn] and pott.vials < svo.es_knownstuff[potn] and (svo.es_shortnamesr[potn] and svo.es_shortnamesr[potn] or potn) ~= "empty" then
+      if svo.es_knownstuff[potn] and pott.vials < svo.es_knownstuff[potn] and (svo.es_shortnamesr[potn] and svo.es_shortnamesr[potn] or potn) ~= 'empty' then
         for _ = 1, svo.es_knownstuff[potn] - pott.vials do
           t[#t+1] = string.format("refill empty from %s", (svo.es_shortnamesr[potn] and svo.es_shortnamesr[potn] or potn))
         end
@@ -203,7 +203,7 @@ function svo.es_captured(vlist)
     end
 
     for catn, catt in pairs(svo.es_potions) do
-      svo.echof("%s%s:", catn:title():sub(1, -2), (catn:sub(-1) == "y" and "ies" or catn:sub(-1).."s"))
+      svo.echof("%s%s:", catn:title():sub(1, -2), (catn:sub(-1) == 'y' and 'ies' or catn:sub(-1)..'s'))
 
       for potn, pott in pairs(catt) do
         -- don't show vials that we have 0 of and want 0 of
@@ -243,10 +243,10 @@ function svo.es_dodisposing(vlist)
 
     -- one pass is enough! If we don't completely dispose of it, then that's alright
     for otherid, t in pairs(svo.es_vials) do
-      if otherid ~= id and (t.potion == svo.es_vials[id].potion or t.potion == "empty") and t.sips < (type(t.months) == "number" and 200 or 240) and
-        (type(t.months) ~= "number" or t.months > conf.decaytime) then
+      if otherid ~= id and (t.potion == svo.es_vials[id].potion or t.potion == 'empty') and t.sips < (type(t.months) == 'number' and 200 or 240) and
+        (type(t.months) ~= 'number' or t.months > conf.decaytime) then
 
-        local deltacapacity = (type(t.months) == "number" and 200 or 240) - t.sips -- this is how much we can fill it up by
+        local deltacapacity = (type(t.months) == 'number' and 200 or 240) - t.sips -- this is how much we can fill it up by
         svo.echof("Can fill vial%d with %d more sips.", otherid, deltacapacity)
 
         local fillingwith = (svo.es_vials[id].sips < deltacapacity and svo.es_vials[id].sips or deltacapacity)
@@ -260,7 +260,7 @@ function svo.es_dodisposing(vlist)
         svo.es_vials[id].sips = svo.es_vials[id].sips - fillingwith
         svo.echof("Decayable vial%s is now at %d sips.", id, svo.es_vials[id].sips)
 
-        if t.potion == "empty" then t.potion = svo.es_vials[id].potion; svo.echof("Poured into empty now has %s potion", tostring(t.potion)) end
+        if t.potion == 'empty' then t.potion = svo.es_vials[id].potion; svo.echof("Poured into empty now has %s potion", tostring(t.potion)) end
         if svo.es_vials[id].sips <= 0 then svo.echof("Vial %s fully emptied.\n--", tostring(id)) return end
       end
     end
@@ -270,9 +270,9 @@ function svo.es_dodisposing(vlist)
   echo'\n'
   local haddecays
   for id, t in pairs(svo.es_vials) do
-    if type(t.months) == "number" and t.months <= conf.decaytime then
+    if type(t.months) == 'number' and t.months <= conf.decaytime then
       emptyvial(id)
-      svo.sendc(svo.es_disposecmd:gsub("vial", id), false)
+      svo.sendc(svo.es_disposecmd:gsub('vial', id), false)
       haddecays = true
     end
   end
@@ -288,15 +288,15 @@ function svo.es_dodisposing(vlist)
 end
 
 function svo.es_dispose(cmd)
-  if not cmd:find("vial", 1, true) then svo.echof("Please include the word 'vial' in the command. Thanks!") return end
+  if not cmd:find('vial', 1, true) then svo.echof("Please include the word 'vial' in the command. Thanks!") return end
   if not next(svo.es_vials) then svo.echof("Don't know of any vials you have - check 'elist' please.") return end
 
   svo.signals.elistcaptured:connect(svo.es_dodisposing)
   svo.es_disposecmd = cmd
   -- refresh our vials data, in case new vials were bought
   send("config pagelength 250", false)
-  send("vlist", false)
-  send("elist", false)
+  send('vlist', false)
+  send('elist', false)
 end
 
 svo.signals.saveconfig:connect(function () svo.tablesave(getMudletHomeDir() .. "/svo/config/svo.es_knownstuff", svo.es_knownstuff) end)

@@ -106,7 +106,7 @@ svo.protips = {
   "'vshow herbstat' shows what Svof thinks of your herb inventory and updates real-time!",
   "You can do \"vlua svo.protips\" to see all of the svo.protips",
   "The extra Svof's in the Package Manager are OK - those are the addons",
-  [[When you're scripting, you can make Svof do an action for you in the proper way via the svo.doaction("<action>", "<balance>") function - for example svo.doaction("healmana", "sip") will properly sip mana or mentality, depending on the users settings and what they actually have]],
+  [[When you're scripting, you can make Svof do an action for you in the proper way via the svo.doaction("<action>", "<balance>") function - for example svo.doaction('healmana', 'sip') will properly sip mana or mentality, depending on the users settings and what they actually have]],
   [[vconfig lag 4 - for those times when you're on a hawaiian mountainside catching DSL wifi through a rain catchment tank during a heavy jungle rain]],
   "You can look at vshow curelist for a forestal <-> alchemist equivalents table, and configure prefercustom curemethod from right there",
   "vlua can work as a calculator - try it, do vlua 2+2",

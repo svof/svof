@@ -20,7 +20,7 @@ function svo.check_sp_satisfied()
        sys.sp_satisfied = false; return
       end
     end
-  elseif type(sp_config.parry) == "string" and sp_config.parry == "manual" then
+  elseif type(sp_config.parry) == 'string' and sp_config.parry == 'manual' then
     -- check if we need to unparry in manual
     for limb, status in pairs(sps.parry_currently) do
       if status ~= sp_config.parry_shouldbe[limb] then
@@ -75,7 +75,7 @@ sps.install = {
           resetFormat()
           deselect()
       for name, _ in pairs(sp_limbs) do
-        moveCursor("main",  1, getLineNumber()+2)
+        moveCursor('main',  1, getLineNumber()+2)
         if selectString(name, 1) ~= -1 then
           setLink('svo.sp.nextprio ("' .. name .. '", true)', 'Set ' .. name .. ' as the next limb in importance.')
           resetFormat()
@@ -226,7 +226,7 @@ function sp.setparrylevel(limb, amount, echoback)
   sp_config.parry_actionlevel[limb] = tonumber(amount)
 
   if echoback then
-    svo.echof("Set the %s parry action level to %s", limb, amount and tostring(amount) or "none")
+    svo.echof("Set the %s parry action level to %s", limb, amount and tostring(amount) or 'none')
   end
 
   for limbname,_ in pairs(sp_limbs) do
@@ -240,13 +240,13 @@ function svo.sp_setparry(what, echoback)
   if echoback then sendf = svo.echof else sendf = svo.errorf end
 
   local t = {
-    h = "head",
-    tt = "torso",
+    h = 'head',
+    tt = 'torso',
     rl = "right leg",
     ll = "left leg",
     ra = "right arm",
     la = "left arm",
-    n = "nothing"
+    n = 'nothing'
   }
 
   svo.assert(t[what], "invalid short letter for svo.sp_setparry", sendf)
@@ -269,7 +269,7 @@ sp.show = function ()
   end]]
 
   svo.echof("Limb priorities: %s", table.concat(sp_config.priority, ", "))
-  svo.echof("Parry strategy: %s (currently parrying: %s)", type(sp_config.parry) == "string" and sp_config.parry or "custom function",
+  svo.echof("Parry strategy: %s (currently parrying: %s)", type(sp_config.parry) == 'string' and sp_config.parry or "custom function",
 
   (function ()
     local parrying_list = {}
@@ -284,15 +284,15 @@ svo.sp_checksp = function ()
   -- check parry
   -- see if any priories have been set for strategies that require them
   local prios, priosset = sp_config.priority, true
-  if type(prios) ~= "table" then
+  if type(prios) ~= 'table' then
     priosset = false
   end
 
-  if priosset and sp_config.parry == "full" then
+  if priosset and sp_config.parry == 'full' then
     local alreadyset
     for i = 1, #prios do
       local limb = prios[i]
-      if not alreadyset and type(sp_config.parry_actionlevel[limb]) == "number" and (affs["mangled"..limb] or (limb == "head" and (affs.serioustrauma or affs.mildtrauma)) or (limb == "torso" and (affs.mildconcussion or affs.seriousconcussion))) then
+      if not alreadyset and type(sp_config.parry_actionlevel[limb]) == 'number' and (affs['mangled'..limb] or (limb == 'head' and (affs.serioustrauma or affs.mildtrauma)) or (limb == 'torso' and (affs.mildconcussion or affs.seriousconcussion))) then
         sp_config.parry_shouldbe[limb] = true
         alreadyset = true
       else
@@ -300,7 +300,7 @@ svo.sp_checksp = function ()
       end
     end
 
-  elseif sp_config.parry == "lasthit" then
+  elseif sp_config.parry == 'lasthit' then
     for limb, _ in pairs(sp_config.parry_shouldbe) do
       if limb == me.lasthitlimb then
         sp_config.parry_shouldbe[limb] = true
@@ -311,8 +311,8 @@ svo.sp_checksp = function ()
 
   elseif sp_config.parry == "lasthit opposite limb" then
     local t = {
-      head = "torso",
-      torso = "head",
+      head = 'torso',
+      torso = 'head',
       ["right arm"] = "left arm",
       ["left arm"] = "right arm",
       ["right leg"] = "left leg",
@@ -333,8 +333,8 @@ svo.sp_checksp = function ()
 
   elseif sp_config.parry == "lasthit opposite side" then
     local t = {
-      head = "torso",
-      torso = "head",
+      head = 'torso',
+      torso = 'head',
       ["right arm"] = "right leg",
       ["left arm"] = "left leg",
       ["right leg"] = "right arm",
@@ -353,7 +353,7 @@ svo.sp_checksp = function ()
       end
     end
 
-  elseif type(sp_config.parry) == "function" then
+  elseif type(sp_config.parry) == 'function' then
     local s,m = pcall(sp_config.parry)
     if not s then svo.echof("Your custom parry function had a problem:\n  %s", m) end
   end
@@ -367,7 +367,7 @@ end
 -- check custom parry functions whenever we gain or lose an aff
 -- implemented in another function and not svo.sp_checksp, because of https://github.com/katcipis/luanotify/issues/24
 sps.checkcustomparry = function()
-  if type(sp_config.parry) == "function" then
+  if type(sp_config.parry) == 'function' then
     sp_config.parry()
 
     -- check if we need to adjust our parry

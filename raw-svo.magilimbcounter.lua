@@ -11,7 +11,7 @@ local sk = svo.sk
 svo.ml_version = "1.0"
 
 svo.ml_list = {}
-local limbs = {"head", "torso", "rightarm", "leftarm", "rightleg", "leftleg"}
+local limbs = {'head', 'torso', 'rightarm', 'leftarm', 'rightleg', 'leftleg'}
 local hittable = {}
 svo.ml_prep_at = 4
 svo.ml_break_at = 5
@@ -27,7 +27,7 @@ local function get_other_prepped(t, limbhit)
   end
 
   if #s == 0 then return ""
-  else return string.format(" Their %s %s also prepped.", svo.concatand(s), (#s == 1 and "is" or "are")) end
+  else return string.format(" Their %s %s also prepped.", svo.concatand(s), (#s == 1 and 'is' or 'are')) end
 end
 
 function svo.ml_ignore()
@@ -90,15 +90,15 @@ function svo.ml_reset(whom)
   if whom then whom = string.title(whom) end
 
   local t = {
-    h = "head",
-    t = "torso",
-    rl = "rightleg",
-    ll = "leftleg",
-    ra = "rightarm",
-    la = "leftarm",
+    h = 'head',
+    t = 'torso',
+    rl = 'rightleg',
+    ll = 'leftleg',
+    ra = 'rightarm',
+    la = 'leftarm',
   }
 
-  if whom == "All" then
+  if whom == 'All' then
     svo.ml_list = {}
     svo.echof("Reset everyone's limb status.")
   elseif not whom and svo.lasthit then
@@ -131,14 +131,14 @@ function svo.ml_show()
 
   setFgColor(unpack(svo.getDefaultColorNums))
   for person, limbt in pairs(svo.ml_list) do
-    echo("---"..person.." ") fg("a_darkgrey")
+    echo("---"..person.." ") fg('a_darkgrey')
     echoLink("(reset)", 'svo.ml_reset"'..person..'"', "Reset limb status for "..person, true)
     setFgColor(unpack(svo.getDefaultColorNums))
     echo(string.format(" -- prep at %s -- break at %s --", svo.ml_prep_at, svo.ml_break_at))
     echo(string.rep("-", (52-#person-#tostring(svo.ml_prep_at)-#tostring(svo.ml_break_at))))
     echo"\n|"
     for i = 1, #limbs do
-      if limbt[limbs[i]] >= svo.ml_break_at - 1 then fg("green") end
+      if limbt[limbs[i]] >= svo.ml_break_at - 1 then fg('green') end
       echo(string.format("%14s", (limbt[limbs[i]] >= svo.ml_break_at - 1 and limbs[i].." prep" or limbs[i].. " "..limbt[limbs[i]])))
       if limbt[limbs[i]] >= svo.ml_break_at - 1 then setFgColor(unpack(svo.getDefaultColorNums)) end
       echo"|"

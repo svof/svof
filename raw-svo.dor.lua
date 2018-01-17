@@ -37,13 +37,13 @@ function svo.dofirst(what, echoback, show)
 
   if echoback then svo.echof("Will do \"%s\" first.", tostring(what)) end
   -- spur the queue into doing work right away, unless this came from a trigger - in which case the prompt will make the stuff work anyhow
-  if not debug.traceback():find("Trigger", 1, true) then svo.make_gnomes_work() end
+  if not debug.traceback():find('Trigger', 1, true) then svo.make_gnomes_work() end
   raiseEvent("svo do changed")
 end
 function svo.dofreefirst(what, echoback)
   table.insert(me.dofreequeue, 1, what)
   if echoback then svo.echof("Will do \"%s\" first in dofree.", tostring(what)) end
-  if not debug.traceback():find("Trigger", 1, true) then svo.make_gnomes_work() end
+  if not debug.traceback():find('Trigger', 1, true) then svo.make_gnomes_work() end
   raiseEvent("svo dofree changed")
 end
 
@@ -57,14 +57,14 @@ function svo.doadd(what, echoback, show)
   end
 
   if echoback then svo.echof("Added '%s' to the do queue.", tostring(what)) end
-  if not debug.traceback():find("Trigger", 1, true) then svo.make_gnomes_work() end
+  if not debug.traceback():find('Trigger', 1, true) then svo.make_gnomes_work() end
   raiseEvent("svo do changed")
 end
 
 function svo.doaddfree(what, echoback)
   me.dofreequeue[#me.dofreequeue+1] = what
   if echoback then svo.echof("Added '%s' to the dofree queue.", tostring(me.dofreequeue[#me.dofreequeue])) end
-  if not debug.traceback():find("Trigger", 1, true) then svo.make_gnomes_work() end
+  if not debug.traceback():find('Trigger', 1, true) then svo.make_gnomes_work() end
   raiseEvent("svo dofree changed")
 end
 
@@ -74,20 +74,20 @@ function svo.donext()
     killTimer(sys.actiontimeoutid)
     sys.actiontimeoutid = false
   end
-  if not debug.traceback():find("Trigger", 1, true) then svo.make_gnomes_work() end
+  if not debug.traceback():find('Trigger', 1, true) then svo.make_gnomes_work() end
 end
 
 function svo.dor (what, echoback, show)
-  if not what or what == "off" then
-    if me.doqueue.repeating or what == "off" then
+  if not what or what == 'off' then
+    if me.doqueue.repeating or what == 'off' then
       me.doqueue = {repeating = false}
-      if echoback then svo.echof("Do-Repeat %s.", svo.red("disabled")) end
+      if echoback then svo.echof("Do-Repeat %s.", svo.red('disabled')) end
     else
       me.doqueue.repeating = true
       if echoback and #me.doqueue > 0 then
-        svo.echof("Do-Repeat %s; will repeat the first command (%s) in the queue%s.", svo.green("enabled"), sk.getactiondo(1), (me.dopaused and ", but the do queue is currently paused" or ""))
+        svo.echof("Do-Repeat %s; will repeat the first command (%s) in the queue%s.", svo.green('enabled'), sk.getactiondo(1), (me.dopaused and ", but the do queue is currently paused" or ""))
       elseif echoback then
-        svo.echof("Do-Repeat %s; will repeat the first command (which is nothing right now) in the queue%s.", svo.green("enabled"), (me.dopaused and ", but the do queue is currently paused" or ""))
+        svo.echof("Do-Repeat %s; will repeat the first command (which is nothing right now) in the queue%s.", svo.green('enabled'), (me.dopaused and ", but the do queue is currently paused" or ""))
       end
     end
   else
@@ -98,9 +98,9 @@ function svo.dor (what, echoback, show)
       me.doqueue[1] = {what = what, show = show}
     end
 
-    if echoback then svo.echof("Do-Repeat %s; will repeat %s forever%s.", svo.green("enabled"), sk.getactiondo(1), (me.dopaused and ", but the do queue is currently paused" or "")) end
+    if echoback then svo.echof("Do-Repeat %s; will repeat %s forever%s.", svo.green('enabled'), sk.getactiondo(1), (me.dopaused and ", but the do queue is currently paused" or "")) end
   end
-  if not debug.traceback():find("Trigger", 1, true) then svo.make_gnomes_work() end
+  if not debug.traceback():find('Trigger', 1, true) then svo.make_gnomes_work() end
   raiseEvent("svo do changed")
 end
 
@@ -118,7 +118,7 @@ function sk.check_do()
     action = action.what
   end
 
-  if type(action) == "string" then
+  if type(action) == 'string' then
     for _,w in ipairs(string.split(action, "%$")) do
       if type(show) == 'nil' then
         pcall(expandAlias, w)
@@ -151,7 +151,7 @@ function svo.check_dofree()
   svo.dofreeworking = true
 
   for _, action in ipairs(me.dofreequeue) do
-    if type(action) == "string" then
+    if type(action) == 'string' then
       for _,w in ipairs(string.split(action, "%$")) do
         expandAlias(w, false)
       end
@@ -170,7 +170,7 @@ end
 svo.signals.systemstart:connect(function () svo.addbalanceless("svo check dofree", svo.check_dofree) end)
 
 function svo.undo(what, echoback)
-  if what == "all" then return end
+  if what == 'all' then return end
 
   if #me.doqueue == 0 then
     if echoback then svo.echof("The do queue is empty.") end

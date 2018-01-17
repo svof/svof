@@ -56,7 +56,7 @@ svo.trace = function()
       if exactarealastroom then exactarealastroom = mmp.cleanAreaName(exactarealastroom) end
     end
 
-    svo.cc("%s moved %d room%s to %s%s", svo.tracing, #svo.rooms_to_announce-1, (svo.rooms_to_announce == 2 and "" or "s"), svo.rooms_to_announce[#svo.rooms_to_announce], (exactarealastroom and " in "..exactarealastroom))
+    svo.cc("%s moved %d room%s to %s%s", svo.tracing, #svo.rooms_to_announce-1, (svo.rooms_to_announce == 2 and "" or 's'), svo.rooms_to_announce[#svo.rooms_to_announce], (exactarealastroom and " in "..exactarealastroom))
   -- else just one room in the table - then it is the same room, so ignore
   end
   svo.rooms_to_announce = nil

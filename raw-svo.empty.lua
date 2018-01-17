@@ -10,20 +10,20 @@ local empty = svo.empty
 
 local affs = svo.affs
 
-local madness_affs = {"addiction", "confusion", "dementia", "hallucinations", "hypersomnia", "illness", "impatience",
-"lethargy", "loneliness", "madness", "masochism", "paranoia", "recklessness", "stupidity", "vertigo"}
+local madness_affs = {'addiction', 'confusion', 'dementia', 'hallucinations', 'hypersomnia', 'illness', 'impatience',
+'lethargy', 'loneliness', 'madness', 'masochism', 'paranoia', 'recklessness', 'stupidity', 'vertigo'}
 
 for herbname, herbaffs in pairs({
-  goldenseal = {"dissonance", "impatience", "stupidity", "dizziness", "epilepsy", "shyness", "depression",
-   "shadowmadness"},
-  kelp = {"asthma", "hypochondria", "healthleech", "sensitivity", "clumsiness", "weakness"},
-  lobelia = {"claustrophobia", "recklessness", "agoraphobia", "loneliness", "masochism", "vertigo", "spiritdisrupt",
-  "airdisrupt", "waterdisrupt", "earthdisrupt", "firedisrupt"},
-  ginseng = {"haemophilia", "darkshade", "relapsing", "addiction", "illness", "lethargy"},
-  ash = {"hallucinations", "hypersomnia", "confusion", "paranoia", "dementia"},
-  bellwort = {"generosity", "pacifism", "justice", "inlove", "peace", "retribution", "timeloop"}
+  goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression',
+   'shadowmadness'},
+  kelp = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness'},
+  lobelia = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'spiritdisrupt',
+  'airdisrupt', 'waterdisrupt', 'earthdisrupt', 'firedisrupt'},
+  ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy'},
+  ash = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia'},
+  bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'}
 }) do
-  empty["eat_"..herbname] = function()
+  empty['eat_'..herbname] = function()
     svo.lostbal_herb()
 
     if not affs.madness then
@@ -39,23 +39,23 @@ end
 
 empty.eat_bloodroot = function()
   svo.lostbal_herb()
-  svo.rmaff("paralysis")
+  svo.rmaff('paralysis')
 
-  if not affs.stain then svo.rmaff("slickness") end
+  if not affs.stain then svo.rmaff('slickness') end
 end
 
-empty.degenerateaffs = {"weakness", "clumsiness", "lethargy", "illness", "asthma", "paralysis"}
+empty.degenerateaffs = {'weakness', 'clumsiness', 'lethargy', 'illness', 'asthma', 'paralysis'}
 -- expose publicly
 svo.degenerateaffs = empty.degenerateaffs
 
-empty.deteriorateaffs = {"stupidity", "confusion", "hallucinations", "depression", "shadowmadness", "vertigo",
-"masochism", "agoraphobia", "claustrophobia"}
+empty.deteriorateaffs = {'stupidity', 'confusion', 'hallucinations', 'depression', 'shadowmadness', 'vertigo',
+'masochism', 'agoraphobia', 'claustrophobia'}
 -- expose publicly
 svo.deteriorateaffs = empty.deteriorateaffs
 
-empty.focuscurables = {"claustrophobia", "masochism", "dizziness", "confusion", "stupidity", "generosity",
-"loneliness", "agoraphobia", "recklessness", "epilepsy", "pacifism", "anorexia", "shyness", "vertigo", "unknownmental",
-"airdisrupt", "earthdisrupt", "waterdisrupt", "firedisrupt", "paranoia", "hallucinations", "dementia"}
+empty.focuscurables = {'claustrophobia', 'masochism', 'dizziness', 'confusion', 'stupidity', 'generosity',
+'loneliness', 'agoraphobia', 'recklessness', 'epilepsy', 'pacifism', 'anorexia', 'shyness', 'vertigo', 'unknownmental',
+'airdisrupt', 'earthdisrupt', 'waterdisrupt', 'firedisrupt', 'paranoia', 'hallucinations', 'dementia'}
 
 -- expose publicly
 svo.focuscurables = empty.focuscurables
@@ -66,19 +66,19 @@ empty.focus = function()
 end
 
 -- you /can/ cure hamstring, dissonance with tree
-empty.treecurables = {"ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "claustrophobia",
-"clumsiness", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade",
-"deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "generosity",
-"haemophilia", "hallucinations", "healthleech",  "hellsight", "hypersomnia", "hypochondria", "illness", "impatience",
-"inlove", "itching", "justice", "lethargy", "loneliness", "madness", "masochism", "pacifism", "paralysis", "paranoia",
-"peace", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slickness", "stupidity", "stuttering",
-"unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voyria", "weakness", "hamstring",
-"shivering", "frozen", "skullfractures", "crackedribs", "wristfractures", "torntendons", "depression", "parasite",
-"retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate"}
+empty.treecurables = {'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'claustrophobia',
+'clumsiness', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade',
+'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'generosity',
+'haemophilia', 'hallucinations', 'healthleech',  'hellsight', 'hypersomnia', 'hypochondria', 'illness', 'impatience',
+'inlove', 'itching', 'justice', 'lethargy', 'loneliness', 'madness', 'masochism', 'pacifism', 'paralysis', 'paranoia',
+'peace', 'recklessness', 'relapsing', 'selarnia', 'sensitivity', 'shyness', 'slickness', 'stupidity', 'stuttering',
+'unknownany', 'unknowncrippledarm', 'unknowncrippledleg', 'unknownmental', 'vertigo', 'voyria', 'weakness', 'hamstring',
+'shivering', 'frozen', 'skullfractures', 'crackedribs', 'wristfractures', 'torntendons', 'depression', 'parasite',
+'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate'}
 empty.treeblocks = {
-  madness = {"madness", "dementia", "stupidity", "confusion", "hypersomnia", "paranoia", "hallucinations", "impatience",
-  "addiction", "agoraphobia", "inlove", "loneliness", "recklessness", "masochism"},
-  hypothermia = {"frozen", "shivering"},
+  madness = {'madness', 'dementia', 'stupidity', 'confusion', 'hypersomnia', 'paranoia', 'hallucinations', 'impatience',
+  'addiction', 'agoraphobia', 'inlove', 'loneliness', 'recklessness', 'masochism'},
+  hypothermia = {'frozen', 'shivering'},
 }
 -- expose publicly
 svo.treecurables = empty.treecurables
@@ -119,73 +119,73 @@ empty.dragonheal = empty.tree
 empty.shrugging  = empty.tree
 
 empty.smoke_elm = function()
-  svo.rmaff({"deadening", "madness", "aeon"})
+  svo.rmaff({'deadening', 'madness', 'aeon'})
 end
 
 empty.smoke_valerian = function()
-  svo.rmaff({"disloyalty", "manaleech", "slickness", "hellsight"})
+  svo.rmaff({'disloyalty', 'manaleech', 'slickness', 'hellsight'})
 end
 
 
 empty.writhe = function()
-  svo.rmaff({"impale", "bound", "webbed", "roped", "transfixed", "hoisted"})
+  svo.rmaff({'impale', 'bound', 'webbed', 'roped', 'transfixed', 'hoisted'})
 end
 
 empty.apply_epidermal_head = function ()
-  svo.rmaff({"anorexia", "itching", "stuttering", "slashedthroat", "blindaff", "deafaff", "scalded"})
-  svo.defences.lost("blind")
-  svo.defences.lost("deaf")
+  svo.rmaff({'anorexia', 'itching', 'stuttering', 'slashedthroat', 'blindaff', 'deafaff', 'scalded'})
+  svo.defences.lost('blind')
+  svo.defences.lost('deaf')
 end
 
 empty.apply_epidermal_body = function ()
-  svo.rmaff({"anorexia", "itching"})
+  svo.rmaff({'anorexia', 'itching'})
 end
 
 empty.apply_mending = function()
   svo.dict.unknowncrippledlimb.count = 0
   svo.dict.unknowncrippledarm.count = 0
   svo.dict.unknowncrippledleg.count = 0
-  svo.rmaff({"selarnia", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "ablaze",
-    "severeburn", "extremeburn", "charredburn", "meltingburn", "unknowncrippledarm", "unknowncrippledleg",
-    "unknowncrippledlimb"})
+  svo.rmaff({'selarnia', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'ablaze',
+    'severeburn', 'extremeburn', 'charredburn', 'meltingburn', 'unknowncrippledarm', 'unknowncrippledleg',
+    'unknowncrippledlimb'})
 end
 
 empty.noeffect_mending_arms = function()
-  svo.rmaff({"crippledrightarm", "crippledleftarm", "unknowncrippledarm"})
+  svo.rmaff({'crippledrightarm', 'crippledleftarm', 'unknowncrippledarm'})
   svo.dict.unknowncrippledarm.count = 0
 end
 
 empty.noeffect_mending_legs = function()
-  svo.rmaff({"crippledrightleg", "crippledleftleg", "unknowncrippledleg"})
+  svo.rmaff({'crippledrightleg', 'crippledleftleg', 'unknowncrippledleg'})
   svo.dict.unknowncrippledleg.count = 0
 end
 
 empty.apply_health_head = function()
-  svo.rmaff({"skullfractures"})
+  svo.rmaff({'skullfractures'})
   svo.dict.skullfractures.count = 0
 end
 
 empty.apply_health_torso = function()
-  svo.rmaff({"crackedribs"})
+  svo.rmaff({'crackedribs'})
   svo.dict.crackedribs.count = 0
 end
 
 empty.apply_health_arms = function()
-  svo.rmaff({"wristfractures"})
+  svo.rmaff({'wristfractures'})
   svo.dict.wristfractures.count = 0
 end
 
 empty.apply_health_legs = function()
-  svo.rmaff({"torntendons"})
+  svo.rmaff({'torntendons'})
   svo.dict.torntendons.count = 0
 end
 
 empty.sip_immunity = function ()
-  svo.rmaff("voyria")
+  svo.rmaff('voyria')
 end
 
 empty.eat_ginger = function ()
-  svo.rmaff({"cholerichumour", "melancholichumour", "phlegmatichumour", "sanguinehumour"})
+  svo.rmaff({'cholerichumour', 'melancholichumour', 'phlegmatichumour', 'sanguinehumour'})
   svo.dict.cholerichumour.count = 0
   svo.dict.melancholichumour.count = 0
   svo.dict.phlegmatichumour.count = 0

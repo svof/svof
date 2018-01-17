@@ -37,36 +37,36 @@ svo.signals.saveconfig:connect(function () ndb.conf.citypolitics = ndb.conf.city
 
 svo.signals.saveconfig:connect(function ()
 	-- this can error out if the connection is closed
-  pcall(function() db.__conn["namedb"]:execute("VACUUM") end)
+  pcall(function() db.__conn['namedb']:execute('VACUUM') end)
 end)
 
 --ndb.API
 function ndb.ismhaldorian(name)
-  return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.city, "Mhaldor"), db:eq(ndb.db.people.name, name)})) ~= 0
+  return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.city, 'Mhaldor'), db:eq(ndb.db.people.name, name)})) ~= 0
 end
 
 function ndb.iscyrenian(name)
-  return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.city, "Cyrene"), db:eq(ndb.db.people.name, name)})) ~= 0
+  return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.city, 'Cyrene'), db:eq(ndb.db.people.name, name)})) ~= 0
 end
 
 function ndb.isshallamese(name)
-  return #(db:fetch(ndb.db.people, {db:OR(db:eq(ndb.db.people.city, "Shallam"), db:eq(ndb.db.people.city, "Targossas")), db:eq(ndb.db.people.name, name)})) ~= 0
+  return #(db:fetch(ndb.db.people, {db:OR(db:eq(ndb.db.people.city, 'Shallam'), db:eq(ndb.db.people.city, 'Targossas')), db:eq(ndb.db.people.name, name)})) ~= 0
 end
 
 function ndb.istargossian(name)
-  return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.city, "Targossas"), db:eq(ndb.db.people.name, name)})) ~= 0
+  return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.city, 'Targossas'), db:eq(ndb.db.people.name, name)})) ~= 0
 end
 
 function ndb.iseleusian(name)
-  return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.city, "Eleusis"), db:eq(ndb.db.people.name, name)})) ~= 0
+  return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.city, 'Eleusis'), db:eq(ndb.db.people.name, name)})) ~= 0
 end
 
 function ndb.isashtani(name)
-  return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.city, "Ashtan"), db:eq(ndb.db.people.name, name)})) ~= 0
+  return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.city, 'Ashtan'), db:eq(ndb.db.people.name, name)})) ~= 0
 end
 
 function ndb.ishashani(name)
-  return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.city, "Hashan"), db:eq(ndb.db.people.name, name)})) ~= 0
+  return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.city, 'Hashan'), db:eq(ndb.db.people.name, name)})) ~= 0
 end
 
 function ndb.isclass(name, class)
@@ -193,7 +193,7 @@ function ndb.isenemy(name)
   -- -1 autodetected, 1 enemy, 2 ally
   if p.iff == 1 or
        (p.iff ~= 2 and
-         ((city and city ~= "" and ndb.conf.citypolitics[city] == "enemy") or
+         ((city and city ~= "" and ndb.conf.citypolitics[city] == 'enemy') or
          (p.cityenemy == 1 or p.orderenemy == 1 or p.houseenemy == 1))) then
     return true else return false
   end
@@ -209,7 +209,7 @@ function ndb.iscityenemy(name)
   -- -1 autodetected, 1 enemy, 2 ally
   if p.iff == 1 or
        (p.iff ~= 2 and
-         ((city and city ~= "" and ndb.conf.citypolitics[city] == "enemy") or
+         ((city and city ~= "" and ndb.conf.citypolitics[city] == 'enemy') or
          (p.cityenemy == 1))) then
     return true else return false
   end
@@ -247,45 +247,45 @@ function ndb.getname (name)
 end
 
 local singular_city = {
-  [""] = "Rogue",
-  Mhaldor = "Mhaldorian",
-  Ashtan = "Ashtani",
-  Hashan = "Hashani",
-  Eleusis = "Eleusian",
-  Shallam = "Shallamese",
-  Targossas = "Targossian",
-  Cyrene = "Cyrenian"
+  [""] = 'Rogue',
+  Mhaldor = 'Mhaldorian',
+  Ashtan = 'Ashtani',
+  Hashan = 'Hashani',
+  Eleusis = 'Eleusian',
+  Shallam = 'Shallamese',
+  Targossas = 'Targossian',
+  Cyrene = 'Cyrenian'
 }
 
 local plural_city = {
-  [""] = "Rogues",
-  Mhaldor = "Mhaldorians",
-  Ashtan = "Ashtani",
-  Hashan = "Hashani",
-  Eleusis = "Eleusians",
-  Shallam = "Shallamese",
-  Targossas = "Targossians",
-  Cyrene = "Cyrenians"
+  [""] = 'Rogues',
+  Mhaldor = 'Mhaldorians',
+  Ashtan = 'Ashtani',
+  Hashan = 'Hashani',
+  Eleusis = 'Eleusians',
+  Shallam = 'Shallamese',
+  Targossas = 'Targossians',
+  Cyrene = 'Cyrenians'
 }
 
 local plural_class = {
-  Apostate    = "Apostates",
-  Bard        = "Bards",
-  Blademaster = "Blademasters",
-  Dragon      = "Dragons",
-  Druid       = "Druids",
-  Infernal    = "Infernals",
-  Jester      = "Jesters",
-  Magi        = "Magi",
-  Monk        = "Monks",
-  Occultist   = "Occultists",
-  Paladin     = "Paladins",
-  Priest      = "Priests",
-  Runewarden  = "Runewardens",
-  Sentinel    = "Sentinels",
-  Serpent     = "Serpents",
-  Shaman      = "Shamans",
-  Sylvan      = "Sylvans",
+  Apostate    = 'Apostates',
+  Bard        = 'Bards',
+  Blademaster = 'Blademasters',
+  Dragon      = 'Dragons',
+  Druid       = 'Druids',
+  Infernal    = 'Infernals',
+  Jester      = 'Jesters',
+  Magi        = 'Magi',
+  Monk        = 'Monks',
+  Occultist   = 'Occultists',
+  Paladin     = 'Paladins',
+  Priest      = 'Priests',
+  Runewarden  = 'Runewardens',
+  Sentinel    = 'Sentinels',
+  Serpent     = 'Serpents',
+  Shaman      = 'Shamans',
+  Sylvan      = 'Sylvans',
 }
 
 function ndb.getpluralclass(class, count)
@@ -312,39 +312,39 @@ local function getcolor(name)
   local city, order, conf, color = person.city, person.order, svo.conf
 
   -- order of priority: watchfor > divine > city > order > house > citizens.
-  if (city == "" or city == "rogue") then city = "" else city = city:lower() end -- known rogues are returned as ""
+  if (city == "" or city == 'rogue') then city = "" else city = city:lower() end -- known rogues are returned as ""
 
   -- color first
   if conf.highlightwatchfor and svo.me.watchfor[name] then
-    color     = conf.watchforcolor or "a_darkwhite"
+    color     = conf.watchforcolor or 'a_darkwhite'
 
   elseif conf.highlightdivine and person.immortal == 1 then
-    color     = conf.divinecolor or "a_darkwhite"
+    color     = conf.divinecolor or 'a_darkwhite'
 
   elseif conf.highlightcity and person.cityenemy == 1 then
-    color     = conf.citycolor or "a_darkwhite"
+    color     = conf.citycolor or 'a_darkwhite'
 
   elseif conf.highlightorder and person.orderenemy == 1 then
-    color     = conf.ordercolor or "a_darkwhite"
+    color     = conf.ordercolor or 'a_darkwhite'
 
   elseif conf.highlighthouse and person.houseenemy == 1 then
-    color     = conf.housecolor or "a_darkwhite"
+    color     = conf.housecolor or 'a_darkwhite'
 
-  elseif order and conf["highlight"..order] then
-    color     = conf[order.."color"] or "a_darkwhite"
+  elseif order and conf['highlight'..order] then
+    color     = conf[order..'color'] or 'a_darkwhite'
 
   elseif city == "" and conf.highlightrogues then
-    color     = conf.roguescolor or "a_darkwhite"
+    color     = conf.roguescolor or 'a_darkwhite'
 
-  elseif city ~= "" and conf["highlight"..city] then
-    color     = conf[city.."color"] or "a_darkwhite"
+  elseif city ~= "" and conf['highlight'..city] then
+    color     = conf[city..'color'] or 'a_darkwhite'
   end
 
   return color
 end
 
 function ndb.getcolor(name)
-  svo.assert(type(name) == "string", "ndb.getcolor: name to get a color of is required")
+  svo.assert(type(name) == 'string', "ndb.getcolor: name to get a color of is required")
 
   local color = getcolor(name)
 
@@ -352,7 +352,7 @@ function ndb.getcolor(name)
 end
 
 function ndb.getcolorn(name)
-  svo.assert(type(name) == "string", "ndb.getcolorn: name to get a color of is required")
+  svo.assert(type(name) == 'string', "ndb.getcolorn: name to get a color of is required")
 
   local color = getcolor(name)
 
@@ -360,16 +360,16 @@ function ndb.getcolorn(name)
 end
 
 function ndb.getcolorp(name)
-  svo.assert(type(name) == "string", "ndb.getcolorp: name to get a color of is required")
+  svo.assert(type(name) == 'string', "ndb.getcolorp: name to get a color of is required")
 
   local color = getcolor(name)
 
   return color
 end
 
-for _, format in ipairs{"bold", "underline", "italicize"} do
-  ndb["should"..format] = function(name)
-    svo.assert(type(name) == "string", "ndb.should"..format..": name to get a color of is required")
+for _, format in ipairs{'bold', 'underline', 'italicize'} do
+  ndb['should'..format] = function(name)
+    svo.assert(type(name) == 'string', "ndb.should"..format..": name to get a color of is required")
 
     local person = ndb.getname(name)
 
@@ -377,13 +377,13 @@ for _, format in ipairs{"bold", "underline", "italicize"} do
 
     local city, order, conf = person.city, person.order, svo.conf
 
-    return (conf[format.."watchfor"] and svo.me.watchfor[name])    or
-           (conf[format.."city"] and person.cityenemy == 1)        or
-           (conf[format.."order"] and person.orderenemy == 1)      or
-           (conf[format.."house"] and person.houseenemy == 1)      or
-           (conf[format.."divine"] and person.immortal == 1)       or
+    return (conf[format..'watchfor'] and svo.me.watchfor[name])    or
+           (conf[format..'city'] and person.cityenemy == 1)        or
+           (conf[format..'order'] and person.orderenemy == 1)      or
+           (conf[format..'house'] and person.houseenemy == 1)      or
+           (conf[format..'divine'] and person.immortal == 1)       or
            (order and conf[format..order])                         or
-           ((city == "" or city == "rogue") and conf[format.."rogues"]) or
+           ((city == "" or city == 'rogue') and conf[format..'rogues']) or
            (city and conf[format..city])                           or false
   end
 end
@@ -391,7 +391,7 @@ end
 function ndb.addname(name)
   local temp_name_list = {}
 
-  if type(name) == "table" then
+  if type(name) == 'table' then
     for i = 1, #name do
       temp_name_list[#temp_name_list+1] = {name = name[i]:title()}
     end
@@ -407,14 +407,14 @@ end
 function ndb.setiff(name, status)
   name = name:lower():title()
 
-  local category = "iff"
+  local category = 'iff'
   local towhat
 
   -- -1 autodetected, 1 enemy, 2 ally
   status = status:lower()
-  if status == "enemy" then
+  if status == 'enemy' then
     towhat = 1
-  elseif status == "ally" then
+  elseif status == 'ally' then
     towhat = 2
   else
     towhat = -1
@@ -482,11 +482,11 @@ function ndb.honors(name, type)
   if ndb.honorsid then svo.echof("ndb.honors() for %s called, when already honours'ing %s - not going to do this.", name:title(), ndb.honorsname:title()) return end
   name = string.title(name)
 
-  enableTrigger("Honors")
+  enableTrigger('Honors')
 
   if ndb.honorsid then killTimer(ndb.honorsid) end
   ndb.honorsid = tempTimer(2+getNetworkLatency(), function()
-    disableTrigger("Honors")
+    disableTrigger('Honors')
     svo.echof("Honors on %s didn't happen - re-checking...", name)
     ndb.honorsid, ndb.gaghonours = nil, nil
     ndb.honors(name, type)
@@ -495,7 +495,7 @@ function ndb.honors(name, type)
   ndb.honorsname = name
   send("honorsb " .. name, false) -- needs to full so it sees the clan listing
 
-  if type == "quiet" then ndb.gaghonours = true end
+  if type == 'quiet' then ndb.gaghonours = true end
 end
 
 function ndb.cancelhonors(quietly)
@@ -504,7 +504,7 @@ function ndb.cancelhonors(quietly)
 
   if (ndb.honorslist and next(ndb.honorslist)) or ndb.honorsid then
     ndb.honorslist = {}
-    if ndb.honorsid then killTimer(ndb.honorsid) disableTrigger("Honors") end; ndb.honorsid = nil
+    if ndb.honorsid then killTimer(ndb.honorsid) disableTrigger('Honors') end; ndb.honorsid = nil
     if not quietly then svo.echof("Cancelled honors-checking people.") end
   else
     if not quietly then svo.echof("Not checking anyone atm already.") end
@@ -589,7 +589,7 @@ function ndb.doexport()
     else
       -- prune fields we don't need
       for key,value in pairs(ndb.exportdata.fields) do
-        if key ~= "name" and not value then p[key] = nil end
+        if key ~= 'name' and not value then p[key] = nil end
       end
 
       -- prune internal fields starting with underscores
@@ -651,9 +651,9 @@ function ndb.doimport()
   db:merge_unique(ndb.db.people, temp_name_list)
   svo.echof("Imported %d name%s okay.", #temp_name_list, (#temp_name_list == 1 and '' or 's'))
 
-  local c = #(db:fetch(ndb.db.people, db:eq(ndb.db.people.city, "Shallam")))
+  local c = #(db:fetch(ndb.db.people, db:eq(ndb.db.people.city, 'Shallam')))
   if c ~= 0 then
-    ndb.fixed_set(ndb.db.people.city, "Targossas", db:eq(ndb.db.people.city, "Shallam"))
+    ndb.fixed_set(ndb.db.people.city, 'Targossas', db:eq(ndb.db.people.city, 'Shallam'))
     svo.echof("Migrated "..c.." Shallamese to be called Targossians now.")
   end
 
@@ -663,7 +663,7 @@ end
 
 function ndb.loadhighlights()
   ndb.highlightIDs = ndb.highlightIDs or {}
-  collectgarbage("stop")
+  collectgarbage('stop')
 
   ndb.cleartriggers()
 
@@ -705,28 +705,28 @@ function ndb.singlehighlight(name, city, order, cityenemy, orderenemy, houseenem
 
   -- color first
   if conf.highlightwatchfor and watchfor then
-    color     = conf.watchforcolor or "a_darkwhite"
+    color     = conf.watchforcolor or 'a_darkwhite'
 
   elseif conf.highlightdivine and immortal == 1 then
-    color     = conf.divinecolor or "a_darkwhite"
+    color     = conf.divinecolor or 'a_darkwhite'
 
   elseif conf.highlightcity and cityenemy == 1 then
-    color     = conf.citycolor or "a_darkwhite"
+    color     = conf.citycolor or 'a_darkwhite'
 
   elseif conf.highlightorder and orderenemy == 1 then
-    color     = conf.ordercolor or "a_darkwhite"
+    color     = conf.ordercolor or 'a_darkwhite'
 
   elseif conf.highlighthouse and houseenemy == 1 then
-    color     = conf.housecolor or "a_darkwhite"
+    color     = conf.housecolor or 'a_darkwhite'
 
-  elseif order and conf["highlight"..order] then
-    color     = conf[order.."color"] or "a_darkwhite"
+  elseif order and conf['highlight'..order] then
+    color     = conf[order..'color'] or 'a_darkwhite'
 
-  elseif (city == "" or city == "rogue") and conf.highlightrogues then
-    color     = conf.roguescolor or "a_darkwhite"
+  elseif (city == "" or city == 'rogue') and conf.highlightrogues then
+    color     = conf.roguescolor or 'a_darkwhite'
 
-  elseif city and conf["highlight"..city] then
-    color     = conf[city.."color"] or "a_darkwhite"
+  elseif city and conf['highlight'..city] then
+    color     = conf[city..'color'] or 'a_darkwhite'
   end
 
   -- rest of things
@@ -735,36 +735,36 @@ function ndb.singlehighlight(name, city, order, cityenemy, orderenemy, houseenem
                 (conf.boldorder and orderenemy == 1)      or
                 (conf.boldhouse and houseenemy == 1)      or
                 (conf.bolddivine and immortal == 1)       or
-                (order and conf["bold"..order])           or
-                ((city == "" or city == "rogue") and conf.boldrogues) or
-                (city and conf["bold"..city])
+                (order and conf['bold'..order])           or
+                ((city == "" or city == 'rogue') and conf.boldrogues) or
+                (city and conf['bold'..city])
 
   underline = (conf.underlinewatchfor and watchfor)       or
                 (conf.underlinecity and cityenemy == 1)   or
                 (conf.underlineorder and orderenemy == 1) or
                 (conf.underlinehouse and houseenemy == 1) or
                 (conf.underlinedivine and immortal == 1)  or
-                (order and conf["underline"..order])      or
-                ((city == "" or city == "rogue") and conf.underlinerogues) or
-                (city and conf["underline"..city])
+                (order and conf['underline'..order])      or
+                ((city == "" or city == 'rogue') and conf.underlinerogues) or
+                (city and conf['underline'..city])
 
   italicize = (conf.italicizewatchfor and watchfor)       or
                 (conf.italicizecity and cityenemy == 1)   or
                 (conf.italicizeorder and orderenemy == 1) or
                 (conf.italicizehouse and houseenemy == 1) or
                 (conf.italicizedivine and immortal == 1)  or
-                (order and conf["italicize"..order])      or
-                ((city == "" or city == "rogue") and conf.italicizerogues) or
-                (city and conf["italicize"..city])
+                (order and conf['italicize'..order])      or
+                ((city == "" or city == 'rogue') and conf.italicizerogues) or
+                (city and conf['italicize'..city])
 
   if not (color or bold or underline or italicize) then return end
 
   ndb.highlightIDs = ndb.highlightIDs or {}
   ndb.highlightIDs[name] = tempTrigger(name, ([[ndb.highlight("%s", %s, %s, %s, %s)]]):format(name,
-    (color     and '"'..color..'"' or "false"),
-    (bold      and "true" or "false"),
-    (underline and "true" or "false"),
-    (italicize and "true" or "false")
+    (color     and '"'..color..'"' or 'false'),
+    (bold      and 'true' or 'false'),
+    (underline and 'true' or 'false'),
+    (italicize and 'true' or 'false')
   ))
 end
 
@@ -804,11 +804,11 @@ end
 
 function ndb.finished_honors(event, name, type)
   if svo.conf.paused or not ndb.honorslist then return end
-  local type = ndb.gaghonours and "quiet" or "manual"
+  local type = ndb.gaghonours and 'quiet' or 'manual'
 
   local name = next(ndb.honorslist or {})
   if not name then
-    if type ~= "manual" then
+    if type ~= 'manual' then
       echo'\n'
       svo.echof("Done checking all new names.")
       svo.showprompt()
@@ -831,7 +831,7 @@ function ndb.honors_next(argument)
   if not name then return end
 
   if svo.conf.usehonors then
-    ndb.honors(name, "quiet")
+    ndb.honors(name, 'quiet')
   else
     --ndb.getinfo(name) -- Achaea disallowed use of website scraping
     return
@@ -847,19 +847,19 @@ function ndb.honors_next(argument)
 
     local h,m,s = seconds2human(leftseconds)
     if h > 0 then
-      timeleft[#timeleft+1] = h.."h"
+      timeleft[#timeleft+1] = h..'h'
     end
     if h > 0 and m > 0 then
       timeleft[#timeleft+1] = ", "
     end
     if m > 0 then
-      timeleft[#timeleft+1] = m.."m"
+      timeleft[#timeleft+1] = m..'m'
     end
     if m > 0 and s > 0 then
       timeleft[#timeleft+1] = ", "
     end
     if s > 0 then
-      timeleft[#timeleft+1] = s.."s"
+      timeleft[#timeleft+1] = s..'s'
     end
   end
 

@@ -13,20 +13,20 @@ svo.me.pipes = svo.me.pipes or {}
 local pipes, me = svo.pipes, svo.me
 
 pipes.valerian = pipes.valerian or
-  {lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = "valerian", filledwith2 = "valerian", maxpuffs = 10, maxpuffs2 = 10}
+  {lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = 'valerian', filledwith2 = 'valerian', maxpuffs = 10, maxpuffs2 = 10}
 me.pipes.valerian = pipes.valerian
 
 pipes.elm = pipes.elm or
-{lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = "elm", filledwith2 = "elm", maxpuffs = 10, maxpuffs2 = 10}
+{lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = 'elm', filledwith2 = 'elm', maxpuffs = 10, maxpuffs2 = 10}
 me.pipes.elm = pipes.elm
 
 pipes.skullcap = pipes.skullcap or
-{lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = "skullcap", filledwith2 = "skullcap", maxpuffs = 10, maxpuffs2 = 10}
+{lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = 'skullcap', filledwith2 = 'skullcap', maxpuffs = 10, maxpuffs2 = 10}
 me.pipes.skullcap = pipes.skullcap
 
-pipes.pnames = {"valerian", "skullcap", "elm"}
+pipes.pnames = {'valerian', 'skullcap', 'elm'}
 
-pipes.expectations = {"valerian", "skullcap", "elm"}
+pipes.expectations = {'valerian', 'skullcap', 'elm'}
 
 pipes.empties = {}
 
@@ -52,33 +52,33 @@ function svo.pipestart()
   local oldvalerianmaxpuffs, oldelmmaxpuffs, oldskullcapmaxpuffs = pipes.valerian.maxpuffs, pipes.elm.maxpuffs, pipes.skullcap.maxpuffs
   local oldvalerianmaxpuffs2, oldelmmaxpuffs2, oldskullcapmaxpuffs2 = pipes.valerian.maxpuffs2, pipes.elm.maxpuffs2, pipes.skullcap.maxpuffs2
 
-  pipes.valerian = {lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = "valerian", filledwith2 = "valerian", maxpuffs = oldvalerianmaxpuffs, maxpuffs2 = oldvalerianmaxpuffs2}
+  pipes.valerian = {lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = 'valerian', filledwith2 = 'valerian', maxpuffs = oldvalerianmaxpuffs, maxpuffs2 = oldvalerianmaxpuffs2}
   me.pipes.valerian = pipes.valerian
 
-  pipes.elm = {lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = "elm", filledwith2 = "elm", maxpuffs = oldelmmaxpuffs, maxpuffs2 = oldelmmaxpuffs2}
+  pipes.elm = {lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = 'elm', filledwith2 = 'elm', maxpuffs = oldelmmaxpuffs, maxpuffs2 = oldelmmaxpuffs2}
   me.pipes.elm = pipes.elm
 
-  pipes.skullcap = {lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = "skullcap", filledwith2 = "skullcap", maxpuffs = oldskullcapmaxpuffs, maxpuffs2 = oldskullcapmaxpuffs2}
+  pipes.skullcap = {lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = 'skullcap', filledwith2 = 'skullcap', maxpuffs = oldskullcapmaxpuffs, maxpuffs2 = oldskullcapmaxpuffs2}
   me.pipes.skullcap = pipes.skullcap
 end
 
 function svo.parseplist()
   local pipenames = {
-    ["slippery elm"]                = "elm",
-    ["a valerian leaf"]             = "valerian",
-    ["a skullcap flower"]           = "skullcap",
-    ["a pinch of ground cinnabar"]  = "elm",
-    ["a pinch of realgar crystals"] = "valerian",
-    ["a pinch of ground malachite"] = "skullcap"
+    ["slippery elm"]                = 'elm',
+    ["a valerian leaf"]             = 'valerian',
+    ["a skullcap flower"]           = 'skullcap',
+    ["a pinch of ground cinnabar"]  = 'elm',
+    ["a pinch of realgar crystals"] = 'valerian',
+    ["a pinch of ground malachite"] = 'skullcap'
   }
 
   local short_names = {
-    ["slippery elm"]                = "elm",
-    ["a valerian leaf"]             = "valerian",
-    ["a skullcap flower"]           = "skullcap",
-    ["a pinch of ground cinnabar"]  = "cinnabar",
-    ["a pinch of realgar crystals"] = "realgar",
-    ["a pinch of ground malachite"] = "malachite"
+    ["slippery elm"]                = 'elm',
+    ["a valerian leaf"]             = 'valerian',
+    ["a skullcap flower"]           = 'skullcap',
+    ["a pinch of ground cinnabar"]  = 'cinnabar',
+    ["a pinch of realgar crystals"] = 'realgar',
+    ["a pinch of ground malachite"] = 'malachite'
   }
 
   local id     = tonumber(matches[3])
@@ -92,30 +92,30 @@ function svo.parseplist()
   if pipes[herb].id == 0 then
     pipes[herb].id = id
     svo.firstpipe = true
-    filled = "filledwith"
-    lit = "lit"
-    arty = "arty"
-    puffskey = "puffs"
-    maxpuffs = "maxpuffs"
+    filled = 'filledwith'
+    lit = 'lit'
+    arty = 'arty'
+    puffskey = 'puffs'
+    maxpuffs = 'maxpuffs'
   else
     pipes[herb].id2 = id
     svo.firstpipe = false
-    filled = "filledwith2"
-    lit = "lit2"
-    arty = "arty2"
-    puffskey = "puffs2"
-    maxpuffs = "maxpuffs2"
+    filled = 'filledwith2'
+    lit = 'lit2'
+    arty = 'arty2'
+    puffskey = 'puffs2'
+    maxpuffs = 'maxpuffs2'
   end
 
   pipes[herb][arty] = false
 
   pipes[herb][filled] = short_names[matches[4]]
 
-  if status == "out" then
+  if status == 'out' then
     pipes[herb][lit] = false
-  elseif status == "lit" then
+  elseif status == 'lit' then
     pipes[herb][lit] = true
-   elseif status == "artf" then
+   elseif status == 'artf' then
     pipes[herb][arty] = true
   end
 
@@ -130,11 +130,11 @@ function svo.parseplist()
   end
 
   -- warn if relighting any pipes is on ignore, to make it more obvious - people tended to miss the original line
-  if svo.ignore["light"..herb] then
+  if svo.ignore['light'..herb] then
     decho(" "..svo.getDefaultColor().."(")
     setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
-    echoLink("re-enable lighting", 'svo.ignore.light'..herb..' = nil; svo.echof("Re-enabled lighting of the '..pipes[herb].filledwith..' pipe."); if not svo.conf.relight then svo.config.set("relight", "on", true) end', 'Re-lighting the '..pipes[herb].filledwith..' pipe was put on ignore because '..svo.ignore["light"..herb].because..' - click the link to re-enable it', true)
+    echoLink("re-enable lighting", 'svo.ignore.light'..herb..' = nil; svo.echof("Re-enabled lighting of the '..pipes[herb].filledwith..' pipe."); if not svo.conf.relight then svo.config.set([[relight]], [[on]], true) end', 'Re-lighting the '..pipes[herb].filledwith..' pipe was put on ignore because '..svo.ignore['light'..herb].because..' - click the link to re-enable it', true)
     setUnderline(false)
     decho(svo.getDefaultColor()..")")
   end
@@ -146,7 +146,7 @@ function svo.parseplistempty()
   if not (id and status) then return end
 
   -- save the data, to later assign the pipes to herbs
-  pipes.empties[#pipes.empties+1] = {id = id, arty = (status == "artf" and true or false), status = status}
+  pipes.empties[#pipes.empties+1] = {id = id, arty = (status == 'artf' and true or false), status = status}
 end
 
 function svo.parseplistend()
@@ -155,7 +155,7 @@ function svo.parseplistend()
     local i = pipes.pnames[id]
     if pipes[i] and pipes[i].id == 0 and next(pipes.empties) then
       pipes[i].id = pipes.empties[#pipes.empties].id
-      if pipes.empties[#pipes.empties].status == "Lit" then
+      if pipes.empties[#pipes.empties].status == 'Lit' then
         pipes[i].lit = true
       else
         pipes[i].lit = false
@@ -174,7 +174,7 @@ function svo.parseplistend()
     local i = pipes.pnames[id]
     if pipes[i] and pipes[i].id2 == 0 and next(pipes.empties) then
       pipes[i].id2 = pipes.empties[#pipes.empties].id
-      if pipes.empties[#pipes.empties].status2 == "Lit" then
+      if pipes.empties[#pipes.empties].status2 == 'Lit' then
         pipes[i].lit2 = true
       else
         pipes[i].lit2 = false
@@ -200,17 +200,17 @@ function svo.pipe_assignid(newid)
     local i = pipes.pnames[id]
     if pipes[i].id == 0 then
       pipes[i].id = newid
-      svo.conf[i.."id"] = newid
+      svo.conf[i..'id'] = newid
       pipes[i].lit = false
       send("empty "..newid, false)
-      raiseEvent("svo config changed", i.."id")
+      raiseEvent("svo config changed", i..'id')
       return i
     elseif pipes[i].id2 == 0 then
       pipes[i].id2 = newid
-      svo.conf[i.."id2"] = newid
+      svo.conf[i..'id2'] = newid
       pipes[i].lit2 = false
       send("empty "..newid, false)
-      raiseEvent("svo config changed", i.."id2")
+      raiseEvent("svo config changed", i..'id2')
       return i
     end
   end
@@ -245,9 +245,9 @@ if lfs.attributes(getMudletHomeDir() .. "/svo/pipes/conf") then
     pipes.skullcap.puffs2      = pipes.skullcap.puffs2 or 0
     pipes.valerian.puffs2      = pipes.valerian.puffs2 or 0
 
-    pipes.elm.filledwith2      = pipes.elm.filledwith2 or "elm"
-    pipes.skullcap.filledwith2 = pipes.skullcap.filledwith2 or "skullcap"
-    pipes.valerian.filledwith2 = pipes.valerian.filledwith2 or "valerian"
+    pipes.elm.filledwith2      = pipes.elm.filledwith2 or 'elm'
+    pipes.skullcap.filledwith2 = pipes.skullcap.filledwith2 or 'skullcap'
+    pipes.valerian.filledwith2 = pipes.valerian.filledwith2 or 'valerian'
 
     me.pipes.elm               = pipes.elm
     me.pipes.skullcap          = pipes.skullcap
@@ -264,13 +264,13 @@ svo.signals.connected:connect(function ()
   if not pipes.elm.arty2 then pipes.elm.lit2           = false end
   if not pipes.skullcap.arty2 then pipes.skullcap.lit2 = false end
 
-  if not pipes.valerian.filledwith then pipes.valerian.filledwith   = "valerian" end
-  if not pipes.elm.filledwith then pipes.elm.filledwith             = "elm" end
-  if not pipes.skullcap.filledwith then pipes.skullcap.filledwith   = "skullcap" end
+  if not pipes.valerian.filledwith then pipes.valerian.filledwith   = 'valerian' end
+  if not pipes.elm.filledwith then pipes.elm.filledwith             = 'elm' end
+  if not pipes.skullcap.filledwith then pipes.skullcap.filledwith   = 'skullcap' end
 
-  if not pipes.valerian.filledwith2 then pipes.valerian.filledwith2 = "valerian" end
-  if not pipes.elm.filledwith2 then pipes.elm.filledwith2           = "elm" end
-  if not pipes.skullcap.filledwith2 then pipes.skullcap.filledwith2 = "skullcap" end
+  if not pipes.valerian.filledwith2 then pipes.valerian.filledwith2 = 'valerian' end
+  if not pipes.elm.filledwith2 then pipes.elm.filledwith2           = 'elm' end
+  if not pipes.skullcap.filledwith2 then pipes.skullcap.filledwith2 = 'skullcap' end
 end)
 
 svo.signals.saveconfig:connect(function ()

@@ -55,11 +55,11 @@ function prio.export (name, options, echoback)
     for _, v in pairs(to_export) do
       v.o = true
     end
-  elseif type(options) == "string" then
+  elseif type(options) == 'string' then
     for w in string.gmatch(options, "%a+") do
       if to_export[w] then to_export[w].o = true end
     end
-  elseif type(options) == "table" then
+  elseif type(options) == 'table' then
     for _, w in ipairs(options) do
       if to_export[w] then to_export[w].o = true end
     end
@@ -68,9 +68,9 @@ function prio.export (name, options, echoback)
   --[[ generate a single table like so:
   {
     herb = {
-      "relapsing",
-      "paranoia",
-      "vapors",
+      'relapsing',
+      'paranoia',
+      'vapors',
       ...
     },
 
@@ -92,7 +92,7 @@ function prio.export (name, options, echoback)
 
   for priority, priotbl in pairs(to_export) do
     if priotbl.o then
-      if priority == "slowcuring" then
+      if priority == 'slowcuring' then
         data = svo.make_sync_prio_table("%s_%s")
       else
         data = svo.make_prio_table(priority)
@@ -106,7 +106,7 @@ function prio.export (name, options, echoback)
   s = table.concat(s, "\n")
 
   svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/prios")
-  io.output(getMudletHomeDir() .. "/svo/prios/"..name, "w")
+  io.output(getMudletHomeDir() .. "/svo/prios/"..name, 'w')
   io.write(s)
   io.close()
 
@@ -140,7 +140,7 @@ end
 function prio.getsortedlist(balance)
   -- get into table...
   local data
-  if balance ~= "slowcuring" then
+  if balance ~= 'slowcuring' then
     data = svo.make_prio_table(balance)
   else
     data = svo.make_sync_prio_table("%s_%s")
@@ -182,7 +182,7 @@ end
 
 -- returns a sorted list of actions in a balance by priority
 function prio.sortlist(actions, balance)
-  svo.assert(type(actions) == "table", "svo.prio.sortlist: actions must be an indexed table (a list)")
+  svo.assert(type(actions) == 'table', "svo.prio.sortlist: actions must be an indexed table (a list)")
   svo.assert(balance, "svo.prio.sortlist: in which balance do you want to check these actions in?")
 
   table.sort(actions, function(a,b)
@@ -215,16 +215,16 @@ end
 function prio.insert(action, balance, number, echoback)
   number = tonumber(number)
 
-  if balance == "balance" then balance = "physical" end
+  if balance == 'balance' then balance = 'physical' end
 
-  if balance == "slowcuring" then
+  if balance == 'slowcuring' then
     local validaction, plainaction = svo.valid_sync_action(action)
 
     if not validaction then return false, plainaction end
   end
 
   local function getpriotable(balancename)
-    if balancename ~= "slowcuring" then
+    if balancename ~= 'slowcuring' then
       return svo.make_prio_table(balancename)
     else
       return svo.make_sync_prio_table("%s_%s")
@@ -232,19 +232,19 @@ function prio.insert(action, balance, number, echoback)
   end
 
   local function insertat(actionname, balancename, newprio)
-    if balancename ~= "slowcuring" then
+    if balancename ~= 'slowcuring' then
       svo.dict[actionname][balancename].aspriority = newprio
     else
       svo.dict[actionname][balancename].spriority = newprio
     end
     if echoback then svo.echof("Set %s's priority in %s balance to %d.", actionname, balancename, newprio) end
-    raiseEvent("svo prio changed", actionname, balancename, newprio, (balancename == "slowcuring" and "slowcuring"))
+    raiseEvent("svo prio changed", actionname, balancename, newprio, (balancename == 'slowcuring' and 'slowcuring'))
   end
 
   local t = getpriotable(balance)
   local originalt = svo.deepcopy(t)
 
-  if balance ~= "slowcuring" and not t then return nil, "no such balance: "..balance end
+  if balance ~= 'slowcuring' and not t then return nil, "no such balance: "..balance end
 
   -- if nothing is in the desired index, then just insert. If something is, shuffle down first.
   if not t[number] then
@@ -287,13 +287,13 @@ function prio.insert(action, balance, number, echoback)
     -- then read off our diff of new list and store away new prios.
     local diff = svo.basictableindexdiff(originalt, l) -- obtain an indexed list of all the different positions
     for _, a in pairs(diff) do
-      if balance ~= "slowcuring" then
+      if balance ~= 'slowcuring' then
         svo.dict[a][balance].aspriority = action_prio[a]
         raiseEvent("svo prio changed", a, balance, action_prio[a])
       else
         local _, syncaction, syncbalance = svo.valid_sync_action(a)
         svo.dict[syncaction][syncbalance].spriority = action_prio[a]
-        raiseEvent("svo prio changed", syncaction, syncbalance, action_prio[a], "slowcuring")
+        raiseEvent("svo prio changed", syncaction, syncbalance, action_prio[a], 'slowcuring')
       end
     end
 
@@ -310,7 +310,7 @@ end
 
 function prio.cleargaps(balance, echoback)
   -- sync mode
-  if balance == "slowcuring" then
+  if balance == 'slowcuring' then
     local data = svo.make_sync_prio_table("%s_%s")
 
     local max=0
@@ -335,7 +335,7 @@ function prio.cleargaps(balance, echoback)
     for _, a in pairs(diff) do
       local _, syncaction, syncbalance = svo.valid_sync_action(a)
       svo.dict[syncaction][syncbalance].spriority = action_prio[a]
-      raiseEvent("svo prio changed", syncaction, syncbalance, action_prio[a], "slowcuring")
+      raiseEvent("svo prio changed", syncaction, syncbalance, action_prio[a], 'slowcuring')
     end
 
     if echoback then svo.echof("Cleared all gaps for the slow curing prio.") end
@@ -377,7 +377,7 @@ function prio.usedefault(echoback)
 --[[  local s,m = os.remove(getMudletHomeDir() .. "/svo/prios/current")
   if not s then svo.echof("Couldn't update because of: "..tostring(m)) return end]]
 
-  if prio.import("current", false, false, true) then
+  if prio.import('current', false, false, true) then
     sendf("Updated to default priorities.")
   else
     sendf("Couldn't update to default priorities :|") end
@@ -398,20 +398,20 @@ function prio.import(name, echoback, report_errors, use_default)
   local path = filename or getMudletHomeDir() .. "/svo/prios/".. name
 
   local importables = {
-    "herb",
-    "smoke",
-    "salve",
-    "sip",
-    "purgative",
-    "physical",
-    "focus",
-    "moss",
-    "misc",
-    "slowcuring",
+    'herb',
+    'smoke',
+    'salve',
+    'sip',
+    'purgative',
+    'physical',
+    'focus',
+    'moss',
+    'misc',
+    'slowcuring',
   }
 
   local s
-  if name == "current" and (use_default or not lfs.attributes(path)) then
+  if name == 'current' and (use_default or not lfs.attributes(path)) then
     s = ""
     -- adds in the default prios here at compile-time
     -- s = $(
@@ -457,20 +457,20 @@ function prio.import(name, echoback, report_errors, use_default)
   -- table i now contains subtables with all of our stuff
   for balance,balancet in pairs(i) do
     if contains(importables, balance) then
-      if balance == "slowcuring" then
+      if balance == 'slowcuring' then
         -- reset all current ones to zero
         svo.clear_sync_prios()
 
         for num, action in pairs(balancet) do
           -- have to weed out action name _ balance name first
           local _,_, actionname, balancename = sfind(action, '(%w+)_(%w+)')
-          set(num, actionname, balancename, "spriority")
+          set(num, actionname, balancename, 'spriority')
         end
       else
         -- reset all current ones to zero
         svo.clear_balance_prios(balance)
         for num, action in pairs(balancet) do
-          set(num, action, balance, "aspriority")
+          set(num, action, balance, 'aspriority')
         end
       end
     end
@@ -487,9 +487,9 @@ function prio.import(name, echoback, report_errors, use_default)
 end
 
 signals.saveconfig:connect(function ()
-  prio.export("current")
+  prio.export('current')
 end)
 
 signals.systemstart:connect(function ()
-  prio.import("current")
+  prio.import('current')
 end)

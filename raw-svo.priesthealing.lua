@@ -39,26 +39,26 @@ function svo.healothersaff()
     end
   end
 
-  local cant_heal_these = {"unknowncrippledlimb", "blackout"}
+  local cant_heal_these = {'unknowncrippledlimb', 'blackout'}
 
   if not highestaff or table.contains(cant_heal_these, highestaff) then echo(string.format("%s hasn't got any afflictions we can cure\n", (svo.currently_diagnosing.name or '?'))) return end
 
   local aff = highestaff
 
   local svonames = {
-    blind = "blindness",
-    deaf = "deafness",
-    blindaff = "blindness",
-    deafaff = "deafness",
-    illness = "vomiting",
-    weakness = "weariness",
-    crippledleftarm = "arms",
-    crippledrightarm = "arms",
-    crippledleftleg = "legs",
-    crippledrightleg = "legs",
-    unknowncrippledleg = "legs",
-    unknowncrippledarm = "arms",
-    ablaze = "burning",
+    blind = 'blindness',
+    deaf = 'deafness',
+    blindaff = 'blindness',
+    deafaff = 'deafness',
+    illness = 'vomiting',
+    weakness = 'weariness',
+    crippledleftarm = 'arms',
+    crippledrightarm = 'arms',
+    crippledleftleg = 'legs',
+    crippledrightleg = 'legs',
+    unknowncrippledleg = 'legs',
+    unknowncrippledarm = 'arms',
+    ablaze = 'burning',
   }
 
   send("heal "..svo.currently_diagnosing.name .." "..(svonames[aff] or aff), false)

@@ -11,17 +11,17 @@ local conf, sk, me, defc = svo.conf, svo.sk, svo.me, svo.defc
 local stats = svo.defences
 local bals, cp, cpp = svo.bals, svo.cp, svo.cpp
 
-for _, stat in ipairs {"health", "mana", "endurance", "willpower"} do
-  cpp["compute_"..stat.."_percent"] = function()
-    return math.floor((stats["current"..stat]/stats["max"..stat])*100)
+for _, stat in ipairs {'health', 'mana', 'endurance', 'willpower'} do
+  cpp['compute_'..stat..'_percent'] = function()
+    return math.floor((stats['current'..stat]/stats['max'..stat])*100)
   end
 end
 
-for _, stat in ipairs {"health", "mana", "endurance", "willpower"} do
-  cpp["compute_"..stat.."_colour"] = function()
-    if stats["current"..stat] >= (stats["max"..stat] * .75) then
+for _, stat in ipairs {'health', 'mana', 'endurance', 'willpower'} do
+  cpp['compute_'..stat..'_colour'] = function()
+    if stats['current'..stat] >= (stats['max'..stat] * .75) then
       return "<a_darkgreen>"
-    elseif stats["current"..stat] >= (stats["max"..stat] * .25) then
+    elseif stats['current'..stat] >= (stats['max'..stat] * .25) then
       return "<a_yellow>"
     else
       return "<a_red>" end
@@ -64,27 +64,27 @@ cpp.compute_defs = function()
   local t = {}
 
   if defc.cloak then
-    t[#t+1] = "c"
+    t[#t+1] = 'c'
   end
 
   if affs.deafaff or defc.deaf then
-    t[#t+1] = "d"
+    t[#t+1] = 'd'
   end
 
   if affs.blindaff or defc.blind then
-    t[#t+1] = "b"
+    t[#t+1] = 'b'
   end
 
   if defc.kola then
-    t[#t+1] = "k"
+    t[#t+1] = 'k'
   end
 
   if defc.rebounding then
-    t[#t+1] = "r"
+    t[#t+1] = 'r'
   end
 
   if defc.breath then
-    t[#t+1] = "h"
+    t[#t+1] = 'h'
   end
 
   return table.concat(t)
@@ -93,8 +93,8 @@ end
 cpp.compute_eqbal = function()
   local t = {}
 
-  if bals.equilibrium then t[#t+1] = "e" end
-  if bals.balance then t[#t+1] = "x" end
+  if bals.equilibrium then t[#t+1] = 'e' end
+  if bals.balance then t[#t+1] = 'x' end
 
   return table.concat(t)
 end
@@ -103,12 +103,12 @@ cpp.compute_armbal = function()
   local t = {}
 
   if bals.leftarm == true then
-    t[#t+1] = "l"
+    t[#t+1] = 'l'
   elseif bals.leftarm ~= false then
     t[#t+1] = "?" end
 
   if bals.rightarm == true then
-    t[#t+1] = "r"
+    t[#t+1] = 'r'
   elseif bals.rightarm ~= false then
     t[#t+1] = "?" end
 
@@ -116,11 +116,11 @@ cpp.compute_armbal = function()
 end
 
 cpp.compute_prone = function ()
-  return (affs.prone and "p" or "")
+  return (affs.prone and 'p' or "")
 end
 
 cpp.compute_Prone = function ()
-  return (affs.prone and "P" or "")
+  return (affs.prone and 'P' or "")
 end
 
 if svo.haveskillset('kaido') then
@@ -187,19 +187,19 @@ end
 end
 
 cpp.compute_gametarget_colour = function()
-  local colour = "blanched_almond"
+  local colour = 'blanched_almond'
 
   local hp = me.gametargethp or 0
   if hp == 0 then
-        colour = "blanched_almond"
+        colour = 'blanched_almond'
   elseif hp < 5 then
-        colour = "red" -- nearly dead
+        colour = 'red' -- nearly dead
   elseif hp < 25 then
-        colour = "orange_red" -- grievously wounded
+        colour = 'orange_red' -- grievously wounded
   elseif hp < 50 then
-        colour = "dark_orange" -- injured
+        colour = 'dark_orange' -- injured
   elseif hp < 75 then
-        colour = "orange" -- slightly injured
+        colour = 'orange' -- slightly injured
   end
 
   return '<'..colour..">"
@@ -208,46 +208,46 @@ end
 
 if svo.haveskillset('voicecraft') then
 cpp.compute_voicebal = function()
-  return (bals.voice and "v" or "")
+  return (bals.voice and 'v' or "")
 end
 end
 
 -- add me to default prompt
 if svo.haveskillset('domination') then
 cpp.compute_entitiesbal = function()
-  return (bals.entities and "e" or "")
+  return (bals.entities and 'e' or "")
 end
 end
 
 if svo.haveskillset('healing') then
 cpp.compute_healingbal = function()
-  return (bals.healing and "E" or "")
+  return (bals.healing and 'E' or "")
 end
 end
 
 if svo.haveskillset('physiology') then
 cpp.compute_humourbal = function()
-  return (bals.humour and "h" or "")
+  return (bals.humour and 'h' or "")
 end
 
 cpp.compute_homunculusbal = function()
-  return (bals.homunculus and "H" or "")
+  return (bals.homunculus and 'H' or "")
 end
 end
 
 if svo.haveskillset('venom') then
 cpp.compute_shruggingbal = function()
-  return (bals.shrugging and "s" or "")
+  return (bals.shrugging and 's' or "")
 end
 end
 
 cpp.compute_dragonhealbal = function()
-  return (bals.dragonheal and "d" or "")
+  return (bals.dragonheal and 'd' or "")
 end
 
 if svo.haveskillset('terminus') then
 cpp.compute_wordbal = function()
-  return (bals.word and "w" or "")
+  return (bals.word and 'w' or "")
 end
 end
 
@@ -297,9 +297,9 @@ cpp.compute_power_color = function()
   if not power or power == 0 then
    powerColor = ""
   else
-   powerColor = "<" .. (power < 25 and "red" or power < 60 and
-  "yellow" or power < 75 and
-       "green_yellow" or power < 100 and "a_darkgreen" or "a_green") ..">"
+   powerColor = "<" .. (power < 25 and 'red' or power < 60 and
+  'yellow' or power < 75 and
+       'green_yellow' or power < 100 and 'a_darkgreen' or 'a_green') ..">"
   end
   return powerColor
 end
@@ -337,12 +337,12 @@ end
 
 cpp.compute_promptstring = function()
   local text = ("<LightSlateGrey>")..
-        (defc.cloak and "c" or "") ..
+        (defc.cloak and 'c' or "") ..
         (bals.equilibrium and "<white>e<LightSlateGrey>" or "")..
         (bals.balance and "<white>x<LightSlateGrey>" or "")..
-        (defc.kola and "k" or "")..
-        ((defc.deaf or affs.deafaff) and "d" or "")..
-        ((defc.blind or affs.blindaff) and "b" or "")..
+        (defc.kola and 'k' or "")..
+        ((defc.deaf or affs.deafaff) and 'd' or "")..
+        ((defc.blind or affs.blindaff) and 'b' or "")..
         (defc.astralform and "@" or "")..
         (defc.phase and "@" or "")..
         (defc.blackwind and "@" or "")..
@@ -377,12 +377,12 @@ end
 
 cpp.compute_promptstringorig = function()
  return ("<grey>")..
-        (defc.cloak and "c" or "") ..
-        (bals.equilibrium and "e" or "")..
-        (bals.balance and "x" or "")..
-        (defc.kola and "k" or "")..
-        ((defc.deaf or affs.deafaff) and "d" or "")..
-        ((defc.blind or affs.blindaff) and "b" or "")..
+        (defc.cloak and 'c' or "") ..
+        (bals.equilibrium and 'e' or "")..
+        (bals.balance and 'x' or "")..
+        (defc.kola and 'k' or "")..
+        ((defc.deaf or affs.deafaff) and 'd' or "")..
+        ((defc.blind or affs.blindaff) and 'b' or "")..
         ((defc.phase or defc.blackwind or defc.astralform) and "@" or "")
 end
 
@@ -573,7 +573,7 @@ signals.gmcpcharname:connect(cp.makefunction)
 cp.display = function() return '' end
 
 signals.systemstart:connect(function ()
-  if not conf.oldcustomprompt or conf.oldcustomprompt == "off" then
+  if not conf.oldcustomprompt or conf.oldcustomprompt == 'off' then
     conf.oldcustomprompt = conf.customprompt
   end
 end)

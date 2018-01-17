@@ -23,13 +23,13 @@ local function calculatestatchanges()
     me.healthchange = stats.currenthealth - oldhealth
 
     if conf.showchanges then
-      if conf.changestype == "full" then
+      if conf.changestype == 'full' then
         t[#t+1] = string.format("<255,0,0>%d<128,128,128> Health", me.healthchange)
-      elseif conf.changestype == "short" then
+      elseif conf.changestype == 'short' then
         t[#t+1] = string.format("<255,0,0>%d<128,128,128>h", me.healthchange)
-      elseif conf.changestype == "fullpercent" then
+      elseif conf.changestype == 'fullpercent' then
         t[#t+1] = string.format("<255,0,0>%d<128,128,128> Health, %.1f%%", me.healthchange, 100/stats.maxhealth*me.healthchange*-1)
-      elseif conf.changestype == "shortpercent" then
+      elseif conf.changestype == 'shortpercent' then
         t[#t+1] = string.format("<255,0,0>%d<128,128,128>h, %.1f%%", me.healthchange, 100/stats.maxhealth*me.healthchange*-1)
       end
     end
@@ -38,13 +38,13 @@ local function calculatestatchanges()
     me.healthchange = stats.currenthealth - oldhealth
 
     if conf.showchanges then
-      if conf.changestype == "full" then
+      if conf.changestype == 'full' then
         t[#t+1] = string.format("<0,255,0>+%d<128,128,128> Health", me.healthchange)
-      elseif conf.changestype == "short" then
+      elseif conf.changestype == 'short' then
         t[#t+1] = string.format("<0,255,0>+%d<128,128,128>h", me.healthchange)
-      elseif conf.changestype == "fullpercent" then
+      elseif conf.changestype == 'fullpercent' then
         t[#t+1] = string.format("<0,255,0>+%d<128,128,128> Health, %.1f%%", me.healthchange, 100/stats.maxhealth*me.healthchange)
-      elseif conf.changestype == "shortpercent" then
+      elseif conf.changestype == 'shortpercent' then
         t[#t+1] = string.format("<0,255,0>+%d<128,128,128>h, %.1f%%", me.healthchange, 100/stats.maxhealth*me.healthchange)
       end
     end
@@ -54,13 +54,13 @@ local function calculatestatchanges()
     me.manachange = stats.currentmana - oldmana
 
     if conf.showchanges then
-      if conf.changestype == "full" then
+      if conf.changestype == 'full' then
         t[#t+1] = string.format("<255,0,0>%d<128,128,128> Mana", me.manachange)
-      elseif conf.changestype == "short" then
+      elseif conf.changestype == 'short' then
         t[#t+1] = string.format("<255,0,0>%d<128,128,128>m", me.manachange)
-      elseif conf.changestype == "fullpercent" then
+      elseif conf.changestype == 'fullpercent' then
         t[#t+1] = string.format("<255,0,0>%d<128,128,128> Mana, %.1f%%", me.manachange, 100/stats.maxmana*me.manachange*-1)
-      elseif conf.changestype == "shortpercent" then
+      elseif conf.changestype == 'shortpercent' then
         t[#t+1] = string.format("<255,0,0>%d<128,128,128>m, %.1f%%", me.manachange, 100/stats.maxmana*me.manachange*-1)
       end
     end
@@ -69,13 +69,13 @@ local function calculatestatchanges()
     me.manachange = stats.currentmana - oldmana
 
     if conf.showchanges then
-      if conf.changestype == "full" then
+      if conf.changestype == 'full' then
         t[#t+1] = string.format("<0,255,0>+%d<128,128,128> Mana", me.manachange)
-      elseif conf.changestype == "short" then
+      elseif conf.changestype == 'short' then
         t[#t+1] = string.format("<0,255,0>+%d<128,128,128>m", me.manachange)
-      elseif conf.changestype == "fullpercent" then
+      elseif conf.changestype == 'fullpercent' then
         t[#t+1] = string.format("<0,255,0>+%d<128,128,128> Mana, %.1f%%", me.manachange, 100/stats.maxmana*me.manachange)
-      elseif conf.changestype == "shortpercent" then
+      elseif conf.changestype == 'shortpercent' then
         t[#t+1] = string.format("<0,255,0>+%d<128,128,128>m, %.1f%%", me.manachange, 100/stats.maxmana*me.manachange)
       end
     end
@@ -101,7 +101,7 @@ local function checkblackout()
     valid.simpleblackout()
   elseif not blackout_flag and affs.blackout and getCurrentLine() ~= "" then
     if actions.touchtree_misc then
-      lifevision.add(actions.touchtree_misc.p, nil, "blackout")
+      lifevision.add(actions.touchtree_misc.p, nil, 'blackout')
     else
       svo.checkaction(svo.dict.blackout.waitingfor, true)
       lifevision.add(actions.blackout_waitingfor.p)
@@ -115,8 +115,8 @@ function svo.valid.setup_prompt()
   if line == "-" or line:find("^%-%d+%-$") or line == " Vote-" then
     -- bals.balance = true
     -- bals.equilibrium = true
-    bals.rightarm = "unset"
-    bals.leftarm = "unset"
+    bals.rightarm = 'unset'
+    bals.leftarm = 'unset'
   else
     bals.balance = false
     bals.equilibrium = false
@@ -132,39 +132,39 @@ local function check_promptflags()
 
   if pflags.b and not defc.blind and not affs.blindaff then
     if ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)) then
-      if svo.me.class == "Apostate" and not defc.mindseye then
+      if svo.me.class == 'Apostate' and not defc.mindseye then
         return
       end
-      defences.got("blind")
+      defences.got('blind')
     else
       svo.addaffdict(svo.dict.blindaff)
     end
   elseif not pflags.b and (defc.blind or affs.blindaff) then
-    svo.rmaff("blindaff")
-    defences.lost("blind")
+    svo.rmaff('blindaff')
+    defences.lost('blind')
   end
 
   if pflags.d and not defc.deaf and not affs.deafaff then
     if ((defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye) then
-      defences.got("deaf")
+      defences.got('deaf')
     else
       svo.addaffdict(svo.dict.deafaff)
     end
   elseif not pflags.d and (defc.deaf or affs.deafaff) then
-    svo.rmaff("deafaff")
-    defences.lost("deaf")
+    svo.rmaff('deafaff')
+    defences.lost('deaf')
   end
 
   if pflags.k and not defc.kola then
-    defences.got("kola")
+    defences.got('kola')
   elseif not pflags.k and defc.kola then
-    defences.lost("kola")
+    defences.lost('kola')
   end
 
   if pflags.c and not defc.cloak then
-    defences.got("cloak")
+    defences.got('cloak')
   elseif not pflags.c and defc.cloak then
-    defences.lost("cloak")
+    defences.lost('cloak')
   end
 
 if svo.haveskillset('shindo') then
@@ -176,15 +176,15 @@ if svo.haveskillset('kaido') then
 end
 
 if svo.haveskillset('necromancy') then
-  if pflags.at then defences.got("blackwind") else defences.lost("blackwind") end
+  if pflags.at then defences.got('blackwind') else defences.lost('blackwind') end
 end
 
 if svo.haveskillset('occultism') then
-  if pflags.at then defences.got("astralform") else defences.lost("astralform") end
+  if pflags.at then defences.got('astralform') else defences.lost('astralform') end
 end
 
 if svo.haveskillset('subterfuge') then
-  if pflags.at then defences.got("phase") else defences.lost("phase") end
+  if pflags.at then defences.got('phase') else defences.lost('phase') end
 end
 
   local oldgametarget, oldgametargethp = me.gametarget, me.gametargethp
@@ -244,7 +244,7 @@ function svo.onprompt()
   -- send off all batched commands
   sk.dosendqueue()
 
-  local currentlinenumber = getLastLineNumber("main")
+  local currentlinenumber = getLastLineNumber('main')
   svo.lastpromptnumber = currentlinenumber
   -- record the time of the latest prompt we've seen - doing so is okay because we aren't using the current time, but retrieving the already calculated time from Mudlet
   -- using this, we can then find which was the most recent prompt line. Sometimes another line will share the time with the prompt, but the prompt will always be latest
@@ -261,8 +261,8 @@ signals.after_prompt_processing:connect(function ()
   moveCursorEnd()
   if selectString( getCurrentLine(), 1 ) ~= -1 then
     copy()
-    moveCursorEnd("svo_prompt")
-    paste("svo_prompt")
+    moveCursorEnd('svo_prompt')
+    paste('svo_prompt')
   end
 
   -- stats are updated in a pre-emit of before_prompt_processing; available to the customprompt here
@@ -277,7 +277,7 @@ signals.after_prompt_processing:connect(function ()
   -- prefix an orange '?:' if we don't know the exact stats
   if affs.recklessness or affs.blackout then
     local currentline = getLineCount()
-    moveCursor("main", 0, currentline)
+    moveCursor('main', 0, currentline)
     deselect()
     setFgColor(255, 102, 0)
     insertText("?:")
@@ -288,10 +288,10 @@ signals.after_prompt_processing:connect(function ()
   if sys.sync then
     local currentline = getLineCount()
     deselect()
-    moveCursor("main", 0, currentline)
+    moveCursor('main', 0, currentline)
     setFgColor(255, 0, 0)
     insertText("(")
-    moveCursor("main", 1, currentline)
+    moveCursor('main', 1, currentline)
 
     -- you're overriding the system, green
     if svo.sacid then
@@ -305,17 +305,17 @@ signals.after_prompt_processing:connect(function ()
     end
 
     if svo.sacid then
-      insertLink("a", 'svo.echof[[You\'re currently overriding the system]]', 'You were overriding the system at this point', true)
+      insertLink('a', 'svo.echof[[You\'re currently overriding the system]]', 'You were overriding the system at this point', true)
     elseif sk.syncdebug then
-      insertLink("a", 'svo.echof[['..sk.syncdebug..']]', 'Click to see actions we were considering doing at this point', true)
+      insertLink('a', 'svo.echof[['..sk.syncdebug..']]', 'Click to see actions we were considering doing at this point', true)
     else
-      insertText("a")
+      insertText('a')
     end
 
-    moveCursor("main", 2, currentline)
+    moveCursor('main', 2, currentline)
     setFgColor(255, 0, 0)
     insertText(")")
-    moveCursor("main", 3, currentline)
+    moveCursor('main', 3, currentline)
     setFgColor(0,0,0)
     insertText(" ")
     moveCursorEnd()
@@ -323,7 +323,7 @@ signals.after_prompt_processing:connect(function ()
   end
 
   if conf.paused then
-    moveCursor("main", 0, getLineCount())
+    moveCursor('main', 0, getLineCount())
     cinsertText("<a_red>(<a_darkgrey>p<a_red>)<black> ")
   end
 
@@ -335,7 +335,7 @@ signals.after_prompt_processing:connect(function ()
   if conf.singleprompt then
     selectString(getCurrentLine(), 1)
     copy()
-    clearWindow("bottomprompt")
+    clearWindow('bottomprompt')
     svo.bottomprompt:paste()
 
     if conf.singlepromptblank then
@@ -363,7 +363,7 @@ local old500p = false
 
 
 function svo.prio_makefirst(action, balance)
-  svo.assert(action and svo.dict[action], "svo.prio_makefirst: " .. (action and action or "nil") .. " isn't a valid action.")
+  svo.assert(action and svo.dict[action], "svo.prio_makefirst: " .. (action and action or 'nil') .. " isn't a valid action.")
 
   local act = svo.dict[action]
 
@@ -376,11 +376,11 @@ function svo.prio_makefirst(action, balance)
     svo.assert(count == 1, "svo.prio_makefirst: " .. action .. " uses more than one balance, which one do you want to move?")
     local balance = false
     for k,_ in pairs(act) do
-      if k ~= "aff" and k ~= "waitingfor" then balance = k end
+      if k ~= 'aff' and k ~= 'waitingfor' then balance = k end
     end
   end
 
-  svo.assert(act[balance] and act[balance] ~= "aff" and act[balance] ~= "waitingfor", "svo.prio_makefirst: " .. action .. " doesn't use the " .. (balance and balance or "nil") .. " balance.")
+  svo.assert(act[balance] and act[balance] ~= 'aff' and act[balance] ~= 'waitingfor', "svo.prio_makefirst: " .. action .. " doesn't use the " .. (balance and balance or 'nil') .. " balance.")
 
   local beforestate = sk.getbeforestateprios()
 
@@ -447,12 +447,12 @@ function svo.prio_slowswap(what, arg3, echoback, callback, ...)
   local afterstate = sk.getafterstateprios()
   sk.notifypriodiffs(beforestate, afterstate)
 
-  if callback and type(callback) == "function" then callback(...) end
+  if callback and type(callback) == 'function' then callback(...) end
 end
 
 function svo.prio_swap(what, balance, arg2, arg3, echoback, callback, ...)
   local sendf; if echoback then sendf = svo.echof else sendf = svo.errorf end
-  svo.assert(what and svo.dict[what] and balance and svo.dict[what][balance] and balance ~= "aff" and balance ~= "waitingfor", "what item and balance do you want to swap?", sendf)
+  svo.assert(what and svo.dict[what] and balance and svo.dict[what][balance] and balance ~= 'aff' and balance ~= 'waitingfor', "what item and balance do you want to swap?", sendf)
 
   local function swaptwo(what, name, balance, ...)
     if svo.dict[what][balance].aspriority < svo.dict[name][balance].aspriority then
@@ -465,7 +465,7 @@ function svo.prio_swap(what, balance, arg2, arg3, echoback, callback, ...)
       if echoback then svo.echof("<0,255,0>%s <255,255,255>> <0,255,0>%s%s in %s balance", name, what, svo.getDefaultColor(), balance) end
     end
 
-    if callback and type(callback) == "function" then callback(...) end
+    if callback and type(callback) == 'function' then callback(...) end
   end
 
   local beforestate = sk.getbeforestateprios()
@@ -509,7 +509,7 @@ svo.prompt_stats = function ()
         if not conf.paused then
           conf.paused = true
           echo"\n" svo.echof("Paused the system - please enable GMCP for it in Mudlet settings!") svo.showprompt()
-          raiseEvent("svo config changed", "paused")
+          raiseEvent("svo config changed", 'paused')
         end
       return
     end
@@ -549,7 +549,7 @@ svo.prompt_stats = function ()
       sk.checkwillpower()
     end
 
-    if (affs.blackout and not ((lifevision.l.touchtree_misc and lifevision.l.touchtree_misc.arg == "blackout") or lifevision.l.blackout_waitingfor)) or (affs.recklessness and not actions.recklessness_focus and not actions.recklessness_herb) then
+    if (affs.blackout and not ((lifevision.l.touchtree_misc and lifevision.l.touchtree_misc.arg == 'blackout') or lifevision.l.blackout_waitingfor)) or (affs.recklessness and not actions.recklessness_focus and not actions.recklessness_herb) then
       local assumestats = conf.assumestats/100
       stats.currenthealth, stats.currentmana =
         math.floor(stats.maxhealth * assumestats), math.floor(stats.maxmana * assumestats)
@@ -587,7 +587,7 @@ function svo.goteq()
   if sys.misseddisrupt then killTimer(sys.misseddisrupt); sys.misseddisrupt = nil end
   sys.extended_eq = nil
 
-  if affs.blackout and not bals.equilibrium then bals.equilibrium = true; raiseEvent("svo got balance", "equilibrium") end
+  if affs.blackout and not bals.equilibrium then bals.equilibrium = true; raiseEvent("svo got balance", 'equilibrium') end
 end
 
 function svo.gotbalance()
@@ -599,7 +599,7 @@ function svo.gotbalance()
   end
 
   -- FIXME
-  if affs.blackout and not bals.balance then bals.balance = true; raiseEvent("svo got balance", "balance") end
+  if affs.blackout and not bals.balance then bals.balance = true; raiseEvent("svo got balance", 'balance') end
 end
 
 function svo.gotarmbalance()
@@ -611,7 +611,7 @@ function svo.gotarmbalance()
 end
 
 signals["svo lost balance"]:connect(function(balance)
-  if balance ~= "equilibrium" or not conf.noeqtimeout or conf.noeqtimeout == 0 or conf.serverside then return end
+  if balance ~= 'equilibrium' or not conf.noeqtimeout or conf.noeqtimeout == 0 or conf.serverside then return end
 
   if sys.misseddisrupt then killTimer(sys.misseddisrupt) end
   sys.misseddisrupt = tempTimer(conf.noeqtimeout, function()
@@ -630,14 +630,14 @@ signals["svo lost balance"]:connect(function(balance)
 end)
 
 signals["svo got balance"]:connect(function(balance)
-  if balance ~= "equilibrium" then return end
+  if balance ~= 'equilibrium' then return end
 
-  if affs.disrupt then svo.rmaff("disrupt") end
+  if affs.disrupt then svo.rmaff('disrupt') end
 end)
 
 if svo.haveskillset('weaponmastery') then
 signals["svo got balance"]:connect(function(balance)
-  if balance ~= "balance" then return end
+  if balance ~= 'balance' then return end
 
   sk.didfootingattack = false
 end)
@@ -674,7 +674,7 @@ end
 
 svo.can_usemana = function()
   return stats.currentmana > sys.manause and
-    not svo.doingaction("nomana") -- pseudo-tracking for blackout and recklessness
+    not svo.doingaction('nomana') -- pseudo-tracking for blackout and recklessness
     and (stats.wp or 0) > 1
 end
 
@@ -708,7 +708,7 @@ end
 svo.prefixwarning = function ()
   local deselect, echo, setFgColor = deselect, echo, setFgColor
 
-  if conf.warningtype == "right" then
+  if conf.warningtype == 'right' then
     local currentline = getCurrentLine()
     deselect()
     echo(string.rep(" ", conf.screenwidth - #currentline - #cnrl.warning-3))
@@ -723,16 +723,16 @@ svo.prefixwarning = function ()
   else
     local currentline = getLineCount()
     deselect()
-    moveCursor("main", 0, currentline)
+    moveCursor('main', 0, currentline)
     setFgColor(0, 050, 200)
     insertText("(")
-    moveCursor("main", 1, currentline)
+    moveCursor('main', 1, currentline)
     setFgColor(128, 128, 128)
     insertText(cnrl.warning)
-    moveCursor("main", 1+#cnrl.warning, currentline)
+    moveCursor('main', 1+#cnrl.warning, currentline)
     setFgColor(0, 050, 200)
     insertText(")")
-    moveCursor("main", 2+#cnrl.warning, currentline)
+    moveCursor('main', 2+#cnrl.warning, currentline)
     setFgColor(0,0,0)
     insertText(" ")
     moveCursorEnd()
@@ -741,15 +741,15 @@ svo.prefixwarning = function ()
 end
 
 svo.cnrl.lockdata = {
-  ["soft"] = function () return (affs.slickness and affs.anorexia and affs.asthma) end,
-  ["venom"] = function () return (affs.slickness and affs.anorexia and affs.asthma and affs.paralysis) end,
-  ["hard"] = function () return (affs.slickness and affs.anorexia and affs.asthma and (affs.impatience or (not svo.can_usemana() or not svo.conf.focus))) end,
-  ["dragon"] = function () return (defc.dragonform and affs.slickness and affs.anorexia and affs.asthma and (affs.impatience or (not svo.can_usemana() or not svo.conf.focus)) and affs.recklessness and affs.weakness) end,
-  ["stain"] = function() return (affs.stain and affs.slickness and ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm)) and pipes.valerian.puffs == 0) end,
-  ["rift"] = function() return ((affs.asthma and (rift.invcontents.kelp == 0 and rift.invcontents.aurum == 0)) and affs.slickness and ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))) end,
+  ['soft'] = function () return (affs.slickness and affs.anorexia and affs.asthma) end,
+  ['venom'] = function () return (affs.slickness and affs.anorexia and affs.asthma and affs.paralysis) end,
+  ['hard'] = function () return (affs.slickness and affs.anorexia and affs.asthma and (affs.impatience or (not svo.can_usemana() or not svo.conf.focus))) end,
+  ['dragon'] = function () return (defc.dragonform and affs.slickness and affs.anorexia and affs.asthma and (affs.impatience or (not svo.can_usemana() or not svo.conf.focus)) and affs.recklessness and affs.weakness) end,
+  ['stain'] = function() return (affs.stain and affs.slickness and ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm)) and pipes.valerian.puffs == 0) end,
+  ['rift'] = function() return ((affs.asthma and (rift.invcontents.kelp == 0 and rift.invcontents.aurum == 0)) and affs.slickness and ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))) end,
   ["rift 2"] = function() return (affs.asthma and affs.slickness and affs.anorexia and (affs.paralysis or (affs.disrupt and not bals.equilibrium)) and ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))) end,
-  ["slow"] = function () return (affs.asthma and affs.slickness and ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm)) and (affs.mildconcussion or affs.seriousconcussion) and affs.aeon) end,
-  ["true"] = function () return (affs.slickness and affs.anorexia and affs.asthma and affs.paralysis and affs.impatience and affs.disrupt and affs.confusion) end
+  ['slow'] = function () return (affs.asthma and affs.slickness and ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm)) and (affs.mildconcussion or affs.seriousconcussion) and affs.aeon) end,
+  ['true'] = function () return (affs.slickness and affs.anorexia and affs.asthma and affs.paralysis and affs.impatience and affs.disrupt and affs.confusion) end
 }
 
 --[[ cnrl.checkwarning gets unblocked whenever we receive an aff that is
@@ -833,12 +833,12 @@ function svo.cnrl.processcommand(what)
   -- then when the sluggish msg is seen, the timer is cleared.
   -- amnesia screws with it by hiding the sluggish msg itself!
   if not sk.sluggishtimer and not affs.amnesia and what ~= "" and not what:lower():find("^curing") then
-    sk.sawsluggish = getLastLineNumber("main")
+    sk.sawsluggish = getLastLineNumber('main')
     local time = sys.wait + svo.syncdelay() + getNetworkLatency()
     sk.sluggishtimer = tempTimer(time, function ()
-      if type(sk.sawsluggish) == "number" and sk.sawsluggish ~= getLastLineNumber("main") and (affs.retardation or svo.affsp.retardation) then
+      if type(sk.sawsluggish) == 'number' and sk.sawsluggish ~= getLastLineNumber('main') and (affs.retardation or svo.affsp.retardation) then
         if affs.retardation then echo"\n" svo.echof("Retardation seems to have went away.") end
-        svo.rmaff("retardation")
+        svo.rmaff('retardation')
       end
 
       sk.sluggishtimer = nil
@@ -851,7 +851,7 @@ signals.sysdatasendrequest:block(cnrl.processcommand)
 
 -- parse things for acceptance. ideas to prevent looping: either debug.traceback() (very slow it turned out), or block/unblock handler when doing sys actions (solution used)
 function svo.cnrl.processusercommand(what, now)
-  -- remove spaces, as some people may use spaces, ie "bedevil " instead of just "bedevil" which then confuses tracking
+  -- remove spaces, as some people may use spaces, ie "bedevil " instead of just 'bedevil' which then confuses tracking
   what = what:trim()
 
   -- if this is a system command done outside of a cnrl.processusercommand block because of batching, catch it
@@ -860,17 +860,17 @@ function svo.cnrl.processusercommand(what, now)
   -- debugf("sys.input_to_actions: %s", pl.pretty.write(pl.tablex.keys(sys.input_to_actions)))
   -- debugf("sk.systemscommands: %s", pl.pretty.write(sk.systemscommands))
 
-  if not svo.innews and (what == "qq" or what == "quit") then
+  if not svo.innews and (what == 'qq' or what == 'quit') then
     svo.QQ()
     svo.echof("Going into empty defs mode so pre-cache doesn't take anything out, and stuffing away all riftables...")
-    defs.switch("empty")
+    defs.switch('empty')
     svo.inra()
-  elseif not svo.innews and (what == "ir" or what == "info rift") then
-    me.parsingrift = "all"
+  elseif not svo.innews and (what == 'ir' or what == "info rift") then
+    me.parsingrift = 'all'
   elseif not svo.innews and (what == "ir herb" or what == "ir plant") then -- missing info rift variants
-    me.parsingrift = "herbs"
+    me.parsingrift = 'herbs'
   elseif not svo.innews and (what == "ir mineral") then
-    me.parsingrift = "minerals"
+    me.parsingrift = 'minerals'
 
   elseif sys.input_to_actions[what] then
     local function dostuff()
@@ -897,9 +897,9 @@ signals.sysdatasendrequest:connect(cnrl.processusercommand)
 -- limited_around: don't show the full list, but only 13 elements around the center one
 function svo.printorder(balance, limited_around)
   -- translate the obvious 'balance' to 'physical'
-  if balance == "balance" then balance = "physical" end
+  if balance == 'balance' then balance = 'physical' end
   local sendf = svo.errorf
-  svo.assert(type(balance) == "string", "svo.printorder: what balance do you want to print for?", sendf)
+  svo.assert(type(balance) == 'string', "svo.printorder: what balance do you want to print for?", sendf)
 
   -- get into table...
   local data = svo.make_prio_table(balance)
@@ -948,9 +948,9 @@ function svo.printorder(balance, limited_around)
 
   local function echoserver(j, raffs, rdefs, balance, ssprioamount)
     if raffs[data[j]] then
-      return string.format("ss aff %"..ssprioamount.."s", (raffs[data[j]] <= 25 and raffs[data[j]] or "25"))
+      return string.format("ss aff %"..ssprioamount..'s', (raffs[data[j]] <= 25 and raffs[data[j]] or '25'))
     elseif rdefs[data[j]] then
-      return string.format("ss def %"..ssprioamount.."s", (rdefs[data[j]] <= 25 and rdefs[data[j]] or "25"))
+      return string.format("ss def %"..ssprioamount..'s', (rdefs[data[j]] <= 25 and rdefs[data[j]] or '25'))
     elseif svo.dict[data[j]][balance].def then
       return "ss def"..(' '):rep(ssprioamount).."-"
     elseif svo.dict[data[j]][balance].aff then
@@ -970,10 +970,10 @@ function svo.printorder(balance, limited_around)
       echoLink("^^", 'svo.prio_swap("'..data[j]..'", "'..balance..'", '..(j+1)..', nil, false, svo.printorder, "'..balance..'", '..(j+1)..')', 'shuffle '..data[j]..' up', true)
       echo(" ")
       setFgColor(148,148,255)
-      echoLink("vv", 'svo.prio_swap("'..data[j]..'", "'..balance..'", '..(j-1)..', nil, false, svo.printorder, "'..balance..'", '..(j-1)..')', 'shuffle '..data[j]..' down', true)
+      echoLink('vv', 'svo.prio_swap("'..data[j]..'", "'..balance..'", '..(j-1)..', nil, false, svo.printorder, "'..balance..'", '..(j-1)..')', 'shuffle '..data[j]..' down', true)
       setFgColor(112,112,112)
       -- focus balance can't have 'priority'
-      if not conf.serverside or balance == "focus" then
+      if not conf.serverside or balance == 'focus' then
         echo(string.format(" (%s) "..(' '):rep(prioamount - intlen(j)).."%s", j, data[j]))
       else
         -- defs not on defup/keepup won't have a priority
@@ -1037,7 +1037,7 @@ function svo.printordersync(limited_around)
       echoLink("^^", 'svo.prio_slowswap("'..string.format("%s_%s", string.match(data[j], "(%w+) %((%w+)%)"))..'", '..(j+1)..', false, svo.printordersync, '..(j+1)..')', 'shuffle '..data[j]..' up', true)
       echo(" ")
       setFgColor(148,148,255)
-      echoLink("vv", 'svo.prio_slowswap("'..string.format("%s_%s", string.match(data[j], "(%w+) %((%w+)%)"))..'", '..(j-1)..', false, svo.printordersync, '..(j-1)..')', 'shuffle '..data[j]..' up', true)
+      echoLink('vv', 'svo.prio_slowswap("'..string.format("%s_%s", string.match(data[j], "(%w+) %((%w+)%)"))..'", '..(j-1)..', false, svo.printordersync, '..(j-1)..')', 'shuffle '..data[j]..' up', true)
       setFgColor(112,112,112)
       echo(" (" .. j..") "..data[j])
       echo("\n")
@@ -1067,10 +1067,10 @@ function svo.sk.check_fullstats()
       svo.serverignore.healmana = true
     end
 
-    if type(sk.fullstatscallback) == "function" then
+    if type(sk.fullstatscallback) == 'function' then
       local s,m = pcall(sk.fullstatscallback)
       if not s then svo.echof("Your fullstats function had a problem:\n  %s", m) end
-    elseif type(sk.fullstatscallback) == "string" then
+    elseif type(sk.fullstatscallback) == 'string' then
       local s,m = pcall(loadstring(sk.fullstatscallback))
       if not s then svo.echof("Your fullstats code had a problem:\n  %s", m) end
     end
@@ -1085,10 +1085,10 @@ function svo.fullstats(newstatus, callback, echoback)
       if echoback then svo.echof("We're already completely healthy.") end
       raiseEvent("svo got fullstats")
 
-      if newstatus and type(callback) == "function" then
+      if newstatus and type(callback) == 'function' then
         local s,m = pcall(callback)
         if not s then svo.echof("Your fullstats function had a problem:\n  %s", m) end
-      elseif newstatus and type(callback) == "string" then
+      elseif newstatus and type(callback) == 'string' then
         local s,m = pcall(loadstring(callback))
         if not s then svo.echof("Your fullstats code had a problem:\n  %s", m) end
       end
@@ -1126,7 +1126,7 @@ end
 
 svo.prompttrigger = function (name, func)
   svo.assert(name, "svo.prompttrigger: the name needs to be provided")
-  svo.assert(type(func) == "function" or type(func) == "nil", "svo.prompttrigger: the second argument needs to be a Lua function or nil")
+  svo.assert(type(func) == 'function' or type(func) == 'nil', "svo.prompttrigger: the second argument needs to be a Lua function or nil")
 
   sk.onprompt_beforeaction_add(name, func)
 end
@@ -1138,11 +1138,11 @@ end
 function svo.lyre_step()
   if not (bals.balance and bals.equilibrium) then svo.echof("Don't have balance+eq.") return end
 
-  if not conf.lyre then svo.config.set("lyre", "on", true) end
+  if not conf.lyre then svo.config.set('lyre', 'on', true) end
 
   if sys.sync then sk.gnomes_are_working = true end
   svo.conf.paused = false
-  raiseEvent("svo config changed", "paused")
+  raiseEvent("svo config changed", 'paused')
 
   svo.conf.lyre_step = true
   svo.make_gnomes_work()
@@ -1157,8 +1157,8 @@ end
 
 -- capture the incoming values for gmcp balance and eq
 signals.gmcpcharvitals:connect(function()
-  svo.newbals.balance     = gmcp.Char.Vitals.bal == "1" and true or false
-  svo.newbals.equilibrium = gmcp.Char.Vitals.eq == "1" and true or false
+  svo.newbals.balance     = gmcp.Char.Vitals.bal == '1' and true or false
+  svo.newbals.equilibrium = gmcp.Char.Vitals.eq == '1' and true or false
 end)
 
 -- feed the curing systems curing command through the system, so it can track actions
