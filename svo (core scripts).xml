@@ -40390,7 +40390,7 @@ svo.systemloaded = true
 raiseEvent(&quot;svo system loaded&quot;)
 
 svo.echofn(&quot;Loaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
-echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.pathurs.com/homepage.php&quot;', &quot;Svof homepage&quot;)
+echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.github.io/svof&quot;', &quot;Svof homepage&quot;)
 decho(svo.getDefaultColor()..&quot;)\n&quot;)</script>
                     <eventHandlerList/>
                 </Script>
@@ -42195,7 +42195,7 @@ if not svo.conf.riftlabel then svo.riftlabel:hide() end</script>
                 <script>--[[ svo system loader, made by Vadi ]]
 
       svo.echofn(&quot;Loaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
-      echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.pathurs.com/homepage.php&quot;', &quot;Svof homepage&quot;)
+      echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.github.io/svof/&quot;', &quot;Svof homepage&quot;)
       decho(svo.getDefaultColor()..&quot;)\n&quot;)
 
 if true then return end
@@ -42223,7 +42223,7 @@ function svo_load()
       if not s then display(m) return end
 
       svo.echofn(&quot;Loaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
-      echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.pathurs.com/homepage.php&quot;', &quot;Svof homepage&quot;)
+      echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.github.io/svof/&quot;', &quot;Svof homepage&quot;)
       decho(svo.getDefaultColor()..&quot;)\n&quot;)
       return
     end
@@ -42274,7 +42274,7 @@ function svo_load()
   if not s then display(m) return end
 
   svo.echofn(&quot;Loaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
-  echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.pathurs.com/homepage.php&quot;', &quot;Svof homepage&quot;)
+  echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.github.io/svof/&quot;', &quot;Svof homepage&quot;)
   decho(svo.getDefaultColor()..&quot;)\n&quot;)
 
   -- update file
