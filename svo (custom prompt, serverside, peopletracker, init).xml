@@ -1812,8 +1812,8 @@ if svo.systemloaded then svo.loader.peopletracker() end</script>
             <packageName></packageName>
             <script>-- this function loads the system independent of the order of xmls/modules
 -- also used when the system needs to be reloaded with a new class
-function svo_init_system(force_init)
-  if svo.systemloaded and not force_init then return end
+function svo_init_system()
+  if svo.systemloaded then return end
 
   -- list of requires Svof subsystems that needs to be loaded before we can load the system
   local required_subsystems = {
@@ -1866,7 +1866,7 @@ function svo_init_system(force_init)
   svo.signals.systemstart:emit()
   svo.systemloaded = true
   raiseEvent(&quot;svo system loaded&quot;)
-  
+  	
   svo.echofn(&quot;Loaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
   echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.github.io/svof&quot;', &quot;Svof homepage&quot;)
   decho(svo.getDefaultColor()..&quot;)\n&quot;)
@@ -1886,7 +1886,8 @@ end</script>
   if svo.me.class ~= gmcp.Char.Status.class then
 	  local oldclass = svo.me.class
 		svo.me.class = gmcp.Char.Status.class
-	  svo_init_system(true)		
+		svo.signals.saveconfig:emit()
+	  svo.systemloaded = false; svo_init_system()		
 	  svo.echof(&quot;Changed your Svof from %s over to %s.&quot;, oldclass, svo.me.class)
 	end
 end</script>
