@@ -7112,8 +7112,8 @@ function svo_init_system()
 	if gmcp and gmcp.Char and gmcp.Char.Name then
 	  svo.signals.gmcpcharname:emit()
 	end
-  	svo.echof&quot;2222&quot;
-  svo.echofn(&quot;Loaded &amp; ready to gooo, version %s (&quot;, tostring(svo.version))
+	
+  svo.echofn(&quot;Loaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
   echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.github.io/svof&quot;', &quot;Svof homepage&quot;)
   decho(svo.getDefaultColor()..&quot;)\n&quot;)
 	
@@ -7187,6 +7187,21 @@ end
 svo.install_other_modules()</script>
                 <eventHandlerList>
                     <string>sysInstallModule</string>
+                </eventHandlerList>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo.installed_as_package</name>
+                <packageName></packageName>
+                <script>function svo.installed_as_package(_, installedpackage)
+  if installedpackage ~= &quot;svo (install me in module manager)&quot; then return end
+	
+	cecho(
+[[&lt;indian_red&gt;Svof needs to be installed as a module, not a package -
+please uninstall it and instead instead using the &lt;orange_red&gt;Module Manager&lt;indian_red&gt;.
+]])
+end</script>
+                <eventHandlerList>
+                    <string>sysInstallPackage</string>
                 </eventHandlerList>
             </Script>
         </ScriptGroup>
