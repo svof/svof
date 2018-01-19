@@ -1843,7 +1843,7 @@ function svo_init_system(force_init)
   }
 	
 	-- Penlight is not loaded yet	
-	if not package.loaded[&quot;pl.tablex&quot;] then return end
+	if not package.loaded['pl.tablex'] then return end
 		
 	local tablex = require('pl.tablex')
 	local loaded_subsystems = tablex.keys(svo.loader)

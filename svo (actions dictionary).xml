@@ -33,16 +33,16 @@ local defences, stats, empty, cnrl, rift = svo.defences, svo.stats, svo.empty, s
 local bals, pipes = svo.bals, svo.pipes
 
 -- these lists are checked by curing functions in the skeleton
-svo.dict_balanceful = {}
-svo.dict_balanceless = {}
-svo.dict_balanceful_def = {}
-svo.dict_balanceless_def = {}
-svo.dict_herb = {}
-svo.dict_misc = {}
-svo.dict_misc_def = {}
-svo.dict_purgative = {}
-svo.dict_salve_def = {}
-svo.dict_smoke_def = {}
+svo.dict_balanceful      = svo.dict_balanceful or {}
+svo.dict_balanceless     = svo.dict_balanceless or {}
+svo.dict_balanceful_def  = svo.dict_balanceful_def or {}
+svo.dict_balanceless_def = svo.dict_balanceless_def or {}
+svo.dict_herb            = svo.dict_herb or {}
+svo.dict_misc            = svo.dict_misc or {}
+svo.dict_misc_def        = svo.dict_misc_def or {}
+svo.dict_purgative       = svo.dict_purgative or {}
+svo.dict_salve_def       = svo.dict_salve_def or {}
+svo.dict_smoke_def       = svo.dict_smoke_def or {}
 
 svo.codepaste = svo.codepaste or {}
 local codepaste = svo.codepaste
@@ -15587,12 +15587,12 @@ function svo.basicdef(which, command, balanceless, gamename, undeffable)
     svo.dict[which].gamename = gamename
   end
   if balanceless then
-    svo.dict[which].balanceless_act = true
+    svo.dict[which].physical.balanceless_act = true
   else
-    svo.dict[which].balanceful_act = true
+    svo.dict[which].physical.balanceful_act = true
   end
   if undeffable then
-    svo.dict[which].undeffable = true
+    svo.dict[which].physical.undeffable = true
   end
 end
 local basicdef = svo.basicdef
