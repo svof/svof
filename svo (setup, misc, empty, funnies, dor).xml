@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
 <MudletPackage version="1.001">
+    <TriggerPackage/>
+    <TimerPackage/>
+    <AliasPackage/>
+    <ActionPackage/>
     <ScriptPackage>
         <ScriptGroup isActive="yes" isFolder="yes">
             <name>Setup, misc, empty, funnies, dor</name>
@@ -3242,4 +3246,8 @@ if svo.systemloaded then svo.loader.dor() end</script>
             </Script>
         </ScriptGroup>
     </ScriptPackage>
+    <KeyPackage/>
+    <HelpPackage>
+        <helpURL></helpURL>
+    </HelpPackage>
 </MudletPackage>
