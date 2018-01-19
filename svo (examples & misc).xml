@@ -2224,7 +2224,7 @@ svo.riftlabel = Geyser.Label:new({  name = &quot;svo.riftlabel&quot;,
                                x = -360, y = -166,
                                width = 355, height = 166})
 
-if not svo.conf.riftlabel then svo.riftlabel:hide() end</script>
+if not svo or not svo.conf or not svo.conf.riftlabel then svo.riftlabel:hide() end</script>
                 <eventHandlerList/>
             </Script>
         </ScriptGroup>
