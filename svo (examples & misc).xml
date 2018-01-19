@@ -6423,7 +6423,7 @@ function svo.checkforupdate(type)
         if not s then svo.echof(&quot;Couldn't remove the %s file (error was: %s) - this might be a problem.&quot;, location, m) end
       end
 
-      location = downloadfolder..string.format(&quot;%s.Svof.current.zip&quot;, svo.me.class)
+      location = downloadfolder..&quot;Svof.current.zip&quot;
       if io.exists(location) then
         local s,m = os.remove(location)
         if not s then svo.echof(&quot;Couldn't delete the old svo zip (located at %s), because of: %s. This might be a problem.&quot;, location, m) end
@@ -6438,8 +6438,8 @@ end
 function svo.downloadnewsystem(newversion)
   local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
   
-	svo.downloadedsystem = downloadfolder..string.format(&quot;%s.Svof.current.zip&quot;, svo.me.class)
-  local downloadurl = baseUrl..svo.me.class..[[.Svof.v]]..newversion..[[.zip]]
+	svo.downloadedsystem = downloadfolder..&quot;Svof.current.zip&quot;
+  local downloadurl = baseUrl..[[Svof.v]]..newversion..[[.zip]]
 
   downloadFile(svo.downloadedsystem, downloadurl)
   svo.newdownloadedversion = newversion
