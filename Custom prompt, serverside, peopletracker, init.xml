@@ -1,0 +1,1881 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.001">
+    <ScriptPackage>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>Custom prompt, serverside, peopletracker, init</name>
+            <packageName></packageName>
+            <script>-------------------------------------------------
+--         Put your Lua functions here.        --
+--                                             --
+-- Note that you can also use external Scripts --
+-------------------------------------------------
+</script>
+            <eventHandlerList/>
+            <Script isActive="yes" isFolder="no">
+                <name>Custom prompt</name>
+                <packageName></packageName>
+                <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+
+-- Svof is licensed under a
+-- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+-- You should have received a copy of the license along with this
+-- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+svo = svo or {}; svo.loader = svo.loader or {}
+svo.loader.customprompt = function()
+
+local sys, affs, signals = svo.sys, svo.affs, svo.signals
+local conf, sk, me, defc = svo.conf, svo.sk, svo.me, svo.defc
+local stats = svo.stats
+local bals, cp, cpp = svo.bals, svo.cp, svo.cpp
+
+for _, stat in ipairs {'health', 'mana', 'endurance', 'willpower'} do
+  cpp['compute_'..stat..'_percent'] = function()
+    return math.floor((stats['current'..stat]/stats['max'..stat])*100)
+  end
+end
+
+for _, stat in ipairs {'health', 'mana', 'endurance', 'willpower'} do
+  cpp['compute_'..stat..'_colour'] = function()
+    if stats['current'..stat] &gt;= (stats['max'..stat] * .75) then
+      return &quot;&lt;a_darkgreen&gt;&quot;
+    elseif stats['current'..stat] &gt;= (stats['max'..stat] * .25) then
+      return &quot;&lt;a_yellow&gt;&quot;
+    else
+      return &quot;&lt;a_red&gt;&quot; end
+  end
+end
+
+cpp.compute_reverse_xp = function()
+  return 100 - stats.nextlevel
+end
+
+cpp.compute_pause = function()
+  return conf.paused and '&lt;a_red&gt;(&lt;a_darkgrey&gt;p&lt;a_red&gt;)&lt;black&gt; ' or ''
+end
+
+cpp.compute_slowcuring = function()
+  if not sys.sync then return '' end
+
+  local s = {}
+  s[#s+1] = &quot;&lt;red&gt;(&quot;
+
+  if svo.sacid then
+    s[#s+1] = &quot;&lt;green&gt;a&quot;
+  elseif sk.doingstuff_inslowmode() then
+    s[#s+1] = &quot;&lt;red&gt;a&quot;
+  else
+    s[#s+1] = &quot;&lt;blue&gt;a&quot;
+  end
+
+  s[#s+1] = &quot;&lt;red&gt;) &quot;
+
+  return table.concat(s)
+end
+
+cpp.unknown_stats = function()
+  if not affs.recklessness and not affs.blackout then return '' else
+  return &quot;&lt;blaze_orange&gt;?: &quot; end
+end
+
+cpp.compute_defs = function()
+  local t = {}
+
+  if defc.cloak then
+    t[#t+1] = 'c'
+  end
+
+  if affs.deafaff or defc.deaf then
+    t[#t+1] = 'd'
+  end
+
+  if affs.blindaff or defc.blind then
+    t[#t+1] = 'b'
+  end
+
+  if defc.kola then
+    t[#t+1] = 'k'
+  end
+
+  if defc.rebounding then
+    t[#t+1] = 'r'
+  end
+
+  if defc.breath then
+    t[#t+1] = 'h'
+  end
+
+  return table.concat(t)
+end
+
+cpp.compute_eqbal = function()
+  local t = {}
+
+  if bals.equilibrium then t[#t+1] = 'e' end
+  if bals.balance then t[#t+1] = 'x' end
+
+  return table.concat(t)
+end
+
+cpp.compute_armbal = function()
+  local t = {}
+
+  if bals.leftarm == true then
+    t[#t+1] = 'l'
+  elseif bals.leftarm ~= false then
+    t[#t+1] = &quot;?&quot; end
+
+  if bals.rightarm == true then
+    t[#t+1] = 'r'
+  elseif bals.rightarm ~= false then
+    t[#t+1] = &quot;?&quot; end
+
+  return table.concat(t)
+end
+
+cpp.compute_prone = function ()
+  return (affs.prone and 'p' or &quot;&quot;)
+end
+
+cpp.compute_Prone = function ()
+  return (affs.prone and 'P' or &quot;&quot;)
+end
+
+if svo.haveskillset('kaido') then
+cpp.compute_kai = function ()
+  if stats.kai ~= 0 then
+    return stats.kai
+  end
+
+  return &quot;&quot;
+end
+
+cpp.compute_kai_colour = function ()
+  if not stats.kai or stats.kai == 0 then
+    return &quot;&quot;
+  elseif stats.kai &lt;= 11 then
+    return &quot;&lt;a_onelevel&gt;&quot;
+  elseif stats.kai &lt;= 21 then
+    return &quot;&lt;a_twolevel&gt;&quot;
+  elseif stats.kai &lt;= 41 then
+    return &quot;&lt;a_threelevel&gt;&quot;
+  elseif stats.kai &lt;= 61 then
+    return &quot;&lt;a_fourlevel&gt;&quot;
+  elseif stats.kai &lt;= 81 then
+    return &quot;&lt;a_fivelevel&gt;&quot;
+  elseif stats.kai == 100 then
+    return &quot;&lt;a_sixlevel&gt;&quot;
+  else
+    return &quot;&quot;
+  end
+
+end
+end
+
+
+if svo.haveskillset('shindo') then
+cpp.compute_shin = function ()
+  if stats.shin ~= 0 then
+    return stats.shin
+  end
+
+  return &quot;&quot;
+end
+
+cpp.compute_shin_colour = function ()
+  if not stats.shin or stats.shin == 0 then
+    return &quot;&quot;
+  elseif stats.shin &lt;= 5 then
+    return &quot;&lt;a_onelevel&gt;&quot;
+  elseif stats.shin &lt;= 15 then
+    return &quot;&lt;a_twolevel&gt;&quot;
+  elseif stats.shin &lt;= 30 then
+    return &quot;&lt;a_threelevel&gt;&quot;
+  elseif stats.shin &lt;= 40 then
+    return &quot;&lt;a_fourlevel&gt;&quot;
+  elseif stats.shin &lt;= 90 then
+    return &quot;&lt;a_fivelevel&gt;&quot;
+  elseif stats.shin == 100 then
+    return &quot;&lt;a_sixlevel&gt;&quot;
+  else
+    return &quot;&quot;
+  end
+
+end
+end
+
+cpp.compute_gametarget_colour = function()
+  local colour = 'blanched_almond'
+
+  local hp = me.gametargethp or 0
+  if hp == 0 then
+        colour = 'blanched_almond'
+  elseif hp &lt; 5 then
+        colour = 'red' -- nearly dead
+  elseif hp &lt; 25 then
+        colour = 'orange_red' -- grievously wounded
+  elseif hp &lt; 50 then
+        colour = 'dark_orange' -- injured
+  elseif hp &lt; 75 then
+        colour = 'orange' -- slightly injured
+  end
+
+  return '&lt;'..colour..&quot;&gt;&quot;
+end
+
+
+if svo.haveskillset('voicecraft') then
+cpp.compute_voicebal = function()
+  return (bals.voice and 'v' or &quot;&quot;)
+end
+end
+
+-- add me to default prompt
+if svo.haveskillset('domination') then
+cpp.compute_entitiesbal = function()
+  return (bals.entities and 'e' or &quot;&quot;)
+end
+end
+
+if svo.haveskillset('healing') then
+cpp.compute_healingbal = function()
+  return (bals.healing and 'E' or &quot;&quot;)
+end
+end
+
+if svo.haveskillset('physiology') then
+cpp.compute_humourbal = function()
+  return (bals.humour and 'h' or &quot;&quot;)
+end
+
+cpp.compute_homunculusbal = function()
+  return (bals.homunculus and 'H' or &quot;&quot;)
+end
+end
+
+if svo.haveskillset('venom') then
+cpp.compute_shruggingbal = function()
+  return (bals.shrugging and 's' or &quot;&quot;)
+end
+end
+
+cpp.compute_dragonhealbal = function()
+  return (bals.dragonheal and 'd' or &quot;&quot;)
+end
+
+if svo.haveskillset('terminus') then
+cpp.compute_wordbal = function()
+  return (bals.word and 'w' or &quot;&quot;)
+end
+end
+
+if svo.haveskillset('aeonics') then
+cpp.compute_age = function()
+  return ((stats.age and stats.age &gt; 0) and tostring(stats.age) or &quot;&quot;)
+end
+end
+
+cpp.compute_timestamp = function()
+  return getTime(true, 'hh:mm:ss.zzz')
+end
+
+cpp.compute_servertimestamp = function()
+  return me.servertime or ''
+end
+
+cpp.compute_at = function()
+  return (defc.blackwind or defc.astralform or defc.phase) and &quot;@&quot; or &quot;&quot;
+end
+
+cpp.compute_gametarget = function()
+  return me.gametarget and me.gametarget or &quot;&quot;
+end
+
+cpp.compute_gametargethp = function()
+  return me.gametargethp and me.gametargethp..&quot;%&quot; or &quot;&quot;
+end
+
+cpp.compute_weaponmastery = function()
+  return stats.weaponmastery or 0
+end
+
+cpp.compute_power = function()
+  local power = stats.shin or stats.kai
+  if not power or power == 0 then
+   power = &quot;&quot;
+  else
+   power = power .. &quot;&lt;grey&gt;-&quot;
+  end
+  return power
+end
+
+cpp.compute_power_color = function()
+  local powerColor
+  local power = stats.shin or stats.kai
+  if not power or power == 0 then
+   powerColor = &quot;&quot;
+  else
+   powerColor = &quot;&lt;&quot; .. (power &lt; 25 and 'red' or power &lt; 60 and
+  'yellow' or power &lt; 75 and
+       'green_yellow' or power &lt; 100 and 'a_darkgreen' or 'a_green') ..&quot;&gt;&quot;
+  end
+  return powerColor
+end
+
+if svo.haveskillset('metamorphosis') then
+cpp.compute_morph = function()
+  return me.morph or &quot;&quot;
+
+end
+end
+
+if svo.haveskillset('groves') then
+cpp.compute_sunlight = function()
+  return stats.sunlight &gt; 0 and tostring(stats.sunlight) or &quot;&quot;
+end
+end
+
+if svo.haveskillset('tekura') then
+cpp.compute_monkpath = function()
+  return me.path or &quot;&quot;
+end
+
+cpp.compute_stanceform = function()
+  return me.stance or me.form or &quot;&quot;
+end
+
+cpp.compute_stanceform_verbose = function()
+  return string.format(
+    &quot;%s: %s&quot;,
+    cpp.compute_monkpath(),
+    cpp.compute_stanceform()
+  )
+end
+end
+
+cpp.compute_promptstring = function()
+  local text = (&quot;&lt;LightSlateGrey&gt;&quot;)..
+        (defc.cloak and 'c' or &quot;&quot;) ..
+        (bals.equilibrium and &quot;&lt;white&gt;e&lt;LightSlateGrey&gt;&quot; or &quot;&quot;)..
+        (bals.balance and &quot;&lt;white&gt;x&lt;LightSlateGrey&gt;&quot; or &quot;&quot;)..
+        (defc.kola and 'k' or &quot;&quot;)..
+        ((defc.deaf or affs.deafaff) and 'd' or &quot;&quot;)..
+        ((defc.blind or affs.blindaff) and 'b' or &quot;&quot;)..
+        (defc.astralform and &quot;@&quot; or &quot;&quot;)..
+        (defc.phase and &quot;@&quot; or &quot;&quot;)..
+        (defc.blackwind and &quot;@&quot; or &quot;&quot;)..
+        (defc.breath and &quot;&lt;blue&gt;|&lt;LightSlateGrey&gt;b&quot; or &quot;&quot;)
+  local composition = {text}
+if bals.entities then
+  composition[#composition+1] = 'e'
+end
+if bals.healing then
+  composition[#composition+1] = 'E'
+end
+if svo.haveskillset('physiology') then
+  if bals.humour then
+    composition[#composition+1] = 'h'
+  end
+  if bals.homunculus then
+    composition[#composition+1] = 'H'
+  end
+end
+if bals.shrugging then
+  composition[#composition+1] = 's'
+end
+if bals.voice then
+  composition[#composition+1] =  'v'
+end
+if bals.word then
+  composition[#composition+1] = 'w'
+end
+  composition[#composition+1] = '-&lt;grey&gt;'
+  return table.concat(composition)
+end
+
+cpp.compute_promptstringorig = function()
+ return (&quot;&lt;grey&gt;&quot;)..
+        (defc.cloak and 'c' or &quot;&quot;) ..
+        (bals.equilibrium and 'e' or &quot;&quot;)..
+        (bals.balance and 'x' or &quot;&quot;)..
+        (defc.kola and 'k' or &quot;&quot;)..
+        ((defc.deaf or affs.deafaff) and 'd' or &quot;&quot;)..
+        ((defc.blind or affs.blindaff) and 'b' or &quot;&quot;)..
+        ((defc.phase or defc.blackwind or defc.astralform) and &quot;@&quot; or &quot;&quot;)
+end
+
+cpp.compute_diffmana = function()
+  return (me.manachange &gt; 0 and &quot;+&quot;..me.manachange or (me.manachange &lt; 0 and me.manachange or ''))
+end
+cpp.compute_diffhealth = function()
+  return (me.healthchange &gt; 0 and &quot;+&quot;..me.healthchange or (me.healthchange &lt; 0 and me.healthchange or ''))
+end
+
+cpp.compute_diffmana_paren = function()
+  return (me.manachange &gt; 0 and &quot;(+&quot;..me.manachange..&quot;)&quot; or (me.manachange &lt; 0 and &quot;(&quot;..me.manachange..&quot;)&quot; or ''))
+end
+cpp.compute_diffhealth_paren = function()
+  return (me.healthchange &gt; 0 and &quot;(+&quot;..me.healthchange..&quot;)&quot; or (me.healthchange &lt; 0 and &quot;(&quot;..me.healthchange..&quot;)&quot; or ''))
+end
+
+cpp.compute_diffmana_bracket = function()
+  return (me.manachange &gt; 0 and &quot;[+&quot;..me.manachange..&quot;]&quot; or (me.manachange &lt; 0 and &quot;[&quot;..me.manachange..&quot;]&quot; or ''))
+end
+cpp.compute_diffhealth_bracket = function()
+  return (me.healthchange &gt; 0 and &quot;[+&quot;..me.healthchange..&quot;]&quot; or (me.healthchange &lt; 0 and &quot;[&quot;..me.healthchange..&quot;]&quot; or ''))
+end
+
+cpp.compute_day = function()
+  return me.gametime and me.gametime.day or &quot;&quot;
+end
+
+cpp.compute_month = function()
+  return me.gametime and me.gametime.month or &quot;&quot;
+end
+
+cpp.compute_year = function()
+  return me.gametime and me.gametime.year or &quot;&quot;
+end
+
+cpp.compute_battlerage = function()
+  return stats.battlerage &gt; 0 and tostring(stats.battlerage) or &quot;&quot;
+end
+
+cp.definitions                      = cp.definitions or {}
+cp.definitions[&quot;@health&quot;]           = &quot;svo.stats.currenthealth&quot;
+cp.definitions[&quot;@mana&quot;]             = &quot;svo.stats.currentmana&quot;
+cp.definitions[&quot;@willpower&quot;]        = &quot;svo.stats.currentwillpower&quot;
+cp.definitions[&quot;@endurance&quot;]        = &quot;svo.stats.currentendurance&quot;
+cp.definitions[&quot;@maxhealth&quot;]        = &quot;svo.stats.maxhealth&quot;
+cp.definitions[&quot;@maxmana&quot;]          = &quot;svo.stats.maxmana&quot;
+cp.definitions[&quot;@maxwillpower&quot;]     = &quot;svo.stats.maxwillpower&quot;
+cp.definitions[&quot;@maxendurance&quot;]     = &quot;svo.stats.maxendurance&quot;
+cp.definitions[&quot;@%health&quot;]          = &quot;svo.cpp.compute_health_percent()&quot;
+cp.definitions[&quot;@%mana&quot;]            = &quot;svo.cpp.compute_mana_percent()&quot;
+cp.definitions[&quot;@%willpower&quot;]       = &quot;svo.cpp.compute_willpower_percent()&quot;
+cp.definitions[&quot;@%endurance&quot;]       = &quot;svo.cpp.compute_endurance_percent()&quot;
+cp.definitions[&quot;@%xp&quot;]              = &quot;svo.stats.nextlevel&quot;
+cp.definitions[&quot;@-%xp&quot;]             = &quot;svo.cpp.compute_reverse_xp()&quot;
+cp.definitions[&quot;@xprank&quot;]           = &quot;svo.stats.xprank&quot;
+cp.definitions[&quot;@defs&quot;]             = &quot;svo.cpp.compute_defs()&quot;
+cp.definitions[&quot;@eqbal&quot;]            = &quot;svo.cpp.compute_eqbal()&quot;
+cp.definitions[&quot;@armbal&quot;]           = &quot;svo.cpp.compute_armbal()&quot;
+cp.definitions[&quot;@prone&quot;]            = &quot;svo.cpp.compute_prone()&quot;
+cp.definitions[&quot;@Prone&quot;]            = &quot;svo.cpp.compute_Prone()&quot;
+cp.definitions[&quot;@@&quot;]                = &quot;svo.cpp.compute_at()&quot;
+cp.definitions[&quot;@power&quot;]            = &quot;svo.cpp.compute_power()&quot;
+cp.definitions[&quot;@promptstring&quot;]     = &quot;svo.cpp.compute_promptstring()&quot;
+cp.definitions[&quot;@promptstringorig&quot;] = &quot;svo.cpp.compute_promptstringorig()&quot;
+cp.definitions[&quot;@diffmana&quot;]         = &quot;svo.cpp.compute_diffmana()&quot;
+cp.definitions[&quot;@diffhealth&quot;]       = &quot;svo.cpp.compute_diffhealth()&quot;
+cp.definitions[&quot;@(diffmana)&quot;]       = &quot;svo.cpp.compute_diffmana_paren()&quot;
+cp.definitions[&quot;@(diffhealth)&quot;]     = &quot;svo.cpp.compute_diffhealth_paren()&quot;
+cp.definitions[&quot;@[diffmana]&quot;]       = &quot;svo.cpp.compute_diffmana_bracket()&quot;
+cp.definitions[&quot;@[diffhealth]&quot;]     = &quot;svo.cpp.compute_diffhealth_bracket()&quot;
+cp.definitions[&quot;@day&quot;]              = &quot;svo.cpp.compute_day()&quot;
+cp.definitions[&quot;@month&quot;]            = &quot;svo.cpp.compute_month()&quot;
+cp.definitions[&quot;@year&quot;]             = &quot;svo.cpp.compute_year()&quot;
+cp.definitions[&quot;@p&quot;]                = &quot;svo.cpp.compute_pause()&quot;
+cp.definitions[&quot;@slowcuring&quot;]       = &quot;svo.cpp.compute_slowcuring()&quot;
+cp.definitions[&quot;@?:&quot;]               = &quot;svo.cpp.unknown_stats()&quot;
+cp.definitions[&quot;@gametarget&quot;]       = &quot;svo.cpp.compute_gametarget()&quot;
+cp.definitions[&quot;@gametargethp&quot;]     = &quot;svo.cpp.compute_gametargethp()&quot;
+cp.definitions[&quot;@dragonhealbal&quot;]    = &quot;svo.cpp.compute_dragonhealbal()&quot;
+cp.definitions[&quot;@battlerage&quot;]       = &quot;svo.cpp.compute_battlerage()&quot;
+cp.definitions[&quot;^7&quot;]                = &quot;svo.cpp.compute_power_color()&quot;
+cp.definitions[&quot;^r&quot;]                = &quot;'&lt;a_red&gt;'&quot;
+cp.definitions[&quot;^R&quot;]                = &quot;'&lt;a_darkred&gt;'&quot;
+cp.definitions[&quot;^g&quot;]                = &quot;'&lt;a_green&gt;'&quot;
+cp.definitions[&quot;^G&quot;]                = &quot;'&lt;a_darkgreen&gt;'&quot;
+cp.definitions[&quot;^y&quot;]                = &quot;'&lt;a_yellow&gt;'&quot;
+cp.definitions[&quot;^Y&quot;]                = &quot;'&lt;a_darkyellow&gt;'&quot;
+cp.definitions[&quot;^b&quot;]                = &quot;'&lt;a_blue&gt;'&quot;
+cp.definitions[&quot;^B&quot;]                = &quot;'&lt;a_darkblue&gt;'&quot;
+cp.definitions[&quot;^m&quot;]                = &quot;'&lt;a_magenta&gt;'&quot;
+cp.definitions[&quot;^M&quot;]                = &quot;'&lt;a_darkmagenta&gt;'&quot;
+cp.definitions[&quot;^c&quot;]                = &quot;'&lt;a_cyan&gt;'&quot;
+cp.definitions[&quot;^C&quot;]                = &quot;'&lt;a_darkcyan&gt;'&quot;
+cp.definitions[&quot;^w&quot;]                = &quot;'&lt;a_white&gt;'&quot;
+cp.definitions[&quot;^W&quot;]                = &quot;'&lt;a_darkwhite&gt;'&quot;
+cp.definitions[&quot;^gametarget&quot;]       = &quot;svo.cpp.compute_gametarget_colour()&quot;
+
+if svo.haveskillset('voicecraft') then
+  cp.definitions[&quot;@voicebal&quot;]      = &quot;svo.cpp.compute_voicebal()&quot;
+end
+if svo.haveskillset('domination') then
+  cp.definitions[&quot;@entitiesbal&quot;]   = &quot;svo.cpp.compute_entitiesbal()&quot;
+end
+if svo.haveskillset('healing') then
+  cp.definitions[&quot;@healingbal&quot;]    = &quot;svo.cpp.compute_healingbal()&quot;
+end
+if svo.haveskillset('physiology') then
+  cp.definitions[&quot;@humourbal&quot;]     = &quot;svo.cpp.compute_humourbal()&quot;
+  cp.definitions[&quot;@homunculusbal&quot;] = &quot;svo.cpp.compute_homunculusbal()&quot;
+end
+if svo.haveskillset('venom') then
+  cp.definitions[&quot;@shrugging&quot;]     = &quot;svo.cpp.compute_shruggingbal()&quot;
+end
+if svo.haveskillset('tekura') or svo.haveskillset('shikudo') then
+  cp.definitions[&quot;@monkpath&quot;]      = &quot;svo.cpp.compute_monkpath()&quot;
+  cp.definitions[&quot;@monkstance&quot;]        = &quot;svo.cpp.compute_stanceform()&quot;
+  cp.definitions[&quot;@monkfull&quot;]      = &quot;svo.cpp.compute_stanceform_verbose()&quot;
+end
+if svo.haveskillset('kaido') then
+  cp.definitions[&quot;@kai&quot;]           = &quot;svo.cpp.compute_kai()&quot;
+end
+if svo.haveskillset('shindo') then
+  cp.definitions[&quot;@shin&quot;]          = &quot;svo.cpp.compute_shin()&quot;
+end
+  cp.definitions[&quot;@timestamp&quot;]     = &quot;svo.cpp.compute_timestamp()&quot;
+  cp.definitions[&quot;@servertimestamp&quot;] = &quot;svo.cpp.compute_servertimestamp()&quot;
+if svo.haveskillset('weaponmastery') then
+  cp.definitions[&quot;@weaponmastery&quot;] = &quot;svo.cpp.compute_weaponmastery()&quot;
+end
+if svo.haveskillset('metamorphosis') then
+  cp.definitions[&quot;@morph&quot;]         = &quot;svo.cpp.compute_morph()&quot;
+end
+if svo.haveskillset('groves') then
+  cp.definitions[&quot;@sunlight&quot;]      = &quot;svo.cpp.compute_sunlight()&quot;
+end
+if svo.haveskillset('terminus') then
+  cp.definitions[&quot;@wordbal&quot;]       = &quot;svo.cpp.compute_wordbal()&quot;
+end
+if svo.haveskillset('aeonics') then
+  cp.definitions[&quot;@age&quot;]           = &quot;svo.cpp.compute_age()&quot;
+end
+  cp.definitions[&quot;^1&quot;]             = &quot;svo.cpp.compute_health_colour()&quot;
+  cp.definitions[&quot;^2&quot;]             = &quot;svo.cpp.compute_mana_colour()&quot;
+  cp.definitions[&quot;^4&quot;]             = &quot;svo.cpp.compute_willpower_colour()&quot;
+  cp.definitions[&quot;^5&quot;]             = &quot;svo.cpp.compute_endurance_colour()&quot;
+if svo.haveskillset('kaido') then
+  cp.definitions[&quot;^6&quot;]             = &quot;svo.cpp.compute_kai_colour()&quot;
+end
+if svo.haveskillset('shindo') then
+  cp.definitions[&quot;^6&quot;]             = &quot;svo.cpp.compute_shin_colour()&quot;
+end
+
+function cp.adddefinition(tag, func)
+  func = string.format(&quot;tostring(%s)&quot;, func)
+
+  cp.definitions[tag] = func
+  cp.makefunction()
+end
+
+function cp.makefunction()
+  if not conf.customprompt or not sk.logged_in then return end
+
+  local t = cp.generatetable(conf.customprompt)
+
+  local display, error = loadstring(&quot;return table.concat({&quot;..table.concat(t, &quot;, &quot;)..&quot;})&quot;)
+  if display then cp.display = display else
+    cp.display = function() return '' end
+    svo.debugf(&quot;Couldn't compile the custom prompt: %s&quot;, error)
+  end
+
+  -- set the prompt we require within the game for these tags to work
+  if conf.customprompt:find(&quot;@gametarget&quot;) or conf.customprompt:find(&quot;@gametargethp&quot;) or conf.customprompt:find(&quot;@weaponmastery&quot;) or conf.customprompt:find(&quot;@servertimestamp&quot;) then
+    send(sys.ingamecustomprompt, false)
+
+    svo.ingameprompt = tempExactMatchTrigger(&quot;Your custom prompt is now:&quot;, [[
+      svo.deleteAllP()
+      if svo.ingameprompt then
+        killTrigger(svo.ingameprompt)
+        svo.ingameprompt = nil
+      end
+    ]])
+  end
+end
+-- use the login event, and not systemstart, so we get can set the right prompt in the game
+signals.gmcpcharname:connect(cp.makefunction, 'create the prompt function at start')
+-- meanwhile, return nothing
+cp.display = function() return '' end
+
+-- but also regenerate the function if we're already logged in and this script is saved
+if svo.systemloaded then
+  cp.makefunction()
+end
+
+signals.systemstart:connect(function ()
+  if not conf.oldcustomprompt or conf.oldcustomprompt == 'off' then
+    conf.oldcustomprompt = conf.customprompt
+  end
+end, 'remember the oldcustomprompt')
+
+function cp.generatetable(customprompt)
+  local t = {}
+  local ssub = string.sub
+
+  local tags_array = {}
+  for def, defv in pairs(cp.definitions) do
+    tags_array[#tags_array+1] = {def = def, defv = defv}
+  end
+
+  table.sort(tags_array, function(a,b) return #a.def &gt; #b.def end)
+
+  local buffer = &quot;&quot;
+
+  local function add_character(c)
+      buffer = buffer .. c
+  end
+
+  local function add_buffer()
+    if buffer ~= &quot;&quot; then
+      t[#t+1] = &quot;'&quot; .. buffer .. &quot;'&quot;
+      buffer = &quot;&quot;
+    end
+  end
+
+  local function add_code(c)
+      add_buffer()
+      t[#t+1] = c
+  end
+
+  while customprompt ~= &quot;&quot; do
+    local matched = false
+
+    for i = 1, #tags_array do
+      local def = tags_array[i].def
+
+      if ssub(customprompt, 1, #def) == def then
+        add_code(tags_array[i].defv)
+        customprompt = ssub(customprompt, #def + 1)
+        matched = true
+        break
+      end
+    end
+
+    if not matched then
+      add_character(ssub(customprompt, 1, 1))
+      customprompt = ssub(customprompt, 2)
+    end
+
+  end
+
+  add_buffer()
+
+  return t
+end
+
+-- import color_table
+for color in pairs(color_table) do
+  cp.definitions[&quot;^&quot;..color] = &quot;'&lt;&quot;..color..&quot;&gt;'&quot;
+end
+
+end -- end of svo customprompt loader
+
+if svo.systemloaded then svo.loader.customprompt() end</script>
+                <eventHandlerList/>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>Serverside</name>
+                <packageName></packageName>
+                <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+
+-- Svof is licensed under a
+-- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+-- You should have received a copy of the license along with this
+-- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+svo = svo or {}; svo.loader = svo.loader or {}
+svo.loader.serverside = function()
+
+local sys, affs, defdefup, defkeepup, signals = svo.sys, svo.affs, svo.defdefup, svo.defkeepup, svo.signals
+local conf, sk, me, defs = svo.conf, svo.sk, svo.me, svo.defs
+local stats, serverignore = svo.stats, svo.serverignore
+
+-- update serverside prios in general
+signals[&quot;svo prio changed&quot;]:connect(function()
+  if not conf.serverside then return end
+
+  if not sk.priochangetimer then
+    sk.priochangetimer = tempTimer(0, function() sk.updateserversideprios() end)
+  end
+end, 'update serverside prios on svo prio change')
+
+-- update serverside prios with custom svo.dict overrides, ie for health which is not on serverside prios
+signals[&quot;svo prio changed&quot;]:connect(function(action, balance, newprio, slowcuring)
+  if not (conf.serverside and svo.dict[action][balance].onprioswitch) then return end
+
+  svo.dict[action][balance].onprioswitch(newprio, slowcuring)
+end, 'run onprioswitch dict functions')
+
+-- start out with blank prios, so a diff on switch to basic has the right stuff
+signals[&quot;svo system loaded&quot;]:connect(function()
+  sk.priosbeforechange = sk.getblankbeforestateprios()
+end, 'get initial state of prios')
+
+
+function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache)
+  local isdefence, priority, gamename
+
+  if svo.dict[action][balance].def then
+    isdefence = &quot;defence &quot;
+    priority = rdefs[action]
+  elseif svo.dict[action].aff then
+    isdefence = &quot;&quot;
+    priority = raffs[action]
+  else -- an action that's not an aff or a def - ignore
+    svo.debugf(&quot;(e!) sk.sendpriorityswitch: quitting, not an aff or a def&quot;)
+    return
+  end
+
+  -- caps at 25, so pool everything after on 25
+  if priority &gt; 25 then priority = 25 end
+
+  -- if already in cache at same priority, don't send
+  if cache[action] == priority then
+    svo.debugf(&quot;%s is already on %s, ignoring&quot;, action, cache[action])
+    return
+  else
+    cache[action] = priority
+  end
+
+  gamename = svo.dict[action].gamename and svo.dict[action].gamename or action
+
+  local command = string.format(&quot;priority %s%s %s&quot;, isdefence, gamename, priority)
+
+  svo.sendcuring(command)
+end
+
+function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache)
+  local isdefence, priority, gamename
+
+  if svo.dict[action][balance].def then
+    isdefence = &quot;defence &quot;
+    priority = 'reset'
+  elseif svo.dict[action].aff then
+    isdefence = &quot;&quot;
+    priority = 26
+  else -- an action that's not an aff or a def - ignore
+    svo.debugf(&quot;(e!) sk.sendpriorityignore: quitting, not an aff or a def&quot;)
+    return
+  end
+
+  -- if already in cache at same priority, don't send
+  if cache[action] == 'ignore' then
+    svo.debugf(&quot;%s is already on %s, ignoring&quot;, action, cache[action])
+    return
+  else
+    cache[action] = 'ignore'
+  end
+
+  gamename = svo.dict[action].gamename and svo.dict[action].gamename or action
+
+  local command = string.format(&quot;priority %s%s %s&quot;, isdefence, gamename, priority)
+
+  svo.sendcuring(command)
+end
+
+function sk.updateserversideprios()
+  if not sk.priochangetimer then return end
+  sk.updateserverwatch = sk.updateserverwatch or createStopWatch()
+  startStopWatch(sk.updateserverwatch)
+
+  -- don't notify of prio changes until the system is loaded, as they can get shuffled around a bit
+  if not svo.systemloaded then return end
+
+  local afterstate = sk.getafterstateprios()
+  svo.debugf(&quot;sk.updateserverwatch sk.getafterstateprios: %s&quot;, getStopWatchTime(sk.updateserverwatch))
+
+  local basictableindexdiff = svo.basictableindexdiff
+
+  for balance, data in pairs(sk.priosbeforechange) do
+    if balance == 'slowcuring' then
+      sk.priochangecache[balance] = sk.priochangecache[balance] or {}
+      local priochangecache = sk.priochangecache[balance]
+
+      -- make the diff of snapshots
+      local diffslow = basictableindexdiff(data.data, afterstate[balance].newdata)
+      -- split the action_balance actions into separate balances
+      local diff = sk.splitbals(diffslow)
+
+      -- get the new list of prios, sorted in importance
+      local neworderslow = svo.prio.getsortedlist(balance)
+      -- split the action_balance actions into separate balances
+      local neworderbals = sk.splitbals(neworderslow)
+
+      -- if not in slowcuring mode, switch to slowcuring prios first
+      local needtoswitch, needtoswitchback = false, false
+      if not sys.sync then
+        needtoswitch = true
+      end
+
+      for balance, neworder in pairs(neworderbals) do
+        if diff[balance] then
+          priochangecache[balance] = priochangecache[balance] or {}
+          local affs, defs, ignoreaffs, ignoredefs = sk.splitdefs(balance, neworder)
+          local raffs, rdefs, rignoreaffs, rignoredefs = {}, {}, {}, {}
+          for index, aff in pairs(affs) do raffs[aff] = index end
+          for index, def in pairs(defs) do rdefs[def] = index end
+          for index, aff in pairs(ignoreaffs) do rignoreaffs[aff] = index end
+          for index, def in pairs(ignoredefs) do rignoredefs[def] = index end
+
+          -- update for the changes
+          for _, action in pairs(diff[balance]) do
+            -- check if this is something actually on prios. an aff could be ignored, a def not on keepup
+            if raffs[action] or rdefs[action] then
+              if needtoswitch then svo.sendc(&quot;curingset switch slowcuring&quot;); needtoswitch = false; needtoswitchback = true end
+
+              sk.sendpriorityswitch(action, balance, raffs, rdefs, priochangecache[balance])
+            elseif rignoreaffs[action] or rignoredefs[action] then
+              if needtoswitch then svo.sendc(&quot;curingset switch slowcuring&quot;); needtoswitch = false; needtoswitchback = true end
+
+              sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, priochangecache[balance])
+            end
+          end
+        end
+      end
+
+      if needtoswitchback then
+        svo.sendc(&quot;curingset switch normal&quot;)
+      end
+    else
+      sk.priochangecache[balance] = sk.priochangecache[balance] or {}
+
+      -- make the diff of snapshots
+      local diff = basictableindexdiff(data.data, afterstate[balance].newdata)
+      -- if next(diff) then svo.debugf(&quot;%s diff: %s&quot;, balance, pl.pretty.write(diff)) end
+      -- get the new list of prios, sorted in importance
+      local neworder = svo.prio.getsortedlist(balance)
+      local affs, defs, ignoreaffs, ignoredefs = sk.splitdefs(balance, neworder)
+      local raffs, rdefs, rignoreaffs, rignoredefs = {}, {}, {}, {}
+      for index, aff in pairs(affs) do raffs[aff] = index end
+      for index, def in pairs(defs) do rdefs[def] = index end
+      for index, aff in pairs(ignoreaffs) do rignoreaffs[aff] = index end
+      for index, def in pairs(ignoredefs) do rignoredefs[def] = index end
+
+      -- if not in slowcuring mode, switch to slowcuring prios first
+      local needtoswitch, needtoswitchback = false, false
+      if sys.sync then
+        needtoswitch = true
+      end
+
+      -- update for the changes
+      for _, action in pairs(diff) do
+        -- check if this is something actually on prios. an aff could be ignored, a def not on keepup
+        if raffs[action] or rdefs[action] then
+          if needtoswitch then svo.sendc(&quot;curingset switch normal&quot;); needtoswitch = false; needtoswitchback = true end
+
+          sk.sendpriorityswitch(action, balance, raffs, rdefs, sk.priochangecache[balance])
+        elseif rignoreaffs[action] or rignoredefs[action] then
+          if needtoswitch then svo.sendc(&quot;curingset switch normal&quot;); needtoswitch = false; needtoswitchback = true end
+
+          sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, sk.priochangecache[balance])
+        end
+      end
+
+      if needtoswitchback then
+        svo.sendc(&quot;curingset switch slowcuring&quot;)
+      end
+    end
+  end
+
+  sk.priochangetimer = nil
+
+  -- save new state for next change
+  svo.debugf(&quot;sk.updateserverwatch sk.getbeforestateprios: %s&quot;, getStopWatchTime(sk.updateserverwatch))
+  sk.priosbeforechange = sk.getbeforestateprios()
+
+  svo.debugf(&quot;sk.updateserverwatch: %s&quot;, stopStopWatch(sk.updateserverwatch))
+end
+
+-- splits slowcuring prios by balance
+function sk.splitbals(list)
+  local balances, valid_sync_action = {}, svo.valid_sync_action
+
+  for i = 1, #list do
+    local action_balance = list[i]
+
+    local _, action, balance = valid_sync_action(action_balance)
+    balances[balance] = balances[balance] or {}
+    local balancet = balances[balance]
+    balancet[#balancet+1] = action
+  end
+
+  return balances
+end
+
+-- returns true if the given action should be ignored on serverside, which it should be if:
+-- it's ignored in system in general
+-- it's handled by Svof instead of serverside
+-- it's not on keepup
+-- if we're in defup and it's not on defup
+-- its custom onservereignore function returns true
+function sk.shouldignoreserverside(action)
+  return conf.serverside and (
+    svo.ignore[action] or
+    not serverignore[action] or
+    (not sys.deffing and defkeepup[defs.mode][action] == false) or
+    (sys.deffing and defdefup[defs.mode][action] == false) or
+    (svo.dict[action].onservereignore and svo.dict[action].onservereignore())
+  ) -- false so afflictions are okay, which are a nil
+end
+svo.shouldignoreserverside = sk.shouldignoreserverside
+
+function sk.handleserversideswitch()
+  if not sk.priochangetimer then
+    sk.priochangetimer = tempTimer(0, function() sk.updateserversideprios() end)
+  end
+end
+
+function sk.handleserversideswitch_keepup(defmode, action)
+  if not svo.dict[action] then return end
+
+  -- don't do anything for the current defences mode
+  if defmode ~= defs.mode then return end
+
+  if not sk.priochangetimer then
+    sk.priochangetimer = tempTimer(0, function() sk.updateserversideprios() end)
+  end
+end
+
+-- splits defs up into another list and removes them from the affs one
+-- also remove uncurable actions that aren't affs, and defs that
+-- aren't on defup or keepup
+function sk.splitdefs(balance, list)
+  local defslist, disableddefs, disabledaffs, dict, defmode = {}, {}, {}, svo.dict, svo.defs.mode
+
+  -- prune list to only be a list of affs, save defs and disable defs into another list
+  -- iterate backwards, so we can remove items from the list safely
+  for i = #list, 1, -1 do
+    local action = list[i]
+
+    -- take care of defs
+    if dict[action][balance].def then
+      -- check that it's not undeffable in-game and on keepup
+      if not dict[action][balance].undeffable and ((sys.deffing and defdefup[defmode][action]) or (not sys.deffing and defkeepup[defmode][action])) and not sk.shouldignoreserverside(action) then
+        defslist[i] = list[i]
+        list[i] = nil
+      -- if it's off keepup, send to another list so those defs get ignored
+      elseif not dict[action][balance].undeffable and sk.shouldignoreserverside(action) then
+        disableddefs[#disableddefs+1] = list[i]
+        list[i] = nil
+      else
+        -- make sure to remove a def either way
+        list[i] = nil
+      end
+    else
+      -- remove if not priotisable
+      if dict[action][balance].uncurable or dict[action][balance].irregular then
+        list[i] = nil
+      -- if handled by svo, or handled by serverside and on normal ignore, ignore
+      elseif dict[action].aff and sk.shouldignoreserverside(action) then
+        disabledaffs[#disabledaffs+1] = list[i]
+        list[i] = nil
+      end
+    end
+  end
+
+  return list, defslist, disabledaffs, disableddefs
+end
+
+
+-- gets a snapshot of priorities, skipping actions that should be ignored
+function sk.getbeforestateprios()
+  local beforestate = {}
+  local importables = {
+    'herb',
+    'smoke',
+    'salve',
+    'sip',
+    'purgative',
+    'physical',
+    'moss',
+    'misc',
+    'slowcuring',
+  }
+
+  local make_prio_tablef = svo.make_prio_tablef
+
+  for _, balance in ipairs(importables) do
+    beforestate[balance] = {}
+
+    if balance == 'slowcuring' then
+      -- get the before state for diffing
+      local data = svo.make_sync_prio_tablef(&quot;%s_%s&quot;, function(action)
+        return not sk.shouldignoreserverside(action)
+      end, { focus = true })
+      beforestate[balance] = {data = data}
+    else
+      -- get the before state for diffing
+      local data = make_prio_tablef(balance, function(action)
+        return not sk.shouldignoreserverside(action)
+      end)
+      beforestate[balance] = {data = data}
+    end
+  end
+
+  return beforestate
+end
+
+-- gets a blanked out state of before prios - useful if all of them need to be reset serverside
+function sk.getblankbeforestateprios()
+  local beforestate = {}
+  local importables = {
+    'herb',
+    'smoke',
+    'salve',
+    'sip',
+    'purgative',
+    'physical',
+    'moss',
+    'misc',
+    'slowcuring',
+  }
+  local make_prio_tablef = svo.make_prio_tablef
+
+  for _, balance in ipairs(importables) do
+    beforestate[balance] = {}
+
+    if balance == 'slowcuring' then
+      -- get the before state for diffing
+      local data = svo.make_sync_prio_tablef(&quot;%s_%s&quot;, nil, { focus = true })
+      -- set all prios to negative, so things get set or ignored serverside properly
+      local nullify, c = {}, -1
+      for _,v in pairs(data) do nullify[c] = v; c = c - 1 end
+      beforestate[balance] = {data = nullify}
+    else
+      -- get the before state for diffing
+      local data = make_prio_tablef(balance)
+      -- set all prios to negative, so things get set or ignored serverside properly
+      local nullify, c = {}, -1
+      for _,v in pairs(data) do nullify[c] = v; c = c - 1 end
+      beforestate[balance] = {data = nullify}
+    end
+  end
+
+  return beforestate
+end
+
+function sk.getafterstateprios()
+  local afterstate = {}
+  local importables = {
+    'herb',
+    'smoke',
+    'salve',
+    'sip',
+    'purgative',
+    'physical',
+    'moss',
+    'misc',
+    'slowcuring',
+  }
+
+  local make_prio_tablef = svo.make_prio_tablef
+
+  for _, balance in ipairs(importables) do
+    afterstate[balance] = {}
+
+    if balance == 'slowcuring' then
+      -- get the new state
+      local newdata = svo.make_sync_prio_tablef(&quot;%s_%s&quot;, function(action)
+        return not sk.shouldignoreserverside(action)
+      end, { focus = true })
+      -- create an action - prio table for retrieval of location using diffs
+      local action_prio = {}
+      for k,v in pairs(newdata) do action_prio[v] = k end
+      afterstate[balance] = {newdata = newdata, action_prio = action_prio}
+    else
+      -- get the new state
+      local newdata = make_prio_tablef(balance, function(action)
+        return not sk.shouldignoreserverside(action)
+      end)
+      -- create an action - prio table for retrieval of location using diffs
+      local action_prio = {}
+      for k,v in pairs(newdata) do action_prio[v] = k end
+      afterstate[balance] = {newdata = newdata, action_prio = action_prio}
+    end
+  end
+
+  return afterstate
+end
+
+function sk.notifypriodiffs(beforestate, afterstate)
+  local basictableindexdiff = svo.basictableindexdiff
+
+  -- don't notify of prio changes until the system is loaded, as they can get shuffled around a bit
+  if not svo.systemloaded then return end
+
+  for balance, data in pairs(beforestate) do
+    if balance == 'slowcuring' then
+      -- make the diff of snapshots
+      local diff = basictableindexdiff(data.data, afterstate[balance].newdata)
+      local valid_sync_action = svo.valid_sync_action
+
+      -- now only notify for the differences
+      for _, a in pairs(diff) do
+        local _, action, balance = valid_sync_action(a)
+        raiseEvent(&quot;svo prio changed&quot;, action, balance, afterstate[balance].action_prio[a], 'slowcuring')
+      end
+    else
+      -- make the diff of snapshots
+      local diff = basictableindexdiff(data.data, afterstate[balance].newdata)
+
+      -- notify only for the changes
+      for _, a in pairs(diff) do
+        raiseEvent(&quot;svo prio changed&quot;, a, balance, afterstate[balance].action_prio[a])
+      end
+    end
+  end
+end
+
+
+-- returns an alphabetically sorted indexed list of all actions serverside can do
+function sk.getallserversideactions()
+  local type = type
+
+  local actions = {}
+  for action, balances in pairs(svo.dict) do
+    for balance, data in pairs(balances) do
+      if type(data) == 'table' and balance ~= 'waitingfor' and balance ~= 'aff' and balance ~= 'gone' and balance ~= 'happened' and not data.uncurable and not data.undeffable then
+        actions[action] = true
+      end
+    end
+  end
+
+  local actionslist = {}
+  for k,_ in pairs(actions) do
+    actionslist[#actionslist+1] = k
+  end
+
+  table.sort(actionslist)
+
+  return actionslist
+end
+
+--[[ register all signals needed for this to work ]]
+
+signals.sync:connect(function ()
+  if not conf.serverside then return end
+
+  if sys.sync then
+    svo.sendc(&quot;curingset switch slowcuring&quot;)
+  else
+    svo.sendc(&quot;curingset switch normal&quot;)
+  end
+end, 'update curingset on aeon/retardation')
+
+-- vconfig serverside
+signals[&quot;svo config changed&quot;]:connect(function(config)
+  if config ~= 'serverside' then return end
+
+  if conf.serverside then
+    sk.priochangecache = {
+      special = {
+        focustoggle = conf.focus
+      }
+    }
+    -- sync everything
+    sk.priosbeforechange = sk.getblankbeforestateprios()
+    svo.sendcuring(&quot;PRIORITY RESET&quot;)
+    sk.priochangetimer = true
+    sk.updateserversideprios()
+    -- sync all special things like health
+    for _, actiont in pairs(svo.dict) do
+      for _, balancet in pairs(actiont) do
+        if type(balancet) == 'table' and balancet.onprioswitch then
+          balancet.onprioswitch()
+        end
+      end
+    end
+
+    -- initial sync of some config options.
+    local option
+    for _, optionname in ipairs({'healthaffsabove', 'mosshealth', 'mossmana'}) do
+      if conf[optionname] == true then option = 'on'
+      elseif conf[optionname] == false then option = 'off'
+      else
+        option = conf[optionname]
+      end
+
+      svo.sendcuring(optionname.. &quot; &quot;..option)
+    end
+
+    if conf.keepup then
+      svo.sendcuring(&quot;defences on&quot;)
+    else
+      svo.sendcuring(&quot;defences off&quot;)
+    end
+
+    sk.togglefocusserver()
+    sk.toggleclotserver()
+    sk.toggleinsomniaserver()
+
+    if sk.canclot() and conf.clot then svo.sendcuring(&quot;clot on&quot;) else svo.sendcuring(&quot;clot off&quot;) end
+    svo.sendcuring(&quot;clotat &quot;..conf.bleedamount)
+
+    if not serverignore.healhealth then
+      svo.sendcuring(&quot;siphealth 0&quot;)
+      sk.priochangecache.special.healhealth = 0
+    elseif serverignore.healhealth then
+      svo.sendcuring(&quot;siphealth &quot;..conf.siphealth)
+      sk.priochangecache.special.healhealth = conf.siphealth
+    end
+
+    if not serverignore.healmana then
+      svo.sendcuring(&quot;sipmana 0&quot;)
+      sk.priochangecache.special.healmana = 0
+    elseif serverignore.healmana then
+      svo.sendcuring(&quot;sipmana &quot;..conf.sipmana)
+      sk.priochangecache.special.healmana = conf.sipmana
+    end
+
+    if conf.curemethod == 'transonly' then
+      svo.sendcuring(&quot;transmutation on&quot;)
+    elseif conf.curemethod == 'conconly' then
+      svo.sendcuring(&quot;transmutation off&quot;)
+    elseif conf.curemethod == 'prefertrans' then
+      svo.sendcuring(&quot;transmutation on&quot;)
+      svo.echof(&quot;Setting in-game curemethod to 'transmutation cures only', as serverside doesn't support mixed cures.&quot;)
+    elseif conf.curemethod == 'preferconc' then
+       svo.sendcuring(&quot;transmutation off&quot;)
+       svo.echof(&quot;Setting in-game curemethod to 'concoctions cures only', as serverside doesn't support mixed cures.&quot;)
+    end
+
+    svo.sendcuring(&quot;manathreshold &quot;..conf.manause)
+  end
+end, 'update serverside prios on config change')
+signals[&quot;svo config changed&quot;]:connect(function(config)
+  if not (conf.serverside and config == 'healthaffsabove') then return end
+
+  local option
+  if conf.healthaffsabove == true then option = 'on'
+  elseif conf.healthaffsabove == false then option = 'off'
+  else
+    option = conf.healthaffsabove
+  end
+
+  svo.sendcuring(&quot;healthaffsabove &quot;..option)
+end, 'update healthaffsabove')
+
+for _, optionname in ipairs({'mosshealth', 'mossmana'}) do
+  signals[&quot;svo config changed&quot;]:connect(function(config)
+    if not (conf.serverside and config == optionname) then return end
+
+    local option
+    if conf.moss then
+      option = conf[optionname]
+    else
+      option = '0'
+    end
+
+    svo.sendcuring(optionname ..&quot; &quot;..option)
+  end, 'update serverside moss')
+end
+
+-- vconfig moss
+signals[&quot;svo config changed&quot;]:connect(function(config)
+  if not (conf.serverside and config == 'moss') then return end
+
+  if conf.moss then
+    svo.sendcuring(&quot;mosshealth &quot;..conf.mosshealth)
+    svo.sendcuring(&quot;mossmana &quot;..conf.mossmana)
+  else
+    svo.sendcuring(&quot;mosshealth 0&quot;)
+    svo.sendcuring(&quot;mossmana 0&quot;)
+  end
+
+end, 'update serverside moss use amount')
+
+signals[&quot;svo config changed&quot;]:connect(function(config)
+  if not (conf.serverside and config == 'clot') then return end
+
+  if sk.canclot() and conf.clot and not sk.clotting_on_serverside then
+    svo.sendcuring(&quot;clot on&quot;)
+    sk.clotting_on_serverside = true
+  elseif not (sk.canclot() and conf.clot) and sk.clotting_on_serverside then
+    svo.sendcuring(&quot;clot off&quot;)
+    sk.clotting_on_serverside = false
+  end
+end, 'update serverside clot')
+
+-- healhealth / siphealth
+signals[&quot;svo config changed&quot;]:connect(function(config)
+  if not (conf.serverside and config == 'siphealth') then return end
+
+  if not serverignore.healhealth and sk.priochangecache.special.healhealth ~= 0 then
+    svo.sendcuring(&quot;siphealth 0&quot;)
+    sk.priochangecache.special.healhealth = 0
+  elseif serverignore.healhealth and sk.priochangecache.special.healhealth ~= conf.siphealth then
+    svo.sendcuring(&quot;siphealth &quot;..conf.siphealth)
+    sk.priochangecache.special.healhealth = conf.siphealth
+  end
+end, 'update serverside siphealth')
+signals[&quot;svo serverignore changed&quot;]:connect(function(config)
+  if not (conf.serverside and config == 'healhealth') then return end
+
+  if not serverignore.healhealth and sk.priochangecache.special.healhealth ~= 0 then
+    svo.sendcuring(&quot;siphealth 0&quot;)
+    sk.priochangecache.special.healhealth = 0
+  elseif serverignore.healhealth and sk.priochangecache.special.healhealth ~= conf.siphealth then
+    svo.sendcuring(&quot;siphealth &quot;..conf.siphealth)
+    sk.priochangecache.special.healhealth = conf.siphealth
+  end
+end, 'update serverside healhealth')
+
+-- healmana / sipmana
+signals[&quot;svo config changed&quot;]:connect(function(config)
+  if not (conf.serverside and config == 'sipmana') then return end
+
+  if not serverignore.healmana and sk.priochangecache.special.healmana ~= 0 then
+    svo.sendcuring(&quot;sipmana 0&quot;)
+    sk.priochangecache.special.healmana = 0
+  elseif serverignore.healmana and sk.priochangecache.special.healmana ~= conf.sipmana then
+    svo.sendcuring(&quot;sipmana &quot;..conf.sipmana)
+    sk.priochangecache.special.healmana = conf.sipmana
+  end
+end, 'update serverside sipmana')
+signals[&quot;svo serverignore changed&quot;]:connect(function(config)
+  if not (conf.serverside and config == 'healmana') then return end
+
+  if not serverignore.healmana and sk.priochangecache.special.healmana ~= 0 then
+    svo.sendcuring(&quot;sipmana 0&quot;)
+    sk.priochangecache.special.healmana = 0
+  elseif serverignore.healmana and sk.priochangecache.special.healmana ~= conf.sipmana then
+    svo.sendcuring(&quot;sipmana &quot;..conf.sipmana)
+    sk.priochangecache.special.healmana = conf.sipmana
+  end
+end, 'update serverside sipmana')
+
+-- bleedamount
+signals[&quot;svo config changed&quot;]:connect(function(config)
+  if not (conf.serverside and config == 'bleedamount') then return end
+
+  svo.sendcuring(&quot;clotat &quot;..conf.bleedamount)
+end, 'update serverside clot amount')
+
+-- manause
+signals[&quot;svo config changed&quot;]:connect(function(config)
+  if not (conf.serverside and config == 'manause') then return end
+
+  svo.sendcuring(&quot;manathreshold &quot;..conf.manause)
+end, 'update serverside manathreshold')
+
+-- curemethod
+signals[&quot;svo config changed&quot;]:connect(function(config)
+  if not (conf.serverside and config == 'curemethod' and not svo.logging_in) then return end
+
+  if conf.curemethod == 'transonly' then
+    svo.sendcuring(&quot;transmutation on&quot;)
+  elseif conf.curemethod == 'conconly' then
+    svo.sendcuring(&quot;transmutation off&quot;)
+  elseif conf.curemethod == 'prefertrans' then
+    svo.sendcuring(&quot;transmutation on&quot;)
+    svo.echof(&quot;Setting in-game curemethod to 'transmutation cures only', as serverside doesn't support mixed cures.&quot;)
+  elseif conf.curemethod == 'preferconc' then
+     svo.sendcuring(&quot;transmutation off&quot;)
+     svo.echof(&quot;Setting in-game curemethod to 'concoctions cures only', as serverside doesn't support mixed cures.&quot;)
+  end
+end, 'update serverside curemethod')
+
+-- pause
+signals[&quot;svo config changed&quot;]:connect(function(config)
+  if not (conf.serverside and config == 'paused' and not svo.logging_in) then return end
+
+  -- send right away, so chained commands are done in proper order
+  if conf.paused then
+    svo.force_send(&quot;curing off&quot;)
+  else
+    svo.force_send(&quot;curing on&quot;)
+  end
+end, 'update serverside curing pause')
+
+-- keepup
+signals[&quot;svo config changed&quot;]:connect(function(config)
+  if not (conf.serverside and config == 'keepup' and not svo.logging_in) then return end
+
+  if conf.keepup then
+    svo.sendcuring(&quot;defences on&quot;)
+  else
+    svo.sendcuring(&quot;defences off&quot;)
+  end
+end, 'update serverside keepup')
+
+signals[&quot;svo ignore changed&quot;]:connect(sk.handleserversideswitch, &quot;sk.handleserversideswitch&quot;)
+signals[&quot;svo ignore changed&quot;]:connect(sk.handleserversideswitch_keepup, &quot;sk.handleserversideswitch_keepup&quot;)
+signals[&quot;svo keepup changed&quot;]:connect(sk.handleserversideswitch, &quot;sk.handleserversideswitch&quot;)
+signals[&quot;svo keepup changed&quot;]:connect(sk.handleserversideswitch_keepup, &quot;sk.handleserversideswitch_keepup&quot;)
+signals[&quot;svo serverignore changed&quot;]:connect(sk.handleserversideswitch, &quot;sk.handleserversideswitch&quot;)
+signals[&quot;svo serverignore changed&quot;]:connect(sk.handleserversideswitch_keepup, &quot;sk.handleserversideswitch_keepup&quot;)
+signals[&quot;svo switched defence mode&quot;]:connect(sk.handleserversideswitch, &quot;sk.handleserversideswitch&quot;)
+signals[&quot;svo done defup&quot;]:connect(sk.handleserversideswitch, &quot;sk.handleserversideswitch&quot;)
+
+-- setup the block if serverside isn't on at load
+signals[&quot;svo system loaded&quot;]:connect(function()
+  if not conf.serverside then
+    signals[&quot;svo ignore changed&quot;]:block(sk.handleserversideswitch)
+    signals[&quot;svo ignore changed&quot;]:block(sk.handleserversideswitch_keepup)
+    signals[&quot;svo keepup changed&quot;]:block(sk.handleserversideswitch)
+    signals[&quot;svo keepup changed&quot;]:block(sk.handleserversideswitch_keepup)
+    signals[&quot;svo serverignore changed&quot;]:block(sk.handleserversideswitch)
+    signals[&quot;svo serverignore changed&quot;]:block(sk.handleserversideswitch_keepup)
+    signals[&quot;svo switched defence mode&quot;]:block(sk.handleserversideswitch)
+    signals[&quot;svo done defup&quot;]:block(sk.handleserversideswitch)
+  end
+end, 'disable serverside functions when not using serverside')
+
+-- toggle appropriately upon vconfig changed
+signals[&quot;svo config changed&quot;]:connect(function(config)
+  if config ~= 'serverside' then return end
+
+  if conf.serverside then
+    signals[&quot;svo ignore changed&quot;]:unblock(sk.handleserversideswitch)
+    signals[&quot;svo ignore changed&quot;]:unblock(sk.handleserversideswitch_keepup)
+    signals[&quot;svo keepup changed&quot;]:unblock(sk.handleserversideswitch)
+    signals[&quot;svo keepup changed&quot;]:unblock(sk.handleserversideswitch_keepup)
+    signals[&quot;svo serverignore changed&quot;]:unblock(sk.handleserversideswitch)
+    signals[&quot;svo serverignore changed&quot;]:unblock(sk.handleserversideswitch_keepup)
+    signals[&quot;svo switched defence mode&quot;]:unblock(sk.handleserversideswitch)
+    signals[&quot;svo done defup&quot;]:unblock(sk.handleserversideswitch)
+  else
+    signals[&quot;svo ignore changed&quot;]:block(sk.handleserversideswitch)
+    signals[&quot;svo ignore changed&quot;]:block(sk.handleserversideswitch_keepup)
+    signals[&quot;svo keepup changed&quot;]:block(sk.handleserversideswitch)
+    signals[&quot;svo keepup changed&quot;]:block(sk.handleserversideswitch_keepup)
+    signals[&quot;svo serverignore changed&quot;]:block(sk.handleserversideswitch)
+    signals[&quot;svo serverignore changed&quot;]:block(sk.handleserversideswitch_keepup)
+    signals[&quot;svo switched defence mode&quot;]:block(sk.handleserversideswitch)
+    signals[&quot;svo done defup&quot;]:block(sk.handleserversideswitch)
+  end
+end, 'toggle serverside functions')
+
+
+-- if we've got cadmus, and have one of the me.cadmusaffs afflictions, then we should focus
+function sk.canfocus()
+  -- check if we haven't got cadmus
+  if not affs.cadmus then return true end
+
+  -- if we do, and focus with cadmus is on, check if any of the affs we've got allow us to focus
+  if conf.focuswithcadmus then
+    -- iterate aff list, as that'll be smaller most of the time than cadmusaffs
+    for aff in pairs(affs) do
+      if me.cadmusaffs[aff] == true then return true end
+    end
+  end
+
+  return false
+end
+
+function sk.togglefocusserver()
+  if not (conf.serverside and sk.logged_in) then return end
+
+  if sk.canfocus() and conf.focus and not sk.priochangecache.special.focustoggle then
+    svo.sendcuring(&quot;focus on&quot;)
+    sk.priochangecache.special.focustoggle = true
+  elseif (not conf.focus or (conf.focus and not sk.canfocus())) and sk.priochangecache.special.focustoggle then
+    svo.sendcuring(&quot;focus off&quot;)
+    sk.priochangecache.special.focustoggle = false
+  end
+end
+signals.svogotaff:connect(sk.togglefocusserver, &quot;sk.togglefocusserver&quot;)
+-- use after prompt processing, not lost aff, so afflictions getting removed don't spam-toggle
+signals.after_prompt_processing:connect(sk.togglefocusserver, &quot;sk.togglefocusserver&quot;)
+signals[&quot;svo config changed&quot;]:connect(sk.togglefocusserver, &quot;sk.togglefocusserver&quot;)
+
+function sk.canclot()
+  if (affs.corrupted and stats.currenthealth &lt; sys.corruptedhealthmin) then
+    return false
+  else
+    return true
+  end
+end
+
+function sk.toggleclotserver()
+  if not conf.serverside then return end
+
+  if sk.canclot() and conf.clot and not sk.clotting_on_serverside then
+    svo.sendcuring(&quot;clot on&quot;)
+    sk.clotting_on_serverside = true
+  elseif not (sk.canclot() and conf.clot) and sk.clotting_on_serverside then
+    svo.sendcuring(&quot;clot off&quot;)
+    sk.clotting_on_serverside = false
+  end
+end
+-- use after prompt processing, not lost aff, so afflictions getting removed don't spam-toggle
+signals.svogotaff:connect(sk.toggleclotserver, &quot;sk.toggleclotserver&quot;)
+signals.after_prompt_processing:connect(sk.toggleclotserver, &quot;sk.toggleclotserver&quot;)
+
+
+function sk.toggleinsomniaserver()
+  if not (conf.serverside and sk.logged_in) then return end
+
+  if conf.insomnia and not sk.priochangecache.special.insomniatoggle then
+    svo.sendcuring(&quot;insomnia on&quot;)
+    sk.priochangecache.special.insomniatoggle = true
+  elseif not conf.insomnia and sk.priochangecache.special.insomniatoggle then
+    svo.sendcuring(&quot;insomnia off&quot;)
+    sk.priochangecache.special.insomniatoggle = false
+  end
+end
+signals[&quot;svo config changed&quot;]:connect(sk.toggleinsomniaserver, &quot;sk.toggleinsomniaserver&quot;)
+
+--
+
+
+function svo.setupserverside()
+  if not conf.serverside then return end
+
+  svo.sendc(&quot;curingset new normal&quot;)
+  svo.sendc(&quot;curingset new slowcuring&quot;)
+
+  if svo.serversidesetup then killTimer(svo.serversidesetup) end
+  svo.serversidesetup = tempTimer(5+svo.getping(), function()
+    svo.serversidesetup = nil
+  end)
+end
+signals.charname:connect(svo.setupserverside, &quot;svo.setupserverside&quot;)
+signals.gmcpcharname:connect(svo.setupserverside, &quot;svo.setupserverside&quot;)
+
+function svo.hitcuringsetlimit()
+  if not svo.serversidesetup then return end
+
+  if not svo.conf.serverside then return end
+
+  echo(&quot;\n&quot;)
+  svo.echofn(&quot;You don't have enough curingset slots to enable serverside use - Svof requires two. View your curingsets with &quot;)
+  setFgColor(unpack(svo.getDefaultColorNums))
+  setUnderline(true)
+  echoLink(&quot;CURINGSET LIST&quot;, 'send&quot;curingset list&quot;', &quot;CURINGSET LIST&quot;, true)
+  setUnderline(false)
+  echo(&quot; and delete some with &quot;)
+  setUnderline(true)
+  echoLink(&quot;CURINGSET DELETE&quot;, 'printCmdLine&quot;curingset delete &quot;', &quot;CURINGSET DELETE&quot;, true)
+  setUnderline(false)
+  echo(&quot;.\n&quot;)
+
+  svo.tntf_set('serverside', 'off', true)
+end
+
+function svo.hitaliaslimit()
+  if not svo.serversidesetup then return end
+
+  if not svo.conf.serverside then return end
+
+  echo(&quot;\n&quot;)
+  svo.echofn(&quot;You haven't got enough space for Svof's two serverside aliases - view list with &quot;)
+  setFgColor(unpack(svo.getDefaultColorNums))
+  setUnderline(true)
+  echoLink(&quot;ALIAS LIST&quot;, 'send&quot;alias list&quot;', &quot;ALIAS LIST&quot;, true)
+  setUnderline(false)
+  echo(&quot; and delete some with &quot;)
+  setUnderline(true)
+  echoLink('CLEARALIAS', 'printCmdLine&quot;clearalias &quot;', 'CLEARALIAS', true)
+  setUnderline(false)
+  echo(&quot;.\n&quot;)
+
+  svo.tntf_set('serverside', 'off', true)
+end
+
+end -- end of svo serverside loader
+
+if svo.systemloaded then svo.loader.serverside() end</script>
+                <eventHandlerList/>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>Peopletracker</name>
+                <packageName></packageName>
+                <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+
+-- Svof is licensed under a
+-- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+-- You should have received a copy of the license along with this
+-- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+svo = svo or {}; svo.loader = svo.loader or {}
+svo.loader.peopletracker = function()
+
+--[[
+things to optimize: only do label updates on prompt
+handling multiple rooms ideas:
+ * draw a far-away label saying &quot;also in area at '%s': blah, blah&quot;
+   -&gt; can't work yet, because calculating a possible location would be a pain
+ * put names in every room
+   -&gt; looks ugly in this combination: http://img7.imagebanana.com/img/oshg8lw5/Selection_037.png
+ * label by single letters for groups, with only the rightmost room having the full list of names with letter) prepended
+]]
+
+local sys, signals = svo.sys, svo.signals
+local conf, sk = svo.conf, svo.sk
+
+-- area = {labels}
+local labels = {}
+
+-- default to numerals when we run out
+-- while defining this as a function would be nicer, it's easier for most people to mod if it's in this format
+local multiplegroups = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'}
+
+conf.peopletracker = type(conf.peopletracker) == 'nil' and true or conf.peopletracker
+svo.config.setoption('peopletracker', {
+  type = 'boolean',
+  onenabled = function ()
+    if not deleteMapLabel or not createMapLabel then
+      svo.echof(&quot;I'm sorry, but your Mudlet is too old and can't make labels on the map yet - update it!&quot;)
+      conf.peopletracker = false
+      raiseEvent(&quot;svo config changed&quot;, 'peopletracker')
+      return
+    end
+
+    svo.echof(&quot;People tracker &lt;0,250,0&gt;enabled%s.&quot;, svo.getDefaultColor())
+  end,
+  ondisabled = function () sys.clean_old_labels() svo.echof(&quot;People tracker &lt;250,0,0&gt;disabled%s.&quot;, svo.getDefaultColor()) end,
+  installstart = function () conf.peopletracker = true end,
+})
+
+conf.clearlabels = type(conf.clearlabels) == 'nil' and true or conf.clearlabels
+svo.config.setoption('clearlabels', {
+  type = 'boolean',
+  onenabled = function ()
+    signals.newarea:connect(sys.clear_labels, 'clear labels on new area')
+    svo.echof(&quot;&lt;0,250,0&gt;Will%s automatically clear map labels that are surrounded by ().&quot;, svo.getDefaultColor())
+  end,
+  ondisabled = function ()
+    signals.newarea:disconnect(sys.clear_labels)
+    svo.echof(&quot;&lt;250,0,0&gt;Won't%s automatically clear map labels that are surrounded by ().&quot;, svo.getDefaultColor())
+  end,
+  installstart = function () conf.clearlabels = true end,
+})
+
+conf.labelsfont = type(conf.labelsfont) == 'nil' and 10 or conf.labelsfont
+svo.config.setoption('labelsfont', {
+  type = 'number',
+  onset = function () sys.update_people_labels() svo.echof(&quot;Labels set to draw at %dpt.&quot;, conf.labelsfont) end,
+  installstart = function () conf.labelsfont = 10 end,
+})
+
+conf.labelcolor = conf.labelcolor or 'white'
+conf.maxdupes = conf.maxdupes or 20
+svo.config.setoption('labelcolor', {
+  type = 'string',
+  vconfig2string = true,
+  check = function (what)
+    if color_table[what] then return true end
+  end,
+  onshow = function (defaultcolour)
+    fg('gold')
+    echoLink(&quot;ppl: &quot;, &quot;&quot;, &quot;svo People Tracker&quot;, true)
+    fg(defaultcolour) echo(&quot;People tracker &quot;)
+    fg('a_cyan') echoLink((conf.peopletracker and 'on' or 'off'), &quot;svo.config.set('peopletracker', &quot;..(conf.peopletracker and 'false' or 'true')..&quot;, true)&quot;, &quot;Click to &quot;..(conf.peopletracker and 'disable' or 'enable')..&quot; people tracking on the map&quot;, true)
+    fg(defaultcolour) echo(&quot;; using&quot;)
+    fg(conf.labelcolor or 'a_cyan') echoLink(&quot; &quot;..(conf.labelcolor or '?'), &quot;printCmdLine'vconfig labelcolor '&quot;, &quot;Click to change the color&quot;, true)
+    fg(defaultcolour) echo(&quot; map labels (&quot;)
+    fg('a_cyan') echoLink(&quot;view all&quot;, &quot;showColors()&quot;, &quot;Click to view possible color names that you can use for customizing the label colors&quot;, true)
+    fg(defaultcolour)
+    echo(&quot;); font size is &quot;)
+    fg('a_cyan') echoLink(tostring(conf.labelsfont), &quot;printCmdLine'vconfig labelsfont '&quot;, &quot;Click to set the font size for peopletracker labels&quot;, true)
+    echo(&quot;.\n&quot;)
+  end,
+  onset = function ()
+    local r,g,b = unpack(color_table[conf.labelcolor])
+    sys.update_people_labels()
+    svo.echof(&quot;Okay, will color the map labels in &lt;%s,%s,%s&gt;%s%s now.&quot;, r,g,b, conf.labelcolor, svo.getDefaultColor())
+  end,
+  installstart = function ()
+    conf.labelcolor = 'blue'
+  end
+})
+
+-- check for old Mudlet versions
+if not deleteMapLabel or not createMapLabel then
+  svo.echof(&quot;I'm sorry, but your Mudlet is too old and can't make labels on the map yet - update it!&quot;)
+  return
+end
+
+sys.clean_old_labels = function()
+  for areanum, arealabels in pairs(labels) do
+    for _, label in pairs(arealabels) do
+      deleteMapLabel(areanum, label)
+    end
+  end
+  labels = {}
+end
+signals.sysexitevent:connect(sys.clean_old_labels, 'cleanup old labels on Mudlet quit')
+
+sys.clear_labels = function()
+  if not mmp then return end
+  local function clearlabels(areaid)
+    local t = getMapLabels(areaid)
+    if type(t) ~= 'table' then return end
+
+    local starts, ends = string.starts, string.ends
+    for labelid, text in pairs(t) do
+      if starts(text, '(') and ends(text, ')') then
+        deleteMapLabel(areaid, labelid)
+      end
+    end
+  end
+
+  for areaid in pairs(mmp.areatabler or {}) do
+    clearlabels(areaid)
+  end
+end
+
+if conf.clearlabels then
+  signals.newarea:connect(sys.clear_labels, 'clear labels on new area')
+end
+
+sys.update_people_labels = function ()
+  -- drawwatch = drawwatch or createStopWatch()
+  -- startStopWatch(drawwatch)
+
+  local s,m = pcall(function()
+    if not mmp then return end
+    -- build a 'location = people' reverse map
+    local r = {}
+    -- keeps track at which index of multiplegroups are we at
+    local multiplescount = 1
+
+    local fr,fg,fb = unpack(color_table[conf.labelcolor or 'white'])
+    local br,bg,bb = unpack(color_table.black)
+
+    for k,v in pairs(mmp.pdb) do
+      if mmp.pdb_lastupdate[k] then
+        r[v] = r[v] or {}; r[v][#r[v]+1] = k
+      end
+    end
+
+    sys.clean_old_labels()
+    if not conf.peopletracker or not mmp.pdb_lastupdate or not mmp.roomexists(mmp.currentroom) then return end
+
+    local getRoomArea, createMapLabel, getRoomCoordinates, concat, sort = getRoomArea, createMapLabel, getRoomCoordinates, table.concat, table.sort
+
+    -- if we have a unique location, draw fancy labels in all rooms on 60% opacity
+    for room, persons in pairs(r) do
+      sort(persons)
+      local ids = mmp.getnums(room, true)
+
+      -- multiples? special case then. Current method implemented is #3
+      if ids and #ids &gt;1 and #ids &lt;= conf.maxdupes then
+        -- make a table of roomid = {x,y,z}
+        -- in a separate variable, track the right-most room ID and x coordinate per-Z level
+        local coords, rightmost = {}, {}
+        for _, exactroomid in pairs(ids) do
+          coords[exactroomid] = {getRoomCoordinates(exactroomid)}
+          coords[exactroomid][4] = getRoomArea(exactroomid)
+
+          if not rightmost[coords[exactroomid][3]] or
+            coords[exactroomid][1] &gt;= rightmost[coords[exactroomid][3]][1] then -- &gt;= so rightmostroom is set at least once
+
+            rightmost[coords[exactroomid][3]] =
+              {coords[exactroomid][1], exactroomid} -- we don't account for the Y coordinate if the X's are the same atm, though
+          end
+        end
+
+        -- now, draw!
+        for roomid, l in pairs(coords) do
+          local area = l[4]
+          labels[area] = labels[area] or {}
+
+          if rightmost[l[3]] and roomid == rightmost[l[3]][2] then
+            -- doesn't account for multiplescount overflowing atm
+            labels[area][#labels[area]+1] = createMapLabel(area, '('..multiplegroups[multiplescount]..&quot; &quot;..concat(persons, &quot;, &quot;)..')', l[1],l[2],l[3], fr, fg, fb, br, bg, bb, 0,conf.labelsfont)
+          else
+            labels[area][#labels[area]+1] = createMapLabel(area, '('..multiplegroups[multiplescount]..')', l[1],l[2],l[3], fr, fg, fb, br, bg, bb, 0,conf.labelsfont)
+          end
+        end
+        multiplescount = multiplescount +1
+
+      elseif ids and #ids == 1 then
+        local x,y,z = getRoomCoordinates(ids[1])
+        local area = getRoomArea(ids[1])
+
+        if area then -- somehow area can still be returned as nil
+          labels[area] = labels[area] or {}
+
+          labels[area][#labels[area]+1] = createMapLabel(area, '('..concat(persons, &quot;, &quot;)..')', x,y,z, fr, fg, fb, br, bg, bb, 0,conf.labelsfont)
+        end
+      end
+    end
+  end)
+
+  if not s then
+    echoLink(&quot;(e!)&quot;, string.format(&quot;echo([=[The problem was: %q]=])&quot;, m), 'Oy - there was a problem with the peopletracker. Click on this link and submit a bug report with what it says.')
+  end
+
+  -- svo.echof(&quot;update took %s&quot;, stopStopWatch(drawwatch))
+end
+
+signals[&quot;mmapper updated pdb&quot;]:connect(function()
+  if isPrompt() then
+    sys.update_people_labels()
+  else
+    sk.onprompt_beforeaction_add('update_labels', sys.update_people_labels)
+  end
+end, 'update labels on new pdb update')
+
+signals.quit:connect(sys.clean_old_labels, 'cleanup old labels on system start')
+
+end -- end of svo peopletracker loader
+
+if svo.systemloaded then svo.loader.peopletracker() end</script>
+                <eventHandlerList/>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo_init_system</name>
+                <packageName></packageName>
+                <script>-- this function loads the system independent of the order of xmls/modules
+function svo_init_system()
+  if svo.systemloaded then return end
+
+  -- list of requires Svof subsystems that needs to be loaded before we can load the system
+  local required_subsystems = {
+    &quot;setup&quot;,
+    &quot;misc&quot;,
+    &quot;empty&quot;,
+    &quot;dict&quot;,
+    &quot;sk&quot;,
+    &quot;controllers&quot;,
+    &quot;action&quot;,
+    &quot;pipes&quot;,
+    &quot;rift&quot;,
+    &quot;diag&quot;,
+    &quot;valid_simple&quot;,
+    &quot;valid_main&quot;,
+    &quot;config&quot;,
+    &quot;install&quot;,
+    &quot;aliases&quot;,
+    &quot;defences&quot;,
+    &quot;prio&quot;,
+    &quot;parry&quot;,
+    &quot;funnies&quot;,
+    &quot;dor&quot;,
+    &quot;customprompt&quot;,
+    &quot;serverside&quot;,
+    &quot;peopletracker&quot;,
+  }
+	
+	-- Penlight is not loaded yet
+	local tablex = require('pl.tablex')
+	
+	if not tablex then cecho(&quot;&lt;red&gt;missing pl\n&quot;) return end
+	
+	local loaded_subsystems = tablex.keys(svo.loader)
+	
+	-- check if any of the required modules are missing
+	if not table.is_empty(table.n_complement(required_subsystems, loaded_subsystems)) then
+	  return
+	end
+	
+	for _, subsystem in ipairs(required_subsystems) do
+	  svo.loader[subsystem]()
+	end
+
+  svo.signals.systemstart:emit()
+  svo.systemloaded = true
+  raiseEvent(&quot;svo system loaded&quot;)
+  
+  svo.echofn(&quot;Loaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
+  echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.github.io/svof&quot;', &quot;Svof homepage&quot;)
+  decho(svo.getDefaultColor()..&quot;)\n&quot;)
+end</script>
+                <eventHandlerList>
+                    <string>sysLoadEvent</string>
+                    <string>sysInstall</string>
+                </eventHandlerList>
+            </Script>
+        </ScriptGroup>
+    </ScriptPackage>
+</MudletPackage>
