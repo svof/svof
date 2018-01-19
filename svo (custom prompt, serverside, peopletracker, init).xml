@@ -1811,8 +1811,9 @@ if svo.systemloaded then svo.loader.peopletracker() end</script>
             <name>svo_init_system</name>
             <packageName></packageName>
             <script>-- this function loads the system independent of the order of xmls/modules
-function svo_init_system()
-  if svo.systemloaded then return end
+-- also used when the system needs to be reloaded with a new class
+function svo_init_system(force_init)
+  if svo.systemloaded and not force_init then return end
 
   -- list of requires Svof subsystems that needs to be loaded before we can load the system
   local required_subsystems = {
@@ -1863,6 +1864,9 @@ function svo_init_system()
   svo.echofn(&quot;Loaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
   echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.github.io/svof&quot;', &quot;Svof homepage&quot;)
   decho(svo.getDefaultColor()..&quot;)\n&quot;)
+	
+	-- setup prompt stats on a reload
+	if force_init then sendSocket(&quot;\n&quot;) end
 end</script>
             <eventHandlerList>
                 <string>sysLoadEvent</string>
