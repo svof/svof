@@ -191,6 +191,7 @@ signals.aeony = signals.aeony or luanotify.signal.new()
 signals.sync = signals.sync or luanotify.signal.new()
 signals.dragonform = signals.dragonform or luanotify.signal.new()
 
+if not svo.systemloaded then
 local haddragonform = false
 signals.dragonform:add_post_emit(function()
   if svo.defc.dragonform and not haddragonform then
@@ -201,6 +202,7 @@ signals.dragonform:add_post_emit(function()
     haddragonform = false
   end
 end)
+end
 
 signals.canoutr = signals.canoutr or luanotify.signal.new()
 signals.canoutr:connect(function()
@@ -625,6 +627,8 @@ end
 -- general ones
 signals.relogin = signals.relogin or luanotify.signal.new()
 signals.enablegmcp = signals.enablegmcp or luanotify.signal.new()
+
+if not svo.systemloaded then
 signals.enablegmcp:add_post_emit(function ()
   svo.logging_in = false
   if not sys.enabledgmcp then
@@ -640,6 +644,8 @@ signals.enablegmcp:add_post_emit(function ()
 
   svo.innews = false
 end)
+end
+
 tempBeginOfLineTrigger(&quot;Rapture Runtime Environment&quot;, [[svo.logging_in = true]])
 
 signals.newroom = signals.newroom or luanotify.signal.new()
@@ -706,10 +712,12 @@ if svo.haveskillset('metamorphosis') then
 signals.morphskillchanged = signals.morphskillchanged or luanotify.signal.new()
 end
 
-signals.saveconfig:add_post_emit(function ()
-  echo&quot;\n&quot;
-  svo.echof(&quot;Saved system settings.&quot;)
-end)
+if not svo.systemloaded then 
+  signals.saveconfig:add_post_emit(function ()
+    echo&quot;\n&quot;
+    svo.echof(&quot;Saved system settings.&quot;)
+  end)
+end
 
 signals.loadedconfig = signals.loadedconfig or luanotify.signal.new()
 signals.svogotaff = signals.svogotaff or luanotify.signal.new()

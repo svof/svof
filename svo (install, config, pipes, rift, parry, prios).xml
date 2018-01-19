@@ -3951,6 +3951,7 @@ function svo.toggle_riftlabel(toggle)
   end
 end
 
+if not svo.systemloaded then
 svo.signals.systemstart:add_post_emit(function ()
   if lfs.attributes(getMudletHomeDir() .. &quot;/svo/rift+inv/rift&quot;) then
     table.load(getMudletHomeDir() .. &quot;/svo/rift+inv/rift&quot;, rift.riftcontents)
@@ -3991,6 +3992,7 @@ svo.signals.systemstart:add_post_emit(function ()
   end
   rift.update_riftlabel()
 end)
+end
 
 svo.signals.enablegmcp:connect(function()
   sendGMCP([[Core.Supports.Add [&quot;IRE.Rift 1&quot;] ]])

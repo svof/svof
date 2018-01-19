@@ -957,8 +957,11 @@ function svo.sk.makewarnings()
   end
 end
 
-signals.systemstart:add_post_emit(sk.makewarnings)
-signals.orgchanged:add_post_emit(sk.makewarnings)
+if not svo.systemloaded then
+  signals.systemstart:add_post_emit(sk.makewarnings)
+  signals.orgchanged:add_post_emit(sk.makewarnings)
+end
+
 signals.curemethodchanged:connect(sk.makewarnings, &quot;update warnings for curemethod&quot;)
 
 svo.sk.warn = function (what)
