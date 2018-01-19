@@ -1907,7 +1907,7 @@ end</script>
 -- selecting the hex colour code and then use http://www.yellowpipe.com/yis/tools/hex-to-rgb/color-converter.php
 -- to convert it to the 3 RGB colours
 function Customize_systems_echos()
-if not svo then return end
+if not (svo and svo.echos) then return end
 
 -- this does the (svo): blah-style echoes
 function svo.echos.demo(newline, what)
