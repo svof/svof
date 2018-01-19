@@ -1873,6 +1873,19 @@ end</script>
                 <string>sysInstall</string>
             </eventHandlerList>
         </Script>
+        <Script isActive="yes" isFolder="no">
+            <name>svo.classchange</name>
+            <packageName></packageName>
+            <script>function svo.classchange()
+  if svo.me.class ~= gmcp.Char.Status.class then
+		svo.me.class = gmcp.Char.Status.class
+	  svo_init_system(true)		
+	end
+end</script>
+            <eventHandlerList>
+                <string>gmcp.Char.Status</string>
+            </eventHandlerList>
+        </Script>
     </ScriptPackage>
     <KeyPackage/>
     <HelpPackage>
