@@ -318,12 +318,7 @@ end, 'update gmcpcharvitals')
 -- _put(string.format(&quot;me.class = \&quot;%s\&quot;\n&quot;, type(class) == 'string' and stringx.title(class) or table.concat(tablex.imap(stringx.title, class), &quot;, &quot;)))
 -- _put(&quot;me.skills = &quot;.. pretty.write(skills))
 -- )
-me.class = 'Infernal'
-me.skills = {
-  weaponmastery = true,
-  necromancy = true,
-  chivalry = true
-}
+me.class = me.class or 'Infernal'
 
 svo.knownskills = {
   alchemist    = {'transmutation', 'physiology', 'alchemy'},
@@ -346,6 +341,13 @@ svo.knownskills = {
   shaman       = {'runelore', 'curses', 'vodun'},
   sylvan       = {'weatherweaving', 'groves', 'propagation'},
 }
+
+me.skills = {}
+for _, skill in ipairs(svo.knownskills[me.class:lower()]) do
+  me.skills[skill] = true
+end
+
+
 -- optimised haveskillset, since it gets called often: compute a key-value table
 -- with all of the skills we have.
 do
