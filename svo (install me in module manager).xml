@@ -6,6 +6,21 @@
     <AliasPackage/>
     <ActionPackage/>
     <ScriptPackage>
+        <Script isActive="yes" isFolder="no">
+            <name>Create Svof namespace</name>
+            <packageName></packageName>
+            <script>svo = svo or {
+  autopause_on_def = function() end,
+  balanceless = {},
+  disable_seek = function() end,
+	loader = {}
+}
+
+ndb = ndb or {}
+
+createBuffer('svo_prompt')</script>
+            <eventHandlerList/>
+        </Script>
         <ScriptGroup isActive="yes" isFolder="yes">
             <name>3rdparty</name>
             <packageName></packageName>
@@ -7021,6 +7036,158 @@ svo.riftlabel = Geyser.Label:new({  name = &quot;svo.riftlabel&quot;,
 
 if not svo or not svo.conf or not svo.conf.riftlabel then svo.riftlabel:hide() end</script>
                 <eventHandlerList/>
+            </Script>
+        </ScriptGroup>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>Load &amp; init</name>
+            <packageName></packageName>
+            <script>-------------------------------------------------
+--         Put your Lua functions here.        --
+--                                             --
+-- Note that you can also use external Scripts --
+-------------------------------------------------
+</script>
+            <eventHandlerList/>
+            <Script isActive="yes" isFolder="no">
+                <name>svo_init_system</name>
+                <packageName></packageName>
+                <script>-- this function loads the system independent of the order of xmls/modules
+-- also used when the system needs to be reloaded with a new class
+function svo_init_system()
+  if svo.systemloaded then return end
+
+  -- list of requires Svof subsystems that needs to be loaded before we can load the system
+  local required_subsystems = {
+    &quot;setup&quot;,
+    &quot;misc&quot;,
+    &quot;empty&quot;,
+    &quot;dict&quot;,
+    &quot;sk&quot;,
+    &quot;controllers&quot;,
+    &quot;action&quot;,
+    &quot;pipes&quot;,
+    &quot;rift&quot;,
+    &quot;diag&quot;,
+    &quot;valid_simple&quot;,
+    &quot;valid_main&quot;,
+    &quot;config&quot;,
+    &quot;install&quot;,
+    &quot;aliases&quot;,
+    &quot;defences&quot;,
+    &quot;prio&quot;,
+    &quot;parry&quot;,
+    &quot;funnies&quot;,
+    &quot;dor&quot;,
+    &quot;customprompt&quot;,
+    &quot;serverside&quot;,
+    &quot;peopletracker&quot;,
+  }
+	
+	-- Penlight is not loaded yet	
+	if not package.loaded['pl.tablex'] then return end
+		
+	local tablex = require('pl.tablex')
+	local loaded_subsystems = tablex.keys(svo.loader)
+	
+	-- check if any of the required modules are missing
+	if not table.is_empty(table.n_complement(required_subsystems, loaded_subsystems)) then
+	  return
+	end
+	
+	-- ensure Mudlet is new enough for the system to work without issues
+	if not mudletOlderThan or mudletOlderThan(3,6) then
+	  cecho(&quot;&lt;SkyBlue:firebrick&gt;Can't load Svof: your Mudlet is too old for the system to run well.\nPlease update to latest to enjoy it!\n&quot;)
+		return
+	end
+	
+	for _, subsystem in ipairs(required_subsystems) do
+	  svo.loader[subsystem]()
+	end
+
+  svo.signals.systemstart:emit()
+  svo.systemloaded = true
+  raiseEvent(&quot;svo system loaded&quot;)
+	
+	-- if we're already logged in when the system is installed, initialise a few other things
+	if gmcp and gmcp.Char and gmcp.Char.Name then
+	  svo.signals.gmcpcharname:emit()
+	end
+  	svo.echof&quot;2222&quot;
+  svo.echofn(&quot;Loaded &amp; ready to gooo, version %s (&quot;, tostring(svo.version))
+  echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.github.io/svof&quot;', &quot;Svof homepage&quot;)
+  decho(svo.getDefaultColor()..&quot;)\n&quot;)
+	
+	-- setup prompt stats on a reload
+	if force_init then sendSocket(&quot;\n&quot;) end
+end</script>
+                <eventHandlerList>
+                    <string>sysLoadEvent</string>
+                    <string>sysInstall</string>
+                </eventHandlerList>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo.classchange</name>
+                <packageName></packageName>
+                <script>function svo.classchange()
+  if svo.me.class ~= gmcp.Char.Status.class then
+	  local oldclass = svo.me.class
+		svo.me.class = gmcp.Char.Status.class
+		svo.signals.saveconfig:emit()
+	  svo.systemloaded = false; svo_init_system()		
+	  svo.echof(&quot;Changed your Svof from %s over to %s.&quot;, oldclass, svo.me.class)
+	end
+end</script>
+                <eventHandlerList>
+                    <string>gmcp.Char.Status</string>
+                </eventHandlerList>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo.install_other_modules</name>
+                <packageName></packageName>
+                <script>function svo.install_other_modules(_, installedmodule)
+  if installedmodule ~= &quot;svo (install me in module manager)&quot; then return end
+	
+  local modules_list = {
+	  'svo (actions dictionary)', 'svo (alias and defence functions)',
+		'svo (curing skeleton, controllers, action system)',
+		'svo (custom prompt, serverside, peopletracker)',
+		'svo (install, config, pipes, rift, parry, prios)',
+		'svo (setup, misc, empty, funnies, dor)',
+		'svo (trigger functions)', 'svo (aliases, triggers)'
+	}
+	
+	local current_module_name = 'svo (install me in module manager)'
+	local basepath = getModulePath(current_module_name)
+	-- -4 to account for the .xml ending
+	basepath = basepath:sub(1, #basepath-#current_module_name-4)
+	
+	
+	-- install missing modules &amp; sync if Mudlet supports it
+	for _, modulename in ipairs(modules_list) do
+	  if not getModulePath(modulename) then
+		  local modulepath = basepath..modulename..&quot;.xml&quot;
+			
+			if io.exists(modulepath) then
+  		  -- workaround for https://github.com/Mudlet/Mudlet/issues/1223
+  			tempTimer(0, function()
+				  installModule(basepath..modulename..&quot;.xml&quot;)
+					if syncModule then
+					  syncModule(modulename)
+					else
+					  cecho(&quot;\n&lt;dark_orchid&gt;Installed &lt;green&gt;&quot;..modulename..&quot;&lt;dark_orchid&gt; - make sure to tick 'sync' in the Module Manager!&quot;)
+				  end
+				end)
+			end
+		end
+	end
+	
+	-- sync this module too
+	if syncModule then syncModule('svo (install me in module manager)') end
+end
+svo.install_other_modules()</script>
+                <eventHandlerList>
+                    <string>sysInstallModule</string>
+                </eventHandlerList>
             </Script>
         </ScriptGroup>
     </ScriptPackage>
