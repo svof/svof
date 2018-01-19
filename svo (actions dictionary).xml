@@ -14678,17 +14678,28 @@ if svo.haveskillset('shadowmancy') then
 
       isadvisable = function ()
         local shadowcloak = me.getitem(&quot;a grim cloak&quot;)
-        if not defc.dragonform and not defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].shadowcloak) or (conf.keepup and defkeepup[defs.mode].shadowcloak) or (sys.deffing and defdefup[defs.mode].disperse) or (conf.keepup and defkeepup[defs.mode].disperse) or (sys.deffing and defdefup[defs.mode].shadowveil) or (conf.keepup and defkeepup[defs.mode].shadowveil) or (sys.deffing and defdefup[defs.mode].hiding) or (conf.keepup and defkeepup[defs.mode].hiding)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and stats.mp then
-          if not shadowcloak then
-            if stats.mp &gt;= 100 then
+        if not defc.dragonform and not defc.shadowcloak and 
+          ((sys.deffing and defdefup[defs.mode].shadowcloak) 
+            or (conf.keepup and defkeepup[defs.mode].shadowcloak)
+            or (sys.deffing and defdefup[defs.mode].disperse)
+            or (conf.keepup and defkeepup[defs.mode].disperse) 
+            or (sys.deffing and defdefup[defs.mode].shadowveil) 
+            or (conf.keepup and defkeepup[defs.mode].shadowveil)
+            or (sys.deffing and defdefup[defs.mode].hiding)
+            or (conf.keepup and defkeepup[defs.mode].hiding))
+          and not codepaste.balanceful_defs_codepaste()
+          and not affs.paralysis
+          and not affs.prone and stats.mp then
+	          if not shadowcloak then
+              if stats.mp &gt;= 100 then
+                return true
+              elseif not sk.gettingfullstats then
+                svo.fullstats(true)
+                svo.echof(&quot;Getting fullstats for Shadowcloak summoning...&quot;)
+              end
+            else
               return true
-            elseif not sk.gettingfullstats then
-              svo.fullstats(true)
-              svo.echof(&quot;Getting fullstats for Shadowcloak summoning...&quot;)
             end
-          else
-            return true
-          end
         end
         return false
       end,
