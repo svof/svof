@@ -565,6 +565,6 @@ raise = utils.raise
 -- @see path.package_path
 -- @function package.searchpath
 
-return utils
+package.loaded['pl.utils'] = utils
 
 

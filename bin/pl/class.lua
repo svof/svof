@@ -176,5 +176,5 @@ function class.properties._class_init(klass)
 end
 
 
-return class
+package.loaded['pl.class'] = class
 

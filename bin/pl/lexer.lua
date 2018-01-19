@@ -453,4 +453,4 @@ function lexer.expecting (tok,expected_type,no_skip_ws)
     return v
 end
 
-return lexer
+package.loaded['pl.lexer'] = lexer

@@ -472,4 +472,4 @@ function dir.getallfiles( start_path, pattern )
     return files
 end
 
-return dir
+package.loaded['pl.dir'] = dir

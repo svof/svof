@@ -396,4 +396,4 @@ end
 
 
 ---- finis -----
-return path
+package.loaded['pl.path'] = path

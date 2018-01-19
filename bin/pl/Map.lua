@@ -110,4 +110,4 @@ function Map:__tostring ()
     return pretty_write(self,'')
 end
 
-return Map
+package.loaded['pl.Map'] = Map

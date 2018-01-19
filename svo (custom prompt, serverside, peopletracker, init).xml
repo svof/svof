@@ -1841,11 +1841,10 @@ function svo_init_system()
     &quot;peopletracker&quot;,
   }
 	
-	-- Penlight is not loaded yet
+	-- Penlight is not loaded yet	
+	if not package.loaded[&quot;pl.tablex&quot;] then return end
+		
 	local tablex = require('pl.tablex')
-	
-	if not tablex then cecho(&quot;&lt;red&gt;missing pl\n&quot;) return end
-	
 	local loaded_subsystems = tablex.keys(svo.loader)
 	
 	-- check if any of the required modules are missing

@@ -145,7 +145,7 @@ function OrderedMap:__tostring ()
     return '{'..concat(res,',')..'}'
 end
 
-return OrderedMap
+package.loaded['pl.OrderedMap'] = OrderedMap
 
 
 

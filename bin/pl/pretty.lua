@@ -283,4 +283,4 @@ function pretty.number (num,kind,prec)
     end
 end
 
-return pretty
+package.loaded['pl.pretty'] = pretty

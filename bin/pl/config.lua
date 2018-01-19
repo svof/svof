@@ -197,5 +197,5 @@ function config.read(file,cnfg)
     return top_t
 end
 
-return config
+package.loaded['pl.config'] = config
 

@@ -817,4 +817,4 @@ function tablex.search (t,value,exclude)
     return _find(t,value,tables)
 end
 
-return tablex
+package.loaded['pl.tablex'] = tablex

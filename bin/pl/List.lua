@@ -606,5 +606,5 @@ function List.iterate(seq)
 end
 iter = List.iterate
 
-return List
+package.loaded['pl.List'] = List
 

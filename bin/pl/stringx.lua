@@ -437,4 +437,4 @@ function stringx.import(dont_overload)
     utils.import(stringx,string)
 end
 
-return stringx
+package.loaded['pl.stringx'] = stringx
