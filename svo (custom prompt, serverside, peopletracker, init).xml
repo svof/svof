@@ -6,20 +6,10 @@
     <AliasPackage/>
     <ActionPackage/>
     <ScriptPackage>
-        <ScriptGroup isActive="yes" isFolder="yes">
-            <name>Custom prompt, serverside, peopletracker, init</name>
+        <Script isActive="yes" isFolder="no">
+            <name>Custom prompt</name>
             <packageName></packageName>
-            <script>-------------------------------------------------
---         Put your Lua functions here.        --
---                                             --
--- Note that you can also use external Scripts --
--------------------------------------------------
-</script>
-            <eventHandlerList/>
-            <Script isActive="yes" isFolder="no">
-                <name>Custom prompt</name>
-                <packageName></packageName>
-                <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+            <script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -670,12 +660,12 @@ end
 end -- end of svo customprompt loader
 
 if svo.systemloaded then svo.loader.customprompt() end</script>
-                <eventHandlerList/>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>Serverside</name>
-                <packageName></packageName>
-                <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+            <eventHandlerList/>
+        </Script>
+        <Script isActive="yes" isFolder="no">
+            <name>Serverside</name>
+            <packageName></packageName>
+            <script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -1576,12 +1566,12 @@ end
 end -- end of svo serverside loader
 
 if svo.systemloaded then svo.loader.serverside() end</script>
-                <eventHandlerList/>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>Peopletracker</name>
-                <packageName></packageName>
-                <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+            <eventHandlerList/>
+        </Script>
+        <Script isActive="yes" isFolder="no">
+            <name>Peopletracker</name>
+            <packageName></packageName>
+            <script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -1815,12 +1805,12 @@ signals.quit:connect(sys.clean_old_labels, 'cleanup old labels on system start')
 end -- end of svo peopletracker loader
 
 if svo.systemloaded then svo.loader.peopletracker() end</script>
-                <eventHandlerList/>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo_init_system</name>
-                <packageName></packageName>
-                <script>-- this function loads the system independent of the order of xmls/modules
+            <eventHandlerList/>
+        </Script>
+        <Script isActive="yes" isFolder="no">
+            <name>svo_init_system</name>
+            <packageName></packageName>
+            <script>-- this function loads the system independent of the order of xmls/modules
 function svo_init_system()
   if svo.systemloaded then return end
 
@@ -1875,12 +1865,11 @@ function svo_init_system()
   echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.github.io/svof&quot;', &quot;Svof homepage&quot;)
   decho(svo.getDefaultColor()..&quot;)\n&quot;)
 end</script>
-                <eventHandlerList>
-                    <string>sysLoadEvent</string>
-                    <string>sysInstall</string>
-                </eventHandlerList>
-            </Script>
-        </ScriptGroup>
+            <eventHandlerList>
+                <string>sysLoadEvent</string>
+                <string>sysInstall</string>
+            </eventHandlerList>
+        </Script>
     </ScriptPackage>
     <KeyPackage/>
     <HelpPackage>

@@ -7,33 +7,19 @@
     <ActionPackage/>
     <ScriptPackage>
         <ScriptGroup isActive="yes" isFolder="yes">
-            <name>svo</name>
+            <name>3rdparty</name>
             <packageName></packageName>
-            <script>svo = svo or {
-  autopause_on_def = function() end,
-  balanceless = {},
-  disable_seek = function() end,
-}
-
-ndb = ndb or {}
-
-createBuffer(&quot;svo_prompt&quot;)
-</script>
-            <eventHandlerList/>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>3rdparty</name>
-                <packageName></packageName>
-                <script>-------------------------------------------------
+            <script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-                <eventHandlerList/>
-                <Script isActive="yes" isFolder="no">
-                    <name>double_queue</name>
-                    <packageName></packageName>
-                    <script>---------------------------------------------------------------------------------
+            <eventHandlerList/>
+            <Script isActive="yes" isFolder="no">
+                <name>double_queue</name>
+                <packageName></packageName>
+                <script>---------------------------------------------------------------------------------
 -- Copyright (C) 2010 Tiago Katcipis &lt;tiagokatcipis@gmail.com&gt;
 -- Copyright (C) 2010 Paulo Pizarro  &lt;paulo.pizarro@gmail.com&gt;
 -- 
@@ -188,12 +174,12 @@ function DoubleQueue:position(data)
 	return self.data_position[data]
 end
 </script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>signal</name>
-                    <packageName></packageName>
-                    <script>---------------------------------------------------------------------------------
+                <eventHandlerList/>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>signal</name>
+                <packageName></packageName>
+                <script>---------------------------------------------------------------------------------
 -- Copyright (C) 2010 Tiago Katcipis &lt;tiagokatcipis@gmail.com&gt;
 -- Copyright (C) 2010 Paulo Pizarro  &lt;paulo.pizarro@gmail.com&gt;
 -- 
@@ -421,75 +407,75 @@ function Signal:stop()
 end
 
 </script>
-                    <eventHandlerList/>
-                </Script>
-            </ScriptGroup>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>Event handlers</name>
-                <packageName></packageName>
-                <script>-------------------------------------------------
+                <eventHandlerList/>
+            </Script>
+        </ScriptGroup>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>Event handlers</name>
+            <packageName></packageName>
+            <script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-                <eventHandlerList/>
-                <Script isActive="yes" isFolder="no">
-                    <name>svo_events</name>
-                    <packageName></packageName>
-                    <script>function svo_events(...)
+            <eventHandlerList/>
+            <Script isActive="yes" isFolder="no">
+                <name>svo_events</name>
+                <packageName></packageName>
+                <script>function svo_events(...)
 	local s,m = pcall(svo.events, ...)
 	if not s then display(m) end
 end</script>
-                    <eventHandlerList>
-                        <string>CharVitals</string>
-                        <string>CharName</string>
-                        <string>RoomNum</string>
-                        <string>RoomBrief</string>
-                        <string>sysDataSendRequest</string>
-                        <string>sysExitEvent</string>
-                        <string>mmapper updated pdb</string>
-                        <string>svo lost balance</string>
-                        <string>svo got balance</string>
-                        <string>svo prio changed</string>
-                        <string>svo system loaded</string>
-                        <string>svo config changed</string>
-                        <string>svo serverignore changed</string>
-                        <string>svo ignore changed</string>
-                        <string>svo defup changed</string>
-                        <string>svo keepup changed</string>
-                        <string>svo switched defence mode</string>
-                        <string>svo done defup</string>
-                        <string>NameDB finished honors</string>
-                    </eventHandlerList>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>svo_gevents</name>
-                    <packageName></packageName>
-                    <script>function svo_gevents(...)
+                <eventHandlerList>
+                    <string>CharVitals</string>
+                    <string>CharName</string>
+                    <string>RoomNum</string>
+                    <string>RoomBrief</string>
+                    <string>sysDataSendRequest</string>
+                    <string>sysExitEvent</string>
+                    <string>mmapper updated pdb</string>
+                    <string>svo lost balance</string>
+                    <string>svo got balance</string>
+                    <string>svo prio changed</string>
+                    <string>svo system loaded</string>
+                    <string>svo config changed</string>
+                    <string>svo serverignore changed</string>
+                    <string>svo ignore changed</string>
+                    <string>svo defup changed</string>
+                    <string>svo keepup changed</string>
+                    <string>svo switched defence mode</string>
+                    <string>svo done defup</string>
+                    <string>NameDB finished honors</string>
+                </eventHandlerList>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo_gevents</name>
+                <packageName></packageName>
+                <script>function svo_gevents(...)
 	local s,m = pcall(svo.gevents, ...)
 	if not s then display(m) end
 end</script>
-                    <eventHandlerList>
-                        <string>gmcp.Char</string>
-                        <string>gmcp.Room</string>
-                        <string>gmcp.Char.Status</string>
-                        <string>gmcp.IRE.Time</string>
-                    </eventHandlerList>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>svo_savesettings</name>
-                    <packageName></packageName>
-                    <script>svo_savesettings = svo.savesettings</script>
-                    <eventHandlerList>
-                        <string>sysExitEvent</string>
-                    </eventHandlerList>
-                </Script>
-            </ScriptGroup>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>svo Utilities</name>
+                <eventHandlerList>
+                    <string>gmcp.Char</string>
+                    <string>gmcp.Room</string>
+                    <string>gmcp.Char.Status</string>
+                    <string>gmcp.IRE.Time</string>
+                </eventHandlerList>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo_savesettings</name>
                 <packageName></packageName>
-                <script>function svo.inslowcuringmode()
+                <script>svo_savesettings = svo.savesettings</script>
+                <eventHandlerList>
+                    <string>sysExitEvent</string>
+                </eventHandlerList>
+            </Script>
+        </ScriptGroup>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>svo Utilities</name>
+            <packageName></packageName>
+            <script>function svo.inslowcuringmode()
 	return (svo.affl.retardation or svo.affl.aeon) and true or false
 end
 
@@ -678,11 +664,11 @@ function svo.havefractures()
 
   return affs.crackedribs or affs.skullfractures or affs.torntendons or affs.wristfractures
 end</script>
-                <eventHandlerList/>
-                <Script isActive="yes" isFolder="no">
-                    <name>Tree curing strats</name>
-                    <packageName></packageName>
-                    <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
+            <eventHandlerList/>
+            <Script isActive="yes" isFolder="no">
+                <name>Tree curing strats</name>
+                <packageName></packageName>
+                <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
 -- make sure the script is either after the Svof one or it loads itself on the 'svo system loaded' event.
 -- then just copy one of these strats and edit it! When you save it, it'll appear in the vconfig2 strat list.
 
@@ -790,12 +776,12 @@ svo.tree.fractures = {
     return not svo.bals.sip and svo.havefractures()
   end
 }</script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>Restore curing strats</name>
-                    <packageName></packageName>
-                    <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
+                <eventHandlerList/>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>Restore curing strats</name>
+                <packageName></packageName>
+                <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
 -- make sure the script is either after the Svof one or it loads itself on the 'svo system loaded' event.
 -- then just copy one of these strats and edit it! When you save it, it'll appear in the vconfig2 strat list.
 
@@ -888,12 +874,12 @@ svo.restore.maybevivi = {
   end
 }
 </script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>Dragonheal curing strats</name>
-                    <packageName></packageName>
-                    <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
+                <eventHandlerList/>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>Dragonheal curing strats</name>
+                <packageName></packageName>
+                <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
 -- make sure the script is either after the Svof one or it loads itself on the 'svo system loaded' event.
 -- then just copy one of these strats and edit it! When you save it, it'll appear in the vconfig2 strat list.
 
@@ -950,12 +936,12 @@ svo.dragonheal.maybevivi = {
     return svo.countbrokenlimbs() &gt;= 3
   end
 }</script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>Shrugging curing strats</name>
-                    <packageName></packageName>
-                    <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
+                <eventHandlerList/>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>Shrugging curing strats</name>
+                <packageName></packageName>
+                <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
 -- make sure the script is either after the Svof one or it loads itself on the 'svo system loaded' event.
 -- then just copy one of these strats and edit it! When you save it, it'll appear in the vconfig2 strat list.
 
@@ -1027,12 +1013,12 @@ svo.shrugging.maybevivi = {
     return svo.countbrokenlimbs() &gt;= 3
   end
 }</script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>Rage curing strats</name>
-                    <packageName></packageName>
-                    <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
+                <eventHandlerList/>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>Rage curing strats</name>
+                <packageName></packageName>
+                <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
 -- make sure the script is either after the Svof one or it loads itself on the 'svo system loaded' event.
 -- then just copy one of these strats and edit it! When you save it, it'll appear in the vconfig2 strat list.
 
@@ -1055,12 +1041,12 @@ svo.rage.any3affs = {
     return table.size(svo.affl) &gt;= 3
   end
 }</script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>Fitness curing strats</name>
-                    <packageName></packageName>
-                    <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
+                <eventHandlerList/>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>Fitness curing strats</name>
+                <packageName></packageName>
+                <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
 -- make sure the script is either after the Svof one or it loads itself on the 'svo system loaded' event.
 -- then just copy one of these strats and edit it! When you save it, it'll appear in the vconfig2 strat list.
 
@@ -1092,25 +1078,25 @@ svo.fitness.hellsightconc = {
     return svo.affl.hellsight and (svo.affl.mildconcussion or svo.affl.seriousconcussion)
   end
 }</script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>svo.isenemy</name>
-                    <packageName></packageName>
-                    <script>function svo.isenemy(name)
+                <eventHandlerList/>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo.isenemy</name>
+                <packageName></packageName>
+                <script>function svo.isenemy(name)
   return (target and target:lower():starts(name:lower())) or ndb.isenemy(name)
 end</script>
-                    <eventHandlerList/>
-                </Script>
-                <ScriptGroup isActive="yes" isFolder="yes">
-                    <name>Custom prompt tags</name>
+                <eventHandlerList/>
+            </Script>
+            <ScriptGroup isActive="yes" isFolder="yes">
+                <name>Custom prompt tags</name>
+                <packageName></packageName>
+                <script></script>
+                <eventHandlerList/>
+                <Script isActive="yes" isFolder="no">
+                    <name>@affs</name>
                     <packageName></packageName>
-                    <script></script>
-                    <eventHandlerList/>
-                    <Script isActive="yes" isFolder="no">
-                        <name>@affs</name>
-                        <packageName></packageName>
-                        <script>--[[ Iocuns prompt aff thingy from http://forums.achaea.com/index.php?showtopic=39543&amp;view=findpost&amp;p=1283964, taken with permission ]]
+                    <script>--[[ Iocuns prompt aff thingy from http://forums.achaea.com/index.php?showtopic=39543&amp;view=findpost&amp;p=1283964, taken with permission ]]
 --[[ to use in a custom prompt, use the @paracelsus_affs_customtag tag ]]
 --[[ this is now used by default in Svo ]]
 local aff_abbrev = {
@@ -1277,12 +1263,12 @@ registerAnonymousEventHandler(&quot;svo system loaded&quot;, function()
   
   svo.adddefinition(&quot;@target&quot;, &quot;target&quot;)
 end)</script>
-                        <eventHandlerList/>
-                    </Script>
-                    <Script isActive="yes" isFolder="no">
-                        <name>@exits</name>
-                        <packageName></packageName>
-                        <script>svo.cpp = svo.cpp or {}
+                    <eventHandlerList/>
+                </Script>
+                <Script isActive="yes" isFolder="no">
+                    <name>@exits</name>
+                    <packageName></packageName>
+                    <script>svo.cpp = svo.cpp or {}
 
 function svo.cpp.show_exits()
   if not (gmcp.Room and gmcp.Room.Info and gmcp.Room.Info.exits) then return &quot;&quot; end
@@ -1305,13 +1291,13 @@ registerAnonymousEventHandler(&quot;svo system loaded&quot;, function()
   svo.adddefinition(&quot;@exits&quot;, &quot;svo.cpp.show_exits()&quot;)
   svo.adddefinition(&quot;@EXITS&quot;, &quot;svo.cpp.show_exits_caps()&quot;)
 end)</script>
-                        <eventHandlerList/>
-                    </Script>
-                </ScriptGroup>
-                <Script isActive="yes" isFolder="no">
-                    <name>svo_autoslickprio</name>
-                    <packageName></packageName>
-                    <script>function svo_autoslickprio(_, balance)
+                    <eventHandlerList/>
+                </Script>
+            </ScriptGroup>
+            <Script isActive="yes" isFolder="no">
+                <name>svo_autoslickprio</name>
+                <packageName></packageName>
+                <script>function svo_autoslickprio(_, balance)
   if not svo.conf.autoslick then return end
   if balance ~= 'herb' then return end
   if not (svo.affl.slickness and svo.affl.asthma) and not svo.swapped_asthma then return end
@@ -1343,16 +1329,16 @@ end)</script>
   svo.swapped_asthma = asthma_prio
   echo'\n' svo.echof(&quot;emergency - have asthma+slickness and paralysis/impatience prio is before asthma: swapping asthma to be cured first.&quot;)
 end</script>
-                    <eventHandlerList>
-                        <string>svo got balance</string>
-                        <string>svo lost aff</string>
-                        <string>svo got aff</string>
-                    </eventHandlerList>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>svo_onimportant_aff</name>
-                    <packageName></packageName>
-                    <script>local bigboxaffs = {&quot;serioustrauma&quot;, &quot;mildtrauma&quot;, &quot;mildconcussion&quot;, &quot;seriousconcussion&quot;, &quot;mutilatedleftarm&quot;, &quot;mutilatedleftleg&quot;, &quot;mutilatedrightarm&quot;, &quot;mutilatedrightleg&quot;, &quot;mangledleftarm&quot;, &quot;mangledleftleg&quot;, &quot;mangledrightarm&quot;, &quot;mangledrightleg&quot;}
+                <eventHandlerList>
+                    <string>svo got balance</string>
+                    <string>svo lost aff</string>
+                    <string>svo got aff</string>
+                </eventHandlerList>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo_onimportant_aff</name>
+                <packageName></packageName>
+                <script>local bigboxaffs = {&quot;serioustrauma&quot;, &quot;mildtrauma&quot;, &quot;mildconcussion&quot;, &quot;seriousconcussion&quot;, &quot;mutilatedleftarm&quot;, &quot;mutilatedleftleg&quot;, &quot;mutilatedrightarm&quot;, &quot;mutilatedrightleg&quot;, &quot;mangledleftarm&quot;, &quot;mangledleftleg&quot;, &quot;mangledrightarm&quot;, &quot;mangledrightleg&quot;}
 local bigboxaffs_t = {}; for i = 1, #bigboxaffs do bigboxaffs_t[bigboxaffs[i]] = true end
 
 function svo_onimportant_aff(_, which)
@@ -1360,14 +1346,14 @@ function svo_onimportant_aff(_, which)
     svo.boxDisplay(&quot;afflicted w/ &quot;..which, &quot;black:DarkOrange&quot;)
   end
 end</script>
-                    <eventHandlerList>
-                        <string>svo got aff</string>
-                    </eventHandlerList>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>svo.autopause_on_def</name>
-                    <packageName></packageName>
-                    <script>function svo.autopause_on_def(event, def)
+                <eventHandlerList>
+                    <string>svo got aff</string>
+                </eventHandlerList>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo.autopause_on_def</name>
+                <packageName></packageName>
+                <script>function svo.autopause_on_def(event, def)
   if (def == &quot;blackwind&quot; or def == &quot;astralform&quot;) and event == &quot;svo got def&quot; then
     if svo.conf.paused then svo.dont_unpause_for_bw = true
     else svo.app(&quot;on&quot;) end
@@ -1376,15 +1362,15 @@ end</script>
     svo.dont_unpause_for_bw = nil
   end
 end</script>
-                    <eventHandlerList>
-                        <string>svo got def</string>
-                        <string>svo lost def</string>
-                    </eventHandlerList>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>svo.sitting</name>
-                    <packageName></packageName>
-                    <script>-- handles getting up after a manual sit
+                <eventHandlerList>
+                    <string>svo got def</string>
+                    <string>svo lost def</string>
+                </eventHandlerList>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo.sitting</name>
+                <packageName></packageName>
+                <script>-- handles getting up after a manual sit
 function svo.sitting(_, aff)
   if aff ~= &quot;prone&quot; then return end
 
@@ -1393,14 +1379,14 @@ function svo.sitting(_, aff)
     raiseEvent(&quot;svo ignore changed&quot;, &quot;prone&quot;)
   end
 end</script>
-                    <eventHandlerList>
-                        <string>svo lost aff</string>
-                    </eventHandlerList>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>svo.sleeping</name>
-                    <packageName></packageName>
-                    <script>-- handles unignoring sleeping after waking up
+                <eventHandlerList>
+                    <string>svo lost aff</string>
+                </eventHandlerList>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo.sleeping</name>
+                <packageName></packageName>
+                <script>-- handles unignoring sleeping after waking up
 function svo.sleeping(_, aff)
   if aff ~= &quot;sleep&quot; then return end
 
@@ -1408,14 +1394,14 @@ function svo.sleeping(_, aff)
     svo.ignore.sleep = nil
   end
 end</script>
-                    <eventHandlerList>
-                        <string>svo lost aff</string>
-                    </eventHandlerList>
-                </Script>
-                <ScriptGroup isActive="yes" isFolder="yes">
-                    <name>svo Meteor Compress</name>
-                    <packageName></packageName>
-                    <script>function svo.updatemeteors()
+                <eventHandlerList>
+                    <string>svo lost aff</string>
+                </eventHandlerList>
+            </Script>
+            <ScriptGroup isActive="yes" isFolder="yes">
+                <name>svo Meteor Compress</name>
+                <packageName></packageName>
+                <script>function svo.updatemeteors()
   deleteLine()
   svo.prompttrigger(&quot;compress meteors&quot;, svo.showmeteors)
 end
@@ -1461,12 +1447,12 @@ function svo.showmeteors()
   svo.echof(&quot;&lt;255,0,0&gt;meteors%s: %s&quot;, svo.getDefaultColor(), svo.concatand(t))
   svo.meteors = nil
 end</script>
-                    <eventHandlerList/>
-                </ScriptGroup>
-                <ScriptGroup isActive="yes" isFolder="yes">
-                    <name>commandTracker</name>
-                    <packageName></packageName>
-                    <script>lastCommands = lastCommands or {}
+                <eventHandlerList/>
+            </ScriptGroup>
+            <ScriptGroup isActive="yes" isFolder="yes">
+                <name>commandTracker</name>
+                <packageName></packageName>
+                <script>lastCommands = lastCommands or {}
 
 function commandTracker(_,what)
    local howMany = 5
@@ -1508,25 +1494,25 @@ stupidityCheckTable = {
 	[&quot;You stumble and poke yourself in the eye.&quot;]                                                                       = &quot;^poke&quot;,
 	[&quot;Your mind is whirling with thoughts - you cannot settle down to sleep.&quot;]                                          = &quot;^sleep&quot;,
 }</script>
-                    <eventHandlerList>
-                        <string>sysDataSendRequest</string>
-                    </eventHandlerList>
-                </ScriptGroup>
+                <eventHandlerList>
+                    <string>sysDataSendRequest</string>
+                </eventHandlerList>
             </ScriptGroup>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>Check for system updates</name>
-                <packageName></packageName>
-                <script>-------------------------------------------------
+        </ScriptGroup>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>Check for system updates</name>
+            <packageName></packageName>
+            <script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-                <eventHandlerList/>
-                <Script isActive="yes" isFolder="no">
-                    <name>svo_downloaded_file</name>
-                    <packageName></packageName>
-                    <script>function svo_downloaded_file(_, filename)
+            <eventHandlerList/>
+            <Script isActive="yes" isFolder="no">
+                <name>svo_downloaded_file</name>
+                <packageName></packageName>
+                <script>function svo_downloaded_file(_, filename)
   -- is the file that downloaded our oursystem?
 
   if filename == tostring(svo.versionfile) then
@@ -1595,14 +1581,14 @@ stupidityCheckTable = {
     svo.showupdatereminder(svo.newdownloadedversion)
   end
 end</script>
-                    <eventHandlerList>
-                        <string>sysDownloadDone</string>
-                    </eventHandlerList>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>Check for updates</name>
-                    <packageName></packageName>
-                    <script>local downloadfolder = getMudletHomeDir()..&quot;/svo/downloads/&quot;
+                <eventHandlerList>
+                    <string>sysDownloadDone</string>
+                </eventHandlerList>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>Check for updates</name>
+                <packageName></packageName>
+                <script>local downloadfolder = getMudletHomeDir()..&quot;/svo/downloads/&quot;
 local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
 
 -- this should get called at start and every hour after that
@@ -1660,22 +1646,22 @@ function svo.downloadnewsystem(newversion)
   downloadFile(svo.downloadedsystem, downloadurl)
   svo.newdownloadedversion = newversion
 end</script>
-                    <eventHandlerList/>
-                    <Script isActive="yes" isFolder="no">
-                        <name>svo_checkupdatestart</name>
-                        <packageName></packageName>
-                        <script>function svo_checkupdatestart()
+                <eventHandlerList/>
+                <Script isActive="yes" isFolder="no">
+                    <name>svo_checkupdatestart</name>
+                    <packageName></packageName>
+                    <script>function svo_checkupdatestart()
   svo.checkforupdate()
 end</script>
-                        <eventHandlerList>
-                            <string>svo system loaded</string>
-                        </eventHandlerList>
-                    </Script>
+                    <eventHandlerList>
+                        <string>svo system loaded</string>
+                    </eventHandlerList>
                 </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>Update UI</name>
-                    <packageName></packageName>
-                    <script>function svo.showupdatereminder(newversion)
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>Update UI</name>
+                <packageName></packageName>
+                <script>function svo.showupdatereminder(newversion)
   svo.announceupdates = nil
 
   svo.updatelabel = svo.updatelabel or Geyser.Label:new({
@@ -1815,11 +1801,21 @@ function svo_doupdate_click()
   end)
   svo_update_system()
 end</script>
-                    <eventHandlerList/>
-                </Script>
-            </ScriptGroup>
+                <eventHandlerList/>
+            </Script>
+        </ScriptGroup>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>Examples</name>
+            <packageName></packageName>
+            <script>-------------------------------------------------
+--         Put your Lua functions here.        --
+--                                             --
+-- Note that you can also use external Scripts --
+-------------------------------------------------
+</script>
+            <eventHandlerList/>
             <ScriptGroup isActive="yes" isFolder="yes">
-                <name>Examples</name>
+                <name>Use of got/lost aff/def events</name>
                 <packageName></packageName>
                 <script>-------------------------------------------------
 --         Put your Lua functions here.        --
@@ -1828,48 +1824,38 @@ end</script>
 -------------------------------------------------
 </script>
                 <eventHandlerList/>
-                <ScriptGroup isActive="yes" isFolder="yes">
-                    <name>Use of got/lost aff/def events</name>
+                <Script isActive="no" isFolder="no">
+                    <name>svo_example_affs</name>
                     <packageName></packageName>
-                    <script>-------------------------------------------------
---         Put your Lua functions here.        --
---                                             --
--- Note that you can also use external Scripts --
--------------------------------------------------
-</script>
-                    <eventHandlerList/>
-                    <Script isActive="no" isFolder="no">
-                        <name>svo_example_affs</name>
-                        <packageName></packageName>
-                        <script>-- Act on lost/gained affs
+                    <script>-- Act on lost/gained affs
 -- can be used, for example, to stop an instakill if you've gotten hindered - unpause system, unpause offense, etc.
 -- must have vconfig eventaffs on
 function svo_example_affs(eventname, data)
 	svo.echof(&quot;Event: %s, data: %s&quot;, eventname, data)
 --	tempTimer(0, function() svo.echof(&quot;Event: %s, data: %s&quot;, eventname, data) end)
 end</script>
-                        <eventHandlerList>
-                            <string>svo got aff</string>
-                            <string>svo lost aff</string>
-                            <string>svo got def</string>
-                            <string>svo lost def</string>
-                        </eventHandlerList>
-                    </Script>
-                </ScriptGroup>
-                <ScriptGroup isActive="yes" isFolder="yes">
-                    <name>affs display window</name>
-                    <packageName></packageName>
-                    <script>-------------------------------------------------
+                    <eventHandlerList>
+                        <string>svo got aff</string>
+                        <string>svo lost aff</string>
+                        <string>svo got def</string>
+                        <string>svo lost def</string>
+                    </eventHandlerList>
+                </Script>
+            </ScriptGroup>
+            <ScriptGroup isActive="yes" isFolder="yes">
+                <name>affs display window</name>
+                <packageName></packageName>
+                <script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-                    <eventHandlerList/>
-                    <Script isActive="no" isFolder="no">
-                        <name>svo_update_window</name>
-                        <packageName></packageName>
-                        <script>-- delete the line below and enable vconfig eventaffs plus this script for this demo to work!
+                <eventHandlerList/>
+                <Script isActive="no" isFolder="no">
+                    <name>svo_update_window</name>
+                    <packageName></packageName>
+                    <script>-- delete the line below and enable vconfig eventaffs plus this script for this demo to work!
 if true or not Geyser then return end
 
 local affslabel
@@ -1903,16 +1889,16 @@ local s = {}
 	end
 	affslabel:echo([[&lt;span style=&quot;color:white&quot;&gt;]].. table.concat(s, &quot;&lt;br&gt;&quot;) ..&quot;&lt;/span&gt;&quot;)
 end</script>
-                        <eventHandlerList>
-                            <string>svo got aff</string>
-                            <string>svo lost aff</string>
-                        </eventHandlerList>
-                    </Script>
-                </ScriptGroup>
-                <Script isActive="no" isFolder="no">
-                    <name>Customize_systems_echos</name>
-                    <packageName></packageName>
-                    <script>-- sample custom echo! Feel free to change the 'demo' name, so you can do 'vconfig echotype &lt;name&gt;'.
+                    <eventHandlerList>
+                        <string>svo got aff</string>
+                        <string>svo lost aff</string>
+                    </eventHandlerList>
+                </Script>
+            </ScriptGroup>
+            <Script isActive="no" isFolder="no">
+                <name>Customize_systems_echos</name>
+                <packageName></packageName>
+                <script>-- sample custom echo! Feel free to change the 'demo' name, so you can do 'vconfig echotype &lt;name&gt;'.
 
 -- to edit this, mode this script outside of Svo - doesn't matter if it's before or after Svo scripts
 -- then do 'vshow colors' to select your new colour scheme
@@ -1939,24 +1925,24 @@ end
 
 -- this is so editing the scheme after loading works
 Customize_systems_echos()</script>
-                    <eventHandlerList>
-                        <string>svo system loaded</string>
-                    </eventHandlerList>
-                </Script>
-                <ScriptGroup isActive="yes" isFolder="yes">
-                    <name>Display afflictions on prompt demo</name>
-                    <packageName></packageName>
-                    <script>-------------------------------------------------
+                <eventHandlerList>
+                    <string>svo system loaded</string>
+                </eventHandlerList>
+            </Script>
+            <ScriptGroup isActive="yes" isFolder="yes">
+                <name>Display afflictions on prompt demo</name>
+                <packageName></packageName>
+                <script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-                    <eventHandlerList/>
-                    <Script isActive="no" isFolder="no">
-                        <name>mm_display_affs</name>
-                        <packageName></packageName>
-                        <script>-- just shows how to suffix affs to the prompt so you know
+                <eventHandlerList/>
+                <Script isActive="no" isFolder="no">
+                    <name>mm_display_affs</name>
+                    <packageName></packageName>
+                    <script>-- just shows how to suffix affs to the prompt so you know
 
 function mm_display_affs()
 	-- put two dashes before the line below so this function will work!
@@ -1980,25 +1966,25 @@ function mm_display_affs()
 		echo(&quot;[[TANGLED]] &quot;)
 	end
 end</script>
-                        <eventHandlerList>
-                            <string>svo done with prompt</string>
-                        </eventHandlerList>
-                    </Script>
-                </ScriptGroup>
-                <ScriptGroup isActive="yes" isFolder="yes">
-                    <name>Show which affs you got/lost w/ times and count (by Lynara)</name>
-                    <packageName></packageName>
-                    <script>-------------------------------------------------
+                    <eventHandlerList>
+                        <string>svo done with prompt</string>
+                    </eventHandlerList>
+                </Script>
+            </ScriptGroup>
+            <ScriptGroup isActive="yes" isFolder="yes">
+                <name>Show which affs you got/lost w/ times and count (by Lynara)</name>
+                <packageName></packageName>
+                <script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-                    <eventHandlerList/>
-                    <Script isActive="no" isFolder="no">
-                        <name>MyAffs</name>
-                        <packageName></packageName>
-                        <script>-- made by Lynara
+                <eventHandlerList/>
+                <Script isActive="no" isFolder="no">
+                    <name>MyAffs</name>
+                    <packageName></packageName>
+                    <script>-- made by Lynara
 
 svo.stopWatches = svo.stopWatches or {}
 function MyAffs(eventname, data)
@@ -2011,17 +1997,17 @@ function MyAffs(eventname, data)
  data, getStopWatchTime(svo.stopWatches[data]), default, table.size(svo.affl), default)
    end
 end</script>
-                        <eventHandlerList>
-                            <string>svo got aff</string>
-                            <string>svo lost aff</string>
-                        </eventHandlerList>
-                    </Script>
-                </ScriptGroup>
+                    <eventHandlerList>
+                        <string>svo got aff</string>
+                        <string>svo lost aff</string>
+                    </eventHandlerList>
+                </Script>
             </ScriptGroup>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>svo Time Tracking</name>
-                <packageName></packageName>
-                <script>svo.me = svo.me or {}
+        </ScriptGroup>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>svo Time Tracking</name>
+            <packageName></packageName>
+            <script>svo.me = svo.me or {}
 svo.me.time = svo.me.time or {
   h = 0, m = 0,
   tictimer = false,
@@ -2047,12 +2033,12 @@ function svo.tic_time()
   svo.echof(&quot;It is now %.0d:%1d&quot;, svo.me.time.h, svo.me.time.m)
   svo.me.time.tictimer = tempTimer(svo.me.time.min2s, svo.tic_time)
 end</script>
-                <eventHandlerList/>
-            </ScriptGroup>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>svo Class Management</name>
-                <packageName></packageName>
-                <script>--[[ start of a class management (tn class/tn classonly) + class-specifics tricks ]]
+            <eventHandlerList/>
+        </ScriptGroup>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>svo Class Management</name>
+            <packageName></packageName>
+            <script>--[[ start of a class management (tn class/tn classonly) + class-specifics tricks ]]
 
 svo.classes = {
   alchemist    = {fighting = false, skills = {&quot;transmutation&quot;, &quot;physiology&quot;, &quot;alchemy&quot;}},
@@ -2124,25 +2110,25 @@ end
 function svo.startedfighting(class, name)
   svo.valid.gothit(class, name) -- check for **ILLUSION**s
 end</script>
-                <eventHandlerList/>
-                <Script isActive="yes" isFolder="no">
-                    <name>svo_show_classes</name>
-                    <packageName></packageName>
-                    <script>function svo_show_classes()
+            <eventHandlerList/>
+            <Script isActive="yes" isFolder="no">
+                <name>svo_show_classes</name>
+                <packageName></packageName>
+                <script>function svo_show_classes()
   if not next(svo.enabledclasses) then svo.echof(&quot;No class tricks are enabled.&quot;) return end
 
   local l = svo.keystolist(svo.enabledclasses)
   table.sort(l)
   svo.echof(&quot;Enabled tricks for: %s&quot;, svo.concatand(l))
 end</script>
-                    <eventHandlerList>
-                        <string>svo onshow</string>
-                    </eventHandlerList>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>svo.registerhit</name>
-                    <packageName></packageName>
-                    <script>function svo.registerhit(_, class, name)
+                <eventHandlerList>
+                    <string>svo onshow</string>
+                </eventHandlerList>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo.registerhit</name>
+                <packageName></packageName>
+                <script>function svo.registerhit(_, class, name)
   if not svo.classes[class] or not svo.conf.autoclasses then return end
 
   if not svo.enabledclasses[class] then
@@ -2175,34 +2161,34 @@ end</script>
     svo.showprompt()
   end)
 end</script>
-                    <eventHandlerList>
-                        <string>svo got hit by</string>
-                    </eventHandlerList>
-                </Script>
-            </ScriptGroup>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>svo UI Experiments</name>
-                <packageName></packageName>
-                <script>-------------------------------------------------
+                <eventHandlerList>
+                    <string>svo got hit by</string>
+                </eventHandlerList>
+            </Script>
+        </ScriptGroup>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>svo UI Experiments</name>
+            <packageName></packageName>
+            <script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-                <eventHandlerList/>
-                <Script isActive="yes" isFolder="no">
-                    <name>Enable Comm</name>
-                    <packageName></packageName>
-                    <script>function svo_enableCommChannel()
+            <eventHandlerList/>
+            <Script isActive="yes" isFolder="no">
+                <name>Enable Comm</name>
+                <packageName></packageName>
+                <script>function svo_enableCommChannel()
 	-- register after GMCP is enabled. gmod doesn't re-register atm on restart
     sendGMCP([[Core.Supports.Add [&quot;Comm.Channel 1&quot;] ]])
 end</script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>svo_captureChats</name>
-                    <packageName></packageName>
-                    <script>-- magical chat capture that doesn't require any triggers!
+                <eventHandlerList/>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo_captureChats</name>
+                <packageName></packageName>
+                <script>-- magical chat capture that doesn't require any triggers!
 -- made for Svo
 svo.ui = svo.ui or {}
 
@@ -2218,14 +2204,14 @@ function svo_captureChats()
 		else svo.ui.chat:Append(&quot;All&quot;) end
 ]])
 end</script>
-                    <eventHandlerList>
-                        <string>gmcp.Comm.Channel.Start</string>
-                    </eventHandlerList>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>Rift label dimensions</name>
-                    <packageName></packageName>
-                    <script>-- after editing this, do vshow herbstat to make it appear. To adjust the font size used, use vconfig herbstatsize #
+                <eventHandlerList>
+                    <string>gmcp.Comm.Channel.Start</string>
+                </eventHandlerList>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>Rift label dimensions</name>
+                <packageName></packageName>
+                <script>-- after editing this, do vshow herbstat to make it appear. To adjust the font size used, use vconfig herbstatsize #
 
 -- if you'd like your changes to stay between Svo updates, move this script out of Svo's folder,
 -- and make sure it is *after* Svo's folder after an update
@@ -2236,13 +2222,13 @@ svo.riftlabel = Geyser.Label:new({  name = &quot;svo.riftlabel&quot;,
                                width = 355, height = 166})
 
 if not svo.conf.riftlabel then svo.riftlabel:hide() end</script>
-                    <eventHandlerList/>
-                </Script>
-            </ScriptGroup>
-            <Script isActive="yes" isFolder="no">
-                <name>Load externals</name>
-                <packageName></packageName>
-                <script>--[[ svo system loader, made by Vadi ]]
+                <eventHandlerList/>
+            </Script>
+        </ScriptGroup>
+        <Script isActive="yes" isFolder="no">
+            <name>Load externals</name>
+            <packageName></packageName>
+            <script>--[[ svo system loader, made by Vadi ]]
 
 if true then return end
 
@@ -2344,9 +2330,8 @@ end
 
 --load system
 svo_load()</script>
-                <eventHandlerList/>
-            </Script>
-        </ScriptGroup>
+            <eventHandlerList/>
+        </Script>
     </ScriptPackage>
     <KeyPackage/>
     <HelpPackage>

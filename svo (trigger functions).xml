@@ -6,20 +6,10 @@
     <AliasPackage/>
     <ActionPackage/>
     <ScriptPackage>
-        <ScriptGroup isActive="yes" isFolder="yes">
-            <name>Trigger functions</name>
+        <Script isActive="yes" isFolder="no">
+            <name>Diag trigger functions</name>
             <packageName></packageName>
-            <script>-------------------------------------------------
---         Put your Lua functions here.        --
---                                             --
--- Note that you can also use external Scripts --
--------------------------------------------------
-</script>
-            <eventHandlerList/>
-            <Script isActive="yes" isFolder="no">
-                <name>Diag trigger functions</name>
-                <packageName></packageName>
-                <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+            <script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -139,12 +129,12 @@ end
 end -- end of svo diag loader
 
 if svo.systemloaded then svo.loader.diag() end</script>
-                <eventHandlerList/>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo.valid.simple_* trigger functions</name>
-                <packageName></packageName>
-                <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+            <eventHandlerList/>
+        </Script>
+        <Script isActive="yes" isFolder="no">
+            <name>svo.valid.simple_* trigger functions</name>
+            <packageName></packageName>
+            <script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -336,12 +326,12 @@ end
 end -- end of svo valid_simple loader
 
 if svo.systemloaded then svo.loader.valid_simple() end</script>
-                <eventHandlerList/>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>Main trigger functions</name>
-                <packageName></packageName>
-                <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+            <eventHandlerList/>
+        </Script>
+        <Script isActive="yes" isFolder="no">
+            <name>Main trigger functions</name>
+            <packageName></packageName>
+            <script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -5002,9 +4992,8 @@ end
 end -- end of svo valid_main loader
 
 if svo.systemloaded then svo.loader.valid_main() end</script>
-                <eventHandlerList/>
-            </Script>
-        </ScriptGroup>
+            <eventHandlerList/>
+        </Script>
     </ScriptPackage>
     <KeyPackage/>
     <HelpPackage>
