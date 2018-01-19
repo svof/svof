@@ -1878,8 +1878,10 @@ end</script>
             <packageName></packageName>
             <script>function svo.classchange()
   if svo.me.class ~= gmcp.Char.Status.class then
+	  local oldclass = svo.me.class
 		svo.me.class = gmcp.Char.Status.class
 	  svo_init_system(true)		
+	  svo.echof(&quot;Changed your Svof from %s over to %s.&quot;, oldclass, svo.me.class)
 	end
 end</script>
             <eventHandlerList>

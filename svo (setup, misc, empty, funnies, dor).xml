@@ -228,8 +228,11 @@ end, 'stop the logger on quit')
 signals.quit:add_pre_emit(function () signals.saveconfig:emit() end)
 signals.quit:add_pre_emit(function () raiseEvent &quot;svo quit&quot; end)
 signals.systemend = signals.systemend or luanotify.signal.new()
+signals.saveconfig = signals.saveconfig or luanotify.signal.new()
 
 signals.donedefup = signals.donedefup or luanotify.signal.new()
+
+
 
 -- gmcp ones
 signals.gmcpcharname = signals.gmcpcharname or luanotify.signal.new()
@@ -312,13 +315,19 @@ signals.gmcpcharvitals:connect(function()
   end
 end, 'update gmcpcharvitals')
 
--- $(
--- local paths = {}; paths.oldpath = package.path; package.path = package.path..&quot;;./?.lua;./bin/?.lua;&quot;; local pretty = require &quot;pl.pretty&quot;; local stringx = require &quot;pl.stringx&quot;; local tablex = require &quot;pl.tablex&quot;; package.path = paths.oldpath
 
--- _put(string.format(&quot;me.class = \&quot;%s\&quot;\n&quot;, type(class) == 'string' and stringx.title(class) or table.concat(tablex.imap(stringx.title, class), &quot;, &quot;)))
--- _put(&quot;me.skills = &quot;.. pretty.write(skills))
--- )
-me.class = me.class or 'Infernal'
+local my_class_location = getMudletHomeDir() .. &quot;/svo/config/my_class&quot;
+local my_class = {}
+if lfs.attributes(my_class_location) then
+  table.load(my_class_location, my_class)
+end
+
+me.class = me.class or (table.is_empty(my_class) and 'Infernal' or my_class.class)
+
+signals.saveconfig:connect(function()
+  svo.tablesave(my_class_location, {class = svo.me.class})
+end, 'save my class')
+
 
 svo.knownskills = {
   alchemist    = {'transmutation', 'physiology', 'alchemy'},
@@ -689,7 +698,6 @@ signals.curemethodchanged = signals.curemethodchanged or luanotify.signal.new()
 signals.limbhit = signals.limbhit or luanotify.signal.new()
 signals.loadconfig = signals.loadconfig or luanotify.signal.new()
 signals.orgchanged = signals.orgchanged or luanotify.signal.new()
-signals.saveconfig = signals.saveconfig or luanotify.signal.new()
 signals.sysdatasendrequest = signals.sysdatasendrequest or luanotify.signal.new()
 if svo.haveskillset('healing') then
 signals.healingskillchanged = signals.healingskillchanged or luanotify.signal.new()
@@ -1447,7 +1455,6 @@ signals.systemstart:connect(function ()
   svo.ignore.checkparalysis = true
 end, 'load ignore list')
 
-signals.saveconfig:connect(function () svo.tablesave(getMudletHomeDir() .. &quot;/svo/config/ignore&quot;, svo.ignore) end, 'save ignore list')
 
 -- load the locatelist
 signals.systemstart:connect(function ()
