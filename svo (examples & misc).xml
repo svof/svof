@@ -1538,10 +1538,10 @@ stupidityCheckTable = {
     end
 
     if not writtenversion or writtenversion:trim() ~= s:trim() or not lfs.attributes(getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s.Svof.current.zip&quot;, svo.me.class)) then
-      if svo.announceupdates == &quot;checking&quot; then svo.echof(&quot;A new Svo is available! You're on %s, latest is %s. I'll download it for you.&quot;, svo.version, s:trim()) end
+      if svo.announceupdates == &quot;checking&quot; then svo.echof(&quot;A new Svof is available! You're on %s, latest is %s. I'll download it for you.&quot;, svo.version, s:trim()) end
       svo.downloadnewsystem(s:trim())
     else
-      if svo.announceupdates == &quot;checking&quot; then svo.echof(&quot;A new Svo is available and has been downloaded for you! You're on %s, latest is %s.&quot;, svo.version, s:trim()) end
+      if svo.announceupdates == &quot;checking&quot; then svo.echof(&quot;A new Svof is available and has been downloaded for you! You're on %s, latest is %s.&quot;, svo.version, s:trim()) end
       svo.showupdatereminder(writtenversion)
     end
 
@@ -1589,11 +1589,12 @@ end</script>
                 <name>Check for updates</name>
                 <packageName></packageName>
                 <script>local downloadfolder = getMudletHomeDir()..&quot;/svo/downloads/&quot;
-local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
 
 -- this should get called at start and every hour after that
 function svo.checkforupdate(type)
-  if svo.checkingupdates then return end
+  local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
+  
+	if svo.checkingupdates then return end
   svo.versionfile = downloadfolder..&quot;svo_version&quot;
 
   if not downloadFile then
@@ -1640,7 +1641,9 @@ end
 
 -- downloads the system &amp; updates the system version saved
 function svo.downloadnewsystem(newversion)
-  svo.downloadedsystem = downloadfolder..string.format(&quot;%s.Svof.current.zip&quot;, svo.me.class)
+  local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
+  
+	svo.downloadedsystem = downloadfolder..string.format(&quot;%s.Svof.current.zip&quot;, svo.me.class)
   local downloadurl = baseUrl..svo.me.class..[[.Svof.v]]..newversion..[[.zip]]
 
   downloadFile(svo.downloadedsystem, downloadurl)
