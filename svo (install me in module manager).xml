@@ -6567,14 +6567,14 @@ function svo_doupdate_click()
 
   function svo_update_system()
     svo_updating_system = &quot;uninstalling&quot;
-    uninstallPackage(class..&quot; svo&quot;)
+    svo.uninstall_all_modules()
 
     svo_updating_system = &quot;installing&quot;
-    svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Uninstalled the old Svo, installing the new one now...&lt;p&gt;]])
-    installPackage(getMudletHomeDir()..&quot;/svo/downloads/Svof.current.zip&quot;)
+    svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Uninstalled the old Svof, installing the new one now...&lt;p&gt;]])
+    svo.install_from_zip(getMudletHomeDir()..&quot;/svo/downloads/Svof.current.zip&quot;)
 
     svo_updating_system = nil
-    svo.echof(&quot;Svo updated! Restart Mudlet, and you'll be all done. You can find the changelog on svof.pathurs.com/changelog.php&quot;)
+    svo.echof(&quot;Svof updated! Restart Mudlet, and you'll be all done. You can find the changelog on svof.pathurs.com/changelog.php&quot;)
 
     svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Svo updated!&lt;br&gt;&lt;br&gt;Restart Mudlet, and you'll be all done.&lt;p&gt;]])
     svo.updatelabel:setStyleSheet([[
@@ -6599,15 +6599,6 @@ function svo_doupdate_click()
   end
 
   svo_updating_system = &quot;started&quot;
-  tempTimer(10, function()
-    if not svo_updating_system then return end
-
-    if svo_updating_system == &quot;uninstalling&quot; then
-      svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:8pt; color:white&quot;&gt;Hm, seems the update got stuck on the uninstallPackage() function. Try uninstalling Svo from the Package Manager and then installing it from the zip (found in ]].. getMudletHomeDir()..&quot;/svo/downloads/Svof.current.zip&quot; ..[[) to upgrade now.&lt;p&gt;]])
-    elseif svo_updating_system == &quot;installing&quot; then
-      svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:8pt; color:white&quot;&gt;Hm, seems the update got stuck on the installPackage() function. Old Svo is uninstalled, but it the new one didn't get installed - install your Svo zip (found in ]].. getMudletHomeDir()..&quot;/svo/downloads/Svof.current.zip&quot; ..[[ via the Package Manager.&lt;p&gt;]])
-    end
-  end)
   svo_update_system()
 end</script>
                 <eventHandlerList/>
@@ -7221,7 +7212,93 @@ function svo.uninstall_all_modules()
 	  uninstallModule(modulename)
 	end
 	
-	uninstallModule('svo (install me in module manager)') 
+	uninstallModule('svo (install me in module manager)')
+	svo.systemloaded = nil
+end</script>
+                <eventHandlerList/>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo.install_from_zip</name>
+                <packageName></packageName>
+                <script>-------------------------------------------------
+--         Put your Lua functions here.        --
+--                                             --
+-- Note that you can also use external Scripts --
+-------------------------------------------------
+local templocation = getMudletHomeDir() .. &quot;/svo/downloads/temp&quot;
+
+local function maketemplocation(location)
+  if lfs.attributes(location) then
+    deletedir(location)
+  end
+  return lfs.mkdir(location)
+end
+
+local function getmoduleslist(location)
+  return svo.pl.dir.getfiles(location, &quot;*.xml&quot;)
+end
+
+function svo.install_all_modules_in(location)
+  if not string.ends(location, '/') then
+    location = location .. &quot;/&quot;
+  end
+  local modules_list = getmoduleslist(location)
+  -- if Mudlet does not support syncModule(), ask the person to do it manually
+  local warn_manual_sync
+  -- install missing modules &amp; sync if Mudlet supports it
+  for _, modulelocation in ipairs(modules_list) do
+    tempTimer(
+      0,
+      function()
+        installModule(modulelocation)
+        if syncModule then
+          syncModule(modulename)
+        else
+          if warn_manual_sync then
+            killTimer(warn_manual_sync)
+          end
+          warn_manual_sync = tempTimer(0, svo.ask_to_sync_manual)
+        end
+      end
+    )
+  end
+end
+
+-- credit: https://stackoverflow.com/a/43407750/72944
+local deletedir =
+  function(dir)
+    for file in lfs.dir(dir) do
+      local file_path = dir .. '/' .. file
+      if file ~= &quot;.&quot; and file ~= &quot;..&quot; then
+        if lfs.attributes(file_path, 'mode') == 'file' then
+          os.remove(file_path)
+        elseif lfs.attributes(file_path, 'mode') == 'directory' then
+          deletedir(file_path)
+        end
+      end
+    end
+    lfs.rmdir(dir)
+  end
+
+function svo.install_from_zip(ziplocation)
+  -- check that zip is present
+  if not io.exists(ziplocation) then
+    return nil, &quot;input file zip is missing&quot;
+  end
+  -- create temporary location to extract zip into
+  if not maketemplocation(templocation) then
+    return nil, &quot;couldn't create temporary download location&quot;
+  end
+  -- extract zip into said temporary location
+  unzip(ziplocation, templocation)
+  -- install all modules
+  svo.install_all_modules_in(templocation)
+  -- delete temporary location
+  deletedir(templocation)
+  -- reset the loaded flag
+  svo.systemloaded = nil
+  -- happy times
+  svo_init_system()
 end</script>
                 <eventHandlerList/>
             </Script>

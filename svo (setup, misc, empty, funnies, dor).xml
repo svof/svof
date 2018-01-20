@@ -2147,12 +2147,12 @@ function svo.oneconcatwithval(tbl)
 end
 
 function svo.concatand(t)
-  svo.assert(type(t) == 'table', &quot;svo.concatand: argument must be a table&quot;)
+  svo.assert(type(t) == 'table', 'svo.concatand: argument must be a table')
 
-  if #t == 0 then return &quot;&quot;
+  if #t == 0 then return ''
   elseif #t == 1 then return t[1]
   else
-    return table.concat(t, &quot;, &quot;, 1, #t-1) .. &quot; and &quot;..t[#t]
+    return table.concat(t, ', ', 1, #t-1) .. ', and '..t[#t]
   end
 end
 
@@ -3249,6 +3249,17 @@ end
 end -- end of svo dor loader
 
 if svo.systemloaded then svo.loader.dor() end</script>
+            <eventHandlerList/>
+        </Script>
+        <Script isActive="no" isFolder="no">
+            <name>NewScript</name>
+            <packageName></packageName>
+            <script>-------------------------------------------------
+--         Put your Lua functions here.        --
+--                                             --
+-- Note that you can also use external Scripts --
+-------------------------------------------------
+</script>
             <eventHandlerList/>
         </Script>
     </ScriptPackage>
