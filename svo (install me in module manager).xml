@@ -6347,7 +6347,8 @@ stupidityCheckTable = {
       writtenversion = f:read(&quot;*a&quot;)
     end
 
-    if not writtenversion or writtenversion:trim() ~= s:trim() or not lfs.attributes(getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s.Svof.current.zip&quot;, svo.me.class)) then
+    if not writtenversion or writtenversion:trim() ~= s:trim() 
+		  or not lfs.attributes(getMudletHomeDir()..&quot;/svo/downloads/&quot;..&quot;Svof.current.zip&quot;) then
       if svo.announceupdates == &quot;checking&quot; then svo.echof(&quot;A new Svof is available! You're on %s, latest is %s. I'll download it for you.&quot;, svo.version, s:trim()) end
       svo.downloadnewsystem(s:trim())
     else
@@ -6532,7 +6533,7 @@ end</script>
     font-family: monospace;
   ]])
 
-  svo.updatelabel:echo(string.format([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Hey, a new Svo (%s) has been downloaded and is available for install.&lt;br&gt;&lt;br&gt;Install and restart now, or install later?&lt;p&gt;]], newversion))
+  svo.updatelabel:echo(string.format([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Hey, a new Svof (%s) has been downloaded and is available for install.&lt;br&gt;&lt;br&gt;Install and restart now, or install later?&lt;p&gt;]], newversion))
 
   svo.doupdatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:8pt; color:white&quot;&gt;Restart&lt;/p]])
 
@@ -6559,12 +6560,7 @@ function svo_doupdate_click()
 
   local class = svo.me.class
 
-  if not (uninstallPackage and installPackage) then
-    svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Can't update your Svo. You didn't update to Mudlet 2.1, and your current Mudlet lacks the features necessary. Go update first please.&lt;p&gt;]])
-    return
-  end
-
-  if not io.exists(getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s.Svof.current.zip&quot;, class)) then
+  if not io.exists(getMudletHomeDir()..&quot;/svo/downloads/Svof.current.zip&quot;) then
     svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Hm, can't update Svo - seems the new system we downloaded dissapeared. Do 'vupdate force' to download it again.&lt;p&gt;]])
     return
   end
@@ -6575,7 +6571,7 @@ function svo_doupdate_click()
 
     svo_updating_system = &quot;installing&quot;
     svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Uninstalled the old Svo, installing the new one now...&lt;p&gt;]])
-    installPackage(getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s.Svof.current.zip&quot;, class))
+    installPackage(getMudletHomeDir()..&quot;/svo/downloads/Svof.current.zip&quot;)
 
     svo_updating_system = nil
     svo.echof(&quot;Svo updated! Restart Mudlet, and you'll be all done. You can find the changelog on svof.pathurs.com/changelog.php&quot;)
@@ -6607,9 +6603,9 @@ function svo_doupdate_click()
     if not svo_updating_system then return end
 
     if svo_updating_system == &quot;uninstalling&quot; then
-      svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:8pt; color:white&quot;&gt;Hm, seems the update got stuck on the uninstallPackage() function. Try uninstalling Svo from the Package Manager and then installing it from the zip (found in ]].. getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s.Svof.current.zip&quot;, class) ..[[) to upgrade now.&lt;p&gt;]])
+      svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:8pt; color:white&quot;&gt;Hm, seems the update got stuck on the uninstallPackage() function. Try uninstalling Svo from the Package Manager and then installing it from the zip (found in ]].. getMudletHomeDir()..&quot;/svo/downloads/Svof.current.zip&quot; ..[[) to upgrade now.&lt;p&gt;]])
     elseif svo_updating_system == &quot;installing&quot; then
-      svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:8pt; color:white&quot;&gt;Hm, seems the update got stuck on the installPackage() function. Old Svo is uninstalled, but it the new one didn't get installed - install your Svo zip (found in ]].. getMudletHomeDir()..&quot;/svo/downloads/&quot;..string.format(&quot;%s.Svof.current.zip&quot;, class) ..[[ via the Package Manager.&lt;p&gt;]])
+      svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:8pt; color:white&quot;&gt;Hm, seems the update got stuck on the installPackage() function. Old Svo is uninstalled, but it the new one didn't get installed - install your Svo zip (found in ]].. getMudletHomeDir()..&quot;/svo/downloads/Svof.current.zip&quot; ..[[ via the Package Manager.&lt;p&gt;]])
     end
   end)
   svo_update_system()
@@ -7046,7 +7042,15 @@ if not svo or not svo.conf or not svo.conf.riftlabel then svo.riftlabel:hide() e
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
-</script>
+  
+	svo.modules_list = {
+	  'svo (actions dictionary)', 'svo (alias and defence functions)',
+		'svo (curing skeleton, controllers, action system)',
+		'svo (custom prompt, serverside, peopletracker)',
+		'svo (install, config, pipes, rift, parry, prios)',
+		'svo (setup, misc, empty, funnies, dor)',
+		'svo (trigger functions)', 'svo (aliases, triggers)'
+	}</script>
             <eventHandlerList/>
             <Script isActive="yes" isFolder="no">
                 <name>svo_init_system</name>
@@ -7147,20 +7151,15 @@ end</script>
                 <script>function svo.install_other_modules(_, installedmodule)
   if installedmodule ~= &quot;svo (install me in module manager)&quot; then return end
 	
-  local modules_list = {
-	  'svo (actions dictionary)', 'svo (alias and defence functions)',
-		'svo (curing skeleton, controllers, action system)',
-		'svo (custom prompt, serverside, peopletracker)',
-		'svo (install, config, pipes, rift, parry, prios)',
-		'svo (setup, misc, empty, funnies, dor)',
-		'svo (trigger functions)', 'svo (aliases, triggers)'
-	}
+	local modules_list = svo.modules_list
 	
 	local current_module_name = 'svo (install me in module manager)'
 	local basepath = getModulePath(current_module_name)
 	-- -4 to account for the .xml ending
 	basepath = basepath:sub(1, #basepath-#current_module_name-4)
 	
+	-- if Mudlet does not support syncModule(), ask the person to do it manually
+	local warn_manual_sync
 	
 	-- install missing modules &amp; sync if Mudlet supports it
 	for _, modulename in ipairs(modules_list) do
@@ -7174,8 +7173,9 @@ end</script>
 					if syncModule then
 					  syncModule(modulename)
 					else
-					  cecho(&quot;\n&lt;dark_orchid&gt;Installed &lt;green&gt;&quot;..modulename..&quot;&lt;dark_orchid&gt; - make sure to tick 'sync' in the Module Manager!&quot;)
-				  end
+					  if warn_manual_sync then killTimer(warn_manual_sync) end
+					  warn_manual_sync = tempTimer(0, svo.ask_to_sync_manual)
+					end
 				end)
 			end
 		end
@@ -7184,7 +7184,11 @@ end</script>
 	-- sync this module too
 	if syncModule then syncModule('svo (install me in module manager)') end
 end
-svo.install_other_modules()</script>
+svo.install_other_modules()
+
+function svo.ask_to_sync_manual()
+	cecho(&quot;\n&lt;dark_orchid&gt;Installed all modules - now make sure to tick 'sync' in the Module Manager for everything Svof!&quot;)
+end</script>
                 <eventHandlerList>
                     <string>sysInstallModule</string>
                 </eventHandlerList>
@@ -7203,6 +7207,23 @@ end</script>
                 <eventHandlerList>
                     <string>sysInstallPackage</string>
                 </eventHandlerList>
+            </Script>
+            <Script isActive="yes" isFolder="no">
+                <name>svo.uninstall_all_modules</name>
+                <packageName></packageName>
+                <script>-------------------------------------------------
+--         Put your Lua functions here.        --
+--                                             --
+-- Note that you can also use external Scripts --
+-------------------------------------------------
+function svo.uninstall_all_modules()
+  for _, modulename in ipairs(svo.modules_list) do
+	  uninstallModule(modulename)
+	end
+	
+	uninstallModule('svo (install me in module manager)') 
+end</script>
+                <eventHandlerList/>
             </Script>
         </ScriptGroup>
     </ScriptPackage>
