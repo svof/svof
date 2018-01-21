@@ -6567,9 +6567,9 @@ function svo_doupdate_click()
     svo.install_from_zip(getMudletHomeDir()..&quot;/svo/downloads/Svof.current.zip&quot;)
 
     svo_updating_system = nil
-    svo.echof(&quot;Svof updated! Restart Mudlet, and you'll be all done. You can find the changelog on github.com/svof/svof/releases&quot;)
+    svo.echof(&quot;Svof updated! You can find the changelog on github.com/svof/svof/releases&quot;)
 
-    svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Svo updated!&lt;br&gt;&lt;br&gt;Restart Mudlet, and you'll be all done.&lt;p&gt;]])
+    svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Svo updated!&lt;p&gt;]])
     svo.updatelabel:setStyleSheet([[
         margin: 0px;
         padding: 2px;
@@ -6589,6 +6589,8 @@ function svo_doupdate_click()
       qproperty-wordWrap: true;
       font-family: 'Ubuntu','Calibri',serif;
     ]])
+		
+		tempTimer(10, function() svo.updatelabel:hide() end)
   end
 
   svo_updating_system = &quot;started&quot;
@@ -7247,16 +7249,20 @@ local function getmoduleslist(location)
   return svo.pl.dir.getfiles(location, &quot;*.xml&quot;)
 end
 
+local function get_names_from_paths(locations, location)
+	-- get a list of module names from their locations
+	local modules_list = svo.pl.tablex.imap(string.sub, locations, #location+1)
+	-- strip the final .xml as well
+	modules_list = svo.pl.tablex.imap(string.sub, modules_list, 1, -5)
+	return modules_list
+end
+
 function svo.install_all_modules_in(location)
   if not string.ends(location, '/') then
     location = location .. &quot;/&quot;
   end
   local modules_locations_list = getmoduleslist(location)
-	-- get a list of module names from their locations
-	local modules_list = svo.pl.tablex.imap(string.sub, modules_locations_list, #location+1)
-	-- strip the final .xml as well
-	modules_list = svo.pl.tablex.imap(string.sub, modules_list, 1, -5)
-	display(modules_list)
+  local modules_list = get_names_from_paths(modules_locations_list, location)
   -- if Mudlet does not support syncModule(), ask the person to do it manually
   local warn_manual_sync
   -- install missing modules &amp; sync if Mudlet supports it
@@ -7264,9 +7270,7 @@ function svo.install_all_modules_in(location)
     tempTimer(
       0,
       function()
-			  print(modulelocation)
         local s, m = installModule(modulelocation)
-				if not s then display(m) end
         if syncModule then
           syncModule(modules_list[i])
         else
@@ -7295,7 +7299,7 @@ function svo.install_from_zip(ziplocation)
   -- install all modules
   svo.install_all_modules_in(templocation)
   -- delete temporary location
-  -- deletedir(templocation)
+  deletedir(templocation)
   -- reset the loaded flag
   svo.systemloaded = nil
   -- happy times
