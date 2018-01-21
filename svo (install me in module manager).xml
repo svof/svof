@@ -7181,12 +7181,16 @@ end</script>
                 <name>svo.installed_as_package</name>
                 <packageName></packageName>
                 <script>function svo.installed_as_package(_, installedpackage)
-  if installedpackage ~= &quot;svo (install me in module manager)&quot; then return end
+  if not (installedpackage == &quot;svo (install me in module manager)&quot;
+	  or installedpackage == &quot;Svof - dont install me as package&quot;) then return end
 	
-	cecho(
+	if svo_installed_as_package then killTimer(svo_installed_as_package) end
+	svo_installed_as_package = tempTimer(0, function() cecho(
 [[&lt;indian_red&gt;Svof needs to be installed as a module, not a package -
-please uninstall it and instead instead using the &lt;orange_red&gt;Module Manager&lt;indian_red&gt;.
+please uninstall it and instead install using the &lt;orange_red&gt;Module Manager&lt;indian_red&gt;!
 ]])
+  svo_installed_as_package = nil
+  end)
 end</script>
                 <eventHandlerList>
                     <string>sysInstallPackage</string>
