@@ -6403,7 +6403,8 @@ end</script>
 
 -- this should get called at start and every hour after that
 function svo.checkforupdate(type)
-  local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
+  -- local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
+  local baseUrl = string.format(&quot;http://localhost:8080/%s/&quot;, svo.conf.releasechannel)
   
 	if svo.checkingupdates then return end
   svo.versionfile = downloadfolder..&quot;svo_version&quot;
@@ -6411,48 +6412,48 @@ function svo.checkforupdate(type)
   if not downloadFile then
     svo.echof(&quot;Your version of Mudlet doesn't support downloading files - please upgrade to 2.0+&quot;)
   else
-    if not lfs.attributes(downloadfolder) then
+  if not lfs.attributes(downloadfolder) then
       if lfs and lfs.mkdir then
-         local t,s = lfs.mkdir(downloadfolder)
-         if not t and s ~= &quot;File exists&quot; then svo.echof(&quot;Couldn't make the '&quot;..downloadfolder..&quot;' folder; &quot;..s) return end
+     local t,s = lfs.mkdir(downloadfolder)
+     if not t and s ~= &quot;File exists&quot; then svo.echof(&quot;Couldn't make the '&quot;..downloadfolder..&quot;' folder; &quot;..s) return end
       else
         svo.echof(&quot;Sorry, but you need LuaFileSystem (lfs) installed, or have the '&quot;..downloadfolder..&quot;' folder exist.&quot;)
         return
       end
+  end
+
+  svo.checkingupdates = true
+  downloadFile(svo.versionfile, baseUrl .. &quot;current_version.txt&quot;)
+
+  if type == &quot;checking&quot; then
+    svo.echof(&quot;Checking for updates...&quot;)
+    svo.announceupdates = &quot;checking&quot;
+  elseif type == &quot;force&quot; then
+    svo.echof(&quot;(re)downloading latest system...&quot;)
+    svo.announceupdates = &quot;force&quot;
+    svo.version = 0
+
+
+    local location = getMudletHomeDir()..&quot;/svo/downloads/available_version&quot;
+    if io.exists(location) then
+      local s,m = os.remove(location)
+      if not s then svo.echof(&quot;Couldn't remove the %s file (error was: %s) - this might be a problem.&quot;, location, m) end
     end
 
-    svo.checkingupdates = true
-    downloadFile(svo.versionfile, baseUrl .. &quot;current_version.txt&quot;)
-
-    if type == &quot;checking&quot; then
-      svo.echof(&quot;Checking for updates...&quot;)
-      svo.announceupdates = &quot;checking&quot;
-    elseif type == &quot;force&quot; then
-      svo.echof(&quot;(re)downloading latest system...&quot;)
-      svo.announceupdates = &quot;force&quot;
-      svo.version = 0
-
-
-      local location = getMudletHomeDir()..&quot;/svo/downloads/available_version&quot;
-      if io.exists(location) then
-        local s,m = os.remove(location)
-        if not s then svo.echof(&quot;Couldn't remove the %s file (error was: %s) - this might be a problem.&quot;, location, m) end
-      end
-
-      location = downloadfolder..&quot;Svof.current.zip&quot;
-      if io.exists(location) then
-        local s,m = os.remove(location)
-        if not s then svo.echof(&quot;Couldn't delete the old svo zip (located at %s), because of: %s. This might be a problem.&quot;, location, m) end
-      end
-    else
-      svo.announceupdates = nil
+    location = downloadfolder..&quot;Svof.current.zip&quot;
+    if io.exists(location) then
+      local s,m = os.remove(location)
+      if not s then svo.echof(&quot;Couldn't delete the old svo zip (located at %s), because of: %s. This might be a problem.&quot;, location, m) end
     end
+  else
+    svo.announceupdates = nil
   end
 end
 
 -- downloads the system &amp; updates the system version saved
 function svo.downloadnewsystem(newversion)
-  local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
+  -- local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
+  local baseUrl = string.format(&quot;http://localhost:8080/%s/&quot;, svo.conf.releasechannel)
   
 	svo.downloadedsystem = downloadfolder..&quot;Svof.current.zip&quot;
   local downloadurl = baseUrl..[[Svof.v]]..newversion..[[.zip]]
@@ -6574,7 +6575,7 @@ function svo_doupdate_click()
     svo.install_from_zip(getMudletHomeDir()..&quot;/svo/downloads/Svof.current.zip&quot;)
 
     svo_updating_system = nil
-    svo.echof(&quot;Svof updated! Restart Mudlet, and you'll be all done. You can find the changelog on svof.pathurs.com/changelog.php&quot;)
+    svo.echof(&quot;Svof updated! Restart Mudlet, and you'll be all done. You can find the changelog on github.com/svof/svof/releases&quot;)
 
     svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Svo updated!&lt;br&gt;&lt;br&gt;Restart Mudlet, and you'll be all done.&lt;p&gt;]])
     svo.updatelabel:setStyleSheet([[
