@@ -6403,8 +6403,7 @@ end</script>
 
 -- this should get called at start and every hour after that
 function svo.checkforupdate(type)
-  -- local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
-  local baseUrl = string.format(&quot;http://localhost:8080/%s/&quot;, svo.conf.releasechannel)
+  local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
   
 	if svo.checkingupdates then return end
   svo.versionfile = downloadfolder..&quot;svo_version&quot;
@@ -6444,8 +6443,7 @@ end
 
 -- downloads the system &amp; updates the system version saved
 function svo.downloadnewsystem(newversion)
-  -- local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
-  local baseUrl = string.format(&quot;http://localhost:8080/%s/&quot;, svo.conf.releasechannel)
+  local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
   
 	svo.downloadedsystem = downloadfolder..&quot;Svof.current.zip&quot;
   local downloadurl = baseUrl..[[Svof.v]]..newversion..[[.zip]]
