@@ -1,1 +1,1 @@
-mpackage = "Svof - dont install me as package-test"
+mpackage = "Svof - dont install me as package"
