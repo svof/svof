@@ -20,7 +20,7 @@
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.setup = function()
 
-svo.version = 'development'
+svo.version = '33.1'
 
 if Logger and not svo.systemloaded then
   Logger:LogSection('svof', {'timestamp', split = 5000, 'keepOpen'})
