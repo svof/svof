@@ -6409,17 +6409,9 @@ function svo.checkforupdate(type)
 	if svo.checkingupdates then return end
   svo.versionfile = downloadfolder..&quot;svo_version&quot;
 
-  if not downloadFile then
-    svo.echof(&quot;Your version of Mudlet doesn't support downloading files - please upgrade to 2.0+&quot;)
-  else
   if not lfs.attributes(downloadfolder) then
-      if lfs and lfs.mkdir then
      local t,s = lfs.mkdir(downloadfolder)
      if not t and s ~= &quot;File exists&quot; then svo.echof(&quot;Couldn't make the '&quot;..downloadfolder..&quot;' folder; &quot;..s) return end
-      else
-        svo.echof(&quot;Sorry, but you need LuaFileSystem (lfs) installed, or have the '&quot;..downloadfolder..&quot;' folder exist.&quot;)
-        return
-      end
   end
 
   svo.checkingupdates = true
@@ -7226,7 +7218,23 @@ end</script>
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
-local templocation = getMudletHomeDir() .. &quot;/svo/downloads/temp&quot;
+local templocation = getMudletHomeDir() .. &quot;/svo/downloads/temp/&quot;
+
+-- deletedir credit: https://stackoverflow.com/a/43407750/72944
+local deletedir =
+  function(dir)
+    for file in lfs.dir(dir) do
+      local file_path = dir .. '/' .. file
+      if file ~= &quot;.&quot; and file ~= &quot;..&quot; then
+        if lfs.attributes(file_path, 'mode') == 'file' then
+          os.remove(file_path)
+        elseif lfs.attributes(file_path, 'mode') == 'directory' then
+          deletedir(file_path)
+        end
+      end
+    end
+    lfs.rmdir(dir)
+  end
 
 local function maketemplocation(location)
   if lfs.attributes(location) then
@@ -7243,17 +7251,24 @@ function svo.install_all_modules_in(location)
   if not string.ends(location, '/') then
     location = location .. &quot;/&quot;
   end
-  local modules_list = getmoduleslist(location)
+  local modules_locations_list = getmoduleslist(location)
+	-- get a list of module names from their locations
+	local modules_list = svo.pl.tablex.imap(string.sub, modules_locations_list, #location+1)
+	-- strip the final .xml as well
+	modules_list = svo.pl.tablex.imap(string.sub, modules_list, 1, -5)
+	display(modules_list)
   -- if Mudlet does not support syncModule(), ask the person to do it manually
   local warn_manual_sync
   -- install missing modules &amp; sync if Mudlet supports it
-  for _, modulelocation in ipairs(modules_list) do
+  for i, modulelocation in ipairs(modules_locations_list) do
     tempTimer(
       0,
       function()
-        installModule(modulelocation)
+			  print(modulelocation)
+        local s, m = installModule(modulelocation)
+				if not s then display(m) end
         if syncModule then
-          syncModule(modulename)
+          syncModule(modules_list[i])
         else
           if warn_manual_sync then
             killTimer(warn_manual_sync)
@@ -7265,23 +7280,8 @@ function svo.install_all_modules_in(location)
   end
 end
 
--- credit: https://stackoverflow.com/a/43407750/72944
-local deletedir =
-  function(dir)
-    for file in lfs.dir(dir) do
-      local file_path = dir .. '/' .. file
-      if file ~= &quot;.&quot; and file ~= &quot;..&quot; then
-        if lfs.attributes(file_path, 'mode') == 'file' then
-          os.remove(file_path)
-        elseif lfs.attributes(file_path, 'mode') == 'directory' then
-          deletedir(file_path)
-        end
-      end
-    end
-    lfs.rmdir(dir)
-  end
-
 function svo.install_from_zip(ziplocation)
+  svo.signals.saveconfig:emit()
   -- check that zip is present
   if not io.exists(ziplocation) then
     return nil, &quot;input file zip is missing&quot;
@@ -7295,7 +7295,7 @@ function svo.install_from_zip(ziplocation)
   -- install all modules
   svo.install_all_modules_in(templocation)
   -- delete temporary location
-  deletedir(templocation)
+  -- deletedir(templocation)
   -- reset the loaded flag
   svo.systemloaded = nil
   -- happy times
