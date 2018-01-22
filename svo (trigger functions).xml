@@ -3161,7 +3161,7 @@ for _, smoke in pairs({
       if not result then return end
 
       svo.smoke_cure = true
-      if result.name == aff&quot;.._smoke&quot; then
+      if result.name == aff..'_smoke' then
         lifevision.add(actions[aff..'_smoke'].p)
       else
         svo.killaction(svo.dict[result.action_name].smoke)
