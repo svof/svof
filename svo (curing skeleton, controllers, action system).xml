@@ -1344,8 +1344,8 @@ svo.addaff = function(aff_string_or_table)
     old_public_addaff(aff_string_or_table)
   end
 end
-svo.addaffdict = old_public_addaff
-
+svo.addaffdict = old_internal_addaff
+                
 -- old internal version of removeaff
 svo.rmaff = function (old)
   if type(old) == 'table' then
