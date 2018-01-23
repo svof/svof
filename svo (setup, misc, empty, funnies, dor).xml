@@ -3251,17 +3251,6 @@ end -- end of svo dor loader
 if svo.systemloaded then svo.loader.dor() end</script>
             <eventHandlerList/>
         </Script>
-        <Script isActive="no" isFolder="no">
-            <name>NewScript</name>
-            <packageName></packageName>
-            <script>-------------------------------------------------
---         Put your Lua functions here.        --
---                                             --
--- Note that you can also use external Scripts --
--------------------------------------------------
-</script>
-            <eventHandlerList/>
-        </Script>
     </ScriptPackage>
     <KeyPackage/>
     <HelpPackage>
