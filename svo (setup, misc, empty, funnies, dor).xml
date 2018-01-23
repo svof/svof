@@ -201,7 +201,7 @@ signals.dragonform:add_post_emit(function()
     raiseEvent&quot;svo lost dragonform&quot;
     haddragonform = false
   end
-end)
+end, 'post emit dragonform')
 end
 
 signals.canoutr = signals.canoutr or luanotify.signal.new()
@@ -643,7 +643,7 @@ signals.enablegmcp:add_post_emit(function ()
   else conf.paused = false end
 
   svo.innews = false
-end)
+end, 'post emit enablegmcp')
 end
 
 tempBeginOfLineTrigger(&quot;Rapture Runtime Environment&quot;, [[svo.logging_in = true]])
@@ -716,7 +716,7 @@ if not svo.systemloaded then
   signals.saveconfig:add_post_emit(function ()
     echo&quot;\n&quot;
     svo.echof(&quot;Saved system settings.&quot;)
-  end)
+  end, 'post emit saveconfig')
 end
 
 signals.loadedconfig = signals.loadedconfig or luanotify.signal.new()
@@ -865,7 +865,7 @@ if not svo.systemloaded then
     if not conf.curemethod or conf.curemethod == 'auto' then
       conf.curemethod = 'conconly'
     end
-  end)
+  end, 'post emit systemstart')
 
   conf.ninkharsag = true
 end
