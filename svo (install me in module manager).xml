@@ -7117,9 +7117,14 @@ end</script>
                 <name>svo.classchange</name>
                 <packageName></packageName>
                 <script>function svo.classchange()
-  if svo.me.class ~= gmcp.Char.Status.class then
+  local newclass = gmcp.Char.Status.class
+  if svo.me.class ~= newclass then
 	  local oldclass = svo.me.class
-		svo.me.class = gmcp.Char.Status.class
+		
+		-- if you're in Dragon or an unrecognised class, use the None system
+		-- works fine in Dragon as they don't have class-specific skills anyway
+		if not svo.knownskills[newclass:lower()] then newclass = &quot;None&quot; end
+		svo.me.class = newclass
 		svo.signals.saveconfig:emit()
 	  svo.systemloaded = false; svo_init_system()		
 	  svo.echof(&quot;Changed your Svof from %s over to %s.&quot;, oldclass, svo.me.class)
