@@ -865,7 +865,7 @@ if not svo.systemloaded then
     if not conf.curemethod or conf.curemethod == 'auto' then
       conf.curemethod = 'conconly'
     end
-  end, 'post emit systemstart')
+  end, 'post emit adjust cure method')
 
   conf.ninkharsag = true
 end
