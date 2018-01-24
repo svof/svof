@@ -178,6 +178,10 @@ svo.es_version = &quot;1.1&quot;
 
 local firstload = not svo.es_vials
 
+-- load elistsorter after all of the main code has
+-- loaded, so svo.signal is available
+tempTimer(0, function()
+
 -- stores vial ID and months left
 svo.es_vials = svo.es_vials or {}
 -- stores type by key, and inside each, a potion table
@@ -512,8 +516,7 @@ end, 'save vial configuration')
 if firstload then
   svo.echof(&quot;Loaded svo Elist Sorter, version %s.&quot;, tostring(svo.es_version))
 end
-
-</script>
+end)</script>
             <eventHandlerList/>
         </Script>
         <Script isActive="yes" isFolder="no">
