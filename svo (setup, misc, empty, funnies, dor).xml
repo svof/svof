@@ -20,7 +20,7 @@
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.setup = function()
 
-svo.version = '33.1'
+svo.version = '33.2'
 
 if Logger and not svo.systemloaded then
   Logger:LogSection('svof', {'timestamp', split = 5000, 'keepOpen'})
@@ -712,7 +712,7 @@ if svo.haveskillset('metamorphosis') then
 signals.morphskillchanged = signals.morphskillchanged or luanotify.signal.new()
 end
 
-if not svo.systemloaded then 
+if not svo.systemloaded then
   signals.saveconfig:add_post_emit(function ()
     echo&quot;\n&quot;
     svo.echof(&quot;Saved system settings.&quot;)
