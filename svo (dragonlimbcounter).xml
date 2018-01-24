@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
-<MudletPackage version="1.0">
+<MudletPackage version="1.001">
     <TriggerPackage>
-        <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-            <name>svo Dragon limbcounter</name>
-            <script></script>
+        <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>Rend</name>
+            <script>svo.dl_hit(multimatches[2][2], multimatches[2][3])</script>
             <triggerType>0</triggerType>
             <conditonLineDelta>0</conditonLineDelta>
             <mStayOpen>0</mStayOpen>
@@ -15,99 +15,230 @@
             <mSoundFile></mSoundFile>
             <colorTriggerFgColor>#000000</colorTriggerFgColor>
             <colorTriggerBgColor>#000000</colorTriggerBgColor>
-            <regexCodeList/>
-            <regexCodePropertyList/>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Rend</name>
-                <script>svo.dl_hit(multimatches[2][2], multimatches[2][3])</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>Lunging forward with long, flashing claws extended, you tear into the flesh of</string>
-                    <string>Lunging forward with long, flashing claws extended, you tear into the flesh of (\w+)'s (.+)\.$</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>2</integer>
-                    <integer>1</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>svodl Don't register</name>
-                <script>-- it's OK, the trigger is supposed to be off by default
+            <regexCodeList>
+                <string>Lunging forward with long, flashing claws extended, you tear into the flesh of</string>
+                <string>Lunging forward with long, flashing claws extended, you tear into the flesh of (\w+)'s (.+)\.$</string>
+            </regexCodeList>
+            <regexCodePropertyList>
+                <integer>2</integer>
+                <integer>1</integer>
+            </regexCodePropertyList>
+        </Trigger>
+        <Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>svodl Don't register</name>
+            <script>-- it's OK, the trigger is supposed to be off by default
 svo.dl_ignore()</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>^\w+ dodges nimbly out of the way\.$</string>
-                    <string>^\w+ twists (?:his|her) body out of harm's way\.$</string>
-                    <string>^\w+ parries the attack with a deft manoeuvre\.$</string>
-                    <string>^\w+ steps into the attack, grabs your arm, and throws you violently to the ground\.$</string>
-                    <string>^\w+ quickly jumps back, avoiding the attack\.$</string>
-                    <string>^A chaos orb intercepts the attack against \w+ and renders it harmless\.$</string>
-                    <string>The attack rebounds back onto you!</string>
-                    <string>^A reflection of \w+ blinks out of existence\.$</string>
-                    <string>The attack rebounds onto you!</string>
-                    <string>^\w+ moves into your attack, knocking your blow aside before viciously countering with a strike to your head\.$</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>1</integer>
-                    <integer>1</integer>
-                    <integer>1</integer>
-                    <integer>1</integer>
-                    <integer>1</integer>
-                    <integer>1</integer>
-                    <integer>3</integer>
-                    <integer>1</integer>
-                    <integer>3</integer>
-                    <integer>1</integer>
-                </regexCodePropertyList>
-            </Trigger>
-        </TriggerGroup>
+            <triggerType>0</triggerType>
+            <conditonLineDelta>0</conditonLineDelta>
+            <mStayOpen>0</mStayOpen>
+            <mCommand></mCommand>
+            <packageName></packageName>
+            <mFgColor>#ff0000</mFgColor>
+            <mBgColor>#ffff00</mBgColor>
+            <mSoundFile></mSoundFile>
+            <colorTriggerFgColor>#000000</colorTriggerFgColor>
+            <colorTriggerBgColor>#000000</colorTriggerBgColor>
+            <regexCodeList>
+                <string>^\w+ dodges nimbly out of the way\.$</string>
+                <string>^\w+ twists (?:his|her) body out of harm's way\.$</string>
+                <string>^\w+ parries the attack with a deft manoeuvre\.$</string>
+                <string>^\w+ steps into the attack, grabs your arm, and throws you violently to the ground\.$</string>
+                <string>^\w+ quickly jumps back, avoiding the attack\.$</string>
+                <string>^A chaos orb intercepts the attack against \w+ and renders it harmless\.$</string>
+                <string>The attack rebounds back onto you!</string>
+                <string>^A reflection of \w+ blinks out of existence\.$</string>
+                <string>The attack rebounds onto you!</string>
+                <string>^\w+ moves into your attack, knocking your blow aside before viciously countering with a strike to your head\.$</string>
+            </regexCodeList>
+            <regexCodePropertyList>
+                <integer>1</integer>
+                <integer>1</integer>
+                <integer>1</integer>
+                <integer>1</integer>
+                <integer>1</integer>
+                <integer>1</integer>
+                <integer>3</integer>
+                <integer>1</integer>
+                <integer>3</integer>
+                <integer>1</integer>
+            </regexCodePropertyList>
+        </Trigger>
     </TriggerPackage>
     <TimerPackage/>
     <AliasPackage>
-        <AliasGroup isActive="yes" isFolder="yes">
-            <name>svo Dragon limbcounter</name>
-            <script></script>
+        <Alias isActive="yes" isFolder="no">
+            <name>Reset</name>
+            <script>svo.dl_reset(matches[2])</script>
             <command></command>
             <packageName></packageName>
-            <regex></regex>
-            <Alias isActive="yes" isFolder="no">
-                <name>Reset</name>
-                <script>svo.dl_reset(matches[2])</script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^nn ?(.+)?$</regex>
-            </Alias>
-            <Alias isActive="yes" isFolder="no">
-                <name>Check status</name>
-                <script>if svo.dl_show then svo.dl_show() end</script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^vsl$</regex>
-            </Alias>
-        </AliasGroup>
+            <regex>^nn ?(.+)?$</regex>
+        </Alias>
+        <Alias isActive="yes" isFolder="no">
+            <name>Check status</name>
+            <script>if svo.dl_show then svo.dl_show() end</script>
+            <command></command>
+            <packageName></packageName>
+            <regex>^vsl$</regex>
+        </Alias>
     </AliasPackage>
     <ActionPackage/>
     <ScriptPackage>
-        <ScriptGroup isActive="yes" isFolder="yes">
-            <name>svo Dragon limbcounter</name>
+        <Script isActive="yes" isFolder="no">
+            <name>Dragon limbcounter code</name>
+            <packageName></packageName>
+            <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+
+-- Svof is licensed under a
+-- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+-- You should have received a copy of the license along with this
+-- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+svo.dl_version = &quot;1.0&quot;
+
+local firstload = not svo.dl_list
+
+svo.dl_list = svo.dl_list or {}
+local limbs = {'head', 'torso', 'rightarm', 'leftarm', 'rightleg', 'leftleg'}
+local hittable = {}
+svo.dl_prep_at = 3
+svo.dl_break_at = 4
+
+enableTrigger(&quot;svo Dragon limbcounter&quot;)
+enableAlias(&quot;svo Dragon limbcounter&quot;)
+
+-- Their blah, blah, blah are also prepped.
+local function get_other_prepped(t, limbhit)
+  local s = {}
+  for i = 1, #limbs do
+    if limbs[i] ~= limbhit and t[limbs[i]] == svo.dl_prep_at then s[#s+1] = limbs[i] end
+  end
+
+  if #s == 0 then return &quot;&quot;
+  else return string.format(&quot; Their %s %s also prepped.&quot;, svo.concatand(s), (#s == 1 and 'is' or 'are')) end
+end
+
+function svo.dl_ignore()
+  if not next(hittable) then return end
+  table.remove(select(2, next(hittable)))
+end
+
+
+function svo.sk.dl_checklimbcounter()
+  -- make the announces work with a singleprompt
+  local echof = svo.itf
+  moveCursor(0, getLineNumber())
+
+  -- we'll only ever have one name here so far
+  local who, t = next(hittable)
+  local where
+  for i = 1, #t do
+    local dmg
+    where, dmg = next(t[i])
+    svo.dl_list[who][where] = svo.dl_list[who][where] + dmg
+    raiseEvent(&quot;svo limbcounter hit&quot;, who, where)
+  end
+
+  if not where then
+    echof(&quot;Failed to connect.%s&quot;, get_other_prepped(svo.dl_list[who], &quot;&quot;))
+  else
+    if svo.dl_list[who][where] &gt;= svo.dl_break_at then
+      echof(&quot;%s's %s broke.%s&quot;, who, where, get_other_prepped(svo.dl_list[who], where))
+      svo.dl_list[who][where] = 0
+    elseif svo.dl_list[who][where] &gt;= svo.dl_prep_at then
+      echof(&quot;%s's %s is prepped.%s&quot;, who, where, get_other_prepped(svo.dl_list[who], where))
+    else
+      echof(&quot;%s's %s is now at %s/%s.%s&quot;, who, where, svo.dl_list[who][where], svo.dl_break_at, get_other_prepped(svo.dl_list[who], where))
+    end
+  end
+
+  hittable = {}
+  disableTrigger(&quot;svodl Don't register&quot;)
+  svo.signals.before_prompt_processing:disconnect(svo.sk.dl_checklimbcounter)
+end
+
+function svo.dl_hit(who, where)
+  svo.dl_list[who] = svo.dl_list[who] or {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0}
+  where = where:gsub(&quot; &quot;, &quot;&quot;)
+  svo.lasthit = who
+
+  hittable[who] = hittable[who] or {}
+  hittable[who][#hittable[who] + 1] = {[where] = 1}
+  svo.signals.before_prompt_processing:connect(svo.sk.dl_checklimbcounter)
+  enableTrigger(&quot;svodl Don't register&quot;)
+end
+
+function svo.dl_reset(whom)
+  if not svo.defc.dragonform then return end
+
+  if whom then whom = string.title(whom) end
+
+  local t = {
+    h = 'head',
+    t = 'torso',
+    rl = 'rightleg',
+    ll = 'leftleg',
+    ra = 'rightarm',
+    la = 'leftarm',
+  }
+
+  if whom == 'All' then
+    svo.dl_list = {}
+    svo.echof(&quot;Reset everyone's limb status.&quot;)
+  elseif not whom and svo.lasthit then
+    svo.dl_list[svo.lasthit] = {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0, dl_break_at = svo.dl_break_at}
+    svo.echof(&quot;Reset %s's limb status.&quot;, svo.lasthit)
+  elseif t[whom:lower()] then
+    if not svo.lasthit or not svo.dl_list[svo.lasthit] then
+      svo.echof(&quot;Not keeping track of anyone yet to reset their limb.&quot;)
+    else
+      svo.dl_list[svo.lasthit][t[whom:lower()]] = 0
+      svo.echof(&quot;Reset %s %s's status.&quot;, svo.lasthit, t[whom:lower()])
+    end
+  elseif whom then
+    if svo.dl_list[whom] then
+      svo.dl_list[whom] = nil
+      svo.echof(&quot;Reset %s's limb status.&quot;, whom)
+    else
+      svo.echof(&quot;Weren't keeping track of %s anyway.&quot;, whom)
+    end
+  else
+    svo.echof(&quot;Not keeping track of anyone to reset them anyway.&quot;)
+  end
+  raiseEvent(&quot;svo limbcounter reset&quot;)
+end
+
+function svo.dl_show()
+  if not svo.defc.dragonform then return end
+
+  if not next(svo.dl_list) then svo.echof(&quot;dragon limbcounter: Not keeping track of anyone yet.&quot;); return end
+
+  setFgColor(unpack(svo.getDefaultColorNums))
+  for person, limbt in pairs(svo.dl_list) do
+    echo(&quot;---&quot;..person..&quot; &quot;) fg('a_darkgrey')
+    echoLink(&quot;(reset)&quot;, 'svo.dl_reset&quot;'..person..'&quot;', &quot;Reset limb status for &quot;..person, true)
+    setFgColor(unpack(svo.getDefaultColorNums))
+    echo(string.format(&quot; -- prep at %s -- break at %s --&quot;, svo.dl_prep_at, svo.dl_break_at))
+    echo(string.rep(&quot;-&quot;, (52-#person-#tostring(svo.dl_prep_at)-#tostring(svo.dl_break_at))))
+    echo&quot;\n|&quot;
+    for i = 1, #limbs do
+      if limbt[limbs[i]] &gt;= svo.dl_break_at - 1 then fg('green') end
+      echo(string.format(&quot;%14s&quot;, (limbt[limbs[i]] &gt;= svo.dl_break_at - 1 and limbs[i]..&quot; prep&quot; or limbs[i].. &quot; &quot;..limbt[limbs[i]])))
+      if limbt[limbs[i]] &gt;= svo.dl_break_at - 1 then setFgColor(unpack(svo.getDefaultColorNums)) end
+      echo&quot;|&quot;
+    end
+    echo&quot;\n&quot;
+  end
+  echo(string.rep(&quot;-&quot;, 91))
+end
+
+if firstload then
+  svo.echof(&quot;Loaded svo Dragon limbcounter, version %s.&quot;, tostring(svo.dl_version))
+end</script>
+            <eventHandlerList/>
+        </Script>
+        <Script isActive="yes" isFolder="no">
+            <name>Dragon limbcounter prompt tags</name>
             <packageName></packageName>
             <script>-- dragon limbcounters prompt tag is defined here
 -- feel free to tinker with it, but move it out into a script of its own,
@@ -156,7 +287,7 @@ svo.adddefinition(&quot;@dl_prompttag3&quot;, &quot;svo.dl_prompttag3()&quot;)
 
 end)</script>
             <eventHandlerList/>
-        </ScriptGroup>
+        </Script>
     </ScriptPackage>
     <KeyPackage/>
     <HelpPackage>
