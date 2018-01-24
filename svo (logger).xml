@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
-<MudletPackage version="1.0">
+<MudletPackage version="1.001">
     <TriggerPackage/>
     <TimerPackage/>
     <AliasPackage>
-        <AliasGroup isActive="yes" isFolder="yes">
-            <name>HTML5 logger</name>
-            <script></script>
-            <command></command>
-            <packageName></packageName>
-            <regex></regex>
-            <Alias isActive="yes" isFolder="no">
-                <name>(startlog) Start logging</name>
-                <script>html5log.recording_stopwatch = createStopWatch()
+        <Alias isActive="yes" isFolder="no">
+            <name>(startlog) Start logging</name>
+            <script>html5log.recording_stopwatch = createStopWatch()
 startStopWatch(html5log.recording_stopwatch)
 
 html5log.current_data = {[[
@@ -339,18 +333,17 @@ html5log.trig = tempRegexTrigger(&quot;^&quot;, &quot;html5log.recordline()&quot
 html5log.showlabel()
 cecho(&quot;\nStarted logging... use 'stoplog' to stop.&quot;)
 </script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^startlog$</regex>
-            </Alias>
-            <Alias isActive="yes" isFolder="no">
-                <name>(stoplog) Stop logging</name>
-                <script>html5log_stoplogging()</script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^stoplog$</regex>
-            </Alias>
-        </AliasGroup>
+            <command></command>
+            <packageName></packageName>
+            <regex>^startlog$</regex>
+        </Alias>
+        <Alias isActive="yes" isFolder="no">
+            <name>(stoplog) Stop logging</name>
+            <script>html5log_stoplogging()</script>
+            <command></command>
+            <packageName></packageName>
+            <regex>^stoplog$</regex>
+        </Alias>
     </AliasPackage>
     <ActionPackage/>
     <ScriptPackage>
