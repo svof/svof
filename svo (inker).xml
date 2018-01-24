@@ -2,9 +2,51 @@
 <!DOCTYPE MudletPackage>
 <MudletPackage version="1.001">
     <TriggerPackage>
-        <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-            <name>svo Tattoo Inker</name>
-            <script></script>
+        <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>Spot not available</name>
+            <script>svo.ti_cantink(multimatches[2][2])</script>
+            <triggerType>0</triggerType>
+            <conditonLineDelta>0</conditonLineDelta>
+            <mStayOpen>0</mStayOpen>
+            <mCommand></mCommand>
+            <packageName></packageName>
+            <mFgColor>#ff0000</mFgColor>
+            <mBgColor>#ffff00</mBgColor>
+            <mSoundFile></mSoundFile>
+            <colorTriggerFgColor>#000000</colorTriggerFgColor>
+            <colorTriggerBgColor>#000000</colorTriggerBgColor>
+            <regexCodeList>
+                <string>You cannot hold any more tattoos on your</string>
+                <string>^You cannot hold any more tattoos on your (.+)\.$</string>
+            </regexCodeList>
+            <regexCodePropertyList>
+                <integer>2</integer>
+                <integer>1</integer>
+            </regexCodePropertyList>
+        </Trigger>
+        <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>No back</name>
+            <script>svo.ti_cantink(&quot;back&quot;)</script>
+            <triggerType>0</triggerType>
+            <conditonLineDelta>0</conditonLineDelta>
+            <mStayOpen>0</mStayOpen>
+            <mCommand></mCommand>
+            <packageName></packageName>
+            <mFgColor>#ff0000</mFgColor>
+            <mBgColor>#ffff00</mBgColor>
+            <mSoundFile></mSoundFile>
+            <colorTriggerFgColor>#000000</colorTriggerFgColor>
+            <colorTriggerBgColor>#000000</colorTriggerBgColor>
+            <regexCodeList>
+                <string>You cannot ink the tattoo on that!</string>
+            </regexCodeList>
+            <regexCodePropertyList>
+                <integer>3</integer>
+            </regexCodePropertyList>
+        </Trigger>
+        <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>No spot available on someone else</name>
+            <script>svo.ti_cantink(matches[2])</script>
             <triggerType>0</triggerType>
             <conditonLineDelta>99</conditonLineDelta>
             <mStayOpen>0</mStayOpen>
@@ -15,177 +57,506 @@
             <mSoundFile></mSoundFile>
             <colorTriggerFgColor>#000000</colorTriggerFgColor>
             <colorTriggerBgColor>#000000</colorTriggerBgColor>
-            <regexCodeList/>
-            <regexCodePropertyList/>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Spot not available</name>
-                <script>svo.ti_cantink(multimatches[2][2])</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>You cannot hold any more tattoos on your</string>
-                    <string>^You cannot hold any more tattoos on your (.+)\.$</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>2</integer>
-                    <integer>1</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>No back</name>
-                <script>svo.ti_cantink(&quot;back&quot;)</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>You cannot ink the tattoo on that!</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>3</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>No spot available on someone else</name>
-                <script>svo.ti_cantink(matches[2])</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>99</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>cannot hold any more tattoos on (?:his|her) (.+)\.$</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>1</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Finished inking the tattoo</name>
-                <script>svo.ti_finishedinking()</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>As the </string>
-                    <string>^As the \w+ tattoo's shape is codified on the .+ of yourself, the last of the ink leaves the air and you pause for a moment to admire your handiwork\.$</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>2</integer>
-                    <integer>1</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Interrupted inking</name>
-                <script>svo.ti_interrupted()</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>As the inking process is ruined, the ink dissipates into the surrounding air.</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>3</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Lacking inks</name>
-                <script>svo.ti_noinks()</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>You do not possess the ink that is required to create a</string>
-                    <string>^You do not possess the ink that is required to create a \w+ tattoo\.</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>2</integer>
-                    <integer>1</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Lacking skills</name>
-                <script>svo.ti_noinks()</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>You do not know how to ink</string>
-                    <string>^You do not know how to ink an? \w+ tattoo\.$</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>2</integer>
-                    <integer>1</integer>
-                </regexCodePropertyList>
-            </Trigger>
-        </TriggerGroup>
+            <regexCodeList>
+                <string>cannot hold any more tattoos on (?:his|her) (.+)\.$</string>
+            </regexCodeList>
+            <regexCodePropertyList>
+                <integer>1</integer>
+            </regexCodePropertyList>
+        </Trigger>
+        <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>Finished inking the tattoo</name>
+            <script>svo.ti_finishedinking()</script>
+            <triggerType>0</triggerType>
+            <conditonLineDelta>0</conditonLineDelta>
+            <mStayOpen>0</mStayOpen>
+            <mCommand></mCommand>
+            <packageName></packageName>
+            <mFgColor>#ff0000</mFgColor>
+            <mBgColor>#ffff00</mBgColor>
+            <mSoundFile></mSoundFile>
+            <colorTriggerFgColor>#000000</colorTriggerFgColor>
+            <colorTriggerBgColor>#000000</colorTriggerBgColor>
+            <regexCodeList>
+                <string>As the </string>
+                <string>^As the \w+ tattoo's shape is codified on the .+ of yourself, the last of the ink leaves the air and you pause for a moment to admire your handiwork\.$</string>
+            </regexCodeList>
+            <regexCodePropertyList>
+                <integer>2</integer>
+                <integer>1</integer>
+            </regexCodePropertyList>
+        </Trigger>
+        <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>Interrupted inking</name>
+            <script>svo.ti_interrupted()</script>
+            <triggerType>0</triggerType>
+            <conditonLineDelta>0</conditonLineDelta>
+            <mStayOpen>0</mStayOpen>
+            <mCommand></mCommand>
+            <packageName></packageName>
+            <mFgColor>#ff0000</mFgColor>
+            <mBgColor>#ffff00</mBgColor>
+            <mSoundFile></mSoundFile>
+            <colorTriggerFgColor>#000000</colorTriggerFgColor>
+            <colorTriggerBgColor>#000000</colorTriggerBgColor>
+            <regexCodeList>
+                <string>As the inking process is ruined, the ink dissipates into the surrounding air.</string>
+            </regexCodeList>
+            <regexCodePropertyList>
+                <integer>3</integer>
+            </regexCodePropertyList>
+        </Trigger>
+        <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>Lacking inks</name>
+            <script>svo.ti_noinks()</script>
+            <triggerType>0</triggerType>
+            <conditonLineDelta>0</conditonLineDelta>
+            <mStayOpen>0</mStayOpen>
+            <mCommand></mCommand>
+            <packageName></packageName>
+            <mFgColor>#ff0000</mFgColor>
+            <mBgColor>#ffff00</mBgColor>
+            <mSoundFile></mSoundFile>
+            <colorTriggerFgColor>#000000</colorTriggerFgColor>
+            <colorTriggerBgColor>#000000</colorTriggerBgColor>
+            <regexCodeList>
+                <string>You do not possess the ink that is required to create a</string>
+                <string>^You do not possess the ink that is required to create a \w+ tattoo\.</string>
+            </regexCodeList>
+            <regexCodePropertyList>
+                <integer>2</integer>
+                <integer>1</integer>
+            </regexCodePropertyList>
+        </Trigger>
+        <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>Lacking skills</name>
+            <script>svo.ti_noinks()</script>
+            <triggerType>0</triggerType>
+            <conditonLineDelta>0</conditonLineDelta>
+            <mStayOpen>0</mStayOpen>
+            <mCommand></mCommand>
+            <packageName></packageName>
+            <mFgColor>#ff0000</mFgColor>
+            <mBgColor>#ffff00</mBgColor>
+            <mSoundFile></mSoundFile>
+            <colorTriggerFgColor>#000000</colorTriggerFgColor>
+            <colorTriggerBgColor>#000000</colorTriggerBgColor>
+            <regexCodeList>
+                <string>You do not know how to ink</string>
+                <string>^You do not know how to ink an? \w+ tattoo\.$</string>
+            </regexCodeList>
+            <regexCodePropertyList>
+                <integer>2</integer>
+                <integer>1</integer>
+            </regexCodePropertyList>
+        </Trigger>
     </TriggerPackage>
     <TimerPackage/>
     <AliasPackage>
-        <AliasGroup isActive="yes" isFolder="yes">
-            <name>svo Tattoo Inker</name>
-            <script></script>
+        <Alias isActive="yes" isFolder="no">
+            <name>Ink</name>
+            <script>svo.ti_ink(matches[2])</script>
             <command></command>
             <packageName></packageName>
-            <regex></regex>
-            <Alias isActive="yes" isFolder="no">
-                <name>Ink</name>
-                <script>svo.ti_ink(matches[2])</script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^ink (.+)$</regex>
-            </Alias>
-        </AliasGroup>
+            <regex>^ink (.+)$</regex>
+        </Alias>
     </AliasPackage>
     <ActionPackage/>
-    <ScriptPackage/>
+    <ScriptPackage>
+        <Script isActive="yes" isFolder="no">
+            <name>elistsorter code</name>
+            <packageName></packageName>
+            <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+
+-- Svof is licensed under a
+-- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+-- You should have received a copy of the license along with this
+-- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+local firstload = not svo.ti_version
+svo.ti_version = &quot;1.1&quot;
+
+local limb_order = {'head', 'torso', &quot;right arm&quot;, &quot;left arm&quot;, &quot;right leg&quot;, &quot;left leg&quot;, 'back'}
+local tattoos = {
+  ox = {
+    {
+      1,
+      'goldink',
+    },
+    {
+      1,
+      'redink',
+    },
+    {
+      1,
+      'yellowink',
+    },
+    {
+      1,
+      'blueink',
+    }
+  },
+  cloak = {
+    {
+      3,
+      'blueink',
+    }
+  },
+  firefly = {
+    {
+      1,
+      'yellowink',
+    }
+  },
+  bell = {
+    {
+      3,
+      'blueink',
+    },
+    {
+      2,
+      'redink',
+    }
+  },
+  moss = {
+    {
+      1,
+      'blueink',
+    },
+    {
+      1,
+      'redink',
+    },
+    {
+      1,
+      'yellowink',
+    }
+  },
+  prism = {
+    {
+      1,
+      'blueink',
+    },
+    {
+      1,
+      'greenink',
+    },
+    {
+      1,
+      'purpleink',
+    },
+    {
+      1,
+      'redink',
+    },
+    {
+      1,
+      'yellowink',
+    }
+  },
+  mindseye = {
+    {
+      2,
+      'blueink',
+    },
+    {
+      1,
+      'greenink',
+    }
+  },
+  brazier = {
+    {
+      2,
+      'redink',
+    },
+    {
+      2,
+      'yellowink',
+    }
+  },
+  feather = {
+    {
+      2,
+      'blueink',
+    },
+    {
+      1,
+      'redink',
+    }
+  },
+  moon = {
+    {
+      1,
+      'blueink',
+    },
+    {
+      1,
+      'redink',
+    },
+    {
+      1,
+      'yellowink',
+    }
+  },
+  starburst = {
+    {
+      1,
+      'blueink',
+    },
+    {
+      1,
+      'goldink',
+    },
+    {
+      1,
+      'greenink',
+    },
+    {
+      1,
+      'purpleink',
+    },
+    {
+      1,
+      'redink',
+    },
+    {
+      1,
+      'yellowink',
+    }
+  },
+  chameleon = {
+    {
+      1,
+      'goldink',
+    },
+    {
+      1,
+      'purpleink',
+    },
+    {
+      1,
+      'yellowink',
+    }
+  },
+  crystal = {
+    {
+      1,
+      'greenink',
+    },
+    {
+      1,
+      'purpleink',
+    },
+    {
+      1,
+      'yellowink',
+    }
+  },
+  megalith = {
+    {
+      2,
+      'goldink',
+    }
+  },
+  tree = {
+    {
+      5,
+      'greenink',
+    }
+  },
+  hourglass = {
+    {
+      1,
+      'blueink',
+    },
+    {
+      2,
+      'yellowink',
+    }
+  },
+  hammer = {
+    {
+      1,
+      'purpleink',
+    },
+    {
+      2,
+      'redink',
+    }
+  },
+  tentacle = {
+    {
+      2,
+      'greenink',
+    },
+    {
+      1,
+      'purpleink',
+    }
+  },
+  web = {
+    {
+      1,
+      'greenink',
+    },
+    {
+      1,
+      'yellowink',
+    }
+  },
+  boar = {
+    {
+      1,
+      'purpleink',
+    },
+    {
+      2,
+      'redink',
+    }
+  },
+  shield = {
+    {
+      1,
+      'greenink',
+    },
+    {
+      2,
+      'redink',
+    }
+  }
+}
+
+svo.ti_inking = false
+
+-- if ends with 'on person', then it's on a person!
+function svo.ti_ink(order)
+  local anotherperson = order:match(&quot; on (%w+)$&quot;)
+  if anotherperson then order = order:sub(1, #order-#anotherperson-4) end
+  local tattoosorder = string.split(order, &quot;,&quot;)
+  for i = 1, #tattoosorder do tattoosorder[i] = string.trim(tattoosorder[i]) end
+
+  svo.ti_inking = {on = anotherperson or 'me', tattoos = tattoosorder, ink_counter = 1, tattoo_counter = 1}
+  svo.echof(&quot;Going to ink %s on %s.&quot;, svo.concatand(svo.ti_inking.tattoos), svo.ti_inking.on)
+  svo.showprompt() echo&quot;\n&quot;
+  svo.app('on')
+
+  svo.ti_inknext()
+end
+
+local function doneinking()
+    local touchables = {'moss', 'moon', 'boar', 'megalith', 'ox'}
+    local needtotouch = {}
+    for i = 1, svo.ti_inking.tattoo_counter do
+      if table.contains(touchables, svo.ti_inking.tattoos[i]) then needtotouch[#needtotouch+1] = svo.ti_inking.tattoos[i] end
+    end
+    if #needtotouch &gt; 0 then
+      if svo.ti_inking.on ~= 'me' then
+        if svo.conf.telltouch then send(string.format(&quot;say to %s you should now touch your %s tattoo%s&quot;, svo.ti_inking.on, svo.concatand(needtotouch), (#needtotouch == 1 and &quot;&quot; or 's'))) end
+      end
+    end
+
+    svo.ti_inking = nil
+    echo(&quot;\n&quot;)
+    svo.app('off')
+    svo.echof(&quot;Finished inking all tattoos.&quot;)
+end
+
+function svo.ti_cantink(limb)
+  if not svo.ti_inking then return end
+  if limb == limb_order[#limb_order] then
+    echo(&quot;\n&quot;)
+    svo.echof(&quot;No more inking spots on %s :|&quot;, (svo.ti_inking.on == 'me' and 'you' or svo.ti_inking.on))
+    svo.showprompt()
+    doneinking()
+  else
+    svo.ti_inking.ink_counter = svo.ti_inking.ink_counter + 1
+    svo.ti_inknext()
+  end
+end
+
+function svo.ti_finishedinking()
+  if not svo.ti_inking then return end
+
+  if table.contains({'moss', 'moon', 'boar', 'megalith', 'ox'}, svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter]) then
+    send(&quot;touch &quot;..svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter])
+  end
+
+  svo.ti_inking.tattoo_counter = svo.ti_inking.tattoo_counter + 1
+
+  if not svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter] then
+    doneinking()
+  else
+    svo.ti_inking.ink_counter = 1
+    echo(&quot;\n&quot;)
+    svo.echof(&quot;Inking the next tattoo...&quot;)
+    svo.ti_inknext()
+  end
+end
+
+function svo.ti_inknext()
+  if svo.ti_inking.ink_counter == 1 and not tattoos[svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter]] then
+    svo.echof(&quot;Don't know the inks necessary for a %s tattoo.&quot;, svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter])
+    svo.showprompt()
+  elseif svo.ti_inking.ink_counter == 1 then
+    for _, t in pairs(tattoos[svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter]]) do
+      svo.sendc(string.format(&quot;outr %d %s&quot;, t[1], t[2]), false)
+    end
+  end
+
+  svo.sendc(string.format(&quot;ink %s on %s of %s&quot;, svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter], limb_order[svo.ti_inking.ink_counter], svo.ti_inking.on))
+end
+
+function svo.ti_interrupted()
+  if not svo.ti_inking then return end
+
+  svo.ti_inking.ink_counter = 1
+  if svo.ti_inking.on == 'me' then
+    echo&quot;\n&quot; svo.echof(&quot;Be still! Going to ink again in a few...&quot;)
+  else
+    send(string.format(&quot;say to %s be still!&quot;, svo.ti_inking.on))
+  end
+  tempTimer(2, function() svo.ti_inknext() end)
+end
+
+function svo.ti_noinks()
+  echo(&quot;\n&quot;) svo.echof(&quot;Lacking inks for the %s tattoo...&quot;, svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter])
+  if not svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter + 1] then
+    doneinking()
+  else
+    svo.ti_inking.tattoo_counter = svo.ti_inking.tattoo_counter + 1
+    svo.ti_inknext()
+  end
+end
+
+svo.config.setoption('telltouch',
+{
+  type = 'boolean',
+  vconfig2string = true,
+  onshow = function (defaultcolour)
+    fg('gold')
+    echoLink(&quot;ti:&quot;, &quot;&quot;, &quot;svo Tattoo Inker&quot;, true)
+    -- &lt;Tell/Don't tell&gt; people to touch inked tattoos
+    if svo.conf.telltouch then
+      fg('a_cyan') echoLink(&quot; Will tell&quot;, &quot;svo.config.set('telltouch', false, true)&quot;, &quot;Click to stop telling people to touch their newly-inked tattoos&quot;, true)
+    else
+      fg('a_cyan') echoLink(&quot; Won't tell&quot;, &quot;svo.config.set('telltouch', true, true)&quot;, &quot;Click to start telling people to touch their newly-inked tattoos&quot;, true)
+    end
+    fg(defaultcolour) echo(&quot; people to touch inked tattoos&quot;)
+    echo(&quot;.\n&quot;)
+  end,
+  onenabled = function ()
+    svo.echof(&quot;&lt;0,250,0&gt;Will%s tell people to touch tattoos they need to after inking.&quot;, svo.getDefaultColor())
+  end,
+  ondisabled = function () svo.echof(&quot;&lt;250,0,0&gt;Won't%s tell people to touch tattoos they need to after inking.&quot;, svo.getDefaultColor()) end
+})
+
+if firstload then
+  svo.echof(&quot;Loaded svo Tattoo Inker, version %s.&quot;, tostring(svo.ti_version))
+end</script>
+            <eventHandlerList/>
+        </Script>
+    </ScriptPackage>
     <KeyPackage/>
     <HelpPackage>
         <helpURL></helpURL>
