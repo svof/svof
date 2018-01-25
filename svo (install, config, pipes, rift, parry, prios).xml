@@ -3991,7 +3991,7 @@ svo.signals.systemstart:add_post_emit(function ()
     end
   end
   rift.update_riftlabel()
-end)
+end, 'post emit rift handling')
 end
 
 svo.signals.enablegmcp:connect(function()

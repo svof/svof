@@ -269,6 +269,7 @@ function new ()
     object.handler_names   = queue.new()
     object.pre_emit_funcs  = queue.new()
     object.post_emit_funcs = queue.new()
+	object.post_emit_names = queue.new()
     object.signal_stopped = false
     return object
 end
@@ -413,9 +414,15 @@ end
 -- reducing the need to do this check_ups inside some handler function, since some resources 
 -- can be shared by multiple handlers. They are called on a stack (LIFO) policy based on the order they added.
 -- @param post_emit_func – The post_emit function.
-function Signal:add_post_emit(post_emit_func)
+function Signal:add_post_emit(post_emit_func, post_emit_name)
+				local position = self.post_emit_names:position(post_emit_name)
+    		if position then
+					self.post_emit_func:removeIndex(position)
+					self.post_emit_names:remove(post_emit_name)
+				end
     self.post_emit_funcs:push_front(post_emit_func)
 end
+
 
 ---
 -- Removes the post_emit function
