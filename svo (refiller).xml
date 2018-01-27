@@ -388,6 +388,9 @@ svo.doadd(&quot;give 50 vial to &quot;..svo.givevials.person)</script>
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
+
+tempTimer(0, function()
+
 local conf = svo.conf
 
 svo.rf_debug = false
@@ -829,7 +832,8 @@ function svo.rf_missingstuff()
       (svo.rf_refilling.currentorderdata.normal - svo.rf_refilling.currentorderdata.arty) * (svo.rf_currenttrans and 4 or 5) +
       svo.rf_refilling.currentorderdata.arty * 2)
 end
-</script>
+
+end)</script>
             <eventHandlerList/>
         </Script>
         <Script isActive="yes" isFolder="no">

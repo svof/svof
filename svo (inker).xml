@@ -174,6 +174,8 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
+
+tempTimer(0, function()
 local firstload = not svo.ti_version
 svo.ti_version = &quot;1.1&quot;
 
@@ -553,7 +555,9 @@ svo.config.setoption('telltouch',
 
 if firstload then
   svo.echof(&quot;Loaded svo Tattoo Inker, version %s.&quot;, tostring(svo.ti_version))
-end</script>
+end
+
+end)</script>
             <eventHandlerList/>
         </Script>
     </ScriptPackage>

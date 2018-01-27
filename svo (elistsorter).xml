@@ -176,11 +176,11 @@ send(command, false)</script>
 
 svo.es_version = &quot;1.1&quot;
 
-local firstload = not svo.es_vials
 
 -- load elistsorter after all of the main code has
 -- loaded, so svo.signal is available
 tempTimer(0, function()
+local firstload = not svo.es_vials
 
 -- stores vial ID and months left
 svo.es_vials = svo.es_vials or {}
@@ -476,7 +476,8 @@ end
 svo.signals.saveconfig:connect(function ()
   svo.tablesave(getMudletHomeDir() .. &quot;/svo/config/svo.es_knownstuff&quot;, svo.es_knownstuff)
 end, 'save knownstuff')
-svo.signals.systemstart:connect(function ()
+
+function svo.load_elist_data()
   local conf_path = getMudletHomeDir() .. &quot;/svo/config/svo.es_knownstuff&quot;
 
   if lfs.attributes(conf_path) then
@@ -492,10 +493,11 @@ svo.signals.systemstart:connect(function ()
       end)
     end
   end
-end, 'load knownstuff')
+end
+if firstload then svo.load_elist_data() end
 
 -- remember our vial statuses if we have
-svo.signals.systemstart:connect(function ()
+function svo.load_potions_data()
   local conf_path = getMudletHomeDir() .. &quot;/svo/config/svo.es_potions&quot;
 
   if lfs.attributes(conf_path) then
@@ -507,7 +509,8 @@ svo.signals.systemstart:connect(function ()
   -- erase tonics and balms as those are gone
   svo.es_potions.tonic = nil
   svo.es_potions.balm = nil
-end, 'load vial configuration')
+end
+if firstload then svo.load_potions_data() end
 
 svo.signals.saveconfig:connect(function ()
   svo.tablesave(getMudletHomeDir() .. &quot;/svo/config/svo.es_potions&quot;, svo.es_potions)

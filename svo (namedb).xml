@@ -4040,9 +4040,7 @@ function ndb.showpolitics(noprompt)
 
   if not noprompt then svo.showprompt() end
 end</script>
-                    <eventHandlerList>
-                        <string>svo system loaded</string>
-                    </eventHandlerList>
+                    <eventHandlerList/>
                     <Script isActive="yes" isFolder="no">
                         <name>ndb.onshow</name>
                         <packageName></packageName>
@@ -4168,14 +4166,6 @@ end</script>
                 <packageName></packageName>
                 <script></script>
                 <eventHandlerList/>
-                <Script isActive="yes" isFolder="no">
-                    <name>ndb.loadhighlights</name>
-                    <packageName></packageName>
-                    <script></script>
-                    <eventHandlerList>
-                        <string>svo system loaded</string>
-                    </eventHandlerList>
-                </Script>
                 <Script isActive="yes" isFolder="no">
                     <name>ndb.addhighlightname</name>
                     <packageName></packageName>
@@ -4769,12 +4759,16 @@ end</script>
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
+-- load after Svof has loaded to have svo.pl
+tempTimer(0, function()
+
 local me = svo.me
+local firstload = not ndb.ismhaldorian
 
 svo.pl.dir.makepath(getMudletHomeDir() .. &quot;/svo/namedb&quot;)
 
 -- load the highlightignore list
-svo.signals.systemstart:connect(function ()
+function ndb.loadhighlightignore()
   local conf_path = getMudletHomeDir() .. &quot;/svo/config/highlightignore&quot;
 
   if lfs.attributes(conf_path) then
@@ -4790,7 +4784,8 @@ svo.signals.systemstart:connect(function ()
 		end)
 	end
   end
-end, 'load highlightignore list')
+end
+if firstload then ndb.loadhighlightignore() end
 svo.signals.saveconfig:connect(function () me.highlightignore = me.highlightignore or {}; svo.tablesave(getMudletHomeDir() .. &quot;/svo/config/highlightignore&quot;, me.highlightignore) end, 'save highlightignore list')
 
 
@@ -5640,7 +5635,12 @@ svo.signals[&quot;namedb finished honors&quot;]:connect(ndb.honors_next, 'run ho
 
 -- end
 -- svo.signals[&quot;svo config changed&quot;]:connect(sk.togglehonors)
-</script>
+
+
+if firstload then ndb.configs() end
+ndb.loadhighlights()
+
+end)</script>
                 <eventHandlerList/>
             </Script>
         </ScriptGroup>

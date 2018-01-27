@@ -581,6 +581,9 @@ handling multiple rooms ideas:
  * label by single letters for groups, with only the rightmost room having the full list of names with letter) prepended
 ]]
 
+
+tempTimer(0, function()
+
 local sys, signals = svo.sys, svo.signals
 local conf, sk = svo.conf, svo.sk
 
@@ -784,7 +787,8 @@ signals[&quot;mmapper updated pdb&quot;]:connect(function()
 end, 'redraw labels')
 
 signals.quit:connect(sys.clean_old_labels, 'clean up old labels on quit')
-</script>
+
+end)</script>
                 <eventHandlerList/>
             </Script>
         </ScriptGroup>

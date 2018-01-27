@@ -96,6 +96,7 @@ svo.dl_ignore()</script>
 
 svo.dl_version = &quot;1.0&quot;
 
+tempTimer(0, function()
 local firstload = not svo.dl_list
 
 svo.dl_list = svo.dl_list or {}
@@ -234,7 +235,8 @@ end
 
 if firstload then
   svo.echof(&quot;Loaded svo Dragon limbcounter, version %s.&quot;, tostring(svo.dl_version))
-end</script>
+end
+end)</script>
             <eventHandlerList/>
         </Script>
         <Script isActive="yes" isFolder="no">
