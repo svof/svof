@@ -447,13 +447,9 @@ else
 end
       end,
 
-      oncompleted = function()
-        svo.lostbal_sip()
-      end,
+      oncompleted = function() svo.lostbal_sip() end,
 
-      noeffect = function()
-        svo.lostbal_sip()
-      end,
+      noeffect = function() svo.lostbal_sip() end,
 
       onprioswitch = function()
         codepaste.serversideahealthmanaprio()
@@ -477,13 +473,9 @@ else
 end
       end,
 
-      oncompleted = function()
-        svo.lostbal_moss()
-      end,
+      oncompleted = function() svo.lostbal_moss() end,
 
-      noeffect = function()
-        svo.lostbal_moss()
-      end,
+      noeffect = function() svo.lostbal_moss() end,
 
       eatcure = {'irid', 'potash'},
       actions = {&quot;eat moss&quot;, &quot;eat irid&quot;, &quot;eat potash&quot;},
@@ -502,13 +494,9 @@ end
         return ((stats.currentmana &lt; sys.sipmana or (sk.gettingfullstats and stats.currentmana &lt; stats.maxmana)) and not svo.doingaction('healmana')) or false
       end,
 
-      oncompleted = function()
-        svo.lostbal_sip()
-      end,
+      oncompleted = function() svo.lostbal_sip() end,
 
-      noeffect = function()
-        svo.lostbal_sip()
-      end,
+      noeffect = function() svo.lostbal_sip() end,
 
       onprioswitch = function()
         codepaste.serversideahealthmanaprio()
@@ -528,13 +516,9 @@ end
         return ((stats.currentmana &lt; sys.mossmana) and (not svo.doingaction('healmana') or (stats.currentmana &lt; (sys.mossmana-600)))) or false
       end,
 
-      oncompleted = function()
-        svo.lostbal_moss()
-      end,
+      oncompleted = function() svo.lostbal_moss() end,
 
-      noeffect = function()
-        svo.lostbal_moss()
-      end,
+      noeffect = function() svo.lostbal_moss() end,
 
       eatcure = {'irid', 'potash'},
       actions = {&quot;eat moss&quot;, &quot;eat irid&quot;, &quot;eat potash&quot;},
@@ -571,18 +555,13 @@ end
         empty.apply_health_head()
       end,
 
-      noeffect = function()
-        svo.lostbal_sip()
-      end,
+      noeffect = function() svo.lostbal_sip() end,
 
       -- in case an unrecognised message is shown, don't error
-      empty = function()
-      end,
+      empty = function() end,
 
       actions = {&quot;apply health to head&quot;},
-      onstart = function()
-        send(&quot;apply health to head&quot;, conf.commandecho)
-      end
+      onstart = function() send('apply health to head', conf.commandecho) end
     },
     aff = {
       oncompleted = function (number)
@@ -650,18 +629,13 @@ end
         empty.apply_health_torso()
       end,
 
-      noeffect = function()
-        svo.lostbal_sip()
-      end,
+      noeffect = function() svo.lostbal_sip() end,
 
       -- in case an unrecognised message is shown, don't error
-      empty = function()
-      end,
+      empty = function() end,
 
       actions = {&quot;apply health to torso&quot;},
-      onstart = function()
-        send(&quot;apply health to torso&quot;, conf.commandecho)
-      end
+      onstart = function() send('apply health to torso', conf.commandecho) end
     },
     aff = {
       oncompleted = function (number)
@@ -729,18 +703,13 @@ end
         empty.apply_health_arms()
       end,
 
-      noeffect = function()
-        svo.lostbal_sip()
-      end,
+      noeffect = function() svo.lostbal_sip() end,
 
       -- in case an unrecognised message is shown, don't error
-      empty = function()
-      end,
+      empty = function() end,
 
       actions = {&quot;apply health to arms&quot;},
-      onstart = function()
-        send(&quot;apply health to arms&quot;, conf.commandecho)
-      end
+      onstart = function() send('apply health to arms', conf.commandecho) end
     },
     aff = {
       oncompleted = function (number)
@@ -808,18 +777,13 @@ end
         empty.apply_health_legs()
       end,
 
-      noeffect = function()
-        svo.lostbal_sip()
-      end,
+      noeffect = function() svo.lostbal_sip() end,
 
       -- in case an unrecognised message is shown, don't error
-      empty = function()
-      end,
+      empty = function() end,
 
       actions = {&quot;apply health to legs&quot;},
-      onstart = function()
-        send(&quot;apply health to legs&quot;, conf.commandecho)
-      end
+      onstart = function() send('apply health to legs', conf.commandecho) end
     },
     aff = {
       oncompleted = function (number)
@@ -883,9 +847,7 @@ end
         svo.dict.cholerichumour.count = 0
       end,
 
-      noeffect = function()
-        svo.lostbal_herb()
-      end,
+      noeffect = function() svo.lostbal_herb() end,
 
       -- does damage based on humour count
       inundated = function()
@@ -895,9 +857,7 @@ end
 
       eatcure = {'ginger', 'antimony'},
 
-      onstart = function()
-        svo.eat(svo.dict.cholerichumour.herb)
-      end
+      onstart = function() svo.eat(svo.dict.cholerichumour.herb) end
     },
     aff = {
       oncompleted = function (number)
@@ -942,9 +902,7 @@ end
         svo.dict.melancholichumour.count = 0
       end,
 
-      noeffect = function()
-        svo.lostbal_herb()
-      end,
+      noeffect = function() svo.lostbal_herb() end,
 
       -- does mana damage based on humour count
       inundated = function()
@@ -954,9 +912,7 @@ end
 
       eatcure = {'ginger', 'antimony'},
 
-      onstart = function()
-        svo.eat(svo.dict.melancholichumour.herb)
-      end
+      onstart = function() svo.eat(svo.dict.melancholichumour.herb) end
     },
     aff = {
       oncompleted = function (number)
@@ -1002,9 +958,7 @@ end
         svo.dict.phlegmatichumour.count = 0
       end,
 
-      noeffect = function()
-        svo.lostbal_herb()
-      end,
+      noeffect = function() svo.lostbal_herb() end,
 
       -- gives various afflictions, amount of which depends on your humour level
       --[[
@@ -1024,9 +978,7 @@ end
 
       eatcure = {'ginger', 'antimony'},
 
-      onstart = function()
-        svo.eat(svo.dict.phlegmatichumour.herb)
-      end
+      onstart = function() svo.eat(svo.dict.phlegmatichumour.herb) end
     },
     aff = {
       oncompleted = function (number)
@@ -1071,9 +1023,7 @@ end
         svo.dict.sanguinehumour.count = 0
       end,
 
-      noeffect = function()
-        svo.lostbal_herb()
-      end,
+      noeffect = function() svo.lostbal_herb() end,
 
       -- gives bleeding depending on your sanguine humour level, from 250 for first to 2500 for last
       inundated = function()
@@ -1093,9 +1043,7 @@ end
 
       eatcure = {'ginger', 'antimony'},
 
-      onstart = function()
-        svo.eat(svo.dict.sanguinehumour.herb)
-      end
+      onstart = function() svo.eat(svo.dict.sanguinehumour.herb) end
     },
     aff = {
       oncompleted = function (number)
@@ -1127,16 +1075,11 @@ end
 
       eatcure = {'pear', 'calcite'},
 
-      onstart = function()
-        svo.eat(svo.dict.waterbubble.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.waterbubble.herb) end,
 
-      oncompleted = function()
-        defences.got('waterbubble')
-      end,
+      oncompleted = function() defences.got('waterbubble') end,
 
-      empty = function()
-      end
+      empty = function() end
     }
   },
   pacifism = {
@@ -1153,13 +1096,9 @@ end
       end,
 
       eatcure = {'bellwort', 'cuprum'},
-      onstart = function()
-        svo.eat(svo.dict.pacifism.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.pacifism.herb) end,
 
-      empty = function()
-        empty.eat_bellwort()
-      end
+      empty = function() empty.eat_bellwort() end
     },
     focus = {
       isadvisable = function()
@@ -1172,9 +1111,7 @@ end
         svo.lostbal_focus()
       end,
 
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -1206,13 +1143,9 @@ end
       end,
 
       eatcure = {'bellwort', 'cuprum'},
-      onstart = function()
-        svo.eat(svo.dict.peace.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.peace.herb) end,
 
-      empty = function()
-        empty.eat_bellwort()
-      end
+      empty = function() empty.eat_bellwort() end
     },
     aff = {
       oncompleted = function()
@@ -1220,9 +1153,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('peace')
-      end,
+      oncompleted = function() svo.rmaff('peace') end,
     }
   },
   inlove = {
@@ -1238,13 +1169,9 @@ end
       end,
 
       eatcure = {'bellwort', 'cuprum'},
-      onstart = function()
-        svo.eat(svo.dict.inlove.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.inlove.herb) end,
 
-      empty = function()
-        empty.eat_bellwort()
-      end
+      empty = function() empty.eat_bellwort() end
     },
     aff = {
       oncompleted = function()
@@ -1252,9 +1179,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('inlove')
-      end,
+      oncompleted = function() svo.rmaff('inlove') end,
     }
   },
   dissonance = {
@@ -1269,13 +1194,9 @@ end
       end,
 
       eatcure = {'goldenseal', 'plumbum'},
-      onstart = function()
-        svo.eat(svo.dict.dissonance.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.dissonance.herb) end,
 
-      empty = function()
-        empty.eat_goldenseal()
-      end
+      empty = function() empty.eat_goldenseal() end
     },
     aff = {
       oncompleted = function()
@@ -1283,9 +1204,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('dissonance')
-      end,
+      oncompleted = function() svo.rmaff('dissonance') end,
     }
   },
   dizziness = {
@@ -1301,13 +1220,9 @@ end
       end,
 
       eatcure = {'goldenseal', 'plumbum'},
-      onstart = function()
-        svo.eat(svo.dict.dizziness.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.dizziness.herb) end,
 
-      empty = function()
-        empty.eat_goldenseal()
-      end
+      empty = function() empty.eat_goldenseal() end
     },
     focus = {
       isadvisable = function()
@@ -1321,9 +1236,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -1356,13 +1269,9 @@ end
       end,
 
       eatcure = {'goldenseal', 'plumbum'},
-      onstart = function()
-        svo.eat(svo.dict.shyness.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.shyness.herb) end,
 
-      empty = function()
-        empty.eat_goldenseal()
-      end
+      empty = function() empty.eat_goldenseal() end
     },
     focus = {
       isadvisable = function()
@@ -1376,9 +1285,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -1411,13 +1318,9 @@ end
       end,
 
       eatcure = {'goldenseal', 'plumbum'},
-      onstart = function()
-        svo.eat(svo.dict.epilepsy.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.epilepsy.herb) end,
 
-      empty = function()
-        empty.eat_goldenseal()
-      end
+      empty = function() empty.eat_goldenseal() end
     },
     focus = {
       isadvisable = function()
@@ -1431,9 +1334,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -1470,13 +1371,9 @@ end
       end,
 
       eatcure = {'goldenseal', 'plumbum'},
-      onstart = function()
-        svo.eat(svo.dict.impatience.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.impatience.herb) end,
 
-      empty = function()
-        empty.eat_goldenseal()
-      end
+      empty = function() empty.eat_goldenseal() end
     },
     aff = {
       oncompleted = function()
@@ -1485,9 +1382,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('impatience')
-      end,
+      oncompleted = function() svo.rmaff('impatience') end,
     }
   },
   stupidity = {
@@ -1503,13 +1398,9 @@ end
       end,
 
       eatcure = {'goldenseal', 'plumbum'},
-      onstart = function()
-        svo.eat(svo.dict.stupidity.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.stupidity.herb) end,
 
-      empty = function()
-        empty.eat_goldenseal()
-      end
+      empty = function() empty.eat_goldenseal() end
     },
     focus = {
       isadvisable = function()
@@ -1523,9 +1414,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -1560,13 +1449,9 @@ end
       end,
 
       eatcure = {'lobelia', 'argentum'},
-      onstart = function()
-        svo.eat(svo.dict.masochism.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.masochism.herb) end,
 
-      empty = function()
-        empty.eat_lobelia()
-      end
+      empty = function() empty.eat_lobelia() end
     },
     focus = {
       isadvisable = function()
@@ -1580,9 +1465,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -1615,13 +1498,9 @@ end
       end,
 
       eatcure = {'lobelia', 'argentum'},
-      onstart = function()
-        svo.eat(svo.dict.recklessness.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.recklessness.herb) end,
 
-      empty = function()
-        empty.eat_lobelia()
-      end
+      empty = function() empty.eat_lobelia() end
     },
     focus = {
       isadvisable = function()
@@ -1635,9 +1514,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -1691,13 +1568,9 @@ end
       end,
 
       eatcure = {'bellwort', 'cuprum'},
-      onstart = function()
-        svo.eat(svo.dict.justice.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.justice.herb) end,
 
-      empty = function()
-        empty.eat_bellwort()
-      end
+      empty = function() empty.eat_bellwort() end
     },
     aff = {
       oncompleted = function()
@@ -1705,9 +1578,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('justice')
-      end,
+      oncompleted = function() svo.rmaff('justice') end,
     }
   },
   generosity = {
@@ -1723,13 +1594,9 @@ end
       end,
 
       eatcure = {'bellwort', 'cuprum'},
-      onstart = function()
-        svo.eat(svo.dict.generosity.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.generosity.herb) end,
 
-      empty = function()
-        empty.eat_bellwort()
-      end
+      empty = function() empty.eat_bellwort() end
     },
     focus = {
       isadvisable = function()
@@ -1743,9 +1610,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -1779,13 +1644,9 @@ end
       end,
 
       eatcure = {'kelp', 'aurum'},
-      onstart = function()
-        svo.eat(svo.dict.weakness.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.weakness.herb) end,
 
-      empty = function()
-        empty.eat_kelp()
-      end
+      empty = function() empty.eat_kelp() end
     },
     aff = {
       oncompleted = function()
@@ -1812,13 +1673,9 @@ end
       end,
 
       eatcure = {'lobelia', 'argentum'},
-      onstart = function()
-        svo.eat(svo.dict.vertigo.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.vertigo.herb) end,
 
-      empty = function()
-        empty.eat_lobelia()
-      end
+      empty = function() empty.eat_lobelia() end
     },
     focus = {
       isadvisable = function()
@@ -1832,9 +1689,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -1866,13 +1721,9 @@ end
       end,
 
       eatcure = {'lobelia', 'argentum'},
-      onstart = function()
-        svo.eat(svo.dict.loneliness.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.loneliness.herb) end,
 
-      empty = function()
-        empty.eat_lobelia()
-      end
+      empty = function() empty.eat_lobelia() end
     },
     focus = {
       isadvisable = function()
@@ -1885,9 +1736,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -1919,13 +1768,9 @@ end
       end,
 
       eatcure = {'ash', 'stannum'},
-      onstart = function()
-        svo.eat(svo.dict.dementia.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.dementia.herb) end,
 
-      empty = function()
-        empty.eat_ash()
-      end
+      empty = function() empty.eat_ash() end
     },
     focus = {
       isadvisable = function()
@@ -1938,9 +1783,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -1954,9 +1797,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('dementia')
-      end,
+      oncompleted = function() svo.rmaff('dementia') end,
     }
   },
   paranoia = {
@@ -1971,13 +1812,9 @@ end
       end,
 
       eatcure = {'ash', 'stannum'},
-      onstart = function()
-        svo.eat(svo.dict.paranoia.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.paranoia.herb) end,
 
-      empty = function()
-        empty.eat_ash()
-      end
+      empty = function() empty.eat_ash() end
     },
     focus = {
       isadvisable = function()
@@ -1990,9 +1827,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -2006,9 +1841,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('paranoia')
-      end,
+      oncompleted = function() svo.rmaff('paranoia') end,
     }
   },
   hypersomnia = {
@@ -2023,13 +1856,9 @@ end
       end,
 
       eatcure = {'ash', 'stannum'},
-      onstart = function()
-        svo.eat(svo.dict.hypersomnia.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.hypersomnia.herb) end,
 
-      empty = function()
-        empty.eat_ash()
-      end
+      empty = function() empty.eat_ash() end
     },
     aff = {
       oncompleted = function()
@@ -2037,9 +1866,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('hypersomnia')
-      end,
+      oncompleted = function() svo.rmaff('hypersomnia') end,
     }
   },
   hallucinations = {
@@ -2054,13 +1881,9 @@ end
       end,
 
       eatcure = {'ash', 'stannum'},
-      onstart = function()
-        svo.eat(svo.dict.hallucinations.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.hallucinations.herb) end,
 
-      empty = function()
-        empty.eat_ash()
-      end
+      empty = function() empty.eat_ash() end
     },
     focus = {
       isadvisable = function()
@@ -2073,9 +1896,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -2089,9 +1910,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('hallucinations')
-      end,
+      oncompleted = function() svo.rmaff('hallucinations') end,
     }
   },
   confusion = {
@@ -2107,13 +1926,9 @@ end
       end,
 
       eatcure = {'ash', 'stannum'},
-      onstart = function()
-        svo.eat(svo.dict.confusion.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.confusion.herb) end,
 
-      empty = function()
-        empty.eat_ash()
-      end
+      empty = function() empty.eat_ash() end
     },
     focus = {
       isadvisable = function()
@@ -2127,9 +1942,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -2163,13 +1976,9 @@ end
       end,
 
       eatcure = {'lobelia', 'argentum'},
-      onstart = function()
-        svo.eat(svo.dict.agoraphobia.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.agoraphobia.herb) end,
 
-      empty = function()
-        empty.eat_lobelia()
-      end
+      empty = function() empty.eat_lobelia() end
     },
     focus = {
       isadvisable = function()
@@ -2183,9 +1992,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -2200,9 +2007,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('agoraphobia')
-      end,
+      oncompleted = function() svo.rmaff('agoraphobia') end,
     }
   },
   claustrophobia = {
@@ -2218,13 +2023,9 @@ end
       end,
 
       eatcure = {'lobelia', 'argentum'},
-      onstart = function()
-        svo.eat(svo.dict.claustrophobia.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.claustrophobia.herb) end,
 
-      empty = function()
-        empty.eat_lobelia()
-      end
+      empty = function() empty.eat_lobelia() end
     },
     focus = {
       isadvisable = function()
@@ -2238,9 +2039,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -2273,13 +2072,9 @@ end
       end,
 
       eatcure = {'bloodroot', 'magnesium'},
-      onstart = function()
-        svo.eat(svo.dict.paralysis.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.paralysis.herb) end,
 
-      empty = function()
-        empty.eat_bloodroot()
-      end
+      empty = function() empty.eat_bloodroot() end
     },
     aff = {
       oncompleted = function()
@@ -2288,9 +2083,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('paralysis')
-      end,
+      oncompleted = function() svo.rmaff('paralysis') end,
     },
     onremoved = function() svo.affsp.paralysis = nil svo.donext() end
   },
@@ -2306,13 +2099,9 @@ end
       end,
 
       eatcure = {'kelp', 'aurum'},
-      onstart = function()
-        svo.eat(svo.dict.asthma.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.asthma.herb) end,
 
-      empty = function()
-        empty.eat_kelp()
-      end
+      empty = function() empty.eat_kelp() end
     },
     aff = {
       oncompleted = function()
@@ -2327,9 +2116,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('asthma')
-      end,
+      oncompleted = function() svo.rmaff('asthma') end,
     }
   },
   clumsiness = {
@@ -2344,13 +2131,9 @@ end
       end,
 
       eatcure = {'kelp', 'aurum'},
-      onstart = function()
-        svo.eat(svo.dict.clumsiness.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.clumsiness.herb) end,
 
-      empty = function()
-        empty.eat_kelp()
-      end
+      empty = function() empty.eat_kelp() end
     },
     aff = {
       oncompleted = function()
@@ -2358,9 +2141,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('clumsiness')
-      end,
+      oncompleted = function() svo.rmaff('clumsiness') end,
     }
   },
   sensitivity = {
@@ -2375,13 +2156,9 @@ end
       end,
 
       eatcure = {'kelp', 'aurum'},
-      onstart = function()
-        svo.eat(svo.dict.sensitivity.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.sensitivity.herb) end,
 
-      empty = function()
-        empty.eat_kelp()
-      end
+      empty = function() empty.eat_kelp() end
     },
     aff = {
       oncompleted = function()
@@ -2403,9 +2180,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('sensitivity')
-      end,
+      oncompleted = function() svo.rmaff('sensitivity') end,
     }
   },
   healthleech = {
@@ -2420,13 +2195,9 @@ end
       end,
 
       eatcure = {'kelp', 'aurum'},
-      onstart = function()
-        svo.eat(svo.dict.healthleech.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.healthleech.herb) end,
 
-      empty = function()
-        empty.eat_kelp()
-      end
+      empty = function() empty.eat_kelp() end
     },
     aff = {
       oncompleted = function()
@@ -2434,9 +2205,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('healthleech')
-      end,
+      oncompleted = function() svo.rmaff('healthleech') end,
     }
   },
   relapsing = {
@@ -2454,13 +2223,9 @@ end
       end,
 
       eatcure = {'ginseng', 'ferrum'},
-      onstart = function()
-        svo.eat(svo.dict.relapsing.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.relapsing.herb) end,
 
-      empty = function()
-        empty.eat_ginseng()
-      end
+      empty = function() empty.eat_ginseng() end
     },
     --[[
       relapsing:  ai off, accept everything
@@ -2574,13 +2339,9 @@ end
       end,
 
       eatcure = {'ginseng', 'ferrum'},
-      onstart = function()
-        svo.eat(svo.dict.darkshade.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.darkshade.herb) end,
 
-      empty = function()
-        empty.eat_ginseng()
-      end
+      empty = function() empty.eat_ginseng() end
     },
     aff = {
       oncompleted = function (oldhp)
@@ -2594,9 +2355,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('darkshade')
-      end,
+      oncompleted = function() svo.rmaff('darkshade') end,
     }
   },
   lethargy = {
@@ -2612,13 +2371,9 @@ end
       end,
 
       eatcure = {'ginseng', 'ferrum'},
-      onstart = function()
-        svo.eat(svo.dict.lethargy.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.lethargy.herb) end,
 
-      empty = function()
-        empty.eat_ginseng()
-      end
+      empty = function() empty.eat_ginseng() end
     },
     aff = {
       oncompleted = function()
@@ -2626,9 +2381,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('lethargy')
-      end,
+      oncompleted = function() svo.rmaff('lethargy') end,
     }
   },
   illness = {
@@ -2645,13 +2398,9 @@ end
       end,
 
       eatcure = {'ginseng', 'ferrum'},
-      onstart = function()
-        svo.eat(svo.dict.illness.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.illness.herb) end,
 
-      empty = function()
-        empty.eat_ginseng()
-      end
+      empty = function() empty.eat_ginseng() end
     },
     aff = {
       oncompleted = function()
@@ -2661,9 +2410,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('illness')
-      end,
+      oncompleted = function() svo.rmaff('illness') end,
     }
   },
   addiction = {
@@ -2679,13 +2426,9 @@ end
       end,
 
       eatcure = {'ginseng', 'ferrum'},
-      onstart = function()
-        svo.eat(svo.dict.addiction.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.addiction.herb) end,
 
-      empty = function()
-        empty.eat_ginseng()
-      end
+      empty = function() empty.eat_ginseng() end
     },
     aff = {
       oncompleted = function()
@@ -2693,9 +2436,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('addiction')
-      end,
+      oncompleted = function() svo.rmaff('addiction') end,
     },
     onremoved = function()
       rift.checkprecache()
@@ -2713,13 +2454,9 @@ end
       end,
 
       eatcure = {'ginseng', 'ferrum'},
-      onstart = function()
-        svo.eat(svo.dict.haemophilia.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.haemophilia.herb) end,
 
-      empty = function()
-        empty.eat_ginseng()
-      end
+      empty = function() empty.eat_ginseng() end
     },
     aff = {
       oncompleted = function()
@@ -2727,9 +2464,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('haemophilia')
-      end,
+      oncompleted = function() svo.rmaff('haemophilia') end,
     }
   },
   hypochondria = {
@@ -2744,13 +2479,9 @@ end
       end,
 
       eatcure = {'kelp', 'aurum'},
-      onstart = function()
-        svo.eat(svo.dict.hypochondria.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.hypochondria.herb) end,
 
-      empty = function()
-        empty.eat_kelp()
-      end
+      empty = function() empty.eat_kelp() end
     },
     aff = {
       oncompleted = function()
@@ -2758,9 +2489,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('hypochondria')
-      end,
+      oncompleted = function() svo.rmaff('hypochondria') end,
     }
   },
 
@@ -2800,9 +2529,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('aeon')
-      end,
+      oncompleted = function() svo.rmaff('aeon') end,
     },
     onremoved = function()
       svo.affsp.aeon = nil
@@ -2845,9 +2572,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('hellsight')
-      end,
+      oncompleted = function() svo.rmaff('hellsight') end,
     }
   },
   deadening = {
@@ -2879,9 +2604,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('deadening')
-      end,
+      oncompleted = function() svo.rmaff('deadening') end,
     }
   },
   madness = {
@@ -2918,9 +2641,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('madness')
-      end,
+      oncompleted = function() svo.rmaff('madness') end,
     }
   },
   -- valerian cures
@@ -2958,13 +2679,9 @@ end
       end,
 
       eatcure = {'bloodroot', 'magnesium'},
-      onstart = function()
-        svo.eat(svo.dict.slickness.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.slickness.herb) end,
 
-      empty = function()
-        empty.eat_bloodroot()
-      end
+      empty = function() empty.eat_bloodroot() end
     },
     aff = {
       oncompleted = function()
@@ -2973,9 +2690,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('slickness')
-      end,
+      oncompleted = function() svo.rmaff('slickness') end,
     }
   },
   disloyalty = {
@@ -3007,9 +2722,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('disloyalty')
-      end,
+      oncompleted = function() svo.rmaff('disloyalty') end,
     }
   },
   manaleech = {
@@ -3041,9 +2754,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('manaleech')
-      end,
+      oncompleted = function() svo.rmaff('manaleech') end,
     }
   },
 
@@ -3078,29 +2789,21 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('heartseed')
-      end,
+      oncompleted = function() svo.rmaff('heartseed') end,
     }
   },
   curingheartseed = {
     waitingfor = {
       customwait = 6, -- 4 to cure
 
-      oncompleted = function()
-        svo.rmaff('heartseed')
-      end,
+      oncompleted = function() svo.rmaff('heartseed') end,
 
-      ontimeout = function()
-        svo.rmaff('heartseed')
-      end,
+      ontimeout = function() svo.rmaff('heartseed') end,
 
-      noeffect = function()
-        svo.rmaff('heartseed')
-      end,
+      noeffect = function() svo.rmaff('heartseed') end,
 
       onstart = function()
-    -- add blocking of the cure coming too early if it'll become necessary.
+        -- add blocking of the cure coming too early if it'll become necessary.
       end,
     }
   },
@@ -3133,26 +2836,18 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('hypothermia')
-      end,
+      oncompleted = function() svo.rmaff('hypothermia') end,
     }
   },
   curinghypothermia = {
     waitingfor = {
       customwait = 6, -- 4 to cure
 
-      oncompleted = function()
-        svo.rmaff('hypothermia')
-      end,
+      oncompleted = function() svo.rmaff('hypothermia') end,
 
-      ontimeout = function()
-        svo.rmaff('hypothermia')
-      end,
+      ontimeout = function() svo.rmaff('hypothermia') end,
 
-      noeffect = function()
-        svo.rmaff('hypothermia')
-      end,
+      noeffect = function() svo.rmaff('hypothermia') end,
 
       onstart = function()
         -- add blocking of the cure coming too early if it'll become necessary.
@@ -3201,9 +2896,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('mutilatedrightleg')
-      end,
+      oncompleted = function() svo.rmaff('mutilatedrightleg') end,
     }
   },
   curingmutilatedrightleg = {
@@ -3228,17 +2921,14 @@ end
         end
       end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
       oncuredleft = function()
         svo.rmaff('mutilatedrightleg')
         svo.addaffdict(svo.dict.mangledrightleg)
       end,
 
-      noeffect = function()
-        svo.rmaff('mutilatedrightleg')
-      end
+      noeffect = function() svo.rmaff('mutilatedrightleg') end
     }
   },
   parestolegs = {
@@ -3276,9 +2966,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('parestolegs')
-      end,
+      oncompleted = function() svo.rmaff('parestolegs') end,
     }
   },
   curingparestolegs = {
@@ -3295,16 +2983,11 @@ end
         end
       end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
-      ontimeout = function()
-        svo.rmaff('parestolegs')
-      end,
+      ontimeout = function() svo.rmaff('parestolegs') end,
 
-      noeffect = function()
-        svo.rmaff('parestolegs')
-      end
+      noeffect = function() svo.rmaff('parestolegs') end
     }
   },
   mangledrightleg = {
@@ -3348,9 +3031,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('mangledrightleg')
-      end,
+      oncompleted = function() svo.rmaff('mangledrightleg') end,
     }
   },
   curingmangledrightleg = {
@@ -3376,17 +3057,14 @@ end
         end
       end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
       oncuredleft = function()
         svo.rmaff('mangledrightleg')
         svo.addaffdict(svo.dict.crippledrightleg)
       end,
 
-      noeffect = function()
-        svo.rmaff('mangledrightleg')
-      end
+      noeffect = function() svo.rmaff('mangledrightleg') end
     }
   },
   crippledrightleg = {
@@ -3435,9 +3113,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('crippledrightleg')
-      end,
+      oncompleted = function() svo.rmaff('crippledrightleg') end,
     }
   },
   mutilatedleftleg = {
@@ -3481,9 +3157,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('mutilatedleftleg')
-      end,
+      oncompleted = function() svo.rmaff('mutilatedleftleg') end,
     }
   },
   curingmutilatedleftleg = {
@@ -3508,17 +3182,14 @@ end
         end
       end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
       oncuredleft = function()
         svo.rmaff('mutilatedleftleg')
         svo.addaffdict(svo.dict.mangledleftleg)
       end,
 
-      noeffect = function()
-        svo.rmaff('mutilatedleftleg')
-      end
+      noeffect = function() svo.rmaff('mutilatedleftleg') end
     }
   },
   mangledleftleg = {
@@ -3562,9 +3233,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('mangledleftleg')
-      end,
+      oncompleted = function() svo.rmaff('mangledleftleg') end,
     }
   },
   curingmangledleftleg = {
@@ -3590,17 +3259,14 @@ end
         end
       end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
       oncuredleft = function()
         svo.rmaff('mangledleftleg')
         svo.addaffdict(svo.dict.crippledleftleg)
       end,
 
-      noeffect = function()
-        svo.rmaff('mangledleftleg')
-      end
+      noeffect = function() svo.rmaff('mangledleftleg') end
     }
   },
   crippledleftleg = {
@@ -3649,9 +3315,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('crippledleftleg')
-      end,
+      oncompleted = function() svo.rmaff('crippledleftleg') end,
     }
   },
   parestoarms = {
@@ -3689,9 +3353,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('parestoarms')
-      end,
+      oncompleted = function() svo.rmaff('parestoarms') end,
     }
   },
   curingparestoarms = {
@@ -3708,16 +3370,11 @@ end
         end
       end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
-      ontimeout = function()
-        svo.rmaff('parestoarms')
-      end,
+      ontimeout = function() svo.rmaff('parestoarms') end,
 
-      noeffect = function()
-        svo.rmaff('parestoarms')
-      end
+      noeffect = function() svo.rmaff('parestoarms') end
     }
   },
   mutilatedleftarm = {
@@ -3754,9 +3411,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('mutilatedleftarm')
-      end,
+      oncompleted = function() svo.rmaff('mutilatedleftarm') end,
     },
     onremoved = function() signals.canoutr:emit() end
   },
@@ -3783,17 +3438,14 @@ end
         end
       end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
       oncuredleft = function()
         svo.rmaff('mutilatedleftarm')
         svo.addaffdict(svo.dict.mangledleftarm)
       end,
 
-      noeffect = function()
-        svo.rmaff('mutilatedleftarm')
-      end
+      noeffect = function() svo.rmaff('mutilatedleftarm') end
     }
   },
   mangledleftarm = {
@@ -3830,9 +3482,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('mangledleftarm')
-      end,
+      oncompleted = function() svo.rmaff('mangledleftarm') end,
     },
     onremoved = function() signals.canoutr:emit() end
   },
@@ -3861,8 +3511,7 @@ end
         end
       end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
       oncuredleft = function()
         svo.rmaff('mangledleftarm')
@@ -3870,9 +3519,7 @@ end
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
       end,
 
-      noeffect = function()
-        svo.rmaff('mangledleftarm')
-      end
+      noeffect = function() svo.rmaff('mangledleftarm') end
     }
   },
   crippledleftarm = {
@@ -3920,9 +3567,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('crippledleftarm')
-      end,
+      oncompleted = function() svo.rmaff('crippledleftarm') end,
     },
     onremoved = function() signals.canoutr:emit() end
   },
@@ -3960,9 +3605,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('mutilatedrightarm')
-      end,
+      oncompleted = function() svo.rmaff('mutilatedrightarm') end,
     },
     onremoved = function() signals.canoutr:emit() end
   },
@@ -3989,17 +3632,14 @@ end
         end
       end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
       oncuredleft = function()
         svo.rmaff('mutilatedleftarm')
         svo.addaffdict(svo.dict.mangledleftarm)
       end,
 
-      noeffect = function()
-        svo.rmaff('mutilatedrightarm')
-      end
+      noeffect = function() svo.rmaff('mutilatedrightarm') end
     }
   },
   mangledrightarm = {
@@ -4036,9 +3676,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('mangledrightarm')
-      end,
+      oncompleted = function() svo.rmaff('mangledrightarm') end,
     },
     onremoved = function() signals.canoutr:emit() end
   },
@@ -4067,8 +3705,7 @@ end
         end
       end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
       oncuredleft = function()
         svo.rmaff('mangledleftarm')
@@ -4076,9 +3713,7 @@ end
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
       end,
 
-      noeffect = function()
-        svo.rmaff('mangledrightarm')
-      end
+      noeffect = function() svo.rmaff('mangledrightarm') end
     }
   },
   crippledrightarm = {
@@ -4126,9 +3761,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('crippledrightarm')
-      end,
+      oncompleted = function() svo.rmaff('crippledrightarm') end,
     },
     onremoved = function() signals.canoutr:emit() end
   },
@@ -4168,9 +3801,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('laceratedthroat')
-      end,
+      oncompleted = function() svo.rmaff('laceratedthroat') end,
     }
   },
   curinglaceratedthroat = {
@@ -4182,8 +3813,7 @@ end
         svo.addaffdict(svo.dict.slashedthroat)
       end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
       noeffect = function()
         svo.rmaff('laceratedthroat')
@@ -4229,9 +3859,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('slashedthroat')
-      end,
+      oncompleted = function() svo.rmaff('slashedthroat') end,
     }
   },
   serioustrauma = {
@@ -4271,9 +3899,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('serioustrauma')
-      end,
+      oncompleted = function() svo.rmaff('serioustrauma') end,
     }
   },
   curingserioustrauma = {
@@ -4292,8 +3918,7 @@ end
         end
       end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
       noeffect = function()
         svo.rmaff('serioustrauma')
@@ -4332,29 +3957,20 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('mildtrauma')
-      end,
+      oncompleted = function() svo.rmaff('mildtrauma') end,
     }
   },
   curingmildtrauma = {
     waitingfor = {
       customwait = 6,
 
-      oncompleted = function()
-        svo.rmaff('mildtrauma')
-      end,
+      oncompleted = function() svo.rmaff('mildtrauma') end,
 
-      ontimeout = function()
-        svo.rmaff('mildtrauma')
-      end,
+      ontimeout = function() svo.rmaff('mildtrauma') end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
-      noeffect = function()
-        svo.rmaff('mildtrauma')
-      end
+      noeffect = function() svo.rmaff('mildtrauma') end
     }
   },
   seriousconcussion = {
@@ -4396,9 +4012,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('seriousconcussion')
-      end,
+      oncompleted = function() svo.rmaff('seriousconcussion') end,
     },
     onadded = function()
       if affs.prone and affs.seriousconcussion then
@@ -4422,8 +4036,7 @@ end
         end
       end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
       noeffect = function()
         svo.rmaff('seriousconcussion')
@@ -4468,29 +4081,20 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('mildconcussion')
-      end,
+      oncompleted = function() svo.rmaff('mildconcussion') end,
     }
   },
   curingmildconcussion = {
     waitingfor = {
       customwait = 6,
 
-      oncompleted = function()
-        svo.rmaff('mildconcussion')
-      end,
+      oncompleted = function() svo.rmaff('mildconcussion') end,
 
-      ontimeout = function()
-        svo.rmaff('mildconcussion')
-      end,
+      ontimeout = function() svo.rmaff('mildconcussion') end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
-      noeffect = function()
-        svo.rmaff('mildconcussion')
-      end
+      noeffect = function() svo.rmaff('mildconcussion') end
     }
   },
 
@@ -4534,9 +4138,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -4663,9 +4265,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('severeburn')
-      end,
+      oncompleted = function() svo.rmaff('severeburn') end,
     }
   },
   extremeburn = {
@@ -4710,9 +4310,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('extremeburn')
-      end,
+      oncompleted = function() svo.rmaff('extremeburn') end,
     }
   },
   charredburn = {
@@ -4757,9 +4355,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('charredburn')
-      end,
+      oncompleted = function() svo.rmaff('charredburn') end,
     }
   },
   meltingburn = {
@@ -4806,9 +4402,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('meltingburn')
-      end,
+      oncompleted = function() svo.rmaff('meltingburn') end,
     }
   },
   selarnia = {
@@ -4844,9 +4438,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('selarnia')
-      end,
+      oncompleted = function() svo.rmaff('selarnia') end,
     }
   },
   itching = {
@@ -4880,9 +4472,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('itching')
-      end,
+      oncompleted = function() svo.rmaff('itching') end,
     }
   },
   stuttering = {
@@ -4916,9 +4506,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('stuttering')
-      end,
+      oncompleted = function() svo.rmaff('stuttering') end,
     }
   },
   scalded = {
@@ -4952,9 +4540,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('scalded')
-      end,
+      oncompleted = function() svo.rmaff('scalded') end,
     }
   },
   numbedleftarm = {
@@ -5139,9 +4725,7 @@ end
         svo.rmaff('shivering')
       end,
 
-      noeffect = function()
-        svo.lostbal_salve()
-      end,
+      noeffect = function() svo.lostbal_salve() end,
 
       gotcaloricdef = function (hypothermia)
         if not hypothermia then svo.rmaff({'frozen', 'shivering'}) end
@@ -5166,9 +4750,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('shivering')
-      end,
+      oncompleted = function() svo.rmaff('shivering') end,
     }
   },
   frozen = {
@@ -5183,9 +4765,7 @@ end
         svo.addaffdict(svo.dict.shivering)
       end,
 
-      noeffect = function()
-        svo.lostbal_salve()
-      end,
+      noeffect = function() svo.lostbal_salve() end,
 
       gotcaloricdef = function (hypothermia)
         if not hypothermia then svo.rmaff({'frozen', 'shivering'}) end
@@ -5210,9 +4790,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('frozen')
-      end
+      oncompleted = function() svo.rmaff('frozen') end
     }
   },
 
@@ -5249,9 +4827,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('voyria')
-      end
+      oncompleted = function() svo.rmaff('voyria') end
     }
   },
 
@@ -5330,14 +4906,10 @@ end
         return (affs.fear and not svo.doingaction('fear')) or false
       end,
 
-      oncompleted = function()
-        svo.rmaff('fear')
-      end,
+      oncompleted = function() svo.rmaff('fear') end,
 
       action = 'compose',
-      onstart = function()
-        send('compose', conf.commandecho)
-      end
+      onstart = function() send('compose', conf.commandecho) end
     },
     focus = {
       isadvisable = function()
@@ -5352,9 +4924,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -5386,13 +4956,10 @@ end
       end,
 
       actions = {'wake', &quot;wake up&quot;},
-      onstart = function()
-        send(&quot;wake up&quot;, conf.commandecho)
-      end,
+      onstart = function() send('wake up', conf.commandecho) end,
 
       -- ???
-      empty = function()
-      end
+      empty = function() end
     },
     aff = {
       oncompleted = function()
@@ -5414,9 +4981,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('sleep')
-      end,
+      oncompleted = function() svo.rmaff('sleep') end,
     }
   },
   curingsleep = {
@@ -5529,9 +5094,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('bleeding')
-      end,
+      oncompleted = function() svo.rmaff('bleeding') end,
     },
     onremoved = function()
       svo.dict.bleeding.count = 0
@@ -5635,18 +5198,14 @@ end
       end,
 
       action = &quot;touch tree&quot;,
-      onstart = function()
-        send(&quot;touch tree&quot;, conf.commandecho)
-      end,
+      onstart = function() send('touch tree', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_tree()
         empty.tree()
       end,
 
-      offbal = function()
-        svo.lostbal_tree()
-      end
+      offbal = function() svo.lostbal_tree() end
     }
   },
   restore = {
@@ -5680,9 +5239,7 @@ end
       end,
 
       action = 'restore',
-      onstart = function()
-        send('restore', conf.commandecho)
-      end
+      onstart = function() send('restore', conf.commandecho) end
     }
   },
   dragonheal = {
@@ -5713,14 +5270,10 @@ end
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
       end,
 
-      nobalance = function()
-        svo.lostbal_dragonheal()
-      end,
+      nobalance = function() svo.lostbal_dragonheal() end,
 
       action = 'dragonheal',
-      onstart = function()
-        send('dragonheal', conf.commandecho)
-      end
+      onstart = function() send('dragonheal', conf.commandecho) end
     }
   },
   defcheck = {
@@ -5742,9 +5295,7 @@ end
       end,
 
       action = 'def',
-      onstart = function()
-        send('def', conf.commandecho)
-      end
+      onstart = function() send('def', conf.commandecho) end
     },
   },
   diag = {
@@ -5770,9 +5321,7 @@ end
       end,
 
       actions = {'diag', 'diagnose', &quot;diag me&quot;, &quot;diagnose me&quot;},
-      onstart = function()
-        send('diag', conf.commandecho)
-      end
+      onstart = function() send('diag', conf.commandecho) end
     },
   },
   block = {
@@ -5806,8 +5355,7 @@ end
       end,
 
       -- in case of failing to block, register that the action has been completed
-      failed = function()
-      end,
+      failed = function() end,
 
       onstart = function()
         if (not defc.block or svo.dict.block.physical.blockingdir ~= conf.blockingdir) then
@@ -5945,9 +5493,7 @@ end
           and not affs.mutilatedleftleg and not affs.mutilatedrightleg) or false
       end,
 
-      oncompleted = function()
-        svo.rmaff('prone')
-      end,
+      oncompleted = function() svo.rmaff('prone') end,
 
       onstart = function()
 if svo.haveskillset('weaponmastery') then
@@ -5970,9 +5516,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('prone')
-      end
+      oncompleted = function() svo.rmaff('prone') end
     },
     onremoved = function() svo.donext() end,
     onadded = function()
@@ -5989,18 +5533,12 @@ end
           and not affs.confusion and not affs.sleep) or false
       end,
 
-      oncompleted = function()
-        svo.rmaff('disrupt')
-      end,
+      oncompleted = function() svo.rmaff('disrupt') end,
 
-      oncured = function()
-        svo.rmaff('disrupt')
-      end,
+      oncured = function() svo.rmaff('disrupt') end,
 
       action = 'concentrate',
-      onstart = function()
-        send('concentrate', conf.commandecho)
-      end
+      onstart = function() send('concentrate', conf.commandecho) end
     },
     aff = {
       oncompleted = function()
@@ -6009,9 +5547,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('disrupt')
-      end
+      oncompleted = function() svo.rmaff('disrupt') end
     }
   },
   lightpipes = {
@@ -6239,16 +5775,11 @@ end
     waitingfor = {
       customwait = 60,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
-      oncompleted = function()
-        svo.rmaff('blackout')
-      end,
+      oncompleted = function() svo.rmaff('blackout') end,
 
-      ontimeout = function()
-        svo.rmaff('blackout')
-      end
+      ontimeout = function() svo.rmaff('blackout') end
     },
     aff = {
       oncompleted = function()
@@ -6274,9 +5805,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('blackout')
-      end,
+      oncompleted = function() svo.rmaff('blackout') end,
     },
     onremoved = function()
       svo.check_generics()
@@ -6326,11 +5855,9 @@ end
     waitingfor = {
       customwait = 999,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
-      empty = function()
-      end
+      empty = function() end
     },
     aff = {
       oncompleted = function (number)
@@ -6416,9 +5943,7 @@ end
         svo.lostbal_focus()
       end,
 
-      onstart = function()
-        send(&quot;focus mind&quot;, conf.commandecho)
-      end,
+      onstart = function() send('focus mind', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -6642,11 +6167,9 @@ end
     waitingfor = {
       customwait = 999,
 
-      onstart = function()
-      end,
+      onstart = function() end,
 
-      empty = function()
-      end
+      empty = function() end
     },
     aff = {
       oncompleted = function (number)
@@ -6680,9 +6203,7 @@ end
       end,
 
       action = 'writhe',
-      onstart = function()
-        send('writhe', conf.commandecho)
-      end,
+      onstart = function() send('writhe', conf.commandecho) end,
 
       helpless = function()
         empty.writhe()
@@ -6699,9 +6220,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('bound')
-      end,
+      oncompleted = function() svo.rmaff('bound') end,
     },
     onremoved = function() signals.canoutr:emit() end
   },
@@ -6709,12 +6228,9 @@ end
     waitingfor = {
       customwait = 6,
 
-      oncompleted = function()
-        svo.rmaff('bound')
-      end,
+      oncompleted = function() svo.rmaff('bound') end,
 
-      onstart = function()
-      end
+      onstart = function() end
     }
   },
   webbed = {
@@ -6754,9 +6270,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('webbed')
-      end,
+      oncompleted = function() svo.rmaff('webbed') end,
     },
     onremoved = function() signals.canoutr:emit() svo.donext() end
   },
@@ -6764,12 +6278,9 @@ end
     waitingfor = {
       customwait = 6,
 
-      oncompleted = function()
-        svo.rmaff('webbed')
-      end,
+      oncompleted = function() svo.rmaff('webbed') end,
 
-      onstart = function()
-      end
+      onstart = function() end
     }
   },
   roped = {
@@ -6785,9 +6296,7 @@ end
       end,
 
       action = 'writhe',
-      onstart = function()
-        send('writhe', conf.commandecho)
-      end,
+      onstart = function() send('writhe', conf.commandecho) end,
 
       helpless = function()
         empty.writhe()
@@ -6804,9 +6313,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('roped')
-      end,
+      oncompleted = function() svo.rmaff('roped') end,
     },
     onremoved = function() signals.canoutr:emit() svo.donext() end
   },
@@ -6814,12 +6321,9 @@ end
     waitingfor = {
       customwait = 6,
 
-      oncompleted = function()
-        svo.rmaff('roped')
-      end,
+      oncompleted = function() svo.rmaff('roped') end,
 
-      onstart = function()
-      end
+      onstart = function() end
     }
   },
   hoisted = {
@@ -6836,9 +6340,7 @@ end
       end,
 
       action = 'writhe',
-      onstart = function()
-        send('writhe', conf.commandecho)
-      end,
+      onstart = function() send('writhe', conf.commandecho) end,
 
       helpless = function()
         empty.writhe()
@@ -6854,21 +6356,16 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('hoisted')
-      end,
+      oncompleted = function() svo.rmaff('hoisted') end,
     }
   },
   curinghoisted = {
     waitingfor = {
       customwait = 6,
 
-      oncompleted = function()
-        svo.rmaff('hoisted')
-      end,
+      oncompleted = function() svo.rmaff('hoisted') end,
 
-      onstart = function()
-      end
+      onstart = function() end
     }
   },
   transfixed = {
@@ -6885,9 +6382,7 @@ end
       end,
 
       action = 'writhe',
-      onstart = function()
-        send('writhe', conf.commandecho)
-      end,
+      onstart = function() send('writhe', conf.commandecho) end,
 
       helpless = function()
         empty.writhe()
@@ -6908,9 +6403,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('transfixed')
-      end,
+      oncompleted = function() svo.rmaff('transfixed') end,
     },
     onremoved = function() signals.canoutr:emit() svo.donext() end
   },
@@ -6918,12 +6411,9 @@ end
     waitingfor = {
       customwait = 6,
 
-      oncompleted = function()
-        svo.rmaff('transfixed')
-      end,
+      oncompleted = function() svo.rmaff('transfixed') end,
 
-      onstart = function()
-      end
+      onstart = function() end
     }
   },
   impale = {
@@ -6941,17 +6431,13 @@ end
       end,
 
       action = 'writhe',
-      onstart = function()
-        send('writhe', conf.commandecho)
-      end,
+      onstart = function() send('writhe', conf.commandecho) end,
 
       helpless = function()
         empty.writhe()
       end,
 
-      dragged = function()
-        svo.rmaff('impale')
-      end,
+      dragged = function() svo.rmaff('impale') end,
     },
     aff = {
       oncompleted = function()
@@ -6960,9 +6446,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('impale')
-      end,
+      oncompleted = function() svo.rmaff('impale') end,
     },
     onremoved = function() signals.canoutr:emit() end
   },
@@ -6970,20 +6454,13 @@ end
     waitingfor = {
       customwait = 6,
 
-      oncompleted = function()
-        svo.rmaff('impale')
-      end,
+      oncompleted = function() svo.rmaff('impale') end,
 
-      withdrew = function()
-        svo.rmaff('impale')
-      end,
+      withdrew = function() svo.rmaff('impale') end,
 
-      dragged = function()
-        svo.rmaff('impale')
-      end,
+      dragged = function() svo.rmaff('impale') end,
 
-      onstart = function()
-      end
+      onstart = function() end
     }
   },
   dragonflex = {
@@ -6999,9 +6476,7 @@ end
       end,
 
       action = 'dragonflex',
-      onstart = function()
-        send('dragonflex', conf.commandecho)
-      end
+      onstart = function() send('dragonflex', conf.commandecho) end
     },
   },
 
@@ -7263,9 +6738,7 @@ end
         svo.affsp.asthma = nil
       end,
 
-      onstart = function()
-        send(&quot;hold breath&quot;, conf.commandecho)
-      end
+      onstart = function() send('hold breath', conf.commandecho) end
     },
     smoke = {
       uncurable = true,
@@ -7274,9 +6747,7 @@ end
         return (svo.affsp.asthma and not svo.dict.checkasthma.misc.isadvisable() and codepaste.smoke_valerian_pipe()) or false
       end,
 
-      oncompleted = function()
-        svo.lostbal_smoke()
-      end,
+      oncompleted = function() svo.lostbal_smoke() end,
 
       badlungs = function()
         svo.addaffdict(svo.dict.asthma)
@@ -7290,8 +6761,7 @@ end
       end,
 
       -- mucous can hit when we aren't even afflicted, so it's moot. Have to wait for it to clear up
-      mucous = function()
-      end,
+      mucous = function() end,
 
       onclear = function()
         svo.affsp.asthma = nil
@@ -7353,9 +6823,7 @@ end
         svo.affsp.hypersomnia = nil
       end,
 
-      onstart = function()
-        send('insomnia', conf.commandecho)
-      end
+      onstart = function() send('insomnia', conf.commandecho) end
     },
     aff = {
       notagameaff = true,
@@ -7509,8 +6977,7 @@ end
         return (affs.amnesia) or false
       end,
 
-      oncompleted = function()
-      end,
+      oncompleted = function() end,
 
       onstart = function()
         send(&quot;touch stuff&quot;, conf.commandecho)
@@ -7538,9 +7005,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('amnesia')
-      end,
+      oncompleted = function() svo.rmaff('amnesia') end,
     }
   },
 
@@ -7819,9 +7284,7 @@ end
 
       onstart = function() end,
 
-      oncompleted = function()
-        svo.rmaff('corrupted')
-      end
+      oncompleted = function() svo.rmaff('corrupted') end
     },
     aff = {
       oncompleted = function()
@@ -7846,9 +7309,7 @@ end
 
       onstart = function() end,
 
-      oncompleted = function()
-        svo.rmaff('mucous')
-      end,
+      oncompleted = function() svo.rmaff('mucous') end,
 
       ontimeout = function()
         svo.rmaff('mucous')
@@ -8097,8 +7558,7 @@ end
         return false
       end,
 
-      ontimeout = function()
-      end,
+      ontimeout = function() end,
 
       onstart = function() end,
 
@@ -8163,8 +7623,7 @@ end
         return false
       end,
 
-      ontimeout = function()
-      end,
+      ontimeout = function() end,
 
       onstart = function() end,
 
@@ -8196,9 +7655,7 @@ end
         return false
       end,
 
-      ontimeout = function()
-        svo.rmaff('ninkharsag')
-      end,
+      ontimeout = function() svo.rmaff('ninkharsag') end,
 
       onstart = function() end,
 
@@ -8245,8 +7702,7 @@ end
         return false
       end,
 
-      ontimeout = function()
-      end,
+      ontimeout = function() end,
 
       onstart = function() end,
 
@@ -8283,13 +7739,9 @@ end
       end,
 
       eatcure = {'lobelia', 'argentum'},
-      onstart = function()
-        svo.eat(svo.dict.spiritdisrupt.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.spiritdisrupt.herb) end,
 
-      empty = function()
-        empty.eat_lobelia()
-      end
+      empty = function() empty.eat_lobelia() end
     },
     aff = {
       oncompleted = function()
@@ -8315,9 +7767,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -8336,13 +7786,9 @@ end
       end,
 
       eatcure = {'lobelia', 'argentum'},
-      onstart = function()
-        svo.eat(svo.dict.airdisrupt.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.airdisrupt.herb) end,
 
-      empty = function()
-        empty.eat_lobelia()
-      end
+      empty = function() empty.eat_lobelia() end
     },
     aff = {
       oncompleted = function()
@@ -8368,13 +7814,9 @@ end
       end,
 
       eatcure = {'lobelia', 'argentum'},
-      onstart = function()
-        svo.eat(svo.dict.earthdisrupt.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.earthdisrupt.herb) end,
 
-      empty = function()
-        empty.eat_lobelia()
-      end
+      empty = function() empty.eat_lobelia() end
     },
     aff = {
       oncompleted = function()
@@ -8400,9 +7842,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -8421,13 +7861,9 @@ end
       end,
 
       eatcure = {'lobelia', 'argentum'},
-      onstart = function()
-        svo.eat(svo.dict.waterdisrupt.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.waterdisrupt.herb) end,
 
-      empty = function()
-        empty.eat_lobelia()
-      end
+      empty = function() empty.eat_lobelia() end
     },
     aff = {
       oncompleted = function()
@@ -8453,9 +7889,7 @@ end
       end,
 
       action = 'focus',
-      onstart = function()
-        send('focus', conf.commandecho)
-      end,
+      onstart = function() send('focus', conf.commandecho) end,
 
       empty = function()
         svo.lostbal_focus()
@@ -8474,13 +7908,9 @@ end
       end,
 
       eatcure = {'lobelia', 'argentum'},
-      onstart = function()
-        svo.eat(svo.dict.firedisrupt.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.firedisrupt.herb) end,
 
-      empty = function()
-        empty.eat_lobelia()
-      end
+      empty = function() empty.eat_lobelia() end
     },
     aff = {
       oncompleted = function()
@@ -8545,13 +7975,9 @@ end
       end,
 
       eatcure = {'goldenseal', 'plumbum'},
-      onstart = function()
-        svo.eat(svo.dict.depression.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.depression.herb) end,
 
-      empty = function()
-        empty.eat_goldenseal()
-      end
+      empty = function() empty.eat_goldenseal() end
     },
     aff = {
       oncompleted = function()
@@ -8559,9 +7985,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('depression')
-      end,
+      oncompleted = function() svo.rmaff('depression') end,
     }
   },
   parasite = {
@@ -8576,13 +8000,9 @@ end
       end,
 
       eatcure = {'kelp', 'aurum'},
-      onstart = function()
-        svo.eat(svo.dict.parasite.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.parasite.herb) end,
 
-      empty = function()
-        empty.eat_kelp()
-      end
+      empty = function() empty.eat_kelp() end
     },
     aff = {
       oncompleted = function()
@@ -8590,9 +8010,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('parasite')
-      end,
+      oncompleted = function() svo.rmaff('parasite') end,
     }
   },
   retribution = {
@@ -8607,13 +8025,9 @@ end
       end,
 
       eatcure = {'bellwort', 'cuprum'},
-      onstart = function()
-        svo.eat(svo.dict.retribution.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.retribution.herb) end,
 
-      empty = function()
-        empty.eat_bellwort()
-      end
+      empty = function() empty.eat_bellwort() end
     },
     aff = {
       oncompleted = function()
@@ -8621,9 +8035,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('retribution')
-      end,
+      oncompleted = function() svo.rmaff('retribution') end,
     }
   },
   shadowmadness = {
@@ -8638,13 +8050,9 @@ end
       end,
 
       eatcure = {'goldenseal', 'plumbum'},
-      onstart = function()
-        svo.eat(svo.dict.shadowmadness.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.shadowmadness.herb) end,
 
-      empty = function()
-        empty.eat_goldenseal()
-      end
+      empty = function() empty.eat_goldenseal() end
     },
     aff = {
       oncompleted = function()
@@ -8652,9 +8060,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('shadowmadness')
-      end,
+      oncompleted = function() svo.rmaff('shadowmadness') end,
     }
   },
   timeloop = {
@@ -8669,13 +8075,9 @@ end
       end,
 
       eatcure = {'bellwort', 'cuprum'},
-      onstart = function()
-        svo.eat(svo.dict.timeloop.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.timeloop.herb) end,
 
-      empty = function()
-        empty.eat_bellwort()
-      end
+      empty = function() empty.eat_bellwort() end
     },
     aff = {
       oncompleted = function()
@@ -8683,9 +8085,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('timeloop')
-      end,
+      oncompleted = function() svo.rmaff('timeloop') end,
     }
   },
   degenerate = {
@@ -8821,9 +8221,7 @@ end
 
       onstart = function() end,
 
-      oncompleted = function()
-        svo.rmaff('retardation')
-      end
+      oncompleted = function() svo.rmaff('retardation') end
     },
     aff = {
       oncompleted = function()
@@ -8836,9 +8234,7 @@ end
       end,
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('retardation')
-      end,
+      oncompleted = function() svo.rmaff('retardation') end,
     },
     onremoved = function()
       svo.affsp.retardation = nil
@@ -9000,9 +8396,7 @@ end
 
       onstart = function() raiseEvent(&quot;svo rebounding start&quot;) end,
 
-      oncompleted = function()
-        defences.got('rebounding')
-      end,
+      oncompleted = function() defences.got('rebounding') end,
 
       deathtarot = function() -- nothing happens! It just doesn't come up :/
       end,
@@ -9037,13 +8431,9 @@ end
         svo.sip(svo.dict.frost.purgative)
       end,
 
-      empty = function()
-        defences.got('frost')
-      end,
+      empty = function() defences.got('frost') end,
 
-      noeffect = function()
-        defences.got('frost')
-      end
+      noeffect = function() defences.got('frost') end
     },
     gone = {
       oncompleted = function()
@@ -9062,13 +8452,9 @@ end
         return ((sys.deffing and defdefup[defs.mode].venom and not defc.venom) or (conf.keepup and defkeepup[defs.mode].venom and not defc.venom)) or false
       end,
 
-      oncompleted = function()
-        defences.got('venom')
-      end,
+      oncompleted = function() defences.got('venom') end,
 
-      noeffect = function()
-        defences.got('venom')
-      end,
+      noeffect = function() defences.got('venom') end,
 
       sipcure = {'venom', 'toxin'},
 
@@ -9076,9 +8462,7 @@ end
         svo.sip(svo.dict.venom.purgative)
       end,
 
-      empty = function()
-        defences.got('venom')
-      end
+      empty = function() defences.got('venom') end
     }
   },
   levitation = {
@@ -9090,13 +8474,9 @@ end
         return ((sys.deffing and defdefup[defs.mode].levitation and not defc.levitation) or (conf.keepup and defkeepup[defs.mode].levitation and not defc.levitation)) or false
       end,
 
-      oncompleted = function()
-        defences.got('levitation')
-      end,
+      oncompleted = function() defences.got('levitation') end,
 
-      noeffect = function()
-        defences.got('levitation')
-      end,
+      noeffect = function() defences.got('levitation') end,
 
       sipcure = {'levitation', 'hovering'},
 
@@ -9104,9 +8484,7 @@ end
         svo.sip(svo.dict.levitation.purgative)
       end,
 
-      empty = function()
-        defences.got('levitation')
-      end
+      empty = function() defences.got('levitation') end
     }
   },
   speed = {
@@ -9138,9 +8516,7 @@ end
         tempTimer(3, function() svo.dict.speed.blocked = false; svo.make_gnomes_work() end)
       end,
 
-      noeffect = function()
-        defences.got('speed')
-      end,
+      noeffect = function() defences.got('speed') end,
 
       sipcure = {'speed', 'haste'},
 
@@ -9153,18 +8529,14 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('speed')
-      end
+      oncompleted = function() defences.lost('speed') end
     }
   },
   curingspeed = {
     waitingfor = {
       customwait = 7,
 
-      oncompleted = function()
-        defences.got('speed')
-      end,
+      oncompleted = function() defences.got('speed') end,
 
       ontimeout = function()
         if defc.speed then return end
@@ -9276,9 +8648,7 @@ end
     waitingfor = {
       customwait = 8,
 
-      oncompleted = function()
-        defences.got('sileris')
-      end,
+      oncompleted = function() defences.got('sileris') end,
 
       ontimeout = function()
         if defc.sileris then return end
@@ -9302,18 +8672,12 @@ end
         return (not defc.deathsight and (not conf.deathsight or not svo.can_usemana()) and ((sys.deffing and defdefup[defs.mode].deathsight) or (conf.keepup and defkeepup[defs.mode].deathsight)) and not svo.doingaction('deathsight')) or false
       end,
 
-      oncompleted = function()
-        defences.got('deathsight')
-      end,
+      oncompleted = function() defences.got('deathsight') end,
 
       eatcure = {'skullcap', 'azurite'},
-      onstart = function()
-        svo.eat(svo.dict.deathsight.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.deathsight.herb) end,
 
-      empty = function()
-        defences.got('deathsight')
-      end
+      empty = function() defences.got('deathsight') end
     },
     physical = {
       balanceful_act = true, def = true,
@@ -9322,14 +8686,10 @@ end
         return (not defc.deathsight and conf.deathsight and svo.can_usemana() and not svo.doingaction('deathsight') and ((sys.deffing and defdefup[defs.mode].deathsight) or (conf.keepup and defkeepup[defs.mode].deathsight)) and not codepaste.balanceful_defs_codepaste()) or false
       end,
 
-      oncompleted = function()
-        defences.got('deathsight')
-      end,
+      oncompleted = function() defences.got('deathsight') end,
 
       action = 'deathsight',
-      onstart = function()
-        send('deathsight', conf.commandecho)
-      end
+      onstart = function() send('deathsight', conf.commandecho) end
     },
   },
   thirdeye = {
@@ -9340,18 +8700,12 @@ end
         return (((sys.deffing and defdefup[defs.mode].thirdeye and not defc.thirdeye) or (conf.keepup and defkeepup[defs.mode].thirdeye and not defc.thirdeye)) and not svo.doingaction('thirdeye') and not (conf.thirdeye and svo.can_usemana())) or false
       end,
 
-      oncompleted = function()
-        defences.got('thirdeye')
-      end,
+      oncompleted = function() defences.got('thirdeye') end,
 
       eatcure = {'echinacea', 'dolomite'},
-      onstart = function()
-        svo.eat(svo.dict.thirdeye.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.thirdeye.herb) end,
 
-      empty = function()
-        defences.got('thirdeye')
-      end
+      empty = function() defences.got('thirdeye') end
     },
     misc = {
       def = true,
@@ -9361,14 +8715,10 @@ end
       end,
 
       -- by default, oncompleted means a clot went through okay
-      oncompleted = function()
-        defences.got('thirdeye')
-      end,
+      oncompleted = function() defences.got('thirdeye') end,
 
       action = 'thirdeye',
-      onstart = function()
-        send('thirdeye', conf.commandecho)
-      end
+      onstart = function() send('thirdeye', conf.commandecho) end
     },
   },
   insomnia = {
@@ -9379,18 +8729,12 @@ end
         return (((sys.deffing and defdefup[defs.mode].insomnia and not defc.insomnia) or (conf.keepup and defkeepup[defs.mode].insomnia and not defc.insomnia)) and not svo.doingaction('insomnia') and not (conf.insomnia and svo.can_usemana()) and not affs.hypersomnia) or false
       end,
 
-      oncompleted = function()
-        defences.got('insomnia')
-      end,
+      oncompleted = function() defences.got('insomnia') end,
 
       eatcure = {'cohosh', 'gypsum'},
-      onstart = function()
-        svo.eat(svo.dict.insomnia.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.insomnia.herb) end,
 
-      empty = function()
-        defences.got('insomnia')
-      end,
+      empty = function() defences.got('insomnia') end,
 
       hypersomnia = function()
         svo.addaffdict(svo.dict.hypersomnia)
@@ -9403,24 +8747,18 @@ end
         return (conf.insomnia and svo.can_usemana() and not svo.doingaction('insomnia') and ((sys.deffing and defdefup[defs.mode].insomnia and not defc.insomnia) or (conf.keepup and defkeepup[defs.mode].insomnia and not defc.insomnia)) and not affs.hypersomnia) or false
       end,
 
-      oncompleted = function()
-        defences.got('insomnia')
-      end,
+      oncompleted = function() defences.got('insomnia') end,
 
       hypersomnia = function()
         svo.addaffdict(svo.dict.hypersomnia)
       end,
 
       action = 'insomnia',
-      onstart = function()
-        send('insomnia', conf.commandecho)
-      end
+      onstart = function() send('insomnia', conf.commandecho) end
     },
     -- small cheat for insomnia being on diagnose
     aff = {
-      oncompleted = function()
-        defences.got('insomnia')
-      end
+      oncompleted = function() defences.got('insomnia') end
     },
     gone = {
       oncompleted = function(aff)
@@ -9462,22 +8800,16 @@ end
         return (((sys.deffing and defdefup[defs.mode].myrrh and not defc.myrrh) or (conf.keepup and defkeepup[defs.mode].myrrh and not defc.myrrh))) or false
       end,
 
-      oncompleted = function()
-        defences.got('myrrh')
-      end,
+      oncompleted = function() defences.got('myrrh') end,
 
       noeffect = function()
         svo.dict.myrrh.herb.oncompleted ()
       end,
 
       eatcure = {'myrrh', 'bisemutum'},
-      onstart = function()
-        svo.eat(svo.dict.myrrh.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.myrrh.herb) end,
 
-      empty = function()
-        defences.got('myrrh')
-      end
+      empty = function() defences.got('myrrh') end
     },
   },
   kola = {
@@ -9488,22 +8820,16 @@ end
         return (((sys.deffing and defdefup[defs.mode].kola and not defc.kola) or (conf.keepup and defkeepup[defs.mode].kola and not defc.kola))) or false
       end,
 
-      oncompleted = function()
-        defences.got('kola')
-      end,
+      oncompleted = function() defences.got('kola') end,
 
       noeffect = function()
         svo.dict.kola.herb.oncompleted ()
       end,
 
       eatcure = {'kola', 'quartz'},
-      onstart = function()
-        svo.eat(svo.dict.kola.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.kola.herb) end,
 
-      empty = function()
-        defences.got('kola')
-      end
+      empty = function() defences.got('kola') end
     },
     gone = {
       oncompleted = function()
@@ -9551,9 +8877,7 @@ end
         defences.got('caloric')
       end,
 
-      noeffect = function()
-        svo.lostbal_salve()
-      end,
+      noeffect = function() svo.lostbal_salve() end,
 
       -- called from shivering or frozen cure
       gotcaloricdef = function (hypothermia)
@@ -9618,9 +8942,7 @@ end
       end,
 
       eatcure = {'bayberry', 'arsenic'},
-      onstart = function()
-        svo.eat(svo.dict.blind.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.blind.herb) end,
 
       empty = function()
         defences.got('blind')
@@ -9639,12 +8961,9 @@ end
     waitingfor = {
       customwait = 6,
 
-      oncompleted = function()
-        defences.got('blind')
-      end,
+      oncompleted = function() defences.got('blind') end,
 
-      onstart = function()
-      end
+      onstart = function() end
     }
   },
   deaf = {
@@ -9672,9 +8991,7 @@ end
       end,
 
       eatcure = {'hawthorn', 'calamine'},
-      onstart = function()
-        svo.eat(svo.dict.deaf.herb)
-      end,
+      onstart = function() svo.eat(svo.dict.deaf.herb) end,
 
       empty = function()
         svo.dict.deaf.herb.oncompleted()
@@ -9692,12 +9009,9 @@ end
     waitingfor = {
       customwait = 6,
 
-      oncompleted = function()
-        defences.got('deaf')
-      end,
+      oncompleted = function() defences.got('deaf') end,
 
-      onstart = function()
-      end
+      onstart = function() end
     }
   },
 
@@ -9803,9 +9117,7 @@ end
         return (((sys.deffing and defdefup[defs.mode].breath and not defc.breath) or (conf.keepup and defkeepup[defs.mode].breath and not defc.breath)) and not svo.doingaction('breath') and not codepaste.balanceful_defs_codepaste() and not affs.aeon and not affs.asthma) or false
       end,
 
-      oncompleted = function()
-        defences.got('breath')
-      end,
+      oncompleted = function() defences.got('breath') end,
 
       action = &quot;hold breath&quot;,
       onstart = function()
@@ -9816,9 +9128,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('breath')
-      end,
+      oncompleted = function() defences.lost('breath') end,
     }
   },
   dragonform = {
@@ -9936,18 +9246,14 @@ end
         tempTimer(3, function() svo.dict.dragonbreath.blocked = false; svo.make_gnomes_work() end)
       end,
 
-      alreadygot = function()
-        defences.got('dragonbreath')
-      end,
+      alreadygot = function() defences.got('dragonbreath') end,
 
       onstart = function()
         send(&quot;summon &quot;..(conf.dragonbreath and conf.dragonbreath or 'unknown'), conf.commandecho)
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('dragonbreath')
-      end
+      oncompleted = function() defences.lost('dragonbreath') end
     }
   },
   waitingfordragonbreath = {
@@ -9956,9 +9262,7 @@ end
 
       onstart = function() end,
 
-      oncompleted = function()
-        defences.got('dragonbreath')
-      end
+      oncompleted = function() defences.got('dragonbreath') end
     }
   },
   dragonarmour = {
@@ -9969,19 +9273,13 @@ end
         return (((sys.deffing and defdefup[defs.mode].dragonarmour and not defc.dragonarmour) or (conf.keepup and defkeepup[defs.mode].dragonarmour and not defc.dragonarmour)) and not codepaste.balanceful_defs_codepaste() and defc.dragonform) or false
       end,
 
-      oncompleted = function()
-        defences.got('dragonarmour')
-      end,
+      oncompleted = function() defences.got('dragonarmour') end,
 
       action = &quot;dragonarmour on&quot;,
-      onstart = function()
-        send(&quot;dragonarmour on&quot;, conf.commandecho)
-      end
+      onstart = function() send('dragonarmour on', conf.commandecho) end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('dragonarmour')
-      end
+      oncompleted = function() defences.lost('dragonarmour') end
     }
   },
   selfishness = {
@@ -9995,9 +9293,7 @@ end
           and not codepaste.balanceful_defs_codepaste()) or false
       end,
 
-      oncompleted = function()
-        defences.got('selfishness')
-      end,
+      oncompleted = function() defences.got('selfishness') end,
 
       onstart = function()
         if (sys.deffing and defdefup[defs.mode].selfishness and not defc.selfishness) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].selfishness and not defc.selfishness) then
@@ -10043,9 +9339,7 @@ end
         end
       end,
 
-      alreadyon = function()
-        defences.got('riding')
-      end,
+      alreadyon = function() defences.got('riding') end,
 
       dragonform = function()
         defences.got('dragonform')
@@ -10086,14 +9380,10 @@ end
         return (((sys.deffing and defdefup[defs.mode].meditate and not defc.meditate) or (conf.keepup and defkeepup[defs.mode].meditate and not defc.meditate)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'meditate' and (stats.currentwillpower &lt; stats.maxwillpower or stats.currentmana &lt; stats.maxmana)) or false
       end,
 
-      oncompleted = function()
-        defences.got('meditate')
-      end,
+      oncompleted = function() defences.got('meditate') end,
 
       actions = {'med', 'meditate'},
-      onstart = function()
-        send('meditate', conf.commandecho)
-      end
+      onstart = function() send('meditate', conf.commandecho) end
     }
   },
 
@@ -10128,9 +9418,7 @@ end
       end,
 
       action = &quot;touch mindseye&quot;,
-      onstart = function()
-        send(&quot;touch mindseye&quot;, conf.commandecho)
-      end
+      onstart = function() send('touch mindseye', conf.commandecho) end
     }
   },
   metawake = {
@@ -10141,14 +9429,10 @@ end
         return (not defc.metawake and ((sys.deffing and defdefup[defs.mode].metawake) or (conf.keepup and defkeepup[defs.mode].metawake)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not svo.doingaction'metawake' and not affs.lullaby) or false
       end,
 
-      oncompleted = function()
-        defences.got('metawake')
-      end,
+      oncompleted = function() defences.got('metawake') end,
 
       action = &quot;metawake on&quot;,
-      onstart = function()
-        send(&quot;metawake on&quot;, conf.commandecho)
-      end
+      onstart = function() send('metawake on', conf.commandecho) end
     }
   },
   cloak = {
@@ -10159,14 +9443,10 @@ end
         return (not defc.cloak and ((sys.deffing and defdefup[defs.mode].cloak) or (conf.keepup and defkeepup[defs.mode].cloak)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone) or false
       end,
 
-      oncompleted = function()
-        defences.got('cloak')
-      end,
+      oncompleted = function() defences.got('cloak') end,
 
       action = &quot;touch cloak&quot;,
-      onstart = function()
-        send(&quot;touch cloak&quot;, conf.commandecho)
-      end
+      onstart = function() send('touch cloak', conf.commandecho) end
     },
     gone = {
       oncompleted = function()
@@ -10191,9 +9471,7 @@ end
           and (not svo.haveskillset('metamorphosis') or ((not affs.cantmorph and sk.morphsforskill.nightsight) or defc.dragonform))) or false
       end,
 
-      oncompleted = function()
-        defences.got('nightsight')
-      end,
+      oncompleted = function() defences.got('nightsight') end,
 
       action = &quot;nightsight on&quot;,
       onstart = function()
@@ -10242,9 +9520,7 @@ end
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('shield')
-      end
+      oncompleted = function() defences.lost('shield') end
     }
   },
   sstosvoa = {
@@ -10664,9 +9940,7 @@ if svo.haveskillset('shindo') then
       end,
 
       action = 'blind',
-      onstart = function()
-        send('blind', conf.commandecho)
-      end
+      onstart = function() send('blind', conf.commandecho) end
     }
 end
 if svo.haveskillset('kaido') then
@@ -10682,9 +9956,7 @@ if svo.haveskillset('kaido') then
       end,
 
       action = 'blind',
-      onstart = function()
-        send('blind', conf.commandecho)
-      end
+      onstart = function() send('blind', conf.commandecho) end
     }
 end
 
@@ -10699,14 +9971,10 @@ if svo.haveskillset('necromancy') then
         return (not defc.lifevision and ((sys.deffing and defdefup[defs.mode].lifevision) or (conf.keepup and defkeepup[defs.mode].lifevision)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.prone and stats.currentmana &gt;= 600) or false
       end,
 
-      oncompleted = function()
-        defences.got('lifevision')
-      end,
+      oncompleted = function() defences.got('lifevision') end,
 
       action = 'lifevision',
-      onstart = function()
-        send('lifevision', conf.commandecho)
-      end
+      onstart = function() send('lifevision', conf.commandecho) end
     }
   }
 end
@@ -10721,14 +9989,10 @@ if svo.haveskillset('devotion') then
         return (not defc.frostblessing and ((sys.deffing and defdefup[defs.mode].frostblessing) or (conf.keepup and defkeepup[defs.mode].frostblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and defc.air and defc.water and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function()
-        defences.got('frostblessing')
-      end,
+      oncompleted = function() defences.got('frostblessing') end,
 
       action = &quot;bless me spiritshield frost&quot;,
-      onstart = function()
-        send(&quot;bless me spiritshield frost&quot;, conf.commandecho)
-      end
+      onstart = function() send('bless me spiritshield frost', conf.commandecho) end
     }
   }
   svo.dict.willpowerblessing = {
@@ -10739,14 +10003,10 @@ if svo.haveskillset('devotion') then
         return (not defc.willpowerblessing and ((sys.deffing and defdefup[defs.mode].willpowerblessing) or (conf.keepup and defkeepup[defs.mode].willpowerblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and defc.air and defc.water and defc.fire and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function()
-        defences.got('willpowerblessing')
-      end,
+      oncompleted = function() defences.got('willpowerblessing') end,
 
       action = &quot;bless me willpower&quot;,
-      onstart = function()
-        send(&quot;bless me willpower&quot;, conf.commandecho)
-      end
+      onstart = function() send('bless me willpower', conf.commandecho) end
     }
   }
   svo.dict.thermalblessing = {
@@ -10757,14 +10017,10 @@ if svo.haveskillset('devotion') then
         return (not defc.thermalblessing and ((sys.deffing and defdefup[defs.mode].thermalblessing) or (conf.keepup and defkeepup[defs.mode].thermalblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and defc.spirit and defc.fire and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function()
-        defences.got('thermalblessing')
-      end,
+      oncompleted = function() defences.got('thermalblessing') end,
 
       action = &quot;bless me spiritshield thermal&quot;,
-      onstart = function()
-        send(&quot;bless me spiritshield thermal&quot;, conf.commandecho)
-      end
+      onstart = function() send('bless me spiritshield thermal', conf.commandecho) end
     }
   }
   svo.dict.earthblessing = {
@@ -10775,14 +10031,10 @@ if svo.haveskillset('devotion') then
         return (not defc.earthblessing and ((sys.deffing and defdefup[defs.mode].earthblessing) or (conf.keepup and defkeepup[defs.mode].earthblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and defc.earth and defc.water and defc.fire and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function()
-        defences.got('earthblessing')
-      end,
+      oncompleted = function() defences.got('earthblessing') end,
 
       action = &quot;bless me spiritshield earth&quot;,
-      onstart = function()
-        send(&quot;bless me spiritshield earth&quot;, conf.commandecho)
-      end
+      onstart = function() send('bless me spiritshield earth', conf.commandecho) end
     }
   }
   svo.dict.enduranceblessing = {
@@ -10793,14 +10045,10 @@ if svo.haveskillset('devotion') then
         return (not defc.enduranceblessing and ((sys.deffing and defdefup[defs.mode].enduranceblessing) or (conf.keepup and defkeepup[defs.mode].enduranceblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and defc.air and defc.earth and defc.water and defc.fire and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function()
-        defences.got('enduranceblessing')
-      end,
+      oncompleted = function() defences.got('enduranceblessing') end,
 
       action = &quot;bless me endurance&quot;,
-      onstart = function()
-        send(&quot;bless me endurance&quot;, conf.commandecho)
-      end
+      onstart = function() send('bless me endurance', conf.commandecho) end
     }
   }
 end
@@ -10841,9 +10089,7 @@ if svo.haveskillset('spirituality') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('mace')
-      end,
+      oncompleted = function() defences.lost('mace') end,
     }
   }
   svo.dict.waitingformace = {
@@ -10890,13 +10136,10 @@ if svo.haveskillset('spirituality') then
         return false
       end,
 
-      oncompleted = function()
-      end,
+      oncompleted = function() end,
 
       action = &quot;angel sacrifice&quot;,
-      onstart = function()
-        send(&quot;angel sacrifice&quot;, conf.commandecho)
-      end
+      onstart = function() send('angel sacrifice', conf.commandecho) end
     }
   }
   svo.dict.summon = {
@@ -10907,14 +10150,10 @@ if svo.haveskillset('spirituality') then
         return (not defc.summon and ((sys.deffing and defdefup[defs.mode].summon) or (conf.keepup and defkeepup[defs.mode].summon)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
       end,
 
-      oncompleted = function()
-        defences.got('summon')
-      end,
+      oncompleted = function() defences.got('summon') end,
 
       action = &quot;angel summon&quot;,
-      onstart = function()
-        send(&quot;angel summon&quot;, conf.commandecho)
-      end
+      onstart = function() send('angel summon', conf.commandecho) end
     }
   }
   svo.dict.empathy = {
@@ -10925,14 +10164,10 @@ if svo.haveskillset('spirituality') then
         return (not defc.empathy and ((sys.deffing and defdefup[defs.mode].empathy) or (conf.keepup and defkeepup[defs.mode].empathy)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and defc.summon) or false
       end,
 
-      oncompleted = function()
-        defences.got('empathy')
-      end,
+      oncompleted = function() defences.got('empathy') end,
 
       action = &quot;angel empathy on&quot;,
-      onstart = function()
-        send(&quot;angel empathy on&quot;, conf.commandecho)
-      end
+      onstart = function() send('angel empathy on', conf.commandecho) end
     }
   }
   svo.dict.watch = {
@@ -10943,14 +10178,10 @@ if svo.haveskillset('spirituality') then
         return (not defc.watch and ((sys.deffing and defdefup[defs.mode].watch) or (conf.keepup and defkeepup[defs.mode].watch)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and defc.summon) or false
       end,
 
-      oncompleted = function()
-        defences.got('watch')
-      end,
+      oncompleted = function() defences.got('watch') end,
 
       action = &quot;angel watch on&quot;,
-      onstart = function()
-        send(&quot;angel watch on&quot;, conf.commandecho)
-      end
+      onstart = function() send('angel watch on', conf.commandecho) end
     }
   }
   svo.dict.care = {
@@ -10961,14 +10192,10 @@ if svo.haveskillset('spirituality') then
         return (not defc.care and ((sys.deffing and defdefup[defs.mode].care) or (conf.keepup and defkeepup[defs.mode].care)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and defc.summon) or false
       end,
 
-      oncompleted = function()
-        defences.got('care')
-      end,
+      oncompleted = function() defences.got('care') end,
 
       action = &quot;angel care on&quot;,
-      onstart = function()
-        send(&quot;angel care on&quot;, conf.commandecho)
-      end
+      onstart = function() send('angel care on', conf.commandecho) end
     }
   }
 end
@@ -10984,13 +10211,10 @@ if svo.haveskillset('shindo') then
         return false
       end,
 
-      oncompleted = function()
-      end,
+      oncompleted = function() end,
 
       action = &quot;shin phoenix&quot;,
-      onstart = function()
-        send(&quot;shin phoenix&quot;, conf.commandecho)
-      end
+      onstart = function() send('shin phoenix', conf.commandecho) end
     }
   }
 end
@@ -11013,9 +10237,7 @@ if svo.haveskillset('twoarts') then
       end,
 
       action = 'doya',
-      onstart = function()
-        send('doya', conf.commandecho)
-      end
+      onstart = function() send('doya', conf.commandecho) end
     },
   }
   svo.dict.thyr = {
@@ -11035,9 +10257,7 @@ if svo.haveskillset('twoarts') then
       end,
 
       action = 'thyr',
-      onstart = function()
-        send('thyr', conf.commandecho)
-      end
+      onstart = function() send('thyr', conf.commandecho) end
     },
   }
   svo.dict.mir = {
@@ -11057,9 +10277,7 @@ if svo.haveskillset('twoarts') then
       end,
 
       action = 'mir',
-      onstart = function()
-        send('mir', conf.commandecho)
-      end
+      onstart = function() send('mir', conf.commandecho) end
     },
   }
   svo.dict.arash = {
@@ -11079,9 +10297,7 @@ if svo.haveskillset('twoarts') then
       end,
 
       action = 'arash',
-      onstart = function()
-        send('arash', conf.commandecho)
-      end
+      onstart = function() send('arash', conf.commandecho) end
     },
   }
   svo.dict.sanya = {
@@ -11101,9 +10317,7 @@ if svo.haveskillset('twoarts') then
       end,
 
       action = 'sanya',
-      onstart = function()
-        send('sanya', conf.commandecho)
-      end
+      onstart = function() send('sanya', conf.commandecho) end
     },
   }
 end
@@ -11117,9 +10331,7 @@ if svo.haveskillset('metamorphosis') then
         return (not defc.affinity and ((sys.deffing and defdefup[defs.mode].affinity) or (conf.keepup and defkeepup[defs.mode].affinity)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.prone) or false
       end,
 
-      oncompleted = function()
-        defences.got('affinity')
-      end,
+      oncompleted = function() defences.got('affinity') end,
 
       action = &quot;embrace spirit&quot;,
       onstart = function()
@@ -11160,17 +10372,13 @@ if svo.haveskillset('metamorphosis') then
         svo.lostbal_fitness()
       end,
 
-      curedasthma = function()
-        svo.rmaff('asthma')
-      end,
+      curedasthma = function() svo.rmaff('asthma') end,
 
       weakness = function()
         svo.addaffdict(svo.dict.weakness)
       end,
 
-      allgood = function()
-        svo.rmaff('asthma')
-      end,
+      allgood = function() svo.rmaff('asthma') end,
 
       actions = {'fitness'},
       onstart = function()
@@ -11194,9 +10402,7 @@ if svo.haveskillset('metamorphosis') then
         return (not defc.elusiveness and ((sys.deffing and defdefup[defs.mode].elusiveness) or (conf.keepup and defkeepup[defs.mode].elusiveness)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and sk.morphsforskill.elusiveness) or false
       end,
 
-      oncompleted = function()
-        defences.got('elusiveness')
-      end,
+      oncompleted = function() defences.got('elusiveness') end,
 
       action = &quot;elusiveness on&quot;,
       onstart = function()
@@ -11239,9 +10445,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('frost')
-      end
+      oncompleted = function() defences.lost('frost') end
     }
   }
   svo.dict.stealth = {
@@ -11252,9 +10456,7 @@ if svo.haveskillset('metamorphosis') then
         return (not defc.stealth and ((sys.deffing and defdefup[defs.mode].stealth) or (conf.keepup and defkeepup[defs.mode].stealth)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and sk.morphsforskill.stealth) or false
       end,
 
-      oncompleted = function()
-        defences.got('stealth')
-      end,
+      oncompleted = function() defences.got('stealth') end,
 
       action = &quot;stealth on&quot;,
       onstart = function()
@@ -11278,9 +10480,7 @@ if svo.haveskillset('metamorphosis') then
         return (not defc.resistance and ((sys.deffing and defdefup[defs.mode].resistance) or (conf.keepup and defkeepup[defs.mode].resistance)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and sk.morphsforskill.resistance) or false
       end,
 
-      oncompleted = function()
-        defences.got('resistance')
-      end,
+      oncompleted = function() defences.got('resistance') end,
 
       action = 'resistance',
       onstart = function()
@@ -11304,9 +10504,7 @@ if svo.haveskillset('metamorphosis') then
         return (not defc.rest and ((sys.deffing and defdefup[defs.mode].rest) or (conf.keepup and defkeepup[defs.mode].rest)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and sk.morphsforskill.rest) or false
       end,
 
-      oncompleted = function()
-        defences.got('rest')
-      end,
+      oncompleted = function() defences.got('rest') end,
 
       action = 'rest',
       onstart = function()
@@ -11339,9 +10537,7 @@ if svo.haveskillset('metamorphosis') then
         end
       end,
 
-      oncompleted = function()
-        defences.got('vitality')
-      end,
+      oncompleted = function() defences.got('vitality') end,
 
       action = 'vitality',
       onstart = function()
@@ -11371,9 +10567,7 @@ if svo.haveskillset('metamorphosis') then
         return (not defc.flame and ((sys.deffing and defdefup[defs.mode].flame) or (conf.keepup and defkeepup[defs.mode].flame)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and sk.morphsforskill.flame) or false
       end,
 
-      oncompleted = function()
-        defences.got('flame')
-      end,
+      oncompleted = function() defences.got('flame') end,
 
       actions = {&quot;summon flame&quot;, &quot;summon fire&quot;},
       onstart = function()
@@ -11415,9 +10609,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('squirrel')
-      end,
+      oncompleted = function() defences.lost('squirrel') end,
     }
   }
   svo.dict.wildcat = {
@@ -11446,9 +10638,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('wildcat')
-      end,
+      oncompleted = function() defences.lost('wildcat') end,
     }
   }
   svo.dict.wolf = {
@@ -11477,9 +10667,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('wolf')
-      end,
+      oncompleted = function() defences.lost('wolf') end,
     }
   }
   svo.dict.turtle = {
@@ -11508,9 +10696,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('turtle')
-      end,
+      oncompleted = function() defences.lost('turtle') end,
     }
   }
   svo.dict.jackdaw = {
@@ -11539,9 +10725,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('jackdaw')
-      end,
+      oncompleted = function() defences.lost('jackdaw') end,
     }
   }
   svo.dict.cheetah = {
@@ -11570,9 +10754,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('cheetah')
-      end,
+      oncompleted = function() defences.lost('cheetah') end,
     }
   }
   svo.dict.owl = {
@@ -11601,9 +10783,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('owl')
-      end,
+      oncompleted = function() defences.lost('owl') end,
     }
   }
   svo.dict.hyena = {
@@ -11632,9 +10812,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('hyena')
-      end,
+      oncompleted = function() defences.lost('hyena') end,
     }
   }
   svo.dict.condor = {
@@ -11663,9 +10841,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('condor')
-      end,
+      oncompleted = function() defences.lost('condor') end,
     }
   }
   svo.dict.gopher = {
@@ -11694,9 +10870,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('gopher')
-      end,
+      oncompleted = function() defences.lost('gopher') end,
     }
   }
   svo.dict.sloth = {
@@ -11725,9 +10899,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('sloth')
-      end,
+      oncompleted = function() defences.lost('sloth') end,
     }
   }
   svo.dict.bear = {
@@ -11756,9 +10928,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('bear')
-      end,
+      oncompleted = function() defences.lost('bear') end,
     }
   }
   svo.dict.nightingale = {
@@ -11787,9 +10957,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('nightingale')
-      end,
+      oncompleted = function() defences.lost('nightingale') end,
     }
   }
   svo.dict.elephant = {
@@ -11818,9 +10986,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('elephant')
-      end,
+      oncompleted = function() defences.lost('elephant') end,
     }
   }
   svo.dict.wolverine = {
@@ -11849,9 +11015,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('wolverine')
-      end,
+      oncompleted = function() defences.lost('wolverine') end,
     }
   }
   svo.dict.eagle = {
@@ -11880,9 +11044,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('eagle')
-      end,
+      oncompleted = function() defences.lost('eagle') end,
     }
   }
   svo.dict.gorilla = {
@@ -11911,9 +11073,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('gorilla')
-      end,
+      oncompleted = function() defences.lost('gorilla') end,
     }
   }
   svo.dict.icewyrm = {
@@ -11942,9 +11102,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('icewyrm')
-      end,
+      oncompleted = function() defences.lost('icewyrm') end,
     }
   }
 end
@@ -11958,14 +11116,10 @@ if svo.haveskillset('swashbuckling') then
         return ((sys.deffing and defdefup[defs.mode].drunkensailor and not defc.drunkensailor) or (conf.keepup and defkeepup[defs.mode].drunkensailor and not defc.drunkensailor) and not defc.heartsfury and not svo.doingaction'drunkensailor' and not affs.paralysis) or false
       end,
 
-      oncompleted = function()
-        defences.got('drunkensailor')
-      end,
+      oncompleted = function() defences.got('drunkensailor') end,
 
       action = 'drunkensailor',
-      onstart = function()
-        send('drunkensailor', conf.commandecho)
-      end
+      onstart = function() send('drunkensailor', conf.commandecho) end
     },
   }
   svo.dict.heartsfury = {
@@ -11976,14 +11130,10 @@ if svo.haveskillset('swashbuckling') then
         return ((sys.deffing and defdefup[defs.mode].heartsfury and not defc.heartsfury) or (conf.keepup and defkeepup[defs.mode].heartsfury and not defc.heartsfury) and not defc.drunkensailor and not svo.doingaction'heartsfury' and not affs.paralysis) or false
       end,
 
-      oncompleted = function()
-        defences.got('heartsfury')
-      end,
+      oncompleted = function() defences.got('heartsfury') end,
 
       action = 'heartsfury',
-      onstart = function()
-        send('heartsfury', conf.commandecho)
-      end
+      onstart = function() send('heartsfury', conf.commandecho) end
     },
   }
 end
@@ -12003,9 +11153,7 @@ if svo.haveskillset('voicecraft') then
       end,
 
       action = &quot;sing lay&quot;,
-      onstart = function()
-        send(&quot;sing lay&quot;, conf.commandecho)
-      end
+      onstart = function() send('sing lay', conf.commandecho) end
     },
   }
   svo.dict.tune = {
@@ -12022,9 +11170,7 @@ if svo.haveskillset('voicecraft') then
       end,
 
       action = &quot;sing tune&quot;,
-      onstart = function()
-        send(&quot;sing tune&quot;, conf.commandecho)
-      end
+      onstart = function() send('sing tune', conf.commandecho) end
     },
   }
   svo.dict.aria = {
@@ -12041,9 +11187,7 @@ if svo.haveskillset('voicecraft') then
       end,
 
       action = &quot;sing aria at me&quot;,
-      onstart = function()
-        send(&quot;sing aria at me&quot;, conf.commandecho)
-      end
+      onstart = function() send('sing aria at me', conf.commandecho) end
     },
   }
 end
@@ -12063,9 +11207,7 @@ if svo.haveskillset('occultism') then
       end,
 
       action = 'astralform',
-      onstart = function()
-        send('astralform', conf.commandecho)
-      end
+      onstart = function() send('astralform', conf.commandecho) end
     }
   }
 end
@@ -12080,14 +11222,10 @@ if svo.haveskillset('healing') then
         return (not defc.bedevil and ((sys.deffing and defdefup[defs.mode].bedevil) or (conf.keepup and defkeepup[defs.mode].bedevil)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone and defc.air and defc.water and defc.fire and defc.earth and defc.spirit) or false
       end,
 
-      oncompleted = function()
-        defences.got('bedevil')
-      end,
+      oncompleted = function() defences.got('bedevil') end,
 
       action = 'bedevil',
-      onstart = function()
-        send('bedevil', conf.commandecho)
-      end
+      onstart = function() send('bedevil', conf.commandecho) end
     }
   }
 end
@@ -12101,14 +11239,10 @@ if svo.haveskillset('healing') or svo.haveskillset('elementalism') or svo.havesk
        return (not defc.simultaneity and ((sys.deffing and defdefup[defs.mode].simultaneity) or (conf.keepup and defkeepup[defs.mode].simultaneity)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana &gt;= 1000) or false
       end,
 
-      oncompleted = function()
-        defences.got('simultaneity')
-      end,
+      oncompleted = function() defences.got('simultaneity') end,
 
       action = 'simultaneity',
-      onstart = function()
-        send('simultaneity', conf.commandecho)
-      end
+      onstart = function() send('simultaneity', conf.commandecho) end
     }
   }
   svo.dict.air = {
@@ -12128,9 +11262,7 @@ if svo.haveskillset('healing') or svo.haveskillset('elementalism') or svo.havesk
       end,
 
       action = &quot;channel air&quot;,
-      onstart = function()
-        send(&quot;channel air&quot;, conf.commandecho)
-      end
+      onstart = function() send('channel air', conf.commandecho) end
     },
     gone = {
       oncompleted = function()
@@ -12156,9 +11288,7 @@ if svo.haveskillset('healing') or svo.haveskillset('elementalism') or svo.havesk
       end,
 
       action = &quot;channel water&quot;,
-      onstart = function()
-        send(&quot;channel water&quot;, conf.commandecho)
-      end
+      onstart = function() send('channel water', conf.commandecho) end
     },
     gone = {
       oncompleted = function()
@@ -12184,9 +11314,7 @@ if svo.haveskillset('healing') or svo.haveskillset('elementalism') or svo.havesk
       end,
 
       action = &quot;channel earth&quot;,
-      onstart = function()
-        send(&quot;channel earth&quot;, conf.commandecho)
-      end
+      onstart = function() send('channel earth', conf.commandecho) end
     },
     gone = {
       oncompleted = function()
@@ -12212,9 +11340,7 @@ if not svo.haveskillset('weatherweaving') then
       end,
 
       action = &quot;channel fire&quot;,
-      onstart = function()
-        send(&quot;channel fire&quot;, conf.commandecho)
-      end
+      onstart = function() send('channel fire', conf.commandecho) end
     },
     gone = {
       oncompleted = function()
@@ -12241,9 +11367,7 @@ if svo.haveskillset('healing') then
       end,
 
       action = &quot;channel spirit&quot;,
-      onstart = function()
-        send(&quot;channel spirit&quot;, conf.commandecho)
-      end
+      onstart = function() send('channel spirit', conf.commandecho) end
     },
     gone = {
       oncompleted = function()
@@ -12262,14 +11386,10 @@ end
         and (svo.haveskillset('weatherweaving') or defc.fire)) or false
       end,
 
-      oncompleted = function()
-        defences.got('bindall')
-      end,
+      oncompleted = function() defences.got('bindall') end,
 
       action = &quot;bind all&quot;,
-      onstart = function()
-        send(&quot;bind all&quot;, conf.commandecho)
-      end
+      onstart = function() send('bind all', conf.commandecho) end
     }
   }
   svo.dict.boundair = {
@@ -12288,9 +11408,7 @@ end
       end,
 
       action = &quot;bind air&quot;,
-      onstart = function()
-        send(&quot;bind air&quot;, conf.commandecho)
-      end
+      onstart = function() send('bind air', conf.commandecho) end
     },
     gone = {
       oncompleted = function()
@@ -12315,9 +11433,7 @@ end
       end,
 
       action = &quot;bind water&quot;,
-      onstart = function()
-        send(&quot;bind water&quot;, conf.commandecho)
-      end
+      onstart = function() send('bind water', conf.commandecho) end
     },
     gone = {
       oncompleted = function()
@@ -12371,9 +11487,7 @@ end
       end,
 
       action = &quot;bind earth&quot;,
-      onstart = function()
-        send(&quot;bind earth&quot;, conf.commandecho)
-      end
+      onstart = function() send('bind earth', conf.commandecho) end
     },
     gone = {
       oncompleted = function()
@@ -12419,14 +11533,10 @@ end
         return (((((sys.deffing and defdefup[defs.mode].fortifyall and not defc.fortifyall) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall))) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana &gt;= 600 and defc.air and defc.earth and defc.water and (not svo.haveskillset('healing') or defc.spirit) and (svo.haveskillset('weatherweaving') or defc.fire)) or false
       end,
 
-      oncompleted = function()
-        defences.got('fortifyall')
-      end,
+      oncompleted = function() defences.got('fortifyall') end,
 
       action = &quot;fortify all&quot;,
-      onstart = function()
-        send(&quot;fortify all&quot;, conf.commandecho)
-      end
+      onstart = function() send('fortify all', conf.commandecho) end
     }
   }
   svo.dict.fortifiedair = {
@@ -12445,9 +11555,7 @@ end
       end,
 
       action = &quot;fortify air&quot;,
-      onstart = function()
-        send(&quot;fortify air&quot;, conf.commandecho)
-      end
+      onstart = function() send('fortify air', conf.commandecho) end
     },
     gone = {
       oncompleted = function()
@@ -12472,9 +11580,7 @@ end
       end,
 
       action = &quot;fortify water&quot;,
-      onstart = function()
-        send(&quot;fortify water&quot;, conf.commandecho)
-      end
+      onstart = function() send('fortify water', conf.commandecho) end
     },
     gone = {
       oncompleted = function()
@@ -12528,9 +11634,7 @@ end
       end,
 
       action = &quot;fortify earth&quot;,
-      onstart = function()
-        send(&quot;fortify earth&quot;, conf.commandecho)
-      end
+      onstart = function() send('fortify earth', conf.commandecho) end
     },
     gone = {
       oncompleted = function()
@@ -12579,14 +11683,10 @@ if svo.haveskillset('elementalism') then
        return (not defc.waterweird and ((sys.deffing and defdefup[defs.mode].waterweird) or (conf.keepup and defkeepup[defs.mode].waterweird)) and not codepaste.balanceful_defs_codepaste() and defc.water) or false
       end,
 
-      oncompleted = function()
-        defences.got('waterweird')
-      end,
+      oncompleted = function() defences.got('waterweird') end,
 
       action = &quot;cast waterweird at me&quot;,
-      onstart = function()
-        send(&quot;cast waterweird at me&quot;, conf.commandecho)
-      end
+      onstart = function() send('cast waterweird at me', conf.commandecho) end
     }
   }
   svo.dict.chargeshield = {
@@ -12597,14 +11697,10 @@ if svo.haveskillset('elementalism') then
         return (not defc.chargeshield and ((sys.deffing and defdefup[defs.mode].chargeshield) or (conf.keepup and defkeepup[defs.mode].chargeshield)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone and defc.air) or false
       end,
 
-      oncompleted = function()
-        defences.got('chargeshield')
-      end,
+      oncompleted = function() defences.got('chargeshield') end,
 
       action = &quot;cast chargeshield at me&quot;,
-      onstart = function()
-        send(&quot;cast chargeshield at me&quot;, conf.commandecho)
-      end
+      onstart = function() send('cast chargeshield at me', conf.commandecho) end
     }
   }
   svo.dict.stonefist = {
@@ -12615,14 +11711,10 @@ if svo.haveskillset('elementalism') then
        return (not defc.stonefist and ((sys.deffing and defdefup[defs.mode].stonefist) or (conf.keepup and defkeepup[defs.mode].stonefist)) and not codepaste.balanceful_defs_codepaste() and defc.earth) or false
       end,
 
-      oncompleted = function()
-        defences.got('stonefist')
-      end,
+      oncompleted = function() defences.got('stonefist') end,
 
       action = &quot;cast stonefist&quot;,
-      onstart = function()
-        send(&quot;cast stonefist&quot;, conf.commandecho)
-      end
+      onstart = function() send('cast stonefist', conf.commandecho) end
     }
   }
   svo.dict.stoneskin = {
@@ -12633,14 +11725,10 @@ if svo.haveskillset('elementalism') then
        return (not defc.stoneskin and ((sys.deffing and defdefup[defs.mode].stoneskin) or (conf.keepup and defkeepup[defs.mode].stoneskin)) and not codepaste.balanceful_defs_codepaste() and defc.earth) or false
       end,
 
-      oncompleted = function()
-        defences.got('stoneskin')
-      end,
+      oncompleted = function() defences.got('stoneskin') end,
 
       action = &quot;cast stoneskin&quot;,
-      onstart = function()
-        send(&quot;cast stoneskin&quot;, conf.commandecho)
-      end
+      onstart = function() send('cast stoneskin', conf.commandecho) end
     }
   }
   svo.dict.diamondskin = {
@@ -12651,14 +11739,10 @@ if svo.haveskillset('elementalism') then
        return (not defc.diamondskin and ((sys.deffing and defdefup[defs.mode].diamondskin) or (conf.keepup and defkeepup[defs.mode].diamondskin)) and not codepaste.balanceful_defs_codepaste() and defc.earth and defc.water and defc.fire) or false
       end,
 
-      oncompleted = function()
-        defences.got('diamondskin')
-      end,
+      oncompleted = function() defences.got('diamondskin') end,
 
       action = &quot;cast diamondskin&quot;,
-      onstart = function()
-        send(&quot;cast diamondskin&quot;, conf.commandecho)
-      end
+      onstart = function() send('cast diamondskin', conf.commandecho) end
     }
   }
 end
@@ -12672,14 +11756,10 @@ if svo.haveskillset('elementalism') or svo.haveskillset('weatherweaving') then
        return (not defc.reflection and ((sys.deffing and defdefup[defs.mode].reflection) or (conf.keepup and defkeepup[defs.mode].reflection)) and not codepaste.balanceful_defs_codepaste() and defc.air and not affs.prone) or false
       end,
 
-      oncompleted = function()
-        defences.got('reflection')
-      end,
+      oncompleted = function() defences.got('reflection') end,
 
       action = &quot;cast reflection at me&quot;,
-      onstart = function()
-        send(&quot;cast reflection at me&quot;, conf.commandecho)
-      end
+      onstart = function() send('cast reflection at me', conf.commandecho) end
     }
   }
 end
@@ -12701,14 +11781,10 @@ if svo.haveskillset('apostasy') then
         end
       end,
 
-      oncompleted = function()
-        defences.got('baalzadeen')
-      end,
+      oncompleted = function() defences.got('baalzadeen') end,
 
       action = &quot;summon baalzadeen&quot;,
-      onstart = function()
-        send(&quot;summon baalzadeen&quot;, conf.commandecho)
-      end
+      onstart = function() send('summon baalzadeen', conf.commandecho) end
     }
   }
   svo.dict.armour = {
@@ -12719,14 +11795,10 @@ if svo.haveskillset('apostasy') then
         return (not defc.armour and ((sys.deffing and defdefup[defs.mode].armour) or (conf.keepup and defkeepup[defs.mode].armour)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone and defc.baalzadeen) or false
       end,
 
-      oncompleted = function()
-        defences.got('armour')
-      end,
+      oncompleted = function() defences.got('armour') end,
 
       action = &quot;demon armour&quot;,
-      onstart = function()
-        send(&quot;demon armour&quot;, conf.commandecho)
-      end
+      onstart = function() send('demon armour', conf.commandecho) end
     }
   }
   svo.dict.syphon = {
@@ -12737,14 +11809,10 @@ if svo.haveskillset('apostasy') then
         return (not defc.syphon and ((sys.deffing and defdefup[defs.mode].syphon) or (conf.keepup and defkeepup[defs.mode].syphon)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone and defc.baalzadeen) or false
       end,
 
-      oncompleted = function()
-        defences.got('syphon')
-      end,
+      oncompleted = function() defences.got('syphon') end,
 
       action = &quot;demon syphon&quot;,
-      onstart = function()
-        send(&quot;demon syphon&quot;, conf.commandecho)
-      end
+      onstart = function() send('demon syphon', conf.commandecho) end
     }
   }
   svo.dict.mask = {
@@ -12755,14 +11823,10 @@ if svo.haveskillset('apostasy') then
         return (not defc.mask and ((sys.deffing and defdefup[defs.mode].mask) or (conf.keepup and defkeepup[defs.mode].mask)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone and defc.baalzadeen) or false
       end,
 
-      oncompleted = function()
-        defences.got('mask')
-      end,
+      oncompleted = function() defences.got('mask') end,
 
       action = 'mask',
-      onstart = function()
-        send('mask', conf.commandecho)
-      end
+      onstart = function() send('mask', conf.commandecho) end
     }
   }
 end
@@ -12776,14 +11840,10 @@ if svo.haveskillset('weatherweaving') then
        return (not defc.circulate and ((sys.deffing and defdefup[defs.mode].circulate) or (conf.keepup and defkeepup[defs.mode].circulate)) and not codepaste.balanceful_defs_codepaste() and defc.air and defc.earth) or false
       end,
 
-      oncompleted = function()
-        defences.got('circulate')
-      end,
+      oncompleted = function() defences.got('circulate') end,
 
       action = &quot;cast circulate&quot;,
-      onstart = function()
-        send(&quot;cast circulate&quot;, conf.commandecho)
-      end
+      onstart = function() send('cast circulate', conf.commandecho) end
     }
   }
 end
@@ -12803,14 +11863,10 @@ if svo.haveskillset('kaido') then
         return (((sys.deffing and defdefup[defs.mode].boosting and not defc.boosting) or (conf.keepup and defkeepup[defs.mode].boosting and not defc.boosting)) and not codepaste.balanceful_defs_codepaste() and defc.regeneration) or false
       end,
 
-      oncompleted = function()
-        defences.got('boosting')
-      end,
+      oncompleted = function() defences.got('boosting') end,
 
       action = &quot;boost regeneration&quot;,
-      onstart = function()
-        send(&quot;boost regeneration&quot;, conf.commandecho)
-      end
+      onstart = function() send('boost regeneration', conf.commandecho) end
     }
   }
   svo.dict.kaiboost = {
@@ -12821,14 +11877,10 @@ if svo.haveskillset('kaido') then
         return (((sys.deffing and defdefup[defs.mode].kaiboost and not defc.kaiboost) or (conf.keepup and defkeepup[defs.mode].kaiboost and not defc.kaiboost)) and not codepaste.balanceful_defs_codepaste() and stats.kai &gt;= 11 and not svo.doingaction'kaiboost') or false
       end,
 
-      oncompleted = function()
-        defences.got('kaiboost')
-      end,
+      oncompleted = function() defences.got('kaiboost') end,
 
       action = &quot;kai boost&quot;,
-      onstart = function()
-        send(&quot;kai boost&quot;, conf.commandecho)
-      end
+      onstart = function() send('kai boost', conf.commandecho) end
     }
   }
   svo.dict.vitality = {
@@ -12847,14 +11899,10 @@ if svo.haveskillset('kaido') then
         end
       end,
 
-      oncompleted = function()
-        defences.got('vitality')
-      end,
+      oncompleted = function() defences.got('vitality') end,
 
       action = 'vitality',
-      onstart = function()
-        send('vitality', conf.commandecho)
-      end
+      onstart = function() send('vitality', conf.commandecho) end
     },
     gone = {
       oncompleted = function()
@@ -12876,9 +11924,7 @@ if svo.haveskillset('tarot') then
         return (not defc.devil and ((sys.deffing and defdefup[defs.mode].devil) or (conf.keepup and defkeepup[defs.mode].devil)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone) or false
       end,
 
-      oncompleted = function()
-        defences.got('devil')
-      end,
+      oncompleted = function() defences.got('devil') end,
 
       action = &quot;fling devil at ground&quot;,
       onstart = function()
@@ -12910,13 +11956,9 @@ if svo.haveskillset('shikudo') then
         ) or false
       end,
 
-      oncompleted = function()
-        defences.got('grip')
-      end,
+      oncompleted = function() defences.got('grip') end,
 
-      onstart = function()
-        send('grip', conf.commandecho)
-      end
+      onstart = function() send('grip', conf.commandecho) end
     }
   }
   svo.dict.tykonos = {
@@ -12926,9 +11968,7 @@ if svo.haveskillset('shikudo') then
       isadvisable = function() return shikudo_ability_isadvisable('tykonos') end,
       oncompleted = function() return shikudo_form_oncompleted('tykonos') end,
 
-      onstart = function()
-        send(&quot;adopt tykonos form&quot;, conf.commandecho)
-      end
+      onstart = function() send('adopt tykonos form', conf.commandecho) end
     },
   }
   svo.dict.willow = {
@@ -12938,9 +11978,7 @@ if svo.haveskillset('shikudo') then
       isadvisable = function() return shikudo_ability_isadvisable('willow') end,
       oncompleted = function() return shikudo_form_oncompleted('willow') end,
 
-      onstart = function()
-        send(&quot;adopt willow form&quot;, conf.commandecho)
-      end
+      onstart = function() send('adopt willow form', conf.commandecho) end
     },
   }
   svo.dict.rain = {
@@ -12950,9 +11988,7 @@ if svo.haveskillset('shikudo') then
       isadvisable = function() return shikudo_ability_isadvisable('rain') end,
       oncompleted = function() return shikudo_form_oncompleted('rain') end,
 
-      onstart = function()
-        send(&quot;adopt rain form&quot;, conf.commandecho)
-      end
+      onstart = function() send('adopt rain form', conf.commandecho) end
     },
   }
   svo.dict.oak = {
@@ -12962,9 +11998,7 @@ if svo.haveskillset('shikudo') then
       isadvisable = function() return shikudo_ability_isadvisable('oak') end,
       oncompleted = function() return shikudo_form_oncompleted('oak') end,
 
-      onstart = function()
-        send(&quot;adopt oak form&quot;, conf.commandecho)
-      end
+      onstart = function() send('adopt oak form', conf.commandecho) end
     },
   }
   svo.dict.gaital = {
@@ -12974,9 +12008,7 @@ if svo.haveskillset('shikudo') then
       isadvisable = function() return shikudo_ability_isadvisable('gaital') end,
       oncompleted = function() return shikudo_form_oncompleted('gaital') end,
 
-      onstart = function()
-        send(&quot;adopt gaital form&quot;, conf.commandecho)
-      end
+      onstart = function() send('adopt gaital form', conf.commandecho) end
     },
   }
   svo.dict.maelstrom = {
@@ -12986,9 +12018,7 @@ if svo.haveskillset('shikudo') then
       isadvisable = function() return shikudo_ability_isadvisable('maelstrom') end,
       oncompleted = function() return shikudo_form_oncompleted('maelstrom') end,
 
-      onstart = function()
-        send(&quot;adopt maelstrom form&quot;, conf.commandecho)
-      end
+      onstart = function() send('adopt maelstrom form', conf.commandecho) end
     },
   }
 end
@@ -13000,13 +12030,9 @@ if svo.haveskillset('tekura') then
       isadvisable = function() return tekura_ability_isadvisable('bodyblock') end,
       action = 'bdb',
 
-      oncompleted = function()
-        defences.got('bodyblock')
-      end,
+      oncompleted = function() defences.got('bodyblock') end,
 
-      onstart = function()
-        send('bdb', conf.commandecho)
-      end
+      onstart = function() send('bdb', conf.commandecho) end
     },
   }
   svo.dict.evadeblock = {
@@ -13015,13 +12041,9 @@ if svo.haveskillset('tekura') then
       action = 'evb',
       isadvisable = function() return tekura_ability_isadvisable('evadeblock') end,
 
-      oncompleted = function()
-        defences.got('evadeblock')
-      end,
+      oncompleted = function() defences.got('evadeblock') end,
 
-      onstart = function()
-        send('evb', conf.commandecho)
-      end
+      onstart = function() send('evb', conf.commandecho) end
     },
   }
   svo.dict.pinchblock = {
@@ -13030,13 +12052,9 @@ if svo.haveskillset('tekura') then
       action = 'pnb',
       isadvisable = function() return tekura_ability_isadvisable('pinchblock') end,
 
-      oncompleted = function()
-        defences.got('pinchblock')
-      end,
+      oncompleted = function() defences.got('pinchblock') end,
 
-      onstart = function()
-        send('pnb', conf.commandecho)
-      end
+      onstart = function() send('pnb', conf.commandecho) end
     },
   }
   svo.dict.horse = {
@@ -13046,9 +12064,7 @@ if svo.haveskillset('tekura') then
       isadvisable = function() return tekura_ability_isadvisable('horse') end,
       oncompleted = function() return tekura_stance_oncompleted('horse') end,
 
-      onstart = function()
-        send('hrs', conf.commandecho)
-      end
+      onstart = function() send('hrs', conf.commandecho) end
     },
   }
   svo.dict.eagle = {
@@ -13058,9 +12074,7 @@ if svo.haveskillset('tekura') then
       isadvisable = function() return tekura_ability_isadvisable('eagle') end,
       oncompleted = function() return tekura_stance_oncompleted('eagle') end,
 
-      onstart = function()
-        send('egs', conf.commandecho)
-      end
+      onstart = function() send('egs', conf.commandecho) end
     },
   }
   svo.dict.cat = {
@@ -13070,9 +12084,7 @@ if svo.haveskillset('tekura') then
       isadvisable = function() return tekura_ability_isadvisable('cat') end,
       oncompleted = function() return tekura_stance_oncompleted('cat') end,
 
-      onstart = function()
-        send('cts', conf.commandecho)
-      end
+      onstart = function() send('cts', conf.commandecho) end
     },
   }
   svo.dict.bear = {
@@ -13082,9 +12094,7 @@ if svo.haveskillset('tekura') then
       isadvisable = function() return tekura_ability_isadvisable('bear') end,
       oncompleted = function() return tekura_stance_oncompleted('bear') end,
 
-      onstart = function()
-        send('brs', conf.commandecho)
-      end
+      onstart = function() send('brs', conf.commandecho) end
     },
   }
   svo.dict.rat = {
@@ -13094,9 +12104,7 @@ if svo.haveskillset('tekura') then
       isadvisable = function() return tekura_ability_isadvisable('rat') end,
       oncompleted = function() return tekura_stance_oncompleted('rat') end,
 
-      onstart = function()
-        send('rts', conf.commandecho)
-      end
+      onstart = function() send('rts', conf.commandecho) end
     },
   }
   svo.dict.scorpion = {
@@ -13106,9 +12114,7 @@ if svo.haveskillset('tekura') then
       isadvisable = function() return tekura_ability_isadvisable('scorpion') end,
       oncompleted = function() return tekura_stance_oncompleted('scorpion') end,
 
-      onstart = function()
-        send('scs', conf.commandecho)
-      end
+      onstart = function() send('scs', conf.commandecho) end
     },
   }
   svo.dict.dragon = {
@@ -13118,9 +12124,7 @@ if svo.haveskillset('tekura') then
       isadvisable = function() return tekura_ability_isadvisable('dragon') end,
       oncompleted = function() return tekura_stance_oncompleted('dragon') end,
 
-      onstart = function()
-        send('drs', conf.commandecho)
-      end
+      onstart = function() send('drs', conf.commandecho) end
     },
   }
 end
@@ -13156,13 +12160,9 @@ if svo.haveskillset('venom') then
       end,
 
       action = 'shrugging',
-      onstart = function()
-        send('shrugging', conf.commandecho)
-      end,
+      onstart = function() send('shrugging', conf.commandecho) end,
 
-      offbal = function()
-        svo.lostbal_shrugging()
-      end
+      offbal = function() svo.lostbal_shrugging() end
     }
   }
 end
@@ -13176,9 +12176,7 @@ if svo.haveskillset('alchemy') then
         return (not defc.extispicy and ((sys.deffing and defdefup[defs.mode].extispicy) or (conf.keepup and defkeepup[defs.mode].extispicy)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone) or false
       end,
 
-      oncompleted = function()
-        defences.got('extispicy')
-      end,
+      oncompleted = function() defences.got('extispicy') end,
 
       norat = function()
         if svo.ignore.extispicy then return end
@@ -13197,9 +12195,7 @@ if svo.haveskillset('alchemy') then
       end,
 
       action = &quot;dissect rat&quot;,
-      onstart = function()
-        send(&quot;dissect rat&quot;, conf.commandecho)
-      end
+      onstart = function() send('dissect rat', conf.commandecho) end
     }
   }
 end
@@ -13213,9 +12209,7 @@ if svo.haveskillset('woodlore') then
         return (((sys.deffing and defdefup[defs.mode].impaling and not defc.impaling) or (conf.keepup and defkeepup[defs.mode].impaling and not defc.impaling)) and not codepaste.balanceful_defs_codepaste()) or false
       end,
 
-      oncompleted = function()
-        defences.got('impaling')
-      end,
+      oncompleted = function() defences.got('impaling') end,
 
       onstart = function()
         send(&quot;set &quot;..(conf.weapon and conf.weapon or 'unknown'), conf.commandecho)
@@ -13230,9 +12224,7 @@ if svo.haveskillset('woodlore') then
         return (((sys.deffing and defdefup[defs.mode].spinning and not defc.spinning) or (conf.keepup and defkeepup[defs.mode].spinning and not defc.spinning)) and not codepaste.balanceful_defs_codepaste()) or false
       end,
 
-      oncompleted = function()
-        defences.got('spinning')
-      end,
+      oncompleted = function() defences.got('spinning') end,
 
       onstart = function()
         send(&quot;spin &quot;..conf.weapon and conf.weapon or 'unknown', conf.commandecho)
@@ -13250,14 +12242,10 @@ if svo.haveskillset('propagation') then
        return (not defc.barkskin and ((sys.deffing and defdefup[defs.mode].barkskin) or (conf.keepup and defkeepup[defs.mode].barkskin)) and not codepaste.balanceful_defs_codepaste() and defc.earth) or false
       end,
 
-      oncompleted = function()
-        defences.got('barkskin')
-      end,
+      oncompleted = function() defences.got('barkskin') end,
 
       action = 'barkskin',
-      onstart = function()
-        send('barkskin', conf.commandecho)
-      end
+      onstart = function() send('barkskin', conf.commandecho) end
     }
   }
   svo.dict.viridian = {
@@ -13312,9 +12300,7 @@ if svo.haveskillset('propagation') then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('viridian')
-      end,
+      oncompleted = function() defences.lost('viridian') end,
     }
   }
   svo.dict.waitingforviridian = {
@@ -13346,8 +12332,7 @@ if svo.haveskillset('propagation') then
         svo.dict.waitingforviridian.waitingfor.cancelled()
       end,
 
-      onstart = function()
-      end,
+      onstart = function() end,
     }
   }
 end
@@ -13360,9 +12345,7 @@ if svo.haveskillset('groves') then
         return (((sys.deffing and defdefup[defs.mode].flail and not defc.flail) or (conf.keepup and defkeepup[defs.mode].flail and not defc.flail)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone) or false
       end,
 
-      oncompleted = function()
-        defences.got('flail')
-      end,
+      oncompleted = function() defences.got('flail') end,
 
       onstart = function()
         send('wield quarterstaff', conf.commandecho)
@@ -13644,14 +12627,10 @@ if svo.haveskillset('domination') then
         return (not defc.arctar and ((sys.deffing and defdefup[defs.mode].arctar) or (conf.keepup and defkeepup[defs.mode].arctar)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and bals.entities) or false
       end,
 
-      oncompleted = function()
-        defences.got('arctar')
-      end,
+      oncompleted = function() defences.got('arctar') end,
 
       action = &quot;command orb&quot;,
-      onstart = function()
-        send(&quot;command orb&quot;, conf.commandecho)
-      end
+      onstart = function() send('command orb', conf.commandecho) end
     }
   }
 end
@@ -13662,19 +12641,19 @@ if svo.haveskillset('shadowmancy') then
 
       isadvisable = function()
         local shadowcloak = me.getitem(&quot;a grim cloak&quot;)
-        if not defc.dragonform and not defc.shadowcloak and 
-          ((sys.deffing and defdefup[defs.mode].shadowcloak) 
+        if not defc.dragonform and not defc.shadowcloak and
+          ((sys.deffing and defdefup[defs.mode].shadowcloak)
             or (conf.keepup and defkeepup[defs.mode].shadowcloak)
             or (sys.deffing and defdefup[defs.mode].disperse)
-            or (conf.keepup and defkeepup[defs.mode].disperse) 
-            or (sys.deffing and defdefup[defs.mode].shadowveil) 
+            or (conf.keepup and defkeepup[defs.mode].disperse)
+            or (sys.deffing and defdefup[defs.mode].shadowveil)
             or (conf.keepup and defkeepup[defs.mode].shadowveil)
             or (sys.deffing and defdefup[defs.mode].hiding)
             or (conf.keepup and defkeepup[defs.mode].hiding))
           and not codepaste.balanceful_defs_codepaste()
           and not affs.paralysis
           and not affs.prone and stats.mp then
-	          if not shadowcloak then
+            if not shadowcloak then
               if stats.mp &gt;= 100 then
                 return true
               elseif not sk.gettingfullstats then
@@ -13688,9 +12667,7 @@ if svo.haveskillset('shadowmancy') then
         return false
       end,
 
-      oncompleted = function()
-        defences.got('shadowcloak')
-      end,
+      oncompleted = function() defences.got('shadowcloak') end,
 
       action = &quot;shadow cloak&quot;,
       onstart = function()
@@ -13713,14 +12690,10 @@ if svo.haveskillset('shadowmancy') then
         return not defc.dragonform and not defc.disperse and defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].disperse) or (conf.keepup and defkeepup[defs.mode].disperse)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone
       end,
 
-      oncompleted = function()
-        defences.got('disperse')
-      end,
+      oncompleted = function() defences.got('disperse') end,
 
       action = &quot;shadow disperse&quot;,
-      onstart = function()
-        send(&quot;shadow disperse&quot;, conf.commandecho)
-      end
+      onstart = function() send('shadow disperse', conf.commandecho) end
     }
   }
   svo.dict.shadowveil = {
@@ -13731,14 +12704,10 @@ if svo.haveskillset('shadowmancy') then
         return not defc.dragonform and not defc.shadowveil and defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].shadowveil) or (conf.keepup and defkeepup[defs.mode].shadowveil)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone
       end,
 
-      oncompleted = function()
-        defences.got('shadowveil')
-      end,
+      oncompleted = function() defences.got('shadowveil') end,
 
       action = &quot;shadow veil&quot;,
-      onstart = function()
-        send(&quot;shadow veil&quot;, conf.commandecho)
-      end
+      onstart = function() send('shadow veil', conf.commandecho) end
     }
   }
   svo.dict.hiding = {
@@ -13749,14 +12718,10 @@ if svo.haveskillset('shadowmancy') then
         return not defc.dragonform and not defc.hiding and defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].hiding) or (conf.keepup and defkeepup[defs.mode].hiding)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone
       end,
 
-      oncompleted = function()
-        defences.got('hiding')
-      end,
+      oncompleted = function() defences.got('hiding') end,
 
       action = &quot;shadow veil&quot;,
-      onstart = function()
-        send(&quot;shadow veil&quot;, conf.commandecho)
-      end
+      onstart = function() send('shadow veil', conf.commandecho) end
     }
   }
 end
@@ -13769,14 +12734,10 @@ if svo.haveskillset('aeonics') then
         return (((sys.deffing and defdefup[defs.mode].dilation and not defc.dilation) or (conf.keepup and defkeepup[defs.mode].dilation and not defc.dilation)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'dilation' and (stats.age and stats.age &gt; 0)) or false
       end,
 
-      oncompleted = function()
-        defences.got('dilation')
-      end,
+      oncompleted = function() defences.got('dilation') end,
 
       actions = {&quot;chrono dilation&quot;, &quot;chrono dilation boost&quot;},
-      onstart = function()
-        send(&quot;chrono dilation&quot;, conf.commandecho)
-      end
+      onstart = function() send('chrono dilation', conf.commandecho) end
     }
   }
 end
@@ -13790,14 +12751,10 @@ if svo.haveskillset('terminus') then
         return (not defc.dragonform and not defc.trusad and ((sys.deffing and defdefup[defs.mode].trusad) or (conf.keepup and defkeepup[defs.mode].trusad)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
       end,
 
-      oncompleted = function()
-        defences.got('trusad')
-      end,
+      oncompleted = function() defences.got('trusad') end,
 
       action = &quot;intone trusad&quot;,
-      onstart = function()
-        send(&quot;intone trusad&quot;, conf.commandecho)
-      end
+      onstart = function() send('intone trusad', conf.commandecho) end
     }
   }
   svo.dict.tsuura = {
@@ -13809,14 +12766,10 @@ if svo.haveskillset('terminus') then
         return (not defc.dragonform and not defc.tsuura and ((sys.deffing and defdefup[defs.mode].tsuura) or (conf.keepup and defkeepup[defs.mode].tsuura)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
       end,
 
-      oncompleted = function()
-        defences.got('tsuura')
-      end,
+      oncompleted = function() defences.got('tsuura') end,
 
       action = &quot;intone tsuura&quot;,
-      onstart = function()
-        send(&quot;intone tsuura&quot;, conf.commandecho)
-      end
+      onstart = function() send('intone tsuura', conf.commandecho) end
     }
   }
   svo.dict.ukhia = {
@@ -13828,14 +12781,10 @@ if svo.haveskillset('terminus') then
         return (not defc.dragonform and not defc.ukhia and ((sys.deffing and defdefup[defs.mode].ukhia) or (conf.keepup and defkeepup[defs.mode].ukhia)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
       end,
 
-      oncompleted = function()
-        defences.got('ukhia')
-      end,
+      oncompleted = function() defences.got('ukhia') end,
 
       action = &quot;intone ukhia&quot;,
-      onstart = function()
-        send(&quot;intone ukhia&quot;, conf.commandecho)
-      end
+      onstart = function() send('intone ukhia', conf.commandecho) end
     }
   }
   svo.dict.qamad = {
@@ -13847,14 +12796,10 @@ if svo.haveskillset('terminus') then
         return (not defc.dragonform and not defc.qamad and ((sys.deffing and defdefup[defs.mode].qamad) or (conf.keepup and defkeepup[defs.mode].qamad)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
       end,
 
-      oncompleted = function()
-        defences.got('qamad')
-      end,
+      oncompleted = function() defences.got('qamad') end,
 
       action = &quot;intone qamad&quot;,
-      onstart = function()
-        send(&quot;intone qamad&quot;, conf.commandecho)
-      end
+      onstart = function() send('intone qamad', conf.commandecho) end
     }
   }
   svo.dict.mainaas = {
@@ -13866,14 +12811,10 @@ if svo.haveskillset('terminus') then
         return (not defc.dragonform and not defc.mainaas and ((sys.deffing and defdefup[defs.mode].mainaas) or (conf.keepup and defkeepup[defs.mode].mainaas)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
       end,
 
-      oncompleted = function()
-        defences.got('mainaas')
-      end,
+      oncompleted = function() defences.got('mainaas') end,
 
       action = &quot;intone mainaas&quot;,
-      onstart = function()
-        send(&quot;intone mainaas&quot;, conf.commandecho)
-      end
+      onstart = function() send('intone mainaas', conf.commandecho) end
     }
   }
   svo.dict.gaiartha = {
@@ -13885,14 +12826,10 @@ if svo.haveskillset('terminus') then
         return (not defc.dragonform and not defc.gaiartha and ((sys.deffing and defdefup[defs.mode].gaiartha) or (conf.keepup and defkeepup[defs.mode].gaiartha)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
       end,
 
-      oncompleted = function()
-        defences.got('gaiartha')
-      end,
+      oncompleted = function() defences.got('gaiartha') end,
 
       action = &quot;intone gaiartha&quot;,
-      onstart = function()
-        send(&quot;intone gaiartha&quot;, conf.commandecho)
-      end
+      onstart = function() send('intone gaiartha', conf.commandecho) end
     }
   }
   svo.dict.lyre = {
@@ -14018,9 +12955,7 @@ if svo.me.class == 'Sentinel' then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('basilisk')
-      end,
+      oncompleted = function() defences.lost('basilisk') end,
     }
   }
 end
@@ -14051,9 +12986,7 @@ if svo.me.class == 'Sentinel' then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('jaguar')
-      end,
+      oncompleted = function() defences.lost('jaguar') end,
     }
   }
 end
@@ -14084,9 +13017,7 @@ if svo.me.class == 'Druid' then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('wyvern')
-      end,
+      oncompleted = function() defences.lost('wyvern') end,
     }
   }
   svo.dict.hydra = {
@@ -14115,9 +13046,7 @@ if svo.me.class == 'Druid' then
       end
     },
     gone = {
-      oncompleted = function()
-        defences.lost('hydra')
-      end,
+      oncompleted = function() defences.lost('hydra') end,
     }
   }
 end
@@ -14282,9 +13211,7 @@ if svo.haveskillset('voicecraft') then
       end,
 
       action = &quot;chant dwinnu&quot;,
-      onstart = function()
-        send(&quot;chant dwinnu&quot;, conf.commandecho)
-      end
+      onstart = function() send('chant dwinnu', conf.commandecho) end
     },
   }
 end
@@ -14305,9 +13232,7 @@ if svo.haveskillset('chivalry') then
         end
       end,
 
-      oncompleted = function()
-        svo.lostbal_rage()
-      end,
+      oncompleted = function() svo.lostbal_rage() end,
 
       empty = function()
         svo.rmaff{'inlove', 'justice', 'generosity', 'pacifism', 'peace'}
@@ -14315,9 +13240,7 @@ if svo.haveskillset('chivalry') then
       end,
 
       action = 'rage',
-      onstart = function()
-        send('rage', conf.commandecho)
-      end
+      onstart = function() send('rage', conf.commandecho) end
     },
   }
 end
@@ -14336,9 +13259,7 @@ if svo.haveskillset('metamorphosis') then
         echo&quot;\n&quot;svo.echof(&quot;We can probably morph again now.&quot;)
       end,
 
-      oncompleted = function()
-        svo.rmaff('cantmorph')
-      end
+      oncompleted = function() svo.rmaff('cantmorph') end
     },
     aff = {
       oncompleted = function()
@@ -14346,9 +13267,7 @@ if svo.haveskillset('metamorphosis') then
       end
     },
     gone = {
-      oncompleted = function()
-        svo.rmaff('cantmorph')
-      end,
+      oncompleted = function() svo.rmaff('cantmorph') end,
     }
   }
 end
@@ -14449,14 +13368,10 @@ if svo.haveskillset('chivalry') or svo.haveskillset('striking') or svo.haveskill
 
       end,
 
-      allgood = function()
-        svo.rmaff('asthma')
-      end,
+      allgood = function() svo.rmaff('asthma') end,
 
       actions = {'fitness'},
-      onstart = function()
-        send('fitness', conf.commandecho)
-      end
+      onstart = function() send('fitness', conf.commandecho) end
     },
   }
 end
@@ -14469,14 +13384,10 @@ if svo.haveskillset('devotion') then
         return (defc.bloodsworn and conf.bloodswornoff and stats.currenthealth &lt;= sys.bloodswornoff and not svo.doingaction'bloodsworntoggle' and not defc.dragonform) or false
       end,
 
-      oncompleted = function()
-        defences.lost('bloodsworn')
-      end,
+      oncompleted = function() defences.lost('bloodsworn') end,
 
       action = &quot;bloodsworn off&quot;,
-      onstart = function()
-        send(&quot;bloodsworn off&quot;, conf.commandecho)
-      end
+      onstart = function() send('bloodsworn off', conf.commandecho) end
     }
   }
 end
@@ -15227,7 +14138,8 @@ end, 'setup command to action mapping')
 
 end -- end of svo dict loader
 
-if svo.systemloaded then svo.loader.dict() end</script>
+if svo.systemloaded then svo.loader.dict() end
+</script>
             <eventHandlerList/>
         </Script>
     </ScriptPackage>
