@@ -11363,33 +11363,6 @@ if svo.haveskillset('metamorphosis') then
       end
     }
   }
-  -- nightsight = {
-  --   physical = {
-  --  --  --     balanceful_act = true,
-  --     def = true,
-
-  --     isadvisable = function()
-  --       return (not defc.nightsight and ((sys.deffing and defdefup[defs.mode].nightsight) or (conf.keepup and defkeepup[defs.mode].nightsight)) and not codepaste.balanceful_defs_codepaste() and ((not affs.cantmorph and sk.morphsforskill.nightsight) or defc.dragonform)) or false
-  --     end,
-
-  --     oncompleted = function()
-  --       defences.got('nightsight')
-  --     end,
-
-  --     action = &quot;nightsight on&quot;,
-  --     onstart = function()
-  --       if not defc.dragonform and (not conf.transmorph and sk.inamorph() and not sk.inamorphfor'nightsight') then
-  --         if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-  --         send('human', conf.commandecho)
-  --       elseif not defc.dragonform and not sk.inamorphfor'nightsight' then
-  --         if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-  --         send(&quot;morph &quot;..sk.morphsforskill.nightsight[1], conf.commandecho)
-  --       elseif defc.dragonform or sk.inamorphfor'nightsight' then
-  --         send(&quot;nightsight on&quot;, conf.commandecho)
-  --       end
-  --     end
-  --   },
-  -- },
   svo.dict.flame = {
     physical = {
       balanceful_act = true, def = true, undeffable = true, -- mark as undeffable since serverside can't morph
