@@ -5281,9 +5281,9 @@ end</script>
                 </eventHandlerList>
             </Script>
             <Script isActive="yes" isFolder="no">
-                <name>svo_savesettings</name>
+                <name>svo.savesettings</name>
                 <packageName></packageName>
-                <script>svo_savesettings = svo.savesettings</script>
+                <script></script>
                 <eventHandlerList>
                     <string>sysExitEvent</string>
                 </eventHandlerList>
