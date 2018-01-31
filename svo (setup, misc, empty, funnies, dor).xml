@@ -472,7 +472,7 @@ signals.gmcpcharafflictionsadd:connect(function()
   gaffl[thisaff] = true
   if conf.gmcpaffechoes then svo.echof(&quot;Gained aff %s&quot;, thisaff) end
   if svo.dict.sstosvoa[thisaff] then
-    svo.addaffdict(svo.dict.sstosvoa[thisaff])
+    svo.addaffdict(svo.dict[svo.dict.sstosvoa[thisaff]])
   end
 end, 'track gained gmcp aff')
 
@@ -481,7 +481,7 @@ signals.gmcpcharafflictionsremove:connect(function()
   gaffl[thisaff] = nil
   if conf.gmcpdefechoes then svo.echof(&quot;Cured aff %s&quot;, thisaff) end
   if svo.dict.sstosvoa[thisaff] then
-    svo.rmaff(svo.dict.sstosvoa[thisaff])
+    svo.rmaff(svo.dict[svo.dict.sstosvoa[thisaff]])
   end
 end, 'track lost gmcp aff')
 
@@ -499,7 +499,7 @@ signals.gmcpcharafflictionslist:connect(function()
       if preaffl[svoAffliction] then
         preaffl[svoAffliction] = false
       else
-        svo.addaffdict(svoAffliction)
+        svo.addaff(svoAffliction)
       end
     end
   end
