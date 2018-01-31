@@ -3983,7 +3983,7 @@ svo.signals.systemstart:add_post_emit(function ()
   if lfs.attributes(getMudletHomeDir() .. &quot;/svo/rift+inv/precachedata&quot;) then
     table.load(getMudletHomeDir() .. &quot;/svo/rift+inv/precachedata&quot;, tmp)
     svo.update(rift.precachedata, tmp)
-    rift.precache = rift.precachedata[svo.defs.mode]
+    rift.precache = rift.precachedata[svo.defs.mode] or {}
 
     -- moss was removed, get rid of it
     for _, m in pairs(rift.precachedata) do

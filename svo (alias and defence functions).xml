@@ -3814,7 +3814,7 @@ function defs.switch(which, echoback, nodefup)
     svo.echof(&quot;Deffing up in %s defence mode.&quot;, defs.mode)
   end
 
-  rift.precache = rift.precachedata[defs.mode]
+  rift.precache = rift.precachedata[defs.mode] or {}
   if not nodefup then sys.deffing = true end
   sk.fix_affs_and_defs()
   startStopWatch(defences.defup_timer)
@@ -3843,7 +3843,7 @@ function defs.quietswitch(which, echoback)
     svo.echof(&quot;Deffing up in %s defence mode.&quot;, defs.mode)
   end
 
-  rift.precache = rift.precachedata[defs.mode]
+  rift.precache = rift.precachedata[defs.mode] or {}
   sk.fix_affs_and_defs()
 end
 
