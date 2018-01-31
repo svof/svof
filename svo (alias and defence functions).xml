@@ -4218,6 +4218,10 @@ signals.systemstart:connect(function ()
         for kk,vv in pairs(svo.dict[defname]) do if type(vv) == 'table' and kk ~= 'gone' then bal = kk break end end
         if bal then
           defs['got_' .. defname] = function (force)
+					  -- svo.dict might not know about a defence when you go lesserform
+						-- before it's reloaded for the specific class
+					  if not svo.dict[defname] then return end
+						
             if svo.haveskillset('metamorphosis') then
               if defdata.custom_def_type or svo.usingbal(bal) then svo.checkaction(svo.dict[defname][bal], true)
               else svo.checkaction(svo.dict[defname][bal], force) end
