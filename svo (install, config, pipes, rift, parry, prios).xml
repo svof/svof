@@ -4073,8 +4073,13 @@ sps.sp_fillup = function ()
   return t
 end
 
-sp_config = sp_config or { parry = &quot;&quot;, priority = {}, parry_actionlevel = {}, parry_shouldbe = sps.sp_fillup() }
-sps.parry_currently = sps.sp_fillup()
+if table.is_empty(sp_config) then
+  svo.sp_config = { parry = &quot;&quot;, priority = {}, parry_actionlevel = {}, parry_shouldbe = sps.sp_fillup() }
+	sp_config = svo.sp_config
+	
+  sps.parry_currently = sps.sp_fillup()
+end
+
 me.parry_currently = sps.parry_currently
 
 sps.parry_options = {
