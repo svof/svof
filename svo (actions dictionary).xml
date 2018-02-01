@@ -7477,6 +7477,7 @@ end
     }
   },
   hamstring = {
+	  gamename = &quot;hamstrung&quot;,
     waitingfor = {
       customwait = 10,
 
