@@ -704,15 +704,15 @@ end, 'get initial state of prios')
 
 function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache)
   local isdefence, priority, gamename
-
+	
   if svo.dict[action][balance].def then
     isdefence = &quot;defence &quot;
     priority = rdefs[action]
-  elseif svo.dict[action].aff then
+  elseif svo.dict[action].aff and not svo.dict[action].aff.notagameaff then
     isdefence = &quot;&quot;
     priority = raffs[action]
   else -- an action that's not an aff or a def - ignore
-    svo.debugf(&quot;(e!) sk.sendpriorityswitch: quitting, not an aff or a def&quot;)
+    svo.debugf(&quot;(e!) sk.sendpriorityswitch: quitting, %s (%s) is not an aff or a def&quot;, action, balance)
     return
   end
 
@@ -740,11 +740,11 @@ function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache)
   if svo.dict[action][balance].def then
     isdefence = &quot;defence &quot;
     priority = 'reset'
-  elseif svo.dict[action].aff then
+  elseif svo.dict[action].aff and not svo.dict[action].aff.notagameaff then
     isdefence = &quot;&quot;
     priority = 26
   else -- an action that's not an aff or a def - ignore
-    svo.debugf(&quot;(e!) sk.sendpriorityignore: quitting, not an aff or a def&quot;)
+    svo.debugf(&quot;(e!) sk.sendpriorityignore: quitting, %s (%s) is not an aff or a def&quot;, action, balance)
     return
   end
 
@@ -1089,6 +1089,7 @@ end
 
 function sk.notifypriodiffs(beforestate, afterstate)
   local basictableindexdiff = svo.basictableindexdiff
+	local raiseEvent = raiseEvent
 
   -- don't notify of prio changes until the system is loaded, as they can get shuffled around a bit
   if not svo.systemloaded then return end
