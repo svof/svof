@@ -13690,8 +13690,14 @@ function svo.dict_setup()
         if not balancedata.name then balancedata.name = action .. '_' .. balancename end
         if not balancedata.balance then balancedata.balance = balancename end
         if not balancedata.action_name then balancedata.action_name = action end
-        balancedata.spriority  = balancedata.spriority or 0
-        balancedata.aspriority = balancedata.aspriority or 0
+				
+				-- don't assign priorities to these balances, since prios for them don't make sense
+				-- and if an action has prios, then it means it should be prioritised on serverside
+				if balancename ~= 'aff' and balancename ~= 'gone' and balancename ~= 'waitingfor' and
+				   balancename ~= 'boosted' and balancename ~= 'weakened' then
+          balancedata.spriority  = balancedata.spriority or 0
+          balancedata.aspriority = balancedata.aspriority or 0
+				end
         if balancedata.aspriority == 0 then
           unassigned_actions[balancename] = unassigned_actions[balancename] or {}
           unassigned_actions[balancename][#unassigned_actions[balancename]+1] = action

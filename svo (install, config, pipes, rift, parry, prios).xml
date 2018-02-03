@@ -2422,20 +2422,7 @@ tntf_tbl = {
   serverside = {
     shortcuts = {'ss'},
     on = function()
-      do
-        -- if we've got nothing on the list, setup these defaults
-        if not next(svo.serverignore) then
-          local list = sk.getallserversideactions()
-
-          for _, action in ipairs(list) do
-            svo.serverignore[action] = true
-          end
-
-          svo.serverignore.impale     = false -- serverside does not stack writhing atm
-          svo.serverignore.lovers     = false -- lust not handled by serverside
-          svo.serverignore.selfishness = false -- doesn't take selfish off
-        end
-      end
+		  svo.setup_default_serverignore()
 
       -- take previous ignores off
       local removelist = {}

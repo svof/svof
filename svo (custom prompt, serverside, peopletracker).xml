@@ -678,7 +678,7 @@ svo.loader.serverside = function()
 
 local sys, affs, defdefup, defkeepup, signals = svo.sys, svo.affs, svo.defdefup, svo.defkeepup, svo.signals
 local conf, sk, me, defs = svo.conf, svo.sk, svo.me, svo.defs
-local stats, serverignore = svo.stats, svo.serverignore
+local stats = svo.stats
 
 -- update serverside prios in general
 signals[&quot;svo prio changed&quot;]:connect(function()
@@ -783,7 +783,7 @@ function sk.updateserversideprios()
 
       -- make the diff of snapshots
       local diffslow = basictableindexdiff(data.data, afterstate[balance].newdata)
-      -- split the action_balance actions into separate balances
+      -- split the slowcuring actions into separate balances
       local diff = sk.splitbals(diffslow)
 
       -- get the new list of prios, sorted in importance
@@ -901,7 +901,7 @@ end
 function sk.shouldignoreserverside(action)
   return conf.serverside and (
     svo.ignore[action] or
-    not serverignore[action] or
+    not svo.serverignore[action] or
     (not sys.deffing and defkeepup[defs.mode][action] == false) or
     (sys.deffing and defdefup[defs.mode][action] == false) or
     (svo.dict[action].onservereignore and svo.dict[action].onservereignore())
@@ -940,9 +940,13 @@ function sk.splitdefs(balance, list)
     -- take care of defs
     if dict[action][balance].def then
       -- check that it's not undeffable in-game and on keepup
-      if not dict[action][balance].undeffable and ((sys.deffing and defdefup[defmode][action]) or (not sys.deffing and defkeepup[defmode][action])) and not sk.shouldignoreserverside(action) then
-        defslist[i] = list[i]
-        list[i] = nil
+      if not dict[action][balance].undeffable and 
+			  ((sys.deffing and defdefup[defmode][action]) or 
+				(not sys.deffing and defkeepup[defmode][action])) and not 
+				sk.shouldignoreserverside(action) then
+				
+          defslist[i] = list[i]
+          list[i] = nil
       -- if it's off keepup, send to another list so those defs get ignored
       elseif not dict[action][balance].undeffable and sk.shouldignoreserverside(action) then
         disableddefs[#disableddefs+1] = list[i]
@@ -1118,7 +1122,7 @@ function sk.notifypriodiffs(beforestate, afterstate)
 end
 
 
--- returns an alphabetically sorted indexed list of all actions serverside can do
+-- returns an alphabetically sorted, indexed list of all actions serverside can do
 function sk.getallserversideactions()
   local type = type
 
@@ -1202,18 +1206,18 @@ signals[&quot;svo config changed&quot;]:connect(function(config)
     if sk.canclot() and conf.clot then svo.sendcuring(&quot;clot on&quot;) else svo.sendcuring(&quot;clot off&quot;) end
     svo.sendcuring(&quot;clotat &quot;..conf.bleedamount)
 
-    if not serverignore.healhealth then
+    if not svo.serverignore.healhealth then
       svo.sendcuring(&quot;siphealth 0&quot;)
       sk.priochangecache.special.healhealth = 0
-    elseif serverignore.healhealth then
+    elseif svo.serverignore.healhealth then
       svo.sendcuring(&quot;siphealth &quot;..conf.siphealth)
       sk.priochangecache.special.healhealth = conf.siphealth
     end
 
-    if not serverignore.healmana then
+    if not svo.serverignore.healmana then
       svo.sendcuring(&quot;sipmana 0&quot;)
       sk.priochangecache.special.healmana = 0
-    elseif serverignore.healmana then
+    elseif svo.serverignore.healmana then
       svo.sendcuring(&quot;sipmana &quot;..conf.sipmana)
       sk.priochangecache.special.healmana = conf.sipmana
     end
@@ -1291,10 +1295,10 @@ end, 'update serverside clot')
 signals[&quot;svo config changed&quot;]:connect(function(config)
   if not (conf.serverside and config == 'siphealth') then return end
 
-  if not serverignore.healhealth and sk.priochangecache.special.healhealth ~= 0 then
+  if not svo.serverignore.healhealth and sk.priochangecache.special.healhealth ~= 0 then
     svo.sendcuring(&quot;siphealth 0&quot;)
     sk.priochangecache.special.healhealth = 0
-  elseif serverignore.healhealth and sk.priochangecache.special.healhealth ~= conf.siphealth then
+  elseif svo.serverignore.healhealth and sk.priochangecache.special.healhealth ~= conf.siphealth then
     svo.sendcuring(&quot;siphealth &quot;..conf.siphealth)
     sk.priochangecache.special.healhealth = conf.siphealth
   end
@@ -1302,10 +1306,10 @@ end, 'update serverside siphealth')
 signals[&quot;svo serverignore changed&quot;]:connect(function(config)
   if not (conf.serverside and config == 'healhealth') then return end
 
-  if not serverignore.healhealth and sk.priochangecache.special.healhealth ~= 0 then
+  if not svo.serverignore.healhealth and sk.priochangecache.special.healhealth ~= 0 then
     svo.sendcuring(&quot;siphealth 0&quot;)
     sk.priochangecache.special.healhealth = 0
-  elseif serverignore.healhealth and sk.priochangecache.special.healhealth ~= conf.siphealth then
+  elseif svo.serverignore.healhealth and sk.priochangecache.special.healhealth ~= conf.siphealth then
     svo.sendcuring(&quot;siphealth &quot;..conf.siphealth)
     sk.priochangecache.special.healhealth = conf.siphealth
   end
@@ -1315,10 +1319,10 @@ end, 'update serverside healhealth')
 signals[&quot;svo config changed&quot;]:connect(function(config)
   if not (conf.serverside and config == 'sipmana') then return end
 
-  if not serverignore.healmana and sk.priochangecache.special.healmana ~= 0 then
+  if not svo.serverignore.healmana and sk.priochangecache.special.healmana ~= 0 then
     svo.sendcuring(&quot;sipmana 0&quot;)
     sk.priochangecache.special.healmana = 0
-  elseif serverignore.healmana and sk.priochangecache.special.healmana ~= conf.sipmana then
+  elseif svo.serverignore.healmana and sk.priochangecache.special.healmana ~= conf.sipmana then
     svo.sendcuring(&quot;sipmana &quot;..conf.sipmana)
     sk.priochangecache.special.healmana = conf.sipmana
   end
@@ -1326,10 +1330,10 @@ end, 'update serverside sipmana')
 signals[&quot;svo serverignore changed&quot;]:connect(function(config)
   if not (conf.serverside and config == 'healmana') then return end
 
-  if not serverignore.healmana and sk.priochangecache.special.healmana ~= 0 then
+  if not svo.serverignore.healmana and sk.priochangecache.special.healmana ~= 0 then
     svo.sendcuring(&quot;sipmana 0&quot;)
     sk.priochangecache.special.healmana = 0
-  elseif serverignore.healmana and sk.priochangecache.special.healmana ~= conf.sipmana then
+  elseif svo.serverignore.healmana and sk.priochangecache.special.healmana ~= conf.sipmana then
     svo.sendcuring(&quot;sipmana &quot;..conf.sipmana)
     sk.priochangecache.special.healmana = conf.sipmana
   end
@@ -1542,6 +1546,20 @@ function svo.hitcuringsetlimit()
   echo(&quot;.\n&quot;)
 
   svo.tntf_set('serverside', 'off', true)
+end
+
+function svo.setup_default_serverignore()
+  if not next(svo.serverignore) then
+    local list = sk.getallserversideactions()
+
+    for _, action in ipairs(list) do
+      svo.serverignore[action] = true
+    end
+
+    svo.serverignore.impale     = false -- serverside does not stack writhing atm
+    svo.serverignore.lovers     = false -- lust not handled by serverside
+    svo.serverignore.selfishness = false -- doesn't take selfish off
+  end
 end
 
 function svo.hitaliaslimit()
