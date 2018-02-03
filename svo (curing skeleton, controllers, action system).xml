@@ -3703,7 +3703,8 @@ svo.doaction = function(arg1, arg2)
     balance = arg2
     svo.assert(dict[which], &quot;svo.doaction: &quot;..which..&quot; action doesn't exist. See 'vshow ignorelist' for a list of them.&quot;)
     svo.assert(dict[which][balance], &quot;svo.doaction: &quot;..which..&quot; doesn't have a &quot;..balance.. &quot; balance.&quot;)
-  end
+    act = dict[which][balance]
+	end
   --it'll be in format of dict.what.#somebalance
   -- add to a table, create timers and store id's in there
   -- if ai is on, enable the relevant triggers &lt;- maybe we should do
