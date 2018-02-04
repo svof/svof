@@ -517,12 +517,6 @@ signals.gmcpchardefencesadd:connect(function()
   if svo.dict.sstosvod[thisdef] then
     if type(svo.defs['got_'..svo.dict.sstosvod[thisdef]]) == 'function' then
       svo.defs['got_'..svo.dict.sstosvod[thisdef]](true)
-    else
-      echoLink(&quot;(e!)&quot;,
-        [[echo(&quot;The problem was: got_ function was ]]..type(svo.defs['got_'..svo.dict.sstosvod[thisdef]])..
-        [[ for defence ]]..svo.dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)&quot;)]],
-        'Oy - there was a problem. Click on this link and submit a bug report with what it says along with '
-        ..'a copy/paste of what you saw.')
     end
   end
 end, 'track gained gmcp def')
@@ -534,12 +528,6 @@ signals.gmcpchardefencesremove:connect(function()
   if svo.dict.sstosvod[thisdef] then
     if type(svo.defs['lost_'..svo.dict.sstosvod[thisdef]]) == 'function' then
       svo.defs['lost_'..svo.dict.sstosvod[thisdef]]()
-    else
-      echoLink(&quot;(e!)&quot;,
-        [[echo(&quot;The problem was: lost_ function was ]]..type(svo.defs['lost_'..svo.dict.sstosvod[thisdef]])..
-        [[ for defence ]]..svo.dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)&quot;)]],
-        'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a '
-        ..'copy/paste of what you saw.')
     end
   end
 end, 'track lost gmcp def')
@@ -555,12 +543,6 @@ signals.gmcpchardefenceslist:connect(function()
         predefs[svo.dict.sstosvod[thisdef]] = false
       elseif type(svo.defs['got_'..svo.dict.sstosvod[thisdef]]) == 'function' then
         svo.defs['got_'..svo.dict.sstosvod[thisdef]](true)
-      else
-        echoLink(&quot;(e!)&quot;,
-          [[echo(&quot;The problem was: got_ function was ]]..type(svo.defs['got_'..svo.dict.sstosvod[thisdef]])..
-          [[ for defence ]]..svo.dict.sstosvod[thisdef]..[[ (gmcp:]]..thisdef..[[)&quot;)]],
-          'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a '
-          ..'copy/paste of what you saw.')
       end
     end
   end
@@ -568,12 +550,6 @@ signals.gmcpchardefenceslist:connect(function()
     if val == true and svo.dict.sstosvod[defname] then
       if type(svo.defs['lost_'..svo.dict.sstosvod[defname]]) == 'function' then
         svo.defs['lost_'..svo.dict.sstosvod[defname]]()
-      else
-        echoLink(&quot;(e!)&quot;,
-          [[echo(&quot;The problem was: lost_ function was ]]..type(svo.defs['lost_'..svo.dict.sstosvod[defname]])..
-          [[ for defence ]]..svo.dict.sstosvod[defname]..[[ (gmcp:]]..defname..[[)&quot;)]],
-          'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a '
-          ..'copy/paste of what you saw.')
       end
     end
   end
