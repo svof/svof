@@ -7135,6 +7135,11 @@ end</script>
 
 		svo.me.class = newclass
 		svo.signals.saveconfig:emit()
+		
+		-- reset all serverside prios so serverside doesn't spam class-specific defences
+		-- it's a bug in the game that serverside still tries to put up defences you can't
+		svo.sk.resetserversideprios()
+		
 	  svo.systemloaded = false; svo_init_system()		
 	  svo.echof(&quot;Changed your Svof from %s over to %s.&quot;, oldclass, svo.me.class)
 	end

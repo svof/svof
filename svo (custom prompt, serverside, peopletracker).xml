@@ -701,15 +701,21 @@ signals[&quot;svo system loaded&quot;]:connect(function()
   sk.priosbeforechange = sk.getblankbeforestateprios()
 end, 'get initial state of prios')
 
+function sk.resetserversideprios()
+  svo.sendc(&quot;curing priority reset&quot;)
+  svo.sendc(&quot;curing priority defense list reset&quot;)
+	sk.priochangecache = nil
+  sk.priosbeforechange = sk.getblankbeforestateprios()
+end
 
 function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache)
   local isdefence, priority, gamename
 	
   if svo.dict[action][balance].def then
-    isdefence = &quot;defence &quot;
+    isdefence = 'defence '	
     priority = rdefs[action]
   elseif svo.dict[action].aff and not svo.dict[action].aff.notagameaff then
-    isdefence = &quot;&quot;
+    isdefence = ''
     priority = raffs[action]
   else -- an action that's not an aff or a def - ignore
     svo.debugf(&quot;(e!) sk.sendpriorityswitch: quitting, %s (%s) is not an aff or a def&quot;, action, balance)
