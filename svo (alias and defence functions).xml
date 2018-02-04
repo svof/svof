@@ -4495,10 +4495,6 @@ local function show_defs(tbl, linkcommand, cmdname)
   end
 
   local function show_em(skillset, what)
-    if skillset and not sk.ignored_defences[skillset] then
-      if not skillset then svo.echof(&quot;no fucking skillset! %s&quot;, debug.traceback()) end
-      svo.echof(&quot;what, %s is not in ignored_defences: %s&quot;, skillset, svo.pl.pretty.write(sk.ignored_defences))
-    end
     if skillset and not sk.ignored_defences[skillset].status then svo.echof(&quot;%s defences:&quot;, skillset:title()) end
     for _,def in ipairs(what) do
       local disabled = ((sk.ignored_defences[skillset] and sk.ignored_defences[skillset].status) and true or (sk.ignored_defences[sk.ignored_defences_map[def]].t[def]))
