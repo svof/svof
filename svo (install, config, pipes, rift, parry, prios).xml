@@ -3342,9 +3342,9 @@ end, 'update svo.sip on curemethod change')
 -- determine the apply method
 svo.signals.curemethodchanged:connect(function ()
   svo.apply = function (what, whereto)
-    whereto = whereto or &quot;&quot;
+    whereto = whereto or ''
     local use = what.applycure[1]
-    send(&quot;apply &quot;..use..whereto, conf.commandecho)
+    send('apply '..use..whereto, conf.commandecho)
     sys.last_used[what.name] = use
   end
 end, 'update svo.apply on curemethod change')
