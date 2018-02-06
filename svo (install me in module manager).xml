@@ -420,6 +420,7 @@ function Signal:add_post_emit(post_emit_func, post_emit_name)
 					self.post_emit_func:removeIndex(position)
 					self.post_emit_names:remove(post_emit_name)
 				end
+    self.post_emit_names:push_front(post_emit_name or "")
     self.post_emit_funcs:push_front(post_emit_func)
 end
 
