@@ -5400,7 +5400,7 @@ end
         if svo.sps.something_to_parry() then
           for name, limb in pairs(svo.sp_config.parry_shouldbe) do
             if limb and limb ~= svo.sps.parry_currently[name] then
-if not svo.haveskillset('tekura') then
+if not (svo.haveskillset('tekura') and conf.guarding) then
               send(string.format(&quot;%sparry %s&quot;, (not defc.dragonform and &quot;&quot; or 'claw'), name), conf.commandecho)
 else
               send(string.format(&quot;%s %s&quot;, (not defc.dragonform and 'guard' or 'clawparry'), name), conf.commandecho)
@@ -5412,7 +5412,7 @@ end
           -- check if we need to unparry in manual
           for limb, status in pairs(svo.sps.parry_currently) do
             if status ~= svo.sp_config.parry_shouldbe[limb] then
-if not svo.haveskillset('tekura') then
+if not (svo.haveskillset('tekura') and conf.guarding) then
              send(string.format(&quot;%sparry nothing&quot;, (not defc.dragonform and &quot;&quot; or 'claw')), conf.commandecho)
 else
              send(string.format(&quot;%s nothing&quot;, (not defc.dragonform and 'guard' or 'clawparry')), conf.commandecho)
@@ -5424,7 +5424,7 @@ end
           -- got here? nothing to do...
           svo.sys.sp_satisfied = true
         elseif svo.sp_config.priority[1] and not svo.sps.parry_currently[svo.sp_config.priority[1]] then
-if not svo.haveskillset('tekura') then
+if not (svo.haveskillset('tekura') and conf.guarding) then
           send(string.format(&quot;%sparry %s&quot;, (not defc.dragonform and &quot;&quot; or 'claw'), svo.sp_config.priority[1]), conf.commandecho)
 else
           send(string.format(&quot;%s %s&quot;, (not defc.dragonform and 'guard' or 'clawparry'), svo.sp_config.priority[1]), conf.commandecho)
