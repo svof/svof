@@ -2995,13 +2995,13 @@ svo.pl.dir.makepath(getMudletHomeDir() .. &quot;/svo/rift+inv&quot;)
 local rift, me, sys, sk, conf = svo.rift, svo.me, svo.sys, svo.sk, svo.conf
 local pipes = svo.pipes
 
-rift.riftcontents = {}
-rift.invcontents = {}
+rift.riftcontents = rift.riftcontents or {}
+rift.invcontents = rift.invcontents or {}
 me.riftcontents = rift.riftcontents
 me.invcontents = rift.invcontents
 
-rift.precache = {}
-rift.precachedata = {}
+rift.precache = rift.precache or {}
+rift.precachedata = rift.precachedata or {}
 
 rift.doprecache = false
 
