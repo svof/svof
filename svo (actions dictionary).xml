@@ -830,7 +830,7 @@ end
         return (affs.pressure) or false
       end,
 
-      -- this is called when you still have some left
+      -- this is called when you still have some left 
       oncompleted = function()
         svo.lostbal_herb()
         codepaste.remove_stackableaff('pressure', true)
