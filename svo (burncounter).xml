@@ -225,16 +225,25 @@ svo.bl_ignore()</script>
             <script>-- burncounters prompt tag is defined here
 -- feel free to tinker with it, but move it out into a script of its own,
 -- so your changes don't get erased on an update!
-tempTimer(0, function()
+tempTimer(
+  0,
+  function()
+    function svo.bl_prompttag()
+      if
+        svo.defc.dragonform or not svo.lasthit or not svo.bl_list or not svo.bl_list[svo.lasthit]
+      then
+        return &quot;&quot;
+      end
+      local t = svo.bl_list[svo.lasthit]
+      return
+        string.format(
+          &quot;%s%s&quot;, (t.level == 0 and '' or t.level), (t.dehydrate == 0 and '' or &quot; (dehydrated)&quot;)
+        )
+    end
 
-function svo.bl_prompttag()
-  if svo.defc.dragonform or not svo.lasthit or not svo.bl_list or not svo.bl_list[svo.lasthit] then return &quot;&quot; end
-  local t = svo.bl_list[svo.lasthit]
-  return string.format(&quot;%s%s&quot;, (t.level == 0 and '' or t.level), (t.dehydrate == 0 and '' or &quot; (dehydrated)&quot;))
-end
-svo.adddefinition(&quot;@bl&quot;, &quot;svo.bl_prompttag()&quot;)
-
-end)</script>
+    svo.adddefinition(&quot;@bl&quot;, &quot;svo.bl_prompttag()&quot;)
+  end
+)</script>
             <eventHandlerList/>
             <Script isActive="yes" isFolder="no">
                 <name>burncounter code</name>
