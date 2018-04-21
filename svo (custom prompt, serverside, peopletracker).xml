@@ -704,7 +704,11 @@ end, 'get initial state of prios')
 function sk.resetserversideprios()
   svo.sendc(&quot;curing priority reset&quot;)
   svo.sendc(&quot;curing priority defense list reset&quot;)
-	sk.priochangecache = nil
+	sk.priochangecache = {
+    special = {
+      focustoggle = conf.focus
+    }
+	}
   sk.priosbeforechange = sk.getblankbeforestateprios()
 end
 
