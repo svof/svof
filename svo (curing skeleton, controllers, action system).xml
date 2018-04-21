@@ -2712,7 +2712,7 @@ function svo.onprompt()
   local processing_status, processing_message = pcall(signals.after_prompt_processing.emit, signals.after_prompt_processing)
   if not processing_status then
     svo.debugf(processing_message)
-    echoLink(&quot;(e!)&quot;, string.format(&quot;svo.echof([[The problem was: stuff after the actual work failed (%q)]])&quot;, m), 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+    echoLink(&quot;(e!)&quot;, string.format(&quot;svo.echof([[The problem was: stuff after the actual work failed (%q)]])&quot;, processing_message), 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
   end
 
   if conf.showchanges and conf.commandecho and conf.commandechotype ~= 'fancynewline' then sk.showstatchanges() end
