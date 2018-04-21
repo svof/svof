@@ -8914,13 +8914,13 @@ end
   },
   blind = {
     gamename = 'blindness',
-    onservereignore = function()
+    onservereignore = function()			
       -- no blind skill: ignore serverside if it's not to be deffed up atm
       -- with blind skill: ignore serverside can use skill, or if it's not to be deffed up atm
-      return
-        (not svo.haveskillset('shindo') or (conf.shindoblind and not defc.dragonform)) or
+      return not 
+        ((not svo.haveskillset('shindo') or (conf.shindoblind and not defc.dragonform)) or
         (not svo.haveskillset('kaido') or (conf.kaidoblind and not defc.dragonform)) or
-        not ((sys.deffing and defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind))
+        not ((sys.deffing and defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)))
     end,
     herb = {
       def = true,
@@ -8972,9 +8972,9 @@ end
     onservereignore = function()
       -- no deaf skill: ignore serverside if it's not to be deffed up atm
       -- with deaf skill: ignore serverside can use skill, or if it's not to be deffed up atm
-      return (not svo.haveskillset('shindo') or (conf.shindodeaf and not defc.dragonform)) or
+      return not((not svo.haveskillset('shindo') or (conf.shindodeaf and not defc.dragonform)) or
         (not svo.haveskillset('kaido') or (conf.kaidodeaf and not defc.dragonform)) or
-        not ((sys.deffing and defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf))
+        not ((sys.deffing and defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf)))
     end,
     herb = {
       def = true,
