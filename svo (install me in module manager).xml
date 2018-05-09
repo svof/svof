@@ -7054,30 +7054,36 @@ function svo_init_system()
 
   -- list of requires Svof subsystems that needs to be loaded before we can load the system
   local required_subsystems = {
-    &quot;setup&quot;,
-    &quot;misc&quot;,
-    &quot;empty&quot;,
-    &quot;dict&quot;,
-    &quot;sk&quot;,
-    &quot;controllers&quot;,
-    &quot;action&quot;,
-    &quot;pipes&quot;,
-    &quot;rift&quot;,
-    &quot;diag&quot;,
-    &quot;valid_simple&quot;,
-    &quot;valid_main&quot;,
-    &quot;config&quot;,
-    &quot;install&quot;,
-    &quot;aliases&quot;,
-    &quot;defences&quot;,
-    &quot;prio&quot;,
-    &quot;parry&quot;,
-    &quot;funnies&quot;,
-    &quot;dor&quot;,
-    &quot;customprompt&quot;,
-    &quot;serverside&quot;,
-    &quot;peopletracker&quot;,
+    'setup',
+    'misc',
+    'empty',
+    'dict',
+    'sk',
+    'controllers',
+    'action',
+    'pipes',
+    'rift',
+    'diag',
+    'valid_simple',
+    'valid_main',
+    'config',
+    'install',
+    'aliases',
+    'defences',
+    'prio',
+    'parry',
+    'funnies',
+    'dor',
+    'customprompt',
+    'serverside',
+    'peopletracker',
   }
+	
+  -- addons that make use of the loader mechanism to load after the system is loaded
+	local addons = {
+	  'magilimbcounter',
+		'priestreporter'
+	}
 	
 	-- Penlight is not loaded yet	
 	if not package.loaded['pl.tablex'] then return end
@@ -7110,8 +7116,14 @@ function svo_init_system()
 	end
 	
   svo.echofn(&quot;Loaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
-  echoLink(&quot;homepage&quot;, '(openUrl or openURL)&quot;http://svof.github.io/svof&quot;', &quot;Svof homepage&quot;)
+  echoLink(&quot;homepage&quot;, 'openUrl&quot;http://svof.github.io/svof&quot;', &quot;Svof homepage&quot;)
   decho(svo.getDefaultColor()..&quot;)\n&quot;)
+	
+	-- load any addons that wait for the system to load,
+	-- plus ensure only the class-specific limbcounter is present
+	for _, addon in ipairs(addons) do
+	  if svo.loader[addon] then svo.loader[addon]() end
+	end
 	
 	-- setup prompt stats on a reload
 	if force_init then sendSocket(&quot;\n&quot;) end
@@ -7124,8 +7136,8 @@ end</script>
             <Script isActive="yes" isFolder="no">
                 <name>svo.classchange</name>
                 <packageName></packageName>
-                <script>function svo.classchange()
-  local newclass = gmcp.Char.Status.class
+                <script>function svo.classchange(override)
+  local newclass = override or gmcp.Char.Status.class
 	
 	-- if you're in Dragon or an unrecognised class, use the None system
 	-- works fine in Dragon as they don't have class-specific skills anyway
