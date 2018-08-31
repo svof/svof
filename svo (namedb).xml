@@ -3280,10 +3280,10 @@ function ndb.downloaded_file(_, filename)
   raiseEvent(&quot;NameDB finished honors&quot;)
 end
 
-function ndb.getinfo(person)
+--[[function ndb.getinfo(person)
   downloadFile(getMudletHomeDir()..&quot;/&quot;..person..&quot;-namedb.html&quot;, &quot;http://oldsite.ironrealms.com/game/honors/Achaea/&quot;..
 person)
-end</script>
+end]]--</script>
                     <eventHandlerList>
                         <string>sysDownloadDone</string>
                     </eventHandlerList>
