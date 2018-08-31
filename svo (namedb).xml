@@ -3210,20 +3210,22 @@ end</script>
 
 function ndb.downloaded_file(_, filename)
   -- is the file that downloaded ours?
-  if not string.find(filename, &quot;namedb.html&quot;) then return end
+  if not string.find(filename, &quot;namedb.json&quot;) then return end
   local f = io.open(filename)
   local s = f:read(&quot;*all&quot;)
   if f then f:close() end
   os.remove(filename)
+  s = s:gsub(&quot;\&quot;&quot;, &quot;&quot;)
   local name = filename:match(&quot;(%w+)-namedb&quot;)
-  local fullname = s:match([[&lt;br /&gt;Full name: (.+)&lt;br /&gt;City]])
-  local level = s:match([[Level: (.-)&lt;]])
-  local city = s:match([[&lt;br /&gt;City: (.+)&lt;br /&gt;House]])
-  local house = s:match([[&lt;br /&gt;House: (.+)&lt;br /&gt;Level]])
-  local class = s:match([[&lt;br /&gt;Class: (.+)&lt;br /&gt;Mob]])
-  local xp_rank = s:match([[Xp rank: (%d+)]])
+  local fullname = s:match([[fullname:(.+),city]])
+  local level = s:match([[level:(%d+),class]])
+  local city = s:match([[city:(.+),house]])
+  local house = s:match([[house:(.+),level]])
+  local class = s:match([[class:(.+),mob_kills]])
+  local xp_rank = s:match([[xp_rank:(%d+),explorer_rank]])
   local dragon
   local temp_name_list
+
   -- sometimes players, unless you're logged in, aren't visible
   if s:find(&quot;I do not recognize that player.&quot;) then
     temp_name_list = {{
@@ -3252,21 +3254,21 @@ function ndb.downloaded_file(_, filename)
       xp_rank = xp_rank and xp_rank or -1,
     }}
     if city ~= &quot;(hidden)&quot; then
-    	  temp_name_list[1].city = (city ~= &quot;(none)&quot; and city or &quot;rogue&quot;)
+        temp_name_list[1].city = (city ~= &quot;(none)&quot; and city or &quot;rogue&quot;)
     end
     -- house info isn't shown if you're logged in to the website for some people
     if not(house == &quot;(hidden)&quot; or house == &quot;(none)&quot;) then
       temp_name_list[1].guild = house
     end
   end
+
   db:merge_unique(ndb.db.people, temp_name_list)
 
   raiseEvent(&quot;NameDB finished honors&quot;)
 end
 
 function ndb.getinfo(person)
-  downloadFile(getMudletHomeDir()..&quot;/&quot;..person..&quot;-namedb.html&quot;, &quot;http://oldsite.ironrealms.com/game/honors/Achaea/&quot;..
-person)
+  downloadFile(getMudletHomeDir()..&quot;/&quot;..person..&quot;-namedb.json&quot;, &quot;http://api.achaea.com/characters/&quot;..person..&quot;.json&quot;)
 end</script>
                     <eventHandlerList>
                         <string>sysDownloadDone</string>
