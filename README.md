@@ -26,6 +26,7 @@ Svof is licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.
         1. Using Brew from your Terminal: `brew install lua` and `brew install p7zip`.
             1. Afterwards, make sure to `brew install lua5.1`.
         1. Using LuaRocks from your Terminal: `luarocks install luafilesystem` and `luarocks install penlight`
+    1. Docker: install [Docker CE](https://docs.docker.com/install) on your platform of choice. You'll need docker and docker-compose in particular.
 1. Open the command-line and navigate to the Svof folder, and run:
 
        On Ubuntu:
@@ -33,10 +34,12 @@ Svof is licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.
 
        In Windows:
        generate.lua -o yourclasshere
-       
+
        On OSX:
        lua5.1 generate.lua -o yourclasshere
 
+       On Docker:
+       CLASS=yourclasshere docker-compose up
 
 1. Replace <Svof Git location> with the path to the XML files, and then run this command in Mudlet (requires 3.0 - this is only needed for the development version, normal Svof can run on 2.1)
 
