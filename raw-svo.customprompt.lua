@@ -1,4 +1,4 @@
--- Svof (c) 2011-2015 by Vadim Peretokin
+-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -6,19 +6,22 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-cpp = {}
+local sys, affs, signals = svo.sys, svo.affs, svo.signals
+local conf, sk, me, defc = svo.conf, svo.sk, svo.me, svo.defc
+local stats = svo.defences
+local bals, cp, cpp = svo.bals, svo.cp, svo.cpp
 
-for _, stat in ipairs {"health", "mana", "endurance", "willpower"} do
-  cpp["compute_"..stat.."_percent"] = function()
-    return math.floor((stats["current"..stat]/stats["max"..stat])*100)
+for _, stat in ipairs {'health', 'mana', 'endurance', 'willpower'} do
+  cpp['compute_'..stat..'_percent'] = function()
+    return math.floor((stats['current'..stat]/stats['max'..stat])*100)
   end
 end
 
-for _, stat in ipairs {"health", "mana", "endurance", "willpower"} do
-  cpp["compute_"..stat.."_colour"] = function()
-    if stats["current"..stat] >= (stats["max"..stat] * .75) then
+for _, stat in ipairs {'health', 'mana', 'endurance', 'willpower'} do
+  cpp['compute_'..stat..'_colour'] = function()
+    if stats['current'..stat] >= (stats['max'..stat] * .75) then
       return "<a_darkgreen>"
-    elseif stats["current"..stat] >= (stats["max"..stat] * .25) then
+    elseif stats['current'..stat] >= (stats['max'..stat] * .25) then
       return "<a_yellow>"
     else
       return "<a_red>" end
@@ -39,7 +42,7 @@ cpp.compute_slowcuring = function()
   local s = {}
   s[#s+1] = "<red>("
 
-  if sacid then
+  if svo.sacid then
     s[#s+1] = "<green>a"
   elseif sk.doingstuff_inslowmode() then
     s[#s+1] = "<red>a"
@@ -61,27 +64,27 @@ cpp.compute_defs = function()
   local t = {}
 
   if defc.cloak then
-    t[#t+1] = "c"
+    t[#t+1] = 'c'
   end
 
   if affs.deafaff or defc.deaf then
-    t[#t+1] = "d"
+    t[#t+1] = 'd'
   end
 
   if affs.blindaff or defc.blind then
-    t[#t+1] = "b"
+    t[#t+1] = 'b'
   end
 
   if defc.kola then
-    t[#t+1] = "k"
+    t[#t+1] = 'k'
   end
 
   if defc.rebounding then
-    t[#t+1] = "r"
+    t[#t+1] = 'r'
   end
 
   if defc.breath then
-    t[#t+1] = "h"
+    t[#t+1] = 'h'
   end
 
   return table.concat(t)
@@ -90,8 +93,8 @@ end
 cpp.compute_eqbal = function()
   local t = {}
 
-  if bals.equilibrium then t[#t+1] = "e" end
-  if bals.balance then t[#t+1] = "x" end
+  if bals.equilibrium then t[#t+1] = 'e' end
+  if bals.balance then t[#t+1] = 'x' end
 
   return table.concat(t)
 end
@@ -100,12 +103,12 @@ cpp.compute_armbal = function()
   local t = {}
 
   if bals.leftarm == true then
-    t[#t+1] = "l"
+    t[#t+1] = 'l'
   elseif bals.leftarm ~= false then
     t[#t+1] = "?" end
 
   if bals.rightarm == true then
-    t[#t+1] = "r"
+    t[#t+1] = 'r'
   elseif bals.rightarm ~= false then
     t[#t+1] = "?" end
 
@@ -113,14 +116,14 @@ cpp.compute_armbal = function()
 end
 
 cpp.compute_prone = function ()
-  return (affs.prone and "p" or "")
+  return (affs.prone and 'p' or "")
 end
 
 cpp.compute_Prone = function ()
-  return (affs.prone and "P" or "")
+  return (affs.prone and 'P' or "")
 end
 
-#if skills.kaido then
+if svo.haveskillset('kaido') then
 cpp.compute_kai = function ()
   if stats.kai ~= 0 then
     return stats.kai
@@ -149,10 +152,10 @@ cpp.compute_kai_colour = function ()
   end
 
 end
-#end
+end
 
 
-#if skills.shindo then
+if svo.haveskillset('shindo') then
 cpp.compute_shin = function ()
   if stats.shin ~= 0 then
     return stats.shin
@@ -181,78 +184,78 @@ cpp.compute_shin_colour = function ()
   end
 
 end
-#end
+end
 
 cpp.compute_gametarget_colour = function()
-  local colour = "blanched_almond"
+  local colour = 'blanched_almond'
 
   local hp = me.gametargethp or 0
   if hp == 0 then
-      -- default colour
+        colour = 'blanched_almond'
   elseif hp < 5 then
-        colour = "red" -- nearly dead
+        colour = 'red' -- nearly dead
   elseif hp < 25 then
-        colour = "orange_red" -- grievously wounded
+        colour = 'orange_red' -- grievously wounded
   elseif hp < 50 then
-        colour = "dark_orange" -- injured
+        colour = 'dark_orange' -- injured
   elseif hp < 75 then
-        colour = "orange" -- slightly injured
+        colour = 'orange' -- slightly injured
   end
 
   return '<'..colour..">"
 end
 
 
-#if skills.voicecraft then
+if svo.haveskillset('voicecraft') then
 cpp.compute_voicebal = function()
-  return (bals.voice and "v" or "")
+  return (bals.voice and 'v' or "")
 end
-#end
+end
 
 -- add me to default prompt
-#if skills.domination then
+if svo.haveskillset('domination') then
 cpp.compute_entitiesbal = function()
-  return (bals.entities and "e" or "")
+  return (bals.entities and 'e' or "")
 end
-#end
+end
 
-#if skills.healing then
+if svo.haveskillset('healing') then
 cpp.compute_healingbal = function()
-  return (bals.healing and "E" or "")
+  return (bals.healing and 'E' or "")
 end
-#end
+end
 
-#if skills.physiology then
+if svo.haveskillset('physiology') then
 cpp.compute_humourbal = function()
-  return (bals.humour and "h" or "")
+  return (bals.humour and 'h' or "")
 end
 
 cpp.compute_homunculusbal = function()
-  return (bals.homunculus and "H" or "")
+  return (bals.homunculus and 'H' or "")
 end
-#end
+end
 
-#if skills.venom then
+if svo.haveskillset('venom') then
 cpp.compute_shruggingbal = function()
-  return (bals.shrugging and "s" or "")
+  return (bals.shrugging and 's' or "")
 end
-#end
+end
 
 cpp.compute_dragonhealbal = function()
-  return (bals.dragonheal and "d" or "")
+  return (bals.dragonheal and 'd' or "")
 end
 
-#if skills.terminus then
+if svo.haveskillset('terminus') then
 cpp.compute_wordbal = function()
-  return (bals.word and "w" or "")
+  return (bals.word and 'w' or "")
 end
-#end
+end
 
-#if skills.aeonics then
+if svo.haveskillset('aeonics') then
 cpp.compute_age = function()
   return ((stats.age and stats.age > 0) and tostring(stats.age) or "")
 end
-#end
+end
 
 cpp.compute_timestamp = function()
   return getTime(true, 'hh:mm:ss.zzz')
@@ -294,27 +297,27 @@ cpp.compute_power_color = function()
   if not power or power == 0 then
    powerColor = ""
   else
-   powerColor = "<" .. (power < 25 and "red" or power < 60 and
-  "yellow" or power < 75 and
-       "green_yellow" or power < 100 and "a_darkgreen" or "a_green") ..">"
+   powerColor = "<" .. (power < 25 and 'red' or power < 60 and
+  'yellow' or power < 75 and
+       'green_yellow' or power < 100 and 'a_darkgreen' or 'a_green') ..">"
   end
   return powerColor
 end
 
-#if skills.metamorphosis then
+if svo.haveskillset('metamorphosis') then
 cpp.compute_morph = function()
   return me.morph or ""
 
 end
-#end
+end
 
-#if skills.groves then
+if svo.haveskillset('groves') then
 cpp.compute_sunlight = function()
   return stats.sunlight > 0 and tostring(stats.sunlight) or ""
 end
-#end
+end
 
-#if skills.tekura then
+if svo.haveskillset('tekura') then
 cpp.compute_monkpath = function()
   return me.path or ""
 end
@@ -325,55 +328,61 @@ end
 
 cpp.compute_stanceform_verbose = function()
   return string.format(
-    "%s: %s", 
-    cpp.compute_monkpath(), 
+    "%s: %s",
+    cpp.compute_monkpath(),
     cpp.compute_stanceform()
   )
 end
-#end
+end
 
 cpp.compute_promptstring = function()
- return ("<LightSlateGrey>")..
-        (defc.cloak and "c" or "") ..
+  local text = ("<LightSlateGrey>")..
+        (defc.cloak and 'c' or "") ..
         (bals.equilibrium and "<white>e<LightSlateGrey>" or "")..
         (bals.balance and "<white>x<LightSlateGrey>" or "")..
-        (defc.kola and "k" or "")..
-        ((defc.deaf or affs.deafaff) and "d" or "")..
-        ((defc.blind or affs.blindaff) and "b" or "")..
+        (defc.kola and 'k' or "")..
+        ((defc.deaf or affs.deafaff) and 'd' or "")..
+        ((defc.blind or affs.blindaff) and 'b' or "")..
         (defc.astralform and "@" or "")..
         (defc.phase and "@" or "")..
         (defc.blackwind and "@" or "")..
-        (defc.breath and "<blue>|<LightSlateGrey>b" or "")..
-#if skills.domination then
-        (bals.entities and "e" or "")..
-#end
-#if skills.healing then
-        (bals.healing and "E" or "")..
-#end
-#if skills.physiology then
-        (bals.humour and "h" or "")..
-        (bals.homunculus and "H" or "")..
-#end
-#if skills.venom then
-        (bals.shrugging and "s" or "")..
-#end
-#if skills.voicecraft then
-        (bals.voice and "v" or "")..
-#end
-#if skills.terminus then
-        (bals.word and "w" or "")..
-#end
-        ("-<grey>")
+        (defc.breath and "<blue>|<LightSlateGrey>b" or "")
+  local composition = {text}
+if bals.entities then
+  composition[#composition+1] = 'e'
+end
+if bals.healing then
+  composition[#composition+1] = 'E'
+end
+if svo.haveskillset('physiology') then
+  if bals.humour then
+    composition[#composition+1] = 'h'
+  end
+  if bals.homunculus then
+    composition[#composition+1] = 'H'
+  end
+end
+if bals.shrugging then
+  composition[#composition+1] = 's'
+end
+if bals.voice then
+  composition[#composition+1] =  'v'
+end
+if bals.word then
+  composition[#composition+1] = 'w'
+end
+  composition[#composition+1] = '-<grey>'
+  return table.concat(composition)
 end
 
 cpp.compute_promptstringorig = function()
  return ("<grey>")..
-        (defc.cloak and "c" or "") ..
-        (bals.equilibrium and "e" or "")..
-        (bals.balance and "x" or "")..
-        (defc.kola and "k" or "")..
-        ((defc.deaf or affs.deafaff) and "d" or "")..
-        ((defc.blind or affs.blindaff) and "b" or "")..
+        (defc.cloak and 'c' or "") ..
+        (bals.equilibrium and 'e' or "")..
+        (bals.balance and 'x' or "")..
+        (defc.kola and 'k' or "")..
+        ((defc.deaf or affs.deafaff) and 'd' or "")..
+        ((defc.blind or affs.blindaff) and 'b' or "")..
         ((defc.phase or defc.blackwind or defc.astralform) and "@" or "")
 end
 
@@ -455,60 +464,6 @@ cp.definitions = {
   ["@gametargethp"] = "svo.cpp.compute_gametargethp()",
   ["@dragonhealbal"]    = "svo.cpp.compute_dragonhealbal()",
   ["@battlerage"]    = "svo.cpp.compute_battlerage()",
-#if skills.voicecraft then
-  ["@voicebal"]      = "svo.cpp.compute_voicebal()",
-#end
-#if skills.domination then
-  ["@entitiesbal"]   = "svo.cpp.compute_entitiesbal()",
-#end
-#if skills.healing then
-  ["@healingbal"]    = "svo.cpp.compute_healingbal()",
-#end
-#if skills.physiology then
-  ["@humourbal"]     = "svo.cpp.compute_humourbal()",
-  ["@homunculusbal"] = "svo.cpp.compute_homunculusbal()",
-#end
-#if skills.venom then
-  ["@shrugging"]     = "svo.cpp.compute_shruggingbal()",
-#end
-#if skills.tekura or skills.shikudo then
-  ["@monkpath"]      = "svo.cpp.compute_monkpath()",
-  ["@monkstance"]        = "svo.cpp.compute_stanceform()",
-  ["@monkfull"]      = "svo.cpp.compute_stanceform_verbose()",
-#end
-#if skills.kaido then
-  ["@kai"]           = "svo.cpp.compute_kai()",
-#end
-#if skills.shindo then
-  ["@shin"]          = "svo.cpp.compute_shin()",
-#end
-  ["@timestamp"]     = "svo.cpp.compute_timestamp()",
-  ["@servertimestamp"] = "svo.cpp.compute_servertimestamp()",
-#if skills.weaponmastery then
-  ["@weaponmastery"] = "svo.cpp.compute_weaponmastery()",
-#end
-#if skills.metamorphosis then
-  ["@morph"]         = "svo.cpp.compute_morph()",
-#end
-#if skills.groves then
-  ["@sunlight"]      = "svo.cpp.compute_sunlight()",
-#end
-#if skills.terminus then
-  ["@wordbal"]       = "svo.cpp.compute_wordbal()",
-#end
-#if skills.aeonics then
-  ["@age"]           = "svo.cpp.compute_age()",
-#end
-  ["^1"]             = "svo.cpp.compute_health_colour()",
-  ["^2"]             = "svo.cpp.compute_mana_colour()",
-  ["^4"]             = "svo.cpp.compute_willpower_colour()",
-  ["^5"]             = "svo.cpp.compute_endurance_colour()",
-#if skills.kaido then
-  ["^6"]             = "svo.cpp.compute_kai_colour()",
-#end
-#if skills.shindo then
-  ["^6"]             = "svo.cpp.compute_shin_colour()",
-#end
   ["^7"]             = "svo.cpp.compute_power_color()",
   ["^r"]             = "'<a_red>'",
   ["^R"]             = "'<a_darkred>'",
@@ -526,9 +481,63 @@ cp.definitions = {
   ["^W"]             = "'<a_darkwhite>'",
   ["^gametarget"]    = "svo.cpp.compute_gametarget_colour()",
 }
+if svo.haveskillset('voicecraft') then
+  cp.definitions["@voicebal"]      = "svo.cpp.compute_voicebal()"
+end
+if svo.haveskillset('domination') then
+  cp.definitions["@entitiesbal"]   = "svo.cpp.compute_entitiesbal()"
+end
+if svo.haveskillset('healing') then
+  cp.definitions["@healingbal"]    = "svo.cpp.compute_healingbal()"
+end
+if svo.haveskillset('physiology') then
+  cp.definitions["@humourbal"]     = "svo.cpp.compute_humourbal()"
+  cp.definitions["@homunculusbal"] = "svo.cpp.compute_homunculusbal()"
+end
+if svo.haveskillset('venom') then
+  cp.definitions["@shrugging"]     = "svo.cpp.compute_shruggingbal()"
+end
+if svo.haveskillset('tekura') or svo.haveskillset('shikudo') then
+  cp.definitions["@monkpath"]      = "svo.cpp.compute_monkpath()"
+  cp.definitions["@monkstance"]        = "svo.cpp.compute_stanceform()"
+  cp.definitions["@monkfull"]      = "svo.cpp.compute_stanceform_verbose()"
+end
+if svo.haveskillset('kaido') then
+  cp.definitions["@kai"]           = "svo.cpp.compute_kai()"
+end
+if svo.haveskillset('shindo') then
+  cp.definitions["@shin"]          = "svo.cpp.compute_shin()"
+end
+  cp.definitions["@timestamp"]     = "svo.cpp.compute_timestamp()"
+  cp.definitions["@servertimestamp"] = "svo.cpp.compute_servertimestamp()"
+if svo.haveskillset('weaponmastery') then
+  cp.definitions["@weaponmastery"] = "svo.cpp.compute_weaponmastery()"
+end
+if svo.haveskillset('metamorphosis') then
+  cp.definitions["@morph"]         = "svo.cpp.compute_morph()"
+end
+if svo.haveskillset('groves') then
+  cp.definitions["@sunlight"]      = "svo.cpp.compute_sunlight()"
+end
+if svo.haveskillset('terminus') then
+  cp.definitions["@wordbal"]       = "svo.cpp.compute_wordbal()"
+end
+if svo.haveskillset('aeonics') then
+  cp.definitions["@age"]           = "svo.cpp.compute_age()"
+end
+  cp.definitions["^1"]             = "svo.cpp.compute_health_colour()"
+  cp.definitions["^2"]             = "svo.cpp.compute_mana_colour()"
+  cp.definitions["^4"]             = "svo.cpp.compute_willpower_colour()"
+  cp.definitions["^5"]             = "svo.cpp.compute_endurance_colour()"
+if svo.haveskillset('kaido') then
+  cp.definitions["^6"]             = "svo.cpp.compute_kai_colour()"
+end
+if svo.haveskillset('shindo') then
+  cp.definitions["^6"]             = "svo.cpp.compute_shin_colour()"
+end
 
 function cp.adddefinition(tag, func)
-  local func = string.format("tostring(%s)", func)
+  func = string.format("tostring(%s)", func)
 
   cp.definitions[tag] = func
   cp.makefunction()
@@ -542,7 +551,7 @@ function cp.makefunction()
   local display, error = loadstring("return table.concat({"..table.concat(t, ", ").."})")
   if display then cp.display = display else
     cp.display = function() return '' end
-    debugf("Couldn't compile the custom prompt: %s", error)
+    svo.debugf("Couldn't compile the custom prompt: %s", error)
   end
 
   -- set the prompt we require within the game for these tags to work
@@ -564,7 +573,7 @@ signals.gmcpcharname:connect(cp.makefunction)
 cp.display = function() return '' end
 
 signals.systemstart:connect(function ()
-  if not conf.oldcustomprompt or conf.oldcustomprompt == "off" then
+  if not conf.oldcustomprompt or conf.oldcustomprompt == 'off' then
     conf.oldcustomprompt = conf.customprompt
   end
 end)

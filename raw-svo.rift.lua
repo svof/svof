@@ -1,4 +1,4 @@
--- Svof (c) 2011-2015 by Vadim Peretokin
+-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -11,7 +11,10 @@
 
       otherwise just eat
   ]]
-pl.dir.makepath(getMudletHomeDir() .. "/svo/rift+inv")
+svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/rift+inv")
+
+local rift, me, sys, sk, conf = svo.rift, svo.me, svo.sys, svo.sk, svo.conf
+local pipes = svo.pipes
 
 rift.riftcontents = {}
 rift.invcontents = {}
@@ -23,26 +26,26 @@ rift.precachedata = {}
 
 rift.doprecache = false
 
-rift.allherbs = {"ash", "bayberry", "bellwort", "bloodroot", "cohosh", "echinacea", "elm", "ginger", "ginseng", "goldenseal", "hawthorn", "kelp", "kola", "kuzu", "lobelia", "myrrh", "pear", "sileris", "skullcap", "valerian", "weed", "slipper", "irid", "ferrum", "stannum", "dolomite", "antimony", "bisemutum", "bellwort", "magnesium", "calamine", "malachite", "azurite", "plumbum", "realgar", "arsenic", "cohosh", "argentum", "calcite", "potash", "quicksilver", "kelp", "kola", "cinnabar", "cuprum", "aurum", "quartz", "gypsum"}
-rift.herbsminerals = {"antimony", "argentum", "arsenic", "ash", "aurum", "azurite", "bayberry", "bellwort", "bisemutum", "bloodroot", "calamine", "calcite", "cinnabar", "cohosh", "cuprum", "dolomite", "echinacea", "elm", "ferrum", "ginger", "ginseng", "goldenseal", "gypsum", "hawthorn", "irid", "kelp", "kola", "lobelia", "magnesium", "malachite", "myrrh", "plumbum", "potash", "quartz", "quicksilver", "realgar", "sileris", "skullcap", "stannum", "valerian", "weed"}
-rift.functionalherbs = {"slipper", "kuzu", "pear"}
+rift.allherbs = {'ash', 'bayberry', 'bellwort', 'bloodroot', 'cohosh', 'echinacea', 'elm', 'ginger', 'ginseng', 'goldenseal', 'hawthorn', 'kelp', 'kola', 'kuzu', 'lobelia', 'myrrh', 'pear', 'sileris', 'skullcap', 'valerian', 'weed', 'slipper', 'irid', 'ferrum', 'stannum', 'dolomite', 'antimony', 'bisemutum', 'bellwort', 'magnesium', 'calamine', 'malachite', 'azurite', 'plumbum', 'realgar', 'arsenic', 'cohosh', 'argentum', 'calcite', 'potash', 'quicksilver', 'kelp', 'kola', 'cinnabar', 'cuprum', 'aurum', 'quartz', 'gypsum'}
+rift.herbsminerals = {'antimony', 'argentum', 'arsenic', 'ash', 'aurum', 'azurite', 'bayberry', 'bellwort', 'bisemutum', 'bloodroot', 'calamine', 'calcite', 'cinnabar', 'cohosh', 'cuprum', 'dolomite', 'echinacea', 'elm', 'ferrum', 'ginger', 'ginseng', 'goldenseal', 'gypsum', 'hawthorn', 'irid', 'kelp', 'kola', 'lobelia', 'magnesium', 'malachite', 'myrrh', 'plumbum', 'potash', 'quartz', 'quicksilver', 'realgar', 'sileris', 'skullcap', 'stannum', 'valerian', 'weed'}
+rift.functionalherbs = {'slipper', 'kuzu', 'pear'}
 
-rift.herblist = {"elm", "valerian", "ash", "bayberry", "bellwort", "bloodroot", "cohosh", "echinacea", "ginger", "ginseng", "goldenseal", "hawthorn", "kelp", "kola", "kuzu", "lobelia", "irid", "myrrh", "pear", "sileris", "skullcap", "slipper", "weed"}
-rift.curativeherbs = {"ash", "bayberry", "bellwort", "bloodroot", "cohosh", "echinacea", "elm", "ginger", "ginseng", "goldenseal", "hawthorn", "irid", "kelp", "kola", "lobelia", "myrrh", "pear", "sileris", "skullcap", "valerian"}
+rift.herblist = {'elm', 'valerian', 'ash', 'bayberry', 'bellwort', 'bloodroot', 'cohosh', 'echinacea', 'ginger', 'ginseng', 'goldenseal', 'hawthorn', 'kelp', 'kola', 'kuzu', 'lobelia', 'irid', 'myrrh', 'pear', 'sileris', 'skullcap', 'slipper', 'weed'}
+rift.curativeherbs = {'ash', 'bayberry', 'bellwort', 'bloodroot', 'cohosh', 'echinacea', 'elm', 'ginger', 'ginseng', 'goldenseal', 'hawthorn', 'irid', 'kelp', 'kola', 'lobelia', 'myrrh', 'pear', 'sileris', 'skullcap', 'valerian'}
 
-rift.minerallist = {"ferrum", "stannum", "dolomite", "antimony", "bisemutum", "cuprum", "magnesium", "calamine", "malachite", "azurite", "plumbum", "realgar", "arsenic", "gypsum", "argentum", "calcite", "potash", "quicksilver", "aurum", "quartz", "cinnabar"}
+rift.minerallist = {'ferrum', 'stannum', 'dolomite', 'antimony', 'bisemutum', 'cuprum', 'magnesium', 'calamine', 'malachite', 'azurite', 'plumbum', 'realgar', 'arsenic', 'gypsum', 'argentum', 'calcite', 'potash', 'quicksilver', 'aurum', 'quartz', 'cinnabar'}
 
 me.herblist = rift.herblist
 me.minerallist = rift.minerallist
 
-rift.forestalvials = {"caloric", "epidermal", "frost", "health", "immunity", "levitation", "mana", "mass", "mending", "restoration", "speed", "venom"}
+rift.forestalvials = {'caloric', 'epidermal', 'frost', 'health', 'immunity', 'levitation', 'mana', 'mass', 'mending', 'restoration', 'speed', 'venom'}
 
 rift.resetriftcontents = function()
   for _, herb in ipairs(rift.allherbs) do
     rift.riftcontents[herb] = 0
   end
 
-  myrift = rift.riftcontents
+  svo.myrift = rift.riftcontents
 end
 
 rift.resetinvcontents = function()
@@ -50,7 +53,7 @@ rift.resetinvcontents = function()
     rift.invcontents[herb] = 0
   end
 
-  myinv = rift.invcontents
+  svo.myinv = rift.invcontents
 end
 
 rift.resetriftcontents()
@@ -159,46 +162,46 @@ rift.herbs_singular_sansprefix = {
   ["bellwort flower"]     = 'bellwort',
   ["bloodroot leaf"]      = 'bloodroot',
   ["black cohosh"]        = 'cohosh',
-  ["echinacea"]           = 'echinacea',
+  ['echinacea']           = 'echinacea',
   ["slippery elm"]        = 'elm',
   ["ginger root"]         = 'ginger',
   ["ginseng root"]        = 'ginseng',
   ["goldenseal root"]     = 'goldenseal',
   ["hawthorn berry"]      = 'hawthorn',
-  ["kelp"]                = 'kelp',
+  ['kelp']                = 'kelp',
   ["kola nut"]            = 'kola',
   ["kuzu root"]           = 'kuzu',
   ["lobelia seed"]        = 'lobelia',
   ["irid moss"]           = 'irid',
   ["myrrh gum"]           = 'myrrh',
   ["prickly pear"]        = 'pear',
-  ["sileris"]             = 'sileris',
-  ["skullcap"]            = 'skullcap',
+  ['sileris']             = 'sileris',
+  ['skullcap']            = 'skullcap',
   ["lady's slipper root"] = 'slipper',
-  ["valerian"]            = 'valerian',
-  ["weed"]                = 'weed',
+  ['valerian']            = 'valerian',
+  ['weed']                = 'weed',
 
-  ["ferrum"]      = "ferrum",
-  ["stannum"]     = "stannum",
-  ["dolomite"]    = "dolomite",
-  ["antimony"]    = "antimony",
-  ["bisemutum"]   = "bisemutum",
-  ["cuprum"]      = "cuprum",
-  ["magnesium"]   = "magnesium",
-  ["calamine"]    = "calamine",
-  ["malachite"]   = "malachite",
-  ["azurite"]     = "azurite",
-  ["plumbum"]     = "plumbum",
-  ["realgar"]     = "realgar",
-  ["arsenic"]     = "arsenic",
-  ["gypsum"]      = "gypsum",
-  ["argentum"]    = "argentum",
-  ["calcite"]     = "calcite",
-  ["potash"]      = "potash",
-  ["quicksilver"] = "quicksilver",
-  ["aurum"]       = "aurum",
-  ["quartz"]      = "quartz",
-  ["cinnabar"]    = "cinnabar",
+  ['ferrum']      = 'ferrum',
+  ['stannum']     = 'stannum',
+  ['dolomite']    = 'dolomite',
+  ['antimony']    = 'antimony',
+  ['bisemutum']   = 'bisemutum',
+  ['cuprum']      = 'cuprum',
+  ['magnesium']   = 'magnesium',
+  ['calamine']    = 'calamine',
+  ['malachite']   = 'malachite',
+  ['azurite']     = 'azurite',
+  ['plumbum']     = 'plumbum',
+  ['realgar']     = 'realgar',
+  ['arsenic']     = 'arsenic',
+  ['gypsum']      = 'gypsum',
+  ['argentum']    = 'argentum',
+  ['calcite']     = 'calcite',
+  ['potash']      = 'potash',
+  ['quicksilver'] = 'quicksilver',
+  ['aurum']       = 'aurum',
+  ['quartz']      = 'quartz',
+  ['cinnabar']    = 'cinnabar',
 }
 
 -- non-herb items - used in inra sorting. A space is used to accomodate the different materials without introducing complications in the code
@@ -218,62 +221,62 @@ rift.items_plural = {
 }
 
 rift.items_singular = {
-  ["a bar of silver"]        = "silver",
-  ["a bead of lead"]         = "lead",
-  ["a chunk of tin"]         = "tin",
-  ["a nodule of copper"]     = "nodule",
-  ["a piece of coal"]        = "coal",
-  ["a small nugget of gold"] = "gold",
-  ["an iron bar"]            = "iron",
-  ["a pile of fish scales"]  = "scales",
-  ["a small pot of lacquer"] = "lacquer",
-  ["a block of stone"]       = "stone",
+  ["a bar of silver"]        = 'silver',
+  ["a bead of lead"]         = 'lead',
+  ["a chunk of tin"]         = 'tin',
+  ["a nodule of copper"]     = 'nodule',
+  ["a piece of coal"]        = 'coal',
+  ["a small nugget of gold"] = 'gold',
+  ["an iron bar"]            = 'iron',
+  ["a pile of fish scales"]  = 'scales',
+  ["a small pot of lacquer"] = 'lacquer',
+  ["a block of stone"]       = 'stone',
 }
 
 rift.herb_conversions = {
-  ash        = "stannum",
-  bayberry   = "arsenic",
-  bellwort   = "cuprum",
-  bloodroot  = "magnesium",
-  cohosh     = "gypsum",
-  echinacea  = "dolomite",
-  elm        = "cinnabar",
-  ginger     = "antimony",
-  ginseng    = "ferrum",
-  goldenseal = "plumbum",
-  hawthorn   = "calamine",
-  irid       = "potash",
-  kelp       = "aurum",
-  kola       = "quartz",
-  lobelia    = "argentum",
-  myrrh      = "bisemutum",
-  pear       = "calcite",
-  sileris    = "quicksilver",
-  skullcap   = "azurite",
-  valerian   = "realgar",
+  ash        = 'stannum',
+  bayberry   = 'arsenic',
+  bellwort   = 'cuprum',
+  bloodroot  = 'magnesium',
+  cohosh     = 'gypsum',
+  echinacea  = 'dolomite',
+  elm        = 'cinnabar',
+  ginger     = 'antimony',
+  ginseng    = 'ferrum',
+  goldenseal = 'plumbum',
+  hawthorn   = 'calamine',
+  irid       = 'potash',
+  kelp       = 'aurum',
+  kola       = 'quartz',
+  lobelia    = 'argentum',
+  myrrh      = 'bisemutum',
+  pear       = 'calcite',
+  sileris    = 'quicksilver',
+  skullcap   = 'azurite',
+  valerian   = 'realgar',
 }
 
 rift.vial_conversions = {
-  caloric     = "exothermic",
-  epidermal   = "sensory",
-  frost       = "endothermia",
-  health      = "vitality",
-  immunity    = "antigen",
-  levitation  = "hovering",
-  mana        = "mentality",
-  mass        = "density",
-  mending     = "renewal",
-  restoration = "reconstructive",
-  speed       = "haste",
-  venom       = "toxin",
+  caloric     = 'exothermic',
+  epidermal   = 'sensory',
+  frost       = 'endothermia',
+  health      = 'vitality',
+  immunity    = 'antigen',
+  levitation  = 'hovering',
+  mana        = 'mentality',
+  mass        = 'density',
+  mending     = 'renewal',
+  restoration = 'reconstructive',
+  speed       = 'haste',
+  venom       = 'toxin',
 }
 
-function intlen(number)
+function svo.intlen(number)
   return number == 0 and 1 or math.floor(math.log10(number)+1)
 end
 
 rift.update_riftlabel = function()
-  if not riftlabel or riftlabel.hidden then return end
+  if not svo.riftlabel or svo.riftlabel.hidden then return end
 
   local count = 0
   local tbl = {}
@@ -283,7 +286,7 @@ rift.update_riftlabel = function()
   for _, j in pairs(rift.herbsminerals) do
     count = count + 1
 
-    tbl[#tbl+1] = string.format([[<font style="color:grey;">%s</font>%s%d<font style="color:grey;">/</font>%d ]], j, string.rep("&nbsp;", charwidth - #j- intlen(rift.invcontents[j]) - intlen(rift.riftcontents[j])), rift.invcontents[j], rift.riftcontents[j])
+    tbl[#tbl+1] = string.format([[<font style="color:grey;">%s</font>%s%d<font style="color:grey;">/</font>%d ]], j, string.rep("&nbsp;", charwidth - #j- svo.intlen(rift.invcontents[j]) - svo.intlen(rift.riftcontents[j])), rift.invcontents[j], rift.riftcontents[j])
     if count % columncount == 0 then tbl[#tbl+1] = "<br />" end
   end
 
@@ -294,30 +297,30 @@ rift.update_riftlabel = function()
     tbl[#tbl+1] = string.rep("&nbsp;", spacesneeded)
   end
 
-  echo("svo.riftlabel", string.format([[<center><p style="font-size: ]]..(conf.herbstatsize and conf.herbstatsize or 9)..[[px; color:white; font-weight:;">%s</p></center>]], table.concat(tbl)))
+  echo("svo.riftlabel", string.format([[<center><p style="font-size: ]]..(svo.conf.herbstatsize and svo.conf.herbstatsize or 9)..[[px; color:white; font-weight:;">%s</p></center>]], table.concat(tbl)))
 end
 
 rift.outr = function (what)
   if not sys.canoutr then return end
 
   if (rift.precache[what] and rift.precache[what] == 0) or not rift.invcontents[what] or not rift.precache[what] or (rift.invcontents[what] and rift.precache[what] and (rift.invcontents[what] - 1 >= rift.precache[what])) then
-    send("outr " .. what, conf.commandecho)
+    send("outr " .. what, svo.conf.commandecho)
   else
-    send("outr " .. (rift.precache[what] - rift.invcontents[what] + 1) .. " " .. what, conf.commandecho)
+    send("outr " .. (rift.precache[what] - rift.invcontents[what] + 1) .. " " .. what, svo.conf.commandecho)
   end
 
   -- allow other outrs to catch up, then re-check again
   if sys.blockoutr then killTimer(sys.blockoutr); sys.blockoutr = nil end
-  sys.blockoutr = tempTimer(sys.wait + syncdelay(), function () sys.blockoutr = nil; debugf("sys.blockoutr expired") make_gnomes_work() end)
-  debugf("sys.blockoutr setup: ", debug.traceback())
+  sys.blockoutr = tempTimer(sys.wait + svo.syncdelay(), function () sys.blockoutr = nil; svo.debugf("sys.blockoutr expired") svo.make_gnomes_work() end)
+  svo.debugf("sys.blockoutr setup: ", debug.traceback())
 end
 
 rift.checkprecache = function()
   rift.doprecache = false
 
-  for herb, amount in pairs(rift.precache) do
+  for herb, _ in pairs(rift.precache) do
     -- if we have addiction, then only precache 1, otherwise, however much is needed
-    if rift.precache[herb] ~= 0 and rift.riftcontents[herb] ~= 0 and (not affs.addiction and (rift.invcontents[herb] < rift.precache[herb]) or (rift.invcontents[herb] == 0)) then
+    if rift.precache[herb] ~= 0 and rift.riftcontents[herb] ~= 0 and (not svo.affs.addiction and (rift.invcontents[herb] < rift.precache[herb]) or (rift.invcontents[herb] == 0)) then
       rift.doprecache = true; return
     end
   end
@@ -325,12 +328,12 @@ end
 
 -- used by skeleton's check_herb to see that you can eat something. It checks the appropriate herb in inv if we can't outr
 -- takes in dict.<aff>.herb as an argument
-signals.curemethodchanged:connect(function ()
-  if conf.curemethod == "conconly" then
+svo.signals.curemethodchanged:connect(function ()
+  if svo.conf.curemethod == 'conconly' then
     sk.can_eat_for = function (aff)
       return (rift.invcontents[aff.eatcure[1]] > 0)
     end
-  elseif conf.curemethod == "transonly" then
+  elseif svo.conf.curemethod == 'transonly' then
     sk.can_eat_for = function (aff)
       return (rift.invcontents[aff.eatcure[2]] > 0)
     end
@@ -342,14 +345,14 @@ signals.curemethodchanged:connect(function ()
 end)
 
 local function siprandom(what)
-  if not es_vialids or not es_vialids[what] or not es_vialids[what][1] then return what end
+  if not svo.es_vialids or not svo.es_vialids[what] or not svo.es_vialids[what][1] then return what end
 
-  return es_vialids[what][math.random(#es_vialids[what])]
+  return svo.es_vialids[what][math.random(#svo.es_vialids[what])]
 end
 
 -- determine the sip method. gets a table as arg with two things - the conc and trans cure
-signals.curemethodchanged:connect(function ()
-  sip = function (what)
+svo.signals.curemethodchanged:connect(function ()
+  svo.sip = function (what)
     local use = what.sipcure[1]
     if conf.siprandom then use = siprandom(use) end
     send("sip "..use, conf.commandecho)
@@ -358,8 +361,8 @@ signals.curemethodchanged:connect(function ()
 end)
 
 -- determine the apply method
-signals.curemethodchanged:connect(function ()
-  apply = function (what, whereto)
+svo.signals.curemethodchanged:connect(function ()
+  svo.apply = function (what, whereto)
     whereto = whereto or ""
     local use = what.applycure[1]
     send("apply "..use..whereto, conf.commandecho)
@@ -368,8 +371,8 @@ signals.curemethodchanged:connect(function ()
 end)
 
 -- used to determine what to eat, and set what we've eaten
-signals.curemethodchanged:connect(function ()
-  if conf.curemethod == "conconly" then
+svo.signals.curemethodchanged:connect(function ()
+  if conf.curemethod == 'conconly' then
     sk.synceat = function(what)
       local use = what.eatcure[1]
       if rift.invcontents[use] > 0 then
@@ -391,7 +394,7 @@ signals.curemethodchanged:connect(function ()
       sys.last_used[what.name] = use
     end
 
-  elseif conf.curemethod == "transonly" then
+  elseif conf.curemethod == 'transonly' then
     sk.synceat = function(what)
       local use = what.eatcure[2]
       if rift.invcontents[use] > 0 then
@@ -413,7 +416,7 @@ signals.curemethodchanged:connect(function ()
       sys.last_used[what.name] = use
     end
 
-  elseif conf.curemethod == nil or conf.curemethod == "preferconc" then
+  elseif conf.curemethod == nil or conf.curemethod == 'preferconc' then
     sk.synceat = function(what)
       local use, use2 = what.eatcure[1], what.eatcure[2]
       -- if we don't have the conc cure in inv, but have the alchemy one, use alchemy
@@ -449,7 +452,7 @@ signals.curemethodchanged:connect(function ()
       sys.last_used[what.name] = use
     end
 
-  elseif conf.curemethod == "prefertrans" then
+  elseif conf.curemethod == 'prefertrans' then
     -- should eat trans if it's in inv
     -- should eat trans if it's in the rift and no conc in inv
     sk.synceat = function(what)
@@ -484,7 +487,7 @@ signals.curemethodchanged:connect(function ()
       sys.last_used[what.name] = use
     end
 
-  elseif conf.curemethod == "prefercustom" then
+  elseif conf.curemethod == 'prefercustom' then
     -- should eat trans if it's in inv
     -- should eat trans if it's in the rift and no conc in inv
     sk.synceat = function(what)
@@ -555,7 +558,7 @@ signals.curemethodchanged:connect(function ()
     end
 
     -- disabled for now, because tracking which herb we used for an action is problematic
-  -- elseif conf.curemethod == "auto" then
+  -- elseif conf.curemethod == 'auto' then
   --   sk.synceat = function(what)
   --     -- if we have the alchemy cure, use it, otherwise stick to usual
   --     local haveusual, havealchemy = rift.invcontents[what], rift.invcontents[herb_conversions[what]]
@@ -591,25 +594,25 @@ signals.curemethodchanged:connect(function ()
 
   -- update the actual 'eat' function
   sk.checkaeony()
-  signals.aeony:emit()
+  svo.signals.aeony:emit()
 end)
 
-signals.systemstart:connect(function()
-  signals.curemethodchanged:emit()
+svo.signals.systemstart:connect(function()
+  svo.signals.curemethodchanged:emit()
 end)
 
-signals.aeony:connect(function ()
+svo.signals.aeony:connect(function ()
   if sys.sync then
-    eat = sk.synceat
+    svo.eat = sk.synceat
   else
-    eat = sk.asynceat
+    svo.eat = sk.asynceat
   end
 end)
 
 local smoke_herb_conversions = {
-  elm      = "cinnabar",
-  skullcap = "malachite",
-  valerian = "realgar",
+  elm      = 'cinnabar',
+  skullcap = 'malachite',
+  valerian = 'realgar',
 }
 
 -- pipes don't need to be refilled that often, so we'll do the herb selection realtime instead of recompiling this huge monster all the time
@@ -617,22 +620,22 @@ function sk.asyncfill(what, where)
   local orig = what
 
   -- work out if we need to change what to its alternative
-  if conf.curemethod ~= "conconly" and (
+  if conf.curemethod ~= 'conconly' and (
 
-    conf.curemethod == "transonly" or
+    conf.curemethod == 'transonly' or
 
-    ((conf.curemethod == "preferconc" or conf.curemethod == nil) and
+    ((conf.curemethod == 'preferconc' or conf.curemethod == nil) and
       -- we don't have in forestal inventory, but do have alchemy in inventory, use alchemy
        (not (rift.invcontents[what] > 0) and (rift.invcontents[smoke_herb_conversions[what]] > 0)) or
         -- or if we don't have the conc cure in rift either, use alchemy
        (not (rift.riftcontents[what] > 0))) or
 
-    (conf.curemethod == "prefertrans" and -- we *do* have the trans available
+    (conf.curemethod == 'prefertrans' and -- we *do* have the trans available
       (rift.invcontents[smoke_herb_conversions[what]] > 0
         or (not (rift.invcontents[what] > 0) and (rift.riftcontents[smoke_herb_conversions[what]] > 0)))) or
 
     -- prefercustom, and we either prefer alchy and have it, or prefer conc and don't have it
-    (conf.curemethod == "prefercustom" and
+    (conf.curemethod == 'prefercustom' and
       ((me.curelist[what] == smoke_herb_conversions[what] and rift.riftcontents[smoke_herb_conversions[what]] > 0)
         or
        (me.curelist[what] == what and rift.riftcontents[what] <= 0)
@@ -641,15 +644,15 @@ function sk.asyncfill(what, where)
       what = smoke_herb_conversions[what]
   end
 
-  sys.last_used["fill"..orig.."_physical"] = what
+  sys.last_used['fill'..orig..'_physical'] = what
   pipes[orig].filledwith = what
 
   if rift.invcontents[what] > 0 then
     if pipes[orig].puffs > 0 then
-      if not defc.selfishness then
+      if not svo.defc.selfishness then
         send("empty "..where, conf.commandecho)
       else
-        for i = 1, (pipes[orig].puffs + 1) do
+        for _ = 1, (pipes[orig].puffs + 1) do
           send("smoke "..where, conf.commandecho)
         end
       end
@@ -660,10 +663,10 @@ function sk.asyncfill(what, where)
   else
     rift.outr(what)
     if pipes[orig].puffs > 0 then
-      if not defc.selfishness then
+      if not svo.defc.selfishness then
         send("empty "..where, conf.commandecho)
       else
-        for i = 1, (pipes[orig].puffs + 1) do
+        for _ = 1, (pipes[orig].puffs + 1) do
           send("smoke "..where, conf.commandecho)
         end
       end
@@ -675,21 +678,21 @@ end
 function sk.syncfill(what, where)
   local orig = what
   -- work out if we need to change what to its alternative
-  if conf.curemethod ~= "conconly" and (
+  if conf.curemethod ~= 'conconly' and (
 
-    conf.curemethod == "transonly" or
+    conf.curemethod == 'transonly' or
 
-    ((conf.curemethod == "preferconc" or conf.curemethod == nil) and
+    ((conf.curemethod == 'preferconc' or conf.curemethod == nil) and
        (not (rift.invcontents[what] > 0) and (rift.invcontents[smoke_herb_conversions[what]] > 0))
         -- or if we don't have the conc cure in rift either, use alchemy
         or not (rift.riftcontents[what] > 0)) or
 
-    (conf.curemethod == "prefertrans" and
+    (conf.curemethod == 'prefertrans' and
       (rift.invcontents[smoke_herb_conversions[what]] > 0)
         or (not (rift.invcontents[what] > 0) and (rift.riftcontents[smoke_herb_conversions[what]] > 0))) or
 
     -- prefercustom, and we either prefer alchy and have it, or prefer conc and don't have it
-    (conf.curemethod == "prefercustom" and (
+    (conf.curemethod == 'prefercustom' and (
       (me.curelist[what] == what and rift.riftcontents[what] <= 0)
         or
       (me.curelist[what] == smoke_herb_conversions[what] and rift.riftcontents[smoke_herb_conversions[what]] > 0)
@@ -697,11 +700,11 @@ function sk.syncfill(what, where)
       what = smoke_herb_conversions[what]
   end
 
-  sys.last_used["fill"..orig.."_physical"] = what
+  sys.last_used['fill'..orig..'_physical'] = what
   pipes[orig].filledwith = what
 
   if pipes[orig].puffs > 0 then
-    if defc.selfishness then echof("Problem - can't refill while selfish :/") return end
+    if svo.defc.selfishness then svo.echof("Problem - can't refill while selfish :/") return end
     send("empty "..where, conf.commandecho)
   elseif rift.invcontents[what] > 0 then
     send("put " .. what .. " in " .. where, conf.commandecho)
@@ -710,16 +713,16 @@ function sk.syncfill(what, where)
   end
 end
 
-signals.aeony:connect(function ()
+svo.signals.aeony:connect(function ()
   if sys.sync then
-    fillpipe = sk.syncfill
+    svo.fillpipe = sk.syncfill
   else
-    fillpipe = sk.asyncfill
+    svo.fillpipe = sk.asyncfill
   end
 end)
 
 
-function riftline()
+function svo.riftline()
   for i = 1, #matches, 3 do
     local amount = tonumber(matches[i+1])
     local rawherbstring, herb = matches[i+2], false
@@ -741,24 +744,24 @@ function riftline()
   rift.update_riftlabel()
 end
 
-function showrift()
+function svo.showrift()
   display(rift.riftcontents)
 end
 
-function showinv()
+function svo.showinv()
   display(rift.invcontents)
 end
 
-function showprecache()
+function svo.showprecache()
   local count = 1
 
   local function makelink(herb, sign)
     if sign == "-" and rift.precache[herb] == 0 then
       echo " "
     elseif sign == "+" then
-      echoLink(sign, [[svo.setprecache("]]..herb..[[", 1, "add", nil, true)]], sign .. " the " .. herb .. " amount")
+      echoLink(sign, [[svo.setprecache("]]..herb..[[", 1, 'add', nil, true)]], sign .. " the " .. herb .. " amount")
     elseif sign == "-" then
-      echoLink(sign, [[svo.setprecache("]]..herb..[[", 1, "subtract", nil, true)]], sign .. " the " .. herb .. " amount")
+      echoLink(sign, [[svo.setprecache("]]..herb..[[", 1, 'subtract', nil, true)]], sign .. " the " .. herb .. " amount")
     else
       echo " "
     end
@@ -766,21 +769,21 @@ function showprecache()
     return ""
   end
 
---[[  moveCursor("main", 0, getLastLineNumber("main"))
-  debugf("line: " .. getCurrentLine() .. ", latest: " .. getLastLineNumber("main"))
+--[[  moveCursor('main', 0, getLastLineNumber('main'))
+  debugf("line: " .. getCurrentLine() .. ", latest: " .. getLastLineNumber('main'))
   if getCurrentLine() == "-" or getCurrentLine() == " " then
     insertText(" ")
     for i = 1, 1000 do deleteLine()
-    debugf("deleting") end
+    debugf('deleting') end
   end]]
-  echof("Herb pre-cache list (%s defences):", defs.mode)
+  svo.echof("Herb pre-cache list (%s defences):", svo.defs.mode)
 
   local t = {}; for herb in pairs(rift.precache) do t[#t+1] = herb end; table.sort(t)
   for i = 1, #t do
     local herb, amount = t[i], rift.precache[t[i]]
   -- for herb, amount in pairs(rift.precache) do
     if count % 3 ~= 0 then
-      decho(string.format("<153,204,204>[<91,134,214>%d<153,204,204>%s%s] %-"..(intlen(amount) == 1 and "23" or "22").."s", amount, makelink(herb, "+"), makelink(herb, "-"), herb))
+      decho(string.format("<153,204,204>[<91,134,214>%d<153,204,204>%s%s] %-"..(svo.intlen(amount) == 1 and '23' or '22')..'s', amount, makelink(herb, "+"), makelink(herb, "-"), herb))
     else
       decho(string.format("<153,204,204>[<91,134,214>%d<153,204,204>%s%s] %s", amount, makelink(herb, "+"), makelink(herb, "-"), herb)) end
 
@@ -788,37 +791,37 @@ function showprecache()
     count = count + 1
   end
 
---[[  moveCursor("main", 0, getLastLineNumber("main"))
-  moveCursor("main", #getCurrentLine(), getLastLineNumber("main"))
+--[[  moveCursor('main', 0, getLastLineNumber('main'))
+  moveCursor('main', #getCurrentLine(), getLastLineNumber('main'))
   insertText("\n-\n")]]
   echo"\n"
-  showprompt()
+  svo.showprompt()
 end
 
-function setprecache(herb, amount, flag, echoback, show_list)
+function svo.setprecache(herb, amount, flag, echoback, show_list)
   local sendf
-  if echoback then sendf = echof else sendf = errorf end
+  if echoback then sendf = svo.echof else sendf = svo.errorf end
 
-  assert(rift.precache[herb], "what herb do you want to set a precache amount for?", sendf)
+  svo.assert(rift.precache[herb], "what herb do you want to set a precache amount for?", sendf)
 
-  if flag == "add" then
+  if flag == 'add' then
     rift.precache[herb] = rift.precache[herb] + amount
-  elseif flag == "subtract" then
+  elseif flag == 'subtract' then
     rift.precache[herb] = rift.precache[herb] - amount
     if rift.precache[herb] < 0 then rift.precache[herb] = 0 end
-  elseif not flag or flag == "set" then
+  elseif not flag or flag == 'set' then
     rift.precache[herb] = amount
   end
 
   if echoback then
-    echof("Will keep at least %d of %s out in the inventory now.", rift.precache[herb], herb)
+    svo.echof("Will keep at least %d of %s out in the inventory now.", rift.precache[herb], herb)
   elseif show_list then
-    showprecache()
+    svo.showprecache()
   end
   rift.checkprecache()
 end
 
-function invline()
+function svo.invline()
   rift.resetinvcontents()
 
   -- lowercase as the first letter is capitalised
@@ -853,7 +856,7 @@ function invline()
   rift.checkprecache()
 end
 
-function riftremoved()
+function svo.riftremoved()
   local removed = tonumber(matches[2])
   local what = rift.herbs_singular_sansprefix[matches[3]]
   local inrift = tonumber(matches[4])
@@ -865,16 +868,16 @@ function riftremoved()
 
   rift.update_riftlabel()
 
-  signals.removed_from_rift:emit(removed, what, inrift)
+  svo.signals.removed_from_rift:emit(removed, what, inrift)
 
   -- don't add if not doing it
-  checkaction(dict.doprecache.misc, false)
-  if actions.doprecache_misc then
-    lifevision.add(actions.doprecache_misc.p)
+  svo.checkaction(svo.dict.doprecache.misc, false)
+  if svo.actions.doprecache_misc then
+    svo.lifevision.add(svo.actions.doprecache_misc.p)
   end
 end
 
-function pocketbelt_added()
+function svo.pocketbelt_added()
   local removedamount = tonumber(matches[2])
   local what = matches[3]
   if not rift.invcontents[what] then return end
@@ -882,7 +885,7 @@ function pocketbelt_added()
   rift.invcontents[what] = rift.invcontents[what] - removedamount
 end
 
-function pocketbelt_removed()
+function svo.pocketbelt_removed()
   local removedamount = tonumber(matches[2])
   local what = matches[3]
   if not rift.invcontents[what] then return end
@@ -890,7 +893,7 @@ function pocketbelt_removed()
   rift.invcontents[what] = rift.invcontents[what] + removedamount
 end
 
-function riftadded()
+function svo.riftadded()
   local removed = tonumber(matches[2])
   local what = rift.herbs_singular_sansprefix[matches[3]]
   if not what then return end
@@ -904,7 +907,7 @@ function riftadded()
   rift.checkprecache()
 end
 
-function riftnada()
+function svo.riftnada()
   local what = matches[2]
   if rift.invcontents[what] then rift.invcontents[what] = 0 end
 
@@ -912,8 +915,8 @@ function riftnada()
   rift.checkprecache()
 end
 
-function riftate()
-  -- if conf.aillusion and not (usingbal"herb" or usingbal"moss") then
+function svo.riftate()
+  -- if conf.aillusion and not (usingbal'herb' or usingbal'moss') then
   --   resetFormat()
   --   echoLink(" (i)", '', "Precache considered this to be an illusion (because the system isn't eating anything right now) and didn't count the herb used", true)
   --   return
@@ -923,7 +926,7 @@ function riftate()
 
   if not rift.herbs_singular[what] then return end
 
-  if not conf.arena then
+  if not svo.conf.arena then
     rift.invcontents[rift.herbs_singular[what]] = rift.invcontents[rift.herbs_singular[what]] - 1
     if rift.invcontents[rift.herbs_singular[what]] < 0 then rift.invcontents[rift.herbs_singular[what]] = 0 end
   end
@@ -941,22 +944,22 @@ do
   end
 end
 
-function toggle_riftlabel(toggle)
-  if (type(toggle) == 'nil' and riftlabel.hidden) or (type(toggle) ~= 'nil' and toggle) then
-    riftlabel:show()
+function svo.toggle_riftlabel(toggle)
+  if (type(toggle) == 'nil' and svo.riftlabel.hidden) or (type(toggle) ~= 'nil' and toggle) then
+    svo.riftlabel:show()
     rift.update_riftlabel()
-    echof("Spawned the herbstat window.")
-    conf.riftlabel = true
-    raiseEvent("svo config changed", "riftlabel")
-  elseif (type(toggle) == 'nil' and not riftlabel.hidden) or (type(toggle) ~= 'nil' and not toggle) then
-    riftlabel:hide()
-    echof("Hid the herbstat window.")
-    conf.riftlabel = false
-    raiseEvent("svo config changed", "riftlabel")
+    svo.echof("Spawned the herbstat window.")
+    svo.conf.riftlabel = true
+    raiseEvent("svo config changed", 'riftlabel')
+  elseif (type(toggle) == 'nil' and not svo.riftlabel.hidden) or (type(toggle) ~= 'nil' and not toggle) then
+    svo.riftlabel:hide()
+    svo.echof("Hid the herbstat window.")
+    svo.conf.riftlabel = false
+    raiseEvent("svo config changed", 'riftlabel')
   end
 end
 
-signals.systemstart:add_post_emit(function ()
+svo.signals.systemstart:add_post_emit(function ()
   if lfs.attributes(getMudletHomeDir() .. "/svo/rift+inv/rift") then
     table.load(getMudletHomeDir() .. "/svo/rift+inv/rift", rift.riftcontents)
   end
@@ -967,14 +970,14 @@ signals.systemstart:add_post_emit(function ()
   -- reset, because we can't have herbs in inv at login
   rift.resetinvcontents()
 
-  for mode, _ in pairs(defdefup) do
+  for mode, _ in pairs(svo.defdefup) do
     rift.precachedata[mode] = {}
 
     for _,herb in pairs(rift.herbsminerals) do
       rift.precachedata[mode][herb] = 0
     end
 
-    if mode == "combat" then
+    if mode == 'combat' then
       rift.precachedata[mode].irid = 1
       rift.precachedata[mode].kelp = 1
       rift.precachedata[mode].bloodroot = 1
@@ -986,28 +989,28 @@ signals.systemstart:add_post_emit(function ()
   local tmp = {}
   if lfs.attributes(getMudletHomeDir() .. "/svo/rift+inv/precachedata") then
     table.load(getMudletHomeDir() .. "/svo/rift+inv/precachedata", tmp)
-    update(rift.precachedata, tmp)
-    rift.precache = rift.precachedata[defs.mode]
+    svo.update(rift.precachedata, tmp)
+    rift.precache = rift.precachedata[svo.defs.mode]
 
     -- moss was removed, get rid of it
-    for mode, m in pairs(rift.precachedata) do
+    for _, m in pairs(rift.precachedata) do
       if m.moss then m.moss = nil end
     end
   end
   rift.update_riftlabel()
 end)
 
-signals.enablegmcp:connect(function()
+svo.signals.enablegmcp:connect(function()
   sendGMCP([[Core.Supports.Add ["IRE.Rift 1"] ]])
 end)
 
-signals.saveconfig:connect(function ()
-  table.save(getMudletHomeDir() .. "/svo/rift+inv/rift", rift.riftcontents)
-  table.save(getMudletHomeDir() .. "/svo/rift+inv/inv", rift.invcontents)
-  table.save(getMudletHomeDir() .. "/svo/rift+inv/precachedata", rift.precachedata)
+svo.signals.saveconfig:connect(function ()
+  svo.tablesave(getMudletHomeDir() .. "/svo/rift+inv/rift", rift.riftcontents)
+  svo.tablesave(getMudletHomeDir() .. "/svo/rift+inv/inv", rift.invcontents)
+  svo.tablesave(getMudletHomeDir() .. "/svo/rift+inv/precachedata", rift.precachedata)
 end)
 
 
 sk.checkaeony()
-signals.aeony:emit()
+svo.signals.aeony:emit()
 

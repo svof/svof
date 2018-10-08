@@ -1,51 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
-<MudletPackage version="1.0">
+<MudletPackage version="1.001">
     <TriggerPackage/>
     <TimerPackage/>
     <AliasPackage>
-        <AliasGroup isActive="yes" isFolder="yes">
-            <name>svo Enchanter</name>
-            <script>-------------------------------------------------
---           Originally made by Jenny          --
---        Updated/Corrected by Jukilian        --
--------------------------------------------------
-</script>
+        <Alias isActive="yes" isFolder="no">
+            <name>enchant</name>
+            <script>svo.parse_enchant_arguments(matches[2])</script>
             <command></command>
             <packageName></packageName>
-            <regex></regex>
-            <Alias isActive="yes" isFolder="no">
-                <name>enchant</name>
-                <script>svo.parse_enchant_arguments(matches[2])</script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^enchant (.+)$</regex>
-            </Alias>
-            <Alias isActive="yes" isFolder="no">
-                <name>repeat the last order</name>
-                <script>svo.reenchant()</script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^reenchant$</regex>
-            </Alias>
-        </AliasGroup>
+            <regex>^enchant (.+)$</regex>
+        </Alias>
+        <Alias isActive="yes" isFolder="no">
+            <name>repeat the last order</name>
+            <script>svo.reenchant()</script>
+            <command></command>
+            <packageName></packageName>
+            <regex>^reenchant$</regex>
+        </Alias>
     </AliasPackage>
     <ActionPackage/>
     <ScriptPackage>
-        <ScriptGroup isActive="yes" isFolder="yes">
-            <name>svo Enchanter</name>
+        <Script isActive="yes" isFolder="no">
+            <name>enchanter script</name>
             <packageName></packageName>
-            <script>-------------------------------------------------
---           Originally made by Jenny          --
---        Updated/Corrected by Jukilian        --
---            Rewritten by Keneanung           --
--------------------------------------------------
-</script>
-            <eventHandlerList/>
-            <Script isActive="yes" isFolder="no">
-                <name>script</name>
-                <packageName></packageName>
-                <script>local ourobori_data = {
+            <script>local ourobori_data = {
   [18864] = { &quot;ouroboros60684&quot;,  &quot;ouroboros203598&quot; },
   [21191] = { &quot;ouroboros34462&quot;,  &quot;ouroboros49014&quot;  },
   [21192] = { &quot;ouroboros191596&quot;, &quot;ouroboros191631&quot; },
@@ -1306,9 +1285,8 @@ end
 registerAnonymousEventHandler(&quot;gmcp.Char.Items.List&quot;, &quot;svo.check_ourobori&quot;)
 registerAnonymousEventHandler(&quot;svo system loaded&quot;, &quot;initialiseEnchantScript&quot;)
 </script>
-                <eventHandlerList/>
-            </Script>
-        </ScriptGroup>
+            <eventHandlerList/>
+        </Script>
     </ScriptPackage>
     <KeyPackage/>
     <HelpPackage>
