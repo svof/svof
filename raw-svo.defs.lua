@@ -2353,7 +2353,7 @@ defs_data = pl.OrderedMap {}
     on = { "You focus on enhancing your personal luck.",
       "Your strikes are already guided by preternatural luck."
     },
-    off = "Your strikes are no longer guided by unnatural luck.".
+    off = "Your strikes are no longer guided by unnatural luck.",
     def = "Your strikes are guided by unnatural luck."
   })
   defs_data:set("rupture", { type = "emulation",
