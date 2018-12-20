@@ -15471,6 +15471,25 @@ affinity = {
     }
   },
 #end
+
+#if skills.weaving then
+#basicdef("secondskin", "weave secondskin")
+#end
+
+#if skills.psionics then
+#basicdef("comprehend", "psi comprehend", false, "psicomprehend")
+#basicdef("transcend", "psi transcend", false, "psitranscend")
+#basicdef("breakthrough", "psi breakthrough", false, "psibreakthrough")
+#basicdef("vanish", "psi vanish partial", false, "psivanish")
+#end
+
+#if skills.emulation then
+#basicdef("guidedstrike", "enact guidedstrike")
+#basicdef("clarity", "enact clarity", false, "mentalclarity")
+#basicdef("rupture", "enact rupture", false, "rupturesight")
+#basicdef("indomitability", "enact indomitability")
+#end
+
   sstosvoa = {
     addiction = "addiction",
     aeon = "aeon",
