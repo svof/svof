@@ -15485,7 +15485,7 @@ affinity = {
 
 #if skills.emulation then
 #basicdef("guidedstrike", "enact guidedstrike")
-#basicdef("clarity", "enact clarity", false, "mentalclarity")
+#basicdef("mentalclarity", "enact clarity")
 #basicdef("rupture", "enact rupture", false, "rupturesight")
 #basicdef("indomitability", "enact indomitability")
 #end

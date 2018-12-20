@@ -2363,7 +2363,7 @@ defs_data = pl.OrderedMap {}
     off = "Your vision returns to normal levels, no longer able to perceive the veins that lie beneath people's skin.",
     def = "Your blows will rupture veins and arteries with every strike."
   })
-  defs_data:set("clarity", { type = "emulation",
+  defs_data:set("mentalclarity", { type = "emulation",
     on = { "A total focus overcomes you; the mundanity of everyday distractions unable to penetrate your clarity.",
       "Your clarity of thought already surpasses natural limits."
     },
