@@ -27,4 +27,5 @@ skills = {
   serpent      = {"subterfuge", "venom", "hypnosis"},
   shaman       = {"runelore", "curses", "vodun"},
   sylvan       = {"weatherweaving", "groves", "propagation"},
+  psion        = {"weaving", "psionics", "emulation"},
 }
