@@ -823,6 +823,55 @@ end
       end,
     }
   },
+  pressure = {
+    gamename = 'pressure',
+    herb = {
+      isadvisable = function()
+        return (affs.pressure) or false
+      end,
+
+      -- this is called when you still have some left 
+      oncompleted = function()
+        svo.lostbal_herb()
+        codepaste.remove_stackableaff('pressure', true)
+      end,
+
+      empty = function()
+        empty.eat_pear()
+        svo.lostbal_herb()
+      end,
+
+      cured = function()
+        svo.lostbal_herb()
+        svo.rmaff('pressure')
+        svo.dict.pressure.count = 0
+      end,
+
+      noeffect = function() svo.lostbal_herb() end,
+
+      eatcure = {'pear', 'calcite'},
+
+      onstart = function() svo.eat(svo.dict.pressure.herb) end
+    },
+    aff = {
+      oncompleted = function (number)
+        local count = svo.dict.pressure.count
+        svo.addaffdict(svo.dict.pressure)
+
+        svo.dict.pressure.count = (count or 0) + (number or 1)
+        if svo.dict.pressure.count &gt; 7 then
+          svo.dict.pressure.count = 7
+        end
+        svo.updateaffcount(svo.dict.pressure)
+      end
+    },
+    gone = {
+      oncompleted = function()
+        svo.rmaff('pressure')
+        svo.dict.pressure.count = 0
+      end
+    }
+  },
   cholerichumour = {
     gamename = 'temperedcholeric',
     herb = {
@@ -2644,6 +2693,38 @@ end
       oncompleted = function() svo.rmaff('madness') end,
     }
   },
+  tension = {
+    smoke = {
+      isadvisable = function()
+        return (affs.tension and codepaste.smoke_elm_pipe()) or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('tension')
+        svo.lostbal_smoke()
+        sk.elm_smokepuff()
+      end,
+
+      smokecure = {'elm', 'cinnabar'},
+      onstart = function()
+        send(&quot;smoke &quot; .. pipes.elm.id, conf.commandecho)
+      end,
+
+      empty = function()
+        empty.smoke_elm()
+        svo.lostbal_smoke()
+        sk.elm_smokepuff()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.tension)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('tension') end,
+    }
+  },
   -- valerian cures
   slickness = {
     smoke = {
@@ -2801,6 +2882,100 @@ end
       ontimeout = function() svo.rmaff('heartseed') end,
 
       noeffect = function() svo.rmaff('heartseed') end,
+
+      onstart = function()
+        -- add blocking of the cure coming too early if it'll become necessary.
+      end,
+    }
+  },
+  calcifiedskull = {
+    salve = {
+      isadvisable = function()
+        return (affs.calcifiedskull and not affs.mildconcussion) or false
+      end,
+
+      oncompleted = function()
+        svo.lostbal_salve()
+
+        svo.doaction(svo.dict.curingcalcifiedskull.waitingfor)
+      end,
+
+      applycure = {'restoration', 'reconstructive'},
+      actions = {&quot;apply restoration to head&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to head&quot;, &quot;apply reconstructive&quot;},
+      onstart = function()
+        svo.apply(svo.dict.calcifiedskull.salve, &quot; to head&quot;)
+      end,
+
+      -- we get no msg from an application of this
+      empty = function()
+        svo.dict.calcifiedskull.salve.oncompleted()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.calcifiedskull)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('calcifiedskull') end,
+    }
+  },
+  curingcalcifiedskull = {
+    waitingfor = {
+      customwait = 6, -- 4 to cure
+
+      oncompleted = function() svo.rmaff('calcifiedskull') end,
+
+      ontimeout = function() svo.rmaff('calcifiedskull') end,
+
+      noeffect = function() svo.rmaff('calcifiedskull') end,
+
+      onstart = function()
+        -- add blocking of the cure coming too early if it'll become necessary.
+      end,
+    }
+  },
+  calcifiedtorso = {
+    salve = {
+      isadvisable = function()
+        return (affs.calcifiedtorso and not affs.mildtrauma) or false
+      end,
+
+      oncompleted = function()
+        svo.lostbal_salve()
+
+        svo.doaction(svo.dict.curingcalcifiedtorso.waitingfor)
+      end,
+
+      applycure = {'restoration', 'reconstructive'},
+      actions = {&quot;apply restoration to torso&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to torso&quot;, &quot;apply reconstructive&quot;},
+      onstart = function()
+        svo.apply(svo.dict.calcifiedtorso.salve, &quot; to torso&quot;)
+      end,
+
+      -- we get no msg from an application of this
+      empty = function()
+        svo.dict.calcifiedtorso.salve.oncompleted()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.calcifiedtorso)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('calcifiedtorso') end,
+    }
+  },
+  curingcalcifiedtorso = {
+    waitingfor = {
+      customwait = 6, -- 4 to cure
+
+      oncompleted = function() svo.rmaff('calcifiedtorso') end,
+
+      ontimeout = function() svo.rmaff('calcifiedtorso') end,
+
+      noeffect = function() svo.rmaff('calcifiedtorso') end,
 
       onstart = function()
         -- add blocking of the cure coming too early if it'll become necessary.
@@ -7447,6 +7622,35 @@ end
       end,
     }
   },
+  latched = {
+    waitingfor = {
+      customwait = 20, -- not sure how this is cured yet exactly
+
+      isadvisable = function()
+        return false
+      end,
+
+      onstart = function() end,
+
+      oncompleted = function()
+        svo.rmaff('latched')
+        svo.make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.latched)
+        codepaste.badaeon()
+        if not svo.actions.latched_waitingfor then svo.doaction(svo.dict.latched.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function()
+        svo.rmaff('latched')
+        svo.killaction(svo.dict.latched.waitingfor)
+      end,
+    }
+  },
   voided = {
     waitingfor = {
       customwait = 20, -- lasts 20s tops, 15s in some stances. out-times multiple pommelstrikes
@@ -9543,6 +9747,8 @@ end
     bruisedribs = false,
     burning = 'ablaze',
     cadmuscurse = 'cadmus',
+    calcifiedskull = 'calcifiedskull',
+    calcifiedtorso = 'calcifiedtorso',
     claustrophobia = 'claustrophobia',
     clumsiness = 'clumsiness',
     concussion = 'seriousconcussion',
@@ -9608,6 +9814,7 @@ end
     kaisurge = false,
     laceratedthroat = 'laceratedthroat',
     lapsingconsciousness = false,
+    latched = 'latched',
     lethargy = 'lethargy',
     loneliness = 'loneliness',
     lovers = 'inlove',
@@ -9634,6 +9841,7 @@ end
     phlogisticated = 'phlogistication',
     pinshot = 'pinshot',
     prone = 'prone',
+    pressure = 'pressure',
     recklessness = 'recklessness',
     retribution = 'retribution',
     revealed = false,
@@ -9661,6 +9869,7 @@ end
     temperedsanguine = 'sanguinehumour',
     timeflux = 'timeflux',
     timeloop = 'timeloop',
+    tension = 'tension',
     torntendons = 'torntendons',
     transfixation = 'transfixed',
     trueblind = false,
