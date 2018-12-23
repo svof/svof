@@ -52527,7 +52527,7 @@ svo.config.set(&quot;commandseparator&quot;, separator)</script>
                     <regexCodeList>
                         <string>|</string>
                         <string>CommandSeparator</string>
-                        <string>^\| +CommandSeparator +(.+)? +\|</string>
+                        <string>^\| +CommandSeparator +(.+)? +ShowSelfClasswho</string>
                     </regexCodeList>
                     <regexCodePropertyList>
                         <integer>2</integer>
