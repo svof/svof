@@ -1,6 +1,6 @@
 language: ruby
 rvm:
-- 2.2.5
+- 2.3.0
 dist: trusty
 sudo: required
 install:
