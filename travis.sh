@@ -14,9 +14,20 @@ then
   exit 0
 fi
 
+cd output
+
+# Create current_version file
+echo "${TRAVIS_TAG}" > current_version.txt
+
 # Create documentation for the release
-cd doc/_build/html
+cd ../doc/_build/html
 touch .nojekyll
+
+mkdir stable
+cp ../../../output/* stable/
+
+mkdir testing
+cp ../../../output/* testing/
 
 git init
 
@@ -73,24 +84,3 @@ then
   echo "Updating release body failed:" "$http_code"
   exit 1
 fi
-
-# Upload release zip files via sftp so automatic updates work
-
-# Change to output directory
-cd output
-
-# Create current_version file
-echo "${TRAVIS_TAG}" > current_version.txt
-
-# upload everything here.
-for f in *
-do
-  echo "Uploading ${f}"
-  curl -3 --disable-epsv --ftp-skip-pasv-ip \
-  -u "svof-machine-account:${FTP_PASS}" -T "${f}" "ftp://ftp.pathurs.com" &> /dev/null
-  stat=$?
-  if [ "$stat" -ne 0 ]; then
-    echo "Could not upload ${f}: Return code was ${stat}"
-    exit 1
-  fi
-done

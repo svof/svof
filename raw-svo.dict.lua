@@ -89,6 +89,80 @@ local dict_smoke_def = {}
 
 local codepaste = {}
 
+local tekura_ability_isadvisable = function (new_stance)
+  return (
+    (
+      (
+        sys.deffing 
+        and defdefup[defs.mode][new_stance] 
+        and not defc[new_stance]  
+      ) 
+      or (
+        conf.keepup 
+        and defkeepup[defs.mode][new_stance] 
+        and not defc[new_stance] 
+      )
+    ) 
+    and me.path == "tekura" 
+    and not codepaste.balanceful_defs_codepaste() 
+    and not defc.riding
+  ) or false
+end
+
+local shikudo_ability_isadvisable = function (new_form)
+  return (
+    (
+      (
+        sys.deffing 
+        and defdefup[defs.mode][new_form] 
+        and not defc[new_form]  
+      ) 
+      or (
+        conf.keepup 
+        and defkeepup[defs.mode][new_form] 
+        and not defc[new_form] 
+      )
+    ) 
+    and me.path == "shikudo" 
+    and not codepaste.balanceful_defs_codepaste() 
+    and not defc.riding
+  ) or false
+end
+
+local tekura_stance_oncompleted = function (new_stance)
+  local stances = {
+    "horse", 
+    "eagle", 
+    "cat", 
+    "bear", 
+    "rat", 
+    "scorpion", 
+    "dragon"
+  }
+
+  for _, stance in ipairs(stances) do
+    defences.lost(stance)
+  end
+
+  defences.got(new_stance)
+end
+
+local shikudo_form_oncompleted = function (new_form)
+  local shikudo_forms = {
+    "tykonos", 
+    "willow", 
+    "rain", 
+    "oak", 
+    "gaital", 
+    "maelstrom"
+  }
+
+  for _, form in ipairs(shikudo_forms) do
+    defences.lost(form)
+  end
+
+  defences.got(new_form)
+end
 
 -- used to check if we're writhing from something already
 --impale stacks below other writhes
@@ -267,8 +341,6 @@ codepaste.smoke_elm_pipe = function()
 
   return (not (pipes.elm.id == 0) and
     (pipes.elm.lit or pipes.elm.arty) and
-    -- can't smoke elm with inquisition and hellsight together
-    not (affs.inquisition and affs.hellsight) and
     not (pipes.elm.puffs == 0))
 end
 
@@ -992,32 +1064,16 @@ dict = {
 
       -- gives various afflictions, amount of which depends on your humour level
       --[[
-        slickness always seems to happen
-        1-2: add 1 unknown
-        3-6: add 2 unknowns
-        7-9: add 3 unknowns
-        10: add 4 unknowns
+        1-2: 1 affliction
+        3-6: 2 afflictions
+        7-9: 3 afflictions
+        10: 4 afflictions
 
-        anorexia 50% time
-        slickness 8+
+        Above information is roughly accurate.
+        Gives between one and four afflictions from the following: lethargy, slickness, anorexia, weariness.
+        Afflictions not hidden by gmcp, so removed from the inundated function.
       ]]
       inundated = function()
-        addaff(dict.slickness)
-
-        if dict.phlegmatichumour.count >= 3 and math.random(1,2) == 1 then
-          addaff(dict.anorexia)
-        end
-
-        if dict.phlegmatichumour.count == 8 then
-          codepaste.addunknownany(4)
-        elseif dict.phlegmatichumour.count >= 6 then
-          codepaste.addunknownany(3)
-        elseif dict.phlegmatichumour.count >= 4 then
-          codepaste.addunknownany(2)
-        else
-          codepaste.addunknownany(1)
-        end
-
         removeaff("phlegmatichumour")
         dict.phlegmatichumour.count = 0
       end,
@@ -1124,11 +1180,9 @@ dict = {
       aspriority = 0,
       spriority = 0,
       def = true,
-      -- not handled by serverside
-      undeffable = true,
 
       isadvisable = function ()
-        return false
+        return not defc.waterbubble and ((sys.deffing and defdefup[defs.mode].waterbubble) or (conf.keepup and defkeepup[defs.mode].waterbubble)) and not affs.anorexia and me.is_underwater
       end,
 
       eatcure = {"pear", "calcite"},
@@ -1138,6 +1192,7 @@ dict = {
       end,
 
       oncompleted = function ()
+        defences.got("waterbubble")
       end,
 
       empty = function()
@@ -3003,7 +3058,7 @@ dict = {
       spriority = 0,
 
       isadvisable = function ()
-        return (affs.hellsight and codepaste.smoke_valerian_pipe()) or false
+        return (affs.hellsight and not affs.inquisition and codepaste.smoke_valerian_pipe()) or false
       end,
 
       oncompleted = function ()
@@ -6309,13 +6364,13 @@ dict = {
       isadvisable = function ()
         return (not sys.sp_satisfied and not sys.blockparry and not affs.paralysis
           and not doingaction "doparry" and (
-#if class == "monk" then
+#if skills.tekura then
             conf.guarding
 #else
             conf.parry
 #end
            ) and not codepaste.balanceful_codepaste()
-#if class ~= "blademaster" and class ~= "monk" then
+#if class ~= "blademaster" and not skills.tekura then
           -- blademasters can parry with their sword sheathed
           and ((not sys.enabledgmcp or defc.dragonform) or (next(me.wielded) and sk.have_parryable()))
 #end
@@ -9179,6 +9234,301 @@ dict = {
       end,
     }
   },
+  depression = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.depression or false
+      end,
+
+      oncompleted = function ()
+        removeaff("depression")
+        lostbal_herb()
+      end,
+
+      eatcure = {"goldenseal", "plumbum"},
+      onstart = function ()
+        eat(dict.depression.herb)
+      end,
+
+      empty = function()
+        empty.eat_goldenseal()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.depression)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("depression")
+      end,
+    }
+  },
+  parasite = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.parasite or false
+      end,
+
+      oncompleted = function ()
+        removeaff("parasite")
+        lostbal_herb()
+      end,
+
+      eatcure = {"kelp", "aurum"},
+      onstart = function ()
+        eat(dict.parasite.herb)
+      end,
+
+      empty = function()
+        empty.eat_kelp()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.parasite)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("parasite")
+      end,
+    }
+  },
+  retribution = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.retribution or false
+      end,
+
+      oncompleted = function ()
+        removeaff("retribution")
+        lostbal_herb()
+      end,
+
+      eatcure = {"bellwort", "cuprum"},
+      onstart = function ()
+        eat(dict.retribution.herb)
+      end,
+
+      empty = function()
+        empty.eat_bellwort()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.retribution)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("retribution")
+      end,
+    }
+  },
+  shadowmadness = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.shadowmadness or false
+      end,
+
+      oncompleted = function ()
+        removeaff("shadowmadness")
+        lostbal_herb()
+      end,
+
+      eatcure = {"goldenseal", "plumbum"},
+      onstart = function ()
+        eat(dict.shadowmadness.herb)
+      end,
+
+      empty = function()
+        empty.eat_goldenseal()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.shadowmadness)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("shadowmadness")
+      end,
+    }
+  },
+  timeloop = {
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.timeloop or false
+      end,
+
+      oncompleted = function ()
+        removeaff("timeloop")
+        lostbal_herb()
+      end,
+
+      eatcure = {"bellwort", "cuprum"},
+      onstart = function ()
+        eat(dict.timeloop.herb)
+      end,
+
+      empty = function()
+        empty.eat_bellwort()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.timeloop)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("timeloop")
+      end,
+    }
+  },
+  degenerate = {
+    waitingfor = {
+      customwait = 0, -- seems to last 6 seconds per degenerate affliction when boosted, set below
+
+      isadvisable = function ()
+        return false
+      end,
+
+      onstart = function () end,
+
+      oncompleted = function ()
+        removeaff("degenerate")
+        make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        local timeout = 0
+        for _, aff in ipairs(empty.degenerateaffs) do
+          timeout = timeout + (affs[aff] and 7 or 0)
+        end
+        dict.degenerate.waitingfor.customwait = timeout
+        addaff(dict.degenerate)
+        if not actions.degenerate_waitingfor then doaction(dict.degenerate.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("degenerate")
+        killaction (dict.degenerate.waitingfor)
+      end,
+    }
+  },
+  deteriorate = {
+    waitingfor = {
+      customwait = 0, -- seems to last 6 seconds per deteriorate affliction when boosted, set below
+
+      isadvisable = function ()
+        return false
+      end,
+
+      onstart = function () end,
+
+      oncompleted = function ()
+        removeaff("deteriorate")
+        make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        local timeout = 0
+        for _, aff in ipairs(empty.deteriorateaffs) do
+          timeout = timeout + (affs[aff] and 7 or 0)
+        end
+        dict.deteriorate.waitingfor.customwait = timeout
+        addaff(dict.deteriorate)
+        if not actions.deteriorate_waitingfor then doaction(dict.deteriorate.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("deteriorate")
+        killaction (dict.deteriorate.waitingfor)
+      end,
+    }
+  },
+  hatred = {
+    waitingfor = {
+      customwait = 15,
+
+      isadvisable = function ()
+        return false
+      end,
+
+      onstart = function () end,
+
+      oncompleted = function ()
+        removeaff("hatred")
+        make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.hatred)
+        if not actions.hatred_waitingfor then doaction(dict.hatred.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("hatred")
+        killaction (dict.hatred.waitingfor)
+      end,
+    }
+  },
+  paradox = {
+    count = 0,
+    blocked_herb = "",
+    boosted = {
+      oncompleted = function ()
+        dict.paradox.aff.count = 10
+        updateaffcount(dict.paradox)
+      end
+    },
+    weakened = {
+      oncompleted = function ()
+        codepaste.remove_stackableaff("paradox", true)
+      end
+    },
+    aff = {
+      oncompleted = function (herb)
+        dict.paradox.count = 5
+        dict.paradox.blocked_herb = herb
+        addaff(dict.paradox)  
+        affl["paradox"].herb = herb
+        updateaffcount(dict.paradox)
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("paradox")
+        dict.paradox.count = 0
+        dict.paradox.blocked_herb = ""
+      end,
+    }
+  },
   retardation = {
     waitingfor = {
       isadvisable = function ()
@@ -9389,6 +9739,31 @@ dict = {
       end
     }
   },
+#if skills.aeonics then
+  age = {
+    happened = {
+      onstart = function () end,
+
+      oncompleted = function(amount)
+        if amount > 1400 then
+          ignore_illusion("Age went over the possible max")
+          stats.age = 0
+        elseif amount == 0 then
+          if dict.age.happened.timer then killTimer(dict.age.happened.timer) end
+          stats.age = 0
+          dict.age.happened.timer = nil
+        else
+          if dict.age.happened.timer then killTimer(dict.age.happened.timer) end
+          dict.age.happened.timer = tempTimer(6 + getping(), function()
+            ignore_illusion("Age tick timed out")
+            stats.age = 0
+          end)
+          stats.age = amount
+        end
+      end
+    }
+  },
+#end
 
 -- general defences
   rebounding = {
@@ -13841,11 +14216,193 @@ affinity = {
   },
 #end
 
-#if skills.tekura then
-#basicdef("bodyblock", "bdb")
-#basicdef("evadeblock", "evb")
-#basicdef("pinchblock", "pnb")
+#if skills.shikudo then
+  grip = {
+    gamename = "gripping",
+    physical = {
+      balanceless_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+      action = "grip",
 
+      isadvisable = function()
+        return (
+          not defc.grip 
+          and (
+            (sys.deffing and defdefup[defs.mode].grip) 
+            or (conf.keepup and defkeepup[defs.mode].grip)
+          ) 
+          and me.path == "shikudo" 
+          and not codepaste.balanceful_defs_codepaste() 
+          and sys.canoutr 
+          and not affs.paralysis 
+          and not affs.prone
+        ) or false
+      end,
+
+      oncompleted = function()
+        defences.got("grip")
+      end,
+
+      onstart = function() 
+        send("grip", conf.commandecho)
+      end
+    }
+  },
+  tykonos = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt tykonos form",
+      isadvisable = function() return shikudo_ability_isadvisable("tykonos") end,
+      oncompleted = function() return shikudo_form_oncompleted("tykonos") end,
+
+      onstart = function ()
+        send("adopt tykonos form", conf.commandecho)
+      end
+    },
+  },
+  willow = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt willow form",
+      isadvisable = function() return shikudo_ability_isadvisable("willow") end,
+      oncompleted = function() return shikudo_form_oncompleted("willow") end,
+
+      onstart = function ()
+        send("adopt willow form", conf.commandecho)
+      end
+    },
+  },
+  rain = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt rain form",
+      isadvisable = function() return shikudo_ability_isadvisable("rain") end,
+      oncompleted = function() return shikudo_form_oncompleted("rain") end,
+
+      onstart = function ()
+        send("adopt rain form", conf.commandecho)
+      end
+    },
+  },
+  oak = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt oak form",
+      isadvisable = function() return shikudo_ability_isadvisable("oak") end,
+      oncompleted = function() return shikudo_form_oncompleted("oak") end,
+
+      onstart = function ()
+        send("adopt oak form", conf.commandecho)
+      end
+    },
+  },
+  gaital = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt gaital form",
+      isadvisable = function() return shikudo_ability_isadvisable("gaital") end,
+      oncompleted = function() return shikudo_form_oncompleted("gaital") end,
+
+      onstart = function ()
+        send("adopt gaital form", conf.commandecho)
+      end
+    },
+  },
+  maelstrom = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      action = "adopt maelstrom form",
+      isadvisable = function() return shikudo_ability_isadvisable("maelstrom") end,
+      oncompleted = function() return shikudo_form_oncompleted("maelstrom") end,
+
+      onstart = function ()
+        send("adopt maelstrom form", conf.commandecho)
+      end
+    },
+  },
+#end
+
+#if skills.tekura then
+  bodyblock = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      isadvisable = function() return tekura_ability_isadvisable("bodyblock") end,
+      action = "bdb",
+
+      oncompleted = function ()
+        defences.got("bodyblock")
+      end,
+
+      onstart = function ()
+        send("bdb", conf.commandecho)
+      end
+    },
+  },
+  evadeblock = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      action = "evb",
+      isadvisable = function() return tekura_ability_isadvisable("evadeblock") end,
+
+      oncompleted = function () 
+        defences.got("evadeblock") 
+      end,
+
+      onstart = function ()
+        send("evb", conf.commandecho)
+      end
+    },
+  },
+  pinchblock = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      action = "pnb",
+      isadvisable = function() return tekura_ability_isadvisable("pinchblock") end,
+
+      oncompleted = function ()
+        defences.got("pinchblock")
+      end,
+
+      onstart = function ()
+        send("pnb", conf.commandecho)
+      end
+    },
+  },
   horse = {
     physical = {
       aspriority = 0,
@@ -13853,20 +14410,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].horse and not defc.horse) or (conf.keepup and defkeepup[defs.mode].horse and not defc.horse)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("horse")
-      end,
-
       action = "hrs",
+      isadvisable = function() return tekura_ability_isadvisable("horse") end,
+      oncompleted = function() return tekura_stance_oncompleted("horse") end,
+
       onstart = function ()
         send("hrs", conf.commandecho)
       end
@@ -13879,20 +14426,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].eagle and not defc.eagle) or (conf.keepup and defkeepup[defs.mode].eagle and not defc.eagle)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("eagle")
-      end,
-
       action = "egs",
+      isadvisable = function() return tekura_ability_isadvisable("eagle") end,
+      oncompleted = function() return tekura_stance_oncompleted("eagle") end,
+
       onstart = function ()
         send("egs", conf.commandecho)
       end
@@ -13905,20 +14442,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].cat and not defc.cat) or (conf.keepup and defkeepup[defs.mode].cat and not defc.cat)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("cat")
-      end,
-
       action = "cts",
+      isadvisable = function() return tekura_ability_isadvisable("cat") end,
+      oncompleted = function() return tekura_stance_oncompleted("cat") end,
+
       onstart = function ()
         send("cts", conf.commandecho)
       end
@@ -13931,20 +14458,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].bear and not defc.bear) or (conf.keepup and defkeepup[defs.mode].bear and not defc.bear)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("bear")
-      end,
-
       action = "brs",
+      isadvisable = function() return tekura_ability_isadvisable("bear") end,
+      oncompleted = function() return tekura_stance_oncompleted("bear") end,
+
       onstart = function ()
         send("brs", conf.commandecho)
       end
@@ -13957,20 +14474,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].rat and not defc.rat) or (conf.keepup and defkeepup[defs.mode].rat and not defc.rat)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("rat")
-      end,
-
       action = "rts",
+      isadvisable = function() return tekura_ability_isadvisable("rat") end,
+      oncompleted = function() return tekura_stance_oncompleted("rat") end,
+
       onstart = function ()
         send("rts", conf.commandecho)
       end
@@ -13983,20 +14490,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].scorpion and not defc.scorpion) or (conf.keepup and defkeepup[defs.mode].scorpion and not defc.scorpion)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("scorpion")
-      end,
-
       action = "scs",
+      isadvisable = function() return tekura_ability_isadvisable("scorpion") end,
+      oncompleted = function() return tekura_stance_oncompleted("scorpion") end,
+
       onstart = function ()
         send("scs", conf.commandecho)
       end
@@ -14009,20 +14506,10 @@ affinity = {
       balanceful_act = true,
       def = true,
       undeffable = true,
-
-      isadvisable = function ()
-        return (((sys.deffing and defdefup[defs.mode].dragon and not defc.dragon) or (conf.keepup and defkeepup[defs.mode].dragon and not defc.dragon)) and not codepaste.balanceful_defs_codepaste() and not defc.riding) or false
-      end,
-
-      oncompleted = function ()
-        for _, stance in ipairs{"horse", "eagle", "cat", "bear", "rat", "scorpion", "dragon"} do
-          defences.lost(stance)
-        end
-
-        defences.got("dragon")
-      end,
-
       action = "drs",
+      isadvisable = function() return tekura_ability_isadvisable("dragon") end,
+      oncompleted = function() return tekura_stance_oncompleted("dragon") end,
+
       onstart = function ()
         send("drs", conf.commandecho)
       end
@@ -14036,7 +14523,7 @@ affinity = {
 
 #if skills.subterfuge then
 #basicdef("scales", "scales")
-#basicdef("hiding", "hide", false, false, true)
+#basicdef("hiding", "hide", false, "hiding", true)
 #basicdef("pacing", "pacing on")
 #basicdef("bask", "bask", false, "basking")
 #basicdef("listen", "listen", false, false, true)
@@ -14140,7 +14627,7 @@ affinity = {
 #if skills.woodlore then
 #basicdef("barkskin", "barkskin")
 #basicdef("fleetness", "fleetness")
-#basicdef("hiding", "hide")
+#basicdef("hiding", "hide", false, "hiding", true)
 #basicdef("firstaid", "firstaid on")
   impaling = {
     physical = {
@@ -14619,6 +15106,390 @@ affinity = {
     }
   },
 #end
+#if skills.shadowmancy then
+  shadowcloak = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+      undeffable = true,
+
+      isadvisable = function ()
+        local shadowcloak = me.getitem("a grim cloak")
+        if not defc.dragonform and not defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].shadowcloak) or (conf.keepup and defkeepup[defs.mode].shadowcloak) or (sys.deffing and defdefup[defs.mode].disperse) or (conf.keepup and defkeepup[defs.mode].disperse) or (sys.deffing and defdefup[defs.mode].shadowveil) or (conf.keepup and defkeepup[defs.mode].shadowveil) or (sys.deffing and defdefup[defs.mode].hiding) or (conf.keepup and defkeepup[defs.mode].hiding)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and stats.mp then
+          if not shadowcloak then
+            if stats.mp >= 100 then
+              return true
+            elseif not sk.gettingfullstats then
+              fullstats(true)
+              echof("Getting fullstats for Shadowcloak summoning...")
+            end
+          else
+            return true
+          end
+        end
+        return false
+      end,
+
+      oncompleted = function ()
+        defences.got("shadowcloak")
+      end,
+
+      action = "shadow cloak",
+      onstart = function ()
+        local shadowcloak = me.getitem("a grim cloak")
+        if not shadowcloak then
+          send("shadow cloak", conf.commandecho)
+        elseif not shadowcloak.attrib or not shadowcloak.attrib:find("w") then
+          send("wear " .. shadowcloak.id, conf.commandecho)
+        else
+      defences.got("shadowcloak")
+        end
+      end
+    }
+  },
+  disperse = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return not defc.dragonform and not defc.disperse and defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].disperse) or (conf.keepup and defkeepup[defs.mode].disperse)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone
+      end,
+
+      oncompleted = function ()
+        defences.got("disperse")
+      end,
+
+      action = "shadow disperse",
+      onstart = function ()
+        send("shadow disperse", conf.commandecho)
+      end
+    }
+  },
+  shadowveil = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return not defc.dragonform and not defc.shadowveil and defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].shadowveil) or (conf.keepup and defkeepup[defs.mode].shadowveil)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone
+      end,
+
+      oncompleted = function ()
+        defences.got("shadowveil")
+      end,
+
+      action = "shadow veil",
+      onstart = function ()
+        send("shadow veil", conf.commandecho)
+      end
+    }
+  },
+  hiding = {
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+      undeffable = true,
+
+      isadvisable = function ()
+        return not defc.dragonform and not defc.hiding and defc.shadowcloak and ((sys.deffing and defdefup[defs.mode].hiding) or (conf.keepup and defkeepup[defs.mode].hiding)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone
+      end,
+
+      oncompleted = function ()
+        defences.got("hiding")
+      end,
+
+      action = "shadow veil",
+      onstart = function ()
+        send("shadow veil", conf.commandecho)
+      end
+    }
+  },
+#end
+#if skills.aeonics then
+#basicdef("blur", "chrono blur boost")
+  dilation = {
+    physical = {
+      balanceless_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+      undeffable = true,
+
+      isadvisable = function ()
+        return (((sys.deffing and defdefup[defs.mode].dilation and not defc.dilation) or (conf.keepup and defkeepup[defs.mode].dilation and not defc.dilation)) and not codepaste.balanceful_defs_codepaste() and not doingaction'dilation' and (stats.age and stats.age > 0)) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("dilation")
+      end,
+
+      actions = {"chrono dilation", "chrono dilation boost"},
+      onstart = function ()
+        send("chrono dilation", conf.commandecho)
+      end
+    }
+  },
+#end
+#if skills.terminus then
+  trusad = {
+    gamename = "precision",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.trusad and ((sys.deffing and defdefup[defs.mode].trusad) or (conf.keepup and defkeepup[defs.mode].trusad)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("trusad")
+      end,
+      
+      action = "intone trusad",
+      onstart = function ()
+        send("intone trusad", conf.commandecho)
+      end
+    }
+  },
+  tsuura = {
+    gamename = "durability",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.tsuura and ((sys.deffing and defdefup[defs.mode].tsuura) or (conf.keepup and defkeepup[defs.mode].tsuura)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("tsuura")
+      end,
+      
+      action = "intone tsuura",
+      onstart = function ()
+        send("intone tsuura", conf.commandecho)
+      end
+    }
+  },
+  ukhia = {
+    gamename = "bloodquell",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.ukhia and ((sys.deffing and defdefup[defs.mode].ukhia) or (conf.keepup and defkeepup[defs.mode].ukhia)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("ukhia")
+      end,
+      
+      action = "intone ukhia",
+      onstart = function ()
+        send("intone ukhia", conf.commandecho)
+      end
+    }
+  },
+  qamad = {
+    gamename = "ironwill",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.qamad and ((sys.deffing and defdefup[defs.mode].qamad) or (conf.keepup and defkeepup[defs.mode].qamad)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("qamad")
+      end,
+      
+      action = "intone qamad",
+      onstart = function ()
+        send("intone qamad", conf.commandecho)
+      end
+    }
+  },
+  mainaas = {
+    gamename = "bodyaugment",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.mainaas and ((sys.deffing and defdefup[defs.mode].mainaas) or (conf.keepup and defkeepup[defs.mode].mainaas)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("mainaas")
+      end,
+      
+      action = "intone mainaas",
+      onstart = function ()
+        send("intone mainaas", conf.commandecho)
+      end
+    }
+  },
+  gaiartha = {
+    gamename = "antiforce",
+    physical = {
+      balanceful_act = true,
+      aspriority = 0,
+      spriority = 0,
+      def = true,
+
+      isadvisable = function ()
+        return (not defc.dragonform and not defc.gaiartha and ((sys.deffing and defdefup[defs.mode].gaiartha) or (conf.keepup and defkeepup[defs.mode].gaiartha)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.word) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("gaiartha")
+      end,
+      
+      action = "intone gaiartha",
+      onstart = function ()
+        send("intone gaiartha", conf.commandecho)
+      end
+    }
+  },
+  lyre = {
+    physical = {
+      aspriority = 0,
+      spriority = 0,
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+
+      isadvisable = function ()
+        return (not defc.lyre and not doingaction("lyre") and ((sys.deffing and defdefup[defs.mode].lyre) or (conf.keepup and defkeepup[defs.mode].lyre)) and not will_take_balance() and not conf.lyre_step and not affs.prone and (defc.dragonform or (conf.lyrecmd and conf.lyrecmd ~= "intone kail") or bals.word)) or false
+      end,
+
+      oncompleted = function ()
+        defences.got("lyre")
+
+        if conf.lyre then conf.paused = true; raiseEvent("svo config changed", "paused") end
+      end,
+
+      ontimeout = function()
+        if conf.paused and not defc.lyre then
+          echof("Lyre strum didn't happen - unpausing.")
+          conf.paused = false; raiseEvent("svo config changed", "paused")
+          make_gnomes_work()
+        end
+      end,
+
+      onkill = function()
+        if conf.paused and not defc.lyre then
+          echof("Lyre strum cancelled - unpausing.")
+          conf.paused = false; raiseEvent("svo config changed", "paused")
+        end
+      end,
+
+      action = "intone kail",
+      onstart = function ()
+        sys.sendonceonly = true
+
+        -- small fix to make 'lyc' work and be in-order (as well as use batching)
+        local send = send
+        -- record in systemscommands, so it doesn't get killed later on in the controller and loop
+        if conf.batch then send = function(what, ...) sendc(what, ...) sk.systemscommands[what] = true end end
+
+        if not defc.dragonform and not conf.lyrecmd then
+          send("intone kail", conf.commandecho)
+        elseif conf.lyrecmd then
+          send(tostring(conf.lyrecmd), conf.commandecho)
+        else
+          send("strum lyre", conf.commandecho)
+        end
+        sys.sendonceonly = false
+
+        if conf.lyre then conf.paused = true; raiseEvent("svo config changed", "paused") end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        defences.lost("lyre")
+
+        -- as a special case for handling the following scenario:
+        --[[(focus)
+          Your prismatic barrier dissolves into nothing.
+          You focus your mind intently on curing your mental maladies.
+          Food is no longer repulsive to you. (7.548s)
+          H: 3294 (50%), M: 4911 (89%) 28725e, 10294w 89.3% ex|cdk- 19:24:04.719(sip health|eat bayberry|outr bayberry|eat
+          irid|outr irid)(+324h, 5.0%, -291m, 5.3%)
+          You begin to weave a melody of magical, heart-rending beauty and a beautiful barrier of prismatic light surrounds you.
+          (p) H: 3294 (50%), M: 4911 (89%) 28725e, 10194w 89.3% x|cdk- 19:24:04.897
+          Your prismatic barrier dissolves into nothing.
+          You take a drink from a purple heartwood vial.
+          The elixir heals and soothes you.
+          H: 4767 (73%), M: 4911 (89%) 28725e, 10194w 89.3% x|cdk- 19:24:05.247(+1473h, 22.7%)
+          You eat some bayberry bark.
+          Your eyes dim as you lose your sight.
+        ]]
+        -- we want to kill lyre going up when it goes down and you're off balance, because you won't get it up off-bal
+
+        -- but don't kill it if it is in lifevision - meaning we're going to get it:
+        --[[
+          (ex) 4600h|100%, 4000m|84%, 100w%, 100e%, (cdbkr)-  {9 Mayan 637}(strum lyre)
+          Your prismatic barrier dissolves into nothing.
+          You strum a Lasallian lyre, and a prismatic barrier forms around you.
+          (svo): Lyre strum cancelled - unpausing.
+          (x) 4600h|100%, 4000m|84%, 100w%, 100e%, (cdbkr)-  {9 Mayan 637}
+          You have recovered equilibrium. (3.887s)
+          (ex) 4600h|100%, 4000m|84%, 100w%, 100e%, (cdbkr)-  {9 Mayan 637}(strum lyre)
+          Your prismatic barrier dissolves into nothing.
+          You strum a Lasallian lyre, and a prismatic barrier forms around you.
+          (svo): Lyre strum cancelled - unpausing.
+        ]]
+
+        if not (bals.balance and bals.equilibrium) and actions.lyre_physical and not lifevision.l.lyre_physical then killaction(dict.lyre.physical) end
+
+        -- unpause should we lose the lyre def for some reason - but not while we're doing lyc
+        -- since we'll lose the lyre def and it'll come up right away
+        if conf.lyre and conf.paused and not actions.lyre_physical then conf.paused = false; raiseEvent("svo config changed", "paused") end
+      end,
+    }
+  },
+#end
+
+#if skills.weaving then
+#basicdef("secondskin", "weave secondskin")
+#end
+
+#if skills.psionics then
+#basicdef("comprehend", "psi comprehend", false, "psicomprehend")
+#basicdef("transcend", "psi transcend", false, "psitranscend")
+#basicdef("breakthrough", "psi breakthrough", false, "psibreakthrough")
+#basicdef("vanish", "psi vanish partial", false, "psivanish")
+#end
+
+#if skills.emulation then
+#basicdef("guidedstrike", "enact guidedstrike")
+#basicdef("mentalclarity", "enact clarity")
+#basicdef("rupture", "enact rupture", false, "rupturesight")
+#basicdef("indomitability", "enact indomitability")
+#end
+
   sstosvoa = {
     addiction = "addiction",
     aeon = "aeon",
@@ -14647,7 +15518,7 @@ affinity = {
     crackedribs = "crackedribs",
     daeggerimpale = false, 
     damagedhead = "mildconcussion", 
-    damagedleftarm = "mangledrightarm", 
+    damagedleftarm = "mangledleftarm", 
     damagedleftleg = "mangledleftleg", 
     damagedrightarm = "mangledrightarm", 
     damagedrightleg = "mangledrightleg", 
@@ -14657,9 +15528,12 @@ affinity = {
     deadening = "deadening",
     deafness = false, 
     deepsleep = "sleep",
+    degenerate = "degenerate",
     dehydrated = "dehydrated",
     dementia = "dementia",
     demonstain = "stain",
+    depression = "depression",
+    deteriorate = "deteriorate",
     disloyalty = "disloyalty",
     disrupted = "disrupt",
     dissonance = "dissonance",
@@ -14678,6 +15552,7 @@ affinity = {
     haemophilia = "haemophilia",
     hallucinations = "hallucinations",
     hamstrung = "hamstring",
+    hatred = "hatred",
     healthleech = "healthleech",
     heartseed = "heartseed",
     hecatecurse = "hecate",
@@ -14685,7 +15560,7 @@ affinity = {
     hindered = false, 
     homunculusmercury = false, 
     hypersomnia = "hypersomnia",
-    hypochondria = "hypochondira",
+    hypochondria = "hypochondria",
     hypothermia = "hypothermia",
     icefisted = "icing", 
     impaled = "impale",
@@ -14718,6 +15593,7 @@ affinity = {
     palpatarfeed = "palpatar",
     paralysis = "paralysis",
     paranoia = "paranoia",
+    parasite = "parasite",
     peace = "peace",
     penitence = false, 
     petrified = false, 
@@ -14725,6 +15601,7 @@ affinity = {
     pinshot = "pinshot",
     prone = "prone",
     recklessness = "recklessness",
+    retribution = "retribution",
     revealed = false,
     scalded = "scalded",
     scrambledbrains = false, 
@@ -14732,6 +15609,7 @@ affinity = {
     selarnia = "selarnia",
     sensitivity = "sensitivity",
     serioustrauma = "serioustrauma",
+    shadowmadness = "shadowmadness",
     shivering = "shivering",
     shyness = "shyness",
     silver = false,
@@ -14748,6 +15626,7 @@ affinity = {
     temperedphlegmatic = "phlegmatichumour", 
     temperedsanguine = "sanguinehumour",
     timeflux = "timeflux",
+    timeloop = "timeloop",
     torntendons = "torntendons",
     transfixation = "transfixed",
     trueblind = false,
@@ -14769,8 +15648,9 @@ affinity = {
     acrobatics = "acrobatics",
     affinity = "affinity",
     aiming = false,
-    airpocket = "pear",
+    airpocket = "waterbubble",
     alertness = "alertness",
+    antiforce = "gaiartha",
     arctar = "arctar",
     aria = "aria",
     arrowcatching = "arrowcatch",
@@ -14786,8 +15666,11 @@ affinity = {
     blessingofthegods = false,
     blindness = "blind",
     blocking = "block",
+    bloodquell = "ukhia",
     bloodshield = false,
+    blur = "blur",
     boartattoo = false,
+    bodyaugment = "mainaas",
     bodyblock = "bodyblock",
     boostedregeneration = "boosting",
     chameleon = "chameleon",
@@ -14809,11 +15692,15 @@ affinity = {
     density = "mass",
     devilmark = "devilmark",
     diamondskin = "diamondskin",
+    disassociate = false,
+    disperse = "disperse",
     distortedaura = "distortedaura",
+    disperse = "disperse",
     dodging = "dodging",
     dragonarmour = "dragonarmour",
     dragonbreath = "dragonbreath",
     drunkensailor = "drunkensailor",
+    durability = "tsuura",
     earthshield = "earthblessing",
     eavesdropping = "eavesdrop",
     electricresist = "electricresist",
@@ -14837,6 +15724,7 @@ affinity = {
     gripping = "grip",
     groundwatch = "groundwatch",
     harmony = "harmony",
+    haste = false,
     heartsfury = "heartsfury",
     heldbreath = "breath",
     heresy = "heresy",
@@ -14849,12 +15737,15 @@ affinity = {
     insuflate = false,
     insulation = false,
     ironform = false,
+    ironwill = "qamad",
     kaiboost = "kaiboost",
     kaitrance = "trance",
     kola = "kola",
+    lament = false,
     lay = "lay",
     levitating = "levitation",
     lifegiver = false,
+    lifesteal = false,
     lifevision = "lifevision",
     lipreading = "lipread",
     magicresist = "magicresist",
@@ -14877,6 +15768,7 @@ affinity = {
     pinchblock = "pinchblock",
     poisonresist = "venom",
     preachblessing = false,
+    precision = "trusad",
     prismatic = "lyre",
     projectiles = "projectiles",
     promosurcoat = false,
@@ -14894,13 +15786,19 @@ affinity = {
     secondsight = "secondsight",
     selfishness = "selfishness",
     setweapon = "impaling",
+    shadowveil = "shadowveil",
     shield = "shield",
+    shikudoform = false,
     shinbinding = "bind",
     shinclarity = "clarity",
     shinrejoinder = false,
     shintrance = "shintrance",
     shipwarning = "shipwarning",
+#if skills.subterfuge then
     shroud = "cloaking",
+#else
+    shroud = "shroud",
+#end
     skywatch = "skywatch",
     slippery = "slipperiness",
     softfocusing = "softfocus",

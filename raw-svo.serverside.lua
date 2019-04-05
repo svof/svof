@@ -481,7 +481,11 @@ signals["svo config changed"]:connect(function(config)
   if config ~= "serverside" then return end
 
   if conf.serverside then
-    sk.priochangecache = { special = {} }
+    sk.priochangecache = {
+      special = {
+        focustoggle = conf.focus
+      }
+    }
     -- sync everything
     sk.priosbeforechange = sk.getblankbeforestateprios()
     sendcuring("PRIORITY RESET")
@@ -552,20 +556,46 @@ signals["svo config changed"]:connect(function(config)
     sendcuring("manathreshold "..conf.manause)
   end
 end)
+signals["svo config changed"]:connect(function(config)
+  if not (conf.serverside and config == "healthaffsabove") then return end
 
-#for _, conf in ipairs({"healthaffsabove", "mosshealth", "mossmana"}) do
+  if conf.healthaffsabove == true then option = "on"
+  elseif conf.healthaffsabove == false then option = "off"
+  else
+    option = conf.healthaffsabove
+  end
+
+  sendcuring("healthaffsabove "..option)
+end)
+
+#for _, conf in ipairs({"mosshealth", "mossmana"}) do
 signals["svo config changed"]:connect(function(config)
   if not (conf.serverside and config == "$(conf)") then return end
-
-  if conf.$(conf) == true then option = "on"
-  elseif conf.$(conf) == false then option = "off"
-  else
+  
+  if conf.moss then
     option = conf.$(conf)
+  else
+    option = "0"
   end
 
   sendcuring("$(conf) "..option)
 end)
 #end
+
+-- vconfig moss
+signals["svo config changed"]:connect(function(config)
+  if not (conf.serverside and config == "moss") then return end
+  
+  if conf.moss then
+    sendcuring("mosshealth "..conf.mosshealth)
+    sendcuring("mossmana "..conf.mossmana)
+  else
+    sendcuring("mosshealth 0")
+    sendcuring("mossmana 0")
+  end
+
+end)
+
 signals["svo config changed"]:connect(function(config)
   if not (conf.serverside and config == "clot") then return end
 
@@ -663,9 +693,9 @@ signals["svo config changed"]:connect(function(config)
 
   -- send right away, so chained commands are done in proper order
   if conf.paused then
-    send("curing off")
+    force_send("curing off")
   else
-    send("curing on")
+    force_send("curing on")
   end
 end)
 
@@ -729,7 +759,7 @@ signals["svo config changed"]:connect(function(config)
 end)
 
 
--- if we've got cadmus, and have one of of the me.cadmusaffs afflictions, then we should focus
+-- if we've got cadmus, and have one of the me.cadmusaffs afflictions, then we should focus
 function sk.canfocus()
   -- check if we haven't got cadmus
   if not affs.cadmus then return true end
@@ -742,7 +772,7 @@ function sk.canfocus()
     end
   end
 
-  return true
+  return false
 end
 
 function sk.togglefocusserver()

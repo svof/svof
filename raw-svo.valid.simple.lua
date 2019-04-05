@@ -6,7 +6,7 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-for i,j in ipairs({"ablaze", "severeburn", "extremeburn", "charredburn", "meltingburn", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "heartseed", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impale", "impatience", "inlove", "inquisition", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "lovers", "madness", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", "masochism", "mildtrauma", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "pacifism", "paralysis", "paranoia", "peace", "prone", "recklessness", "relapsing", "roped", "selarnia", "sensitivity", "seriousconcussion", "serioustrauma", "shyness", "slashedthroat", "slickness", "stun", "stupidity", "stuttering", "transfixed", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voided", "voyria", "weakness", "webbed", "hamstring", "shivering", "frozen", "blindaff", "deafaff", "retardation", "manaleech", "sleep", "amnesia", "unknowncrippledlimb", "cholerichumour", "melancholichumour", "phlegmatichumour", "sanguinehumour", "phlogistication", "vitrification", "corrupted", "stain", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "hoisted", "swellskin", "pinshot", "hypothermia", "scalded", "dehydrated", "timeflux", "lullaby", "numbedleftarm", "numbedrightarm", "unconsciousness",
+for i,j in ipairs({"ablaze", "severeburn", "extremeburn", "charredburn", "meltingburn", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "heartseed", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impale", "impatience", "inlove", "inquisition", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "lovers", "madness", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", "masochism", "mildtrauma", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "pacifism", "paralysis", "paranoia", "peace", "prone", "recklessness", "relapsing", "roped", "selarnia", "sensitivity", "seriousconcussion", "serioustrauma", "shyness", "slashedthroat", "slickness", "stun", "stupidity", "stuttering", "transfixed", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voided", "voyria", "weakness", "webbed", "hamstring", "shivering", "frozen", "blindaff", "deafaff", "retardation", "manaleech", "sleep", "amnesia", "unknowncrippledlimb", "cholerichumour", "melancholichumour", "phlegmatichumour", "sanguinehumour", "phlogistication", "vitrification", "corrupted", "stain", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "swellskin", "pinshot", "hypothermia", "scalded", "dehydrated", "timeflux", "lullaby", "numbedleftarm", "numbedrightarm", "unconsciousness", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate", "hatred",
 #if skills.metamorphosis then
   "cantmorph",
 #end
@@ -15,6 +15,15 @@ for i,j in ipairs({"ablaze", "severeburn", "extremeburn", "charredburn", "meltin
     checkaction(dict[j].aff, true)
     lifevision.add(actions[j .. "_aff"].p)
   end
+end
+
+valid.simplehoisted = function(name)
+  assert(name)
+
+  if (conf.autowrithe == "white" and me.hoistlist[name]) or (conf.autowrithe == "black" and not me.hoistlist[name]) then return end
+
+  checkaction(dict.hoisted.aff, true)
+  lifevision.add(actions.hoisted_aff.p)
 end
 
 valid.simpleprone = function ()
@@ -159,3 +168,10 @@ valid.proper_crippledleftleg = simplecrippledrightleg
 valid.proper_crippledrightleg = simplecrippledrightleg
 valid.proper_crippledrightarm = simplecrippledrightarm
 valid.proper_crippledleftarm = simplecrippledleftarm
+
+#if skills.aeonics then
+valid.simpleage = function(value)
+  checkaction(dict.age.happened, true)
+  lifevision.add(actions.age_happened.p, nil, tonumber(value))
+end
+#end

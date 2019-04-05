@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
-<MudletPackage version="1.0">
+<MudletPackage version="1.001">
     <TriggerPackage>
         <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
             <name>svo Tattoo Inker</name>
@@ -93,8 +93,8 @@
                 <colorTriggerFgColor>#000000</colorTriggerFgColor>
                 <colorTriggerBgColor>#000000</colorTriggerBgColor>
                 <regexCodeList>
-                    <string>As the</string>
-                    <string>^As the \w+ tattoo's shape is codified on the</string>
+                    <string>As the </string>
+                    <string>^As the \w+ tattoo's shape is codified on the .+ of yourself, the last of the ink leaves the air and you pause for a moment to admire your handiwork\.$</string>
                 </regexCodeList>
                 <regexCodePropertyList>
                     <integer>2</integer>
