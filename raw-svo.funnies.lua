@@ -59,6 +59,7 @@ protips = {
   "Basic keepup is done at login for you, so you might want to be conservative about what you put on basic keepup - and instead put most of the defs on defup, or in another mode",
   "You can create your own priority lists, and swap them in depending on your fighting conditions",
   "You can add names not to be autorejected with vconfig lustlist <name>",
+  "You can add names not to writhe against with vconfig hoistlist <name>",
   "No illusions will be checked with anti-illusion off. If you're worried, it's best to leave it on",
   "If you attach flame sigils to your pipes, you can't be forced to put them in your container",
   "Be extra careful in blackout. People use it, obviously enough, to hide things from you",

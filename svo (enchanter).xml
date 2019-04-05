@@ -49,9 +49,16 @@
   [18864] = { &quot;ouroboros60684&quot;,  &quot;ouroboros203598&quot; },
   [21191] = { &quot;ouroboros34462&quot;,  &quot;ouroboros49014&quot;  },
   [21192] = { &quot;ouroboros191596&quot;, &quot;ouroboros191631&quot; },
-   [5953] = { &quot;ouroboros36673&quot;,  &quot;ouroboros36838&quot;  },
-   [5954] = { &quot;ouroboros23502&quot;,  &quot;ouroboros57255&quot;  },
-   [5955] = { &quot;ouroboros1263&quot;,   &quot;ouroboros30460&quot;  }
+  [47270] = { &quot;ouroboros36673&quot;,  &quot;ouroboros36838&quot;  },
+  [47271] = { &quot;ouroboros23502&quot;,  &quot;ouroboros57255&quot;  },
+  [47272] = { &quot;ouroboros1263&quot;,   &quot;ouroboros30460&quot;  },
+  [47301] = { &quot;ouroboros205397&quot;, &quot;ouroros219350&quot;   },
+  [11016] = { &quot;ouroboros71982&quot;,  &quot;ouroboros94567&quot;  },
+  [11014] = { &quot;ouroboros54000&quot;,  &quot;ouroboros27606&quot;  },
+  [11018] = { &quot;ouroboros48748&quot;,  &quot;ouroboros69603&quot;  },
+  [11017] = { &quot;ouroboros105971&quot;, &quot;ouroboros106382&quot; },
+  [12518] = { &quot;ouroboros77138&quot;, &quot;ouroboros159812&quot;  },
+  [42336] = { &quot;ouroboros133228&quot;, &quot;ouroboros204600&quot; }
 }
 
 -- Keep track if we are already ennchating
@@ -870,7 +877,8 @@ local function getOIDs()
   checking_ourobori = true
 
   svo.echof( &quot;Don't know the ourobori IDs for this room, so going to check...&quot; )
-  send( &quot;ql&quot; )
+  sendGMCP( &quot;Char.Items.Room&quot; )
+  send(&quot;\n&quot;)
 end
 
 -- Repeats the last order
@@ -1002,11 +1010,11 @@ local function startEnchanting()
     svo.echof(&quot;Starting enchantment order&quot;)
     ouroboros1 = ourobori_data[gmcp.Room.Info.num][1]
     ouroboros2 = ourobori_data[gmcp.Room.Info.num][2]
-    hadSelfishness = svo.defc.selfishness
+    hadSelfishness = svo.defc.selfishness or false
     if hadSelfishness then
       svo.defs.keepup(&quot;selfishness&quot;, false, svo.defs.mode, false)
     end
-    hadRiding = svo.defc.riding
+    hadRiding = svo.defc.riding or false
     if hadRiding then
       svo.defs.keepup(&quot;riding&quot;, false, svo.defs.mode, false)
     end
@@ -1038,6 +1046,8 @@ end
 
 -- gets howMany unworn items with the same short desc as what for enchanting
 local function getSameItems(howMany, what)
+  howMany = tonumber(howMany)
+
   -- lets get the short desc first
   local shortDesc
   for _, item in ipairs(svo.me.inventory) do

@@ -1,0 +1,7 @@
+version: "3"
+services:
+  svof:
+    build: .
+    command: lua5.1 generate.lua -o $CLASS
+    volumes:
+      - .:/src
