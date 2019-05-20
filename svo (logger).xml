@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
-<MudletPackage version="1.001">
-	<TriggerPackage />
-	<TimerPackage />
-	<AliasPackage>
-		<AliasGroup isActive="yes" isFolder="yes">
-			<name>HTML5 logger</name>
-			<script></script>
-			<command></command>
-			<packageName></packageName>
-			<regex></regex>
-			<Alias isActive="yes" isFolder="no">
-				<name>(startlog) Start logging</name>
-				<script>html5log.recording_stopwatch = createStopWatch()
+<MudletPackage version="1.0">
+    <TriggerPackage/>
+    <TimerPackage/>
+    <AliasPackage>
+        <AliasGroup isActive="yes" isFolder="yes">
+            <name>HTML5 logger</name>
+            <script></script>
+            <command></command>
+            <packageName></packageName>
+            <regex></regex>
+            <Alias isActive="yes" isFolder="no">
+                <name>(startlog) Start logging</name>
+                <script>html5log.recording_stopwatch = createStopWatch()
 startStopWatch(html5log.recording_stopwatch)
 
 html5log.current_data = {[[
@@ -165,19 +165,19 @@ html5log.current_data = {[[
     &lt;/style&gt;
     &lt;/head&gt;
     &lt;body&gt;
-&lt;script type="text/javascript"&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
     var log;
     var first_offset = 0;
     var last_index = 0;
     var timer;
     var display_time = function () {
-        document.getElementById("current_time").style.color = "white";
-        document.getElementById("current_time").innerHTML = parseFloat(log[last_index].offset/1000) + " sec.";
+        document.getElementById(&quot;current_time&quot;).style.color = &quot;white&quot;;
+        document.getElementById(&quot;current_time&quot;).innerHTML = parseFloat(log[last_index].offset/1000) + &quot; sec.&quot;;
     }
     var pause = function() {
         clearTimeout(timer);
         display_time();
-        document.getElementById("current_time").style.color = "red";
+        document.getElementById(&quot;current_time&quot;).style.color = &quot;red&quot;;
     }
     var rewind = function (time)
     {
@@ -227,11 +227,11 @@ html5log.current_data = {[[
     };
     var replay = function () {
         if (last_index == 0)
-            document.getElementById("log").innerHTML = "";
+            document.getElementById(&quot;log&quot;).innerHTML = &quot;&quot;;
         display_time();
         display_segment(last_index);
         if (last_index &lt; log.length)
-            timer = setTimeout("replay()", (log[last_index].offset-log[last_index-1].offset));
+            timer = setTimeout(&quot;replay()&quot;, (log[last_index].offset-log[last_index-1].offset));
         else
             last_index = 0;
     };
@@ -243,32 +243,32 @@ html5log.current_data = {[[
             window.scrollTo(0, document.body.scrollHeight);
     };
     var display_segment = function (i, no_scroll) {
-        var elem = document.createElement("div");
-        elem.setAttribute("id", log[i].offset);
-        elem.innerHTML = "&lt;div&gt;";
+        var elem = document.createElement(&quot;div&quot;);
+        elem.setAttribute(&quot;id&quot;, log[i].offset);
+        elem.innerHTML = &quot;&lt;div&gt;&quot;;
         offset = log[i].offset;
         while (i &lt; log.length &amp;&amp; log[i].offset == offset)
         {
-            elem.innerHTML += "&lt;div&gt;" + log[i].message + "&lt;/div&gt;";
+            elem.innerHTML += &quot;&lt;div&gt;&quot; + log[i].message + &quot;&lt;/div&gt;&quot;;
             i++;
         }
         last_index = i;
-        elem.innerHTML += "&lt;/div&gt;";
-        document.getElementById("log").appendChild(elem);
+        elem.innerHTML += &quot;&lt;/div&gt;&quot;;
+        document.getElementById(&quot;log&quot;).appendChild(elem);
         if (!no_scroll || no_scroll !== true)
             window.scrollTo(0, document.body.scrollHeight);
     };
     var build_log_array = function ()
     {
         log = [];
-        var elems = getElementsByClassName(document, "log");
+        var elems = getElementsByClassName(document, &quot;log&quot;);
         for (i in elems)
         {
-		if (log[log.length-1] &amp;&amp; log[log.length-1].offset == elems[i].getAttribute("id"))
+		if (log[log.length-1] &amp;&amp; log[log.length-1].offset == elems[i].getAttribute(&quot;id&quot;))
 		{
 			log[log.length-1].message += elems[i].innerHTML;
 		} else {
-			log[log.length] = {offset : elems[i].getAttribute("id"), message: "&lt;div&gt;" + elems[i].innerHTML + "&lt;/div&gt;"};
+			log[log.length] = {offset : elems[i].getAttribute(&quot;id&quot;), message: &quot;&lt;div&gt;&quot; + elems[i].innerHTML + &quot;&lt;/div&gt;&quot;};
 		}
         }
         first_offset = log[0].offset;
@@ -284,7 +284,7 @@ html5log.current_data = {[[
        obj.addEventListener(evType, fn, false);
        return true;
      } else if (obj.attachEvent){
-       var r = obj.attachEvent("on"+evType, fn);
+       var r = obj.attachEvent(&quot;on&quot;+evType, fn);
        return r;
      } else {
        return false;
@@ -298,9 +298,9 @@ html5log.current_data = {[[
             if ( node == null )
               node = document;
             var classElements = [],
-                els = node.getElementsByTagName("*"),
+                els = node.getElementsByTagName(&quot;*&quot;),
                 elsLen = els.length,
-                pattern = new RegExp("(^|\s)"+searchClass+"(\s|$)"), i, j;
+                pattern = new RegExp(&quot;(^|\s)&quot;+searchClass+&quot;(\s|$)&quot;), i, j;
             for (i = 0, j = 0; i &lt; elsLen; i++) {
               if ( pattern.test(els[i].className) ) {
                   classElements[j] = els[i];
@@ -311,53 +311,53 @@ html5log.current_data = {[[
         })(classname, node);
       }
     }
-    add_event(window, "load", function () {build_log_array()});
+    add_event(window, &quot;load&quot;, function () {build_log_array()});
 &lt;/script&gt;
-&lt;div id="options"&gt;
-    &lt;div id="current_time"&gt;&lt;/div&gt;
-    &lt;div id="buttons"&gt;
-        &lt;input type="button" onclick="replay()" value="Play Log" /&gt;
-        &lt;input type="button" onclick="pause()" value="Pause"/&gt;
-        &lt;input type="button" onclick="rewind(10000)" value="&lt;&lt;" title="Rewind 10 Seconds"/&gt;
-        &lt;input type="button" onclick="rewind(5000)" value="&lt;" title="Rewind 5 Seconds"/&gt;
-        &lt;input type="button" onclick="fast_forward(5000)" value="&gt;" title="Fast Forward 5 Seconds"/&gt;
-        &lt;input type="button" onclick="fast_forward(10000)" value="&gt;&gt;" title="Fast Forward 10 Seconds"/&gt;
-        &lt;p id="save"&gt;Press &lt;strong&gt;CTRL-S&lt;/strong&gt; to save the log on your computer&lt;/p&gt;
+&lt;div id=&quot;options&quot;&gt;
+    &lt;div id=&quot;current_time&quot;&gt;&lt;/div&gt;
+    &lt;div id=&quot;buttons&quot;&gt;
+        &lt;input type=&quot;button&quot; onclick=&quot;replay()&quot; value=&quot;Play Log&quot; /&gt;
+        &lt;input type=&quot;button&quot; onclick=&quot;pause()&quot; value=&quot;Pause&quot;/&gt;
+        &lt;input type=&quot;button&quot; onclick=&quot;rewind(10000)&quot; value=&quot;&lt;&lt;&quot; title=&quot;Rewind 10 Seconds&quot;/&gt;
+        &lt;input type=&quot;button&quot; onclick=&quot;rewind(5000)&quot; value=&quot;&lt;&quot; title=&quot;Rewind 5 Seconds&quot;/&gt;
+        &lt;input type=&quot;button&quot; onclick=&quot;fast_forward(5000)&quot; value=&quot;&gt;&quot; title=&quot;Fast Forward 5 Seconds&quot;/&gt;
+        &lt;input type=&quot;button&quot; onclick=&quot;fast_forward(10000)&quot; value=&quot;&gt;&gt;&quot; title=&quot;Fast Forward 10 Seconds&quot;/&gt;
+        &lt;p id=&quot;save&quot;&gt;Press &lt;strong&gt;CTRL-S&lt;/strong&gt; to save the log on your computer&lt;/p&gt;
     &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="log" class="tnc_default"&gt;
+&lt;div id=&quot;log&quot; class=&quot;tnc_default&quot;&gt;
 ]]}
 
 html5log.inbetween = {}
 
---enableTrigger("Capture each line")
---enableTrigger("Record on the prompt")
+--enableTrigger(&quot;Capture each line&quot;)
+--enableTrigger(&quot;Record on the prompt&quot;)
 
 if html5log.trig then killTrigger(html5log.trig) end
-html5log.trig = tempRegexTrigger("^", "html5log.recordline()")
+html5log.trig = tempRegexTrigger(&quot;^&quot;, &quot;html5log.recordline()&quot;)
 
 html5log.showlabel()
-cecho("\nStarted logging... use 'stoplog' to stop.")
+cecho(&quot;\nStarted logging... use 'stoplog' to stop.&quot;)
 </script>
-				<command></command>
-				<packageName></packageName>
-				<regex>^startlog$</regex>
-			</Alias>
-			<Alias isActive="yes" isFolder="no">
-				<name>(stoplog) Stop logging</name>
-				<script>html5log_stoplogging()</script>
-				<command></command>
-				<packageName></packageName>
-				<regex>^stoplog$</regex>
-			</Alias>
-		</AliasGroup>
-	</AliasPackage>
-	<ActionPackage />
-	<ScriptPackage>
-		<ScriptGroup isActive="yes" isFolder="yes">
-			<name>HTML5 logger</name>
-			<packageName></packageName>
-			<script>html5log = html5log or {}
+                <command></command>
+                <packageName></packageName>
+                <regex>^startlog$</regex>
+            </Alias>
+            <Alias isActive="yes" isFolder="no">
+                <name>(stoplog) Stop logging</name>
+                <script>html5log_stoplogging()</script>
+                <command></command>
+                <packageName></packageName>
+                <regex>^stoplog$</regex>
+            </Alias>
+        </AliasGroup>
+    </AliasPackage>
+    <ActionPackage/>
+    <ScriptPackage>
+        <ScriptGroup isActive="yes" isFolder="yes">
+            <name>HTML5 logger</name>
+            <packageName></packageName>
+            <script>html5log = html5log or {}
 
 function html5log.recordcurrentline()
   local line_num, cur_line = getLineNumber(), getCurrentLine()
@@ -373,16 +373,16 @@ function html5log.recordcurrentline()
   while index &lt; #cur_line do
     index = index + 1
 
-    if moveCursor("main", index, line_num) and selectString(cur_line:sub(index), 1) then
+    if moveCursor(&quot;main&quot;, index, line_num) and selectString(cur_line:sub(index), 1) then
       r,g,b = getFgColor()
       br,bg,bb = getBgColor()
       if cr ~= r or cg ~= g or cb ~= b or cbr ~= br or cbg ~= bg or cbb ~= bb then
         cr,cg,cb = r,g,b
         cbr,cbg,cbb = br,bg,bb
         if tc == 1 then
-          output[tc] = string.format("&lt;span style=\'color: rgb(%d,%d,%d);background: rgb(%d,%d,%d);'&gt;%s", r,g,b,br,bg,bb, cur_line:sub(index, index))
+          output[tc] = string.format(&quot;&lt;span style=\'color: rgb(%d,%d,%d);background: rgb(%d,%d,%d);'&gt;%s&quot;, r,g,b,br,bg,bb, cur_line:sub(index, index))
         else
-          output[tc] = string.format("&lt;/span&gt;&lt;span style=\'color: rgb(%d,%d,%d);background: rgb(%d,%d,%d);'&gt;%s", r,g,b,br,bg,bb, cur_line:sub(index, index))
+          output[tc] = string.format(&quot;&lt;/span&gt;&lt;span style=\'color: rgb(%d,%d,%d);background: rgb(%d,%d,%d);'&gt;%s&quot;, r,g,b,br,bg,bb, cur_line:sub(index, index))
         end
         tc = tc +1
       else
@@ -392,29 +392,29 @@ function html5log.recordcurrentline()
       cur_line:sub(index, index)
     end
   end
-  output[#output+1] = "&lt;/span&gt;"
+  output[#output+1] = &quot;&lt;/span&gt;&quot;
 
   return table.concat(output)
 end
 
 function html5log_stoplogging()
-  disableTrigger("Capture each line")
-  disableTrigger("Record on the prompt")
+  disableTrigger(&quot;Capture each line&quot;)
+  disableTrigger(&quot;Record on the prompt&quot;)
 
   html5log.current_data[#html5log.current_data+1] = [[&lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;]]
 
 
-  local logfile = getMudletHomeDir().."/svolog.html"
-  local file_output = io.open(logfile, "w")
+  local logfile = getMudletHomeDir()..&quot;/svolog.html&quot;
+  local file_output = io.open(logfile, &quot;w&quot;)
 
 
   local conversions = {
-    ["¦"] = "&amp;brvbar;",
-    ["×"] = "&amp;times;",
-    ["«"] = "&amp;#171;",
-    ["»"] = "&amp;raquo;"
+    [&quot;¦&quot;] = &quot;&amp;brvbar;&quot;,
+    [&quot;×&quot;] = &quot;&amp;times;&quot;,
+    [&quot;«&quot;] = &quot;&amp;#171;&quot;,
+    [&quot;»&quot;] = &quot;&amp;raquo;&quot;
   }
 
 
@@ -428,9 +428,9 @@ function html5log_stoplogging()
   file_output:close()
 
   -- this can use quite a bit of memory on a large buffer, so free it up right away
-  collectgarbage("collect")
-  local location = [[file:///]]..logfile:gsub([[\]], "/")
-  cecho("\n&lt;cyan&gt;Log recording finished, opening &lt;cyan&gt;"..location..".")
+  collectgarbage(&quot;collect&quot;)
+  local location = [[file:///]]..logfile:gsub([[\]], &quot;/&quot;)
+  cecho(&quot;\n&lt;cyan&gt;Log recording finished, opening &lt;cyan&gt;&quot;..location..&quot;.&quot;)
   openUrl(location)
 
   html5log.current_data = nil
@@ -439,7 +439,7 @@ function html5log_stoplogging()
   html5log.trig = nil
 
   html5log.label:hide()
-  collectgarbage("collect")
+  collectgarbage(&quot;collect&quot;)
 end
 
 function html5log.showlabel()
@@ -448,7 +448,7 @@ function html5log.showlabel()
   else
 
     html5log.label = Geyser.Label:new({
-      name="html5log.label",
+      name=&quot;html5log.label&quot;,
       x=-110, y=-60,
       width=50, height=30,
     })
@@ -464,8 +464,8 @@ function html5log.showlabel()
       min-width: 80px;
   ]]
 
-    html5log.label:echo"&lt;center&gt;Stop logging&lt;/center&gt;"
-    html5log.label:setClickCallback("html5log_stoplogging")
+    html5log.label:echo&quot;&lt;center&gt;Stop logging&lt;/center&gt;&quot;
+    html5log.label:setClickCallback(&quot;html5log_stoplogging&quot;)
   end
 end
 
@@ -474,18 +474,18 @@ function html5log.recordline()
 
   if isPrompt() then
     for i = 1, #html5log.inbetween do
-      html5log.current_data[#html5log.current_data+1] = string.format([[&lt;div id="%d" class="log tnc_default"&gt;&lt;p&gt;%s&lt;/p&gt;&lt;/div&gt;]], getStopWatchTime(html5log.recording_stopwatch)*1000, string.gsub(html5log.inbetween[i], '\n', '&lt;br/&gt;'))
+      html5log.current_data[#html5log.current_data+1] = string.format([[&lt;div id=&quot;%d&quot; class=&quot;log tnc_default&quot;&gt;&lt;p&gt;%s&lt;/p&gt;&lt;/div&gt;]], getStopWatchTime(html5log.recording_stopwatch)*1000, string.gsub(html5log.inbetween[i], '\n', '&lt;br/&gt;'))
     end
 
     html5log.inbetween = {}
   end
 end
 </script>
-			<eventHandlerList />
-		</ScriptGroup>
-	</ScriptPackage>
-	<KeyPackage />
-	<HelpPackage>
-		<helpURL></helpURL>
-	</HelpPackage>
+            <eventHandlerList/>
+        </ScriptGroup>
+    </ScriptPackage>
+    <KeyPackage/>
+    <HelpPackage>
+        <helpURL></helpURL>
+    </HelpPackage>
 </MudletPackage>
