@@ -1462,7 +1462,7 @@ function valid.bad_legs()
 end
 
 
-for _, aff in ipairs({"hamstring", "galed", "voided", "inquisition", "burning", "icing", "phlogistication", "vitrification", "corrupted", "mucous", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "swellskin", "pinshot", "dehydrated", "timeflux", "lullaby", "numbedleftarm", "numbedrightarm", "unconsciousness", "degenerate", "deteriorate", "hatred",
+for _, aff in ipairs({"latched", "hamstring", "galed", "voided", "inquisition", "burning", "icing", "phlogistication", "vitrification", "corrupted", "mucous", "rixil", "palpatar", "cadmus", "hecate", "ninkharsag", "swellskin", "pinshot", "dehydrated", "timeflux", "lullaby", "numbedleftarm", "numbedrightarm", "unconsciousness", "degenerate", "deteriorate", "hatred",
 #if skills.metamorphosis then
 "cantmorph",
 #end
@@ -1485,7 +1485,7 @@ function valid.stun_woreoff()
   end
 end
 
-#for _, aff in ipairs({"heartseed", "hypothermia"}) do
+#for _, aff in ipairs({"calcifiedtorso", "calcifiedskull", "heartseed", "hypothermia"}) do
 function valid.$(aff)_cured()
   checkaction(dict.curing$(aff).waitingfor)
   if actions.curing$(aff)_waitingfor then
@@ -2727,7 +2727,7 @@ end
 #for _, restoration in pairs({
 #  restorationlegs = {"mutilatedrightleg", "mutilatedleftleg", "mangledrightleg", "mangledleftleg", "parestolegs"},
 #  restorationarms = {"mutilatedrightarm", "mutilatedleftarm", "mangledrightarm", "mangledleftarm", "parestoarms"},
-#  restorationother = {"mildtrauma", "serioustrauma", "mildconcussion", "seriousconcussion", "laceratedthroat", "heartseed"}
+#  restorationother = {"mildtrauma", "serioustrauma", "mildconcussion", "seriousconcussion", "laceratedthroat", "heartseed", "calcifiedskull", "calcifiedtorso"}
 #}) do
 #  local checkany_string = ""
 #  local temp = {}
@@ -2836,7 +2836,7 @@ end
 -- normal smokes
 #for _, smoke in pairs({
 #valerian = {"disloyalty", "slickness", "manaleech"},
-#elm = {"deadening", "hellsight", "madness", "aeon"}}) do
+#elm = {"tension", "deadening", "hellsight", "madness", "aeon"}}) do
 #local checkany_string = ""
 #local temp = {}
 
@@ -2875,6 +2875,7 @@ end
 #goldenseal = {"dissonance", "impatience", "stupidity", "dizziness", "epilepsy", "shyness", "depression", "shadowmadness"},
 #kelp       = {"asthma", "hypochondria", "healthleech", "sensitivity", "clumsiness", "weakness", "parasite"},
 #lobelia    = {"claustrophobia", "recklessness", "agoraphobia", "loneliness", "masochism", "vertigo", "spiritdisrupt", "airdisrupt", "waterdisrupt", "earthdisrupt", "firedisrupt"},
+#pear       = {"pressure"}
 #}) do
 #local checkany_string = ""
 #local temp = {}
@@ -2921,7 +2922,7 @@ end
 
 -- tree touches
 #for _, tree in pairs({
-#tree = {"ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impatience", "inlove", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "madness", "masochism","pacifism", "paranoia", "peace", "prone", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slashedthroat", "slickness", "stupidity", "stuttering",  "vertigo", "voided", "voyria", "weakness", "hamstring", "shivering", "frozen", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate"}}) do
+#tree = {"tension", "pressure", "calcifiedskull", "calcifiedtorso", "latched", "ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impatience", "inlove", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "madness", "masochism","pacifism", "paranoia", "peace", "prone", "recklessness", "relapsing", "selarnia", "sensitivity", "shyness", "slashedthroat", "slickness", "stupidity", "stuttering",  "vertigo", "voided", "voyria", "weakness", "hamstring", "shivering", "frozen", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate"}}) do
 
 #for _, aff in pairs(tree) do
 function valid.tree_cured_$(aff)()
@@ -3152,7 +3153,7 @@ end
 
 function valid.restoration_noeffect()
   local r = checkany(
-  dict.curingheartseed.waitingfor, dict.curingmangledleftleg.waitingfor, dict.curingmangledrightleg.waitingfor, dict.curingmangledrightarm.waitingfor, dict.curingmangledleftarm.waitingfor, dict.curingmutilatedrightarm.waitingfor, dict.curingmutilatedleftarm.waitingfor, dict.curingparestolegs.waitingfor, dict.curingmildtrauma.waitingfor, dict.curingserioustrauma.waitingfor, dict.curingmutilatedrightleg.waitingfor, dict.curingmutilatedleftleg.waitingfor, dict.curingseriousconcussion.waitingfor, dict.curingmildconcussion.waitingfor, dict.curinglaceratedthroat.waitingfor)
+  dict.curingcalcifiedtorso.waitingfor, dict.curingcalcifiedskull.waitingfor, dict.curingheartseed.waitingfor, dict.curingmangledleftleg.waitingfor, dict.curingmangledrightleg.waitingfor, dict.curingmangledrightarm.waitingfor, dict.curingmangledleftarm.waitingfor, dict.curingmutilatedrightarm.waitingfor, dict.curingmutilatedleftarm.waitingfor, dict.curingparestolegs.waitingfor, dict.curingmildtrauma.waitingfor, dict.curingserioustrauma.waitingfor, dict.curingmutilatedrightleg.waitingfor, dict.curingmutilatedleftleg.waitingfor, dict.curingseriousconcussion.waitingfor, dict.curingmildconcussion.waitingfor, dict.curinglaceratedthroat.waitingfor)
 
   if not r then return end
 
@@ -3307,7 +3308,7 @@ end
 
 
 local generic_cures_data = {
-  "ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "heartseed", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impale", "impatience", "inlove", "inquisition", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "lovers", "madness", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", "masochism", "mildtrauma", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "pacifism", "paralysis", "paranoia", "peace", "prone", "recklessness", "relapsing", "roped", "selarnia", "sensitivity", "seriousconcussion", "serioustrauma", "shyness", "slashedthroat", "slickness", "stun", "stupidity", "stuttering", "transfixed", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voided", "voyria", "weakness", "webbed", "healhealth", "healmana", "hamstring", "shivering", "frozen", "hallucinations", "stain", "rixil", "palpatar", "cadmus", "hecate", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate", "hatred"
+  "tension", "pressure", "calcifiedskull", "calcifiedtorso", "latched", "ablaze", "addiction", "aeon", "agoraphobia", "anorexia", "asthma", "blackout", "bleeding", "bound", "burning", "claustrophobia", "clumsiness", "mildconcussion", "confusion", "crippledleftarm", "crippledleftleg", "crippledrightarm", "crippledrightleg", "darkshade", "deadening", "dementia", "disloyalty", "disrupt", "dissonance", "dizziness", "epilepsy", "fear", "galed", "generosity", "haemophilia", "hallucinations", "healthleech", "heartseed", "hellsight", "hypersomnia", "hypochondria", "icing", "illness", "impale", "impatience", "inlove", "inquisition", "itching", "justice", "laceratedthroat", "lethargy", "loneliness", "lovers", "madness", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg", "masochism", "mildtrauma", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "pacifism", "paralysis", "paranoia", "peace", "prone", "recklessness", "relapsing", "roped", "selarnia", "sensitivity", "seriousconcussion", "serioustrauma", "shyness", "slashedthroat", "slickness", "stun", "stupidity", "stuttering", "transfixed", "unknownany", "unknowncrippledarm", "unknowncrippledleg", "unknownmental", "vertigo", "voided", "voyria", "weakness", "webbed", "healhealth", "healmana", "hamstring", "shivering", "frozen", "hallucinations", "stain", "rixil", "palpatar", "cadmus", "hecate", "spiritdisrupt", "airdisrupt", "firedisrupt", "earthdisrupt", "waterdisrupt", "depression", "parasite", "retribution", "shadowmadness", "timeloop", "degenerate", "deteriorate", "hatred"
 }
 
 for i = 1, #generic_cures_data do

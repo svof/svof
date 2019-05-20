@@ -906,6 +906,55 @@ dict = {
       end,
     }
   },
+  pressure = {
+    gamename = 'pressure',
+    herb = {
+      isadvisable = function()
+        return (affs.pressure) or false
+      end,
+
+      -- this is called when you still have some left
+      oncompleted = function()
+        lostbal_herb()
+        codepaste.remove_stackableaff('pressure', true)
+      end,
+
+      empty = function()
+        empty.eat_pear()
+        lostbal_herb()
+      end,
+
+      cured = function()
+        lostbal_herb()
+        removeaff('pressure')
+        dict.pressure.count = 0
+      end,
+
+      noeffect = function() lostbal_herb() end,
+
+      eatcure = {'pear', 'calcite'},
+
+      onstart = function() svo.eat(dict.pressure.herb) end
+    },
+    aff = {
+      oncompleted = function (number)
+        local count = dict.pressure.count
+        addaff(dict.pressure)
+
+        dict.pressure.count = (count or 0) + (number or 1)
+        if dict.pressure.count > 7 then
+          dict.pressure.count = 7
+        end
+        svo.updateaffcount(dict.pressure)
+      end
+    },
+    gone = {
+      oncompleted = function()
+        removeaff('pressure')
+        dict.pressure.count = 0
+      end
+    }
+  },
   cholerichumour = {
     gamename = "temperedcholeric",
     herb = {
@@ -3173,6 +3222,38 @@ dict = {
       end,
     }
   },
+  tension = {
+    smoke = {
+      isadvisable = function()
+        return (affs.tension and codepaste.smoke_elm_pipe()) or false
+      end,
+
+      oncompleted = function()
+        removeaff('tension')
+        lostbal_smoke()
+        sk.elm_smokepuff()
+      end,
+
+      smokecure = {'elm', 'cinnabar'},
+      onstart = function()
+        send("smoke " .. pipes.elm.id, conf.commandecho)
+      end,
+
+      empty = function()
+        empty.smoke_elm()
+        lostbal_smoke()
+        sk.elm_smokepuff()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        addaff(dict.tension)
+      end,
+    },
+    gone = {
+      oncompleted = function() removeaff('tension') end,
+    }
+  },
   -- valerian cures
   slickness = {
     smoke = {
@@ -3367,6 +3448,100 @@ dict = {
 
       onstart = function ()
     -- add blocking of the cure coming too early if it'll become necessary.
+      end,
+    }
+  },
+  calcifiedskull = {
+    salve = {
+      isadvisable = function()
+        return (affs.calcifiedskull and not affs.mildconcussion) or false
+      end,
+
+      oncompleted = function()
+        lostbal_salve()
+
+        doaction(dict.curingcalcifiedskull.waitingfor)
+      end,
+
+      applycure = {'restoration', 'reconstructive'},
+      actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
+      onstart = function()
+        apply(dict.calcifiedskull.salve, " to head")
+      end,
+
+      -- we get no msg from an application of this
+      empty = function()
+        dict.calcifiedskull.salve.oncompleted()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        addaff(dict.calcifiedskull)
+      end,
+    },
+    gone = {
+      oncompleted = function() removeaff('calcifiedskull') end,
+    }
+  },
+  curingcalcifiedskull = {
+    waitingfor = {
+      customwait = 6, -- 4 to cure
+
+      oncompleted = function() removeaff('calcifiedskull') end,
+
+      ontimeout = function() removeaff('calcifiedskull') end,
+
+      noeffect = function() removeaff('calcifiedskull') end,
+
+      onstart = function()
+        -- add blocking of the cure coming too early if it'll become necessary.
+      end,
+    }
+  },
+  calcifiedtorso = {
+    salve = {
+      isadvisable = function()
+        return (affs.calcifiedtorso and not affs.mildtrauma) or false
+      end,
+
+      oncompleted = function()
+        lostbal_salve()
+
+        doaction(dict.curingcalcifiedtorso.waitingfor)
+      end,
+
+      applycure = {'restoration', 'reconstructive'},
+      actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
+      onstart = function()
+        apply(dict.calcifiedtorso.salve, " to torso")
+      end,
+
+      -- we get no msg from an application of this
+      empty = function()
+        dict.calcifiedtorso.salve.oncompleted()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        addaff(dict.calcifiedtorso)
+      end,
+    },
+    gone = {
+      oncompleted = function() removeaff('calcifiedtorso') end,
+    }
+  },
+  curingcalcifiedtorso = {
+    waitingfor = {
+      customwait = 6, -- 4 to cure
+
+      oncompleted = function() removeaff('calcifiedtorso') end,
+
+      ontimeout = function() removeaff('calcifiedtorso') end,
+
+      noeffect = function() removeaff('calcifiedtorso') end,
+
+      onstart = function()
+        -- add blocking of the cure coming too early if it'll become necessary.
       end,
     }
   },
@@ -8661,6 +8836,35 @@ dict = {
       oncompleted = function ()
         removeaff("burning")
         killaction (dict.burning.waitingfor)
+      end,
+    }
+  },
+  latched = {
+    waitingfor = {
+      customwait = 20, -- not sure how this is cured yet exactly
+
+      isadvisable = function()
+        return false
+      end,
+
+      onstart = function() end,
+
+      oncompleted = function()
+        removeaff('latched')
+        make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        addaff(dict.latched)
+        codepaste.badaeon()
+        if not actions.latched_waitingfor then doaction(dict.latched.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function()
+        removeaff('latched')
+        killaction(dict.latched.waitingfor)
       end,
     }
   },
@@ -15509,6 +15713,8 @@ affinity = {
     bruisedribs = false, 
     burning = "ablaze",
     cadmuscurse = "cadmus",
+    calcifiedskull = 'calcifiedskull',
+    calcifiedtorso = 'calcifiedtorso',
     claustrophobia = "claustrophobia",
     clumsiness = "clumsiness",
     concussion = "seriousconcussion", 
@@ -15574,6 +15780,7 @@ affinity = {
     kaisurge = false,
     laceratedthroat = "laceratedthroat",
     lapsingconsciousness = false, 
+    latched = 'latched',
     lethargy = "lethargy",
     loneliness = "loneliness",
     lovers = "inlove",
@@ -15600,6 +15807,7 @@ affinity = {
     phlogisticated = "phlogistication", 
     pinshot = "pinshot",
     prone = "prone",
+    pressure = 'pressure',
     recklessness = "recklessness",
     retribution = "retribution",
     revealed = false,
@@ -15627,6 +15835,7 @@ affinity = {
     temperedsanguine = "sanguinehumour",
     timeflux = "timeflux",
     timeloop = "timeloop",
+    tension = 'tension',
     torntendons = "torntendons",
     transfixation = "transfixed",
     trueblind = false,
