@@ -1,1 +1,1 @@
-mpackage = "Infernal svo"
+mpackage = "Depthswalker svo"
