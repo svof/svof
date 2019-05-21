@@ -1587,9 +1587,11 @@ moveCursorEnd()</script>
                             <string>Her date of birth is hidden by the sand of Aeon.</string>
                             <string>He was born before the fall of the Seleucarian Empire.</string>
                             <string>She was born before the fall of the Seleucarian Empire.</string>
+                            <string>His birth was foretold in legend.</string>
                         </regexCodeList>
                         <regexCodePropertyList>
                             <integer>1</integer>
+                            <integer>3</integer>
                             <integer>3</integer>
                             <integer>3</integer>
                             <integer>3</integer>
