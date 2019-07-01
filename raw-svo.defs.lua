@@ -105,7 +105,7 @@ defs_data = pl.OrderedMap {}
 #end
 #if not skills.elementalism then
   defs_data:set("reflection", { nodef = true,
-    def = "You are surrounded by one reflection of youself.",
+    def = "You are surrounded by one reflection of yourself.",
     defr = [[^You are surrounded by \d+ reflections? of yourself\.$]]})
 #end
   defs_data:set("shipwarning", { nodef = true,
@@ -1466,7 +1466,7 @@ defs_data = pl.OrderedMap {}
     def = "You are surrounded by a non-conducting chargeshield."})
   defs_data:set("reflection", {
     type = "elementalism",
-    def = "You are surrounded by one reflection of youself.",
+    def = "You are surrounded by one reflection of yourself.",
     defr = [[^You are surrounded by \d+ reflections? of yourself\.$]],
     on = {"You cast a spell of reflection over yourself.", "This spell may only be used to cast one reflection on someone. If he or she already has one, it may not be used."},
     off = {"One of your reflections has been destroyed! You have 0 left.", "All your reflections wink out of existence!"}})
@@ -1642,7 +1642,7 @@ defs_data = pl.OrderedMap {}
     def = "You are circulating electricity throughout your body."})
   defs_data:set("reflection", {
     type = "weatherweaving",
-    def = "You are surrounded by one reflection of youself.",
+    def = "You are surrounded by one reflection of yourself.",
     defr = [[^You are surrounded by \d+ reflections? of yourself\.$]],
     on = {"You cast a spell of reflection over yourself.", "This spell may only be used to cast one reflection on someone. If he or she already has one, it may not be used."},
     off = {"One of your reflections has been destroyed! You have 0 left.", "All your reflections wink out of existence!"}})
@@ -1773,11 +1773,11 @@ defs_data = pl.OrderedMap {}
 #if skills.shikudo then
   local onenable_shikudo = function (mode, newdef, whereto, echoback)
     local shikudo_forms = {
-      "tykonos", 
-      "willow", 
-      "rain", 
-      "oak", 
-      "gaital", 
+      "tykonos",
+      "willow",
+      "rain",
+      "oak",
+      "gaital",
       "maelstrom"
     }
 
@@ -1793,50 +1793,50 @@ defs_data = pl.OrderedMap {}
 
     return true
   end
-  
-  defs_data:set("tykonos", { 
+
+  defs_data:set("tykonos", {
     type = "shikudo",
     onenable = onenable_shikudo,
     def = "You are enacting the Tykonos form.",
     on = "You spin your staff in the opening sequence of the form of Tykonos, snapping into a ready stance.",
     off = [[^You clumsily transition from the form of \w+ into the form of]]
   })
-  defs_data:set("willow", { 
+  defs_data:set("willow", {
     type = "shikudo",
     onenable = onenable_shikudo,
     def = "You are enacting the Willows shaken by the Wind form.",
     on = "Twirling your staff, you sink into the calm required for the form of Willows Shaken by the Wind.",
     off = [[^You clumsily transition from the form of \w+ into the form of]]
   })
-  defs_data:set("rain", { 
+  defs_data:set("rain", {
     type = "shikudo",
     onenable = onenable_shikudo,
     def = "You are enacting the Willows in Rain Storm form.",
     on = "Dropping into a lower stance, you snap your weapon into an offensive position, tensing your muscles in preparation for the form of Willows in Rain Storm.",
     off = [[^You clumsily transition from the form of \w+ into the form of]]
   })
-  defs_data:set("oak", { 
+  defs_data:set("oak", {
     type = "shikudo",
     onenable = onenable_shikudo,
     def = "You are enacting the the Live Oak form.",
     on = "Rising onto the balls of your feet, you prepare to begin the deadly form of the Live Oak.",
     off = [[^You clumsily transition from the form of \w+ into the form of]]
   })
-  defs_data:set("gaital", { 
+  defs_data:set("gaital", {
     type = "shikudo",
     onenable = onenable_shikudo,
     def = "You are enacting the Gaital form.",
     on = "You let your eyes fall closed and instinct guide you as you flow into the form of Gaital.",
     off = [[^You clumsily transition from the form of \w+ into the form of]]
   })
-  defs_data:set("maelstrom", { 
+  defs_data:set("maelstrom", {
     type = "shikudo",
     onenable = onenable_shikudo,
     def = "You are enacting the the Unrelenting Storm form.",
     on = "You allow your kai to flow through you, circulating throughout your limbs and down your weapon in preparation to begin the form of the Unrelenting Storm.",
     off = [[^You clumsily transition from the form of \w+ into the form of]]
   })
-  defs_data:set("grip", { 
+  defs_data:set("grip", {
     type = "shikudo",
     on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
     def = "Your hands are gripping your wielded items tightly.",
@@ -2378,7 +2378,7 @@ defs_data = pl.OrderedMap {}
     def = "You is suffused with indomitable might."
   })
 #end
-  
+
 do
   function defences.enablelifevision()
     if dict.lifevision then return end
