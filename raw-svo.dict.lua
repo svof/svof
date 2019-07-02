@@ -907,6 +907,7 @@ dict = {
     }
   },
   pressure = {
+    count = 0,
     gamename = 'pressure',
     herb = {
       isadvisable = function()
@@ -945,14 +946,30 @@ dict = {
         if dict.pressure.count > 7 then
           dict.pressure.count = 7
         end
-        svo.updateaffcount(dict.pressure)
+        updateaffcount(dict.pressure)
       end
     },
     gone = {
-      oncompleted = function()
-        removeaff('pressure')
+      oncompleted = function ()
+        removeaff("pressure")
         dict.pressure.count = 0
-      end
+      end,
+
+      general_cure = function(amount, dontkeep)
+        -- two counts are cured if you're above 5
+        local howmany = dict.pressure.count
+        for i = 1, (amount or 1) do
+          codepaste.remove_stackableaff("pressure", not dontkeep)
+        end
+        if howmany > 5 then
+          codepaste.remove_stackableaff("pressure", not dontkeep)
+        end
+      end,
+
+      general_cured = function(amount)
+        removeaff("pressure")
+        dict.pressure.count = 0
+      end,
     }
   },
   cholerichumour = {
@@ -4735,6 +4752,45 @@ dict = {
     gone = {
       oncompleted = function ()
         removeaff("slashedthroat")
+      end,
+    }
+  },
+  crushedthroat = {
+    salve = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return (affs.crushedthroat) or false
+      end,
+
+      oncompleted = function ()
+        lostbal_salve()
+        removeaff("crushedthroat")
+      end,
+
+      noeffect = function ()
+        empty.apply_mending_head()
+      end,
+
+      empty = function ()
+        empty.apply_mending_head()
+      end,
+
+      applycure = {"mending", "renewal"},
+      actions = {"apply mending to head", "apply mending", "apply renewal to head", "apply renewal"},
+      onstart = function ()
+        apply(dict.crushedthroat.salve, " to head")
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.crushedthroat)
+      end,
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("crushedthroat")
       end,
     }
   },
@@ -8839,9 +8895,37 @@ dict = {
       end,
     }
   },
-  latched = {
+  mindravaged = {
     waitingfor = {
-      customwait = 20, -- not sure how this is cured yet exactly
+      customwait = 30, -- ??
+
+      isadvisable = function ()
+        return false
+      end,
+
+      onstart = function () end,
+
+      oncompleted = function ()
+        removeaff("mindravaged")
+        make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        addaff(dict.mindravaged)
+        if not actions.mindravaged_waitingfor then doaction(dict.mindravaged.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("burning")
+        killaction (dict.mindravaged.waitingfor)
+      end,
+    }
+  },
+  latched = {
+    waitingfor = { -- Latch has four levels, two have instant effects on focus/bleeding, one hinders, one readies desiccate
+      customwait = 20, -- Sipping health cures the desiccate-ready latch; time cures the hinder after ~15 seconds
 
       isadvisable = function()
         return false
@@ -8865,6 +8949,35 @@ dict = {
       oncompleted = function()
         removeaff('latched')
         killaction(dict.latched.waitingfor)
+      end,
+    }
+  },
+  kkractlebrand = {
+    waitingfor = {
+      customwait = 999, -- Sipping health cures
+
+      isadvisable = function()
+        return false
+      end,
+
+      onstart = function() end,
+
+      oncompleted = function()
+        removeaff('kkractlebrand')
+        make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        addaff(dict.kkractlebrand)
+        codepaste.badaeon()
+        if not actions.kkractlebrand_waitingfor then doaction(dict.kkractlebrand.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function()
+        removeaff('kkractlebrand')
+        killaction(dict.kkractlebrand.waitingfor)
       end,
     }
   },
@@ -9731,6 +9844,187 @@ dict = {
         dict.paradox.count = 0
         dict.paradox.blocked_herb = ""
       end,
+    }
+  },
+  unweavingbody = {
+    count = 0,
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.unweavingbody or false
+      end,
+
+      oncompleted = function ()
+        removeaff("unweavingbody")
+        dict.unweavingbody.count = 0
+        lostbal_herb()
+      end,
+
+      cured = function()
+        lostbal_herb()
+        removeaff("unweavingbody")
+        dict.unweavingbody.count = 0
+      end,
+
+      eatcure = {"ginseng", "ferrum"},
+      onstart = function ()
+        eat(dict.unweavingbody.herb)
+      end,
+
+      empty = function()
+        empty.eat_ginseng()
+      end
+    },
+    aff = {
+      oncompleted = function (number)
+        local count = dict.unweavingbody.count
+        addaff(dict.unweavingbody)
+
+        dict.unweavingbody.count = (count or 0) + (number or 1)
+        if dict.unweavingbody.count > 5 then
+          dict.unweavingbody.count = 5
+        end
+        updateaffcount(dict.unweavingbody)
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("unweavingbody")
+        dict.unweavingbody.count = 0
+      end,
+
+      general_cure = function(amount, dontkeep)
+        removeaff("unweavingbody")
+        dict.unweavingbody.count = 0
+      end,
+
+      general_cured = function(amount)
+        removeaff("unweavingbody")
+        dict.unweavingbody.count = 0
+      end
+    }
+  },
+  unweavingmind = {
+    count = 0,
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.unweavingmind or false
+      end,
+
+      oncompleted = function ()
+        removeaff("unweavingmind")
+        dict.unweavingmind.count = 0
+        lostbal_herb()
+      end,
+
+      cured = function()
+        lostbal_herb()
+        removeaff("unweavingmind")
+        dict.unweavingmind.count = 0
+      end,
+
+      eatcure = {"goldenseal", "plumbum"},
+      onstart = function ()
+        eat(dict.unweavingmind.herb)
+      end,
+
+      empty = function()
+        empty.eat_goldenseal()
+      end
+    },
+    aff = {
+      oncompleted = function (number)
+        local count = dict.unweavingmind.count
+        addaff(dict.unweavingmind)
+
+        dict.unweavingmind.count = (count or 0) + (number or 1)
+        if dict.unweavingmind.count > 5 then
+          dict.unweavingmind.count = 5
+        end
+        updateaffcount(dict.unweavingmind)
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("unweavingmind")
+        dict.unweavingmind.count = 0
+      end,
+
+      general_cure = function(amount, dontkeep)
+        removeaff("unweavingmind")
+        dict.unweavingmind.count = 0
+      end,
+
+      general_cured = function(amount)
+        removeaff("unweavingmind")
+        dict.unweavingmind.count = 0
+      end,
+    }
+  },
+  unweavingspirit = {
+    count = 0,
+    smoke = {
+      isadvisable = function()
+        return (affs.unweavingspirit and codepaste.smoke_elm_pipe()) or false
+      end,
+
+      oncompleted = function()
+        codepaste.remove_stackableaff('unweavingspirit', true)
+        lostbal_smoke()
+        sk.elm_smokepuff()
+      end,
+
+      cured = function()
+        lostbal_smoke()
+        sk.elm_smokepuff()
+        removeaff("unweavingspirit")
+        dict.unweavingspirit.count = 0
+      end,
+
+      smokecure = {'elm', 'cinnabar'},
+      onstart = function()
+        send("smoke " .. pipes.elm.id, conf.commandecho)
+      end,
+
+      empty = function()
+        empty.smoke_elm()
+        lostbal_smoke()
+        sk.elm_smokepuff()
+      end
+    },
+    aff = {
+      oncompleted = function (number)
+        local count = dict.unweavingspirit.count
+        addaff(dict.unweavingspirit)
+
+        dict.unweavingspirit.count = (count or 0) + (number or 1)
+        if dict.unweavingspirit.count > 5 then
+          dict.unweavingspirit.count = 5
+        end
+        updateaffcount(dict.unweavingspirit)
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        removeaff("unweavingspirit")
+        dict.unweavingspirit.count = 0
+      end,
+
+      general_cure = function(amount, dontkeep)
+        for i = 1, (amount or 1) do
+          codepaste.remove_stackableaff("unweavingspirit", not dontkeep)
+        end
+      end,
+
+      general_cured = function(amount)
+        removeaff("unweavingspirit")
+        dict.unweavingspirit.count = 0
+      end
     }
   },
   retardation = {
@@ -15722,6 +16016,7 @@ affinity = {
     confusion = "confusion",
     corruption = "corrupted",
     crackedribs = "crackedribs",
+    crushedthroat = "crushedthroat",
     daeggerimpale = false, 
     damagedhead = "mildconcussion", 
     damagedleftarm = "mangledleftarm", 
@@ -15793,6 +16088,7 @@ affinity = {
     masochism = "masochism",
     mildtrauma = "mildtrauma",
     mindclamp = false, 
+    mindravaged = "mindravaged",
     nausea = "illness", 
     numbedleftarm = "numbedleftarm",
     numbedrightarm = "numbedrightarm",

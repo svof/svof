@@ -525,10 +525,10 @@ prompt_stats = function ()
     stats.currentendurance, stats.maxendurance,
     stats.currentwillpower, stats.maxwillpower
      =
-        vitals.hp, vitals.maxhp,
-        vitals.mp, vitals.maxmp,
-        vitals.ep, vitals.maxep,
-        vitals.wp, vitals.maxwp
+        vitals.hp or 0, vitals.maxhp or 0,
+        vitals.mp or 0, vitals.maxmp or 0,
+        vitals.ep or 0, vitals.maxep or 0,
+        vitals.wp or 0, vitals.maxwp or 0
 
     stats.nextlevel = gmcp.Char.Vitals.nl or 0
     stats.xprank = gmcp.Char.Status.xprank or 0
