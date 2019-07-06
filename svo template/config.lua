@@ -1,1 +1,0 @@
-mpackage = "Infernal svo"
