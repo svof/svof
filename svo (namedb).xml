@@ -813,10 +813,7 @@ if multimatches[1][1] == "None." then
   return
 end
 
--- update the total amount of people in the game with a clever addition
-if selectString(multimatches[3][2], 1) &gt; -1 then
-  replace(string.format("%d (%d total)", multimatches[3][2], tonumber(multimatches[3][2])+#temp_name_list))
-end
+
 
 --[[
 for _,name in ipairs(data) do
@@ -962,7 +959,7 @@ disableTrigger("NameDB qw")</script>
 					<regexCodeList>
 						<string>.*</string>
 						<string>1</string>
-						<string>^Plus another (\d+) whose presence you cannot fully sense(?: \(\d+ total\))?\.$</string>
+						<string>^(?:Plus another (\d+) whose presence you cannot fully sense(?: \(\d+ total\))?\.|\((\d+) total\)\.)$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -1716,8 +1713,12 @@ temp_name_list[1].xp_rank = -2</script>
 						<regexCodeList>
 							<string>He is unranked in Achaea.</string>
 							<string>She is unranked in Achaea.</string>
+							<string>He has given up the adventuring life.</string>
+							<string>She has given up the adventuring life.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
+							<integer>3</integer>
+							<integer>3</integer>
 							<integer>3</integer>
 							<integer>3</integer>
 						</regexCodePropertyList>
@@ -3246,6 +3247,7 @@ end
 
 function ndb.getinfo(person)
   downloadFile(getMudletHomeDir().."/"..person.."-namedb.json", "http://api.achaea.com/characters/"..person..".json")
+--downloadFile(getMudletHomeDir().."/"..person.."-namedb.html", "https://www.achaea.com/game/honors/"..person)
 end</script>
 					<eventHandlerList>
 						<string>sysDownloadDone</string>
@@ -4932,6 +4934,19 @@ function ndb.isenemy(name)
        (p.iff ~= 2 and
          ((city and city ~= "" and ndb.conf.citypolitics[city] == 'enemy') or
          (p.cityenemy == 1 or p.orderenemy == 1 or p.houseenemy == 1))) then
+    return true else return false
+  end
+end
+
+-- returns true only if someone is a city enemy. They could be a house enemy, order enemy, or politics enemy and not be considered an enemy by this
+function ndb.isonlycityenemy(name)
+  local p = ndb.getname(name)
+  if not p then return false end
+
+  local city = p.city
+
+ -- only return true for city enemy
+  if p.cityenemy == 1 then
     return true else return false
   end
 end
