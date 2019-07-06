@@ -1,1 +1,0 @@
-module("svo", package.seeall)
