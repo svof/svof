@@ -1281,7 +1281,7 @@ if not svo.haveskillset('alchemy') then
 end
 if not svo.haveskillset('elementalism') then
   defs_data:set('reflection', { nodef = true,
-    def = "You are surrounded by one reflection of youself.",
+    def = "You are surrounded by one reflection of yourself.",
     defr = [[^You are surrounded by \d+ reflections? of yourself\.$]]})
 end
   defs_data:set('shipwarning', { nodef = true,
@@ -2635,7 +2635,7 @@ if svo.haveskillset('elementalism') then
     def = "You are surrounded by a non-conducting chargeshield."})
   defs_data:set('reflection', {
     type = 'elementalism',
-    def = "You are surrounded by one reflection of youself.",
+    def = "You are surrounded by one reflection of yourself.",
     defr = [[^You are surrounded by \d+ reflections? of yourself\.$]],
     on = {"You cast a spell of reflection over yourself.", "This spell may only be used to cast one reflection on someone. If he or she already has one, it may not be used."},
     off = {"One of your reflections has been destroyed! You have 0 left.", "All your reflections wink out of existence!"}})
@@ -2811,7 +2811,7 @@ if svo.haveskillset('weatherweaving') then
     def = "You are circulating electricity throughout your body."})
   defs_data:set('reflection', {
     type = 'weatherweaving',
-    def = "You are surrounded by one reflection of youself.",
+    def = "You are surrounded by one reflection of yourself.",
     defr = [[^You are surrounded by \d+ reflections? of yourself\.$]],
     on = {"You cast a spell of reflection over yourself.", "This spell may only be used to cast one reflection on someone. If he or she already has one, it may not be used."},
     off = {"One of your reflections has been destroyed! You have 0 left.", "All your reflections wink out of existence!"}})
@@ -3531,6 +3531,19 @@ if svo.haveskillset('emulation') then
   })
 end
 
+if svo.haveskillset('sculpting') then
+	defs_data:set('strata', { type = 'sculpting',
+		def = "You are protected by protective strata.",
+		on = {"Calling upon the power of Garash, you form protective strata to cover your entire form.", "You are already protected by a layer of strata."}})
+	defs_data:set('tremorsense', { type = 'sculpting',
+		def = "You will know who walks upon the earth in your location.",
+		on = {"You begin to sense for those that would tread upon the hallowed earth.", "You are already focussing on the tremors caused by those that walk on land."},
+		off = {"You cease focussing on the tremors created by those that walk on land.", "You are not focussing on the tremors caused by those who walk on land."}})
+	defs_data:set('extrusion', { type = 'sculpting',
+		def = "You will restore your form with magma.",
+		on = "The magma within your form begins to churn.",
+		off = {"Magma explodes from beneath your outer strata, hardening in an instant to form a restored external coating.", "You are not able to extrude your magma to restore yourself so soon after doing it previously."}})
+end
 
 do
   function defences.enablelifevision()

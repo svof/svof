@@ -30,6 +30,7 @@
 -- * add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in 'Main trigger functions')
 -- * check failure conditions and add them, ie salves fizzling off balance
 
+
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.dict = function()
 
@@ -13856,6 +13857,12 @@ basicdef("guidedstrike", "enact guidedstrike")
 basicdef("mentalclarity", "enact clarity", false, "mentalclarity")
 basicdef("rupture", "enact rupture", false, "rupturesight")
 basicdef("indomitability", "enact indomitability")
+end
+
+if svo.haveskillset('sculpting') then
+    basicdef('strata', "terran strata", false, 'strata')
+    basicdef('tremorsense', "terran tremorsense", false, 'tremorsense')
+    basicdef('extrusion', "terran extrusion", false, 'extrusion')
 end
 
 for ssa, svoa in pairs(svo.dict.sstosvoa) do
