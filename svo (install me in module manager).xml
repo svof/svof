@@ -7039,25 +7039,33 @@ if not svo or not svo.conf or not svo.conf.riftlabel then svo.riftlabel:hide() e
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
-  
-	svo.modules_list = {
-	  'svo (actions dictionary)', 'svo (alias and defence functions)',
-		'svo (curing skeleton, controllers, action system)',
-		'svo (custom prompt, serverside, peopletracker)',
-		'svo (install, config, pipes, rift, parry, prios)',
-		'svo (setup, misc, empty, funnies, dor)',
-		'svo (trigger functions)', 'svo (aliases, triggers)'
-	}</script>
+
+-- list of all xml files Svof needs installed as modules in Mudlet
+svo.modules_list = {
+  'svo (actions dictionary)', 'svo (alias and defence functions)',
+	'svo (curing skeleton, controllers, action system)',
+	'svo (custom prompt, serverside, peopletracker)',
+	'svo (install, config, pipes, rift, parry, prios)',
+	'svo (setup, misc, empty, funnies, dor)',
+	'svo (trigger functions)', 'svo (aliases, triggers)'
+}</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>svo_init_system</name>
 				<packageName></packageName>
-				<script>-- this function loads the system independent of the order of xmls/modules
+				<script>-- Svof consists of multiples Mudlet modules which need to be loaded in the correct order
+-- (since a module can require functions already defined in another module)
+-- this loader will load them in the correct order by calling the svo.loader.* function 
+-- each file defines
+
+
+-- Loads the system independent of the order of xmls/modules got installed within Mudlet
 -- also used when the system needs to be reloaded with a new class
 function svo_init_system()
   if svo.systemloaded then return end
 
-  -- list of requires Svof subsystems that needs to be loaded before we can load the system
+  -- list of required Svof subsystems that need to be loaded before we can
+	-- load everything else that starts on the 'svo.signals.systemstart' event
   local required_subsystems = {
     'setup',
     'misc',
