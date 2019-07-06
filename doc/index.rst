@@ -2638,6 +2638,9 @@ Svof API functions
 
    Deletes an option. Don't delete *svo's* options, because that'll just confuse people, and they'll come back anyway on a restart. This will not delete the actual value in *svo.conf.optionname*, it'll still persist unless you set it to *nil*.
 
+.. function:: svo.installationfolder()
+
+   Returns the current folder Svof is installed in.
 
 .. function:: svo.deleteLineP()
 
