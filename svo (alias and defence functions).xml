@@ -1196,11 +1196,11 @@ local actions, lifevision = svo.actions, svo.lifevision
 svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/defup+keepup")
 
 --[[ a small dictionary to know which defences belong to which skillset ]]
-defences.def_types = defences.def_types or {}
+defences.def_types = {} or defences.def_types
 
 -- the list from 'def'
-defences.def_def_list = defences.def_def_list or {}
-defences.defup_timer = defences.defup_timer or createStopWatch()
+defences.def_def_list = {} or defences.def_def_list
+defences.defup_timer = createStopWatch() or defences.defup_timer
 
 function defences.gettime(defence, max)
   if not defc[defence] then return "" end
