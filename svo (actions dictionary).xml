@@ -13823,6 +13823,22 @@ if svo.haveskillset('domination') then
   basicdef('golgotha', "summon golgotha", nil, 'golgothagrace')
 end
 
+if svo.haveskillset('weaving') then
+basicdef("secondskin", "weave secondskin")
+end
+if svo.haveskillset('psionics') then
+basicdef("comprehend", "psi comprehend", false, "psicomprehend")
+basicdef("transcend", "psi transcend", false, "psitranscend")
+basicdef("breakthrough", "psi breakthrough", false, "psibreakthrough")
+basicdef("vanish", "psi vanish partial", false, "psivanish")
+end
+if svo.haveskillset('emulation') then
+basicdef("guidedstrike", "enact guidedstrike")
+basicdef("mentalclarity", "enact clarity", false, "mentalclarity")
+basicdef("rupture", "enact rupture", false, "rupturesight")
+basicdef("indomitability", "enact indomitability")
+end
+
 for ssa, svoa in pairs(svo.dict.sstosvoa) do
   if type(svoa) == 'string' then svo.dict.svotossa[svoa] = ssa end
 end
