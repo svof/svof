@@ -3475,6 +3475,59 @@ else
   })
 end
 
+
+if svo.haveskillset('weaving') then
+  defs_data:set('secondskin', { type = 'weaving',
+    on = { "You weave a second skin of armour over your body, protecting your vulnerable areas.", "You have already woven a protective layer of armour over your skin." },
+    def = "You are protected by a layer of flexible armour."
+  })
+end
+
+ if svo.haveskillset('psionics') then
+  defs_data:set('comprehend', { type = 'psionics',
+    on = { "You begin directing your vast intellect to the problem of understanding foreign speech patterns.", "You are already directing your vast intellect to comprehending foreign speech patterns."},
+    def = "You are focussing your vast intellect on comprehending language."
+  })
+  defs_data:set('transcend', {type = 'psionics',
+    on = { "You sink into tranquility; your mind and body transcending their limitations as they begin to function in perfect unity.", "Your mind has already transcended its limitations." },
+    def = "You are of transcendent mind."
+  })
+  defs_data:set('breakthrough', { type = 'psionics',
+    on = { "A sharp pain behind your eyes is the precursor to an abrupt expansion of consciousness, your mental processes speeding to unnatural levels.", "Your mind is already operating at an extreme capacity." },
+    off = "The rapture of your expanded mind abruptly flees you, leaving only the burning pain behind your eyes in its wake.",
+    def = "You are pushing your mind beyond its limits."
+  })
+  defs_data:set('vanish', { type = 'psionics',
+    on = { "You begin focussing on destroying knowledge of yourself from the minds of those around you.", "You are already eradicating knowledge of your presence from the minds around you." },
+    off = "Your focus breaks, your mind no longer able to sustain the rapid destruction of thought.",
+    def = "You are annihilating knowledge from the minds around you."
+  })
+end
+
+if svo.haveskillset('emulation') then
+  defs_data:set('guidedstrike', { type = 'emulation',
+    on = { "You focus on enhancing your personal luck.", "Your strikes are already guided by preternatural luck." },
+    off = "Your strikes are no longer guided by unnatural luck.",
+    def = "Your strikes are guided by unnatural luck."
+  })
+  defs_data:set('rupture', { type = 'emulation',
+    on = { "Your vision sharpens, allowing you to perceive the locations of every vein and artery that lies beneath the skin.",    "Your blows will already rupture veins and arteries."  },
+    off = "Your vision returns to normal levels, no longer able to perceive the veins that lie beneath people's skin.",
+    def = "Your blows will rupture veins and arteries with every strike."
+  })
+  defs_data:set('mentalclarity', { type = 'emulation',
+    on = { "A total focus overcomes you; the mundanity of everyday distractions unable to penetrate your clarity.", "Your clarity of thought already surpasses natural limits."  },
+    off = "Distractions reassert themselves, your mental clarity returning to mundane levels.",
+    def = "Your mind is focussed to perfection."
+  })
+  defs_data:set('indomitability', { type = 'emulation',
+    on = { "Power suffuses every limb and strength burns inside of you; you are the indomitable and no blow shall see you fall.", "You are already channeling the indomitable might of the battlemaster." },
+    off = "Your miriad image shatters under the onslaught.",
+    def = "You is suffused with indomitable might."
+  })
+end
+
+
 do
   function defences.enablelifevision()
     if svo.dict.lifevision then return end
