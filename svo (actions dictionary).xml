@@ -17,19 +17,6 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
--- brains of Svof, where it knows every action (affliction, defence, balance, etc).
--- When to use something, how to use something.
-
--- * add it in 'Dictionary of actions (affs/defs/misc)' in the dict table, with the appropriate functions and curing logic
--- * add it in 'Empty cure handling'
--- * add it in 'Diag trigger functions' and add a new diagnose trigger for it
--- * add gaining affliction 'Simple aff trigger functions', and if there's any complicated logic around it,
--- * 'Main trigger functions'. Add triggers receiving the affliction (triggers section of the code editor)
--- * add losing/curing affliction in 'Main trigger functions and the appropriate triggers
--- * add to tree curing system (touchtree action in this file and and 'Main trigger functions')
--- * add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in 'Main trigger functions')
--- * check failure conditions and add them, ie salves fizzling off balance
-
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.dict = function()
 
@@ -13615,12 +13602,6 @@ if svo.haveskillset('devotion') then
   }
 end
 
--- shortcut function to help create a dict action for a defence
--- 'which' is the Svof defence name, use the same name in the 'Defences' script
--- 'command' is the game command to raise the defence
--- 'balanceless' is a boolean: does this def cost physical balance?
--- 'gamename' is serversside's name for the defence
--- 'undeffable' is a boolean: can serverside put this defence up or should Svof?
 function svo.basicdef(which, command, balanceless, gamename, undeffable)
   svo.dict[which] = {
     physical = {
@@ -13856,6 +13837,12 @@ basicdef("guidedstrike", "enact guidedstrike")
 basicdef("mentalclarity", "enact clarity", false, "mentalclarity")
 basicdef("rupture", "enact rupture", false, "rupturesight")
 basicdef("indomitability", "enact indomitability")
+end
+
+if svo.haveskillset('sculpting') then
+    basicdef('strata', "terran strata", false, 'strata')
+    basicdef('tremorsense', "terran tremorsense", false, 'tremorsense')
+    basicdef('extrusion', "terran extrusion", false, 'extrusion')
 end
 
 for ssa, svoa in pairs(svo.dict.sstosvoa) do

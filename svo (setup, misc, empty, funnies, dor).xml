@@ -353,6 +353,7 @@ svo.knownskills = {
   shaman       = {'runelore', 'curses', 'vodun'},
   sylvan       = {'weatherweaving', 'groves', 'propagation'},
   psion        = {"weaving", "psionics", "emulation"},
+	["earth elemental lord"] = {'sculpting'},
 }
 
 me.skills = {}
@@ -2595,8 +2596,6 @@ if svo.systemloaded then svo.loader.misc() end</script>
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
--- functions for resetting the right afflilictions when a cure cured nothing
-
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.empty = function()
 
@@ -2994,8 +2993,6 @@ if svo.systemloaded then svo.loader.funnies() end</script>
 
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
-
--- Svof's DOR system, implemented as a balanceless and a balancefun action
 
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.dor = function()
