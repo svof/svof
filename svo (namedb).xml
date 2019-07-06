@@ -2130,8 +2130,14 @@ raiseEvent(&quot;NameDB finished honors&quot;, ndb.honorsname, (gaghonours and &
                         <regexCodeList>
                             <string>She was born before time was counted.</string>
                             <string>He was born before time was counted.</string>
+                            <string>He was born from the Spiral Ribbons of Creation.</string>
+                            <string>His birth was foretold in legend.</string>
+                            <string>He is the last of the line of Nicator.</string>
                         </regexCodeList>
                         <regexCodePropertyList>
+                            <integer>3</integer>
+                            <integer>3</integer>
+                            <integer>3</integer>
                             <integer>3</integer>
                             <integer>3</integer>
                         </regexCodePropertyList>
