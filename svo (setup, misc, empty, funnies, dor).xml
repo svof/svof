@@ -40,6 +40,7 @@ local pl = svo.pl
 pl.pretty     = require "pl.pretty"
 pl.config     = require "pl.config"
 pl.dir        = require "pl.dir"
+pl.path       = require "pl.path"
 pl.string     = require "pl.stringx"
 pl.OrderedMap = require "pl.OrderedMap"
 pl.tablex     = require "pl.tablex"
@@ -2570,6 +2571,15 @@ end
 function svo.unsetserverignore(k)
   svo.serverignore[k] = nil
   raiseEvent("svo serverignore changed", k)
+end
+
+-- returns the folder Svof is installed in
+function svo.installationfolder()
+  local mainmodule = "svo (install me in module manager)"
+  local xmlpath = getModulePath(mainmodule)
+	
+	local systempath = svo.pl.path.splitpath(xmlpath)
+	return systempath
 end
 
 end -- end of svo misc loader
