@@ -52851,7 +52851,7 @@ end</script>
 
 if separator == "None" then separator = '' end
 
-svo.config.set("commandseparator", separator)</script>
+svo.config.set("commandseparator", separator:trim())</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -52865,7 +52865,7 @@ svo.config.set("commandseparator", separator)</script>
 					<regexCodeList>
 						<string>|</string>
 						<string>CommandSeparator</string>
-						<string>^\| +CommandSeparator +(.+)? +\|</string>
+						<string>^\| +CommandSeparator +(.+)? +ShowSelfClasswho</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
