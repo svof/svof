@@ -1,117 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
 <MudletPackage version="1.001">
-    <TriggerPackage>
-        <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-            <name>svo Priest Report</name>
-            <script></script>
-            <triggerType>0</triggerType>
-            <conditonLineDelta>0</conditonLineDelta>
-            <mStayOpen>0</mStayOpen>
-            <mCommand></mCommand>
-            <packageName></packageName>
-            <mFgColor>#ff0000</mFgColor>
-            <mBgColor>#ffff00</mBgColor>
-            <mSoundFile></mSoundFile>
-            <colorTriggerFgColor>#000000</colorTriggerFgColor>
-            <colorTriggerBgColor>#000000</colorTriggerBgColor>
-            <regexCodeList/>
-            <regexCodePropertyList/>
-            <Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Seek request</name>
-                <script>if svo.defc.dragonform then return end
+	<TriggerPackage>
+		<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>svo Priest Report</name>
+			<script></script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList />
+			<regexCodePropertyList />
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Seek request</name>
+				<script>if svo.defc.dragonform then return end
 
 local clans = {
-	[&quot;The Dawnguard&quot;] = &quot;dg&quot;,
-	[&quot;Eleusian Rangers&quot;] = &quot;er&quot;,
-	[&quot;Cyrene City Guard&quot;] = &quot;ccg&quot;,
-	[&quot;Party&quot;] = &quot;party&quot;,
-	[&quot;Army&quot;] = &quot;art&quot;,
+	["The Dawnguard"] = "dg",
+	["Eleusian Rangers"] = "er",
+	["Cyrene City Guard"] = "ccg",
+	["Party"] = "party",
+	["Army"] = "art",
 }
 
-if not clans[matches[2]] then echo&quot;\n&quot; svo.echof(&quot;This clans short name isn't known - please add it to the 'Seek request' trigger. Can't report the seek back otherwise!&quot;) return end
+if not clans[matches[2]] then echo"\n" svo.echof("This clans short name isn't known - please add it to the 'Seek request' trigger. Can't report the seek back otherwise!") return end
 
 svo.locating = {clan = clans[matches[2]], name = matches[3]}
-svo.doaddfree(&quot;angel seek &quot;..svo.locating.name)</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>^\((.+)\): \w+ says, &quot;(?:Locate|Companions) (\w+).&quot;$</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>1</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Seek</name>
-                <script>svo.locating.location = multimatches[2][2]
+svo.doaddfree("angel seek "..svo.locating.name)</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^\((.+)\): \w+ says, "(?:Locate|Companions) (\w+)."$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Seek</name>
+				<script>svo.locating.location = multimatches[2][2]
 svo.locating.hp = tonumber(multimatches[2][3])
 svo.locating.mp = tonumber(multimatches[2][4])
 
 if mmp and svo.locating.name then
   mmp.pdb[svo.locating.name] = svo.locating.location
   mmp.pdb_lastupdate[svo.locating.name] = true
-  raiseEvent(&quot;mmapper updated pdb&quot;)
+  raiseEvent("mmapper updated pdb")
 end</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>2</conditonLineDelta>
-                <mStayOpen>100</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>You bid your guardian angel to seek out the</string>
-                    <string>^Your guardian angel senses .+? at (.+?), on a health of (\d+) and a mana of (\d+)\.$</string>
-                    <string>return (svo.locating and line:lower():find(svo.locating.name:lower(), 1, true)) and true or false</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>2</integer>
-                    <integer>1</integer>
-                    <integer>4</integer>
-                </regexCodePropertyList>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Companion</name>
-                    <script>svo.locating.ents = svo.locating.ents or {}
+				<triggerType>0</triggerType>
+				<conditonLineDelta>2</conditonLineDelta>
+				<mStayOpen>100</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>You bid your guardian angel to seek out the</string>
+					<string>^Your guardian angel senses .+? at (.+?), on a health of (\d+) and a mana of (\d+)\.$</string>
+					<string>return (svo.locating and line:lower():find(svo.locating.name:lower(), 1, true)) and true or false</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>2</integer>
+					<integer>1</integer>
+					<integer>4</integer>
+				</regexCodePropertyList>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>Companion</name>
+					<script>svo.locating.ents = svo.locating.ents or {}
 svo.locating.ents[#svo.locating.ents+1] = matches[2]</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>^(?:She|He|You) is with (\w+)\.$</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>Stop (seek)</name>
-                    <script>setTriggerStayOpen(&quot;Seek&quot;, 0)
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>^(?:She|He|You) is with (\w+)\.$</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>Stop (seek)</name>
+					<script>setTriggerStayOpen("Seek", 0)
 
 -- someone asked directly for a seek
 if svo.locating.person then
   if not svo.locating.ents then
-    send(string.format(&quot;tell %s %s (%s) is at %s - alone&quot;, svo.locating.person, svo.locating.name, (svo.locating.hp == 0 and &quot;dead&quot; or svo.locating.hp..&quot;hp, &quot;..svo.locating.mp..&quot;mp&quot;), svo.locating.location))
+    send(string.format("tell %s %s (%s) is at %s - alone", svo.locating.person, svo.locating.name, (svo.locating.hp == 0 and "dead" or svo.locating.hp.."hp, "..svo.locating.mp.."mp"), svo.locating.location))
   else
-    send(string.format(&quot;tell %s %s (%s) is at %s - with %s (%d people total)&quot;, svo.locating.person, svo.locating.name, (svo.locating.hp == 0 and &quot;dead&quot; or svo.locating.hp..&quot;hp, &quot;..svo.locating.mp..&quot;mp&quot;), svo.locating.location,
+    send(string.format("tell %s %s (%s) is at %s - with %s (%d people total)", svo.locating.person, svo.locating.name, (svo.locating.hp == 0 and "dead" or svo.locating.hp.."hp, "..svo.locating.mp.."mp"), svo.locating.location,
       svo.concatand(svo.locating.ents),
       #svo.locating.ents+1))
   end
@@ -122,9 +122,9 @@ end
 -- manual seek, don't know where to report? Use cc
 if not svo.locating.clan then
   if not svo.locating.ents then
-    svo.cc(&quot;%s (%s) is at %s - alone&quot;, svo.locating.name, (svo.locating.hp == 0 and &quot;dead&quot; or svo.locating.hp..&quot;hp, &quot;..svo.locating.mp..&quot;mp&quot;), svo.locating.location)
+    svo.cc("%s (%s) is at %s - alone", svo.locating.name, (svo.locating.hp == 0 and "dead" or svo.locating.hp.."hp, "..svo.locating.mp.."mp"), svo.locating.location)
   else
-    svo.cc(&quot;%s (%s) is at %s - with %s (%d people total)&quot;, svo.locating.name, (svo.locating.hp == 0 and &quot;dead&quot; or svo.locating.hp..&quot;hp, &quot;..svo.locating.mp..&quot;mp&quot;), svo.locating.location,
+    svo.cc("%s (%s) is at %s - with %s (%d people total)", svo.locating.name, (svo.locating.hp == 0 and "dead" or svo.locating.hp.."hp, "..svo.locating.mp.."mp"), svo.locating.location,
       svo.concatand(svo.locating.ents),
       #svo.locating.ents+1)
   end
@@ -133,231 +133,231 @@ if not svo.locating.clan then
 end
 
 local function getchannel()
-  if svo.locating.clan == &quot;party&quot; then
-    return &quot;pt&quot;
-  elseif svo.locating.clan == &quot;art&quot; then
-    return &quot;art&quot;
+  if svo.locating.clan == "party" then
+    return "pt"
+  elseif svo.locating.clan == "art" then
+    return "art"
   else
-    return (&quot;clan &quot;..svo.locating.clan..&quot; tell&quot;)
+    return ("clan "..svo.locating.clan.." tell")
   end
 end
 
 -- someone asked over clan/party for a seek
 if not svo.locating.ents then
-  send(string.format(&quot;%s %s (%s) is at %s - alone&quot;,
-    getchannel(), svo.locating.name, (svo.locating.hp == 0 and &quot;dead&quot; or svo.locating.hp..&quot;hp, &quot;..svo.locating.mp..&quot;mp&quot;), svo.locating.location))
+  send(string.format("%s %s (%s) is at %s - alone",
+    getchannel(), svo.locating.name, (svo.locating.hp == 0 and "dead" or svo.locating.hp.."hp, "..svo.locating.mp.."mp"), svo.locating.location))
 
 else
   send(string.format(
-    &quot;%s %s (%s) is at %s - with %s (%d people total)&quot;,
-    getchannel(), svo.locating.name, (svo.locating.hp == 0 and &quot;dead&quot; or svo.locating.hp..&quot;hp, &quot;..svo.locating.mp..&quot;mp&quot;), svo.locating.location,
-    (svo.concatand and svo.concatand(svo.locating.ents) or table.concat(svo.locating.ents, &quot;, &quot;)),
+    "%s %s (%s) is at %s - with %s (%d people total)",
+    getchannel(), svo.locating.name, (svo.locating.hp == 0 and "dead" or svo.locating.hp.."hp, "..svo.locating.mp.."mp"), svo.locating.location,
+    (svo.concatand and svo.concatand(svo.locating.ents) or table.concat(svo.locating.ents, ", ")),
     #svo.locating.ents+1
   ))
 end
 
 svo.locating = nil</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>return isPrompt()</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>4</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Failed Seek</name>
-                <script>if svo.defc.dragonform then return end
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>return isPrompt()</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>4</integer>
+					</regexCodePropertyList>
+				</Trigger>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Failed Seek</name>
+				<script>if svo.defc.dragonform then return end
 
 if svo.locating and svo.locating.name then
-    if svo.locating.clan == &quot;party&quot; then
+    if svo.locating.clan == "party" then
         send(string.format(
-        &quot;pt %s could not be located&quot;,
+        "pt %s could not be located",
         svo.locating.name
         ))
     elseif svo.locating.clan then
         send(string.format(
-        &quot;clan %s tell %s could not be located&quot;,
+        "clan %s tell %s could not be located",
         svo.locating.clan, svo.locating.name
         ))
     end
     svo.locating = nil
 end</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>Your angel replies sadly that she cannot find any trace of</string>
-                    <string>^Your angel replies sadly that she cannot find any trace of (\w+)\.$</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>2</integer>
-                    <integer>1</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Angel trace</name>
-                <script>svo.angel_trace(multimatches[2][2], multimatches[2][3])</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>Your guardian angel reports that</string>
-                    <string>^Your guardian angel reports that (\w+) has moved to (.+)\.$</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>2</integer>
-                    <integer>1</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Tell request</name>
-                <script>if svo.defc.dragonform then return end
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>Your angel replies sadly that she cannot find any trace of</string>
+					<string>^Your angel replies sadly that she cannot find any trace of (\w+)\.$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>2</integer>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Angel trace</name>
+				<script>svo.angel_trace(multimatches[2][2], multimatches[2][3])</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>Your guardian angel reports that</string>
+					<string>^Your guardian angel reports that (\w+) has moved to (.+)\.$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>2</integer>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Tell request</name>
+				<script>if svo.defc.dragonform then return end
 
 local requester, sought = matches[2], matches[3]
 
-if not svo.me.locatelist[requester] then svo.ignore_illusion(&quot;This person isn't on our locatelist - if you want to allow them, do vconfig locatelist &quot;..requester) return end
+if not svo.me.locatelist[requester] then svo.ignore_illusion("This person isn't on our locatelist - if you want to allow them, do vconfig locatelist "..requester) return end
 
 svo.locating = {person = matches[2], name = matches[3]}
-svo.doaddfree(&quot;angel seek &quot;..svo.locating.name)</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>^(\w+) tells you.*, &quot;(?:Locate|Sense|Find) (\w+)\.&quot;$</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>1</integer>
-                </regexCodePropertyList>
-            </Trigger>
-        </TriggerGroup>
-    </TriggerPackage>
-    <TimerPackage/>
-    <AliasPackage>
-        <AliasGroup isActive="yes" isFolder="yes">
-            <name>svo Priest Report</name>
-            <script></script>
-            <command></command>
-            <packageName></packageName>
-            <regex></regex>
-            <Alias isActive="yes" isFolder="no">
-                <name>(tr person) Trace</name>
-                <script>if matches[2] == &quot;off&quot; then
-  svo.doadd(&quot;angel trace off&quot;, false, false)
+svo.doaddfree("angel seek "..svo.locating.name)</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^(\w+) tells you.*, "(?:Locate|Sense|Find) (\w+)\."$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+		</TriggerGroup>
+	</TriggerPackage>
+	<TimerPackage />
+	<AliasPackage>
+		<AliasGroup isActive="yes" isFolder="yes">
+			<name>svo Priest Report</name>
+			<script></script>
+			<command></command>
+			<packageName></packageName>
+			<regex></regex>
+			<Alias isActive="yes" isFolder="no">
+				<name>(tr person) Trace</name>
+				<script>if matches[2] == "off" then
+  svo.doadd("angel trace off", false, false)
   tracing = nil
 else
   tracing = matches[2]:title()
   svo.tracingarea = matches[3]
-  svo.doadd(&quot;angel trace &quot;..tracing)
-  svo.echof(&quot;Tracing and reporting %s%s&quot;, tracing, (svo.tracingarea and &quot; only when they're in &quot;..svo.tracingarea:title() or ''))
+  svo.doadd("angel trace "..tracing)
+  svo.echof("Tracing and reporting %s%s", tracing, (svo.tracingarea and " only when they're in "..svo.tracingarea:title() or ''))
 end</script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^tr (\w+)(?: (\w+))?$</regex>
-            </Alias>
-            <Alias isActive="yes" isFolder="no">
-                <name>(vshow locatelist) See the people on the locate list</name>
-                <script>local l = (next(svo.me.locatelist) and svo.oneconcat(svo.me.locatelist) or &quot;(none - use vconfig locatelist &lt;friend&gt; to add, and that'll allow them to ask you via tells for locations of people)&quot;)
-svo.echof(&quot;People on the locatelist list: %s&quot;, l)</script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^vshow locatelist$</regex>
-            </Alias>
-            <Alias isActive="yes" isFolder="no">
-                <name>(seek person) Manually seek &amp; report a person</name>
-                <script>svo.locating = {name = matches[2]:title()}
-svo.doaddfree(&quot;angel seek &quot;..svo.locating.name)</script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^seek (\w+)$</regex>
-            </Alias>
-        </AliasGroup>
-    </AliasPackage>
-    <ActionPackage/>
-    <ScriptPackage>
-        <ScriptGroup isActive="yes" isFolder="yes">
-            <name>svo Priest Report</name>
-            <packageName></packageName>
-            <script>-------------------------------------------------
+				<command></command>
+				<packageName></packageName>
+				<regex>^tr (\w+)(?: (\w+))?$</regex>
+			</Alias>
+			<Alias isActive="yes" isFolder="no">
+				<name>(vshow locatelist) See the people on the locate list</name>
+				<script>local l = (next(svo.me.locatelist) and svo.oneconcat(svo.me.locatelist) or "(none - use vconfig locatelist &lt;friend&gt; to add, and that'll allow them to ask you via tells for locations of people)")
+svo.echof("People on the locatelist list: %s", l)</script>
+				<command></command>
+				<packageName></packageName>
+				<regex>^vshow locatelist$</regex>
+			</Alias>
+			<Alias isActive="yes" isFolder="no">
+				<name>(seek person) Manually seek &amp; report a person</name>
+				<script>svo.locating = {name = matches[2]:title()}
+svo.doaddfree("angel seek "..svo.locating.name)</script>
+				<command></command>
+				<packageName></packageName>
+				<regex>^seek (\w+)$</regex>
+			</Alias>
+		</AliasGroup>
+	</AliasPackage>
+	<ActionPackage />
+	<ScriptPackage>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>svo Priest Report</name>
+			<packageName></packageName>
+			<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-            <eventHandlerList/>
-            <Script isActive="yes" isFolder="no">
-                <name>svo_load_priestreport</name>
-                <packageName></packageName>
-                <script>function svo_load_priestreport()
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>svo_load_priestreport</name>
+				<packageName></packageName>
+				<script>function svo_load_priestreport()
   if type(svo.conf.autoseek) ~= 'nil' then
-    if svo.conf.autoseek then enableTrigger&quot;Seek request&quot; else
-    disableTrigger&quot;Seek request&quot; end
+    if svo.conf.autoseek then enableTrigger"Seek request" else
+    disableTrigger"Seek request" end
   end
 
-  svo.config.setoption(&quot;autoseek&quot;,
+  svo.config.setoption("autoseek",
   {
    vconfig2string = true,
-    type = &quot;boolean&quot;,
+    type = "boolean",
     onenabled = function ()
-      enableTrigger&quot;Seek request&quot;
-      svo.echof(&quot;&lt;0,250,0&gt;Will%s seek on seek requests.&quot;, svo.getDefaultColor())
+      enableTrigger"Seek request"
+      svo.echof("&lt;0,250,0&gt;Will%s seek on seek requests.", svo.getDefaultColor())
     end,
-    ondisabled = function () disableTrigger&quot;Seek request&quot; svo.echof(&quot;&lt;250,0,0&gt;Won't%s automatically seek on requests.&quot;, svo.getDefaultColor()) end,
+    ondisabled = function () disableTrigger"Seek request" svo.echof("&lt;250,0,0&gt;Won't%s automatically seek on requests.", svo.getDefaultColor()) end,
     onshow = function (defaultcolour)
-      fg(&quot;gold&quot;)
-      echoLink(&quot;pr:&quot;, &quot;&quot;, &quot;svo Priest Report&quot;, true)
+      fg("gold")
+      echoLink("pr:", "", "svo Priest Report", true)
       fg(defaultcolour)
-      echo(&quot; Responding to seek requests is &quot;)
-      fg(&quot;a_cyan&quot;) echoLink(svo.conf.autoseek and &quot;on&quot; or &quot;off&quot;, &quot;svo.config.set('autoseek', &quot;..(svo.conf.autoseek and &quot;false&quot; or &quot;true&quot;)..&quot;, true)&quot;, &quot;Click to &quot;..(svo.conf.autoseek and &quot;disable&quot; or &quot;enable&quot;)..&quot; responses to seek requests&quot;, true) fg(defaultcolour)
-      fg(defaultcolour) echo(&quot;, better tracing &quot;)
-      fg(&quot;a_cyan&quot;) echoLink(svo.conf.bettertrace and &quot;on&quot; or &quot;off&quot;, &quot;svo.config.set('bettertrace', &quot;..(svo.conf.bettertrace and &quot;false&quot; or &quot;true&quot;)..&quot;, true)&quot;, &quot;Click to &quot;..(svo.conf.bettertrace and &quot;disable&quot; or &quot;enable&quot;)..&quot; a better trace reporting style&quot;, true) fg(defaultcolour)
+      echo(" Responding to seek requests is ")
+      fg("a_cyan") echoLink(svo.conf.autoseek and "on" or "off", "svo.config.set('autoseek', "..(svo.conf.autoseek and "false" or "true")..", true)", "Click to "..(svo.conf.autoseek and "disable" or "enable").." responses to seek requests", true) fg(defaultcolour)
+      fg(defaultcolour) echo(", better tracing ")
+      fg("a_cyan") echoLink(svo.conf.bettertrace and "on" or "off", "svo.config.set('bettertrace', "..(svo.conf.bettertrace and "false" or "true")..", true)", "Click to "..(svo.conf.bettertrace and "disable" or "enable").." a better trace reporting style", true) fg(defaultcolour)
       fg(defaultcolour)
       if not svo.conf.bettertrace then
-        echo(&quot;.\n&quot;)
+        echo(".\n")
       else
-        echo(&quot;, reporting every &quot;)
-        fg(&quot;a_cyan&quot;) echoLink(svo.conf.reportdelay, &quot;printCmdLine('vconfig reportdelay ')&quot;, &quot;Click to adjust the max number of seconds a trace announce will be delayed for someone speedwalking&quot;, true) fg(defaultcolour)
-        echo(&quot;s.\n&quot;)
+        echo(", reporting every ")
+        fg("a_cyan") echoLink(svo.conf.reportdelay, "printCmdLine('vconfig reportdelay ')", "Click to adjust the max number of seconds a trace announce will be delayed for someone speedwalking", true) fg(defaultcolour)
+        echo("s.\n")
       end
   end})
 
   svo.me.locatelist = svo.me.locatelist or {}
 
-  svo.config.setoption(&quot;locatelist&quot;, {
-    type = &quot;string&quot;,
+  svo.config.setoption("locatelist", {
+    type = "string",
     check = function(what)
-      if what:find(&quot;^%w+$&quot;) then return true end
+      if what:find("^%w+$") then return true end
     end,
     onset = function ()
       local name = string.title(svo.conf.locatelist)
@@ -365,73 +365,73 @@ svo.doaddfree(&quot;angel seek &quot;..svo.locating.name)</script>
       if svo.me.locatelist[name] then svo.me.locatelist[name] = nil else svo.me.locatelist[name] = true end
 
       if svo.me.locatelist[name] then
-        svo.echof(&quot;Added &lt;0,255,0&gt;%s%s to the locatelist list - will respond to their locate tells.&quot;, name, svo.getDefaultColor())
+        svo.echof("Added &lt;0,255,0&gt;%s%s to the locatelist list - will respond to their locate tells.", name, svo.getDefaultColor())
       else
-		svo.echof(&quot;Removed %s from the locatelist list.&quot;, name)
+		svo.echof("Removed %s from the locatelist list.", name)
       end
     end
   })
 
 
-  svo.config.setoption(&quot;bettertrace&quot;,
+  svo.config.setoption("bettertrace",
   {
     vconfig2string = true,
-    type = &quot;boolean&quot;,
+    type = "boolean",
     onenabled = function ()
-      svo.echof(&quot;&lt;0,250,0&gt;Will%s use improved trace output (less spammy and more helpful).&quot;, svo.getDefaultColor())
+      svo.echof("&lt;0,250,0&gt;Will%s use improved trace output (less spammy and more helpful).", svo.getDefaultColor())
     end,
-    ondisabled = function () svo.echof(&quot;&lt;250,0,0&gt;Won't%s use improved trace output (will use old room-by-room instead).&quot;, svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use improved trace output (will use old room-by-room instead).", svo.getDefaultColor()) end,
   })
 
-  svo.config.setoption(&quot;reportdelay&quot;,
+  svo.config.setoption("reportdelay",
   {
-    type = &quot;number&quot;,
+    type = "number",
     min = 1,
     max = 100000,
     onset = function ()
-      svo.echof(&quot;Will report movement every %d seconds max for someone speedwalking.&quot;, svo.conf.reportdelay)
+      svo.echof("Will report movement every %d seconds max for someone speedwalking.", svo.conf.reportdelay)
     end,
   })
 end</script>
-                <eventHandlerList>
-                    <string>svo system loaded</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo_onshow_priestreport</name>
-                <packageName></packageName>
-                <script>function svo_onshow_priestreport()
+				<eventHandlerList>
+					<string>svo system loaded</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo_onshow_priestreport</name>
+				<packageName></packageName>
+				<script>function svo_onshow_priestreport()
     local c = table.size(svo.me.locatelist)
 
-    svo.echofn(&quot;# of people on the locatelist: %d &quot;, c)
+    svo.echofn("# of people on the locatelist: %d ", c)
 
     setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
-    echoLink(&quot;(view)&quot;, 'echo&quot;\\n&quot; expandAlias&quot;vshow locatelist&quot;', 'Click here open the locatelist list menu', true)
-    echo&quot;\n&quot;
+    echoLink("(view)", 'echo"\\n" expandAlias"vshow locatelist"', 'Click here open the locatelist list menu', true)
+    echo"\n"
 end</script>
-                <eventHandlerList>
-                    <string>svo onshow</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo.disable_seek</name>
-                <packageName></packageName>
-                <script>-- disable seek alias in dragonform, because it's for priest only
+				<eventHandlerList>
+					<string>svo onshow</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.disable_seek</name>
+				<packageName></packageName>
+				<script>-- disable seek alias in dragonform, because it's for priest only
 function svo.disable_seek()
-  if svo and svo.defc.dragonform then disableAlias&quot;(seek person) Manually seek &amp; report a person&quot;
-  else enableAlias&quot;(seek person) Manually seek &amp; report a person&quot; end
+  if svo and svo.defc.dragonform then disableAlias"(seek person) Manually seek &amp; report a person"
+  else enableAlias"(seek person) Manually seek &amp; report a person" end
 end</script>
-                <eventHandlerList>
-                    <string>svo got dragonform</string>
-                    <string>svo lost dragonform</string>
-                    <string>svo system loaded</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>priest repoter main code</name>
-                <packageName></packageName>
-                <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+				<eventHandlerList>
+					<string>svo got dragonform</string>
+					<string>svo lost dragonform</string>
+					<string>svo system loaded</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>priest repoter main code</name>
+				<packageName></packageName>
+				<script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -441,12 +441,12 @@ end</script>
 
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.priestreporter = function()
-if svo.me.class ~= &quot;Priest&quot; then return end
+if svo.me.class ~= "Priest" then return end
 
 local conf = svo.conf
 
 -- initialise to something so there's a value
-local oldroom = &quot;&quot;
+local oldroom = ""
 conf.reportdelay = 2
 conf.bettertrace = true
 
@@ -463,7 +463,7 @@ local function announce_between_two_rooms(roomname1, roomname2)
 
   -- if we have more than one ID for either - just announce where we ended up
   if not (table.size(rid1) == 1 and table.size(rid2) == 1) then
-    svo.cc(&quot;%s moved one room to %s%s&quot;, svo.tracing, roomname2, (exactarealastroom and &quot; in &quot;..exactarealastroom))
+    svo.cc("%s moved one room to %s%s", svo.tracing, roomname2, (exactarealastroom and " in "..exactarealastroom))
   -- if exactly one ID for start and end, then work out the directory
   else
     rid1 = next(rid1)
@@ -471,10 +471,10 @@ local function announce_between_two_rooms(roomname1, roomname2)
     local found
     for exit, roomid in pairs(getRoomExits(rid1)) do
       if roomid == rid2 then
-        svo.cc(&quot;%s moved %s to %s%s&quot;, svo.tracing, exit, roomname2, (exactarealastroom and &quot; in &quot;..exactarealastroom)); found = true; break
+        svo.cc("%s moved %s to %s%s", svo.tracing, exit, roomname2, (exactarealastroom and " in "..exactarealastroom)); found = true; break
       end
     end
-    if not found then svo.cc(&quot;%s moved one room to %s%s&quot;, svo.tracing, roomname2, (exactarealastroom and &quot; in &quot;..exactarealastroom)) end
+    if not found then svo.cc("%s moved one room to %s%s", svo.tracing, roomname2, (exactarealastroom and " in "..exactarealastroom)) end
   end
 end
 
@@ -493,7 +493,7 @@ svo.trace = function()
       if exactarealastroom then exactarealastroom = mmp.cleanAreaName(exactarealastroom) end
     end
 
-    svo.cc(&quot;%s moved %d room%s to %s%s&quot;, svo.tracing, #svo.rooms_to_announce-1, (svo.rooms_to_announce == 2 and &quot;&quot; or 's'), svo.rooms_to_announce[#svo.rooms_to_announce], (exactarealastroom and &quot; in &quot;..exactarealastroom))
+    svo.cc("%s moved %d room%s to %s%s", svo.tracing, #svo.rooms_to_announce-1, (svo.rooms_to_announce == 2 and "" or 's'), svo.rooms_to_announce[#svo.rooms_to_announce], (exactarealastroom and " in "..exactarealastroom))
   -- else just one room in the table - then it is the same room, so ignore
   end
   svo.rooms_to_announce = nil
@@ -509,9 +509,9 @@ function svo.angel_trace(name, newroom)
 
   local function oldannounce()
     if exactarea then
-      svo.cc(&quot;%s entered %s in %s&quot;, name, newroom, mmp.cleanAreaName(exactarea))
+      svo.cc("%s entered %s in %s", name, newroom, mmp.cleanAreaName(exactarea))
     else
-      svo.cc(&quot;%s entered %s&quot;, name, newroom)
+      svo.cc("%s entered %s", name, newroom)
     end
   end
 
@@ -538,12 +538,12 @@ end -- end of svo priest reporter loader
 
 if svo.systemloaded then svo.loader.priestreporter() end
 </script>
-                <eventHandlerList/>
-            </Script>
-        </ScriptGroup>
-    </ScriptPackage>
-    <KeyPackage/>
-    <HelpPackage>
-        <helpURL></helpURL>
-    </HelpPackage>
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
+	</ScriptPackage>
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL></helpURL>
+	</HelpPackage>
 </MudletPackage>

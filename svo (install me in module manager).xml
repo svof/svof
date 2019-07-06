@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
 <MudletPackage version="1.001">
-    <TriggerPackage/>
-    <TimerPackage/>
-    <AliasPackage/>
-    <ActionPackage/>
-    <ScriptPackage>
-        <Script isActive="yes" isFolder="no">
-            <name>Create Svof namespace</name>
-            <packageName></packageName>
-            <script>svo = svo or {
+	<TriggerPackage />
+	<TimerPackage />
+	<AliasPackage />
+	<ActionPackage />
+	<ScriptPackage>
+		<Script isActive="yes" isFolder="no">
+			<name>Create Svof namespace</name>
+			<packageName></packageName>
+			<script>svo = svo or {
   autopause_on_def = function() end,
   balanceless = {},
   disable_seek = function() end,
@@ -19,32 +19,32 @@
 ndb = ndb or {}
 
 createBuffer('svo_prompt')</script>
-            <eventHandlerList/>
-        </Script>
-        <ScriptGroup isActive="yes" isFolder="yes">
-            <name>3rdparty</name>
-            <packageName></packageName>
-            <script>-------------------------------------------------
+			<eventHandlerList />
+		</Script>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>3rdparty</name>
+			<packageName></packageName>
+			<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-            <eventHandlerList/>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>notify</name>
-                <packageName></packageName>
-                <script>-------------------------------------------------
+			<eventHandlerList />
+			<ScriptGroup isActive="yes" isFolder="yes">
+				<name>notify</name>
+				<packageName></packageName>
+				<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-                <eventHandlerList/>
-                <Script isActive="yes" isFolder="no">
-                    <name>double_queue</name>
-                    <packageName></packageName>
-                    <script>---------------------------------------------------------------------------------
+				<eventHandlerList />
+				<Script isActive="yes" isFolder="no">
+					<name>double_queue</name>
+					<packageName></packageName>
+					<script>---------------------------------------------------------------------------------
 -- Copyright (C) 2010 Tiago Katcipis &lt;tiagokatcipis@gmail.com&gt;
 -- Copyright (C) 2010 Paulo Pizarro  &lt;paulo.pizarro@gmail.com&gt;
 -- 
@@ -71,15 +71,15 @@ createBuffer('svo_prompt')</script>
 -- @class module
 -- @name ordered_set
 -- @description DoubleQueue Class.
--- @author &lt;a href=&quot;mailto:tiagokatcipis@gmail.com&quot;&gt;Tiago Katcipis&lt;/a&gt;
--- @author &lt;a href=&quot;mailto:paulo.pizarro@gmail.com&quot;&gt;Paulo Pizarro&lt;/a&gt;
+-- @author &lt;a href="mailto:tiagokatcipis@gmail.com"&gt;Tiago Katcipis&lt;/a&gt;
+-- @author &lt;a href="mailto:paulo.pizarro@gmail.com"&gt;Paulo Pizarro&lt;/a&gt;
 -- @copyright 2010 Tiago Katcipis, Paulo Pizarro.
 
 local setmetatable = setmetatable
 local pairs = pairs
 local display = display
 
-module(&quot;notify.double_queue&quot;)
+module("notify.double_queue")
 
 -----------------------------------------------------
 -- Class attributes and methods goes on this table --
@@ -199,12 +199,12 @@ function DoubleQueue:position(data)
 	return self.data_position[data]
 end
 </script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>signal</name>
-                    <packageName></packageName>
-                    <script>---------------------------------------------------------------------------------
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>signal</name>
+					<packageName></packageName>
+					<script>---------------------------------------------------------------------------------
 -- Copyright (C) 2010 Tiago Katcipis &lt;tiagokatcipis@gmail.com&gt;
 -- Copyright (C) 2010 Paulo Pizarro  &lt;paulo.pizarro@gmail.com&gt;
 -- 
@@ -231,17 +231,17 @@ end
 -- @class module
 -- @name signal
 -- @description Signal Class.
--- @author &lt;a href=&quot;mailto:tiagokatcipis@gmail.com&quot;&gt;Tiago Katcipis&lt;/a&gt;
--- @author &lt;a href=&quot;mailto:paulo.pizarro@gmail.com&quot;&gt;Paulo Pizarro&lt;/a&gt;
+-- @author &lt;a href="mailto:tiagokatcipis@gmail.com"&gt;Tiago Katcipis&lt;/a&gt;
+-- @author &lt;a href="mailto:paulo.pizarro@gmail.com"&gt;Paulo Pizarro&lt;/a&gt;
 -- @copyright 2010 Tiago Katcipis, Paulo Pizarro.
 
 local require = require
 local setmetatable = setmetatable
 local display = display
 
-module(&quot;notify.signal&quot;)
+module("notify.signal")
 
-local queue = require &quot;notify.double_queue&quot;
+local queue = require "notify.double_queue"
 
 -----------------------------------------------------
 -- Class attributes and methods goes on this table --
@@ -306,7 +306,7 @@ function Signal:connect(handler_function, handler_name)
 				end
 		
         self.handlers:push_back(handler_function)
-        self.handler_names:push_back(handler_name or &quot;&quot;)
+        self.handler_names:push_back(handler_name or "")
     end
 end
 
@@ -440,23 +440,23 @@ function Signal:stop()
 end
 
 </script>
-                    <eventHandlerList/>
-                </Script>
-            </ScriptGroup>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>Penlight</name>
-                <packageName></packageName>
-                <script>-------------------------------------------------
+					<eventHandlerList />
+				</Script>
+			</ScriptGroup>
+			<ScriptGroup isActive="yes" isFolder="yes">
+				<name>Penlight</name>
+				<packageName></packageName>
+				<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-                <eventHandlerList/>
-                <Script isActive="yes" isFolder="no">
-                    <name>utils</name>
-                    <packageName></packageName>
-                    <script>--- Generally useful routines.
+				<eventHandlerList />
+				<Script isActive="yes" isFolder="no">
+					<name>utils</name>
+					<packageName></packageName>
+					<script>--- Generally useful routines.
 -- See  @{01-introduction.md.Generally_useful_functions|the Guide}.
 -- @module pl.utils
 local format,gsub,byte = string.format,string.gsub,string.byte
@@ -468,7 +468,7 @@ local collisions = {}
 
 local utils = {}
 
-utils._VERSION = &quot;1.1.0&quot;
+utils._VERSION = "1.1.0"
 
 local lua51 = rawget(_G,'setfenv')
 
@@ -516,7 +516,7 @@ local function import_symbol(T,k,v,libname)
     local key = rawget(T,k)
     -- warn about collisions!
     if key and k ~= '_M' and k ~= '_NAME' and k ~= '_PACKAGE' and k ~= '_VERSION' then
-        utils.printf(&quot;warning: '%s.%s' overrides existing symbol\n&quot;,libname,k)
+        utils.printf("warning: '%s.%s' overrides existing symbol\n",libname,k)
     end
     rawset(T,k,v)
 end
@@ -758,7 +758,7 @@ if lua51 then
 end
 
 if not table.pack then table.pack = _G.pack end
-if not rawget(_G,&quot;pack&quot;) then _G.pack = table.pack end
+if not rawget(_G,"pack") then _G.pack = table.pack end
 
 --- take an arbitrary set of arguments and make into a table.
 -- This returns the table and the size; works fine for nil arguments
@@ -814,7 +814,7 @@ function utils.type (obj)
         if mt == fileMT then
             return 'file'
         else
-            return mt._name or &quot;unknown &quot;..t
+            return mt._name or "unknown "..t
         end
     else
         return t
@@ -908,9 +908,9 @@ function utils.function_arg (idx,f,msg)
             return ff(f) -- we have a function factory for this type!
         end
     end
-    if not msg then msg = &quot; must be callable&quot; end
+    if not msg then msg = " must be callable" end
     if idx &gt; 0 then
-        error(&quot;argument &quot;..idx..&quot;: &quot;..msg,2)
+        error("argument "..idx..": "..msg,2)
     else
         error(msg,2)
     end
@@ -950,10 +950,10 @@ end
 -- @usage assert_arg(n,val,'string',path.isdir,'not a directory')
 function utils.assert_arg (n,val,tp,verify,msg,lev)
     if type(val) ~= tp then
-        error((&quot;argument %d expected a '%s', got a '%s'&quot;):format(n,tp,type(val)),lev or 2)
+        error(("argument %d expected a '%s', got a '%s'"):format(n,tp,type(val)),lev or 2)
     end
     if verify and not verify(val) then
-        error((&quot;argument %d: '%s' %s&quot;):format(n,val,msg),lev or 2)
+        error(("argument %d: '%s' %s"):format(n,val,msg),lev or 2)
     end
 end
 
@@ -980,7 +980,7 @@ function utils.on_error (mode)
     else
       -- fail loudly
       if err_mode == 'default' then err_mode = 'error' end
-      utils.raise(&quot;Bad argument expected string; 'default', 'quit', or 'error'. Got '&quot;..tostring(mode)..&quot;'&quot;)
+      utils.raise("Bad argument expected string; 'default', 'quit', or 'error'. Got '"..tostring(mode).."'")
     end
 end
 
@@ -1027,12 +1027,12 @@ package.loaded['pl.utils'] = utils
 
 
 </script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>tablex</name>
-                    <packageName></packageName>
-                    <script>--- Extended operations on Lua tables.
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>tablex</name>
+					<packageName></packageName>
+					<script>--- Extended operations on Lua tables.
 --
 -- See @{02-arrays.md.Useful_Operations_on_Tables|the Guide}
 --
@@ -1076,7 +1076,7 @@ local function assert_arg_indexable (idx,val)
     local mt = check_meta(val)
     if mt == true then return end
     if not(mt and mt.__len and mt.__index) then
-        complain(idx,&quot;indexable&quot;)
+        complain(idx,"indexable")
     end
 end
 
@@ -1084,7 +1084,7 @@ local function assert_arg_iterable (idx,val)
     local mt = check_meta(val)
     if mt == true then return end
     if not(mt and mt.__pairs) then
-        complain(idx,&quot;iterable&quot;)
+        complain(idx,"iterable")
     end
 end
 
@@ -1092,7 +1092,7 @@ local function assert_arg_writeable (idx,val)
     local mt = check_meta(val)
     if mt == true then return end
     if not(mt and mt.__newindex) then
-        complain(idx,&quot;writeable&quot;)
+        complain(idx,"writeable")
     end
 end
 
@@ -1779,8 +1779,8 @@ end
 
 --- insert values into a table. &lt;br&gt;
 -- insertvalues(t, [pos,] values) &lt;br&gt;
--- similar to table.insert but inserts values from given table &quot;values&quot;,
--- not the object itself, into table &quot;t&quot; at position &quot;pos&quot;.
+-- similar to table.insert but inserts values from given table "values",
+-- not the object itself, into table "t" at position "pos".
 function tablex.insertvalues(t, ...)
     assert_arg(1,t,'table')
     local pos, values
@@ -1853,12 +1853,12 @@ end
 
 package.loaded['pl.tablex'] = tablex
 </script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>stringx</name>
-                    <packageName></packageName>
-                    <script>--- Python-style extended string library.
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>stringx</name>
+					<packageName></packageName>
+					<script>--- Python-style extended string library.
 --
 -- see 3.6.1 of the Python reference.
 -- If you want to make these available as string methods, then say
@@ -2078,7 +2078,7 @@ function stringx.split(self,re,n)
     end
     local res = usplit(s,re,plain,n)
     if re and re ~= '' and find(s,re,-#re,true) then
-        res[#res+1] = &quot;&quot;
+        res[#res+1] = ""
     end
 	return setmetatable(res,list_MT)
 end
@@ -2299,12 +2299,12 @@ end
 
 package.loaded['pl.stringx'] = stringx
 </script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>lexer</name>
-                    <packageName></packageName>
-                    <script>--- Lexical scanner for creating a sequence of tokens from text.
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>lexer</name>
+					<packageName></packageName>
+					<script>--- Lexical scanner for creating a sequence of tokens from text.
 -- `lexer.scan(s)` returns an iterator over all tokens found in the
 -- string `s`. This iterator returns two values, a token type string
 -- (such as 'string' for quoted string, 'iden' for identifier) and the value of the
@@ -2333,7 +2333,7 @@ local append = table.insert
 
 local function assert_arg(idx,val,tp)
     if type(val) ~= tp then
-        error(&quot;argument &quot;..idx..&quot; must be &quot;..tp, 2)
+        error("argument "..idx.." must be "..tp, 2)
     end
 end
 
@@ -2346,9 +2346,9 @@ local NUMBER4 = '^%d+%.?%d*[eE][%+%-]?%d+'
 local NUMBER5 = '^%d+%.?%d*'
 local IDEN = '^[%a_][%w_]*'
 local WSPACE = '^%s+'
-local STRING0 = [[^(['\&quot;]).-\\%1]]
-local STRING1 = [[^(['\&quot;]).-[^\]%1]]
-local STRING3 = &quot;^((['\&quot;])%2)&quot; -- empty string
+local STRING0 = [[^(['\"]).-\\%1]]
+local STRING1 = [[^(['\"]).-[^\]%1]]
+local STRING3 = "^((['\"])%2)" -- empty string
 local PREPRO = '^#.-[^\\]\n'
 
 local plain_matches,lua_matches,cpp_matches,lua_keyword,cpp_keyword
@@ -2361,7 +2361,7 @@ local function ndump(tok,options)
     if options and options.number then
         tok = tonumber(tok)
     end
-    return yield(&quot;number&quot;,tok)
+    return yield("number",tok)
 end
 
 -- regular strings, single or double quotes; usually we want them
@@ -2370,7 +2370,7 @@ local function sdump(tok,options)
     if options and options.string then
         tok = tok:sub(2,-2)
     end
-    return yield(&quot;string&quot;,tok)
+    return yield("string",tok)
 end
 
 -- long Lua strings need extra work to get rid of the quotes
@@ -2378,14 +2378,14 @@ local function sdump_l(tok,options)
     if options and options.string then
         tok = tok:sub(3,-3)
     end
-    return yield(&quot;string&quot;,tok)
+    return yield("string",tok)
 end
 
 local function chdump(tok,options)
     if options and options.string then
         tok = tok:sub(2,-2)
     end
-    return yield(&quot;char&quot;,tok)
+    return yield("char",tok)
 end
 
 local function cdump(tok)
@@ -2393,7 +2393,7 @@ local function cdump(tok)
 end
 
 local function wsdump (tok)
-    return yield(&quot;space&quot;,tok)
+    return yield("space",tok)
 end
 
 local function pdump (tok)
@@ -2401,22 +2401,22 @@ local function pdump (tok)
 end
 
 local function plain_vdump(tok)
-    return yield(&quot;iden&quot;,tok)
+    return yield("iden",tok)
 end
 
 local function lua_vdump(tok)
     if lua_keyword[tok] then
-        return yield(&quot;keyword&quot;,tok)
+        return yield("keyword",tok)
     else
-        return yield(&quot;iden&quot;,tok)
+        return yield("iden",tok)
     end
 end
 
 local function cpp_vdump(tok)
     if cpp_keyword[tok] then
-        return yield(&quot;keyword&quot;,tok)
+        return yield("keyword",tok)
     else
-        return yield(&quot;iden&quot;,tok)
+        return yield("iden",tok)
     end
 end
 
@@ -2566,18 +2566,18 @@ function lexer.getrest (tok)
 end
 
 --- get the Lua keywords as a set-like table.
--- So &lt;code&gt;res[&quot;and&quot;]&lt;/code&gt; etc would be &lt;code&gt;true&lt;/code&gt;.
+-- So &lt;code&gt;res["and"]&lt;/code&gt; etc would be &lt;code&gt;true&lt;/code&gt;.
 -- @return a table
 function lexer.get_keywords ()
     if not lua_keyword then
         lua_keyword = {
-            [&quot;and&quot;] = true, [&quot;break&quot;] = true,  [&quot;do&quot;] = true,
-            [&quot;else&quot;] = true, [&quot;elseif&quot;] = true, [&quot;end&quot;] = true,
-            [&quot;false&quot;] = true, [&quot;for&quot;] = true, [&quot;function&quot;] = true,
-            [&quot;if&quot;] = true, [&quot;in&quot;] = true,  [&quot;local&quot;] = true, [&quot;nil&quot;] = true,
-            [&quot;not&quot;] = true, [&quot;or&quot;] = true, [&quot;repeat&quot;] = true,
-            [&quot;return&quot;] = true, [&quot;then&quot;] = true, [&quot;true&quot;] = true,
-            [&quot;until&quot;] = true,  [&quot;while&quot;] = true
+            ["and"] = true, ["break"] = true,  ["do"] = true,
+            ["else"] = true, ["elseif"] = true, ["end"] = true,
+            ["false"] = true, ["for"] = true, ["function"] = true,
+            ["if"] = true, ["in"] = true,  ["local"] = true, ["nil"] = true,
+            ["not"] = true, ["or"] = true, ["repeat"] = true,
+            ["return"] = true, ["then"] = true, ["true"] = true,
+            ["until"] = true,  ["while"] = true
         }
     end
     return lua_keyword
@@ -2628,18 +2628,18 @@ function lexer.cpp(s,filter,options)
     filter = filter or {comments=true}
     if not cpp_keyword then
         cpp_keyword = {
-            [&quot;class&quot;] = true, [&quot;break&quot;] = true,  [&quot;do&quot;] = true, [&quot;sizeof&quot;] = true,
-            [&quot;else&quot;] = true, [&quot;continue&quot;] = true, [&quot;struct&quot;] = true,
-            [&quot;false&quot;] = true, [&quot;for&quot;] = true, [&quot;public&quot;] = true, [&quot;void&quot;] = true,
-            [&quot;private&quot;] = true, [&quot;protected&quot;] = true, [&quot;goto&quot;] = true,
-            [&quot;if&quot;] = true, [&quot;static&quot;] = true,  [&quot;const&quot;] = true, [&quot;typedef&quot;] = true,
-            [&quot;enum&quot;] = true, [&quot;char&quot;] = true, [&quot;int&quot;] = true, [&quot;bool&quot;] = true,
-            [&quot;long&quot;] = true, [&quot;float&quot;] = true, [&quot;true&quot;] = true, [&quot;delete&quot;] = true,
-            [&quot;double&quot;] = true,  [&quot;while&quot;] = true, [&quot;new&quot;] = true,
-            [&quot;namespace&quot;] = true, [&quot;try&quot;] = true, [&quot;catch&quot;] = true,
-            [&quot;switch&quot;] = true, [&quot;case&quot;] = true, [&quot;extern&quot;] = true,
-            [&quot;return&quot;] = true,[&quot;default&quot;] = true,['unsigned']  = true,['signed'] = true,
-            [&quot;union&quot;] =  true, [&quot;volatile&quot;] = true, [&quot;register&quot;] = true,[&quot;short&quot;] = true,
+            ["class"] = true, ["break"] = true,  ["do"] = true, ["sizeof"] = true,
+            ["else"] = true, ["continue"] = true, ["struct"] = true,
+            ["false"] = true, ["for"] = true, ["public"] = true, ["void"] = true,
+            ["private"] = true, ["protected"] = true, ["goto"] = true,
+            ["if"] = true, ["static"] = true,  ["const"] = true, ["typedef"] = true,
+            ["enum"] = true, ["char"] = true, ["int"] = true, ["bool"] = true,
+            ["long"] = true, ["float"] = true, ["true"] = true, ["delete"] = true,
+            ["double"] = true,  ["while"] = true, ["new"] = true,
+            ["namespace"] = true, ["try"] = true, ["catch"] = true,
+            ["switch"] = true, ["case"] = true, ["extern"] = true,
+            ["return"] = true,["default"] = true,['unsigned']  = true,['signed'] = true,
+            ["union"] =  true, ["volatile"] = true, ["register"] = true,["short"] = true,
         }
     end
     if not cpp_matches then
@@ -2755,18 +2755,18 @@ function lexer.expecting (tok,expected_type,no_skip_ws)
     else
         t,v = skipws(tok)
     end
-    if t ~= expected_type then error (&quot;expecting &quot;..expected_type,2) end
+    if t ~= expected_type then error ("expecting "..expected_type,2) end
     return v
 end
 
 package.loaded['pl.lexer'] = lexer
 </script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>pretty</name>
-                    <packageName></packageName>
-                    <script>--- Pretty-printing Lua tables.
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>pretty</name>
+					<packageName></packageName>
+					<script>--- Pretty-printing Lua tables.
 -- Also provides a sandboxed Lua table reader and
 -- a function to present large numbers in human-friendly format.
 --
@@ -2811,12 +2811,12 @@ function pretty.read(s)
     if s:find '^%s*%-%-' then -- may start with a comment..
         s = s:gsub('%-%-.-\n','')
     end
-    if not s:find '^%s*%b{}%s*$' then return nil,&quot;not a Lua table&quot; end
-    if s:find '[^\'&quot;%w_]function[^\'&quot;%w_]' then
+    if not s:find '^%s*%b{}%s*$' then return nil,"not a Lua table" end
+    if s:find '[^\'"%w_]function[^\'"%w_]' then
         local tok = lexer.lua(s)
         for t,v in tok do
             if t == 'keyword' then
-                return nil,&quot;cannot have functions in table definition&quot;
+                return nil,"cannot have functions in table definition"
             end
         end
     end
@@ -2845,7 +2845,7 @@ function pretty.load (s, env, paranoid)
             if t == 'keyword'
                 and (v == 'for' or v == 'repeat' or v == 'function' or v == 'goto')
             then
-                return nil,&quot;looping not allowed&quot;
+                return nil,"looping not allowed"
             end
         end
     end
@@ -2861,7 +2861,7 @@ end
 local function quote_if_necessary (v)
     if not v then return ''
     else
-        if v:find ' ' then v = '&quot;'..v..'&quot;' end
+        if v:find ' ' then v = '"'..v..'"' end
     end
     return v
 end
@@ -3053,12 +3053,12 @@ end
 
 package.loaded['pl.pretty'] = pretty
 </script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>path</name>
-                    <packageName></packageName>
-                    <script>--- Path manipulation and file queries.
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>path</name>
+					<packageName></packageName>
+					<script>--- Path manipulation and file queries.
 --
 -- This is modelled after Python's os.path library (10.1); see @{04-paths.md|the Guide}.
 --
@@ -3087,7 +3087,7 @@ if res then
     currentdir = lfs.currentdir
     link_attrib = lfs.symlinkattributes
 else
-    error(&quot;pl.path requires LuaFileSystem&quot;)
+    error("pl.path requires LuaFileSystem")
 end
 
 attrib = attributes
@@ -3102,7 +3102,7 @@ path.chdir = lfs.chdir
 -- @param P A file path
 function path.isdir(P)
 	assert_string(1,P)
-    if P:match(&quot;\\$&quot;) then
+    if P:match("\\$") then
         P = P:sub(1,-2)
     end
     return attrib(P,'mode') == 'directory'
@@ -3303,7 +3303,7 @@ function path.join(p1,p2,...)
     end
     if path.isabs(p2) then return p2 end
     local endc = at(p1,#p1)
-    if endc ~= path.sep and endc ~= other_sep and endc ~= &quot;&quot; then
+    if endc ~= path.sep and endc ~= other_sep and endc ~= "" then
         p1 = p1..path.sep
     end
     return p1..p2
@@ -3458,12 +3458,12 @@ end
 ---- finis -----
 package.loaded['pl.path'] = path
 </script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>class</name>
-                    <packageName></packageName>
-                    <script>--- Provides a reuseable and convenient framework for creating classes in Lua.
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>class</name>
+					<packageName></packageName>
+					<script>--- Provides a reuseable and convenient framework for creating classes in Lua.
 -- Two possible notations:
 --
 --    B = class(A)
@@ -3538,7 +3538,7 @@ local function _class(base,c_arg,c)
         -- inherit the 'not found' handler, if present
         if rawget(c,'_handler') then mt.__index = c._handler end
     elseif base ~= nil then
-        error(&quot;must derive from a table type&quot;,3)
+        error("must derive from a table type",3)
     end
 
     c.__index = c
@@ -3600,7 +3600,7 @@ class = setmetatable({},{
     end,
     __index = function(tbl,key)
         if key == 'class' then
-            io.stderr:write('require(&quot;pl.class&quot;).class is deprecated. Use require(&quot;pl.class&quot;)\n')
+            io.stderr:write('require("pl.class").class is deprecated. Use require("pl.class")\n')
             return class
         end
         local env = _G
@@ -3644,12 +3644,12 @@ end
 package.loaded['pl.class'] = class
 
 </script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>List</name>
-                    <packageName></packageName>
-                    <script>--- Python-style list class.
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>List</name>
+					<packageName></packageName>
+					<script>--- Python-style list class.
 --
 -- **Please Note**: methods that change the list will return the list.
 -- This is to allow for method chaining, but please note that `ls = ls:sort()`
@@ -3658,7 +3658,7 @@ package.loaded['pl.class'] = class
 --
 -- See the Guide for further @{02-arrays.md.Python_style_Lists|discussion}
 --
--- See &lt;a href=&quot;http://www.python.org/doc/current/tut/tut.html&quot;&gt;http://www.python.org/doc/current/tut/tut.html&lt;/a&gt;, section 5.1
+-- See &lt;a href="http://www.python.org/doc/current/tut/tut.html"&gt;http://www.python.org/doc/current/tut/tut.html&lt;/a&gt;, section 5.1
 --
 -- **Note**: The comments before some of the functions are from the Python docs
 -- and contain Python code.
@@ -3756,7 +3756,7 @@ function List.default_map_with(T)
              return self:map(f,...)
           end
        else
-          error(&quot;method not found: &quot;..name,2)
+          error("method not found: "..name,2)
        end
     end
 end
@@ -4044,7 +4044,7 @@ List.concat = concat
 local function tostring_q(val)
     local s = tostring(val)
     if type(val) == 'string' then
-        s = '&quot;'..s..'&quot;'
+        s = '"'..s..'"'
     end
     return s
 end
@@ -4101,7 +4101,7 @@ end
 function List:foreachm (name,...)
     for i = 1,#self do
         local obj = self[i]
-        local f = assert(obj[name],&quot;method not found on object&quot;)
+        local f = assert(obj[name],"method not found on object")
         f(obj,...)
     end
 end
@@ -4182,7 +4182,7 @@ function List:mapm (name,...)
     for i = 1,#t do
       local val = t[i]
       local fn = val[name]
-      if not fn then error(type(val)..&quot; does not have method &quot;..name,2) end
+      if not fn then error(type(val).." does not have method "..name,2) end
       res[i] = fn(val,...)
     end
     return makelist(res,self)
@@ -4260,12 +4260,12 @@ iter = List.iterate
 package.loaded['pl.List'] = List
 
 </script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>Map</name>
-                    <packageName></packageName>
-                    <script>--- A Map class.
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>Map</name>
+					<packageName></packageName>
+					<script>--- A Map class.
 --
 --    &gt; Map = require 'pl.Map'
 --    &gt; m = Map{one=1,two=2}
@@ -4379,12 +4379,12 @@ end
 
 package.loaded['pl.Map'] = Map
 </script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>OrderedMap</name>
-                    <packageName></packageName>
-                    <script>--- OrderedMap, a map which preserves ordering.
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>OrderedMap</name>
+					<packageName></packageName>
+					<script>--- OrderedMap, a map which preserves ordering.
 --
 -- Derived from `pl.Map`.
 --
@@ -4524,7 +4524,7 @@ function OrderedMap:__tostring ()
         local val = self[v]
         local vs = tostring(val)
         if type(val) ~= 'number' then
-            vs = '&quot;'..vs..'&quot;'
+            vs = '"'..vs..'"'
         end
         res[i] = tostring(v)..'='..vs
     end
@@ -4536,12 +4536,12 @@ package.loaded['pl.OrderedMap'] = OrderedMap
 
 
 </script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>dir</name>
-                    <packageName></packageName>
-                    <script>--- Getting directory contents and matching them against wildcards.
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>dir</name>
+					<packageName></packageName>
+					<script>--- Getting directory contents and matching them against wildcards.
 --
 -- Dependencies: `pl.utils`, `pl.path`, `pl.tablex`
 --
@@ -4654,7 +4654,7 @@ end
 local function quote_argument (f)
     f = path.normcase(f)
     if f:find '%s' then
-        return '&quot;'..f..'&quot;'
+        return '"'..f..'"'
     else
         return f
     end
@@ -4739,7 +4739,7 @@ end
 
 local function file_op (is_copy,src,dest,flag)
     if flag == 1 and path.exists(dest) then
-        return false,&quot;cannot overwrite destination&quot;
+        return false,"cannot overwrite destination"
     end
     if is_windows then
         -- if we haven't tried to load Alien/LuaJIT FFI before, then do so
@@ -4767,7 +4767,7 @@ local function file_op (is_copy,src,dest,flag)
                 for name,value in pairs(win32_errors) do
                     if value == err then return false,name end
                 end
-                return false,&quot;Error #&quot;..err
+                return false,"Error #"..err
             else return true
             end
         end
@@ -4925,7 +4925,7 @@ function dir.clonetree (path1,path2,file_fun,verbose)
     path2 = abspath(normcase(path2))
     if verbose then verbose('normalized:',path1,path2) end
     -- particularly NB that the new path isn't fully contained in the old path
-    if path1 == path2 then return raise &quot;paths are the same&quot; end
+    if path1 == path2 then return raise "paths are the same" end
     local i1,i2 = path2:find(path1,1,true)
     if i2 == #path1 and path2:sub(i2+1,i2+1) == path.sep then
         return raise 'destination is a subdirectory of the source'
@@ -4963,7 +4963,7 @@ end
 -- @return an iterator giving pathname and mode (true for dir, false otherwise)
 -- @raise d must be a non-empty string
 function dir.dirtree( d )
-    assert( d and d ~= &quot;&quot;, &quot;directory parameter is missing or empty&quot; )
+    assert( d and d ~= "", "directory parameter is missing or empty" )
     local exists, isdir = path.exists, path.isdir
     local sep = path.sep
 
@@ -4974,7 +4974,7 @@ function dir.dirtree( d )
 
     local function yieldtree( dir )
         for entry in ldir( dir ) do
-            if entry ~= &quot;.&quot; and entry ~= &quot;..&quot; then
+            if entry ~= "." and entry ~= ".." then
                 entry = dir .. sep .. entry
                 if exists(entry) then  -- Just in case a symlink is broken.
                     local is_dir = isdir(entry)
@@ -4999,7 +4999,7 @@ end
 --  @raise start_path must be a string
 function dir.getallfiles( start_path, pattern )
     assert_dir(1,start_path)
-    pattern = pattern or &quot;&quot;
+    pattern = pattern or ""
 
     local files = {}
     local normcase = path.normcase
@@ -5017,12 +5017,12 @@ end
 
 package.loaded['pl.dir'] = dir
 </script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>config</name>
-                    <packageName></packageName>
-                    <script>--- Reads configuration files into a Lua table.
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>config</name>
+					<packageName></packageName>
+					<script>--- Reads configuration files into a Lua table.
 --  Understands INI files, classic Unix config files, and simple
 -- delimited columns of values.
 --
@@ -5067,7 +5067,7 @@ local function strip(s)
 end
 
 local function strip_quotes (s)
-    return s:gsub(&quot;['\&quot;](.*)['\&quot;]&quot;,'%1')
+    return s:gsub("['\"](.*)['\"]",'%1')
 end
 
 local config = {}
@@ -5191,7 +5191,7 @@ function config.read(file,cnfg)
         end
         if type(value) == 'string' then
            if trim_space then value = strip(value) end
-           if not trim_quotes and auto and value:match '^&quot;' then
+           if not trim_quotes and auto and value:match '^"' then
                 trim_quotes = true
             end
            if trim_quotes then value = strip_quotes(value) end
@@ -5224,76 +5224,76 @@ end
 package.loaded['pl.config'] = config
 
 </script>
-                    <eventHandlerList/>
-                </Script>
-            </ScriptGroup>
-        </ScriptGroup>
-        <ScriptGroup isActive="yes" isFolder="yes">
-            <name>Event handlers</name>
-            <packageName></packageName>
-            <script>-------------------------------------------------
+					<eventHandlerList />
+				</Script>
+			</ScriptGroup>
+		</ScriptGroup>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>Event handlers</name>
+			<packageName></packageName>
+			<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-            <eventHandlerList/>
-            <Script isActive="yes" isFolder="no">
-                <name>svo_events</name>
-                <packageName></packageName>
-                <script>function svo_events(...)
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>svo_events</name>
+				<packageName></packageName>
+				<script>function svo_events(...)
 	local s,m = pcall(svo.events, ...)
 	if not s then display(m) end
 end</script>
-                <eventHandlerList>
-                    <string>CharVitals</string>
-                    <string>CharName</string>
-                    <string>RoomNum</string>
-                    <string>RoomBrief</string>
-                    <string>sysDataSendRequest</string>
-                    <string>sysExitEvent</string>
-                    <string>mmapper updated pdb</string>
-                    <string>svo lost balance</string>
-                    <string>svo got balance</string>
-                    <string>svo prio changed</string>
-                    <string>svo system loaded</string>
-                    <string>svo config changed</string>
-                    <string>svo serverignore changed</string>
-                    <string>svo ignore changed</string>
-                    <string>svo defup changed</string>
-                    <string>svo keepup changed</string>
-                    <string>svo switched defence mode</string>
-                    <string>svo done defup</string>
-                    <string>NameDB finished honors</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo_gevents</name>
-                <packageName></packageName>
-                <script>function svo_gevents(...)
+				<eventHandlerList>
+					<string>CharVitals</string>
+					<string>CharName</string>
+					<string>RoomNum</string>
+					<string>RoomBrief</string>
+					<string>sysDataSendRequest</string>
+					<string>sysExitEvent</string>
+					<string>mmapper updated pdb</string>
+					<string>svo lost balance</string>
+					<string>svo got balance</string>
+					<string>svo prio changed</string>
+					<string>svo system loaded</string>
+					<string>svo config changed</string>
+					<string>svo serverignore changed</string>
+					<string>svo ignore changed</string>
+					<string>svo defup changed</string>
+					<string>svo keepup changed</string>
+					<string>svo switched defence mode</string>
+					<string>svo done defup</string>
+					<string>NameDB finished honors</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo_gevents</name>
+				<packageName></packageName>
+				<script>function svo_gevents(...)
 	local s,m = pcall(svo.gevents, ...)
 	if not s then display(m) end
 end</script>
-                <eventHandlerList>
-                    <string>gmcp.Char</string>
-                    <string>gmcp.Room</string>
-                    <string>gmcp.Char.Status</string>
-                    <string>gmcp.IRE.Time</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo.savesettings</name>
-                <packageName></packageName>
-                <script></script>
-                <eventHandlerList>
-                    <string>sysExitEvent</string>
-                </eventHandlerList>
-            </Script>
-        </ScriptGroup>
-        <ScriptGroup isActive="yes" isFolder="yes">
-            <name>svo Utilities</name>
-            <packageName></packageName>
-            <script>function svo.inslowcuringmode()
+				<eventHandlerList>
+					<string>gmcp.Char</string>
+					<string>gmcp.Room</string>
+					<string>gmcp.Char.Status</string>
+					<string>gmcp.IRE.Time</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.savesettings</name>
+				<packageName></packageName>
+				<script></script>
+				<eventHandlerList>
+					<string>sysExitEvent</string>
+				</eventHandlerList>
+			</Script>
+		</ScriptGroup>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>svo Utilities</name>
+			<packageName></packageName>
+			<script>function svo.inslowcuringmode()
 	return (svo.affl.retardation or svo.affl.aeon) and true or false
 end
 
@@ -5302,9 +5302,9 @@ function svo.boxDisplay(msg, color)
     deselect()
     local colTbl = {}
     if color then
-       colTbl = string.split(color, &quot;:&quot;)
+       colTbl = string.split(color, ":")
        for k = 1,2 do
-          if colTbl[k] == &quot;&quot; then
+          if colTbl[k] == "" then
              colTbl[k] = nil
           end
        end
@@ -5312,15 +5312,15 @@ function svo.boxDisplay(msg, color)
           bg(colTbl[2])
        end
     end
-    colTbl[1] = colTbl[1] or &quot;red&quot;
+    colTbl[1] = colTbl[1] or "red"
     fg(colTbl[1])
 	local leng = ((2*string.len(msg)) + 11)
 	local mes = string.upper(msg)
-	echo(&quot;\n &quot;)
-    echo( string.rep(&quot;-&quot;, leng+2) )
-    echo(&quot; \n|     &quot; .. mes .. &quot; | &quot; .. mes .. &quot;     |\n &quot;)
-    echo( string.rep(&quot;-&quot;, leng+2) )
-    echo(&quot; \n&quot;)
+	echo("\n ")
+    echo( string.rep("-", leng+2) )
+    echo(" \n|     " .. mes .. " | " .. mes .. "     |\n ")
+    echo( string.rep("-", leng+2) )
+    echo(" \n")
     resetFormat()
 end
 
@@ -5338,7 +5338,7 @@ function svo.echotime(s, sameline)
   if not sameline then moveCursor(0, getLineNumber()-1) end
   moveCursor(#getCurrentLine(), getLineNumber())
 
-  fg(&quot;dark_slate_gray&quot;)
+  fg("dark_slate_gray")
   insertText(' ('..s..'s)')
   deselect()
   resetFormat()
@@ -5346,7 +5346,7 @@ function svo.echotime(s, sameline)
 end
 
 function svo.echoafftime(s, aff)
-  if aff == &quot;bleeding&quot; and svo.conf.gagclot then return end
+  if aff == "bleeding" and svo.conf.gagclot then return end
 
   if isPrompt() then
     moveCursor(0, getLineNumber()-1)
@@ -5354,7 +5354,7 @@ function svo.echoafftime(s, aff)
   end
 
   deselect()
-  fg(&quot;DarkGoldenrod&quot;)
+  fg("DarkGoldenrod")
   insertText(' ('..s..'s)')
   deselect()
   resetFormat()
@@ -5363,14 +5363,14 @@ end
 
 local function docc(...)
   local sendto, method
-  if not svo.conf.ccto or svo.conf.ccto == 'pt' then sendto = &quot;pt &quot;
-  elseif svo.conf.ccto == 'clt' then sendto = &quot;clt &quot;
-  elseif svo.conf.ccto:find(&quot;^tell %w+&quot;) then sendto = &quot;tell &quot;..svo.conf.ccto:match(&quot;^tell (%w+)&quot;)..&quot; &quot;
-  elseif svo.conf.ccto == 'ot' then sendto = &quot;ot &quot;
-  elseif svo.conf.ccto == 'army' then sendto = &quot;art &quot;
-  elseif svo.conf.ccto == 'team' then sendto = &quot;team &quot;
-  elseif svo.conf.ccto == 'echo' then method = svo.echof; sendto = &quot;&quot;
-  else sendto = &quot;clan &quot;..svo.conf.ccto..&quot; tell &quot; end
+  if not svo.conf.ccto or svo.conf.ccto == 'pt' then sendto = "pt "
+  elseif svo.conf.ccto == 'clt' then sendto = "clt "
+  elseif svo.conf.ccto:find("^tell %w+") then sendto = "tell "..svo.conf.ccto:match("^tell (%w+)").." "
+  elseif svo.conf.ccto == 'ot' then sendto = "ot "
+  elseif svo.conf.ccto == 'army' then sendto = "art "
+  elseif svo.conf.ccto == 'team' then sendto = "team "
+  elseif svo.conf.ccto == 'echo' then method = svo.echof; sendto = ""
+  else sendto = "clan "..svo.conf.ccto.." tell " end
 
   if not method then
     send(sendto .. string.format(...), false)
@@ -5396,25 +5396,25 @@ function string.ordinalSuffix(n)
   n = math.mod (n, 100)
   local d = math.mod (n, 10)
   if d == 1 and n ~= 11 then
-    return &quot;st&quot;
+    return "st"
   elseif d == 2 and n ~= 12 then
-    return &quot;nd&quot;
+    return "nd"
   elseif d == 3 and n ~= 13 then
-    return &quot;rd&quot;
+    return "rd"
   else
-    return &quot;th&quot;
+    return "th"
   end
 end
 
 function svo.shipprompt()
---  selectCurrentLine() fg(&quot;chartreuse&quot;) deselect() resetFormat()
+--  selectCurrentLine() fg("chartreuse") deselect() resetFormat()
 
   svo.me.shippromptn = getLineCount()
 end
 
 -- shows memory use by Lua objects only
-registerAnonymousEventHandler(&quot;svo system loaded&quot;, function()
-  svo.adddefinition(&quot;@mem&quot;, &quot;string.format('%0.2f', collectgarbage('count')/1024)&quot;)
+registerAnonymousEventHandler("svo system loaded", function()
+  svo.adddefinition("@mem", "string.format('%0.2f', collectgarbage('count')/1024)")
 end)
 
 function svo.doubleRunToSend(...)
@@ -5442,14 +5442,14 @@ end
 
 -- starts the stopwatch which measures how long a balance was missing for
 function svo.startbalancewatch(balance)
-  svo.watch[&quot;bal_&quot;..balance] = svo.watch[&quot;bal_&quot;..balance] or createStopWatch()
-  startStopWatch(svo.watch[&quot;bal_&quot;..balance])
+  svo.watch["bal_"..balance] = svo.watch["bal_"..balance] or createStopWatch()
+  startStopWatch(svo.watch["bal_"..balance])
 end
 
 function svo.endbalancewatch(balance, sameline)
-  if svo.watch[&quot;bal_&quot;..balance] then
-    local s = stopStopWatch(svo.watch[&quot;bal_&quot;..balance])
-    svo.stats[&quot;last&quot;..balance] = s
+  if svo.watch["bal_"..balance] then
+    local s = stopStopWatch(svo.watch["bal_"..balance])
+    svo.stats["last"..balance] = s
     if svo.conf.showbaltimes then svo.echotime(s, sameline) end
   end
 end
@@ -5482,11 +5482,11 @@ function svo.havefractures()
 
   return affs.crackedribs or affs.skullfractures or affs.torntendons or affs.wristfractures
 end</script>
-            <eventHandlerList/>
-            <Script isActive="yes" isFolder="no">
-                <name>Tree curing strats</name>
-                <packageName></packageName>
-                <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>Tree curing strats</name>
+				<packageName></packageName>
+				<script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
 -- make sure the script is either after the Svof one or it loads itself on the 'svo system loaded' event.
 -- then just copy one of these strats and edit it! When you save it, it'll appear in the vconfig2 strat list.
 
@@ -5495,19 +5495,19 @@ end</script>
 svo.tree = svo.tree or {}
 
 svo.tree.blackout = {
-  desc = &quot;Use tree to cure blackout&quot;,
+  desc = "Use tree to cure blackout",
 
   function () return svo.affl.blackout and not svo.ignore.blackout end
 }
 
 svo.tree.aeon = {
-  desc = &quot;Use tree to cure aeon when we have asthma or mucous&quot;,
+  desc = "Use tree to cure aeon when we have asthma or mucous",
 
   function () return svo.affl.aeon and (svo.affl.asthma or svo.affl.mucous) end
 }
 
 svo.tree.hardlock = {
-  desc = &quot;Use tree to cure hard locks (asthma, anorexia, slickness, and can't focus)&quot;,
+  desc = "Use tree to cure hard locks (asthma, anorexia, slickness, and can't focus)",
 
   function ()
 
@@ -5517,7 +5517,7 @@ svo.tree.hardlock = {
 
 -- touch tree if we have 3+ limbs damaged and at least one of them is curable with tree
 svo.tree.maybevivi = {
-  desc = &quot;Use tree in a situation when you might get vivisected&quot;,
+  desc = "Use tree in a situation when you might get vivisected",
 
   function ()
     local affs = svo.affl
@@ -5530,7 +5530,7 @@ svo.tree.maybevivi = {
 }
 
 svo.tree.crippledandprone = {
-  desc = &quot;Use tree if prone and both legs are crippled&quot;,
+  desc = "Use tree if prone and both legs are crippled",
 
   function ()
     local affs = svo.affl
@@ -5541,7 +5541,7 @@ svo.tree.crippledandprone = {
 }
 
 svo.tree.getupfaster = {
-  desc = &quot;Use tree if prone, off salve balance, and a leg is crippled&quot;,
+  desc = "Use tree if prone, off salve balance, and a leg is crippled",
 
   function ()
     local affs = svo.affl
@@ -5552,7 +5552,7 @@ svo.tree.getupfaster = {
 }
 
 svo.tree.curearmsfaster = {
-  desc = &quot;Use tree if both arms are crippled and you're off salve balance&quot;,
+  desc = "Use tree if both arms are crippled and you're off salve balance",
 
   function ()
     local affs = svo.affl
@@ -5562,17 +5562,17 @@ svo.tree.curearmsfaster = {
 }
 
 svo.tree.novoyriacure = {
-  desc = &quot;Use tree when you have voyria and no immunity/antigen for it&quot;,
+  desc = "Use tree when you have voyria and no immunity/antigen for it",
 
   function ()
-    return (svo.affl.voyria and ((svo.es_potions.elixir and svo.es_potions.elixir[&quot;an elixir of immunity&quot;] and svo.es_potions.elixir[&quot;an elixir of immunity&quot;].sips &lt;= 1)
-      and (svo.es_potions.tonic and svo.es_potions.tonic[&quot;a tonic of antigen&quot;] and svo.es_potions.tonic[&quot;a tonic of antigen&quot;].sips &lt;= 1))
+    return (svo.affl.voyria and ((svo.es_potions.elixir and svo.es_potions.elixir["an elixir of immunity"] and svo.es_potions.elixir["an elixir of immunity"].sips &lt;= 1)
+      and (svo.es_potions.tonic and svo.es_potions.tonic["a tonic of antigen"] and svo.es_potions.tonic["a tonic of antigen"].sips &lt;= 1))
     )
   end
 }
 
 svo.tree.any2affs = {
-  desc = &quot;Use tree when we've got at least two tree-curable afflictions&quot;,
+  desc = "Use tree when we've got at least two tree-curable afflictions",
 
   function ()
     return #svo.gettreeableaffs() &gt;= 2
@@ -5580,7 +5580,7 @@ svo.tree.any2affs = {
 }
 
 svo.tree.any3affs = {
-  desc = &quot;Use tree when we've got at least three tree-curable afflictions&quot;,
+  desc = "Use tree when we've got at least three tree-curable afflictions",
 
   function ()
     return #svo.gettreeableaffs() &gt;= 3
@@ -5588,25 +5588,25 @@ svo.tree.any3affs = {
 }
 
 svo.tree.fractures = {
-  desc = &quot;Use tree you're got a fracture and are off sip balance&quot;,
+  desc = "Use tree you're got a fracture and are off sip balance",
 
   function ()
     return not svo.bals.sip and svo.havefractures()
   end
 }</script>
-                <eventHandlerList/>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>Restore curing strats</name>
-                <packageName></packageName>
-                <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>Restore curing strats</name>
+				<packageName></packageName>
+				<script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
 -- make sure the script is either after the Svof one or it loads itself on the 'svo system loaded' event.
 -- then just copy one of these strats and edit it! When you save it, it'll appear in the vconfig2 strat list.
 
 -- to count how many affs you have in total, you can use: local affcount = table.size(svo.affl)
 
 --[[svo.restore.anylimb = {
-  desc = &quot;Use restore if any limb is crippled (useful for bashing without mending, for example)&quot;,
+  desc = "Use restore if any limb is crippled (useful for bashing without mending, for example)",
   function () return svo.affl.crippledleftleg or svo.affl.crippledrightleg
     or svo.affl.crippledrightarm or svo.affl.crippledleftarm
   end
@@ -5615,7 +5615,7 @@ svo.tree.fractures = {
 svo.restore = svo.restore or {}
 
 svo.restore.anyoneortwolimbs = {
-  desc = &quot;Use restore if one or two limbs are crippled (and no more), and you're off salve/tree balance&quot;,
+  desc = "Use restore if one or two limbs are crippled (and no more), and you're off salve/tree balance",
 
   function ()
     local mangledormultilated = 0
@@ -5636,7 +5636,7 @@ svo.restore.anyoneortwolimbs = {
 
 
 svo.restore.anyoneortwolimbsprone = {
-  desc = &quot;Use restore if one or two limbs are crippled (and no more), prone, and you're off salve/tree balance&quot;,
+  desc = "Use restore if one or two limbs are crippled (and no more), prone, and you're off salve/tree balance",
 
   function ()
     if not svo.affl.prone then return false end
@@ -5658,7 +5658,7 @@ svo.restore.anyoneortwolimbsprone = {
 }
 
 svo.restore.riftlock = {
-  desc = &quot;Use restore on riftlocks&quot;,
+  desc = "Use restore on riftlocks",
 
   function()
     local affs = svo.affl
@@ -5671,7 +5671,7 @@ svo.restore.riftlock = {
 
 
 svo.restore.stainlock = {
-  desc = &quot;Use restore to cure stain locks (stain, slickness, broken arm and empty valerian/realgar pipe)&quot;,
+  desc = "Use restore to cure stain locks (stain, slickness, broken arm and empty valerian/realgar pipe)",
 
   function ()
     return svo.me.locks.stain and (affs.crippledleftarm or affs.crippledrightarm) -- don't restore if we can't restore anything useful.
@@ -5680,7 +5680,7 @@ svo.restore.stainlock = {
 
 -- restore if we have 3+ limbs damaged and at least one of them is curable with restore
 svo.restore.maybevivi = {
-  desc = &quot;Use restore if you have 3+ limbs damaged and at least one of them is curable with restore&quot;,
+  desc = "Use restore if you have 3+ limbs damaged and at least one of them is curable with restore",
 
   function ()
     local affs = svo.affl
@@ -5692,12 +5692,12 @@ svo.restore.maybevivi = {
   end
 }
 </script>
-                <eventHandlerList/>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>Dragonheal curing strats</name>
-                <packageName></packageName>
-                <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>Dragonheal curing strats</name>
+				<packageName></packageName>
+				<script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
 -- make sure the script is either after the Svof one or it loads itself on the 'svo system loaded' event.
 -- then just copy one of these strats and edit it! When you save it, it'll appear in the vconfig2 strat list.
 
@@ -5706,7 +5706,7 @@ svo.restore.maybevivi = {
 svo.dragonheal = svo.dragonheal or {}
 
 svo.dragonheal.riftlock = {
-  desc = &quot;Use dragonheal on riftlocks&quot;,
+  desc = "Use dragonheal on riftlocks",
 
   function()
     local affs = svo.affl
@@ -5718,13 +5718,13 @@ svo.dragonheal.riftlock = {
 }
 
 svo.dragonheal.aeon = {
-  desc = &quot;Use dragonheal to cure aeon when we have asthma or mucous&quot;,
+  desc = "Use dragonheal to cure aeon when we have asthma or mucous",
 
   function () return svo.affl.aeon and (svo.affl.asthma or svo.affl.mucous) end
 }
 
 svo.dragonheal.hardlock = {
-  desc = &quot;Use dragonheal to cure hard locks (asthma, anorexia, slickness, and can't focus)&quot;,
+  desc = "Use dragonheal to cure hard locks (asthma, anorexia, slickness, and can't focus)",
 
   function ()
 
@@ -5733,7 +5733,7 @@ svo.dragonheal.hardlock = {
 }
 
 svo.dragonheal.stainlock = {
-  desc = &quot;Use dragonheal to cure stain locks (stain, slickness, broken arm and empty valerian/realgar pipe)&quot;,
+  desc = "Use dragonheal to cure stain locks (stain, slickness, broken arm and empty valerian/realgar pipe)",
 
   function ()
 
@@ -5743,7 +5743,7 @@ svo.dragonheal.stainlock = {
 
 -- dragonheal if we have 3+ limbs damaged and at least one of them is curable with dragonheal
 svo.dragonheal.maybevivi = {
-  desc = &quot;Use dragonheal in a situation when you might get vivisected - if we have 3+ limbs damaged and at least one of them is curable with dragonheal&quot;,
+  desc = "Use dragonheal in a situation when you might get vivisected - if we have 3+ limbs damaged and at least one of them is curable with dragonheal",
 
   function ()
     local affs = svo.affl
@@ -5754,12 +5754,12 @@ svo.dragonheal.maybevivi = {
     return svo.countbrokenlimbs() &gt;= 3
   end
 }</script>
-                <eventHandlerList/>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>Shrugging curing strats</name>
-                <packageName></packageName>
-                <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>Shrugging curing strats</name>
+				<packageName></packageName>
+				<script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
 -- make sure the script is either after the Svof one or it loads itself on the 'svo system loaded' event.
 -- then just copy one of these strats and edit it! When you save it, it'll appear in the vconfig2 strat list.
 
@@ -5769,7 +5769,7 @@ svo.shrugging = svo.shrugging or {}
 
 -- desc should should assume it starts with 'Scenarios to use shrugging in:'
 svo.shrugging.riftlock = {
-  desc = &quot;when you're riftlocked&quot;,
+  desc = "when you're riftlocked",
 
   function()
     local affs = svo.affl
@@ -5781,13 +5781,13 @@ svo.shrugging.riftlock = {
 }
 
 svo.shrugging.aeon = {
-  desc = &quot;when we have aeon with asthma or mucous&quot;,
+  desc = "when we have aeon with asthma or mucous",
 
   function () return svo.affl.aeon and (svo.affl.asthma or svo.affl.mucous) end
 }
 
 svo.shrugging.hardlock = {
-  desc = &quot;when we have a hard lock (asthma, anorexia, slickness, and can't focus)&quot;,
+  desc = "when we have a hard lock (asthma, anorexia, slickness, and can't focus)",
 
   function ()
     return svo.me.locks.hard
@@ -5795,7 +5795,7 @@ svo.shrugging.hardlock = {
 }
 
 svo.shrugging.stainlock = {
-  desc = &quot;when we have a stain lock (stain, slickness, broken arm and empty valerian/realgar pipe)&quot;,
+  desc = "when we have a stain lock (stain, slickness, broken arm and empty valerian/realgar pipe)",
 
   function ()
     return svo.me.locks.stain
@@ -5803,7 +5803,7 @@ svo.shrugging.stainlock = {
 }
 
 svo.shrugging.any2affs = {
-  desc = &quot;when we've got at least two shruggable afflictions&quot;,
+  desc = "when we've got at least two shruggable afflictions",
 
   function ()
     return #svo.gettreeableaffs() &gt;= 2
@@ -5811,7 +5811,7 @@ svo.shrugging.any2affs = {
 }
 
 svo.shrugging.any3affs = {
-  desc = &quot;when we've got at least three shruggable afflictions&quot;,
+  desc = "when we've got at least three shruggable afflictions",
 
   function ()
     return #svo.gettreeableaffs() &gt;= 3
@@ -5820,7 +5820,7 @@ svo.shrugging.any3affs = {
 
 -- shrugging if we have 3+ limbs damaged and at least one of them is curable with shrugging
 svo.shrugging.maybevivi = {
-  desc = &quot;when you might get vivisected - if we have 3+ limbs damaged and at least one of them is curable with shrugging&quot;,
+  desc = "when you might get vivisected - if we have 3+ limbs damaged and at least one of them is curable with shrugging",
 
   function ()
     local affs = svo.affl
@@ -5831,12 +5831,12 @@ svo.shrugging.maybevivi = {
     return svo.countbrokenlimbs() &gt;= 3
   end
 }</script>
-                <eventHandlerList/>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>Rage curing strats</name>
-                <packageName></packageName>
-                <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>Rage curing strats</name>
+				<packageName></packageName>
+				<script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
 -- make sure the script is either after the Svof one or it loads itself on the 'svo system loaded' event.
 -- then just copy one of these strats and edit it! When you save it, it'll appear in the vconfig2 strat list.
 
@@ -5845,7 +5845,7 @@ svo.shrugging.maybevivi = {
 svo.rage = svo.rage or {}
 
 svo.rage.any2affs = {
-  desc = &quot;Use rage when we've got at least two afflictions and one of them is rage-curable&quot;,
+  desc = "Use rage when we've got at least two afflictions and one of them is rage-curable",
 
   function ()
     return table.size(svo.affl) &gt;= 2
@@ -5853,18 +5853,18 @@ svo.rage.any2affs = {
 }
 
 svo.rage.any3affs = {
-  desc = &quot;Use rage when we've got at least three afflictions and one of them is rage-curable&quot;,
+  desc = "Use rage when we've got at least three afflictions and one of them is rage-curable",
 
   function ()
     return table.size(svo.affl) &gt;= 3
   end
 }</script>
-                <eventHandlerList/>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>Fitness curing strats</name>
-                <packageName></packageName>
-                <script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>Fitness curing strats</name>
+				<packageName></packageName>
+				<script>-- if you'd like to add your own strat: add it in another script outside Svo, so it stays upon an update.
 -- make sure the script is either after the Svof one or it loads itself on the 'svo system loaded' event.
 -- then just copy one of these strats and edit it! When you save it, it'll appear in the vconfig2 strat list.
 
@@ -5873,16 +5873,16 @@ svo.rage.any3affs = {
 svo.fitness = svo.fitness or {}
 
 svo.fitness.anylock = {
-  desc = &quot;Use fitness if we've got any locks we can use fitness to cure out of&quot;,
+  desc = "Use fitness if we've got any locks we can use fitness to cure out of",
 
   function ()
-    return (svo.me.locks.soft and not svo.doing&quot;focus&quot;) or svo.me.locks.venom or svo.me.locks.hard or
-            svo.me.locks.rift or svo.me.locks[&quot;rift 2&quot;] or svo.me.locks.slow or svo.me.locks[&quot;true&quot;]
+    return (svo.me.locks.soft and not svo.doing"focus") or svo.me.locks.venom or svo.me.locks.hard or
+            svo.me.locks.rift or svo.me.locks["rift 2"] or svo.me.locks.slow or svo.me.locks["true"]
   end
 }
 
 svo.fitness.asthmainaeon = {
-  desc = &quot;Use fitness if we've got asthma in aeon&quot;,
+  desc = "Use fitness if we've got asthma in aeon",
 
   function ()
     return svo.affl.asthma and svo.affl.aeon
@@ -5890,169 +5890,169 @@ svo.fitness.asthmainaeon = {
 }
 
 svo.fitness.hellsightconc = {
-  desc = &quot;Use fitness if we've got hellsight and a concussion&quot;,
+  desc = "Use fitness if we've got hellsight and a concussion",
 
   function ()
     return svo.affl.hellsight and (svo.affl.mildconcussion or svo.affl.seriousconcussion)
   end
 }</script>
-                <eventHandlerList/>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo.isenemy</name>
-                <packageName></packageName>
-                <script>function svo.isenemy(name)
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.isenemy</name>
+				<packageName></packageName>
+				<script>function svo.isenemy(name)
   return (target and target:lower():starts(name:lower())) or ndb.isenemy(name)
 end</script>
-                <eventHandlerList/>
-            </Script>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>Custom prompt tags</name>
-                <packageName></packageName>
-                <script></script>
-                <eventHandlerList/>
-                <Script isActive="yes" isFolder="no">
-                    <name>@affs</name>
-                    <packageName></packageName>
-                    <script>--[[ Iocuns prompt aff thingy from http://forums.achaea.com/index.php?showtopic=39543&amp;view=findpost&amp;p=1283964, taken with permission ]]
+				<eventHandlerList />
+			</Script>
+			<ScriptGroup isActive="yes" isFolder="yes">
+				<name>Custom prompt tags</name>
+				<packageName></packageName>
+				<script></script>
+				<eventHandlerList />
+				<Script isActive="yes" isFolder="no">
+					<name>@affs</name>
+					<packageName></packageName>
+					<script>--[[ Iocuns prompt aff thingy from http://forums.achaea.com/index.php?showtopic=39543&amp;view=findpost&amp;p=1283964, taken with permission ]]
 --[[ to use in a custom prompt, use the @paracelsus_affs_customtag tag ]]
 --[[ this is now used by default in Svo ]]
 local aff_abbrev = {
-  ablaze              = &quot;abl&quot;,
-  addiction           = &quot;add&quot;,
-  aeon                = &quot;ae&quot;,
-  agoraphobia         = &quot;agor&quot;,
-  airdisrupt          = &quot;adsr&quot;,
-  anorexia            = &quot;ano&quot;,
-  asleep              = &quot;asl&quot;,
-  asthma              = &quot;ast&quot;,
-  blackout            = &quot;&quot;,
-  bleeding            = &quot;bld&quot;,
-  blindaff            = &quot;blind&quot;,
-  bound               = &quot;bound&quot;,
-  burning             = &quot;burn&quot;,
-  calcifiedskull      = &quot;calh&quot;,
-  calcifiedtorso      = &quot;calt&quot;,
-  charredburn         = &quot;4burn&quot;,
-  cholerichumour      = &quot;choH&quot;,
-  claustrophobia      = &quot;clau&quot;,
-  clumsiness          = &quot;cl&quot;,
-  confusion           = &quot;con&quot;,
-  corrupted           = &quot;corr&quot;,
-  crackedribs         = &quot;cr&quot;,
-  crippledleftarm     = &quot;la1&quot;,
-  crippledleftleg     = &quot;ll1&quot;,
-  crippledrightarm    = &quot;ra1&quot;,
-  crippledrightleg    = &quot;rl1&quot;,
-  darkshade           = &quot;dark&quot;,
-  deadening           = &quot;dea&quot;,
-  deafaff             = &quot;deaf&quot;,
-  degenerate          = &quot;deg&quot;,
-  dehydrated          = &quot;deh&quot;,
-  dementia            = &quot;dem&quot;,
-  depression          = &quot;dep&quot;,
-  deteriorate         = &quot;det&quot;,
-  disloyalty          = &quot;disl&quot;,
-  disrupt             = &quot;disr&quot;,
-  dissonance          = &quot;disso&quot;,
-  dizziness           = &quot;diz&quot;,
-  earthdisrupt        = &quot;edsr&quot;,
-  epilepsy            = &quot;epi&quot;,
-  extremeburn         = &quot;3burn&quot;,
-  fear                = &quot;fear&quot;,
-  firedisrupt         = &quot;fdsr&quot;,
-  frozen              = &quot;frz&quot;,
-  generosity          = &quot;gen&quot;,
-  haemophilia         = &quot;haem&quot;,
-  hallucinations      = &quot;hall&quot;,
-  hamstring           = &quot;hms&quot;,
-  hatred              = &quot;htr&quot;,
-  healthleech         = &quot;hthl&quot;,
-  heartseed           = &quot;heart&quot;,
-  hellsight           = &quot;hell&quot;,
-  hypersomnia         = &quot;hypers&quot;,
-  hypochondria        = &quot;hypoch&quot;,
-  icing               = &quot;ice&quot;,
-  illness             = &quot;ill&quot;,
-  impaled             = &quot;impale&quot;,
-  impatience          = &quot;impat&quot;,
-  justice             = &quot;just&quot;,
-  laceratedthroat     = &quot;lac2&quot;,
-  latched             = &quot;latch&quot;,
-  lethargy            = &quot;let&quot;,
-  loneliness          = &quot;lon&quot;,
-  lovers              = &quot;lust&quot;,
-  madness             = &quot;mad&quot;,
-  mangledleftarm      = &quot;la2&quot;,
-  mangledleftleg      = &quot;ll2&quot;,
-  mangledrightarm     = &quot;ra2&quot;,
-  mangledrightleg     = &quot;rl2&quot;,
-  masochism           = &quot;maso&quot;,
-  melancholichumour   = &quot;melaH&quot;,
-  meltingburn         = &quot;5burn&quot;,
-  mildconcussion      = &quot;h1&quot;,
-  mildtrauma          = &quot;t1&quot;,
-  mutilatedleftarm    = &quot;la3&quot;,
-  mutilatedleftleg    = &quot;ll3&quot;,
-  mutilatedrightarm   = &quot;ra3&quot;,
-  mutilatedrightleg   = &quot;rl3&quot;,
-  nausea              = &quot;nau&quot;,
-  ninkharsag          = &quot;nkh&quot;,
-  numbedleftarm       = &quot;nbla&quot;,
-  numbedrightarm      = &quot;nbra&quot;,
-  pacifism            = &quot;pac&quot;,
-  paradox             = &quot;para&quot;,
-  paralysis           = &quot;par&quot;,
-  paranoia            = &quot;prn&quot;,
-  parasite            = &quot;prs&quot;,
-  peace               = &quot;pea&quot;,
-  phlegmatichumour    = &quot;phleH&quot;,
-  phlogistication     = &quot;phlog&quot;,
-  pinshot             = &quot;psh&quot;,
-  pressure            = &quot;pre&quot;,
-  prone               = &quot;pr&quot;,
-  recklessness        = &quot;reck&quot;,
-  relapsing           = &quot;scy&quot;,
-  retardation         = &quot;ret&quot;,
-  retribution         = &quot;reb&quot;,
-  roped               = &quot;rop&quot;,
-  sanguinehumour      = &quot;sanH&quot;,
-  selarnia            = &quot;sel&quot;,
-  sensitivity         = &quot;sen&quot;,
-  seriousconcussion   = &quot;h2&quot;,
-  serioustrauma       = &quot;t2&quot;,
-  severeburn          = &quot;2burn&quot;,
-  shadowmadness       = &quot;sham&quot;,
-  shivering           = &quot;shiv&quot;,
-  shyness             = &quot;shy&quot;,
-  skullfractures      = &quot;sf&quot;,
-  slashedthroat       = &quot;lac1&quot;,
-  slickness           = &quot;sli&quot;,
-  spiritdisrupt       = &quot;sdsr&quot;,
-  stain               = &quot;sta&quot;,
-  stupidity           = &quot;st&quot;,
-  stuttering          = &quot;stut&quot;,
-  swellskin           = &quot;swsk&quot;,
-  tension             = &quot;ten&quot;,
-  timeflux            = &quot;tfx&quot;,
-  timeloop            = &quot;tlp&quot;,
-  torntendons         = &quot;tt&quot;,
-  transfixed          = &quot;transf&quot;,
-  unconsciousness     = &quot;unconc&quot;,
-  unknownany          = &quot;?&quot;,
-  unknowncrippledarm  = &quot;uwna&quot;,
-  unknowncrippledleg  = &quot;uwnl&quot;,
-  unknowncrippledlimb = &quot;uwcrip&quot;,
-  unknowncure         = &quot;uc&quot;,
-  unknownmental       = &quot;?&quot;,
-  vertigo             = &quot;vert&quot;,
-  vitrification       = &quot;vitri&quot;,
-  voided              = &quot;void&quot;,
-  voyria              = &quot;voy&quot;,
-  waterdisrupt        = &quot;wdsr&quot;,
-  weakness            = &quot;wea&quot;,
-  webbed              = &quot;web&quot;,
-  wristfractures      = &quot;wf&quot;,
+  ablaze              = "abl",
+  addiction           = "add",
+  aeon                = "ae",
+  agoraphobia         = "agor",
+  airdisrupt          = "adsr",
+  anorexia            = "ano",
+  asleep              = "asl",
+  asthma              = "ast",
+  blackout            = "",
+  bleeding            = "bld",
+  blindaff            = "blind",
+  bound               = "bound",
+  burning             = "burn",
+  calcifiedskull      = "calh",
+  calcifiedtorso      = "calt",
+  charredburn         = "4burn",
+  cholerichumour      = "choH",
+  claustrophobia      = "clau",
+  clumsiness          = "cl",
+  confusion           = "con",
+  corrupted           = "corr",
+  crackedribs         = "cr",
+  crippledleftarm     = "la1",
+  crippledleftleg     = "ll1",
+  crippledrightarm    = "ra1",
+  crippledrightleg    = "rl1",
+  darkshade           = "dark",
+  deadening           = "dea",
+  deafaff             = "deaf",
+  degenerate          = "deg",
+  dehydrated          = "deh",
+  dementia            = "dem",
+  depression          = "dep",
+  deteriorate         = "det",
+  disloyalty          = "disl",
+  disrupt             = "disr",
+  dissonance          = "disso",
+  dizziness           = "diz",
+  earthdisrupt        = "edsr",
+  epilepsy            = "epi",
+  extremeburn         = "3burn",
+  fear                = "fear",
+  firedisrupt         = "fdsr",
+  frozen              = "frz",
+  generosity          = "gen",
+  haemophilia         = "haem",
+  hallucinations      = "hall",
+  hamstring           = "hms",
+  hatred              = "htr",
+  healthleech         = "hthl",
+  heartseed           = "heart",
+  hellsight           = "hell",
+  hypersomnia         = "hypers",
+  hypochondria        = "hypoch",
+  icing               = "ice",
+  illness             = "ill",
+  impaled             = "impale",
+  impatience          = "impat",
+  justice             = "just",
+  laceratedthroat     = "lac2",
+  latched             = "latch",
+  lethargy            = "let",
+  loneliness          = "lon",
+  lovers              = "lust",
+  madness             = "mad",
+  mangledleftarm      = "la2",
+  mangledleftleg      = "ll2",
+  mangledrightarm     = "ra2",
+  mangledrightleg     = "rl2",
+  masochism           = "maso",
+  melancholichumour   = "melaH",
+  meltingburn         = "5burn",
+  mildconcussion      = "h1",
+  mildtrauma          = "t1",
+  mutilatedleftarm    = "la3",
+  mutilatedleftleg    = "ll3",
+  mutilatedrightarm   = "ra3",
+  mutilatedrightleg   = "rl3",
+  nausea              = "nau",
+  ninkharsag          = "nkh",
+  numbedleftarm       = "nbla",
+  numbedrightarm      = "nbra",
+  pacifism            = "pac",
+  paradox             = "para",
+  paralysis           = "par",
+  paranoia            = "prn",
+  parasite            = "prs",
+  peace               = "pea",
+  phlegmatichumour    = "phleH",
+  phlogistication     = "phlog",
+  pinshot             = "psh",
+  pressure            = "pre",
+  prone               = "pr",
+  recklessness        = "reck",
+  relapsing           = "scy",
+  retardation         = "ret",
+  retribution         = "reb",
+  roped               = "rop",
+  sanguinehumour      = "sanH",
+  selarnia            = "sel",
+  sensitivity         = "sen",
+  seriousconcussion   = "h2",
+  serioustrauma       = "t2",
+  severeburn          = "2burn",
+  shadowmadness       = "sham",
+  shivering           = "shiv",
+  shyness             = "shy",
+  skullfractures      = "sf",
+  slashedthroat       = "lac1",
+  slickness           = "sli",
+  spiritdisrupt       = "sdsr",
+  stain               = "sta",
+  stupidity           = "st",
+  stuttering          = "stut",
+  swellskin           = "swsk",
+  tension             = "ten",
+  timeflux            = "tfx",
+  timeloop            = "tlp",
+  torntendons         = "tt",
+  transfixed          = "transf",
+  unconsciousness     = "unconc",
+  unknownany          = "?",
+  unknowncrippledarm  = "uwna",
+  unknowncrippledleg  = "uwnl",
+  unknowncrippledlimb = "uwcrip",
+  unknowncure         = "uc",
+  unknownmental       = "?",
+  vertigo             = "vert",
+  vitrification       = "vitri",
+  voided              = "void",
+  voyria              = "voy",
+  waterdisrupt        = "wdsr",
+  weakness            = "wea",
+  webbed              = "web",
+  wristfractures      = "wf",
 }
 
 -- recoded, it's quicker by a third
@@ -6060,67 +6060,67 @@ function paracelsus_affs_customtag2()
   if next(svo.affl) then
     local s, type = {}, type
     for k,v in pairs(svo.affl) do
-        if (k == &quot;unknownany&quot; or k == &quot;unknownmental&quot;) and (type(v) == 'table') then
-          s[#s+1] = (&quot;?&quot;):rep(v.count)
-        elseif k == &quot;bleeding&quot; and type(v) == 'table' then
+        if (k == "unknownany" or k == "unknownmental") and (type(v) == 'table') then
+          s[#s+1] = ("?"):rep(v.count)
+        elseif k == "bleeding" and type(v) == 'table' then
           if v.count &gt;= svo.conf.bleedamount then
-            s[#s+1] = string.format(&quot;bld(%d)&quot;, v.count)
+            s[#s+1] = string.format("bld(%d)", v.count)
           end
-       elseif k == &quot;lovers&quot; and type(v) == 'table' then
-          s[#s+1] = string.format(&quot;lust(%s)&quot;, svo.oneconcat(svo.affl.lovers.names))
+       elseif k == "lovers" and type(v) == 'table' then
+          s[#s+1] = string.format("lust(%s)", svo.oneconcat(svo.affl.lovers.names))
         elseif type(v) == 'table' and v.count then
           s[#s+1] = (aff_abbrev[k] or k)..'('..v.count..')'
         else
           s[#s+1] = (aff_abbrev[k] or k)
         end
     end
-    return #s &gt; 0 and (&quot;&lt;IndianRed&gt;[&quot;..table.concat(s, &quot; &quot;)..&quot;]&quot;) or &quot;&quot; -- don't display just [] b/c of bleeding
+    return #s &gt; 0 and ("&lt;IndianRed&gt;["..table.concat(s, " ").."]") or "" -- don't display just [] b/c of bleeding
   else
-    return &quot;&quot;
+    return ""
   end
 end
 
-registerAnonymousEventHandler(&quot;svo system loaded&quot;, function()
-  svo.adddefinition(&quot;@paracelsus_affs_customtag&quot;, &quot;paracelsus_affs_customtag2()&quot;)
-  svo.adddefinition(&quot;@affs&quot;, &quot;paracelsus_affs_customtag2()&quot;)
+registerAnonymousEventHandler("svo system loaded", function()
+  svo.adddefinition("@paracelsus_affs_customtag", "paracelsus_affs_customtag2()")
+  svo.adddefinition("@affs", "paracelsus_affs_customtag2()")
   
-  svo.adddefinition(&quot;@target&quot;, &quot;target&quot;)
+  svo.adddefinition("@target", "target")
 end)</script>
-                    <eventHandlerList/>
-                </Script>
-                <Script isActive="yes" isFolder="no">
-                    <name>@exits</name>
-                    <packageName></packageName>
-                    <script>svo.cpp = svo.cpp or {}
+					<eventHandlerList />
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>@exits</name>
+					<packageName></packageName>
+					<script>svo.cpp = svo.cpp or {}
 
 function svo.cpp.show_exits()
-  if not (gmcp.Room and gmcp.Room.Info and gmcp.Room.Info.exits) then return &quot;&quot; end
+  if not (gmcp.Room and gmcp.Room.Info and gmcp.Room.Info.exits) then return "" end
 
   local list = svo.keystolist(gmcp.Room.Info.exits)
   table.sort(list)
-  return table.concat(list, &quot;|&quot;)
+  return table.concat(list, "|")
 end
 
 
 function svo.cpp.show_exits_caps()
-  if not (gmcp.Room and gmcp.Room.Info and gmcp.Room.Info.exits) then return &quot;&quot; end
+  if not (gmcp.Room and gmcp.Room.Info and gmcp.Room.Info.exits) then return "" end
 
   local list = svo.keystolist(gmcp.Room.Info.exits)
   table.sort(list)
-  return table.concat(list, &quot;|&quot;):upper()
+  return table.concat(list, "|"):upper()
 end
 
-registerAnonymousEventHandler(&quot;svo system loaded&quot;, function()
-  svo.adddefinition(&quot;@exits&quot;, &quot;svo.cpp.show_exits()&quot;)
-  svo.adddefinition(&quot;@EXITS&quot;, &quot;svo.cpp.show_exits_caps()&quot;)
+registerAnonymousEventHandler("svo system loaded", function()
+  svo.adddefinition("@exits", "svo.cpp.show_exits()")
+  svo.adddefinition("@EXITS", "svo.cpp.show_exits_caps()")
 end)</script>
-                    <eventHandlerList/>
-                </Script>
-            </ScriptGroup>
-            <Script isActive="yes" isFolder="no">
-                <name>svo_autoslickprio</name>
-                <packageName></packageName>
-                <script>function svo_autoslickprio(_, balance)
+					<eventHandlerList />
+				</Script>
+			</ScriptGroup>
+			<Script isActive="yes" isFolder="no">
+				<name>svo_autoslickprio</name>
+				<packageName></packageName>
+				<script>function svo_autoslickprio(_, balance)
   if not svo.conf.autoslick then return end
   if balance ~= 'herb' then return end
   if not (svo.affl.slickness and svo.affl.asthma) and not svo.swapped_asthma then return end
@@ -6129,9 +6129,9 @@ end)</script>
   if svo.swapped_asthma then
     if not svo.affl.slickness or not svo.affl.asthma then
       -- all good now? undo change
-      svo.prio_swap(&quot;asthma&quot;, &quot;herb&quot;, svo.swapped_asthma)
+      svo.prio_swap("asthma", "herb", svo.swapped_asthma)
       svo.swapped_asthma = nil
-      echo'\n' svo.echof(&quot;Swapped asthma priority back down.&quot;)
+      echo'\n' svo.echof("Swapped asthma priority back down.")
       return
     end
   end
@@ -6139,100 +6139,100 @@ end)</script>
   -- don't have any more affs than this? Then asthma will get cured, so we're fine
   if table.size(svo.affl) &lt;= 2 then return end
 
-  local asthma_prio = svo.prio.getnumber(&quot;asthma&quot;, &quot;herb&quot;)
-  local paralysis_prio = svo.prio.getnumber(&quot;paralysis&quot;, &quot;herb&quot;)
-  local impatience_prio = svo.prio.getnumber(&quot;impatience&quot;, &quot;herb&quot;)
+  local asthma_prio = svo.prio.getnumber("asthma", "herb")
+  local paralysis_prio = svo.prio.getnumber("paralysis", "herb")
+  local impatience_prio = svo.prio.getnumber("impatience", "herb")
 
   -- see if it's not highest
   if asthma_prio &gt; paralysis_prio and asthma_prio &gt; impatience_prio then return end
 
-  local currentmax = svo.prio.gethighest(&quot;herb&quot;)
+  local currentmax = svo.prio.gethighest("herb")
 
-  svo.prio_swap(&quot;asthma&quot;, &quot;herb&quot;, currentmax+1)
+  svo.prio_swap("asthma", "herb", currentmax+1)
   svo.swapped_asthma = asthma_prio
-  echo'\n' svo.echof(&quot;emergency - have asthma+slickness and paralysis/impatience prio is before asthma: swapping asthma to be cured first.&quot;)
+  echo'\n' svo.echof("emergency - have asthma+slickness and paralysis/impatience prio is before asthma: swapping asthma to be cured first.")
 end</script>
-                <eventHandlerList>
-                    <string>svo got balance</string>
-                    <string>svo lost aff</string>
-                    <string>svo got aff</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo_onimportant_aff</name>
-                <packageName></packageName>
-                <script>local bigboxaffs = {&quot;serioustrauma&quot;, &quot;mildtrauma&quot;, &quot;mildconcussion&quot;, &quot;seriousconcussion&quot;, &quot;mutilatedleftarm&quot;, &quot;mutilatedleftleg&quot;, &quot;mutilatedrightarm&quot;, &quot;mutilatedrightleg&quot;, &quot;mangledleftarm&quot;, &quot;mangledleftleg&quot;, &quot;mangledrightarm&quot;, &quot;mangledrightleg&quot;}
+				<eventHandlerList>
+					<string>svo got balance</string>
+					<string>svo lost aff</string>
+					<string>svo got aff</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo_onimportant_aff</name>
+				<packageName></packageName>
+				<script>local bigboxaffs = {"serioustrauma", "mildtrauma", "mildconcussion", "seriousconcussion", "mutilatedleftarm", "mutilatedleftleg", "mutilatedrightarm", "mutilatedrightleg", "mangledleftarm", "mangledleftleg", "mangledrightarm", "mangledrightleg"}
 local bigboxaffs_t = {}; for i = 1, #bigboxaffs do bigboxaffs_t[bigboxaffs[i]] = true end
 
 function svo_onimportant_aff(_, which)
   if bigboxaffs_t[which] then
-    svo.boxDisplay(&quot;afflicted w/ &quot;..which, &quot;black:DarkOrange&quot;)
+    svo.boxDisplay("afflicted w/ "..which, "black:DarkOrange")
   end
 end</script>
-                <eventHandlerList>
-                    <string>svo got aff</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo.autopause_on_def</name>
-                <packageName></packageName>
-                <script>function svo.autopause_on_def(event, def)
-  if (def == &quot;blackwind&quot; or def == &quot;astralform&quot;) and event == &quot;svo got def&quot; then
+				<eventHandlerList>
+					<string>svo got aff</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.autopause_on_def</name>
+				<packageName></packageName>
+				<script>function svo.autopause_on_def(event, def)
+  if (def == "blackwind" or def == "astralform") and event == "svo got def" then
     if svo.conf.paused then svo.dont_unpause_for_bw = true
-    else svo.app(&quot;on&quot;) end
-  elseif (def == &quot;blackwind&quot; or def == &quot;astralform&quot;) and event == &quot;svo lost def&quot; then
-    if not svo.dont_unpause_for_bw then svo.app(&quot;off&quot;) end
+    else svo.app("on") end
+  elseif (def == "blackwind" or def == "astralform") and event == "svo lost def" then
+    if not svo.dont_unpause_for_bw then svo.app("off") end
     svo.dont_unpause_for_bw = nil
   end
 end</script>
-                <eventHandlerList>
-                    <string>svo got def</string>
-                    <string>svo lost def</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo.sitting</name>
-                <packageName></packageName>
-                <script>-- handles getting up after a manual sit
+				<eventHandlerList>
+					<string>svo got def</string>
+					<string>svo lost def</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.sitting</name>
+				<packageName></packageName>
+				<script>-- handles getting up after a manual sit
 function svo.sitting(_, aff)
-  if aff ~= &quot;prone&quot; then return end
+  if aff ~= "prone" then return end
 
-  if svo.ignore.prone and svo.ignore.prone.because and svo.ignore.prone.because == &quot;you sat down&quot; then
+  if svo.ignore.prone and svo.ignore.prone.because and svo.ignore.prone.because == "you sat down" then
     svo.ignore.prone = nil
-    raiseEvent(&quot;svo ignore changed&quot;, &quot;prone&quot;)
+    raiseEvent("svo ignore changed", "prone")
   end
 end</script>
-                <eventHandlerList>
-                    <string>svo lost aff</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo.sleeping</name>
-                <packageName></packageName>
-                <script>-- handles unignoring sleeping after waking up
+				<eventHandlerList>
+					<string>svo lost aff</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.sleeping</name>
+				<packageName></packageName>
+				<script>-- handles unignoring sleeping after waking up
 function svo.sleeping(_, aff)
-  if aff ~= &quot;sleep&quot; then return end
+  if aff ~= "sleep" then return end
 
-  if svo.ignore.sleep and svo.ignore.sleep.because and svo.ignore.sleep.because == &quot;you wanted to sleep&quot; then
+  if svo.ignore.sleep and svo.ignore.sleep.because and svo.ignore.sleep.because == "you wanted to sleep" then
     svo.ignore.sleep = nil
   end
 end</script>
-                <eventHandlerList>
-                    <string>svo lost aff</string>
-                </eventHandlerList>
-            </Script>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>svo Meteor Compress</name>
-                <packageName></packageName>
-                <script>function svo.updatemeteors()
+				<eventHandlerList>
+					<string>svo lost aff</string>
+				</eventHandlerList>
+			</Script>
+			<ScriptGroup isActive="yes" isFolder="yes">
+				<name>svo Meteor Compress</name>
+				<packageName></packageName>
+				<script>function svo.updatemeteors()
   deleteLine()
-  svo.prompttrigger(&quot;compress meteors&quot;, svo.showmeteors)
+  svo.prompttrigger("compress meteors", svo.showmeteors)
 end
 
 local function concatmap(tbl)
   local t = {}
   for k,v in pairs(tbl) do
-    t[#t+1] = v..&quot; on &quot;..k
+    t[#t+1] = v.." on "..k
   end
   return svo.concatand(t)
 end
@@ -6240,46 +6240,46 @@ end
 function svo.showmeteors()
   local t = {}
   if svo.meteors.justlaunched then
-    t[#t+1] = string.format(&quot;%d launched&quot;, svo.meteors.justlaunched)
+    t[#t+1] = string.format("%d launched", svo.meteors.justlaunched)
   end
   if svo.meteors.justlaunchedmine then
-    t[#t+1] = &quot;plus your meteor&quot;
+    t[#t+1] = "plus your meteor"
   end
   if svo.meteors.headingin then
-    t[#t+1] = string.format(&quot;%d heading to you&quot;, svo.meteors.headingin)
+    t[#t+1] = string.format("%d heading to you", svo.meteors.headingin)
   end
   if svo.meteors.headingout then
-    t[#t+1] = string.format(&quot;%d going elsewhere&quot;, svo.meteors.headingout)
+    t[#t+1] = string.format("%d going elsewhere", svo.meteors.headingout)
   end
   if svo.meteors.brokeshield then
-    t[#t+1] = svo.meteors.brokeshield.. &quot; broke your shield&quot;
+    t[#t+1] = svo.meteors.brokeshield.. " broke your shield"
   end
   if svo.meteors.hityou then
-    t[#t+1] = string.format(&quot;%s hit you&quot;, svo.concatand(svo.meteors.hityou))
+    t[#t+1] = string.format("%s hit you", svo.concatand(svo.meteors.hityou))
   end
   if svo.meteors.brokeshieldother then
-    t[#t+1] = string.format(&quot;shield broke on: %s&quot;, concatmap(svo.meteors.brokeshieldother))
+    t[#t+1] = string.format("shield broke on: %s", concatmap(svo.meteors.brokeshieldother))
   end
   if svo.meteors.hitanother then
-    t[#t+1] = string.format(&quot;meteors hit: %s&quot;, concatmap(svo.meteors.hitanother))
+    t[#t+1] = string.format("meteors hit: %s", concatmap(svo.meteors.hitanother))
   end
   if svo.meteors.fellelsewhere then
-    t[#t+1] = string.format(&quot;%d hit no-one&quot;, svo.meteors.fellelsewhere)
+    t[#t+1] = string.format("%d hit no-one", svo.meteors.fellelsewhere)
   end
 
-  svo.echof(&quot;&lt;255,0,0&gt;meteors%s: %s&quot;, svo.getDefaultColor(), svo.concatand(t))
+  svo.echof("&lt;255,0,0&gt;meteors%s: %s", svo.getDefaultColor(), svo.concatand(t))
   svo.meteors = nil
 end</script>
-                <eventHandlerList/>
-            </ScriptGroup>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>commandTracker</name>
-                <packageName></packageName>
-                <script>lastCommands = lastCommands or {}
+				<eventHandlerList />
+			</ScriptGroup>
+			<ScriptGroup isActive="yes" isFolder="yes">
+				<name>commandTracker</name>
+				<packageName></packageName>
+				<script>lastCommands = lastCommands or {}
 
 function commandTracker(_,what)
    local howMany = 5
-   what = what:lower():gsub(&quot;^%s+&quot;,&quot;&quot;)
+   what = what:lower():gsub("^%s+","")
    table.insert(lastCommands, 1, what)
    table.remove(lastCommands, howMany+1)
 end
@@ -6295,77 +6295,77 @@ function commandCheck(what)
 end
 
 stupidityCheckTable = {
-	[&quot;You waggle your eyebrows comically.&quot;]                                                                             = &quot;^waggle&quot;,
-	[&quot;You blink.&quot;]                                                                                                      = &quot;^blink&quot;,
-	[&quot;You twitch spasmodically.&quot;]                                                                                       = &quot;^twitch&quot;,
-	[&quot;As horrible thoughts fill your mind, you begin to sob uncontrollably.&quot;]                                           = &quot;^sob&quot;,
-	[&quot;You hug yourself compassionately.&quot;]                                                                               = &quot;^hug&quot;,
-	[&quot;My friend, clearly you know little of the sultry tango, if you think that you can perform it without a partner.&quot;] = &quot;^tango&quot;,
-	[&quot;Your mind is whirling with thoughts - you cannot settle down to sleep.&quot;]                                          = &quot;^sleep&quot;,
-	[&quot;You get down on one knee and serenade the world.&quot;]                                                                = &quot;^serenade&quot;,
-	[&quot;You make a strangled meowing noise and quickly shut up in embarrassment.&quot;]                                        = &quot;^meow&quot;,
-	[&quot;You burp obscenely.&quot;]                                                                                             = &quot;^burp&quot;,
-	[&quot;You flap your arms madly.&quot;]                                                                                       = &quot;^flap&quot;,
-	[&quot;You wouldn't want to drink a salve. It would not be tasty at all.&quot;]                                               = &quot;^sip&quot;,
-	[&quot;Tears fill your eyes and begin to slowly run down your face.&quot;]                                                    = &quot;^cry&quot;,
-	[&quot;You drop to one knee, demonstrating your humility and respect.&quot;]                                                  = &quot;^kneel&quot;,
-	[&quot;You pick your nose absently.&quot;]                                                                                    = &quot;^picknose&quot;,
-	[&quot;You wail like an old woman.&quot;]                                                                                     = &quot;^wail&quot;,
-	[ [[You grunt a bit and then let out a loud &quot;OINK!&quot;]] ]                                                             = &quot;^oink&quot;,
-	[ [[You let out a loud, long &quot;MOOOOOOOOOOO!&quot;]] ]                                                                    = &quot;^moo&quot;,
-	[ [[&quot;The voices! The voices! Get them out of my head!!&quot; you moan, holding your head in pain.]] ]                    = &quot;^voices&quot;,
-	[&quot;You stumble and poke yourself in the eye.&quot;]                                                                       = &quot;^poke&quot;,
-	[&quot;Your mind is whirling with thoughts - you cannot settle down to sleep.&quot;]                                          = &quot;^sleep&quot;,
+	["You waggle your eyebrows comically."]                                                                             = "^waggle",
+	["You blink."]                                                                                                      = "^blink",
+	["You twitch spasmodically."]                                                                                       = "^twitch",
+	["As horrible thoughts fill your mind, you begin to sob uncontrollably."]                                           = "^sob",
+	["You hug yourself compassionately."]                                                                               = "^hug",
+	["My friend, clearly you know little of the sultry tango, if you think that you can perform it without a partner."] = "^tango",
+	["Your mind is whirling with thoughts - you cannot settle down to sleep."]                                          = "^sleep",
+	["You get down on one knee and serenade the world."]                                                                = "^serenade",
+	["You make a strangled meowing noise and quickly shut up in embarrassment."]                                        = "^meow",
+	["You burp obscenely."]                                                                                             = "^burp",
+	["You flap your arms madly."]                                                                                       = "^flap",
+	["You wouldn't want to drink a salve. It would not be tasty at all."]                                               = "^sip",
+	["Tears fill your eyes and begin to slowly run down your face."]                                                    = "^cry",
+	["You drop to one knee, demonstrating your humility and respect."]                                                  = "^kneel",
+	["You pick your nose absently."]                                                                                    = "^picknose",
+	["You wail like an old woman."]                                                                                     = "^wail",
+	[ [[You grunt a bit and then let out a loud "OINK!"]] ]                                                             = "^oink",
+	[ [[You let out a loud, long "MOOOOOOOOOOO!"]] ]                                                                    = "^moo",
+	[ [["The voices! The voices! Get them out of my head!!" you moan, holding your head in pain.]] ]                    = "^voices",
+	["You stumble and poke yourself in the eye."]                                                                       = "^poke",
+	["Your mind is whirling with thoughts - you cannot settle down to sleep."]                                          = "^sleep",
 }</script>
-                <eventHandlerList>
-                    <string>sysDataSendRequest</string>
-                </eventHandlerList>
-            </ScriptGroup>
-        </ScriptGroup>
-        <ScriptGroup isActive="yes" isFolder="yes">
-            <name>Check for system updates</name>
-            <packageName></packageName>
-            <script>-------------------------------------------------
+				<eventHandlerList>
+					<string>sysDataSendRequest</string>
+				</eventHandlerList>
+			</ScriptGroup>
+		</ScriptGroup>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>Check for system updates</name>
+			<packageName></packageName>
+			<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-            <eventHandlerList/>
-            <Script isActive="yes" isFolder="no">
-                <name>svo_downloaded_file</name>
-                <packageName></packageName>
-                <script>function svo_downloaded_file(_, filename)
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>svo_downloaded_file</name>
+				<packageName></packageName>
+				<script>function svo_downloaded_file(_, filename)
   -- is the file that downloaded our oursystem?
 
   if filename == tostring(svo.versionfile) then
     svo.checkingupdates = false
 
-    local s = io.open(filename):read(&quot;*a&quot;)
+    local s = io.open(filename):read("*a")
     if svo.version == s:trim() then
-      if svo.announceupdates == &quot;checking&quot; then
+      if svo.announceupdates == "checking" then
         svo.announceupdates = nil
-        svo.echof(&quot;You're all good! Latest version is %s and you're on it.&quot;, svo.version)
+        svo.echof("You're all good! Latest version is %s and you're on it.", svo.version)
       end
       return
     end
 
     -- new version? See if we've already downloaded it, if not, do so
-    local f = io.open(getMudletHomeDir()..&quot;/svo/downloads/available_version&quot;)
+    local f = io.open(getMudletHomeDir().."/svo/downloads/available_version")
 
     local writtenversion
 
     -- new version file can not exist if we didn't download a system previously
     if f then
-      writtenversion = f:read(&quot;*a&quot;)
+      writtenversion = f:read("*a")
     end
 
     if not writtenversion or writtenversion:trim() ~= s:trim() 
-		  or not lfs.attributes(getMudletHomeDir()..&quot;/svo/downloads/&quot;..&quot;Svof.current.zip&quot;) then
-      if svo.announceupdates == &quot;checking&quot; then svo.echof(&quot;A new Svof is available! You're on %s, latest is %s. I'll download it for you.&quot;, svo.version, s:trim()) end
+		  or not lfs.attributes(getMudletHomeDir().."/svo/downloads/".."Svof.current.zip") then
+      if svo.announceupdates == "checking" then svo.echof("A new Svof is available! You're on %s, latest is %s. I'll download it for you.", svo.version, s:trim()) end
       svo.downloadnewsystem(s:trim())
     else
-      if svo.announceupdates == &quot;checking&quot; then svo.echof(&quot;A new Svof is available and has been downloaded for you! You're on %s, latest is %s.&quot;, svo.version, s:trim()) end
+      if svo.announceupdates == "checking" then svo.echof("A new Svof is available and has been downloaded for you! You're on %s, latest is %s.", svo.version, s:trim()) end
       svo.showupdatereminder(writtenversion)
     end
 
@@ -6374,15 +6374,15 @@ stupidityCheckTable = {
 
     -- got new zip? make sure it's valid, Dropbox likes to mess with us.
     local f = io.open(filename)
-    if not f or f:read(&quot;*a&quot;):find(&quot;302 Found&quot;) then
+    if not f or f:read("*a"):find("302 Found") then
       -- don't loop downloading forever
       if not svo.downloadretries or svo.downloadretries &lt;= (svo.maxdownloadretries or 5) then
         svo.downloadnewsystem(svo.newdownloadedversion)
         svo.downloadretries = (svo.downloadretries or 0) + 1
-        svo.echof(&quot;Bah. I downloaded the new system, but Dropbox wigged out and didn't actually send us a new zip but an error message. Going to try downloading it again%s.&quot;,
-          (svo.downloadretries == 1 and &quot;&quot; or &quot; (attempt &quot;..svo.downloadretries..&quot; out of &quot;..(svo.maxdownloadretries or 5)..&quot;)&quot;))
+        svo.echof("Bah. I downloaded the new system, but Dropbox wigged out and didn't actually send us a new zip but an error message. Going to try downloading it again%s.",
+          (svo.downloadretries == 1 and "" or " (attempt "..svo.downloadretries.." out of "..(svo.maxdownloadretries or 5)..")"))
       else
-        svo.echof(&quot;Giving up. Dropbox keeps refusing to give us a working zip. Try downloading and upgrading manually; uninstall Svo in the Package Manager and install the new zip from there.&quot;)
+        svo.echof("Giving up. Dropbox keeps refusing to give us a working zip. Try downloading and upgrading manually; uninstall Svo in the Package Manager and install the new zip from there.")
       end
 
       if f then f:close() end
@@ -6393,61 +6393,61 @@ stupidityCheckTable = {
     if f then f:close() end
     if svo.downloadretries then
       svo.downloadretries = nil
-      svo.echof(&quot;OK, got a working zip now that we can install!&quot;)
+      svo.echof("OK, got a working zip now that we can install!")
     end
 
     -- downloaded a new system zip? Save its version in a file, so on restart if the person hasn't updated, we can poke them about it
-    local f,err = io.open(getMudletHomeDir()..&quot;/svo/downloads/available_version&quot;, &quot;w&quot;)
-    if not f then return svo.echof(&quot;Couldn't write to the new version file, because: &quot;..err) end
+    local f,err = io.open(getMudletHomeDir().."/svo/downloads/available_version", "w")
+    if not f then return svo.echof("Couldn't write to the new version file, because: "..err) end
     f:write(svo.newdownloadedversion)
     f:close()
 
     svo.showupdatereminder(svo.newdownloadedversion)
   end
 end</script>
-                <eventHandlerList>
-                    <string>sysDownloadDone</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>Check for updates</name>
-                <packageName></packageName>
-                <script>local downloadfolder = getMudletHomeDir()..&quot;/svo/downloads/&quot;
+				<eventHandlerList>
+					<string>sysDownloadDone</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>Check for updates</name>
+				<packageName></packageName>
+				<script>local downloadfolder = getMudletHomeDir().."/svo/downloads/"
 
 -- this should get called at start and every hour after that
 function svo.checkforupdate(type)
-  local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
+  local baseUrl = string.format("http://svof.github.io/svof/%s/", svo.conf.releasechannel)
   
 	if svo.checkingupdates then return end
-  svo.versionfile = downloadfolder..&quot;svo_version&quot;
+  svo.versionfile = downloadfolder.."svo_version"
 
   if not lfs.attributes(downloadfolder) then
      local t,s = lfs.mkdir(downloadfolder)
-     if not t and s ~= &quot;File exists&quot; then svo.echof(&quot;Couldn't make the '&quot;..downloadfolder..&quot;' folder; &quot;..s) return end
+     if not t and s ~= "File exists" then svo.echof("Couldn't make the '"..downloadfolder.."' folder; "..s) return end
   end
 
   svo.checkingupdates = true
-  downloadFile(svo.versionfile, baseUrl .. &quot;current_version.txt&quot;)
+  downloadFile(svo.versionfile, baseUrl .. "current_version.txt")
 
-  if type == &quot;checking&quot; then
-    svo.echof(&quot;Checking for updates...&quot;)
-    svo.announceupdates = &quot;checking&quot;
-  elseif type == &quot;force&quot; then
-    svo.echof(&quot;(re)downloading latest system...&quot;)
-    svo.announceupdates = &quot;force&quot;
+  if type == "checking" then
+    svo.echof("Checking for updates...")
+    svo.announceupdates = "checking"
+  elseif type == "force" then
+    svo.echof("(re)downloading latest system...")
+    svo.announceupdates = "force"
     svo.version = 0
 
 
-    local location = getMudletHomeDir()..&quot;/svo/downloads/available_version&quot;
+    local location = getMudletHomeDir().."/svo/downloads/available_version"
     if io.exists(location) then
       local s,m = os.remove(location)
-      if not s then svo.echof(&quot;Couldn't remove the %s file (error was: %s) - this might be a problem.&quot;, location, m) end
+      if not s then svo.echof("Couldn't remove the %s file (error was: %s) - this might be a problem.", location, m) end
     end
 
-    location = downloadfolder..&quot;Svof.current.zip&quot;
+    location = downloadfolder.."Svof.current.zip"
     if io.exists(location) then
       local s,m = os.remove(location)
-      if not s then svo.echof(&quot;Couldn't delete the old svo zip (located at %s), because of: %s. This might be a problem.&quot;, location, m) end
+      if not s then svo.echof("Couldn't delete the old svo zip (located at %s), because of: %s. This might be a problem.", location, m) end
     end
   else
     svo.announceupdates = nil
@@ -6456,48 +6456,48 @@ end
 
 -- downloads the system &amp; updates the system version saved
 function svo.downloadnewsystem(newversion)
-  local baseUrl = string.format(&quot;http://svof.github.io/svof/%s/&quot;, svo.conf.releasechannel)
+  local baseUrl = string.format("http://svof.github.io/svof/%s/", svo.conf.releasechannel)
   
-	svo.downloadedsystem = downloadfolder..&quot;Svof.current.zip&quot;
+	svo.downloadedsystem = downloadfolder.."Svof.current.zip"
   local downloadurl = baseUrl..[[Svof.v]]..newversion..[[.zip]]
 
   downloadFile(svo.downloadedsystem, downloadurl)
   svo.newdownloadedversion = newversion
 end</script>
-                <eventHandlerList/>
-                <Script isActive="yes" isFolder="no">
-                    <name>svo_checkupdatestart</name>
-                    <packageName></packageName>
-                    <script>function svo_checkupdatestart()
+				<eventHandlerList />
+				<Script isActive="yes" isFolder="no">
+					<name>svo_checkupdatestart</name>
+					<packageName></packageName>
+					<script>function svo_checkupdatestart()
   svo.checkforupdate()
 end</script>
-                    <eventHandlerList>
-                        <string>svo system loaded</string>
-                    </eventHandlerList>
-                </Script>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>Update UI</name>
-                <packageName></packageName>
-                <script>function svo.showupdatereminder(newversion)
+					<eventHandlerList>
+						<string>svo system loaded</string>
+					</eventHandlerList>
+				</Script>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>Update UI</name>
+				<packageName></packageName>
+				<script>function svo.showupdatereminder(newversion)
   svo.announceupdates = nil
 
   svo.updatelabel = svo.updatelabel or Geyser.Label:new({
-    name = &quot;svo.updatelabel&quot;,
-    x = &quot;-340px&quot;, y = &quot;-115px&quot;,
-    width = &quot;320px&quot;, height = &quot;110px&quot;,
+    name = "svo.updatelabel",
+    x = "-340px", y = "-115px",
+    width = "320px", height = "110px",
   })
 
   svo.doupdatelabel = svo.doupdatelabel or Geyser.Label:new({
-    name = &quot;svo.doupdatelabel&quot;,
-    x = &quot;25%&quot;, y = &quot;-30px&quot;,
-    width = &quot;20%&quot;, height = &quot;20px&quot;,
+    name = "svo.doupdatelabel",
+    x = "25%", y = "-30px",
+    width = "20%", height = "20px",
   }, svo.updatelabel)
 
   svo.dontupdatelabel = svo.dontupdatelabel or Geyser.Label:new({
-    name = &quot;svo.dontupdatelabel&quot;,
-    x = &quot;55%&quot;, y = &quot;-30px&quot;,
-    width = &quot;20%&quot;, height = &quot;20px&quot;,
+    name = "svo.dontupdatelabel",
+    x = "55%", y = "-30px",
+    width = "20%", height = "20px",
   }, svo.updatelabel)
 
   -- grey to black shade, top to bottom
@@ -6537,18 +6537,18 @@ end</script>
     font-family: monospace;
   ]])
 
-  svo.updatelabel:echo(string.format([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Hey, a new Svof (%s) has been downloaded and is available for install.&lt;br&gt;&lt;br&gt;Install and restart now, or install later?&lt;p&gt;]], newversion))
+  svo.updatelabel:echo(string.format([[&lt;p align="center" style="font-size:10pt; color:white"&gt;Hey, a new Svof (%s) has been downloaded and is available for install.&lt;br&gt;&lt;br&gt;Install and restart now, or install later?&lt;p&gt;]], newversion))
 
-  svo.doupdatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:8pt; color:white&quot;&gt;Restart&lt;/p]])
+  svo.doupdatelabel:echo([[&lt;p align="center" style="font-size:8pt; color:white"&gt;Restart&lt;/p]])
 
-  svo.dontupdatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:8pt; color:white&quot;&gt;Later&lt;/p]])
+  svo.dontupdatelabel:echo([[&lt;p align="center" style="font-size:8pt; color:white"&gt;Later&lt;/p]])
 
   svo.updatelabel:show()
   svo.doupdatelabel:show()
   svo.dontupdatelabel:show()
 
-  svo.doupdatelabel:setClickCallback(&quot;svo_doupdate_click&quot;)
-  svo.dontupdatelabel:setClickCallback(&quot;svo_dontupdate_click&quot;)
+  svo.doupdatelabel:setClickCallback("svo_doupdate_click")
+  svo.dontupdatelabel:setClickCallback("svo_dontupdate_click")
 end
 
 function svo_dontupdate_click()
@@ -6558,29 +6558,29 @@ function svo_dontupdate_click()
 end
 
 function svo_doupdate_click()
-  svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Updating Svo...&lt;p&gt;]])
+  svo.updatelabel:echo([[&lt;p align="center" style="font-size:10pt; color:white"&gt;Updating Svo...&lt;p&gt;]])
   svo.doupdatelabel:hide()
   svo.dontupdatelabel:hide()
 
   local class = svo.me.class
 
-  if not io.exists(getMudletHomeDir()..&quot;/svo/downloads/Svof.current.zip&quot;) then
-    svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Hm, can't update Svo - seems the new system we downloaded dissapeared. Do 'vupdate force' to download it again.&lt;p&gt;]])
+  if not io.exists(getMudletHomeDir().."/svo/downloads/Svof.current.zip") then
+    svo.updatelabel:echo([[&lt;p align="center" style="font-size:10pt; color:white"&gt;Hm, can't update Svo - seems the new system we downloaded dissapeared. Do 'vupdate force' to download it again.&lt;p&gt;]])
     return
   end
 
   function svo_update_system()
-    svo_updating_system = &quot;uninstalling&quot;
+    svo_updating_system = "uninstalling"
     svo.uninstall_all_modules()
 
-    svo_updating_system = &quot;installing&quot;
-    svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Uninstalled the old Svof, installing the new one now...&lt;p&gt;]])
-    svo.install_from_zip(getMudletHomeDir()..&quot;/svo/downloads/Svof.current.zip&quot;)
+    svo_updating_system = "installing"
+    svo.updatelabel:echo([[&lt;p align="center" style="font-size:10pt; color:white"&gt;Uninstalled the old Svof, installing the new one now...&lt;p&gt;]])
+    svo.install_from_zip(getMudletHomeDir().."/svo/downloads/Svof.current.zip")
 
     svo_updating_system = nil
-    svo.echof(&quot;Svof updated! You can find the changelog on github.com/svof/svof/releases&quot;)
+    svo.echof("Svof updated! You can find the changelog on github.com/svof/svof/releases")
 
-    svo.updatelabel:echo([[&lt;p align=&quot;center&quot; style=&quot;font-size:10pt; color:white&quot;&gt;Svo updated!&lt;p&gt;]])
+    svo.updatelabel:echo([[&lt;p align="center" style="font-size:10pt; color:white"&gt;Svo updated!&lt;p&gt;]])
     svo.updatelabel:setStyleSheet([[
         margin: 0px;
         padding: 2px;
@@ -6604,80 +6604,80 @@ function svo_doupdate_click()
 		tempTimer(10, function() svo.updatelabel:hide() end)
   end
 
-  svo_updating_system = &quot;started&quot;
+  svo_updating_system = "started"
   svo_update_system()
 end</script>
-                <eventHandlerList/>
-            </Script>
-        </ScriptGroup>
-        <ScriptGroup isActive="yes" isFolder="yes">
-            <name>Examples</name>
-            <packageName></packageName>
-            <script>-------------------------------------------------
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>Examples</name>
+			<packageName></packageName>
+			<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-            <eventHandlerList/>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>Use of got/lost aff/def events</name>
-                <packageName></packageName>
-                <script>-------------------------------------------------
+			<eventHandlerList />
+			<ScriptGroup isActive="yes" isFolder="yes">
+				<name>Use of got/lost aff/def events</name>
+				<packageName></packageName>
+				<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-                <eventHandlerList/>
-                <Script isActive="no" isFolder="no">
-                    <name>svo_example_affs</name>
-                    <packageName></packageName>
-                    <script>-- Act on lost/gained affs
+				<eventHandlerList />
+				<Script isActive="no" isFolder="no">
+					<name>svo_example_affs</name>
+					<packageName></packageName>
+					<script>-- Act on lost/gained affs
 -- can be used, for example, to stop an instakill if you've gotten hindered - unpause system, unpause offense, etc.
 -- must have vconfig eventaffs on
 function svo_example_affs(eventname, data)
-	svo.echof(&quot;Event: %s, data: %s&quot;, eventname, data)
---	tempTimer(0, function() svo.echof(&quot;Event: %s, data: %s&quot;, eventname, data) end)
+	svo.echof("Event: %s, data: %s", eventname, data)
+--	tempTimer(0, function() svo.echof("Event: %s, data: %s", eventname, data) end)
 end</script>
-                    <eventHandlerList>
-                        <string>svo got aff</string>
-                        <string>svo lost aff</string>
-                        <string>svo got def</string>
-                        <string>svo lost def</string>
-                    </eventHandlerList>
-                </Script>
-            </ScriptGroup>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>affs display window</name>
-                <packageName></packageName>
-                <script>-------------------------------------------------
+					<eventHandlerList>
+						<string>svo got aff</string>
+						<string>svo lost aff</string>
+						<string>svo got def</string>
+						<string>svo lost def</string>
+					</eventHandlerList>
+				</Script>
+			</ScriptGroup>
+			<ScriptGroup isActive="yes" isFolder="yes">
+				<name>affs display window</name>
+				<packageName></packageName>
+				<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-                <eventHandlerList/>
-                <Script isActive="no" isFolder="no">
-                    <name>svo_update_window</name>
-                    <packageName></packageName>
-                    <script>-- delete the line below and enable vconfig eventaffs plus this script for this demo to work!
+				<eventHandlerList />
+				<Script isActive="no" isFolder="no">
+					<name>svo_update_window</name>
+					<packageName></packageName>
+					<script>-- delete the line below and enable vconfig eventaffs plus this script for this demo to work!
 if true or not Geyser then return end
 
 local affslabel
 
-local main = Geyser.Container:new({x=0,y=0,width=&quot;100%&quot;,height=&quot;100%&quot;,name=&quot;affslabelcontainer&quot;})
+local main = Geyser.Container:new({x=0,y=0,width="100%",height="100%",name="affslabelcontainer"})
 
-affslabel = Geyser.Label:new({  name = &quot;affslabel&quot;,
-                               x = &quot;87%&quot;, y = &quot;80%&quot;,
-                               width = &quot;11%&quot;, height = &quot;17%&quot;},
+affslabel = Geyser.Label:new({  name = "affslabel",
+                               x = "87%", y = "80%",
+                               width = "11%", height = "17%"},
                                main)
 -- this sets the colour of the whole label to greenish
 affslabel:setColor(100,155,0,127)
 
 local function highlight(name)
 	if not svo.ignore[name] then return name else
-	return string.format([[&lt;span style=&quot;color:yellowgreen&quot;&gt;%s&lt;/span&gt;]], name) end
+	return string.format([[&lt;span style="color:yellowgreen"&gt;%s&lt;/span&gt;]], name) end
 end
 
 function svo_update_window()
@@ -6685,26 +6685,26 @@ local s = {}
 	if not affslabel then return end
 
 	for name, namet in pairs(svo.affl) do
-		if name ~= &quot;deaf&quot; and name ~= &quot;blind&quot; then
-			if type(namet) == &quot;table&quot; and namet.count then
-				s[#s+1] = string.format(&quot;%s (%d)&quot;, highlight(name), namet.count)
+		if name ~= "deaf" and name ~= "blind" then
+			if type(namet) == "table" and namet.count then
+				s[#s+1] = string.format("%s (%d)", highlight(name), namet.count)
 			else
 				s[#s+1] = highlight(name)
 			end
 		end
 	end
-	affslabel:echo([[&lt;span style=&quot;color:white&quot;&gt;]].. table.concat(s, &quot;&lt;br&gt;&quot;) ..&quot;&lt;/span&gt;&quot;)
+	affslabel:echo([[&lt;span style="color:white"&gt;]].. table.concat(s, "&lt;br&gt;") .."&lt;/span&gt;")
 end</script>
-                    <eventHandlerList>
-                        <string>svo got aff</string>
-                        <string>svo lost aff</string>
-                    </eventHandlerList>
-                </Script>
-            </ScriptGroup>
-            <Script isActive="no" isFolder="no">
-                <name>Customize_systems_echos</name>
-                <packageName></packageName>
-                <script>-- sample custom echo! Feel free to change the 'demo' name, so you can do 'vconfig echotype &lt;name&gt;'.
+					<eventHandlerList>
+						<string>svo got aff</string>
+						<string>svo lost aff</string>
+					</eventHandlerList>
+				</Script>
+			</ScriptGroup>
+			<Script isActive="no" isFolder="no">
+				<name>Customize_systems_echos</name>
+				<packageName></packageName>
+				<script>-- sample custom echo! Feel free to change the 'demo' name, so you can do 'vconfig echotype &lt;name&gt;'.
 
 -- to edit this, mode this script outside of Svo - doesn't matter if it's before or after Svo scripts
 -- then do 'vshow colors' to select your new colour scheme
@@ -6717,38 +6717,38 @@ if not (svo and svo.echos) then return end
 
 -- this does the (svo): blah-style echoes
 function svo.echos.demo(newline, what)
-  decho(&quot;&lt;80,66,80&gt;(&lt;107,79,125&gt;svo&lt;80,66,80&gt;)&lt;87,85,89&gt;: &lt;159,128,180&gt;&quot; .. what)
-  if newline then echo&quot;\n&quot; end
+  decho("&lt;80,66,80&gt;(&lt;107,79,125&gt;svo&lt;80,66,80&gt;)&lt;87,85,89&gt;: &lt;159,128,180&gt;" .. what)
+  if newline then echo"\n" end
 end
 
 -- this is the default color of the text in (svo): &lt;this colour here&gt;, so keep it consistent
 -- with the last colour used above
 function svo.echosd.demo()
-  return &quot;&lt;159,128,180&gt;&quot;
+  return "&lt;159,128,180&gt;"
 end
 
 end
 
 -- this is so editing the scheme after loading works
 Customize_systems_echos()</script>
-                <eventHandlerList>
-                    <string>svo system loaded</string>
-                </eventHandlerList>
-            </Script>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>Display afflictions on prompt demo</name>
-                <packageName></packageName>
-                <script>-------------------------------------------------
+				<eventHandlerList>
+					<string>svo system loaded</string>
+				</eventHandlerList>
+			</Script>
+			<ScriptGroup isActive="yes" isFolder="yes">
+				<name>Display afflictions on prompt demo</name>
+				<packageName></packageName>
+				<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-                <eventHandlerList/>
-                <Script isActive="no" isFolder="no">
-                    <name>mm_display_affs</name>
-                    <packageName></packageName>
-                    <script>-- just shows how to suffix affs to the prompt so you know
+				<eventHandlerList />
+				<Script isActive="no" isFolder="no">
+					<name>mm_display_affs</name>
+					<packageName></packageName>
+					<script>-- just shows how to suffix affs to the prompt so you know
 
 function mm_display_affs()
 	-- put two dashes before the line below so this function will work!
@@ -6756,64 +6756,64 @@ function mm_display_affs()
 
 	-- this if/elseif chain will append one aff at a time only
 	if svo.affl.prone then
-		echo(&quot;[[PRONE]] &quot;)
+		echo("[[PRONE]] ")
 	elseif svo.affl.paralysis then
-		echo(&quot;[[PARALYSIS]] &quot;)
+		echo("[[PARALYSIS]] ")
 	elseif svo.affl.crippledleftleg then
-		echo(&quot;[[CRIPPLED LEFTLEG]] &quot;)
+		echo("[[CRIPPLED LEFTLEG]] ")
 	end
 
 	-- these stand-alone ifs will allow for several affs to be suffixed
 	if svo.affl.crippledrightleg then
-		echo(&quot;[[CRIPPLED RIGHT LEG]] &quot;)
+		echo("[[CRIPPLED RIGHT LEG]] ")
 	end
 
 	if svo.affl.tangled then
-		echo(&quot;[[TANGLED]] &quot;)
+		echo("[[TANGLED]] ")
 	end
 end</script>
-                    <eventHandlerList>
-                        <string>svo done with prompt</string>
-                    </eventHandlerList>
-                </Script>
-            </ScriptGroup>
-            <ScriptGroup isActive="yes" isFolder="yes">
-                <name>Show which affs you got/lost w/ times and count (by Lynara)</name>
-                <packageName></packageName>
-                <script>-------------------------------------------------
+					<eventHandlerList>
+						<string>svo done with prompt</string>
+					</eventHandlerList>
+				</Script>
+			</ScriptGroup>
+			<ScriptGroup isActive="yes" isFolder="yes">
+				<name>Show which affs you got/lost w/ times and count (by Lynara)</name>
+				<packageName></packageName>
+				<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-                <eventHandlerList/>
-                <Script isActive="no" isFolder="no">
-                    <name>MyAffs</name>
-                    <packageName></packageName>
-                    <script>-- made by Lynara
+				<eventHandlerList />
+				<Script isActive="no" isFolder="no">
+					<name>MyAffs</name>
+					<packageName></packageName>
+					<script>-- made by Lynara
 
 svo.stopWatches = svo.stopWatches or {}
 function MyAffs(eventname, data)
    local default = svo.getDefaultColor()
-   if eventname == &quot;svo got aff&quot; then
+   if eventname == "svo got aff" then
       svo.stopWatches[data] = svo.affl[data] and svo.affl[data].sw or 0
-      svo.echof(&quot;Got aff: &lt;0,210,0&gt;%s &lt;210,210,210&gt;(&lt;170,0,0&gt;%s%s affs&lt;210,210,210&gt;)&quot;, data, table.size(svo.affl), default )
+      svo.echof("Got aff: &lt;0,210,0&gt;%s &lt;210,210,210&gt;(&lt;170,0,0&gt;%s%s affs&lt;210,210,210&gt;)", data, table.size(svo.affl), default )
    else
       svo.echof([[Lost aff: &lt;0,210,0&gt;%s &lt;210,210,210&gt;(&lt;0,210,0&gt;%s%ssec&lt;210,210,210&gt;) (&lt;170,0,0&gt;%s%s left&lt;210,210,210&gt;)]],
  data, getStopWatchTime(svo.stopWatches[data]), default, table.size(svo.affl), default)
    end
 end</script>
-                    <eventHandlerList>
-                        <string>svo got aff</string>
-                        <string>svo lost aff</string>
-                    </eventHandlerList>
-                </Script>
-            </ScriptGroup>
-        </ScriptGroup>
-        <ScriptGroup isActive="yes" isFolder="yes">
-            <name>svo Time Tracking</name>
-            <packageName></packageName>
-            <script>svo.me = svo.me or {}
+					<eventHandlerList>
+						<string>svo got aff</string>
+						<string>svo lost aff</string>
+					</eventHandlerList>
+				</Script>
+			</ScriptGroup>
+		</ScriptGroup>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>svo Time Tracking</name>
+			<packageName></packageName>
+			<script>svo.me = svo.me or {}
 svo.me.time = svo.me.time or {
   h = 0, m = 0,
   tictimer = false,
@@ -6836,36 +6836,36 @@ function svo.tic_time()
     svo.me.time.m = 0
   end
 
-  svo.echof(&quot;It is now %.0d:%1d&quot;, svo.me.time.h, svo.me.time.m)
+  svo.echof("It is now %.0d:%1d", svo.me.time.h, svo.me.time.m)
   svo.me.time.tictimer = tempTimer(svo.me.time.min2s, svo.tic_time)
 end</script>
-            <eventHandlerList/>
-        </ScriptGroup>
-        <ScriptGroup isActive="yes" isFolder="yes">
-            <name>svo Class Management</name>
-            <packageName></packageName>
-            <script>--[[ start of a class management (tn class/tn classonly) + class-specifics tricks ]]
+			<eventHandlerList />
+		</ScriptGroup>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>svo Class Management</name>
+			<packageName></packageName>
+			<script>--[[ start of a class management (tn class/tn classonly) + class-specifics tricks ]]
 
 svo.classes = {
-  alchemist    = {fighting = false, skills = {&quot;transmutation&quot;, &quot;physiology&quot;, &quot;alchemy&quot;}},
-  apostate     = {fighting = false, skills = {&quot;evileye&quot;, &quot;necromancy&quot;, &quot;apostasy&quot;}},
-  bard         = {fighting = false, skills = {&quot;voicecraft&quot;, &quot;swashbuckling&quot;, &quot;harmonics&quot;}},
-  blademaster  = {fighting = false, skills = {&quot;twoarts&quot;, &quot;striking&quot;, &quot;shindo&quot;}},
-  depthswalker = {fighting = false, skills = {&quot;shadowmancy&quot;, &quot;aeonics&quot;, &quot;terminus&quot;}},
-  dragon       = {fighting = false, skills = {&quot;dragoncraft&quot;}},
-  druid        = {fighting = false, skills = {&quot;groves&quot;, &quot;metamorphosis&quot;, &quot;concoctions&quot;}},
-  infernal     = {fighting = false, skills = {&quot;necromancy&quot;, &quot;chivalry&quot;, &quot;forging&quot;}},
-  jester       = {fighting = false, skills = {&quot;tarot&quot;, &quot;pranks&quot;, &quot;puppetry&quot;}},
-  magi         = {fighting = false, skills = {&quot;elementalism&quot;, &quot;crystalism&quot;, &quot;enchantment&quot;}},
-  monk         = {fighting = false, skills = {&quot;tekura&quot;, &quot;kaido&quot;, &quot;telepathy&quot;}},
-  occultist    = {fighting = false, skills = {&quot;occultism&quot;, &quot;tarot&quot;, &quot;domination&quot;}},
-  paladin      = {fighting = false, skills = {&quot;chivalry&quot;, &quot;devotion&quot;, &quot;forging&quot;}},
-  priest       = {fighting = false, skills = {&quot;spirituality&quot;, &quot;devotion&quot;, &quot;healing&quot;}},
-  runewarden   = {fighting = false, skills = {&quot;runelore&quot;, &quot;chivalry&quot;, &quot;forging&quot;}},
-  sentinel     = {fighting = false, skills = {&quot;metamorphosis&quot;, &quot;woodlore&quot;, &quot;concoctions&quot;}},
-  serpent      = {fighting = false, skills = {&quot;subterfuge&quot;, &quot;venom&quot;, &quot;hypnosis&quot;}},
-  shaman       = {fighting = false, skills = {&quot;spiritlore&quot;, &quot;curses&quot;, &quot;vodun&quot;}},
-  sylvan       = {fighting = false, skills = {&quot;elementalism&quot;, &quot;groves&quot;, &quot;concoctions&quot;}},
+  alchemist    = {fighting = false, skills = {"transmutation", "physiology", "alchemy"}},
+  apostate     = {fighting = false, skills = {"evileye", "necromancy", "apostasy"}},
+  bard         = {fighting = false, skills = {"voicecraft", "swashbuckling", "harmonics"}},
+  blademaster  = {fighting = false, skills = {"twoarts", "striking", "shindo"}},
+  depthswalker = {fighting = false, skills = {"shadowmancy", "aeonics", "terminus"}},
+  dragon       = {fighting = false, skills = {"dragoncraft"}},
+  druid        = {fighting = false, skills = {"groves", "metamorphosis", "concoctions"}},
+  infernal     = {fighting = false, skills = {"necromancy", "chivalry", "forging"}},
+  jester       = {fighting = false, skills = {"tarot", "pranks", "puppetry"}},
+  magi         = {fighting = false, skills = {"elementalism", "crystalism", "enchantment"}},
+  monk         = {fighting = false, skills = {"tekura", "kaido", "telepathy"}},
+  occultist    = {fighting = false, skills = {"occultism", "tarot", "domination"}},
+  paladin      = {fighting = false, skills = {"chivalry", "devotion", "forging"}},
+  priest       = {fighting = false, skills = {"spirituality", "devotion", "healing"}},
+  runewarden   = {fighting = false, skills = {"runelore", "chivalry", "forging"}},
+  sentinel     = {fighting = false, skills = {"metamorphosis", "woodlore", "concoctions"}},
+  serpent      = {fighting = false, skills = {"subterfuge", "venom", "hypnosis"}},
+  shaman       = {fighting = false, skills = {"spiritlore", "curses", "vodun"}},
+  sylvan       = {fighting = false, skills = {"elementalism", "groves", "concoctions"}},
 }
 -- keeps track of what skills are actually enabled
 svo.enabledskills, svo.enabledclasses = svo.enabledskills or {}, svo.enabledclasses or {}
@@ -6883,7 +6883,7 @@ function svo.enableclass(class)
   end
 
   svo.enabledclasses[class] = true
-  raiseEvent(&quot;svo enabled class&quot;, class)
+  raiseEvent("svo enabled class", class)
 end
 
 function svo.disableclass(class)
@@ -6897,7 +6897,7 @@ function svo.disableclass(class)
   end
 
   svo.enabledclasses[class] = nil
-  raiseEvent(&quot;svo disabled class&quot;, class)
+  raiseEvent("svo disabled class", class)
 end
 
 function svo.enableallclasses()
@@ -6916,25 +6916,25 @@ end
 function svo.startedfighting(class, name)
   svo.valid.gothit(class, name) -- check for **ILLUSION**s
 end</script>
-            <eventHandlerList/>
-            <Script isActive="yes" isFolder="no">
-                <name>svo_show_classes</name>
-                <packageName></packageName>
-                <script>function svo_show_classes()
-  if not next(svo.enabledclasses) then svo.echof(&quot;No class tricks are enabled.&quot;) return end
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>svo_show_classes</name>
+				<packageName></packageName>
+				<script>function svo_show_classes()
+  if not next(svo.enabledclasses) then svo.echof("No class tricks are enabled.") return end
 
   local l = svo.keystolist(svo.enabledclasses)
   table.sort(l)
-  svo.echof(&quot;Enabled tricks for: %s&quot;, svo.concatand(l))
+  svo.echof("Enabled tricks for: %s", svo.concatand(l))
 end</script>
-                <eventHandlerList>
-                    <string>svo onshow</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo.registerhit</name>
-                <packageName></packageName>
-                <script>function svo.registerhit(_, class, name)
+				<eventHandlerList>
+					<string>svo onshow</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.registerhit</name>
+				<packageName></packageName>
+				<script>function svo.registerhit(_, class, name)
   if not svo.classes[class] or not svo.conf.autoclasses then return end
 
   if not svo.enabledclasses[class] then
@@ -6953,7 +6953,7 @@ end</script>
   -- enable if we got attacked enough
   if svo.maybefighting[class] and svo.maybefighting[class] &gt;= svo.conf.classattacksamount and not svo.enabledclasses[class] then
     svo.enableclass(class)
-    svo.prompttrigger(&quot;enabled &quot;..class, function() svo.echof(&quot;Seems that we're fighting with %s - enabled class tricks.&quot;, string.title(class)) end)
+    svo.prompttrigger("enabled "..class, function() svo.echof("Seems that we're fighting with %s - enabled class tricks.", string.title(class)) end)
   end
 
   -- start/renew timer
@@ -6963,38 +6963,38 @@ end</script>
     if not svo.enabledclasses[class] then return end
 
     svo.disableclass(class)
-    if svo.stats.currenthealth ~= 0 then echo'\n' svo.echof(&quot;Don't think we're fighting with class %s anymore, disabled tricks.&quot;, string.title(class)) end
+    if svo.stats.currenthealth ~= 0 then echo'\n' svo.echof("Don't think we're fighting with class %s anymore, disabled tricks.", string.title(class)) end
     svo.showprompt()
   end)
 end</script>
-                <eventHandlerList>
-                    <string>svo got hit by</string>
-                </eventHandlerList>
-            </Script>
-        </ScriptGroup>
-        <ScriptGroup isActive="yes" isFolder="yes">
-            <name>svo UI Experiments</name>
-            <packageName></packageName>
-            <script>-------------------------------------------------
+				<eventHandlerList>
+					<string>svo got hit by</string>
+				</eventHandlerList>
+			</Script>
+		</ScriptGroup>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>svo UI Experiments</name>
+			<packageName></packageName>
+			<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
 </script>
-            <eventHandlerList/>
-            <Script isActive="yes" isFolder="no">
-                <name>Enable Comm</name>
-                <packageName></packageName>
-                <script>function svo_enableCommChannel()
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>Enable Comm</name>
+				<packageName></packageName>
+				<script>function svo_enableCommChannel()
 	-- register after GMCP is enabled. gmod doesn't re-register atm on restart
-    sendGMCP([[Core.Supports.Add [&quot;Comm.Channel 1&quot;] ]])
+    sendGMCP([[Core.Supports.Add ["Comm.Channel 1"] ]])
 end</script>
-                <eventHandlerList/>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo_captureChats</name>
-                <packageName></packageName>
-                <script>-- magical chat capture that doesn't require any triggers!
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo_captureChats</name>
+				<packageName></packageName>
+				<script>-- magical chat capture that doesn't require any triggers!
 -- made for Svo
 svo.ui = svo.ui or {}
 
@@ -7006,35 +7006,35 @@ function svo_captureChats()
 		selectCurrentLine()
 		copy()
 
-		if string.starts(line, &quot;(Party)&quot;) then svo.ui.chat:Append(&quot;Party&quot;)
-		else svo.ui.chat:Append(&quot;All&quot;) end
+		if string.starts(line, "(Party)") then svo.ui.chat:Append("Party")
+		else svo.ui.chat:Append("All") end
 ]])
 end</script>
-                <eventHandlerList>
-                    <string>gmcp.Comm.Channel.Start</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>Rift label dimensions</name>
-                <packageName></packageName>
-                <script>-- after editing this, do vshow herbstat to make it appear. To adjust the font size used, use vconfig herbstatsize #
+				<eventHandlerList>
+					<string>gmcp.Comm.Channel.Start</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>Rift label dimensions</name>
+				<packageName></packageName>
+				<script>-- after editing this, do vshow herbstat to make it appear. To adjust the font size used, use vconfig herbstatsize #
 
 -- if you'd like your changes to stay between Svo updates, move this script out of Svo's folder,
 -- and make sure it is *after* Svo's folder after an update
 
 
-svo.riftlabel = Geyser.Label:new({  name = &quot;svo.riftlabel&quot;,
+svo.riftlabel = Geyser.Label:new({  name = "svo.riftlabel",
                                x = -360, y = -166,
                                width = 355, height = 166})
 
 if not svo or not svo.conf or not svo.conf.riftlabel then svo.riftlabel:hide() end</script>
-                <eventHandlerList/>
-            </Script>
-        </ScriptGroup>
-        <ScriptGroup isActive="yes" isFolder="yes">
-            <name>Load &amp; init</name>
-            <packageName></packageName>
-            <script>-------------------------------------------------
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>Load &amp; init</name>
+			<packageName></packageName>
+			<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
@@ -7048,11 +7048,11 @@ if not svo or not svo.conf or not svo.conf.riftlabel then svo.riftlabel:hide() e
 		'svo (setup, misc, empty, funnies, dor)',
 		'svo (trigger functions)', 'svo (aliases, triggers)'
 	}</script>
-            <eventHandlerList/>
-            <Script isActive="yes" isFolder="no">
-                <name>svo_init_system</name>
-                <packageName></packageName>
-                <script>-- this function loads the system independent of the order of xmls/modules
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>svo_init_system</name>
+				<packageName></packageName>
+				<script>-- this function loads the system independent of the order of xmls/modules
 -- also used when the system needs to be reloaded with a new class
 function svo_init_system()
   if svo.systemloaded then return end
@@ -7103,7 +7103,7 @@ function svo_init_system()
 	
 	-- ensure Mudlet is new enough for the system to work without issues
 	if not mudletOlderThan or mudletOlderThan(3,6) then
-	  cecho(&quot;&lt;SkyBlue:firebrick&gt;Can't load Svof: your Mudlet is too old for the system to run well.\nPlease update to latest to enjoy it!\n&quot;)
+	  cecho("&lt;SkyBlue:firebrick&gt;Can't load Svof: your Mudlet is too old for the system to run well.\nPlease update to latest to enjoy it!\n")
 		return
 	end
 	
@@ -7113,16 +7113,16 @@ function svo_init_system()
 
   svo.signals.systemstart:emit()
   svo.systemloaded = true
-  raiseEvent(&quot;svo system loaded&quot;)
+  raiseEvent("svo system loaded")
 	
 	-- if we're already logged in when the system is installed, initialise a few other things
 	if gmcp and gmcp.Char and gmcp.Char.Name then
 	  svo.signals.gmcpcharname:emit()
 	end
 	
-  svo.echofn(&quot;Loaded &amp; ready to go, version %s (&quot;, tostring(svo.version))
-  echoLink(&quot;homepage&quot;, 'openUrl&quot;http://svof.github.io/svof&quot;', &quot;Svof homepage&quot;)
-  decho(svo.getDefaultColor()..&quot;)\n&quot;)
+  svo.echofn("Loaded &amp; ready to go, version %s (", tostring(svo.version))
+  echoLink("homepage", 'openUrl"http://svof.github.io/svof"', "Svof homepage")
+  decho(svo.getDefaultColor()..")\n")
 	
 	-- load any addons that wait for the system to load,
 	-- plus ensure only the class-specific limbcounter is present
@@ -7131,22 +7131,22 @@ function svo_init_system()
 	end
 	
 	-- setup prompt stats on a reload
-	if force_init then sendSocket(&quot;\n&quot;) end
+	if force_init then sendSocket("\n") end
 end</script>
-                <eventHandlerList>
-                    <string>sysLoadEvent</string>
-                    <string>sysInstall</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo.classchange</name>
-                <packageName></packageName>
-                <script>function svo.classchange(override)
+				<eventHandlerList>
+					<string>sysLoadEvent</string>
+					<string>sysInstall</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.classchange</name>
+				<packageName></packageName>
+				<script>function svo.classchange(override)
   local newclass = override or gmcp.Char.Status.class
 	
 	-- if you're in Dragon or an unrecognised class, use the None system
 	-- works fine in Dragon as they don't have class-specific skills anyway
-	if not svo.knownskills[newclass:lower()] then newclass = &quot;None&quot; end
+	if not svo.knownskills[newclass:lower()] then newclass = "None" end
 		
   if svo.me.class ~= newclass then
 	  local oldclass = svo.me.class
@@ -7159,18 +7159,18 @@ end</script>
 		svo.sk.resetserversideprios()
 		
 	  svo.systemloaded = false; svo_init_system()		
-	  svo.echof(&quot;Changed your Svof from %s over to %s.&quot;, oldclass, svo.me.class)
+	  svo.echof("Changed your Svof from %s over to %s.", oldclass, svo.me.class)
 	end
 end</script>
-                <eventHandlerList>
-                    <string>gmcp.Char.Status</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo.install_other_modules</name>
-                <packageName></packageName>
-                <script>function svo.install_other_modules(_, installedmodule)
-  if installedmodule ~= &quot;svo (install me in module manager)&quot; then return end
+				<eventHandlerList>
+					<string>gmcp.Char.Status</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.install_other_modules</name>
+				<packageName></packageName>
+				<script>function svo.install_other_modules(_, installedmodule)
+  if installedmodule ~= "svo (install me in module manager)" then return end
 	
 	local modules_list = svo.modules_list
 	
@@ -7185,12 +7185,12 @@ end</script>
 	-- install missing modules &amp; sync if Mudlet supports it
 	for _, modulename in ipairs(modules_list) do
 	  if not getModulePath(modulename) then
-		  local modulepath = basepath..modulename..&quot;.xml&quot;
+		  local modulepath = basepath..modulename..".xml"
 			
 			if io.exists(modulepath) then
   		  -- workaround for https://github.com/Mudlet/Mudlet/issues/1223
   			tempTimer(0, function()
-				  installModule(basepath..modulename..&quot;.xml&quot;)
+				  installModule(basepath..modulename..".xml")
 					if syncModule then
 					  syncModule(modulename)
 					else
@@ -7208,18 +7208,18 @@ end
 svo.install_other_modules()
 
 function svo.ask_to_sync_manual()
-	cecho(&quot;\n&lt;dark_orchid&gt;Installed all modules - now make sure to tick 'sync' in the Module Manager for everything Svof!&quot;)
+	cecho("\n&lt;dark_orchid&gt;Installed all modules - now make sure to tick 'sync' in the Module Manager for everything Svof!")
 end</script>
-                <eventHandlerList>
-                    <string>sysInstallModule</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo.installed_as_package</name>
-                <packageName></packageName>
-                <script>function svo.installed_as_package(_, installedpackage)
-  if not (installedpackage == &quot;svo (install me in module manager)&quot;
-	  or installedpackage == &quot;Svof - dont install me as package&quot;) then return end
+				<eventHandlerList>
+					<string>sysInstallModule</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.installed_as_package</name>
+				<packageName></packageName>
+				<script>function svo.installed_as_package(_, installedpackage)
+  if not (installedpackage == "svo (install me in module manager)"
+	  or installedpackage == "Svof - dont install me as package") then return end
 	
 	if svo_installed_as_package then killTimer(svo_installed_as_package) end
 	svo_installed_as_package = tempTimer(0, function() cecho(
@@ -7229,14 +7229,14 @@ please uninstall it and instead install using the &lt;orange_red&gt;Module Manag
   svo_installed_as_package = nil
   end)
 end</script>
-                <eventHandlerList>
-                    <string>sysInstallPackage</string>
-                </eventHandlerList>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo.uninstall_all_modules</name>
-                <packageName></packageName>
-                <script>-------------------------------------------------
+				<eventHandlerList>
+					<string>sysInstallPackage</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.uninstall_all_modules</name>
+				<packageName></packageName>
+				<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
@@ -7249,24 +7249,24 @@ function svo.uninstall_all_modules()
 	uninstallModule('svo (install me in module manager)')
 	svo.systemloaded = nil
 end</script>
-                <eventHandlerList/>
-            </Script>
-            <Script isActive="yes" isFolder="no">
-                <name>svo.install_from_zip</name>
-                <packageName></packageName>
-                <script>-------------------------------------------------
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.install_from_zip</name>
+				<packageName></packageName>
+				<script>-------------------------------------------------
 --         Put your Lua functions here.        --
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
-local templocation = getMudletHomeDir() .. &quot;/svo/downloads/temp/&quot;
+local templocation = getMudletHomeDir() .. "/svo/downloads/temp/"
 
 -- deletedir credit: https://stackoverflow.com/a/43407750/72944
 local deletedir =
   function(dir)
     for file in lfs.dir(dir) do
       local file_path = dir .. '/' .. file
-      if file ~= &quot;.&quot; and file ~= &quot;..&quot; then
+      if file ~= "." and file ~= ".." then
         if lfs.attributes(file_path, 'mode') == 'file' then
           os.remove(file_path)
         elseif lfs.attributes(file_path, 'mode') == 'directory' then
@@ -7285,7 +7285,7 @@ local function maketemplocation(location)
 end
 
 local function getmoduleslist(location)
-  return svo.pl.dir.getfiles(location, &quot;*.xml&quot;)
+  return svo.pl.dir.getfiles(location, "*.xml")
 end
 
 local function get_names_from_paths(locations, location)
@@ -7298,7 +7298,7 @@ end
 
 function svo.install_all_modules_in(location)
   if not string.ends(location, '/') then
-    location = location .. &quot;/&quot;
+    location = location .. "/"
   end
   local modules_locations_list = getmoduleslist(location)
   local modules_list = get_names_from_paths(modules_locations_list, location)
@@ -7327,11 +7327,11 @@ function svo.install_from_zip(ziplocation)
   svo.signals.saveconfig:emit()
   -- check that zip is present
   if not io.exists(ziplocation) then
-    return nil, &quot;input file zip is missing&quot;
+    return nil, "input file zip is missing"
   end
   -- create temporary location to extract zip into
   if not maketemplocation(templocation) then
-    return nil, &quot;couldn't create temporary download location&quot;
+    return nil, "couldn't create temporary download location"
   end
   -- extract zip into said temporary location
   unzip(ziplocation, templocation)
@@ -7344,12 +7344,12 @@ function svo.install_from_zip(ziplocation)
   -- happy times
   svo_init_system()
 end</script>
-                <eventHandlerList/>
-            </Script>
-        </ScriptGroup>
-    </ScriptPackage>
-    <KeyPackage/>
-    <HelpPackage>
-        <helpURL></helpURL>
-    </HelpPackage>
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
+	</ScriptPackage>
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL></helpURL>
+	</HelpPackage>
 </MudletPackage>

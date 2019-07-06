@@ -1,68 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
 <MudletPackage version="1.001">
-    <TriggerPackage>
-        <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-            <name>svo Capture elist/elist2/venomlist</name>
-            <script>svo.parsing_vlist = line:find(&quot;Venom&quot;) and true or false
+	<TriggerPackage>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>svo Capture elist/elist2/venomlist</name>
+			<script>svo.parsing_vlist = line:find("Venom") and true or false
 
 svo.es_capture()
 
 svo.storedvials = {}</script>
-            <triggerType>0</triggerType>
-            <conditonLineDelta>0</conditonLineDelta>
-            <mStayOpen>999</mStayOpen>
-            <mCommand></mCommand>
-            <packageName></packageName>
-            <mFgColor>#ff0000</mFgColor>
-            <mBgColor>#ffff00</mBgColor>
-            <mSoundFile></mSoundFile>
-            <colorTriggerFgColor>#000000</colorTriggerFgColor>
-            <colorTriggerBgColor>#000000</colorTriggerBgColor>
-            <regexCodeList>
-                <string>Vial</string>
-                <string>Months</string>
-            </regexCodeList>
-            <regexCodePropertyList>
-                <integer>2</integer>
-                <integer>0</integer>
-            </regexCodePropertyList>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>svo Capture elist stop</name>
-                <script>if not string.find(getLines(getLineNumber()-1, getLineNumber())[1], &quot;^Vial&quot;) then
-  setTriggerStayOpen(&quot;svo Capture elist/elist2/venomlist&quot;, 0)
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>999</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>Vial</string>
+				<string>Months</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>2</integer>
+				<integer>0</integer>
+			</regexCodePropertyList>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>svo Capture elist stop</name>
+				<script>if not string.find(getLines(getLineNumber()-1, getLineNumber())[1], "^Vial") then
+  setTriggerStayOpen("svo Capture elist/elist2/venomlist", 0)
 
   svo.es_captured(svo.parsing_vlist)
-  send(&quot;config pagelength &quot;..(svo.conf.pagelength &gt;= 20 and svo.conf.pagelength or 20), false)
+  send("config pagelength "..(svo.conf.pagelength &gt;= 20 and svo.conf.pagelength or 20), false)
 
   svo.gag_list = nil
 end</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#aaff00</mFgColor>
-                <mBgColor>#00aa00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>------------------------------------------</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>2</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>elist/elist2 vial</name>
-                <script>if svo.gag_list then deleteLine() end
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#aaff00</mFgColor>
+				<mBgColor>#00aa00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>------------------------------------------</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>2</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>elist/elist2 vial</name>
+				<script>if svo.gag_list then deleteLine() end
 
 local vialid = tonumber(matches[2])
 local potion = matches[3]
 local sips = tonumber(matches[4])
-local months = tonumber(matches[5]) or &quot;arty&quot;
-local category = svo.es_categories[potion] or &quot;unknown&quot;
+local months = tonumber(matches[5]) or "arty"
+local category = svo.es_categories[potion] or "unknown"
 
 svo.es_vials = svo.es_vials or {}
 svo.es_vials[vialid] = {months = months, potion = potion, sips = sips}
@@ -77,96 +77,96 @@ if svo.es_shortnamesr[potion] then
   svo.es_vialids[svo.es_shortnamesr[potion]][#svo.es_vialids[svo.es_shortnamesr[potion]]+1] = vialid
 end
 
-if type(months) == &quot;number&quot; and months &lt;= svo.conf.decaytime then
+if type(months) == "number" and months &lt;= svo.conf.decaytime then
   svo.es_potions[category][potion].decays = svo.es_potions[category][potion].decays + 1
 end
 
 svo.es_knownstuff[potion] = svo.es_knownstuff[potion] or 2
 
 -- deal with obfuscated vials now
-if not line:find(&quot;Obfuscated&quot;) then return end
+if not line:find("Obfuscated") then return end
 
 if sips &lt;= svo.conf.obfsips then
-  svo.doaddfree(string.format(&quot;put %s in %s&quot;, vialid, svo.conf.obfcontainer))
+  svo.doaddfree(string.format("put %s in %s", vialid, svo.conf.obfcontainer))
   svo.storedvials = svo.storedvials or {}
   svo.storedvials[vialid] = true
 end</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>3</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>[Vv]ial(\d+)\s+(.+?)\s+(\d+)\s+(\d+|(?:---))$</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>1</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Auto-more (elist)</name>
-                <script>send(&quot;more&quot;, false)
+				<triggerType>0</triggerType>
+				<conditonLineDelta>3</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>[Vv]ial(\d+)\s+(.+?)\s+(\d+)\s+(\d+|(?:---))$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Auto-more (elist)</name>
+				<script>send("more", false)
 svo.deleteLineP()</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>[Type MORE if you wish to continue reading</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>2</integer>
-                </regexCodePropertyList>
-            </Trigger>
-        </Trigger>
-    </TriggerPackage>
-    <TimerPackage/>
-    <AliasPackage>
-        <Alias isActive="yes" isFolder="no">
-            <name>Dispose of decays</name>
-            <script>svo.es_dispose(matches[2])</script>
-            <command></command>
-            <packageName></packageName>
-            <regex>^dispose of decays by: (.+)$</regex>
-        </Alias>
-        <Alias isActive="yes" isFolder="no">
-            <name>Get obfuscated vials out of pack</name>
-            <script>if not svo.storedvials then svo.echof(&quot;We didn't store any obfuscated vials stored away.&quot;) svo.showprompt() return end
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>[Type MORE if you wish to continue reading</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>2</integer>
+				</regexCodePropertyList>
+			</Trigger>
+		</Trigger>
+	</TriggerPackage>
+	<TimerPackage />
+	<AliasPackage>
+		<Alias isActive="yes" isFolder="no">
+			<name>Dispose of decays</name>
+			<script>svo.es_dispose(matches[2])</script>
+			<command></command>
+			<packageName></packageName>
+			<regex>^dispose of decays by: (.+)$</regex>
+		</Alias>
+		<Alias isActive="yes" isFolder="no">
+			<name>Get obfuscated vials out of pack</name>
+			<script>if not svo.storedvials then svo.echof("We didn't store any obfuscated vials stored away.") svo.showprompt() return end
 
 for vial in pairs(svo.storedvials) do
-  send(&quot;get &quot;..vial..&quot; from &quot;..svo.conf.obfcontainer, false)
+  send("get "..vial.." from "..svo.conf.obfcontainer, false)
 end</script>
-            <command></command>
-            <packageName></packageName>
-            <regex>^vialsout$</regex>
-        </Alias>
-        <Alias isActive="yes" isFolder="no">
-            <name>elist/vlist</name>
-            <script>svo.gag_list = true
-send(&quot;config pagelength 250&quot;, false)
+			<command></command>
+			<packageName></packageName>
+			<regex>^vialsout$</regex>
+		</Alias>
+		<Alias isActive="yes" isFolder="no">
+			<name>elist/vlist</name>
+			<script>svo.gag_list = true
+send("config pagelength 250", false)
 send(command, false)</script>
-            <command></command>
-            <packageName></packageName>
-            <regex>^(?:e|v)list$</regex>
-        </Alias>
-    </AliasPackage>
-    <ActionPackage/>
-    <ScriptPackage>
-        <Script isActive="yes" isFolder="no">
-            <name>elistsorter code</name>
-            <packageName></packageName>
-            <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+			<command></command>
+			<packageName></packageName>
+			<regex>^(?:e|v)list$</regex>
+		</Alias>
+	</AliasPackage>
+	<ActionPackage />
+	<ScriptPackage>
+		<Script isActive="yes" isFolder="no">
+			<name>elistsorter code</name>
+			<packageName></packageName>
+			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -174,7 +174,7 @@ send(command, false)</script>
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
-svo.es_version = &quot;1.1&quot;
+svo.es_version = "1.1"
 
 
 -- load elistsorter after all of the main code has
@@ -187,13 +187,13 @@ svo.es_vials = svo.es_vials or {}
 -- stores type by key, and inside each, a potion table
 --svo.es_potions = {} -- intialized in setup
 -- what are we currently capturing - so we know when to show the output
-svo.es_capturing = &quot;&quot;
-svo.es_disposecmd = &quot;&quot;
+svo.es_capturing = ""
+svo.es_disposecmd = ""
 
 svo.es_knownstuff = svo.es_knownstuff or {}
 
 local luanotify = {}
-luanotify.signal = require(&quot;notify.signal&quot;)
+luanotify.signal = require("notify.signal")
 svo.signals.elistcaptured = luanotify.signal.new()
 
 local conf = svo.conf
@@ -247,13 +247,13 @@ svo.config.setoption('elist',
   vconfig2string = true,
   onshow = function (defaultcolour)
     fg('gold')
-    echoLink(&quot;es:&quot;, &quot;&quot;, &quot;svo Elist Sorter&quot;, true)
+    echoLink("es:", "", "svo Elist Sorter", true)
     -- change desired amounts; considering vials about to decay at 5 or less months
-    fg('a_cyan') echoLink(&quot; set vial amounts&quot;, &quot;svo.config.set'elist'&quot;, &quot;Click to change the minimum amounts of vials you'd like to have&quot;, true)
-    fg(defaultcolour) echo(&quot;; considering vials about to decay at&quot;)
-    fg('a_cyan') echoLink(&quot; &quot;..(conf.decaytime or '?'), &quot;printCmdLine'vconfig decaytime '&quot;, &quot;Click to change the amount of months at which a vial will be considered for throwing away&quot;, true)
+    fg('a_cyan') echoLink(" set vial amounts", "svo.config.set'elist'", "Click to change the minimum amounts of vials you'd like to have", true)
+    fg(defaultcolour) echo("; considering vials about to decay at")
+    fg('a_cyan') echoLink(" "..(conf.decaytime or '?'), "printCmdLine'vconfig decaytime '", "Click to change the amount of months at which a vial will be considered for throwing away", true)
     fg(defaultcolour)
-    echo(&quot; month&quot;..(conf.decaytime == 1 and '' or 's')..&quot;.\n&quot;)
+    echo(" month"..(conf.decaytime == 1 and '' or 's')..".\n")
 
   end,
   onmenu = function ()
@@ -261,17 +261,17 @@ svo.config.setoption('elist',
     local t = {}
     for k,_ in pairs(svo.es_categories) do t[svo.es_categories[k] or 'unknown'] = t[svo.es_categories[k] or 'unknown'] or {}; t[svo.es_categories[k] or 'unknown'][#t[svo.es_categories[k] or 'unknown']+1] = k end
 
-    svo.echof(&quot;Set the desired amount for each potion by clicking on the number:&quot;)
+    svo.echof("Set the desired amount for each potion by clicking on the number:")
     for catn, catt in pairs(t) do
-      svo.echof(&quot;%s%s:&quot;, catn:title():sub(1, -2), (catn:sub(-1) == 'y' and 'ies' or catn:sub(-1)..'s'))
+      svo.echof("%s%s:", catn:title():sub(1, -2), (catn:sub(-1) == 'y' and 'ies' or catn:sub(-1)..'s'))
 
       for _, potion in pairs(catt) do
         local amount = (svo.es_knownstuff[potion] or 0)
-        echo(string.format(&quot;  %30s &quot;, potion))
+        echo(string.format("  %30s ", potion))
         fg('blue')
-        echoLink(&quot; &quot;..amount..&quot; &quot;, 'printCmdLine&quot;vconfig setpotion '..(svo.es_shortnamesr[potion] and svo.es_shortnamesr[potion] or 'unknown').. ' '..amount..'&quot;', &quot;Change how many vials of &quot;..potion..&quot; you'd like to have&quot;, true)
+        echoLink(" "..amount.." ", 'printCmdLine"vconfig setpotion '..(svo.es_shortnamesr[potion] and svo.es_shortnamesr[potion] or 'unknown').. ' '..amount..'"', "Change how many vials of "..potion.." you'd like to have", true)
         resetFormat()
-        echo&quot;\n&quot;
+        echo"\n"
       end
     end
   end
@@ -282,18 +282,18 @@ svo.config.setoption('decaytime',
 {
   type = 'number',
   vconfig2string = true,
-  onset = function () svo.echof(&quot;Will consider vials available for disposal when they decay time is at or less than %d months.&quot;, conf.decaytime) end,
+  onset = function () svo.echof("Will consider vials available for disposal when they decay time is at or less than %d months.", conf.decaytime) end,
   onshow = function (defaultcolour)
     fg('gold')
-    echoLink(&quot;es:&quot;, &quot;&quot;, &quot;svo Elist Sorter&quot;, true)
+    echoLink("es:", "", "svo Elist Sorter", true)
 
     -- obfuscated vials: store vials at less than %d sips into %container
-    fg(defaultcolour) echo(&quot; obfuscated vials: store at less than&quot;)
-    fg('a_cyan') echoLink(&quot; &quot;..(conf.obfsips or '?'), &quot;printCmdLine'vconfig obfsips '&quot;, &quot;Click to change the # of sips below which obfuscated vials will be stored in a container&quot;, true)
+    fg(defaultcolour) echo(" obfuscated vials: store at less than")
+    fg('a_cyan') echoLink(" "..(conf.obfsips or '?'), "printCmdLine'vconfig obfsips '", "Click to change the # of sips below which obfuscated vials will be stored in a container", true)
     fg(defaultcolour)
-    echo(&quot; sip&quot;..(conf.obfuscated == 1 and '' or 's')..&quot; into &quot;)
-    fg('a_cyan') echoLink((conf.obfcontainer or '?'), &quot;printCmdLine'vconfig obfcontainer '&quot;, &quot;Click to change container into which obfuscated vials will be stored&quot;, true)
-    echo(&quot;.\n&quot;)
+    echo(" sip"..(conf.obfuscated == 1 and '' or 's').." into ")
+    fg('a_cyan') echoLink((conf.obfcontainer or '?'), "printCmdLine'vconfig obfcontainer '", "Click to change container into which obfuscated vials will be stored", true)
+    echo(".\n")
   end
 })
 
@@ -301,7 +301,7 @@ conf.obfsips = conf.obfsips or 20
 svo.config.setoption('obfsips',
 {
   type = 'number',
-  onset = function () svo.echof(&quot;Will put obfuscated vials away into %s when they're at %d or below sips.&quot;, tostring(conf.obfcontainer), conf.obfsips) end
+  onset = function () svo.echof("Will put obfuscated vials away into %s when they're at %d or below sips.", tostring(conf.obfcontainer), conf.obfsips) end
 })
 
 
@@ -309,26 +309,26 @@ conf.obfcontainer = conf.obfcontainer or 'pack'
 svo.config.setoption('obfcontainer',
 {
   type = 'string',
-  onset = function () svo.echof(&quot;Will put obfuscated vials away into %s.&quot;, tostring(conf.obfcontainer)) end
+  onset = function () svo.echof("Will put obfuscated vials away into %s.", tostring(conf.obfcontainer)) end
 })
 
 svo.config.setoption('setpotion',
 {
   type = 'string',
   onset = function()
-    if not conf.setpotion:find(&quot;^.+ %d+$&quot;) then svo.echof(&quot;What amount do you want to set?&quot;) return end
+    if not conf.setpotion:find("^.+ %d+$") then svo.echof("What amount do you want to set?") return end
 
-    local potion, amount = conf.setpotion:match(&quot;^(.+) (%d+)$&quot;)
+    local potion, amount = conf.setpotion:match("^(.+) (%d+)$")
     amount = tonumber(amount)
     if svo.es_shortnames[potion] then
       svo.es_knownstuff[svo.es_shortnames[potion]] = amount
-      svo.echof(&quot;Made a note that we'd like to have a minimum %s of %s.&quot;, amount, potion)
+      svo.echof("Made a note that we'd like to have a minimum %s of %s.", amount, potion)
       return
     elseif not svo.es_knownstuff[potion] then
-      svo.echof(&quot;I haven't seen any potions called '%s' yet...&quot;, potion)
+      svo.echof("I haven't seen any potions called '%s' yet...", potion)
     else
       svo.es_knownstuff[potion] = amount
-      svo.echof(&quot;Made a note that we'd like to have a minimum %s of %s.&quot;, amount, potion)
+      svo.echof("Made a note that we'd like to have a minimum %s of %s.", amount, potion)
       return
     end
   end
@@ -338,14 +338,14 @@ function svo.es_appendrequest(whatfor)
   local t = {}
   for _, catt in pairs(svo.es_potions) do
     for potn, pott in pairs(catt) do
-      if ((whatfor ~= 'venoms' and not potn:find(&quot;the venom&quot;, 1, true)) or (whatfor == 'venoms' and potn:find(&quot;the venom&quot;, 1, true))) and svo.es_knownstuff[potn] and pott.vials &lt; svo.es_knownstuff[potn] then
-        t[#t+1] = (svo.es_knownstuff[potn] - pott.vials) .. &quot; &quot;.. (svo.es_shortnamesr[potn] and svo.es_shortnamesr[potn] or potn)
+      if ((whatfor ~= 'venoms' and not potn:find("the venom", 1, true)) or (whatfor == 'venoms' and potn:find("the venom", 1, true))) and svo.es_knownstuff[potn] and pott.vials &lt; svo.es_knownstuff[potn] then
+        t[#t+1] = (svo.es_knownstuff[potn] - pott.vials) .. " ".. (svo.es_shortnamesr[potn] and svo.es_shortnamesr[potn] or potn)
       end
     end
   end
 
-  if #t == 0 then svo.echof(&quot;I don't think you're short on anything!&quot;) return
-  else appendCmdLine(&quot; I'd like &quot;..svo.concatand(t)) end
+  if #t == 0 then svo.echof("I don't think you're short on anything!") return
+  else appendCmdLine(" I'd like "..svo.concatand(t)) end
 end
 
 function svo.es_refillfromkeg()
@@ -354,13 +354,13 @@ function svo.es_refillfromkeg()
     for potn, pott in pairs(catt) do
       if svo.es_knownstuff[potn] and pott.vials &lt; svo.es_knownstuff[potn] and (svo.es_shortnamesr[potn] and svo.es_shortnamesr[potn] or potn) ~= 'empty' then
         for _ = 1, svo.es_knownstuff[potn] - pott.vials do
-          t[#t+1] = string.format(&quot;refill empty from %s&quot;, (svo.es_shortnamesr[potn] and svo.es_shortnamesr[potn] or potn))
+          t[#t+1] = string.format("refill empty from %s", (svo.es_shortnamesr[potn] and svo.es_shortnamesr[potn] or potn))
         end
       end
     end
   end
 
-  if #t == 0 then svo.echof(&quot;I don't think you're short on anything!&quot;) return
+  if #t == 0 then svo.echof("I don't think you're short on anything!") return
   else
     svo.sendc(unpack(t))
   end
@@ -372,48 +372,48 @@ function svo.es_captured(vlist)
     local decaying
 
     local function checkdecays(pott)
-      if pott.decays == 0 then return &quot;&quot;
-      else decaying = true return (pott.decays..&quot; decaying soon&quot;) end
+      if pott.decays == 0 then return ""
+      else decaying = true return (pott.decays.." decaying soon") end
     end
 
     for catn, catt in pairs(svo.es_potions) do
-      svo.echof(&quot;%s%s:&quot;, catn:title():sub(1, -2), (catn:sub(-1) == 'y' and 'ies' or catn:sub(-1)..'s'))
+      svo.echof("%s%s:", catn:title():sub(1, -2), (catn:sub(-1) == 'y' and 'ies' or catn:sub(-1)..'s'))
 
       for potn, pott in pairs(catt) do
         -- don't show vials that we have 0 of and want 0 of
         if not (pott.vials == 0 and (not svo.es_knownstuff[potn] or (svo.es_knownstuff[potn] and svo.es_knownstuff[potn] == 0))) then
           if svo.es_knownstuff[potn] and pott.vials &lt; svo.es_knownstuff[potn] then
             missing = missing + svo.es_knownstuff[potn] - pott.vials
-            svo.echon(&quot;%3d %-35s%7s  %10s&quot;, pott.vials, potn..' ('..pott.sips..'s)', (svo.es_knownstuff[potn] - pott.vials .. &quot; short&quot;), checkdecays(pott))
+            svo.echon("%3d %-35s%7s  %10s", pott.vials, potn..' ('..pott.sips..'s)', (svo.es_knownstuff[potn] - pott.vials .. " short"), checkdecays(pott))
           else
-            svo.echon(&quot;%3d %-35s%7s  %10s&quot;, pott.vials, potn..' ('..pott.sips..'s)', &quot;&quot;, checkdecays(pott))
+            svo.echon("%3d %-35s%7s  %10s", pott.vials, potn..' ('..pott.sips..'s)', "", checkdecays(pott))
           end
         end
       end
     end
-    echo&quot;  &quot;; dechoLink(&quot;&lt;0,0,250&gt;(&quot;..svo.getDefaultColor()..&quot;change desired amounts&lt;0,0,250&gt;)&quot;, &quot;svo.config.set('elist')&quot;, &quot;Show a menu to change how much of what would you like to have&quot;, true) echo&quot;\n&quot;
-    if decaying then echo&quot;  &quot;; dechoLink(&quot;&lt;0,0,250&gt;(&quot;..svo.getDefaultColor()..&quot;dispose of decays&lt;0,0,250&gt;)&quot;, &quot;printCmdLine'dispose of decays by: give vial to humgii'&quot;, &quot;Dispose of vials (pouring them into other vials if possible) with a custom command.\nMake sure to include the word 'vial' in the command&quot;, true) echo&quot;\n&quot; end
+    echo"  "; dechoLink("&lt;0,0,250&gt;("..svo.getDefaultColor().."change desired amounts&lt;0,0,250&gt;)", "svo.config.set('elist')", "Show a menu to change how much of what would you like to have", true) echo"\n"
+    if decaying then echo"  "; dechoLink("&lt;0,0,250&gt;("..svo.getDefaultColor().."dispose of decays&lt;0,0,250&gt;)", "printCmdLine'dispose of decays by: give vial to humgii'", "Dispose of vials (pouring them into other vials if possible) with a custom command.\nMake sure to include the word 'vial' in the command", true) echo"\n" end
     if missing &gt; 0 then
-      echo&quot;  &quot;
-      dechoLink(&quot;&lt;0,0,250&gt;(&quot;..svo.getDefaultColor()..&quot;append refill request, need &quot;..missing..&quot; refills&lt;0,0,250&gt;)&quot;, &quot;svo.es_appendrequest('&quot;..svo.es_capturing..&quot;')&quot;, &quot;Insert how many refills of &quot;..svo.es_capturing..&quot; would you like into the command line.\nYou should pre-type whenever you want to say or tell this to anyone, and then click&quot;, true)
-      echo&quot;\n  &quot;
-      dechoLink(&quot;&lt;0,0,250&gt;(&quot;..svo.getDefaultColor()..&quot;refill from tuns, need &quot;..missing..&quot; refills&lt;0,0,250&gt;)&quot;, &quot;svo.es_refillfromkeg()&quot;, &quot;Click here to refill all necessary things from shop tuns&quot;, true)
-      echo&quot;\n&quot;
+      echo"  "
+      dechoLink("&lt;0,0,250&gt;("..svo.getDefaultColor().."append refill request, need "..missing.." refills&lt;0,0,250&gt;)", "svo.es_appendrequest('"..svo.es_capturing.."')", "Insert how many refills of "..svo.es_capturing.." would you like into the command line.\nYou should pre-type whenever you want to say or tell this to anyone, and then click", true)
+      echo"\n  "
+      dechoLink("&lt;0,0,250&gt;("..svo.getDefaultColor().."refill from tuns, need "..missing.." refills&lt;0,0,250&gt;)", "svo.es_refillfromkeg()", "Click here to refill all necessary things from shop tuns", true)
+      echo"\n"
     end
     svo.showprompt()
-    svo.debugf(&quot;raising elistcaptured with: %s&quot;, tostring(vlist))
+    svo.debugf("raising elistcaptured with: %s", tostring(vlist))
     svo.signals.elistcaptured:emit(vlist)
   end)
 end
 
 function svo.es_dodisposing(vlist)
   -- check vlist and then elist - ignore if its vlist, only act on elist
-  svo.debugf(&quot;es_dodisposing: %s&quot;, tostring(vlist))
+  svo.debugf("es_dodisposing: %s", tostring(vlist))
   if vlist then return end
 
   local function emptyvial(id)
-    if svo.es_vials[id].sips == 0 then svo.echof(&quot;%d is already empty.&quot;, id) return end
-    svo.echof(&quot;Emptying vial%d with %s.&quot;, id, svo.es_vials[id].potion)
+    if svo.es_vials[id].sips == 0 then svo.echof("%d is already empty.", id) return end
+    svo.echof("Emptying vial%d with %s.", id, svo.es_vials[id].potion)
 
     -- one pass is enough! If we don't completely dispose of it, then that's alright
     for otherid, t in pairs(svo.es_vials) do
@@ -421,24 +421,24 @@ function svo.es_dodisposing(vlist)
         (type(t.months) ~= 'number' or t.months &gt; conf.decaytime) then
 
         local deltacapacity = (type(t.months) == 'number' and 200 or 240) - t.sips -- this is how much we can fill it up by
-        svo.echof(&quot;Can fill vial%d with %d more sips.&quot;, otherid, deltacapacity)
+        svo.echof("Can fill vial%d with %d more sips.", otherid, deltacapacity)
 
         local fillingwith = (svo.es_vials[id].sips &lt; deltacapacity and svo.es_vials[id].sips or deltacapacity)
-        svo.echof(&quot;Filling vial%d with %d sips.&quot;, otherid, fillingwith)
+        svo.echof("Filling vial%d with %d sips.", otherid, fillingwith)
 
-        svo.sendc(string.format(&quot;pour %d into %d&quot;, id, otherid))
+        svo.sendc(string.format("pour %d into %d", id, otherid))
 
         t.sips = t.sips + fillingwith
-        svo.echof(&quot;Poured %s into vial%s, which is now at %d sips.&quot;, svo.es_vials[id].potion, tostring(otherid), tostring(t.sips))
+        svo.echof("Poured %s into vial%s, which is now at %d sips.", svo.es_vials[id].potion, tostring(otherid), tostring(t.sips))
 
         svo.es_vials[id].sips = svo.es_vials[id].sips - fillingwith
-        svo.echof(&quot;Decayable vial%s is now at %d sips.&quot;, id, svo.es_vials[id].sips)
+        svo.echof("Decayable vial%s is now at %d sips.", id, svo.es_vials[id].sips)
 
-        if t.potion == 'empty' then t.potion = svo.es_vials[id].potion; svo.echof(&quot;Poured into empty now has %s potion&quot;, tostring(t.potion)) end
-        if svo.es_vials[id].sips &lt;= 0 then svo.echof(&quot;Vial %s fully emptied.\n--&quot;, tostring(id)) return end
+        if t.potion == 'empty' then t.potion = svo.es_vials[id].potion; svo.echof("Poured into empty now has %s potion", tostring(t.potion)) end
+        if svo.es_vials[id].sips &lt;= 0 then svo.echof("Vial %s fully emptied.\n--", tostring(id)) return end
       end
     end
-    svo.echof(&quot;Vial %d with '%s' wasn't fully emptied, no space to pour it into now.\n--&quot;, id, svo.es_vials[id].potion)
+    svo.echof("Vial %d with '%s' wasn't fully emptied, no space to pour it into now.\n--", id, svo.es_vials[id].potion)
   end
 
   echo'\n'
@@ -452,9 +452,9 @@ function svo.es_dodisposing(vlist)
   end
 
   if haddecays then
-    svo.echof(&quot;Disposing of vials which have %d or less months on them...&quot;, conf.decaytime)
+    svo.echof("Disposing of vials which have %d or less months on them...", conf.decaytime)
   else
-    svo.echof(&quot;Don't have any vials which have under %d months :)&quot;, conf.decaytime)
+    svo.echof("Don't have any vials which have under %d months :)", conf.decaytime)
   end
   svo.showprompt()
 
@@ -462,23 +462,23 @@ function svo.es_dodisposing(vlist)
 end
 
 function svo.es_dispose(cmd)
-  if not cmd:find('vial', 1, true) then svo.echof(&quot;Please include the word 'vial' in the command. Thanks!&quot;) return end
-  if not next(svo.es_vials) then svo.echof(&quot;Don't know of any vials you have - check 'elist' please.&quot;) return end
+  if not cmd:find('vial', 1, true) then svo.echof("Please include the word 'vial' in the command. Thanks!") return end
+  if not next(svo.es_vials) then svo.echof("Don't know of any vials you have - check 'elist' please.") return end
 
   svo.signals.elistcaptured:connect(svo.es_dodisposing)
   svo.es_disposecmd = cmd
   -- refresh our vials data, in case new vials were bought
-  send(&quot;config pagelength 250&quot;, false)
+  send("config pagelength 250", false)
   send('vlist', false)
   send('elist', false)
 end
 
 svo.signals.saveconfig:connect(function ()
-  svo.tablesave(getMudletHomeDir() .. &quot;/svo/config/svo.es_knownstuff&quot;, svo.es_knownstuff)
+  svo.tablesave(getMudletHomeDir() .. "/svo/config/svo.es_knownstuff", svo.es_knownstuff)
 end, 'save knownstuff')
 
 function svo.load_elist_data()
-  local conf_path = getMudletHomeDir() .. &quot;/svo/config/svo.es_knownstuff&quot;
+  local conf_path = getMudletHomeDir() .. "/svo/config/svo.es_knownstuff"
 
   if lfs.attributes(conf_path) then
     table.load(conf_path, svo.es_knownstuff)
@@ -489,7 +489,7 @@ function svo.load_elist_data()
     if not ok then
       os.remove(conf_path)
       tempTimer(10, function()
-        svo.echof(&quot;Your elist sorter save file file got corrupted for some reason - I've deleted it so the system can load other stuff OK. You'll need to re-set all of the elist options again, though. (%q)&quot;, msg)
+        svo.echof("Your elist sorter save file file got corrupted for some reason - I've deleted it so the system can load other stuff OK. You'll need to re-set all of the elist options again, though. (%q)", msg)
       end)
     end
   end
@@ -498,7 +498,7 @@ if firstload then svo.load_elist_data() end
 
 -- remember our vial statuses if we have
 function svo.load_potions_data()
-  local conf_path = getMudletHomeDir() .. &quot;/svo/config/svo.es_potions&quot;
+  local conf_path = getMudletHomeDir() .. "/svo/config/svo.es_potions"
 
   if lfs.attributes(conf_path) then
     local t = {}
@@ -513,34 +513,34 @@ end
 if firstload then svo.load_potions_data() end
 
 svo.signals.saveconfig:connect(function ()
-  svo.tablesave(getMudletHomeDir() .. &quot;/svo/config/svo.es_potions&quot;, svo.es_potions)
+  svo.tablesave(getMudletHomeDir() .. "/svo/config/svo.es_potions", svo.es_potions)
 end, 'save vial configuration')
 
 if firstload then
-  svo.echof(&quot;Loaded svo Elist Sorter, version %s.&quot;, tostring(svo.es_version))
+  svo.echof("Loaded svo Elist Sorter, version %s.", tostring(svo.es_version))
 end
 end)</script>
-            <eventHandlerList/>
-        </Script>
-        <Script isActive="yes" isFolder="no">
-            <name>svo.put_vials_away</name>
-            <packageName></packageName>
-            <script>function svo.put_vials_away()
+			<eventHandlerList />
+		</Script>
+		<Script isActive="yes" isFolder="no">
+			<name>svo.put_vials_away</name>
+			<packageName></packageName>
+			<script>function svo.put_vials_away()
   if not svo.storedvials then return end
   
   for vial in pairs(svo.storedvials) do
-    send(&quot;get &quot;..vial..&quot; from &quot;..svo.conf.obfcontainer, false)
+    send("get "..vial.." from "..svo.conf.obfcontainer, false)
   end
   
   svo.storedvials = {}
 end</script>
-            <eventHandlerList>
-                <string>svo quit</string>
-            </eventHandlerList>
-        </Script>
-    </ScriptPackage>
-    <KeyPackage/>
-    <HelpPackage>
-        <helpURL></helpURL>
-    </HelpPackage>
+			<eventHandlerList>
+				<string>svo quit</string>
+			</eventHandlerList>
+		</Script>
+	</ScriptPackage>
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL></helpURL>
+	</HelpPackage>
 </MudletPackage>

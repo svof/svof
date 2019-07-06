@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
 <MudletPackage version="1.001">
-    <TriggerPackage>
-        <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-            <name>svo Stormhammer Targetting</name>
-            <script></script>
-            <triggerType>0</triggerType>
-            <conditonLineDelta>99</conditonLineDelta>
-            <mStayOpen>0</mStayOpen>
-            <mCommand></mCommand>
-            <packageName></packageName>
-            <mFgColor>#ff0000</mFgColor>
-            <mBgColor>#ffff00</mBgColor>
-            <mSoundFile></mSoundFile>
-            <colorTriggerFgColor>#000000</colorTriggerFgColor>
-            <colorTriggerBgColor>#000000</colorTriggerBgColor>
-            <regexCodeList/>
-            <regexCodePropertyList/>
-            <Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Check ih</name>
-                <script>enableTrigger(&quot;Check ih prompt&quot;)
+	<TriggerPackage>
+		<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>svo Stormhammer Targetting</name>
+			<script></script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>99</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList />
+			<regexCodePropertyList />
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Check ih</name>
+				<script>enableTrigger("Check ih prompt")
 
-local ignore = {&quot;totem&quot;, &quot;sigil&quot;, &quot;blanket&quot;, &quot;shrine&quot;, &quot;steed&quot;, &quot;hippogriff&quot;, &quot;pegasus&quot;, &quot;beehive&quot;, &quot;lever&quot;, &quot;gate&quot;, &quot;box&quot;}
+local ignore = {"totem", "sigil", "blanket", "shrine", "steed", "hippogriff", "pegasus", "beehive", "lever", "gate", "box"}
 
 if table.contains(ignore, matches[2]) then return end
 local id = tonumber(matches[3])
@@ -37,169 +37,169 @@ elseif target3 == 0 then
   target3 = id
   svo.set_target[#svo.set_target+1] = matches[2]
 end</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>^([A-Za-z]+)(\d+)</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>1</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Check ih prompt</name>
-                <script>disableTrigger(&quot;Check ih&quot;)
-disableTrigger(&quot;Check ih prompt&quot;)
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^([A-Za-z]+)(\d+)</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Check ih prompt</name>
+				<script>disableTrigger("Check ih")
+disableTrigger("Check ih prompt")
 
 if #svo.set_target &gt; 0 then
-  selectCurrentLine() replace&quot;&quot;
-  svo.echof(&quot;Targetted %s&quot;, table.concat(svo.set_target, &quot;, &quot;))
+  selectCurrentLine() replace""
+  svo.echof("Targetted %s", table.concat(svo.set_target, ", "))
   svo.showprompt()
   if not svo.conf.customprompt then wrapLine(getLineCount()) end
 end
 
 svo.set_target = nil</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>return isPrompt()</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>4</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>Capture ents</name>
-                <script></script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>1</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>The following beings are in your entourage:</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>3</integer>
-                </regexCodePropertyList>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>bees</name>
-                    <script>svo.bees = tonumber(matches[2])</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>a swarm of bees#(\d+)</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>efreeti</name>
-                    <script>svo.efreeti = tonumber(matches[2])</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>efreeti#(\d+)</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>weird</name>
-                    <script>svo.weird = tonumber(matches[2])</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>weird#(\d+)</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-            </Trigger>
-        </TriggerGroup>
-    </TriggerPackage>
-    <TimerPackage/>
-    <AliasPackage>
-        <AliasGroup isActive="yes" isFolder="yes">
-            <name>svo Stormhammer Targetting</name>
-            <script>target1 = tonumber(multimatches[2][2])
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>return isPrompt()</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>4</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Capture ents</name>
+				<script></script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>1</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>The following beings are in your entourage:</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>3</integer>
+				</regexCodePropertyList>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>bees</name>
+					<script>svo.bees = tonumber(matches[2])</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>a swarm of bees#(\d+)</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>efreeti</name>
+					<script>svo.efreeti = tonumber(matches[2])</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>efreeti#(\d+)</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>weird</name>
+					<script>svo.weird = tonumber(matches[2])</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>weird#(\d+)</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+			</Trigger>
+		</TriggerGroup>
+	</TriggerPackage>
+	<TimerPackage />
+	<AliasPackage>
+		<AliasGroup isActive="yes" isFolder="yes">
+			<name>svo Stormhammer Targetting</name>
+			<script>target1 = tonumber(multimatches[2][2])
 target2 = tonumber(multimatches[2][3])
 target3 = tonumber(multimatches[2][4])</script>
-            <command></command>
-            <packageName></packageName>
-            <regex></regex>
-            <Alias isActive="yes" isFolder="no">
-                <name>Stormhammer targets</name>
-                <script>send(string.format(&quot;cast stormhammer at %d and %d and %d&quot;, target1, target2, target3))</script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^stm$</regex>
-            </Alias>
-            <Alias isActive="yes" isFolder="no">
-                <name>Get targets</name>
-                <script>enableTrigger(&quot;Check ih&quot;)
-send(&quot;ih&quot;, false)
+			<command></command>
+			<packageName></packageName>
+			<regex></regex>
+			<Alias isActive="yes" isFolder="no">
+				<name>Stormhammer targets</name>
+				<script>send(string.format("cast stormhammer at %d and %d and %d", target1, target2, target3))</script>
+				<command></command>
+				<packageName></packageName>
+				<regex>^stm$</regex>
+			</Alias>
+			<Alias isActive="yes" isFolder="no">
+				<name>Get targets</name>
+				<script>enableTrigger("Check ih")
+send("ih", false)
 target1, target2, target3 = 0,0,0
 
 svo.set_target = {}</script>
-                <command></command>
-                <packageName></packageName>
-                <regex>^ih$</regex>
-            </Alias>
-        </AliasGroup>
-    </AliasPackage>
-    <ActionPackage/>
-    <ScriptPackage/>
-    <KeyPackage/>
-    <HelpPackage>
-        <helpURL></helpURL>
-    </HelpPackage>
+				<command></command>
+				<packageName></packageName>
+				<regex>^ih$</regex>
+			</Alias>
+		</AliasGroup>
+	</AliasPackage>
+	<ActionPackage />
+	<ScriptPackage />
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL></helpURL>
+	</HelpPackage>
 </MudletPackage>

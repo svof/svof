@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
 <MudletPackage version="1.001">
-    <TriggerPackage/>
-    <TimerPackage/>
-    <AliasPackage/>
-    <ActionPackage/>
-    <ScriptPackage>
-        <Script isActive="yes" isFolder="no">
-            <name>Dictionary of actions (affs/defs/misc)</name>
-            <packageName></packageName>
-            <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+	<TriggerPackage />
+	<TimerPackage />
+	<AliasPackage />
+	<ActionPackage />
+	<ScriptPackage>
+		<Script isActive="yes" isFolder="no">
+			<name>Dictionary of actions (affs/defs/misc)</name>
+			<packageName></packageName>
+			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -380,13 +380,13 @@ codepaste.serversideahealthmanaprio = function()
 
   -- swap using curing system commands as appropriate
   -- setup special balance in cache mentioning which is first, so it is remembered
-  sk.priochangecache.special = sk.priochangecache.special or { healthormana = &quot;&quot;}
+  sk.priochangecache.special = sk.priochangecache.special or { healthormana = ""}
 
   if healhealth_prio &gt; healmana_prio and sk.priochangecache.special.healthormana ~= 'health' then
-    svo.sendcuring(&quot;priority health&quot;)
+    svo.sendcuring("priority health")
     sk.priochangecache.special.healthormana = 'health'
   elseif healmana_prio &gt; healhealth_prio and sk.priochangecache.special.healthormana ~= 'mana' then
-    svo.sendcuring(&quot;priority mana&quot;)
+    svo.sendcuring("priority mana")
     sk.priochangecache.special.healthormana = 'mana'
   end
 end
@@ -401,7 +401,7 @@ svo.dict = {
   gamename = nil,
   onservereignore = nil, -- (function) a function which'll return true if this needs to be ignored serverside
   healhealth = {
-    description = &quot;heals health with health/vitality or moss/potash&quot;,
+    description = "heals health with health/vitality or moss/potash",
     sip = {
       name = false, --'healhealth_sip',
       balance = false, --'sip',
@@ -478,14 +478,14 @@ end
       noeffect = function() svo.lostbal_moss() end,
 
       eatcure = {'irid', 'potash'},
-      actions = {&quot;eat moss&quot;, &quot;eat irid&quot;, &quot;eat potash&quot;},
+      actions = {"eat moss", "eat irid", "eat potash"},
       onstart = function()
         svo.eat(svo.dict.healhealth.moss)
       end
     },
   },
   healmana = {
-    description = &quot;heals mana with mana/mentality or moss/potash&quot;,
+    description = "heals mana with mana/mentality or moss/potash",
     sip = {
       -- managed outside priority lists
       irregular = true,
@@ -521,7 +521,7 @@ end
       noeffect = function() svo.lostbal_moss() end,
 
       eatcure = {'irid', 'potash'},
-      actions = {&quot;eat moss&quot;, &quot;eat irid&quot;, &quot;eat potash&quot;},
+      actions = {"eat moss", "eat irid", "eat potash"},
       onstart = function()
         svo.eat(svo.dict.healmana.moss)
       end
@@ -560,7 +560,7 @@ end
       -- in case an unrecognised message is shown, don't error
       empty = function() end,
 
-      actions = {&quot;apply health to head&quot;},
+      actions = {"apply health to head"},
       onstart = function() send('apply health to head', conf.commandecho) end
     },
     aff = {
@@ -634,7 +634,7 @@ end
       -- in case an unrecognised message is shown, don't error
       empty = function() end,
 
-      actions = {&quot;apply health to torso&quot;},
+      actions = {"apply health to torso"},
       onstart = function() send('apply health to torso', conf.commandecho) end
     },
     aff = {
@@ -708,7 +708,7 @@ end
       -- in case an unrecognised message is shown, don't error
       empty = function() end,
 
-      actions = {&quot;apply health to arms&quot;},
+      actions = {"apply health to arms"},
       onstart = function() send('apply health to arms', conf.commandecho) end
     },
     aff = {
@@ -782,7 +782,7 @@ end
       -- in case an unrecognised message is shown, don't error
       empty = function() end,
 
-      actions = {&quot;apply health to legs&quot;},
+      actions = {"apply health to legs"},
       onstart = function() send('apply health to legs', conf.commandecho) end
     },
     aff = {
@@ -1575,7 +1575,7 @@ end
       oncompleted = function (data)
         if data and data.attacktype and data.attacktype == 'domination' and (data.atline+1 == getLastLineNumber('main')
           or (data.atline+1 == getLastLineNumber('main') and
-            svo.find_until_last_paragraph(&quot;The gremlin races between your legs, throwing you off-balance.&quot;, 'exact'))) then
+            svo.find_until_last_paragraph("The gremlin races between your legs, throwing you off-balance.", 'exact'))) then
           svo.addaffdict(svo.dict.recklessness)
         elseif not conf.aillusion or
           (stats.maxhealth == stats.currenthealth and stats.maxmana == stats.currentmana) then
@@ -2221,7 +2221,7 @@ end
         -- A bloodleech leaps at you, clamping with teeth onto exposed flesh and secreting some foul toxin into your bloodstream. You stumble as you are afflicted with sensitivity.$Your hearing is suddenly restored.
         -- or dragoncurse: A sudden sense of panic overtakes you as the draconic curse manifests, afflicting you with sensitivity.$Your hearing is suddenly restored.
         -- however, don't go off on dstab: Bob pricks you twice in rapid succession with her dirk.$Your hearing is suddenly restored.$A prickly, stinging sensation spreads through your body.
-        if svo.find_until_last_paragraph(&quot;Your hearing is suddenly restored.&quot;, 'exact') and not svo.find_until_last_paragraph(&quot;A prickly, stinging sensation spreads through your body.&quot;, 'exact') then return end
+        if svo.find_until_last_paragraph("Your hearing is suddenly restored.", 'exact') and not svo.find_until_last_paragraph("A prickly, stinging sensation spreads through your body.", 'exact') then return end
 
         if not conf.aillusion or (not defc.deaf and not affs.deafaff) then
           svo.addaffdict(svo.dict.sensitivity)
@@ -2453,7 +2453,7 @@ end
     },
     aff = {
       oncompleted = function()
-        if not svo.find_until_last_paragraph(&quot;Your enhanced constitution allows you to shrug off the nausea.&quot;, 'exact') then
+        if not svo.find_until_last_paragraph("Your enhanced constitution allows you to shrug off the nausea.", 'exact') then
           svo.addaffdict(svo.dict.illness)
         end
       end,
@@ -2557,7 +2557,7 @@ end
 
       smokecure = {'elm', 'cinnabar'},
       onstart = function()
-        send(&quot;smoke &quot; .. pipes.elm.id, conf.commandecho)
+        send("smoke " .. pipes.elm.id, conf.commandecho)
       end,
 
       empty = function()
@@ -2601,7 +2601,7 @@ end
 
       smokecure = {'valerian', 'realgar'},
       onstart = function()
-        send(&quot;smoke &quot; .. pipes.valerian.id, conf.commandecho)
+        send("smoke " .. pipes.valerian.id, conf.commandecho)
       end,
 
       empty = function()
@@ -2638,7 +2638,7 @@ end
 
       smokecure = {'elm', 'cinnabar'},
       onstart = function()
-        send(&quot;smoke &quot; .. pipes.elm.id, conf.commandecho)
+        send("smoke " .. pipes.elm.id, conf.commandecho)
       end,
 
       empty = function()
@@ -2671,7 +2671,7 @@ end
 
       smokecure = {'elm', 'cinnabar'},
       onstart = function()
-        send(&quot;smoke &quot; .. pipes.elm.id, conf.commandecho)
+        send("smoke " .. pipes.elm.id, conf.commandecho)
       end,
 
       empty = function()
@@ -2707,7 +2707,7 @@ end
 
       smokecure = {'elm', 'cinnabar'},
       onstart = function()
-        send(&quot;smoke &quot; .. pipes.elm.id, conf.commandecho)
+        send("smoke " .. pipes.elm.id, conf.commandecho)
       end,
 
       empty = function()
@@ -2740,7 +2740,7 @@ end
 
       smokecure = {'valerian', 'realgar'},
       onstart = function()
-        send(&quot;smoke &quot; .. pipes.valerian.id, conf.commandecho)
+        send("smoke " .. pipes.valerian.id, conf.commandecho)
       end,
 
       empty = function()
@@ -2788,7 +2788,7 @@ end
 
       smokecure = {'valerian', 'realgar'},
       onstart = function()
-        send(&quot;smoke &quot; .. pipes.valerian.id, conf.commandecho)
+        send("smoke " .. pipes.valerian.id, conf.commandecho)
       end,
 
       empty = function()
@@ -2820,7 +2820,7 @@ end
 
       smokecure = {'valerian', 'realgar'},
       onstart = function()
-        send(&quot;smoke &quot; .. pipes.valerian.id, conf.commandecho)
+        send("smoke " .. pipes.valerian.id, conf.commandecho)
       end,
 
       empty = function()
@@ -2854,9 +2854,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to torso&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to torso&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.heartseed.salve, &quot; to torso&quot;)
+        svo.apply(svo.dict.heartseed.salve, " to torso")
       end,
 
       -- we get no msg from an application of this
@@ -2901,9 +2901,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to head&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to head&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.calcifiedskull.salve, &quot; to head&quot;)
+        svo.apply(svo.dict.calcifiedskull.salve, " to head")
       end,
 
       -- we get no msg from an application of this
@@ -2948,9 +2948,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to torso&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to torso&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.calcifiedtorso.salve, &quot; to torso&quot;)
+        svo.apply(svo.dict.calcifiedtorso.salve, " to torso")
       end,
 
       -- we get no msg from an application of this
@@ -2995,9 +2995,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to torso&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to torso&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.hypothermia.salve, &quot; to torso&quot;)
+        svo.apply(svo.dict.hypothermia.salve, " to torso")
       end,
 
       -- we get no msg from an application of this
@@ -3044,9 +3044,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to legs&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to legs&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.mutilatedrightleg.salve, &quot; to legs&quot;)
+        svo.apply(svo.dict.mutilatedrightleg.salve, " to legs")
       end,
 
       -- we get no msg from an application of this
@@ -3125,9 +3125,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to legs&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to legs&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.parestolegs.salve, &quot; to legs&quot;)
+        svo.apply(svo.dict.parestolegs.salve, " to legs")
       end,
 
       -- we get no msg from an application of this
@@ -3179,9 +3179,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to legs&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to legs&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.mangledrightleg.salve, &quot; to legs&quot;)
+        svo.apply(svo.dict.mangledrightleg.salve, " to legs")
       end,
 
       -- we get no msg from an application of this
@@ -3264,9 +3264,9 @@ end
       end,
 
       applycure = {'mending', 'renewal'},
-      actions = {&quot;apply mending to legs&quot;, &quot;apply mending&quot;, &quot;apply renewal to legs&quot;, &quot;apply renewal&quot;},
+      actions = {"apply mending to legs", "apply mending", "apply renewal to legs", "apply renewal"},
       onstart = function()
-        svo.apply(svo.dict.crippledrightleg.salve, &quot; to legs&quot;)
+        svo.apply(svo.dict.crippledrightleg.salve, " to legs")
       end,
 
       fizzled = function()
@@ -3305,9 +3305,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to legs&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to legs&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.mutilatedleftleg.salve, &quot; to legs&quot;)
+        svo.apply(svo.dict.mutilatedleftleg.salve, " to legs")
       end,
 
       -- we get no msg from an application of this
@@ -3381,9 +3381,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to legs&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to legs&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.mangledleftleg.salve, &quot; to legs&quot;)
+        svo.apply(svo.dict.mangledleftleg.salve, " to legs")
       end,
 
       -- we get no msg from an application of this
@@ -3466,9 +3466,9 @@ end
       end,
 
       applycure = {'mending', 'renewal'},
-      actions = {&quot;apply mending to legs&quot;, &quot;apply mending&quot;, &quot;apply renewal to legs&quot;, &quot;apply renewal&quot;},
+      actions = {"apply mending to legs", "apply mending", "apply renewal to legs", "apply renewal"},
       onstart = function()
-        svo.apply(svo.dict.crippledleftleg.salve, &quot; to legs&quot;)
+        svo.apply(svo.dict.crippledleftleg.salve, " to legs")
       end,
 
       fizzled = function()
@@ -3512,9 +3512,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to arms&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to arms&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.parestoarms.salve, &quot; to arms&quot;)
+        svo.apply(svo.dict.parestoarms.salve, " to arms")
       end,
 
       -- we get no msg from an application of this
@@ -3566,9 +3566,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to arms&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to arms&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.mutilatedleftarm.salve, &quot; to arms&quot;)
+        svo.apply(svo.dict.mutilatedleftarm.salve, " to arms")
       end,
 
       -- we get no msg from an application of this
@@ -3637,9 +3637,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to arms&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to arms&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.mangledleftarm.salve, &quot; to arms&quot;)
+        svo.apply(svo.dict.mangledleftarm.salve, " to arms")
       end,
 
       -- we get no msg from an application of this
@@ -3719,9 +3719,9 @@ end
       end,
 
       applycure = {'mending', 'renewal'},
-      actions = {&quot;apply mending to arms&quot;, &quot;apply mending&quot;, &quot;apply renewal to arms&quot;, &quot;apply renewal&quot;},
+      actions = {"apply mending to arms", "apply mending", "apply renewal to arms", "apply renewal"},
       onstart = function()
-        svo.apply(svo.dict.crippledleftarm.salve, &quot; to arms&quot;)
+        svo.apply(svo.dict.crippledleftarm.salve, " to arms")
       end,
 
       fizzled = function()
@@ -3760,9 +3760,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to arms&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to arms&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.mutilatedrightarm.salve, &quot; to arms&quot;)
+        svo.apply(svo.dict.mutilatedrightarm.salve, " to arms")
       end,
 
       -- we get no msg from an application of this
@@ -3831,9 +3831,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to arms&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to arms&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.mangledrightarm.salve, &quot; to arms&quot;)
+        svo.apply(svo.dict.mangledrightarm.salve, " to arms")
       end,
 
       -- we get no msg from an application of this
@@ -3913,9 +3913,9 @@ end
       end,
 
       applycure = {'mending', 'renewal'},
-      actions = {&quot;apply mending to arms&quot;, &quot;apply mending&quot;, &quot;apply renewal to arms&quot;, &quot;apply renewal&quot;},
+      actions = {"apply mending to arms", "apply mending", "apply renewal to arms", "apply renewal"},
       onstart = function()
-        svo.apply(svo.dict.crippledrightarm.salve, &quot; to arms&quot;)
+        svo.apply(svo.dict.crippledrightarm.salve, " to arms")
       end,
 
       fizzled = function()
@@ -3953,9 +3953,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to head&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to head&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.laceratedthroat.salve, &quot; to head&quot;)
+        svo.apply(svo.dict.laceratedthroat.salve, " to head")
       end,
 
       -- we get no msg from an application of this
@@ -4016,9 +4016,9 @@ end
       end,
 
       applycure = {'epidermal', 'sensory'},
-      actions = {&quot;apply epidermal to head&quot;, &quot;apply epidermal&quot;, &quot;apply sensory to head&quot;, &quot;apply sensory&quot;},
+      actions = {"apply epidermal to head", "apply epidermal", "apply sensory to head", "apply sensory"},
       onstart = function()
-        svo.apply(svo.dict.slashedthroat.salve, &quot; to head&quot;)
+        svo.apply(svo.dict.slashedthroat.salve, " to head")
       end
     },
     aff = {
@@ -4050,9 +4050,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to torso&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to torso&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.serioustrauma.salve, &quot; to torso&quot;)
+        svo.apply(svo.dict.serioustrauma.salve, " to torso")
       end,
 
       -- we get no msg from an application of this
@@ -4114,9 +4114,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to torso&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to torso&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.mildtrauma.salve, &quot; to torso&quot;)
+        svo.apply(svo.dict.mildtrauma.salve, " to torso")
       end,
 
       -- we get no msg from an application of this
@@ -4162,9 +4162,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to head&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to head&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.seriousconcussion.salve, &quot; to head&quot;)
+        svo.apply(svo.dict.seriousconcussion.salve, " to head")
       end,
 
       -- we get no msg from an application of this
@@ -4233,9 +4233,9 @@ end
       end,
 
       applycure = {'restoration', 'reconstructive'},
-      actions = {&quot;apply restoration to head&quot;, &quot;apply restoration&quot;, &quot;apply reconstructive to head&quot;, &quot;apply reconstructive&quot;},
+      actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
       onstart = function()
-        svo.apply(svo.dict.mildconcussion.salve, &quot; to head&quot;)
+        svo.apply(svo.dict.mildconcussion.salve, " to head")
       end,
 
       -- we get no msg from an application of this
@@ -4296,9 +4296,9 @@ end
       end,
 
       applycure = {'epidermal', 'sensory'},
-      actions = {&quot;apply epidermal to body&quot;, &quot;apply epidermal&quot;, &quot;apply sensory to body&quot;, &quot;apply sensory&quot;},
+      actions = {"apply epidermal to body", "apply epidermal", "apply sensory to body", "apply sensory"},
       onstart = function()
-        svo.apply(svo.dict.anorexia.salve, &quot; to body&quot;)
+        svo.apply(svo.dict.anorexia.salve, " to body")
       end
     },
     focus = {
@@ -4363,9 +4363,9 @@ end
       end,
 
       applycure = {'mending', 'renewal'},
-      actions = {&quot;apply mending to body&quot;, &quot;apply mending&quot;, &quot;apply renewal to body&quot;, &quot;apply renewal&quot;},
+      actions = {"apply mending to body", "apply mending", "apply renewal to body", "apply renewal"},
       onstart = function()
-        svo.apply(svo.dict.ablaze.salve, &quot; to body&quot;)
+        svo.apply(svo.dict.ablaze.salve, " to body")
       end
     },
     aff = {
@@ -4428,9 +4428,9 @@ end
       end,
 
       applycure = {'mending', 'renewal'},
-      actions = {&quot;apply mending to body&quot;, &quot;apply mending&quot;, &quot;apply renewal to body&quot;, &quot;apply renewal&quot;},
+      actions = {"apply mending to body", "apply mending", "apply renewal to body", "apply renewal"},
       onstart = function()
-        svo.apply(svo.dict.severeburn.salve, &quot; to body&quot;)
+        svo.apply(svo.dict.severeburn.salve, " to body")
       end
     },
     aff = {
@@ -4473,9 +4473,9 @@ end
       end,
 
       applycure = {'mending', 'renewal'},
-      actions = {&quot;apply mending to body&quot;, &quot;apply mending&quot;, &quot;apply renewal to body&quot;, &quot;apply renewal&quot;},
+      actions = {"apply mending to body", "apply mending", "apply renewal to body", "apply renewal"},
       onstart = function()
-        svo.apply(svo.dict.extremeburn.salve, &quot; to body&quot;)
+        svo.apply(svo.dict.extremeburn.salve, " to body")
       end
     },
     aff = {
@@ -4518,9 +4518,9 @@ end
       end,
 
       applycure = {'mending', 'renewal'},
-      actions = {&quot;apply mending to body&quot;, &quot;apply mending&quot;, &quot;apply renewal to body&quot;, &quot;apply renewal&quot;},
+      actions = {"apply mending to body", "apply mending", "apply renewal to body", "apply renewal"},
       onstart = function()
-        svo.apply(svo.dict.charredburn.salve, &quot; to body&quot;)
+        svo.apply(svo.dict.charredburn.salve, " to body")
       end
     },
     aff = {
@@ -4563,9 +4563,9 @@ end
       end,
 
       applycure = {'mending', 'renewal'},
-      actions = {&quot;apply mending to body&quot;, &quot;apply mending&quot;, &quot;apply renewal to body&quot;, &quot;apply renewal&quot;},
+      actions = {"apply mending to body", "apply mending", "apply renewal to body", "apply renewal"},
       onstart = function()
-        svo.apply(svo.dict.meltingburn.salve, &quot; to body&quot;)
+        svo.apply(svo.dict.meltingburn.salve, " to body")
       end
     },
     aff = {
@@ -4602,9 +4602,9 @@ end
       end,
 
       applycure = {'mending', 'renewal'},
-      actions = {&quot;apply mending to body&quot;, &quot;apply mending&quot;, &quot;apply renewal to body&quot;, &quot;apply renewal&quot;, &quot;apply mending to torso&quot;, &quot;apply renewal to torso&quot;},
+      actions = {"apply mending to body", "apply mending", "apply renewal to body", "apply renewal", "apply mending to torso", "apply renewal to torso"},
       onstart = function()
-        svo.apply(svo.dict.selarnia.salve, &quot; to body&quot;)
+        svo.apply(svo.dict.selarnia.salve, " to body")
       end
     },
     aff = {
@@ -4636,9 +4636,9 @@ end
       end,
 
       applycure = {'epidermal', 'sensory'},
-      actions = {&quot;apply epidermal to body&quot;, &quot;apply epidermal&quot;, &quot;apply sensory to body&quot;, &quot;apply sensory&quot;},
+      actions = {"apply epidermal to body", "apply epidermal", "apply sensory to body", "apply sensory"},
       onstart = function()
-        svo.apply(svo.dict.itching.salve, &quot; to body&quot;)
+        svo.apply(svo.dict.itching.salve, " to body")
       end
     },
     aff = {
@@ -4670,9 +4670,9 @@ end
       end,
 
       applycure = {'epidermal', 'sensory'},
-      actions = {&quot;apply epidermal to head&quot;, &quot;apply epidermal&quot;, &quot;apply sensory to head&quot;, &quot;apply sensory&quot;},
+      actions = {"apply epidermal to head", "apply epidermal", "apply sensory to head", "apply sensory"},
       onstart = function()
-        svo.apply(svo.dict.stuttering.salve, &quot; to head&quot;)
+        svo.apply(svo.dict.stuttering.salve, " to head")
       end
     },
     aff = {
@@ -4704,9 +4704,9 @@ end
       end,
 
       applycure = {'epidermal', 'sensory'},
-      actions = {&quot;apply epidermal to head&quot;, &quot;apply epidermal&quot;, &quot;apply sensory to head&quot;, &quot;apply sensory&quot;},
+      actions = {"apply epidermal to head", "apply epidermal", "apply sensory to head", "apply sensory"},
       onstart = function()
-        svo.apply(svo.dict.scalded.salve, &quot; to head&quot;)
+        svo.apply(svo.dict.scalded.salve, " to head")
       end
     },
     aff = {
@@ -4819,9 +4819,9 @@ end
       end,
 
       applycure = {'epidermal', 'sensory'},
-      actions = {&quot;apply epidermal to head&quot;, &quot;apply epidermal&quot;, &quot;apply sensory to head&quot;, &quot;apply sensory&quot;},
+      actions = {"apply epidermal to head", "apply epidermal", "apply sensory to head", "apply sensory"},
       onstart = function()
-        svo.apply(svo.dict.blindaff.salve, &quot; to head&quot;)
+        svo.apply(svo.dict.blindaff.salve, " to head")
       end
     },
     aff = {
@@ -4867,9 +4867,9 @@ end
       end,
 
       applycure = {'epidermal', 'sensory'},
-      actions = {&quot;apply epidermal to head&quot;, &quot;apply epidermal&quot;, &quot;apply sensory to head&quot;, &quot;apply sensory&quot;},
+      actions = {"apply epidermal to head", "apply epidermal", "apply sensory to head", "apply sensory"},
       onstart = function()
-        svo.apply(svo.dict.deafaff.salve, &quot; to head&quot;)
+        svo.apply(svo.dict.deafaff.salve, " to head")
       end
     },
     aff = {
@@ -4908,9 +4908,9 @@ end
       end,
 
       applycure = {'caloric', 'exothermic'},
-      actions = {&quot;apply caloric to body&quot;, &quot;apply caloric&quot;, &quot;apply exothermic to body&quot;, &quot;apply exothermic&quot;},
+      actions = {"apply caloric to body", "apply caloric", "apply exothermic to body", "apply exothermic"},
       onstart = function()
-        svo.apply(svo.dict.shivering.salve, &quot; to body&quot;)
+        svo.apply(svo.dict.shivering.salve, " to body")
       end,
 
       empty = function()
@@ -4948,9 +4948,9 @@ end
       end,
 
       applycure = {'caloric', 'exothermic'},
-      actions = {&quot;apply caloric to body&quot;, &quot;apply caloric&quot;, &quot;apply exothermic to body&quot;, &quot;apply exothermic&quot;},
+      actions = {"apply caloric to body", "apply caloric", "apply exothermic to body", "apply exothermic"},
       onstart = function()
-        svo.apply(svo.dict.frozen.salve, &quot; to body&quot;)
+        svo.apply(svo.dict.frozen.salve, " to body")
       end,
 
       empty = function()
@@ -5048,7 +5048,7 @@ end
           return
         end
 
-        send(&quot;reject &quot; .. svo.dict.lovers.rejecting, conf.commandecho)
+        send("reject " .. svo.dict.lovers.rejecting, conf.commandecho)
       end
     },
     aff = {
@@ -5130,7 +5130,7 @@ end
         svo.doaction(svo.dict.curingsleep.waitingfor)
       end,
 
-      actions = {'wake', &quot;wake up&quot;},
+      actions = {'wake', "wake up"},
       onstart = function() send('wake up', conf.commandecho) end,
 
       -- ???
@@ -5212,7 +5212,7 @@ end
 
       nomana = function()
         if not svo.actions.nomana_waitingfor and stats.currentmana ~= 0 then
-          svo.echof(&quot;Seems we're out of mana.&quot;)
+          svo.echof("Seems we're out of mana.")
           svo.doaction(svo.dict.nomana.waitingfor)
         end
 
@@ -5223,7 +5223,7 @@ end
       haemophilia = function()
         if svo.dict.bleeding.saw_haemophilia then
           svo.addaffdict(svo.dict.haemophilia)
-          svo.echof(&quot;Seems like we do have haemophilia for real.&quot;)
+          svo.echof("Seems like we do have haemophilia for real.")
         else
           svo.dict.bleeding.saw_haemophilia = true
         end
@@ -5304,7 +5304,7 @@ end
           svo.rmaff('frozen')
         -- handle levels of burns
 
-        elseif aff == &quot;all burns&quot; then
+        elseif aff == "all burns" then
           codepaste.remove_burns()
 
         elseif aff == 'burn' then
@@ -5325,7 +5325,7 @@ end
             codepaste.remove_stackableaff('skullfractures', true)
           end
 
-        elseif aff == &quot;skullfractures cured&quot; then
+        elseif aff == "skullfractures cured" then
           svo.rmaff('skullfractures')
           svo.dict.skullfractures.count = 0
 
@@ -5337,7 +5337,7 @@ end
             codepaste.remove_stackableaff('crackedribs', true)
           end
 
-        elseif aff == &quot;crackedribs cured&quot; then
+        elseif aff == "crackedribs cured" then
           svo.rmaff('crackedribs')
           svo.dict.crackedribs.count = 0
 
@@ -5349,7 +5349,7 @@ end
             codepaste.remove_stackableaff('wristfractures', true)
           end
 
-        elseif aff == &quot;wristfractures cured&quot; then
+        elseif aff == "wristfractures cured" then
           svo.rmaff('wristfractures')
           svo.dict.wristfractures.count = 0
 
@@ -5361,7 +5361,7 @@ end
             codepaste.remove_stackableaff('torntendons', true)
           end
 
-        elseif aff == &quot;torntendons cured&quot; then
+        elseif aff == "torntendons cured" then
           svo.rmaff('torntendons')
           svo.dict.torntendons.count = 0
 
@@ -5372,7 +5372,7 @@ end
         svo.lostbal_tree()
       end,
 
-      action = &quot;touch tree&quot;,
+      action = "touch tree",
       onstart = function() send('touch tree', conf.commandecho) end,
 
       empty = function()
@@ -5395,7 +5395,7 @@ end
         for name, func in pairs(svo.restore) do
           if not me.disabledrestorefunc[name] then
             local s,m = pcall(func[1])
-            if s and m then svo.debugf(&quot;restore: %s strat went off&quot;, name) return true end
+            if s and m then svo.debugf("restore: %s strat went off", name) return true end
           end
         end
       end,
@@ -5495,14 +5495,14 @@ end
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
       end,
 
-      actions = {'diag', 'diagnose', &quot;diag me&quot;, &quot;diagnose me&quot;},
+      actions = {'diag', 'diagnose', "diag me", "diagnose me"},
       onstart = function() send('diag', conf.commandecho) end
     },
   },
   block = {
     gamename = 'blocking',
     physical = {
-      blockingdir = &quot;&quot;,
+      blockingdir = "",
       balanceless_act = true, def = true, undeffable = true,
 
       isadvisable = function()
@@ -5534,7 +5534,7 @@ end
 
       onstart = function()
         if (not defc.block or svo.dict.block.physical.blockingdir ~= conf.blockingdir) then
-          send(&quot;block &quot;..tostring(conf.blockingdir), conf.commandecho)
+          send("block "..tostring(conf.blockingdir), conf.commandecho)
         else
           send('unblock', conf.commandecho)
         end
@@ -5543,7 +5543,7 @@ end
     gone = {
       oncompleted = function()
         defences.lost('block')
-        svo.dict.block.physical.blockingdir = &quot;&quot;
+        svo.dict.block.physical.blockingdir = ""
 
         if svo.actions.block_physical then
           svo.killaction(svo.dict.block.physical)
@@ -5576,9 +5576,9 @@ end
           for name, limb in pairs(svo.sp_config.parry_shouldbe) do
             if limb and limb ~= svo.sps.parry_currently[name] then
 if not (svo.haveskillset('tekura') and conf.guarding) then
-              send(string.format(&quot;%sparry %s&quot;, (not defc.dragonform and &quot;&quot; or 'claw'), name), conf.commandecho)
+              send(string.format("%sparry %s", (not defc.dragonform and "" or 'claw'), name), conf.commandecho)
 else
-              send(string.format(&quot;%s %s&quot;, (not defc.dragonform and 'guard' or 'clawparry'), name), conf.commandecho)
+              send(string.format("%s %s", (not defc.dragonform and 'guard' or 'clawparry'), name), conf.commandecho)
 end
               return
             end
@@ -5588,9 +5588,9 @@ end
           for limb, status in pairs(svo.sps.parry_currently) do
             if status ~= svo.sp_config.parry_shouldbe[limb] then
 if not (svo.haveskillset('tekura') and conf.guarding) then
-             send(string.format(&quot;%sparry nothing&quot;, (not defc.dragonform and &quot;&quot; or 'claw')), conf.commandecho)
+             send(string.format("%sparry nothing", (not defc.dragonform and "" or 'claw')), conf.commandecho)
 else
-             send(string.format(&quot;%s nothing&quot;, (not defc.dragonform and 'guard' or 'clawparry')), conf.commandecho)
+             send(string.format("%s nothing", (not defc.dragonform and 'guard' or 'clawparry')), conf.commandecho)
 end
              return
             end
@@ -5600,9 +5600,9 @@ end
           svo.sys.sp_satisfied = true
         elseif svo.sp_config.priority[1] and not svo.sps.parry_currently[svo.sp_config.priority[1]] then
 if not (svo.haveskillset('tekura') and conf.guarding) then
-          send(string.format(&quot;%sparry %s&quot;, (not defc.dragonform and &quot;&quot; or 'claw'), svo.sp_config.priority[1]), conf.commandecho)
+          send(string.format("%sparry %s", (not defc.dragonform and "" or 'claw'), svo.sp_config.priority[1]), conf.commandecho)
 else
-          send(string.format(&quot;%s %s&quot;, (not defc.dragonform and 'guard' or 'clawparry'), svo.sp_config.priority[1]), conf.commandecho)
+          send(string.format("%s %s", (not defc.dragonform and 'guard' or 'clawparry'), svo.sp_config.priority[1]), conf.commandecho)
 end
         else -- got here? nothing to do...
           svo.sys.sp_satisfied = true end
@@ -5634,9 +5634,9 @@ end
           -- allow other outrs to catch up, then re-check again
           if sys.blockoutr then killTimer(sys.blockoutr); sys.blockoutr = nil end
           sys.blockoutr = tempTimer(sys.wait + svo.syncdelay(), function() sys.blockoutr = nil
-            svo.debugf(&quot;sys.blockoutr expired&quot;) svo.make_gnomes_work()
+            svo.debugf("sys.blockoutr expired") svo.make_gnomes_work()
             end)
-          svo.debugf(&quot;sys.blockoutr setup: &quot;, debug.traceback())
+          svo.debugf("sys.blockoutr setup: ", debug.traceback())
         end
       end,
 
@@ -5647,7 +5647,7 @@ end
       onstart = function()
         for herb, _ in pairs(rift.precache) do
           if rift.precache[herb] ~= 0 and rift.riftcontents[herb] ~= 0 and (rift.invcontents[herb] &lt; rift.precache[herb]) then
-            send(string.format(&quot;outr %s%s&quot;, (affs.addiction and &quot;&quot; or (rift.precache[herb] - rift.invcontents[herb]..&quot; &quot;)), herb), conf.commandecho)
+            send(string.format("outr %s%s", (affs.addiction and "" or (rift.precache[herb] - rift.invcontents[herb].." ")), herb), conf.commandecho)
             if sys.sync then return end
           end
         end
@@ -5673,8 +5673,8 @@ end
       onstart = function()
 if svo.haveskillset('weaponmastery') then
         if sk.didfootingattack and conf.recoverfooting then
-          send(&quot;recover footing&quot;, conf.commandecho)
-          if affs.blackout then send(&quot;recover footing&quot;, conf.commandecho) end
+          send("recover footing", conf.commandecho)
+          if affs.blackout then send("recover footing", conf.commandecho) end
         else
           send('stand', conf.commandecho)
           if affs.blackout then send('stand', conf.commandecho) end
@@ -5756,12 +5756,12 @@ end
         svo.lastlit('valerian')
       end,
 
-      actions = {&quot;light pipes&quot;},
+      actions = {"light pipes"},
       onstart = function()
         if conf.gagrelight then
-          send(&quot;light pipes&quot;, false)
+          send("light pipes", false)
         else
-          send(&quot;light pipes&quot;, conf.commandecho) end
+          send("light pipes", conf.commandecho) end
       end
     }
   },
@@ -5940,7 +5940,7 @@ end
 
       onstart = function()
         for _, t in pairs(svo.dict.rewield.rewieldables) do
-          send(&quot;wield &quot;..t.id, conf.commandecho)
+          send("wield "..t.id, conf.commandecho)
           if sys.sync then return end
         end
       end
@@ -5967,13 +5967,13 @@ end
 
         -- prevent leprosy in blackout
         if svo.enabledskills.necromancy then
-          svo.echof(&quot;Fighting a Necromancer - going to assume crippled limbs every now and then.&quot;)
+          svo.echof("Fighting a Necromancer - going to assume crippled limbs every now and then.")
           tempTimer(3, function() if affs.blackout then svo.addaffdict(svo.dict.unknowncrippledlimb) svo.make_gnomes_work() end end)
           tempTimer(5, function() if affs.blackout then svo.addaffdict(svo.dict.unknowncrippledlimb) svo.make_gnomes_work() end end)
         end
 
         if svo.enabledskills.curses then
-          svo.echof(&quot;Fighting a Shaman - going to check for asthma/anorexia.&quot;)
+          svo.echof("Fighting a Shaman - going to check for asthma/anorexia.")
           tempTimer(3, function() if affs.blackout then svo.affsp.anorexia = true; svo.affsp.asthma = true; svo.make_gnomes_work() end end)
           tempTimer(5, function() if affs.blackout then svo.affsp.anorexia = true; svo.affsp.asthma = true; svo.make_gnomes_work() end end)
         end
@@ -5993,7 +5993,7 @@ end
       end
 
       if svo.dict.blackout.check_lust then
-        svo.echof(&quot;Checking allies for potential lust...&quot;)
+        svo.echof("Checking allies for potential lust...")
         send('allies', conf.commandecho)
         svo.dict.blackout.check_lust = nil
       end
@@ -6006,17 +6006,17 @@ end
           svo.reset.general()
           svo.reset.defs()
           conf.paused = true
-          echo&quot;\n&quot;svo.echof(&quot;We died.&quot;)
-          raiseEvent(&quot;svo config changed&quot;, 'paused')
+          echo"\n"svo.echof("We died.")
+          raiseEvent("svo config changed", 'paused')
         end
       end)
 
       -- if we came out with full health and mana out of blackout, assume we've got recklessness meanwhile. don't do it in serverside curing though, because that doesn't assume the same
       if (not svo.dict.blackout.addedon or svo.dict.blackout.addedon ~= os.time()) and stats.currenthealth == stats.maxhealth and stats.currentmana == stats.maxmana then
         svo.addaffdict(svo.dict.recklessness)
-        svo.echof(&quot;suspicious full stats out of blackout - going to assume reckless.&quot;)
+        svo.echof("suspicious full stats out of blackout - going to assume reckless.")
         if conf.serverside then
-          svo.sendcuring(&quot;predict recklessness&quot;)
+          svo.sendcuring("predict recklessness")
         end
       end
     end,
@@ -6042,7 +6042,7 @@ end
             svo.addaffdict(svo.dict.recklessness)
 
             if conf.serverside then
-              svo.sendcuring(&quot;predict recklessness&quot;)
+              svo.sendcuring("predict recklessness")
             end
 
             if number and number &gt; 1 then
@@ -6065,7 +6065,7 @@ end
             svo.addaffdict(svo.dict.recklessness)
 
             if conf.serverside then
-              svo.sendcuring(&quot;predict recklessness&quot;)
+              svo.sendcuring("predict recklessness")
             end
         else
           codepaste.addunknownany()
@@ -6133,7 +6133,7 @@ end
             svo.addaffdict(svo.dict.recklessness)
 
             if conf.serverside then
-              svo.sendcuring(&quot;predict recklessness&quot;)
+              svo.sendcuring("predict recklessness")
             end
 
             if number and number &gt; 1 then
@@ -6188,7 +6188,7 @@ end
       end,
 
       applycure = {'mending', 'renewal'},
-      actions = {&quot;apply mending&quot;, &quot;apply renewal&quot;},
+      actions = {"apply mending", "apply renewal"},
       onstart = function()
         svo.apply(svo.dict.unknowncrippledlimb.salve)
       end,
@@ -6205,7 +6205,7 @@ end
         svo.rmaff('unknowncrippledlimb')
         svo.addaffdict(svo.dict.unknowncrippledarm)
         svo.addaffdict(svo.dict.unknowncrippledleg)
-        tempTimer(0, function() svo.show_info(&quot;some limb broken?&quot;, &quot;It would seem an arm or a leg of yours is broken (the salve fizzled), not just crippled - going to work out which is it and fix it&quot;) end)
+        tempTimer(0, function() svo.show_info("some limb broken?", "It would seem an arm or a leg of yours is broken (the salve fizzled), not just crippled - going to work out which is it and fix it") end)
       end,
     },
     aff = {
@@ -6245,10 +6245,10 @@ end
         svo.rmaff('unknowncrippledarm')
       end,
 
-      actions = {&quot;apply mending to arms&quot;, &quot;apply mending&quot;, &quot;apply renewal to arms&quot;, &quot;apply renewal&quot;},
+      actions = {"apply mending to arms", "apply mending", "apply renewal to arms", "apply renewal"},
       applycure = {'mending', 'renewal'},
       onstart = function()
-        svo.apply(svo.dict.unknowncrippledarm.salve, &quot; to arms&quot;)
+        svo.apply(svo.dict.unknowncrippledarm.salve, " to arms")
       end,
 
       noeffect = function()
@@ -6298,10 +6298,10 @@ end
         svo.rmaff('unknowncrippledleg')
       end,
 
-      actions = {&quot;apply mending to legs&quot;, &quot;apply mending&quot;, &quot;apply renewal to legs&quot;, &quot;apply renewal&quot;},
+      actions = {"apply mending to legs", "apply mending", "apply renewal to legs", "apply renewal"},
       applycure = {'mending', 'renewal'},
       onstart = function()
-        svo.apply(svo.dict.unknowncrippledleg.salve, &quot; to legs&quot;)
+        svo.apply(svo.dict.unknowncrippledleg.salve, " to legs")
       end,
 
       noeffect = function()
@@ -6423,7 +6423,7 @@ end
       action = 'writhe',
       onstart = function()
         if math.random(1, 30) == 1 then
-          send(&quot;writhe wiggle wiggle&quot;, conf.commandecho)
+          send("writhe wiggle wiggle", conf.commandecho)
         else
           send('writhe', conf.commandecho)
         end
@@ -6755,7 +6755,7 @@ end
       end,
 
       onstart = function()
-        send(&quot;eat something&quot;, false)
+        send("eat something", false)
       end
     },
     aff = {
@@ -6778,7 +6778,7 @@ end
   },
 
   checkparalysis = {
-    description = &quot;anti-illusion check for paralysis&quot;,
+    description = "anti-illusion check for paralysis",
     misc = {
       uncurable = true,
 
@@ -6810,7 +6810,7 @@ end
       end,
 
       onstart = function()
-        send(&quot;fling paralysis&quot;, false)
+        send("fling paralysis", false)
       end
     },
     aff = {
@@ -6843,7 +6843,7 @@ end
       impatient = function()
         if not affs.impatience then
           svo.addaffdict(svo.dict.impatience)
-          svo.echof(&quot;Looks like the impatience is real.&quot;)
+          svo.echof("Looks like the impatience is real.")
         end
 
         svo.affsp.impatience = nil
@@ -6859,7 +6859,7 @@ end
         if svo.affsp.impatience then
           svo.lostbal_focus()
           if svo.affsp.impatience ~= 'quiet' then
-            svo.echof(&quot;The impatience earlier was actually an illusion, ignoring it.&quot;)
+            svo.echof("The impatience earlier was actually an illusion, ignoring it.")
           end
           svo.affsp.impatience = nil
         end
@@ -6950,13 +6950,13 @@ end
 
       smokecure = {'valerian', 'realgar'},
       onstart = function()
-        send(&quot;smoke &quot; .. pipes.valerian.id, conf.commandecho)
+        send("smoke " .. pipes.valerian.id, conf.commandecho)
       end
     },
     aff = {
       notagameaff = true,
       oncompleted = function (oldhp)
-      if svo.paragraph_length &gt; 2 or (oldhp and stats.currenthealth &lt; oldhp) or (svo.paragraph_length == 2 and svo.find_until_last_paragraph(&quot;aura of weapons rebounding disappears&quot;, 'substring')) then
+      if svo.paragraph_length &gt; 2 or (oldhp and stats.currenthealth &lt; oldhp) or (svo.paragraph_length == 2 and svo.find_until_last_paragraph("aura of weapons rebounding disappears", 'substring')) then
           svo.addaffdict(svo.dict.asthma)
           local r = svo.findbybal('smoke')
           if r then
@@ -6978,7 +6978,7 @@ end
   },
 
   checkhypersomnia = {
-    description = &quot;anti-illusion check for hypersomnia&quot;,
+    description = "anti-illusion check for hypersomnia",
     misc = {
       uncurable = true,
 
@@ -7044,9 +7044,9 @@ end
 
           for k,v in svo.dict.checkstun.tempactions:iter() do
             if svo.actions[k] then
-              svo.debugf(&quot;%s already exists, overwriting it&quot;, k)
+              svo.debugf("%s already exists, overwriting it", k)
             else
-              svo.debugf(&quot;re-added %s&quot;, k)
+              svo.debugf("re-added %s", k)
             end
 
             svo.actions[k] = v
@@ -7064,7 +7064,7 @@ end
       end,
 
       onstart = function()
-        send(&quot;eat something&quot;, false)
+        send("eat something", false)
       end
     },
     aff = {
@@ -7155,7 +7155,7 @@ end
       oncompleted = function() end,
 
       onstart = function()
-        send(&quot;touch stuff&quot;, conf.commandecho)
+        send("touch stuff", conf.commandecho)
         svo.rmaff('amnesia')
       end
     },
@@ -7174,7 +7174,7 @@ end
           end
 
           svo.conf.send_bypass = true
-          send(&quot;touch stuff&quot;, conf.commandecho)
+          send("touch stuff", conf.commandecho)
           svo.conf.send_bypass = false
         end
       end,
@@ -7197,7 +7197,7 @@ end
         svo.rmaff('stun')
 
         if svo.dict.checkstun.templifevision then
-          svo.debugf(&quot;stun timed out = restoring checkstun lifevisions&quot;)
+          svo.debugf("stun timed out = restoring checkstun lifevisions")
           svo.dict.checkstun.misc.oncompleted('fromstun')
           svo.make_gnomes_work()
         end
@@ -7210,7 +7210,7 @@ end
         svo.rmaff('stun')
 
         if svo.dict.checkstun.templifevision then
-          svo.debugf(&quot;stun finished = restoring checkstun lifevisions&quot;)
+          svo.debugf("stun finished = restoring checkstun lifevisions")
           svo.dict.checkstun.misc.oncompleted('fromstun')
         end
       end
@@ -7681,7 +7681,7 @@ end
     }
   },
   hamstring = {
-	  gamename = &quot;hamstrung&quot;,
+	  gamename = "hamstrung",
     waitingfor = {
       customwait = 10,
 
@@ -7694,7 +7694,7 @@ end
       ontimeout = function()
         if affs.hamstring then
           svo.rmaff('hamstring')
-          svo.echof(&quot;Hamstring should have worn off by now, removing it.&quot;)
+          svo.echof("Hamstring should have worn off by now, removing it.")
         end
       end,
 
@@ -8139,7 +8139,7 @@ end
 
       ontimeout = function()
         svo.rmaff('stain')
-        svo.echof(&quot;Taking a guess, I think stain expired by now.&quot;)
+        svo.echof("Taking a guess, I think stain expired by now.")
       end,
 
       onstart = function() end,
@@ -8389,7 +8389,7 @@ end
   },
   paradox = {
     count = 0,
-    blocked_herb = &quot;&quot;,
+    blocked_herb = "",
     boosted = {
       oncompleted = function()
         svo.dict.paradox.aff.count = 10
@@ -8414,7 +8414,7 @@ end
       oncompleted = function()
         svo.rmaff('paradox')
         svo.dict.paradox.count = 0
-        svo.dict.paradox.blocked_herb = &quot;&quot;
+        svo.dict.paradox.blocked_herb = ""
       end,
     }
   },
@@ -8461,7 +8461,7 @@ end
 
       onstart = function() end,
       ontimeout = function()
-        echo&quot;\n&quot;svo.echof(&quot;Hm, maybe we have enough mana for mana skills now...&quot;)
+        echo"\n"svo.echof("Hm, maybe we have enough mana for mana skills now...")
         svo.killaction(svo.dict.nomana.waitingfor)
         svo.make_gnomes_work()
       end
@@ -8473,15 +8473,15 @@ end
     happened = {
       oncompleted = function (tbl)
         if tbl and tbl.initialmsg then
-          echo&quot;\n\n&quot;
-          svo.echof(&quot;Careful: %s&quot;, tbl.initialmsg)
-          echo&quot;\n&quot;
+          echo"\n\n"
+          svo.echof("Careful: %s", tbl.initialmsg)
+          echo"\n"
         end
 
         if tbl and tbl.prefixwarning then
           local duration = tbl.duration or 4
           local startin = tbl.startin or 0
-          cnrl.warning = tbl.prefixwarning or &quot;&quot;
+          cnrl.warning = tbl.prefixwarning or ""
 
           -- timer for starting
           if not conf.warningtype then return end
@@ -8491,7 +8491,7 @@ end
             if cnrl.warnids[tbl.prefixwarning] then killTrigger(cnrl.warnids[tbl.prefixwarning]) end
 
               cnrl.warnids[tbl.prefixwarning] = tempRegexTrigger('^', [[
-                if ((svo.conf.warningtype == 'prompt' and isPrompt()) or svo.conf.warningtype == 'all' or svo.conf.warningtype == 'right') and getCurrentLine() ~= &quot;&quot; and not svo.gagline then
+                if ((svo.conf.warningtype == 'prompt' and isPrompt()) or svo.conf.warningtype == 'all' or svo.conf.warningtype == 'right') and getCurrentLine() ~= "" and not svo.gagline then
                   svo.prefixwarning()
                 end
               ]])
@@ -8518,7 +8518,7 @@ end
           if not bals[balance] then
             bals[balance] = true
 
-            raiseEvent(&quot;svo got balance&quot;, balance)
+            raiseEvent("svo got balance", balance)
 
             svo.endbalancewatch(balance)
 
@@ -8542,9 +8542,9 @@ end
       oncompleted = function()
         for name, class in pairs(svo.dict.gothit.happened.tempmap) do
           if name == '?' then
-            raiseEvent(&quot;svo got hit by&quot;, class)
+            raiseEvent("svo got hit by", class)
           else
-            raiseEvent(&quot;svo got hit by&quot;, class, name)
+            raiseEvent("svo got hit by", class, name)
           end
         end
         svo.dict.gothit.happened.tempmap = {}
@@ -8587,7 +8587,7 @@ end
 
       smokecure = {'skullcap', 'malachite'},
       onstart = function()
-        send(&quot;smoke &quot; .. pipes.skullcap.id, conf.commandecho)
+        send("smoke " .. pipes.skullcap.id, conf.commandecho)
       end,
 
       empty = function()
@@ -8599,7 +8599,7 @@ end
     waitingfor = {
       customwait = 9,
 
-      onstart = function() raiseEvent(&quot;svo rebounding start&quot;) end,
+      onstart = function() raiseEvent("svo rebounding start") end,
 
       oncompleted = function() defences.got('rebounding') end,
 
@@ -8747,7 +8747,7 @@ end
         if defc.speed then return end
 
         if (sys.deffing and defdefup[defs.mode].speed) or (conf.keepup and defkeepup[defs.mode].speed) then
-          svo.echof(&quot;Warning - speed didn't come up in 7s, checking 'def'.&quot;)
+          svo.echof("Warning - speed didn't come up in 7s, checking 'def'.")
           me.manualdefcheck = true
         end
       end,
@@ -8757,7 +8757,7 @@ end
   },
   sileris = {
     gamename = 'fangbarrier',
-    applying = &quot;&quot;,
+    applying = "",
     misc = {
       def = true,
 
@@ -8784,7 +8784,7 @@ end
       -- special case for 'missing herb' trig
       eatcure = {'sileris', 'quicksilver'},
       applycure = {'sileris', 'quicksilver'},
-      actions = {&quot;apply sileris&quot;, &quot;apply quicksilver&quot;},
+      actions = {"apply sileris", "apply quicksilver"},
       onstart = function()
         local use = 'sileris'
 
@@ -8817,11 +8817,11 @@ end
 
         svo.dict.sileris.applying = use
         if rift.invcontents[use] &gt; 0 then
-          send(&quot;outr &quot;..use, conf.commandecho)
-          send(&quot;apply &quot;..use, conf.commandecho)
+          send("outr "..use, conf.commandecho)
+          send("apply "..use, conf.commandecho)
         else
-          send(&quot;outr &quot;..use, conf.commandecho)
-          send(&quot;apply &quot;..use, conf.commandecho)
+          send("outr "..use, conf.commandecho)
+          send("apply "..use, conf.commandecho)
         end
       end,
 
@@ -8859,10 +8859,10 @@ end
         if defc.sileris then return end
 
         if (sys.deffing and defdefup[defs.mode].sileris) or (conf.keepup and defkeepup[defs.mode].sileris) then
-          svo.echof(&quot;Warning - sileris isn't back yet, we might've been tricked. Going to see if we get bitten.&quot;)
+          svo.echof("Warning - sileris isn't back yet, we might've been tricked. Going to see if we get bitten.")
           local oldsileris = defc.sileris
           defc.sileris = 'unsure'
-          if oldsileris ~= defc.sileris then raiseEvent(&quot;svo got def&quot;, 'sileris') end
+          if oldsileris ~= defc.sileris then raiseEvent("svo got def", 'sileris') end
         end
       end,
 
@@ -9063,9 +9063,9 @@ end
       empty = function() end,
 
       applycure = {'mass', 'density'},
-      actions = {&quot;apply mass to body&quot;, &quot;apply mass&quot;, &quot;apply density to body&quot;, &quot;apply density&quot;},
+      actions = {"apply mass to body", "apply mass", "apply density to body", "apply density"},
       onstart = function()
-        svo.apply(svo.dict.mass.salve, &quot; to body&quot;)
+        svo.apply(svo.dict.mass.salve, " to body")
       end,
     },
   },
@@ -9091,9 +9091,9 @@ end
       end,
 
       applycure = {'caloric', 'exothermic'},
-      actions = {&quot;apply caloric to body&quot;, &quot;apply caloric&quot;, &quot;apply exothermic to body&quot;, &quot;apply exothermic&quot;},
+      actions = {"apply caloric to body", "apply caloric", "apply exothermic to body", "apply exothermic"},
       onstart = function()
-        svo.apply(svo.dict.caloric.salve, &quot; to body&quot;)
+        svo.apply(svo.dict.caloric.salve, " to body")
       end,
     },
     gone = {
@@ -9233,25 +9233,25 @@ end
       oncompleted = function()
         defences.got('lyre')
 
-        if conf.lyre and not conf.paused then conf.paused = true; raiseEvent(&quot;svo config changed&quot;, 'paused') end
+        if conf.lyre and not conf.paused then conf.paused = true; raiseEvent("svo config changed", 'paused') end
       end,
 
       ontimeout = function()
         if conf.paused and not defc.lyre then
-          svo.echof(&quot;Lyre strum didn't happen - unpausing.&quot;)
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
+          svo.echof("Lyre strum didn't happen - unpausing.")
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
           svo.make_gnomes_work()
         end
       end,
 
       onkill = function()
         if conf.paused and not defc.lyre then
-          svo.echof(&quot;Lyre strum cancelled - unpausing.&quot;)
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
+          svo.echof("Lyre strum cancelled - unpausing.")
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
         end
       end,
 
-      action = &quot;strum lyre&quot;,
+      action = "strum lyre",
       onstart = function()
         sys.sendonceonly = true
         -- small fix to make 'lyc' work and be in-order (as well as use batching)
@@ -9260,13 +9260,13 @@ end
         if conf.batch then send = function(what, ...) svo.sendc(what, ...) sk.systemscommands[what] = true end end
 
         if not conf.lyrecmd then
-          send(&quot;strum lyre&quot;, conf.commandecho)
+          send("strum lyre", conf.commandecho)
         else
           send(tostring(conf.lyrecmd), conf.commandecho)
         end
         sys.sendonceonly = false
 
-        if conf.lyre and not conf.paused then conf.paused = true; raiseEvent(&quot;svo config changed&quot;, 'paused') end
+        if conf.lyre and not conf.paused then conf.paused = true; raiseEvent("svo config changed", 'paused') end
       end
     },
     gone = {
@@ -9309,7 +9309,7 @@ end
 
         -- unpause should we lose the lyre def for some reason - but not while we're doing lyc
         -- since we'll lose the lyre def and it'll come up right away
-        if conf.lyre and conf.paused and not svo.actions.lyre_physical then conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused') end
+        if conf.lyre and conf.paused and not svo.actions.lyre_physical then conf.paused = false; raiseEvent("svo config changed", 'paused') end
       end,
     }
   },
@@ -9324,12 +9324,12 @@ end
 
       oncompleted = function() defences.got('breath') end,
 
-      action = &quot;hold breath&quot;,
+      action = "hold breath",
       onstart = function()
         if conf.gagbreath and not sys.sync then
-          send(&quot;hold breath&quot;, false)
+          send("hold breath", false)
         else
-          send(&quot;hold breath&quot;, conf.commandecho) end
+          send("hold breath", conf.commandecho) end
       end
     },
     gone = {
@@ -9353,20 +9353,20 @@ end
         svo.dict.waitingfordragonform.waitingfor.oncompleted()
       end,
 
-      actions = {'dragonform', &quot;dragonform red&quot;, &quot;dragonform black&quot;, &quot;dragonform silver&quot;, &quot;dragonform gold&quot;, &quot;dragonform blue&quot;, &quot;dragonform green&quot;},
+      actions = {'dragonform', "dragonform red", "dragonform black", "dragonform silver", "dragonform gold", "dragonform blue", "dragonform green"},
       onstart = function()
       -- user commands catching needs this check
         if not (bals.balance and bals.equilibrium) then return end
 
         if defc.flame and svo.haveskillset('metamorphosis') then
-          send(&quot;relax flame&quot;, conf.commandecho)
+          send("relax flame", conf.commandecho)
         end
         send('dragonform', conf.commandecho)
 
         if not conf.paused then
           svo.dict.dragonform.physical.unpauselater = true
-          conf.paused = true; raiseEvent(&quot;svo config changed&quot;, 'paused')
-          echo&quot;\n&quot; svo.echof(&quot;Temporarily pausing for dragonform.&quot;)
+          conf.paused = true; raiseEvent("svo config changed", 'paused')
+          echo"\n" svo.echof("Temporarily pausing for dragonform.")
         end
       end
     },
@@ -9403,13 +9403,13 @@ end
         signals.dragonform:emit()
 
         if conf.paused and svo.dict.dragonform.physical.unpauselater then
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
 
-          echo&quot;\n&quot;
+          echo"\n"
           if math.random(1, 20) == 1 then
-            svo.echof(&quot;ROOOAR!&quot;)
+            svo.echof("ROOOAR!")
           else
-            svo.echof(&quot;Obtained dragonform, unpausing.&quot;)
+            svo.echof("Obtained dragonform, unpausing.")
           end
         end
         svo.dict.dragonform.physical.unpauselater = false
@@ -9418,8 +9418,8 @@ end
       cancelled = function()
         signals.dragonform:emit()
         if conf.paused and svo.dict.dragonform.physical.unpauselater then
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
-          echo&quot;\n&quot; svo.echof(&quot;Unpausing.&quot;)
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
+          echo"\n" svo.echof("Unpausing.")
         end
         svo.dict.dragonform.physical.unpauselater = false
       end,
@@ -9454,7 +9454,7 @@ end
       alreadygot = function() defences.got('dragonbreath') end,
 
       onstart = function()
-        send(&quot;summon &quot;..(conf.dragonbreath and conf.dragonbreath or 'unknown'), conf.commandecho)
+        send("summon "..(conf.dragonbreath and conf.dragonbreath or 'unknown'), conf.commandecho)
       end
     },
     gone = {
@@ -9480,7 +9480,7 @@ end
 
       oncompleted = function() defences.got('dragonarmour') end,
 
-      action = &quot;dragonarmour on&quot;,
+      action = "dragonarmour on",
       onstart = function() send('dragonarmour on', conf.commandecho) end
     },
     gone = {
@@ -9562,11 +9562,11 @@ end
 
       onstart = function()
         if (sys.deffing and defdefup[defs.mode].riding and not defc.riding) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].riding and not defc.riding) then
-          send(string.format(&quot;%s %s&quot;, tostring(conf.ridingskill), tostring(conf.ridingsteed)), conf.commandecho)
+          send(string.format("%s %s", tostring(conf.ridingskill), tostring(conf.ridingsteed)), conf.commandecho)
         else
           send('dismount', conf.commandecho)
           if sys.sync or tostring(conf.ridingsteed) == 'giraffe' then return end
-          if conf.steedfollow then send(string.format(&quot;order %s follow me&quot;, tostring(conf.ridingsteed), conf.commandecho)) end
+          if conf.steedfollow then send(string.format("order %s follow me", tostring(conf.ridingsteed), conf.commandecho)) end
         end
       end
     },
@@ -9622,7 +9622,7 @@ end
         end
       end,
 
-      action = &quot;touch mindseye&quot;,
+      action = "touch mindseye",
       onstart = function() send('touch mindseye', conf.commandecho) end
     }
   },
@@ -9636,7 +9636,7 @@ end
 
       oncompleted = function() defences.got('metawake') end,
 
-      action = &quot;metawake on&quot;,
+      action = "metawake on",
       onstart = function() send('metawake on', conf.commandecho) end
     }
   },
@@ -9650,7 +9650,7 @@ end
 
       oncompleted = function() defences.got('cloak') end,
 
-      action = &quot;touch cloak&quot;,
+      action = "touch cloak",
       onstart = function() send('touch cloak', conf.commandecho) end
     },
     gone = {
@@ -9678,19 +9678,19 @@ end
 
       oncompleted = function() defences.got('nightsight') end,
 
-      action = &quot;nightsight on&quot;,
+      action = "nightsight on",
       onstart = function()
 if not svo.haveskillset('metamorphosis') then
-        send(&quot;nightsight on&quot;, conf.commandecho)
+        send("nightsight on", conf.commandecho)
 else
         if not defc.dragonform and (not conf.transmorph and sk.inamorph() and not sk.inamorphfor'nightsight') then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         elseif not defc.dragonform and not sk.inamorphfor'nightsight' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph &quot;..sk.morphsforskill.nightsight[1], conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph "..sk.morphsforskill.nightsight[1], conf.commandecho)
         elseif defc.dragonform or sk.inamorphfor'nightsight' then
-          send(&quot;nightsight on&quot;, conf.commandecho)
+          send("nightsight on", conf.commandecho)
         end
 end
       end
@@ -9711,16 +9711,16 @@ end
         end
       end,
 
-      actions = {&quot;touch shield&quot;, &quot;angel aura&quot;},
+      actions = {"touch shield", "angel aura"},
       onstart = function()
 if svo.haveskillset('spirituality') then
         if defc.dragonform or not defc.summon or stats.currentwillpower &lt;= 10 then
-          send(&quot;touch shield&quot;, conf.commandecho)
+          send("touch shield", conf.commandecho)
         else
-          send(&quot;angel aura&quot;, conf.commandecho)
+          send("angel aura", conf.commandecho)
         end
 else
-        send(&quot;touch shield&quot;, conf.commandecho)
+        send("touch shield", conf.commandecho)
 end
       end
     },
@@ -10091,7 +10091,7 @@ else
 end
 
 if svo.haveskillset('weaponmastery') then
-  svo.dict.prone.misc.actions = {'stand', &quot;recover footing&quot;}
+  svo.dict.prone.misc.actions = {'stand', "recover footing"}
 else
   svo.dict.prone.misc.action = 'stand'
 end
@@ -10201,7 +10201,7 @@ if svo.haveskillset('devotion') then
 
       oncompleted = function() defences.got('frostblessing') end,
 
-      action = &quot;bless me spiritshield frost&quot;,
+      action = "bless me spiritshield frost",
       onstart = function() send('bless me spiritshield frost', conf.commandecho) end
     }
   }
@@ -10215,7 +10215,7 @@ if svo.haveskillset('devotion') then
 
       oncompleted = function() defences.got('willpowerblessing') end,
 
-      action = &quot;bless me willpower&quot;,
+      action = "bless me willpower",
       onstart = function() send('bless me willpower', conf.commandecho) end
     }
   }
@@ -10229,7 +10229,7 @@ if svo.haveskillset('devotion') then
 
       oncompleted = function() defences.got('thermalblessing') end,
 
-      action = &quot;bless me spiritshield thermal&quot;,
+      action = "bless me spiritshield thermal",
       onstart = function() send('bless me spiritshield thermal', conf.commandecho) end
     }
   }
@@ -10243,7 +10243,7 @@ if svo.haveskillset('devotion') then
 
       oncompleted = function() defences.got('earthblessing') end,
 
-      action = &quot;bless me spiritshield earth&quot;,
+      action = "bless me spiritshield earth",
       onstart = function() send('bless me spiritshield earth', conf.commandecho) end
     }
   }
@@ -10257,7 +10257,7 @@ if svo.haveskillset('devotion') then
 
       oncompleted = function() defences.got('enduranceblessing') end,
 
-      action = &quot;bless me endurance&quot;,
+      action = "bless me endurance",
       onstart = function() send('bless me endurance', conf.commandecho) end
     }
   }
@@ -10281,20 +10281,20 @@ if svo.haveskillset('spirituality') then
 
       alreadyhave = function()
         svo.dict.waitingformace.waitingfor.oncompleted()
-        send(&quot;wield mace&quot;, conf.commandecho)
+        send("wield mace", conf.commandecho)
       end,
 
-      action = &quot;summon mace&quot;,
+      action = "summon mace",
       onstart = function()
       -- user commands catching needs this check
         if not (bals.balance and bals.equilibrium) then return end
 
-        send(&quot;summon mace&quot;, conf.commandecho)
+        send("summon mace", conf.commandecho)
 
         if not conf.paused then
           svo.dict.mace.physical.unpauselater = true
-          conf.paused = true; raiseEvent(&quot;svo config changed&quot;, 'paused')
-          echo&quot;\n&quot; svo.echof(&quot;Temporarily pausing to summon the mace.&quot;)
+          conf.paused = true; raiseEvent("svo config changed", 'paused')
+          echo"\n" svo.echof("Temporarily pausing to summon the mace.")
         end
       end
     },
@@ -10310,25 +10310,25 @@ if svo.haveskillset('spirituality') then
         defences.got('mace')
 
         if conf.paused and svo.dict.mace.physical.unpauselater then
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
 
-          svo.echof(&quot;Obtained mace, unpausing.&quot;)
+          svo.echof("Obtained mace, unpausing.")
         end
         svo.dict.mace.physical.unpauselater = false
       end,
 
       cancelled = function()
         if conf.paused and svo.dict.mace.physical.unpauselater then
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
-          svo.echof(&quot;Oops, summoning interrupted. Unpausing.&quot;)
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
+          svo.echof("Oops, summoning interrupted. Unpausing.")
         end
         svo.dict.mace.physical.unpauselater = false
       end,
 
       ontimeout = function()
         if conf.paused and svo.dict.mace.physical.unpauselater then
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
-          svo.echof(&quot;Hm... doesn't seem the mace summon is happening. Going to try again.&quot;)
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
+          svo.echof("Hm... doesn't seem the mace summon is happening. Going to try again.")
         end
         svo.dict.mace.physical.unpauselater = false
       end,
@@ -10337,7 +10337,7 @@ if svo.haveskillset('spirituality') then
     }
   }
   svo.dict.sacrifice = {
-    description = &quot;tracks whenever you've sent the angel sacrifice command - so an illusion on angel sacrifice won't trick the system into clearing all affs&quot;,
+    description = "tracks whenever you've sent the angel sacrifice command - so an illusion on angel sacrifice won't trick the system into clearing all affs",
     physical = {
       balanceless_act = true,
       uncurable = true,
@@ -10348,7 +10348,7 @@ if svo.haveskillset('spirituality') then
 
       oncompleted = function() end,
 
-      action = &quot;angel sacrifice&quot;,
+      action = "angel sacrifice",
       onstart = function() send('angel sacrifice', conf.commandecho) end
     }
   }
@@ -10362,7 +10362,7 @@ if svo.haveskillset('spirituality') then
 
       oncompleted = function() defences.got('summon') end,
 
-      action = &quot;angel summon&quot;,
+      action = "angel summon",
       onstart = function() send('angel summon', conf.commandecho) end
     }
   }
@@ -10376,7 +10376,7 @@ if svo.haveskillset('spirituality') then
 
       oncompleted = function() defences.got('empathy') end,
 
-      action = &quot;angel empathy on&quot;,
+      action = "angel empathy on",
       onstart = function() send('angel empathy on', conf.commandecho) end
     }
   }
@@ -10390,7 +10390,7 @@ if svo.haveskillset('spirituality') then
 
       oncompleted = function() defences.got('watch') end,
 
-      action = &quot;angel watch on&quot;,
+      action = "angel watch on",
       onstart = function() send('angel watch on', conf.commandecho) end
     }
   }
@@ -10404,7 +10404,7 @@ if svo.haveskillset('spirituality') then
 
       oncompleted = function() defences.got('care') end,
 
-      action = &quot;angel care on&quot;,
+      action = "angel care on",
       onstart = function() send('angel care on', conf.commandecho) end
     }
   }
@@ -10412,7 +10412,7 @@ end
 
 if svo.haveskillset('shindo') then
   svo.dict.phoenix = {
-    description = &quot;tracks whenever you've sent the shindo phoenix command - so an illusion on shindo phoenix won't trick the system into clearing all affs&quot;,
+    description = "tracks whenever you've sent the shindo phoenix command - so an illusion on shindo phoenix won't trick the system into clearing all affs",
     physical = {
       balanceful_act = true,
       uncurable = true,
@@ -10423,7 +10423,7 @@ if svo.haveskillset('shindo') then
 
       oncompleted = function() end,
 
-      action = &quot;shin phoenix&quot;,
+      action = "shin phoenix",
       onstart = function() send('shin phoenix', conf.commandecho) end
     }
   }
@@ -10543,17 +10543,17 @@ if svo.haveskillset('metamorphosis') then
 
       oncompleted = function() defences.got('affinity') end,
 
-      action = &quot;embrace spirit&quot;,
+      action = "embrace spirit",
       onstart = function()
         if sk.inamorph() then
-          send(&quot;embrace spirit&quot;, conf.commandecho)
+          send("embrace spirit", conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
 
           if sk.skillmorphs.wyvern then
-            send(&quot;morph wyvern&quot;, conf.commandecho)
+            send("morph wyvern", conf.commandecho)
           else
-            send(&quot;morph &quot;..sk.morphsforskill.nightsight[1], conf.commandecho)
+            send("morph "..sk.morphsforskill.nightsight[1], conf.commandecho)
           end
         end
       end
@@ -10593,11 +10593,11 @@ if svo.haveskillset('metamorphosis') then
       actions = {'fitness'},
       onstart = function()
         if not conf.transmorph and sk.inamorph() and not sk.inamorphfor'fitness' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         elseif not sk.inamorphfor'fitness' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph &quot;..sk.morphsforskill.fitness[1], conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph "..sk.morphsforskill.fitness[1], conf.commandecho)
         elseif sk.inamorphfor'fitness' then
           send('fitness', conf.commandecho)
         end
@@ -10614,16 +10614,16 @@ if svo.haveskillset('metamorphosis') then
 
       oncompleted = function() defences.got('elusiveness') end,
 
-      action = &quot;elusiveness on&quot;,
+      action = "elusiveness on",
       onstart = function()
         if not conf.transmorph and sk.inamorph() and not sk.inamorphfor'elusiveness' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         elseif not sk.inamorphfor'elusiveness' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph &quot;..sk.morphsforskill.elusiveness[1], conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph "..sk.morphsforskill.elusiveness[1], conf.commandecho)
         elseif sk.inamorphfor'elusiveness' then
-          send(&quot;elusiveness on&quot;, conf.commandecho)
+          send("elusiveness on", conf.commandecho)
         end
       end
     },
@@ -10644,11 +10644,11 @@ if svo.haveskillset('metamorphosis') then
       action = 'temperance',
       onstart = function()
         if not conf.transmorph and sk.inamorph() and not sk.inamorphfor'temperance' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         elseif not sk.inamorphfor'temperance' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph &quot;..sk.morphsforskill.temperance[1], conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph "..sk.morphsforskill.temperance[1], conf.commandecho)
         elseif sk.inamorphfor'temperance' then
           send('temperance', conf.commandecho)
         end
@@ -10668,16 +10668,16 @@ if svo.haveskillset('metamorphosis') then
 
       oncompleted = function() defences.got('stealth') end,
 
-      action = &quot;stealth on&quot;,
+      action = "stealth on",
       onstart = function()
         if not conf.transmorph and sk.inamorph() and not sk.inamorphfor'stealth' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         elseif not sk.inamorphfor'stealth' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph &quot;..sk.morphsforskill.stealth[1], conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph "..sk.morphsforskill.stealth[1], conf.commandecho)
         elseif sk.inamorphfor'stealth' then
-          send(&quot;stealth on&quot;, conf.commandecho)
+          send("stealth on", conf.commandecho)
         end
       end
     },
@@ -10695,11 +10695,11 @@ if svo.haveskillset('metamorphosis') then
       action = 'resistance',
       onstart = function()
         if not conf.transmorph and sk.inamorph() and not sk.inamorphfor'resistance' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         elseif not sk.inamorphfor'resistance' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph &quot;..sk.morphsforskill.resistance[1], conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph "..sk.morphsforskill.resistance[1], conf.commandecho)
         elseif sk.inamorphfor'resistance' then
           send('resistance', conf.commandecho)
         end
@@ -10719,11 +10719,11 @@ if svo.haveskillset('metamorphosis') then
       action = 'rest',
       onstart = function()
         if not conf.transmorph and sk.inamorph() and not sk.inamorphfor'rest' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         elseif not sk.inamorphfor'rest' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph &quot;..sk.morphsforskill.rest[1], conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph "..sk.morphsforskill.rest[1], conf.commandecho)
         elseif sk.inamorphfor'rest' then
           send('rest', conf.commandecho)
         end
@@ -10742,7 +10742,7 @@ if svo.haveskillset('metamorphosis') then
             return true
           elseif not sk.gettingfullstats then
             svo.fullstats(true)
-            svo.echof(&quot;Getting fullstats for vitality now...&quot;)
+            svo.echof("Getting fullstats for vitality now...")
           end
         end
       end,
@@ -10752,11 +10752,11 @@ if svo.haveskillset('metamorphosis') then
       action = 'vitality',
       onstart = function()
         if not conf.transmorph and sk.inamorph() and not sk.inamorphfor'vitality' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         elseif not sk.inamorphfor'vitality' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph &quot;..sk.morphsforskill.vitality[1], conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph "..sk.morphsforskill.vitality[1], conf.commandecho)
         elseif sk.inamorphfor'vitality' then
           send('vitality', conf.commandecho)
         end
@@ -10779,16 +10779,16 @@ if svo.haveskillset('metamorphosis') then
 
       oncompleted = function() defences.got('flame') end,
 
-      actions = {&quot;summon flame&quot;, &quot;summon fire&quot;},
+      actions = {"summon flame", "summon fire"},
       onstart = function()
         if not conf.transmorph and sk.inamorph() and not sk.inamorphfor'flame' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         elseif not sk.inamorphfor'flame' then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph &quot;..sk.morphsforskill.flame[1], conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph "..sk.morphsforskill.flame[1], conf.commandecho)
         elseif sk.inamorphfor'flame' then
-          send(&quot;summon flame&quot;, conf.commandecho)
+          send("summon flame", conf.commandecho)
         end
       end
     },
@@ -10807,14 +10807,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('squirrel')
       end,
 
-      action = &quot;morph squirrel&quot;,
+      action = "morph squirrel",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph squirrel&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph squirrel", conf.commandecho)
         end
       end
     },
@@ -10836,14 +10836,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('wildcat')
       end,
 
-      action = &quot;morph wildcat&quot;,
+      action = "morph wildcat",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph wildcat&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph wildcat", conf.commandecho)
         end
       end
     },
@@ -10865,14 +10865,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('wolf')
       end,
 
-      action = &quot;morph wolf&quot;,
+      action = "morph wolf",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph wolf&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph wolf", conf.commandecho)
         end
       end
     },
@@ -10894,14 +10894,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('turtle')
       end,
 
-      action = &quot;morph turtle&quot;,
+      action = "morph turtle",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph turtle&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph turtle", conf.commandecho)
         end
       end
     },
@@ -10923,14 +10923,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('jackdaw')
       end,
 
-      action = &quot;morph jackdaw&quot;,
+      action = "morph jackdaw",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph jackdaw&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph jackdaw", conf.commandecho)
         end
       end
     },
@@ -10952,14 +10952,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('cheetah')
       end,
 
-      action = &quot;morph cheetah&quot;,
+      action = "morph cheetah",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph cheetah&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph cheetah", conf.commandecho)
         end
       end
     },
@@ -10981,14 +10981,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('owl')
       end,
 
-      action = &quot;morph owl&quot;,
+      action = "morph owl",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph owl&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph owl", conf.commandecho)
         end
       end
     },
@@ -11010,14 +11010,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('hyena')
       end,
 
-      action = &quot;morph hyena&quot;,
+      action = "morph hyena",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph hyena&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph hyena", conf.commandecho)
         end
       end
     },
@@ -11039,14 +11039,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('condor')
       end,
 
-      action = &quot;morph condor&quot;,
+      action = "morph condor",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph condor&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph condor", conf.commandecho)
         end
       end
     },
@@ -11068,14 +11068,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('gopher')
       end,
 
-      action = &quot;morph gopher&quot;,
+      action = "morph gopher",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph gopher&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph gopher", conf.commandecho)
         end
       end
     },
@@ -11097,14 +11097,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('sloth')
       end,
 
-      action = &quot;morph sloth&quot;,
+      action = "morph sloth",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph sloth&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph sloth", conf.commandecho)
         end
       end
     },
@@ -11126,14 +11126,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('bear')
       end,
 
-      action = &quot;morph bear&quot;,
+      action = "morph bear",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph bear&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph bear", conf.commandecho)
         end
       end
     },
@@ -11155,14 +11155,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('nightingale')
       end,
 
-      action = &quot;morph nightingale&quot;,
+      action = "morph nightingale",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph nightingale&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph nightingale", conf.commandecho)
         end
       end
     },
@@ -11184,14 +11184,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('elephant')
       end,
 
-      action = &quot;morph elephant&quot;,
+      action = "morph elephant",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph elephant&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph elephant", conf.commandecho)
         end
       end
     },
@@ -11213,14 +11213,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('wolverine')
       end,
 
-      action = &quot;morph wolverine&quot;,
+      action = "morph wolverine",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph wolverine&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph wolverine", conf.commandecho)
         end
       end
     },
@@ -11242,14 +11242,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('eagle')
       end,
 
-      action = &quot;morph eagle&quot;,
+      action = "morph eagle",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph eagle&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph eagle", conf.commandecho)
         end
       end
     },
@@ -11271,14 +11271,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('gorilla')
       end,
 
-      action = &quot;morph gorilla&quot;,
+      action = "morph gorilla",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph gorilla&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph gorilla", conf.commandecho)
         end
       end
     },
@@ -11300,14 +11300,14 @@ if svo.haveskillset('metamorphosis') then
         defences.got('icewyrm')
       end,
 
-      action = &quot;morph icewyrm&quot;,
+      action = "morph icewyrm",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph icewyrm&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph icewyrm", conf.commandecho)
         end
       end
     },
@@ -11362,7 +11362,7 @@ if svo.haveskillset('voicecraft') then
         svo.lostbal_voice()
       end,
 
-      action = &quot;sing lay&quot;,
+      action = "sing lay",
       onstart = function() send('sing lay', conf.commandecho) end
     },
   }
@@ -11379,7 +11379,7 @@ if svo.haveskillset('voicecraft') then
         svo.lostbal_voice()
       end,
 
-      action = &quot;sing tune&quot;,
+      action = "sing tune",
       onstart = function() send('sing tune', conf.commandecho) end
     },
   }
@@ -11396,7 +11396,7 @@ if svo.haveskillset('voicecraft') then
         svo.lostbal_voice()
       end,
 
-      action = &quot;sing aria at me&quot;,
+      action = "sing aria at me",
       onstart = function() send('sing aria at me', conf.commandecho) end
     },
   }
@@ -11471,7 +11471,7 @@ if svo.haveskillset('healing') or svo.haveskillset('elementalism') or svo.havesk
         end
       end,
 
-      action = &quot;channel air&quot;,
+      action = "channel air",
       onstart = function() send('channel air', conf.commandecho) end
     },
     gone = {
@@ -11497,7 +11497,7 @@ if svo.haveskillset('healing') or svo.haveskillset('elementalism') or svo.havesk
         end
       end,
 
-      action = &quot;channel water&quot;,
+      action = "channel water",
       onstart = function() send('channel water', conf.commandecho) end
     },
     gone = {
@@ -11523,7 +11523,7 @@ if svo.haveskillset('healing') or svo.haveskillset('elementalism') or svo.havesk
         end
       end,
 
-      action = &quot;channel earth&quot;,
+      action = "channel earth",
       onstart = function() send('channel earth', conf.commandecho) end
     },
     gone = {
@@ -11549,7 +11549,7 @@ if not svo.haveskillset('weatherweaving') then
         end
       end,
 
-      action = &quot;channel fire&quot;,
+      action = "channel fire",
       onstart = function() send('channel fire', conf.commandecho) end
     },
     gone = {
@@ -11576,7 +11576,7 @@ if svo.haveskillset('healing') then
         end
       end,
 
-      action = &quot;channel spirit&quot;,
+      action = "channel spirit",
       onstart = function() send('channel spirit', conf.commandecho) end
     },
     gone = {
@@ -11598,7 +11598,7 @@ end
 
       oncompleted = function() defences.got('bindall') end,
 
-      action = &quot;bind all&quot;,
+      action = "bind all",
       onstart = function() send('bind all', conf.commandecho) end
     }
   }
@@ -11617,7 +11617,7 @@ end
         end
       end,
 
-      action = &quot;bind air&quot;,
+      action = "bind air",
       onstart = function() send('bind air', conf.commandecho) end
     },
     gone = {
@@ -11642,7 +11642,7 @@ end
         end
       end,
 
-      action = &quot;bind water&quot;,
+      action = "bind water",
       onstart = function() send('bind water', conf.commandecho) end
     },
     gone = {
@@ -11668,9 +11668,9 @@ end
           end
         end,
 
-        action = &quot;bind fire&quot;,
+        action = "bind fire",
         onstart = function()
-          send(&quot;bind fire&quot;, conf.commandecho)
+          send("bind fire", conf.commandecho)
         end
       },
       gone = {
@@ -11696,7 +11696,7 @@ end
         end
       end,
 
-      action = &quot;bind earth&quot;,
+      action = "bind earth",
       onstart = function() send('bind earth', conf.commandecho) end
     },
     gone = {
@@ -11722,9 +11722,9 @@ end
           end
         end,
 
-        action = &quot;bind spirit&quot;,
+        action = "bind spirit",
         onstart = function()
-          send(&quot;bind spirit&quot;, conf.commandecho)
+          send("bind spirit", conf.commandecho)
         end
       },
       gone = {
@@ -11745,7 +11745,7 @@ end
 
       oncompleted = function() defences.got('fortifyall') end,
 
-      action = &quot;fortify all&quot;,
+      action = "fortify all",
       onstart = function() send('fortify all', conf.commandecho) end
     }
   }
@@ -11764,7 +11764,7 @@ end
         end
       end,
 
-      action = &quot;fortify air&quot;,
+      action = "fortify air",
       onstart = function() send('fortify air', conf.commandecho) end
     },
     gone = {
@@ -11789,7 +11789,7 @@ end
         end
       end,
 
-      action = &quot;fortify water&quot;,
+      action = "fortify water",
       onstart = function() send('fortify water', conf.commandecho) end
     },
     gone = {
@@ -11815,9 +11815,9 @@ end
           end
         end,
 
-        action = &quot;fortify fire&quot;,
+        action = "fortify fire",
         onstart = function()
-          send(&quot;fortify fire&quot;, conf.commandecho)
+          send("fortify fire", conf.commandecho)
         end
       },
       gone = {
@@ -11843,7 +11843,7 @@ end
         end
       end,
 
-      action = &quot;fortify earth&quot;,
+      action = "fortify earth",
       onstart = function() send('fortify earth', conf.commandecho) end
     },
     gone = {
@@ -11869,9 +11869,9 @@ end
           end
         end,
 
-        action = &quot;fortify spirit&quot;,
+        action = "fortify spirit",
         onstart = function()
-          send(&quot;fortify spirit&quot;, conf.commandecho)
+          send("fortify spirit", conf.commandecho)
         end
       },
       gone = {
@@ -11895,7 +11895,7 @@ if svo.haveskillset('elementalism') then
 
       oncompleted = function() defences.got('waterweird') end,
 
-      action = &quot;cast waterweird at me&quot;,
+      action = "cast waterweird at me",
       onstart = function() send('cast waterweird at me', conf.commandecho) end
     }
   }
@@ -11909,7 +11909,7 @@ if svo.haveskillset('elementalism') then
 
       oncompleted = function() defences.got('chargeshield') end,
 
-      action = &quot;cast chargeshield at me&quot;,
+      action = "cast chargeshield at me",
       onstart = function() send('cast chargeshield at me', conf.commandecho) end
     }
   }
@@ -11923,7 +11923,7 @@ if svo.haveskillset('elementalism') then
 
       oncompleted = function() defences.got('stonefist') end,
 
-      action = &quot;cast stonefist&quot;,
+      action = "cast stonefist",
       onstart = function() send('cast stonefist', conf.commandecho) end
     }
   }
@@ -11937,7 +11937,7 @@ if svo.haveskillset('elementalism') then
 
       oncompleted = function() defences.got('stoneskin') end,
 
-      action = &quot;cast stoneskin&quot;,
+      action = "cast stoneskin",
       onstart = function() send('cast stoneskin', conf.commandecho) end
     }
   }
@@ -11951,7 +11951,7 @@ if svo.haveskillset('elementalism') then
 
       oncompleted = function() defences.got('diamondskin') end,
 
-      action = &quot;cast diamondskin&quot;,
+      action = "cast diamondskin",
       onstart = function() send('cast diamondskin', conf.commandecho) end
     }
   }
@@ -11968,7 +11968,7 @@ if svo.haveskillset('elementalism') or svo.haveskillset('weatherweaving') then
 
       oncompleted = function() defences.got('reflection') end,
 
-      action = &quot;cast reflection at me&quot;,
+      action = "cast reflection at me",
       onstart = function() send('cast reflection at me', conf.commandecho) end
     }
   }
@@ -11986,14 +11986,14 @@ if svo.haveskillset('apostasy') then
              return true
            elseif not sk.gettingfullstats then
              svo.fullstats(true)
-             svo.echof(&quot;Getting fullstats for Baalzadeen summoning...&quot;)
+             svo.echof("Getting fullstats for Baalzadeen summoning...")
            end
         end
       end,
 
       oncompleted = function() defences.got('baalzadeen') end,
 
-      action = &quot;summon baalzadeen&quot;,
+      action = "summon baalzadeen",
       onstart = function() send('summon baalzadeen', conf.commandecho) end
     }
   }
@@ -12007,7 +12007,7 @@ if svo.haveskillset('apostasy') then
 
       oncompleted = function() defences.got('armour') end,
 
-      action = &quot;demon armour&quot;,
+      action = "demon armour",
       onstart = function() send('demon armour', conf.commandecho) end
     }
   }
@@ -12021,7 +12021,7 @@ if svo.haveskillset('apostasy') then
 
       oncompleted = function() defences.got('syphon') end,
 
-      action = &quot;demon syphon&quot;,
+      action = "demon syphon",
       onstart = function() send('demon syphon', conf.commandecho) end
     }
   }
@@ -12052,7 +12052,7 @@ if svo.haveskillset('weatherweaving') then
 
       oncompleted = function() defences.got('circulate') end,
 
-      action = &quot;cast circulate&quot;,
+      action = "cast circulate",
       onstart = function() send('cast circulate', conf.commandecho) end
     }
   }
@@ -12075,7 +12075,7 @@ if svo.haveskillset('kaido') then
 
       oncompleted = function() defences.got('boosting') end,
 
-      action = &quot;boost regeneration&quot;,
+      action = "boost regeneration",
       onstart = function() send('boost regeneration', conf.commandecho) end
     }
   }
@@ -12089,7 +12089,7 @@ if svo.haveskillset('kaido') then
 
       oncompleted = function() defences.got('kaiboost') end,
 
-      action = &quot;kai boost&quot;,
+      action = "kai boost",
       onstart = function() send('kai boost', conf.commandecho) end
     }
   }
@@ -12104,7 +12104,7 @@ if svo.haveskillset('kaido') then
             return true
           elseif not sk.gettingfullstats then
             svo.fullstats(true)
-            svo.echof(&quot;Getting fullstats for vitality now...&quot;)
+            svo.echof("Getting fullstats for vitality now...")
           end
         end
       end,
@@ -12136,9 +12136,9 @@ if svo.haveskillset('tarot') then
 
       oncompleted = function() defences.got('devil') end,
 
-      action = &quot;fling devil at ground&quot;,
+      action = "fling devil at ground",
       onstart = function()
-        sendAll(&quot;outd 1 devil&quot;,&quot;fling devil at ground&quot;,&quot;ind 1 devil&quot;, conf.commandecho)
+        sendAll("outd 1 devil","fling devil at ground","ind 1 devil", conf.commandecho)
       end
     }
   }
@@ -12174,7 +12174,7 @@ if svo.haveskillset('shikudo') then
   svo.dict.tykonos = {
     physical = {
       balanceful_act = true, def = true, undeffable = true,
-      action = &quot;adopt tykonos form&quot;,
+      action = "adopt tykonos form",
       isadvisable = function() return shikudo_ability_isadvisable('tykonos') end,
       oncompleted = function() return shikudo_form_oncompleted('tykonos') end,
 
@@ -12184,7 +12184,7 @@ if svo.haveskillset('shikudo') then
   svo.dict.willow = {
     physical = {
       balanceful_act = true, def = true, undeffable = true,
-      action = &quot;adopt willow form&quot;,
+      action = "adopt willow form",
       isadvisable = function() return shikudo_ability_isadvisable('willow') end,
       oncompleted = function() return shikudo_form_oncompleted('willow') end,
 
@@ -12194,7 +12194,7 @@ if svo.haveskillset('shikudo') then
   svo.dict.rain = {
     physical = {
       balanceful_act = true, def = true, undeffable = true,
-      action = &quot;adopt rain form&quot;,
+      action = "adopt rain form",
       isadvisable = function() return shikudo_ability_isadvisable('rain') end,
       oncompleted = function() return shikudo_form_oncompleted('rain') end,
 
@@ -12204,7 +12204,7 @@ if svo.haveskillset('shikudo') then
   svo.dict.oak = {
     physical = {
       balanceful_act = true, def = true, undeffable = true,
-      action = &quot;adopt oak form&quot;,
+      action = "adopt oak form",
       isadvisable = function() return shikudo_ability_isadvisable('oak') end,
       oncompleted = function() return shikudo_form_oncompleted('oak') end,
 
@@ -12214,7 +12214,7 @@ if svo.haveskillset('shikudo') then
   svo.dict.gaital = {
     physical = {
       balanceful_act = true, def = true, undeffable = true,
-      action = &quot;adopt gaital form&quot;,
+      action = "adopt gaital form",
       isadvisable = function() return shikudo_ability_isadvisable('gaital') end,
       oncompleted = function() return shikudo_form_oncompleted('gaital') end,
 
@@ -12224,7 +12224,7 @@ if svo.haveskillset('shikudo') then
   svo.dict.maelstrom = {
     physical = {
       balanceful_act = true, def = true, undeffable = true,
-      action = &quot;adopt maelstrom form&quot;,
+      action = "adopt maelstrom form",
       isadvisable = function() return shikudo_ability_isadvisable('maelstrom') end,
       oncompleted = function() return shikudo_form_oncompleted('maelstrom') end,
 
@@ -12394,17 +12394,17 @@ if svo.haveskillset('alchemy') then
         svo.ignore.extispicy = true
 
         if sys.deffing then
-          echo'\n' svo.echof(&quot;Looks like we have no rat - going to skip extispicy in this defup.&quot;)
+          echo'\n' svo.echof("Looks like we have no rat - going to skip extispicy in this defup.")
 
           signals.donedefup:connect(function()
             svo.ignore.extispicy = nil
-          end, &quot;donedefup ignore extispicy&quot;)
+          end, "donedefup ignore extispicy")
         else
-          echo'\n' svo.echof(&quot;Looks like we have no rat for keepup - placing extispicy on ignore.&quot;)
+          echo'\n' svo.echof("Looks like we have no rat for keepup - placing extispicy on ignore.")
         end
       end,
 
-      action = &quot;dissect rat&quot;,
+      action = "dissect rat",
       onstart = function() send('dissect rat', conf.commandecho) end
     }
   }
@@ -12422,7 +12422,7 @@ if svo.haveskillset('woodlore') then
       oncompleted = function() defences.got('impaling') end,
 
       onstart = function()
-        send(&quot;set &quot;..(conf.weapon and conf.weapon or 'unknown'), conf.commandecho)
+        send("set "..(conf.weapon and conf.weapon or 'unknown'), conf.commandecho)
       end
     }
   }
@@ -12437,7 +12437,7 @@ if svo.haveskillset('woodlore') then
       oncompleted = function() defences.got('spinning') end,
 
       onstart = function()
-        send(&quot;spin &quot;..conf.weapon and conf.weapon or 'unknown', conf.commandecho)
+        send("spin "..conf.weapon and conf.weapon or 'unknown', conf.commandecho)
       end
     }
   }
@@ -12478,8 +12478,8 @@ if svo.haveskillset('propagation') then
 
       indoors = function()
         if conf.paused and svo.dict.viridian.physical.unpauselater then
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
-          echo&quot;\n&quot; svo.echof(&quot;Unpaused - you must be outside to cast Viridian.&quot;)
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
+          echo"\n" svo.echof("Unpaused - you must be outside to cast Viridian.")
         end
         svo.dict.viridian.physical.unpauselater = false
         defences.got('viridian')
@@ -12487,25 +12487,25 @@ if svo.haveskillset('propagation') then
 
       notonland = function()
         if conf.paused and svo.dict.viridian.physical.unpauselater then
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
-          echo&quot;\n&quot; svo.echof(&quot;You must be in contact with the earth in order to call upon the might of the Viridian.&quot;)
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
+          echo"\n" svo.echof("You must be in contact with the earth in order to call upon the might of the Viridian.")
         end
         svo.dict.viridian.physical.unpauselater = false
         defences.got('viridian')
       end,
 
-      actions = {&quot;assume viridian&quot;, &quot;assume viridian staff&quot;},
+      actions = {"assume viridian", "assume viridian staff"},
       onstart = function()
         if defc.flail then
-          send(&quot;assume viridian staff&quot;, conf.commandecho)
+          send("assume viridian staff", conf.commandecho)
         else
-          send(&quot;assume viridian&quot;, conf.commandecho)
+          send("assume viridian", conf.commandecho)
         end
 
         if not conf.paused then
           svo.dict.viridian.physical.unpauselater = true
-          conf.paused = true; raiseEvent(&quot;svo config changed&quot;, 'paused')
-          echo&quot;\n&quot; svo.echof(&quot;Temporarily pausing for viridian.&quot;)
+          conf.paused = true; raiseEvent("svo config changed", 'paused')
+          echo"\n" svo.echof("Temporarily pausing for viridian.")
         end
       end
     },
@@ -12522,18 +12522,18 @@ if svo.haveskillset('propagation') then
         svo.dict.riding.gone.oncompleted()
 
         if conf.paused and svo.dict.viridian.physical.unpauselater then
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
 
-          echo&quot;\n&quot;
-          svo.echof(&quot;Obtained viridian, unpausing.&quot;)
+          echo"\n"
+          svo.echof("Obtained viridian, unpausing.")
         end
         svo.dict.viridian.physical.unpauselater = false
       end,
 
       cancelled = function()
         if conf.paused and svo.dict.viridian.physical.unpauselater then
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
-          echo&quot;\n&quot; svo.echof(&quot;Unpausing.&quot;)
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
+          echo"\n" svo.echof("Unpausing.")
         end
         svo.dict.viridian.physical.unpauselater = false
       end,
@@ -12574,25 +12574,25 @@ if svo.haveskillset('groves') then
       oncompleted = function()
         defences.got('lyre')
 
-        if conf.lyre then conf.paused = true; raiseEvent(&quot;svo config changed&quot;, 'paused') end
+        if conf.lyre then conf.paused = true; raiseEvent("svo config changed", 'paused') end
       end,
 
       ontimeout = function()
         if conf.paused and not defc.lyre then
-          svo.echof(&quot;Lyre strum didn't happen - unpausing.&quot;)
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
+          svo.echof("Lyre strum didn't happen - unpausing.")
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
           svo.make_gnomes_work()
         end
       end,
 
       onkill = function()
         if conf.paused and not defc.lyre then
-          svo.echof(&quot;Lyre strum cancelled - unpausing.&quot;)
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
+          svo.echof("Lyre strum cancelled - unpausing.")
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
         end
       end,
 
-      action = &quot;evoke barrier&quot;,
+      action = "evoke barrier",
       onstart = function()
         sys.sendonceonly = true
 
@@ -12601,14 +12601,14 @@ if svo.haveskillset('groves') then
         -- record in systemscommands, so it doesn't get killed later on in the controller and loop
         if conf.batch then send = function(what, ...) svo.sendc(what, ...) sk.systemscommands[what] = true end end
 
-        if not defc.dragonform and (not conf.lyrecmd or conf.lyrecmd == &quot;evoke barrier&quot;) then
-          send(&quot;evoke barrier&quot;, conf.commandecho)
+        if not defc.dragonform and (not conf.lyrecmd or conf.lyrecmd == "evoke barrier") then
+          send("evoke barrier", conf.commandecho)
         else
           send(tostring(conf.lyrecmd), conf.commandecho)
         end
         sys.sendonceonly = false
 
-        if conf.lyre then conf.paused = true; raiseEvent(&quot;svo config changed&quot;, 'paused') end
+        if conf.lyre then conf.paused = true; raiseEvent("svo config changed", 'paused') end
       end
     },
     gone = {
@@ -12651,12 +12651,12 @@ if svo.haveskillset('groves') then
 
         -- unpause should we lose the lyre def for some reason - but not while we're doing lyc
         -- since we'll lose the lyre def and it'll come up right away
-        if conf.lyre and conf.paused and not svo.actions.lyre_physical then conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused') end
+        if conf.lyre and conf.paused and not svo.actions.lyre_physical then conf.paused = false; raiseEvent("svo config changed", 'paused') end
       end,
     }
   }
   svo.dict.rejuvenate = {
-    description = &quot;auto pauses/unpauses the system when you're rejuvenating the forests&quot;,
+    description = "auto pauses/unpauses the system when you're rejuvenating the forests",
     physical = {
       unpauselater = false,
       balanceful_act = true,
@@ -12678,8 +12678,8 @@ if svo.haveskillset('groves') then
 
         if not conf.paused then
           svo.dict.rejuvenate.physical.unpauselater = true
-          conf.paused = true; raiseEvent(&quot;svo config changed&quot;, 'paused')
-          echo&quot;\n&quot; svo.echof(&quot;Temporarily pausing to summon the rejuvenate.&quot;)
+          conf.paused = true; raiseEvent("svo config changed", 'paused')
+          echo"\n" svo.echof("Temporarily pausing to summon the rejuvenate.")
         end
       end
     }
@@ -12690,17 +12690,17 @@ if svo.haveskillset('groves') then
 
       oncompleted = function()
         if conf.paused and svo.dict.rejuvenate.physical.unpauselater then
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
 
-          svo.echof(&quot;Finished rejuvenating, unpausing.&quot;)
+          svo.echof("Finished rejuvenating, unpausing.")
         end
         svo.dict.rejuvenate.physical.unpauselater = false
       end,
 
       cancelled = function()
         if conf.paused and svo.dict.rejuvenate.physical.unpauselater then
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
-          svo.echof(&quot;Oops, interrupted rejuvenation. Unpausing.&quot;)
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
+          svo.echof("Oops, interrupted rejuvenation. Unpausing.")
         end
         svo.dict.rejuvenate.physical.unpauselater = false
       end,
@@ -12727,46 +12727,46 @@ if svo.haveskillset('metamorphosis') then
       oncompleted = function()
         defences.got('lyre')
 
-        if conf.lyre then conf.paused = true; raiseEvent(&quot;svo config changed&quot;, 'paused') end
+        if conf.lyre then conf.paused = true; raiseEvent("svo config changed", 'paused') end
       end,
 
       ontimeout = function()
         if conf.paused and not defc.lyre then
-          svo.echof(&quot;Lyre strum didn't happen - unpausing.&quot;)
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
+          svo.echof("Lyre strum didn't happen - unpausing.")
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
           svo.make_gnomes_work()
         end
       end,
 
       onkill = function()
         if conf.paused and not defc.lyre then
-          svo.echof(&quot;Lyre strum cancelled - unpausing.&quot;)
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
+          svo.echof("Lyre strum cancelled - unpausing.")
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
         end
       end,
 
-      action = &quot;sing melody&quot;,
+      action = "sing melody",
       onstart = function()
-        if not defc.dragonform and (not conf.lyrecmd or conf.lyrecmd == &quot;sing melody&quot;) then
+        if not defc.dragonform and (not conf.lyrecmd or conf.lyrecmd == "sing melody") then
           if not conf.transmorph and sk.inamorph() and not sk.inamorphfor'lyre' then
-            if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+            if defc.flame then send("relax flame", conf.commandecho) end
             send('human', conf.commandecho)
           elseif not sk.inamorphfor'lyre' then
-            if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-            send(&quot;morph &quot;..sk.morphsforskill.lyre[1], conf.commandecho)
+            if defc.flame then send("relax flame", conf.commandecho) end
+            send("morph "..sk.morphsforskill.lyre[1], conf.commandecho)
 
             if conf.transmorph then
               sys.sendonceonly = true
-              send(&quot;sing melody&quot;, conf.commandecho)
+              send("sing melody", conf.commandecho)
               sys.sendonceonly = false
-              if conf.lyre then conf.paused = true; raiseEvent(&quot;svo config changed&quot;, 'paused') end
+              if conf.lyre then conf.paused = true; raiseEvent("svo config changed", 'paused') end
             end
           elseif sk.inamorphfor'lyre' then
             sys.sendonceonly = true
-            send(&quot;sing melody&quot;, conf.commandecho)
+            send("sing melody", conf.commandecho)
             sys.sendonceonly = false
 
-            if conf.lyre then conf.paused = true; raiseEvent(&quot;svo config changed&quot;, 'paused') end
+            if conf.lyre then conf.paused = true; raiseEvent("svo config changed", 'paused') end
           end
         else
           -- small fix to make 'lyc' work and be in-order (as well as use batching)
@@ -12778,7 +12778,7 @@ if svo.haveskillset('metamorphosis') then
           send(tostring(conf.lyrecmd), conf.commandecho)
           sys.sendonceonly = false
 
-          if conf.lyre then conf.paused = true; raiseEvent(&quot;svo config changed&quot;, 'paused') end
+          if conf.lyre then conf.paused = true; raiseEvent("svo config changed", 'paused') end
         end
       end
     },
@@ -12822,7 +12822,7 @@ if svo.haveskillset('metamorphosis') then
 
         -- unpause should we lose the lyre def for some reason - but not while we're doing lyc
         -- since we'll lose the lyre def and it'll come up right away
-        if conf.lyre and conf.paused and not svo.actions.lyre_physical then conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused') end
+        if conf.lyre and conf.paused and not svo.actions.lyre_physical then conf.paused = false; raiseEvent("svo config changed", 'paused') end
       end,
     }
   }
@@ -12839,7 +12839,7 @@ if svo.haveskillset('domination') then
 
       oncompleted = function() defences.got('arctar') end,
 
-      action = &quot;command orb&quot;,
+      action = "command orb",
       onstart = function() send('command orb', conf.commandecho) end
     }
   }
@@ -12850,7 +12850,7 @@ if svo.haveskillset('shadowmancy') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        local shadowcloak = me.getitem(&quot;a grim cloak&quot;)
+        local shadowcloak = me.getitem("a grim cloak")
         if not defc.dragonform and not defc.shadowcloak and
           ((sys.deffing and defdefup[defs.mode].shadowcloak)
             or (conf.keepup and defkeepup[defs.mode].shadowcloak)
@@ -12868,7 +12868,7 @@ if svo.haveskillset('shadowmancy') then
                 return true
               elseif not sk.gettingfullstats then
                 svo.fullstats(true)
-                svo.echof(&quot;Getting fullstats for Shadowcloak summoning...&quot;)
+                svo.echof("Getting fullstats for Shadowcloak summoning...")
               end
             else
               return true
@@ -12879,13 +12879,13 @@ if svo.haveskillset('shadowmancy') then
 
       oncompleted = function() defences.got('shadowcloak') end,
 
-      action = &quot;shadow cloak&quot;,
+      action = "shadow cloak",
       onstart = function()
-        local shadowcloak = me.getitem(&quot;a grim cloak&quot;)
+        local shadowcloak = me.getitem("a grim cloak")
         if not shadowcloak then
-          send(&quot;shadow cloak&quot;, conf.commandecho)
+          send("shadow cloak", conf.commandecho)
         elseif not shadowcloak.attrib or not shadowcloak.attrib:find('w') then
-          send(&quot;wear &quot; .. shadowcloak.id, conf.commandecho)
+          send("wear " .. shadowcloak.id, conf.commandecho)
         else
       defences.got('shadowcloak')
         end
@@ -12902,7 +12902,7 @@ if svo.haveskillset('shadowmancy') then
 
       oncompleted = function() defences.got('disperse') end,
 
-      action = &quot;shadow disperse&quot;,
+      action = "shadow disperse",
       onstart = function() send('shadow disperse', conf.commandecho) end
     }
   }
@@ -12916,7 +12916,7 @@ if svo.haveskillset('shadowmancy') then
 
       oncompleted = function() defences.got('shadowveil') end,
 
-      action = &quot;shadow veil&quot;,
+      action = "shadow veil",
       onstart = function() send('shadow veil', conf.commandecho) end
     }
   }
@@ -12930,7 +12930,7 @@ if svo.haveskillset('shadowmancy') then
 
       oncompleted = function() defences.got('hiding') end,
 
-      action = &quot;shadow veil&quot;,
+      action = "shadow veil",
       onstart = function() send('shadow veil', conf.commandecho) end
     }
   }
@@ -12946,7 +12946,7 @@ if svo.haveskillset('aeonics') then
 
       oncompleted = function() defences.got('dilation') end,
 
-      actions = {&quot;chrono dilation&quot;, &quot;chrono dilation boost&quot;},
+      actions = {"chrono dilation", "chrono dilation boost"},
       onstart = function() send('chrono dilation', conf.commandecho) end
     }
   }
@@ -12963,7 +12963,7 @@ if svo.haveskillset('terminus') then
 
       oncompleted = function() defences.got('trusad') end,
 
-      action = &quot;intone trusad&quot;,
+      action = "intone trusad",
       onstart = function() send('intone trusad', conf.commandecho) end
     }
   }
@@ -12978,7 +12978,7 @@ if svo.haveskillset('terminus') then
 
       oncompleted = function() defences.got('tsuura') end,
 
-      action = &quot;intone tsuura&quot;,
+      action = "intone tsuura",
       onstart = function() send('intone tsuura', conf.commandecho) end
     }
   }
@@ -12993,7 +12993,7 @@ if svo.haveskillset('terminus') then
 
       oncompleted = function() defences.got('ukhia') end,
 
-      action = &quot;intone ukhia&quot;,
+      action = "intone ukhia",
       onstart = function() send('intone ukhia', conf.commandecho) end
     }
   }
@@ -13008,7 +13008,7 @@ if svo.haveskillset('terminus') then
 
       oncompleted = function() defences.got('qamad') end,
 
-      action = &quot;intone qamad&quot;,
+      action = "intone qamad",
       onstart = function() send('intone qamad', conf.commandecho) end
     }
   }
@@ -13023,7 +13023,7 @@ if svo.haveskillset('terminus') then
 
       oncompleted = function() defences.got('mainaas') end,
 
-      action = &quot;intone mainaas&quot;,
+      action = "intone mainaas",
       onstart = function() send('intone mainaas', conf.commandecho) end
     }
   }
@@ -13038,7 +13038,7 @@ if svo.haveskillset('terminus') then
 
       oncompleted = function() defences.got('gaiartha') end,
 
-      action = &quot;intone gaiartha&quot;,
+      action = "intone gaiartha",
       onstart = function() send('intone gaiartha', conf.commandecho) end
     }
   }
@@ -13047,31 +13047,31 @@ if svo.haveskillset('terminus') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.lyre and not svo.doingaction('lyre') and ((sys.deffing and defdefup[defs.mode].lyre) or (conf.keepup and defkeepup[defs.mode].lyre)) and not svo.will_take_balance() and not conf.lyre_step and not affs.prone and (defc.dragonform or (conf.lyrecmd and conf.lyrecmd ~= &quot;intone kail&quot;) or bals.word)) or false
+        return (not defc.lyre and not svo.doingaction('lyre') and ((sys.deffing and defdefup[defs.mode].lyre) or (conf.keepup and defkeepup[defs.mode].lyre)) and not svo.will_take_balance() and not conf.lyre_step and not affs.prone and (defc.dragonform or (conf.lyrecmd and conf.lyrecmd ~= "intone kail") or bals.word)) or false
       end,
 
       oncompleted = function()
         defences.got('lyre')
 
-        if conf.lyre then conf.paused = true; raiseEvent(&quot;svo config changed&quot;, 'paused') end
+        if conf.lyre then conf.paused = true; raiseEvent("svo config changed", 'paused') end
       end,
 
       ontimeout = function()
         if conf.paused and not defc.lyre then
-          svo.echof(&quot;Lyre strum didn't happen - unpausing.&quot;)
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
+          svo.echof("Lyre strum didn't happen - unpausing.")
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
           svo.make_gnomes_work()
         end
       end,
 
       onkill = function()
         if conf.paused and not defc.lyre then
-          svo.echof(&quot;Lyre strum cancelled - unpausing.&quot;)
-          conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused')
+          svo.echof("Lyre strum cancelled - unpausing.")
+          conf.paused = false; raiseEvent("svo config changed", 'paused')
         end
       end,
 
-      action = &quot;intone kail&quot;,
+      action = "intone kail",
       onstart = function()
         sys.sendonceonly = true
 
@@ -13081,15 +13081,15 @@ if svo.haveskillset('terminus') then
         if conf.batch then send = function(what, ...) svo.sendc(what, ...) sk.systemscommands[what] = true end end
 
         if not defc.dragonform and not conf.lyrecmd then
-          send(&quot;intone kail&quot;, conf.commandecho)
+          send("intone kail", conf.commandecho)
         elseif conf.lyrecmd then
           send(tostring(conf.lyrecmd), conf.commandecho)
         else
-          send(&quot;strum lyre&quot;, conf.commandecho)
+          send("strum lyre", conf.commandecho)
         end
         sys.sendonceonly = false
 
-        if conf.lyre then conf.paused = true; raiseEvent(&quot;svo config changed&quot;, 'paused') end
+        if conf.lyre then conf.paused = true; raiseEvent("svo config changed", 'paused') end
       end
     },
     gone = {
@@ -13132,7 +13132,7 @@ if svo.haveskillset('terminus') then
 
         -- unpause should we lose the lyre def for some reason - but not while we're doing lyc
         -- since we'll lose the lyre def and it'll come up right away
-        if conf.lyre and conf.paused and not svo.actions.lyre_physical then conf.paused = false; raiseEvent(&quot;svo config changed&quot;, 'paused') end
+        if conf.lyre and conf.paused and not svo.actions.lyre_physical then conf.paused = false; raiseEvent("svo config changed", 'paused') end
       end,
     }
   }
@@ -13153,14 +13153,14 @@ if svo.me.class == 'Sentinel' then
         defences.got('basilisk')
       end,
 
-      action = &quot;morph basilisk&quot;,
+      action = "morph basilisk",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph basilisk&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph basilisk", conf.commandecho)
         end
       end
     },
@@ -13184,14 +13184,14 @@ if svo.me.class == 'Sentinel' then
         defences.got('jaguar')
       end,
 
-      action = &quot;morph jaguar&quot;,
+      action = "morph jaguar",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph jaguar&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph jaguar", conf.commandecho)
         end
       end
     },
@@ -13215,14 +13215,14 @@ if svo.me.class == 'Druid' then
         defences.got('wyvern')
       end,
 
-      action = &quot;morph wyvern&quot;,
+      action = "morph wyvern",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph wyvern&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph wyvern", conf.commandecho)
         end
       end
     },
@@ -13244,14 +13244,14 @@ if svo.me.class == 'Druid' then
         defences.got('hydra')
       end,
 
-      action = &quot;morph hydra&quot;,
+      action = "morph hydra",
       onstart = function()
         if not conf.transmorph and sk.inamorph() then
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
+          if defc.flame then send("relax flame", conf.commandecho) end
           send('human', conf.commandecho)
         else
-          if defc.flame then send(&quot;relax flame&quot;, conf.commandecho) end
-          send(&quot;morph hydra&quot;, conf.commandecho)
+          if defc.flame then send("relax flame", conf.commandecho) end
+          send("morph hydra", conf.commandecho)
         end
       end
     },
@@ -13351,7 +13351,7 @@ if svo.haveskillset('healing') then
         if use_no_name[aff] then
           send('heal', conf.commandecho)
         else
-          send(&quot;heal me &quot;..(svonames[aff] or aff), conf.commandecho)
+          send("heal me "..(svonames[aff] or aff), conf.commandecho)
         end
         svo.dict.usehealing.curingaff = svo.dict.usehealing.afftocure
         svo.dict.usehealing.afftocure = nil
@@ -13392,11 +13392,11 @@ if svo.haveskillset('kaido') then
         local reps = math.floor(necessary_amount/1000)
 
         for _ = 1, reps do
-          send(&quot;transmute 1000&quot;, conf.commandecho)
+          send("transmute 1000", conf.commandecho)
           svo.dict.transmute.transmutereps = svo.dict.transmute.transmutereps + 1
         end
         if necessary_amount % 1000 ~= 0 then
-          send(&quot;transmute &quot;..necessary_amount % 1000, conf.commandecho)
+          send("transmute "..necessary_amount % 1000, conf.commandecho)
           svo.dict.transmute.transmutereps = svo.dict.transmute.transmutereps + 1
         end
 
@@ -13420,7 +13420,7 @@ if svo.haveskillset('voicecraft') then
         svo.lostbal_voice()
       end,
 
-      action = &quot;chant dwinnu&quot;,
+      action = "chant dwinnu",
       onstart = function() send('chant dwinnu', conf.commandecho) end
     },
   }
@@ -13466,7 +13466,7 @@ if svo.haveskillset('metamorphosis') then
       onstart = function() end,
       ontimeout = function()
         svo.rmaff('cantmorph')
-        echo&quot;\n&quot;svo.echof(&quot;We can probably morph again now.&quot;)
+        echo"\n"svo.echof("We can probably morph again now.")
       end,
 
       oncompleted = function() svo.rmaff('cantmorph') end
@@ -13493,7 +13493,7 @@ if svo.haveskillset('metamorphosis') or svo.haveskillset('kaido') then
       onstart = function() end,
       ontimeout = function()
         if not defc.vitality then
-          echo&quot;\n&quot;svo.echof(&quot;We can vitality again now.&quot;)
+          echo"\n"svo.echof("We can vitality again now.")
           svo.make_gnomes_work()
         end
       end,
@@ -13511,7 +13511,7 @@ if svo.haveskillset('metamorphosis') or svo.haveskillset('kaido') then
 end
 if svo.haveskillset('weaponmastery') then
   svo.dict.footingattack = {
-    description = &quot;Tracks attacks suitable for use with balanceless recover footing&quot;,
+    description = "Tracks attacks suitable for use with balanceless recover footing",
     happened = {
       oncompleted = function()
         sk.didfootingattack = true
@@ -13526,7 +13526,7 @@ if svo.haveskillset('aeonics') then
 
       oncompleted = function(amount)
         if amount &gt; 1400 then
-          svo.ignore_illusion(&quot;Age went over the possible max&quot;)
+          svo.ignore_illusion("Age went over the possible max")
           stats.age = 0
         elseif amount == 0 then
           if svo.dict.age.happened.timer then killTimer(svo.dict.age.happened.timer) end
@@ -13535,7 +13535,7 @@ if svo.haveskillset('aeonics') then
         else
           if svo.dict.age.happened.timer then killTimer(svo.dict.age.happened.timer) end
           svo.dict.age.happened.timer = tempTimer(6 + svo.getping(), function()
-            svo.ignore_illusion(&quot;Age tick timed out&quot;)
+            svo.ignore_illusion("Age tick timed out")
             stats.age = 0
           end)
           stats.age = amount
@@ -13596,7 +13596,7 @@ if svo.haveskillset('devotion') then
 
       oncompleted = function() defences.lost('bloodsworn') end,
 
-      action = &quot;bloodsworn off&quot;,
+      action = "bloodsworn off",
       onstart = function() send('bloodsworn off', conf.commandecho) end
     }
   }
@@ -13636,88 +13636,88 @@ end
 local basicdef = svo.basicdef
 
 basicdef('satiation', 'satiation')
-basicdef('treewatch', &quot;treewatch on&quot;, true)
-basicdef('skywatch', &quot;skywatch on&quot;, true)
-basicdef('groundwatch', &quot;groundwatch on&quot;, true)
-basicdef('telesense', &quot;telesense on&quot;, true)
-basicdef('softfocus', &quot;softfocus on&quot;, true, 'softfocusing')
-basicdef('vigilance', &quot;vigilance on&quot;, true)
-basicdef('magicresist', &quot;activate magic resistance&quot;, true)
-basicdef('fireresist', &quot;activate fire resistance&quot;, true)
-basicdef('coldresist', &quot;activate cold resistance&quot;, true)
-basicdef('electricresist', &quot;activate electric resistance&quot;, true)
-basicdef('alertness', &quot;alertness on&quot;)
-basicdef('bell', &quot;touch bell&quot;, true, 'belltattoo')
-basicdef('hypersight', &quot;hypersight on&quot;)
+basicdef('treewatch', "treewatch on", true)
+basicdef('skywatch', "skywatch on", true)
+basicdef('groundwatch', "groundwatch on", true)
+basicdef('telesense', "telesense on", true)
+basicdef('softfocus', "softfocus on", true, 'softfocusing')
+basicdef('vigilance', "vigilance on", true)
+basicdef('magicresist', "activate magic resistance", true)
+basicdef('fireresist', "activate fire resistance", true)
+basicdef('coldresist', "activate cold resistance", true)
+basicdef('electricresist', "activate electric resistance", true)
+basicdef('alertness', "alertness on")
+basicdef('bell', "touch bell", true, 'belltattoo')
+basicdef('hypersight', "hypersight on")
 basicdef('curseward', 'curseward')
 basicdef('clinging', 'cling')
 if svo.haveskillset('necromancy') then
   basicdef('putrefaction', 'putrefaction')
   basicdef('shroud', 'shroud')
-  basicdef('vengeance', &quot;vengeance on&quot;)
-  basicdef('deathaura', &quot;deathaura on&quot;)
-  basicdef('soulcage', &quot;soulcage activate&quot;)
+  basicdef('vengeance', "vengeance on")
+  basicdef('deathaura', "deathaura on")
+  basicdef('soulcage', "soulcage activate")
 end
 if svo.haveskillset('chivalry') then
-  basicdef('mastery', &quot;mastery on&quot;, true, 'blademastery')
-  basicdef('sturdiness', &quot;stand firm&quot;, false, 'standingfirm')
+  basicdef('mastery', "mastery on", true, 'blademastery')
+  basicdef('sturdiness', "stand firm", false, 'standingfirm')
   basicdef('weathering', 'weathering', true)
   basicdef('resistance', 'resistance', true)
   basicdef('grip', 'grip', true, 'gripping')
-  basicdef('fury', &quot;fury on&quot;)
+  basicdef('fury', "fury on")
 end
 if svo.haveskillset('devotion') then
-  basicdef('inspiration', &quot;perform inspiration&quot;)
-  basicdef('bliss', &quot;perform bliss&quot;, nil, nil, true)
+  basicdef('inspiration', "perform inspiration")
+  basicdef('bliss', "perform bliss", nil, nil, true)
 end
 if svo.haveskillset('spirituality') then
-  basicdef('heresy', &quot;hunt heresy&quot;)
+  basicdef('heresy', "hunt heresy")
 end
 if svo.haveskillset('shindo') then
   basicdef('clarity', 'clarity', nil, nil, true)
-  basicdef('sturdiness', &quot;stand firm&quot;, false, 'standingfirm')
+  basicdef('sturdiness', "stand firm", false, 'standingfirm')
   basicdef('weathering', 'weathering', true)
   basicdef('grip', 'grip', true, 'gripping')
   basicdef('toughness', 'toughness', true)
-  basicdef('mindnet', &quot;mindnet on&quot;)
+  basicdef('mindnet', "mindnet on")
   basicdef('constitution', 'constitution')
   basicdef('waterwalk', 'waterwalk', false, 'waterwalking')
   basicdef('retaliationstrike', 'retaliationstrike', nil, 'retaliation')
-  basicdef('shintrance', &quot;shin trance&quot;)
-  basicdef('consciousness', &quot;consciousness on&quot;)
-  basicdef('bind', &quot;binding on&quot;, nil, nil, true)
-  basicdef('projectiles', &quot;projectiles on&quot;)
-  basicdef('dodging', &quot;dodging on&quot;)
+  basicdef('shintrance', "shin trance")
+  basicdef('consciousness', "consciousness on")
+  basicdef('bind', "binding on", nil, nil, true)
+  basicdef('projectiles', "projectiles on")
+  basicdef('dodging', "dodging on")
   basicdef('immunity', 'immunity')
 end
 if svo.haveskillset('metamorphosis') then
-  basicdef('bonding', &quot;bond spirit&quot;, nil, nil, true)
+  basicdef('bonding', "bond spirit", nil, nil, true)
 end
 if svo.haveskillset('swashbuckling') then
-  basicdef('arrowcatch', &quot;arrowcatch on&quot;, nil, 'arrowcatching')
-  basicdef('balancing', &quot;balancing on&quot;)
-  basicdef('acrobatics', &quot;acrobatics on&quot;)
-  basicdef('dodging', &quot;dodging on&quot;)
+  basicdef('arrowcatch', "arrowcatch on", nil, 'arrowcatching')
+  basicdef('balancing', "balancing on")
+  basicdef('acrobatics', "acrobatics on")
+  basicdef('dodging', "dodging on")
   basicdef('grip', 'grip', true, 'gripping')
 end
 if svo.haveskillset('voicecraft') then
-  basicdef('songbird', &quot;whistle for songbird&quot;)
+  basicdef('songbird', "whistle for songbird")
 end
 if svo.haveskillset('harmonics') then
-  basicdef('lament', &quot;play lament&quot;, nil, nil, true)
-  basicdef('anthem', &quot;play anthem&quot;, nil, nil, true)
-  basicdef('harmonius', &quot;play harmonius&quot;, nil, nil, true)
-  basicdef('contradanse', &quot;play contradanse&quot;, nil, nil, true)
-  basicdef('paxmusicalis', &quot;play paxmusicalis&quot;, nil, nil, true)
-  basicdef('gigue', &quot;play gigue&quot;, nil, nil, true)
-  basicdef('bagatelle', &quot;play bagatelle&quot;, nil, nil, true)
-  basicdef('partita', &quot;play partita&quot;, nil, nil, true)
-  basicdef('berceuse', &quot;play berceuse&quot;, nil, nil, true)
-  basicdef('continuo', &quot;play continuo&quot;, nil, nil, true)
-  basicdef('wassail', &quot;play wassail&quot;, nil, nil, true)
-  basicdef('canticle', &quot;play canticle&quot;, nil, nil, true)
-  basicdef('reel', &quot;play reel&quot;, nil, nil, true)
-  basicdef('hallelujah', &quot;play hallelujah&quot;, nil, nil, true)
+  basicdef('lament', "play lament", nil, nil, true)
+  basicdef('anthem', "play anthem", nil, nil, true)
+  basicdef('harmonius', "play harmonius", nil, nil, true)
+  basicdef('contradanse', "play contradanse", nil, nil, true)
+  basicdef('paxmusicalis', "play paxmusicalis", nil, nil, true)
+  basicdef('gigue', "play gigue", nil, nil, true)
+  basicdef('bagatelle', "play bagatelle", nil, nil, true)
+  basicdef('partita', "play partita", nil, nil, true)
+  basicdef('berceuse', "play berceuse", nil, nil, true)
+  basicdef('continuo', "play continuo", nil, nil, true)
+  basicdef('wassail', "play wassail", nil, nil, true)
+  basicdef('canticle', "play canticle", nil, nil, true)
+  basicdef('reel', "play reel", nil, nil, true)
+  basicdef('hallelujah', "play hallelujah", nil, nil, true)
 end
 if svo.haveskillset('occultism') then
   basicdef('shroud', 'shroud')
@@ -13727,22 +13727,22 @@ if svo.haveskillset('occultism') then
   basicdef('devilmark', 'devilmark')
   basicdef('heartstone', 'heartstone', nil, nil, true)
   basicdef('simulacrum', 'simulacrum', nil, nil, true)
-  basicdef('transmogrify', &quot;transmogrify activate&quot;, nil, nil, true)
+  basicdef('transmogrify', "transmogrify activate", nil, nil, true)
 end
 if svo.haveskillset('elementalism') then
-  basicdef('efreeti', &quot;cast efreeti&quot;, nil, nil, true)
+  basicdef('efreeti', "cast efreeti", nil, nil, true)
 end
 if svo.haveskillset('apostasy') then
-  basicdef('daegger', &quot;summon daegger&quot;, nil, nil, true)
-  basicdef('pentagram', &quot;carve pentagram&quot;, nil, nil, true)
+  basicdef('daegger', "summon daegger", nil, nil, true)
+  basicdef('pentagram', "carve pentagram", nil, nil, true)
 end
 if svo.haveskillset('evileye') then
   basicdef('truestare', 'truestare')
 end
 if svo.haveskillset('pranks') then
-  basicdef('arrowcatch', &quot;arrowcatch on&quot;, nil, 'arrowcatching')
-  basicdef('balancing', &quot;balancing on&quot;)
-  basicdef('acrobatics', &quot;acrobatics on&quot;)
+  basicdef('arrowcatch', "arrowcatch on", nil, 'arrowcatching')
+  basicdef('balancing', "balancing on")
+  basicdef('acrobatics', "acrobatics on")
   basicdef('slipperiness', 'slipperiness', nil, 'slippery')
 end
 if svo.haveskillset('puppetry') or svo.haveskillset('vodun') then
@@ -13754,24 +13754,24 @@ end
 if svo.haveskillset('kaido') then
   basicdef('numb', 'numb', nil, nil, true)
   basicdef('weathering', 'weathering', true)
-  basicdef('nightsight', &quot;nightsight on&quot;, true)
+  basicdef('nightsight', "nightsight on", true)
   basicdef('immunity', 'immunity')
-  basicdef('regeneration', &quot;regeneration on&quot;, true)
+  basicdef('regeneration', "regeneration on", true)
   basicdef('resistance', 'resistance', true)
   basicdef('toughness', 'toughness', true)
-  basicdef('trance', &quot;kai trance&quot;, true, 'kaitrance')
-  basicdef('consciousness', &quot;consciousness on&quot;, true)
-  basicdef('projectiles', &quot;projectiles on&quot;, true)
-  basicdef('dodging', &quot;dodging on&quot;, true)
+  basicdef('trance', "kai trance", true, 'kaitrance')
+  basicdef('consciousness', "consciousness on", true)
+  basicdef('projectiles', "projectiles on", true)
+  basicdef('dodging', "dodging on", true)
   basicdef('constitution', 'constitution')
-  basicdef('splitmind', &quot;split mind&quot;)
-  basicdef('sturdiness', &quot;stand firm&quot;, false, 'standingfirm')
+  basicdef('splitmind', "split mind")
+  basicdef('sturdiness', "stand firm", false, 'standingfirm')
 end
 if svo.haveskillset('telepathy') then
-  basicdef('mindtelesense', &quot;mind telesense on&quot;, true)
-  basicdef('hypersense', &quot;mind hypersense on&quot;)
-  basicdef('mindnet', &quot;mindnet on&quot;, true)
-  basicdef('mindcloak', &quot;mind cloak on&quot;, true)
+  basicdef('mindtelesense', "mind telesense on", true)
+  basicdef('hypersense', "mind hypersense on")
+  basicdef('mindnet', "mindnet on", true)
+  basicdef('mindcloak', "mind cloak on", true)
 end
 if svo.haveskillset('skirmishing') then
   basicdef('scout', 'scout', nil, 'scouting')
@@ -13782,45 +13782,45 @@ end
 if svo.haveskillset('subterfuge') then
   basicdef('scales', 'scales')
   basicdef('hiding', 'hide', false, 'hiding', true)
-  basicdef('pacing', &quot;pacing on&quot;)
+  basicdef('pacing', "pacing on")
   basicdef('bask', 'bask', false, 'basking')
   basicdef('listen', 'listen', false, false, true)
   basicdef('eavesdrop', 'eavesdrop', false, 'eavesdropping', true) -- serverside bugs out and doesn't accept it
   basicdef('lipread', 'lipread', false, 'lipreading', true) -- serverside bugs and does it while blind
-  basicdef('weaving', &quot;weaving on&quot;)
-  basicdef('cloaking', &quot;conjure cloak&quot;, false, 'shroud')
-  basicdef('ghost', &quot;conjure ghost&quot;)
+  basicdef('weaving', "weaving on")
+  basicdef('cloaking', "conjure cloak", false, 'shroud')
+  basicdef('ghost', "conjure ghost")
   basicdef('phase', 'phase', false, 'phased', true)
   basicdef('secondsight', 'secondsight')
 end
 if svo.haveskillset('alchemy') then
-  basicdef('lead', &quot;educe lead&quot;, nil, nil, true)
-  basicdef('tin', &quot;educe tin&quot;)
-  basicdef('sulphur', &quot;educe sulphur&quot;)
-  basicdef('mercury', &quot;educe mercury&quot;)
-  basicdef('empower', &quot;astronomy empower me&quot;, nil, nil, true)
+  basicdef('lead', "educe lead", nil, nil, true)
+  basicdef('tin', "educe tin")
+  basicdef('sulphur', "educe sulphur")
+  basicdef('mercury', "educe mercury")
+  basicdef('empower', "astronomy empower me", nil, nil, true)
 end
 if svo.haveskillset('woodlore') then
   basicdef('barkskin', 'barkskin')
   basicdef('fleetness', 'fleetness')
   basicdef('hiding', 'hide', false, 'hiding', true)
-  basicdef('firstaid', &quot;firstaid on&quot;)
+  basicdef('firstaid', "firstaid on")
 end
 if svo.haveskillset('groves') then
-  basicdef('panacea', &quot;evoke panacea&quot;, false, false, true)
-  basicdef('vigour', &quot;evoke vigour&quot;, false, false, true)
-  basicdef('roots', &quot;grove roots&quot;, false, false, true)
-  basicdef('wildgrowth', &quot;evoke wildgrowth&quot;, false, false, true)
-  basicdef('dampening', &quot;evoke dampening&quot;, false, false, true)
-  basicdef('snowstorm', &quot;evoke snowstorm&quot;, false, false, true)
-  basicdef('roots', &quot;grove roots&quot;, false, false, true)
-  basicdef('concealment', &quot;grove concealment&quot;, false, false, true)
-  basicdef('screen', &quot;grove screen&quot;, false, false, true)
-  basicdef('swarm', &quot;call new swarm&quot;, false, false, true)
-  basicdef('harmony', &quot;evoke harmony me&quot;, false, false, true)
+  basicdef('panacea', "evoke panacea", false, false, true)
+  basicdef('vigour', "evoke vigour", false, false, true)
+  basicdef('roots', "grove roots", false, false, true)
+  basicdef('wildgrowth', "evoke wildgrowth", false, false, true)
+  basicdef('dampening', "evoke dampening", false, false, true)
+  basicdef('snowstorm', "evoke snowstorm", false, false, true)
+  basicdef('roots', "grove roots", false, false, true)
+  basicdef('concealment', "grove concealment", false, false, true)
+  basicdef('screen', "grove screen", false, false, true)
+  basicdef('swarm', "call new swarm", false, false, true)
+  basicdef('harmony', "evoke harmony me", false, false, true)
 end
 if svo.haveskillset('domination') then
-  basicdef('golgotha', &quot;summon golgotha&quot;, nil, 'golgothagrace')
+  basicdef('golgotha', "summon golgotha", nil, 'golgothagrace')
 end
 
 for ssa, svoa in pairs(svo.dict.sstosvoa) do
@@ -13857,7 +13857,7 @@ function svo.find_lowest_async(balance)
 end
 
 function svo.find_lowest_sync()
-  local data = svo.make_sync_prio_table(&quot;%s%s&quot;)
+  local data = svo.make_sync_prio_table("%s%s")
   local t = {}
 
   for k,_ in pairs(data) do
@@ -13993,7 +13993,7 @@ function svo.dict_setup()
     if balance.focus and not balance.focus.nomana then
       balance.focus.nomana = function()
         if not svo.actions.nomana_waitingfor and stats.currentmana ~= 0 then
-          svo.echof(&quot;Seems we're out of mana.&quot;)
+          svo.echof("Seems we're out of mana.")
           svo.doaction(svo.dict.nomana.waitingfor)
         end
       end
@@ -14065,9 +14065,9 @@ function svo.dict_validate()
         key = svo.containsbyname(data[balance], l.aspriority)
           if key then
           -- store the new dupe that we found
-          dupes[balance][(k:split('_')[2] and k:split('_')[2] .. &quot; for &quot; or &quot;&quot;) .. i] = l.aspriority
+          dupes[balance][(k:split('_')[2] and k:split('_')[2] .. " for " or "") .. i] = l.aspriority
           -- and store the previous one that we had already!
-          dupes[balance][(key.balance:split('_')[2] and key.balance:split('_')[2] .. &quot; for &quot; or &quot;&quot;) .. key.action_name] = l.aspriority
+          dupes[balance][(key.balance:split('_')[2] and key.balance:split('_')[2] .. " for " or "") .. key.action_name] = l.aspriority
         end
         data[balance][l] = l.aspriority
 
@@ -14078,7 +14078,7 @@ function svo.dict_validate()
   -- if we got something, complain
   for i,j in pairs(dupes) do
     if next(j) then
-        svo.echof(&quot;Meh, problem. The following actions in %s balance have the same priorities: %s&quot;, i, svo.oneconcatwithval(j))
+        svo.echof("Meh, problem. The following actions in %s balance have the same priorities: %s", i, svo.oneconcatwithval(j))
     end
   end
 
@@ -14123,14 +14123,14 @@ function svo.dict_validate()
     svo.assert(type(tbl) == 'table')
     local result = {}
     for _,j in pairs(tbl) do
-      result[#result+1] = j.name .. &quot;(&quot; .. j.prio .. &quot;)&quot;
+      result[#result+1] = j.name .. "(" .. j.prio .. ")"
     end
 
-    return table.concat(result, &quot;, &quot;)
+    return table.concat(result, ", ")
   end
 
     -- complaining time
-  svo.echof(&quot;Meh, problem. The following actions in sync mode have the same priorities: %s&quot;, a(sorted_dupes))
+  svo.echof("Meh, problem. The following actions in sync mode have the same priorities: %s", a(sorted_dupes))
 end
 
 signals.dragonform:connect(function()
@@ -14157,8 +14157,8 @@ signals.dragonform:connect(function()
     -- special case for nightsight and monks: they have it
   end
 
-end, &quot;update allowed actions in dragonform&quot;)
-signals.systemstart:connect(function() signals.dragonform:emit() end, &quot;run dragonform check on system start&quot;)
+end, "update allowed actions in dragonform")
+signals.systemstart:connect(function() signals.dragonform:emit() end, "run dragonform check on system start")
 signals.gmcpcharstatus:connect(function()
   if gmcp.Char.Status.race then
     if gmcp.Char.Status.race:find('Dragon') then
@@ -14169,7 +14169,7 @@ signals.gmcpcharstatus:connect(function()
   end
 
   signals.dragonform:emit()
-end, &quot;update dragonform status off gmcp&quot;)
+end, "update dragonform status off gmcp")
 
 svo.make_prio_table = function (filterbalance)
   local data = {}
@@ -14178,7 +14178,7 @@ svo.make_prio_table = function (filterbalance)
     for k,l in pairs(balances) do
       if k:sub(1, #filterbalance) == filterbalance and type(l) == 'table' and l.aspriority then
         if #k ~= #filterbalance then
-          data[l.aspriority] = k:sub(#filterbalance+2) .. &quot; for &quot; .. action
+          data[l.aspriority] = k:sub(#filterbalance+2) .. " for " .. action
         else
           data[l.aspriority] = action
         end
@@ -14295,8 +14295,8 @@ signals.newroom:connect(function()
     tempTimer(0, function()
       if stats.currenthealth &gt; 0 then
         tempTimer(0, function()
-          if not svo.find_until_last_paragraph(&quot;You scrabble futilely at the ground as&quot;, 'substring') then
-            svo.echof(&quot;Woo! We escaped from %s.&quot;, svo.concatand(escaped))
+          if not svo.find_until_last_paragraph("You scrabble futilely at the ground as", 'substring') then
+            svo.echof("Woo! We escaped from %s.", svo.concatand(escaped))
           end
         end)
       end
@@ -14309,32 +14309,32 @@ signals.systemstart:connect(function()
 
   for action, actiont in pairs(svo.dict) do
     for _, balancet in pairs(actiont) do
-      -- ignore &quot;check*&quot; actions, as they are only useful when used by the system,
+      -- ignore "check*" actions, as they are only useful when used by the system,
       -- and they can override actions that could be done by the user
-      if type(balancet) == 'table' and not action:find(&quot;^check&quot;) then
+      if type(balancet) == 'table' and not action:find("^check") then
         if type(balancet.sipcure) == 'string' then
-          sys.input_to_actions[&quot;drink &quot;..balancet.sipcure] = balancet
-          sys.input_to_actions[&quot;sip &quot;..balancet.sipcure] = balancet
+          sys.input_to_actions["drink "..balancet.sipcure] = balancet
+          sys.input_to_actions["sip "..balancet.sipcure] = balancet
         elseif type(balancet.sipcure) == 'table' then
           for _, potion in ipairs(balancet.sipcure) do
-            sys.input_to_actions[&quot;drink &quot;..potion] = balancet
-            sys.input_to_actions[&quot;sip &quot;..potion] = balancet
+            sys.input_to_actions["drink "..potion] = balancet
+            sys.input_to_actions["sip "..potion] = balancet
           end
 
         elseif type(balancet.eatcure) == 'string' then
-          sys.input_to_actions[&quot;eat &quot;..balancet.eatcure] = balancet
+          sys.input_to_actions["eat "..balancet.eatcure] = balancet
         elseif type(balancet.eatcure) == 'table' then
           for _, thing in ipairs(balancet.eatcure) do
-            sys.input_to_actions[&quot;eat &quot;..thing] = balancet
+            sys.input_to_actions["eat "..thing] = balancet
           end
 
         elseif type(balancet.smokecure) == 'string' then
-          sys.input_to_actions[&quot;smoke &quot;..balancet.smokecure] = balancet
-          sys.input_to_actions[&quot;puff &quot;..balancet.smokecure] = balancet
+          sys.input_to_actions["smoke "..balancet.smokecure] = balancet
+          sys.input_to_actions["puff "..balancet.smokecure] = balancet
         elseif type(balancet.smokecure) == 'table' then
           for _, thing in ipairs(balancet.smokecure) do
-            sys.input_to_actions[&quot;smoke &quot;..thing] = balancet
-            sys.input_to_actions[&quot;puff &quot;..thing] = balancet
+            sys.input_to_actions["smoke "..thing] = balancet
+            sys.input_to_actions["puff "..thing] = balancet
           end
         end
 
@@ -14356,11 +14356,11 @@ end -- end of svo dict loader
 
 if svo.systemloaded then svo.loader.dict() end
 </script>
-            <eventHandlerList/>
-        </Script>
-    </ScriptPackage>
-    <KeyPackage/>
-    <HelpPackage>
-        <helpURL></helpURL>
-    </HelpPackage>
+			<eventHandlerList />
+		</Script>
+	</ScriptPackage>
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL></helpURL>
+	</HelpPackage>
 </MudletPackage>

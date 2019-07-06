@@ -1,247 +1,247 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
 <MudletPackage version="1.001">
-    <TriggerPackage>
-        <TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-            <name>Corpse lists</name>
-            <script></script>
-            <triggerType>0</triggerType>
-            <conditonLineDelta>0</conditonLineDelta>
-            <mStayOpen>0</mStayOpen>
-            <mCommand></mCommand>
-            <packageName></packageName>
-            <mFgColor>#ff0000</mFgColor>
-            <mBgColor>#ffff00</mBgColor>
-            <mSoundFile></mSoundFile>
-            <colorTriggerFgColor>#000000</colorTriggerFgColor>
-            <colorTriggerBgColor>#000000</colorTriggerBgColor>
-            <regexCodeList/>
-            <regexCodePropertyList/>
-            <Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>corpse stuff inventory</name>
-                <script></script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>250</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>You are holding:</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>3</integer>
-                </regexCodePropertyList>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>A corpse</name>
-                    <script>if not svo.off_action then return end
+	<TriggerPackage>
+		<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Corpse lists</name>
+			<script></script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList />
+			<regexCodePropertyList />
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>corpse stuff inventory</name>
+				<script></script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>250</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>You are holding:</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>3</integer>
+				</regexCodePropertyList>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>A corpse</name>
+					<script>if not svo.off_action then return end
 
-if svo.off_action == &quot;offer&quot; then
-  svo.doaddfree(&quot;offer &quot;..matches[3])
-elseif svo.off_action == &quot;defile&quot; then
-  svo.doadd(&quot;offer &quot;..matches[3]..&quot; to defile&quot;)
-elseif svo.off_action == &quot;sanctify&quot; then
-  svo.doadd(&quot;offer &quot;..matches[3]..&quot; to sanctify&quot;)
+if svo.off_action == "offer" then
+  svo.doaddfree("offer "..matches[3])
+elseif svo.off_action == "defile" then
+  svo.doadd("offer "..matches[3].." to defile")
+elseif svo.off_action == "sanctify" then
+  svo.doadd("offer "..matches[3].." to sanctify")
 else
-  svo.doaddfree(&quot;give &quot;..matches[3]..&quot; to &quot;..svo.off_action)
+  svo.doaddfree("give "..matches[3].." to "..svo.off_action)
 end
     </script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>^\s+([A-Za-z']+)(\d+)\s+the corpse of</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>1</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-                <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                    <name>corpse stuff inventory stop</name>
-                    <script>setTriggerStayOpen(&quot;corpse stuff inventory&quot;, 0)
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>^\s+([A-Za-z']+)(\d+)\s+the corpse of</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>corpse stuff inventory stop</name>
+					<script>setTriggerStayOpen("corpse stuff inventory", 0)
 
-disableTrigger(&quot;Corpse lists&quot;)
+disableTrigger("Corpse lists")
 svo.off_action = nil</script>
-                    <triggerType>0</triggerType>
-                    <conditonLineDelta>0</conditonLineDelta>
-                    <mStayOpen>0</mStayOpen>
-                    <mCommand></mCommand>
-                    <packageName></packageName>
-                    <mFgColor>#ff0000</mFgColor>
-                    <mBgColor>#ffff00</mBgColor>
-                    <mSoundFile></mSoundFile>
-                    <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                    <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                    <regexCodeList>
-                        <string>return isPrompt()</string>
-                    </regexCodeList>
-                    <regexCodePropertyList>
-                        <integer>4</integer>
-                    </regexCodePropertyList>
-                </Trigger>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>corpse stuff ground</name>
-                <script>if not svo.off_action then return end
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>return isPrompt()</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>4</integer>
+					</regexCodePropertyList>
+				</Trigger>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>corpse stuff ground</name>
+				<script>if not svo.off_action then return end
 
-if svo.off_action == &quot;get&quot; then
-  svo.doaddfree(&quot;get &quot;..matches[3])
+if svo.off_action == "get" then
+  svo.doaddfree("get "..matches[3])
 end</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>0</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>^([A-Za-z']+)(\d+)\s+the corpse of</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>1</integer>
-                </regexCodePropertyList>
-            </Trigger>
-            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-                <name>corpse stuff ground stop</name>
-                <script>setTriggerStayOpen(&quot;corpse stuff inventory&quot;, 0)
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^([A-Za-z']+)(\d+)\s+the corpse of</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>corpse stuff ground stop</name>
+				<script>setTriggerStayOpen("corpse stuff inventory", 0)
 
-disableTrigger(&quot;Corpse lists&quot;)
+disableTrigger("Corpse lists")
 svo.off_action = nil</script>
-                <triggerType>0</triggerType>
-                <conditonLineDelta>99</conditonLineDelta>
-                <mStayOpen>0</mStayOpen>
-                <mCommand></mCommand>
-                <packageName></packageName>
-                <mFgColor>#ff0000</mFgColor>
-                <mBgColor>#ffff00</mBgColor>
-                <mSoundFile></mSoundFile>
-                <colorTriggerFgColor>#000000</colorTriggerFgColor>
-                <colorTriggerBgColor>#000000</colorTriggerBgColor>
-                <regexCodeList>
-                    <string>Number of matching objects</string>
-                </regexCodeList>
-                <regexCodePropertyList>
-                    <integer>2</integer>
-                </regexCodePropertyList>
-            </Trigger>
-        </TriggerGroup>
-        <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-            <name>Shrine full/gone</name>
-            <script>if svo.me.doqueue[1] and svo.me.doqueue[1]:find(&quot;^offer&quot;) then svo.undoall() end</script>
-            <triggerType>0</triggerType>
-            <conditonLineDelta>0</conditonLineDelta>
-            <mStayOpen>0</mStayOpen>
-            <mCommand></mCommand>
-            <packageName></packageName>
-            <mFgColor>#ff0000</mFgColor>
-            <mBgColor>#ffff00</mBgColor>
-            <mSoundFile></mSoundFile>
-            <colorTriggerFgColor>#000000</colorTriggerFgColor>
-            <colorTriggerBgColor>#000000</colorTriggerBgColor>
-            <regexCodeList>
-                <string>That shrine is already as powerful as it is possible to get it. Further sanctifications are a waste.</string>
-                <string>You may only offer at shrines.</string>
-            </regexCodeList>
-            <regexCodePropertyList>
-                <integer>3</integer>
-                <integer>3</integer>
-            </regexCodePropertyList>
-        </Trigger>
-    </TriggerPackage>
-    <TimerPackage/>
-    <AliasPackage>
-        <Alias isActive="yes" isFolder="no">
-            <name>Offering aliases</name>
-            <script>enableTrigger(&quot;Corpse lists&quot;)
+				<triggerType>0</triggerType>
+				<conditonLineDelta>99</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>Number of matching objects</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>2</integer>
+				</regexCodePropertyList>
+			</Trigger>
+		</TriggerGroup>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Shrine full/gone</name>
+			<script>if svo.me.doqueue[1] and svo.me.doqueue[1]:find("^offer") then svo.undoall() end</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>That shrine is already as powerful as it is possible to get it. Further sanctifications are a waste.</string>
+				<string>You may only offer at shrines.</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>3</integer>
+				<integer>3</integer>
+			</regexCodePropertyList>
+		</Trigger>
+	</TriggerPackage>
+	<TimerPackage />
+	<AliasPackage>
+		<Alias isActive="yes" isFolder="no">
+			<name>Offering aliases</name>
+			<script>enableTrigger("Corpse lists")
 svo.off_action = matches[3] or matches[2]
 
-if svo.off_action ~= &quot;get&quot; or svo.off_action == &quot;offer&quot; then
-  sendGMCP(&quot;Char.Items.Inv&quot;)
-  send(&quot;\n&quot;)
+if svo.off_action ~= "get" or svo.off_action == "offer" then
+  sendGMCP("Char.Items.Inv")
+  send("\n")
 else
-  sendAll(&quot;config pagelength 250&quot;, &quot;ih corpse&quot;, &quot;config pagelength &quot;..(svo.conf.pagelength &gt; 0 and svo.conf.pagelength or 20))
+  sendAll("config pagelength 250", "ih corpse", "config pagelength "..(svo.conf.pagelength &gt; 0 and svo.conf.pagelength or 20))
 end</script>
-            <command></command>
-            <packageName></packageName>
-            <regex>^v(offer|get|defile|sanctify|give) ?(\w+)?$</regex>
-        </Alias>
-    </AliasPackage>
-    <ActionPackage/>
-    <ScriptPackage>
-        <Script isActive="yes" isFolder="no">
-            <name>svo.corpse_stuff</name>
-            <packageName></packageName>
-            <script>function svo.corpse_stuff()
-  if not svo.off_action or gmcp.Char.Items.List.location ~= &quot;inv&quot; then return end
+			<command></command>
+			<packageName></packageName>
+			<regex>^v(offer|get|defile|sanctify|give) ?(\w+)?$</regex>
+		</Alias>
+	</AliasPackage>
+	<ActionPackage />
+	<ScriptPackage>
+		<Script isActive="yes" isFolder="no">
+			<name>svo.corpse_stuff</name>
+			<packageName></packageName>
+			<script>function svo.corpse_stuff()
+  if not svo.off_action or gmcp.Char.Items.List.location ~= "inv" then return end
 
   local t = gmcp.Char.Items.List.items
   local havekris, haveselfish
 
   if svo.defkeepup[svo.defs.mode].selfishness then
-    svo.defs.keepup(&quot;selfishness&quot;, false)
+    svo.defs.keepup("selfishness", false)
     haveselfish = true
   end
 
-  if svo.off_action == &quot;offer&quot; then
+  if svo.off_action == "offer" then
     -- see if we got a kris, if we need it
     for _, item in pairs(t) do
-      if item.name and item.name == &quot;a sacrificial kris&quot; then
-        svo.doaddfree(&quot;unwield right$wield kris&quot;)
+      if item.name and item.name == "a sacrificial kris" then
+        svo.doaddfree("unwield right$wield kris")
         havekris = true
         break
       end
     end
 
     -- now do business
-    svo.doaddfree(&quot;offer corpses&quot;)
+    svo.doaddfree("offer corpses")
   else
 
     for _, item in pairs(t) do
-      if item.name and string.find(item.name, &quot;the corpse of&quot;, 1, true) then
-        if svo.off_action == &quot;defile&quot; then
-          svo.doadd(&quot;offer &quot;..item.id..&quot; to defile&quot;)
-        elseif svo.off_action == &quot;sanctify&quot; then
-          svo.doadd(&quot;offer &quot;..item.id..&quot; to sanctify&quot;)
+      if item.name and string.find(item.name, "the corpse of", 1, true) then
+        if svo.off_action == "defile" then
+          svo.doadd("offer "..item.id.." to defile")
+        elseif svo.off_action == "sanctify" then
+          svo.doadd("offer "..item.id.." to sanctify")
         else
-          svo.doaddfree(&quot;give &quot;..item.id..&quot; to &quot;..svo.off_action)
+          svo.doaddfree("give "..item.id.." to "..svo.off_action)
         end
       end
     end
   end
 
   if havekris then
-    svo.doaddfree(&quot;unwield kris&quot;)
+    svo.doaddfree("unwield kris")
   end
 
   if haveselfish then
-    svo.doadd(&quot;vkeep selfishness on&quot;)
+    svo.doadd("vkeep selfishness on")
   end
 
   svo.off_action = nil
   deleteLine()
 end
 </script>
-            <eventHandlerList>
-                <string>gmcp.Char.Items.List</string>
-            </eventHandlerList>
-        </Script>
-    </ScriptPackage>
-    <KeyPackage/>
-    <HelpPackage>
-        <helpURL></helpURL>
-    </HelpPackage>
+			<eventHandlerList>
+				<string>gmcp.Char.Items.List</string>
+			</eventHandlerList>
+		</Script>
+	</ScriptPackage>
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL></helpURL>
+	</HelpPackage>
 </MudletPackage>

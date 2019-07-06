@@ -1,92 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
 <MudletPackage version="1.001">
-    <TriggerPackage>
-        <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-            <name>Rend</name>
-            <script>svo.dl_hit(multimatches[2][2], multimatches[2][3])</script>
-            <triggerType>0</triggerType>
-            <conditonLineDelta>0</conditonLineDelta>
-            <mStayOpen>0</mStayOpen>
-            <mCommand></mCommand>
-            <packageName></packageName>
-            <mFgColor>#ff0000</mFgColor>
-            <mBgColor>#ffff00</mBgColor>
-            <mSoundFile></mSoundFile>
-            <colorTriggerFgColor>#000000</colorTriggerFgColor>
-            <colorTriggerBgColor>#000000</colorTriggerBgColor>
-            <regexCodeList>
-                <string>Lunging forward with long, flashing claws extended, you tear into the flesh of</string>
-                <string>Lunging forward with long, flashing claws extended, you tear into the flesh of (\w+)'s (.+)\.$</string>
-            </regexCodeList>
-            <regexCodePropertyList>
-                <integer>2</integer>
-                <integer>1</integer>
-            </regexCodePropertyList>
-        </Trigger>
-        <Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-            <name>svodl Don't register</name>
-            <script>-- it's OK, the trigger is supposed to be off by default
+	<TriggerPackage>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Rend</name>
+			<script>svo.dl_hit(multimatches[2][2], multimatches[2][3])</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>Lunging forward with long, flashing claws extended, you tear into the flesh of</string>
+				<string>Lunging forward with long, flashing claws extended, you tear into the flesh of (\w+)'s (.+)\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>2</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>svodl Don't register</name>
+			<script>-- it's OK, the trigger is supposed to be off by default
 svo.dl_ignore()</script>
-            <triggerType>0</triggerType>
-            <conditonLineDelta>0</conditonLineDelta>
-            <mStayOpen>0</mStayOpen>
-            <mCommand></mCommand>
-            <packageName></packageName>
-            <mFgColor>#ff0000</mFgColor>
-            <mBgColor>#ffff00</mBgColor>
-            <mSoundFile></mSoundFile>
-            <colorTriggerFgColor>#000000</colorTriggerFgColor>
-            <colorTriggerBgColor>#000000</colorTriggerBgColor>
-            <regexCodeList>
-                <string>^\w+ dodges nimbly out of the way\.$</string>
-                <string>^\w+ twists (?:his|her) body out of harm's way\.$</string>
-                <string>^\w+ parries the attack with a deft manoeuvre\.$</string>
-                <string>^\w+ steps into the attack, grabs your arm, and throws you violently to the ground\.$</string>
-                <string>^\w+ quickly jumps back, avoiding the attack\.$</string>
-                <string>^A chaos orb intercepts the attack against \w+ and renders it harmless\.$</string>
-                <string>The attack rebounds back onto you!</string>
-                <string>^A reflection of \w+ blinks out of existence\.$</string>
-                <string>The attack rebounds onto you!</string>
-                <string>^\w+ moves into your attack, knocking your blow aside before viciously countering with a strike to your head\.$</string>
-            </regexCodeList>
-            <regexCodePropertyList>
-                <integer>1</integer>
-                <integer>1</integer>
-                <integer>1</integer>
-                <integer>1</integer>
-                <integer>1</integer>
-                <integer>1</integer>
-                <integer>3</integer>
-                <integer>1</integer>
-                <integer>3</integer>
-                <integer>1</integer>
-            </regexCodePropertyList>
-        </Trigger>
-    </TriggerPackage>
-    <TimerPackage/>
-    <AliasPackage>
-        <Alias isActive="yes" isFolder="no">
-            <name>Reset</name>
-            <script>svo.dl_reset(matches[2])</script>
-            <command></command>
-            <packageName></packageName>
-            <regex>^nn ?(.+)?$</regex>
-        </Alias>
-        <Alias isActive="yes" isFolder="no">
-            <name>Check status</name>
-            <script>if svo.dl_show then svo.dl_show() end</script>
-            <command></command>
-            <packageName></packageName>
-            <regex>^vsl$</regex>
-        </Alias>
-    </AliasPackage>
-    <ActionPackage/>
-    <ScriptPackage>
-        <Script isActive="yes" isFolder="no">
-            <name>Dragon limbcounter code</name>
-            <packageName></packageName>
-            <script>-- Svof (c) 2011-2018 by Vadim Peretokin
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>^\w+ dodges nimbly out of the way\.$</string>
+				<string>^\w+ twists (?:his|her) body out of harm's way\.$</string>
+				<string>^\w+ parries the attack with a deft manoeuvre\.$</string>
+				<string>^\w+ steps into the attack, grabs your arm, and throws you violently to the ground\.$</string>
+				<string>^\w+ quickly jumps back, avoiding the attack\.$</string>
+				<string>^A chaos orb intercepts the attack against \w+ and renders it harmless\.$</string>
+				<string>The attack rebounds back onto you!</string>
+				<string>^A reflection of \w+ blinks out of existence\.$</string>
+				<string>The attack rebounds onto you!</string>
+				<string>^\w+ moves into your attack, knocking your blow aside before viciously countering with a strike to your head\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>1</integer>
+				<integer>1</integer>
+				<integer>1</integer>
+				<integer>1</integer>
+				<integer>1</integer>
+				<integer>1</integer>
+				<integer>3</integer>
+				<integer>1</integer>
+				<integer>3</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+	</TriggerPackage>
+	<TimerPackage />
+	<AliasPackage>
+		<Alias isActive="yes" isFolder="no">
+			<name>Reset</name>
+			<script>svo.dl_reset(matches[2])</script>
+			<command></command>
+			<packageName></packageName>
+			<regex>^nn ?(.+)?$</regex>
+		</Alias>
+		<Alias isActive="yes" isFolder="no">
+			<name>Check status</name>
+			<script>if svo.dl_show then svo.dl_show() end</script>
+			<command></command>
+			<packageName></packageName>
+			<regex>^vsl$</regex>
+		</Alias>
+	</AliasPackage>
+	<ActionPackage />
+	<ScriptPackage>
+		<Script isActive="yes" isFolder="no">
+			<name>Dragon limbcounter code</name>
+			<packageName></packageName>
+			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -94,7 +94,7 @@ svo.dl_ignore()</script>
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
-svo.dl_version = &quot;1.0&quot;
+svo.dl_version = "1.0"
 
 tempTimer(0, function()
 local firstload = not svo.dl_list
@@ -105,8 +105,8 @@ local hittable = {}
 svo.dl_prep_at = 3
 svo.dl_break_at = 4
 
-enableTrigger(&quot;svo Dragon limbcounter&quot;)
-enableAlias(&quot;svo Dragon limbcounter&quot;)
+enableTrigger("svo Dragon limbcounter")
+enableAlias("svo Dragon limbcounter")
 
 -- Their blah, blah, blah are also prepped.
 local function get_other_prepped(t, limbhit)
@@ -115,8 +115,8 @@ local function get_other_prepped(t, limbhit)
     if limbs[i] ~= limbhit and t[limbs[i]] == svo.dl_prep_at then s[#s+1] = limbs[i] end
   end
 
-  if #s == 0 then return &quot;&quot;
-  else return string.format(&quot; Their %s %s also prepped.&quot;, svo.concatand(s), (#s == 1 and 'is' or 'are')) end
+  if #s == 0 then return ""
+  else return string.format(" Their %s %s also prepped.", svo.concatand(s), (#s == 1 and 'is' or 'are')) end
 end
 
 function svo.dl_ignore()
@@ -137,36 +137,36 @@ function svo.sk.dl_checklimbcounter()
     local dmg
     where, dmg = next(t[i])
     svo.dl_list[who][where] = svo.dl_list[who][where] + dmg
-    raiseEvent(&quot;svo limbcounter hit&quot;, who, where)
+    raiseEvent("svo limbcounter hit", who, where)
   end
 
   if not where then
-    echof(&quot;Failed to connect.%s&quot;, get_other_prepped(svo.dl_list[who], &quot;&quot;))
+    echof("Failed to connect.%s", get_other_prepped(svo.dl_list[who], ""))
   else
     if svo.dl_list[who][where] &gt;= svo.dl_break_at then
-      echof(&quot;%s's %s broke.%s&quot;, who, where, get_other_prepped(svo.dl_list[who], where))
+      echof("%s's %s broke.%s", who, where, get_other_prepped(svo.dl_list[who], where))
       svo.dl_list[who][where] = 0
     elseif svo.dl_list[who][where] &gt;= svo.dl_prep_at then
-      echof(&quot;%s's %s is prepped.%s&quot;, who, where, get_other_prepped(svo.dl_list[who], where))
+      echof("%s's %s is prepped.%s", who, where, get_other_prepped(svo.dl_list[who], where))
     else
-      echof(&quot;%s's %s is now at %s/%s.%s&quot;, who, where, svo.dl_list[who][where], svo.dl_break_at, get_other_prepped(svo.dl_list[who], where))
+      echof("%s's %s is now at %s/%s.%s", who, where, svo.dl_list[who][where], svo.dl_break_at, get_other_prepped(svo.dl_list[who], where))
     end
   end
 
   hittable = {}
-  disableTrigger(&quot;svodl Don't register&quot;)
+  disableTrigger("svodl Don't register")
   svo.signals.before_prompt_processing:disconnect(svo.sk.dl_checklimbcounter)
 end
 
 function svo.dl_hit(who, where)
   svo.dl_list[who] = svo.dl_list[who] or {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0}
-  where = where:gsub(&quot; &quot;, &quot;&quot;)
+  where = where:gsub(" ", "")
   svo.lasthit = who
 
   hittable[who] = hittable[who] or {}
   hittable[who][#hittable[who] + 1] = {[where] = 1}
   svo.signals.before_prompt_processing:connect(svo.sk.dl_checklimbcounter)
-  enableTrigger(&quot;svodl Don't register&quot;)
+  enableTrigger("svodl Don't register")
 end
 
 function svo.dl_reset(whom)
@@ -185,114 +185,114 @@ function svo.dl_reset(whom)
 
   if whom == 'All' then
     svo.dl_list = {}
-    svo.echof(&quot;Reset everyone's limb status.&quot;)
+    svo.echof("Reset everyone's limb status.")
   elseif not whom and svo.lasthit then
     svo.dl_list[svo.lasthit] = {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0, dl_break_at = svo.dl_break_at}
-    svo.echof(&quot;Reset %s's limb status.&quot;, svo.lasthit)
+    svo.echof("Reset %s's limb status.", svo.lasthit)
   elseif t[whom:lower()] then
     if not svo.lasthit or not svo.dl_list[svo.lasthit] then
-      svo.echof(&quot;Not keeping track of anyone yet to reset their limb.&quot;)
+      svo.echof("Not keeping track of anyone yet to reset their limb.")
     else
       svo.dl_list[svo.lasthit][t[whom:lower()]] = 0
-      svo.echof(&quot;Reset %s %s's status.&quot;, svo.lasthit, t[whom:lower()])
+      svo.echof("Reset %s %s's status.", svo.lasthit, t[whom:lower()])
     end
   elseif whom then
     if svo.dl_list[whom] then
       svo.dl_list[whom] = nil
-      svo.echof(&quot;Reset %s's limb status.&quot;, whom)
+      svo.echof("Reset %s's limb status.", whom)
     else
-      svo.echof(&quot;Weren't keeping track of %s anyway.&quot;, whom)
+      svo.echof("Weren't keeping track of %s anyway.", whom)
     end
   else
-    svo.echof(&quot;Not keeping track of anyone to reset them anyway.&quot;)
+    svo.echof("Not keeping track of anyone to reset them anyway.")
   end
-  raiseEvent(&quot;svo limbcounter reset&quot;)
+  raiseEvent("svo limbcounter reset")
 end
 
 function svo.dl_show()
   if not svo.defc.dragonform then return end
 
-  if not next(svo.dl_list) then svo.echof(&quot;dragon limbcounter: Not keeping track of anyone yet.&quot;); return end
+  if not next(svo.dl_list) then svo.echof("dragon limbcounter: Not keeping track of anyone yet."); return end
 
   setFgColor(unpack(svo.getDefaultColorNums))
   for person, limbt in pairs(svo.dl_list) do
-    echo(&quot;---&quot;..person..&quot; &quot;) fg('a_darkgrey')
-    echoLink(&quot;(reset)&quot;, 'svo.dl_reset&quot;'..person..'&quot;', &quot;Reset limb status for &quot;..person, true)
+    echo("---"..person.." ") fg('a_darkgrey')
+    echoLink("(reset)", 'svo.dl_reset"'..person..'"', "Reset limb status for "..person, true)
     setFgColor(unpack(svo.getDefaultColorNums))
-    echo(string.format(&quot; -- prep at %s -- break at %s --&quot;, svo.dl_prep_at, svo.dl_break_at))
-    echo(string.rep(&quot;-&quot;, (52-#person-#tostring(svo.dl_prep_at)-#tostring(svo.dl_break_at))))
-    echo&quot;\n|&quot;
+    echo(string.format(" -- prep at %s -- break at %s --", svo.dl_prep_at, svo.dl_break_at))
+    echo(string.rep("-", (52-#person-#tostring(svo.dl_prep_at)-#tostring(svo.dl_break_at))))
+    echo"\n|"
     for i = 1, #limbs do
       if limbt[limbs[i]] &gt;= svo.dl_break_at - 1 then fg('green') end
-      echo(string.format(&quot;%14s&quot;, (limbt[limbs[i]] &gt;= svo.dl_break_at - 1 and limbs[i]..&quot; prep&quot; or limbs[i].. &quot; &quot;..limbt[limbs[i]])))
+      echo(string.format("%14s", (limbt[limbs[i]] &gt;= svo.dl_break_at - 1 and limbs[i].." prep" or limbs[i].. " "..limbt[limbs[i]])))
       if limbt[limbs[i]] &gt;= svo.dl_break_at - 1 then setFgColor(unpack(svo.getDefaultColorNums)) end
-      echo&quot;|&quot;
+      echo"|"
     end
-    echo&quot;\n&quot;
+    echo"\n"
   end
-  echo(string.rep(&quot;-&quot;, 91))
+  echo(string.rep("-", 91))
 end
 
 if firstload then
-  svo.echof(&quot;Loaded svo Dragon limbcounter, version %s.&quot;, tostring(svo.dl_version))
+  svo.echof("Loaded svo Dragon limbcounter, version %s.", tostring(svo.dl_version))
 end
 end)</script>
-            <eventHandlerList/>
-        </Script>
-        <Script isActive="yes" isFolder="no">
-            <name>Dragon limbcounter prompt tags</name>
-            <packageName></packageName>
-            <script>-- dragon limbcounters prompt tag is defined here
+			<eventHandlerList />
+		</Script>
+		<Script isActive="yes" isFolder="no">
+			<name>Dragon limbcounter prompt tags</name>
+			<packageName></packageName>
+			<script>-- dragon limbcounters prompt tag is defined here
 -- feel free to tinker with it, but move it out into a script of its own,
 -- so your changes don't get erased on an update!
 tempTimer(0, function()
 
 
 function svo.dl_prompttag2()
-  if not svo.defc.dragonform or not svo.lasthit or not svo.dl_list or not svo.dl_list[svo.lasthit] then return &quot;&quot; end
+  if not svo.defc.dragonform or not svo.lasthit or not svo.dl_list or not svo.dl_list[svo.lasthit] then return "" end
   local t = svo.dl_list[svo.lasthit]
-  return string.format(&quot;%s: h %d|t %d|ra %d|la %d|rl %d|ll %d&quot;, svo.lasthit, t.head, t.torso, t.rightarm, t.leftarm, t.rightleg, t.leftleg)
+  return string.format("%s: h %d|t %d|ra %d|la %d|rl %d|ll %d", svo.lasthit, t.head, t.torso, t.rightarm, t.leftarm, t.rightleg, t.leftleg)
 end
-svo.adddefinition(&quot;@dl_prompttag2&quot;, &quot;svo.dl_prompttag2()&quot;)
+svo.adddefinition("@dl_prompttag2", "svo.dl_prompttag2()")
 
 
 
 function svo.dl_prompttag()
-  if not svo.defc.dragonform or not svo.lasthit or not svo.dl_list or not svo.dl_list[svo.lasthit] then return &quot;&quot; end
+  if not svo.defc.dragonform or not svo.lasthit or not svo.dl_list or not svo.dl_list[svo.lasthit] then return "" end
   local t = svo.dl_list[svo.lasthit]
   local prep = 1
-  return string.format(&quot;%s%d&lt;a_white&gt;/%s%d&lt;a_white&gt;|%s%d&lt;a_white&gt;/%s%d&lt;a_white&gt;|%s%d&lt;a_white&gt;/%s%d&lt;a_white&gt;|%d&quot;,
-                   ((svo.dl_break_at - t.leftarm) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.leftarm,
-                   ((svo.dl_break_at - t.rightarm) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.rightarm,
-                   ((svo.dl_break_at - t.leftleg) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.leftleg,
-                   ((svo.dl_break_at - t.rightleg) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.rightleg,
-                   ((svo.dl_break_at - t.head) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.head,
-                   ((svo.dl_break_at - t.torso) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.torso, svo.dl_break_at)
+  return string.format("%s%d&lt;a_white&gt;/%s%d&lt;a_white&gt;|%s%d&lt;a_white&gt;/%s%d&lt;a_white&gt;|%s%d&lt;a_white&gt;/%s%d&lt;a_white&gt;|%d",
+                   ((svo.dl_break_at - t.leftarm) &lt;= prep) and "&lt;a_red&gt;" or "&lt;a_darkyellow&gt;", t.leftarm,
+                   ((svo.dl_break_at - t.rightarm) &lt;= prep) and "&lt;a_red&gt;" or "&lt;a_darkyellow&gt;", t.rightarm,
+                   ((svo.dl_break_at - t.leftleg) &lt;= prep) and "&lt;a_red&gt;" or "&lt;a_darkyellow&gt;", t.leftleg,
+                   ((svo.dl_break_at - t.rightleg) &lt;= prep) and "&lt;a_red&gt;" or "&lt;a_darkyellow&gt;", t.rightleg,
+                   ((svo.dl_break_at - t.head) &lt;= prep) and "&lt;a_red&gt;" or "&lt;a_darkyellow&gt;", t.head,
+                   ((svo.dl_break_at - t.torso) &lt;= prep) and "&lt;a_red&gt;" or "&lt;a_darkyellow&gt;", t.torso, svo.dl_break_at)
 end
-svo.adddefinition(&quot;@dl_prompttag&quot;, &quot;svo.dl_prompttag()&quot;)
+svo.adddefinition("@dl_prompttag", "svo.dl_prompttag()")
 
 
 function svo.dl_prompttag3()
-  if not svo.defc.dragonform or not svo.lasthit or not svo.dl_list or not svo.dl_list[svo.lasthit] then return &quot;&quot; end
+  if not svo.defc.dragonform or not svo.lasthit or not svo.dl_list or not svo.dl_list[svo.lasthit] then return "" end
   local t = svo.dl_list[svo.lasthit]
   local prep = 1
-  return string.format(&quot;&lt;a_darkgrey&gt;(%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%d)&quot;,
-                   ((svo.dl_break_at - t.leftarm) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.leftarm,
-                   ((svo.dl_break_at - t.rightarm) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.rightarm,
-                   ((svo.dl_break_at - t.leftleg) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.leftleg,
-                   ((svo.dl_break_at - t.rightleg) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.rightleg,
-                   ((svo.dl_break_at - t.head) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.head,
-                   ((svo.dl_break_at - t.torso) &lt;= prep) and &quot;&lt;a_red&gt;&quot; or &quot;&lt;a_darkyellow&gt;&quot;, t.torso, svo.dl_break_at)
+  return string.format("&lt;a_darkgrey&gt;(%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%s%d&lt;a_darkgrey&gt;:%d)",
+                   ((svo.dl_break_at - t.leftarm) &lt;= prep) and "&lt;a_red&gt;" or "&lt;a_darkyellow&gt;", t.leftarm,
+                   ((svo.dl_break_at - t.rightarm) &lt;= prep) and "&lt;a_red&gt;" or "&lt;a_darkyellow&gt;", t.rightarm,
+                   ((svo.dl_break_at - t.leftleg) &lt;= prep) and "&lt;a_red&gt;" or "&lt;a_darkyellow&gt;", t.leftleg,
+                   ((svo.dl_break_at - t.rightleg) &lt;= prep) and "&lt;a_red&gt;" or "&lt;a_darkyellow&gt;", t.rightleg,
+                   ((svo.dl_break_at - t.head) &lt;= prep) and "&lt;a_red&gt;" or "&lt;a_darkyellow&gt;", t.head,
+                   ((svo.dl_break_at - t.torso) &lt;= prep) and "&lt;a_red&gt;" or "&lt;a_darkyellow&gt;", t.torso, svo.dl_break_at)
 end
-svo.adddefinition(&quot;@dl_prompttag3&quot;, &quot;svo.dl_prompttag3()&quot;)
+svo.adddefinition("@dl_prompttag3", "svo.dl_prompttag3()")
 
 
 end)</script>
-            <eventHandlerList/>
-        </Script>
-    </ScriptPackage>
-    <KeyPackage/>
-    <HelpPackage>
-        <helpURL></helpURL>
-    </HelpPackage>
+			<eventHandlerList />
+		</Script>
+	</ScriptPackage>
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL></helpURL>
+	</HelpPackage>
 </MudletPackage>
