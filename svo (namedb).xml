@@ -3188,7 +3188,7 @@ end</script>
 
 function ndb.downloaded_file(_, filename)
   -- is the file that downloaded ours?
-  if not string.find(filename, "namedb.json") then return end
+  if not string.find(filename, "namedb.html") then return end
   local f = io.open(filename)
   local s = f:read("*all")
   if f then f:close() end
@@ -3246,8 +3246,7 @@ function ndb.downloaded_file(_, filename)
 end
 
 function ndb.getinfo(person)
-  downloadFile(getMudletHomeDir().."/"..person.."-namedb.json", "http://api.achaea.com/characters/"..person..".json")
---downloadFile(getMudletHomeDir().."/"..person.."-namedb.html", "https://www.achaea.com/game/honors/"..person)
+	downloadFile(getMudletHomeDir().."/"..person.."-namedb.html", "https://www.achaea.com/game/honors/"..person)
 end</script>
 					<eventHandlerList>
 						<string>sysDownloadDone</string>
