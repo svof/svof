@@ -18,7 +18,21 @@ This system is what was previously called Svo, which is no longer available. Svo
 Installing
 ~~~~~~~~~~
 
-To install the system, make sure GMCP is enabled (Mudlet settings), and that you're connected to server **achaea.com** and port **23**, and logged in -- then use the **vinstall** command. This'll have the system run auto-configuration first - where it'll detect and enable skills that you have. After that, it'll ask you preference questions about the basic and essential options. Feel free to take your time to ask someone else as to what should you set an option to (like for sipping health). The installation otherwise is fairly painless - and you can always change any option you'd like later with the same command.
+To install the system, make sure that you're connected to server **achaea.com** and port **23** (or 2003), and logged are in.
+
+1) Download the zip.
+
+2) Unzip it somewhere permanent. Don't delete the unzipped files.
+
+3) Install svo (install me in module manager).xml in the Module Manager:
+
+.. image:: doc/images/install-in-module-manager.png
+
+4) Tick sync for all modules.
+
+5) Done. Don't delete the unzipped files - that's where the system is always loaded from now.
+
+Now, use the **vinstall** command. This'll have the system run auto-configuration first - where it'll detect and enable skills that you have. After that, it'll ask you preference questions about the basic and essential options. Feel free to take your time to ask someone else as to what should you set an option to (like for sipping health). The installation otherwise is fairly painless - and you can always change any option you'd like later with the same command.
 
 After you've finished the installation, it's best to *vsave* and restart Mudlet so the system is loaded fresh with all the settings.
 
