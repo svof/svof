@@ -26,7 +26,7 @@ To install the system, make sure that you're connected to server **achaea.com** 
 
 3) Install svo (install me in module manager).xml in the Module Manager:
 
-.. image:: doc/images/install-in-module-manager.png
+.. image:: images/install-in-module-manager.png
 
 4) Tick sync for all modules.
 
