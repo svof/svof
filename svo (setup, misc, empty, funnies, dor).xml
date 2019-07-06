@@ -2002,13 +2002,9 @@ function svo.echof(...)
   local sfind = string.find
   if t[1] and t[2] and sfind(t[1], "^%w+$") and not sfind(t[1], "%", 1, true) then
     sk.echofwindow = t[1]
-    local olddecho, oldecho = decho, echo
-    decho, echo = ofs.windowdecho, ofs.windowecho
-
+		
     moveCursorEnd(t[1])
     svo.vecho(true, string.format(select(2, ...)))
-
-    decho, echo = olddecho, oldecho
   else
     moveCursorEnd('main')
     local successful, s = pcall(string.format, ...)
