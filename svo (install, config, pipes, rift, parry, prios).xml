@@ -3296,14 +3296,11 @@ end
 
 rift.checkprecache = function()
   rift.doprecache = false
-	svo.echof("now working")
 
   for herb, _ in pairs(rift.precache) do
-	svo.echof("checking %s. precache: %s, inv: %s", herb, rift.precache[herb], rift.riftcontents[herb])
     -- if we have addiction, then only precache 1, otherwise, however much is needed
     if rift.precache[herb] ~= 0 and rift.riftcontents[herb] ~= 0 and 
 		  (not svo.affs.addiction and (rift.invcontents[herb] &lt; rift.precache[herb]) or (rift.invcontents[herb] == 0)) then
-      svo.echof("yep, need %s", herb)
 			rift.doprecache = true; return
     end
   end
