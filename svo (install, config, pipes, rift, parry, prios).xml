@@ -4846,13 +4846,8 @@ function prio.import(name, echoback, report_errors, use_default)
 
   local s
   if name == 'current' and (use_default or not lfs.attributes(path)) then
-    s = ""
-    -- adds in the default prios here at compile-time
-    -- s = $(
-    --     io.input("bin/default_prios")
-    --     local prios = io.read("*a")
-    --     _put(string.format("%q", prios))
-    --     )
+    io.input(svo.installationfolder() .. "/default_prios")
+    s = io.read("*a")
   else
     svo.assert(lfs.attributes(path), name .. " prio doesn't exist.", sendf)
 
