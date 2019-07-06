@@ -7102,7 +7102,7 @@ function svo_init_system()
 	end
 	
 	-- ensure Mudlet is new enough for the system to work without issues
-	if not mudletOlderThan or mudletOlderThan(3,6) then
+	if not mudletOlderThan or mudletOlderThan(3,20) then
 	  cecho("&lt;SkyBlue:firebrick&gt;Can't load Svof: your Mudlet is too old for the system to run well.\nPlease update to latest to enjoy it!\n")
 		return
 	end
