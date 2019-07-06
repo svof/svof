@@ -17,6 +17,9 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
+-- Installation procedure - autodetects skills (before GMCP came along, by ABing and gagging)
+-- and asks questions for things it couldn't
+
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.install = function()
 
@@ -399,6 +402,8 @@ if svo.systemloaded then svo.loader.install() end</script>
 
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+-- Svof's configuration (vconfig) and tn/tf system
 
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.config = function()
@@ -2981,6 +2986,9 @@ if svo.systemloaded then svo.loader.pipes() end</script>
 
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+-- rift, inventory tracking and use of right actions depending on 
+-- normal/aeon curing and previously with minerals, appropriate herb/mineral use
 
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.rift = function()

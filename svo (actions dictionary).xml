@@ -17,6 +17,9 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
+-- brains of Svof, where it knows every action (affliction, defence, balance, etc).
+-- When to use something, how to use something.
+
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.dict = function()
 
