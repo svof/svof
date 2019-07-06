@@ -17,6 +17,9 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
+-- Svof's custom prompt feature.
+-- Available to players many years before the serverside one.
+
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.customprompt = function()
 
@@ -672,6 +675,9 @@ if svo.systemloaded then svo.loader.customprompt() end</script>
 
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+-- Integration with serverside curing - mirroring of Svof's priorities to
+-- serverside in an efficient, seamless manner
 
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.serverside = function()

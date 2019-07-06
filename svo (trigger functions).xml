@@ -132,7 +132,7 @@ if svo.systemloaded then svo.loader.diag() end</script>
 			<eventHandlerList />
 		</Script>
 		<Script isActive="yes" isFolder="no">
-			<name>svo.valid.simple_* trigger functions</name>
+			<name>Simple aff trigger functions</name>
 			<packageName></packageName>
 			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
@@ -338,6 +338,9 @@ if svo.systemloaded then svo.loader.valid_simple() end</script>
 
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+-- Definitions of all trigger functions - recording in-game data in most
+--  accurate way, while not getting tricked by illusions
 
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.valid_main = function()

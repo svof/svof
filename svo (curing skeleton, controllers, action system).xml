@@ -17,6 +17,8 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
+-- essential core files, including balance checks that decide what should be done
+
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.sk = function()
 
@@ -2483,6 +2485,9 @@ if svo.systemloaded then svo.loader.sk() end</script>
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
+-- core system functions that can be behind aliases/triggers - includes prompt
+-- function, GMCP stats function, affliction lock tracking, aeon/retardation deny/override system, etc.
+
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.controllers = function()
 
@@ -2683,6 +2688,32 @@ end
 
   me.servertime = line:match("-s(%d+:%d+:%d+%.%d+)")
 end
+
+-- This the order that events things happen on the prompt function:
+-- 
+--     \
+--      |onprompt
+--      |signals.before_prompt_processing
+--      |  \
+--      |   |prompt_stats (stores new prompt stats)
+--      |   |sk.acrobatics_pronecheckf (toggled)
+--      |   |valid.check_life
+--      |   |sk.onprompt_beforelifevision_do (-&gt; svo.aiprompt())
+--      |
+--      |send_in_the_gnomes
+--      |  \
+--      |   |lifevision.validate
+--      |   |signals.after_lifevision_processing
+--      |      \
+--      |       |sk.onprompt_beforeaction_do / prompttrigger
+--      |       |cnrl.checkwarning
+--      |       |sp_checksp
+--      |   |make_gnomes_work (curing commands)
+--      |
+--      |signals.after_prompt_processing
+--      |  \
+--      |   |custom prompt
+--      |   |cnrl.dolockwarning
 
 function svo.onprompt()
   raiseEvent("svo before the prompt")
@@ -3674,6 +3705,11 @@ if svo.systemloaded then svo.loader.controllers() end</script>
 
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+-- Svof's action system. Every single thing that Svof does like cure an affliction, 
+-- put up a defence, regain a balance, is an action - defined in the actions dictionary.
+-- Rule of thumb is that all send()'s should be an action (there's just an exception to 
+-- send commands to serverside to be done, as those commands cannot be interrupted in any way)
 
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.action = function()
