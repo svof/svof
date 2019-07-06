@@ -132,7 +132,7 @@ if svo.systemloaded then svo.loader.diag() end</script>
 			<eventHandlerList />
 		</Script>
 		<Script isActive="yes" isFolder="no">
-			<name>svo.valid.simple_* trigger functions</name>
+			<name>Simple aff trigger functions</name>
 			<packageName></packageName>
 			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
