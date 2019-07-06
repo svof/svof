@@ -484,6 +484,9 @@ API
 
   ndb.iscityenemy(name)
     Similar to ndb.isenemy - but ignores whenever someone is a house enemy or not. So it checks everything else that ndb.isenemy checks (citizenship, iff, and city) while ignoring the status of someone being your House's enemy.
+    
+  ndb.isonlycityenemy(name)
+    Similar to ndb.iscityenemy - but ignores everything except if someone is an enemy to your current city if you have one.
 
   svo.config.set("ndbpaused", option, true)
     Disables or enables NameDB highlighting (same as what the ``npp`` alias does). ``option`` is a toggle in the same manner as ``svo.config.set()`` operates - it can be ``true``, ``false``, ``"on"``, ``"off"`` and so on. The last argument, ``true``, has to be there for the function to take effect.
