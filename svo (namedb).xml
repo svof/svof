@@ -2632,37 +2632,8 @@ send(matches[2].." enemies", false)</script>
 
 -- load help data in
 if not ndb.help then
-  local path = getMudletHomeDir().."/"..class.." svo/ndb-help.lua"
-  if not lfs.attributes(path) then
-  -- not found? Lets try the dev version
-    local svo_location = getMudletHomeDir() .. _sep .. "svo_location"
-    local system_path -- location of the system's folder with a trailing slash
-    local f,msg
-
-    if lfs.attributes(svo_location) then
-      f,msg = io.open(svo_location, "r+")
-      assert(f, msg)
-
-      -- this should give us the folder it's in
-      system_path = f:read("*l")
-
-      if string.sub(system_path, -1) == "/" or string.sub(system_path, -1) == [[\]] then
-        system_path = string.sub(system_path, 1, -2)
-      end
-
-      -- Got a valid path?
-      if lfs.attributes(system_path) then
-        path = system_path .."/ndb-help.lua"
-      else
-        svo.echof("Didn't find the ndb-help.lua file anywhere - I can't show you the aliases!")
-        return
-      end
-    else
-      svo.echof("Didn't find the ndb-help.lua file anywhere - I can't show you the aliases!")
-      return
-    end
-  end
-
+  local path = svo.installationfolder() .."/ndb-help.lua"
+  
   local f, m = io.open(path)
   local s = f:read("*a")
 
