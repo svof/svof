@@ -7142,7 +7142,7 @@ end</script>
 				<name>svo.classchange</name>
 				<packageName></packageName>
 				<script>function svo.classchange(override)
-  local newclass = override or gmcp.Char.Status.class
+  local newclass = (override ~= "gmcp.Char.Status") and override or gmcp.Char.Status.class
 	
 	-- if you're in Dragon or an unrecognised class, use the None system
 	-- works fine in Dragon as they don't have class-specific skills anyway
