@@ -17,6 +17,8 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
+-- functions for Svof's aliases, that should call other core functions as necessary to do their work.
+
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.aliases = function()
 
@@ -1180,6 +1182,8 @@ if svo.systemloaded then svo.loader.aliases() end</script>
 
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+-- everything to do about Svof's defences - database, tracking, switching, etc.
 
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.defences = function()
