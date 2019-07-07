@@ -4090,6 +4090,7 @@ end</script>
 end</script>
 					<eventHandlerList>
 						<string>svo system loaded</string>
+						<string>sysInstallModule</string>
 					</eventHandlerList>
 				</Script>
 				<Script isActive="yes" isFolder="no">
