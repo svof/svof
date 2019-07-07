@@ -4197,7 +4197,10 @@ end
 
 signals.systemstart:connect(function ()
   local defdefup_t, defkeepup_t = svo.defload()
-
+	
+--Empty the def_type table on startup and class change to prevent duplicate defences.
+ defences.def_types = {}
+ 
   -- create blank defup modes
   for k,_ in pairs(defdefup_t) do
     defdefup[k] = defdefup[k] or {}
