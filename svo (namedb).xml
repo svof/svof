@@ -2539,7 +2539,7 @@ svo.showprompt()</script>
 				<name>(ndb update all) Re-check every person in the database</name>
 				<script>local alldata = db:fetch(ndb.db.people)
 
-if not svo.conf.autocheck and not svo.conf.usehonors then
+if not svo.conf.autocheck or not svo.conf.usehonors then
 	svo.echof("Both vconfig usehonors and vconfig autocheck must be set to yes to update all entries.")
 	return 
 end
