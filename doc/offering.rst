@@ -15,6 +15,9 @@ Aliases
 
   vgive *person*
   	Gives all corpses away to a person.
+    
+  vput *thing*
+    Puts all the corpses into whatever you specify.
 
   vdefile
   	Defiles with corpses. Use *undoall* to stop defiling.

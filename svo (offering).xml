@@ -2,7 +2,7 @@
 <!DOCTYPE MudletPackage>
 <MudletPackage version="1.001">
 	<TriggerPackage>
-		<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+		<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 			<name>Corpse lists</name>
 			<script></script>
 			<triggerType>0</triggerType>
@@ -167,9 +167,10 @@ svo.off_action = nil</script>
 		<Alias isActive="yes" isFolder="no">
 			<name>Offering aliases</name>
 			<script>enableTrigger("Corpse lists")
-svo.off_action = matches[3] or matches[2]
+svo.off_preaction = matches[2]
+svo.off_action = matches[3]
 
-if svo.off_action ~= "get" or svo.off_action == "offer" then
+if svo.off_preaction ~= "get" then
   sendGMCP("Char.Items.Inv")
   send("\n")
 else
@@ -177,7 +178,7 @@ else
 end</script>
 			<command></command>
 			<packageName></packageName>
-			<regex>^v(offer|get|defile|sanctify|give) ?(\w+)?$</regex>
+			<regex>^v(offer|get|defile|sanctify|give|put) ?(\w+)?$</regex>
 		</Alias>
 	</AliasPackage>
 	<ActionPackage />
@@ -196,7 +197,7 @@ end</script>
     haveselfish = true
   end
 
-  if svo.off_action == "offer" then
+  if svo.off_preaction == "offer" then
     -- see if we got a kris, if we need it
     for _, item in pairs(t) do
       if item.name and item.name == "a sacrificial kris" then
@@ -212,12 +213,14 @@ end</script>
 
     for _, item in pairs(t) do
       if item.name and string.find(item.name, "the corpse of", 1, true) then
-        if svo.off_action == "defile" then
+        if svo.off_preaction == "defile" then
           svo.doadd("offer "..item.id.." to defile")
-        elseif svo.off_action == "sanctify" then
+        elseif svo.off_preaction == "sanctify" then
           svo.doadd("offer "..item.id.." to sanctify")
-        else
+        elseif svo.off_preaction == "give" then
           svo.doaddfree("give "..item.id.." to "..svo.off_action)
+				elseif svo.off_preaction == "put" then
+					svo.doaddfree("put "..item.id.." in "..svo.off_action)
         end
       end
     end
