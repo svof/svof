@@ -331,8 +331,8 @@ end</script>
 			<colorTriggerFgColor>#000000</colorTriggerFgColor>
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList>
-				<string>A supple purple shell of berry juice has formed around</string>
-				<string>^A supple purple shell of berry juice has formed around (\w+)\.$</string>
+				<string>A supple purple shell of sileris berry juice has formed around</string>
+				<string>^A supple purple shell of sileris berry juice has formed around (\w+)\.$</string>
 			</regexCodeList>
 			<regexCodePropertyList>
 				<integer>2</integer>
@@ -391,8 +391,8 @@ svo.rt_flayed = nil</script>
 		</Trigger>
 		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 			<name>Applied quicksilver</name>
-			<script>tempTimer(3.5, function () svo.echof("%s's &lt;255,0,0&gt;sileris%s coming up in two (2) seconds.", tostring(svo.rt_sname), svo.getDefaultColor()) end)
-tempTimer(4.5, function () svo.echof("%s's &lt;255,0,0&gt;sileris%s coming up in one (1) second.", tostring(svo.rt_sname), svo.getDefaultColor()) end)
+			<script>tempTimer(3.5, function () svo.echof("%s's &lt;255,0,0&gt;quicksilver%s coming up in two (2) seconds.", tostring(svo.rt_sname), svo.getDefaultColor()) end)
+tempTimer(4.5, function () svo.echof("%s's &lt;255,0,0&gt;quicksilver%s coming up in one (1) second.", tostring(svo.rt_sname), svo.getDefaultColor()) end)
 svo.rt_flayed = nil</script>
 			<triggerType>0</triggerType>
 			<conditonLineDelta>0</conditonLineDelta>
