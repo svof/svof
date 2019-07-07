@@ -500,10 +500,6 @@ function svo.ti_inknext()
   if svo.ti_inking.ink_counter == 1 and not tattoos[svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter]] then
     svo.echof("Don't know the inks necessary for a %s tattoo.", svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter])
     svo.showprompt()
-  elseif svo.ti_inking.ink_counter == 1 then
-    for _, t in pairs(tattoos[svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter]]) do
-      svo.sendc(string.format("outr %d %s", t[1], t[2]), false)
-    end
   end
 
   svo.sendc(string.format("ink %s on %s of %s", svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter], limb_order[svo.ti_inking.ink_counter], svo.ti_inking.on))
