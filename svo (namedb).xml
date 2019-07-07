@@ -4234,8 +4234,8 @@ end</script>
   if data.immortal == 0 then
     cecho("&lt;a_darkcyan&gt;  Orgs:\n")
     cecho(string.format("&lt;a_darkgrey&gt;    House:  %-24s City:        %s (cr%s)%s\n",
-      (data.guild == '' and 'unknown' or data.guild),
-      (data.city == '' and 'unknown' or data.city),
+      string.title(data.guild == '' and 'unknown' or data.guild),
+      string.title(data.city == '' and 'unknown' or data.city),
       (data.city_rank == 0 and '?' or data.city_rank),
       (data.city_soldier == 0 and '' or ' (S)')
     ))
