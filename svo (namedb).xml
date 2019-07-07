@@ -2950,13 +2950,13 @@ ndb.valid.cities = {
   "Ashtan", "Cyrene", "Hashan", "Eleusis", "Mhaldor", "Targossas"
 }
 ndb.valid.classes = {
-  "alchemist", "apostate", "bard", "blademaster", "druid", "infernal", "jester", "magi", "monk", "occultist", "paladin", "priest", "runewarden", "sentinel", "serpent", "shaman", "sylvan"
+  "alchemist", "apostate", "bard", "blademaster", "depthswalker", "druid", "infernal", "jester", "magi", "monk", "occultist", "paladin", "priest", "psion", "runewarden", "sentinel", "serpent", "shaman", "sylvan"
 }
 ndb.valid.houses = {
-  "Blacklotus", "Occultists", "Shadowsnakes", "Merchants", "Warlocks", "Ashura", "Spiritwalkers", "Cij", "Shield", "Virtuosi", "Outriders", "Dawnblade", "Harbingers", "Luminai", "Legates", "Insidium", "Scions", "Heartwood"
+  "Scions", "Merchants", "Heartwood", "Cij", "Somatikos", "Shield", "Krymenian", "Virtuosi", "Outriders", "Dawnblade", "Harbingers", "Luminai", "Legates", "Insidium", "Consortium", "Savants", "Vanguard"
 }
 ndb.valid.races = {
-  "tsol'aa", "dwarf", "human", "troll", "atavian", "rajamala", "horkval", "grook", "xoran", "siren", "satyr", "mhun",
+  "tsol'aa", "dwarf", "human", "troll", "atavian", "rajamala", "horkval", "grook", "xoran", "siren", "satyr", "mhun", "tash'la", "elemental lord", "elemental lady"
 }
 ndb.valid.infamous = {
   ["is rapidly approaching the ranks of the Infamous"] = 1,
@@ -3188,7 +3188,7 @@ end</script>
 
 function ndb.downloaded_file(_, filename)
   -- is the file that downloaded ours?
-  if not string.find(filename, "namedb.html") then return end
+  if not string.find(filename, "namedb.json") then return end
   local f = io.open(filename)
   local s = f:read("*all")
   if f then f:close() end
@@ -3246,7 +3246,7 @@ function ndb.downloaded_file(_, filename)
 end
 
 function ndb.getinfo(person)
-	downloadFile(getMudletHomeDir().."/"..person.."-namedb.html", "https://www.achaea.com/game/honors/"..person)
+  downloadFile(getMudletHomeDir().."/"..person.."-namedb.json", "http://api.achaea.com/characters/"..person..".json")
 end</script>
 					<eventHandlerList>
 						<string>sysDownloadDone</string>
