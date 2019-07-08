@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.001">
+	<TriggerPackage>
+		<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>qwho (svo people tracker)</name>
+			<script></script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList />
+			<regexCodePropertyList />
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Auto-more (qwho)</name>
+				<script>send("more", false)
+svo.deleteLineP()</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>[Type MORE if you wish to continue reading</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>2</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Continued more</name>
+				<script>deleteLine()</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>[File continued via MORE]</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>3</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Stop (people tracker who)</name>
+				<script>svo.deleteLineP()
+disableTrigger("qwho (svo people tracker)")
+if svo.qwhoopen then killTimer(svo.qwhoopen) end
+svo.qwhoopen = nil
+tempTimer(0, function() svo.echof("Done checking all of wholist!") svo.buildwhosummary() svo.showprompt() wrapLine(getLineCount()) end)
+raiseEvent("mmapper updated pdb")</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^Total: \d+$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Gag while checking...</name>
+				<script>mmp.pdb[matches[2]] = matches[3]
+mmp.pdb_lastupdate[matches[2]] = true
+
+svo.deleteLineP()</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^(\w+) +\((.+)\)$</string>
+					<string>^The soul of (\w+) +\((.+)\)$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Gag no-location &amp; guides</name>
+				<script>svo.deleteLineP()</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^\w+$</string>
+					<string>Juliet, the Guide</string>
+					<string>Romeo, the Guide</string>
+					<string>(Praying for Salvation)</string>
+					<string>The soul of</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+					<integer>2</integer>
+					<integer>2</integer>
+					<integer>2</integer>
+					<integer>2</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="yes" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Gag no-location (gods)</name>
+				<script>svo.deleteLineP()</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#00b300</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>ANSI_COLORS_F{002}_B{000}</string>
+					<string>return not isPrompt()</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>6</integer>
+					<integer>4</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Gag phased</name>
+				<script>mmp.pdb[matches[2]] = matches[3]
+mmp.pdb_lastupdate[matches[2]] = true
+
+svo.deleteLineP()</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^\(Phased\) (\w+) +\((.+)\)$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+		</TriggerGroup>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>KoTH start</name>
+			<script>mmp.pdb.Hill = matches[2]
+echo(string.rep(" ", 50-#line)) svo.echof("gotop hill")
+raiseEvent("mmapper updated pdb")</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>^The HILL is at: (.+)!$</string>
+				<string>^The HILL has moved! It is now at: (.+)!$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>1</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>KoTH</name>
+			<script>mmp.pdb_lastupdate = {}</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>2</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>Current event: King of the Hill</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>3</integer>
+			</regexCodePropertyList>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Hill</name>
+				<script>mmp.pdb.Hill = matches[2]
+echo(string.rep(" ", 60-#line)) svo.echof("gotop hill")
+raiseEvent("mmapper updated pdb")</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^The HILL for this game is: (.+)</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Flag</name>
+				<script>mmp.pdb.Flag = matches[2]
+echo(string.rep(" ", 60-#line)) svo.echof("gotop flag")
+raiseEvent("mmapper updated pdb")</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^Flag Location: (.+?)\.</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+		</Trigger>
+	</TriggerPackage>
+	<TimerPackage />
+	<AliasPackage>
+		<Alias isActive="yes" isFolder="no">
+			<name>(qwho, qwhom, qwhog, qwho&lt;area&gt;) Check wholist</name>
+			<script>mmp.pdb, mmp.pdb_lastupdate = {}, {}
+enableTrigger("qwho (svo people tracker)")
+
+if not svo.defc.thirdeye then
+  if svo.conf.thirdeye then svo.doaction("thirdeye", "misc")
+  else svo.doaction("thirdeye", "herb") end
+end
+
+sendSocket("who b\n", false)
+
+if svo.qwhoopen then killTimer(svo.qwhoopen) end
+svo.qwhoopen = tempTimer(10, [[
+  if not svo.qwhoopen then return end
+
+  disableTrigger("qwho (svo people tracker)")
+  svo.echof("qwho didn't finish - manually closed it.")
+  tempTimer(0, function() svo.buildwhosummary() svo.showprompt() wrapLine(getLineCount()) end)
+  raiseEvent("mmapper updated pdb")
+  svo.qwhoopen = nil
+]])
+
+svo.showqwho = matches[2]
+svo.qwhofilter = matches[3]
+
+svo.echof("Checking all of wholist%s%s...", ((svo.showqwho and svo.showqwho ~= "") and (" for "..svo.showqwho) or ''), (svo.qwhofilter and " in "..svo.qwhofilter or ''))</script>
+			<command></command>
+			<packageName></packageName>
+			<regex>^qwho(m|g|w)?(?: (.+))?$</regex>
+		</Alias>
+		<Alias isActive="yes" isFolder="no">
+			<name>(gotop) Go to person</name>
+			<script>local function goto(whom)
+  local p = whom:title()
+  if not mmp.pdb[p] then mmp.echo("Sorry - don't know where "..p.." is.") return end
+
+  local nums = mmp.getnums(mmp.pdb[p], true)
+  mmp.gotoRoom(nums[1])
+  mmp.echo(string.format("Going to %s in %s%s.", p, mmp.cleanAreaName(mmp.areatabler[getRoomArea(nums[1])] or '?'), (#nums ~= 1 and " (non-unique location though)" or "")))
+end
+
+if not matches[2] then
+  if not target then
+    mmp.echo("I don't know what your target is (set the 'target' variable)") return
+  else
+    goto(target)
+  end
+else
+  goto(matches[2])
+end</script>
+			<command></command>
+			<packageName></packageName>
+			<regex>^gotop(?: (\w+))?$</regex>
+		</Alias>
+		<Alias isActive="yes" isFolder="no">
+			<name>(ppwith) Report people with person</name>
+			<script>if not svo.qwhoareas or not next(svo.qwhoareas) then svo.echof("Check qwho first - we don't have any wholist data.") return end
+
+local person = matches[2]:title()
+
+local function locate(person)
+  for area, areadata in pairs(svo.qwhoareas) do
+    for room, people in pairs(areadata) do
+      for i = 1, #people do
+        if people[i]:starts(person) then
+          return area, room, people[i]
+        end
+      end
+    end
+  end
+end
+
+local area, room, fullname = locate(person)
+
+if not area then svo.echof("Don't have %s in the list - perhaps they're gemmed, or check qwho again?", person) return end
+
+local people = svo.qwhoareas[area][room]
+table.sort(people)
+
+local function cleanAreaName(area)
+  return mmp.cleanAreaName and mmp.cleanAreaName(area) or area
+end
+
+if #people == 1 then
+  local text = string.format("%s is alone at %s in %s", people[1], room, cleanAreaName(area))
+  svo.cc(text)
+  svo.echof(text)
+else
+  local text = string.format("%d %s total with %s at %s in %s - %s", #people, (#people == 1 and 'person' or 'people'), fullname, room, cleanAreaName(area) or '?', svo.concatand(people))
+  svo.cc(text)
+  svo.echof(text)
+end</script>
+			<command></command>
+			<packageName></packageName>
+			<regex>^ppwith (\w+)$</regex>
+		</Alias>
+		<Alias isActive="yes" isFolder="no">
+			<name>(ppin) Report people in area</name>
+			<script>if not svo.qwhoareas or not next(svo.qwhoareas) then svo.echof("Check qwho first - we don't have any wholist data.") return end
+
+local function cleanAreaName(area)
+  return mmp.cleanAreaName and mmp.cleanAreaName(area) or area
+end
+
+for area, areadata in pairs(svo.qwhoareas) do
+  local people = {}
+  if area:lower():find(matches[2]:lower()) then
+    for _, room in pairs(areadata) do
+      people = table.n_union(people, room)
+    end
+    table.sort(people)
+
+    svo.cc("%s %s in %s - %s", #people, (#people == 1 and 'person' or 'people'), cleanAreaName(area), svo.concatand(people))
+  end
+end</script>
+			<command></command>
+			<packageName></packageName>
+			<regex>^ppin (.+)$</regex>
+		</Alias>
+		<Alias isActive="yes" isFolder="no">
+			<name>(vshow watchfor) See people on watchfor</name>
+			<script>local l = (next(svo.me.watchfor) and svo.oneconcat(svo.me.watchfor) or "(none - use vconfig watchfor &lt;person&gt; to add)")
+svo.echof("People on the watchfor list: %s", l)
+svo.showprompt()</script>
+			<command></command>
+			<packageName></packageName>
+			<regex>^vshow watchfor$</regex>
+		</Alias>
+	</AliasPackage>
+	<ActionPackage />
+	<ScriptPackage>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>svo People Tracker</name>
+			<packageName></packageName>
+			<script>function svo.buildwhosummary()
+  local time = createStopWatch(); startStopWatch(time)
+  local areas = {}
+
+  local pdb, getnums, getRoomArea, areatabler = mmp.pdb, mmp.getnums, getRoomArea, mmp.areatabler
+  for name in pairs(mmp.pdb_lastupdate) do
+    local room = pdb[name]
+    local roomids = getnums(room, true)
+
+    if not roomids then
+      areas["unknown area"] = areas["unknown area"] or {}
+      areas["unknown area"][room] = areas["unknown area"][room] or {}
+      areas["unknown area"][room][#areas["unknown area"][room]+1] = name
+    elseif #roomids == 1 then
+      local area = areatabler[getRoomArea(roomids[1])] or "unknown area"
+      areas[area] = areas[area] or {}
+      areas[area][room] = areas[area][room] or {}
+      areas[area][room][#areas[area][room]+1] = name
+    else
+      local singlearea = mmp.areatabler[getRoomArea(roomids[1])] or '?'
+
+      local inexact
+      for i = 1, #roomids do
+        if singlearea ~= mmp.areatabler[getRoomArea(roomids[i])] then
+          areas["uncertain area"] = areas["uncertain area"] or {}
+          areas["uncertain area"][room] = areas["uncertain area"][room] or {}
+          areas["uncertain area"][room][#areas["uncertain area"][room]+1] = name
+          inexact = true
+          break
+        end
+      end
+
+      if not inexact then
+        areas[singlearea] = areas[singlearea] or {}
+        areas[singlearea][room] = areas[singlearea][room] or {}
+        areas[singlearea][room][#areas[singlearea][room]+1] = name
+      end
+    end
+  end
+
+
+  local sortedareas = {}
+  for area in pairs(areas) do sortedareas[#sortedareas+1] = area end
+  table.sort(sortedareas)
+
+  svo.qwhoareas, svo.qwhosortedareas = areas, sortedareas
+
+  if not svo.showqwho then return end
+  if svo.qwhofilter then svo.qwhofilter = svo.qwhofilter:lower() end
+
+  if #sortedareas == 0 then svo.echof("Didn't pick anyone up on the who list - it was empty.") return end
+
+  local cecho, sformat, concatand, concatandf = cecho, string.format, svo.concatand, svo.concatandf
+
+  -- wraps the name so people after a &lt;reset&gt; are still white
+  local function wrapname(name)
+    return "&lt;white&gt;"..ndb.getcolorn(name).."&lt;reset&gt;"
+  end
+
+  local function rendergeneral()
+    svo.echof("%s ungemmed people are visible:", table.size(mmp.pdb_lastupdate))
+    for i = 1, #sortedareas do
+      if not svo.qwhofilter or sortedareas[i]:lower():find(svo.qwhofilter, 1, true) then
+        cecho(sformat(" &lt;CadetBlue&gt;in %s:\n", sortedareas[i]))
+        for room, people in pairs(areas[sortedareas[i]]) do
+          table.sort(people)
+          cecho(sformat("   in %s: &lt;white&gt;%s &lt;DarkSlateGray&gt;(%d %s)\n", room, concatandf(people, wrapname), #people, (#people == 1 and "person" or "people")))
+        end
+      end
+    end
+  end
+
+  local function rendergroups()
+    svo.echof("%s ungemmed people are visible, showing groups only:", table.size(mmp.pdb_lastupdate))
+    for i = 1, #sortedareas do
+      if not svo.qwhofilter or sortedareas[i]:lower():find(svo.qwhofilter, 1, true) then
+        local showedarea
+        for room, people in pairs(areas[sortedareas[i]]) do
+          if #people &gt; 1 then
+            if not showedarea then cecho(sformat(" &lt;CadetBlue&gt;in %s:\n", sortedareas[i])) showedarea = true end
+            table.sort(people)
+            cecho(sformat("   in %s: &lt;white&gt;%s &lt;DarkSlateGray&gt;(%d %s)\n", room, concatandf(people, wrapname), #people, (#people == 1 and "person" or "people")))
+          end
+        end
+      end
+    end
+  end
+
+  local function renderwatchfor()
+    -- make an indexed list
+    local watchfor = {}; for name in pairs(svo.me.watchfor) do watchfor[#watchfor+1] = name end
+
+    svo.echof("%s ungemmed people are visible, showing watchfor names only:", table.size(mmp.pdb_lastupdate))
+    for i = 1, #sortedareas do
+      if not svo.qwhofilter or sortedareas[i]:lower():find(svo.qwhofilter, 1, true) then
+        local showedarea
+        for room, people in pairs(areas[sortedareas[i]]) do
+          local intersection = table.n_intersection(watchfor, people)
+          if #intersection &gt; 0 then
+            if not showedarea then cecho(sformat(" &lt;CadetBlue&gt;in %s:\n", sortedareas[i])) showedarea = true end
+            table.sort(people)
+            cecho(sformat("   in %s: &lt;white&gt;%s &lt;DarkSlateGray&gt;(%d %s)\n", room, concatandf(people, wrapname), #people, (#people == 1 and "person" or "people")))
+          end
+        end
+      end
+    end
+  end
+
+  if svo.showqwho == 'g' then
+    rendergroups()
+  elseif svo.showqwho == 'w' then
+    if not svo.me.watchfor or not next(svo.me.watchfor) then svo.echof("You don't have anyone on the watchfor list - do vconfig watchfor &lt;person&gt; to add someone first.") return
+    else renderwatchfor() end
+  else
+    rendergeneral()
+  end
+
+  svo.showqwho = nil
+  if svo.conf.debug and not s then display(m) end
+  if svo.conf.perf then svo.echof("qwho rendered in %ss", stopStopWatch(time)) end
+end</script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>svo.add_peopletracker_config</name>
+				<packageName></packageName>
+				<script>function svo.add_peopletracker_config()
+  svo.me.watchfor = svo.me.watchfor or {}
+
+  svo.config.setoption("watchfor", {
+    type = "string",
+    check = function(what)
+      if what:find("^%w+$") then return true end
+    end,
+    onset = function ()
+      local name = string.title(svo.conf.watchfor)
+      -- we want nil, not false so 'or' doesn't help
+      if svo.me.watchfor[name] then svo.me.watchfor[name] = nil else svo.me.watchfor[name] = true end
+
+      if svo.me.watchfor[name] then
+        svo.echof("Added &lt;0,255,0&gt;%s%s to the watchfor list - use qwhow to see them.", name, svo.getDefaultColor())
+      else
+		svo.echof("Removed %s from the watchfor list.", name)
+      end
+      raiseEvent("svo watchfor name changed", name)
+    end
+  })
+end</script>
+				<eventHandlerList>
+					<string>svo system loaded</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>Map label drawing code</name>
+				<packageName></packageName>
+				<script>-- Svof (c) 2011-2018 by Vadim Peretokin
+
+-- Svof is licensed under a
+-- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+-- You should have received a copy of the license along with this
+-- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+
+--[[
+things to optimize: only do label updates on prompt
+handling multiple rooms ideas:
+ * draw a far-away label saying "also in area at '%s': blah, blah"
+   -&gt; can't work yet, because calculating a possible location would be a pain
+ * put names in every room
+   -&gt; looks ugly in this combination: http://img7.imagebanana.com/img/oshg8lw5/Selection_037.png
+ * label by single letters for groups, with only the rightmost room having the full list of names with letter) prepended
+]]
+
+
+tempTimer(0, function()
+
+local sys, signals = svo.sys, svo.signals
+local conf, sk = svo.conf, svo.sk
+
+-- area = {labels}
+local labels = {}
+
+-- default to numerals when we run out
+-- while defining this as a function would be nicer, it's easier for most people to mod if it's in this format
+local multiplegroups = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'}
+
+conf.peopletracker = type(conf.peopletracker) == 'nil' and true or conf.peopletracker
+svo.config.setoption('peopletracker', {
+  type = 'boolean',
+  onenabled = function ()
+    if not deleteMapLabel or not createMapLabel then
+      svo.echof("I'm sorry, but your Mudlet is too old and can't make labels on the map yet - update it!")
+      conf.peopletracker = false
+      raiseEvent("svo config changed", 'peopletracker')
+      return
+    end
+
+    svo.echof("People tracker &lt;0,250,0&gt;enabled%s.", svo.getDefaultColor())
+  end,
+  ondisabled = function () sys.clean_old_labels() svo.echof("People tracker &lt;250,0,0&gt;disabled%s.", svo.getDefaultColor()) end,
+  installstart = function () conf.peopletracker = true end,
+})
+
+conf.clearlabels = type(conf.clearlabels) == 'nil' and true or conf.clearlabels
+svo.config.setoption('clearlabels', {
+  type = 'boolean',
+  onenabled = function () signals.newarea:connect(sys.clear_labels) svo.echof("&lt;0,250,0&gt;Will%s automatically clear map labels that are surrounded by ().", svo.getDefaultColor()) end,
+  ondisabled = function ()signals.newarea:disconnect(sys.clear_labels) svo.echof("&lt;250,0,0&gt;Won't%s automatically clear map labels that are surrounded by ().", svo.getDefaultColor()) end,
+  installstart = function () conf.clearlabels = true end,
+})
+
+conf.labelsfont = type(conf.labelsfont) == 'nil' and 10 or conf.labelsfont
+svo.config.setoption('labelsfont', {
+  type = 'number',
+  onset = function () sys.update_people_labels() svo.echof("Labels set to draw at %dpt.", conf.labelsfont) end,
+  installstart = function () conf.labelsfont = 10 end,
+})
+
+conf.labelcolor = conf.labelcolor or 'white'
+conf.maxdupes = conf.maxdupes or 20
+svo.config.setoption('labelcolor', {
+  type = 'string',
+  vconfig2string = true,
+  check = function (what)
+    if color_table[what] then return true end
+  end,
+  onshow = function (defaultcolour)
+    fg('gold')
+    echoLink("ppl: ", "", "svo People Tracker", true)
+    fg(defaultcolour) echo("People tracker ")
+    fg('a_cyan') echoLink((conf.peopletracker and 'on' or 'off'), "svo.config.set('peopletracker', "..(conf.peopletracker and 'false' or 'true')..", true)", "Click to "..(conf.peopletracker and 'disable' or 'enable').." people tracking on the map", true)
+    fg(defaultcolour) echo("; using")
+    fg(conf.labelcolor or 'a_cyan') echoLink(" "..(conf.labelcolor or '?'), "printCmdLine'vconfig labelcolor '", "Click to change the color", true)
+    fg(defaultcolour) echo(" map labels (")
+    fg('a_cyan') echoLink("view all", "showColors()", "Click to view possible color names that you can use for customizing the label colors", true)
+    fg(defaultcolour)
+    echo("); font size is ")
+    fg('a_cyan') echoLink(tostring(conf.labelsfont), "printCmdLine'vconfig labelsfont '", "Click to set the font size for peopletracker labels", true)
+    echo(".\n")
+  end,
+  onset = function ()
+    local r,g,b = unpack(color_table[conf.labelcolor])
+    sys.update_people_labels()
+    svo.echof("Okay, will color the map labels in &lt;%s,%s,%s&gt;%s%s now.", r,g,b, conf.labelcolor, svo.getDefaultColor())
+  end,
+  installstart = function ()
+    conf.labelcolor = 'blue'
+  end
+})
+
+-- check for old Mudlet versions
+if not deleteMapLabel or not createMapLabel then
+  svo.echof("I'm sorry, but your Mudlet is too old and can't make labels on the map yet - update it!")
+  return
+end
+
+sys.clean_old_labels = function()
+  for areanum, arealabels in pairs(labels) do
+    for _, label in pairs(arealabels) do
+      deleteMapLabel(areanum, label)
+    end
+  end
+  labels = {}
+end
+signals.sysexitevent:connect(sys.clean_old_labels, 'clean up map labels on quit')
+
+sys.clear_labels = function()
+  if not mmp then return end
+  local function clearlabels(areaid)
+    local t = getMapLabels(areaid)
+    if type(t) ~= 'table' then return end
+
+    local starts, ends = string.starts, string.ends
+    for labelid, text in pairs(t) do
+      if starts(text, '(') and ends(text, ')') then
+        deleteMapLabel(areaid, labelid)
+      end
+    end
+  end
+
+  for areaid in pairs(mmp.areatabler or {}) do
+    clearlabels(areaid)
+  end
+end
+
+if conf.clearlabels then
+  signals.newarea:connect(sys.clear_labels)
+end
+
+sys.update_people_labels = function ()
+  -- drawwatch = drawwatch or createStopWatch()
+  -- startStopWatch(drawwatch)
+
+  local s,m = pcall(function()
+    if not mmp then return end
+    -- build a 'location = people' reverse map
+    local r = {}
+    -- keeps track at which index of multiplegroups are we at
+    local multiplescount = 1
+
+    local fr,fg,fb = unpack(color_table[conf.labelcolor or 'white'])
+    local br,bg,bb = unpack(color_table.black)
+
+    for k,v in pairs(mmp.pdb) do
+      if mmp.pdb_lastupdate[k] then
+        r[v] = r[v] or {}; r[v][#r[v]+1] = k
+      end
+    end
+
+    sys.clean_old_labels()
+    if not conf.peopletracker or not mmp.pdb_lastupdate or not mmp.roomexists(mmp.currentroom) then return end
+
+    local getRoomArea, createMapLabel, getRoomCoordinates, concat, sort = getRoomArea, createMapLabel, getRoomCoordinates, table.concat, table.sort
+
+    -- if we have a unique location, draw fancy labels in all rooms on 60% opacity
+    for room, persons in pairs(r) do
+      sort(persons)
+      local ids = mmp.getnums(room, true)
+
+      -- multiples? special case then. Current method implemented is #3
+      if ids and #ids &gt;1 and #ids &lt;= conf.maxdupes then
+        -- make a table of roomid = {x,y,z}
+        -- in a separate variable, track the right-most room ID and x coordinate per-Z level
+        local coords, rightmost = {}, {}
+        for _, exactroomid in pairs(ids) do
+          coords[exactroomid] = {getRoomCoordinates(exactroomid)}
+          coords[exactroomid][4] = getRoomArea(exactroomid)
+
+          if not rightmost[coords[exactroomid][3]] or
+            coords[exactroomid][1] &gt;= rightmost[coords[exactroomid][3]][1] then -- &gt;= so rightmostroom is set at least once
+
+            rightmost[coords[exactroomid][3]] =
+              {coords[exactroomid][1], exactroomid} -- we don't account for the Y coordinate if the X's are the same atm, though
+          end
+        end
+
+        -- now, draw!
+        for roomid, l in pairs(coords) do
+          local area = l[4]
+          labels[area] = labels[area] or {}
+
+          if rightmost[l[3]] and roomid == rightmost[l[3]][2] then
+            -- doesn't account for multiplescount overflowing atm
+            labels[area][#labels[area]+1] = createMapLabel(area, '('..multiplegroups[multiplescount].." "..concat(persons, ", ")..')', l[1],l[2],l[3], fr, fg, fb, br, bg, bb, 0,conf.labelsfont)
+          else
+            labels[area][#labels[area]+1] = createMapLabel(area, '('..multiplegroups[multiplescount]..')', l[1],l[2],l[3], fr, fg, fb, br, bg, bb, 0,conf.labelsfont)
+          end
+        end
+        multiplescount = multiplescount +1
+
+      elseif ids and #ids == 1 then
+        local x,y,z = getRoomCoordinates(ids[1])
+        local area = getRoomArea(ids[1])
+
+        if area then -- somehow area can still be returned as nil
+          labels[area] = labels[area] or {}
+
+          labels[area][#labels[area]+1] = createMapLabel(area, '('..concat(persons, ", ")..')', x,y,z, fr, fg, fb, br, bg, bb, 0,conf.labelsfont)
+        end
+      end
+    end
+  end)
+
+  if not s then
+    echoLink("(e!)", string.format("echo([=[The problem was: %q]=])", m), 'Oy - there was a problem with the peopletracker. Click on this link and submit a bug report with what it says.')
+  end
+
+  -- svo.echof("update took %s", stopStopWatch(drawwatch))
+end
+
+signals["mmapper updated pdb"]:connect(function()
+  if isPrompt() then
+    sys.update_people_labels()
+  else
+    sk.onprompt_beforeaction_add('update_labels', sys.update_people_labels)
+  end
+end, 'redraw labels')
+
+signals.quit:connect(sys.clean_old_labels, 'clean up old labels on quit')
+
+end)</script>
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
+	</ScriptPackage>
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL></helpURL>
+	</HelpPackage>
+</MudletPackage>

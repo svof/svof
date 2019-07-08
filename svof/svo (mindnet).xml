@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.001">
+	<TriggerPackage>
+		<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>svo Mindnet Report</name>
+			<script></script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList />
+			<regexCodePropertyList />
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Person left</name>
+				<script>if not svo.conf.mindnet then return end
+
+if not ndb or ndb.isenemy(matches[2]) then
+  mindnet_left = mindnet_left or {}
+  mindnet_left[#mindnet_left+1] = matches[2]
+
+svo.prompttrigger("mindnet left", function()
+  -- use this if you want to show who left
+  -- send(string.format("pt %s LEFT!", svo.concatand(mindnet_left)))
+
+  -- use this if you want to show who left + number
+  -- send(string.format("pt %s (%d) LEFT!", svo.concatand(mindnet_left), #mindnet_left))
+
+  -- use this if you want to show who left + number + area
+  svo.cc("%s (%d) LEFT %s!", svo.concatand(mindnet_left), #mindnet_left, (gmcp.Room and gmcp.Room.Info.area or ''))
+
+  mindnet_left = nil
+end)
+
+end</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^(\w+) has left the area\.$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Person came</name>
+				<script>if not svo.conf.mindnet then return end
+
+if not ndb or ndb.isenemy(matches[2]) then
+  mindnet_entered = mindnet_entered or {}
+  mindnet_entered[#mindnet_entered+1] = matches[2]
+
+
+svo.prompttrigger("mindnet entered", function()
+  -- use this if you want to show who entered
+  -- send(string.format("pt %s ENTERED!", svo.concatand(mindnet_entered)))
+
+  -- use this if you want to show who entered + number
+  -- send(string.format("pt %s (%d) ENTERED!", svo.concatand(mindnet_entered), #mindnet_entered))
+
+  -- use this if you want to show who entered + number + area
+  svo.cc("%s (%d) ENTERED %s!", svo.concatand(mindnet_entered), #mindnet_entered, gmcp.Room.Info.area)
+
+  mindnet_entered = nil
+end)
+
+end</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^(\w+) has entered the area\.$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+		</TriggerGroup>
+	</TriggerPackage>
+	<TimerPackage />
+	<AliasPackage />
+	<ActionPackage />
+	<ScriptPackage>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>svo Mindnet Report</name>
+			<packageName></packageName>
+			<script></script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>svo_load_mindreport</name>
+				<packageName></packageName>
+				<script>function svo_load_mindreport()
+  -- adds the vconfig mindnet option with the following code:
+
+  svo.config.setoption("mindnet", {
+    type = "boolean",
+    onenabled = function() svo.echof("&lt;0,250,0&gt;Will%s announce mindnet to cc.", svo.getDefaultColor()) end,
+    ondisabled = function() svo.echof("&lt;250,0,0&gt;Won't%s announce mindnet to cc.", svo.getDefaultColor()) end,
+    vconfig2string = true,
+    onshow = function (defaultcolour)
+      fg("gold")
+      echoLink("mr:", "", "svo Mindnet Report", true)
+
+    if svo.conf.mindnet then
+      fg("a_cyan") echoLink(" Announcing ", 'svo.config.set("mindnet", "off", true)', "Click to disable mindnet announces", true) fg(defaultcolour)
+      echo("mindet to cc")
+    else
+      fg("a_cyan") echoLink(" Not announcing ", 'svo.config.set("mindnet", "on", true)', "Click to enable mindnet announces", true) fg(defaultcolour)
+      echo("mindnet")
+    end
+    echo(".\n")
+    end
+  })
+end</script>
+				<eventHandlerList>
+					<string>svo system loaded</string>
+				</eventHandlerList>
+			</Script>
+		</ScriptGroup>
+	</ScriptPackage>
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL></helpURL>
+	</HelpPackage>
+</MudletPackage>

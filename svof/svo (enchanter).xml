@@ -1,0 +1,1295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.001">
+	<TriggerPackage />
+	<TimerPackage />
+	<AliasPackage>
+		<Alias isActive="yes" isFolder="no">
+			<name>enchant</name>
+			<script>svo.parse_enchant_arguments(matches[2])</script>
+			<command></command>
+			<packageName></packageName>
+			<regex>^enchant (.+)$</regex>
+		</Alias>
+		<Alias isActive="yes" isFolder="no">
+			<name>repeat the last order</name>
+			<script>svo.reenchant()</script>
+			<command></command>
+			<packageName></packageName>
+			<regex>^reenchant$</regex>
+		</Alias>
+	</AliasPackage>
+	<ActionPackage />
+	<ScriptPackage>
+		<Script isActive="yes" isFolder="no">
+			<name>enchanter script</name>
+			<packageName></packageName>
+			<script>local ourobori_data = {
+  [18864] = { "ouroboros60684",  "ouroboros203598" },
+  [21191] = { "ouroboros34462",  "ouroboros49014"  },
+  [21192] = { "ouroboros191596", "ouroboros191631" },
+  [47270] = { "ouroboros36673",  "ouroboros36838"  },
+  [47271] = { "ouroboros23502",  "ouroboros57255"  },
+  [47272] = { "ouroboros1263",   "ouroboros30460"  },
+  [47301] = { "ouroboros205397", "ouroros219350"   },
+  [11016] = { "ouroboros71982",  "ouroboros94567"  },
+  [11014] = { "ouroboros54000",  "ouroboros27606"  },
+  [11018] = { "ouroboros48748",  "ouroboros69603"  },
+  [11017] = { "ouroboros105971", "ouroboros106382" },
+  [12518] = { "ouroboros77138", "ouroboros159812"  },
+  [42336] = { "ouroboros133228", "ouroboros204600" }
+}
+
+-- Keep track if we are already ennchating
+local enchanting = false
+-- Queue of items we want to create. The item we are currently making is not in here.
+local enchantmentQueue = {}
+-- Queue of actions we need to do for the current enchantment
+local enchantmentActions = {}
+-- Flag for checking the IDs of the ourobori in the current room
+local checking_ourobori = false
+-- Keeps track if we need to put up selfishness again after enchanting
+local hadSelfishness = false
+-- Keeps track if we need to put up riding again after enchanting
+local hadRiding = false
+-- The string command of the last order in case we want to repeat it
+local lastOrder = ""
+
+-- The ouroboros we work with
+local ouroboros1, ouroboros2
+
+-- Hard coded list of known enchantments. Structure of each item:
+--[[
+  fullname:    Name that is used in the begin command
+  type:        Type of Enchantment. Possible values: "creation" and "enchantment"
+  nameToGet:   (creation only) name that will be used when getting the item from the ouroboros
+  ingredients: Name - value table. Name is the ingredient that goes into the ouroboros, value is the number for one item
+  otherItems:  Other items needed, that go not into the ouroboros. Currently the number of kola nuts and if a coin is needed
+  actions:     Ordered list of actions to create the item
+--]]
+local enchantments = {
+
+  purity = {
+    fullname    = "necklace of purity",
+    type        = "creation",
+    nameToGet   = "necklace",
+    ingredients = {
+      ice      = 4,
+      goldbar  = 1,
+      dust     = 1,
+    },
+    otherItems = {},
+    actions     = {
+      "bang drum",
+      "ring bell",
+      "burn the polygon",
+      "burn the polygon",
+      "burn the polygon",
+      "wave arms",
+      "play horn",
+      "play horn",
+      "play horn",
+      "play horn",
+      "burn incense",
+      "light candle",
+      "square the circle",
+      "square the circle",
+      "square the circle"
+    }
+  },
+
+  pestilence = {
+    fullname     = "ring of pestilence",
+    type         = "creation",
+    nameToGet    = "ring",
+    ingredients  = {
+      goldbar   = 1,
+      silverbar = 2,
+      staghorn  = 1,
+    },
+    otherItems = {
+      gold = true
+    },
+    actions      = {
+      "strum lute",
+      "flipcoin",
+      "bang drum",
+      "wave arms",
+      "square the circle",
+      "wave feather",
+      "burn incense",
+      "point sword",
+      "burn the polygon",
+      "burn the polygon",
+      "burn the polygon",
+      "play horn",
+      "play horn",
+      "play horn",
+      "ring bell",
+      "ring bell",
+      "ring bell",
+      "bang drum",
+      "square the circle",
+      "strum lute"
+    }
+  },
+
+  negation = {
+    fullname     = "gem of negation",
+    type         = "creation",
+    nameToGet    = "ring",
+    ingredients  = {
+      goldbar   = 1,
+    },
+    otherItems = {
+      kola = 1
+    },
+    actions      = {
+      "ring bell",
+      "ring bell",
+      "ring bell",
+      "light candle",
+      "crush kola",
+      "burn the polygon",
+      "point sword",
+      "chant zool ekilthia requi oben"
+    }
+  },
+
+  dreamcatcher = {
+    fullname     = "dreamcatcher",
+    type         = "creation",
+    nameToGet    = "dreamcatcher",
+    ingredients  = {
+      goldbar   = 2,
+      silverbar = 2,
+      staghorn  = 1,
+    },
+    otherItems = {},
+    actions      = {
+      "wave arms",
+      "burn incense",
+      "square the circle",
+      "light candle",
+      "strum lute",
+      "strum lute",
+      "strum lute",
+      "ring bell",
+      "ring bell",
+      "ring bell",
+      "point sword",
+      "point sword",
+      "strum lute",
+      "strum lute",
+      "strum lute"
+    }
+  },
+
+  bauble = {
+    fullname     = "bauble",
+    type         = "creation",
+    nameToGet    = "bauble",
+    ingredients  = {
+      dust      = 1,
+    },
+    otherItems = {
+      kola = 1
+    },
+    actions      = {
+      "crush kola",
+      "burn the polygon",
+      "clap hands",
+      "square the circle",
+      "chant disei stalla rapwah cosoth tu"
+    }
+  },
+
+  fresist = {
+    fullname     = "fire resistance",
+    type         = "enchantment",
+    ingredients  = {
+      ice       = 1,
+      silverbar = 2,
+    },
+    otherItems = {},
+    actions      = {
+      "ring bell",
+      "ring bell",
+      "light candle",
+      "light candle",
+      "play horn",
+      "play horn",
+      "light candle",
+      "light candle",
+      "bang drum",
+      "bang drum",
+      "clap hands",
+      "clap hands",
+      "strum lute",
+      "strum lute",
+      "clap hands",
+      "clap hands",
+      "bang drum",
+      "bang drum",
+      "light candle",
+      "light candle"
+    }
+  },
+
+  concealment = {
+    fullname     = "orb of concealment",
+    type         = "creation",
+    nameToGet    = "concealment",
+    ingredients  = {
+      goldbar   = 1,
+      silverbar = 5,
+    },
+    otherItems = {
+      gold = true
+    },
+    actions      = {
+      "wave feather",
+      "wave arms",
+      "flipcoin",
+      "play horn",
+      "point sword",
+      "clap hands",
+      "spin around thrice",
+      "chant aisyalam",
+      "spin around thrice",
+      "clap hands",
+      "point sword",
+      "play horn",
+      "flipcoin",
+      "wave arms",
+      "wave feather"
+    }
+  },
+
+  icewall = {
+    fullname     = "icewall",
+    type         = "enchantment",
+    ingredients  = {
+      ice       = 1,
+      dust      = 1,
+    },
+    otherItems = {},
+    actions      = {
+      "chant incula cela ecta",
+      "play horn",
+      "play horn",
+      "play horn",
+      "bang drum",
+      "bang drum",
+      "square the circle",
+      "point sword",
+      "spin around thrice",
+      "burn the polygon"
+    }
+  },
+
+  comprehension = {
+    fullname     = "necklace of comprehension",
+    type         = "creation",
+    nameToGet    = "necklace",
+    ingredients  = {
+      ice       = 2,
+      silverbar = 4,
+      staghorn  = 3,
+      goldbar   = 3,
+    },
+    otherItems = {
+      kola = 1,
+    },
+    actions      = {
+      "play horn",
+      "play horn",
+      "play horn",
+      "burn incense",
+      "wave feather",
+      "ring bell",
+      "roll dice",
+      "roll dice",
+      "spin around thrice",
+      "burn incense",
+      "crush kola"
+    }
+  },
+
+  whirlwind = {
+    fullname     = "whirlwind of vastar",
+    type         = "creation",
+    nameToGet    = "whirlwind",
+    ingredients  = {
+      silverbar = 1,
+      staghorn  = 1,
+      dust      = 1,
+    },
+    otherItems = {},
+    actions      = {
+      "spin around thrice",
+      "spin around thrice",
+      "spin around thrice",
+      "spin around thrice",
+      "wave feather",
+      "burn incense",
+      "spin around thrice",
+      "spin around thrice",
+      "spin around thrice",
+      "spin around thrice"
+    }
+  },
+
+  magic = {
+    fullname     = "magical resistance",
+    type         = "enchantment",
+    ingredients  = {
+      silverbar = 2,
+      staghorn  = 5,
+      goldbar   = 1,
+    },
+    otherItems = {
+      gold = true
+    },
+    actions      = {
+      "burn the polygon",
+      "burn the polygon",
+      "strum lute",
+      "strum lute",
+      "wave feather",
+      "wave feather",
+      "strum lute",
+      "strum lute",
+      "burn incense",
+      "burn incense",
+      "flipcoin",
+      "flipcoin",
+      "square the circle",
+      "square the circle",
+      "flipcoin",
+      "flipcoin",
+      "burn incense",
+      "burn incense",
+      "strum lute",
+      "strum lute"
+    }
+  },
+
+  brooch = {
+    fullname     = "brooch of thoth",
+    type         = "creation",
+    nameToGet    = "brooch",
+    ingredients  = {
+      silverbar = 2,
+      staghorn  = 1,
+      dust      = 2,
+      ice       = 1,
+    },
+    otherItems = {},
+    actions      = {
+      "chant mortis troy tenkla",
+      "chant mortis troy tenklu",
+      "chant mortis troy tenkli",
+      "clap hands",
+      "clap hands",
+      "clap hands"
+    }
+  },
+
+  firewall = {
+    fullname     = "firewall",
+    type         = "enchantment",
+    ingredients  = {
+      silverbar = 3,
+      staghorn  = 3,
+      dust      = 1,
+    },
+    otherItems = {},
+    actions      = {
+      "chant firth ilith rhedo een",
+      "burn the polygon",
+      "spin around thrice",
+      "point sword",
+      "square the circle",
+      "bang drum",
+      "bang drum",
+      "play horn",
+      "play horn",
+      "play horn"
+    }
+  },
+
+  electric = {
+    fullname     = "electrical resistance",
+    type         = "enchantment",
+    ingredients  = {
+      goldbar   = 5,
+    },
+    otherItems = {
+      gold = true,
+      kola = 2
+    },
+    actions      = {
+      "light candle",
+      "light candle",
+      "burn incense",
+      "burn incense",
+      "flipcoin",
+      "flipcoin",
+      "burn incense",
+      "burn incense",
+      "burn the polygon",
+      "burn the polygon",
+      "play horn",
+      "play horn",
+      "crush kola",
+      "crush kola",
+      "play horn",
+      "play horn",
+      "burn the polygon",
+      "burn the polygon",
+      "burn the polygon",
+      "burn the polygon"
+    }
+  },
+
+  cold = {
+    fullname     = "cold resistance",
+    type         = "enchantment",
+    ingredients  = {
+      goldbar   = 2,
+      horn      = 2,
+      dust      = 2,
+    },
+    otherItems = {
+      gold = true
+    },
+    actions      = {
+      "bang drum",
+      "bang drum",
+      "burn the polygon",
+      "burn the polygon",
+      "flipcoin",
+      "flipcoin",
+      "burn the polygon",
+      "burn the polygon",
+      "light candle",
+      "light candle",
+      "point sword",
+      "point sword",
+      "roll dice",
+      "roll dice",
+      "point sword",
+      "point sword",
+      "light candle",
+      "light candle",
+      "burn the polygon",
+      "burn the polygon"
+    }
+  },
+
+  orb = {
+    fullname     = "orb sigil",
+    type         = "creation",
+    nameToGet    = "orbsigil",
+    ingredients  = {
+      dust      = 1,
+    },
+    otherItems = {},
+    actions      = {
+      "chant solip preena het epi re enla",
+      "chant solip preena het epi re enla",
+      "chant solip preena het epi re enla",
+      "ring bell"
+    }
+  },
+
+  cube = {
+    fullname     = "cube sigil",
+    type         = "creation",
+    nameToGet    = "cube",
+    ingredients  = {
+      silverbar = 2,
+    },
+    otherItems = {},
+    actions      = {
+      "chant dara acti me prishna eni not",
+      "chant dara acti me prishna eni not",
+      "chant dara acti me prishna eni not",
+      "ring bell"
+    }
+  },
+
+  mushroom = {
+    fullname     = "mushroom sigil",
+    type         = "creation",
+    nameToGet    = "mushroom",
+    ingredients  = {
+      ice       = 1,
+    },
+    otherItems = {},
+    actions      = {
+      "chant mil usra shal hract reed oom oon mez",
+      "chant mil usra shal hract reed oom oon mez",
+      "chant mil usra shal hract reed oom oon mez",
+      "ring bell"
+    }
+  },
+
+  monolith = {
+    fullname     = "monolith sigil",
+    type         = "creation",
+    nameToGet    = "monolith",
+    ingredients  = {
+      silverbar = 1,
+      goldbar   = 1
+    },
+    otherItems = {},
+    actions      = {
+      "chant me ol nok oloth lilo ib te het",
+      "chant me ol nok oloth lilo ib te het",
+      "chant me ol nok oloth lilo ib te het",
+      "ring bell"
+    }
+  },
+
+  knife = {
+    fullname     = "knife sigil",
+    type         = "creation",
+    nameToGet    = "knife",
+    ingredients  = {
+      silverbar = 1,
+    },
+    otherItems = {},
+    actions      = {
+      "chant keef nitash idca feef enla",
+      "chant keef nitash idca feef enla",
+      "chant keef nitash idca feef enla",
+      "ring bell"
+    }
+  },
+
+  key = {
+    fullname     = "key sigil",
+    type         = "creation",
+    nameToGet    = "key",
+    ingredients  = {
+      goldbar   = 1
+    },
+    otherItems = {},
+    actions      = {
+      "chant krolop escit yall",
+      "chant krolop escit yall",
+      "chant krolop escit yall",
+      "ring bell"
+    }
+  },
+
+  flame = {
+    fullname     = "flame sigil",
+    type         = "creation",
+    nameToGet    = "flame",
+    ingredients  = {
+      silverbar = 1,
+    },
+    otherItems = {},
+    actions      = {
+      "chant flet lhar abe minlo eec",
+      "chant flet lhar abe minlo eec",
+      "chant flet lhar abe minlo eec",
+      "ring bell"
+    }
+  },
+
+  fist = {
+    fullname     = "fist sigil",
+    type         = "creation",
+    nameToGet    = "fist",
+    ingredients  = {
+      silverbar = 1,
+      staghorn  = 2,
+    },
+    otherItems = {},
+    actions      = {
+      "chant fartak ishla spooz tran",
+      "chant fartak ishla spooz tran",
+      "chant fartak ishla spooz tran",
+      "ring bell"
+    }
+  },
+
+  hearing = {
+    fullname     = "hearing",
+    type         = "enchantment",
+    ingredients  = {
+      silverbar = 3,
+      horn      = 4,
+    },
+    otherItems = {
+      kola = 1
+    },
+    actions      = {
+      "bang drum",
+      "clap hands",
+      "play horn",
+      "strum lute",
+      "clap hands",
+      "play horn",
+      "bang drum",
+      "strum lute",
+      "strum lute",
+      "play horn",
+      "clap hands",
+      "bang drum",
+      "bang drum",
+      "crush kola",
+      "ring bell"
+    }
+  },
+
+  eye = {
+    fullname     = "eye sigil",
+    type         = "creation",
+    nameToGet    = "eye",
+    ingredients  = {
+      obsidian  = 1,
+    },
+    otherItems = {},
+    actions      = {
+      "square the circle",
+      "ring bell",
+    }
+  },
+
+  worrystone = {
+    fullname     = "worrystone",
+    type         = "creation",
+    nameToGet    = "worrystone",
+    ingredients  = {
+      ice       = 1,
+      goldbar   = 1,
+      silverbar = 1,
+      horn      = 1,
+      dust      = 1,
+    },
+    otherItems = {
+      gold = true
+    },
+    actions      = {
+      "roll dice",
+      "roll dice",
+      "roll dice",
+      "roll dice",
+      "roll dice",
+      "flipcoin",
+      "flipcoin",
+      "flipcoin",
+      "flipcoin",
+      "flipcoin",
+      "spin around thrice",
+      "wave feather",
+      "square the circle"
+    }
+  },
+
+  meteor = {
+    fullname     = "meteor",
+    type         = "creation",
+    nameToGet    = "meteor",
+    ingredients  = {
+      dust      = 1,
+      arrow     = 1,
+    },
+    otherItems = {},
+    actions      = {
+      "wave arms",
+      "wave feather",
+      "chant minlo ecta tu ecta oloth rhedo",
+      "bang drum"
+    }
+  },
+
+  waterwalking = {
+    fullname     = "walk on water",
+    type         = "enchantment",
+    ingredients  = {
+      silverbar = 1,
+      goldbar   = 2,
+      ice       = 1,
+    },
+    otherItems = {
+      kola = 1
+    },
+    actions      = {
+      "square the circle",
+      "wave arms",
+      "wave arms",
+      "wave arms",
+      "point sword",
+      "point sword",
+      "strum lute",
+      "bang drum",
+      "bang drum",
+      "bang drum",
+      "bang drum",
+      "roll dice",
+      "crush kola"
+    }
+  },
+
+  scabbard = {
+    fullname     = "stasis",
+    type         = "enchantment",
+    ingredients  = {
+      silverbar = 2,
+      goldbar   = 3,
+      ice       = 3,
+      dust      = 3,
+      horn      = 3,
+    },
+    otherItems = {
+      kola = 1
+    },
+    actions      = {
+      "wave feather",
+      "wave feather",
+      "roll dice",
+      "roll dice",
+      "roll dice",
+      "wave arms",
+      "wave arms",
+      "crush kola",
+      "chant drabbacs statorium",
+      "strum lute",
+      "wave feather",
+      "wave feather",
+      "square the circle",
+      "square the circle",
+      "square the circle",
+      "wave feather"
+    }
+  },
+
+  stasis = {
+    fullname     = "bag of stasis",
+    type         = "creation",
+    nameToGet    = "bag",
+    ingredients  = {
+      ice       = 3,
+      goldbar   = 4,
+      silverbar = 1,
+      dust      = 2,
+      horn      = 3,
+    },
+    otherItems = {
+      kola = 2
+    },
+    actions      = {
+      "wave feather",
+      "wave feather",
+      "bang drum",
+      "spin around thrice",
+      "light candle",
+      "ring bell",
+      "chant stasis statorium",
+      "spin around thrice",
+      "clap hands",
+      "clap hands",
+      "square the circle",
+      "square the circle",
+      "square the circle",
+      "wave feather",
+      "roll dice",
+      "roll dice",
+      "roll dice",
+      "roll dice",
+      "roll dice",
+      "roll dice",
+      "crush kola",
+      "crush kola"
+    }
+  },
+
+  firelash = {
+    fullname     = "firelash",
+    type         = "enchantment",
+    ingredients  = {
+      silverbar = 1,
+      goldbar   = 1,
+      dust      = 2,
+    },
+    otherItems = {},
+    actions      = {
+      "bang drum",
+      "clap hands",
+      "burn incense",
+      "point sword",
+      "light candle",
+      "chant fo icti re eschle lok ast suh hrat",
+      "ring bell",
+      "spin around thrice",
+      "burn the polygon",
+      "roll dice",
+      "roll dice",
+      "roll dice"
+    }
+  },
+
+  star = {
+    fullname     = "star sigil",
+    type         = "creation",
+    nameToGet    = "star",
+    ingredients  = {
+      silverbar = 1,
+      goldbar   = 2,
+    },
+    otherItems = {},
+    actions      = {
+      "strum lute",
+      "ring bell"
+    }
+  },
+}
+
+-- Starts the check for oroboros
+local function getOIDs()
+  checking_ourobori = true
+
+  svo.echof( "Don't know the ourobori IDs for this room, so going to check..." )
+  sendGMCP( "Char.Items.Room" )
+  send("\n")
+end
+
+-- Repeats the last order
+local function reenchant()
+  enchant(enchanting[1], enchanting[2])
+end
+
+local function addToActionQueue(command, balanceful)
+  enchantmentActions[#enchantmentActions + 1] = {
+    command = command,
+    balanceful = (balanceful or false) }
+end
+
+-- Queues the actions needed for the next item in the queue
+local function enchantNextItem()
+  local queueItem = enchantmentQueue[1]
+  -- No first item anymore? We are done!
+  if not queueItem then
+    return false
+  end
+  -- remove the item from queue
+  table.remove(enchantmentQueue, 1)
+  -- get the descriptive object for the enchantment
+  local what = enchantments[queueItem.what]
+
+  -- determine, how many items we want to create
+  local amount
+  if what.type == "creation" then
+    amount = tonumber(queueItem.arg) or 1
+  else
+    amount = 1
+  end
+
+  -- retrieve ingredients and put them into the ouroboros
+  for name, per in pairs(what.ingredients) do
+    local totalAmount = per * amount
+    if name == "arrow" then
+      addToActionQueue("outq " .. totalAmount .. " " .. name, true)
+      -- lets handle arrows differently. Since 'arrow' also applies to meteors, we will need special encoding
+      if totalAmount == 1 then
+        addToActionQueue("put @an arrow@ in " .. ouroboros1, false)
+		else
+        addToActionQueue(string.format("put group @a group of %d arrows@ in %s", totalAmount, ouroboros1), false)
+		end
+    else
+      addToActionQueue("outr " .. totalAmount .. " " .. name, false)
+      addToActionQueue("put " .. (totalAmount &gt; 1 and "group " or "") .. name .. " in " .. ouroboros1, false)
+    end
+  end
+
+  -- retrieve other items needed
+  local kola = what.otherItems.kola
+  if kola then
+      addToActionQueue("outr " .. kola .. " kola", false)
+  end
+
+  local gold = what.otherItems.gold
+  if gold then
+      svo.conf.enchantgetgold:gsub("([^$]+)", addToActionQueue)
+  end
+
+  -- start enchantment
+  if what.type == "enchantment" then
+      addToActionQueue("put " .. queueItem.arg .. " in " .. ouroboros2, false)
+      addToActionQueue("begin enchantment of " .. queueItem.arg .. " with " .. what.fullname, false)
+  else
+      addToActionQueue("begin creation of " .. amount .. " " .. what.fullname, false)
+  end
+
+  --queue actions
+  for _, action in ipairs(what.actions) do
+      addToActionQueue(action, true)
+  end
+
+  -- end the ritual
+  addToActionQueue("end ritual", false)
+  if what.type == "creation" then
+      addToActionQueue("get " .. (amount &gt; 1 and (amount .. " ") or "") .. what.nameToGet .. " from " ..ouroboros2, amount &gt; 1)
+  else
+      addToActionQueue("get " .. queueItem.arg .. " from " .. ouroboros2, false)
+  end
+  if gold then
+      svo.conf.enchantputgold:gsub("([^$]+)", addToActionQueue)
+  end
+  return true
+end
+
+-- Full order done. Clean up and tell the user.
+local function endEnchanting()
+  enchanting = false
+  svo.removebalanceful("enchantment step")
+  svo.defs.keepup("selfishness", hadSelfishness, svo.defs.mode, false)
+  svo.defs.keepup("riding", hadRiding, svo.defs.mode, false)
+  svo.echof("Enchantment order done!")
+  return hadSelfishness and hadRiding
+end
+
+-- Run the next step(s) in queue
+local function enchantmentStep()
+
+  local step
+  -- run all steps that don't need balance at once. Needs a little less time, less spam and doesn't break svo.addbalanceful.
+  repeat
+    -- enchantmentActions empty? Try to fill it from the queue
+    -- if there's nothing, we're done.
+    if #enchantmentActions == 0 and not enchantNextItem() then
+      return endEnchanting()
+    end
+    step = enchantmentActions[1]
+    table.remove(enchantmentActions, 1)
+    -- replace special stuff for meteors enchantment
+    local command = step.command:gsub("@(.+)@", function(what)
+        for _, item in ipairs(svo.me.inventory) do
+          if what == item.name then
+            return item.id
+          end
+        end
+      end)
+    svo.sendc(command)
+  until step.balanceful
+  return true
+end
+
+-- Start the enchanting process. Some common setup first.
+local function startEnchanting()
+  --skip this in case we are already enchanting
+  if not enchanting then
+    enchanting = true
+    svo.echof("Starting enchantment order")
+    ouroboros1 = ourobori_data[gmcp.Room.Info.num][1]
+    ouroboros2 = ourobori_data[gmcp.Room.Info.num][2]
+    hadSelfishness = svo.defc.selfishness or false
+    if hadSelfishness then
+      svo.defs.keepup("selfishness", false, svo.defs.mode, false)
+    end
+    hadRiding = svo.defc.riding or false
+    if hadRiding then
+      svo.defs.keepup("riding", false, svo.defs.mode, false)
+    end
+    svo.addbalanceful("enchantment step", enchantmentStep)
+    svo.donext()
+  end
+end
+
+-- exported via the svo namespace below. Parses gmcp.Char.Items.List for ourorboros
+local function check_ourobori()
+  if not checking_ourobori or gmcp.Char.Items.List.location ~= "room" then return end
+
+  for _, item in ipairs(gmcp.Char.Items.List.items) do
+    if item.name == 'a beguiling ouroboros' then
+      ourobori_data[gmcp.Room.Info.num] = ourobori_data[gmcp.Room.Info.num] or {}
+      table.insert(ourobori_data[gmcp.Room.Info.num], "ouroboros"..item.id)
+    end
+  end
+
+  checking_ourobori = false
+
+  if not ourobori_data[gmcp.Room.Info.num] then
+    svo.echof("Hey, I don't think there are actually are any ourobori here :|")
+    enchantmentQueue = {}
+  else
+    startEnchanting()
+  end
+end
+
+-- gets howMany unworn items with the same short desc as what for enchanting
+local function getSameItems(howMany, what)
+  howMany = tonumber(howMany)
+
+  -- lets get the short desc first
+  local shortDesc
+  for _, item in ipairs(svo.me.inventory) do
+    if (not item.attrib or not item.attrib:find("w")) and item.id == what then
+      shortDesc = item.name
+      break
+    end
+  end
+
+  if not shortDesc then
+    svo.echof("You don't seem to have '" .. what .. "' in your inventory. Skipping.")
+    return {}
+  end
+
+  -- Now gather howMany items with the same name
+  local counter = 0
+  local result = {}
+  for _, item in ipairs(svo.me.inventory) do
+    if not (item.attrib and (item.attrib:find("w") or item.attrib:find("E"))) and item.name == shortDesc then
+      item.attrib = (item.attrib or "") ..  "E" -- lets add a pseudo attribute to mark it as "used"
+      counter = counter + 1
+      result[counter] = item.id
+      if counter == howMany then
+        break
+      end
+    end
+  end
+
+  return result
+
+end
+
+-- Add an enchantment to the queue
+--   enchantment: The name of a known enchantment
+--   number: How many items to create or which item id should be enchanted (depends on enchantment type)
+local function enchant( enchantment, number, exampleItem )
+  if not enchantment then
+    svo.echof("What do you want to echant? (Hint: 'enchant (number) (with what)[, (number) (with what)]*')")
+    return
+  end
+  if not number then
+    svo.echof("Which item do you want to enchant or how many items do you want to create? (Hint: 'enchant (number) (with what)[, (number) (with what)]*')")
+    return
+  end
+
+  local enchantmentObject = enchantments[enchantment]
+
+  if not enchantmentObject then
+    svo.echof("Echantment '" .. enchantment .. "' unknown. See 'enchant list' for known enchantments.")
+  else
+
+    if enchantmentObject.type == "creation" then
+      local step = svo.conf.haveenchantmentmedallion and 5 or 1
+      for i=step,tonumber(number),step do
+        enchantmentQueue[#enchantmentQueue + 1] = { what = enchantment, arg = step }
+        number = number - step
+      end
+      if tonumber(number) &gt; 0 then
+        enchantmentQueue[#enchantmentQueue + 1] = { what = enchantment, arg = number }
+      end
+    else
+      if exampleItem == "" then
+        enchantmentQueue[#enchantmentQueue + 1] = { what = enchantment, arg = number }
+      else
+        local itemList = getSameItems(number, exampleItem)
+        for _, item in ipairs(itemList) do
+          enchantmentQueue[#enchantmentQueue + 1] = { what = enchantment, arg = item }
+        end
+      end
+    end
+
+    if not ourobori_data[ gmcp.Room.Info.num ] then
+      getOIDs()
+    else
+      startEnchanting()
+    end
+  end
+end
+
+-- Calculate the object cost of an enchantment
+--   what: name of a known enchantment
+--   num: How many items should be created (only matters for created items)
+--   _: only needed for enchant
+--   costCollection: table where costs get added. This is useful if the function is called multiple times in a row, because costs get added up here
+-- returns the calculated cost in a table
+local function getEnchantCost(what, num, exampleItem, costCollection)
+  local enchantObject = enchantments[what]
+  costCollection = type(costCollection) == "table" and costCollection or {}
+  if not enchantObject then return end
+  local factor
+  if enchantObject.type == "creation" then
+    factor = tonumber(num) or 1
+  else
+    if exampleItem ~= "" then
+      factor = num
+    else
+      factor = 1
+    end
+  end
+  for item, amount in pairs(enchantObject.ingredients) do
+    costCollection[item] = factor * amount + (costCollection[item] or 0)
+  end
+  local kola = enchantObject.otherItems.kola
+  if kola then
+    costCollection["kola"] = factor * kola + (costCollection["kola"] or 0)
+  end
+  return costCollection
+end
+
+-- Prints the costs calculated by getEnchantCost
+local function printEnchantCosts(cost)
+  local echo = cecho
+  echo("Your order uses the following commodities:\n")
+  for item, amount in pairs(cost) do
+    echo("  &lt;gold&gt;" .. item .. "&lt;reset&gt; - &lt;SlateGrey&gt;" .. amount .. "&lt;reset&gt;\n")
+  end
+end
+
+-- Parses the argument(s) given to the enchant alias
+local function parseEnchantArguments(arg)
+
+  -- if a list was requested, print it
+  if arg == "list" then
+    cecho("&lt;white&gt;              Sigils:\n" )
+    cecho("&lt;SlateGrey&gt;          'eye' - Eye Sigil\n")
+    cecho("&lt;SlateGrey&gt;          'key' - Key Sigil\n")
+    cecho("&lt;SlateGrey&gt;          'orb' - Orb Sigil\n")
+    cecho("&lt;SlateGrey&gt;         'cube' - Cube Sigil\n")
+    cecho("&lt;SlateGrey&gt;         'fist' - Fist Sigil\n")
+    cecho("&lt;SlateGrey&gt;         'star' - Star Sigil\n")
+    cecho("&lt;SlateGrey&gt;        'flame' - Flame Sigil\n")
+    cecho("&lt;SlateGrey&gt;        'knife' - Knife Sigil\n")
+    cecho("&lt;SlateGrey&gt;     'monolith' - Monolith Sigil\n")
+    cecho("&lt;SlateGrey&gt;     'mushroom' - Mushroom Sigil\n")
+
+    cecho("\n&lt;white&gt;          Resistance:\n" )
+    cecho("&lt;SlateGrey&gt;         'cold' - Cold Resist\n")
+    cecho("&lt;SlateGrey&gt;        'magic' - Magic Resist\n")
+    cecho("&lt;SlateGrey&gt;      'fresist' - Fire Resist\n")
+    cecho("&lt;SlateGrey&gt;     'electric' - Electric Resist\n")
+
+    cecho("\n&lt;white&gt;   Item Enchantments:\n")
+    cecho("&lt;SlateGrey&gt;       'meteor' - Meteor Arrow\n")
+    cecho("&lt;SlateGrey&gt;      'augment' - Augment Armour or Weapon\n")
+    cecho("&lt;SlateGrey&gt;      'icewall' - Icewall\n")
+    cecho("&lt;SlateGrey&gt;     'firelash' - Firelash\n")
+    cecho("&lt;SlateGrey&gt;     'firewall' - Firewall\n")
+    cecho("&lt;SlateGrey&gt;     'scabbard' - Scabbard of Stasis\n")
+    cecho("&lt;SlateGrey&gt; 'waterwalking' - Waterwalking\n")
+
+    cecho("\n&lt;white&gt;       Item Creation:\n" )
+    cecho("&lt;SlateGrey&gt;       'bauble' - Scented Bauble\n")
+    cecho("&lt;SlateGrey&gt;       'brooch' - Brooch of Thoth\n")
+    cecho("&lt;SlateGrey&gt;       'purity' - Necklace of Purity\n")
+    cecho("&lt;SlateGrey&gt;       'stasis' - Bag of Stasis\n")
+    cecho("&lt;SlateGrey&gt;      'hearing' - Earring of Hearing\n")
+    cecho("&lt;SlateGrey&gt;     'negation' - Gem of Negation\n")
+    cecho("&lt;SlateGrey&gt;    'whirlwind' - Whirlwind of Vastar\n")
+    cecho("&lt;SlateGrey&gt;   'pestilence' - Ring of Pestilence\n")
+    cecho("&lt;SlateGrey&gt;   'worrystone' - Worrystone\n")
+    cecho("&lt;SlateGrey&gt;  'concealment' - Orb of Concealment\n")
+    cecho("&lt;SlateGrey&gt; 'dreamcatcher' - Dreamcatcher\n")
+    cecho("&lt;SlateGrey&gt;'comprehension' - Necklace of Comprehension\n")
+  elseif string.starts(arg, "cancel") then
+    enchantmentQueue = {}
+    if arg == "cancel force" then
+      enchantmentActions = {}
+    end
+  else
+    local functionToUse
+    local getCosts = false
+
+    -- Differ between cost calculation and real enchantment
+    if string.starts(arg, "cost") then
+      functionToUse = getEnchantCost
+      arg = arg:sub(5)
+      getCosts = true
+    else
+      functionToUse = enchant
+      lastOrder = arg
+    end
+
+    -- split the arguments and feed them to the function
+    local arguments = arg:split(",")
+    local output = {}
+    for _, argument in ipairs(arguments) do
+      argument = argument:trim()
+      local num, exampleItem, enchantment = argument:match("^(%w+) ?(%w-) (%w+)$")
+      functionToUse(enchantment, num, exampleItem, output)
+    end
+    -- print costs, if requested
+    if getCosts then
+      printEnchantCosts(output)
+    end
+  end
+
+end
+
+-- repeat the last order
+local function reenchant()
+  parseEnchantArguments(lastOrder)
+end
+
+-- initialise the script by adding some publishing some functions in the svo namespace as well as adding in some functions
+function initialiseEnchantScript()
+  svo.check_ourobori = check_ourobori
+  svo.parse_enchant_arguments = parseEnchantArguments
+  svo.reenchant = reenchant
+  svo.get_enchant_cost = getEnchantCost
+  svo.config.setoption("haveenchantmentmedallion",
+  {
+    vconfig2string = true,
+    type = "boolean",
+    onenabled = function ()
+      svo.echof("&lt;0,250,0&gt;Will%s use the Medallion of Enchantment for item creation.", svo.getDefaultColor())
+    end,
+    ondisabled = function ()
+      svo.echof("&lt;250,0,0&gt;Won't%s use the Medallion of Enchantment for item creation.", svo.getDefaultColor())
+    end,
+    onshow = function (defaultcolour)
+      fg("gold")
+      echoLink("enchanter:", "", "svo enchanting script", true)
+      fg(defaultcolour)
+      echo(" Using the Medallion of Enchantment for item creation is ")
+      fg("a_cyan") echoLink(svo.conf.haveenchantmentmedallion and "enabled" or "disabled", "svo.config.set('haveenchantmentmedallion', "..(svo.conf.haveenchantmentmedallion and "false" or "true")..", true)", "Click to "..(svo.conf.haveenchantmentmedallion and "disable" or "enable").." the use of the Medallion of Enchantment", true) fg(defaultcolour)
+      echo(".\n")
+  end})
+
+  svo.conf.enchantgetgold = svo.conf.enchantgetgold or "get 1 gold from pack"
+  svo.config.setoption("enchantgetgold", {
+    type = "string",
+    vconfig2string = true,
+    onshow = function (defaultcolour)
+      fg("gold")
+      echoLink("enchanter:", "", "svo enchanting script", true)
+      fg(defaultcolour) echo(" Will use ")
+      fg("a_cyan") echoLink((svo.conf.enchantgetgold or "get 1 gold from pack"), "printCmdLine 'vconfig enchantgetgold '", "Click to set the command to use for retrieving a gold coin", true)
+      fg(defaultcolour) echo(" for getting gold coins to flip; putting it away with")
+      fg("a_cyan") echoLink(" "..(svo.conf.enchantputgold or "put 1 gold in pack"), "printCmdLine'vconfig enchantputgold '", "Click to set the command to use for putting the gold coin away", true)
+      fg(defaultcolour) echo(".\n")
+    end,
+    onset = function ()
+      svo.echof("Okay, will get a gold coin with '%s'.", svo.conf.enchantgetgold)
+    end
+  })
+
+  svo.conf.enchantputgold = svo.conf.enchantputgold or "put 1 gold in pack"
+  svo.config.setoption("enchantputgold", {
+    type = "string",
+    onset = function ()
+      svo.echof("Okay, will put gold coins away with '%s'.", svo.conf.enchantputgold)
+    end
+  })
+end
+
+registerAnonymousEventHandler("gmcp.Char.Items.List", "svo.check_ourobori")
+registerAnonymousEventHandler("svo system loaded", "initialiseEnchantScript")
+</script>
+			<eventHandlerList />
+		</Script>
+	</ScriptPackage>
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL></helpURL>
+	</HelpPackage>
+</MudletPackage>

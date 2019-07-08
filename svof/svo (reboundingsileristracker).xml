@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.001">
+	<TriggerPackage>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Self-removed</name>
+			<script>if not target or not matches[2]:lower():find(target:lower(), 1, true) then return end
+
+svo.rt_name = matches[2]
+svo.rt_razed = true
+tempTimer(2, [[svo.rt_razed = nil]])
+
+selectCurrentLine()
+setFgColor(0, 170, 255)
+resetFormat()
+deselect()</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#00aaff</mFgColor>
+			<mBgColor>#000000</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>^(\w+)'s aura of weapons rebounding disappears\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Razed</name>
+			<script>svo.rt_name = multimatches[2][2]
+svo.rt_razed = true
+tempTimer(2, [[svo.rt_razed = nil]])
+
+selectCurrentLine()
+setFgColor(0, 170, 255)
+resetFormat()
+deselect()</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>You raze </string>
+				<string>^You raze (\w+)'s aura of rebounding with .+\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>2</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Magi raze</name>
+			<script>svo.rt_name = multimatches[2][2]
+svo.rt_razed = true
+tempTimer(2, [[svo.rt_razed = nil]])
+
+selectCurrentLine()
+setFgColor(0, 170, 255)
+resetFormat()
+deselect()</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>You call upon Whiirh to empower your staff and strike</string>
+				<string>^You call upon Whiirh to empower your staff and strike (\w+), the power of air dispersing (?:her|his) aura of rebounding\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>2</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Serpent flay</name>
+			<script>svo.rt_name = multimatches[2][2]
+svo.rt_razed = true
+tempTimer(2, [[svo.rt_razed = nil]])
+
+selectCurrentLine()
+setFgColor(0, 170, 255)
+resetFormat()
+deselect()</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>You flay away</string>
+				<string>^You flay away (\w+)'s aura of rebounding defence\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>2</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Knight fracture</name>
+			<script>svo.rt_name = multimatches[2][2]
+svo.rt_razed = true
+tempTimer(2, [[svo.rt_razed = nil]])
+
+selectCurrentLine()
+setFgColor(0, 170, 255)
+resetFormat()
+deselect()</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>You deliver a single, powerful blow against the aura of rebounding surrounding</string>
+				<string>^You deliver a single, powerful blow against the aura of rebounding surrounding (\w+), fracturing it\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>2</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Knight two-handed cutting carve</name>
+			<script>svo.rt_name = multimatches[2][2]
+svo.rt_razed = true
+tempTimer(2, [[svo.rt_razed = nil]])
+
+selectCurrentLine()
+setFgColor(0, 170, 255)
+resetFormat()
+deselect()</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>Lunging forward, you bring</string>
+				<string>^Lunging forward, you bring .+? down in a savage diagonal blow, carving through (\w+)'s aura of rebounding\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>2</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Knight two-handed blunt carve</name>
+			<script>svo.rt_name = multimatches[2][2]
+svo.rt_razed = true
+tempTimer(2, [[svo.rt_razed = nil]])
+
+selectCurrentLine()
+setFgColor(0, 170, 255)
+resetFormat()
+deselect()</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>Planting your feet, you whirl </string>
+				<string>^Planting your feet, you whirl .+? over your head before bringing it down with terrible force upon (\w+), shattering (?:his|her) aura of rebounding\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>2</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Smoked</name>
+			<script>tempTimer(6, function () svo.echof("%s's &lt;255,0,0&gt;aura%s coming up in two (2) seconds.", svo.rt_name, svo.getDefaultColor()) end)
+tempTimer(7, function () svo.echof("%s's &lt;255,0,0&gt;aura%s coming up in one (1) second.", svo.rt_name, svo.getDefaultColor()) end)
+svo.rt_razed = nil</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>^\w+ takes a long drag off (?:his|her)? ?.*pipe\.$|^A great gurgling sound is heard as \w+ takes a long drag from an enamel bubble pipe\. A series of shining bubbles erupt from the bowl of (?:her|his) pipe\.$</string>
+				<string>return (svo.rt_razed and line:find(svo.rt_name, 1, true)) and true or false</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>1</integer>
+				<integer>4</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Got rebounding</name>
+			<script>if multimatches[2][2] == svo.rt_name then
+  selectCurrentLine()
+  fg("gold")
+  bg("firebrick")
+end</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>You suddenly perceive the vague outline of an aura of rebounding around</string>
+				<string>^You suddenly perceive the vague outline of an aura of rebounding around (\w+)\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>2</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Flayed sileris</name>
+			<script>svo.rt_sname = multimatches[2][2]
+svo.rt_flayed = true
+tempTimer(2, [[if svo.rt_flayed then svo.rt_flayed = nil end]])
+
+selectCurrentLine()
+setFgColor(0, 170, 255)
+resetFormat()
+deselect()</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>You flay the purple, waxy coating from</string>
+				<string>^You flay the purple, waxy coating from (\w+)\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>2</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Flayed quicksilver</name>
+			<script>svo.rt_sname = multimatches[2][2]
+svo.rt_flayed = true
+tempTimer(2, [[if svo.rt_flayed then svo.rt_flayed = nil end]])
+
+selectCurrentLine()
+setFgColor(0, 170, 255)
+resetFormat()
+deselect()</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>You flay the metallic coating from</string>
+				<string>^You flay the metallic coating from (\w+)\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>2</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Got sileris</name>
+			<script>if multimatches[2][2] == svo.rt_sname then
+  selectCurrentLine()
+  fg("blue")
+  bg("firebrick")
+end</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>A supple purple shell of sileris berry juice has formed around</string>
+				<string>^A supple purple shell of sileris berry juice has formed around (\w+)\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>2</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Got quicksilver</name>
+			<script>if multimatches[2][2] == svo.rt_sname then
+  selectCurrentLine()
+  fg("blue")
+  bg("firebrick")
+end</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>A supple metallic shell of quicksilver has formed around</string>
+				<string>^A supple metallic shell of quicksilver has formed around (\w+)\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>2</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Applied sileris</name>
+			<script>tempTimer(3.5, function () svo.echof("%s's &lt;255,0,0&gt;sileris%s coming up in two (2) seconds.", tostring(svo.rt_sname), svo.getDefaultColor()) end)
+tempTimer(4.5, function () svo.echof("%s's &lt;255,0,0&gt;sileris%s coming up in one (1) second.", tostring(svo.rt_sname), svo.getDefaultColor()) end)
+svo.rt_flayed = nil</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>^(\w+) applies a sileris berry to (?:him|her)self\.$</string>
+				<string>return (svo.rt_flayed and line:find(svo.rt_sname, 1, true)) and true or false</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>1</integer>
+				<integer>4</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Applied quicksilver</name>
+			<script>tempTimer(3.5, function () svo.echof("%s's &lt;255,0,0&gt;quicksilver%s coming up in two (2) seconds.", tostring(svo.rt_sname), svo.getDefaultColor()) end)
+tempTimer(4.5, function () svo.echof("%s's &lt;255,0,0&gt;quicksilver%s coming up in one (1) second.", tostring(svo.rt_sname), svo.getDefaultColor()) end)
+svo.rt_flayed = nil</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>^(\w+) applies a quicksilver droplet to (?:him|her)self\.$</string>
+				<string>return (svo.rt_flayed and line:find(svo.rt_sname, 1, true)) and true or false</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>1</integer>
+				<integer>4</integer>
+			</regexCodePropertyList>
+		</Trigger>
+	</TriggerPackage>
+	<TimerPackage />
+	<AliasPackage />
+	<ActionPackage />
+	<ScriptPackage />
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL></helpURL>
+	</HelpPackage>
+</MudletPackage>

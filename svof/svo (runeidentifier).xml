@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.001">
+	<TriggerPackage>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>Totem</name>
+			<script>local rune = multimatches[2][2]
+local t = {
+  ["like an open eye"] = {
+    rune = "wunjo", effect = "cure blind"},
+  ["that looks like a stick man"] = {
+    rune = "inguz", effect = "paralysis"},
+  ["shaped like a butterfly"] = {
+    rune = "nairat", effect = "entangle"},
+  ["like a closed eye"] = {
+    rune = "fehu", effect = function()
+      if not svo.fehu or svo.fehu == 3 then svo.fehu = 1 return "strip insomnia"
+      elseif svo.fehu == 1 then svo.fehu = 2 return "sleep"
+      elseif svo.fehu == 2 then svo.fehu = 3 return "strip kola" end
+    end
+  },
+  ["resembling a bell"] = {
+    rune = "mannaz", effect = "cure deaf"},
+  ["that looks like a nail"] = {
+    rune = "sowulu", effect = "damage"},
+  ["that looks like something out of your nightmares"] = {
+    rune = "kena", effect = "fear"},
+  ["shaped like a viper"] = {
+    rune = "sleizak", effect = "voyria"},
+  ["resembling an apple core"] = {
+    rune = "loshre", effect = "anorexia"},
+  ["resembling a square box"] = {
+    rune = "pithakhan", effect = "drain mana"},
+  ["like a lightning bolt"] = {
+    rune = "uruz", effect = "heal"},
+  ["resembling a leech"] = {
+    rune = "nauthiz", effect = "hunger"},
+  ["like an upward-pointing arrow"] = {
+    rune = "tiwaz", effect = "defence strip"}
+}
+
+echo(string.rep(" ", 60-#multimatches[2][1]))
+
+if t[rune] then
+  cecho(string.format(" &lt;a_red&gt;(&lt;a_grey&gt;%s: &lt;a_cyan&gt;%s&lt;a_red&gt;)",
+    t[rune].rune, type(t[rune].effect) == "function" and t[rune].effect() or t[rune].effect))
+else
+  cecho(" &lt;a_red&gt;(&lt;a_darkyellow&gt;unknown!&lt;a_red)")
+end
+
+svo.prompttrigger("clear fehu", function() svo.fehu = nil end)</script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>1</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>A rune</string>
+				<string>^A rune (.+) is sketched in slot \d+\.$</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>2</integer>
+				<integer>1</integer>
+			</regexCodePropertyList>
+		</Trigger>
+		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<name>On a person/ground</name>
+			<script></script>
+			<triggerType>0</triggerType>
+			<conditonLineDelta>0</conditonLineDelta>
+			<mStayOpen>0</mStayOpen>
+			<mCommand></mCommand>
+			<packageName></packageName>
+			<mFgColor>#ff0000</mFgColor>
+			<mBgColor>#ffff00</mBgColor>
+			<mSoundFile></mSoundFile>
+			<colorTriggerFgColor>#000000</colorTriggerFgColor>
+			<colorTriggerBgColor>#000000</colorTriggerBgColor>
+			<regexCodeList>
+				<string>A rune</string>
+			</regexCodeList>
+			<regexCodePropertyList>
+				<integer>0</integer>
+			</regexCodePropertyList>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="yes" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Regex</name>
+				<script>local t = {
+  ["like an open eye"] = {
+    rune = "wunjo", effect = "cure blind"},
+  ["that looks like a stick man"] = {
+    rune = "inguz", effect = "paralysis"},
+  ["shaped like a butterfly"] = {
+    rune = "nairat", effect = "entangle"},
+  ["like a closed eye"] = {
+    rune = "fehu", effect = function()
+      if not svo.fehu or svo.fehu == 3 then svo.fehu = 1 return "strip insomnia"
+      elseif svo.fehu == 1 then svo.fehu = 2 return "sleep"
+      elseif svo.fehu == 2 then svo.fehu = 3 return "strip kola" end
+    end
+  },
+  ["resembling a bell"] = {
+    rune = "mannaz", effect = "cure deaf"},
+  ["that looks like a nail"] = {
+    rune = "sowulu", effect = "damage"},
+  ["that looks like something out of your nightmares"] = {
+    rune = "kena", effect = "fear"},
+  ["shaped like a viper"] = {
+    rune = "sleizak", effect = "voyria"},
+  ["resembling an apple core"] = {
+    rune = "loshre", effect = "anorexia"},
+  ["resembling a square box"] = {
+    rune = "pithakhan", effect = "drain mana"},
+  ["like a lightning bolt"] = {
+    rune = "uruz", effect = "heal"},
+  ["resembling a leech"] = {
+    rune = "nauthiz", effect = "hunger"},
+  ["like an upward-pointing arrow"] = {
+    rune = "tiwaz", effect = "defence strip"},
+  ["shaped like a mighty oak"] = {
+    rune = "jera", effect = "+1 con and str"},
+  ["resembling an elk"] = {
+    rune = "algiz", effect = "10% dmg reduction"},
+  ["like a lion"] = {
+    rune = "berkana", effect = "lvl1 health regen"},
+  ["resembling a horse"] = {
+    rune = "raido", effect = "return location"},
+  ["like a flurry of lightning bolts"] = {
+    rune = "isaz", effect = "throws off balance"},
+  ["like a rising sun"] = {
+    rune = "dagaz", effect = "heals affs"},
+  ["shaped like a yew"] = {
+    rune = "eihwaz", effect = "removes vibes"},
+  ["resembling a volcano"] = {
+    rune = "thurisaz", effect = "hits a person"},
+  ["resembling a mountain range"] = {
+    rune = "othala", effect = "damage over time"},
+}
+
+for i = 1, #matches, 2 do
+  local rune = matches[i+1]
+  local line = matches[i]
+
+  local pos = selectString(line, 1)
+  moveCursor("main", pos+#line-1, getLineNumber())
+
+  if t[rune] then
+    cinsertText(string.format(" &lt;a_blue&gt;(&lt;a_grey&gt;%s: &lt;a_cyan&gt;%s&lt;a_blue&gt;)",
+      t[rune].rune, type(t[rune].effect) == "function" and t[rune].effect() or t[rune].effect))
+  else
+    cinsertText(" &lt;a_blue&gt;(&lt;a_darkyellow&gt;unknown!&lt;a_blue&gt;)")
+  end
+end
+
+deselect()
+resetFormat()
+moveCursorEnd()
+
+svo.prompttrigger("clear fehu", function() svo.fehu = nil end)</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>A rune (.+?) has been sketched onto (?:him|her)\.</string>
+					<string>A rune (.+?) has been sketched into the ground here\.</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+		</Trigger>
+	</TriggerPackage>
+	<TimerPackage />
+	<AliasPackage />
+	<ActionPackage />
+	<ScriptPackage />
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL></helpURL>
+	</HelpPackage>
+</MudletPackage>

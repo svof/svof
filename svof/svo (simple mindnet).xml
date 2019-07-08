@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.001">
+    <TriggerPackage>
+        <TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+            <name>svo Mindnet Report</name>
+            <script></script>
+            <triggerType>0</triggerType>
+            <conditonLineDelta>0</conditonLineDelta>
+            <mStayOpen>0</mStayOpen>
+            <mCommand></mCommand>
+            <packageName></packageName>
+            <mFgColor>#ff0000</mFgColor>
+            <mBgColor>#ffff00</mBgColor>
+            <mSoundFile></mSoundFile>
+            <colorTriggerFgColor>#000000</colorTriggerFgColor>
+            <colorTriggerBgColor>#000000</colorTriggerBgColor>
+            <regexCodeList/>
+            <regexCodePropertyList/>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Person left</name>
+                <script>mindnet_left = mindnet_left or {}
+mindnet_left[#mindnet_left+1] = matches[2]
+
+svo.prompttrigger(&quot;mindnet left&quot;, function()
+  -- use this if you want to show who left
+  -- send(string.format(&quot;pt %s LEFT!&quot;, svo.concatand(mindnet_left)))
+
+  -- use this if you want to show who left + number
+  -- send(string.format(&quot;pt %s (%d) LEFT!&quot;, svo.concatand(mindnet_left), #mindnet_left))
+
+  -- use this if you want to show who left + number + area
+  send(string.format(&quot;pt %s (%d) LEFT %s!&quot;, svo.concatand(mindnet_left), #mindnet_left, gmcp.Room.Info.area))
+
+  mindnet_left = nil
+end)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>^(\w+) has left the area\.$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+            <Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+                <name>Person came</name>
+                <script>mindnet_entered = mindnet_entered or {}
+mindnet_entered[#mindnet_entered+1] = matches[2]
+
+svo.prompttrigger(&quot;mindnet entered&quot;, function()
+  -- use this if you want to show who entered
+  -- send(string.format(&quot;pt %s ENTERED!&quot;, svo.concatand(mindnet_entered)))
+
+  -- use this if you want to show who entered + number
+  -- send(string.format(&quot;pt %s (%d) ENTERED!&quot;, svo.concatand(mindnet_entered), #mindnet_entered))
+
+  -- use this if you want to show who entered + number + area
+  send(string.format(&quot;pt %s (%d) ENTERED %s!&quot;, svo.concatand(mindnet_entered), #mindnet_entered, gmcp.Room.Info.area))
+
+  mindnet_entered = nil
+end)</script>
+                <triggerType>0</triggerType>
+                <conditonLineDelta>0</conditonLineDelta>
+                <mStayOpen>0</mStayOpen>
+                <mCommand></mCommand>
+                <packageName></packageName>
+                <mFgColor>#ff0000</mFgColor>
+                <mBgColor>#ffff00</mBgColor>
+                <mSoundFile></mSoundFile>
+                <colorTriggerFgColor>#000000</colorTriggerFgColor>
+                <colorTriggerBgColor>#000000</colorTriggerBgColor>
+                <regexCodeList>
+                    <string>^(\w+) has entered the area\.$</string>
+                </regexCodeList>
+                <regexCodePropertyList>
+                    <integer>1</integer>
+                </regexCodePropertyList>
+            </Trigger>
+        </TriggerGroup>
+    </TriggerPackage>
+    <TimerPackage/>
+    <AliasPackage/>
+    <ActionPackage/>
+    <ScriptPackage/>
+    <KeyPackage/>
+    <HelpPackage>
+        <helpURL></helpURL>
+    </HelpPackage>
+</MudletPackage>
