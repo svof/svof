@@ -22,8 +22,8 @@ See [documentation](https://svof.github.io/svof/) on how to install, use, and ta
 11. Check off "Create a new branch for this commit and start a pull request".
 12. Name your branch.
 13. Click propose changes.
-14. Make sure the base is the in-client-svof and compare is your new branch.
-15. Overview you changes to make sure you submitted the right files.
+14. Go through your changes, makes sure nothing is out of the ordinary. (Like it saying you changed the entire file)
+15. Click compare across fork. Then switch the base repository to svof/svof - base: in-client-svof.
 16. Click create pull request.
 17. Wait for approval and it to be merged.
 18. You've updated Svof, congratulations!
