@@ -1551,8 +1551,9 @@ svo.lostbal_prayer = function()
   svo.startbalancewatch('prayer')
   sk.prayertick = sk.prayertick + 1
   local oldprayertick = sk.prayertick
+  local reset = conf.ai_resetprayerbal
 
-  tempTimer(10+svo.getping(), function ()
+  tempTimer(3+svo.getping(), function ()
     if not bals.prayer and sk.prayertick == oldprayertick then
       bals.prayer = true
       svo.make_gnomes_work()

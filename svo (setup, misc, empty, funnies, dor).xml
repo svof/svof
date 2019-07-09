@@ -727,7 +727,7 @@ if not svo.systemloaded then
   conf.ai_resetmossbal      = 10  -- resets at 6
   if svo.haveskillset('zeal') then
     -- resets at 3 for blessings, 4 for benediction 1.6-2.3 for affs
-    conf.ai_resetprayerbal        = 1.7
+    conf.ai_resetprayerbal        = 4
   end
   conf.ai_resetpurgativebal = 10 -- it's 7s for voyria
   conf.ai_resetdragonhealbal = 20 -- 20s for dragonheal
@@ -1130,8 +1130,11 @@ svo.index_map = pl.tablex.index_map
 -- lostbal_focus, lostbal_herb, lostbal_salve, lostbal_purgative, lostbal_sip
 sk.salvetick, sk.herbtick, sk.focustick, sk.teatick = 0, 0, 0, 0
 sk.purgativetick, sk.siptick, sk.mosstick, sk.dragonhealtick = 0, 0, 0, 0
-sk.smoketick, sk.voicetick, sk.wordtick, sk.prayertick =  0, 0, 0, 0
+sk.smoketick, sk.voicetick, sk.wordtick =  0, 0, 0
 
+if svo.haveskillset('zeal') then
+  sk.prayertick = 0
+end
 
 if svo.haveskillset('venom') then
 sk.shruggingtick = 0
@@ -2603,8 +2606,7 @@ for herbname, herbaffs in pairs({
   goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression',
    'shadowmadness'},
   kelp = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness'},
-  lobelia = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'spiritdisrupt',
-  'airdisrupt', 'waterdisrupt', 'earthdisrupt', 'firedisrupt'},
+  lobelia = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'spiritburn', 'tenderskin'},
   ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy'},
   ash = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia'},
   bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'}
@@ -2660,7 +2662,7 @@ empty.treecurables = {'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 
 'peace', 'recklessness', 'relapsing', 'selarnia', 'sensitivity', 'shyness', 'slickness', 'stupidity', 'stuttering',
 'unknownany', 'unknowncrippledarm', 'unknowncrippledleg', 'unknownmental', 'vertigo', 'voyria', 'weakness', 'hamstring',
 'shivering', 'frozen', 'skullfractures', 'crackedribs', 'wristfractures', 'torntendons', 'depression', 'parasite',
-'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate'}
+'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'guilt', 'spiritburn', 'tenderskin'}
 empty.treeblocks = {
   madness = {'madness', 'dementia', 'stupidity', 'confusion', 'hypersomnia', 'paranoia', 'hallucinations', 'impatience',
   'addiction', 'agoraphobia', 'inlove', 'loneliness', 'recklessness', 'masochism'},

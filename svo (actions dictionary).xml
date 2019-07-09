@@ -1496,6 +1496,99 @@ end
       end,
     }
   },
+  guilt = {
+    herb = {
+      isadvisable = function()
+        return (affs.guilt and
+          not svo.doingaction('guilt')) or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('guilt')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'lobelia', 'argentum'},
+      onstart = function() svo.eat(svo.dict.guilt.herb) end,
+
+      empty = function() empty.eat_lobelia() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.guilt)
+        sk.guilt_count = 0
+        codepaste.badaeon()
+      end,
+    },
+    gone = {
+      oncompleted = function()
+        svo.rmaff('guilt')
+        codepaste.remove_focusable()
+      end,
+    }
+  },
+  tenderskin = {
+    herb = {
+      isadvisable = function()
+        return (affs.tenderskin and
+          not svo.doingaction('tenderskin')) or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('tenderskin')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'lobelia', 'argentum'},
+      onstart = function() svo.eat(svo.dict.tenderskin.herb) end,
+
+      empty = function() empty.eat_lobelia() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.tenderskin)
+        sk.tenderskin_count = 0
+        codepaste.badaeon()
+      end,
+    },
+    gone = {
+      oncompleted = function()
+        svo.rmaff('tenderskin')
+        codepaste.remove_focusable()
+      end,
+    }
+  },
+  spiritburn = {
+    herb = {
+      isadvisable = function()
+        return (affs.spiritburn and
+          not svo.doingaction('spiritburn')) or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('spiritburn')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'lobelia', 'argentum'},
+      onstart = function() svo.eat(svo.dict.spiritburn.herb) end,
+
+      empty = function() empty.eat_lobelia() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.spiritburn)
+        sk.spiritburn_count = 0
+        codepaste.badaeon()
+      end,
+    },
+    gone = {
+      oncompleted = function()
+        svo.rmaff('spiritburn')
+        codepaste.remove_focusable()
+      end,
+    }
+  },
   masochism = {
     herb = {
       isadvisable = function()
@@ -7942,204 +8035,6 @@ end
       end,
     }
   },
-  spiritdisrupt = {
-    herb = {
-      isadvisable = function()
-        return (affs.spiritdisrupt and not affs.madness and
-          not svo.doingaction('spiritdisrupt')) or false
-      end,
-
-      oncompleted = function()
-        svo.rmaff('spiritdisrupt')
-        svo.lostbal_herb()
-      end,
-
-      eatcure = {'lobelia', 'argentum'},
-      onstart = function() svo.eat(svo.dict.spiritdisrupt.herb) end,
-
-      empty = function() empty.eat_lobelia() end
-    },
-    aff = {
-      oncompleted = function()
-        svo.addaffdict(svo.dict.spiritdisrupt)
-      end,
-    },
-    gone = {
-      oncompleted = function()
-        svo.rmaff('spiritdisrupt')
-        codepaste.remove_focusable()
-      end,
-    }
-  },
-  airdisrupt = {
-    focus = {
-      isadvisable = function()
-        return (affs.airdisrupt and not affs.spiritdisrupt) or false
-      end,
-
-      oncompleted = function()
-        svo.rmaff('airdisrupt')
-        svo.lostbal_focus()
-      end,
-
-      action = 'focus',
-      onstart = function() send('focus', conf.commandecho) end,
-
-      empty = function()
-        svo.lostbal_focus()
-
-        empty.focus()
-      end
-    },
-    herb = {
-      isadvisable = function()
-        return (affs.airdisrupt and not svo.doingaction('airdisrupt')) or false
-      end,
-
-      oncompleted = function()
-        svo.rmaff('airdisrupt')
-        svo.lostbal_herb()
-      end,
-
-      eatcure = {'lobelia', 'argentum'},
-      onstart = function() svo.eat(svo.dict.airdisrupt.herb) end,
-
-      empty = function() empty.eat_lobelia() end
-    },
-    aff = {
-      oncompleted = function()
-        svo.addaffdict(svo.dict.airdisrupt)
-      end,
-    },
-    gone = {
-      oncompleted = function()
-        svo.rmaff('airdisrupt')
-        codepaste.remove_focusable()
-      end,
-    }
-  },
-  earthdisrupt = {
-    herb = {
-      isadvisable = function()
-        return (affs.earthdisrupt and not svo.doingaction('earthdisrupt')) or false
-      end,
-
-      oncompleted = function()
-        svo.rmaff('earthdisrupt')
-        svo.lostbal_herb()
-      end,
-
-      eatcure = {'lobelia', 'argentum'},
-      onstart = function() svo.eat(svo.dict.earthdisrupt.herb) end,
-
-      empty = function() empty.eat_lobelia() end
-    },
-    aff = {
-      oncompleted = function()
-        svo.addaffdict(svo.dict.earthdisrupt)
-      end,
-    },
-    gone = {
-      oncompleted = function()
-        svo.rmaff('earthdisrupt')
-        codepaste.remove_focusable()
-      end,
-    }
-  },
-  waterdisrupt = {
-    focus = {
-      isadvisable = function()
-        return (affs.waterdisrupt and not affs.spiritdisrupt) or false
-      end,
-
-      oncompleted = function()
-        svo.rmaff('waterdisrupt')
-        svo.lostbal_focus()
-      end,
-
-      action = 'focus',
-      onstart = function() send('focus', conf.commandecho) end,
-
-      empty = function()
-        svo.lostbal_focus()
-
-        empty.focus()
-      end
-    },
-    herb = {
-      isadvisable = function()
-        return (affs.waterdisrupt and not svo.doingaction('waterdisrupt')) or false
-      end,
-
-      oncompleted = function()
-        svo.rmaff('waterdisrupt')
-        svo.lostbal_herb()
-      end,
-
-      eatcure = {'lobelia', 'argentum'},
-      onstart = function() svo.eat(svo.dict.waterdisrupt.herb) end,
-
-      empty = function() empty.eat_lobelia() end
-    },
-    aff = {
-      oncompleted = function()
-        svo.addaffdict(svo.dict.waterdisrupt)
-      end,
-    },
-    gone = {
-      oncompleted = function()
-        svo.rmaff('waterdisrupt')
-        codepaste.remove_focusable()
-      end,
-    }
-  },
-  firedisrupt = {
-    focus = {
-      isadvisable = function()
-        return (affs.firedisrupt and not affs.spiritdisrupt) or false
-      end,
-
-      oncompleted = function()
-        svo.rmaff('firedisrupt')
-        svo.lostbal_focus()
-      end,
-
-      action = 'focus',
-      onstart = function() send('focus', conf.commandecho) end,
-
-      empty = function()
-        svo.lostbal_focus()
-
-        empty.focus()
-      end
-    },
-    herb = {
-      isadvisable = function()
-        return (affs.firedisrupt and not svo.doingaction('firedisrupt')) or false
-      end,
-
-      oncompleted = function()
-        svo.rmaff('firedisrupt')
-        svo.lostbal_herb()
-      end,
-
-      eatcure = {'lobelia', 'argentum'},
-      onstart = function() svo.eat(svo.dict.firedisrupt.herb) end,
-
-      empty = function() empty.eat_lobelia() end
-    },
-    aff = {
-      oncompleted = function()
-        svo.addaffdict(svo.dict.firedisrupt)
-      end,
-    },
-    gone = {
-      oncompleted = function()
-        svo.rmaff('firedisrupt')
-        codepaste.remove_focusable()
-      end,
-    }
-  },
   stain = {
     waitingfor = {
       customwait = 60*2+20, -- lasts 2min, but varies, so let's go with 140s
@@ -9743,7 +9638,6 @@ end
     addiction = 'addiction',
     aeon = 'aeon',
     agoraphobia = 'agoraphobia',
-    airdisrupt = 'airdisrupt',
     airfisted = 'galed',
     amnesia = 'amnesia',
     anorexia = 'anorexia',
@@ -9789,17 +9683,16 @@ end
     disrupted = 'disrupt',
     dissonance = 'dissonance',
     dizziness = 'dizziness',
-    earthdisrupt = 'earthdisrupt',
     enlightenment = false,
     enmesh = false,
     entangled = 'roped',
     entropy = false,
     epilepsy = 'epilepsy',
     fear = 'fear',
-    firedisrupt = 'firedisrupt',
     flamefisted = 'burning',
     frozen = 'frozen',
     generosity = 'generosity',
+    guilt = 'guilt',
     haemophilia = 'haemophilia',
     hallucinations = 'hallucinations',
     hamstrung = 'hamstring',
@@ -9871,13 +9764,14 @@ end
     sleeping = 'sleep',
     slickness = 'slickness',
     slimeobscure = 'ninkharsag',
-    spiritdisrupt = 'spiritdisrupt',
+    spiritburn = 'spiritburn',
     stupidity = 'stupidity',
     stuttering = 'stuttering',
     temperedcholeric = 'cholerichumour',
     temperedmelancholic = 'melancholichumour',
     temperedphlegmatic = 'phlegmatichumour',
     temperedsanguine = 'sanguinehumour',
+    tenderskin = 'tenderskin',
     timeflux = 'timeflux',
     timeloop = 'timeloop',
     tension = 'tension',
@@ -9891,7 +9785,6 @@ end
     vitrified = 'vitrification',
     voidfisted = 'voided',
     voyria = 'voyria',
-    waterdisrupt = 'waterdisrupt',
     weakenedmind = 'rixil',
     weariness = 'weakness',
     webbed = 'webbed',
@@ -10202,32 +10095,31 @@ end
 
 
 if svo.haveskillset('zeal') then
-  svo.dict.benediction = {
-    physical = {
-      balanceful_act = true, def = true, undeffable = true,
-
-      isadvisable = function()
-        return ((not defc.frostblessing and defc.thermalblessing and defc.willpowerblessing and defc.earthblessing and defc.enduranceblessing) and ((not sys.deffing and defdefup[defs.mode].frostblessing and defdefup[defs.mode].enduranceblessing and defdefup[defs.mode].thermalblessing and defdefup[defs.mode].willpowerblessing and defdefup[defs.mode].earthblessing) or (not conf.keepup and defkeepup[defs.mode].frostblessing and defkeepup[defs.mode].thermalblessing and defkeepup[defs.mode].earthblessing and defkeepup[defs.mode].willpowerblessing and defkeepup[defs.mode].enduranceblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and conf.benediction == true and bals.prayer == true and stats.currentmana &gt;= 750) or false
-      end,
-
-      oncompleted = function() defences.got('frostblessing') defences.got('thermalblessing') defences.got('earthblessing') defences.got('willpowerblessing') defences.got('enduranceblessing') svo.lostbal_prayer()  end,
-
-      action = "recite benediction me",
-      onstart = function() send('recite benediction me', conf.commandecho) end
-    }
-  }
   svo.dict.frostblessing = {
     physical = {
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.frostblessing and ((sys.deffing and defdefup[defs.mode].frostblessing) or (conf.keepup and defkeepup[defs.mode].frostblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and not conf.benediction and bals.prayer == true and stats.currentmana &gt;= 750) or false
+        return (not defc.frostblessing and ((sys.deffing and defdefup[defs.mode].frostblessing) or (conf.keepup and defkeepup[defs.mode].frostblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and bals.prayer == true and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function() defences.got('frostblessing') svo.lostbal_prayer() end,
+      oncompleted = function() 
+        if conf.benediction then 
+          defences.got('frostblessing') defences.got('thermalblessing') defences.got('earthblessing') defences.got('willpowerblessing') defences.got('enduranceblessing') svo.lostbal_prayer()
+        else 
+          defences.got('frostblessing') svo.lostbal_prayer() 
+        end
+      end,
 
       action = "recite void me",
-      onstart = function() send('recite void me', conf.commandecho) end
+
+      onstart = function() 
+        if conf.benediction then 
+          send('recite benediction me', conf.commandecho)
+        else 
+          send('recite void me', conf.commandecho) 
+        end
+      end
     }
   }
   svo.dict.willpowerblessing = {
@@ -10235,13 +10127,26 @@ if svo.haveskillset('zeal') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.willpowerblessing and ((sys.deffing and defdefup[defs.mode].willpowerblessing) or (conf.keepup and defkeepup[defs.mode].willpowerblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and not conf.benediction and bals.prayer == true and stats.currentmana &gt;= 750) or false
+        return (not defc.willpowerblessing and ((sys.deffing and defdefup[defs.mode].willpowerblessing) or (conf.keepup and defkeepup[defs.mode].willpowerblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and bals.prayer == true and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function() defences.got('willpowerblessing') svo.lostbal_prayer() end,
+      oncompleted = function() 
+        if conf.benediction then 
+          defences.got('frostblessing') defences.got('thermalblessing') defences.got('earthblessing') defences.got('willpowerblessing') defences.got('enduranceblessing') svo.lostbal_prayer()
+        else 
+          defences.got('willpowerblessing') svo.lostbal_prayer() 
+        end
+      end,
 
       action = "recite will me",
-      onstart = function() send('recite will me', conf.commandecho) end
+
+      onstart = function() 
+        if conf.benediction then 
+          send('recite benediction me', conf.commandecho)
+        else 
+          send('recite will me', conf.commandecho) 
+        end 
+      end
     }
   }
   svo.dict.thermalblessing = {
@@ -10249,13 +10154,26 @@ if svo.haveskillset('zeal') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.thermalblessing and ((sys.deffing and defdefup[defs.mode].thermalblessing) or (conf.keepup and defkeepup[defs.mode].thermalblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and not conf.benediction and bals.prayer == true and stats.currentmana &gt;= 750) or false
+        return (not defc.thermalblessing and ((sys.deffing and defdefup[defs.mode].thermalblessing) or (conf.keepup and defkeepup[defs.mode].thermalblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and bals.prayer == true and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function() defences.got('thermalblessing') svo.lostbal_prayer() end,
+      oncompleted = function() 
+        if conf.benediction then 
+          defences.got('frostblessing') defences.got('thermalblessing') defences.got('earthblessing') defences.got('willpowerblessing') defences.got('enduranceblessing') svo.lostbal_prayer()
+        else 
+          defences.got('thermalblessing') svo.lostbal_prayer() 
+        end
+      end,
 
       action = "recite fire me",
-      onstart = function() send('recite fire me', conf.commandecho) end
+
+      onstart = function() 
+        if conf.benediction then 
+          send('recite benediction me', conf.commandecho)
+        else 
+          send('recite fire me', conf.commandecho) 
+        end
+      end
     }
   }
   svo.dict.earthblessing = {
@@ -10263,13 +10181,26 @@ if svo.haveskillset('zeal') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.earthblessing and ((sys.deffing and defdefup[defs.mode].earthblessing) or (conf.keepup and defkeepup[defs.mode].earthblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and not conf.benediction and bals.prayer == true and stats.currentmana &gt;= 750) or false
+        return (not defc.earthblessing and ((sys.deffing and defdefup[defs.mode].earthblessing) or (conf.keepup and defkeepup[defs.mode].earthblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and bals.prayer == true and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function() defences.got('earthblessing') svo.lostbal_prayer() end,
+      oncompleted = function() 
+        if conf.benediction then 
+          defences.got('frostblessing') defences.got('thermalblessing') defences.got('earthblessing') defences.got('willpowerblessing') defences.got('enduranceblessing') svo.lostbal_prayer()
+        else 
+          defences.got('earthblessing') svo.lostbal_prayer() 
+        end
+      end,
 
       action = "recite protection me",
-      onstart = function() send('recite protection me', conf.commandecho) end
+
+      onstart = function() 
+        if conf.benediction then 
+          send('recite benediction me', conf.commandecho)
+        else 
+          send('recite protection me', conf.commandecho) 
+        end
+      end
     }
   }
   svo.dict.enduranceblessing = {
@@ -10277,13 +10208,25 @@ if svo.haveskillset('zeal') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.enduranceblessing and ((sys.deffing and defdefup[defs.mode].enduranceblessing) or (conf.keepup and defkeepup[defs.mode].enduranceblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and not conf.benediction and bals.prayer == true and stats.currentmana &gt;= 750) or false
+        return (not defc.enduranceblessing and ((sys.deffing and defdefup[defs.mode].enduranceblessing) or (conf.keepup and defkeepup[defs.mode].enduranceblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and bals.prayer == true and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function() defences.got('enduranceblessing') svo.lostbal_prayer() end,
+      oncompleted = function() 
+        if conf.benediction then 
+          defences.got('frostblessing') defences.got('thermalblessing') defences.got('earthblessing') defences.got('willpowerblessing') defences.got('enduranceblessing') svo.lostbal_prayer()
+        else 
+          defences.got('enduranceblessing') svo.lostbal_prayer() 
+        end
+      end,
 
       action = "recite endurance me",
-      onstart = function() send('recite endurance me', conf.commandecho) end
+      onstart = function() 
+        if conf.benediction then 
+          send('recite benediction me', conf.commandecho)
+        else 
+          send('recite endurance me', conf.commandecho) 
+        end
+      end
     }
   }
 end
@@ -13501,13 +13444,6 @@ if svo.haveskillset('devotion') then
 end
 if svo.haveskillset('spirituality') then
   basicdef('heresy', "hunt heresy")
-end
-if svo.haveskillset('zeal') then
-  basicdef('thermalblessing', 'recite fire me', false, nil, true)
-  basicdef('willpowerblessing', 'recite will me', false, nil, true)
-  basicdef('frostblessing', 'recite void me', false, nil, true)
-  basicdef('enduranceblessing', 'recite endurance me', false, nil, true)
-  basicdef('earthblessing', 'recite protection me', false, nil, true)
 end
 if svo.haveskillset('shindo') then
   basicdef('clarity', 'clarity', nil, nil, true)
