@@ -6861,7 +6861,7 @@ svo.classes = {
   monk         = {fighting = false, skills = {"tekura", "kaido", "telepathy"}},
   occultist    = {fighting = false, skills = {"occultism", "tarot", "domination"}},
   paladin      = {fighting = false, skills = {"chivalry", "devotion", "forging"}},
-  priest       = {fighting = false, skills = {"spirituality", "devotion", "healing"}},
+  priest       = {fighting = false, skills = {"spirituality", "devotion", "zeal"}},
 	psion        = {fighting = false, skills = {"weaving", "psionics", "emulation"}},
   runewarden   = {fighting = false, skills = {"runelore", "chivalry", "forging"}},
   sentinel     = {fighting = false, skills = {"metamorphosis", "woodlore", "concoctions"}},

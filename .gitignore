@@ -52,7 +52,6 @@ bin/svo.reboundingsileristracker.lua
 bin/svo.refiller.lua
 bin/svo.runeidentifier.lua
 sublime.sublime-workspace
-bin/svo.priesthealing.lua
 bin/svo.enchanter.lua
 bin/svo.stormhammertarget.lua
 bin/svo.logger.lua

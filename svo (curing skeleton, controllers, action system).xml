@@ -51,21 +51,6 @@ function svo.contains(t, value)
   return false
 end
 
-if svo.haveskillset('healing') then
-  -- used by 'normal' cure functions to see if we should ignore curing this aff
-  -- returns true - Healing will *not* cure, use normal
-  -- returns false - Healing *will* cure, don't use normal
-  function sk.wont_heal_this(aff)
-    if type(conf.usehealing) ~= 'string' or conf.usehealing ~= 'full' or not svo.can_usemana() then return true end
-
-    if sk.healingmap[aff] and sk.healingmap[aff]() then
-      return false
-    end
-
-    return true
-  end
-end
-
 svo.sk.checking_herb_ai = function()
   return (svo.doingaction'checkparalysis' or svo.doingaction'checkasthma' or svo.doingaction'checkimpatience') and true or false
 end
@@ -126,12 +111,8 @@ svo.check_purgative = function(sync_mode)
     local gotsomething = false
     for i, j in pairs(what) do
       if not (conf.serverside and svo.serverignore[i]) and j.p.purgative and j.p.purgative.isadvisable() and not svo.ignore[i] then
-        if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
-          return
-        end
-
-      prios[i] = (not sync_mode) and j.p.purgative.aspriority or j.p.purgative.spriority
-      gotsomething = true
+        prios[i] = (not sync_mode) and j.p.purgative.aspriority or j.p.purgative.spriority
+        gotsomething = true
       end
     end
 
@@ -167,9 +148,6 @@ svo.check_salve = function(sync_mode)
   local function check(what)
     for i, j in pairs(what) do
       if not (conf.serverside and svo.serverignore[i]) and j.p.salve and j.p.salve.isadvisable() and not svo.ignore[i] then
-        if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
-          return
-        end
         prios[i] = (not sync_mode) and j.p.salve.aspriority or j.p.salve.spriority
       end
     end
@@ -206,9 +184,6 @@ svo.check_herb = function(sync_mode)
       if not (conf.serverside and svo.serverignore[i]) and j.p.herb and j.p.herb.isadvisable() and not svo.ignore[i]
         -- make sure that we can outrift things, or if we can't, we have the herb in our inventory
         and (sys.canoutr or sk.can_eat_for(j.p.herb)) then
-          if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
-            return
-          end
           prios[i] = (not sync_mode) and j.p.herb.aspriority or j.p.herb.spriority
       end
     end
@@ -247,9 +222,6 @@ svo.check_misc = function(sync_mode, onlyamnesia)
   local function check(what)
     for i, j in pairs(what) do
       if not (conf.serverside and svo.serverignore[i]) and j.p.misc and j.p.misc.isadvisable() and not svo.ignore[i] and not svo.doingaction (i) and (not affs.sleep or j.p.misc.action_name == 'sleep') then
-        if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
-          return
-        end
         prios[i] = (not sync_mode) and j.p.misc.aspriority or j.p.misc.spriority
       end
     end
@@ -301,9 +273,6 @@ svo.check_smoke = function(sync_mode)
   local function check(what)
     for i, j in pairs(what) do
       if not (conf.serverside and svo.serverignore[i]) and j.p.smoke and j.p.smoke.isadvisable() and not svo.ignore[i] and not svo.doingaction(i) then
-        if svo.haveskillset('healing') and not sk.wont_heal_this(i) then
-          return
-        end
         prios[i] = (not sync_mode) and j.p.smoke.aspriority or j.p.smoke.spriority
       end
     end
@@ -373,9 +342,6 @@ svo.check_focus = function(sync_mode)
   local prios = {}
   for i, j in pairs(affs) do
     if not (conf.serverside and svo.serverignore[i]) and j.p.focus and (not affs.cadmus or (conf.focuswithcadmus and me.cadmusaffs[i])) and j.p.focus.isadvisable() and not svo.ignore[i] then
-          if svo.haveskillset('healing') and not wont_heal_this(i) then
-            return
-          end
         prios[i] = (not sync_mode) and j.p.focus.aspriority or j.p.focus.spriority
     end
   end
@@ -1578,6 +1544,25 @@ svo.lostbal_rage = function()
   raiseEvent("svo lost balance", 'rage')
 end
 
+svo.lostbal_prayer = function()
+  if not bals.prayer then return end
+
+  bals.prayer = false
+  svo.startbalancewatch('prayer')
+  sk.prayertick = sk.prayertick + 1
+  local oldprayertick = sk.prayertick
+
+  tempTimer(10+svo.getping(), function ()
+    if not bals.prayer and sk.prayertick == oldprayertick then
+      bals.prayer = true
+      svo.make_gnomes_work()
+      raiseEvent("svo got balance", 'prayer')
+    end
+  end)
+
+  raiseEvent("svo lost balance", 'prayer')
+end
+
 svo.lostbal_voice = function()
   if not bals.voice then return end
 
@@ -1741,28 +1726,6 @@ svo.lostbal_dragonheal = function()
   raiseEvent("svo lost balance", 'dragonheal')
 end
 
-if svo.haveskillset('healing') then
-svo.lostbal_healing = function()
-  if not bals.healing then return end
-
-  bals.healing = false
-  svo.startbalancewatch('healing')
-  sk.healingtick = sk.healingtick + 1
-  local oldhealingtick = sk.healingtick
-
-  tempTimer(conf.ai_resethealingbal, function ()
-    if not bals.healing and sk.healingtick == oldhealingtick then
-      svo.endbalancewatch('healing')
-      bals.healing = true
-      svo.make_gnomes_work()
-      raiseEvent("svo got balance", 'healing')
-    end
-  end)
-
-  raiseEvent("svo lost balance", 'healing')
-end
-end
-
 if svo.haveskillset('terminus') then
 svo.lostbal_word = function()
   if not bals.word then return end
@@ -1819,78 +1782,6 @@ sk.limbnames = {
   torso = true,
   head = true
 }
-
-if svo.haveskillset('healing') then
-  sk.updatehealingmap = function ()
-    sk.healingmap = {}
-    if not conf.healingskill then return end
-
-    local healdata = svo.pl.OrderedMap{}
-    -- afflictions sorted in order of learning the Healing skillset - so not sort this list!
-    -- healdata:set('blind', function() return defc.earth end)
-    healdata:set('blindaff', function() return defc.earth end)
-    healdata:set('paralysis', function() return defc.fire end)
-    -- healdata:set('deaf', function() return defc.air end)
-    healdata:set('deafaff', function() return defc.air end)
-    -- healdata:set('fear', function() return defc.water end)
-    healdata:set('confusion', function() return defc.fire end)
-    -- healdata:set('insomnia', function() return defc.air end)
-    healdata:set('slickness', function() return defc.earth end)
-    healdata:set('stuttering', function() return defc.fire end)
-    healdata:set('paranoia', function() return defc.earth and defc.water end)
-    healdata:set('shyness', function() return defc.earth end)
-    healdata:set('hallucinations', function() return defc.earth end)
-    healdata:set('generosity', function() return defc.earth end)
-    healdata:set('loneliness', function() return defc.air and defc.water end)
-    healdata:set('impatience', function() return defc.fire end)
-    healdata:set('unconsciousness', function() return defc.earth and defc.fire end)
-    healdata:set('claustrophobia', function() return defc.fire and defc.water end)
-    healdata:set('vertigo', function() return defc.earth and defc.fire end)
-    healdata:set('sensitivity', function() return defc.earth and defc.fire and defc.water end)
-    healdata:set('dizziness', function() return defc.water end)
-    healdata:set('crippledrightarm', function() return defc.earth and not affs.mangledrightarm and not affs.mutilatedrightarm and not affs.mangledleftarm and not affs.mutilatedleftarm end)
-    healdata:set('crippledleftarm', function() return defc.earth and not affs.mangledleftarm and not affs.mutilatedleftarm and not affs.mangledrightarm and not affs.mutilatedrightarm end)
-    healdata:set('dementia', function() return defc.fire end)
-    healdata:set('clumsiness', function() return defc.air and defc.water end)
-    healdata:set('ablaze', function() return defc.earth and defc.water end)
-    healdata:set('recklessness', function() return defc.water end)
-    healdata:set('anorexia', function() return defc.earth and defc.air end)
-    healdata:set('agoraphobia', function() return defc.air and defc.fire end)
-    healdata:set('disloyalty', function() return defc.fire and defc.water end)
-    healdata:set('hypersomnia', function() return defc.air and defc.water end)
-    healdata:set('darkshade', function() return defc.earth and defc.fire end)
-    healdata:set('masochism', function() return defc.air and defc.fire end)
-    healdata:set('epilepsy', function() return defc.air and defc.fire end)
-    healdata:set('asthma', function() return defc.air end)
-    healdata:set('stupidity', function() return defc.water end)
-    healdata:set('illness', function() return defc.earth and defc.water end)
-    healdata:set('weakness', function() return defc.fire end)
-    healdata:set('haemophilia', function() return defc.water end)
-    healdata:set('crippledrightleg', function() return defc.air and defc.earth and not affs.mangledrightleg and not affs.mutilatedrightleg and not affs.mangledleftleg and not affs.mutilatedleftleg end)
-    healdata:set('crippledleftleg', function() return defc.air and defc.earth and not affs.mangledleftleg and not affs.mutilatedleftleg and not affs.mangledrightleg and not affs.mutilatedrightleg end)
-    healdata:set('hypochondria', function() return defc.earth and defc.air and defc.fire and defc.water end)
-
-    local svonames = {
-      ablaze          = 'burning',
-      blindness       = 'blind',
-      crippledleftarm = 'arms',
-      crippledleftleg = 'legs',
-      deafness        = 'deaf',
-      illness         = 'vomiting',
-      weakness        = 'weariness',
-    }
-
-    -- setup a map of afflictions that we can cure - key is aff, value is the proper aura cure as a string / table if it's a regen
-    for aff, afft in healdata:iter() do
-      sk.healingmap[aff] = afft
-
-      if aff == conf.healingskill or (svonames[aff] and svonames[aff] == conf.healingskill) then break end
-    end
-
-  end
-  signals.healingskillchanged:connect(sk.updatehealingmap, "update available healing skills")
-  signals.systemstart:connect(sk.updatehealingmap, "update available healing skills")
-end
 
 function svo.sk.increase_lagconf()
   -- don't go above 3, 4 is reserved for do really
@@ -2605,9 +2496,6 @@ function svo.valid.setup_prompt()
   else
     bals.balance = false
     bals.equilibrium = false
-if svo.haveskillset('healing') then
-    bals.healing = false
-end
     svo.pflags = {}
   end
 end
@@ -3189,15 +3077,6 @@ svo.can_usemana = function()
     and (stats.wp or 0) &gt; 1
 end
 
-if svo.haveskillset('healing') then
--- string -&gt; boolean
--- given an affliction, returns true if we've got the available channels open for it
-svo.havechannelsfor = function(aff)
-  if sk.healingmap[aff] and sk.healingmap[aff]() then
-    return true
-  end
-end
-end
 
 svo.cnrl.warnids = {}
 

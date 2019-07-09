@@ -346,7 +346,7 @@ svo.knownskills = {
   none         = {},
   occultist    = {'occultism', 'tarot', 'domination'},
   paladin      = {'chivalry', 'devotion', 'weaponmastery'},
-  priest       = {'spirituality', 'devotion', 'healing'},
+  priest       = {'spirituality', 'devotion', 'zeal'},
   runewarden   = {'runelore', 'chivalry', 'weaponmastery'},
   sentinel     = {'metamorphosis', 'woodlore', 'skirmishing'},
   serpent      = {'subterfuge', 'venom', 'hypnosis'},
@@ -684,9 +684,6 @@ signals.limbhit = signals.limbhit or luanotify.signal.new()
 signals.loadconfig = signals.loadconfig or luanotify.signal.new()
 signals.orgchanged = signals.orgchanged or luanotify.signal.new()
 signals.sysdatasendrequest = signals.sysdatasendrequest or luanotify.signal.new()
-if svo.haveskillset('healing') then
-signals.healingskillchanged = signals.healingskillchanged or luanotify.signal.new()
-end
 if svo.haveskillset('metamorphosis') then
 signals.morphskillchanged = signals.morphskillchanged or luanotify.signal.new()
 end
@@ -728,9 +725,9 @@ if not svo.systemloaded then
   conf.ai_resetherbbal      = 2.5 -- normally at 1.6
   conf.ai_resetsalvebal     = 5
   conf.ai_resetmossbal      = 10  -- resets at 6
-  if svo.haveskillset('healing') then
-    -- resets at 2s for healing allies, near 4s for healing yourself, and offensive skills as inbetween
-    conf.ai_resethealingbal        = 7
+  if svo.haveskillset('zeal') then
+    -- resets at 3 for blessings, 4 for benediction 1.6-2.3 for affs
+    conf.ai_resetprayerbal        = 1.7
   end
   conf.ai_resetpurgativebal = 10 -- it's 7s for voyria
   conf.ai_resetdragonhealbal = 20 -- 20s for dragonheal
@@ -803,10 +800,6 @@ if not svo.systemloaded then
 
   conf.ccto                 = 'pt'
   conf.repeatcmd            = 0
-
-  if svo.haveskillset('healing') then
-  conf.usehealing           = 'partial'
-  end
 
   if svo.haveskillset('kaido') then
   conf.transmute            = 'supplement'
@@ -1015,6 +1008,12 @@ else
 disableTrigger("Voice balance")
 end
 
+if svo.haveskillset('zeal') then
+enableTrigger("Prayer balance")
+else
+disableTrigger("Prayer balance")
+end
+
 if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido')
   or svo.haveskillset('metamorphosis') then
 enableTrigger("Fitness balance")
@@ -1046,10 +1045,10 @@ else
 disableTrigger("Shrugging balance")
 end
 
-if svo.haveskillset('healing') or svo.haveskillset('elementalism') then
-enableTrigger("Healing + Elementalism channels")
+if svo.haveskillset('elementalism') then
+enableTrigger("Elementalism channels")
 else
-disableTrigger("Healing + Elementalism channels")
+disableTrigger("Elementalism channels")
 end
 
 if svo.haveskillset('elementalism') then
@@ -1102,12 +1101,6 @@ else
 enableTrigger("Harmonics defences")
 end
 
-if not svo.haveskillset('healing') then
-disableTrigger("Healing balance")
-else
-enableTrigger("Healing balance")
-end
-
 if not svo.haveskillset('physiology') then
 disableTrigger("Humour balance")
 else
@@ -1137,11 +1130,9 @@ svo.index_map = pl.tablex.index_map
 -- lostbal_focus, lostbal_herb, lostbal_salve, lostbal_purgative, lostbal_sip
 sk.salvetick, sk.herbtick, sk.focustick, sk.teatick = 0, 0, 0, 0
 sk.purgativetick, sk.siptick, sk.mosstick, sk.dragonhealtick = 0, 0, 0, 0
-sk.smoketick, sk.voicetick, sk.wordtick =  0, 0, 0
+sk.smoketick, sk.voicetick, sk.wordtick, sk.prayertick =  0, 0, 0, 0
 
-if svo.haveskillset('healing') then
-sk.healingtick = 0
-end
+
 if svo.haveskillset('venom') then
 sk.shruggingtick = 0
 end
