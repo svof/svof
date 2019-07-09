@@ -292,9 +292,6 @@ codepaste.nonstdcure = function()
   if svo.haveskillset('venom') then
     return svo.doingaction'shrugging'
   end
-  if svo.haveskillset('healing') then
-    return svo.doingaction'usehealing'
-  end
 
   return (svo.doingaction'touchtree' or svo.doingaction'restore')
 end
@@ -10204,33 +10201,47 @@ if svo.haveskillset('necromancy') then
 end
 
 
-if svo.haveskillset('devotion') then
+if svo.haveskillset('zeal') then
+  svo.dict.benediction = {
+    physical = {
+      balanceful_act = true, def = true, undeffable = true,
+
+      isadvisable = function()
+        return ((not defc.frostblessing and defc.thermalblessing and defc.willpowerblessing and defc.earthblessing and defc.enduranceblessing) and ((not sys.deffing and defdefup[defs.mode].frostblessing and defdefup[defs.mode].enduranceblessing and defdefup[defs.mode].thermalblessing and defdefup[defs.mode].willpowerblessing and defdefup[defs.mode].earthblessing) or (not conf.keepup and defkeepup[defs.mode].frostblessing and defkeepup[defs.mode].thermalblessing and defkeepup[defs.mode].earthblessing and defkeepup[defs.mode].willpowerblessing and defkeepup[defs.mode].enduranceblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and conf.benediction == true and bals.prayer == true and stats.currentmana &gt;= 750) or false
+      end,
+
+      oncompleted = function() defences.got('frostblessing') defences.got('thermalblessing') defences.got('earthblessing') defences.got('willpowerblessing') defences.got('enduranceblessing') svo.lostbal_prayer()  end,
+
+      action = "recite benediction me",
+      onstart = function() send('recite benediction me', conf.commandecho) end
+    }
+  }
   svo.dict.frostblessing = {
     physical = {
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.frostblessing and ((sys.deffing and defdefup[defs.mode].frostblessing) or (conf.keepup and defkeepup[defs.mode].frostblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and defc.air and defc.water and stats.currentmana &gt;= 750) or false
+        return (not defc.frostblessing and ((sys.deffing and defdefup[defs.mode].frostblessing) or (conf.keepup and defkeepup[defs.mode].frostblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and not conf.benediction and bals.prayer == true and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function() defences.got('frostblessing') end,
+      oncompleted = function() defences.got('frostblessing') svo.lostbal_prayer() end,
 
-      action = "bless me spiritshield frost",
-      onstart = function() send('bless me spiritshield frost', conf.commandecho) end
+      action = "recite void me",
+      onstart = function() send('recite void me', conf.commandecho) end
     }
   }
   svo.dict.willpowerblessing = {
     physical = {
-      balanceful_act = true, def = true,
+      balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.willpowerblessing and ((sys.deffing and defdefup[defs.mode].willpowerblessing) or (conf.keepup and defkeepup[defs.mode].willpowerblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and defc.air and defc.water and defc.fire and stats.currentmana &gt;= 750) or false
+        return (not defc.willpowerblessing and ((sys.deffing and defdefup[defs.mode].willpowerblessing) or (conf.keepup and defkeepup[defs.mode].willpowerblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and not conf.benediction and bals.prayer == true and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function() defences.got('willpowerblessing') end,
+      oncompleted = function() defences.got('willpowerblessing') svo.lostbal_prayer() end,
 
-      action = "bless me willpower",
-      onstart = function() send('bless me willpower', conf.commandecho) end
+      action = "recite will me",
+      onstart = function() send('recite will me', conf.commandecho) end
     }
   }
   svo.dict.thermalblessing = {
@@ -10238,13 +10249,13 @@ if svo.haveskillset('devotion') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.thermalblessing and ((sys.deffing and defdefup[defs.mode].thermalblessing) or (conf.keepup and defkeepup[defs.mode].thermalblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and defc.spirit and defc.fire and stats.currentmana &gt;= 750) or false
+        return (not defc.thermalblessing and ((sys.deffing and defdefup[defs.mode].thermalblessing) or (conf.keepup and defkeepup[defs.mode].thermalblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and not conf.benediction and bals.prayer == true and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function() defences.got('thermalblessing') end,
+      oncompleted = function() defences.got('thermalblessing') svo.lostbal_prayer() end,
 
-      action = "bless me spiritshield thermal",
-      onstart = function() send('bless me spiritshield thermal', conf.commandecho) end
+      action = "recite fire me",
+      onstart = function() send('recite fire me', conf.commandecho) end
     }
   }
   svo.dict.earthblessing = {
@@ -10252,27 +10263,27 @@ if svo.haveskillset('devotion') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.earthblessing and ((sys.deffing and defdefup[defs.mode].earthblessing) or (conf.keepup and defkeepup[defs.mode].earthblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and defc.earth and defc.water and defc.fire and stats.currentmana &gt;= 750) or false
+        return (not defc.earthblessing and ((sys.deffing and defdefup[defs.mode].earthblessing) or (conf.keepup and defkeepup[defs.mode].earthblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and not conf.benediction and bals.prayer == true and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function() defences.got('earthblessing') end,
+      oncompleted = function() defences.got('earthblessing') svo.lostbal_prayer() end,
 
-      action = "bless me spiritshield earth",
-      onstart = function() send('bless me spiritshield earth', conf.commandecho) end
+      action = "recite protection me",
+      onstart = function() send('recite protection me', conf.commandecho) end
     }
   }
   svo.dict.enduranceblessing = {
     physical = {
-      balanceful_act = true, def = true,
+      balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.enduranceblessing and ((sys.deffing and defdefup[defs.mode].enduranceblessing) or (conf.keepup and defkeepup[defs.mode].enduranceblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and defc.air and defc.earth and defc.water and defc.fire and stats.currentmana &gt;= 750) or false
+        return (not defc.enduranceblessing and ((sys.deffing and defdefup[defs.mode].enduranceblessing) or (conf.keepup and defkeepup[defs.mode].enduranceblessing)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and not conf.benediction and bals.prayer == true and stats.currentmana &gt;= 750) or false
       end,
 
-      oncompleted = function() defences.got('enduranceblessing') end,
+      oncompleted = function() defences.got('enduranceblessing') svo.lostbal_prayer() end,
 
-      action = "bless me endurance",
-      onstart = function() send('bless me endurance', conf.commandecho) end
+      action = "recite endurance me",
+      onstart = function() send('recite endurance me', conf.commandecho) end
     }
   }
 end
@@ -11436,25 +11447,7 @@ if svo.haveskillset('occultism') then
   }
 end
 
-if svo.haveskillset('healing') then
-  svo.dict.bedevil = {
-    gamename = 'bedevilaura',
-    physical = {
-      balanceful_act = true, def = true,
-
-      isadvisable = function()
-        return (not defc.bedevil and ((sys.deffing and defdefup[defs.mode].bedevil) or (conf.keepup and defkeepup[defs.mode].bedevil)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone and defc.air and defc.water and defc.fire and defc.earth and defc.spirit) or false
-      end,
-
-      oncompleted = function() defences.got('bedevil') end,
-
-      action = 'bedevil',
-      onstart = function() send('bedevil', conf.commandecho) end
-    }
-  }
-end
-
-if svo.haveskillset('healing') or svo.haveskillset('elementalism') or svo.haveskillset('weatherweaving') then
+if svo.haveskillset('elementalism') or svo.haveskillset('weatherweaving') then
   svo.dict.simultaneity = {
     physical = {
       balanceful_act = true, def = true, undeffable = true,
@@ -11479,7 +11472,7 @@ if svo.haveskillset('healing') or svo.haveskillset('elementalism') or svo.havesk
 
       oncompleted = function()
         defences.got('air')
-        if defc.air and defc.earth and defc.water and (not svo.haveskillset('healing') or defc.spirit)
+        if defc.air and defc.earth and defc.water and not defc.spirit
         and (svo.haveskillset('weatherweaving') or defc.fire) then
           defences.got('simultaneity')
         end
@@ -11505,7 +11498,7 @@ if svo.haveskillset('healing') or svo.haveskillset('elementalism') or svo.havesk
 
       oncompleted = function()
         defences.got('water')
-        if defc.air and defc.earth and defc.water and (not svo.haveskillset('healing') or defc.spirit)
+        if defc.air and defc.earth and defc.water and not defc.spirit
         and (svo.haveskillset('weatherweaving') or defc.fire) then
           defences.got('simultaneity')
         end
@@ -11531,7 +11524,7 @@ if svo.haveskillset('healing') or svo.haveskillset('elementalism') or svo.havesk
 
       oncompleted = function()
         defences.got('earth')
-        if defc.air and defc.earth and defc.water and (not svo.haveskillset('healing') or defc.spirit)
+        if defc.air and defc.earth and defc.water and not defc.spirit
         and (svo.haveskillset('weatherweaving') or defc.fire) then
           defences.got('simultaneity')
         end
@@ -11558,7 +11551,7 @@ if not svo.haveskillset('weatherweaving') then
 
       oncompleted = function()
         defences.got('fire')
-        if defc.air and defc.fire and defc.earth and defc.water and (not svo.haveskillset('healing') or defc.spirit) then
+        if defc.air and defc.fire and defc.earth and defc.water and not defc.spirit then
           defences.got('simultaneity')
         end
       end,
@@ -11574,39 +11567,12 @@ if not svo.haveskillset('weatherweaving') then
     }
   }
 end
-if svo.haveskillset('healing') then
-  svo.dict.spirit = {
-    physical = {
-      balanceful_act = true, def = true, undeffable = true,
-
-      isadvisable = function()
-        return (((((sys.deffing and defdefup[defs.mode].spirit and not defc.spirit) or (conf.keepup and defkeepup[defs.mode].spirit and not defc.spirit))) or (conf.keepup and defkeepup[defs.mode].spirit and not defc.spirit)) and not codepaste.balanceful_defs_codepaste() and defc.air and defc.fire and defc.water and defc.earth) or false
-      end,
-
-      oncompleted = function()
-        defences.got('spirit')
-        if defc.air and defc.fire and defc.earth and defc.water and defc.spirit then
-          defences.got('simultaneity')
-        end
-      end,
-
-      action = "channel spirit",
-      onstart = function() send('channel spirit', conf.commandecho) end
-    },
-    gone = {
-      oncompleted = function()
-        defences.lost('spirit')
-        defences.lost('simultaneity')
-      end
-    }
-  }
-end
   svo.dict.bindall = {
     physical = {
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (((((sys.deffing and defdefup[defs.mode].bindall and not defc.bindall) or (conf.keepup and defkeepup[defs.mode].bindall and not defc.bindall))) or (conf.keepup and defkeepup[defs.mode].bindall and not defc.bindall)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana &gt;= 750 and defc.air and defc.earth and defc.water and (not svo.haveskillset('healing') or defc.spirit)
+        return (((((sys.deffing and defdefup[defs.mode].bindall and not defc.bindall) or (conf.keepup and defkeepup[defs.mode].bindall and not defc.bindall))) or (conf.keepup and defkeepup[defs.mode].bindall and not defc.bindall)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana &gt;= 750 and defc.air and defc.earth and defc.water and not defc.spirit
         and (svo.haveskillset('weatherweaving') or defc.fire)) or false
       end,
 
@@ -11626,7 +11592,7 @@ end
 
       oncompleted = function()
         defences.got('boundair')
-        if defc.boundair and defc.boundearth and defc.boundwater and (not svo.haveskillset('healing') or defc.boundspirit) and (svo.haveskillset('weatherweaving') or defc.boundfire) then
+        if defc.boundair and defc.boundearth and defc.boundwater and not defc.boundspirit and (svo.haveskillset('weatherweaving') or defc.boundfire) then
           defences.got('bindall')
         end
       end,
@@ -11651,7 +11617,7 @@ end
 
       oncompleted = function()
         defences.got('boundwater')
-        if defc.boundair and defc.boundearth and defc.boundwater and (not svo.haveskillset('healing') or defc.boundspirit) and (svo.haveskillset('weatherweaving') or defc.boundfire) then
+        if defc.boundair and defc.boundearth and defc.boundwater and not defc.boundspirit and (svo.haveskillset('weatherweaving') or defc.boundfire) then
           defences.got('bindall')
         end
       end,
@@ -11677,7 +11643,7 @@ end
 
         oncompleted = function()
           defences.got('boundfire')
-          if defc.boundair and defc.boundfire and defc.boundearth and defc.boundwater and (not svo.haveskillset('healing') or defc.boundspirit) then
+          if defc.boundair and defc.boundfire and defc.boundearth and defc.boundwater and not defc.boundspirit then
             defences.got('bindall')
           end
         end,
@@ -11705,7 +11671,7 @@ end
 
       oncompleted = function()
         defences.got('boundearth')
-        if defc.boundair and defc.boundearth and defc.boundwaterand (not svo.haveskillset('healing') or defc.boundspirit) and (svo.haveskillset('weatherweaving') or defc.boundfire) then
+        if defc.boundair and defc.boundearth and defc.boundwater and not defc.boundspirit and (svo.haveskillset('weatherweaving') or defc.boundfire) then
           defences.got('bindall')
         end
       end,
@@ -11720,41 +11686,12 @@ end
       end
     }
   }
-  if svo.haveskillset('healing') then
-    svo.dict.boundspirit = {
-      physical = {
-        balanceful_act = true, def = true, undeffable = true,
-
-        isadvisable = function()
-          return (((((sys.deffing and defdefup[defs.mode].boundspirit and not defc.boundspirit) or (conf.keepup and defkeepup[defs.mode].boundspirit and not defc.boundspirit))) or (conf.keepup and defkeepup[defs.mode].boundspirit and not defc.boundspirit)) and not codepaste.balanceful_defs_codepaste() and defc.spirit) or false
-        end,
-
-        oncompleted = function()
-          defences.got('boundspirit')
-          if defc.boundair and defc.boundfire and defc.boundearth and defc.boundwater and defc.boundspirit then
-            defences.got('bindall')
-          end
-        end,
-
-        action = "bind spirit",
-        onstart = function()
-          send("bind spirit", conf.commandecho)
-        end
-      },
-      gone = {
-        oncompleted = function()
-          defences.lost('boundspirit')
-          defences.lost('bindall')
-        end
-      }
-    }
-  end
   svo.dict.fortifyall = {
     physical = {
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (((((sys.deffing and defdefup[defs.mode].fortifyall and not defc.fortifyall) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall))) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana &gt;= 600 and defc.air and defc.earth and defc.water and (not svo.haveskillset('healing') or defc.spirit) and (svo.haveskillset('weatherweaving') or defc.fire)) or false
+        return (((((sys.deffing and defdefup[defs.mode].fortifyall and not defc.fortifyall) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall))) or (conf.keepup and defkeepup[defs.mode].fortifyall and not defc.fortifyall)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana &gt;= 600 and defc.air and defc.earth and defc.water and not defc.spirit and (svo.haveskillset('weatherweaving') or defc.fire)) or false
       end,
 
       oncompleted = function() defences.got('fortifyall') end,
@@ -11773,7 +11710,7 @@ end
 
       oncompleted = function()
         defences.got('fortifiedair')
-        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwaterand and (not svo.haveskillset('healing') or defc.fortifiedspirit) and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
+        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwaterand and not defc.fortifiedspirit and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
           defences.got('fortifyall')
         end
       end,
@@ -11798,7 +11735,7 @@ end
 
       oncompleted = function()
         defences.got('fortifiedwater')
-        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and (not svo.haveskillset('healing') or defc.fortifiedspirit) and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
+        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and not defc.fortifiedspirit and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
           defences.got('fortifyall')
         end
       end,
@@ -11824,7 +11761,7 @@ end
 
         oncompleted = function()
           defences.got('fortifiedfire')
-          if defc.fortifiedair and defc.fortifiedfire and defc.fortifiedearth and defc.fortifiedwater and (not svo.haveskillset('healing') or defc.fortifiedspirit) then
+          if defc.fortifiedair and defc.fortifiedfire and defc.fortifiedearth and defc.fortifiedwater and not defc.fortifiedspirit then
             defences.got('fortifyall')
           end
         end,
@@ -11852,7 +11789,7 @@ end
 
       oncompleted = function()
         defences.got('fortifiedearth')
-        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and (not svo.haveskillset('healing') or defc.fortifiedspirit) and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
+        if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and not defc.fortifiedspirit and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
           defences.got('fortifyall')
         end
       end,
@@ -11867,35 +11804,6 @@ end
       end
     }
   }
-  if svo.haveskillset('healing') then
-    svo.dict.fortifiedspirit = {
-      physical = {
-        balanceful_act = true, def = true, undeffable = true,
-
-        isadvisable = function()
-          return (((((sys.deffing and defdefup[defs.mode].fortifiedspirit and not defc.fortifiedspirit) or (conf.keepup and defkeepup[defs.mode].fortifiedspirit and not defc.fortifiedspirit))) or (conf.keepup and defkeepup[defs.mode].fortifiedspirit and not defc.fortifiedspirit)) and not codepaste.balanceful_defs_codepaste() and defc.spirit) or false
-        end,
-
-        oncompleted = function()
-          defences.got('fortifiedspirit')
-          if defc.fortifiedair and defc.fortifiedfire and defc.fortifiedearth and defc.fortifiedwater and defc.fortifiedspirit then
-            defences.got('fortifyall')
-          end
-        end,
-
-        action = "fortify spirit",
-        onstart = function()
-          send("fortify spirit", conf.commandecho)
-        end
-      },
-      gone = {
-        oncompleted = function()
-          defences.lost('fortifiedspirit')
-          defences.lost('fortifyall')
-        end
-      }
-    }
-  end
 end
 
 if svo.haveskillset('elementalism') then
@@ -13274,105 +13182,6 @@ if svo.me.class == 'Druid' then
     }
   }
 end
-if svo.haveskillset('healing') then
-  svo.dict.usehealing = {
-    misc = {
-      uncurable = true,
-
-      isadvisable = function()
-        if not next(affs) or not bals.balance or not bals.equilibrium or not bals.healing or conf.usehealing == 'none' or not svo.can_usemana() or svo.doingaction'usehealing' or affs.transfixed or stats.currentwillpower &lt;= 50 or defc.bedevil or ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm)) then return false end
-
-        -- we calculate here if we can use Healing on any of the affs we got; cache the result as well
-
-        -- small func for getting the spriority of a thing
-        local function getprio(what)
-          local type = type
-          for _,v in pairs(what) do
-            if type(v) == 'table' and v.spriority then
-              return v.spriority
-            end
-          end
-        end
-
-        local t = {}
-        for affname, _ in pairs(affs) do
-          if sk.healingmap[affname] and not svo.ignore[affname] and not svo.doingaction(affname) and not svo.doingaction('curing'..affname) and sk.healingmap[affname]() then
-            t[affname] = getprio(svo.dict[affname])
-          end
-        end
-
-        if not next(t) then return false end
-        svo.dict.usehealing.afftocure = svo.getHighestKey(t)
-        return true
-      end,
-
-      oncompleted = function()
-        if not svo.dict.usehealing.curingaff or (svo.dict.usehealing.curingaff ~= 'deaf' and svo.dict.usehealing.curingaff ~= 'blind') then
-          svo.lostbal_healing()
-        end
-
-        svo.dict.usehealing.curingaff = nil
-      end,
-
-      empty = function()
-        if not svo.dict.usehealing.curingaff or (svo.dict.usehealing.curingaff ~= 'deaf' and svo.dict.usehealing.curingaff ~= 'blind') then
-          svo.lostbal_healing()
-        end
-
-        if not svo.dict.usehealing.curingaff then return end
-        svo.rmaff(svo.dict.usehealing.curingaff)
-        svo.dict.usehealing.curingaff = nil
-      end,
-
-      -- haven't regained healing balance yet
-      nobalance = function()
-        if not svo.dict.usehealing.curingaff or (svo.dict.usehealing.curingaff ~= 'deaf' and svo.dict.usehealing.curingaff ~= 'blind') then
-          svo.lostbal_healing()
-        end
-
-        svo.dict.usehealing.curingaff = nil
-      end,
-
-      -- have bedevil def up; can't use healing
-      bedevilheal = function()
-        svo.dict.usehealing.curingaff = nil
-        defences.got('bedevil')
-      end,
-
-      onstart = function()
-        local aff = svo.dict.usehealing.afftocure
-        local svonames = {
-          blind = 'blindness',
-          deaf = 'deafness',
-          blindaff = 'blindness',
-          deafaff = 'deafness',
-          illness = 'vomiting',
-          weakness = 'weariness',
-          crippledleftarm = 'arms',
-          crippledrightarm = 'arms',
-          crippledleftleg = 'legs',
-          crippledrightleg = 'legs',
-          unknowncrippledleg = 'legs',
-          unknowncrippledarm = 'arms',
-          ablaze = 'burning',
-        }
-
-        local use_no_name = {
-          unknowncrippledlimb = true,
-          blackout = true,
-        }
-
-        if use_no_name[aff] then
-          send('heal', conf.commandecho)
-        else
-          send("heal me "..(svonames[aff] or aff), conf.commandecho)
-        end
-        svo.dict.usehealing.curingaff = svo.dict.usehealing.afftocure
-        svo.dict.usehealing.afftocure = nil
-      end
-    }
-  }
-end
 if svo.haveskillset('kaido') then
   svo.dict.transmute = {
     -- transmutespam is used to throttle bleed spamming so it doesn't get out of control
@@ -13692,6 +13501,13 @@ if svo.haveskillset('devotion') then
 end
 if svo.haveskillset('spirituality') then
   basicdef('heresy', "hunt heresy")
+end
+if svo.haveskillset('zeal') then
+  basicdef('thermalblessing', 'recite fire me', false, nil, true)
+  basicdef('willpowerblessing', 'recite will me', false, nil, true)
+  basicdef('frostblessing', 'recite void me', false, nil, true)
+  basicdef('enduranceblessing', 'recite endurance me', false, nil, true)
+  basicdef('earthblessing', 'recite protection me', false, nil, true)
 end
 if svo.haveskillset('shindo') then
   basicdef('clarity', 'clarity', nil, nil, true)

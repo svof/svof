@@ -236,9 +236,9 @@ cpp.compute_entitiesbal = function()
 end
 end
 
-if svo.haveskillset('healing') then
-cpp.compute_healingbal = function()
-  return (bals.healing and 'E' or "")
+if svo.haveskillset('zeal') then
+cpp.compute_prayerbal = function()
+  return (bals.prayer and 'E' or "")
 end
 end
 
@@ -368,7 +368,7 @@ cpp.compute_promptstring = function()
 if bals.entities then
   composition[#composition+1] = 'e'
 end
-if bals.healing then
+if bals.prayer then
   composition[#composition+1] = 'E'
 end
 if svo.haveskillset('physiology') then
@@ -504,8 +504,8 @@ end
 if svo.haveskillset('domination') then
   cp.definitions["@entitiesbal"]   = "svo.cpp.compute_entitiesbal()"
 end
-if svo.haveskillset('healing') then
-  cp.definitions["@healingbal"]    = "svo.cpp.compute_healingbal()"
+if svo.haveskillset('zeal') then
+  cp.definitions["@prayerbal"]    = "svo.cpp.compute_prayerbal()"
 end
 if svo.haveskillset('physiology') then
   cp.definitions["@humourbal"]     = "svo.cpp.compute_humourbal()"
