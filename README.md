@@ -8,7 +8,25 @@ Download the system for free from [here](https://github.com/svof/svof/releases) 
 See [documentation](https://svof.github.io/svof/) on how to install, use, and take advantage of the powerful system in your scripts.
 
 # Contributing
-See the [developer readme](Developer readme.md) for useful information on the code, acquaint yourself with the [code style](https://github.com/svof/svof/wiki/Code-style), and read the [design principles](https://github.com/svof/svof/wiki/Svof-design-principles).
+
+1. Create or login to your github account.
+2. Create a fork of the [svof repository]https://github.com/svof/svof (It's in the top right corner)
+3. Switch to the in-client-svof branch, it's in the drop down menu below Commits.
+4. Click the clone or download button.
+5. Extract the zip.
+6. Use that extract folder for your modules and make sure they are syncing.
+7. Make the changes in mudlet and save them.
+8. Select Upload files it on the right next to the green Clone or Download button on your fork.
+9. Drag the changed .xmls onto the box, or choose them from the file explorer.
+10. Add a title/description.
+11. Check off "Create a new branch for this commit and start a pull request".
+12. Name your branch.
+13. Click propose changes.
+14. Make sure the base is the in-client-svof and compare is your new branch.
+15. Overview you changes to make sure you submitted the right files.
+16. Click create pull request.
+17. Wait for approval and it to be merged.
+18. You've updated Svof, congratulations!
 
 If you're looking for something to do, have a look at the existing [issues/features](https://github.com/svof/svof/issues) list, and have a [look at the wiki](https://github.com/svof/svof/wiki) on information about the project.
 
