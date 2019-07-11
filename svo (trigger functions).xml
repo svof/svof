@@ -1406,7 +1406,7 @@ function svo.valid.defstrip(which)
   if svo.haveskillset('necromancy') then
     t["death aura"]             = 'deathaura'
   end
-  if svo.haveskillset('healing') then
+  if svo.haveskillset('zeal') then
     t["earth spiritshield"]     = 'earthblessing'
     t["endurance spiritshield"] = 'enduranceblessing'
     t["frost spiritshield"]     = 'frostblessing'
@@ -4249,68 +4249,6 @@ end
 
 valid.low_willpower = sk.checkwillpower
 
-if svo.haveskillset('healing') then
-  sk.check_emptyhealingheal = function ()
-    if sk.currenthealinghealcount+1 == getLineCount() then
-      lifevision.add(actions.usehealing_misc.p, 'empty')
-    else
-      lifevision.add(actions.usehealing_misc.p)
-    end
-
-    signals.before_prompt_processing:disconnect(sk.check_emptyhealingheal)
-  end
-
-  valid.healercure = function ()
-    svo.checkaction(svo.dict.usehealing.misc)
-    if actions.usehealing_misc then
-      sk.currenthealinghealcount = getLineCount()
-      signals.before_prompt_processing:connect(sk.check_emptyhealingheal, 'check for priest heal not curing anything')
-      valid.passive_cure()
-    end
-  end
-
-
-  valid.emptyheal = function ()
-    if actions.usehealing_misc then
-      lifevision.add(actions.usehealing_misc.p, 'empty')
-    end
-  end
-
-  valid.healing_cured_insomnia = function ()
-    svo.checkaction(svo.dict.usehealing.misc)
-    if actions.usehealing_misc then
-      defs.lost_insomnia()
-      lifevision.add(actions.usehealing_misc.p, 'empty')
-    end
-  end
-
-  -- valid.healercure = function ()
-  --   svo.checkaction(svo.dict.usehealing.misc)
-  --   if actions.usehealing_misc then
-  --     valid.passive_cure()
-  --     lifevision.add(actions.usehealing_misc.p)
-  --   end
-  -- end
-
-  valid.nohealbalance = function ()
-    svo.checkaction(svo.dict.usehealing.misc)
-    if actions.usehealing_misc then
-      lifevision.add(actions.usehealing_misc.p, 'nobalance')
-    end
-  end
-
-  valid.bedevilheal = function ()
-    svo.checkaction(svo.dict.usehealing.misc)
-    if actions.usehealing_misc then
-      lifevision.add(actions.usehealing_misc.p, 'bedevilheal')
-    end
-  end
-else
-  valid.healercure = function () end
-  valid.healing_cured_insomnia = valid.healercure
-  valid.nohealbalance = valid.healercure
-  valid.bedevilheal = valid.healercure
-end
 
 if svo.haveskillset('chivalry') then
   sk.check_emptyrage = function ()
@@ -4402,7 +4340,7 @@ function svo.valid.stripped_insomnia()
   end
 end
 
-if svo.haveskillset('elementalism') or svo.haveskillset('healing') then
+if svo.haveskillset('elementalism') then
   function svo.valid.lacking_channels()
     if svo.usingbal('physical') then
       defs.lost_simultaneity()
@@ -4663,15 +4601,15 @@ function svo.valid.pyradius()
   send("\n")
 end
 
-if svo.haveskillset('healing') then
-function svo.valid.usedhealingbalance()
+if svo.haveskillset('zeal') then
+function svo.valid.usedprayerbalance()
   svo.checkaction(svo.dict.stolebalance.happened, true)
-  lifevision.add(actions.stolebalance_happened.p, nil, 'healing')
+  lifevision.add(actions.stolebalance_happened.p, nil, 'zeal')
 end
 
-function svo.valid.gothealingbalance()
+function svo.valid.gotprayerbalance()
   svo.checkaction(svo.dict.gotbalance.happened, true)
-  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'healing' -- hack to allow multiple balances at once
+  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'zeal' -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
 end
@@ -4713,6 +4651,19 @@ end
 function svo.valid.gotvoicebalance()
   svo.checkaction(svo.dict.gotbalance.happened, true)
   svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'voice' -- hack to allow multiple balances at once
+  lifevision.add(actions.gotbalance_happened.p)
+end
+end
+
+if svo.haveskillset('zeal') then
+function svo.valid.usedprayerbalance()
+  svo.checkaction(svo.dict.stolebalance.happened, true)
+  lifevision.add(actions.stolebalance_happened.p, nil, 'prayer')
+end
+
+function svo.valid.gotprayerbalance()
+  svo.checkaction(svo.dict.gotbalance.happened, true)
+  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'prayer'
   lifevision.add(actions.gotbalance_happened.p)
 end
 end

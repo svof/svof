@@ -13,8 +13,8 @@
    namedb.rst
    offering.rst
    peopletracker.rst
-   priesthealing.rst
    priestlimbcounter.rst
    priestreport.rst
    refiller.rst
    runeidentifier.rst
+   

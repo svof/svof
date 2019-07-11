@@ -127,6 +127,11 @@ if svo.haveskillset('weaponmastery') then
     gmcp = {group = 'weaponmastery', name = 'recover'},
   }
 end
+if svo.haveskillset('zeal') then
+  installdata.benediction = {
+    gmcp = {group = 'zeal', name = 'benediction'},
+  }
+end
 
 function svo.installclear(what)
   if type(install.ids[what]) == 'table' then
@@ -1234,11 +1239,7 @@ svo.config_dict = svo.pl.OrderedMap {
     min = 0,
     onset = function () svo.echof("Will diagnose after we have %d or more unknown, but focusable afflictions.", conf.unknownfocus) end,
     installstart = function ()
-      if svo.haveskillset('healing') then
-        conf.unknownfocus = 1
-      else
         conf.unknownfocus = 2
-      end
     end,
   }},
   {unknownany = {
@@ -1246,11 +1247,7 @@ svo.config_dict = svo.pl.OrderedMap {
     min = 0,
     onset = function () svo.echof("Will diagnose after we have %d or more unknown affs.", conf.unknownany) end,
     installstart = function ()
-      if svo.haveskillset('healing') then
-        conf.unknownany = 1
-      else
         conf.unknownany = 2
-      end
     end,
   }},
   {bleedamount = {
@@ -1900,40 +1897,6 @@ svo.config_dict = svo.pl.OrderedMap {
   }},
 }
 
-if svo.haveskillset('healing') then
-  svo.config_dict:insert(1, 'healingskill', {
-    type = 'string',
-    check = function (what)
-      if table.contains({'blindness', 'paralysis', 'deafness', 'fear', 'confusion', 'insomnia', 'slickness', 'stuttering', 'paranoia', 'shyness', 'hallucinations', 'generosity', 'loneliness', 'impatience', 'unconsciousness', 'claustrophobia', 'vertigo', 'sensitivity', 'dizziness', 'arms', 'dementia', 'clumsiness', 'ablaze', 'recklessness', 'anorexia', 'agoraphobia', 'disloyalty', 'hypersomnia', 'darkshade', 'masochism', 'epilepsy', 'asthma', 'stupidity', 'vomiting', 'weariness', 'haemophilia', 'legs', 'hypochondria'}, what:lower()) then return true end
-    end,
-    onset = function ()
-      conf.healingskill = conf.healingskill:lower()
-      signals.healingskillchanged:emit()
-      svo.echof("Thanks! That means that you can now cure:  \n%s", svo.oneconcat(sk.healingmap))
-    end,
-    vconfig2 = true,
-    installstart = function ()
-      conf.healingskill = nil end,
-    installcheck = function ()
-      svo.echof("What is the highest possible affliction that you can cure with Healing? If you don't have it yet, answer with 'blindness' and set 'none' for the 'usehealing' option.") end
-  })
-  svo.config_dict:insert(1, 'usehealing', {
-    type = 'string',
-    check = function (what)
-      if table.contains({'full', 'partial', 'none', 'off'}, what:lower()) then return true end
-    end,
-    onset = function ()
-      conf.usehealing = conf.usehealing:lower()
-      if conf.usehealing == 'off' then conf.usehealing = 'none' end
-      svo.echof("Will use Healing in the '%s' mode.", conf.usehealing)
-    end,
-    vconfig2 = true,
-    installstart = function ()
-      conf.usehealing = nil end,
-    installcheck = function ()
-      svo.echof("Do you want to use Healing skillset in the full, partial or none mode? Full would mean that it'll use Healing for everything that it can and supplement it with normal cures. Partial would mean that it'll use normal cures and supplement it with Healing, while none means it won't make use of Healing at all.") end
-  })
-end
 if svo.haveskillset('kaido') then
   svo.config_dict:insert(1, 'transmute', {
     type = 'string',
@@ -1996,6 +1959,16 @@ if svo.haveskillset('weaponmastery') then
       ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use Recover Footing.", svo.getDefaultColor()) end,
       installstart = function () conf.recoverfooting = nil end,
       installcheck = function () svo.echof("Can you make use of the Recover Footing skill?") end
+    })
+end
+if svo.haveskillset('zeal') then
+  svo.config_dict:insert(1, 'benediction', {
+      type = 'boolean',
+      vconfig1 = "benediction",
+      onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use Benediction to apply Zeal blessings.", svo.getDefaultColor()) end,
+      ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use Benediction.", svo.getDefaultColor()) end,
+      installstart = function () conf.benediction = nil end,
+      installcheck = function () svo.echof("Can you make use of the Benediction skill?") end
     })
 end
 if svo.haveskillset('venom') then
