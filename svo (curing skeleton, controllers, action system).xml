@@ -1591,9 +1591,7 @@ svo.lostbal_sip = function()
 
   -- multiply by 2 if we have addiction
   local lostbalance = conf.ai_resetsipbal
-  if affs.addiction then lostbalance = lostbalance * 2 end
-  -- add .5s for earth disrupt delaying it
-  if affs.earthdisrupt then lostbalance = lostbalance + 0.5 end
+  if affs.addiction then lostbalance = lostbalance * 2 end 
 
   tempTimer(lostbalance, function ()
     if not bals.sip and sk.siptick == oldsiptick then
