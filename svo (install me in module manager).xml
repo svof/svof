@@ -7054,7 +7054,8 @@ svo.modules_list = {
     'svo (peopletracker)',
     'svo (reboundingsileristracker)',
     'svo (refiller)',
-    'svo (runeidentifier)'
+    'svo (runeidentifier)',
+    'svo (dragonlimbcounter)'
   }</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
