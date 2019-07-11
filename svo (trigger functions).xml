@@ -4604,12 +4604,12 @@ end
 if svo.haveskillset('zeal') then
 function svo.valid.usedprayerbalance()
   svo.checkaction(svo.dict.stolebalance.happened, true)
-  lifevision.add(actions.stolebalance_happened.p, nil, 'zeal')
+  lifevision.add(actions.stolebalance_happened.p, nil, 'prayer')
 end
 
 function svo.valid.gotprayerbalance()
   svo.checkaction(svo.dict.gotbalance.happened, true)
-  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'zeal' -- hack to allow multiple balances at once
+  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'prayer' -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
 end
@@ -4651,19 +4651,6 @@ end
 function svo.valid.gotvoicebalance()
   svo.checkaction(svo.dict.gotbalance.happened, true)
   svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'voice' -- hack to allow multiple balances at once
-  lifevision.add(actions.gotbalance_happened.p)
-end
-end
-
-if svo.haveskillset('zeal') then
-function svo.valid.usedprayerbalance()
-  svo.checkaction(svo.dict.stolebalance.happened, true)
-  lifevision.add(actions.stolebalance_happened.p, nil, 'prayer')
-end
-
-function svo.valid.gotprayerbalance()
-  svo.checkaction(svo.dict.gotbalance.happened, true)
-  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'prayer'
   lifevision.add(actions.gotbalance_happened.p)
 end
 end
