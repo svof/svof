@@ -359,17 +359,6 @@ local c3,s3 =
     cecho("&lt;a_grey&gt; mana.\n")
   end
 
-if svo.haveskillset('healing') then
-  if not printCmdLine then
-    cecho(string.format("    &lt;a_blue&gt;- &lt;a_grey&gt;Your highest Healing skill is &lt;a_darkgrey&gt;%s&lt;a_grey&gt;; using &lt;a_darkgrey&gt;%s&lt;a_grey&gt; Healing mode.\n", (conf.healingskill and conf.healingskill or "(none set)"), tostring(conf.usehealing)))
-  else
-    cecho("    &lt;a_blue&gt;- &lt;a_grey&gt;Your highest Healing skill is ") fg('a_darkgrey')
-    echoLink(conf.healingskill and conf.healingskill or "(none set)", 'printCmdLine"vconfig healingskill "', "Click to change your healingskill", true)
-    cecho("&lt;a_grey&gt;; using ") fg('a_darkgrey')
-    echoLink(tostring(conf.usehealing), 'printCmdLine"vconfig usehealing "', "Click to change your healing mode - can be full, partial or none", true)
-    cecho("&lt;a_grey&gt; Healing mode.\n")
-  end
-end
 if svo.haveskillset('kaido') then
   if not printCmdLine then
     cecho(string.format("    &lt;a_blue&gt;- &lt;a_grey&gt;Transmuting if below &lt;a_cyan&gt;%d%%&lt;a_grey&gt; (&lt;a_cyan&gt;%dh&lt;a_grey&gt;); using &lt;a_darkgrey&gt;%s&lt;a_grey&gt; mode.\n", (conf.transmuteamount or "?"), (sys.transmuteamount or "?"), tostring(conf.transmute)))
@@ -976,8 +965,8 @@ end
 if svo.haveskillset('domination') then
   svo.bals.entities = true
 end
-if svo.haveskillset('healing') then
-  svo.bals.healing = true
+if svo.haveskillset('zeal') then
+  svo.bals.prayer = true
 end
 if svo.haveskillset('venom') then
   svo.bals.shrugging = true
@@ -2491,112 +2480,28 @@ if svo.haveskillset('domination') then
     def = "You are acknowledged by Jy'Barrak Golgotha, Emperor of Chaos."})
 end
 
-if svo.haveskillset('healing') then
-  defs_data:set('simultaneity', {
-    type = 'healing',
-    custom_def_type = 'channel'
-  })
-  defs_data:set('bindall', {
-    type = 'healing',
-    custom_def_type = 'channel'
-  })
-  defs_data:set('fortifyall', {
-    type = 'healing',
-    custom_def_type = 'channel'
-  })
-  defs_data:set('air', {
-    off = {"You sever the link to the realm of air.", "The power of the knife sigil cuts your air channel."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You already have a channel opened to air.", "The power of air is harnessed to your will."}})
-  defs_data:set('fire', {
-    off = {"You sever the link to the realm of fire.", "The power of the knife sigil cuts your fire channel."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You already have a channel opened to fire.", "Elemental fire burns at your behest."}})
-  defs_data:set('water', {
-    off = {"You sever the link to the realm of water.", "The power of the knife sigil cuts your water channel."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You already have a channel opened to water.", "Purest water soothes you into calm."}})
-  defs_data:set('earth', {
-    off = {"You sever the link to the realm of earth.", "The power of the knife sigil cuts your earth channel."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You already have a channel opened to earth.", "The strength of earth is at your command."}})
-  defs_data:set('spirit', {
-    off = {"You sever the link to the realm of spirit.", "The power of the knife sigil cuts your spirit channel."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You already have a channel opened to spirit.", "You merge the four elemental channels and the formidable powers of the spirit realms are yours."}})
-
-  defs_data:set('fortifiedair', {
-    off = {"You sever the link to the realm of air.", "The power of the knife sigil cuts your air channel.", "Your magics around the air channel have been destroyed by the knife sigil."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You weave a layer of protective magic about your open elemental channels.", "You weave a layer of protective magic about the Air channel."}})
-  defs_data:set('fortifiedfire', {
-    off = {"You sever the link to the realm of fire.", "The power of the knife sigil cuts your fire channel.", "Your magics around the fire channel have been destroyed by the knife sigil."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You weave a layer of protective magic about your open elemental channels.", "You weave a layer of protective magic about the Fire channel."}})
-  defs_data:set('fortifiedwater', {
-    off = {"You sever the link to the realm of water.", "The power of the knife sigil cuts your water channel.", "Your magics around the water channel have been destroyed by the knife sigil."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You weave a layer of protective magic about your open elemental channels.", "You weave a layer of protective magic about the Water channel."}})
-  defs_data:set('fortifiedearth', {
-    off = {"You sever the link to the realm of earth.", "The power of the knife sigil cuts your earth channel.", "Your magics around the earth channel have been destroyed by the knife sigil."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You weave a layer of protective magic about your open elemental channels.", "You weave a layer of protective magic about the Earth channel."}})
-  defs_data:set('fortifiedspirit', {
-    off = {"You sever the link to the realm of spirit.", "The power of the knife sigil cuts your spirit channel.", "Your magics around the spirit channel have been destroyed by the knife sigil."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You weave a layer of protective magic about your open elemental channels.", "You weave a layer of protective magic about the Spirit channel."}})
-
-  defs_data:set('boundair', {
-    off = {"You sever the link to the realm of air.", "The power of the knife sigil cuts your air channel.", "Your magics around the air channel have been destroyed by the knife sigil."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You bind all your open elemental channels to you.", "You bind the element of Air to your superior will."}})
-  defs_data:set('boundfire', {
-    off = {"You sever the link to the realm of fire.", "The power of the knife sigil cuts your fire channel.", "Your magics around the fire channel have been destroyed by the knife sigil."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You bind all your open elemental channels to you.", "You bind the element of Fire to your superior will."}})
-  defs_data:set('boundwater', {
-    off = {"You sever the link to the realm of water.", "The power of the knife sigil cuts your water channel.", "Your magics around the water channel have been destroyed by the knife sigil."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You bind all your open elemental channels to you.", "You bind the element of Water to your superior will."}})
-  defs_data:set('boundearth', {
-    off = {"You sever the link to the realm of earth.", "The power of the knife sigil cuts your earth channel.", "Your magics around the earth channel have been destroyed by the knife sigil."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You bind all your open elemental channels to you.", "You bind the element of Earth to your superior will."}})
-  defs_data:set('boundspirit', {
-    off = {"You sever the link to the realm of spirit.", "The power of the knife sigil cuts your spirit channel.", "Your magics around the spirit channel have been destroyed by the knife sigil."},
-    type = 'healing',
-    custom_def_type = 'channel',
-    on = {"You bind all your open elemental channels to you.", "You bind the element of Spirit to your superior will."}})
-  defs_data:set('frostblessing', { type = 'healing',
-    on = "You call upon the elements Air and Water and bestow the Frost Spiritshield blessing upon yourself.",
+if svo.haveskillset('zeal') then
+  defs_data:set('frostblessing', { type = 'zeal',
+    staysindragon = true,
+    on = "\"Protected from the ravages of the Outer Cold,\" you murmur.",
     def = "You are protected by the power of a Frost Spiritshield."})
-  defs_data:set('willpowerblessing', { type = 'healing',
-    on = "You call upon the elements Air, Water, and Fire and bestow the Willpower blessing upon yourself.",
+  defs_data:set('willpowerblessing', { type = 'zeal',
+    staysindragon = true,
+    on = {"\"We shall not falter,\" you murmur.", "\"For we shall not falter,\" you murmur."},
     def = "You are regenerating willpower at an increased rate."})
-  defs_data:set('thermalblessing', { type = 'healing',
-    on = "You call upon the elements Fire and Spirit and bestow the Thermal Spiritshield blessing upon yourself.",
+  defs_data:set('thermalblessing', { type = 'zeal',
+    staysindragon = true,
+    on = "\"Sheltered by His duty,\" you murmur.",
     def = "You are protected by the power of a Thermal Spiritshield."})
-  defs_data:set('earthblessing', { type = 'healing',
-    on = "You call upon the elements Earth and Spirit and bestow the Earth Spiritshield blessing upon yourself.",
+  defs_data:set('earthblessing', { type = 'zeal',
+    staysindragon = true,
+    on = "\"Their blades shall break upon our shields,\" you murmur.",
     def = "You are protected by the power of an Earth Spiritshield."})
-  defs_data:set('enduranceblessing', { type = 'healing',
+  defs_data:set('enduranceblessing', { type = 'zeal',
+    staysindragon = true,
     def = "You are regenerating endurance at an increased rate.",
-    on = "You call upon the elements Water, Earth, and Fire and bestow the Endurance blessing upon yourself."})
-  defs_data:set('bedevil', { type = 'healing',
+    on = "\"We will endure until our work is done,\" you murmur."})
+  defs_data:set('bedevil', { type = 'zeal',
     on = {"You manipulate the elements to lash at those who would do you harm.", "You are already protected by the bedeviling aura."},
     def = "An aura of bedevilment has been established about your person.",
     off = "The elemental aura surrounding you sputters and dies."})
