@@ -234,7 +234,7 @@ end</script>
     svo.doadd("vkeep selfishness on")
   end
 
-  svo.off_action = nil
+  svo.off_preaction = nil
   deleteLine()
 end
 </script>
