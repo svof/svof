@@ -228,8 +228,8 @@ signals.connected = signals.connected or luanotify.signal.new()
 signals.quit:connect(function ()
   if Logger then Logger:CloseLog('svo') end
 end, 'stop the logger on quit')
-signals.quit:add_pre_emit(function () signals.saveconfig:emit() end)
-signals.quit:add_pre_emit(function () raiseEvent "svo quit" end)
+signals.quit:add_pre_emit(function () signals.saveconfig:emit() end, 'save config on quit')
+signals.quit:add_pre_emit(function () raiseEvent "svo quit" end, 'raise svo quit on quit')
 signals.systemend = signals.systemend or luanotify.signal.new()
 signals.saveconfig = signals.saveconfig or luanotify.signal.new()
 
