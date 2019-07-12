@@ -4943,6 +4943,19 @@ function ndb.isenemy(name)
   end
 end
 
+-- returns true if they are a soldier of their city
+function ndb.issoldier(name)
+  local p = ndb.getname(name)
+  if not p then return false end
+
+  local soldier = p.soldier
+
+ -- only return true for soldier of their city
+  if p.city_soldier == -2 then
+    return true else return false
+  end
+end
+
 -- returns true only if someone is a city enemy. They could be a house enemy, order enemy, or politics enemy and not be considered an enemy by this
 function ndb.isonlycityenemy(name)
   local p = ndb.getname(name)
