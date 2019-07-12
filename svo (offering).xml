@@ -187,7 +187,7 @@ end</script>
 			<name>svo.corpse_stuff</name>
 			<packageName></packageName>
 			<script>function svo.corpse_stuff()
-  if not svo.off_action or gmcp.Char.Items.List.location ~= "inv" then return end
+  if not svo.off_preaction or gmcp.Char.Items.List.location ~= "inv" then return end
 
   local t = gmcp.Char.Items.List.items
   local havekris, haveselfish
