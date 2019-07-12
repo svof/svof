@@ -4024,7 +4024,9 @@ function ndb.showpolitics(noprompt)
 
   if not noprompt then svo.showprompt() end
 end</script>
-					<eventHandlerList />
+					<eventHandlerList>
+						<string>svo system loaded</string>
+					</eventHandlerList>
 					<Script isActive="yes" isFolder="no">
 						<name>ndb.onshow</name>
 						<packageName></packageName>
@@ -4094,7 +4096,6 @@ end</script>
 end</script>
 					<eventHandlerList>
 						<string>svo system loaded</string>
-						<string>sysInstallModule</string>
 					</eventHandlerList>
 				</Script>
 				<Script isActive="yes" isFolder="no">
@@ -4773,10 +4774,10 @@ end
 if firstload then ndb.loadhighlightignore() end
 svo.signals.saveconfig:connect(function () me.highlightignore = me.highlightignore or {}; svo.tablesave(getMudletHomeDir() .. "/svo/config/highlightignore", me.highlightignore) end, 'save highlightignore list')
 
-
 -- save the ndb.conf.citypolitics list
-
+if ndb.conf == nil then ndb.loadsettings() end
 svo.signals.saveconfig:connect(function () ndb.conf.citypolitics = ndb.conf.citypolitics or {}; svo.tablesave(getMudletHomeDir() .. "/svo/namedb/citypolitics", ndb.conf.citypolitics) end, 'save citypolitics list')
+
 
 svo.signals.saveconfig:connect(function ()
 	-- this can error out if the connection is closed
@@ -5638,7 +5639,8 @@ svo.signals["namedb finished honors"]:connect(ndb.honors_next, 'run honors_next 
 if firstload then ndb.configs() end
 ndb.loadhighlights()
 
-end)</script>
+end)
+</script>
 				<eventHandlerList />
 			</Script>
 		</ScriptGroup>
