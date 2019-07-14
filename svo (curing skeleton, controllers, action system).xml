@@ -2937,17 +2937,16 @@ svo.prompt_stats = function ()
 
     stats.nextlevel = gmcp.Char.Vitals.nl or 0
     stats.xprank = gmcp.Char.Status.xprank or 0
-		
 
-if stats.currenthealth == nil then stats.currenthealth = 1 end
-if stats.currentmana == nil then stats.currentmana = 1 end
-if stats.currentendurance == nil then stats.currentendurance = 4000 end
-if stats.currentwillpower == nil then stats.currentwillpower = 4000 end
-if stats.maxhealth == nil then stats.maxhealth = oldmaxhealth end
-if stats.maxmana == nil then stats.maxmana = oldmaxmana end
-if stats.maxendurance == nil then stats.maxendurance = oldmaxendurance end
-if stats.maxwillpower == nil then stats.maxwillpower = oldmaxwillpower end
---if vitals.hp == nil then svo.blackout() end
+--Sets stats due to gmcp values being nil in blackout
+    stats.currenthealth            = stats.currenthealth or 1
+    stats.currentmana              = stats.currentmana or 1
+    stats.currentendurance         = stats.currentendurance or 4000
+    stats.currentwillpower         = stats.currentwillpower or 4000
+    stats.maxhealth                = stats.maxhealth or oldmaxhealth
+    stats.maxmana                  = stats.maxmana or oldmaxmana
+    stats.maxendurance             = stats.maxendurance or oldmaxendurance
+    stats.maxwillpowermaxwillpower = stats.maxwillpower or oldmaxwillpower
 
     stats.hp = sformat("%.1f", (100/stats.maxhealth)*stats.currenthealth)
     stats.mp = sformat("%.1f", (100/stats.maxmana)*stats.currentmana)
