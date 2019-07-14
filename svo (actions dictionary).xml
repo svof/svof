@@ -6125,6 +6125,7 @@ end
       end
     end,
     onadded = function()
+        svo.check_generics()
       svo.dict.blackout.addedon = os.time()
     end
   },

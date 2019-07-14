@@ -2388,12 +2388,14 @@ local bals, pipes, valid, actions = svo.bals, svo.pipes, svo.valid, svo.actions
 local lifevision = svo.lifevision
 
 local oldhealth, oldmana = 0, 0
+local oldmaxhealth, oldmaxmana, oldmaxendurance, oldmaxwillpower = 0, 0, 0, 0
 me.healthchange, me.manachange = 0, 0
 local function calculatestatchanges()
   local t = {}
 
   me.healthchange = 0
   me.manachange = 0
+	if affs.blackout then return end
   if oldhealth &gt; stats.currenthealth then
     me.healthchange = stats.currenthealth - oldhealth
 
@@ -2461,7 +2463,9 @@ local function calculatestatchanges()
 
   -- update oldhealth, oldmana to current values
   oldhealth, oldmana = stats.currenthealth, stats.currentmana
-
+  oldmaxhealth, oldmaxmana = stats.maxhealth, stats.maxmana
+  oldmaxendurance, oldmaxwillpower= stats.maxendurance, stats.maxwillpower
+	
   -- store away changed for showing later, as the custom prompt that follows overrides
   sk.statchanges = t
 end
@@ -2933,12 +2937,23 @@ svo.prompt_stats = function ()
 
     stats.nextlevel = gmcp.Char.Vitals.nl or 0
     stats.xprank = gmcp.Char.Status.xprank or 0
+		
+
+if stats.currenthealth == nil then stats.currenthealth = 1 end
+if stats.currentmana == nil then stats.currentmana = 1 end
+if stats.currentendurance == nil then stats.currentendurance = 4000 end
+if stats.currentwillpower == nil then stats.currentwillpower = 4000 end
+if stats.maxhealth == nil then stats.maxhealth = oldmaxhealth end
+if stats.maxmana == nil then stats.maxmana = oldmaxmana end
+if stats.maxendurance == nil then stats.maxendurance = oldmaxendurance end
+if stats.maxwillpower == nil then stats.maxwillpower = oldmaxwillpower end
+--if vitals.hp == nil then svo.blackout() end
 
     stats.hp = sformat("%.1f", (100/stats.maxhealth)*stats.currenthealth)
     stats.mp = sformat("%.1f", (100/stats.maxmana)*stats.currentmana)
     stats.wp = sformat("%.1f", (100/stats.maxwillpower)*stats.currentwillpower)
     stats.ed = sformat("%.1f", (100/stats.maxendurance)*stats.currentendurance)
-
+		
     for i,j in pairs(stats) do
       stats[i] = tonumber(j) or 0
     end
@@ -2954,10 +2969,10 @@ svo.prompt_stats = function ()
     end
 
     -- see what max values changed, update other info accordingly
-    if temp.maxhealth ~= stats.maxhealth then
+    if temp.maxhealth ~= stats.maxhealth  or stats.maxhealth == nil then
       signals.changed_maxhealth:emit(temp.maxhealth, stats.maxhealth)
     end
-    if temp.maxmana ~= stats.maxmana then
+    if temp.maxmana ~= stats.maxmana  or stats.maxmana == nil then
       signals.changed_maxmana:emit(temp.maxmana, stats.maxmana)
     end
   end)
