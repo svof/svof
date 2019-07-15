@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
 <MudletPackage version="1.001">
-	<TriggerPackage />
+	<TriggerPackage>
 		<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 			<name>svo (limbcounter)</name>
 			<script></script>
@@ -1448,6 +1448,7 @@ svo.lc_ignore()</script>
 			</TriggerGroup>
 		</TriggerGroup>
 	</TriggerPackage>
+	<TimerPackage />
 	<AliasPackage>
 		<AliasGroup isActive="yes" isFolder="yes">
 			<name>svo (limbcounter)</name>
@@ -1488,6 +1489,7 @@ svo.lc_sethitsneeded(name,hits)</script>
 			</Alias>
 		</AliasGroup>
 	</AliasPackage>
+	<ActionPackage />
 	<ScriptPackage>
 		<ScriptGroup isActive="yes" isFolder="yes">
 			<name>svo (limbcounter)</name>
