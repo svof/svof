@@ -6065,7 +6065,6 @@ end
         if affs.blackout then return end
 
         svo.addaffdict(svo.dict.blackout)
-        svo.check_generics()
 
         tempTimer(4.5, function() if affs.blackout then svo.addaffdict(svo.dict.disrupt) svo.make_gnomes_work() end end)
 
@@ -6125,6 +6124,7 @@ end
       end
     end,
     onadded = function()
+      svo.check_generics()
       svo.dict.blackout.addedon = os.time()
     end
   },
