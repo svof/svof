@@ -3236,11 +3236,11 @@ function ndb.downloaded_file(_, filename)
       xp_rank = xp_rank and xp_rank or -1,
     }}
     if city ~= "(hidden)" then
-        temp_name_list[1].city = (city ~= "(none)" and city or "rogue")
+        temp_name_list[1].city = (city ~= "(none)" and string.title(city) or "rogue")
     end
     -- house info isn't shown if you're logged in to the website for some people
     if not(house == "(hidden)" or house == "(none)") then
-      temp_name_list[1].guild = house
+      temp_name_list[1].guild = string.title(house)
     end
   end
 
@@ -4239,8 +4239,8 @@ end</script>
   if data.immortal == 0 then
     cecho("&lt;a_darkcyan&gt;  Orgs:\n")
     cecho(string.format("&lt;a_darkgrey&gt;    House:  %-24s City:        %s (cr%s)%s\n",
-      string.title(data.guild == '' and 'unknown' or data.guild),
-      string.title(data.city == '' and 'unknown' or data.city),
+      (data.guild == '' and 'unknown' or data.guild),
+      (data.city == '' and 'unknown' or data.city),
       (data.city_rank == 0 and '?' or data.city_rank),
       (data.city_soldier == 0 and '' or ' (S)')
     ))
