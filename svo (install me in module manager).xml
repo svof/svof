@@ -5952,6 +5952,7 @@ local aff_abbrev = {
   crippledleftleg     = "ll1",
   crippledrightarm    = "ra1",
   crippledrightleg    = "rl1",
+  crushedthroat       = 'cru',
   darkshade           = "dark",
   deadening           = "dea",
   deafaff             = "deaf",
