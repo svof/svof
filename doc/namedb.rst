@@ -488,6 +488,9 @@ API
   ndb.isonlycityenemy(name)
     Similar to ndb.iscityenemy - but ignores everything except if someone is an enemy to your current city if you have one.
 
+  ndb.issoldier(name)
+    Will return true if person is a city soldier
+
   svo.config.set("ndbpaused", option, true)
     Disables or enables NameDB highlighting (same as what the ``npp`` alias does). ``option`` is a toggle in the same manner as ``svo.config.set()`` operates - it can be ``true``, ``false``, ``"on"``, ``"off"`` and so on. The last argument, ``true``, has to be there for the function to take effect.
 
