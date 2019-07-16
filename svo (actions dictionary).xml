@@ -8830,7 +8830,7 @@ end
       empty = function() defences.got('deathsight') end
     },
     physical = {
-      balanceful_act = true, def = true,
+      balanceless_act = true, def = true,
 
       isadvisable = function()
         return (not defc.deathsight and conf.deathsight and svo.can_usemana() and not svo.doingaction('deathsight') and ((sys.deffing and defdefup[defs.mode].deathsight) or (conf.keepup and defkeepup[defs.mode].deathsight)) and not codepaste.balanceful_defs_codepaste()) or false
