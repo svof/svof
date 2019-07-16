@@ -838,27 +838,27 @@ end
     gamename = 'pressure',
     herb = {
       isadvisable = function()
-        return (affs.pressure) or false
+        return (affs.pressure and bals.smoke) or false
       end,
 
       -- this is called when you still have some left 
       oncompleted = function()
-        svo.lostbal_herb()
+        svo.lostbal_smoke()
         codepaste.remove_stackableaff('pressure', true)
       end,
 
       empty = function()
         empty.eat_pear()
-        svo.lostbal_herb()
+        svo.lostbal_smoke()
       end,
 
       cured = function()
-        svo.lostbal_herb()
+        svo.lostbal_smoke()
         svo.rmaff('pressure')
         svo.dict.pressure.count = 0
       end,
 
-      noeffect = function() svo.lostbal_herb() end,
+      noeffect = function() svo.lostbal_smoke() end,
 
       eatcure = {'pear', 'calcite'},
 
@@ -1493,6 +1493,45 @@ end
       oncompleted = function()
         svo.rmaff('stupidity')
         codepaste.remove_focusable()
+      end,
+    }
+  },
+  crushedthroat = {
+    salve = {
+      isadvisable = function()
+        return affs.crushedthroat or false
+      end,
+
+      oncompleted = function()
+        svo.lostbal_salve()
+        svo.rmaff('crushedthroat')
+      end,
+
+      noeffect = function()
+        svo.lostbal_salve()
+        empty.apply_mending_head()
+      end,
+
+      empty = function()
+        empty.apply_mending_head()
+      end,
+
+      applycure = {'mending'},
+      actions = {"apply mending to head"},
+      onstart = function()
+        svo.apply(svo.dict.crushedthroat.salve, " to head")
+      end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.crushedthroat)
+        sk.crushedthroat_count = 0
+        codepaste.badaeon()
+      end,
+    },
+    gone = {
+      oncompleted = function()
+        svo.rmaff('crushedthroat')
       end,
     }
   },
@@ -4895,8 +4934,8 @@ end
     end,
     salve = {
       isadvisable = function()
-        return (affs.blindaff or (defc.blind and not ((sys.deffing and defdefup[defs.mode].blind) or
-          (conf.keepup and defkeepup[defs.mode].blind))) or affs.scalded) or false
+        return (affs.blindaff and not ((sys.deffing and defdefup[defs.mode].blind) or
+          (conf.keepup and defkeepup[defs.mode].blind)) or affs.scalded) or false
       end,
 
       oncompleted = function()
@@ -4922,8 +4961,8 @@ end
         empty.apply_epidermal_head()
       end,
 
-      applycure = {'epidermal', 'sensory'},
-      actions = {"apply epidermal to head", "apply epidermal", "apply sensory to head", "apply sensory"},
+      applycure = {'epidermal'},
+      actions = {"apply epidermal to head", "apply epidermal"},
       onstart = function()
         svo.apply(svo.dict.blindaff.salve, " to head")
       end
@@ -4952,7 +4991,7 @@ end
     end,
     salve = {
       isadvisable = function()
-        return (affs.deafaff or defc.deaf and not ((sys.deffing and defdefup[defs.mode].deaf) or
+        return (affs.deafaff and not ((sys.deffing and defdefup[defs.mode].deaf) or
           (conf.keepup and defkeepup[defs.mode].deaf))) or false
       end,
 
@@ -9661,6 +9700,7 @@ end
     confusion = 'confusion',
     corruption = 'corrupted',
     crackedribs = 'crackedribs',
+    crushedthroat = 'crushedthroat',
     daeggerimpale = false,
     damagedhead = 'mildconcussion',
     damagedleftarm = 'mangledleftarm',
