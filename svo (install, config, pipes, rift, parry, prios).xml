@@ -3611,7 +3611,7 @@ function sk.asyncfill(what, where)
   if rift.invcontents[what] &gt; 0 then
     if pipes[orig].puffs &gt; 0 then
       if not svo.defc.selfishness then
-        send("empty "..where, conf.commandecho)
+        svo.doaddfree("empty "..where, conf.commandecho)
       else
         for _ = 1, (pipes[orig].puffs + 1) do
           send("smoke "..where, conf.commandecho)
@@ -3619,20 +3619,20 @@ function sk.asyncfill(what, where)
       end
     end
 
-    send("put " .. what .. " in " .. where, conf.commandecho)
+    svo.doaddfree("put " .. what .. " in " .. where, conf.commandecho)
     rift.outr(what)
   else
     rift.outr(what)
     if pipes[orig].puffs &gt; 0 then
       if not svo.defc.selfishness then
-        send("empty "..where, conf.commandecho)
+        svo.doaddfree("empty "..where, conf.commandecho)
       else
         for _ = 1, (pipes[orig].puffs + 1) do
           send("smoke "..where, conf.commandecho)
         end
       end
     end
-    send("put " .. what .. " in " .. where, conf.commandecho)
+    svo.doaddfree("put " .. what .. " in " .. where, conf.commandecho)
   end
 end
 
@@ -3666,9 +3666,9 @@ function sk.syncfill(what, where)
 
   if pipes[orig].puffs &gt; 0 then
     if svo.defc.selfishness then svo.echof("Problem - can't refill while selfish :/") return end
-    send("empty "..where, conf.commandecho)
+    svo.doaddfree("empty "..where, conf.commandecho)
   elseif rift.invcontents[what] &gt; 0 then
-    send("put " .. what .. " in " .. where, conf.commandecho)
+    svo.doaddfree("put " .. what .. " in " .. where, conf.commandecho)
   else
     rift.outr(what)
   end
