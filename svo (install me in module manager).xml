@@ -7065,7 +7065,6 @@ svo.modules_list = {
     'svo (reboundingsileristracker)',
     'svo (refiller)',
     'svo (runeidentifier)',
-    'svo (sparkstracker)',
     'svo (stormhammertarget)',
     'svo (limbcounter)',
     'svo (burncounter)',
