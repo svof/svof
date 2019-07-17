@@ -37,7 +37,7 @@
 					<integer>1</integer>
 				</regexCodePropertyList>
 			</Trigger>
-			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Knight limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -1234,7 +1234,7 @@ svo.lc_smash()</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo earth Elemental Lord limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -1850,11 +1850,11 @@ function svo.lc_prompttag2()
     )
 end
 
-svo.adddefinition("@svo.lc_prompttag2", "svo.lc_prompttag2()")
+svo.adddefinition("@lc_prompttag2", "svo.lc_prompttag2()")
 
 function svo.lc_prompttag()
   if
-    svo.defc.dragonform or not svo.lc_lasthit or not svo.lc_list or not svo.lc_list[svo.lc_lasthit]
+    svo.defc.dragonform or not svo.lc_lasthit or not table.contains(svo.lc_list, svo.me.class) or not svo.lc_list[svo.lc_lasthit]
   then
     return ""
   end
@@ -1879,7 +1879,7 @@ function svo.lc_prompttag()
     )
 end
 
-svo.adddefinition("@svo.lc_prompttag", "svo.lc_prompttag()")
+svo.adddefinition("@lc_prompttag", "svo.lc_prompttag()")
 
 function svo.lc_prompttag3()
   if not svo.lc_lasthit or not svo.lc_list or not svo.lc_list[svo.lc_lasthit] then
@@ -1906,7 +1906,7 @@ function svo.lc_prompttag3()
     )
 end
 
-svo.adddefinition("@svo.lc_prompttag3", "svo.lc_prompttag3()")
+svo.adddefinition("@lc_prompttag3", "svo.lc_prompttag3()")
 svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.lc_version))
 </script>
 				<eventHandlerList>
