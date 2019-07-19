@@ -1234,7 +1234,7 @@ svo.lc_smash()</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo earth Elemental Lord limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -1344,7 +1344,7 @@ svo.lc_ignore()</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Dragon limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -1507,7 +1507,13 @@ svo.lc_sethitsneeded(name,hits)</script>
 local sk = svo.sk
 svo.lc_version = "1.0"
 svo.lc_list = {}
-svo.lc_checkdamage = svo.lc_checkdamage or false
+svo.lc_priestdamage = svo.lc_priestdamage or false
+svo.lc_shikudodamage = svo.lc_shikudodamage or "none"
+svo.lc_shikudoskill = { 
+	lowest = lowest or 0,
+	middle = middle or 0,
+	highest = highest or 0
+}
 svo.lc_classlist =
   {
     "Magi",
@@ -1553,6 +1559,18 @@ function svo.lc_smash()
   signals.before_prompt_processing:disconnect(sk.svo.lc_checklimbcounter)
 end
 
+function svo.lc_shikudocount(low, mid, high)
+	svo.lc_shikudoskill.highest = high
+	svo.lc_shikudoskill.highest = string.format("%2.1f", svo.lc_shikudoskill.highest)
+	svo.lc_shikudoskill.highest = tonumber(svo.lc_shikudoskill.highest)
+	svo.lc_shikudoskill.middle = (mid / high)
+	svo.lc_shikudoskill.middle = string.format("%2.1f", svo.lc_shikudoskill.middle)
+	svo.lc_shikudoskill.middle = tonumber(svo.lc_shikudoskill.middle) 
+	svo.lc_shikudoskill.lowest = (low / high)
+	svo.lc_shikudoskill.lowest = string.format("%2.1f", svo.lc_shikudoskill.lowest)
+	svo.lc_shikudoskill.lowest = tonumber(svo.lc_shikudoskill.lowest)
+end
+	
 function svo.lc_appliedreset(part, person)
 	if table.contains(svo.lc_list, person) then
 		echo("\n") svo.echof("Checking reset status")
@@ -1603,13 +1621,17 @@ local function get_other_prepped(t, limbhit)
   end
 end
 
-function svo.lc_damagecheck()
-	if svo.lc_checkdamage == false then
-		svo.lc_checkdamage = true
+function svo.lc_priestdamage()
+	if svo.lc_priestdamage == false then
+		svo.lc_priestdamage = true
 	else
-		svo.lc_checkdamage = false
+		svo.lc_priestdamage = false
 	end
 end		
+
+function svo.lc_shikudodamage(limb)
+	svo.lc_shikudodamage = limb
+end
 
 function svo.lc_checklimbcounter()
   -- make the announces work with a singleprompt
@@ -1662,18 +1684,44 @@ function svo.lc_checklimbcounter()
 end
 
 function svo.lc_hit(who, where, howmuch)
+	local damage = howmuch
   svo.lc_list[who] =
     svo.lc_list[who] or {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0}
   where = where:gsub(" ", "")
   svo.lc_lasthit = who
   hittable[who] = hittable[who] or {}
-  hittable[who][#hittable[who] + 1] = {[where] = (howmuch and howmuch or 1)}
+  hittable[who][#hittable[who] + 1] = {[where] = (damage and damage or 1)}
   svo.signals.before_prompt_processing:connect(svo.lc_checklimbcounter)
   enableTrigger("svolc Don't register")
 end
 
+function svo.lc_shikudohit(who, where, group)
+	local damage = svo.lc_shikudoskill[group]
+	if svo.lc_shikudodamage == "none" and svo.lc_shikudodamage ~= where then
+    svo.lc_list[who] =
+      svo.lc_list[who] or {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0}
+    where = where:gsub(" ", "")
+    svo.lc_lasthit = who
+    hittable[who] = hittable[who] or {}
+    hittable[who][#hittable[who] + 1] = {[where] = (damage and damage or 1)}
+    svo.signals.before_prompt_processing:connect(svo.lc_checklimbcounter)
+    enableTrigger("svolc Don't register")
+	elseif svo.lc_shikudodamage == where then
+		damage = (damage / 2)
+    svo.lc_list[who] =
+      svo.lc_list[who] or {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0}
+    where = where:gsub(" ", "")
+    svo.lc_lasthit = who
+    hittable[who] = hittable[who] or {}
+    hittable[who][#hittable[who] + 1] = {[where] = (damage and damage or 1)}
+    svo.signals.before_prompt_processing:connect(svo.lc_checklimbcounter)
+    enableTrigger("svolc Don't register")
+	end
+end
+
 function svo.lc_ignore()
   table.remove(select(2, next(hittable)))
+	disableTrigger("svolc Don't Register")
 end
 
 function svo.lc_reset(whom)
