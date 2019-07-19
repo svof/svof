@@ -2327,6 +2327,7 @@ function svo.sk.fix_affs_and_defs()
     svo.addaffdict(svo.dict.deafaff)
     svo.echof("deafness is now considered an affliction, will cure it.")
   end
+	svo.sk.updateserversideprios()
 end
 
 
