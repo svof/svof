@@ -433,12 +433,12 @@ end</script>
 					<regexCodeList>
 						<string>^\w+ sinks (?:his|her) fangs into your body and you wince in pain\.$</string>
 						<string>2</string>
-						<string>return isPrompt()</string>
+						<string></string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
 						<integer>5</integer>
-						<integer>4</integer>
+						<integer>7</integer>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -459,12 +459,12 @@ end</script>
 					<regexCodeList>
 						<string>^\w+ pricks you twice in rapid succession with (?:his|her) dirk\.?$</string>
 						<string>2</string>
-						<string>return isPrompt()</string>
+						<string></string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
 						<integer>5</integer>
-						<integer>4</integer>
+						<integer>7</integer>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -485,12 +485,12 @@ end</script>
 					<regexCodeList>
 						<string>^\w+ viciously jabs a needle-pointed dirk into you\.$ </string>
 						<string>2</string>
-						<string>return isPrompt()</string>
+						<string></string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
 						<integer>5</integer>
-						<integer>4</integer>
+						<integer>7</integer>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -3286,10 +3286,10 @@ setTriggerStayOpen("Focus", 0)</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>return isPrompt()</string>
+						<string></string>
 					</regexCodeList>
 					<regexCodePropertyList>
-						<integer>4</integer>
+						<integer>7</integer>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -6409,10 +6409,10 @@ svo.valid.diag_corrupted()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>return isPrompt()</string>
+							<string></string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>4</integer>
+							<integer>7</integer>
 						</regexCodePropertyList>
 					</Trigger>
 				</Trigger>
@@ -13614,12 +13614,12 @@ svo.valid.emptyheal()</script>
 					<regexCodeList>
 						<string>You call upon the powers of</string>
 						<string>^You call upon the powers of .+ and project your healing through your Spirit channel\.$</string>
-						<string>return isPrompt()</string>
+						<string></string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
 						<integer>1</integer>
-						<integer>4</integer>
+						<integer>7</integer>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -14169,14 +14169,14 @@ svo.show_ignore()</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>You look around triumphantly and realise your team has completely vanquished the opposing team. Your team has WON the party duel!</string>
-						<string>return isPrompt()</string>
+						<string></string>
 						<string>The team of</string>
 						<string>has defeated</string>
 						<string>in combat within</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>3</integer>
-						<integer>4</integer>
+						<integer>7</integer>
 						<integer>2</integer>
 						<integer>0</integer>
 						<integer>0</integer>
@@ -16505,10 +16505,10 @@ end</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>return isPrompt()</string>
+								<string></string>
 							</regexCodeList>
 							<regexCodePropertyList>
-								<integer>4</integer>
+								<integer>7</integer>
 							</regexCodePropertyList>
 						</Trigger>
 					</Trigger>
@@ -17513,7 +17513,7 @@ svo.gotarmbalance()</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Prayer balance</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -17925,7 +17925,7 @@ raiseEvent("svo got balance", "entities")</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Shrugging balance</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -20676,10 +20676,10 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>return isPrompt()</string>
+							<string></string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>4</integer>
+							<integer>7</integer>
 						</regexCodePropertyList>
 					</Trigger>
 				</Trigger>
@@ -21045,10 +21045,10 @@ svo.parseplistend()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>return isPrompt()</string>
+							<string></string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>4</integer>
+							<integer>7</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -22857,7 +22857,7 @@ end</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Spirituality defences</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -23116,10 +23116,10 @@ end</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>return isPrompt()</string>
+								<string></string>
 							</regexCodeList>
 							<regexCodePropertyList>
-								<integer>4</integer>
+								<integer>7</integer>
 							</regexCodePropertyList>
 						</Trigger>
 					</Trigger>
@@ -23373,12 +23373,12 @@ end</script>
 						<regexCodeList>
 							<string>Pain wracks your soul as you begin your new life. As the new body forms, you realise you now have</string>
 							<string>^Pain wracks your soul as you begin your new life\. As the new body forms, you realise you now have .+? and .+?, and you are covered with .+\.$</string>
-							<string>return isPrompt()</string>
+							<string></string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>2</integer>
 							<integer>1</integer>
-							<integer>4</integer>
+							<integer>7</integer>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
@@ -23488,11 +23488,11 @@ end</script>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>As you feel the last remnants of strength ebb from your tormented body, you close your eyes and let darkness embrace you. Suddenly, you feel your consciousness wrenched from its pitiful mortal frame and your soul is free. You feel your form shifting, warping and changing as you whirl and spiral outward, ever outward. A jolt of sensation awakens you, and you open your eyes tentatively to find yourself trapped within a physical body once more.</string>
-							<string>return isPrompt()</string>
+							<string></string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>3</integer>
-							<integer>4</integer>
+							<integer>7</integer>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
@@ -23606,7 +23606,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Bashing triggers</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -37694,10 +37694,10 @@ svo.doomer = nil</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>return isPrompt()</string>
+							<string></string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>4</integer>
+							<integer>7</integer>
 						</regexCodePropertyList>
 					</Trigger>
 				</Trigger>
@@ -39918,10 +39918,10 @@ svo.prompttrigger("register dragon", function() svo.startedfighting("dragon", sv
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>return isPrompt()</string>
+							<string></string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>4</integer>
+							<integer>7</integer>
 						</regexCodePropertyList>
 					</Trigger>
 				</Trigger>
@@ -43283,10 +43283,10 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>return isPrompt()</string>
+							<string></string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>4</integer>
+							<integer>7</integer>
 						</regexCodePropertyList>
 					</Trigger>
 				</Trigger>
@@ -51598,10 +51598,10 @@ end</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>return isPrompt()</string>
+								<string></string>
 							</regexCodeList>
 							<regexCodePropertyList>
-								<integer>4</integer>
+								<integer>7</integer>
 							</regexCodePropertyList>
 						</Trigger>
 					</Trigger>
@@ -51765,10 +51765,10 @@ svo.readingsection = nil</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>return isPrompt()</string>
+								<string></string>
 							</regexCodeList>
 							<regexCodePropertyList>
-								<integer>4</integer>
+								<integer>7</integer>
 							</regexCodePropertyList>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -53523,7 +53523,7 @@ svo.echof("BIG GIANT NOTE: This is not the final thing! The final might or might
 				<packageName></packageName>
 				<regex>^vshow herbstat$</regex>
 			</Alias>
-			<AliasGroup isActive="yes" isFolder="yes">
+			<AliasGroup isActive="no" isFolder="yes">
 				<name>Spirituality aliases</name>
 				<script></script>
 				<command></command>
