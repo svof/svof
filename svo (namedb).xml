@@ -508,7 +508,6 @@ raiseEvent("NameDB got new data")
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>return isPrompt()</string>
 							<string></string>
 						</regexCodeList>
 						<regexCodePropertyList>
