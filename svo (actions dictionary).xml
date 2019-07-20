@@ -4930,7 +4930,7 @@ end
   blindaff = {
     gamename = 'blind',
     onservereignore = function()
-      return ((sys.deffing and defdefup[defs.mode].blind and not defc.blind) or (conf.keepup and defkeepup[defs.mode].blind and not defc.blind)) or false
+      return (svo.defdefup[svo.defs.mode].blind or svo.defkeepup[svo.defs.mode].blind)
     end,
     salve = {
       isadvisable = function()
@@ -4987,7 +4987,7 @@ end
   deafaff = {
     gamename = 'deaf',
     onservereignore = function()
-      return ((sys.deffing and defdefup[defs.mode].deaf and not defc.deaf) or (conf.keepup and defkeepup[defs.mode].deaf and not defc.deaf)) or false
+      return (svo.defdefup[svo.defs.mode].deaf or svo.defkeepup[svo.defs.mode].deaf)
     end,
     salve = {
       isadvisable = function()
