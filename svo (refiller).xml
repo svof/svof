@@ -165,10 +165,10 @@ svo.rf_nextpotion()</script>
 				<colorTriggerFgColor>#000000</colorTriggerFgColor>
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList>
-					<string>return isPrompt()</string>
+					<string></string>
 				</regexCodeList>
 				<regexCodePropertyList>
-					<integer>4</integer>
+					<integer>7</integer>
 				</regexCodePropertyList>
 			</Trigger>
 		</Trigger>
@@ -188,11 +188,11 @@ svo.doadd("put 50 vial in "..(svo.conf.packid or 'pack'))</script>
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList>
 				<string>You put</string>
-				<string>return isPrompt()</string>
+				<string></string>
 			</regexCodeList>
 			<regexCodePropertyList>
 				<integer>2</integer>
-				<integer>4</integer>
+				<integer>7</integer>
 			</regexCodePropertyList>
 		</Trigger>
 		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -234,11 +234,11 @@ svo.doadd("get 50 vial from "..(svo.conf.packid or 'pack'))</script>
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList>
 				<string>You take</string>
-				<string>return isPrompt()</string>
+				<string></string>
 			</regexCodeList>
 			<regexCodePropertyList>
 				<integer>2</integer>
-				<integer>4</integer>
+				<integer>7</integer>
 			</regexCodePropertyList>
 		</Trigger>
 		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">

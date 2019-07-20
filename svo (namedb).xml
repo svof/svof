@@ -509,9 +509,10 @@ raiseEvent("NameDB got new data")
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>return isPrompt()</string>
+							<string></string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>4</integer>
+							<integer>7</integer>
 						</regexCodePropertyList>
 					</Trigger>
 				</Trigger>
@@ -617,10 +618,10 @@ raiseEvent("NameDB got new data")
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>return isPrompt()</string>
+							<string></string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>4</integer>
+							<integer>7</integer>
 						</regexCodePropertyList>
 					</Trigger>
 				</Trigger>
@@ -719,10 +720,10 @@ raiseEvent("NameDB got new data")</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>return isPrompt()</string>
+								<string></string>
 							</regexCodeList>
 							<regexCodePropertyList>
-								<integer>4</integer>
+								<integer>7</integer>
 							</regexCodePropertyList>
 						</Trigger>
 					</Trigger>
@@ -1184,11 +1185,11 @@ raiseEvent("NameDB got new data")
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>return isPrompt()</string>
+							<string></string>
 							<string>See FRIENDS R[EQUESTS] to see outstanding requests to or from you.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>4</integer>
+							<integer>7</integer>
 							<integer>3</integer>
 						</regexCodePropertyList>
 					</Trigger>
@@ -1382,10 +1383,10 @@ raiseEvent("NameDB got new data")</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>return isPrompt()</string>
+							<string></string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>4</integer>
+							<integer>7</integer>
 						</regexCodePropertyList>
 					</Trigger>
 				</Trigger>
@@ -1615,10 +1616,10 @@ temp_name_list = nil</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>return isPrompt()</string>
+							<string></string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>4</integer>
+							<integer>7</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -2259,10 +2260,10 @@ parse_enemies = nil</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>return isPrompt()</string>
+						<string></string>
 					</regexCodeList>
 					<regexCodePropertyList>
-						<integer>4</integer>
+						<integer>7</integer>
 					</regexCodePropertyList>
 				</Trigger>
 			</Trigger>

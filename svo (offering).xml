@@ -84,10 +84,10 @@ svo.off_action = nil</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>return isPrompt()</string>
+						<string></string>
 					</regexCodeList>
 					<regexCodePropertyList>
-						<integer>4</integer>
+						<integer>7</integer>
 					</regexCodePropertyList>
 				</Trigger>
 			</Trigger>
