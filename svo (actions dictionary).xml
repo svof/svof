@@ -4930,7 +4930,7 @@ end
   blindaff = {
     gamename = 'blind',
     onservereignore = function()
-      return not svo.dict.blind.onservereignore()
+      return (svo.defdefup[svo.defs.mode].blind or svo.defkeepup[svo.defs.mode].blind)
     end,
     salve = {
       isadvisable = function()
@@ -4987,7 +4987,7 @@ end
   deafaff = {
     gamename = 'deaf',
     onservereignore = function()
-      return not svo.dict.deaf.onservereignore()
+      return (svo.defdefup[svo.defs.mode].deaf or svo.defkeepup[svo.defs.mode].deaf)
     end,
     salve = {
       isadvisable = function()
