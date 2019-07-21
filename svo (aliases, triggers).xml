@@ -17925,7 +17925,7 @@ raiseEvent("svo got balance", "entities")</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Shrugging balance</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -17981,7 +17981,7 @@ raiseEvent("svo got balance", "entities")</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Humour balance</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -18446,6 +18446,7 @@ svo.app("off", true)</script>
 							<string>Your soul returns on the land of the living after finishing the narration of your clan's summary.</string>
 							<string>The sign flickers and changes.</string>
 							<string>You return from decorating a poster.</string>
+							<string>^You change builder bounty #\d+'s content\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>3</integer>
@@ -18460,6 +18461,7 @@ svo.app("off", true)</script>
 							<integer>3</integer>
 							<integer>3</integer>
 							<integer>3</integer>
+							<integer>1</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -23496,7 +23498,7 @@ end</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Alchemy defences</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -23606,7 +23608,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Bashing triggers</name>
 				<script></script>
 				<triggerType>0</triggerType>
