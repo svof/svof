@@ -849,7 +849,7 @@ function svo.dop(what, echoback)
 end
 
 function svo.dv()
-  sys.manualdiag = true
+  svo.sys.manualdiag = true
   svo.make_gnomes_work()
 end
 
