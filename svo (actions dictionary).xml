@@ -13167,24 +13167,14 @@ if svo.me.class == 'Druid' then
 end
 if svo.haveskillset('kaido') then
   svo.dict.transmute = {
-    -- transmutespam is used to throttle bleed spamming so it doesn't get out of control
-    transmutespam = false,
-    transmutereps = 0,
     physical = {
       balanceless_act = true,
 
       isadvisable = function()
-        return (conf.transmute ~= 'none' and not defc.dragonform and (stats.currenthealth &lt; sys.transmuteamount or (sk.gettingfullstats and stats.currenthealth &lt; stats.maxhealth)) and not svo.doingaction'healhealth' and not svo.doingaction'transmute' and not codepaste.balanceful_codepaste() and svo.can_usemana() and (not affs.prone or svo.doingaction'prone') and not svo.dict.transmute.transmutespam) or false
+        return (conf.transmute ~= 'none' and not defc.dragonform and (stats.currenthealth &lt; sys.transmuteamount or (sk.gettingfullstats and stats.currenthealth &lt; stats.maxhealth)) and not svo.doingaction'healhealth' and not svo.doingaction'transmute' and not codepaste.balanceful_codepaste() and svo.can_usemana() and (not affs.prone or svo.doingaction'prone')) or false
       end,
 
       oncompleted = function()
-        -- count down transmute reps, and if we can, cancel the transmute-blocking timer
-        svo.dict.transmute.transmutereps = svo.dict.transmute.transmutereps - 1
-        if svo.dict.transmute.transmutereps &lt;= 0 then
-          -- in case transmute expired and we finish after
-          if svo.dict.transmute.transmutespam then killTimer(svo.dict.transmute.transmutespam); svo.dict.transmute.transmutespam = nil end
-          svo.dict.transmute.transmutereps = 0
-        end
       end,
 
       onstart = function()
@@ -13193,23 +13183,7 @@ if svo.haveskillset('kaido') then
 
         -- compute just how much of the necessary amount can we transmute given our available mana, and a 1:1 health gain/mana loss mapping
         necessary_amount = (available_mana &gt; necessary_amount) and necessary_amount or available_mana
-
-        svo.dict.transmute.transmutereps = 0
-        local reps = math.floor(necessary_amount/1000)
-
-        for _ = 1, reps do
-          send("transmute 1000", conf.commandecho)
-          svo.dict.transmute.transmutereps = svo.dict.transmute.transmutereps + 1
-        end
-        if necessary_amount % 1000 ~= 0 then
-          send("transmute "..necessary_amount % 1000, conf.commandecho)
-          svo.dict.transmute.transmutereps = svo.dict.transmute.transmutereps + 1
-        end
-
-        -- after sending a bunch of transmutes, wait a bit before doing it again
-        if svo.dict.transmute.transmutespam then killTimer(svo.dict.transmute.transmutespam); svo.dict.transmute.transmutespam = nil end
-        svo.dict.transmute.transmutespam = tempTimer(svo.getping()*1.5, function() svo.dict.transmute.transmutespam = nil; svo.dict.transmute.transmutereps = 0 svo.make_gnomes_work() end)
-        -- if it's just one transmute, then we can get it done in ping time (but allow for flexibility) - otherwise do it in 2x ping time, as there's a big skip between the first and latter commands
+          send("transmute "..necessary_amount, conf.commandecho)
       end
     }
   }
