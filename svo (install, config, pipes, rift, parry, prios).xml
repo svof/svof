@@ -2866,14 +2866,14 @@ function svo.pipe_assignid(newid)
       pipes[i].id = newid
       svo.conf[i..'id'] = newid
       pipes[i].lit = false
-      svo.dofreeadd("empty "..newid, false)
+      send("empty "..newid, false)
       raiseEvent("svo config changed", i..'id')
       return i
     elseif pipes[i].id2 == 0 then
       pipes[i].id2 = newid
       svo.conf[i..'id2'] = newid
       pipes[i].lit2 = false
-      svo.dofreeadd("empty "..newid, false)
+      send("empty "..newid, false)
       raiseEvent("svo config changed", i..'id2')
       return i
     end
