@@ -13657,6 +13657,20 @@ if svo.haveskillset('sculpting') then
     basicdef('extrusion', "terran extrusion", false, 'extrusion')
 end
 
+if svo.haveskillset('ignition') then
+    basicdef('fireshroud', "ignite shroud", false, 'fireshroud')
+end
+
+if svo.haveskillset('duress') then
+    basicdef('skysight', "manifest skysight", false, 'skysight')
+    basicdef('tempest', "manifest tempest", false, 'tempest')
+    basicdef('susurrating', "manifest susuration", false, 'susurrating')
+end
+
+if svo.haveskillset("pervasion") then
+    basicdef("cohesion", "manifest cohesion", false, "cohesion")
+end
+
 for ssa, svoa in pairs(svo.dict.sstosvoa) do
   if type(svoa) == 'string' then svo.dict.svotossa[svoa] = ssa end
 end
