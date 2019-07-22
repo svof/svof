@@ -3618,9 +3618,8 @@ function sk.asyncfill(what, where)
         end
       end
     end
-
+		rift.outr(what)
     send("put " .. what .. " in " .. where, conf.commandecho)
-    rift.outr(what)
   else
     rift.outr(what)
     if pipes[orig].puffs &gt; 0 then
