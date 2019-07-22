@@ -2866,14 +2866,14 @@ function svo.pipe_assignid(newid)
       pipes[i].id = newid
       svo.conf[i..'id'] = newid
       pipes[i].lit = false
-      send("empty "..newid, false)
+      svo.dofreeadd("empty "..newid, false)
       raiseEvent("svo config changed", i..'id')
       return i
     elseif pipes[i].id2 == 0 then
       pipes[i].id2 = newid
       svo.conf[i..'id2'] = newid
       pipes[i].lit2 = false
-      send("empty "..newid, false)
+      svo.dofreeadd("empty "..newid, false)
       raiseEvent("svo config changed", i..'id2')
       return i
     end
@@ -3618,9 +3618,8 @@ function sk.asyncfill(what, where)
         end
       end
     end
-
+		rift.outr(what)
     send("put " .. what .. " in " .. where, conf.commandecho)
-    rift.outr(what)
   else
     rift.outr(what)
     if pipes[orig].puffs &gt; 0 then

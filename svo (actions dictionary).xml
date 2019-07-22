@@ -5882,7 +5882,7 @@ end
           or (not pipes.skullcap.arty2 and not pipes.skullcap.lit2 and pipes.skullcap.puffs2 &gt; 0 and not (pipes.skullcap.id2 == 0))
           )
         and (conf.relight or sk.forcelight_valerian or sk.forcelight_skullcap or sk.forcelight_elm)
-        and not (svo.doingaction('lightskullcap') or svo.doingaction('lightelm') or svo.doingaction('lightvalerian') or svo.doingaction('lightpipes'))) or false
+        and not (conf.serverside or svo.doingaction('lightskullcap') or svo.doingaction('lightelm') or svo.doingaction('lightvalerian') or svo.doingaction('lightpipes'))) or false
       end,
 
       oncompleted = function()
@@ -5924,7 +5924,7 @@ end
       end,
 
       isadvisable = function()
-        return ((svo.dict.fillskullcap.physical.mainpipeout() or svo.dict.fillskullcap.physical.secondarypipeout()) and not svo.doingaction('fillskullcap') and not svo.doingaction('fillelm') and not svo.doingaction('fillvalerian') and not svo.will_take_balance() and not (affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm or affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm or affs.paralysis or affs.transfixed)) or false
+        return ((svo.dict.fillskullcap.physical.mainpipeout() or svo.dict.fillskullcap.physical.secondarypipeout()) and not svo.doingaction('fillskullcap') and not svo.doingaction('fillelm') and not svo.doingaction('fillvalerian') and not svo.will_take_balance() and not (affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm or affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm or affs.paralysis or affs.transfixed) and not conf.serverside) or false
       end,
 
       oncompleted = function()
@@ -5968,7 +5968,7 @@ end
       end,
 
       isadvisable = function()
-        return ((svo.dict.fillelm.physical.mainpipeout() or svo.dict.fillelm.physical.secondarypipeout()) and not svo.doingaction('fillskullcap') and not svo.doingaction('fillelm') and not svo.doingaction('fillvalerian') and not svo.will_take_balance()  and not (affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm or affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm or affs.paralysis or affs.transfixed)) or false
+        return ((svo.dict.fillelm.physical.mainpipeout() or svo.dict.fillelm.physical.secondarypipeout()) and not svo.doingaction('fillskullcap') and not svo.doingaction('fillelm') and not svo.doingaction('fillvalerian') and not svo.will_take_balance()  and not (affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm or affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm or affs.paralysis or affs.transfixed) and not conf.serverside) or false
       end,
 
       oncompleted = function()
@@ -6012,7 +6012,7 @@ end
       end,
 
       isadvisable = function()
-        if (svo.dict.fillvalerian.physical.mainpipeout() or svo.dict.fillvalerian.physical.secondarypipeout()) and not svo.doingaction('fillskullcap') and not svo.doingaction('fillelm') and not svo.doingaction('fillvalerian') and not svo.will_take_balance() then
+        if ((svo.dict.fillvalerian.physical.mainpipeout() or svo.dict.fillvalerian.physical.secondarypipeout()) and not svo.doingaction('fillskullcap') and not svo.doingaction('fillelm') and not svo.doingaction('fillvalerian') and not svo.will_take_balance() and not conf.serverside) then
 
           if (affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm or affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm or affs.paralysis or affs.transfixed) then
             sk.warn 'emptyvalerianpipenorefill'
