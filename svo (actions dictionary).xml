@@ -5968,7 +5968,7 @@ end
       end,
 
       isadvisable = function()
-        return ((svo.dict.fillelm.physical.mainpipeout() or svo.dict.fillelm.physical.secondarypipeout()) and not svo.doingaction('fillskullcap') and not svo.doingaction('fillelm') and not svo.doingaction('fillvalerian') and not svo.will_take_balance()  and not (affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm or affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm or affs.paralysis or affs.transfixed)and not conf.serverside) or false
+        return ((svo.dict.fillelm.physical.mainpipeout() or svo.dict.fillelm.physical.secondarypipeout()) and not svo.doingaction('fillskullcap') and not svo.doingaction('fillelm') and not svo.doingaction('fillvalerian') and not svo.will_take_balance()  and not (affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm or affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm or affs.paralysis or affs.transfixed) and not conf.serverside) or false
       end,
 
       oncompleted = function()
