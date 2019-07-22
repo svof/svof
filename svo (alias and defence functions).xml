@@ -3437,19 +3437,44 @@ if svo.haveskillset('emulation') then
 end
 
 if svo.haveskillset('sculpting') then
-	defs_data:set('strata', { type = 'sculpting',
-		def = "You are protected by protective strata.",
-		on = {"Calling upon the power of Garash, you form protective strata to cover your entire form.", "You are already protected by a layer of strata."}})
-	defs_data:set('tremorsense', { type = 'sculpting',
-		def = "You will know who walks upon the earth in your location.",
-		on = {"You begin to sense for those that would tread upon the hallowed earth.", "You are already focussing on the tremors caused by those that walk on land."},
-		off = {"You cease focussing on the tremors created by those that walk on land.", "You are not focussing on the tremors caused by those who walk on land."}})
-	defs_data:set('extrusion', { type = 'sculpting',
-		def = "You will restore your form with magma.",
-		on = "The magma within your form begins to churn.",
-		off = {"Magma explodes from beneath your outer strata, hardening in an instant to form a restored external coating.", "You are not able to extrude your magma to restore yourself so soon after doing it previously."}})
+  defs_data:set('strata', { type = 'sculpting',
+    def = "You are protected by protective strata.",
+    on = {"Calling upon the power of Garash, you form protective strata to cover your entire form.", "You are already protected by a layer of strata."}})
+  defs_data:set('tremorsense', { type = 'sculpting',
+    def = "You will know who walks upon the earth in your location.",
+    on = {"You begin to sense for those that would tread upon the hallowed earth.", "You are already focussing on the tremors caused by those that walk on land."},
+    off = {"You cease focussing on the tremors created by those that walk on land.", "You are not focussing on the tremors caused by those who walk on land."}})
+  defs_data:set('extrusion', { type = 'sculpting',
+    def = "You will restore your form with magma.",
+    on = "The magma within your form begins to churn.",
+    off = {"Magma explodes from beneath your outer strata, hardening in an instant to form a restored external coating.", "You are not able to extrude your magma to restore yourself so soon after doing it previously."}})
 end
 
+if svo.haveskillset('ignition') then
+  defs_data:set('fireshroud', { type = 'ignition',
+  def = "You have shrouded your with flame.",
+  on = "A shroud of flame bursts into being, cloaking you in a burning aura of crimson.",
+  off = "The burning shroud that cloaks you winks out of existence."})
+end
+
+if svo.haveskillset('duress') then
+  defs_data:set('skysight', {type = 'duress',
+    def = "You are aware of all that transpires in Whiirh's domain.",
+    on = {"You begin to focus on the events transpiring within Whiirh's domain.", "You have already enhanced yourself to detect movement through the skies."},
+    off = {"You cease to focus on the events transpiring within Whiirh's domain.", "You are not focussing on the events transpiring within Whiirh's domain."}})
+  defs_data:set('tempest', {type = 'duress',
+    def = "You are surrounded by a raging tempest.",
+    on = {"A whirling tempest comes into existence with you at the centre.","A howling tempest already rages about you."}})
+  defs_data:set('susurrating', {type = 'duress',
+  def = "Susurrations fill the air around you.",
+  on = {"A gentle breeze begins to emanate from you, creating a barely audible murmur.","Susurrations already surround you. "}})
+end
+
+if svo.haveskillset('pervasion') then
+  defs_data:set('cohesion', {type = 'pervasion',
+    def = "You have altered the cohesion of your form.",
+    on = {"You alter the cohesion of your fluid form.", "You have already altered the cohesiveness of your form."}})
+end
 do
   function defences.enablelifevision()
     if svo.dict.lifevision then return end
