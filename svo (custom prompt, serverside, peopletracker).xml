@@ -1108,6 +1108,7 @@ function sk.getafterstateprios()
 end
 
 function sk.notifypriodiffs(beforestate, afterstate)
+if not conf.serverside then return end
   local basictableindexdiff = svo.basictableindexdiff
 	local raiseEvent = raiseEvent
 
