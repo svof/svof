@@ -915,7 +915,7 @@ end
 -- if we're in defup and it's not on defup
 -- its custom onservereignore function returns true
 function sk.shouldignoreserverside(action)
-  return conf.serverside and (
+  return (
     svo.ignore[action] or
     not svo.serverignore[action] or
     (not sys.deffing and defkeepup[defs.mode][action] == false) or
@@ -1108,7 +1108,6 @@ function sk.getafterstateprios()
 end
 
 function sk.notifypriodiffs(beforestate, afterstate)
-if not conf.serverside then return end
   local basictableindexdiff = svo.basictableindexdiff
 	local raiseEvent = raiseEvent
 
