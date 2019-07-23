@@ -12275,7 +12275,13 @@ if svo.haveskillset('venom') then
       end,
 
       action = 'shrugging',
-      onstart = function() send('shrugging', conf.commandecho) end,
+			onstart = function()
+				if svo.conf.serverside then
+				  send('curing queue add shrugging', conf.commandecho) 
+				else
+      		send('shrugging', conf.commandecho) 
+				end
+			end,
 
       offbal = function() svo.lostbal_shrugging() end
     }
