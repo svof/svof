@@ -22538,8 +22538,8 @@ svo.defs["lost_fortified"..multimatches[2][2]]()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>Harmonic                 # Owner               Duration </string>
-							<string>-------------------------------------------------------------------------------</string>
+							<string>Harmonic                 # Owner               Duration</string>
+							<string>------------------------------------------------------------------------------</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>3</integer>
