@@ -3024,7 +3024,7 @@ end
 for _, regeneration in pairs({
   caloric   = {'frozen', 'shivering', 'caloric'},
   epidermal = {'anorexia', 'itching', 'stuttering', 'slashedthroat', 'blindaff', 'deafaff', 'scalded'},
-  mending   = {'selarnia', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'ablaze', 'unknowncrippledarm', 'unknowncrippledleg', 'unknowncrippledlimb'}}) do
+  mending   = {'crushedthroat','selarnia', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'ablaze', 'unknowncrippledarm', 'unknowncrippledleg', 'unknowncrippledlimb'}}) do
   local other_regeneration_affs = {}
 
   for _, aff in pairs(regeneration) do
