@@ -13180,9 +13180,6 @@ if svo.haveskillset('kaido') then
         return (conf.transmute ~= 'none' and not defc.dragonform and (stats.currenthealth &lt; sys.transmuteamount or (sk.gettingfullstats and stats.currenthealth &lt; stats.maxhealth)) and not svo.doingaction'healhealth' and not svo.doingaction'transmute' and not codepaste.balanceful_codepaste() and svo.can_usemana() and (not affs.prone or svo.doingaction'prone')) or false
       end,
 
-      oncompleted = function()
-      end,
-
       onstart = function()
         local necessary_amount = (not sk.gettingfullstats and math.ceil(sys.transmuteamount - stats.currenthealth) or (stats.maxhealth - stats.currenthealth))
         local available_mana = math.floor(stats.currentmana - sys.manause)
