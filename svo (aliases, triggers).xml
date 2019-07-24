@@ -50188,8 +50188,7 @@ svo.startedfighting("alchemist", multimatches[2][2])</script>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Humor double tempered</name>
-					<script>echo("fired")
-svo.valid.got_humour(multimatches[2][2],2)</script>
+					<script>svo.valid.got_humour(multimatches[2][2],2)</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
