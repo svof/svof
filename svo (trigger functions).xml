@@ -2140,55 +2140,9 @@ function svo.valid.humour_truewrack()
   end
 end
 
-function svo.valid.got_humour(which)
+function svo.valid.got_humour(which,count)
   svo.assert(svo.dict[which..'humour'], "svo.valid.got_humour: which humour to add?")
-
-  local function countaffs(humour)
-    local affs_in_a_humour = 3
-
-    local t = {
-      choleric    = {'illness', 'sensitivity', 'slickness'},
-      melancholic = {'anorexia', 'impatience', 'stupidity'},
-      phlegmatic  = {'asthma', 'clumsiness', 'disloyalty'},
-      sanguine    = {'haemophilia', 'recklessness',  'paralysis'}
-    }
-
-    -- add the amount of focusables in a humour as the 4th argument, to check for as well
-    for humour, data in pairs(t) do
-      local focusables_in_humour = 0
-      for i = 1, affs_in_a_humour do
-        if svo.dict[data[i]].focus then focusables_in_humour = focusables_in_humour + 1 end
-      end
-      data[affs_in_a_humour+1] = focusables_in_humour
-    end
-
-    -- update temper count according to known humour-related affs we've got
-    local count = 0
-    for i = 1, affs_in_a_humour do
-      if affs[t[humour][i]] then count = count + 1 end
-    end
-
-    -- update temper count according to unknown focusable affs we've got, limited by the max
-    -- amount of focusable affs we can have
-    if affs.unknownmental then
-      local max_focusable_affs_in_humour = t[humour][affs_in_a_humour+1]
-      count = count + (svo.dict.unknownmental.count &gt; max_focusable_affs_in_humour and max_focusable_affs_in_humour or svo.dict.unknownmental.count)
-    end
-
-    -- and lastly, unknown affs
-    if affs.unknownany then
-      count = count + svo.dict.unknownany.count
-    end
-
-    return count
-  end
-
-  -- humours give up to 3 levels in one go, depending on which relevant afflictions have you got. account for unknown afflictions as well!
-  -- 1 for the temper, + any more affs
-  local humourlevels = 1 + countaffs(which)
-  -- trim the max we counted down to 3, which is the most possible right now
-  if humourlevels &gt; 3 then humourlevels = 3 end
-
+  local humourlevels = count or 1
   svo.checkaction(svo.dict[which..'humour'].aff, true)
   lifevision.add(actions[which..'humour_aff'].p, nil, humourlevels)
 end
