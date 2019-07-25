@@ -2947,7 +2947,7 @@ svo.prompt_stats = function ()
     stats.maxhealth                = stats.maxhealth or oldmaxhealth
     stats.maxmana                  = stats.maxmana or oldmaxmana
     stats.maxendurance             = stats.maxendurance or oldmaxendurance
-    stats.maxwillpowermaxwillpower = stats.maxwillpower or oldmaxwillpower
+    stats.maxwillpower             = stats.maxwillpower or oldmaxwillpower
 
     stats.hp = sformat("%.1f", (100/stats.maxhealth)*stats.currenthealth)
     stats.mp = sformat("%.1f", (100/stats.maxmana)*stats.currentmana)
