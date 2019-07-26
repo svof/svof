@@ -37,6 +37,66 @@
 					<integer>1</integer>
 				</regexCodePropertyList>
 			</Trigger>
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>svolc Don't register</name>
+				<script>-- it's OK, the trigger is supposed to be off by default - and share the name with another
+svo.lc_ignore()</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>99</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>^\w+ dodges nimbly out of the way\.$</string>
+					<string>^\w+ twists (?:his|her) body out of harm's way\.$</string>
+					<string>^\w+ parries the attack with a deft manoeuvre\.$</string>
+					<string>^\w+ steps into the attack, grabs your arm, and throws you violently to the ground\.$</string>
+					<string>^\w+ quickly jumps back, avoiding the attack\.$</string>
+					<string>^A chaos orb intercepts the attack against \w+ and renders it harmless\.$</string>
+					<string>The attack rebounds onto you!</string>
+					<string>^A reflection of \w+ blinks out of existence\.$</string>
+					<string>The attack rebounds back onto you!</string>
+					<string>^\w+ moves into your attack, knocking your blow aside before viciously countering with a strike to your head\.$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>1</integer>
+					<integer>1</integer>
+					<integer>1</integer>
+					<integer>1</integer>
+					<integer>1</integer>
+					<integer>1</integer>
+					<integer>3</integer>
+					<integer>1</integer>
+					<integer>3</integer>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>svolc Don't register</name>
+				<script>-- it's OK, the trigger is supposed to be off by default - and share the name with another
+svo.lc_smash()</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>It breaks with a satisfying 'CRACK'.</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>3</integer>
+				</regexCodePropertyList>
+			</Trigger>
 			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Knight limbcounter</name>
 				<script></script>
@@ -63,7 +123,7 @@ local maxhp = tonumber(multimatches[2][2])
 
 local hits
 
--- attempt to account for the limbbreak penalties and bonuses that exist
+-- Modify your counts here
 if maxhp &gt; 9000 then hits = 6
 elseif maxhp &gt; 5000 then hits = 5
 elseif maxhp &gt; 4000 then hits = 4
@@ -71,8 +131,7 @@ elseif maxhp &gt; 2000 then hits = 3
 else hits = 2
 end
 
-echo"\n" svo.echof("My guess would be %d hits.", hits)
-svo.lc_sethitsneeded(multimatches[2][2], hits)</script>
+echo"\n" svo.echof("My guess would be %d hits.", hits)</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -92,9 +151,9 @@ svo.lc_sethitsneeded(multimatches[2][2], hits)</script>
 						<integer>1</integer>
 					</regexCodePropertyList>
 				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Swing</name>
-					<script>svo.lc_hit(multimatches[2][2], multimatches[2][3])</script>
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>Cutting</name>
+					<script></script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -105,81 +164,97 @@ svo.lc_sethitsneeded(multimatches[2][2], hits)</script>
 					<mSoundFile></mSoundFile>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You swing</string>
-						<string>^You swing .+ at (\w+)'s (.+?) with</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Quick jab</name>
-					<script>svo.lc_hit(multimatches[2][2], multimatches[2][3])</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>Lightning-quick, you jab</string>
-						<string>^Lightning-quick, you jab (\w+)'s (.+?) with</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Slash</name>
-					<script>svo.lc_hit(multimatches[2][2], multimatches[2][3])</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You slash into</string>
-						<string>You slash into (\w+)'s (.+?) with</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Vicious jab</name>
-					<script>svo.lc_hit(multimatches[2][2], multimatches[2][3])</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You viciously jab</string>
-						<string>^You viciously jab .+ into (\w+)'s (.+)\.$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
+					<regexCodeList />
+					<regexCodePropertyList />
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Vicious jab</name>
+						<script>svo.lc_hit(multimatches[2][2], multimatches[2][3])</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You viciously jab</string>
+							<string>^You viciously jab .+ into (\w+)'s (.+)\.$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Slash</name>
+						<script>svo.lc_hit(multimatches[2][2], multimatches[2][3])</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You slash into</string>
+							<string>You slash into (\w+)'s (.+?) with</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Quick jab</name>
+						<script>svo.lc_hit(multimatches[2][2], multimatches[2][3])</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Lightning-quick, you jab</string>
+							<string>^Lightning-quick, you jab (\w+)'s (.+?) with</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Swing</name>
+						<script>svo.lc_hit(multimatches[2][2], multimatches[2][3])</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You swing</string>
+							<string>^You swing .+ at (\w+)'s (.+?) with</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+				</TriggerGroup>
 				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Sword and Shield</name>
 					<script></script>
@@ -335,9 +410,16 @@ svo.lc_sethitsneeded(multimatches[2][2], hits)</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList />
 					<regexCodePropertyList />
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Hew</name>
-						<script>svo.lc_hit(multimatches[2][2], multimatches[2][3])</script>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Devastate</name>
+						<script>if matches[2] == "legs" then
+	svo.lc_list[matches[3]]["leftleg"] = svo.lc_break_at
+	svo.lc_list[matches[3]]["rightleg"] = svo.lc_break_at
+elseif matches[2] == "arms" then
+	svo.lc_list[matches[3]]["leftarm"] = svo.lc_break_at
+	svo.lc_list[matches[3]]["rightarm"] = svo.lc_break_at
+end
+svo.lc_checklimbcounter()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -349,17 +431,29 @@ svo.lc_sethitsneeded(multimatches[2][2], hits)</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>Taking hold of</string>
-							<string>^Taking hold of .+? with a firm two-handed grip, you hew savagely at (\w+)'s (.+?)\.$</string>
+							<string>^You whip .+? in a vicious arc, hewing savagely into the (\w+) of (\w+)\.$</string>
+							<string>^Winding up a devastating stroke of your warhammer, you unleash a crushing blow aimed at the (\w+) of (\w+).$</string>
+							<string>^Bracing your feet, you launch a devastating slash at the (\w+) of (\w+), delivering a glancing blow.$</string>
+							<string>^You direct a devastating two-handed blow with .+? at the already injured (\w+) of (\w+).$</string>
+							<string>^Adjusting your footing, you unleash a horrific slash at the (\w+) of (\w+), cleaving flesh and shattering bone in a savage display of your supremacy.$</string>
+							<string>^Drawing back .+?, you deliver a single, crippling blow to the (\w+) of (\w+), mangling bone and meat in a bloody spray.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>2</integer>
+							<integer>1</integer>
+							<integer>1</integer>
+							<integer>1</integer>
+							<integer>1</integer>
+							<integer>1</integer>
 							<integer>1</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Overhand</name>
-						<script>svo.lc_hit(multimatches[2][2], "head")</script>
+						<script>if svo.lc_checkdamage then
+	svo.lc_hit(multimatches[2][2], "head", .5)
+elseif not svo.lc_checkdamage then
+	svo.lc_hit(multimatches[2][2], "head", 1)
+end</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -380,8 +474,38 @@ svo.lc_sethitsneeded(multimatches[2][2], hits)</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Hew</name>
+						<script>if svo.lc_checkdamage then
+	svo.lc_hit(multimatches[2][2], multimatches[2][3], .5)
+elseif not svo.lc_checkdamage then
+	svo.lc_hit(multimatches[2][2], multimatches[2][3], 1)
+end</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Taking hold of</string>
+							<string>^Taking hold of .+? with a firm two-handed grip, you hew savagely at (\w+)'s (.+?)\.$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Underhand</name>
-						<script>svo.lc_hit(multimatches[2][2], "torso")</script>
+						<script>if svo.lc_checkdamage then
+	svo.lc_hit(multimatches[2][2], "torso", .5)
+elseif not svo.lc_checkdamage then
+	svo.lc_hit(multimatches[2][2], "torso", 1)
+end</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -401,10 +525,9 @@ svo.lc_sethitsneeded(multimatches[2][2], hits)</script>
 							<integer>1</integer>
 						</regexCodePropertyList>
 					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Devastate legs mangle</name>
-						<script>svo.lc_hit(multimatches[2][2], "right leg")
-svo.lc_hit(multimatches[2][2], "left leg")</script>
+					<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Battlefury Focus</name>
+						<script></script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -415,175 +538,49 @@ svo.lc_hit(multimatches[2][2], "left leg")</script>
 						<mSoundFile></mSoundFile>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>You whip</string>
-							<string>^You whip .+? in a vicious arc, hewing savagely into the legs of (\w+)\.$</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>2</integer>
-							<integer>1</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Whip</name>
-						<script>svo.lc_hit(multimatches[2][3], multimatches[2][2])</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>You whip</string>
-							<string>^You whip .+? toward the (.+?) of (\w+)\.$</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>2</integer>
-							<integer>1</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Dreadblade whip</name>
-						<script>svo.lc_hit(multimatches[2][2], "right leg")
-svo.lc_hit(multimatches[2][2], "left leg")</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>You whip a Dreadblade bastard sword in a vicious arc, hewing savagely into the legs of</string>
-							<string>^You whip a Dreadblade bastard sword in a vicious arc, hewing savagely into the legs of (\w+)</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>2</integer>
-							<integer>1</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Hellforge already injured legs</name>
-						<script>svo.lc_hit(multimatches[2][2], "right leg")
-svo.lc_hit(multimatches[2][2], "left leg")</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>You direct a devastating two-handed blow with a Hellforge Hammer at the already injured legs of</string>
-							<string>^You direct a devastating two-handed blow with a Hellforge Hammer at the already injured legs of (\w+)</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>2</integer>
-							<integer>1</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Hammer crushing blow legs</name>
-						<script>svo.lc_hit(multimatches[2][2], "right leg")
-svo.lc_hit(multimatches[2][2], "left leg")</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>Winding up a devastating stroke of your warhammer, you unleash a crushing blow aimed at the legs of </string>
-							<string>^Winding up a devastating stroke of your warhammer, you unleash a crushing blow aimed at the legs of (\w+)</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>2</integer>
-							<integer>1</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Dreadblade leg hew</name>
-						<script>svo.lc_hit(multimatches[2][2], "right leg")
-svo.lc_hit(multimatches[2][2], "left leg")</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>You whip a Dreadblade bastard sword in a vicious arc, hewing savagely into the legs of</string>
-							<string>^You whip a Dreadblade bastard sword in a vicious arc, hewing savagely into the legs of (\w+)</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>2</integer>
-							<integer>1</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Hammer crippling blow legs</name>
-						<script>svo.lc_hit(multimatches[2][2], "right leg")
-svo.lc_hit(multimatches[2][2], "left leg")</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>Drawing back a Hellforge Hammer, you deliver a single, crippling blow to the legs of</string>
-							<string>^Drawing back a Hellforge Hammer, you deliver a single, crippling blow to the legs of (\w+)</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>2</integer>
-							<integer>1</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Hellforge savage arms</name>
-						<script>svo.lc_hit(multimatches[2][2], "right arm")
-svo.lc_hit(multimatches[2][2], "left arm")</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>Bringing a Hellforge Hammer around in a savage arc, you viciously pulverise the already injured arms of </string>
-							<string>^Bringing a Hellforge Hammer around in a savage arc, you viciously pulverise the already injured arms of (\w+)</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>2</integer>
-							<integer>1</integer>
-						</regexCodePropertyList>
-					</Trigger>
+						<regexCodeList />
+						<regexCodePropertyList />
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>Speed</name>
+							<script>svo.lc_checkdamage = false</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>Channeling the fury of battle, you prepare to unleash a brutally swift stroke against your foe.</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>3</integer>
+							</regexCodePropertyList>
+						</Trigger>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>Precision</name>
+							<script>svo.lc_checkdamage = true</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>You shift your stance, poising yourself for a precise strike against your foe.</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>3</integer>
+							</regexCodePropertyList>
+						</Trigger>
+					</TriggerGroup>
 				</TriggerGroup>
 			</TriggerGroup>
 			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -824,11 +821,11 @@ end</script>
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList />
 				<regexCodePropertyList />
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Punch</name>
-					<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "arm")</script>
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>Shikudo</name>
+					<script></script>
 					<triggerType>0</triggerType>
-					<conditonLineDelta>1</conditonLineDelta>
+					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
 					<mCommand></mCommand>
 					<packageName></packageName>
@@ -837,22 +834,623 @@ end</script>
 					<mSoundFile></mSoundFile>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You ball up one fist and hammerfist</string>
-						<string>^You ball up one fist and hammerfist (\w+)\.$</string>
-						<string>^You connect to the (.+)!$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Punch</name>
-					<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "arm")</script>
+					<regexCodeList />
+					<regexCodePropertyList />
+					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Guesstimates</name>
+						<script>--Disabled on purpose
+--This currently does not have a formula to determine break counts. 
+--You will need to test and add in your own counts based upon the weapon you have.
+--Once you have tested you can enable this to get a rough estimate on your break count.
+--Shikudo hits are broken up into 3 groups. The groups are as follow:
+--Group 1 (lowest limb damage, highest count) - Dart
+--Group 2 (middle limb damage, middle count) - Spinkick, Nervestrike, Needle, Livestrike, Thrust
+--Group 3 (highest limb damage, lowest count) - Risingkick, Frontkick, Flashheel, Hiraku, Hiru, Ruku, Kuro
+
+--The below function will place the hits in an appropriate form so the limb counter can track all of the seperate hits
+--svo.lc_shikudocount(lowest, middle, highest)
+
+--You will need to go through each attack group and find what the limb counts are to set them accordingly
+
+local maxhp = tonumber(multimatches[2][2])
+
+local hits
+
+--Modify your counts here
+if maxhp &gt; 9000 then svo.lc_shikudocount(7, 6, 5)
+elseif maxhp &gt; 5000 then svo.lc_shikudocount(6, 5, 4)
+elseif maxhp &gt; 4000 then svo.lc_shikudocount(5, 4, 3)
+elseif maxhp &gt; 2000 then svo.lc_shikudocount(4, 3, 2)
+else svo.lc_shikudocount(3, 2, 1)
+end
+
+echo("\n")
+svo.echof("My guess would be Group 1: %s, Group 2: %s, Group 3: %s.", svo.lc_shikudoskill.lowest, svo.lc_shikudoskill.middle, svo.lc_shikudoskill.highest)</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You glance over</string>
+							<string>^You glance over \w+ and see that (?:his|her) health is at \d+/(\d+)\.$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Hyperfocus</name>
+						<script></script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList />
+						<regexCodePropertyList />
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>Hyperfocus on</name>
+							<script>svo.lc_shikudodamage(matches[2])</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^You will now focus on bypassing attempts to deflect blows when striking the (\w+).$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>Hyperfocus off</name>
+							<script>svo.lc_shikudodamage("none")</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>You cease to focus on exploiting flaws in defensive technique.</string>
+								<string>You are not currently focussing on exploiting flaws in defensive technique.</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>3</integer>
+								<integer>3</integer>
+							</regexCodePropertyList>
+						</Trigger>
+					</TriggerGroup>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Risingkick</name>
+						<script></script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>2</conditonLineDelta>
+						<mStayOpen>1</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You drive your foot up in a rising kick</string>
+							<string>1</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>5</integer>
+						</regexCodePropertyList>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>Torso</name>
+							<script>svo.lc_shikudohit(matches[2], "torso", "highest")</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^Your foot drives into the solar plexus of (\w+).$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>Head</name>
+							<script>svo.lc_shikudohit(matches[2], "head", "highest")</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^Your foot catches (\w+) under the chin, snapping (?:his|her) head back.$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Spinkick</name>
+						<script>if matches[2] == "ribs" then
+	svo.lc_shikudohit(matches[3], "torso", "middle")
+elseif matches[2] == "temple" then
+	svo.lc_shikudohit(matches[3], "head", "middle")
+end</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>^Whirling around, you bring the ball of your foot smashing into the (\w+) of (\w+).$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Frontkick</name>
+						<script>svo.lc_shikudohit(multimatches[3][3], ""..multimatches[3][2]"arm", "highest")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>3</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You lash out with a straight kick at</string>
+							<string>1</string>
+							<string>^The instep of your foot smashes into the (\w+) underarm of (\w+), throwing (?:him|her) from (?:his|her) feet and sending (?:him|her) spinning to the ground.$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>5</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Flashheel</name>
+						<script>svo.lc_shikudohit(multimatches[1][3], ""..multimatches[1][2]"leg", "highest")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>3</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>^Snapping your leg out to its full extent, you drive a heel into the (.*) knee of (\w+).$</string>
+							<string>1</string>
+							<string>You feel the satisfying crunch of bone under the impact of your heel.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+							<integer>5</integer>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Livestrike</name>
+						<script>svo.lc_shikudohit(multimatches[3][2], "torso", "middle")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>3</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Lunging forward, you drive the end of</string>
+							<string>1</string>
+							<string>^The breath of (\w+) leaves (?:him|her) in an explosive gasp as the end of the staff smashes home.$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>5</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Needle</name>
+						<script></script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>1</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>With pinpoint precision, you drive</string>
+							<string>^Reversing your grip on .+?\, you drive the top of the weapon into the throat of (.*).$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>Connect</name>
+							<script>svo.lc_shikudohit(matches[2], "head", "middle")</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^The end of the staff smashes into the exposed throat of (\w+), crushing cartilage.$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Nervestrike</name>
+						<script>svo.lc_shikudohit(multimatches[1][2], "head", "middle")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>3</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>^You whip an exterminated willow staff at the side of (\w+)\'s neck.$</string>
+							<string>1</string>
+							<string>Horror overcomes the face of</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+							<integer>5</integer>
+							<integer>2</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Ruku Arms 1</name>
+						<script>svo.lc_shikudohit(multimatches[1][3], ""..multimatches[1][2]"arm", "highest")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>3</conditonLineDelta>
+						<mStayOpen>1</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>^You spin a full rotation, bringing an exterminated willow staff around in a blur of motion to smash into the (.+?) arm of (\w+).$</string>
+							<string>1</string>
+							<string>^The staff connects to the .+? with a resounding crack, the limb flopping uselessly.$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+							<integer>5</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Ruku Arms 2</name>
+						<script>svo.lc_shikudohit(multimatches[1][2], ""..multimatches[3][2]"arm", "highest")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>3</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>^You whip .+? at (\w+) in a controlled arc, bringing its length to crack against (?:his|her) (.+?).$</string>
+							<string>1</string>
+							<string>^The staff connects to the (\w+) arm with a resounding crack, the limb flopping uselessly.$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+							<integer>5</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Ruku Torso 1</name>
+						<script>svo.lc_shikudohit(multimatches[1][3], "torso", "highest")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>3</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>^You spin a full rotation, bringing an exterminated willow staff around in a blur of motion to smash into the (.+?) of (\w+).$</string>
+							<string>1</string>
+							<string>^(\w+) staggers as the staff cracks across (?:his|her) ribs, sweat breaking out upon (?:his|her) forehead.$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+							<integer>5</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Ruku Torso 2</name>
+						<script>svo.lc_shikudohit(multimatches[1][2], "torso", "highest")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>3</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>^You whip .+? at (\w+) in a controlled arc, bringing its length to crack against (?:his|her) (.+?).$</string>
+							<string>1</string>
+							<string>^(\w+) staggers as the staff cracks across (?:his|her) ribs, sweat breaking out upon (?:his|her) forehead.$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+							<integer>5</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Kuro 1</name>
+						<script>svo.lc_shikudohit(multimatches[3][3], ""..multimatches[3][2]"leg", "highest")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>3</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Dropping into a lower stance, you sweep</string>
+							<string>1</string>
+							<string>^The staff cracks across the (\w+) thigh of (\w+).$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>5</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Kuro 2</name>
+						<script>svo.lc_shikudohit(multimatches[3][3], ""..multimatches[3][2]"leg", "highest")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>3</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Falling back into a low crouch, you lash out</string>
+							<string>1</string>
+							<string>^The staff cracks across the (\w+) thigh of (\w+).$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>5</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Hiru 1</name>
+						<script>svo.lc_shikudohit(multimatches[3][2], "head", "highest")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>3</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Snapping back into a ready stance, you whirl</string>
+							<string>1</string>
+							<string>^The staff connects to the side of (\w+)'s head with a resounding crack.$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>5</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Hiru 2</name>
+						<script>svo.lc_shikudohit(multimatches[3][2], "head", "highest")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>3</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>^Whirling .+? in a tight arc, you bring the weapon around to crash into the side of the head of (.*).$</string>
+							<string>1</string>
+							<string>^The staff connects to the side of (\w+)'s head with a resounding crack.$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+							<integer>5</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Hiraku</name>
+						<script></script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>1</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>^Bracing your back foot, you lunge forward with an exterminated willow staff at the face of (.*).$</string>
+							<string>^Stepping forward, you drive an exterminated willow staff at the face of (.*).$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>Connect</name>
+							<script>svo.lc_shikudohit(matches[2], "head", "highest")</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^The staff smashes into the face of (\w+) with a sickening crunch.$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Thrust</name>
+						<script>local limb = string.gsub(matches[2], " ", "") 
+svo.lc_shikudohit(matches[3], limb, "middle")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>^Continuing your kata, you spin .+? in your hands and drive it in a sharp thrust towards the (.+?) of (\w+).$</string>
+							<string>^Stepping forward, you drive the end of .+? into the (.+?) of (\w+).$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Dart</name>
+						<script>local limb = string.gsub(matches[2], " ", "") 
+svo.lc_shikudohit(matches[3], limb, "lowest")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>^Sharply extending out your arms in front of you, you deliver a lightning-fast thrust to the (.+?) of (\w+) with .+?.$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+				</TriggerGroup>
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>Tekura</name>
+					<script></script>
 					<triggerType>0</triggerType>
-					<conditonLineDelta>1</conditonLineDelta>
+					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
 					<mCommand></mCommand>
 					<packageName></packageName>
@@ -861,209 +1459,249 @@ end</script>
 					<mSoundFile></mSoundFile>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You form a spear hand and stab out towards</string>
-						<string>^You form a spear hand and stab out towards (\w+)\.$</string>
-						<string>^You connect to the (.+)!$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Punch</name>
-					<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "arm")</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>1</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You launch a powerful uppercut at</string>
-						<string>^You launch a powerful uppercut at (\w+)\.$</string>
-						<string>^You connect to the (.+)!$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Punch</name>
-					<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "arm")</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>1</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You unleash a powerful hook towards</string>
-						<string>^You unleash a powerful hook towards (\w+)\.$</string>
-						<string>^You connect to the (.+)!$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Kick</name>
-					<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "leg")</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>1</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You hurl yourself towards</string>
-						<string>^You hurl yourself towards (\w+) with a lightning\-fast moon kick\.$</string>
-						<string>^You connect to the (.+)!$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Kick</name>
-					<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "leg")</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>1</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You let fly at</string>
-						<string>^You let fly at (\w+) with a snap kick\.$</string>
-						<string>^You connect to the (.+)!$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Kick</name>
-					<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "leg")</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>1</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You pump out at</string>
-						<string>^You pump out at (\w+) with a powerful side kick\.$</string>
-						<string>^You connect to the (.+)!$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Kick</name>
-					<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "leg")</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>1</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You spin into the air and throw a whirlwind kick towards</string>
-						<string>^You spin into the air and throw a whirlwind kick towards (\w+)\.$</string>
-						<string>^You connect to the (.+)!$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Roundhouse kick</name>
-					<script>svo.ml_hit(multimatches[2][2], "torso", "torso")</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>1</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You twist your torso and send a roundhouse towards</string>
-						<string>^You twist your torso and send a roundhouse towards (\w+)\.$</string>
-						<string>^Your kick drives savagely into \w+'s chest\.$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>AXK</name>
-					<script>svo.ml_hit(multimatches[2][2], "head", "AXK")</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>1</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>You kick your leg high and scythe downwards at</string>
-						<string>^You kick your leg high and scythe downwards at (\w+)\.$</string>
-						<string>^You connect to the (.+)!$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>2</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
+					<regexCodeList />
+					<regexCodePropertyList />
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>AXK</name>
+						<script>svo.ml_hit(multimatches[2][2], "head", "AXK")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>1</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You kick your leg high and scythe downwards at</string>
+							<string>^You kick your leg high and scythe downwards at (\w+)\.$</string>
+							<string>^You connect to the (.+)!$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Roundhouse kick</name>
+						<script>svo.ml_hit(multimatches[2][2], "torso", "torso")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>1</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You twist your torso and send a roundhouse towards</string>
+							<string>^You twist your torso and send a roundhouse towards (\w+)\.$</string>
+							<string>^Your kick drives savagely into \w+'s chest\.$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Kick</name>
+						<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "leg")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>1</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You spin into the air and throw a whirlwind kick towards</string>
+							<string>^You spin into the air and throw a whirlwind kick towards (\w+)\.$</string>
+							<string>^You connect to the (.+)!$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Kick</name>
+						<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "leg")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>1</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You pump out at</string>
+							<string>^You pump out at (\w+) with a powerful side kick\.$</string>
+							<string>^You connect to the (.+)!$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Kick</name>
+						<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "leg")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>1</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You let fly at</string>
+							<string>^You let fly at (\w+) with a snap kick\.$</string>
+							<string>^You connect to the (.+)!$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Kick</name>
+						<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "leg")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>1</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You hurl yourself towards</string>
+							<string>^You hurl yourself towards (\w+) with a lightning\-fast moon kick\.$</string>
+							<string>^You connect to the (.+)!$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Punch</name>
+						<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "arm")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>1</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You unleash a powerful hook towards</string>
+							<string>^You unleash a powerful hook towards (\w+)\.$</string>
+							<string>^You connect to the (.+)!$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Punch</name>
+						<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "arm")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>1</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You launch a powerful uppercut at</string>
+							<string>^You launch a powerful uppercut at (\w+)\.$</string>
+							<string>^You connect to the (.+)!$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Punch</name>
+						<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "arm")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>1</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You ball up one fist and hammerfist</string>
+							<string>^You ball up one fist and hammerfist (\w+)\.$</string>
+							<string>^You connect to the (.+)!$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Punch</name>
+						<script>svo.ml_hit(multimatches[2][2], multimatches[3][2], "arm")</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>1</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>You form a spear hand and stab out towards</string>
+							<string>^You form a spear hand and stab out towards (\w+)\.$</string>
+							<string>^You connect to the (.+)!$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+				</TriggerGroup>
 			</TriggerGroup>
 			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Priest limbcounter</name>
@@ -1091,7 +1729,7 @@ local maxhp = tonumber(multimatches[2][2])
 
 local hits
 
--- attempt to account for the limbbreak penalties and bonuses that exist
+--Modify your counts here
 if maxhp &gt; 9000 then hits = 6
 elseif maxhp &gt; 5000 then hits = 5
 elseif maxhp &gt; 4000 then hits = 4
@@ -1099,8 +1737,8 @@ elseif maxhp &gt; 2000 then hits = 3
 else hits = 2
 end
 
-echo"\n" svo.echof("My guess would be %d hits.", hits)
-svo.lc_sethitsneeded(multimatches[2][2], hits)</script>
+echo("\n")
+svo.echof("My guess would be %d hits.", hits)</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -1173,66 +1811,6 @@ end</script>
 						<integer>1</integer>
 					</regexCodePropertyList>
 				</Trigger>
-				<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>svolc Don't register</name>
-					<script>-- it's OK, the trigger is supposed to be off by default - and share the name with another
-svo.lc_ignore()</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>99</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>^\w+ dodges nimbly out of the way\.$</string>
-						<string>^\w+ twists (?:his|her) body out of harm's way\.$</string>
-						<string>^\w+ parries the attack with a deft manoeuvre\.$</string>
-						<string>^\w+ steps into the attack, grabs your arm, and throws you violently to the ground\.$</string>
-						<string>^\w+ quickly jumps back, avoiding the attack\.$</string>
-						<string>^A chaos orb intercepts the attack against \w+ and renders it harmless\.$</string>
-						<string>The attack rebounds onto you!</string>
-						<string>^A reflection of \w+ blinks out of existence\.$</string>
-						<string>The attack rebounds back onto you!</string>
-						<string>^\w+ moves into your attack, knocking your blow aside before viciously countering with a strike to your head\.$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>3</integer>
-						<integer>1</integer>
-						<integer>3</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>svolc Don't register</name>
-					<script>-- it's OK, the trigger is supposed to be off by default - and share the name with another
-svo.lc_smash()</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>It breaks with a satisfying 'CRACK'.</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>3</integer>
-					</regexCodePropertyList>
-				</Trigger>
 			</TriggerGroup>
 			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo earth Elemental Lord limbcounter</name>
@@ -1253,8 +1831,7 @@ svo.lc_smash()</script>
 					<name>Guesstimates</name>
 					<script>-- Earth Lord's always break at 6, but the limb damage can be doubled based off Sculpting stage
 echo("\n")
-svo.echof("Earth Lords break at 6")
-svo.lc_sethitsneeded(multimatches[2][2], 6)</script>
+svo.echof("Earth Lords break at 6")</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -1304,45 +1881,6 @@ end</script>
 						<integer>1</integer>
 					</regexCodePropertyList>
 				</Trigger>
-				<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>svolc Don't register</name>
-					<script>-- it's OK, the trigger is supposed to be off by default - and share the name with another
-svo.lc_ignore()</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>99</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>^\w+ dodges nimbly out of the way\.$</string>
-						<string>^\w+ twists (?:his|her) body out of harm's way\.$</string>
-						<string>^\w+ parries the attack with a deft manoeuvre\.$</string>
-						<string>^\w+ steps into the attack, grabs your arm, and throws you violently to the ground\.$</string>
-						<string>^\w+ quickly jumps back, avoiding the attack\.$</string>
-						<string>^A chaos orb intercepts the attack against \w+ and renders it harmless\.$</string>
-						<string>The attack rebounds onto you!</string>
-						<string>^A reflection of \w+ blinks out of existence\.$</string>
-						<string>The attack rebounds back onto you!</string>
-						<string>^\w+ moves into your attack, knocking your blow aside before viciously countering with a strike to your head\.$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>3</integer>
-						<integer>1</integer>
-						<integer>3</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
 			</TriggerGroup>
 			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Dragon limbcounter</name>
@@ -1363,8 +1901,7 @@ svo.lc_ignore()</script>
 					<name>Guesstimates</name>
 					<script>-- Dragons break at 4 regardless of health
 echo("\n")
-svo.echof("Dragons break at 4")
-svo.lc_sethitsneeded(multimatches[2][2], 4)</script>
+svo.echof("Dragons break at 4")</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -1403,45 +1940,6 @@ svo.lc_sethitsneeded(multimatches[2][2], 4)</script>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>svolc Don't register</name>
-					<script>-- it's OK, the trigger is supposed to be off by default - and share the name with another
-svo.lc_ignore()</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>99</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>^\w+ dodges nimbly out of the way\.$</string>
-						<string>^\w+ twists (?:his|her) body out of harm's way\.$</string>
-						<string>^\w+ parries the attack with a deft manoeuvre\.$</string>
-						<string>^\w+ steps into the attack, grabs your arm, and throws you violently to the ground\.$</string>
-						<string>^\w+ quickly jumps back, avoiding the attack\.$</string>
-						<string>^A chaos orb intercepts the attack against \w+ and renders it harmless\.$</string>
-						<string>The attack rebounds onto you!</string>
-						<string>^A reflection of \w+ blinks out of existence\.$</string>
-						<string>The attack rebounds back onto you!</string>
-						<string>^\w+ moves into your attack, knocking your blow aside before viciously countering with a strike to your head\.$</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>1</integer>
-						<integer>3</integer>
-						<integer>1</integer>
-						<integer>3</integer>
 						<integer>1</integer>
 					</regexCodePropertyList>
 				</Trigger>
