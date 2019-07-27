@@ -21,10 +21,20 @@
 	</AliasPackage>
 	<ActionPackage />
 	<ScriptPackage>
-		<Script isActive="yes" isFolder="no">
-			<name>enchanter script</name>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>svo Enchanter</name>
 			<packageName></packageName>
-			<script>local ourobori_data = {
+			<script>function enchanterPrio(_, module)
+  if module ~= "svo (enchanter)" then return end
+  setModulePriority(module, 1)
+end
+
+registerAnonymousEventHandler("sysInstall", "enchanterPrio")</script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>enchanter script</name>
+				<packageName></packageName>
+				<script>local ourobori_data = {
   [18864] = { "ouroboros60684",  "ouroboros203598" },
   [21191] = { "ouroboros34462",  "ouroboros49014"  },
   [21192] = { "ouroboros191596", "ouroboros191631" },
@@ -1285,8 +1295,9 @@ end
 registerAnonymousEventHandler("gmcp.Char.Items.List", "svo.check_ourobori")
 registerAnonymousEventHandler("svo system loaded", "initialiseEnchantScript")
 </script>
-			<eventHandlerList />
-		</Script>
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
 	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>

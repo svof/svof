@@ -163,10 +163,20 @@ send(command, false)</script>
 	</AliasPackage>
 	<ActionPackage />
 	<ScriptPackage>
-		<Script isActive="yes" isFolder="no">
-			<name>elistsorter code</name>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>svo Elixer Sorter</name>
 			<packageName></packageName>
-			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
+			<script>function elistPrio(_, module)
+  if module ~= "svo (elistsorter)" then return end
+  setModulePriority(module, 1)
+end
+
+registerAnonymousEventHandler("sysInstall", "elistPrio")</script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>elistsorter code</name>
+				<packageName></packageName>
+				<script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -520,12 +530,12 @@ if firstload then
   svo.echof("Loaded svo Elist Sorter, version %s.", tostring(svo.es_version))
 end
 end)</script>
-			<eventHandlerList />
-		</Script>
-		<Script isActive="yes" isFolder="no">
-			<name>svo.put_vials_away</name>
-			<packageName></packageName>
-			<script>function svo.put_vials_away()
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.put_vials_away</name>
+				<packageName></packageName>
+				<script>function svo.put_vials_away()
   if not svo.storedvials then return end
   
   for vial in pairs(svo.storedvials) do
@@ -534,10 +544,11 @@ end)</script>
   
   svo.storedvials = {}
 end</script>
-			<eventHandlerList>
-				<string>svo quit</string>
-			</eventHandlerList>
-		</Script>
+				<eventHandlerList>
+					<string>svo quit</string>
+				</eventHandlerList>
+			</Script>
+		</ScriptGroup>
 	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>

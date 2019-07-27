@@ -97,7 +97,7 @@ svo.lc_smash()</script>
 					<integer>3</integer>
 				</regexCodePropertyList>
 			</Trigger>
-			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Knight limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -1882,7 +1882,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Dragon limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -1992,7 +1992,12 @@ svo.lc_sethitsneeded(name,hits)</script>
 		<ScriptGroup isActive="yes" isFolder="yes">
 			<name>svo (limbcounter)</name>
 			<packageName></packageName>
-			<script></script>
+			<script>function limbcounterPrio(_, module)
+  if module ~= "svo (limbcounter)" then return end
+  setModulePriority(module, 1)
+end
+
+registerAnonymousEventHandler("sysInstall", "limbcounterPrio")</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>svo limbcounter</name>
