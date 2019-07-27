@@ -7190,6 +7190,11 @@ end</script>
 		
 	  svo.systemloaded = false; svo_init_system()		
 	  svo.echof("Changed your Svof from %s over to %s.", oldclass, svo.me.class)
+		
+		-- if system is not paused after dragonforming, unpause serverside
+		if not svo.conf.paused then
+		  svo.force_send("curing on")
+		end
 	end
 end</script>
 				<eventHandlerList>
