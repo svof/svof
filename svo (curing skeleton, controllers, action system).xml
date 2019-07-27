@@ -1056,7 +1056,7 @@ function svo.sk.stun_symptom()
   sk.stun_count = sk.stun_count + 1
 
   if sk.stun_count &gt;= 3 then
-    svo.valid.simplestun()
+    svo.valid.proper_stun()
     echo"\n" svo.echof("auto-detected stun.")
     sk.stun_count = 0
     return
