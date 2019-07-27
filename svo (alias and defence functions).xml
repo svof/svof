@@ -1434,7 +1434,7 @@ end
     offr = {[[^\w+'s cantata shatters the defences surrounding you\.$]], [[^\w+ delivers a single, powerful blow to the aura of rebounding surrounding you, shattering it\.$]], [[^\w+ brings .+? down in a single diagonal stroke, carving cleanly through your aura of rebounding\.$]], [[^\w+ whirls .+? over (?:her|his) head, before bringing it down upon your aura of rebounding, shattering it instantly\.$]], [[^The point of .+? strikes your aura of rebounding, and rapid cracks begin to spread outward from the point of impact\. Moments later, the protection shatters\.$]]}})
   defs_data:set('blind', { type = 'general',
     def = "You are blind." })
-  defs_data:set('boar tatto', { nodef = true,
+  defs_data:set('boar tattoo', { nodef = true,
     def = "The vitality of the boar is energising you."})
   defs_data:set('moss tattoo', { nodef = true,
     def = "Your wounds are being staunched by the moss tattoo."})
