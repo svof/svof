@@ -21192,21 +21192,9 @@ svo.parseplistend()</script>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>svo started dragonform (lesser)</name>
-					<script>svo.defs.started_dragonform()
+					<script>svo.valid.dragonformingcolour(multimatches[2][2])
 
-local t = {
-   ["red"] = 'dragonfire',
-   ["black"] = 'acid',
-   ["silver"] = 'lightning',
-   ["gold"] = 'psi',
-   ["blue"] = 'ice',
-   ["green"] = 'venom'
-}
-
-if not t[multimatches[2][2]] then return end
-
-svo.conf.dragonbreath = t[multimatches[2][2]]
-raiseEvent("svo config changed", "dragonbreath")</script>
+svo.defs.started_dragonform()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
