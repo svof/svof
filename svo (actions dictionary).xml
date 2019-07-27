@@ -12470,7 +12470,7 @@ if svo.haveskillset('groves') then
 
       oncompleted = function() defences.got('flail') end,
 
-      actions = {"flail quarterstaff"}
+      actions = {"flail quarterstaff"},
 
       onstart = function()
         send('wield quarterstaff', conf.commandecho)
