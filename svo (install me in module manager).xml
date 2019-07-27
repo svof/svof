@@ -7182,9 +7182,11 @@ end</script>
 	-- save general defences in temp table, so svo doesn't waste resources
 	-- deffing what is already up	
   for k,v in pairs(svo.defc) do
-  if v then
-     if svo.defs_data[k].type == "general" then
-        temp_defs[k] = true
+    if v then
+      if svo.defs_data[k].type then
+        if svo.defs_data[k].type == "general" then
+          temp_defs[k] = true
+        end
       end
     end
   end	
@@ -7205,7 +7207,7 @@ end</script>
 		
 		-- if system is not paused after dragonforming, unpause serverside
     if not svo.conf.paused then
-      svo.force_send("curing on")
+      svo.app("off")
     end
   end
 end</script>
