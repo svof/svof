@@ -603,7 +603,7 @@ function svo.valid.dragonformingcolour(colour)
        ['red'] = 'dragonfire',
        ['black'] = 'acid',
        ['silver'] = 'lightning',
-       -- it is 'golden' and not 'gold' for this message
+       ['gold'] = 'psi',
        ['golden'] = 'psi',
        ['blue'] = 'ice',
        ['green'] = 'venom'
