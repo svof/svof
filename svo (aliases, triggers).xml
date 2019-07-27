@@ -21227,6 +21227,42 @@ raiseEvent("svo config changed", "dragonbreath")</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>svo mid elder dragonform (lesser)</name>
+					<script>svo.defs.started_dragonform()
+
+local t = {
+   ["red"] = 'dragonfire',
+   ["black"] = 'acid',
+   ["silver"] = 'lightning',
+   ["gold"] = 'psi',
+   ["blue"] = 'ice',
+   ["green"] = 'venom'
+}
+
+if not t[multimatches[2][2]] then return end
+
+svo.conf.dragonbreath = t[multimatches[2][2]]
+raiseEvent("svo config changed", "dragonbreath")</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>^As the (\w+) light shining from you grows to an intensity that </string>
+						<string>^As the (\w+) light shining from you grows to an intensity that </string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>svo started dragonform (elder)</name>
 					<script>svo.defs.started_dragonform()</script>
 					<triggerType>0</triggerType>
@@ -21269,7 +21305,7 @@ raiseEvent("svo config changed", "dragonbreath")</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>svo alreadyhave dragonform</name>
+					<name>svo already have dragonform</name>
 					<script>svo.defs.alreadyhave_dragonform()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
