@@ -9397,6 +9397,8 @@ end
       end,
 
       alreadygot = function() defences.got('dragonbreath') end,
+			
+      actions = {'summon acid', 'summon psi', 'summon ice', 'summon venom', 'summon dragonfire', 'summon lightning'},
 
       onstart = function()
         send("summon "..(conf.dragonbreath and conf.dragonbreath or 'unknown'), conf.commandecho)
@@ -12467,6 +12469,8 @@ if svo.haveskillset('groves') then
       end,
 
       oncompleted = function() defences.got('flail') end,
+
+      actions = {"flail quarterstaff"},
 
       onstart = function()
         send('wield quarterstaff', conf.commandecho)
