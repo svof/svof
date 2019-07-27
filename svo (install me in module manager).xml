@@ -7068,7 +7068,8 @@ svo.modules_list = {
     'svo (stormhammertarget)',
     'svo (limbcounter)',
     'svo (burncounter)',
-    'svo (priestreport)'
+    'svo (priestreport)',
+    'svo (enchanter)'
 
   }</script>
 			<eventHandlerList />
