@@ -163,10 +163,20 @@
 	</AliasPackage>
 	<ActionPackage />
 	<ScriptPackage>
-		<Script isActive="yes" isFolder="no">
-			<name>elistsorter code</name>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>svo Inker</name>
 			<packageName></packageName>
-			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
+			<script>function inkerPrio(_, module)
+  if module ~= "svo (inker)" then return end
+  setModulePriority(module, 1)
+end
+
+registerAnonymousEventHandler("sysInstall", "inkerPrio")</script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>inker code</name>
+				<packageName></packageName>
+				<script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -554,8 +564,9 @@ if firstload then
 end
 
 end)</script>
-			<eventHandlerList />
-		</Script>
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
 	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>

@@ -309,12 +309,14 @@ svo.doaddfree("angel seek "..svo.locating.name)</script>
 		<ScriptGroup isActive="yes" isFolder="yes">
 			<name>svo Priest Report</name>
 			<packageName></packageName>
-			<script>-------------------------------------------------
---         Put your Lua functions here.        --
---                                             --
--- Note that you can also use external Scripts --
--------------------------------------------------
-</script>
+			<script>function priestReportPrio(_, module)
+  if module ~= "svo (priestreport)" then return end
+  setModulePriority(module, 1)
+end
+
+
+
+registerAnonymousEventHandler("sysInstall", "priestReportPrio")</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>svo_load_priestreport</name>

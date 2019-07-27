@@ -377,10 +377,20 @@ svo.doadd("give 50 vial to "..svo.givevials.person)</script>
 	</AliasPackage>
 	<ActionPackage />
 	<ScriptPackage>
-		<Script isActive="yes" isFolder="no">
-			<name>refiller code</name>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>svo Refiller</name>
 			<packageName></packageName>
-			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
+			<script>function refillerPrio(_, module)
+  if module ~= "svo (refiller)" then return end
+  setModulePriority(module, 1)
+end
+
+registerAnonymousEventHandler("sysInstall", "refillerPrio")</script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>refiller code</name>
+				<packageName></packageName>
+				<script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
 -- Svof is licensed under a
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -834,12 +844,12 @@ function svo.rf_missingstuff()
 end
 
 end)</script>
-			<eventHandlerList />
-		</Script>
-		<Script isActive="yes" isFolder="no">
-			<name>svo.rf_check_trans</name>
-			<packageName></packageName>
-			<script>function svo.rf_check_trans()
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.rf_check_trans</name>
+				<packageName></packageName>
+				<script>function svo.rf_check_trans()
   if not (gmcp and gmcp.Char and gmcp.Char.Skills and gmcp.Char.Skills.Groups) then return end
 
   svo.rf_transrefiller = false
@@ -853,10 +863,11 @@ end)</script>
     end
   end
 end</script>
-			<eventHandlerList>
-				<string>gmcp.Char.Skills</string>
-			</eventHandlerList>
-		</Script>
+				<eventHandlerList>
+					<string>gmcp.Char.Skills</string>
+				</eventHandlerList>
+			</Script>
+		</ScriptGroup>
 	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>

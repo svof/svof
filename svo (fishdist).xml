@@ -300,7 +300,12 @@ fdistance = false</script>
 		<ScriptGroup isActive="yes" isFolder="yes">
 			<name>svo Fishing Distance by Trilliana</name>
 			<packageName></packageName>
-			<script></script>
+			<script>function fishdistPrio(_, module)
+  if module ~= "svo (fishdist)" then return end
+  setModulePriority(module, 1)
+end
+
+registerAnonymousEventHandler("sysInstall", "fishdistPrio")</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>svo_load_fishingdistance</name>
