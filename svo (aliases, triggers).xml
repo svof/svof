@@ -21239,9 +21239,9 @@ local t = {
    ["green"] = 'venom'
 }
 
-if not t[multimatches[2][2]] then return end
+if not t[multimatches[1][2]] then return end
 
-svo.conf.dragonbreath = t[multimatches[2][2]]
+svo.conf.dragonbreath = t[multimatches[1][2]]
 raiseEvent("svo config changed", "dragonbreath")</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -21255,10 +21255,8 @@ raiseEvent("svo config changed", "dragonbreath")</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>^As the (\w+) light shining from you grows to an intensity that </string>
-						<string>^As the (\w+) light shining from you grows to an intensity that </string>
 					</regexCodeList>
 					<regexCodePropertyList>
-						<integer>1</integer>
 						<integer>1</integer>
 					</regexCodePropertyList>
 				</Trigger>
