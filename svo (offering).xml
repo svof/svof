@@ -183,10 +183,20 @@ end</script>
 	</AliasPackage>
 	<ActionPackage />
 	<ScriptPackage>
-		<Script isActive="yes" isFolder="no">
-			<name>svo.corpse_stuff</name>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>svo Offering Module</name>
 			<packageName></packageName>
-			<script>function svo.corpse_stuff()
+			<script>function offererPrio(_, module)
+  if module ~= "svo (offering)" then return end
+  setModulePriority(module, 1)
+end
+
+registerAnonymousEventHandler("sysInstall", "offererPrio")</script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>svo.corpse_stuff</name>
+				<packageName></packageName>
+				<script>function svo.corpse_stuff()
   if not svo.off_preaction or gmcp.Char.Items.List.location ~= "inv" then return end
 
   local t = gmcp.Char.Items.List.items
@@ -238,10 +248,11 @@ end</script>
   deleteLine()
 end
 </script>
-			<eventHandlerList>
-				<string>gmcp.Char.Items.List</string>
-			</eventHandlerList>
-		</Script>
+				<eventHandlerList>
+					<string>gmcp.Char.Items.List</string>
+				</eventHandlerList>
+			</Script>
+		</ScriptGroup>
 	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>

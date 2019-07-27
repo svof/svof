@@ -528,7 +528,14 @@ svo.showprompt()</script>
   svo.showqwho = nil
   if svo.conf.debug and not s then display(m) end
   if svo.conf.perf then svo.echof("qwho rendered in %ss", stopStopWatch(time)) end
-end</script>
+end
+
+function trackerPrio(_, module)
+  if module ~= "svo (peopletracker)" then return end
+  setModulePriority(module, 1)
+end
+
+registerAnonymousEventHandler("sysInstall", "trackerPrio")</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>svo.add_peopletracker_config</name>

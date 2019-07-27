@@ -222,7 +222,14 @@ svo.bl_ignore()</script>
 		<ScriptGroup isActive="yes" isFolder="yes">
 			<name>svo Magi burncounter</name>
 			<packageName></packageName>
-			<script>-- burncounters prompt tag is defined here
+			<script>function burnPrio(_, module)
+  if module ~= "svo (burncounter)" then return end
+  setModulePriority(module, 1)
+end
+
+registerAnonymousEventHandler("sysInstall", "burnPrio")
+
+-- burncounters prompt tag is defined here
 -- feel free to tinker with it, but move it out into a script of its own,
 -- so your changes don't get erased on an update!
 tempTimer(
@@ -424,8 +431,7 @@ function svo.bl_show()
   echo(string.rep("-", 91))
 end
 
-svo.echof("Loaded svo Magi burncounter.")
-</script>
+svo.echof("Loaded svo Magi burncounter.")</script>
 				<eventHandlerList />
 			</Script>
 		</ScriptGroup>

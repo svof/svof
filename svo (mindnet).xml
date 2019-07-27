@@ -105,7 +105,12 @@ end</script>
 		<ScriptGroup isActive="yes" isFolder="yes">
 			<name>svo Mindnet Report</name>
 			<packageName></packageName>
-			<script></script>
+			<script>function mindnetPrio(_, module)
+  if module ~= "svo (mindnet)" then return end
+  setModulePriority(module, 1)
+end
+
+registerAnonymousEventHandler("sysInstall", "mindnetPrio")</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>svo_load_mindreport</name>
