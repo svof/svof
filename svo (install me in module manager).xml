@@ -7187,8 +7187,8 @@ end</script>
     -- kill temporary defense triggers for old class
     for k,v in pairs(svo.defencetemptriggers) do
       killTrigger(v)
-      svo.defencetemptriggers[v] = nil
     end
+    svo.defencetemptriggers = {}
 
     svo.me.class = newclass
     svo.signals.saveconfig:emit()
