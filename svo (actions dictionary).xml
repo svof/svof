@@ -9973,7 +9973,6 @@ end
     scouting = 'scout',
     secondsight = 'secondsight',
     selfishness = 'selfishness',
-    setweapon = 'impaling',
     shadowveil = 'shadowveil',
     shield = 'shield',
     shikudoform = false,
@@ -10666,6 +10665,26 @@ if svo.haveskillset('metamorphosis') then
     },
     gone = {
       oncompleted = function() defences.lost('frost') end
+    }
+  }
+  svo.dict.bonding = {
+    physical = {
+      balanceful_act = true, def = true, undeffable = true, -- mark as undeffable since serverside can't morph
+
+      isadvisable = function()
+        return (not defc.bonding and ((sys.deffing and defdefup[defs.mode].bonding) or (conf.keepup and defkeepup[defs.mode].bonding)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and sk.inamorph()) or false
+      end,
+
+      oncompleted = function()
+        defences.got('bonding')
+      end,
+
+      action = 'bond spirit',
+
+      onstart = function() send('bond spirit', conf.commandecho) end
+    },
+    gone = {
+      oncompleted = function() defences.lost('bonding') end
     }
   }
   svo.dict.stealth = {
@@ -12323,22 +12342,7 @@ if svo.haveskillset('alchemy') then
   }
 end
 
-if svo.haveskillset('woodlore') then
-  svo.dict.impaling = {
-    physical = {
-      balanceful_act = true, def = true, undeffable = true,
-
-      isadvisable = function()
-        return (((sys.deffing and defdefup[defs.mode].impaling and not defc.impaling) or (conf.keepup and defkeepup[defs.mode].impaling and not defc.impaling)) and not codepaste.balanceful_defs_codepaste()) or false
-      end,
-
-      oncompleted = function() defences.got('impaling') end,
-
-      onstart = function()
-        send("set "..(conf.weapon and conf.weapon or 'unknown'), conf.commandecho)
-      end
-    }
-  }
+if svo.haveskillset('skirmishing') then
   svo.dict.spinning = {
     physical = {
       balanceful_act = true, def = true, undeffable = true,
@@ -12348,6 +12352,8 @@ if svo.haveskillset('woodlore') then
       end,
 
       oncompleted = function() defences.got('spinning') end,
+
+      actions = {"spin trident", "spin spear"},
 
       onstart = function()
         send("spin "..conf.weapon and conf.weapon or 'unknown', conf.commandecho)
@@ -12470,7 +12476,7 @@ if svo.haveskillset('groves') then
 
       oncompleted = function() defences.got('flail') end,
 
-      actions = {"flail quarterstaff"},
+      action = "flail quarterstaff",
 
       onstart = function()
         send('wield quarterstaff', conf.commandecho)
