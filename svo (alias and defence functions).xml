@@ -4140,12 +4140,14 @@ signals.systemstart:connect(function ()
 --Empty the def_type table on startup and class change to prevent duplicate defences.
  defences.def_types = {}
  
+ --organise tempTriggers in a table to delete on class change
+ svo.tempDefTriggers = {}
+ 
   -- create blank defup modes
   for k,_ in pairs(defdefup_t) do
     defdefup[k] = defdefup[k] or {}
     defkeepup[k] = defkeepup[k] or {}
   end
-
 
   for defname, defdata in defs_data:iter() do
     -- sort into def types if applicable
@@ -4156,71 +4158,71 @@ signals.systemstart:connect(function ()
 
     if defdata.onr and type(defdata.onr) == 'table' then
       for _, pattern in ipairs(defdata.onr) do
-        tempRegexTrigger(pattern, 'svo.defs.got_' .. sk.sanitize(defname) .. '()')
+        table.insert(svo.tempDefTriggers, tempRegexTrigger(pattern, 'svo.defs.got_' .. sk.sanitize(defname) .. '()'))
       end
     elseif defdata.onr then
-      tempRegexTrigger(defdata.onr, 'svo.defs.got_' .. sk.sanitize(defname) .. '()')
+      table.insert(svo.tempDefTriggers, tempRegexTrigger(defdata.onr, 'svo.defs.got_' .. sk.sanitize(defname) .. '()'))
     end
 
     if defdata.on and type(defdata.on) == 'table' then
       for _, pattern in ipairs(defdata.on) do
-        (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.defs.got_' .. sk.sanitize(defname) .. '()')
+        table.insert(svo.tempDefTriggers, tempExactMatchTrigger(pattern, 'svo.defs.got_' .. sk.sanitize(defname) .. '()'))
       end
     elseif defdata.on then
-      (tempExactMatchTrigger or tempTrigger)(defdata.on, 'svo.defs.got_' .. sk.sanitize(defname) .. '()')
+      table.insert(svo.tempDefTriggers, tempExactMatchTrigger(defdata.on, 'svo.defs.got_' .. sk.sanitize(defname) .. '()'))
     end
 
     if defdata.on_only and type(defdata.on_only) == 'table' then
       for _,pattern in ipairs(defdata.on_only) do
-        (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.defs.gotonly_' .. sk.sanitize(defname) .. '()')
+        table.insert(svo.tempDefTriggers, tempExactMatchTrigger(pattern, 'svo.defs.gotonly_' .. sk.sanitize(defname) .. '()'))
       end
     elseif defdata.on_only then
-      (tempExactMatchTrigger or tempTrigger)(defdata.on_only, 'svo.defs.gotonly_' .. sk.sanitize(defname) .. '()')
+      table.insert(svo.tempDefTriggers, tempExactMatchTrigger(defdata.on_only, 'svo.defs.gotonly_' .. sk.sanitize(defname) .. '()'))
     end
 
     if defdata.on_free then (tempExactMatchTrigger or tempTrigger)(defdata.on_free, 'svo.defs.got_' .. sk.sanitize(defname) .. '()') end
 
     if defdata.offr and type(defdata.offr) == 'string' then
-        tempRegexTrigger(defdata.offr, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
+        table.insert(svo.tempDefTriggers, tempRegexTrigger(defdata.offr, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()'))
     elseif defdata.offr then
       for _,pattern in ipairs(defdata.offr) do
-        tempRegexTrigger(pattern, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
+        table.insert(svo.tempDefTriggers, tempRegexTrigger(pattern, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()'))
       end
     end
 
     if defdata.off and type(defdata.off) == 'string' then
-        (tempExactMatchTrigger or tempTrigger)(defdata.off, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
+        table.insert(svo.tempDefTriggers, tempExactMatchTrigger(defdata.off, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()'))
     elseif defdata.off then
       for _,pattern in ipairs(defdata.off) do
-        (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
+        table.insert(svo.tempDefTriggers, tempExactMatchTrigger(pattern, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()'))
       end
     end
 
     -- this is EXACTLY for substring
     if defdata.offs and type(defdata.offs) == 'string' then
-        tempTrigger(defdata.offs, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
+        table.insert(svo.tempDefTriggers, tempTrigger(defdata.offs, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()'))
     elseif defdata.offs then
       for _,pattern in ipairs(defdata.offs) do
-        tempTrigger(pattern, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')
+        table.insert(svo.tempDefTriggers, tempTrigger(pattern, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()'))
       end
     end
 
-    if defdata.off_free then (tempExactMatchTrigger or tempTrigger)(defdata.off_free, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()') end
+    if defdata.off_free then table.insert(svo.tempDefTriggers, tempExactMatchTrigger(defdata.off_free, 'svo.defs.lost_' .. sk.sanitize(defname) .. '()')) end
 
     if defdata.def and type(defdata.def) == 'table' then
       for _,pattern in ipairs(defdata.def) do
-        (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
+        table.insert(svo.tempDefTriggers, tempExactMatchTrigger(pattern, 'svo.defs.def_' .. sk.sanitize(defname) .. '()'))
       end
     elseif defdata.def then
-      (tempExactMatchTrigger or tempTrigger)(defdata.def, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
+      table.insert(svo.tempDefTriggers, tempExactMatchTrigger(defdata.def, 'svo.defs.def_' .. sk.sanitize(defname) .. '()'))
     end
 
     if defdata.defr and type(defdata.defr) == 'table' then
       for _,pattern in ipairs(defdata.defr) do
-        tempRegexTrigger(pattern, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
+        table.insert(svo.tempDefTriggers, tempRegexTrigger(pattern, 'svo.defs.def_' .. sk.sanitize(defname) .. '()'))
       end
     elseif defdata.defr then
-      tempRegexTrigger(defdata.defr, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
+      table.insert(svo.tempDefTriggers, tempRegexTrigger(defdata.defr, 'svo.defs.def_' .. sk.sanitize(defname) .. '()'))
     end
 
     if not defs['got_' .. defname] then
