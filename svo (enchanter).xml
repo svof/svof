@@ -1290,11 +1290,15 @@ function initialiseEnchantScript()
       svo.echof("Okay, will put gold coins away with '%s'.", svo.conf.enchantputgold)
     end
   })
+	
+  svo.echof("Loaded svo Enchanter.")
 end
 
 registerAnonymousEventHandler("gmcp.Char.Items.List", "svo.check_ourobori")
 registerAnonymousEventHandler("svo system loaded", "initialiseEnchantScript")
-</script>
+if svo.systemloaded  and not svo.check_ourobori then
+  initialiseEnchantScript()
+end</script>
 				<eventHandlerList />
 			</Script>
 		</ScriptGroup>
