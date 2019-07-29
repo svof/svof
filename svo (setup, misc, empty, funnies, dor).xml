@@ -357,6 +357,10 @@ svo.knownskills = {
   ["fire elemental lord"]  = {'ignition'},
   ["air elemental lord"]   = {'duress'},
   ["water elemental lord"] = {'pervasion'},
+  ["earth elemental lady"] = {'sculpting'},
+  ["fire elemental lady"]  = {'ignition'},
+  ["air elemental lady"]   = {'duress'},
+  ["water elemental lady"] = {'pervasion'},
 }
 
 me.skills = {}

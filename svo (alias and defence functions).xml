@@ -3099,10 +3099,6 @@ if svo.haveskillset('woodlore') then
   defs_data:set('spinning', { type = 'woodlore',
     onr = [[^You begin to rapidly spin .+ in a defensive pattern\.$]],
     off = [[^You cease spinning .+\.$]]})
-  defs_data:set('impaling', { type = 'woodlore',
-    onr = [[^You plant the butt end of .+ firmly on the ground and ready yourself to impale any charging enemies\.$]],
-    def = "You are preparing to impale onrushing attackers.",
-    off = "You cease your preparations to impale any charging enemies."})
   defs_data:set('evasion', { type = 'woodlore',
     on = {"You must be in the air before you can begin evasive flying.", "You begin soaring erratically and frantically, attempting to avoid the eyes gazing up from below.", "You are already attempting to elude the prying eyes below."},
     def = "You are flying evasively.",
