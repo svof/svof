@@ -1240,14 +1240,16 @@ signals["svo config changed"]:connect(function(config)
 
     if conf.curemethod == 'transonly' then
       svo.sendcuring("transmutation on")
+       svo.sendcuring("fallback off")
     elseif conf.curemethod == 'conconly' then
       svo.sendcuring("transmutation off")
+       svo.sendcuring("fallback off")
     elseif conf.curemethod == 'prefertrans' then
       svo.sendcuring("transmutation on")
-      svo.echof("Setting in-game curemethod to 'transmutation cures only', as serverside doesn't support mixed cures.")
+      svo.sendcuring("fallback on")
     elseif conf.curemethod == 'preferconc' then
        svo.sendcuring("transmutation off")
-       svo.echof("Setting in-game curemethod to 'concoctions cures only', as serverside doesn't support mixed cures.")
+       svo.sendcuring("fallback on")
     end
 
     svo.sendcuring("manathreshold "..conf.manause)
@@ -1375,14 +1377,16 @@ signals["svo config changed"]:connect(function(config)
 
   if conf.curemethod == 'transonly' then
     svo.sendcuring("transmutation on")
+    svo.sendcuring("fallback off")
   elseif conf.curemethod == 'conconly' then
     svo.sendcuring("transmutation off")
+    svo.sendcuring("fallback off")
   elseif conf.curemethod == 'prefertrans' then
     svo.sendcuring("transmutation on")
-    svo.echof("Setting in-game curemethod to 'transmutation cures only', as serverside doesn't support mixed cures.")
+    svo.sendcuring("fallback on")
   elseif conf.curemethod == 'preferconc' then
      svo.sendcuring("transmutation off")
-     svo.echof("Setting in-game curemethod to 'concoctions cures only', as serverside doesn't support mixed cures.")
+     svo.sendcuring("fallback on")
   end
 end, 'update serverside curemethod')
 
