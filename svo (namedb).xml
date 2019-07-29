@@ -2731,7 +2731,14 @@ end
 		<ScriptGroup isActive="yes" isFolder="yes">
 			<name>NameDB</name>
 			<packageName></packageName>
-			<script>ndb = ndb or {}</script>
+			<script>ndb = ndb or {}
+
+function ndbPrio(_, module)
+  if module ~= "svo (namedb)" then return end
+  setModulePriority(module, 1)
+end
+
+registerAnonymousEventHandler("sysInstall", "ndbPrio")</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>ndb.init</name>

@@ -348,9 +348,19 @@ cecho("\nStarted logging... use 'stoplog' to stop.")
 	<ActionPackage />
 	<ScriptPackage>
 		<ScriptGroup isActive="yes" isFolder="yes">
-			<name>HTML5 logger</name>
+			<name>svo Logger</name>
 			<packageName></packageName>
-			<script>html5log = html5log or {}
+			<script>function loggerPrio(_, module)
+  if module ~= "svo (logger)" then return end
+  setModulePriority(module, 1)
+end
+
+registerAnonymousEventHandler("sysInstall", "loggerPrio")</script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>HTML5 logger</name>
+				<packageName></packageName>
+				<script>html5log = html5log or {}
 
 function html5log.recordcurrentline()
   local line_num, cur_line = getLineNumber(), getCurrentLine()
@@ -472,9 +482,9 @@ function html5log.recordline()
 
     html5log.inbetween = {}
   end
-end
-</script>
-			<eventHandlerList />
+end</script>
+				<eventHandlerList />
+			</Script>
 		</ScriptGroup>
 	</ScriptPackage>
 	<KeyPackage />
