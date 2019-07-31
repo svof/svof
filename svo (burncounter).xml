@@ -265,7 +265,7 @@ tempTimer(
 
 local sk = svo.sk
 
-local hittable
+local hittable = {}
 
 svo.bl_list = {}
 svo.burn_levels = {
@@ -373,7 +373,7 @@ function svo.bl_count(who, what)
 
   hittable[who] = what
   svo.signals.after_prompt_processing:unblock(sk.bl_checkburncounter)
-  enableTrigger("svokl Don't register")
+  enableTrigger("svobl Don't register")
 end
 
 svo.signals.after_prompt_processing:connect(sk.bl_checkburncounter)
