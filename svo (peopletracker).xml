@@ -64,7 +64,7 @@ svo.deleteLineP()</script>
 disableTrigger("qwho (svo people tracker)")
 if svo.qwhoopen then killTimer(svo.qwhoopen) end
 svo.qwhoopen = nil
-tempTimer(0, function() svo.echof("Done checking all of wholist!") svo.buildwhosummary() svo.showprompt() wrapLine(getLineCount()) end)
+tempTimer(0, function() svo.echof("Done checking all of wholist!") svo.buildwhosummary() svo.showprompt() wrapLine("main", getLineCount()) end)
 raiseEvent("mmapper updated pdb")</script>
 				<triggerType>0</triggerType>
 				<conditonLineDelta>0</conditonLineDelta>
