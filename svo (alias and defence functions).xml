@@ -3461,7 +3461,7 @@ end
 
 if svo.haveskillset('ignition') then
   defs_data:set('fireshroud', { type = 'ignition',
-  def = "You have shrouded your with flame.",
+  def = "You have shrouded yourself with flame.",
   on = "A shroud of flame bursts into being, cloaking you in a burning aura of crimson.",
   off = "The burning shroud that cloaks you winks out of existence."})
 end
