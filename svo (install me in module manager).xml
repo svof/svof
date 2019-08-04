@@ -7175,8 +7175,13 @@ end</script>
 				<script>function svo.classchange(override)
   local newclass = (override ~= "gmcp.Char.Status") and override or gmcp.Char.Status.class
 	
-	-- if you're in Dragon or an unrecognised class, use the None system
-	-- works fine in Dragon as they don't have class-specific skills anyway
+	--Don't switch svo type ond dragonforming
+	if string.find(newclass, "Dragon") then
+		return
+	end
+	
+	
+	-- if you're in an unrecognised class, use the None system
 	if not svo.knownskills[newclass:lower()] then newclass = "None" end
 		
 
