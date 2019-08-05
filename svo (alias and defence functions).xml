@@ -3096,9 +3096,6 @@ if svo.haveskillset('woodlore') then
     on = {"You conceal yourself using all the guile you possess.", "You are already hidden."},
     def = "You have used great guile to conceal yourself.",
     off = {"You emerge from your hiding place.","You are discovered!","The flash of light illuminates you - you have been discovered!", "From what do you wish to emerge?"}})
-  defs_data:set('spinning', { type = 'woodlore',
-    onr = [[^You begin to rapidly spin .+ in a defensive pattern\.$]],
-    off = [[^You cease spinning .+\.$]]})
   defs_data:set('evasion', { type = 'woodlore',
     on = {"You must be in the air before you can begin evasive flying.", "You begin soaring erratically and frantically, attempting to avoid the eyes gazing up from below.", "You are already attempting to elude the prying eyes below."},
     def = "You are flying evasively.",
@@ -3235,6 +3232,9 @@ if svo.haveskillset('skirmishing') then
   defs_data:set('scout', { type = 'skirmishing',
     on = "You begin scouting ahead for danger.",
     def = {"You are able to scout passed obstructions.", "You are able to scout past obstructions."}})
+	defs_data:set('spinning', { type = 'skirmishing',
+    onr = [[^You begin to rapidly spin .+ in a defensive pattern\.$]],
+    off = [[^You cease spinning .+\.$]]})
 end
 
 if svo.haveskillset('shadowmancy') then
