@@ -97,7 +97,7 @@ svo.lc_smash()</script>
 					<integer>3</integer>
 				</regexCodePropertyList>
 			</Trigger>
-			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Knight limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -806,7 +806,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Monk limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -852,16 +852,17 @@ end</script>
 
 --You will need to go through each attack group and find what the limb counts are to set them accordingly
 
-local maxhp = tonumber(multimatches[2][2])
+local maxhp = tonumber(multimatches[2][3])
+local person = multimatches[2][2]
 
 local hits
 
 --Modify your counts here
-if maxhp &gt; 9000 then svo.lc_shikudocount(7, 6, 5)
-elseif maxhp &gt; 5000 then svo.lc_shikudocount(6, 5, 4)
-elseif maxhp &gt; 4000 then svo.lc_shikudocount(5, 4, 3)
-elseif maxhp &gt; 2000 then svo.lc_shikudocount(4, 3, 2)
-else svo.lc_shikudocount(3, 2, 1)
+if maxhp &gt; 9000 then svo.lc_shikudocount(person, 5, 6, 7)
+elseif maxhp &gt; 5000 then svo.lc_shikudocount(person, 4, 5, 6)
+elseif maxhp &gt; 4000 then svo.lc_shikudocount(person, 3, 4, 5)
+elseif maxhp &gt; 2000 then svo.lc_shikudocount(person, 2, 3, 4)
+else svo.lc_shikudocount(person, 1, 2, 3)
 end
 
 echo("\n")
@@ -878,7 +879,7 @@ svo.echof("My guess would be Group 1: %s, Group 2: %s, Group 3: %s.", svo.lc_shi
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>You glance over</string>
-							<string>^You glance over \w+ and see that (?:his|her) health is at \d+/(\d+)\.$</string>
+							<string>^You glance over (\w+) and see that (?:his|her) health is at \d+/(\d+)\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>2</integer>
@@ -1031,7 +1032,7 @@ end</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Frontkick</name>
-						<script>svo.lc_shikudohit(multimatches[3][3], ""..multimatches[3][2]"arm", "highest")</script>
+						<script>svo.lc_shikudohit(multimatches[3][3], ""..multimatches[3][2].."arm", "highest")</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>3</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -1055,7 +1056,7 @@ end</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Flashheel</name>
-						<script>svo.lc_shikudohit(multimatches[1][3], ""..multimatches[1][2]"leg", "highest")</script>
+						<script>svo.lc_shikudohit(multimatches[1][3], ""..multimatches[1][2].."leg", "highest")</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>3</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -1169,7 +1170,7 @@ end</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Ruku Arms 1</name>
-						<script>svo.lc_shikudohit(multimatches[1][3], ""..multimatches[1][2]"arm", "highest")</script>
+						<script>svo.lc_shikudohit(multimatches[1][3], ""..multimatches[1][2].."arm", "highest")</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>3</conditonLineDelta>
 						<mStayOpen>1</mStayOpen>
@@ -1181,7 +1182,7 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^You spin a full rotation, bringing an exterminated willow staff around in a blur of motion to smash into the (.+?) arm of (\w+).$</string>
+							<string>^You spin a full rotation, bringing .+? around in a blur of motion to smash into the (\w+) arm of (\w+).$</string>
 							<string>1</string>
 							<string>^The staff connects to the .+? with a resounding crack, the limb flopping uselessly.$</string>
 						</regexCodeList>
@@ -1193,7 +1194,7 @@ end</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Ruku Arms 2</name>
-						<script>svo.lc_shikudohit(multimatches[1][2], ""..multimatches[3][2]"arm", "highest")</script>
+						<script>svo.lc_shikudohit(multimatches[1][2], ""..multimatches[3][2].."arm", "highest")</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>3</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -1205,7 +1206,7 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^You whip .+? at (\w+) in a controlled arc, bringing its length to crack against (?:his|her) (.+?).$</string>
+							<string>^You whip .+? at (\w+) in a controlled arc, bringing its length to crack against (?:his|her) (.+?) arm.$</string>
 							<string>1</string>
 							<string>^The staff connects to the (\w+) arm with a resounding crack, the limb flopping uselessly.$</string>
 						</regexCodeList>
@@ -1229,7 +1230,7 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^You spin a full rotation, bringing an exterminated willow staff around in a blur of motion to smash into the (.+?) of (\w+).$</string>
+							<string>^You spin a full rotation, bringing .+? around in a blur of motion to smash into the (.+?) of (\w+).$</string>
 							<string>1</string>
 							<string>^(\w+) staggers as the staff cracks across (?:his|her) ribs, sweat breaking out upon (?:his|her) forehead.$</string>
 						</regexCodeList>
@@ -1265,7 +1266,7 @@ end</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Kuro 1</name>
-						<script>svo.lc_shikudohit(multimatches[3][3], ""..multimatches[3][2]"leg", "highest")</script>
+						<script>svo.lc_shikudohit(multimatches[3][3], ""..multimatches[3][2].."leg", "highest")</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>3</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -1289,7 +1290,7 @@ end</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Kuro 2</name>
-						<script>svo.lc_shikudohit(multimatches[3][3], ""..multimatches[3][2]"leg", "highest")</script>
+						<script>svo.lc_shikudohit(multimatches[3][3], ""..multimatches[3][2].."leg", "highest")</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>3</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -1403,11 +1404,10 @@ end</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Thrust</name>
-						<script>local limb = string.gsub(matches[2], " ", "") 
-svo.lc_shikudohit(matches[3], limb, "middle")</script>
+						<script></script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
+						<mStayOpen>1</mStayOpen>
 						<mCommand></mCommand>
 						<packageName></packageName>
 						<mFgColor>#ff0000</mFgColor>
@@ -1423,13 +1423,34 @@ svo.lc_shikudohit(matches[3], limb, "middle")</script>
 							<integer>1</integer>
 							<integer>1</integer>
 						</regexCodePropertyList>
+						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+							<name>Connect</name>
+							<script>local limb = string.gsub(matches[2], " ", "") 
+svo.lc_shikudohit(matches[3], limb, "middle")</script>
+							<triggerType>0</triggerType>
+							<conditonLineDelta>0</conditonLineDelta>
+							<mStayOpen>0</mStayOpen>
+							<mCommand></mCommand>
+							<packageName></packageName>
+							<mFgColor>#ff0000</mFgColor>
+							<mBgColor>#ffff00</mBgColor>
+							<mSoundFile></mSoundFile>
+							<colorTriggerFgColor>#000000</colorTriggerFgColor>
+							<colorTriggerBgColor>#000000</colorTriggerBgColor>
+							<regexCodeList>
+								<string>^The staff drives into the (.+?) of (\w+).$</string>
+							</regexCodeList>
+							<regexCodePropertyList>
+								<integer>1</integer>
+							</regexCodePropertyList>
+						</Trigger>
 					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Dart</name>
-						<script>local limb = string.gsub(matches[2], " ", "") 
-svo.lc_shikudohit(matches[3], limb, "lowest")</script>
+						<script>local limb = string.gsub(multimatches[3][2], " ", "") 
+svo.lc_shikudohit(multimatches[3][2], limb, "lowest")</script>
 						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
+						<conditonLineDelta>3</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
 						<mCommand></mCommand>
 						<packageName></packageName>
@@ -1440,9 +1461,13 @@ svo.lc_shikudohit(matches[3], limb, "lowest")</script>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>^Sharply extending out your arms in front of you, you deliver a lightning-fast thrust to the (.+?) of (\w+) with .+?.$</string>
+							<string>1</string>
+							<string>^The staff drives into the (.+?) of (\w+).</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
+							<integer>2</integer>
+							<integer>0</integer>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
@@ -2010,6 +2035,7 @@ registerAnonymousEventHandler("sysInstall", "limbcounterPrio")</script>
 local sk = svo.sk
 svo.lc_version = "1.0"
 svo.lc_list = {}
+svo.lc_echo = svo.lc_echo or {}
 svo.lc_priestdamage = svo.lc_priestdamage or false
 svo.lc_shikudodamage = svo.lc_shikudodamage or "none"
 svo.lc_shikudoskill = { 
@@ -2027,6 +2053,7 @@ svo.lc_classlist =
     "Priest",
     "Dragon",
     "Druid",
+		"Blademaster",
     "Sentinel",
     "earth Elemental Lord",
 		"None",
@@ -2036,6 +2063,7 @@ local hittable = {}
 svo.lc_lasthit = svo.lc_lasthit or ""
 svo.lc_break_at = svo.lc_break_at or 10
 svo.lc_prep_at = function () local prep if svo.lc_break_at then prep = svo.lc_break_at - 1 return prep end end
+svo.lc_myclass = svo.lc_myclass or ""
 if table.contains(svo.lc_classlist, svo.me.class) then
 		disableTrigger("svo Meta limbcounter")
 		disableTrigger("svo Monk limbcounter")
@@ -2047,11 +2075,15 @@ if table.contains(svo.lc_classlist, svo.me.class) then
 		disableTrigger("svo Knight limbcounter")
   if svo.me.class == "Paladin" or svo.me.class == "Runewarden" or svo.me.class == "Infernal" then
     enableTrigger("svo Knight limbcounter")
+		svo.lc_myclass = svo.me.class
   elseif svo.me.class == "Druid" or svo.me.class == "Sentinel" then
     enableTrigger("svo Meta limbcounter")
+		svo.lc_myclass = svo.me.class
   elseif svo.defc["dragonform"] == true then
 		enableTrigger("svo Dragon limbcounter")
-	else
+		svo.lc_myclass = svo.me.class
+	elseif table.contains(svo.lc_classlist, svo.me.class) then
+		svo.lc_myclass = svo.me.class
     enableTrigger("svo " .. svo.me.class .. " limbcounter")
   end
 end
@@ -2062,16 +2094,17 @@ function svo.lc_smash()
   signals.before_prompt_processing:disconnect(sk.svo.lc_checklimbcounter)
 end
 
-function svo.lc_shikudocount(low, mid, high)
-	svo.lc_shikudoskill.highest = high
+function svo.lc_shikudocount(person, low, mid, high)
+	svo.lc_shikudoskill.highest = 1
 	svo.lc_shikudoskill.highest = string.format("%2.1f", svo.lc_shikudoskill.highest)
 	svo.lc_shikudoskill.highest = tonumber(svo.lc_shikudoskill.highest)
-	svo.lc_shikudoskill.middle = (mid / high)
+	svo.lc_shikudoskill.middle = (high / mid)
 	svo.lc_shikudoskill.middle = string.format("%2.1f", svo.lc_shikudoskill.middle)
 	svo.lc_shikudoskill.middle = tonumber(svo.lc_shikudoskill.middle) 
-	svo.lc_shikudoskill.lowest = (low / high)
+	svo.lc_shikudoskill.lowest = (high / low)
 	svo.lc_shikudoskill.lowest = string.format("%2.1f", svo.lc_shikudoskill.lowest)
 	svo.lc_shikudoskill.lowest = tonumber(svo.lc_shikudoskill.lowest)
+	svo.lc_sethitsneeded(person, high)
 end
 	
 function svo.lc_appliedreset(part, person)
@@ -2132,8 +2165,12 @@ function svo.lc_priestdamage()
 	end
 end		
 
-function svo.lc_shikudodamage(limb)
-	svo.lc_shikudodamage = limb
+function svo.lc_shikudodamagecheck(limb)
+	if limb == nil then
+		svo.lc_shikudodamage = "none"
+	else
+		svo.lc_shikudodamage = limb
+	end
 end
 
 function svo.lc_checklimbcounter()
@@ -2151,27 +2188,29 @@ function svo.lc_checklimbcounter()
           where, dmg = next(t[i])
           svo.lc_list[who][where] = svo.lc_list[who][where] + dmg
           raiseEvent("svo limbcounter hit", who, where)
-        end
-        if not where then
-          svo.echof("Failed to connect.%s", get_other_prepped(svo.lc_list[who], ""))
-        else
-          if svo.lc_list[who][where] &gt;= svo.lc_break_at then
-            svo.echof("%s's %s broke.%s", who, where, get_other_prepped(svo.lc_list[who], where))
-          elseif svo.lc_list[who][where] &gt;= svo.lc_prep_at() then
-            svo.echof(
-              "%s's %s is prepped.%s", who, where, get_other_prepped(svo.lc_list[who], where)
-            )
-          else
-            svo.echof(
-              "%s's %s is now at %s/%s.%s",
-              who,
-              where,
-              svo.lc_list[who][where],
-              svo.lc_break_at,
-              get_other_prepped(svo.lc_list[who], where)
-            )
-          end
-        end
+					
+            if not where then
+              svo.echof("Failed to connect.%s", get_other_prepped(svo.lc_list[who], ""))
+            else
+              if svo.lc_list[who][where] &gt;= svo.lc_break_at then
+                svo.echof("%s's %s broke.%s", who, where, get_other_prepped(svo.lc_list[who], where))
+              elseif svo.lc_list[who][where] &gt;= svo.lc_prep_at() then
+                svo.echof(
+                  "%s's %s is prepped.%s", who, where, get_other_prepped(svo.lc_list[who], where)
+                )
+              else
+                svo.echof(
+                  "%s's %s is now at %s/%s.%s",
+                  who,
+                  where,
+                  svo.lc_list[who][where],
+                  svo.lc_break_at,
+                  get_other_prepped(svo.lc_list[who], where)
+                )
+              end
+					end
+				end
+				svo.signals.before_prompt_processing:disconnect(svo.lc_checklimbcounter)
       end
     )
   if not s then
@@ -2183,7 +2222,6 @@ function svo.lc_checklimbcounter()
   end
   hittable = {}
   disableTrigger("svolc Don't register")
-  svo.signals.before_prompt_processing:disconnect(svo.lc_checklimbcounter)
 end
 
 function svo.lc_hit(who, where, howmuch)
@@ -2194,21 +2232,20 @@ function svo.lc_hit(who, where, howmuch)
   svo.lc_lasthit = who
   hittable[who] = hittable[who] or {}
   hittable[who][#hittable[who] + 1] = {[where] = (damage and damage or 1)}
-  svo.signals.before_prompt_processing:connect(svo.lc_checklimbcounter)
   enableTrigger("svolc Don't register")
+	svo.signals.before_prompt_processing:connect(svo.lc_checklimbcounter)
 end
 
 function svo.lc_shikudohit(who, where, group)
 	local damage = svo.lc_shikudoskill[group]
-	if svo.lc_shikudodamage == "none" and svo.lc_shikudodamage ~= where then
+	if svo.lc_shikudodamage == "none" then
     svo.lc_list[who] =
       svo.lc_list[who] or {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0}
     where = where:gsub(" ", "")
     svo.lc_lasthit = who
     hittable[who] = hittable[who] or {}
     hittable[who][#hittable[who] + 1] = {[where] = (damage and damage or 1)}
-    svo.signals.before_prompt_processing:connect(svo.lc_checklimbcounter)
-    enableTrigger("svolc Don't register")
+		svo.signals.before_prompt_processing:connect(svo.lc_checklimbcounter)
 	elseif svo.lc_shikudodamage == where then
 		damage = (damage / 2)
     svo.lc_list[who] =
@@ -2217,8 +2254,7 @@ function svo.lc_shikudohit(who, where, group)
     svo.lc_lasthit = who
     hittable[who] = hittable[who] or {}
     hittable[who][#hittable[who] + 1] = {[where] = (damage and damage or 1)}
-    svo.signals.before_prompt_processing:connect(svo.lc_checklimbcounter)
-    enableTrigger("svolc Don't register")
+		svo.signals.before_prompt_processing:connect(svo.lc_checklimbcounter)
 	end
 end
 
@@ -2271,12 +2307,12 @@ function svo.lc_show()
   end
   setFgColor(unpack(svo.getDefaultColorNums))
   for person, limbt in pairs(svo.lc_list) do
-    echo("---" .. person .. " ")
+    echo("--- " .. person .. " ")
     fg('a_darkgrey')
     echoLink("(reset)", 'svo.lc_reset"' .. person .. '"', "Reset limb status for " .. person, true)
     setFgColor(unpack(svo.getDefaultColorNums))
-    echo(string.format(" -- prep at %s -- break at %s --", svo.lc_prep_at, svo.lc_break_at))
-    echo(string.rep("-", (52 - #person - #tostring(svo.lc_prep_at) - #tostring(svo.lc_break_at))))
+    echo(string.format(" -- prep at %s -- break at %s --", svo.lc_prep_at(), svo.lc_break_at))
+    echo(string.rep("-", (68 - #person - #tostring(svo.lc_prep_at()) - #tostring(svo.lc_break_at))))
     echo("\n|")
     for i = 1, #limbs do
       if limbt[limbs[i]] &gt;= svo.lc_break_at - 1 then
@@ -2327,7 +2363,7 @@ function svo.lc_sethitsneeded(person, hits)
       end
     end
   elseif lc_lasthit and svo.lc_list[lc_lasthit] then
-    svo.lc_list[lc_lasthit].svo.lc_break_at = svo.lc_break_at
+    svo.lc_list[lc_lasthit].broke = svo.lc_break_at
     echof("Set the breaking point for %s at %s.", lc_lasthit, svo.lc_break_at)
     for i = 1, #limbs do
       if svo.lc_list[lc_lasthit][limbs[i]] &gt; hits then
@@ -2365,15 +2401,15 @@ function svo.lc_synchits()
 end
 
 svo.config.setoption(
-  "limbprep",
+  "weapon",
   {
-    type = "number",
+    type = "string",
     onset =
       function()
-        echof(
-          "Will consider a limb to be prepped when it's %s hit%s away from breaking.",
-          conf.limbprep,
-          (conf.limbprep == 1 and '' or 's')
+        svo.echof(
+          "Setting your weapon to %s",
+          svo.conf.weapon,
+          (svo.conf.weaon == "none" and '' or 's')
         )
       end,
   }
@@ -2463,6 +2499,196 @@ svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.lc_versio
 				<eventHandlerList>
 					<string>svo system loaded</string>
 				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo count show</name>
+				<packageName></packageName>
+				<script>svo.lc_counttable = {
+	Runewarden = {
+		["Two Handed"] = {
+			[1] = {0, 1200},
+			[2] = {1201, 1800},
+			[3] = {1900, 2400},
+			[4] = {2400, 3093},
+			[5] = {3888, 4900},
+			[6] = {4906, 6246},
+			[7] = {6325, 7775},
+			[8] = {8030, 9000},
+			[9] = {9001, 10000},
+			[10] = {10001, 11001}
+		},
+		["Dual Cutting"] = {
+			[1] = {0, 1200},
+			[2] = {1201, 1800},
+			[3] = {1900, 2400},
+			[4] = {2400, 3093},
+			[5] = {3888, 4900},
+			[6] = {4906, 6246},
+			[7] = {6325, 7775},
+			[8] = {8030, 9000},
+			[9] = {9001, 10000},
+			[10] = {10001, 11001}
+		},
+		["Dual Blunt"] = {
+			[1] = {0, 1200},
+			[2] = {1201, 1800},
+			[3] = {1900, 2400},
+			[4] = {2400, 3093},
+			[5] = {3888, 4900},
+			[6] = {4906, 6246},
+			[7] = {6325, 7775},
+			[8] = {8030, 9000},
+			[9] = {9001, 10000},
+			[10] = {10001, 11001}
+		}
+	}
+}
+
+
+
+svo.lc_changetable = svo.lc_changetable or {}
+svo.lc_changeold = svo.lc_changeold or 0
+svo.lc_changenew = svo.lc_changenew or 0
+svo.lc_changing = svo.lc_changing or ""
+
+function svo.lc_countshow()
+  local classcounter = {}
+  if svo.defc.dragonform then
+    return
+  end
+  for _, v in pairs(svo.lc_classlist) do
+    if svo.me.class ~= v then
+      table.insert(classcounter, v)
+    end
+  end
+	setFgColor(unpack(svo.getDefaultColorNums))
+	echo("\n")
+	svo.echof("Limbcounter Count")
+	echo("\n")
+	if table.contains({"Runewarden", "Infernal", "Paladin"}, svo.lc_myclass) then
+		svo.lc_countshowknight()
+	else
+	end
+	echo("\n")
+end
+
+function svo.lc_countshowknight()
+	local spec = string.match(gmcp.Char.Vitals.charstats[3], "Spec: (.*)")
+	local counts = svo.lc_counttable[svo.me.class][spec]
+	setFgColor(unpack(svo.getDefaultColorNums))
+	echo("---- ")
+	cecho("&lt;goldenrod&gt;"..svo.me.class..": "..spec)
+	setFgColor(unpack(svo.getDefaultColorNums))
+	echo(" "..string.rep("-", 53))
+	echo("\n|"..string.format("%79s", " ").."|\n|")
+	for k, v in ipairs(svo.lc_counttable[svo.me.class][spec]) do
+		local last = table.size(svo.lc_counttable[svo.me.class][spec])
+		local position = k
+		if k ~= last and (k == 3 or k == 6 or k == 9 or k == 12 or k == 15 or k == 18 or k == 21) then
+  		echo(""..string.format("%3s", " ")..""..string.format("%1s", "["..string.format("%2s", k).."] - ["))
+    	echoLink(""..string.format("%5s", svo.lc_counttable[svo.me.class][spec][k][1]).."", [[svo.lc_changestart(]]..position..[[, "first")]], "Change beginning value", true)
+    	echo(" - ")
+    	echoLink(""..string.format("%5s", svo.lc_counttable[svo.me.class][spec][k][2]).."", [[svo.lc_changestart(]]..position..[[, "second")]], "Change end value", true)
+    	echo("] "..string.format("%3s", " ").."|\n|")
+		elseif k == last and (k == 3 or k == 6 or k == 9 or k == 12 or k == 15 or k == 18 or k == 21) then
+  		echo(""..string.format("%3s", " ")..""..string.format("%1s", "["..string.format("%2s", k).."] - ["))
+    	echoLink(""..string.format("%5s", svo.lc_counttable[svo.me.class][spec][k][1]).."", [[svo.lc_changestart(]]..position..[[, "first")]], "Change beginning value", true)
+    	echo(" - ")
+    	echoLink(""..string.format("%5s", svo.lc_counttable[svo.me.class][spec][k][2]).."", [[svo.lc_changestart(]]..position..[[, "second")]], "Change end value", true)
+    	echo("] "..string.format("%3s", " ").."|")
+		elseif k == last and (k == 2 or k == 5 or k == 8 or k == 11 or k == 14 or k == 17 or k == 20) then
+			echo(""..string.format("%3s", " ")..""..string.format("%1s", "["..string.format("%2s", k).."] - ["))
+    	echoLink(""..string.format("%5s", svo.lc_counttable[svo.me.class][spec][k][1]).."", [[svo.lc_changestart(]]..position..[[, "first")]], "Change beginning value", true)
+    	echo(" - ")
+    	echoLink(""..string.format("%5s", svo.lc_counttable[svo.me.class][spec][k][2]).."", [[svo.lc_changestart(]]..position..[[, "second")]], "Change end value", true)
+    	echo("] "..string.format("%28s", " ").."|")
+		elseif k == last and (k == 1 or k == 4 or k == 7 or k == 10 or k == 13 or k == 16 or k == 19) then
+			echo(""..string.format("%3s", " ")..""..string.format("%1s", "["..string.format("%2s", k).."] - ["))
+    	echoLink(""..string.format("%5s", svo.lc_counttable[svo.me.class][spec][k][1]).."", [[svo.lc_changestart(]]..position..[[, "first")]], "Change beginning value", true)
+    	echo(" - ")
+    	echoLink(""..string.format("%5s", svo.lc_counttable[svo.me.class][spec][k][2]).."", [[svo.lc_changestart(]]..position..[[, "second")]], "Change end value", true)
+    	echo("] "..string.format("%53s", " ").."|")
+		else
+			echo(""..string.format("%3s", " ")..""..string.format("%1s", "["..string.format("%2s", k).."] - ["))
+    	echoLink(""..string.format("%5s", svo.lc_counttable[svo.me.class][spec][k][1]).."", [[svo.lc_changestart(]]..position..[[, "first")]], "Change beginning value", true)
+    	echo(" - ")
+    	echoLink(""..string.format("%5s", svo.lc_counttable[svo.me.class][spec][k][2]).."", [[svo.lc_changestart(]]..position..[[, "second")]], "Change end value", true)
+    	echo("]")
+		end
+	end
+	echo("\n|"..string.format("%79s", " ").."|")
+	echo("\n|"..string.format("%5s", " "))
+	cechoLink("&lt;green&gt;+", [[svo.lc_addcount()]], "Add Count", true)
+	setFgColor(unpack(svo.getDefaultColorNums))
+	echo(" Add a count, ")
+	cechoLink("&lt;red&gt;-", [[svo.lc_deletecount()]], "Delete Count", true)
+	setFgColor(unpack(svo.getDefaultColorNums))
+	echo(" Delete a count")
+	echo(""..string.format("%43s", " ").."|")
+	echo("\n"..string.rep("-", 81))
+end
+
+function svo.lc_changestart(position, from)
+	echo("\n")
+	svo.echof("Change Value to What?")
+	printCmdLine("vconfig changelimbcount ")
+	svo.lc_changing = from
+	if table.contains({"Runewarden", "Infernal", "Paladin"}, svo.lc_myclass) then
+  	local spec = string.match(gmcp.Char.Vitals.charstats[3], "Spec: (.*)")
+		if from == "first" then
+			svo.lc_changeold = svo.lc_counttable[svo.me.class][spec][position][1]
+		elseif from == "second" then
+			svo.lc_changeold = svo.lc_counttable[svo.me.class][spec][position][2]
+		end
+	end
+	svo.lc_changeposition = position
+	svo.lc_changenew = to
+end
+
+function svo.lc_changeend(new)
+	if table.contains({"Runewarden", "Infernal", "Paladin"}, svo.lc_myclass) then
+  	local spec = string.match(gmcp.Char.Vitals.charstats[3], "Spec: (.*)")
+		if svo.lc_changing == "first" then
+  		svo.lc_counttable[svo.me.class][spec][svo.lc_changeposition][1] = new
+		elseif svo.lc_changing == "second" then
+			svo.lc_counttable[svo.me.class][spec][svo.lc_changeposition][2] = new
+		end
+	end
+	svo.lc_countshow()
+end
+
+function svo.lc_addcount()
+	local spec = string.match(gmcp.Char.Vitals.charstats[3], "Spec: (.*)")
+	local counts = svo.lc_counttable[svo.me.class][spec]
+	local last = table.size(svo.lc_counttable[svo.me.class][spec])
+	local new = last + 1
+	svo.lc_counttable[svo.me.class][spec][new] = {0, 0}
+	svo.lc_countshow()
+end
+
+function svo.lc_deletecount()
+	local spec = string.match(gmcp.Char.Vitals.charstats[3], "Spec: (.*)")
+	local counts = svo.lc_counttable[svo.me.class][spec]
+	local remove = table.size(svo.lc_counttable[svo.me.class][spec])
+	svo.lc_counttable[svo.me.class][spec][remove] = nil
+	svo.lc_countshow()
+end
+
+svo.config.setoption(
+  "changelimbcount",
+  {
+    type = "number",
+    onset =
+      function()
+        svo.echof(
+          "Setting the old value %s to the new value %s",
+          svo.lc_changeold, svo.conf.changelimbcount
+        )
+				svo.lc_changeend(svo.conf.changelimbcount)
+      end,
+  }
+)</script>
+				<eventHandlerList />
 			</Script>
 		</ScriptGroup>
 	</ScriptPackage>
