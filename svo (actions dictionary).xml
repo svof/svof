@@ -8363,6 +8363,215 @@ end
       end,
     }
   },
+  mindravaged = {
+    waitingfor = {
+      customwait = 30, -- Honestly not sure how long this lasts, but this seems about right; need someone to make sure
+
+      isadvisable = function ()
+        return false
+      end,
+
+      onstart = function () end,
+
+      oncompleted = function ()
+        svo.rmaff("mindravaged")
+        svo.make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function ()
+        svo.addaffdict(svo.dict.mindravaged)
+        if not svo.actions.mindravaged_waitingfor then svo.doaction(svo.dict.mindravaged.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        svo.rmaff("burning")
+        svo.killaction(svo.dict.mindravaged.waitingfor)
+      end,
+    }
+  },
+  unweavingbody = {
+    count = 0,
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return affs.unweavingbody or false
+      end,
+
+      oncompleted = function ()
+        svo.rmaff("unweavingbody")
+        svo.dict.unweavingbody.count = 0
+        svo.lostbal_herb()
+      end,
+
+      cured = function()
+        svo.lostbal_herb()
+        svo.rmaff("unweavingbody")
+        svo.dict.unweavingbody.count = 0
+      end,
+
+      eatcure = {"ginseng", "ferrum"},
+      onstart = function ()
+        svo.eat(svo.dict.unweavingbody.herb)
+      end,
+
+      empty = function()
+        svo.empty.eat_ginseng()
+      end
+    },
+    aff = {
+      oncompleted = function (number)
+        local count = svo.dict.unweavingbody.count
+        svo.addaffdict(dict.unweavingbody)
+
+        svo.dict.unweavingbody.count = (count or 0) + (number or 1)
+        if svo.dict.unweavingbody.count &gt; 5 then
+          svo.dict.unweavingbody.count = 5
+        end
+        svo.updateaffcount(svo.dict.unweavingbody)
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        svo.rmaff("unweavingbody")
+        svo.dict.unweavingbody.count = 0
+      end,
+
+      general_cure = function(amount, dontkeep)
+        svo.rmaff("unweavingbody")
+        svo.dict.unweavingbody.count = 0
+      end,
+
+      general_cured = function(amount)
+        svo.rmaff("unweavingbody")
+        svo.dict.unweavingbody.count = 0
+      end
+    }
+  },
+  unweavingmind = {
+    count = 0,
+    herb = {
+      aspriority = 0,
+      spriority = 0,
+
+      isadvisable = function ()
+        return svo.affs.unweavingmind or false
+      end,
+
+      oncompleted = function ()
+        svo.rmaff("unweavingmind")
+        svo.dict.unweavingmind.count = 0
+        svo.lostbal_herb()
+      end,
+
+      cured = function()
+        svo.lostbal_herb()
+        svo.rmaff("unweavingmind")
+        svo.dict.unweavingmind.count = 0
+      end,
+
+      eatcure = {"goldenseal", "plumbum"},
+      onstart = function ()
+        svo.eat(svo.dict.unweavingmind.herb)
+      end,
+
+      empty = function()
+        svo.empty.eat_goldenseal()
+      end
+    },
+    aff = {
+      oncompleted = function (number)
+        local count = svo.dict.unweavingmind.count
+        svo.addaffdict(svo.dict.unweavingmind)
+
+        svo.dict.unweavingmind.count = (count or 0) + (number or 1)
+        if svo.dict.unweavingmind.count &gt; 5 then
+          svo.dict.unweavingmind.count = 5
+        end
+        svo.updateaffcount(svo.dict.unweavingmind)
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        svo.rmaff("unweavingmind")
+        svo.dict.unweavingmind.count = 0
+      end,
+
+      general_cure = function(amount, dontkeep)
+        svo.rmaff("unweavingmind")
+        svo.dict.unweavingmind.count = 0
+      end,
+
+      general_cured = function(amount)
+        svo.rmaff("unweavingmind")
+        svo.dict.unweavingmind.count = 0
+      end,
+    }
+  },
+  unweavingspirit = {
+    count = 0,
+    smoke = {
+      isadvisable = function()
+        return (svo.affs.unweavingspirit and codepaste.smoke_elm_pipe()) or false
+      end,
+
+      oncompleted = function()
+        codepaste.remove_stackableaff('unweavingspirit', true)
+        svo.lostbal_smoke()
+        sk.elm_smokepuff()
+      end,
+
+      cured = function()
+        svo.lostbal_smoke()
+        sk.elm_smokepuff()
+        svo.rmaff("unweavingspirit")
+        svo.dict.unweavingspirit.count = 0
+      end,
+
+      smokecure = {'elm', 'cinnabar'},
+      onstart = function()
+        send("smoke " .. pipes.elm.id, conf.commandecho)
+      end,
+
+      empty = function()
+        svo.empty.smoke_elm()
+        svo.lostbal_smoke()
+        sk.elm_smokepuff()
+      end
+    },
+    aff = {
+      oncompleted = function (number)
+        local count = svo.dict.unweavingspirit.count
+        svo.addaffdict(svo.dict.unweavingspirit)
+
+        svo.dict.unweavingspirit.count = (count or 0) + (number or 1)
+        if svo.dict.unweavingspirit.count &gt; 5 then
+          svo.dict.unweavingspirit.count = 5
+        end
+        svo.updateaffcount(svo.dict.unweavingspirit)
+      end
+    },
+    gone = {
+      oncompleted = function ()
+        svo.rmaff("unweavingspirit")
+        svo.dict.unweavingspirit.count = 0
+      end,
+
+      general_cure = function(amount, dontkeep)
+        for i = 1, (amount or 1) do
+          codepaste.remove_stackableaff("unweavingspirit", not dontkeep)
+        end
+      end,
+
+      general_cured = function(amount)
+        svo.rmaff("unweavingspirit")
+        svo.dict.unweavingspirit.count = 0
+      end
+    }
+  },
   retardation = {
     waitingfor = {
       isadvisable = function()
@@ -9821,6 +10030,9 @@ end
     transfixation = 'transfixed',
     trueblind = false,
     unconsciousness = 'unconsciousness',
+    unweavingbody = 'unweavingbody',
+    unweavingmind = 'unweavingmind',
+    unweavingspirit = 'unweavingspirit',
     vertigo = 'vertigo',
     vinewreathed = false,
     vitiated = false,
