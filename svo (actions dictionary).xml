@@ -10893,11 +10893,24 @@ if svo.haveskillset('metamorphosis') then
 
       action = 'bond spirit',
 
-      onstart = function() send('bond spirit', conf.commandecho) end
-    },
-    gone = {
-      oncompleted = function() defences.lost('bonding') end
-    }
+      onstart = function() 
+				if sk.inamorph() then
+					send('bond spirit', conf.commandecho)
+				else
+          if defc.flame then send("relax flame", conf.commandecho) end
+
+          if sk.skillmorphs.wyvern then
+            send("morph wyvern", conf.commandecho)
+          else
+            send("morph "..sk.morphsforskill.nightsight[1], conf.commandecho)
+          end
+        end
+			end,
+
+   		gone = {
+      	oncompleted = function() defences.lost('bonding') end
+    	}
+		}
   }
   svo.dict.stealth = {
     physical = {
@@ -12241,7 +12254,7 @@ if svo.haveskillset('kaido') then
           if (stats.currenthealth &gt;= stats.maxhealth and stats.currentmana &gt;= stats.maxmana) then
             return true
           elseif not sk.gettingfullstats then
-            svo.fullstats(true)
+            svo.fullstats(true, false, true)
             svo.echof("Getting fullstats for vitality now...")
           end
         end
@@ -12568,7 +12581,7 @@ if svo.haveskillset('skirmishing') then
       actions = {"spin trident", "spin spear"},
 
       onstart = function()
-        send("spin "..conf.weapon and conf.weapon or 'unknown', conf.commandecho)
+        send("spin "..conf.weapon, conf.commandecho)
       end
     }
   }
@@ -13700,9 +13713,6 @@ if svo.haveskillset('shindo') then
   basicdef('projectiles', "projectiles on")
   basicdef('dodging', "dodging on")
   basicdef('immunity', 'immunity')
-end
-if svo.haveskillset('metamorphosis') then
-  basicdef('bonding', "bond spirit", nil, nil, true)
 end
 if svo.haveskillset('swashbuckling') then
   basicdef('arrowcatch', "arrowcatch on", nil, 'arrowcatching')
