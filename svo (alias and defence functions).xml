@@ -2905,7 +2905,7 @@ if svo.haveskillset('shikudo') then
   defs_data:set('oak', {
     type = 'shikudo',
     onenable = onenable_shikudo,
-    def = "You are enacting the the Live Oak form.",
+    def = "You are enacting the Live Oak form.",
     on = {"Rising onto the balls of your feet, you prepare to begin the deadly form of the Live Oak.", "You are already carrying out the form of Live Oak."},
     off = [[^You clumsily transition from the form of \w+ into the form of]]
   })
@@ -2919,7 +2919,7 @@ if svo.haveskillset('shikudo') then
   defs_data:set('maelstrom', {
     type = 'shikudo',
     onenable = onenable_shikudo,
-    def = "You are enacting the the Unrelenting Storm form.",
+    def = "You are enacting the Unrelenting Storm form.",
     on = {"You allow your kai to flow through you, circulating throughout your limbs and down your weapon in preparation to begin the form of the Unrelenting Storm.", "You are already carrying out the form of Unrelenting Storm."},
     off = [[^You clumsily transition from the form of \w+ into the form of]]
   })
