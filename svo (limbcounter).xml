@@ -821,7 +821,7 @@ end</script>
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList />
 				<regexCodePropertyList />
-				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Shikudo</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -1158,7 +1158,7 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^You whip an exterminated willow staff at the side of (\w+)\'s neck.$</string>
+							<string>^You whip (.+?) at the side of (\w+)\'s neck.$</string>
 							<string>1</string>
 							<string>Horror overcomes the face of</string>
 						</regexCodeList>
@@ -1374,8 +1374,8 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^Bracing your back foot, you lunge forward with an exterminated willow staff at the face of (.*).$</string>
-							<string>^Stepping forward, you drive an exterminated willow staff at the face of (.*).$</string>
+							<string>^Bracing your back foot, you lunge forward with (.+?) at the face of (.*).$</string>
+							<string>^Stepping forward, you drive (.+?) at the face of (.*).$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -1948,7 +1948,7 @@ svo.echof("Dragons break at 4")</script>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Rend</name>
-					<script>svo.dl_hit(multimatches[2][2], multimatches[2][3])</script>
+					<script>svo.lc_hit(multimatches[2][2], multimatches[2][3], 1)</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -2358,7 +2358,7 @@ function svo.lc_sethitsneeded(person, hits)
     for i = 1, #limbs do
       if svo.lc_list[person][limbs[i]] &gt; hits then
         svo.lc_list[person][limbs[i]] = 0
-        echof("Reset %s's %s limb (it's over hits needed).", svo.lc_list[person], limbs[i])
+        svo.echof("Reset %s's %s limb (it's over hits needed).", svo.lc_list[person], limbs[i])
         raiseEvent("svo limb reset", svo.lc_list[person], limbs[i])
       end
     end

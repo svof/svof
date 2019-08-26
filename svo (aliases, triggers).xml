@@ -17415,7 +17415,7 @@ raiseEvent("svo lost balance", "hydra")</script>
 					</Trigger>
 				</TriggerGroup>
 				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Tekura balances</name>
+					<name>Monk Balances</name>
 					<script></script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -17456,8 +17456,32 @@ end</script>
 							<string>You launch a powerful uppercut at </string>
 							<string>You form a spear hand and stab out towards </string>
 							<string>You unleash a powerful hook towards </string>
+							<string>Lunging forward, you drive the end of</string>
+							<string>With pinpoint precision, you drive</string>
+							<string>Reversing your grip on</string>
+							<string>^You whip .+? at the side .*.</string>
+							<string>You spin a full rotation, bringing</string>
+							<string>^You whip .+? at .*.</string>
+							<string>Dropping into a lower stance, you sweep</string>
+							<string>Falling back into a low crouch, you lash out</string>
+							<string>Bracing your back foot, you lunge forward</string>
+							<string>Stepping forward, you drive</string>
+							<string>Continuing your kata, you spin</string>
+							<string>Sharply extending out your arms in front of yo</string>
 						</regexCodeList>
 						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>2</integer>
+							<integer>2</integer>
+							<integer>2</integer>
+							<integer>2</integer>
+							<integer>2</integer>
+							<integer>2</integer>
+							<integer>1</integer>
+							<integer>2</integer>
+							<integer>1</integer>
+							<integer>2</integer>
+							<integer>2</integer>
 							<integer>2</integer>
 							<integer>2</integer>
 							<integer>2</integer>
@@ -23618,7 +23642,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Bashing triggers</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -51414,7 +51438,7 @@ fg("a_darkgrey") echo(" " .. percent .. "% mana") resetFormat()</script>
 							</regexCodePropertyList>
 						</Trigger>
 					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Bar Health on Assess</name>
 						<script>selectString("You glance over ", 1) replace("") deselect()
 
@@ -51451,7 +51475,7 @@ deselect() resetFormat()</script>
 							<integer>1</integer>
 						</regexCodePropertyList>
 					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Bar Mana on contemplate</name>
 						<script>local percent = math.floor((100/tonumber(matches[3])) * tonumber(matches[2]))
 

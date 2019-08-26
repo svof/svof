@@ -997,10 +997,10 @@ else
 enableTrigger("Kaido defences")
 end
 
-if not svo.haveskillset('tekura') then
-disableTrigger("Tekura balances")
+if not svo.haveskillset('tekura') and not svo.haveskillset('shikudo') then
+disableTrigger("Monk balances")
 else
-enableTrigger("Tekura balances")
+enableTrigger("Monk balances")
 end
 
 if svo.me.class == 'Druid' then
