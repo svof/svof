@@ -500,47 +500,76 @@ cp.definitions["^gametarget"]       = "svo.cpp.compute_gametarget_colour()"
 
 if svo.haveskillset('voicecraft') then
   cp.definitions["@voicebal"]      = "svo.cpp.compute_voicebal()"
+else
+	cp.definitions["@voicebal"]      = ""
 end
 if svo.haveskillset('domination') then
   cp.definitions["@entitiesbal"]   = "svo.cpp.compute_entitiesbal()"
+else
+	cp.definitions["@entitiesbal"]   = ""
 end
 if svo.haveskillset('zeal') then
   cp.definitions["@prayerbal"]    = "svo.cpp.compute_prayerbal()"
+else
+	cp.definitions["@prayerbal"]    = ""
 end
 if svo.haveskillset('physiology') then
   cp.definitions["@humourbal"]     = "svo.cpp.compute_humourbal()"
   cp.definitions["@homunculusbal"] = "svo.cpp.compute_homunculusbal()"
+else
+  cp.definitions["@humourbal"]     = ""
+  cp.definitions["@homunculusbal"] = ""
 end
 if svo.haveskillset('venom') then
   cp.definitions["@shrugging"]     = "svo.cpp.compute_shruggingbal()"
+else
+  cp.definitions["@shrugging"]     = ""
 end
 if svo.haveskillset('tekura') or svo.haveskillset('shikudo') then
   cp.definitions["@monkpath"]      = "svo.cpp.compute_monkpath()"
-  cp.definitions["@monkstance"]        = "svo.cpp.compute_stanceform()"
+  cp.definitions["@monkstance"]    = "svo.cpp.compute_stanceform()"
   cp.definitions["@monkfull"]      = "svo.cpp.compute_stanceform_verbose()"
+else
+  cp.definitions["@monkpath"]      = ""
+  cp.definitions["@monkstance"]    = ""
+  cp.definitions["@monkfull"]      = ""
 end
 if svo.haveskillset('kaido') then
   cp.definitions["@kai"]           = "svo.cpp.compute_kai()"
+else
+  cp.definitions["@kai"]           = ""
 end
 if svo.haveskillset('shindo') then
   cp.definitions["@shin"]          = "svo.cpp.compute_shin()"
+else
+  cp.definitions["@shin"]          = ""
 end
   cp.definitions["@timestamp"]     = "svo.cpp.compute_timestamp()"
   cp.definitions["@servertimestamp"] = "svo.cpp.compute_servertimestamp()"
 if svo.haveskillset('weaponmastery') then
   cp.definitions["@weaponmastery"] = "svo.cpp.compute_weaponmastery()"
+else
+  cp.definitions["@weaponmastery"] = ""
 end
 if svo.haveskillset('metamorphosis') then
   cp.definitions["@morph"]         = "svo.cpp.compute_morph()"
+else
+  cp.definitions["@morph"]         = ""
 end
 if svo.haveskillset('groves') then
   cp.definitions["@sunlight"]      = "svo.cpp.compute_sunlight()"
+else
+  cp.definitions["@sunlight"]      = ""
 end
 if svo.haveskillset('terminus') then
   cp.definitions["@wordbal"]       = "svo.cpp.compute_wordbal()"
+else
+  cp.definitions["@wordbal"]       = ""
 end
 if svo.haveskillset('aeonics') then
   cp.definitions["@age"]           = "svo.cpp.compute_age()"
+else
+  cp.definitions["@age"]           = ""
 end
   cp.definitions["^1"]             = "svo.cpp.compute_health_colour()"
   cp.definitions["^2"]             = "svo.cpp.compute_mana_colour()"

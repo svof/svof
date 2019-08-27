@@ -45932,8 +45932,10 @@ svo.startedfighting("bard", svo.potential_bard)</script>
 					<regexCodeList>
 						<string>^(\w+) quickly flings a tarot card at you, and you feel unreasonable lust for (?:him|her)\.$</string>
 						<string>^You feel an unusually strong lust for (\w+)(\.| \(M\)\.)$</string>
+						<string>^As your gaze falls upon the depiction, an insatiable lust for the glorious (\w+) comes over you.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
+						<integer>1</integer>
 						<integer>1</integer>
 						<integer>1</integer>
 					</regexCodePropertyList>
