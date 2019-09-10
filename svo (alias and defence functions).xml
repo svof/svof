@@ -905,8 +905,18 @@ function svo.reset.affs(echoback)
 end
 
 function svo.reset.general()
-  svo.actions = svo.pl.OrderedMap()
-  svo.lifevision.l = svo.pl.OrderedMap()
+  --svo.actions = svo.pl.OrderedMap()
+  --svo.lifevision.l = svo.pl.OrderedMap()
+	
+	local to_kill = {}
+  for _,v in svo.actions:iter() do
+  	to_kill[#to_kill+1] = svo.dict[v.p.action_name][v.p.balance]
+  end
+
+  local killaction = svo.killaction
+  for _, action in ipairs(to_kill) do
+    killaction(action)
+  end
 
   for bal in pairs(svo.bals_in_use) do
     svo.bals_in_use[bal] = {}
