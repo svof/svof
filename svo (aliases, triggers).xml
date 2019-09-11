@@ -6339,7 +6339,16 @@ svo.valid.diag_corrupted()</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>pressure</name>
-						<script>svo.valid.diag_pressure(matches[2])</script>
+						<script>local t = {
+["slightly elevated"] = 1,
+["elevated"] = 2,
+["moderately elevated"] = 3,
+["severely elevated"] = 4,
+["extremely elevated"] = 5,
+["terminally elevated"] = 6
+}
+
+svo.valid.diag_pressure(t[matches[2]])</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
