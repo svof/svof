@@ -284,20 +284,14 @@ svo.check_smoke = function(sync_mode)
 
   -- have nada?
   if not next(prios) then return end
-
+	
   if not sync_mode then
-    local set = svo.index_map(prios)
-
-    local highest, lowest = svo.getBoundary(prios)
-    for i = highest, lowest, -1 do
-      if set[i] then
-        svo.doaction(svo.dict[set[i]].smoke)
-      end
-    end
+        svo.doaction(svo.dict[svo.getHighestKey(prios)].smoke)
   else
     -- otherwise, do the highest!
     return svo.dict[svo.getHighestKey(prios)].smoke
   end
+	
 end
 
 svo.check_moss = function(sync_mode)
