@@ -836,9 +836,9 @@ end
   },
   pressure = {
     gamename = 'pressure',
-    herb = {
+    smoke = {
       isadvisable = function()
-        return (affs.pressure and bals.smoke) or false
+        return (affs.pressure and bals.herb) or false
       end,
 
       -- this is called when you still have some left 
@@ -858,11 +858,14 @@ end
         svo.dict.pressure.count = 0
       end,
 
-      noeffect = function() svo.lostbal_smoke() end,
+      noeffect = function()
+			svo.rmaff('pressure')
+			 svo.lostbal_smoke()
+			  end,
 
       eatcure = {'pear', 'calcite'},
 
-      onstart = function() svo.eat(svo.dict.pressure.herb) end
+      onstart = function() svo.eat(svo.dict.pressure.smoke) end
     },
     aff = {
       oncompleted = function (number)

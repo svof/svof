@@ -116,7 +116,7 @@ for _,affname in ipairs({'ablaze', 'severeburn', 'extremeburn', 'charredburn', '
 end
 
 -- afflictions with a count
-for _, aff in ipairs({'cholerichumour', 'melancholichumour', 'phlegmatichumour', 'sanguinehumour', 'bleeding', 'skullfractures', 'crackedribs', 'wristfractures', 'torntendons'}) do
+for _, aff in ipairs({'cholerichumour', 'melancholichumour', 'phlegmatichumour', 'sanguinehumour', 'bleeding', 'skullfractures', 'crackedribs', 'wristfractures', 'torntendons', 'pressure'}) do
   svo.valid['diag_'..aff] = function(howmuch)
     svo.sk.diag_list[aff] = tonumber(howmuch)
 
@@ -2140,6 +2140,42 @@ function svo.valid.humour_truewrack()
   end
 end
 
+function svo.valid.got_pressure(calc)
+  svo.assert(svo.dict.pressure, "svo.valid.got_pressure: how much pressure to add?")
+	if not calc then
+    svo.checkaction(svo.dict.pressure.aff, true)
+    lifevision.add(actions.pressure_aff.p, nil, 1)
+	else
+	 local function countaffs()	
+
+     local t = {"manaleech", "disloyalty", "deadening",}
+
+     -- update pressure count according to known pressure-related affs we've got	
+    local count = 0	
+    for i = 1, #t do	
+      if affs[t[i]] then count = count + 1 end	
+    end	
+
+     -- and lastly, unknown affs	
+    if affs.unknownany then	
+      count = count + svo.dict.unknownany.count	
+    end	
+     return count	
+  end	
+
+   -- pressure gives up to 3 levels in one go, depending on which relevant afflictions have you got. account for unknown afflictions as well!	
+  -- 1 for the pressure, + any more affs	
+  local pressurelevels = 1 + countaffs()	
+
+  -- trim the max we counted down to 3, which is the most possible right now	
+  if pressurelevels &gt; 3 then pressurelevels = 3 end	
+
+
+    svo.checkaction(svo.dict.pressure.aff, true)
+    lifevision.add(actions.pressure_aff.p, nil, pressurelevels)
+	end
+end
+
 function svo.valid.got_humour(which,count)
   svo.assert(svo.dict[which..'humour'], "svo.valid.got_humour: which humour to add?")
   local humourlevels = count or 1
@@ -3124,6 +3160,7 @@ for _, herb in pairs({
   ash        = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia'},
   bellwort   = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'},
   bloodroot  = {'paralysis', 'slickness'},
+	pear       = {'pressure'},
   ginger     = {'melancholichumour', 'cholerichumour', 'phlegmatichumour', 'sanguinehumour'},
   ginseng    = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy'},
   goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression', 'shadowmadness'},
@@ -3425,6 +3462,16 @@ function svo.valid.noeffect_moss()
   if not r then return end
 
   svo.herb_cure = true
+  if not lifevision.l[r.name] then
+    lifevision.add(actions[r.name].p, 'noeffect')
+  end
+end
+
+function svo.valid.noeffect_pear()
+  local r = svo.checkany(svo.dict.pressure.smoke)
+  if not r then return end
+
+  svo.smoke_cure = true
   if not lifevision.l[r.name] then
     lifevision.add(actions[r.name].p, 'noeffect')
   end

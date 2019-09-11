@@ -2616,6 +2616,7 @@ for herbname, herbaffs in pairs({
   lobelia = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'spiritburn', 'tenderskin'},
   ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy'},
   ash = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia'},
+	pear = {'pressure'},
   bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'}
 }) do
   empty['eat_'..herbname] = function()
@@ -2721,6 +2722,9 @@ empty.smoke_valerian = function()
   svo.rmaff({'disloyalty', 'manaleech', 'slickness', 'hellsight'})
 end
 
+empty.smoke_pear = function()
+	svo.rmaff('pressure')
+end
 
 empty.writhe = function()
   svo.rmaff({'impale', 'bound', 'webbed', 'roped', 'transfixed', 'hoisted'})
