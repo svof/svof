@@ -270,7 +270,7 @@ Svof by default is in *vconfig autoreject whitelist* mode - which means that any
 You can also set it to the blacklist mode - where it will reject names *only* on the lustlist. You can do that with *vconfig autoreject blacklist*.
 
 Hoisting
-~~~~
+~~~~~~~~
 Svof by default is in *vconfig autowrithe whitelist* mode - which means that any name not on its whitelist will be writhed against when they hoist you. To add/remove names on the hoistlist, do *vconfig hoistlist <name>*.
 
 You can also set it to the blacklist mode - where it will *only* writhe against names on the hoistlist. You can do that with *vconfig autowrithe blacklist*.
