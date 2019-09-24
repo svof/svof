@@ -4,7 +4,7 @@ The Multi-Class limbcounter automatically tracks whomever you are hitting, and t
 
 It also has a feature of showing the last hit opponents limb status on the prompt - to use this, add the *@lc_prompttag*, *@lc_prompttag2* or *@lc_prompttag3* tag to your :ref:`custom prompt<customprompt>`. The tags display the same information in different ways, so choose whichever one you'd like. If you'd like to modify a tag, the source code for them is available in the script for the addon - copy it into a new script (so it doesn't get overwritten on an update) and feel free to tinker.
 
-If you just want to keep your prompt as-is, then you can use this: ::
+If you just want to keep your prompt as-is, then you can use this::
 
 	vconfig customprompt ^1@healthh, ^2@manam, ^5@endurancee, ^4@willpowerw ^W@eqbal@defs^b|@lc_prompttag^W- @affs
 
