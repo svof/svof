@@ -1,5 +1,5 @@
 Svof Elist Sorter
-================
+=================
 This script helps you keep your vials in good order - it tells you what you're running low on (with configurable amounts for each elixir/salve/venom), what is about to decay (with configurable time), and has a button for inserting text of which refills would you like (venoms work as well). For vials that are about to decay, it has a feature to pour contents into other vials and then dispose of them via a custom command.
 
 To use it, check *elist* or *vlist* and it'll display a nicely organized menu of it's own after the output. If you're running low on any vials, it'll tell you how many of each, and allow you to click on a button at the end of the menu that'll insert into the command line what stuff do you need.
