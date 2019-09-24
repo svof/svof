@@ -85,7 +85,7 @@ Be wary of storing it on a Linux NFS share as well - that seems to present issue
 
 Troubleshooting
 ^^^^^^^^^^^^^^^
-If your qwho-like aliases and any others that do anything with geography stop working, and you check the errors view to see **mmp** being mentioned, like so::
+If your qwho-like aliases and any others that do anything with geography stop working, and you check the errors view to see **mmp** being mentioned, like so:: lua
 
   [ERROR:] object:<error in anonymous Lua function> function:<no debug data available>
            <Lua error:[string "function mmp.echo(what)..."]:125: attempt to index local 'key' (a number value)>
