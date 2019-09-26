@@ -3176,6 +3176,53 @@ end
       end,
     }
   },
+  tonguetied = {
+    salve = {
+      isadvisable = function()
+        return (affs.tonguetied) or false
+      end,
+
+      oncompleted = function()
+        svo.lostbal_salve()
+
+        svo.doaction(svo.dict.curingtonguetied.waitingfor)
+      end,
+
+      applycure = {'restoration', 'reconstructive'},
+      actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
+      onstart = function()
+        svo.apply(svo.dict.tonguetied.salve, " to head")
+      end,
+
+      -- we get no msg from an application of this
+      empty = function()
+        svo.dict.tonguetied.salve.oncompleted()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.tonguetied)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('tonguetied') end,
+    }
+  },
+  curingtonguetied = {
+    waitingfor = {
+      customwait = 6, -- 4 to cure
+
+      oncompleted = function() svo.rmaff('tonguetied') end,
+
+      ontimeout = function() svo.rmaff('tonguetied') end,
+
+      noeffect = function() svo.rmaff('tonguetied') end,
+
+      onstart = function()
+        -- add blocking of the cure coming too early if it'll become necessary.
+      end,
+    }
+  },
 
   mutilatedrightleg = {
     gamename = 'mangledrightleg',
@@ -4800,7 +4847,7 @@ end
   stuttering = {
     salve = {
       isadvisable = function()
-        return (affs.stuttering) or false
+        return (affs.stuttering and not affs.tonguetied) or false
       end,
 
       oncompleted = function()
