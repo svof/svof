@@ -977,7 +977,7 @@ disableTrigger(&quot;NameDB qw&quot;)</script>
                         <regexCodeList>
                             <string>.*</string>
                             <string>1</string>
-                            <string>^Plus another (\d+) whose presence you cannot fully sense(?: \(\d+ total\))?\.$</string>
+                            <string>^(?:Plus another (\d+) whose presence you cannot fully sense (?:\(\d+ total\))?\.|\((\d+) total\)\.$)</string>
                         </regexCodeList>
                         <regexCodePropertyList>
                             <integer>1</integer>
