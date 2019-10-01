@@ -1,7 +1,12 @@
 language: ruby
 rvm:
+<<<<<<< HEAD
 - 2.5.3
 dist: xenial
+=======
+- 2.3.0
+dist: trusty
+>>>>>>> e8c4abf39ab5cd5a8d1dcf51b74b6756efb2d497
 sudo: required
 install:
 - sudo apt-get update
