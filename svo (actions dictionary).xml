@@ -13927,7 +13927,7 @@ end
 if svo.haveskillset('duress') then
     basicdef('skysight', "manifest skysight", false, 'skysight')
     basicdef('tempest', "manifest tempest", false, 'tempest')
-    basicdef('susurrating', "manifest susuration", false, 'susurrating')
+    basicdef('susurrating', "manifest susurration", false, 'susurrating')
 end
 
 if svo.haveskillset("pervasion") then
