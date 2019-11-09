@@ -40,6 +40,7 @@ spriority: global async priority. In use when curing in sync mode.
 aspriority: inter-balance sync priority. In use when curing in async mode.
 isadvisable: determines if it is possible to cure this aff. some things that
   block bals might not block a single aff
+undeffable: undeffable by serverside, or if you want Svo to put the defence up instead of ss for any reason				
 ]]
 
 local sys, affs, defdefup, defkeepup, signals = svo.sys, svo.affs, svo.defdefup, svo.defkeepup, svo.signals
