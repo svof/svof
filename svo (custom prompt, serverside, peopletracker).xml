@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
-<MudletPackage version="1.001">
+<MudletPackage version="1.002">
 	<TriggerPackage />
 	<TimerPackage />
 	<AliasPackage />
@@ -162,7 +162,7 @@ cpp.compute_kai_colour = function ()
     return "&lt;a_fourlevel&gt;"
   elseif stats.kai &lt;= 81 then
     return "&lt;a_fivelevel&gt;"
-  elseif stats.kai == 100 then
+  elseif stats.kai &lt;= 100 then
     return "&lt;a_sixlevel&gt;"
   else
     return ""
@@ -194,12 +194,33 @@ cpp.compute_shin_colour = function ()
     return "&lt;a_fourlevel&gt;"
   elseif stats.shin &lt;= 90 then
     return "&lt;a_fivelevel&gt;"
-  elseif stats.shin == 100 then
+  elseif stats.shin &lt;= 100 then
     return "&lt;a_sixlevel&gt;"
   else
     return ""
   end
+end
+end
 
+if svo.haveskillset('aeonics') then
+cpp.compute_age_colour = function ()
+  if not stats.age or stats.age == 0 then
+    return "&lt;grey&gt;"
+  elseif stats.age &lt;= 150 then
+    return "&lt;ansi_light_green&gt;"
+  elseif stats.age &lt;= 300 then
+    return "&lt;ansiGreen&gt;"
+  elseif stats.age &lt;= 450 then
+    return "&lt;ansi_yellow&gt;"
+  elseif stats.age &lt;= 600 then
+    return "&lt;gold&gt;"
+  elseif stats.age &lt;= 800 then
+    return "&lt;blaze_orange&gt;"
+  elseif stats.age &lt;= 1000 then
+    return "&lt;red&gt;"
+  else
+    return ""
+  end
 end
 end
 
@@ -269,9 +290,9 @@ end
 end
 
 if svo.haveskillset('aeonics') then
-cpp.compute_age = function()
-  return ((stats.age and stats.age &gt; 0) and tostring(stats.age) or "")
-end
+  cpp.compute_age = function()
+    return ((stats.age and stats.age &gt; 0) and tostring(stats.age) or "")
+  end
 end
 
 cpp.compute_timestamp = function()
@@ -501,75 +522,75 @@ cp.definitions["^gametarget"]       = "svo.cpp.compute_gametarget_colour()"
 if svo.haveskillset('voicecraft') then
   cp.definitions["@voicebal"]      = "svo.cpp.compute_voicebal()"
 else
-	cp.definitions["@voicebal"]      = ""
+	cp.definitions["@voicebal"]      = "''"
 end
 if svo.haveskillset('domination') then
   cp.definitions["@entitiesbal"]   = "svo.cpp.compute_entitiesbal()"
 else
-	cp.definitions["@entitiesbal"]   = ""
+	cp.definitions["@entitiesbal"]   = "''"
 end
 if svo.haveskillset('zeal') then
   cp.definitions["@prayerbal"]    = "svo.cpp.compute_prayerbal()"
 else
-	cp.definitions["@prayerbal"]    = ""
+	cp.definitions["@prayerbal"]    = "''"
 end
 if svo.haveskillset('physiology') then
   cp.definitions["@humourbal"]     = "svo.cpp.compute_humourbal()"
   cp.definitions["@homunculusbal"] = "svo.cpp.compute_homunculusbal()"
 else
-  cp.definitions["@humourbal"]     = ""
-  cp.definitions["@homunculusbal"] = ""
+  cp.definitions["@humourbal"]     = "''"
+  cp.definitions["@homunculusbal"] = "''"
 end
 if svo.haveskillset('venom') then
   cp.definitions["@shrugging"]     = "svo.cpp.compute_shruggingbal()"
 else
-  cp.definitions["@shrugging"]     = ""
+  cp.definitions["@shrugging"]     = "''"
 end
 if svo.haveskillset('tekura') or svo.haveskillset('shikudo') then
   cp.definitions["@monkpath"]      = "svo.cpp.compute_monkpath()"
   cp.definitions["@monkstance"]    = "svo.cpp.compute_stanceform()"
   cp.definitions["@monkfull"]      = "svo.cpp.compute_stanceform_verbose()"
 else
-  cp.definitions["@monkpath"]      = ""
-  cp.definitions["@monkstance"]    = ""
-  cp.definitions["@monkfull"]      = ""
+  cp.definitions["@monkpath"]      = "''"
+  cp.definitions["@monkstance"]    = "''"
+  cp.definitions["@monkfull"]      = "''"
 end
 if svo.haveskillset('kaido') then
   cp.definitions["@kai"]           = "svo.cpp.compute_kai()"
 else
-  cp.definitions["@kai"]           = ""
+  cp.definitions["@kai"]           = "''"
 end
 if svo.haveskillset('shindo') then
   cp.definitions["@shin"]          = "svo.cpp.compute_shin()"
 else
-  cp.definitions["@shin"]          = ""
+  cp.definitions["@shin"]          = "''"
 end
   cp.definitions["@timestamp"]     = "svo.cpp.compute_timestamp()"
   cp.definitions["@servertimestamp"] = "svo.cpp.compute_servertimestamp()"
 if svo.haveskillset('weaponmastery') then
   cp.definitions["@weaponmastery"] = "svo.cpp.compute_weaponmastery()"
 else
-  cp.definitions["@weaponmastery"] = ""
+  cp.definitions["@weaponmastery"] = "''"
 end
 if svo.haveskillset('metamorphosis') then
   cp.definitions["@morph"]         = "svo.cpp.compute_morph()"
 else
-  cp.definitions["@morph"]         = ""
+  cp.definitions["@morph"]         = "''"
 end
 if svo.haveskillset('groves') then
   cp.definitions["@sunlight"]      = "svo.cpp.compute_sunlight()"
 else
-  cp.definitions["@sunlight"]      = ""
+  cp.definitions["@sunlight"]      = "''"
 end
 if svo.haveskillset('terminus') then
   cp.definitions["@wordbal"]       = "svo.cpp.compute_wordbal()"
 else
-  cp.definitions["@wordbal"]       = ""
+  cp.definitions["@wordbal"]       = "''"
 end
 if svo.haveskillset('aeonics') then
   cp.definitions["@age"]           = "svo.cpp.compute_age()"
 else
-  cp.definitions["@age"]           = ""
+  cp.definitions["@age"]           = "''"
 end
   cp.definitions["^1"]             = "svo.cpp.compute_health_colour()"
   cp.definitions["^2"]             = "svo.cpp.compute_mana_colour()"
@@ -577,9 +598,12 @@ end
   cp.definitions["^5"]             = "svo.cpp.compute_endurance_colour()"
 if svo.haveskillset('kaido') then
   cp.definitions["^6"]             = "svo.cpp.compute_kai_colour()"
-end
-if svo.haveskillset('shindo') then
+elseif svo.haveskillset('shindo') then
   cp.definitions["^6"]             = "svo.cpp.compute_shin_colour()"
+elseif svo.haveskillset('aeonics') then
+  cp.definitions["^6"]             = "svo.cpp.compute_age_colour()"
+else
+  cp.definitions["^6"]             = "''"
 end
 
 function cp.adddefinition(tag, func)
