@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
-<MudletPackage version="1.002">
+<MudletPackage version="1.001">
 	<TriggerPackage />
 	<TimerPackage />
 	<AliasPackage />
@@ -167,7 +167,6 @@ cpp.compute_kai_colour = function ()
   else
     return ""
   end
-
 end
 end
 
@@ -177,7 +176,6 @@ cpp.compute_shin = function ()
   if stats.shin ~= 0 then
     return stats.shin
   end
-
   return ""
 end
 
