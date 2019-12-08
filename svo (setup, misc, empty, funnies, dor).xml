@@ -1585,7 +1585,7 @@ for _, config in ipairs{
       end
     end
 		svo.setup_default_serverignore()
-  end, 'load server/cadmus/custom data')
+  end, 'load '..config.location..' data')
   
   -- save the config.location list
   signals.saveconfig:connect(function ()
