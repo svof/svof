@@ -5642,7 +5642,7 @@ function ndb.honors_next(argument)
 
   ndb.showhonorswindow(string.format("Checking %s, %s name%s%s left to check...\n", name, left, (left == 1 and '' or 's'), (next(timeleft) and '('..table.concat(timeleft)..')' or '')))
 end
-svo.signals["svo got balance"]:connect(ndb.honors_next, 'run honors_next on balance')
+registerAnonymousEventHandler("svo got balance", "ndb.honors_next")
 local luanotify = {}
 luanotify.signal = require("notify.signal")
 svo.signals["namedb finished honors"] = luanotify.signal.new()
