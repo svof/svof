@@ -36,8 +36,8 @@ svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.dict = function()
 
 --[[
-spriority: global async priority. In use when curing in sync mode.
-aspriority: inter-balance sync priority. In use when curing in async mode.
+spriority: global slowcuring priority. In use when curing in aeon/retardation/etc mode (ie, syncronous actions only).
+aspriority: normal curing priority. In use when curing normally (ie, asyncronous actions can be done in the game).
 isadvisable: determines if it is possible to cure this aff. some things that
   block bals might not block a single aff
 undeffable: undeffable by serverside, or if you want Svo to put the defence up instead of ss for any reason				
