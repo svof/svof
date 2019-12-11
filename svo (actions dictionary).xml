@@ -13156,7 +13156,7 @@ if svo.haveskillset('aeonics') then
       def = true,
       
       isadvisable = function ()
-        return (not defc.blur and ((sys.deffing and defdefup[defs.mode].blur) or (conf.keepup and defkeepup[defs.mode].blur)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and (stats.age and stats.age < 820)) or false
+        return (not defc.blur and ((sys.deffing and defdefup[defs.mode].blur) or (conf.keepup and defkeepup[defs.mode].blur)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and (not stats.age or stats.age <= 820)) or false
       end,
 
       oncompleted = function ()
