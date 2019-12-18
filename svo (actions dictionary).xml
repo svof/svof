@@ -13161,7 +13161,7 @@ if svo.haveskillset('aeonics') then
         defences.got('blur')
       end,
 
-      action = "chrono blur boost",
+      action = {"chrono blur", "chrono blur boost"}
       onstart = function ()
         send('chrono blur boost', conf.commandecho)
       end
