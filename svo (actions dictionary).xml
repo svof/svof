@@ -13151,8 +13151,6 @@ if svo.haveskillset('aeonics') then
   svo.dict.blur = {
     physical = {
       balanceful_act = true,
-      aspriority = 0,
-      spriority = 0,
       def = true,
       
       isadvisable = function ()
