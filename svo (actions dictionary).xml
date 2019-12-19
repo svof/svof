@@ -13148,6 +13148,25 @@ if svo.haveskillset('aeonics') then
       onstart = function() send('chrono dilation', conf.commandecho) end
     }
   }
+  svo.dict.blur = {
+    physical = {
+      balanceful_act = true,
+      def = true,
+      
+      isadvisable = function ()
+        return ((not defc.blur and ((sys.deffing and defdefup[defs.mode].blur) or (conf.keepup and defkeepup[defs.mode].blur))) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and (not stats.age or stats.age &lt;= 820)) or false
+      end,
+
+      oncompleted = function ()
+        defences.got('blur')
+      end,
+
+      actions = {"chrono blur", "chrono blur boost"},
+      onstart = function ()
+        send('chrono blur boost', conf.commandecho)
+      end
+    }
+  } 
 end
 if svo.haveskillset('terminus') then
   svo.dict.trusad = {
