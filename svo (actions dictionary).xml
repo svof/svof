@@ -13136,25 +13136,49 @@ end
 if svo.haveskillset('aeonics') then
   svo.dict.dilation = {
     physical = {
+      age = 200, 
       balanceless_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (((sys.deffing and defdefup[defs.mode].dilation and not defc.dilation) or (conf.keepup and defkeepup[defs.mode].dilation and not defc.dilation)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'dilation' and (stats.age and stats.age &gt; 0)) or false
+        return (not defc.dilation and ((sys.deffing and defdefup[defs.mode].dilation) or (conf.keepup and defkeepup[defs.mode].dilation)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'dilation' and (stats.age and (stats.age &gt; 0 and stats.age &lt;= 800))) or false
       end,
 
       oncompleted = function() defences.got('dilation') end,
 
       actions = {"chrono dilation", "chrono dilation boost"},
-      onstart = function() send('chrono dilation', conf.commandecho) end
+      onstart = function() send('chrono dilation boost', conf.commandecho) end
+    }
+  }
+    svo.dict.reflection = {
+    gamename = 'reflections',
+    physical = {
+      age = 500,
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+       return (not defc.reflection and ((sys.deffing and defdefup[defs.mode].reflection) or (conf.keepup and defkeepup[defs.mode].reflection)) and not codepaste.balanceful_defs_codepaste() and not affs.prone and not affs.paralysis) or false
+      end,
+
+      oncompleted = function() defences.got('reflection') end,
+
+      actions = {"chrono images", "chrono images boost"},
+      onstart = function()
+        if not stats.age or stats.age &lt;= 1000-svo.dict.reflection.physical.age then
+          send('chrono images boost', conf.commandecho)
+        else
+          send('chrono images', conf.commandecho)
+        end
+      end
     }
   }
   svo.dict.blur = {
     physical = {
+      age = 180,
       balanceful_act = true,
       def = true,
       
       isadvisable = function ()
-        return ((not defc.blur and ((sys.deffing and defdefup[defs.mode].blur) or (conf.keepup and defkeepup[defs.mode].blur))) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and (not stats.age or stats.age &lt;= 820)) or false
+        return (not defc.blur and ((sys.deffing and defdefup[defs.mode].blur) or (conf.keepup and defkeepup[defs.mode].blur)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and (not stats.age or stats.age &lt;= 820)) or false
       end,
 
       oncompleted = function ()
