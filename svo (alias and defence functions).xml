@@ -3357,7 +3357,7 @@ if svo.haveskillset('aeonics') then
     on = {"With a minor application of will, you increase your speed.",},
     off = "Your movements are no longer faster than the relative timestream."
   })
-  defs_data:set('reflections', { type = 'aeonics',
+  defs_data:set('reflection ', { type = 'aeonics',
     def = {"You are surrounded by two reflections of yourself.","You are surrounded by one reflection of yourself."},
     defr = [[^You are surrounded by \d+ reflections? of yourself\.$]],
   	on =  {"Taking hold of the strands of causality, you attempt to mislead your foes with false images from alternative timelines.", "You are already protected by a magical reflection."},
