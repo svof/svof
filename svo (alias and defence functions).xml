@@ -3386,9 +3386,11 @@ end
 
 if svo.haveskillset('terminus') then
   defs_data:set('trusad', { type = 'terminus',
+    on = [[Imbuing your voice with power, you intone, "Trusad".]],
     def = "You are enhancing your precision through the power of Terminus."
   })
   defs_data:set('tsuura', { type = 'terminus',
+    on = [[Imbuing your voice with power, you intone, "Tsuura".]],
     def = "You are enhancing your durability against denizens."
   })
   defs_data:set('ukhia', { type = 'terminus',
@@ -3398,7 +3400,7 @@ if svo.haveskillset('terminus') then
     def = "You have a will of iron."
   })
   defs_data:set('mainaas', { type = 'terminus',
-    on = {"You have already augmented your body - no need to risk it again.",},
+    on = {"You have already augmented your body - no need to risk it again.",[[Taking a steadying breath, you turn your focus inward and proclaim, "Mainaas".]]},
     def = "You have augmented your own body for enhanced defence.",
   })
   defs_data:set('gaiartha', {
