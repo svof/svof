@@ -5376,8 +5376,9 @@ function ndb.doexport()
           removekeys[#removekeys+1] = key
         end
       end
-
-      for _ = 1, #removekeys do p[removekeys[i]] = nil end
+      if not next(removekeys) == nil then
+        for _ = 1, #removekeys do p[removekeys[i]] = nil end
+      end
     end
   end
 
