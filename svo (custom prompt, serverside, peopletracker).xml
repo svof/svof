@@ -1339,8 +1339,8 @@ signals["svo config changed"]:connect(function(config)
   if not (conf.serverside and config == 'moss') then return end
 
   if conf.moss then
-    svo.sendcuring("mosshealth "..conf.mosshealth)
-    svo.sendcuring("mossmana "..conf.mossmana)
+    svo.sendcuring("mosshealth ".. (conf.mosshealth or 0))
+    svo.sendcuring("mossmana ".. (conf.mossmana or 0))
   else
     svo.sendcuring("mosshealth 0")
     svo.sendcuring("mossmana 0")

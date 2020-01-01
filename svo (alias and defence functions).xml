@@ -1278,7 +1278,7 @@ if not svo.haveskillset('alchemy') then
     on = "You are already empowered by astronomical energies.",
     defr = [[^You are resonating with (?:the )?(?:Nebula )?(\w+)'s energy\.$]]})
 end
-if not svo.haveskillset('elementalism') then
+if not svo.haveskillset('elementalism') or not svo.haveskillset('aeonics') or not svo.haveskillset('weatherweaving') then
   defs_data:set('reflection', { nodef = true,
     def = "You are surrounded by one reflection of yourself.",
     defr = [[^You are surrounded by \d+ reflections? of yourself\.$]]})
@@ -3353,8 +3353,16 @@ end
 
 if svo.haveskillset('aeonics') then
   defs_data:set('blur', { type = 'aeonics',
-    def = "Travelling the world more quickly due to time dilation."
+    def = "Travelling the world more quickly due to time dilation.",
+    on = {"With a minor application of will, you increase your speed.",},
+    off = "Your movements are no longer faster than the relative timestream."
   })
+  defs_data:set('reflection ', { type = 'aeonics',
+    def = {"You are surrounded by two reflections of yourself.","You are surrounded by one reflection of yourself."},
+    defr = [[^You are surrounded by \d+ reflections? of yourself\.$]],
+  	on =  {"Taking hold of the strands of causality, you attempt to mislead your foes with false images from alternative timelines.", "You are already protected by a magical reflection."},
+	  off = {"All your reflections wink out of existence!","One of your reflections has been destroyed! You have 0 left."}
+	})
   defs_data:set('dilation', { type = 'aeonics',
     onenable = function (mode, newdef, whereto, echoback)
       if svo['def'..whereto][mode].breath then
@@ -3378,9 +3386,11 @@ end
 
 if svo.haveskillset('terminus') then
   defs_data:set('trusad', { type = 'terminus',
+    on = [[Imbuing your voice with power, you intone, "Trusad".]],
     def = "You are enhancing your precision through the power of Terminus."
   })
   defs_data:set('tsuura', { type = 'terminus',
+    on = [[Imbuing your voice with power, you intone, "Tsuura".]],
     def = "You are enhancing your durability against denizens."
   })
   defs_data:set('ukhia', { type = 'terminus',
@@ -3390,7 +3400,8 @@ if svo.haveskillset('terminus') then
     def = "You have a will of iron."
   })
   defs_data:set('mainaas', { type = 'terminus',
-    def = "You have augmented your own body for enhanced defence."
+    on = {"You have already augmented your body - no need to risk it again.",[[Taking a steadying breath, you turn your focus inward and proclaim, "Mainaas".]]},
+    def = "You have augmented your own body for enhanced defence.",
   })
   defs_data:set('gaiartha', {
     type = 'terminus',

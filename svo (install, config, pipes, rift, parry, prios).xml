@@ -2688,9 +2688,9 @@ pipes.skullcap = pipes.skullcap or
 {lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = 'skullcap', filledwith2 = 'skullcap', maxpuffs = 10, maxpuffs2 = 10}
 me.pipes.skullcap = pipes.skullcap
 
-pipes.pnames = {'valerian', 'skullcap', 'elm'}
+pipes.pnames = {'valerian','elm','skullcap'}
 
-pipes.expectations = {'valerian', 'skullcap', 'elm'}
+pipes.expectations = {'valerian','elm','skullcap'}
 
 pipes.empties = {}
 
@@ -2869,7 +2869,7 @@ function svo.pipe_assignid(newid)
       send("empty "..newid, false)
       raiseEvent("svo config changed", i..'id')
       return i
-    elseif pipes[i].id2 == 0 then
+    elseif pipes[i].id2 == 0 and pipes[pipes.pnames[#pipes.pnames]].id ~= 0 then
       pipes[i].id2 = newid
       svo.conf[i..'id2'] = newid
       pipes[i].lit2 = false
