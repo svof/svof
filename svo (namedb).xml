@@ -752,15 +752,12 @@ temp_name_list = {}
 
 local selectString, getFgColor, format = selectString, getFgColor, string.format
 
--- selectString not working for first name by default - fix with this
-moveCursor(0,getLineNumber())
-insertText("&gt;")
 
 -- see if we can glean off city affiliation off qwc colours
 for _, name in ipairs(data) do
   temp_name_list[#temp_name_list + 1] = {name = name}
 
-  if selectString(name,1) &gt; 0 then
+  if selectString(name,1) &gt;= 0 then
     local r,g,b = getFgColor()
     local rgb = format("%d,%d,%d", r,g,b)
     if city_colours[rgb] then
@@ -945,7 +942,8 @@ elseif ndb.qwtype == "show infamous" then
 end
 
 commit()
-disableTrigger("NameDB qw")</script>
+disableTrigger("NameDB qw")
+echo(" Fired")</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -959,7 +957,7 @@ disableTrigger("NameDB qw")</script>
 					<regexCodeList>
 						<string>.*</string>
 						<string>1</string>
-						<string>^(?:Plus another (\d+) whose presence you cannot fully sense(?: \(\d+ total\))?\.|\((\d+) total\)\.)$</string>
+						<string>^(?:Plus another \d+ whose presence you cannot fully sense )?\(\d+ total\)\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
