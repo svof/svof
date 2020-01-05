@@ -942,8 +942,7 @@ elseif ndb.qwtype == "show infamous" then
 end
 
 commit()
-disableTrigger("NameDB qw")
-echo(" Fired")</script>
+disableTrigger("NameDB qw")</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
