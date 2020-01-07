@@ -19,7 +19,9 @@
 			<regexCodePropertyList />
 			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo target cured limbs</name>
-				<script>svo.lc_appliedreset(matches[3], matches[2])</script>
+				<script>if not svo.lc_limbreset then
+	svo.lc_appliedreset(matches[3], matches[2])
+end</script>
 				<triggerType>0</triggerType>
 				<conditonLineDelta>0</conditonLineDelta>
 				<mStayOpen>0</mStayOpen>
@@ -806,7 +808,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Monk limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -1907,7 +1909,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Dragon limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -1925,8 +1927,10 @@ end</script>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Guesstimates</name>
 					<script>-- Dragons break at 4 regardless of health
-echo("\n")
-svo.echof("Dragons break at 4")</script>
+local person
+person = multimatches[2][2]
+svo.echof("Dragons break at 4")
+svo.lc_sethitsneeded(person, 4)</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -2032,12 +2036,15 @@ registerAnonymousEventHandler("sysInstall", "limbcounterPrio")</script>
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+svo = svo or {}; svo.loader = svo.loader or {}
+svo.loader.limbcounter = function()
 local sk = svo.sk
 svo.lc_version = "1.0"
 svo.lc_list = {}
 svo.lc_echo = svo.lc_echo or {}
 svo.lc_priestdamage = svo.lc_priestdamage or false
 svo.lc_shikudodamage = svo.lc_shikudodamage or "none"
+svo.lc_limbreset = svo.lc_limbreset or false
 svo.lc_shikudoskill = { 
 	lowest = lowest or 0,
 	middle = middle or 0,
@@ -2064,7 +2071,7 @@ svo.lc_lasthit = svo.lc_lasthit or ""
 svo.lc_break_at = svo.lc_break_at or 10
 svo.lc_prep_at = function () local prep if svo.lc_break_at then prep = svo.lc_break_at - 1 return prep end end
 svo.lc_myclass = svo.lc_myclass or ""
-if table.contains(svo.lc_classlist, svo.me.class) then
+if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == true then
 		disableTrigger("svo Meta limbcounter")
 		disableTrigger("svo Monk limbcounter")
 		disableTrigger("svo Burn limbcounter")
@@ -2275,7 +2282,7 @@ function svo.lc_reset(whom)
     svo.echof("Reset everyone's limb status.")
   elseif not whom and svo.lc_lasthit then
     svo.lc_list[lasthit] =
-      {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0}
+      {head = 0, torso = 0, rightarm = 0, leftarm = 0, rightleg = 0, leftleg = 0, broke = 0}
     svo.echof("Reset %s's limb status.", svo.lc_lasthit)
   elseif t[whom:lower()] then
     if not svo.lc_lasthit or not svo.lc_list[svo.lc_lasthit] then
@@ -2358,7 +2365,7 @@ function svo.lc_sethitsneeded(person, hits)
     for i = 1, #limbs do
       if svo.lc_list[person][limbs[i]] &gt; hits then
         svo.lc_list[person][limbs[i]] = 0
-        svo.echof("Reset %s's %s limb (it's over hits needed).", svo.lc_list[person], limbs[i])
+        svo.echof("Reset %s's %s limb (it's over hits needed).", person, limbs[i])
         raiseEvent("svo limb reset", svo.lc_list[person], limbs[i])
       end
     end
@@ -2368,13 +2375,13 @@ function svo.lc_sethitsneeded(person, hits)
     for i = 1, #limbs do
       if svo.lc_list[lc_lasthit][limbs[i]] &gt; hits then
         svo.lc_list[person][limbs[i]] = 0
-        echof("Reset %s's %s limb (it's over hits needed).", svo.lc_list[lc_lasthit], limbs[i])
+        echof("Reset %s's %s limb (it's over hits needed).", lc_lasthit, limbs[i])
         raiseEvent("svo limb reset", svo.lc_list[person], limbs[i])
       end
     end
   else
     svo.lc_break_at = tonumber(hits)
-    echof("Set the breaking points for future targets at %s.", svo.lc_break_at)
+    svo.echof("Set the breaking points for future targets at %s.", svo.lc_break_at)
   end
 end
 
@@ -2495,7 +2502,7 @@ end
 
 svo.adddefinition("@lc_prompttag3", "svo.lc_prompttag3()")
 svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.lc_version))
-</script>
+end</script>
 				<eventHandlerList>
 					<string>svo system loaded</string>
 				</eventHandlerList>
