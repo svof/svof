@@ -2039,17 +2039,6 @@ registerAnonymousEventHandler("sysInstall", "limbcounterPrio")</script>
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.limbcounter = function()
 local sk = svo.sk
-svo.lc_version = "1.0"
-svo.lc_list = {}
-svo.lc_echo = svo.lc_echo or {}
-svo.lc_priestdamage = svo.lc_priestdamage or false
-svo.lc_shikudodamage = svo.lc_shikudodamage or "none"
-svo.lc_limbreset = svo.lc_limbreset or false
-svo.lc_shikudoskill = { 
-	lowest = lowest or 0,
-	middle = middle or 0,
-	highest = highest or 0
-}
 svo.lc_classlist =
   {
     "Magi",
@@ -2065,6 +2054,20 @@ svo.lc_classlist =
     "earth Elemental Lord",
 		"None",
   }
+if not table.contains(svo.lc_classlist, svo.me.class) then return end
+
+svo.lc_version = "1.0"
+svo.lc_list = {}
+svo.lc_echo = svo.lc_echo or {}
+svo.lc_priestdamage = svo.lc_priestdamage or false
+svo.lc_shikudodamage = svo.lc_shikudodamage or "none"
+svo.lc_limbreset = svo.lc_limbreset or false
+svo.lc_shikudoskill = { 
+	lowest = lowest or 0,
+	middle = middle or 0,
+	highest = highest or 0
+}
+
 local limbs = {'head', 'torso', 'rightarm', 'leftarm', 'rightleg', 'leftleg'}
 local hittable = {}
 svo.lc_lasthit = svo.lc_lasthit or ""
@@ -2503,9 +2506,7 @@ end
 svo.adddefinition("@lc_prompttag3", "svo.lc_prompttag3()")
 svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.lc_version))
 end</script>
-				<eventHandlerList>
-					<string>svo system loaded</string>
-				</eventHandlerList>
+				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
 				<name>svo count show</name>
