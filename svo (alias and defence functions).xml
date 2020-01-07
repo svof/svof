@@ -1326,7 +1326,7 @@ end
     off = "Your curseward has been breached!",
     on = {"You bring a curseward into being to protect you from harm.", "You already have curseward up."}})
   defs_data:set('bell', { type = 'general',
-    on = {"You will now attempt to detect attempts to spy on your person.", "You touch the bell tattoo."},
+    on = {"You will now attempt to detect attempts to spy on your person.", "You touch the bell tattoo.", "You already have the bell tattoo defence."},
     def = "You are protected by the bell tattoo."})
   defs_data:set('cloak', { type = 'general',
     on = {"You caress the tattoo and immediately you feel a cloak of protection surround you.", "You are already protected by the cloak tattoo."},
