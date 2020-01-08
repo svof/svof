@@ -7179,7 +7179,7 @@ end</script>
 				<script>function svo.classchange(override)
   local newclass = (override ~= "gmcp.Char.Status") and override or gmcp.Char.Status.class
 	local temp_defs = {}
-	
+  
 	-- if you're in an unrecognised class, use the None system
 	if not svo.knownskills[newclass:lower()] then newclass = "None" end
 		
@@ -7187,7 +7187,9 @@ end</script>
 	-- deffing what is already up	
   for k,v in pairs(svo.defc) do
     if v then
-      if svo.defs_data[k].type then
+      if not svo.defs_data[k] then
+        svo.defc[k] = nil
+      else
         if svo.defs_data[k].type == "general" then
           temp_defs[k] = true
         end
@@ -7197,7 +7199,7 @@ end</script>
 	
   if svo.me.class ~= newclass then
     local oldclass = svo.me.class
-
+    
     -- kill temporary defense triggers for old class
     for k,v in pairs(svo.defencetemptriggers) do
       killTrigger(v)
