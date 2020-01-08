@@ -1884,7 +1884,7 @@ svo.config_dict = svo.pl.OrderedMap {
       echo(" channel for downloading updates.\n")
     end,
     check = function (what)
-      if what == 'stable' or what == 'testing' then return true end
+      if what == 'stable' or what == 'testing' or what == 'inclient' then return true end
     end,
     onset = function ()
       conf.releasechannel = conf.releasechannel:lower()
@@ -1892,7 +1892,7 @@ svo.config_dict = svo.pl.OrderedMap {
         conf.releasechannel)
     end,
     installstart = function ()
-      conf.releasechannel = 'stable'
+      conf.releasechannel = 'inclient'
     end
   }},
 }

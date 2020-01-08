@@ -6380,42 +6380,29 @@ stupidityCheckTable = {
       if svo.announceupdates == "checking" then svo.echof("A new Svof is available and has been downloaded for you! You're on %s, latest is %s.", svo.version, s:trim()) end
       svo.showupdatereminder(writtenversion)
     end
-
-  elseif filename == tostring(svo.downloadedsystem) then
-    svo.checkingupdates = false
-
-    -- got new zip? make sure it's valid, Dropbox likes to mess with us.
-    local f = io.open(filename)
-    if not f or f:read("*a"):find("302 Found") then
-      -- don't loop downloading forever
-      if not svo.downloadretries or svo.downloadretries &lt;= (svo.maxdownloadretries or 5) then
-        svo.downloadnewsystem(svo.newdownloadedversion)
-        svo.downloadretries = (svo.downloadretries or 0) + 1
-        svo.echof("Bah. I downloaded the new system, but Dropbox wigged out and didn't actually send us a new zip but an error message. Going to try downloading it again%s.",
-          (svo.downloadretries == 1 and "" or " (attempt "..svo.downloadretries.." out of "..(svo.maxdownloadretries or 5)..")"))
-      else
-        svo.echof("Giving up. Dropbox keeps refusing to give us a working zip. Try downloading and upgrading manually; uninstall Svo in the Package Manager and install the new zip from there.")
+  
+  elseif filename:match("(svo \(.+\)\.xml)$") then
+    local moduleName = filename:match("(svo \(.+\))\.xml$")
+    downloadingModules = downloadingModules - 1
+    svo.downloadedsystem[moduleName] = true
+    if downloadingModules and downloadingModules ~= 0 then return end
+    local dlDir = getMudletHomeDir() .. "/svo/downloads/"
+    local installDir = getModulePath("svo (install me in module manager)") 
+    installDir= installDir:sub(1, #installDir-38)
+    for k in lfs.dir(installDir) do
+      if k ~= "." and k ~= ".." then
+        os.remove(installDir .. k)
       end
-
-      if f then f:close() end
-      return
     end
-
-    -- cleanup
-    if f then f:close() end
-    if svo.downloadretries then
-      svo.downloadretries = nil
-      svo.echof("OK, got a working zip now that we can install!")
+    for k,v in pairs(svo.downloadedsystem) do 
+      if v then
+        os.rename(dlDir .. k .. ".xml", installDir .. k .. ".xml")
+        reloadModule(k)
+        svo.downloadedsystem[k] = nil
+      end
     end
-
-    -- downloaded a new system zip? Save its version in a file, so on restart if the person hasn't updated, we can poke them about it
-    local f,err = io.open(getMudletHomeDir().."/svo/downloads/available_version", "w")
-    if not f then return svo.echof("Couldn't write to the new version file, because: "..err) end
-    f:write(svo.newdownloadedversion)
-    f:close()
-
-    svo.showupdatereminder(svo.newdownloadedversion)
-  end
+    svo.echof("New version installed and ready to go! Please restart mudlet to finalize cleanup.")
+  end  
 end</script>
 				<eventHandlerList>
 					<string>sysDownloadDone</string>
@@ -6425,11 +6412,12 @@ end</script>
 				<name>Check for updates</name>
 				<packageName></packageName>
 				<script>local downloadfolder = getMudletHomeDir().."/svo/downloads/"
+local baseUrl = "https://github.com/svof/svof/raw/in-client-svof/"
 
 -- this should get called at start and every hour after that
 function svo.checkforupdate(type)
   local baseUrl = string.format("http://svof.github.io/svof/%s/", svo.conf.releasechannel)
-  
+ 
 	if svo.checkingupdates then return end
   svo.versionfile = downloadfolder.."svo_version"
 
@@ -6455,11 +6443,12 @@ function svo.checkforupdate(type)
       local s,m = os.remove(location)
       if not s then svo.echof("Couldn't remove the %s file (error was: %s) - this might be a problem.", location, m) end
     end
-
-    location = downloadfolder.."Svof.current.zip"
-    if io.exists(location) then
-      local s,m = os.remove(location)
-      if not s then svo.echof("Couldn't delete the old svo zip (located at %s), because of: %s. This might be a problem.", location, m) end
+    for k,v in pairs(svo.modules_list) do
+      location = downloadfolder .. v .. ".xml"
+      if io.exists(location) then
+        local s,m = os.remove(location)
+        if not s then svo.echof("Couldn't delete the old xml (located at %s), because of: %s. This might be a problem.", location, m) end
+      end
     end
   else
     svo.announceupdates = nil
@@ -6468,12 +6457,25 @@ end
 
 -- downloads the system &amp; updates the system version saved
 function svo.downloadnewsystem(newversion)
-  local baseUrl = string.format("http://svof.github.io/svof/%s/", svo.conf.releasechannel)
+--  local baseUrl = string.format("http://svof.github.io/svof/%s/", svo.conf.releasechannel)
+  local baseUrl = "https://github.com/svof/svof/raw/in-client-svof/"
+	svo.downloadedsystem = svo.downloadedsystem or {}
+  downloadingModules = 0
+  if downloadTimer then killTimer(downloadTimer) end
+  downloadTimer = tempTimer(10, "downloadingModules = nil killTimer(downloadTimer) downloadTimer = nil")
+  -- also include base install file 
+  local downloadUrl = baseUrl .. string.gsub("svo (install me in module manager)"," ", "%%20") .. ".xml"
+  downloadFile(downloadfolder .. "svo (install me in module manager).xml", downloadUrl)
+  svo.downloadedsystem["svo (install me in module manager)"] = false
+  downloadingModules = downloadingModules + 1
+  --download all the modules in the modules_list
+  for k,v in pairs(svo.modules_list) do
+    local downloadUrl = baseUrl .. v:gsub(" ", "%%20") .. ".xml"
+    downloadFile(downloadfolder .. v .. ".xml", downloadUrl)
+    svo.downloadedsystem[v] = false
+    downloadingModules = downloadingModules + 1
+  end
   
-	svo.downloadedsystem = downloadfolder.."Svof.current.zip"
-  local downloadurl = baseUrl..[[Svof.v]]..newversion..[[.zip]]
-
-  downloadFile(svo.downloadedsystem, downloadurl)
   svo.newdownloadedversion = newversion
 end</script>
 				<eventHandlerList />
@@ -6481,7 +6483,7 @@ end</script>
 					<name>svo_checkupdatestart</name>
 					<packageName></packageName>
 					<script>function svo_checkupdatestart()
-  svo.checkforupdate()
+  svo.checkforupdate("checking")
 end</script>
 					<eventHandlerList>
 						<string>svo system loaded</string>
