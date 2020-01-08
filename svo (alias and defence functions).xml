@@ -3300,7 +3300,7 @@ if svo.haveskillset('shadowmancy') then
 
 -- signals for shadowcloak tracking
   signals.gmcpcharitemslist:connect(function()
-  if gmcp.Char.Status.class == "Depthswakler" then
+  if gmcp.Char.Status.class == "Depthswalker" then
     if gmcp.Char.Items.List.location ~= 'inv' then
       return
     end
@@ -3317,7 +3317,7 @@ if svo.haveskillset('shadowmancy') then
   end
   end, 'add/remove shadowcloak on gmcp items list')
   signals.gmcpcharitemsadd:connect(function()
-  if gmcp.Char.Status.class == "Depthswakler" then
+  if gmcp.Char.Status.class == "Depthswalker" then
     if gmcp.Char.Items.Add.location ~= 'inv' then
       return
     end
@@ -3331,7 +3331,7 @@ if svo.haveskillset('shadowmancy') then
   end
   end, 'add shadowcloak on gmcp items add')
   signals.gmcpcharitemsremove:connect(function()
-  if gmcp.Char.Status.class == "Depthswakler" then
+  if gmcp.Char.Status.class == "Depthswalker" then
     if gmcp.Char.Items.Remove.location ~= 'inv' then
       return
     end
@@ -3343,7 +3343,7 @@ if svo.haveskillset('shadowmancy') then
   end
   end, 'remove shadowcloak on gmcp items remove')
   signals.gmcpcharitemsupdate:connect(function()
-  if gmcp.Char.Status.class == "Depthswakler" then
+  if gmcp.Char.Status.class == "Depthswalker" then
     if gmcp.Char.Items.Update.location ~= 'inv' then
       return
     end
