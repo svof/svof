@@ -2503,7 +2503,9 @@ end
 
 svo.adddefinition("@lc_prompttag3", "svo.lc_prompttag3()")
 svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.lc_version))</script>
-				<eventHandlerList />
+				<eventHandlerList>
+					<string>svo system loaded</string>
+				</eventHandlerList>
 			</Script>
 			<Script isActive="yes" isFolder="no">
 				<name>svo count show</name>
