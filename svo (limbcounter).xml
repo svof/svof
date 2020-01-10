@@ -2036,8 +2036,6 @@ registerAnonymousEventHandler("sysInstall", "limbcounterPrio")</script>
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
-svo = svo or {}; svo.loader = svo.loader or {}
-svo.loader.limbcounter = function()
 local sk = svo.sk
 svo.lc_classlist =
   {
@@ -2504,8 +2502,7 @@ function svo.lc_prompttag3()
 end
 
 svo.adddefinition("@lc_prompttag3", "svo.lc_prompttag3()")
-svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.lc_version))
-end</script>
+svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.lc_version))</script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
