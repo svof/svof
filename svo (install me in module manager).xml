@@ -15,6 +15,8 @@
   disable_seek = function() end,
 	loader = {}
 }
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (install me in module manager)"] = 1
 
 ndb = ndb or {}
 
@@ -6412,7 +6414,6 @@ end</script>
 				<name>Check for updates</name>
 				<packageName></packageName>
 				<script>local downloadfolder = getMudletHomeDir().."/svo/downloads/"
-local baseUrl = "https://github.com/svof/svof/raw/in-client-svof/"
 
 -- this should get called at start and every hour after that
 function svo.checkforupdate(type)

@@ -18,6 +18,8 @@
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
 svo = svo or {}; svo.loader = svo.loader or {}
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (setup, misc, empty, funnies, dor)"] = 1
 svo.loader.setup = function()
 
 svo.version = "34"

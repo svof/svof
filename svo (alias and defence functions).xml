@@ -20,6 +20,8 @@
 -- functions for Svof's aliases, that should call other core functions as necessary to do their work.
 
 svo = svo or {}; svo.loader = svo.loader or {}
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (alias and defence functions)"] = 1
 svo.loader.aliases = function()
 
 local sys, affs, signals = svo.sys, svo.affs, svo.signals

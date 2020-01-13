@@ -2735,7 +2735,10 @@ function ndbPrio(_, module)
   setModulePriority(module, 1)
 end
 
-registerAnonymousEventHandler("sysInstall", "ndbPrio")</script>
+registerAnonymousEventHandler("sysInstall", "ndbPrio")
+
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (namedb)"] = 1</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>ndb.init</name>

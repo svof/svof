@@ -314,9 +314,10 @@ svo.doaddfree("angel seek "..svo.locating.name)</script>
   setModulePriority(module, 1)
 end
 
+registerAnonymousEventHandler("sysInstall", "priestReportPrio")
 
-
-registerAnonymousEventHandler("sysInstall", "priestReportPrio")</script>
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (priestreport)"] = 1</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>svo_load_priestreport</name>

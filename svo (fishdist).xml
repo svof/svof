@@ -305,7 +305,10 @@ fdistance = false</script>
   setModulePriority(module, 1)
 end
 
-registerAnonymousEventHandler("sysInstall", "fishdistPrio")</script>
+registerAnonymousEventHandler("sysInstall", "fishdistPrio")
+
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (fishdist)"] = 1</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>svo_load_fishingdistance</name>

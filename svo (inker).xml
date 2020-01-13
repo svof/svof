@@ -171,7 +171,10 @@
   setModulePriority(module, 1)
 end
 
-registerAnonymousEventHandler("sysInstall", "inkerPrio")</script>
+registerAnonymousEventHandler("sysInstall", "inkerPrio")
+
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (inker)"] = 1.2</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>inker code</name>
@@ -186,8 +189,8 @@ registerAnonymousEventHandler("sysInstall", "inkerPrio")</script>
 
 
 tempTimer(0, function()
-local firstload = not svo.ti_version
-svo.ti_version = "1.2"
+local firstload = not svo.inkerLoaded
+svo.inkerLoaded = true 
 
 local limb_order = {'head', 'torso', "right arm", "left arm", "right leg", "left leg", 'back'}
 local tattoos = {
@@ -560,7 +563,7 @@ svo.config.setoption('telltouch',
 })
 
 if firstload then
-  svo.echof("Loaded svo Tattoo Inker, version %s.", tostring(svo.ti_version))
+  svo.echof("Loaded svo Tattoo Inker, version %s.", tostring(svo.modules_version["svo (inker)"]))
 end
 
 end)</script>

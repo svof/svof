@@ -20,6 +20,8 @@
 -- essential core files, including balance checks that decide what should be done
 
 svo = svo or {}; svo.loader = svo.loader or {}
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (curing skeleton, controllers, action system)"] = 1
 svo.loader.sk = function()
 
 local sys, affs, defdefup, defkeepup, signals = svo.sys, svo.affs, svo.defdefup, svo.defkeepup, svo.signals

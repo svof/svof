@@ -355,7 +355,10 @@ cecho("\nStarted logging... use 'stoplog' to stop.")
   setModulePriority(module, 1)
 end
 
-registerAnonymousEventHandler("sysInstall", "loggerPrio")</script>
+registerAnonymousEventHandler("sysInstall", "loggerPrio")
+
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (logger)"] = 1</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>HTML5 logger</name>
