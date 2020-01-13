@@ -2037,10 +2037,11 @@ registerAnonymousEventHandler("sysInstall", "limbcounterPrio")</script>
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 svo = svo or {}; svo.loader = svo.loader or {}
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (limbcounter)"] = 1
 svo.loader.limbcounter = function()
 local sk = svo.sk
 
-svo.lc_version = "1.0"
 svo.lc_list = {}
 svo.lc_echo = svo.lc_echo or {}
 svo.lc_priestdamage = svo.lc_priestdamage or false
@@ -2085,19 +2086,19 @@ if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == t
   if svo.me.class == "Paladin" or svo.me.class == "Runewarden" or svo.me.class == "Infernal" then
     enableTrigger("svo Knight limbcounter")
 		svo.lc_myclass = svo.me.class
-    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.lc_version))
+    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.modules_version["svo (limbcounter)"]))
   elseif svo.me.class == "Druid" or svo.me.class == "Sentinel" then
     enableTrigger("svo Meta limbcounter")
 		svo.lc_myclass = svo.me.class
-    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.lc_version))
+    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.modules_version["svo (limbcounter)"]))
   elseif svo.defc["dragonform"] == true then
 		enableTrigger("svo Dragon limbcounter")
 		svo.lc_myclass = svo.me.class
-    svo.echof("Loaded svo limbcounter, %s %s.", "Dragon", tostring(svo.lc_version))
+    svo.echof("Loaded svo limbcounter, %s %s.", "Dragon", tostring(svo.modules_version["svo (limbcounter)"]))
 	elseif table.contains(svo.lc_classlist, svo.me.class) then
 		svo.lc_myclass = svo.me.class
     enableTrigger("svo " .. svo.me.class .. " limbcounter")
-    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.lc_version))
+    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.modules_version["svo (limbcounter)"]))
   end
 elseif not table.contains(svo.lc_classlist, svo.me.class) then
     disableTrigger("svo Meta limbcounter")

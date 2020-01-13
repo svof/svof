@@ -53416,7 +53416,7 @@ svo.showprompt()</script>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
 				<name>(vversion) Show system version</name>
-				<script>svo.echof("system version is %s", svo.version)
+				<script>svo.echof("system version is %s on the %s release stream", svo.version, svo.conf.releasechannel)
 svo.checkforupdate()</script>
 				<command></command>
 				<packageName></packageName>

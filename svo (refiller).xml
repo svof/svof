@@ -385,7 +385,10 @@ svo.doadd("give 50 vial to "..svo.givevials.person)</script>
   setModulePriority(module, 1)
 end
 
-registerAnonymousEventHandler("sysInstall", "refillerPrio")</script>
+registerAnonymousEventHandler("sysInstall", "refillerPrio")
+
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (refiller)"] = 1</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>refiller code</name>

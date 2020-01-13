@@ -21,6 +21,8 @@
 -- and asks questions for things it couldn't
 
 svo = svo or {}; svo.loader = svo.loader or {}
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (install, config, pipes, rift, parry, prios)"] = 1
 svo.loader.install = function()
 
 local sys, signals = svo.sys, svo.signals
