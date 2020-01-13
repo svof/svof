@@ -1561,7 +1561,6 @@ es_categories = {
   ["the venom selarnia"]      = "venom",
   ["the venom slike"]         = "venom",
   ["the venom sumac"]         = "venom",
-  ["the venom sumac"]         = "venom",
   ["the venom vardrax"]       = "venom",
   ["the venom vernalius"]     = "venom",
   ["the venom voyria"]        = "venom",
