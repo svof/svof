@@ -1909,7 +1909,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Dragon limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -2036,23 +2036,9 @@ registerAnonymousEventHandler("sysInstall", "limbcounterPrio")</script>
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+svo = svo or {}; svo.loader = svo.loader or {}
+svo.loader.limbcounter = function()
 local sk = svo.sk
-svo.lc_classlist =
-  {
-    "Magi",
-    "Paladin",
-    "Infernal",
-    "Runewarden",
-    "Monk",
-    "Priest",
-    "Dragon",
-    "Druid",
-		"Blademaster",
-    "Sentinel",
-    "earth Elemental Lord",
-		"None",
-  }
-if not table.contains(svo.lc_classlist, svo.me.class) then return end
 
 svo.lc_version = "1.0"
 svo.lc_list = {}
@@ -2072,6 +2058,21 @@ svo.lc_lasthit = svo.lc_lasthit or ""
 svo.lc_break_at = svo.lc_break_at or 10
 svo.lc_prep_at = function () local prep if svo.lc_break_at then prep = svo.lc_break_at - 1 return prep end end
 svo.lc_myclass = svo.lc_myclass or ""
+svo.lc_classlist =
+  {
+    "Magi",
+    "Paladin",
+    "Infernal",
+    "Runewarden",
+    "Monk",
+    "Priest",
+    "Dragon",
+    "Druid",
+		"Blademaster",
+    "Sentinel",
+    "earth Elemental Lord",
+		"None",
+  }
 if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == true then
 		disableTrigger("svo Meta limbcounter")
 		disableTrigger("svo Monk limbcounter")
@@ -2084,16 +2085,29 @@ if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == t
   if svo.me.class == "Paladin" or svo.me.class == "Runewarden" or svo.me.class == "Infernal" then
     enableTrigger("svo Knight limbcounter")
 		svo.lc_myclass = svo.me.class
+    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.lc_version))
   elseif svo.me.class == "Druid" or svo.me.class == "Sentinel" then
     enableTrigger("svo Meta limbcounter")
 		svo.lc_myclass = svo.me.class
+    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.lc_version))
   elseif svo.defc["dragonform"] == true then
 		enableTrigger("svo Dragon limbcounter")
 		svo.lc_myclass = svo.me.class
+    svo.echof("Loaded svo limbcounter, %s %s.", "Dragon", tostring(svo.lc_version))
 	elseif table.contains(svo.lc_classlist, svo.me.class) then
 		svo.lc_myclass = svo.me.class
     enableTrigger("svo " .. svo.me.class .. " limbcounter")
+    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.lc_version))
   end
+elseif not table.contains(svo.lc_classlist, svo.me.class) then
+    disableTrigger("svo Meta limbcounter")
+		disableTrigger("svo Monk limbcounter")
+		disableTrigger("svo Burn limbcounter")
+		disableTrigger("svo Priest limbcounter")
+		disableTrigger("svo Magi limbcounter")
+		disableTrigger("svo earth Elemental Lord limbcounter")
+		disableTrigger("svo Dragon limbcounter")
+		disableTrigger("svo Knight limbcounter")
 end
 
 function svo.lc_smash()
@@ -2427,6 +2441,8 @@ svo.conf.limbprep = svo.conf.limbprep or 1
 -- feel free to tinker with it, but move it out into a script of its own,
 -- so your changes don't get erased on an update!
 
+
+
 function svo.lc_prompttag2()
   if not svo.lc_lasthit or not svo.lc_list or not svo.lc_list[svo.lc_lasthit] then
     return ""
@@ -2502,10 +2518,8 @@ function svo.lc_prompttag3()
 end
 
 svo.adddefinition("@lc_prompttag3", "svo.lc_prompttag3()")
-svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.lc_version))</script>
-				<eventHandlerList>
-					<string>svo system loaded</string>
-				</eventHandlerList>
+end</script>
+				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
 				<name>svo count show</name>
