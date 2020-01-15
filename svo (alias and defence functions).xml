@@ -3435,7 +3435,7 @@ end
  if svo.haveskillset('psionics') then
   defs_data:set('comprehend', { type = 'psionics',
     on = { "You begin directing your vast intellect to the problem of understanding foreign speech patterns.", "You are already directing your vast intellect to comprehending foreign speech patterns."},
-    def = "You are focussing your vast intellect on comprehending language."
+    def = "You are focusing your vast intellect on comprehending language."
   })
   defs_data:set('transcend', {type = 'psionics',
     on = { "You sink into tranquility; your mind and body transcending their limitations as they begin to function in perfect unity.", "Your mind has already transcended its limitations." },
