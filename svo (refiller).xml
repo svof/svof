@@ -229,27 +229,6 @@ echo'\n' svo.echof("Handed all vials over.")</script>
 				<integer>3</integer>
 			</regexCodePropertyList>
 		</Trigger>
-		<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-			<name>Too many refills</name>
-			<script>svo.deleteLineP()
-svo.echof("Oops, we can't refill more than 50 batches at a time.")</script>
-			<triggerType>0</triggerType>
-			<conditonLineDelta>0</conditonLineDelta>
-			<mStayOpen>0</mStayOpen>
-			<mCommand></mCommand>
-			<packageName></packageName>
-			<mFgColor>#ff0000</mFgColor>
-			<mBgColor>#ffff00</mBgColor>
-			<mSoundFile></mSoundFile>
-			<colorTriggerFgColor>#000000</colorTriggerFgColor>
-			<colorTriggerBgColor>#000000</colorTriggerBgColor>
-			<regexCodeList>
-				<string>You may not brew more than 50 batches at a time.</string>
-			</regexCodeList>
-			<regexCodePropertyList>
-				<integer>3</integer>
-			</regexCodePropertyList>
-		</Trigger>
 		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 			<name>There's something wrong there</name>
 			<script>svo.rf_cancel()</script>
