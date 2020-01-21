@@ -80,7 +80,7 @@
 			<colorTriggerFgColor>#000000</colorTriggerFgColor>
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList>
-				<string>^You lack the required ingredients to (brew|compound) that.$</string>
+				<string>^You lack the required ingredients to (brew|compound) that\.$</string>
 			</regexCodeList>
 			<regexCodePropertyList>
 				<integer>1</integer>
@@ -243,16 +243,14 @@ echo'\n' svo.echof("Handed all vials over.")</script>
 			<colorTriggerFgColor>#000000</colorTriggerFgColor>
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList>
-				<string>That pot already contains an</string>
-				<string>That alembic already contains a</string>
+				<string>^That (pot|alembic) already contains (a|an) .+\!$</string>
 				<string>That is not a pot.</string>
 				<string>That is not an alembic.</string>
 			</regexCodeList>
 			<regexCodePropertyList>
-				<integer>2</integer>
-				<integer>2</integer>
-				<integer>2</integer>
-				<integer>2</integer>
+				<integer>1</integer>
+				<integer>3</integer>
+				<integer>3</integer>
 			</regexCodePropertyList>
 		</Trigger>
 	</TriggerPackage>
@@ -261,6 +259,8 @@ echo'\n' svo.echof("Handed all vials over.")</script>
 		<Alias isActive="yes" isFolder="no">
 			<name>Refill something</name>
 			<script>-- example: compound/brew 5 health, 3 restoration
+if command:find("brew %d+ %w+ in %w+") then send(command, false) return end
+if command:find("compound %d+ %w+ in %w+") then send(command, false) return end
 
 if matches[3] == 'cancel' then svo.rf_cancel() svo.showprompt() echo'\n' return end
 svo.rf_refill(matches[2], matches[3])</script>
@@ -456,7 +456,7 @@ end
 function svo.rf_cancel()
   svo.rf_refilling = nil
   svo.undoall()
-  svo.echof("Cancelled refilling.")
+  echo'\n' svo.echof("Cancelled refilling.")
 end
 
 function svo.rf_refill(action,what)
@@ -473,7 +473,7 @@ function svo.rf_refill(action,what)
     end
     
     if not concoctions[potion] and not toxins[potion] then
-      svo.echof("Don't know what a '%s' potion is :|", tostring(potion))
+      svo.echof("Don't know what a '%s' is :|", tostring(potion))
     else
       svo.rf_refilling.p[potion] = tonumber(amount)
     end
@@ -519,7 +519,6 @@ function svo.rf_nextpotion()
     max = (svo.rf_currenttrans and 12 or 10)
     if svo.rf_refilling.currentorderdata &lt;= max then
       svo.rf_refilling.p[svo.rf_refilling.currentorder] = nil
---      svo.rf_refilling.currentorderdata = nil
       svo.rf_refilling.currentorder = nil
     end
   end
@@ -529,6 +528,7 @@ function svo.rf_missingstuff()
   disableTrigger("Missing ingredients"); tempTimer(2, function() enableTrigger("Missing ingredients") end)
 
   echo'\n' svo.echof("Ack, looks like you're out of enough ingredients. :(")
+  svo.rf_cancel()
 end
 
 end)</script>
