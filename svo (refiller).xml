@@ -229,7 +229,7 @@ echo'\n' svo.echof("Handed all vials over.")</script>
 				<integer>3</integer>
 			</regexCodePropertyList>
 		</Trigger>
-		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+		<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 			<name>There's something wrong there</name>
 			<script>svo.rf_cancel()</script>
 			<triggerType>0</triggerType>
@@ -243,12 +243,14 @@ echo'\n' svo.echof("Handed all vials over.")</script>
 			<colorTriggerFgColor>#000000</colorTriggerFgColor>
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList>
-				<string>^That (pot|alembic) already contains (a|an) .+\!$</string>
-				<string>That is not a pot.</string>
+				<string>That pot already contains a</string>
+				<string>That alembic already contains a</string>
 				<string>That is not an alembic.</string>
+				<string>That is not a pot.</string>
 			</regexCodeList>
 			<regexCodePropertyList>
-				<integer>1</integer>
+				<integer>2</integer>
+				<integer>2</integer>
 				<integer>3</integer>
 				<integer>3</integer>
 			</regexCodePropertyList>
@@ -456,6 +458,9 @@ end
 function svo.rf_cancel()
   svo.rf_refilling = nil
   svo.undoall()
+  --no need for failsafe triggers when not using refiller
+  disableTrigger("There's something wrong there")
+  
   echo'\n' svo.echof("Cancelled refilling.")
 end
 
@@ -483,6 +488,9 @@ function svo.rf_refill(action,what)
     svo.echof("Don't have anything to refill, then :/")
     return
   end
+  --enables failsafe triggers
+  enableTrigger("There's something wrong there")
+  
   svo.rf_previousorder = svo.deepcopy(svo.rf_refilling.p)
   svo.rf_nextpotion()
 end
@@ -503,6 +511,9 @@ function svo.rf_nextpotion()
   end
   if not svo.rf_refilling.currentorder then
     svo.rf_refilling = nil
+    --disables failsafe triggers as they are no longer needed when we finish everything
+    disableTrigger("There's something wrong there")
+    
     svo.echof("Done refilling!")
     raiseEvent("svo done refilling")
   else
