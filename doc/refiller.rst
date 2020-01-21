@@ -36,10 +36,10 @@ Aliases
     Sets the back ID to store vials away into when you do 'putvials' before taking on the customers vials. To get them out after, do 'getvials'.
 
   putvials
-  	Stuffs all of your current vials away into a container, so you can take the customers empty and artefact vials without them getting mixed in with yours. You should do this before they give you their vials.
+    Stuffs all of your current vials away into a container, so you can take the customers empty and artefact vials without them getting mixed in with yours. You should do this before they give you their vials.
 
   getvials
-  	After you've given vials back with 'givevials', *getvials* will reclaim your vials from the container you hid them in.
+    After you've given vials back with 'givevials', *getvials* will reclaim your vials from the container you hid them in.
 
   givevials <person>
     Hands over all of your vials to another person.
