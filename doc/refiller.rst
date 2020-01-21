@@ -8,7 +8,8 @@ Use of the refiller would be: do **putvials** to put all of your vials away, and
 
 Aliases
 ^^^^^^^^
-.. glossary::
+.. glossary
+::
 
   brew|compound <what>
     Does your **entire** order - separate different potions with a comma! For example: ::
@@ -46,7 +47,8 @@ Aliases
 
 API
 ^^^
-.. glossary::
+.. glossary
+::
 
 	svo done refilling (event)
 	  Raised when a successful refill is done. You can use this event, for example, to perform order cost calculations.
