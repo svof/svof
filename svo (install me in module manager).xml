@@ -9,12 +9,12 @@
 		<Script isActive="yes" isFolder="no">
 			<name>Create Svof namespace</name>
 			<packageName></packageName>
-			<script>svo = svo or {
-  autopause_on_def = function() end,
-  balanceless = {},
-  disable_seek = function() end,
-	loader = {}
-}
+			<script>svo = svo or {}
+
+svo.autopause_on_def = svo.autopause_on_def or function() end
+svo.balanceless = svo.balanceless or {}
+svo.disable_seek = svo.disable_seek or function() end
+svo.loader = svo.loader or {}
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (install me in module manager)"] = 1
 
@@ -7077,7 +7077,6 @@ svo.modules_list = {
     'svo (burncounter)',
     'svo (priestreport)',
     'svo (enchanter)'
-
   }</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
@@ -7272,13 +7271,13 @@ end</script>
 	-- sync this module too
 	if syncModule then syncModule('svo (install me in module manager)') end
 end
-svo.install_other_modules()
 
 function svo.ask_to_sync_manual()
 	cecho("\n&lt;dark_orchid&gt;Installed all modules - now make sure to tick 'sync' in the Module Manager for everything Svof!")
 end</script>
 				<eventHandlerList>
 					<string>sysInstallModule</string>
+					<string>sysLuaInstallModule</string>
 				</eventHandlerList>
 			</Script>
 			<Script isActive="yes" isFolder="no">
@@ -7308,15 +7307,20 @@ end</script>
 --                                             --
 -- Note that you can also use external Scripts --
 -------------------------------------------------
-function svo.uninstall_all_modules()
-  for _, modulename in ipairs(svo.modules_list) do
-	  uninstallModule(modulename)
-	end
-	
-	uninstallModule('svo (install me in module manager)')
+function svo.uninstall_all_modules(event,modulename)
+  if event and (modulename ~= "svo (install me in module manager)") then return true end
+
+  for ourmodule,_ in pairs(svo.modules_version) do
+    if not event or (ourmodule ~= "svo (install me in module manager)") then
+  	  uninstallModule(ourmodule)
+    end
+  end
 	svo.systemloaded = nil
 end</script>
-				<eventHandlerList />
+				<eventHandlerList>
+					<string>sysUninstallModule</string>
+					<string>sysLuaUninstallModule</string>
+				</eventHandlerList>
 			</Script>
 			<Script isActive="yes" isFolder="no">
 				<name>svo.install_from_zip</name>
