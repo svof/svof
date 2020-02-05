@@ -831,6 +831,7 @@ svo.config_dict = svo.pl.OrderedMap {
     type = 'string',
     check = function (what)
       if what == 'full' or what == 'short' or what == 'fullpercent' or what == 'shortpercent' then return true end
+      return nil, {'full', 'short', 'fullpercent', 'shortpercent'}
     end,
     onset = function ()
       svo.echof("Will use the %s health/mana loss echoes.", conf.changestype)
@@ -841,11 +842,13 @@ svo.config_dict = svo.pl.OrderedMap {
     type = 'string',
     check = function (what)
       if what == 'off' or what == 'file' or what == 'echo' or what == 'both' then return true end
+      return nil, {'off', 'file', 'echo', 'both'}
     end,
     onset = function ()
       svo.updateloggingconfig()
       if conf.log == 'off' then
         svo.echof("Logging disabled.")
+        conf.log = false
       elseif conf.log == 'file' then
         if Logger then
           svo.echof("Will log to the file in %s.", (getMudletHomeDir() .. "/log/svof.txt"))
@@ -1004,6 +1007,7 @@ svo.config_dict = svo.pl.OrderedMap {
     type = 'string',
     check = function (what)
       if what == 'plain' or what == 'fancy' or what == 'fancynewline' then return true end
+      return nil, {'plain', 'fancy', 'fancynewline'}
     end,
     onset = function ()
       svo.echof("Will use the %s command echoes.", conf.commandechotype)
@@ -1014,6 +1018,7 @@ svo.config_dict = svo.pl.OrderedMap {
     type = 'string',
     check = function (what)
       if table.contains({'conconly', 'transonly', 'preferconc', 'prefertrans', 'prefercustom'}, what) then return true end
+      return nil, {'conconly', 'transonly', 'preferconc', 'prefertrans', 'prefercustom'}
     end,
     onset = function ()
       signals.curemethodchanged:emit()
@@ -1480,6 +1485,7 @@ svo.config_dict = svo.pl.OrderedMap {
     type = 'string',
     check = function (what)
       if svo.contains({'Ashtan', 'Hashan', 'Mhaldor', 'Targossas', 'Cyrene', 'Eleusis', 'None', 'Rogue'}, what:title()) then return true end
+      return nil, {'Ashtan', 'Hashan', 'Mhaldor', 'Targossas', 'Cyrene', 'Eleusis', 'None', 'Rogue'}
     end,
     onset = function ()
       if conf.org == 'none' or conf.org == 'rogue' then
@@ -1513,8 +1519,11 @@ svo.config_dict = svo.pl.OrderedMap {
     vconfig2string = true,
     check = function (what)
       if color_table[what] or what == 'off' then return true end
+      return nil, "Please use `vlua showColors(searchString)` to see available colors. Default is 'blue'."
+
     end,
     onset = function ()
+      if conf.slowcurecolour == 'off' then conf.slowcurecolour = 'blue' end
       local r,g,b = unpack(color_table[conf.slowcurecolour])
       svo.echof("Will colour your actions in &lt;%d,%d,%d&gt;%s%s when in aeon or retardation.", r,g,b, conf.slowcurecolour, svo.getDefaultColor())
     end,
@@ -1554,6 +1563,7 @@ svo.config_dict = svo.pl.OrderedMap {
     type = 'string',
     check = function (what)
       if svo.contains({'black', 'white', 'off', 'on'}, what:sub(1,5):lower()) then sk.oldautoreject = conf.autoreject return true end
+      return nil, {'black','blacklist', 'white', 'whitelist', 'off', 'on'}
     end,
     onset = function ()
       conf.autoreject = string.lower(conf.autoreject):sub(1,5)
@@ -1611,7 +1621,8 @@ svo.config_dict = svo.pl.OrderedMap {
     type = 'string',
     check = function (what)
       if svo.contains({'black', 'white', 'off', 'on'}, what:sub(1,5):lower()) then sk.oldautowrithe = conf.autowrithe return true end
-    end,
+      return nil, {'black','blacklist', 'white', 'whitelist', 'off', 'on'}
+   end,
     onset = function ()
       conf.autowrithe = string.lower(conf.autowrithe):sub(1,5)
 
@@ -1668,6 +1679,9 @@ svo.config_dict = svo.pl.OrderedMap {
     type = 'string',
     check = function (what)
       if svo.echos[what:title()] or svo.echos[what] then return true end
+      local ret = {}
+      for k,v in pairs(svo.echos) do table.insert(ret, k) end
+      return nil, ret
     end,
     onset = function ()
       conf.echotype = svo.echos[conf.echotype:title()] and conf.echotype:title() or conf.echotype
@@ -1707,6 +1721,7 @@ svo.config_dict = svo.pl.OrderedMap {
     vconfig2 = true,
     check = function (what)
       if svo.contains({'all', 'prompt', 'none', 'right', 'off'}, what) then return true end
+      return nil, {'all', 'prompt', 'none', 'right', 'off'}
     end,
     onset = function ()
       if conf.warningtype == 'none' or conf.warningtype == 'off' then
@@ -1729,6 +1744,9 @@ svo.config_dict = svo.pl.OrderedMap {
     vconfig2string = true,
     check = function (what)
       if defdefup[what:lower()] then return true end
+      local ret = {}
+      for k,_ in defdefup do table.insert(ret, k) end
+      return nil, ret
     end,
     onshow = function (defaultcolour)
       local tooltip
@@ -1887,6 +1905,7 @@ svo.config_dict = svo.pl.OrderedMap {
     end,
     check = function (what)
       if what == 'stable' or what == 'testing' or what == 'inclient' then return true end
+      return nil, {'stable', 'testing', 'inclient'}
     end,
     onset = function ()
       conf.releasechannel = conf.releasechannel:lower()
@@ -1904,7 +1923,8 @@ if svo.haveskillset('kaido') then
     type = 'string',
     check = function (what)
       if svo.convert_string(what) == false then return true end
-      if table.contains({'replaceall', 'replacehealth', 'supplement', 'none', 'off'}, what:lower()) then return true end
+      if table.contains({'replaceall', 'replacehealth', 'supplement', 'none'}, what:lower()) then return true end
+      return nil, {'anything negative to disable', 'replaceall', 'replacehealth', 'supplement', 'none'}
     end,
     onset = function ()
       conf.transmute = conf.transmute:lower()
@@ -2258,8 +2278,8 @@ if svo.haveskillset('chivalry') then
   })
 end
 
-if not conf.releasechannel then
-  conf.releasechannel = 'stable'
+if not conf.releasechannel or true then --force everybody to use the 'inclient' channel at the moment.
+  conf.releasechannel = 'inclient'
 end
 
 if not conf.autowrithe then
@@ -2592,7 +2612,13 @@ function svo.config.set(what, option, echoback)
     end
 
     if svo.config_dict[what].check and not svo.config_dict[what].check(option) then
+      local _, options = svo.config_dict[what].check(option)
       sendf("%s isn't something you can set %s to be.", option, what)
+      if type(options) == 'table' then
+        sendf("You can set %s to %s", what, svo.concatand(options))
+      elseif type(options) == 'string' then
+        sendf(options)
+      end
       showprompt()
       if not echoback then svo.echof = oldechof end
       return
