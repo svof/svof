@@ -806,6 +806,6 @@ end)</script>
 	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>
-		<helpURL></helpURL>
+		<helpURL>https://svof.github.io/svof/peopletracker.html</helpURL>
 	</HelpPackage>
 </MudletPackage>

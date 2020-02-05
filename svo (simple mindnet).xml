@@ -102,6 +102,6 @@ svo.modules_version["svo (simple mindnet)"] = 1</script>
 	</ScriptPackage> 
     <KeyPackage/>
     <HelpPackage>
-        <helpURL></helpURL>
+        <helpURL>https://svof.github.io/svof/</helpURL>
     </HelpPackage>
 </MudletPackage>

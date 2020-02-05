@@ -548,6 +548,6 @@ if svo.systemloaded then svo.loader.priestreporter() end
 	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>
-		<helpURL></helpURL>
+		<helpURL>https://svof.github.io/svof/priestreport.html</helpURL>
 	</HelpPackage>
 </MudletPackage>

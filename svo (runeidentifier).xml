@@ -197,6 +197,6 @@ svo.modules_version["svo (runeidentifier)"] = 1</script>
 	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>
-		<helpURL></helpURL>
+		<helpURL>https://svof.github.io/svof/runeidentifier.html</helpURL>
 	</HelpPackage>
 </MudletPackage>
