@@ -1903,6 +1903,6 @@ if svo.systemloaded then svo.loader.peopletracker() end</script>
 	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>
-		<helpURL></helpURL>
+		<helpURL>https://svof.github.io/svof/</helpURL>
 	</HelpPackage>
 </MudletPackage>

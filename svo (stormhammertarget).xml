@@ -197,9 +197,18 @@ svo.set_target = {}</script>
 		</AliasGroup>
 	</AliasPackage>
 	<ActionPackage />
-	<ScriptPackage />
+	<ScriptPackage>
+		<Script isActive="yes" isFolder="no">
+			<name>svo (stormhammertarget)</name>
+			<packageName></packageName>
+			<script>svo = svo or {}
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (stormhammertarget)"] = 1</script>
+			<eventHandlerList />
+		</Script>
+	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>
-		<helpURL></helpURL>
+		<helpURL>https://svof.github.io/svof/</helpURL>
 	</HelpPackage>
 </MudletPackage>

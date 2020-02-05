@@ -185,9 +185,18 @@ svo.prompttrigger("clear fehu", function() svo.fehu = nil end)</script>
 	<TimerPackage />
 	<AliasPackage />
 	<ActionPackage />
-	<ScriptPackage />
+	<ScriptPackage>
+		<Script isActive="yes" isFolder="no">
+			<name>svo (runeidentifier)</name>
+			<packageName></packageName>
+			<script>svo = svo or {}
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (runeidentifier)"] = 1</script>
+			<eventHandlerList />
+		</Script>
+	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>
-		<helpURL></helpURL>
+		<helpURL>https://svof.github.io/svof/runeidentifier.html</helpURL>
 	</HelpPackage>
 </MudletPackage>

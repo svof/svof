@@ -2275,12 +2275,12 @@ function svo.gevents(_, key)
   if signals[name] then signals[name]:emit() end
 end
 
-local yes = {'yes', 'yep', 'yup', 'oui', 'on', 'y', 'da'}
-local no = {'no', 'nope', 'non', 'off', 'n', 'net'}
+local yes = {'yes', 'yep', 'yup', 'oui', 'on', 'y', 'da', 'yeah', 'ja'}
+local no = {'no', 'nope', 'non', 'off', 'n', 'net', 'nein', 'nah'}
 function svo.convert_string(which)
+  if type(which) == 'string' then which = which:lower() end
   if svo.contains(yes, which) or which == true then return true end
   if svo.contains(no, which) or which == false then return false end
-
   return nil
 end
 svo.toboolean = svo.convert_string
@@ -3260,6 +3260,6 @@ if svo.systemloaded then svo.loader.dor() end</script>
 	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>
-		<helpURL></helpURL>
+		<helpURL>https://svof.github.io/svof/</helpURL>
 	</HelpPackage>
 </MudletPackage>

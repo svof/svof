@@ -310,12 +310,13 @@ svo.doaddfree("angel seek "..svo.locating.name)</script>
 			<name>svo Priest Report</name>
 			<packageName></packageName>
 			<script>function priestReportPrio(_, module)
-  if module ~= "svo (priestreport)" then return end
-  setModulePriority(module, 1)
+  if module ~= "svo (priestreport)" then return true end
+  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
 end
 
-registerAnonymousEventHandler("sysInstall", "priestReportPrio")
+registerAnonymousEventHandler("sysInstall", "priestReportPrio", true)
 
+svo = svo or {}
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (priestreport)"] = 1</script>
 			<eventHandlerList />
@@ -547,6 +548,6 @@ if svo.systemloaded then svo.loader.priestreporter() end
 	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>
-		<helpURL></helpURL>
+		<helpURL>https://svof.github.io/svof/priestreport.html</helpURL>
 	</HelpPackage>
 </MudletPackage>

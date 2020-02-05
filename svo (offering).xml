@@ -187,12 +187,13 @@ end</script>
 			<name>svo Offering Module</name>
 			<packageName></packageName>
 			<script>function offererPrio(_, module)
-  if module ~= "svo (offering)" then return end
-  setModulePriority(module, 1)
+  if module ~= "svo (offering)" then return true end
+  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
 end
 
-registerAnonymousEventHandler("sysInstall", "offererPrio")
+registerAnonymousEventHandler("sysInstall", "offererPrio", true)
 
+svo = svo or {}
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (offering)"] = 1</script>
 			<eventHandlerList />
@@ -259,6 +260,6 @@ end
 	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>
-		<helpURL></helpURL>
+		<helpURL>https://svof.github.io/svof/offering.html</helpURL>
 	</HelpPackage>
 </MudletPackage>

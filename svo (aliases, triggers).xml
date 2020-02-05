@@ -54164,7 +54164,16 @@ svo.showaffs()</script>
 			</ActionGroup>
 		</ActionGroup>
 	</ActionPackage>
-	<ScriptPackage />
+	<ScriptPackage>
+		<Script isActive="yes" isFolder="no">
+			<name>svo (aliases, triggers)</name>
+			<packageName></packageName>
+			<script>svo = svo or {}
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (aliases, triggers)"] = 1</script>
+			<eventHandlerList />
+		</Script>
+	</ScriptPackage>
 	<KeyPackage>
 		<KeyGroup isActive="yes" isFolder="yes">
 			<name>svo</name>
@@ -54188,6 +54197,6 @@ end</script>
 		</KeyGroup>
 	</KeyPackage>
 	<HelpPackage>
-		<helpURL></helpURL>
+		<helpURL>https://svof.github.io/svof/</helpURL>
 	</HelpPackage>
 </MudletPackage>

@@ -167,12 +167,12 @@
 			<name>svo Inker</name>
 			<packageName></packageName>
 			<script>function inkerPrio(_, module)
-  if module ~= "svo (inker)" then return end
-  setModulePriority(module, 1)
+  if module ~= "svo (inker)" then return true end
+  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
 end
 
-registerAnonymousEventHandler("sysInstall", "inkerPrio")
-
+registerAnonymousEventHandler("sysInstall", "inkerPrio",true)
+svo = svo or {}
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (inker)"] = 1.2</script>
 			<eventHandlerList />
@@ -573,6 +573,6 @@ end)</script>
 	</ScriptPackage>
 	<KeyPackage />
 	<HelpPackage>
-		<helpURL></helpURL>
+		<helpURL>https://svof.github.io/svof/inker.html</helpURL>
 	</HelpPackage>
 </MudletPackage>
