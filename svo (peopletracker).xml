@@ -408,7 +408,8 @@ svo.showprompt()</script>
 		<ScriptGroup isActive="yes" isFolder="yes">
 			<name>svo People Tracker</name>
 			<packageName></packageName>
-			<script>function svo.buildwhosummary()
+			<script>svo = svo or {}
+function svo.buildwhosummary()
   local time = createStopWatch(); startStopWatch(time)
   local areas = {}
 
@@ -531,11 +532,11 @@ svo.showprompt()</script>
 end
 
 function trackerPrio(_, module)
-  if module ~= "svo (peopletracker)" then return end
-  setModulePriority(module, 1)
+  if module ~= "svo (peopletracker)" then return true end
+  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
 end
 
-registerAnonymousEventHandler("sysInstall", "trackerPrio")
+registerAnonymousEventHandler("sysInstall", "trackerPrio", true)
 
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (peopletracker)"] = 1</script>

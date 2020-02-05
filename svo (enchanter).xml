@@ -25,12 +25,12 @@
 			<name>svo Enchanter</name>
 			<packageName></packageName>
 			<script>function enchanterPrio(_, module)
-  if module ~= "svo (enchanter)" then return end
-  setModulePriority(module, 1)
+  if module ~= "svo (enchanter)" then return true end
+  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
 end
 
-registerAnonymousEventHandler("sysInstall", "enchanterPrio")
-
+registerAnonymousEventHandler("sysInstall", "enchanterPrio", true)
+svo = svo or {}
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (enchanter)"] = 1</script>
 			<eventHandlerList />

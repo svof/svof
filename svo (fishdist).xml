@@ -301,11 +301,11 @@ fdistance = false</script>
 			<name>svo Fishing Distance by Trilliana</name>
 			<packageName></packageName>
 			<script>function fishdistPrio(_, module)
-  if module ~= "svo (fishdist)" then return end
-  setModulePriority(module, 1)
+  if module ~= "svo (fishdist)" then return true end
+  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
 end
 
-registerAnonymousEventHandler("sysInstall", "fishdistPrio")
+registerAnonymousEventHandler("sysInstall", "fishdistPrio",true)
 
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (fishdist)"] = 1</script>

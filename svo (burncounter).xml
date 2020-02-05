@@ -222,15 +222,16 @@ svo.bl_ignore()</script>
 		<ScriptGroup isActive="yes" isFolder="yes">
 			<name>svo Magi burncounter</name>
 			<packageName></packageName>
-			<script>svo.modules_version = svo.modules_version or {}
+			<script>svo = svo or {}
+svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (burncounter)"] = 1
 
 function burnPrio(_, module)
-  if module ~= "svo (burncounter)" then return end
-  setModulePriority(module, 1)
+  if module ~= "svo (burncounter)" then return true end
+  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
 end
 
-registerAnonymousEventHandler("sysInstall", "burnPrio")
+registerAnonymousEventHandler("sysInstall", "burnPrio", true)
 
 -- burncounters prompt tag is defined here
 -- feel free to tinker with it, but move it out into a script of its own,

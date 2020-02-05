@@ -106,12 +106,13 @@ end</script>
 			<name>svo Mindnet Report</name>
 			<packageName></packageName>
 			<script>function mindnetPrio(_, module)
-  if module ~= "svo (mindnet)" then return end
-  setModulePriority(module, 1)
+  if module ~= "svo (mindnet)" then return true end
+  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
 end
 
-registerAnonymousEventHandler("sysInstall", "mindnetPrio")
+registerAnonymousEventHandler("sysInstall", "mindnetPrio", true)
 
+svo = svo or {}
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (mindnet)"] = 1</script>
 			<eventHandlerList />
