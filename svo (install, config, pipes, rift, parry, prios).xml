@@ -1932,8 +1932,6 @@ if svo.haveskillset('kaido') then
         conf.transmute = 'none'
       end
 
-      if conf.transmute == 'off' then conf.transmute = 'none' end
-
       if conf.transmute == 'none' then
         svo.echof("Won't use transmute for anything.")
       else
