@@ -286,6 +286,7 @@ svo.burn_levels = {
 local bl_list, burn_levels = svo.bl_list, svo.burn_levels
 
 function sk.bl_checkburncounter()
+  if svo.me.class ~= "Magi" then return end
   -- make the announces work with a singleprompt
   local echof = svo.itf
   moveCursor(0, getLineNumber())
