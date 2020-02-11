@@ -311,7 +311,7 @@ svo.doaddfree("angel seek "..svo.locating.name)</script>
 			<packageName></packageName>
 			<script>function priestReportPrio(_, module)
   if module ~= "svo (priestreport)" then return true end
-  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
+  tempTimer(0, [[setModulePriority("]]..module..[[", 0)]])
 end
 
 registerAnonymousEventHandler("sysInstall", "priestReportPrio", true)
