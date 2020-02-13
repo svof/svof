@@ -615,7 +615,12 @@ function svo.valid.dragonformingcolour(colour)
     raiseEvent("svo config changed", 'dragonbreath')
   end
 end
-
+function svo.defs.got_morph()
+  svo.checkaction(svo.dict.waitingformorph.waitingfor)
+  if actions.waitingformorph_waitingfor then
+    lifevision.add(actions.waitingformorph_waitingfor.p)
+  end
+end
 function svo.defs.got_dragonform()
   svo.checkaction(svo.dict.waitingfordragonform.waitingfor)
   if actions.waitingfordragonform_waitingfor then

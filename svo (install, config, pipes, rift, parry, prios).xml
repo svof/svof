@@ -2070,6 +2070,14 @@ if svo.haveskillset('metamorphosis') then
     installstart = function () conf.transmorph = nil end,
     installcheck = function () svo.echof("Do you have the Metamorphosis Transmorph skill?") end
   })
+  svo.config_dict:insert(1, 'truemorph', {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Have%s truemorph - expecting instant morphing.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Don't%s have truemorph - will wait for morphs.", svo.getDefaultColor()) end,
+    onshow = "Have truemorph",
+    installstart = function () conf.truemorph = nil end,
+    installcheck = function () svo.echof("Do you have the Metamorphosis Truemorph skill?") end
+  })
   svo.config_dict:insert(1, 'morphskill', {
     type = 'string',
     check = function (what)

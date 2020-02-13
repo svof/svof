@@ -10830,6 +10830,9 @@ if svo.haveskillset('metamorphosis') then
           else
             send("morph "..sk.morphsforskill.nightsight[1], conf.commandecho)
           end
+          if  not conf.truemorph then
+            svo.doaction(svo.dict.waitingformorph.waitingfor)
+          end
         end
       end
     }
@@ -10873,6 +10876,9 @@ if svo.haveskillset('metamorphosis') then
         elseif not sk.inamorphfor'fitness' then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph "..sk.morphsforskill.fitness[1], conf.commandecho)
+          if  not conf.truemorph then
+            svo.doaction(svo.dict.waitingformorph.waitingfor)
+          end
         elseif sk.inamorphfor'fitness' then
           send('fitness', conf.commandecho)
         end
@@ -10897,6 +10903,9 @@ if svo.haveskillset('metamorphosis') then
         elseif not sk.inamorphfor'elusiveness' then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph "..sk.morphsforskill.elusiveness[1], conf.commandecho)
+          if  not conf.truemorph then
+            svo.doaction(svo.dict.waitingformorph.waitingfor)
+          end
         elseif sk.inamorphfor'elusiveness' then
           send("elusiveness on", conf.commandecho)
         end
@@ -10924,6 +10933,9 @@ if svo.haveskillset('metamorphosis') then
         elseif not sk.inamorphfor'temperance' then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph "..sk.morphsforskill.temperance[1], conf.commandecho)
+          if  not conf.truemorph then
+            svo.doaction(svo.dict.waitingformorph.waitingfor)
+          end
         elseif sk.inamorphfor'temperance' then
           send('temperance', conf.commandecho)
         end
@@ -10958,6 +10970,9 @@ if svo.haveskillset('metamorphosis') then
           else
             send("morph "..sk.morphsforskill.nightsight[1], conf.commandecho)
           end
+          if  not conf.truemorph then
+            svo.doaction(svo.dict.waitingformorph.waitingfor)
+          end
         end
 			end,
 
@@ -10984,6 +10999,9 @@ if svo.haveskillset('metamorphosis') then
         elseif not sk.inamorphfor'stealth' then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph "..sk.morphsforskill.stealth[1], conf.commandecho)
+          if  not conf.truemorph then
+            svo.doaction(svo.dict.waitingformorph.waitingfor)
+          end
         elseif sk.inamorphfor'stealth' then
           send("stealth on", conf.commandecho)
         end
@@ -11008,6 +11026,9 @@ if svo.haveskillset('metamorphosis') then
         elseif not sk.inamorphfor'resistance' then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph "..sk.morphsforskill.resistance[1], conf.commandecho)
+          if  not conf.truemorph then
+            svo.doaction(svo.dict.waitingformorph.waitingfor)
+          end
         elseif sk.inamorphfor'resistance' then
           send('resistance', conf.commandecho)
         end
@@ -11032,6 +11053,9 @@ if svo.haveskillset('metamorphosis') then
         elseif not sk.inamorphfor'rest' then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph "..sk.morphsforskill.rest[1], conf.commandecho)
+          if  not conf.truemorph then
+            svo.doaction(svo.dict.waitingformorph.waitingfor)
+          end
         elseif sk.inamorphfor'rest' then
           send('rest', conf.commandecho)
         end
@@ -11065,6 +11089,9 @@ if svo.haveskillset('metamorphosis') then
         elseif not sk.inamorphfor'vitality' then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph "..sk.morphsforskill.vitality[1], conf.commandecho)
+          if  not conf.truemorph then
+            svo.doaction(svo.dict.waitingformorph.waitingfor)
+          end
         elseif sk.inamorphfor'vitality' then
           send('vitality', conf.commandecho)
         end
@@ -11095,23 +11122,65 @@ if svo.haveskillset('metamorphosis') then
         elseif not sk.inamorphfor'flame' then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph "..sk.morphsforskill.flame[1], conf.commandecho)
+          if  not conf.truemorph then
+            svo.doaction(svo.dict.waitingformorph.waitingfor)
+          end
         elseif sk.inamorphfor'flame' then
           send("summon flame", conf.commandecho)
         end
       end
     },
   }
+  svo.dict.waitingformorph = {
+	unpauselater = false,
+	waitingfor = {
+		customwait = 4,
+		
+		oncompleted = function()
+			if conf.paused and svo.dict.waitingformorph.unpauselater then
+				conf.paused = false; raiseEvent("svo config changed", 'paused')
+				echo"\n"
+				svo.echof("Obtained morph, unpausing.")         
+			end
+			svo.dict.waitingformorph.unpauselater = false
+		end,
+		
+		cancelled = function()
+			if conf.paused and svo.dict.waitingformorph.unpauselater then
+				conf.paused = false; raiseEvent("svo config changed", 'paused')
+				echo"\n" svo.echof("Unpausing.")
+			end
+			svo.dict.waitingformorph.unpauselater = false
+		
+		end,
+		
+		ontimeout = function()
+		 svo.dict.waitingformorph.waitingfor.cancelled()
+		end,
+		
+		onstart = function()
+			if not conf.truemorph then
+				if not conf.paused then
+					svo.dict.waitingformorph.unpauselater = true
+					conf.paused = true; raiseEvent("svo config changed", 'paused')
+					echo"\n" svo.echof("Temporarily pausing for morphing.")
+				end
+			else
+				svo.dict.waitingformorph.oncompleted()
+			end
+		end,
+	}
+  }
   svo.dict.squirrel = {
     physical = {
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.squirrel and ((sys.deffing and defdefup[defs.mode].squirrel) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].squirrel)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.squirrel and ((sys.deffing and defdefup[defs.mode].squirrel) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].squirrel)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('squirrel')
       end,
 
@@ -11123,6 +11192,9 @@ if svo.haveskillset('metamorphosis') then
         else
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph squirrel", conf.commandecho)
+        end 
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
         end
       end
     },
@@ -11135,12 +11207,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.wildcat and ((sys.deffing and defdefup[defs.mode].wildcat) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].wildcat)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.wildcat and ((sys.deffing and defdefup[defs.mode].wildcat) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].wildcat)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('wildcat')
       end,
 
@@ -11152,6 +11223,9 @@ if svo.haveskillset('metamorphosis') then
         else
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph wildcat", conf.commandecho)
+        end 
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
         end
       end
     },
@@ -11164,12 +11238,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.wolf and ((sys.deffing and defdefup[defs.mode].wolf) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].wolf)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.wolf and ((sys.deffing and defdefup[defs.mode].wolf) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].wolf)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('wolf')
       end,
 
@@ -11182,6 +11255,9 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph wolf", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
       end
     },
     gone = {
@@ -11193,12 +11269,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.turtle and ((sys.deffing and defdefup[defs.mode].turtle) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].turtle)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.turtle and ((sys.deffing and defdefup[defs.mode].turtle) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].turtle)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('turtle')
       end,
 
@@ -11211,6 +11286,9 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph turtle", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
       end
     },
     gone = {
@@ -11222,12 +11300,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.jackdaw and ((sys.deffing and defdefup[defs.mode].jackdaw) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].jackdaw)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.jackdaw and ((sys.deffing and defdefup[defs.mode].jackdaw) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].jackdaw)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('jackdaw')
       end,
 
@@ -11240,6 +11317,9 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph jackdaw", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
       end
     },
     gone = {
@@ -11251,12 +11331,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.cheetah and ((sys.deffing and defdefup[defs.mode].cheetah) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].cheetah)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.cheetah and ((sys.deffing and defdefup[defs.mode].cheetah) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].cheetah)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('cheetah')
       end,
 
@@ -11269,6 +11348,9 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph cheetah", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
       end
     },
     gone = {
@@ -11278,14 +11360,13 @@ if svo.haveskillset('metamorphosis') then
   svo.dict.owl = {
     physical = {
       balanceful_act = true, def = true, undeffable = true,
-
+      
       isadvisable = function()
-        return (not defc.owl and ((sys.deffing and defdefup[defs.mode].owl) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].owl)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.owl and ((sys.deffing and defdefup[defs.mode].owl) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].owl)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('owl')
       end,
 
@@ -11298,6 +11379,9 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph owl", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
       end
     },
     gone = {
@@ -11309,13 +11393,12 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.hyena and ((sys.deffing and defdefup[defs.mode].hyena) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].hyena)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.hyena and ((sys.deffing and defdefup[defs.mode].hyena) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].hyena)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
-        sk.clearmorphs()
-
-        defences.got('hyena')
+          sk.clearmorphs()
+          defences.got('hyena')
       end,
 
       action = "morph hyena",
@@ -11327,6 +11410,10 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph hyena", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
+		
       end
     },
     gone = {
@@ -11338,12 +11425,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.condor and ((sys.deffing and defdefup[defs.mode].condor) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].condor)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.condor and ((sys.deffing and defdefup[defs.mode].condor) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].condor)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('condor')
       end,
 
@@ -11356,6 +11442,9 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph condor", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
       end
     },
     gone = {
@@ -11367,12 +11456,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.gopher and ((sys.deffing and defdefup[defs.mode].gopher) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].gopher)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.gopher and ((sys.deffing and defdefup[defs.mode].gopher) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].gopher)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('gopher')
       end,
 
@@ -11385,6 +11473,9 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph gopher", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
       end
     },
     gone = {
@@ -11396,12 +11487,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.sloth and ((sys.deffing and defdefup[defs.mode].sloth) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].sloth)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.sloth and ((sys.deffing and defdefup[defs.mode].sloth) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].sloth)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('sloth')
       end,
 
@@ -11414,6 +11504,9 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph sloth", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
       end
     },
     gone = {
@@ -11425,12 +11518,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.bear and ((sys.deffing and defdefup[defs.mode].bear) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].bear)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.bear and ((sys.deffing and defdefup[defs.mode].bear) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].bear)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('bear')
       end,
 
@@ -11443,6 +11535,9 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph bear", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
       end
     },
     gone = {
@@ -11454,12 +11549,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.nightingale and ((sys.deffing and defdefup[defs.mode].nightingale) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].nightingale)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.nightingale and ((sys.deffing and defdefup[defs.mode].nightingale) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].nightingale)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('nightingale')
       end,
 
@@ -11472,6 +11566,9 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph nightingale", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
       end
     },
     gone = {
@@ -11483,12 +11580,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.elephant and ((sys.deffing and defdefup[defs.mode].elephant) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].elephant)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.elephant and ((sys.deffing and defdefup[defs.mode].elephant) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].elephant)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('elephant')
       end,
 
@@ -11501,6 +11597,9 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph elephant", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
       end
     },
     gone = {
@@ -11512,12 +11611,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.wolverine and ((sys.deffing and defdefup[defs.mode].wolverine) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].wolverine)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.wolverine and ((sys.deffing and defdefup[defs.mode].wolverine) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].wolverine)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('wolverine')
       end,
 
@@ -11530,6 +11628,9 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph wolverine", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
       end
     },
     gone = {
@@ -11541,12 +11642,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.eagle and ((sys.deffing and defdefup[defs.mode].eagle) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].eagle)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.eagle and ((sys.deffing and defdefup[defs.mode].eagle) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].eagle)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('eagle')
       end,
 
@@ -11559,6 +11659,9 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph eagle", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
       end
     },
     gone = {
@@ -11570,12 +11673,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.gorilla and ((sys.deffing and defdefup[defs.mode].gorilla) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].gorilla)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.gorilla and ((sys.deffing and defdefup[defs.mode].gorilla) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].gorilla)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('gorilla')
       end,
 
@@ -11588,6 +11690,9 @@ if svo.haveskillset('metamorphosis') then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph gorilla", conf.commandecho)
         end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
+        end
       end
     },
     gone = {
@@ -11599,12 +11704,11 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.icewyrm and ((sys.deffing and defdefup[defs.mode].icewyrm) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].icewyrm)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.icewyrm and ((sys.deffing and defdefup[defs.mode].icewyrm) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].icewyrm)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('icewyrm')
       end,
 
@@ -11616,6 +11720,9 @@ if svo.haveskillset('metamorphosis') then
         else
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph icewyrm", conf.commandecho)
+        end
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
         end
       end
     },
@@ -13387,12 +13494,11 @@ if svo.me.class == 'Sentinel' then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.basilisk and ((sys.deffing and defdefup[defs.mode].basilisk) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].basilisk)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.basilisk and ((sys.deffing and defdefup[defs.mode].basilisk) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].basilisk)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('basilisk')
       end,
 
@@ -13404,6 +13510,9 @@ if svo.me.class == 'Sentinel' then
         else
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph basilisk", conf.commandecho)
+        end 
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
         end
       end
     },
@@ -13418,12 +13527,11 @@ if svo.me.class == 'Sentinel' then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.jaguar and ((sys.deffing and defdefup[defs.mode].jaguar) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].jaguar)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.jaguar and ((sys.deffing and defdefup[defs.mode].jaguar) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].jaguar)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('jaguar')
       end,
 
@@ -13435,6 +13543,9 @@ if svo.me.class == 'Sentinel' then
         else
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph jaguar", conf.commandecho)
+        end 
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
         end
       end
     },
@@ -13449,12 +13560,11 @@ if svo.me.class == 'Druid' then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.wyvern and ((sys.deffing and defdefup[defs.mode].wyvern) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].wyvern)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.wyvern and ((sys.deffing and defdefup[defs.mode].wyvern) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].wyvern)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('wyvern')
       end,
 
@@ -13466,6 +13576,9 @@ if svo.me.class == 'Druid' then
         else
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph wyvern", conf.commandecho)
+        end 
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
         end
       end
     },
@@ -13478,12 +13591,11 @@ if svo.me.class == 'Druid' then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        return (not defc.hydra and ((sys.deffing and defdefup[defs.mode].hydra) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].hydra)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and codepaste.nonmorphdefs()) or false
+        return (not defc.hydra and ((sys.deffing and defdefup[defs.mode].hydra) or (not sys.deffing and conf.keepup and defkeepup[defs.mode].hydra)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and codepaste.nonmorphdefs()) or false
       end,
 
       oncompleted = function()
         sk.clearmorphs()
-
         defences.got('hydra')
       end,
 
@@ -13495,6 +13607,9 @@ if svo.me.class == 'Druid' then
         else
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph hydra", conf.commandecho)
+        end 
+        if not conf.truemorph then
+          svo.doaction(svo.dict.waitingformorph.waitingfor)
         end
       end
     },
