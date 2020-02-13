@@ -10813,7 +10813,7 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true, -- mark as undeffable since serverside can't morph
 
       isadvisable = function()
-        return (not defc.affinity and ((sys.deffing and defdefup[defs.mode].affinity) or (conf.keepup and defkeepup[defs.mode].affinity)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.prone) or false
+        return (not defc.affinity and ((sys.deffing and defdefup[defs.mode].affinity) or (conf.keepup and defkeepup[defs.mode].affinity)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not svo.doingaction('waitingformorph') and not affs.prone) or false
       end,
 
       oncompleted = function() defences.got('affinity') end,
@@ -10843,7 +10843,7 @@ if svo.haveskillset('metamorphosis') then
       undeffable = true, -- mark as undeffable since serverside can't morph
 
       isadvisable = function()
-        if not (not affs.weakness and not defc.dragonform and bals.fitness and not codepaste.balanceful_defs_codepaste() and (defc.wyvern or defc.wolf or defc.hyena or defc.jaguar or defc.cheetah or defc.elephant or defc.hydra) and not affs.cantmorph and sk.morphsforskill.fitness) then
+        if not (not affs.weakness and not defc.dragonform and bals.fitness and not codepaste.balanceful_defs_codepaste() and (defc.wyvern or defc.wolf or defc.hyena or defc.jaguar or defc.cheetah or defc.elephant or defc.hydra) and not affs.cantmorph and not svo.doingaction('waitingformorph') and sk.morphsforskill.fitness) then
           return false
         end
 
@@ -10890,7 +10890,7 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true, -- mark as undeffable since serverside can't morph
 
       isadvisable = function()
-        return (not defc.elusiveness and ((sys.deffing and defdefup[defs.mode].elusiveness) or (conf.keepup and defkeepup[defs.mode].elusiveness)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and sk.morphsforskill.elusiveness) or false
+        return (not defc.elusiveness and ((sys.deffing and defdefup[defs.mode].elusiveness) or (conf.keepup and defkeepup[defs.mode].elusiveness)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and sk.morphsforskill.elusiveness) or false
       end,
 
       oncompleted = function() defences.got('elusiveness') end,
@@ -10917,7 +10917,7 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true, -- mark as undeffable since serverside can't morph
 
       isadvisable = function()
-        return (not defc.temperance and ((sys.deffing and defdefup[defs.mode].temperance) or (conf.keepup and defkeepup[defs.mode].temperance)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and sk.morphsforskill.temperance) or false
+        return (not defc.temperance and ((sys.deffing and defdefup[defs.mode].temperance) or (conf.keepup and defkeepup[defs.mode].temperance)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and sk.morphsforskill.temperance) or false
       end,
 
       oncompleted = function()
@@ -10950,7 +10950,7 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true, -- mark as undeffable since serverside can't morph
 
       isadvisable = function()
-        return (not defc.bonding and ((sys.deffing and defdefup[defs.mode].bonding) or (conf.keepup and defkeepup[defs.mode].bonding)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and sk.inamorph()) or false
+        return (not defc.bonding and ((sys.deffing and defdefup[defs.mode].bonding) or (conf.keepup and defkeepup[defs.mode].bonding)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and sk.inamorph()) or false
       end,
 
       oncompleted = function()
@@ -10986,7 +10986,7 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true, -- mark as undeffable since serverside can't morph
 
       isadvisable = function()
-        return (not defc.stealth and ((sys.deffing and defdefup[defs.mode].stealth) or (conf.keepup and defkeepup[defs.mode].stealth)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and sk.morphsforskill.stealth) or false
+        return (not defc.stealth and ((sys.deffing and defdefup[defs.mode].stealth) or (conf.keepup and defkeepup[defs.mode].stealth)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and sk.morphsforskill.stealth) or false
       end,
 
       oncompleted = function() defences.got('stealth') end,
@@ -11013,7 +11013,7 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true, -- mark as undeffable since serverside can't morph
 
       isadvisable = function()
-        return (not defc.resistance and ((sys.deffing and defdefup[defs.mode].resistance) or (conf.keepup and defkeepup[defs.mode].resistance)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and sk.morphsforskill.resistance) or false
+        return (not defc.resistance and ((sys.deffing and defdefup[defs.mode].resistance) or (conf.keepup and defkeepup[defs.mode].resistance)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and sk.morphsforskill.resistance) or false
       end,
 
       oncompleted = function() defences.got('resistance') end,
@@ -11040,7 +11040,7 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true, -- mark as undeffable since serverside can't morph
 
       isadvisable = function()
-        return (not defc.rest and ((sys.deffing and defdefup[defs.mode].rest) or (conf.keepup and defkeepup[defs.mode].rest)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and sk.morphsforskill.rest) or false
+        return (not defc.rest and ((sys.deffing and defdefup[defs.mode].rest) or (conf.keepup and defkeepup[defs.mode].rest)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and sk.morphsforskill.rest) or false
       end,
 
       oncompleted = function() defences.got('rest') end,
@@ -11067,7 +11067,7 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true, -- mark as undeffable since serverside can't morph
 
       isadvisable = function()
-        if (not defc.vitality and ((sys.deffing and defdefup[defs.mode].vitality) or (conf.keepup and defkeepup[defs.mode].vitality)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and sk.morphsforskill.vitality and not svo.doingaction'cantvitality') then
+        if (not defc.vitality and ((sys.deffing and defdefup[defs.mode].vitality) or (conf.keepup and defkeepup[defs.mode].vitality)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and sk.morphsforskill.vitality and not svo.doingaction'cantvitality') then
 
          if (stats.currenthealth &gt;= stats.maxhealth and stats.currentmana &gt;= stats.maxmana)
           then
@@ -11109,7 +11109,7 @@ if svo.haveskillset('metamorphosis') then
       balanceful_act = true, def = true, undeffable = true, -- mark as undeffable since serverside can't morph
 
       isadvisable = function()
-        return (not defc.flame and ((sys.deffing and defdefup[defs.mode].flame) or (conf.keepup and defkeepup[defs.mode].flame)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and sk.morphsforskill.flame) or false
+        return (not defc.flame and ((sys.deffing and defdefup[defs.mode].flame) or (conf.keepup and defkeepup[defs.mode].flame)) and not codepaste.balanceful_defs_codepaste() and not affs.cantmorph and not svo.doingaction('waitingformorph') and sk.morphsforskill.flame) or false
       end,
 
       oncompleted = function() defences.got('flame') end,
