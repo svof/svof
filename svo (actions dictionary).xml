@@ -9899,6 +9899,7 @@ else
         elseif not defc.dragonform and not sk.inamorphfor'nightsight' then
           if defc.flame then send("relax flame", conf.commandecho) end
           send("morph "..sk.morphsforskill.nightsight[1], conf.commandecho)
+          if not conf.truemorph then svo.doaction(svo.dict.waitingformorph.waitingfor) end
         elseif defc.dragonform or sk.inamorphfor'nightsight' then
           send("nightsight on", conf.commandecho)
         end
