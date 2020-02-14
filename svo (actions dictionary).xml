@@ -9883,7 +9883,7 @@ end
           sys.canoutr and
           not affs.prone and
           not svo.doingaction'nightsight'
-          and (not svo.haveskillset('metamorphosis') or ((not affs.cantmorph and sk.morphsforskill.nightsight) or defc.dragonform))) or false
+          and (not svo.haveskillset('metamorphosis') or ((not affs.cantmorph and not svo.doingaction'waitingformorph' and sk.morphsforskill.nightsight) or defc.dragonform))) or false
       end,
 
       oncompleted = function() defences.got('nightsight') end,
