@@ -6392,7 +6392,7 @@ stupidityCheckTable = {
     local installDir = getModulePath("svo (install me in module manager)") 
     installDir= installDir:sub(1, #installDir-38)
     for k in lfs.dir(installDir) do
-      if k ~= "." and k ~= ".." then
+      if k:ends(".xml") then
         os.remove(installDir .. k)
       end
     end
