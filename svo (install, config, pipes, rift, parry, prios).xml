@@ -2688,8 +2688,7 @@ end
 
 end -- end of svo config loader
 
-if svo.systemloaded then svo.loader.config() end
-svo.conf.releaschannel = 'inclient'</script>
+if svo.systemloaded then svo.loader.config() end</script>
 			<eventHandlerList />
 		</Script>
 		<Script isActive="yes" isFolder="no">
