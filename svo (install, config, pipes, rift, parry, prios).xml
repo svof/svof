@@ -4532,7 +4532,7 @@ function prio.export (name, options, echoback)
 
   local data
   local s = {
-    "-- Priorities list '".. name .. "' by ".. sys.charname .. ", exported @ " .. os.date().."\n",
+    "-- Priorities list '".. name .. "' by ".. (sys.charname or "Unknown") .. ", exported @ " .. os.date().."\n",
     "-- Note: The lower the priority in the list without a number, or the lower number - the more important the thing is. ie, things at the bottom of the list will get done before those on the top!"
   }
 
