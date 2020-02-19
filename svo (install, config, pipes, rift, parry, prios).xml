@@ -2688,8 +2688,7 @@ end
 
 end -- end of svo config loader
 
-if svo.systemloaded then svo.loader.config() end
-svo.conf.releaschannel = 'inclient'</script>
+if svo.systemloaded then svo.loader.config() end</script>
 			<eventHandlerList />
 		</Script>
 		<Script isActive="yes" isFolder="no">
@@ -4532,7 +4531,7 @@ function prio.export (name, options, echoback)
 
   local data
   local s = {
-    "-- Priorities list '".. name .. "' by ".. sys.charname .. ", exported @ " .. os.date().."\n",
+    "-- Priorities list '".. name .. "' by ".. (sys.charname or "Unknown") .. ", exported @ " .. os.date().."\n",
     "-- Note: The lower the priority in the list without a number, or the lower number - the more important the thing is. ie, things at the bottom of the list will get done before those on the top!"
   }
 
