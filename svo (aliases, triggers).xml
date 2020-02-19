@@ -16634,7 +16634,7 @@ end</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Lynara's StupidCheck</name>
+						<name>PhoenixCodes' StupidCheck</name>
 						<script>StupeCheck = matches[1]</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>12</conditonLineDelta>
@@ -16664,8 +16664,10 @@ end</script>
 							<string>You drop to one knee, demonstrating your humility and respect.</string>
 							<string>You pick your nose absently.</string>
 							<string>You wail like an old woman.</string>
+							<string>Your mind is whirling with thoughts - you cannot settle down to sleep.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
+							<integer>3</integer>
 							<integer>3</integer>
 							<integer>3</integer>
 							<integer>3</integer>
@@ -16686,7 +16688,13 @@ end</script>
 						</regexCodePropertyList>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>StupidityValid</name>
-							<script>if not commandCheck(StupeCheck) and not svo.affl.stupidity then wrapLine(0,0) echo("\n") svo.echof("Detected stupidity from stupidcheck") svo.valid.simplestupidity() end</script>
+							<script>if not commandCheck(StupeCheck) and not svo.affl.stupidity then 
+  wrapLine(0,0) echo("\n") 
+  svo.echof("Detected stupidity from stupidcheck") 
+  svo.valid.simplestupidity()
+  svo.showprompt()
+  svo.send_in_the_gnomes()
+end</script>
 							<triggerType>0</triggerType>
 							<conditonLineDelta>99</conditonLineDelta>
 							<mStayOpen>0</mStayOpen>
@@ -53436,8 +53444,11 @@ svo.showprompt()</script>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
 				<name>(vversion) Show system version</name>
-				<script>svo.echof("system version is %s on the %s release stream", svo.version, svo.conf.releasechannel)
-svo.checkforupdate()</script>
+				<script>svo.echof("You are on the %s release stream! You have the following modules installed:", svo.conf.releasechannel)
+for k,v in pairs(svo.modules_version) do
+  decho(string.format("%sv%s: %s\n", svo.getDefaultColor(), v, k))
+end
+svo.showprompt()</script>
 				<command></command>
 				<packageName></packageName>
 				<regex>^vversion$</regex>
@@ -53617,10 +53628,10 @@ svo.toggle_ignore(matches[2])</script>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
 				<name>(vupdate) update your system</name>
-				<script>svo.checkforupdate((matches[2] and matches[2]:trim()) or "checking")</script>
+				<script>svo.checkforupdates(matches[2] or "checking")</script>
 				<command></command>
 				<packageName></packageName>
-				<regex>^vupdate( force| class| addons)?$</regex>
+				<regex>^vupdate(?: (force|checking))?$</regex>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
 				<name>Remember vault/mount</name>
