@@ -23210,7 +23210,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>Power</name>
-							<script>local percent = math.floor((100/tonumber(matches[3])) * tonumber(matches[2]))
+							<script>local percent = math.min(180, math.floor((100/tonumber(matches[3])) * tonumber(matches[2])))
 
 echo(string.rep(" ", 36 - #getCurrentLine()))
 
@@ -23294,7 +23294,7 @@ svo.defs.lost_watch()</script>
 						</regexCodePropertyList>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>My angel</name>
-							<script>local percent = math.floor((100/5000) * tonumber(multimatches[2][2]))
+							<script>local percent = math.min(180, math.floor((100/5000) * tonumber(multimatches[2][2])))
 
 echo(string.rep(" ", 36 - #getCurrentLine()))
 
