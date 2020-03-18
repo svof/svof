@@ -18226,7 +18226,7 @@ raiseEvent("svo got balance", "entities")</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Humour balance</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -18348,7 +18348,7 @@ raiseEvent("svo got balance", "homunculus")</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Fitness balance</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -23210,7 +23210,7 @@ end</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>Power</name>
-							<script>local percent = math.floor((100/tonumber(matches[3])) * tonumber(matches[2]))
+							<script>local percent = math.min(180, math.floor((100/tonumber(matches[3])) * tonumber(matches[2])))
 
 echo(string.rep(" ", 36 - #getCurrentLine()))
 
@@ -23294,7 +23294,7 @@ svo.defs.lost_watch()</script>
 						</regexCodePropertyList>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>My angel</name>
-							<script>local percent = math.floor((100/5000) * tonumber(multimatches[2][2]))
+							<script>local percent = math.min(180, math.floor((100/5000) * tonumber(multimatches[2][2])))
 
 echo(string.rep(" ", 36 - #getCurrentLine()))
 
@@ -23733,7 +23733,7 @@ end</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Alchemy defences</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -23863,7 +23863,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Bashing triggers</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -51626,7 +51626,7 @@ resetFormat()</script>
 						</regexCodePropertyList>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>Health</name>
-							<script>local percent = math.floor((100/tonumber(matches[3])) * tonumber(matches[2]))
+							<script>local percent = math.min(180, math.floor((100/tonumber(matches[3])) * tonumber(matches[2])))
 
 echo(string.rep(" ", 36 - #getCurrentLine()))
 
@@ -51655,7 +51655,7 @@ deselect() resetFormat()</script>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>Mana</name>
-							<script>local percent = math.floor((100/tonumber(matches[3])) * tonumber(matches[2]))
+							<script>local percent = math.min(180, math.floor((100/tonumber(matches[3])) * tonumber(matches[2])))
 
 echo(string.rep(" ", 36 - #line))
 resetFormat()
@@ -51691,7 +51691,7 @@ if selectString(" and see that his health", 1) ~= -1 or selectString(" and see t
   replace("") deselect()
 end
 
-local percent = math.floor((100/tonumber(multimatches[2][3])) * tonumber(multimatches[2][2]))
+local percent = math.min(180, math.floor((100/tonumber(multimatches[2][3])) * tonumber(multimatches[2][2])))
 
 echo(string.rep(" ", 36 - #getCurrentLine()))
 
@@ -51722,7 +51722,7 @@ deselect() resetFormat()</script>
 					</Trigger>
 					<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Bar Mana on contemplate</name>
-						<script>local percent = math.floor((100/tonumber(matches[3])) * tonumber(matches[2]))
+						<script>local percent = math.min(180, math.floor((100/tonumber(matches[3])) * tonumber(matches[2])))
 
 echo(string.rep(" ", 36 - #line))
 resetFormat()
