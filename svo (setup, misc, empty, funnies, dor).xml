@@ -634,7 +634,7 @@ signals.enablegmcp:add_post_emit(function ()
 end, 'post emit enablegmcp')
 end
 
-signals.systemstart:add_post_emit(function () svo.logging_in = true end, 'set logging in on startup')
+signals.systemstart:connect(function () svo.logging_in = true end, 'set logging in on startup')
 
 signals.newroom = signals.newroom or luanotify.signal.new()
 signals.newarea = signals.newarea or luanotify.signal.new()
