@@ -2265,6 +2265,7 @@ end
 svo.sendc = sk.sendqueuecmd
 
 function svo.sk.dosendqueue()
+if svo.logging_in then return end
   if sk.sendcuringtimer then killTimer(sk.sendcuringtimer) end
 
   if #sk.sendqueue &lt;= 1 then

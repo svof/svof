@@ -834,13 +834,15 @@ function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache)
 end
 
 function sk.updateserversideprios()
+--Don't do anything before we log in.
+  if svo.logging_in then return end 
+  
   if not sk.priochangetimer then return end
   sk.updateserverwatch = sk.updateserverwatch or createStopWatch()
   startStopWatch(sk.updateserverwatch)
 
   -- don't notify of prio changes until the system is loaded, as they can get shuffled around a bit
   if not svo.systemloaded then return end
-
   local afterstate = sk.getafterstateprios()
   svo.debugf("sk.updateserverwatch sk.getafterstateprios: %s", getStopWatchTime(sk.updateserverwatch))
 
