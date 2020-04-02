@@ -6416,7 +6416,7 @@ end</script>
 				<script>local downloadfolder = getMudletHomeDir().."/svo/downloads/"
 
 -- this should get called at start and every hour after that
-function svo.checkforupdate(type)
+function svo.checkforupdates(type)
   local baseUrl = string.format("http://svof.github.io/svof/%s/", svo.conf.releasechannel)
  
 	if svo.checkingupdates then return end
@@ -6484,7 +6484,7 @@ end</script>
 					<name>svo_checkupdatestart</name>
 					<packageName></packageName>
 					<script>function svo_checkupdatestart()
-  svo.checkforupdate("checking")
+  svo.checkforupdates("checking")
 end</script>
 					<eventHandlerList>
 						<string>svo system loaded</string>
