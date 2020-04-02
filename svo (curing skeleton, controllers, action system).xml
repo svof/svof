@@ -2265,7 +2265,7 @@ end
 svo.sendc = sk.sendqueuecmd
 
 function svo.sk.dosendqueue()
-if svo.logging_in then return end
+  if svo.logging_in then return end
   if sk.sendcuringtimer then killTimer(sk.sendcuringtimer) end
 
   if #sk.sendqueue &lt;= 1 then
@@ -2605,6 +2605,7 @@ end
 --      |   |cnrl.dolockwarning
 
 function svo.onprompt()
+  if svo.logging_in then return end
   raiseEvent("svo before the prompt")
   sk.processing_prompt = true
   sk.systemscommands = {}
@@ -3619,6 +3620,7 @@ local lifevision = svo.lifevision
 -- record actions in per-action, per-balance tables for checking against later
 -- ie: doaction(dict.healhealth.sip)
 svo.doaction = function(arg1, arg2)
+  if svo.logging_in then return end
   local act, which, balance
   -- do action used to be available in 2 modes - internal and external. Internal API took a dict[action][balance] and
   -- the external API took 2 strings as the action and balance. This is a compatibility layer for the merged result
