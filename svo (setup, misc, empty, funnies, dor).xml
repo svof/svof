@@ -3117,7 +3117,7 @@ function svo.dor (what, echoback, show)
 end
 
 function sk.check_do()
-  if not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or svo.doworking or me.dopaused then return end
+  if svo.logging_in or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or svo.doworking or me.dopaused then return end
 
   if #me.doqueue == 0 then return end
 
@@ -3156,7 +3156,7 @@ end
 svo.signals.systemstart:connect(function () svo.addbalanceful("svo check do", sk.check_do) end, 'add balanceful do check at start')
 
 function svo.check_dofree()
-  if not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or svo.dofreeworking then return end
+  if svo.logging_in or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or svo.dofreeworking then return end
 
   if #me.dofreequeue == 0 then return end
 
