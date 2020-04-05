@@ -757,7 +757,9 @@ end
 
 -- default is async
 signals.aeony:connect(function()
-  if sys.sync then
+  if svo.logging_in then
+    svo.make_gnomes_work = function() end
+  elseif sys.sync then
     svo.make_gnomes_work = svo.make_gnomes_work_sync
   else
     svo.make_gnomes_work = svo.make_gnomes_work_async
@@ -2104,6 +2106,7 @@ function svo.sk.enable_single_prompt()
 end
 
 function svo.sk.showstatchanges()
+  if svo.logging_in then return end
   local t = sk.statchanges
   if #t &gt; 0 then
     if conf.singleprompt then
@@ -2265,7 +2268,7 @@ end
 svo.sendc = sk.sendqueuecmd
 
 function svo.sk.dosendqueue()
-if svo.logging_in then return end
+  if svo.logging_in then return end
   if sk.sendcuringtimer then killTimer(sk.sendcuringtimer) end
 
   if #sk.sendqueue &lt;= 1 then
@@ -2390,7 +2393,7 @@ local oldmaxhealth, oldmaxmana, oldmaxendurance, oldmaxwillpower = 0, 0, 0, 0
 me.healthchange, me.manachange = 0, 0
 local function calculatestatchanges()
   local t = {}
-
+  
   me.healthchange = 0
   me.manachange = 0
 	if affs.blackout then return end

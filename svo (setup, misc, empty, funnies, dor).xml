@@ -618,7 +618,7 @@ signals.enablegmcp = signals.enablegmcp or luanotify.signal.new()
 
 if not svo.systemloaded then
 signals.enablegmcp:add_post_emit(function ()
-  svo.logging_in = false
+  tempBeginOfLineTrigger("Password correct. Welcome to Achaea.", function() svo.logging_in = false signals.aeony:emit() end, 5)  
   if not sys.enabledgmcp then
     sys.enabledgmcp = true
   else
@@ -634,7 +634,7 @@ signals.enablegmcp:add_post_emit(function ()
 end, 'post emit enablegmcp')
 end
 
-signals.systemstart:connect(function () svo.logging_in = true end, 'set logging in on startup')
+signals.systemstart:connect(function () svo.logging_in = true signals.aeony:emit() end, 'set logging in on startup')
 
 signals.newroom = signals.newroom or luanotify.signal.new()
 signals.newarea = signals.newarea or luanotify.signal.new()
