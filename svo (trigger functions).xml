@@ -96,7 +96,7 @@ function svo.valid.diagnose_end()
 
   svo.affsp = {} -- potential affs
   svo.sk.checkaeony()
-  svo.signals.aeony:emit()
+  svo.signals.changecuring:emit()
   setTriggerStayOpen("svo diag", 0)
   svo.sk.diag_list = {}
 end

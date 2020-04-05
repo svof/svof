@@ -927,7 +927,7 @@ function svo.reset.general()
   svo.actions_performed = {}
   sk.onpromptfuncs = {}
   sk.checkaeony()
-  signals.aeony:emit()
+  signals.changecuring:emit()
   signals.canoutr:emit()
   svo.innews = false
   svo.passive_cure_paragraph = false
@@ -1133,7 +1133,7 @@ function svo.vaff(aff)
     if aff == 'aeon' then svo.rmaff('retardation') end
     signals.after_lifevision_processing:unblock(cnrl.checkwarning)
     sk.checkaeony()
-    signals.aeony:emit()
+    signals.changecuring:emit()
     svo.make_gnomes_work()
   end
 end
@@ -1152,7 +1152,7 @@ function svo.vrmaff(aff)
   end
   signals.after_lifevision_processing:unblock(cnrl.checkwarning)
   sk.checkaeony()
-  signals.aeony:emit()
+  signals.changecuring:emit()
   svo.make_gnomes_work()
 end
 

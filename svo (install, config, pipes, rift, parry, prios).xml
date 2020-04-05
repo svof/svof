@@ -3590,14 +3590,14 @@ svo.signals.curemethodchanged:connect(function ()
 
   -- update the actual 'eat' function
   sk.checkaeony()
-  svo.signals.aeony:emit()
+  svo.signals.changecuring:emit()
 end, 'update svo.eat on curemethod change')
 
 svo.signals.systemstart:connect(function()
   svo.signals.curemethodchanged:emit()
 end, 'create eat, apply, etc functions on system start')
 
-svo.signals.aeony:connect(function ()
+svo.signals.changecuring:connect(function ()
   if sys.sync then
     svo.eat = sk.synceat
   else
@@ -3708,7 +3708,7 @@ function sk.syncfill(what, where)
   end
 end
 
-svo.signals.aeony:connect(function ()
+svo.signals.changecuring:connect(function ()
   if sys.sync then
     svo.fillpipe = sk.syncfill
   else
@@ -4009,7 +4009,7 @@ end, 'save rift config')
 
 
 sk.checkaeony()
-svo.signals.aeony:emit()
+svo.signals.changecuring:emit()
 
 end -- end of svo rift loader
 
