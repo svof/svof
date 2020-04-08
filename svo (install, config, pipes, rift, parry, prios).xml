@@ -948,7 +948,7 @@ svo.config_dict = svo.pl.OrderedMap {
           svo.bottom_border = 0
 
           sk.enable_single_prompt()
-          clearWindow("svo.bottomprompt")
+          svo.bottomprompt:clear()
         end
       end
 
