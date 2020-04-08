@@ -756,7 +756,7 @@ svo.make_gnomes_work_sync = function()
 end
 
 -- default is async
-signals.aeony:connect(function()
+signals.changecuring:connect(function()
   if svo.logging_in then
     svo.make_gnomes_work = function() end
   elseif sys.sync then
@@ -766,7 +766,7 @@ signals.aeony:connect(function()
   end
 end, "change curing types")
 sk.checkaeony()
-signals.aeony:emit()
+signals.changecuring:emit()
 
 function svo.send_in_the_gnomes()
   -- at first, deal with lifevision.
@@ -1297,7 +1297,7 @@ local old_public_addaff = function (new_aff)
 
     signals.after_lifevision_processing:unblock(cnrl.checkwarning)
     sk.checkaeony()
-    signals.aeony:emit()
+    signals.changecuring:emit()
     svo.codepaste.badaeon()
 
     return true
@@ -1367,7 +1367,7 @@ svo.removeaff = function (which)
 
   signals.after_lifevision_processing:unblock(cnrl.checkwarning)
   sk.checkaeony()
-  signals.aeony:emit()
+  signals.changecuring:emit()
 
   return removed
 end
@@ -1394,7 +1394,7 @@ svo.removeafflevel = function (which, amount, keep)
 
   signals.after_lifevision_processing:unblock(cnrl.checkwarning)
   sk.checkaeony()
-  signals.aeony:emit()
+  signals.changecuring:emit()
 
   return removed
 end

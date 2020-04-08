@@ -2723,7 +2723,7 @@ end
         defences.lost('speed')
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
         sk.checkaeony()
-        signals.aeony:emit()
+        signals.changecuring:emit()
         codepaste.badaeon()
       end,
     },
@@ -2734,7 +2734,7 @@ end
       svo.affsp.aeon = nil
       sk.retardation_count = 0
       sk.checkaeony()
-      signals.aeony:emit()
+      signals.changecuring:emit()
     end
   },
   hellsight = {
@@ -6883,7 +6883,7 @@ end
         end
 
         sk.checkaeony()
-        signals.aeony:emit()
+        signals.changecuring:emit()
         codepaste.badaeon()
       end,
 
@@ -6914,7 +6914,7 @@ end
           signals.after_lifevision_processing:unblock(cnrl.checkwarning)
 
           sk.checkaeony()
-          signals.aeony:emit()
+          signals.changecuring:emit()
           codepaste.badaeon()
 
           if which == 'retardation' then
@@ -8641,7 +8641,7 @@ end
         if not affs.retardation then
           svo.addaffdict(svo.dict.retardation)
           sk.checkaeony()
-          signals.aeony:emit()
+          signals.changecuring:emit()
           signals.newroom:unblock(sk.check_retardation)
         end
       end,
@@ -8652,7 +8652,7 @@ end
     onremoved = function()
       svo.affsp.retardation = nil
       sk.checkaeony()
-      signals.aeony:emit()
+      signals.changecuring:emit()
       signals.newroom:block(sk.check_retardation)
     end,
     onadded = function()
