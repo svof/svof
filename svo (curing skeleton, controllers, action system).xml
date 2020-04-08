@@ -2096,8 +2096,8 @@ function svo.sk.enable_single_prompt()
   --   if not isPrompt() then return end
   --   selectCurrentLine()
   --   copy()
-  --   clearWindow("svo.bottomprompt")
-  --   paste("svo.bottomprompt")
+  --   svo.bottomprompt:clear()
+  --   svo.bottomprompt:paste()
   --   if svo.conf.singlepromptblank then
   --     replace("")
   --   elseif not svo.conf.singlepromptkeep then deleteLine() end
@@ -2738,7 +2738,7 @@ signals.after_prompt_processing:connect(function ()
   if conf.singleprompt then
     selectString(getCurrentLine(), 1)
     copy()
-    clearWindow('bottomprompt')
+    svo.bottomprompt:clear()
     svo.bottomprompt:paste()
 
     if conf.singlepromptblank then

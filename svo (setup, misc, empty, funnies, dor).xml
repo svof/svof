@@ -1939,12 +1939,12 @@ end
 svo.updateloggingconfig()
 
 function svo.showprompt()
-  if conf.singleprompt then clearWindow'bottomprompt' end
+  if conf.singleprompt then svo.bottomprompt:clear() end
 
-  -- https://bugs.launchpad.net/mudlet/+bug/982720 disallows (conf.singleprompt and 'bottomprompt' or 'main')
+  -- https://bugs.launchpad.net/mudlet/+bug/982720 disallows (conf.singleprompt and 'svo.bottomprompt' or 'main')
   -- if conf.paused then
   --   if conf.singleprompt then
-  --     decho('bottomprompt', "&lt;255,0,0&gt;(&lt;128,128,128&gt;p&lt;255,0,0&gt;)&lt;0,0,0&gt; ")
+  --     decho('svo.bottomprompt', "&lt;255,0,0&gt;(&lt;128,128,128&gt;p&lt;255,0,0&gt;)&lt;0,0,0&gt; ")
   --   else
   --     decho("&lt;255,0,0&gt;(&lt;128,128,128&gt;p&lt;255,0,0&gt;)&lt;0,0,0&gt; ")
   --   end
@@ -1956,12 +1956,12 @@ function svo.showprompt()
     copy('svo_prompt')
 
     if conf.singleprompt then
-      clearWindow('bottomprompt')
+      svo.bottomprompt:clear()
 
       if conf.paused then
-        cecho('bottomprompt', "&lt;a_red&gt;(&lt;a_darkgrey&gt;p&lt;a_red&gt;)&lt;black&gt; ")
+        cecho('svo.bottomprompt', "&lt;a_red&gt;(&lt;a_darkgrey&gt;p&lt;a_red&gt;)&lt;black&gt; ")
       end
-      appendBuffer('bottomprompt')
+      appendBuffer('svo.bottomprompt')
     else
       if conf.paused then
         local currentline = getLineCount()
@@ -1986,7 +1986,7 @@ function svo.showprompt()
     end
   else
     if conf.singleprompt then
-      cecho('bottomprompt', cp.display() or "")
+      cecho('svo.bottomprompt', cp.display() or "")
     else
       cecho(cp.display() or "")
     end
