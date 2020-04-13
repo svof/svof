@@ -24,7 +24,7 @@ To install the system, make sure that you're connected to server **achaea.com** 
 
 2) Unzip it somewhere permanent. Don't delete the unzipped files.
 
-3) Install svo (install me in module manager).xml in the Module Manager:
+3) Install ``svo (install me in module manager).xml`` in the ``Module Manager``:
 
 .. image:: images/install-in-module-manager.png
 
