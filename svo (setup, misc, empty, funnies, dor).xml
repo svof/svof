@@ -494,7 +494,6 @@ signals.gmcpcharafflictionsremove:connect(function()
   gaffl[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
   if svo.dict.sstosvoa[thisaff] then
-    
     svo.rmaff(svo.dict[svo.dict.sstosvoa[thisaff]])
   end
 end, 'track lost gmcp aff')
@@ -636,6 +635,7 @@ signals.enablegmcp:add_post_emit(function ()
 end, 'post emit enablegmcp')
 end
 
+registerAnonymousEventHandler("sysLoadEvent", function () svo.logging_in = true signals.changecuring:emit() end)
 registerAnonymousEventHandler("sysConnectionEvent", function () svo.logging_in = true signals.changecuring:emit() end)
 
 signals.newroom = signals.newroom or luanotify.signal.new()
