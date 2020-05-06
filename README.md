@@ -3,10 +3,12 @@ Svof is an AI system for Achaea, an online MUD. It has advanced and adaptable cu
 
 # Downloading
 To download the system for use, [see here](https://github.com/svof/svof/releases).
+# In-Client Beta
+The system currently has a beta version called in-client Svof. This version supports multi-class, elemental lords, and some of the newer classes. However, it is still in beta.
 
+To download the in-client system for use, [see here](https://github.com/svof/svof/tree/in-client-svof).
 # Documentation
 Extensive documentation for the system is available [here](https://svof.github.io/svof/).
-
 # Contributing
 To code in the system itself, follow instructions below on how to set it up. See also the [developer readme](Developer readme.md) for useful information on the code, acquaint yourself with the [code style](https://github.com/svof/svof/wiki/Code-style), and read the [design principles](https://github.com/svof/svof/wiki/Svof-design-principles).
 
