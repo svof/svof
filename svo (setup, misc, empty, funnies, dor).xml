@@ -490,6 +490,8 @@ end, 'track gained gmcp aff')
 
 signals.gmcpcharafflictionsremove:connect(function()
   local thisaff = gmcp.Char.Afflictions.Remove[1]
+  --If level 1 of an affliction is removed, then the aff is completely gone
+  if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
   gaffl[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
   if svo.dict.sstosvoa[thisaff] then
