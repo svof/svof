@@ -34,6 +34,8 @@ To install the system, make sure that you're connected to server **achaea.com** 
 
 Now, use the **vinstall** command. This'll have the system run auto-configuration first - where it'll detect and enable skills that you have. After that, it'll ask you preference questions about the basic and essential options. Feel free to take your time to ask someone else as to what should you set an option to (like for sipping health). The installation otherwise is fairly painless - and you can always change any option you'd like later with the same command.
 
+If you're using the inclient version of svo, let's verify you're on the proper releasechannel via the **vconfig releasechannel inclient** command.
+
 After you've finished the installation, it's best to *vsave* and restart Mudlet so the system is loaded fresh with all the settings.
 
 Enjoy!
