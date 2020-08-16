@@ -17,7 +17,7 @@
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList />
 			<regexCodePropertyList />
-			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>Seek request</name>
 				<script>if svo.defc.dragonform then return end
 
@@ -275,9 +275,9 @@ svo.doaddfree("angel seek "..svo.locating.name)</script>
 				<name>(tr person) Trace</name>
 				<script>if matches[2] == "off" then
   svo.doadd("angel trace off", false, false)
-  tracing = nil
+  svo.tracing = nil
 else
-  tracing = matches[2]:title()
+  svo.tracing = matches[2]:title()
   svo.tracingarea = matches[3]
   svo.doadd("angel trace "..tracing)
   svo.echof("Tracing and reporting %s%s", tracing, (svo.tracingarea and " only when they're in "..svo.tracingarea:title() or ''))
@@ -294,7 +294,7 @@ svo.echof("People on the locatelist list: %s", l)</script>
 				<packageName></packageName>
 				<regex>^vshow locatelist$</regex>
 			</Alias>
-			<Alias isActive="yes" isFolder="no">
+			<Alias isActive="no" isFolder="no">
 				<name>(seek person) Manually seek &amp; report a person</name>
 				<script>svo.locating = {name = matches[2]:title()}
 svo.doaddfree("angel seek "..svo.locating.name)</script>
