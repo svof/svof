@@ -1168,7 +1168,8 @@ sk.priosbeforechange = sk.priosbeforechange or {}
 sk.priochangecache = sk.priochangecache or { special = {} }
 -- queue of commands to batch into a serverside alias for curing
 sk.sendqueue = sk.sendqueue or {}
-sk.curequeue = sk.curequeue or {}
+sk.affqueue = sk.affqueue or {}
+sk.defqueue = sk.defqueue or {}
 -- keep track of the length of the command - max command length in Achaea is 2048
 sk.sendqueuel = 18 -- 'setalias multicmd ' is 24 characters
 sk.achaea_command_max_length = 2048
