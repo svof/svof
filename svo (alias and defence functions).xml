@@ -856,7 +856,10 @@ function svo.dv()
 end
 
 function svo.inra()
+  if not sys.enabledgmcp then svo.echof("You need to enable GMCP for this alias to work.") return end
+
   sk.inring = true
+  sendGMCP("Char.Items.Inv")
   sendSocket"\n"
 end
 
