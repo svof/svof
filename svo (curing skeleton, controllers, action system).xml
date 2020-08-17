@@ -1956,9 +1956,55 @@ end
 end
 
 signals.gmcpcharitemslist:connect(function ()
-  svo.sendc("inr all")
+  if not gmcp.Char.Items.List.location then svo.debugf("(GMCP problem) location field is missing from Achaea's response.") return end
+  if not sk.inring or gmcp.Char.Items.List.location ~= 'inv' then return end
+
+  local hadsomething = {}
+  for _, t in pairs(gmcp.Char.Items.List.items) do
+    if t.attrib and t.attrib:find('r', 1, true) then
+
+      -- see if we can optimize groupables with 'inr all &lt;type&gt;', making it easier count as well: handle groups first
+      if t.name and t.name:find("a group of", 1, true) then
+        -- function to scan plurals table
+        local check = function(value,input) return input:find("a group of "..value) end
+
+        -- check herbs table
+        local found_plural = next(svo.pl.tablex.map(check, rift.herbs_plural, t.name or ""))
+        -- check other riftable items table
+        found_plural = found_plural or next(svo.pl.tablex.map(check, rift.items_plural, t.name or ""))
+
+        if found_plural and not hadsomething[found_plural] then
+          svo.sendc("inr all", false)
+          hadsomething[found_plural] = true
+        elseif not found_plural and not hadsomething[t.id] then
+          svo.sendc("inr all", false)
+          hadsomething[t.id] = true
+        end
+
+      -- singular herb items that we know of
+      elseif t.name and rift.herbs_singular[t.name] and not hadsomething[rift.herbs_singular[t.name]] then
+        hadsomething[rift.herbs_singular[t.name]] = true
+        svo.sendc("inr all", false)
+
+      -- singular non-herb items
+      elseif t.name and rift.items_singular[t.name] and not hadsomething[rift.items_singular[t.name]] then
+        hadsomething[rift.items_singular[t.name]] = true
+        svo.sendc("inr all", false)
+
+      -- all the rest
+      elseif not rift.items_singular[t.name] and not rift.herbs_singular[t.name] and not hadsomething[t.id] and t.attrib and t.attrib:find('r', 1, true) then
+        svo.sendc("inr "..t.id, true)
+        hadsomething[t.id] = true
+      end
+    end
+  end
   sk.inring = nil
-  svo.echof("Stuffing everything away...")
+  if next(hadsomething) then
+    svo.echof("Stuffing everything away...")
+  else
+    svo.echof("There's nothing to stuff away.")
+  end
+end, "handle inr")
 end, "handle inr")
 
 signals.gmcpcharitemslist:connect(function()
