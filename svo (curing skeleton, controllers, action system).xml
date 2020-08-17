@@ -2005,7 +2005,6 @@ signals.gmcpcharitemslist:connect(function ()
     svo.echof("There's nothing to stuff away.")
   end
 end, "handle inr")
-end, "handle inr")
 
 signals.gmcpcharitemslist:connect(function()
   if not sk.retrieving_herbs or gmcp.Char.Items.List.location ~= 'room' then return end
