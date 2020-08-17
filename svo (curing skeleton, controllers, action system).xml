@@ -2289,6 +2289,7 @@ function svo.sendcuringprio(prio, iter, type)
       end
       sk.defqueue = {}
     end
+  else
   end
 end
 
