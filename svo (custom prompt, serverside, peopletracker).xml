@@ -808,7 +808,7 @@ function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache)
 end
 
 function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache)
-  local isdefence, priority, gamename
+  local isdefence, priority, gamename, istype
 
   if svo.dict[action][balance].def then
     isdefence = "defence "
