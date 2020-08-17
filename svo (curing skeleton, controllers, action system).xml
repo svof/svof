@@ -2266,28 +2266,28 @@ end
 function svo.sendcuringprio(prio, iter, type)
   prio = " "..prio
   if type == 'affliction' then
-    table.insert(svo.sk.curequeue, prio)
-    if #sk.curequeue &gt;= 20 then
-      if #sk.sendqueue &gt;= 6 then
+    table.insert(svo.sk.affqueue, prio)
+    if #sk.affqueue >= 20 then
+      if #sk.sendqueue >= 6 then
         sk.dosendqueue()
       end
-      sk.sendqueue[#sk.sendqueue+1] = "curing priority"..table.concat(sk.curequeue)
+      sk.sendqueue[#sk.sendqueue+1] = "curing priority"..table.concat(svo.sk.affqueue)
       if not sk.sendcuringtimer then
         sk.sendcuringtimer = tempTimer(0, sk.dosendqueue)
       end
-      sk.curequeue = {}
+      sk.affqueue = {}
     end
   elseif type == 'defence' then
-    table.insert(svo.sk.curequeue, prio)
-    if #sk.curequeue &gt;= 20 then
-      if #sk.sendqueue &gt;= 6 then
+    table.insert(svo.sk.defqueue, prio)
+    if #sk.defqueue >= 20 then
+      if #sk.sendqueue >= 6 then
         sk.dosendqueue()
       end
-      sk.sendqueue[#sk.sendqueue+1] = "curing priority defence"..table.concat(sk.curequeue)
+      sk.sendqueue[#sk.sendqueue+1] = "curing priority defence"..table.concat(svo.sk.defqueue)
       if not sk.sendcuringtimer then
         sk.sendcuringtimer = tempTimer(0, sk.dosendqueue)
       end
-      sk.curequeue = {}
+      sk.defqueue = {}
     end
   end
 end
