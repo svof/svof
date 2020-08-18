@@ -22,7 +22,7 @@ svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (setup, misc, empty, funnies, dor)"] = 1
 svo.loader.setup = function()
 
-svo.version = "39"
+svo.version = "40"
 
 if Logger and not svo.systemloaded then
   Logger:LogSection('svof', {'timestamp', split = 5000, 'keepOpen'})
