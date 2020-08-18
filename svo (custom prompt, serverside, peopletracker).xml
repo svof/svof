@@ -801,12 +801,13 @@ function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache)
 
   gamename = svo.dict[action].gamename and svo.dict[action].gamename or action
 
-  local command = string.format("%s %s", gamename, priority)
+  local command = string.format("priority %s%s %s", isdefence, gamename, priority)
 
-  svo.sendcuringprio(command, isdefence, istype)
+  svo.sendcuring(command)
 end
 
 function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache)
+  if svo.logging_in then return end
   local isdefence, priority, gamename, istype
 
   if svo.dict[action][balance].def then
@@ -832,9 +833,9 @@ function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache)
 
   gamename = svo.dict[action].gamename and svo.dict[action].gamename or action
 
-  local command = string.format("%s %s", gamename, priority)
+  local command = string.format("priority %s%s %s", isdefence, gamename, priority)
 
-  svo.sendcuringprio(command, isdefence, istype)
+  svo.sendcuring(command)
 end
 
 function sk.updateserversideprios()
