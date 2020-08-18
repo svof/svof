@@ -1959,52 +1959,10 @@ signals.gmcpcharitemslist:connect(function ()
   if not gmcp.Char.Items.List.location then svo.debugf("(GMCP problem) location field is missing from Achaea's response.") return end
   if not sk.inring or gmcp.Char.Items.List.location ~= 'inv' then return end
 
-  local hadsomething = {}
-  for _, t in pairs(gmcp.Char.Items.List.items) do
-    if t.attrib and t.attrib:find('r', 1, true) then
-
-      -- see if we can optimize groupables with 'inr all &lt;type&gt;', making it easier count as well: handle groups first
-      if t.name and t.name:find("a group of", 1, true) then
-        -- function to scan plurals table
-        local check = function(value,input) return input:find("a group of "..value) end
-
-        -- check herbs table
-        local found_plural = next(svo.pl.tablex.map(check, rift.herbs_plural, t.name or ""))
-        -- check other riftable items table
-        found_plural = found_plural or next(svo.pl.tablex.map(check, rift.items_plural, t.name or ""))
-
-        if found_plural and not hadsomething[found_plural] then
-          svo.sendc("inr all "..found_plural, false)
-          hadsomething[found_plural] = true
-        elseif not found_plural and not hadsomething[t.id] then
-          svo.sendc("inr "..t.id, false)
-          hadsomething[t.id] = true
-        end
-
-      -- singular herb items that we know of
-      elseif t.name and rift.herbs_singular[t.name] and not hadsomething[rift.herbs_singular[t.name]] then
-        hadsomething[rift.herbs_singular[t.name]] = true
-        svo.sendc("inr all "..rift.herbs_singular[t.name], false)
-
-      -- singular non-herb items
-      elseif t.name and rift.items_singular[t.name] and not hadsomething[rift.items_singular[t.name]] then
-        hadsomething[rift.items_singular[t.name]] = true
-        svo.sendc("inr all "..rift.items_singular[t.name], false)
-
-      -- all the rest
-      elseif not rift.items_singular[t.name] and not rift.herbs_singular[t.name] and not hadsomething[t.id] and t.attrib and t.attrib:find('r', 1, true) then
-        svo.sendc("inr "..t.id, true)
-        hadsomething[t.id] = true
-      end
-    end
-  end
+  svo.sendc("inr all", true)
 
   sk.inring = nil
-  if next(hadsomething) then
-    svo.echof("Stuffing everything away...")
-  else
-    svo.echof("There's nothing to stuff away.")
-  end
+  svo.echof("Stuffing everything away...")
 end, "handle inr")
 
 signals.gmcpcharitemslist:connect(function()
@@ -2264,10 +2222,37 @@ function svo.sendcuring(what)
   sk.sendqueuecmd(what)
 end
 
+function svo.sendcuringprio(prio, iter, type)
+  prio = " "..prio
+  local what
+  if type == 'affliction' then
+    table.insert(sk.affqueue, prio)
+    if #sk.affqueue &gt;= 20 then
+      if #sk.sendqueue &gt;= 6 then
+        sk.dosendqueue()
+      end
+      what = "curing priority"..table.concat(sk.affqueue)
+      sk.sendqueuecmd(what)
+      sk.affqueue = {}
+    end
+  elseif type == 'defence' then
+    table.insert(sk.defqueue, prio)
+    if #sk.defqueue &gt;= 20 then
+      if #sk.sendqueue &gt;= 6 then
+        sk.dosendqueue()
+      end
+      what = "curing priority defence"..table.concat(sk.defqueue)
+      sk.sendqueuecmd(what)
+      sk.defqueue = {}
+    end
+  else
+  end
+end
+
 -- public function
 svo.sendc = sk.sendqueuecmd
 
-function svo.sk.dosendqueue()
+function sk.dosendqueue()
   if svo.logging_in then return end
   if sk.sendcuringtimer then killTimer(sk.sendcuringtimer) end
 
@@ -2278,8 +2263,25 @@ function svo.sk.dosendqueue()
   elseif #sk.sendqueue &lt;= 9 then
     send("9multicmd {"..table.concat(sk.sendqueue, "}{").."}", false)
   else
-    local text = table.concat(sk.sendqueue, "/")
-    sendAll("setalias multicmd "..text, 'multicmd', false)
+    local text = "" -- let's have this defined up here for reuse below
+    if #sk.sendqueue &gt; 10 then -- oops, we have lots of commands to send
+      local send_queue = {} -- here be our collector/grabber thing
+      for _, item in ipairs(sk.sendqueue) do -- let's iterate through!
+        table.insert(send_queue, item)
+        if #send_queue == 10 then -- yay we're ready to send this batch!
+          text = table.concat(send_queue, "/")
+          sendAll("setalias multicmd "..text, "multicmd", false)
+          send_queue = {}
+        end
+      end
+      if #send_queue &gt; 0 then -- do we still have commands to send?
+        text = table.concat(send_queue, "/")
+        sendAll("setalias multicmd "..text, "multicmd", false)
+      end
+    else -- this is likely a no-op now but I didn't want to mess with it
+      text = table.concat(sk.sendqueue, "/")
+      sendAll("setalias multicmd "..text, "multicmd", false)
+    end
   end
 
   sk.sendqueue = {}

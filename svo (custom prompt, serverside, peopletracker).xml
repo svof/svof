@@ -773,13 +773,15 @@ function sk.resetserversideprios()
 end
 
 function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache)
-  local isdefence, priority, gamename
+  local isdefence, priority, gamename, istype
 	
   if svo.dict[action][balance].def then
-    isdefence = 'defence '	
+    isdefence = 'defence '
+    istype = 'defence'
     priority = rdefs[action]
   elseif svo.dict[action].aff and not svo.dict[action].aff.notagameaff then
     isdefence = ''
+    istype = 'affliction'
     priority = raffs[action]
   else -- an action that's not an aff or a def - ignore
     svo.debugf("(e!) sk.sendpriorityswitch: quitting, %s (%s) is not an aff or a def", action, balance)
@@ -799,19 +801,21 @@ function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache)
 
   gamename = svo.dict[action].gamename and svo.dict[action].gamename or action
 
-  local command = string.format("priority %s%s %s", isdefence, gamename, priority)
+  local command = string.format("%s %s", gamename, priority)
 
-  svo.sendcuring(command)
+  svo.sendcuringprio(command, isdefence, istype)
 end
 
 function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache)
-  local isdefence, priority, gamename
+  local isdefence, priority, gamename, istype
 
   if svo.dict[action][balance].def then
     isdefence = "defence "
+    istype = 'defence'
     priority = 'reset'
   elseif svo.dict[action].aff and not svo.dict[action].aff.notagameaff then
     isdefence = ""
+    istype = 'affliction'
     priority = 26
   else -- an action that's not an aff or a def - ignore
     svo.debugf("(e!) sk.sendpriorityignore: quitting, %s (%s) is not an aff or a def", action, balance)
@@ -828,9 +832,9 @@ function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache)
 
   gamename = svo.dict[action].gamename and svo.dict[action].gamename or action
 
-  local command = string.format("priority %s%s %s", isdefence, gamename, priority)
+  local command = string.format("%s %s", gamename, priority)
 
-  svo.sendcuring(command)
+  svo.sendcuringprio(command, isdefence, istype)
 end
 
 function sk.updateserversideprios()
