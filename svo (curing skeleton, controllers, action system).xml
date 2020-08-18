@@ -2226,7 +2226,9 @@ function svo.sendcuringprio(prio, iter, type)
   prio = " "..prio
   local what
   if type == 'affliction' then
-    table.insert(sk.affqueue, prio)
+    if not table.contains(sk.affqueue, prio) then 
+      table.insert(sk.affqueue, prio)
+    end
     if #sk.affqueue &gt;= 20 then
       if #sk.sendqueue &gt;= 6 then
         sk.dosendqueue()
@@ -2236,7 +2238,9 @@ function svo.sendcuringprio(prio, iter, type)
       sk.affqueue = {}
     end
   elseif type == 'defence' then
-    table.insert(sk.defqueue, prio)
+    if not table.contains(sk.defqueue, prio) then
+      table.insert(sk.defqueue, prio)
+    end
     if #sk.defqueue &gt;= 20 then
       if #sk.sendqueue &gt;= 6 then
         sk.dosendqueue()
