@@ -1413,6 +1413,9 @@ function svo.valid.defstrip(which)
   if svo.haveskillset('necromancy') then
     t["death aura"]             = 'deathaura'
   end
+  if svo.haveskillset('oppression') then
+    t["death aura"]             = 'deathaura'
+  end
   if svo.haveskillset('zeal') then
     t["earth spiritshield"]     = 'earthblessing'
     t["endurance spiritshield"] = 'enduranceblessing'

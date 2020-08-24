@@ -13898,6 +13898,9 @@ if svo.haveskillset('necromancy') then
   basicdef('deathaura', "deathaura on")
   basicdef('soulcage', "soulcage activate")
 end
+if svo.haveskillset('oppression') then
+  basicdef('deathaura', "deathaura")
+end
 if svo.haveskillset('chivalry') then
   basicdef('mastery', "mastery on", true, 'blademastery')
   basicdef('sturdiness', "stand firm", false, 'standingfirm')

@@ -1636,7 +1636,12 @@ if svo.haveskillset('necromancy') then
     def = "You have sworn vengeance upon those who would slay you.",
     off = {"You forswear your previous oath for vengeance, sudden forgiveness entering your heart.", "You have sworn vengeance against none, Necromancer."}})
 end
-
+if svo.haveskillset('oppression') then
+  defs_data:set('deathaura', { type = 'oppression',
+    on = {"You let the blackness of your soul pour forth.", "You already possess an aura of death."},
+    def = "You are emanating an aura of death.",
+    off = "Your aura of death has worn off."})
+end
 if svo.haveskillset('chivalry') then
   defs_data:set('weathering', { type = 'chivalry',
     on = "A brief shiver runs through your body.",
