@@ -6862,7 +6862,7 @@ end</script>
 			<script>--[[ start of a class management (tn class/tn classonly) + class-specifics tricks ]]
 
 svo.classes = {
-  ["air elemental lord"] = {fighting = false, skills = {"duress"}},
+  ["air elemental"] = {fighting = false, skills = {"duress"}},
   alchemist    = {fighting = false, skills = {"transmutation", "physiology", "alchemy"}},
   apostate     = {fighting = false, skills = {"evileye", "necromancy", "apostasy"}},
   bard         = {fighting = false, skills = {"voicecraft", "swashbuckling", "harmonics"}},
@@ -6870,8 +6870,8 @@ svo.classes = {
   depthswalker = {fighting = false, skills = {"shadowmancy", "aeonics", "terminus"}},
   dragon       = {fighting = false, skills = {"dragoncraft"}},
   druid        = {fighting = false, skills = {"groves", "metamorphosis", "concoctions"}},
-  ["earth elemental lord"] = {fighting = false, skills = {"sculpting"}},
-  ["fire elemental lord"] = {fighting = false, skills = {"ignition"}},
+  ["earth elemental"] = {fighting = false, skills = {"sculpting"}},
+  ["fire elemental"] = {fighting = false, skills = {"ignition"}},
   infernal     = {fighting = false, skills = {"oppression", "chivalry", "weaponmastery"}},
   jester       = {fighting = false, skills = {"tarot", "pranks", "puppetry"}},
   magi         = {fighting = false, skills = {"elementalism", "crystalism", "enchantment"}},
@@ -6885,7 +6885,7 @@ svo.classes = {
   serpent      = {fighting = false, skills = {"subterfuge", "venom", "hypnosis"}},
   shaman       = {fighting = false, skills = {"spiritlore", "curses", "vodun"}},
   sylvan       = {fighting = false, skills = {"elementalism", "groves", "concoctions"}},
-  ["water elemental lord"] = {fighting = false, skills = {"pervasion"}},
+  ["water elemental"] = {fighting = false, skills = {"pervasion"}},
 }
 -- keeps track of what skills are actually enabled
 svo.enabledskills, svo.enabledclasses = svo.enabledskills or {}, svo.enabledclasses or {}
