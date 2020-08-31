@@ -8376,6 +8376,8 @@ end
   },
   unweavingbody = {
     count = 0,
+    name = 'unweavingbody',
+    gamename = 'unweavingbody',
     herb = {
       aspriority = 0,
       spriority = 0,
@@ -8407,13 +8409,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        local count = svo.dict.unweavingbody.count
         svo.addaffdict(dict.unweavingbody)
-
-        svo.dict.unweavingbody.count = (count or 0) + (number or 1)
-        if svo.dict.unweavingbody.count &gt; 5 then
-          svo.dict.unweavingbody.count = 5
-        end
         svo.updateaffcount(svo.dict.unweavingbody)
       end
     },
@@ -8436,6 +8432,8 @@ end
   },
   unweavingmind = {
     count = 0,
+    name = 'unweavingmind',
+    gamename = 'unweavingmind',
     herb = {
       aspriority = 0,
       spriority = 0,
@@ -8467,13 +8465,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        local count = svo.dict.unweavingmind.count
         svo.addaffdict(svo.dict.unweavingmind)
-
-        svo.dict.unweavingmind.count = (count or 0) + (number or 1)
-        if svo.dict.unweavingmind.count &gt; 5 then
-          svo.dict.unweavingmind.count = 5
-        end
         svo.updateaffcount(svo.dict.unweavingmind)
       end
     },
@@ -8496,13 +8488,15 @@ end
   },
   unweavingspirit = {
     count = 0,
+    name = 'unweavingspirit',
+    gamename = 'unweavingspirit',
     smoke = {
       isadvisable = function()
         return (svo.affs.unweavingspirit and codepaste.smoke_elm_pipe()) or false
       end,
 
       oncompleted = function()
-        codepaste.remove_stackableaff('unweavingspirit', true)
+        svo.updateaffcount(svo.dict.unweavingspirit)
         svo.lostbal_smoke()
         sk.elm_smokepuff()
       end,
@@ -8527,13 +8521,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        local count = svo.dict.unweavingspirit.count
         svo.addaffdict(svo.dict.unweavingspirit)
-
-        svo.dict.unweavingspirit.count = (count or 0) + (number or 1)
-        if svo.dict.unweavingspirit.count &gt; 5 then
-          svo.dict.unweavingspirit.count = 5
-        end
         svo.updateaffcount(svo.dict.unweavingspirit)
       end
     },
@@ -8544,9 +8532,7 @@ end
       end,
 
       general_cure = function(amount, dontkeep)
-        for i = 1, (amount or 1) do
-          codepaste.remove_stackableaff("unweavingspirit", not dontkeep)
-        end
+        svo.updateaffcount(svo.dict.unweavingspirit)
       end,
 
       general_cured = function(amount)
