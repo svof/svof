@@ -4532,7 +4532,8 @@ end
       end,
     }
   },
-  ablaze = {
+  
+  ablaze = {           
     gamename = 'burning',
     salve = {
       isadvisable = function()
@@ -4542,6 +4543,9 @@ end
       oncompleted = function()
         svo.lostbal_salve()
         svo.rmaff('ablaze')
+        if defc.torch and (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
+          defences.lost('torch')
+        end
       end,
 
       all = function()
@@ -4559,22 +4563,30 @@ end
         empty.apply_mending()
       end,
 
-      applycure = {'mending', 'renewal'},
-      actions = {"apply mending to body", "apply mending", "apply renewal to body", "apply renewal"},
+      applycure = {'mending'},
+      actions = {"apply mending to body", "apply mending"},
       onstart = function()
         svo.apply(svo.dict.ablaze.salve, " to body")
       end
     },
     aff = {
       oncompleted = function()
-        codepaste.remove_burns('ablaze')
-        svo.addaffdict(svo.dict.ablaze)
+        if (defdefup[defs.mode].torch) or (conf.keepup and defkeepup[defs.mode].torch) and 
+        (svo.me.class == 'fire Elemental Lord' or svo.me.class == 'fire Elemental Lady') then
+          defences.got('torch')
+        else
+          codepaste.remove_burns('ablaze')
+          svo.addaffdict(svo.dict.ablaze)
+        end
       end,
     },
     gone = {
       oncompleted = function()
         local currentburn = sk.current_burn()
         svo.rmaff(currentburn)
+        if defc.torch and (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
+          defences.lost('torch')
+        end
       end,
 
       -- used in blackout and passive curing where multiple levels could be cured at once
@@ -13835,6 +13847,30 @@ if svo.haveskillset('devotion') then
     }
   }
 end
+
+if svo.haveskillset('ignition') then
+  svo.dict.torch = {
+    physical = {
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      
+        isadvisable = function ()
+        return (not defc.torch and ((sys.deffing and defdefup[defs.mode].torch) or (conf.keepup and defkeepup[defs.mode].torch)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
+      end,
+      
+        oncompleted = function ()
+          svo.rmaff('ablaze')
+          defences.got('torch')
+        end,
+        
+      actions = {"manifest torch"},
+      onstart = function ()
+        send('manifest torch', conf.commandecho)
+      end
+      }
+    }
+    end
 
 -- shortcut function to help create a dict action for a defence
 -- 'which' is the Svof defence name, use the same name in the 'Defences' script

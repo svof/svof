@@ -3500,6 +3500,13 @@ if svo.haveskillset('ignition') then
   def = "You have shrouded yourself with flame.",
   on = "A shroud of flame bursts into being, cloaking you in a burning aura of crimson.",
   off = "The burning shroud that cloaks you winks out of existence."})
+  
+  defs_data:set('torch', { type = 'ignition',
+  invisibledef = true,
+  on = "You flare your flames, burning ever brighter.",
+  off = {"The raging fire about your skin goes out.","Steam rises from your skin as the fires that plague you are extinguished.","Waves of elemental water surge over your body, quenching the tongues of flame."}
+  })
+  
 end
 
 if svo.haveskillset('duress') then
