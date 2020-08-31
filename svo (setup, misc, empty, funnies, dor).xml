@@ -511,7 +511,7 @@ signals.gmcpcharafflictionsremove:connect(function()
   if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
   gaffl[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
-  if svo.dict.unknownany.count &gt;= 1 then
+  if svo.dict.unknownany.count >= 1 and not svo.affl[thisaff] then
     svo.valid.remove_unknownany(thisaff)
   end
   if svo.dict.sstosvoa[thisaff] then
