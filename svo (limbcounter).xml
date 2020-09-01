@@ -478,6 +478,32 @@ end</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Pulverize</name>
+						<script>if svo.lc_checkdamage then
+	svo.lc_hit(multimatches[2][2], multimatches[2][3], .5)
+elseif not svo.lc_checkdamage then
+	svo.lc_hit(multimatches[2][2], multimatches[2][3], 1)
+end</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>Throwing your full weight</string>
+							<string>^Throwing your full weight into the motion, you bring .+? across in a terrible blow toward (\w+)'s (.+).$</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>2</integer>
+							<integer>1</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Hew</name>
 						<script>if svo.lc_checkdamage then
 	svo.lc_hit(multimatches[2][2], multimatches[2][3], .5)
@@ -1509,7 +1535,7 @@ svo.lc_shikudohit(multimatches[3][2], limb, "lowest")</script>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>AXK</name>
 						<script>--you need to set the damage for your axk kick here manually
-svo.ml_hit(multimatches[2][2], "head", 4)</script>
+svo.lc_hit(multimatches[2][2], "head", 4)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>1</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -2092,11 +2118,13 @@ svo.lc_classlist =
     "Druid",
 		"Blademaster",
     "Sentinel",
+    "Sylvan",
     "earth Elemental Lord",
 		"None",
   }
 if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == true then
 		disableTrigger("svo Meta limbcounter")
+    disableTrigger("svo Sylvan limbcounter")
 		disableTrigger("svo Monk limbcounter")
 		disableTrigger("svo Burn limbcounter")
 		disableTrigger("svo Priest limbcounter")
@@ -2167,6 +2195,7 @@ if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == t
   end
 elseif not table.contains(svo.lc_classlist, svo.me.class) then
     disableTrigger("svo Meta limbcounter")
+    disableTrigger("svo Sylvan limbcounter")
 		disableTrigger("svo Monk limbcounter")
 		disableTrigger("svo Burn limbcounter")
 		disableTrigger("svo Priest limbcounter")
