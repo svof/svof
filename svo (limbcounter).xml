@@ -1535,7 +1535,7 @@ svo.lc_shikudohit(multimatches[3][2], limb, "lowest")</script>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>AXK</name>
 						<script>--you need to set the damage for your axk kick here manually
-svo.ml_hit(multimatches[2][2], "head", 4)</script>
+svo.lc_hit(multimatches[2][2], "head", 4)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>1</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
