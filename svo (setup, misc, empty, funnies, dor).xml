@@ -328,9 +328,10 @@ if lfs.attributes(my_class_location) then
 end
 
 me.class = me.class or (table.is_empty(my_class) and 'Infernal' or my_class.class)
+me.path = me.path or (table.is_empty(my_class)  and ""  or my_class.path)
 
 signals.saveconfig:connect(function()
-  svo.tablesave(my_class_location, {class = svo.me.class})
+  svo.tablesave(my_class_location, {class = svo.me.class, path = svo.me.path})
 end, 'save my class')
 
 
