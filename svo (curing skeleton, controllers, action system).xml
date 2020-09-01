@@ -1275,6 +1275,9 @@ local old_internal_addaff = function (new_aff)
 
   if not svo.affl[name] then
     svo.affl[name] = { sw = affs[name].sw }
+    if svo.affs[name].p.count ~= nil then
+      svo.affl[name].count = svo.affs[name].p.count
+    end
     signals.svogotaff:emit(name)
     raiseEvent("svo got aff", name)
   end

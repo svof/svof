@@ -551,12 +551,7 @@ end
 
       oncompleted = function()
         svo.lostbal_sip()
-        -- two counts are cured if you're above 5
-        local howmany = svo.dict.skullfractures.count
-        codepaste.remove_stackableaff('skullfractures', true)
-        if howmany &gt; 5 then
-          codepaste.remove_stackableaff('skullfractures', true)
-        end
+        svo.updateaffcount(svo.dict.skullfractures)
       end,
 
       cured = function()
@@ -580,16 +575,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        -- double kngiht affs from precision strikes
-        if sk.doubleknightaff then number = (number or 0) + 1 end
-
-        local count = svo.dict.skullfractures.count
         svo.addaffdict(svo.dict.skullfractures)
-
-        svo.dict.skullfractures.count = (count or 0) + (number or 1)
-        if svo.dict.skullfractures.count &gt; 7 then
-          svo.dict.skullfractures.count = 7
-        end
         svo.updateaffcount(svo.dict.skullfractures)
       end
     },
@@ -600,14 +586,7 @@ end
       end,
 
       general_cure = function(amount, dontkeep)
-        -- two counts are cured if you're above 5
-        local howmany = svo.dict.skullfractures.count
-        for _ = 1, (amount or 1) do
-          codepaste.remove_stackableaff('skullfractures', not dontkeep)
-        end
-        if howmany &gt; 5 then
-          codepaste.remove_stackableaff('skullfractures', not dontkeep)
-        end
+        svo.updateaffcount(svo.dict.skullfractures)
       end,
 
       general_cured = function(_)
@@ -625,12 +604,7 @@ end
 
       oncompleted = function()
         svo.lostbal_sip()
-        -- two counts are cured if you're above 5
-        local howmany = svo.dict.crackedribs.count
-        codepaste.remove_stackableaff('crackedribs', true)
-        if howmany &gt; 5 then
-          codepaste.remove_stackableaff('crackedribs', true)
-        end
+        svo.updateaffcount(svo.dict.crackedribs)
       end,
 
       cured = function()
@@ -654,16 +628,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        -- double kngiht affs from precision strikes
-        if sk.doubleknightaff then number = (number or 0) + 1 end
-
-        local count = svo.dict.crackedribs.count
         svo.addaffdict(svo.dict.crackedribs)
-
-        svo.dict.crackedribs.count = (count or 0) + (number or 1)
-        if svo.dict.crackedribs.count &gt; 7 then
-          svo.dict.crackedribs.count = 7
-        end
         svo.updateaffcount(svo.dict.crackedribs)
       end
     },
@@ -674,14 +639,7 @@ end
       end,
 
       general_cure = function(amount, dontkeep)
-        -- two counts are cured if you're above 5
-        local howmany = svo.dict.crackedribs.count
-        for _ = 1, (amount or 1) do
-          codepaste.remove_stackableaff('crackedribs', not dontkeep)
-        end
-        if howmany &gt; 5 then
-          codepaste.remove_stackableaff('crackedribs', not dontkeep)
-        end
+        svo.updateaffcount(svo.dict.crackedribs)
       end,
 
       general_cured = function()
@@ -699,12 +657,7 @@ end
 
       oncompleted = function()
         svo.lostbal_sip()
-        -- two counts are cured if you're above 5
-        local howmany = svo.dict.wristfractures.count
-        codepaste.remove_stackableaff('wristfractures', true)
-        if howmany &gt; 5 then
-          codepaste.remove_stackableaff('wristfractures', true)
-        end
+        svo.updateaffcount(svo.dict.wristfractures)
       end,
 
       cured = function()
@@ -728,16 +681,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        -- double kngiht affs from precision strikes
-        if sk.doubleknightaff then number = (number or 0) + 1 end
-
-        local count = svo.dict.wristfractures.count
         svo.addaffdict(svo.dict.wristfractures)
-
-        svo.dict.wristfractures.count = (count or 0) + (number or 1)
-        if svo.dict.wristfractures.count &gt; 7 then
-          svo.dict.wristfractures.count = 7
-        end
         svo.updateaffcount(svo.dict.wristfractures)
       end
     },
@@ -748,14 +692,7 @@ end
       end,
 
       general_cure = function(amount, dontkeep)
-        -- two counts are cured if you're above 5
-        local howmany = svo.dict.wristfractures.count
-        for _ = 1, (amount or 1) do
-          codepaste.remove_stackableaff('wristfractures', not dontkeep)
-        end
-        if howmany &gt; 5 then
-          codepaste.remove_stackableaff('wristfractures', not dontkeep)
-        end
+        svo.updateaffcount(svo.dict.wristfractures)
       end,
 
       general_cured = function()
@@ -773,12 +710,7 @@ end
 
       oncompleted = function()
         svo.lostbal_sip()
-                -- two counts are cured if you're above 5
-        local howmany = svo.dict.torntendons.count
-        codepaste.remove_stackableaff('torntendons', true)
-        if howmany &gt; 5 then
-          codepaste.remove_stackableaff('torntendons', true)
-        end
+        svo.updateaffcount(svo.dict.torntendons)
       end,
 
       cured = function()
@@ -802,16 +734,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        -- double kngiht affs from precision strikes
-        if sk.doubleknightaff then number = (number or 0) + 1 end
-
-        local count = svo.dict.torntendons.count
         svo.addaffdict(svo.dict.torntendons)
-
-        svo.dict.torntendons.count = (count or 0) + (number or 1)
-        if svo.dict.torntendons.count &gt; 7 then
-          svo.dict.torntendons.count = 7
-        end
         svo.updateaffcount(svo.dict.torntendons)
       end
     },
@@ -822,14 +745,7 @@ end
       end,
 
       general_cure = function(amount, dontkeep)
-        -- two counts are cured if you're above 5
-        local howmany = svo.dict.torntendons.count
-        for _ = 1, (amount or 1) do
-          codepaste.remove_stackableaff('torntendons', not dontkeep)
-        end
-        if howmany &gt; 5 then
-          codepaste.remove_stackableaff('torntendons', not dontkeep)
-        end
+        svo.updateaffcount(svo.dict.torntendons)
       end,
 
       general_cured = function()
@@ -839,16 +755,18 @@ end
     }
   },
   pressure = {
+    count = 0,
     gamename = 'pressure',
+    name = 'pressure',
     smoke = {
       isadvisable = function()
-        return (affs.pressure and bals.herb) or false
+        return (affs.pressure and bals.smoke) or false
       end,
 
       -- this is called when you still have some left 
       oncompleted = function()
         svo.lostbal_smoke()
-        codepaste.remove_stackableaff('pressure', true)
+        svo.updateaffcount(svo.dict.pressure)
       end,
 
       empty = function()
@@ -863,9 +781,9 @@ end
       end,
 
       noeffect = function()
-			svo.rmaff('pressure')
-			 svo.lostbal_smoke()
-			  end,
+			  svo.rmaff('pressure')
+			  svo.lostbal_smoke()
+		  end,
 
       eatcure = {'pear', 'calcite'},
 
@@ -873,13 +791,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        local count = svo.dict.pressure.count
         svo.addaffdict(svo.dict.pressure)
-
-        svo.dict.pressure.count = (count or 0) + (number or 1)
-        if svo.dict.pressure.count &gt; 7 then
-          svo.dict.pressure.count = 7
-        end
         svo.updateaffcount(svo.dict.pressure)
       end
     },
@@ -887,11 +799,22 @@ end
       oncompleted = function()
         svo.rmaff('pressure')
         svo.dict.pressure.count = 0
-      end
+      end,
+      
+      general_cure = function(amount, dontkeep)
+        svo.updateaffcount(svo.dict.pressure)
+      end,
+
+      general_cured = function()
+        svo.rmaff('pressure')
+        svo.dict.pressure.count = 0
+      end,
     }
   },
   cholerichumour = {
+    count = 0,
     gamename = 'temperedcholeric',
+    name = 'cholerichumour',
     herb = {
       isadvisable = function()
         return (affs.cholerichumour) or false
@@ -900,7 +823,7 @@ end
       -- this is called when you still have some left
       oncompleted = function()
         svo.lostbal_herb()
-        codepaste.remove_stackableaff('cholerichumour', true)
+        svo.updateaffcount(svo.dict.cholerichumour)
       end,
 
       empty = function()
@@ -928,13 +851,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        local count = svo.dict.cholerichumour.count
         svo.addaffdict(svo.dict.cholerichumour)
-
-        svo.dict.cholerichumour.count = (count or 0) + (number or 1)
-        if svo.dict.cholerichumour.count &gt; 8 then
-          svo.dict.cholerichumour.count = 8
-        end
         svo.updateaffcount(svo.dict.cholerichumour)
       end
     },
@@ -942,11 +859,22 @@ end
       oncompleted = function()
         svo.rmaff('cholerichumour')
         svo.dict.cholerichumour.count = 0
-      end
+      end,
+      
+      general_cure = function(amount, dontkeep)
+        svo.updateaffcount(svo.dict.cholerichumour)
+      end,
+
+      general_cured = function()
+        svo.rmaff('cholerichumour')
+        svo.dict.cholerichumour.count = 0
+      end,
     }
   },
   melancholichumour = {
+    count = 0,
     gamename = 'temperedmelancholic',
+    name = 'melancholichumour',
     herb = {
       isadvisable = function()
         return (affs.melancholichumour) or false
@@ -955,7 +883,7 @@ end
       -- this is called when you still have some left
       oncompleted = function()
         svo.lostbal_herb()
-        codepaste.remove_stackableaff('melancholichumour', true)
+        svo.updateaffcount(svo.dict.melancholichumour)
       end,
 
       empty = function()
@@ -983,13 +911,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        local count = svo.dict.melancholichumour.count
         svo.addaffdict(svo.dict.melancholichumour)
-
-        svo.dict.melancholichumour.count = (count or 0) + (number or 1)
-        if svo.dict.melancholichumour.count &gt; 8 then
-          svo.dict.melancholichumour.count = 8
-        end
         svo.updateaffcount(svo.dict.melancholichumour)
       end
     },
@@ -997,11 +919,21 @@ end
       oncompleted = function()
         svo.rmaff('melancholichumour')
         svo.dict.melancholichumour.count = 0
-      end
+      end,
+      
+      general_cure = function(amount, dontkeep)
+        svo.updateaffcount(svo.dict.melancholichumour)
+      end,
+
+      general_cured = function()
+        svo.rmaff('melancholichumour')
+        svo.dict.melancholichumour.count = 0
+      end,
     }
   },
   phlegmatichumour = {
     gamename = 'temperedphlegmatic',
+    name = 'phlegmatichumour',
     count = 0,
     herb = {
       isadvisable = function()
@@ -1011,7 +943,7 @@ end
       -- this is called when you still have some left
       oncompleted = function()
         svo.lostbal_herb()
-        codepaste.remove_stackableaff('phlegmatichumour', true)
+        svo.updateaffcount(svo.dict.phlegmatichumour)
       end,
 
       empty = function()
@@ -1026,18 +958,7 @@ end
       end,
 
       noeffect = function() svo.lostbal_herb() end,
-
-      -- gives various afflictions, amount of which depends on your humour level
-      --[[
-        1-2: 1 affliction
-        3-6: 2 afflictions
-        7-9: 3 afflictions
-        10: 4 afflictions
-
-        Above information is roughly accurate.
-        Gives between one and four afflictions from the following: lethargy, slickness, anorexia, weariness.
-        Afflictions not hidden by gmcp, so removed from the inundated function.
-      ]]
+      
       inundated = function()
         svo.rmaff('phlegmatichumour')
         svo.dict.phlegmatichumour.count = 0
@@ -1049,13 +970,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        local count = svo.dict.phlegmatichumour.count
         svo.addaffdict(svo.dict.phlegmatichumour)
-
-        svo.dict.phlegmatichumour.count = (count or 0) + (number or 1)
-        if svo.dict.phlegmatichumour.count &gt; 8 then
-          svo.dict.phlegmatichumour.count = 8
-        end
         svo.updateaffcount(svo.dict.phlegmatichumour)
       end
     },
@@ -1063,11 +978,22 @@ end
       oncompleted = function()
         svo.rmaff('phlegmatichumour')
         svo.dict.phlegmatichumour.count = 0
-      end
+      end,
+      
+      general_cure = function(amount, dontkeep)
+        svo.updateaffcount(svo.dict.phlegmatichumour)
+      end,
+
+      general_cured = function()
+        svo.rmaff('phlegmatichumour')
+        svo.dict.phlegmatichumour.count = 0
+      end,
     }
   },
   sanguinehumour = {
+    count = 0,
     gamename = 'temperedsanguine',
+    name = 'sanguinehumour',
     herb = {
       isadvisable = function()
         return (affs.sanguinehumour) or false
@@ -1076,7 +1002,7 @@ end
       -- this is called when you still have some left
       oncompleted = function()
         svo.lostbal_herb()
-        codepaste.remove_stackableaff('sanguinehumour', true)
+        svo.updateaffcount(svo.dict.sanguinehumour)
       end,
 
       empty = function()
@@ -1114,13 +1040,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        local count = svo.dict.sanguinehumour.count
         svo.addaffdict(svo.dict.sanguinehumour)
-
-        svo.dict.sanguinehumour.count = (count or 0) + (number or 1)
-        if svo.dict.sanguinehumour.count &gt; 8 then
-          svo.dict.sanguinehumour.count = 8
-        end
         svo.updateaffcount(svo.dict.sanguinehumour)
       end
     },
@@ -1128,7 +1048,16 @@ end
       oncompleted = function()
         svo.rmaff('sanguinehumour')
         svo.dict.sanguinehumour.count = 0
-      end
+      end,
+      
+      general_cure = function(amount, dontkeep)
+        svo.updateaffcount(svo.dict.sanguinehumour)
+      end,
+
+      general_cured = function()
+        svo.rmaff('sanguinehumour')
+        svo.dict.sanguinehumour.count = 0
+      end,
     }
   },
   waterbubble = {
@@ -5767,7 +5696,7 @@ end
 
       isadvisable = function()
         return (not sys.sp_satisfied and not sys.blockparry and not affs.paralysis
-          and not svo.doingaction'doparry' and ((svo.haveskillset('tekura') and conf.guarding) or conf.parry) and not codepaste.balanceful_codepaste()
+          and not svo.doingaction('doparry') and ((svo.haveskillset('tekura') and conf.guarding) or conf.parry) and not codepaste.balanceful_codepaste()
           -- blademasters can parry with their sword sheathed, and monks don't need to wield anything
           and ((svo.haveskillset('tekura') or svo.me.class == 'Blademaster') or ((not sys.enabledgmcp or defc.dragonform) or (next(me.wielded) and sk.have_parryable())))
           and not codepaste.balanceful_defs_codepaste()) or false
@@ -8459,6 +8388,8 @@ end
   },
   unweavingbody = {
     count = 0,
+    name = 'unweavingbody',
+    gamename = 'unweavingbody',
     herb = {
       aspriority = 0,
       spriority = 0,
@@ -8490,13 +8421,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        local count = svo.dict.unweavingbody.count
         svo.addaffdict(dict.unweavingbody)
-
-        svo.dict.unweavingbody.count = (count or 0) + (number or 1)
-        if svo.dict.unweavingbody.count &gt; 5 then
-          svo.dict.unweavingbody.count = 5
-        end
         svo.updateaffcount(svo.dict.unweavingbody)
       end
     },
@@ -8519,6 +8444,8 @@ end
   },
   unweavingmind = {
     count = 0,
+    name = 'unweavingmind',
+    gamename = 'unweavingmind',
     herb = {
       aspriority = 0,
       spriority = 0,
@@ -8550,13 +8477,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        local count = svo.dict.unweavingmind.count
         svo.addaffdict(svo.dict.unweavingmind)
-
-        svo.dict.unweavingmind.count = (count or 0) + (number or 1)
-        if svo.dict.unweavingmind.count &gt; 5 then
-          svo.dict.unweavingmind.count = 5
-        end
         svo.updateaffcount(svo.dict.unweavingmind)
       end
     },
@@ -8579,13 +8500,15 @@ end
   },
   unweavingspirit = {
     count = 0,
+    name = 'unweavingspirit',
+    gamename = 'unweavingspirit',
     smoke = {
       isadvisable = function()
         return (svo.affs.unweavingspirit and codepaste.smoke_elm_pipe()) or false
       end,
 
       oncompleted = function()
-        codepaste.remove_stackableaff('unweavingspirit', true)
+        svo.updateaffcount(svo.dict.unweavingspirit)
         svo.lostbal_smoke()
         sk.elm_smokepuff()
       end,
@@ -8610,13 +8533,7 @@ end
     },
     aff = {
       oncompleted = function (number)
-        local count = svo.dict.unweavingspirit.count
         svo.addaffdict(svo.dict.unweavingspirit)
-
-        svo.dict.unweavingspirit.count = (count or 0) + (number or 1)
-        if svo.dict.unweavingspirit.count &gt; 5 then
-          svo.dict.unweavingspirit.count = 5
-        end
         svo.updateaffcount(svo.dict.unweavingspirit)
       end
     },
@@ -8627,9 +8544,7 @@ end
       end,
 
       general_cure = function(amount, dontkeep)
-        for i = 1, (amount or 1) do
-          codepaste.remove_stackableaff("unweavingspirit", not dontkeep)
-        end
+        svo.updateaffcount(svo.dict.unweavingspirit)
       end,
 
       general_cured = function(amount)

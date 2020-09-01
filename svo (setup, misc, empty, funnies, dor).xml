@@ -481,22 +481,45 @@ signals.gmcpchardefencesadd = signals.gmcpchardefencesadd or luanotify.signal.ne
 
 signals.gmcpcharafflictionsadd:connect(function()
   local thisaff = gmcp.Char.Afflictions.Add.name
+  local affcount = tonumber(string.match(gmcp.Char.Afflictions.Add.name, "%d"))
+  local affname = ""
+  if string.match(gmcp.Char.Afflictions.Add.name, "%d") then affname = thisaff:sub(1, -5) end
   if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
   gaffl[thisaff] = true
   if conf.gmcpaffechoes then svo.echof("Gained aff %s", thisaff) end
   if svo.dict.sstosvoa[thisaff] then
     svo.addaffdict(svo.dict[svo.dict.sstosvoa[thisaff]])
   end
+  if affname ~= "" then
+    if svo.dict.sstosvoa[affname] then
+      svo.addaffdict(svo.dict[svo.dict.sstosvoa[affname]])
+    end
+  end
+  if affcount ~= nil and svo.dict[svo.dict.sstosvoa[affname]].count ~= nil then
+    svo.dict[svo.dict.sstosvoa[affname]].count = affcount
+  end
+  if affcount ~= nil and table.contains(svo.affl, svo.dict[svo.dict.sstosvoa[affname]].name) then
+    svo.updateaffcount(svo.dict[svo.dict.sstosvoa[affname]])
+  end
 end, 'track gained gmcp aff')
 
 signals.gmcpcharafflictionsremove:connect(function()
   local thisaff = gmcp.Char.Afflictions.Remove[1]
+  local affcount = tonumber(string.match(gmcp.Char.Afflictions.Remove[1], "%d"))
+  local affname = ""
+  if string.match(gmcp.Char.Afflictions.Remove[1], "%d") then affname = thisaff:sub(1, -5) end
   --If level 1 of an affliction is removed, then the aff is completely gone
   if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
   gaffl[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
+  if svo.dict.unknownany.count >= 1 and not svo.affl[thisaff] then
+    svo.valid.remove_unknownany(thisaff)
+  end
   if svo.dict.sstosvoa[thisaff] then
     svo.rmaff(svo.dict[svo.dict.sstosvoa[thisaff]])
+  end
+  if affcount ~= nil and svo.dict[svo.dict.sstosvoa[affname]].count ~= nil then
+    svo.dict[svo.dict.sstosvoa[affname]].count = 0
   end
 end, 'track lost gmcp aff')
 
