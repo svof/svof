@@ -1901,7 +1901,7 @@ end</script>
 				<regexCodePropertyList />
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Guesstimates</name>
-					<script>-- Earth Lord's always break at 6, but the limb damage can be doubled based off Sculpting stage
+					<script>-- Earth Lord's always break at 5, but the limb damage can be doubled based off Sculpting stage
 local person
 person = multimatches[2][2]
 svo.echof("Earth Lords break at 5")
@@ -1927,13 +1927,14 @@ svo.lc_sethitsneeded(person, 5)</script>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Powderise</name>
-					<script>local shaping = string.match(gmcp.Char.Vitals.charstats[3], "%d+")
-shaping = tonumber(shaping)
-if shaping == 4 then
+					<script>if svo.lc_shaping == 4 then
 	svo.lc_hit(matches[3], matches[2], 2)
-elseif shaping &lt;= 3 then
+elseif svo.lc_shaping &lt;= 3 then
 	svo.lc_hit(matches[3], matches[2], 1)
-end</script>
+end
+
+svo.lc_shaping = string.match(gmcp.Char.Vitals.charstats[3], "%d+")
+svo.lc_shaping = tonumber(svo.lc_shaping)</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -2094,6 +2095,7 @@ svo.lc_echo = svo.lc_echo or {}
 svo.lc_priestdamage = svo.lc_priestdamage or false
 svo.lc_shikudodamage = svo.lc_shikudodamage or "none"
 svo.lc_limbreset = svo.lc_limbreset or false
+svo.lc_shaping = svo.lc_shaping or 0
 svo.lc_shikudoskill = { 
 	lowest = lowest or 0,
 	middle = middle or 0,
@@ -2183,10 +2185,12 @@ if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == t
           svo.echof("Changing Arm damage for Tekura hits to %d.", svo.conf.armdamage)
         end,
       })
+      svo.echof("Loaded svo limbcounter, %s %s.", "Monk Tekura", tostring(svo.modules_version["svo (limbcounter)"]))
     elseif svo.me.path == "Shikudo" then
       enableTrigger("svo Monk limbcounter")
       enableTrigger("Shikudo")
       disablTrigger("Tekura")
+      svo.echof("Loaded svo limbcounter, %s %s.", "Monk Shikudo", tostring(svo.modules_version["svo (limbcounter)"]))
     end    
 	elseif table.contains(svo.lc_classlist, svo.me.class) then
 		svo.lc_myclass = svo.me.class
