@@ -5456,48 +5456,28 @@ end
           end
 
         elseif aff == 'skullfractures' then
-          -- two counts are cured if you're above 5
-          local howmany = svo.dict.skullfractures.count
-          codepaste.remove_stackableaff('skullfractures', true)
-          if howmany &gt; 5 then
-            codepaste.remove_stackableaff('skullfractures', true)
-          end
+          svo.updateaffcount(svo.dict.skullfractures)
 
         elseif aff == "skullfractures cured" then
           svo.rmaff('skullfractures')
           svo.dict.skullfractures.count = 0
 
         elseif aff == 'crackedribs' then
-          -- two counts are cured if you're above 5
-          local howmany = svo.dict.crackedribs.count
-          codepaste.remove_stackableaff('crackedribs', true)
-          if howmany &gt; 5 then
-            codepaste.remove_stackableaff('crackedribs', true)
-          end
-
+          svo.updateaffcount(svo.dict.crackedribs)
+        
         elseif aff == "crackedribs cured" then
           svo.rmaff('crackedribs')
           svo.dict.crackedribs.count = 0
 
         elseif aff == 'wristfractures' then
-          -- two counts are cured if you're above 5
-          local howmany = svo.dict.wristfractures.count
-          codepaste.remove_stackableaff('wristfractures', true)
-          if howmany &gt; 5 then
-            codepaste.remove_stackableaff('wristfractures', true)
-          end
+          svo.updateaffcount(svo.dict.wristfractures)
 
         elseif aff == "wristfractures cured" then
           svo.rmaff('wristfractures')
           svo.dict.wristfractures.count = 0
 
         elseif aff == 'torntendons' then
-          -- two counts are cured if you're above 5
-          local howmany = svo.dict.torntendons.count
-          codepaste.remove_stackableaff('torntendons', true)
-          if howmany &gt; 5 then
-            codepaste.remove_stackableaff('torntendons', true)
-          end
+          svo.updateaffcount(svo.dict.torntendons)
 
         elseif aff == "torntendons cured" then
           svo.rmaff('torntendons')
@@ -8332,7 +8312,7 @@ end
     blocked_herb = "",
     boosted = {
       oncompleted = function()
-        svo.dict.paradox.aff.count = 10
+        svo.dict.paradox.count = 10
         svo.updateaffcount(svo.dict.paradox)
       end
     },
