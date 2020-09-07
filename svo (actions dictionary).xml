@@ -4466,12 +4466,12 @@ end
     gamename = 'burning',
     onservereignore = function()
       return ((svo.defdefup[svo.defs.mode].torch or svo.defkeepup[svo.defs.mode].torch) and 
-      (svo.me.class == 'fire Elemental Lord' or svo.me.class == 'fire Elemental Lady'))
+      (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))
     end,
     salve = {
       isadvisable = function()
         return (affs.ablaze and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and 
-        (svo.me.class == 'fire Elemental Lord' or svo.me.class == 'fire Elemental Lady'))) or false
+        (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))) or false
       end,
 
       oncompleted = function()
@@ -4506,7 +4506,7 @@ end
     aff = {
       oncompleted = function()
         if ((defdefup[defs.mode].torch) or (conf.keepup and defkeepup[defs.mode].torch)) and 
-        (svo.me.class == 'fire Elemental Lord' or svo.me.class == 'fire Elemental Lady') then
+        (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
           defences.got('torch')
         else
           codepaste.remove_burns('ablaze')

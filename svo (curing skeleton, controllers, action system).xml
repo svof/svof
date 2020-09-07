@@ -2339,11 +2339,11 @@ function svo.sk.fix_affs_and_defs()
   
     --ablaze check for fire elementals, they always must be ON FIRE!
   if affs.ablaze and ((defdefup[defs.mode].torch) or (conf.keepup and defkeepup[defs.mode].torch)
-   and (svo.me.class == 'fire Elemental Lord' or svo.me.class == "fire Elemental Lady")) then
+   and (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady")) then
     svo.rmaff('ablaze')
     defences.got('torch')
     svo.echof("ablaze is now considered a defence.")
-  elseif defc.torch and ((svo.me.class ~= 'fire Elemental Lord' and svo.me.class ~= 'fire Elemental Lady') or
+  elseif defc.torch and ((svo.me.class ~= "fire Elemental Lord" and svo.me.class ~= "fire Elemental Lady") or
    not ((defdefup[defs.mode].torch) or (conf.keepup and defkeepup[defs.mode].torch))) then
     defences.lost('torch')
     svo.addaffdict(svo.dict.ablaze)
