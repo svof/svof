@@ -46,11 +46,10 @@ if svo.off_preaction ~= "get" then
        enableTrigger("Shrine full/gone")
   end
   sendGMCP("Char.Items.Inv")
-  send(" ")
 else
   sendGMCP("Char.Items.Room")
-  send(" ")
-end</script>
+end
+send(" ")</script>
 			<command></command>
 			<packageName></packageName>
 			<regex>^v(offer|drop|get|defile|sanctify|give|put)(?: (?!herb)(\w+))?$</regex>
