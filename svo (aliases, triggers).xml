@@ -53800,7 +53800,7 @@ send("light "..svo.me.pipes.valerian.id, false)</script>
 				<script>svo.get_herbs()</script>
 				<command></command>
 				<packageName></packageName>
-				<regex>^vget ?(?:h|herbs)$</regex>
+				<regex>^vget(?:h| herbs?)$</regex>
 			</Alias>
 			<AliasGroup isActive="yes" isFolder="yes">
 				<name>svo UI Experiments</name>
