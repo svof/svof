@@ -85,7 +85,7 @@ svo.modules_version["svo (offering)"] = 1</script>
   local action = svo.off_action
   if List.location == "room" and preaction == "get" then
     for k,v in pairs(List.items) do
-      if v.attrib:find("d") then
+      if v.attrib and v.attrib:find("d") then
         svo.doaddfree("get " .. v.id)
       elseif v.name:find("the corpse of") then
         svo.doaddfree("get " .. v.id)
