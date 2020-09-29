@@ -1,0 +1,4948 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.001">
+	<TriggerPackage />
+	<TimerPackage />
+	<AliasPackage />
+	<ActionPackage />
+	<ScriptPackage>
+		<Script isActive="yes" isFolder="no">
+			<name>Install system</name>
+			<packageName></packageName>
+			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
+
+-- Svof is licensed under a
+-- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+-- You should have received a copy of the license along with this
+-- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+-- Installation procedure - autodetects skills (before GMCP came along, by ABing and gagging)
+-- and asks questions for things it couldn't
+
+svo = svo or {}; svo.loader = svo.loader or {}
+svo.modules_version = svo.modules_version or {}
+svo.modules_version["svo (install, config, pipes, rift, parry, prios)"] = 1
+svo.loader.install = function()
+
+local sys, signals = svo.sys, svo.signals
+local conf, sk = svo.conf, svo.sk
+local pipes, install = svo.pipes, svo.install
+
+install.ids = install.ids or {}
+
+-- same name as conf
+-- function to say have/don't have
+local installdata = {
+  thirdeye = {
+    gmcp = {group = 'vision', name = 'thirdeye'},
+  },
+  deathsight = {
+    gmcp = {group = 'vision', name = 'deathsight'},
+  },
+  focus = {
+    gmcp = {group = 'survival', name = 'focusing'},
+  },
+  efficiency = {
+    gmcp = {group = 'survival', name = 'efficiency'}
+  },
+  restore = {
+    gmcp = {group = 'survival', name = 'restoration'},
+  },
+  breath = {
+    gmcp = {group = 'survival', name = 'breathing'},
+  },
+  pipes = {
+    command = "ii pipe",
+    item = true,
+    other = {
+      pattern = [[^You are wielding:$]],
+      script = [[
+        svo.deleteAllP()
+        svo.pipetrig = tempRegexTrigger([=[^ +pipe(\d+)]=],
+          [=[
+            tempTimer(0.02, [==[
+              local r = svo.pipe_assignid(]==]..matches[2]..[==[)
+              killTrigger(svo.pipetrig)
+              if r then send("empty "..r, false) svo.echof("Set the %s pipe id to %d.", r, ]==]..matches[2]..[==[) end
+            ]==])
+          ]=])
+      ]]
+    }
+  },
+  insomnia = {
+    gmcp = {group = 'survival', name = 'insomnia'},
+  },
+  clot = {
+    gmcp = {group = 'survival', name = 'clotting'},
+  }
+}
+
+if svo.haveskillset('chivalry') then
+  installdata.fitness = {
+    command = "ab chivalry fitness",
+    gmcp = {group = 'chivalry', name = 'fitness'}}
+elseif svo.haveskillset('kaido') then
+  installdata.fitness = {
+    command = "ab kaido fitness",
+    gmcp = {group = 'kaido', name = 'fitness'}}
+elseif svo.haveskillset('shindo') then
+  installdata.fitness = {
+    command = "ab striking fitness",
+    gmcp = {group = 'striking', name = 'fitness'}}
+end
+
+if svo.haveskillset('venom') then
+  installdata.shrugging = {
+    gmcp = {group = 'venom', name = 'shrugging'}
+  }
+end
+if svo.haveskillset('voicecraft') then
+  installdata.dwinnu = {
+    gmcp = {group = 'voicecraft', name = 'dwinnu'},
+  }
+end
+if not svo.haveskillset('tekura') then
+  installdata.parry = {
+    gmcp = {group = 'weaponry', name = 'parrying'},
+  }
+else
+  installdata.parry = {
+    gmcp = {group = 'tekura', name = 'guarding'},
+  }
+end
+if svo.haveskillset('chivalry') then
+  installdata.rage = {
+    gmcp = {group = 'chivalry', name = 'rage'},
+  }
+end
+if svo.haveskillset('shindo') then
+  installdata.shindodeaf = {
+    gmcp = {group = 'shindo', name = 'deaf'},
+  }
+  installdata.shindoblind = {
+    gmcp = {group = 'shindo', name = 'blind'},
+  }
+end
+if svo.haveskillset('weaponmastery') then
+  installdata.recoverfooting = {
+    gmcp = {group = 'weaponmastery', name = 'recover'},
+  }
+end
+if svo.haveskillset('zeal') then
+  installdata.benediction = {
+    gmcp = {group = 'zeal', name = 'benediction'},
+  }
+end
+
+function svo.installclear(what)
+  if type(install.ids[what]) == 'table' then
+
+    for _, id in pairs(install.ids[what]) do
+      killTrigger(id)
+      install.ids[what][_] = nil
+    end
+    install.ids[what] = nil
+
+  else
+    install.ids[what] = nil
+  end
+
+  if svo.installtimer then killTimer(svo.installtimer) end
+  tempTimer(5+getNetworkLatency(), function ()
+    if next(install.ids) then
+      for thing, _ in pairs(install.ids) do
+        if svo.config_dict[thing] and svo.config_dict[thing].type == 'boolean' then
+          svo.config.set(thing, false, true)
+        end
+
+        svo.installclear(thing)
+      end
+    end
+
+    svo.installtimer = nil
+
+    if not next(install.ids) and not install.installing_system then
+      echo"\n"
+      svo.echof("auto-configuration done. :) question time!")
+      echo"\n"
+      install.ask_install_questions()
+    end
+  end)
+end
+
+function svo.installstart(fresh)
+  if fresh and not sk.installwarning then
+    svo.echof("Are you really sure you want to wipe everything (all remove all non-default defence modes, clear basic+combat defup/keepup to blank, remove all configuration options)? If yes, do vinstall fresh again.")
+    if selectString('really', 1) ~= -1 then setUnderline(true) resetFormat() end
+    svo.sk.installwarning = true
+    return
+  elseif fresh and sk.installwarning then
+    local s, m = os.remove(getMudletHomeDir() .. "/svo")
+    if not s then svo.echof("Couldn't remove svo folder because of: %s", m) end
+
+    svo.defdefup = {
+      basic = {},
+      combat = {},
+    }
+
+    svo.defkeepup = {
+      basic = {},
+      combat = {},
+    }
+
+    svo.echof("Vacuumed everything up!")
+    svo.sk.installwarning = nil
+  end
+
+  for _, skill in pairs(install.ids) do
+    if type(skill) == 'table' then
+      for _, id in pairs(skill) do
+        svo.installclear(id)
+      end
+    end
+  end
+
+  install.ids = {}
+  local ids = install.ids
+
+    for skill, skilldata in pairs(installdata) do
+      if skilldata.gmcp then
+        sendGMCP("Char.Skills.Get "..yajl.to_string(skilldata.gmcp))
+        ids[skill] = true
+      end
+    end
+
+    sendGMCP("Char.Skills.Get "..yajl.to_string{group = 'survival'})
+    sendGMCP("Char.Items.Inv")
+if svo.haveskillset('metamorphosis') then
+    sendGMCP("Char.Skills.Get "..yajl.to_string{group = 'metamorphosis'})
+end
+    signals.gmcpcharskillsinfo:unblock(install.checkskillgmcp)
+    signals.gmcpcharitemslist:unblock(install.checkinvgmcp)
+    signals.gmcpcharskillslist:unblock(install.checkskilllist)
+
+
+  if sys.enabledgmcp then
+    svo.echof("Starting auto-configuration - going to detect which skills and pipes you've got. Please wait 5 seconds for the questions to start.")
+    printCmdLine("Please wait, doing auto-configuration...")
+    echo"\n"
+  else
+    svo.echof("Please enable GMCP in Mudlet settings and restart before installing.")
+
+    signals.gmcpcharskillsinfo:block(install.checkskillgmcp)
+    signals.gmcpcharitemslist:block(install.checkinvgmcp)
+    signals.gmcpcharskillslist:block(install.checkskilllist)
+
+    for _, skill in pairs(install.ids) do
+      if type(skill) == 'table' then
+        for _, id in pairs(skill) do
+          svo.installclear(id)
+        end
+      end
+    end
+
+    install.ids = {}
+
+    return
+  end
+
+  send("config screenwidth 0", true)
+  -- some newbies don't have the full prompt, just a -, which does not have the required info for the system
+  -- for priests, make the balance show on the prompt - as healing others of blind/deaf takes no balance, while other other similar-looking lines do
+  -- anyone else can see the class balance
+  send(sys.ingamecustomprompt, false)
+
+  -- defaults/reset
+  for name, tbl in svo.config_dict:iter() do
+    if tbl.installstart then tbl.installstart(); raiseEvent("svo config changed", name) end
+  end
+  pipes.elm.id, pipes.skullcap.id, pipes.valerian.id = 0,0,0
+
+  if sys.enabledgmcp then
+    local city = gmcp.Char.Status.city:match("^(%w+)")
+    if city then svo.config.set('org', city, true) end
+
+    if gmcp.Char.Status.level and tonumber(gmcp.Char.Status.level:match("^(%d+)")) &gt;= 99 then
+      svo.config.set('dragonflex', true, true)
+      svo.config.set('dragonheal', true, true)
+    else
+      svo.config.set('dragonflex', false, true)
+      svo.config.set('dragonheal', false, true)
+    end
+  end
+end
+
+-- logic: set relevant conf's to nil, go through a table of specific ones - if one is nil, ask the relevant question for it. inside alias to toggle it, call install again.
+
+svo.install.ask_install_questions = function ()
+  if install.installing_system then return end
+
+  install.installing_system = true
+  install.check_install_step()
+end
+
+svo.install.check_install_step = function()
+  for name, tbl in svo.config_dict:iter() do
+    if conf[name] == nil and tbl.installcheck then
+      echo "\n"
+      tbl.installcheck()
+      svo.conf_printinstallhint(name)
+
+      if printCmdLine then
+        clearCmdLine()
+        tempTimer(0, [[appendCmdLine("vconfig ]]..name..[[ ")]])
+      end
+
+      return
+    end
+  end
+
+  install.installing_system = false
+  signals.gmcpcharskillsinfo:block(install.checkskillgmcp)
+  signals.gmcpcharitemslist:block(install.checkinvgmcp)
+  signals.gmcpcharskillslist:block(install.checkskilllist)
+  echo"\n"
+  svo.echof("All done installing! Congrats.")
+  signals.saveconfig:emit()
+
+  decho(svo.getDefaultColor().."If you'd like, you can also optionally setup the ")
+  echoLink('parry', 'svo.sp.setup()', 'parry')
+  decho(svo.getDefaultColor().." system and the ")
+  echoLink("herb precache", 'svo.showprecache()', 'herb precache')
+  decho(svo.getDefaultColor().." system. You can adjust the ")
+  echoLink("echo colours", 'svo.config.showcolours()', 'echo colours')
+  decho(svo.getDefaultColor().." as well!")
+  echo "\n"
+  svo.echof("I'd recommend that you at least glimpse through my docs as well so you sort of know what are you doing :)")
+
+  if not conf.customprompt and not conf.setdefaultprompt then
+    svo.conf.setdefaultprompt = true
+    svo.setdefaultprompt()
+    echo"\n" svo.echof("I've setup a custom prompt for you that mimics the normal Achaean one, but also displays which afflictions have you got. See http://doc.svo.vadisystems.com/#setting-a-custom-prompt on how to customize it if you'd like, or if you don't like it, do 'vconfig customprompt off' to disable it.")
+  end
+
+  tempTimer(math.random(1,2), function ()
+    echo"\n"
+    svo.echof("Oh, and one last thing - QQ, restart Mudlet and login again, so all changes can take effect properly.")
+  end)
+end
+
+function svo.install.checkskillgmcp()
+  local t = _G.gmcp.Char.Skills.Info
+  if not t then return end
+
+  if t.skill == 'clotting' then t.skill = 'clot' end
+  if t.skill == 'parrying' then t.skill = 'parry' end
+
+  if conf[t.skill] == nil and (t.info == "" or t.info:find("You have not yet learned this ability")) then
+    conf[t.skill] = false
+    svo.echof("Don't have %s, so &lt;250,0,0&gt;won't%s be using it whenever possible.", t.skill, svo.getDefaultColor())
+    raiseEvent("svo config changed", t.skill)
+  elseif conf[t.skill] == nil then
+    conf[t.skill] = true
+    svo.echof("Have %s, so &lt;0,250,0&gt;will%s be using it whenever possible.", t.skill, svo.getDefaultColor())
+    raiseEvent("svo config changed", t.skill)
+  end
+
+  svo.installclear(t.skill)
+end
+signals.gmcpcharskillsinfo:connect(install.checkskillgmcp, 'checkskillgmcp')
+signals.gmcpcharskillsinfo:block(install.checkskillgmcp)
+
+function svo.install.checkinvgmcp()
+  local t = _G.gmcp.Char.Items.List
+  if not t.location == 'inv' then return end
+
+  -- feh! Easier to hardcode it for such a miniscule amount of items.
+  -- If list enlarges, fix appopriately.
+  for _, it in pairs(t.items) do
+    if string.find(it.name, "%f[%a]pipe%f[%A]") then
+      local r = svo.pipe_assignid(it.id)
+      if r then svo.echof("Set the %s pipe id to %d.", r, it.id) end
+    end
+  end
+
+end
+signals.gmcpcharitemslist:connect(install.checkinvgmcp, 'checkinvgmcp')
+signals.gmcpcharitemslist:block(install.checkinvgmcp)
+
+
+function svo.install.checkskilllist()
+  local t = _G.gmcp.Char.Skills.List
+  if t.group == 'survival' then
+    for _, k in ipairs{{'focus', 'focusing'}, {'restore', 'restoration'}, {'insomnia', 'insomnia'}, {'clot', 'clotting'}, {'breath', 'breathing'}, {'efficiency', 'efficiency'}} do
+      if svo.contains(t.list, k[2]:title()) then
+        svo.config.set(k[1], true, true)
+        svo.installclear(k[1])
+      end
+    end
+  end
+
+if svo.haveskillset('metamorphosis') then
+  if t.group == 'metamorphosis' then
+    for _, k in ipairs{'truemorph', 'hydra', 'wyvern', 'affinity', 'icewyrm', 'gorilla', 'eagle', 'jaguar', 'wolverine', 'transmorph', 'elephant', 'nightingale', 'bonding', 'bear', 'basilisk', 'sloth', 'gopher', 'condor', 'hyena', 'owl', 'cheetah', 'jackdaw', 'turtle', 'wolf', 'wildcat', 'powers', 'squirrel'} do
+    if svo.contains(t.list, k:title()) then
+      svo.config.set('morphskill', k, true)
+      break
+    end
+  end
+
+  svo.installclear('morphskill')
+end
+  end
+end
+signals.gmcpcharskillslist:connect(install.checkskilllist, 'checkskilllist')
+signals.gmcpcharskillslist:block(install.checkskilllist)
+
+end -- end of svo install loader
+
+if svo.systemloaded then svo.loader.install() end</script>
+			<eventHandlerList />
+		</Script>
+		<Script isActive="yes" isFolder="no">
+			<name>Config system</name>
+			<packageName></packageName>
+			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
+
+-- Svof is licensed under a
+-- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+-- You should have received a copy of the license along with this
+-- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+-- Svof's configuration (vconfig) and tn/tf system
+
+svo = svo or {}; svo.loader = svo.loader or {}
+svo.loader.config = function()
+
+local sys, defdefup, signals = svo.sys, svo.defdefup, svo.signals
+local conf, sk, me, defs = svo.conf, svo.sk, svo.me, svo.defs
+local defences, cnrl, rift = svo.defences, svo.cnrl, svo.rift
+local pipes = svo.pipes
+
+svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/config")
+
+-- conf has actual values, config data for them
+
+svo.wait_tbl = {
+  [0] = {n = 0.7, m = "Systems lag tolerance level set to normal."},
+  [1] = {n = 1.1, m = "The lag level was set to \"decent\" - make sure to set it to normal when it clears up."},
+  [2] = {n = 1.9, m = "The lag level was set to \"severe\" - make sure to set it to normal when it clears up."},
+  [3] = {n = 3.5, m = "The lag level was set to \"awfully terrible\" - make sure to set it to normal when it clears up. Don't even think about fighting in this lag."},
+  [4] = {n = 3.5, m = "The lag level was set to \"you're on a mobile in the middle of nowhere\" - make sure to set it to normal when it clears up. Don't even think about fighting in this lag. Don't use this for bashing with dor either - use 3 instead. This is more useful for scripts that rely on do - enchanting and etc."}
+}
+
+svo.conf_printinstallhint = function (which)
+  svo.assert(svo.config_dict[which] and svo.config_dict[which].type, which.." is missing a type")
+
+  if svo.config_dict[which].type == 'boolean' then
+    svo.echof("Use %s to answer.", tostring(svo.green("vconfig "..which.." yep/nope")))
+  elseif svo.config_dict[which].type == 'string' then
+    svo.echof("Use %s to answer.", tostring(svo.green("vconfig "..which.." (option)")))
+  elseif svo.config_dict[which].type == 'number' and svo.config_dict[which].percentage then
+    svo.echof("Use %s to answer.", tostring(svo.green("vconfig "..which.." (percent)")))
+  elseif svo.config_dict[which].type == 'number' then
+    svo.echof("Use %s to answer.", tostring(svo.green("vconfig "..which.." (number)")))
+  end
+end
+
+local conf_installhint = function (which)
+  svo.assert(svo.config_dict[which] and svo.config_dict[which].type, which.." is missing a type")
+
+  if svo.config_dict[which].type == 'boolean' then
+    return "Use vconfig "..which.." yep/nope to answer."
+  elseif svo.config_dict[which].type == 'string' then
+    return "Use vconfig "..which.." (option) to answer."
+  elseif svo.config_dict[which].type == 'number' and svo.config_dict[which].percentage then
+    return "Use vconfig "..which.." (percent) to answer."
+  elseif svo.config_dict[which].type == 'number' then
+    return "Use vconfig "..which.." (number) to answer."
+  else return ""
+  end
+end
+
+svo.config_dict = svo.pl.OrderedMap {
+  {blockcommands = {
+    vconfig2 = true,
+    type = 'boolean',
+    onenabled = function ()
+      svo.echof("&lt;0,250,0&gt;Will%s block your commands in slow curing mode (aeon/retardation) if the system is doing something.", svo.getDefaultColor())
+      if not denyCurrentSend then svo.echof("Warning: your version of Mudlet doesn't support this, so blockcommands won't actually work. Update to 1.2.0+") end
+    end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s block your commands in slow curing mode, but instead allow them to override what the system is doing.", svo.getDefaultColor())
+    if not denyCurrentSend then svo.echof("Warning: your version of Mudlet doesn't support this, so blockcommands won't actually work.") end end,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      if denyCurrentSend then
+        echo "Override commands in slow-curing mode.\n" return
+      else
+        echo "Override commands in slow-curing mode (requires Mudlet 1.2.0+).\n" return end
+    end,
+    installstart = function () conf.blockcommands = true end,
+  }},
+  {autoslick = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Automatically prioritise slickness",
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s automatically swap asthma herb priority in times of danger - when you have paralysis or impatience above asthma in prios, and you have asthma+slickness on you, getting hit with a herbstack.", svo.getDefaultColor()) end,
+    ondisabled = function ()
+      if svo.swapped_asthma then
+        svo.prio_swap('asthma', 'herb', svo.swapped_asthma)
+        svo.swapped_asthma = nil
+        svo.echof("Swapped asthma priority back down.")
+      end
+
+      svo.echof("&lt;250,0,0&gt;Won't%s automatically swap asthma herb priority in times of danger.", svo.getDefaultColor()) end,
+    installstart = function () conf.autoslick = true end
+  }},
+  {focus = {
+    type = 'boolean',
+    vconfig1 = 'focus',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use Focus to cure.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use Focus to cure.", svo.getDefaultColor()) end,
+    installstart = function () conf.focus = nil end,
+    installcheck = function () svo.echof("Can you make use of the Focus skill?") end
+  }},
+  {siprandom = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s sip by random vial IDs of a potion - note that this requires the elist sorter to know which vial IDs have which potions - and you'll need to check 'elist' after a vial runs out.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s make use of random vials - will be sipping the first available one by name.", svo.getDefaultColor()) end,
+  }},
+  {autoclasses = {
+      type = 'boolean',
+      onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s automatically enable the classes you seem to be fighting (used for class tricks).", svo.getDefaultColor()) end,
+      ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s automatically enable classes that you seem to be fighting (you can use tn/tf class instead).", svo.getDefaultColor()) end,
+
+      vconfig2 = true,
+      onshow = function (defaultcolour)
+        fg(defaultcolour)
+        if conf.autoclasses then
+          echo "Will auto-enable classes.\n"
+        else
+          echo "Won't auto-enable classes.\n"
+        end
+      end,
+    }},
+  {havelifevision = {
+    type = 'boolean',
+    onenabled = function () defences.enablelifevision() svo.echof("&lt;0,250,0&gt;Have%s Lifevision mask - added it to defup/keepup.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Don't%s have Lifevision mask - won't be adding it to defup/keepup.", svo.getDefaultColor()) end,
+  }},
+  {autoarena = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s automatically enable/disable arena mode as you enter into the arena.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s automatically enable/disable arena mode as you enter/leave the arena..", svo.getDefaultColor()) end,
+  }},
+  {haveshroud = {
+    type = 'boolean',
+    onenabled = function () defences.enableshroud() svo.echof("&lt;0,250,0&gt;Have%s a Shroudcloak - added it to defup/keepup.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Don't%s have a Shroudcloak - won't be adding it to defup/keepup.", svo.getDefaultColor()) end,
+  }},
+  {focuswithcadmus = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo "Use Focus while you have cadmus"
+      if conf.focuswithcadmus then
+        echo"    ("
+        echoLink("adjust affs", "svo.config.set'cadmusaffs'", "View, enable and disable afflictions for which focus is allowed to be used while you've got cadmus")
+        fg(defaultcolour) echo ")"
+      end
+      echo"\n"
+      resetFormat()
+    end,
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s focus for mental afflictions when you've got cadmus (this'll give you a physical affliction when you do).", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s focus when you've got cadmus.", svo.getDefaultColor()) end,
+  }},
+  {cadmusaffs = {
+    type = 'custom',
+    onmenu = function ()
+      local underline = setUnderline; _G.setUnderline = function () end
+
+      svo.echofn("Afflictions for which we will use focus even though we have ")
+      underline(true)
+      setFgColor(unpack(svo.getDefaultColorNums))
+      echoLink('cadmus', '', "Cadmus will give you a physical affliction if you focus with it (and still cure the mental one)", true)
+      underline(false)
+      echo(":\n")
+
+      local temp = svo.prio.getlist('focus')
+
+      -- clear gaps so we can sort and display in 2 columns
+      local t = {}
+      for _, focusaff in ipairs(temp) do t[#t+1] = focusaff end
+
+      table.sort(t) -- display alphabetically
+
+      for i = 1, #t, 2 do
+        local focusaff, nextaff = t[i], t[i+1]
+
+        if me.cadmusaffs[focusaff] then
+          dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt;X&lt;153,204,204&gt;]", [[svo.me.cadmusaffs["]]..focusaff..[["] = false; svo.config.set'cadmusaffs']], "Click to stop focusing for "..focusaff.." when you have camus", true)
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %s", focusaff))
+        else
+          dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt; &lt;153,204,204&gt;]", [[svo.me.cadmusaffs["]]..focusaff..[["] = true; svo.config.set'cadmusaffs']], "Click to start focusing for "..focusaff.." when you have camus and are able to focus", true)
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %s", focusaff))
+        end
+
+        -- equal out the spacing on the second column
+        echo((" "):rep(30-#focusaff))
+
+        if nextaff and me.cadmusaffs[nextaff] then
+          dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt;X&lt;153,204,204&gt;]", [[svo.me.cadmusaffs["]]..nextaff..[["] = false; svo.config.set'cadmusaffs']], "Click to stop focusing for "..nextaff.." when you have camus", true)
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %s\n", nextaff))
+        elseif nextaff then
+          dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt; &lt;153,204,204&gt;]", [[svo.me.cadmusaffs["]]..nextaff..[["] = true; svo.config.set'cadmusaffs']], "Click to start focusing for "..nextaff.." when you have camus and are able to focus", true)
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %s\n", nextaff))
+        end
+      end
+
+      _G.setUnderline = underline
+      echo'\n'
+    end
+  }},
+  {lyre = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Lyre mode",
+    onenabled = function () defs.keepup('lyre', 'on') svo.echof("Lyre mode &lt;0,250,0&gt;ON%s.", svo.getDefaultColor()) end,
+    ondisabled = function () defs.keepup('lyre', 'off') svo.app('off', true) svo.echof("Lyre mode &lt;250,0,0&gt;OFF%s.", svo.getDefaultColor()) end,
+  }},
+  {ninkharsag = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Experimental Nin'kharsag tracking",
+    onenabled = function () svo.echof("Experimental Nin'kharsag tracking &lt;0,250,0&gt;enabled%s - will attempt to work out which affs Nin'kharsag hides, and diagnose otherwise.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("Experimental Nin'kharsag &lt;250,0,0&gt;disabled%s.", svo.getDefaultColor()) end,
+  }},
+  {shipmode = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Ship mode",
+    onenabled = function () signals.newroom:connect(sk.check_shipmode, 'check shipmode on room move') svo.echof("Ship mode &lt;0,250,0&gt;enabled%s - this will allow the system to work properly with the 2-3 line prompts.", svo.getDefaultColor()) end,
+    ondisabled = function () signals.newroom:disconnect(sk.check_shipmode) svo.echof("Ship mode &lt;250,0,0&gt;disabled%s.", svo.getDefaultColor()) end,
+  }},
+  {lyrecmd = {
+    type = 'string',
+    onset = function ()
+      svo.dict.lyre.physical.action = conf.lyrecmd
+      svo.echof("Will use the '%s' for the Lyre mode.", tostring(conf.lyrecmd))
+    end
+  }},
+  {commandseparator = {
+    type = 'string',
+    onset = function ()
+      svo.echof("Will use &lt;0,250,0&gt;%s%s as the in-game command separator.", tostring(conf.commandseparator), svo.getDefaultColor())
+    end
+  }},
+  {buckawns = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Have buckawns",
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Do%s have buckawns.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Don't%s have buckawns.", svo.getDefaultColor()) end,
+    installstart = function () conf.buckawns = nil end,
+    installcheck = function () svo.echof("Have you got the buckawns artifact?") end
+  }},
+  {burrowpause = {
+    type = 'boolean',
+    onenabled = function () signals.gmcproominfo:connect(sk.check_burrow_pause, 'check if we need to pause for burrow') svo.echof("&lt;0,250,0&gt;Will%s auto-pause when we burrow.", svo.getDefaultColor()) end,
+    ondisabled = function () signals.gmcproominfo:disconnect(sk.check_burrow_pause) svo.echof("&lt;250,0,0&gt;Won't%s auto-pause when we burrow.", svo.getDefaultColor()) end,
+    installstart = function () conf.burrowpause = true end,
+  }},
+  {freevault = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Vaulting doesn't take balance",
+    onenabled = function ()
+      if conf.freevault and svo.dict.riding.physical.balanceful_act then
+        svo.dict.riding.physical.balanceless_act = true
+        svo.dict.riding.physical.balanceful_act = nil
+        signals.dragonform:emit()
+      elseif not conf.freevault and svo.dict.riding.physical.balanceless_act then
+        svo.dict.riding.physical.balanceless_act = nil
+        svo.dict.riding.physical.balanceful_act = true
+        signals.dragonform:emit()
+      end
+      svo.echof("&lt;0,250,0&gt;Do%s have balanceless vaulting.", svo.getDefaultColor())
+    end,
+    ondisabled = function ()
+      if conf.freevault and svo.dict.riding.physical.balanceful_act then
+        svo.dict.riding.physical.balanceless_act = true
+        svo.dict.riding.physical.balanceful_act = nil
+        signals.dragonform:emit()
+      elseif not conf.freevault and svo.dict.riding.physical.balanceless_act then
+        svo.dict.riding.physical.balanceless_act = nil
+        svo.dict.riding.physical.balanceful_act = true
+        signals.dragonform:emit()
+      end
+      svo.echof("&lt;250,0,0&gt;Don't%s have balanceless vaulting.", svo.getDefaultColor())
+    end,
+  }},
+  {deathsight = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Have deathsight",
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Do%s have deathsight.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Don't%s have deathsight.", svo.getDefaultColor()) end,
+    installstart = function () conf.deathsight = nil end,
+    installcheck = function () svo.echof("Have you got the deathsight skill?") end
+  }},
+  {tree = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo "Use tree       ("
+      echoLink("view scenarios", "svo.config.set'treefunc'", "View, enable and disable scenarios in which tree will be used")
+      fg(defaultcolour) echo ")\n"
+      resetFormat()
+    end,
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use of tree.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use of tree.", svo.getDefaultColor()) end,
+    installstart = function () conf.tree = nil end,
+    installcheck = function () svo.echof("Do you have a Tree tattoo?") end
+  }},
+  {treebalance = {
+    type = 'number',
+    min = 0,
+    max = 100000,
+    onset = function ()
+      if conf.treebalance == 0 then
+        svo.echof("Will use the default settings for tree balance length.")
+      else
+        svo.echof("Set tree balance to be %ds - if it doesn't come back after that, I'll reset it.", conf.treebalance)
+      end
+    end,
+    installstart = function () conf.treebalance = 0 end
+  }},
+  {restore = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo "Use restore    ("
+      echoLink("view scenarios", "svo.config.set'restorefunc'", "View, enable and disable scenarios in which restore will be used")
+      fg(defaultcolour) echo ")\n"
+      resetFormat()
+    end,
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use Restore to cure limbs when necessary.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use Restore to cure.", svo.getDefaultColor()) end,
+    installstart = function () conf.restore = nil end,
+    installcheck = function () svo.echof("Can you make use of the Restore skill?") end
+  }},
+  {dragonheal = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo "Use dragonheal ("
+      echoLink("view scenarios", "svo.config.set'dragonhealfunc'", "View, enable and disable scenarios in which dragonheal will be used")
+      fg(defaultcolour) echo ")\n"
+      resetFormat()
+    end,
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use dragonheal to cure when necessary.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use dragonheal to cure.", svo.getDefaultColor()) end,
+    installstart = function () conf.dragonheal = nil end,
+    installcheck = function () svo.echof("Can you make use of the Dragonheal?") end
+  }},
+  {breath = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Auto-enable breathing on Kai Choke",
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s automatically enabling breathing against Kai Choke and to check for asthma.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use survival breathing.", svo.getDefaultColor()) end,
+    installstart = function () conf.breath = nil end,
+    installcheck = function () svo.echof("Can you make use of the survival breath skill?") end
+  }},
+  {ignoresinglebites = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Ignore single serpent bites",
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s ignore all serpent bites that deliver only one affliction - most likely they'll be illusions, but may also be not against a smart Serpent who realizes that you're ignoring. So if you see them only biting, that's a warning sign that they're *really* biting, and you'd want to toggle this off &amp; diagnose.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s ignore serpent bites that deliver only one affliction.", svo.getDefaultColor()) end
+  }},
+  {ignoresinglestabs = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Ignore single serpent doublestabs",
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s ignore all serpent doublestabs that deliver only one affliction (most likely they'll be illusions, but may also be not).", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s ignore serpent doublestabs that deliver only one affliction.", svo.getDefaultColor()) end
+  }},
+  {efficiency = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Have survival efficiency",
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Have%s survival efficiency - tree tattoo balance will take shorter to come back.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Don't%s have efficiency - tree tattoo balance will take longer to come back.", svo.getDefaultColor()) end,
+    installstart = function () conf.efficiency = nil end,
+    installcheck = function () svo.echof("Do you have the survival efficiency skill?") end
+  }},
+  {clot = {
+    type = 'boolean',
+    vconfig1 = 'clot',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use clot to control bleeding.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use clot for bleeding.", svo.getDefaultColor()) end,
+    installstart = function () conf.clot = nil end,
+    installcheck = function () svo.echof("Can you make use of the Clot skill?") end
+  }},
+  {insomnia = {
+    type = 'boolean',
+    vconfig1 = 'insomnia',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use the Insomnia skill for insomnia.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use the Insomnia skill for insomnia, and will use cohosh instead.", svo.getDefaultColor()) end,
+    installstart = function () conf.insomnia = nil end,
+    installcheck = function () svo.echof("Can you make use of the Insomnia skill?") end
+  }},
+  {thirdeye = {
+    type = 'boolean',
+    vconfig1 = 'thirdeye',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use the thirdeye skill for thirdeye instead of echinacea.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use the thirdeye skill for thirdeye, and will use echinacea instead.", svo.getDefaultColor()) end,
+    installstart = function () conf.thirdeye = nil end,
+    installcheck = function () svo.echof("Can you make use of the Thirdeye skill?") end
+  }},
+  {moss = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s make use of moss/potash to heal.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s make use of moss/potash to heal.", svo.getDefaultColor()) end,
+    installstart = function ()
+      conf.moss = nil end,
+    installcheck = function ()
+      svo.echof("Do you want to make use of moss/potash to heal?") end,
+  }},
+  {showchanges = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s show changes in health/mana on the prompt.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s show changes in health/mana on the prompt.", svo.getDefaultColor()) end,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo("Show h/m changes (in "..tostring(conf.changestype).." format).\n")
+    end,
+    installstart = function () conf.showchanges = nil end,
+    installcheck = function () svo.echof("Do you want to show changes about your health/mana in the prompt?") end
+  }},
+  {changestype = {
+    type = 'string',
+    check = function (what)
+      if what == 'full' or what == 'short' or what == 'fullpercent' or what == 'shortpercent' then return true end
+      return nil, {'full', 'short', 'fullpercent', 'shortpercent'}
+    end,
+    onset = function ()
+      svo.echof("Will use the %s health/mana loss echoes.", conf.changestype)
+    end,
+    installstart = function () conf.changestype = 'shortpercent' end
+  }},
+  {log = {
+    type = 'string',
+    check = function (what)
+      if what == 'off' or what == 'file' or what == 'echo' or what == 'both' then return true end
+      return nil, {'off', 'file', 'echo', 'both'}
+    end,
+    onset = function ()
+      svo.updateloggingconfig()
+      if conf.log == 'off' then
+        svo.echof("Logging disabled.")
+        conf.log = false
+      elseif conf.log == 'file' then
+        if Logger then
+          svo.echof("Will log to the file in %s.", (getMudletHomeDir() .. "/log/svof.txt"))
+        else
+          svo.echof("Please install the Simple logger first (https://forums.mudlet.org/viewtopic.php?f=6&amp;t=1424), then restart.")
+          svo.conf.log = 'off'
+          svo.updateloggingconfig()
+        end
+      elseif conf.log == 'echo' then
+        svo.echof("Will log to your screen.")
+      else
+        svo.echof("Will log to both screen and file in %s.", (getMudletHomeDir() .. "/log/svof.txt"))
+      end
+    end,
+    installstart = function () conf.log = 'off' end
+  }},
+  {showbaltimes = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s show balance times for balance, equilibrium and herbs.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s show balance times.", svo.getDefaultColor()) end,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo "Show how long balances took.\n"
+    end,
+    installstart = function () conf.showbaltimes = true end,
+    -- installcheck = function () svo.echof("Do you want to show how long your balances take?") end
+  }},
+  {showafftimes = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s show how long afflictions took to cure.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s show times for curing afflictions.", svo.getDefaultColor()) end,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo "Show how quickly afflictions are cured.\n"
+    end,
+    installstart = function () conf.showafftimes = true end,
+  }},
+  {doubledo = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s do actions twice under stupidity.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s do actions twice under stupidity.", svo.getDefaultColor()) end,
+    onshow = "Double do actions in stupidity",
+    vconfig2 = true
+  }},
+  {repeatcmd = {
+    type = 'number',
+    min = 0,
+    max = 100000,
+    onset = function ()
+      if conf.repeatcmd == 0 then svo.echof("Will not repeat commands.")
+      elseif conf.repeatcmd == 1 then svo.echof("Will repeat each command one more time.")
+      else svo.echof("Will repeat each command %d more times.", conf.repeatcmd)
+    end end,
+    installstart = function () conf.repeatcmd = 0 end
+  }},
+  {singleprompt = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      if conf.singleprompt then
+        echo(string.format("Use a singleprompt%s", (conf.singlepromptblank and ' (with a blank line)' or '')))
+      else
+        echo("Not using a singleprompt")
+      end
+      echo'.\n'
+      resetFormat()
+    end,
+    onenabled = function ()
+      svo.echof("&lt;0,250,0&gt;Enabled%s the use of a single prompt.", svo.getDefaultColor())
+
+      sk.enable_single_prompt()
+    end,
+    ondisabled = function ()
+      svo.echof("&lt;250,0,0&gt;Disabled%s the use a single prompt.", svo.getDefaultColor())
+      if svo.moveprompt then killTrigger(svo.moveprompt) end
+      if svo.bottomprompt then svo.bottomprompt:hide(); svo.bottomprompt.reposition = function() end end
+      setBorderBottom(0)
+      svo.bottom_border = 0
+    end
+  }},
+  {singlepromptsize = {
+    type = 'number',
+    min = 0,
+    max = 100,
+    onset = function ()
+      if svo.bottomprompt then
+        svo.bottomprompt:setFontSize(conf.singlepromptsize)
+        if conf.singleprompt then
+          -- svo.config.set('singleprompt', 'off', false)
+          -- svo.config.set('singleprompt', 'on', false)
+
+          if svo.moveprompt then killTrigger(svo.moveprompt) end
+          if svo.bottomprompt then svo.bottomprompt:hide(); svo.bottomprompt.reposition = function() end end
+          setBorderBottom(0)
+          svo.bottom_border = 0
+
+          sk.enable_single_prompt()
+          svo.bottomprompt:clear()
+        end
+      end
+
+      svo.echof("Will be displaying the font at size %d.", conf.singlepromptsize)
+    end
+  }},
+  {singlepromptblank = {
+    type = 'boolean',
+    onenabled = function ()
+      svo.echof("&lt;0,250,0&gt;Enabled%s the single prompt to show a blank line for the prompt.", svo.getDefaultColor())
+      svo.config.set('singlepromptkeep', false, false)
+    end,
+    ondisabled = function ()
+      svo.echof("&lt;250,0,0&gt;Disabled%s the blank line, will be deleting the prompt instead.", svo.getDefaultColor())
+    end
+  }},
+  {singlepromptkeep = {
+    type = 'boolean',
+    onenabled = function ()
+      svo.echof("&lt;0,250,0&gt;Enabled%s the single prompt to keep the prompt%s.", svo.getDefaultColor(), (conf.singleprompt and '' or ' (when vconfig singleprompt is on)'))
+      svo.config.set('singlepromptblank', false, false)
+    end,
+    ondisabled = function ()
+      svo.echof("&lt;250,0,0&gt;Disabled%s keeping the prompt, will be removing it.", svo.getDefaultColor())
+    end
+  }},
+  {waitherbai = {
+    type = 'boolean',
+    vconfig2 = true,
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s pause eating of herbs while checking herb-cured illusions.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s pause eating of herbs while checking herb-cured illusions.", svo.getDefaultColor()) end,
+    onshow = function (defaultcolour)
+      fg(defaultcolour) echo ("Don't eat while checking herb-cured illusions.\n")
+    end,
+    installstart = function () conf.waitherbai = true end
+  }},
+  {waitparalysisai = {
+    type = 'boolean',
+    vconfig2 = true,
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s wait for balance/eq to confirm a suspect paralysis instead of accepting it - so if we get a suspect paralysis while off bal/eq, we'll cure other things and check the paralysis when we can.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s wait for balance/eq to confirm a possible paralysis - if we get one off bal/eq, we'll eat bloodroot asap. Otherwise if we have bal/eq, we'll check first.", svo.getDefaultColor()) end,
+    onshow = function (defaultcolour)
+      fg(defaultcolour) echo ("Wait for balance/eq to check suspicious paralysis.\n")
+    end,
+    installstart = function () conf.waitparalysisai = false end
+  }},
+  {commandecho = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s show commands the system is doing.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s show commands the system is doing.", svo.getDefaultColor()) end,
+    onshow = function (defaultcolour)
+      fg(defaultcolour) echo ("Show system commands ("..tostring(conf.commandechotype)..")\n")
+    end,
+    installstart = function () conf.commandecho = true end
+  }},
+  {commandechotype = {
+    type = 'string',
+    check = function (what)
+      if what == 'plain' or what == 'fancy' or what == 'fancynewline' then return true end
+      return nil, {'plain', 'fancy', 'fancynewline'}
+    end,
+    onset = function ()
+      svo.echof("Will use the %s command echoes.", conf.commandechotype)
+    end,
+    installstart = function () conf.commandechotype = 'fancy' end
+  }},
+  {curemethod = {
+    type = 'string',
+    check = function (what)
+      if table.contains({'conconly', 'transonly', 'preferconc', 'prefertrans', 'prefercustom'}, what) then return true end
+      return nil, {'conconly', 'transonly', 'preferconc', 'prefertrans', 'prefercustom'}
+    end,
+    onset = function ()
+      signals.curemethodchanged:emit()
+      if conf.curemethod == 'conconly' then
+        svo.echof("Will only use the usual Concoctions herbs/potions/salve for curing.")
+      elseif conf.curemethod == 'transonly' then
+        svo.echof("Will only use Transmutation minerals for curing.")
+      elseif conf.curemethod == 'preferconc' then
+        svo.echof("Will use Concoctions and Transmutation cures as you have them, but prefer Concoctions cures.")
+      elseif conf.curemethod == 'prefertrans' then
+        svo.echof("Will use Concoctions and Transmutation cures as you have them, but prefer Transmutation cures.")
+      elseif conf.curemethod == 'prefercustom' then
+        svo.echof("Will use your preferred Concoctions or Transmutation cures, falling back to the alternatives if you run out. See 'vshow curelist' for the adjustment menu.")
+      else
+        svo.echof("Will use Concoctions and Transmutation cures as you have them.")
+      end
+    end,
+    -- onshow: done in vshow
+    installstart = function () conf.curemethod = nil end,
+    installcheck = function () svo.echof("Would you like to use Concoctions or Transmutation cures?\n\n  You can answer with 'conconly' - which'll mean that you'd like to use Concoctions cures only, 'transonly' - which'll mean that you'd like to use Transmutation cures only, 'preferconc' - prefer Concoctions cures, but fall back to Transmutation cures should you run out, and lastly, 'prefertrans' - prefer Transmutation cures, but fall back to Concoctions should you run out.") end
+  }},
+  {customprompt = {
+    type = 'string',
+    vconfig2 = true,
+    onset = function ()
+      if conf.customprompt == 'none' or conf.customprompt == 'off' or conf.customprompt == 'of' then
+        conf.customprompt = false
+        svo.echof("Custom prompt disabled.")
+      elseif conf.customprompt == 'on' then
+        if conf.oldcustomprompt ~= 'off' and conf.oldcustomprompt ~= 'of' then
+          conf.customprompt = conf.oldcustomprompt
+          svo.cp.makefunction()
+          svo.echof("Custom prompt restored.")
+          if svo.innews then
+            svo.innews = false
+            svo.echof("Disabled the news status and re-enabled the prompt.")
+          end
+        else
+          svo.echof("You haven't set a custom prompt before, so we can't revert back to it. Set it with 'vconfig customprompt &lt;prompt line&gt;.")
+          conf.customprompt = false
+        end
+      else
+        svo.cp.makefunction()
+        conf.oldcustomprompt = conf.customprompt
+        svo.echof("Custom prompt enabled and set; will replace the standard one with yours now.")
+      end
+    end,
+    installstart = function () conf.customprompt = nil; conf.setdefaultprompt = nil end
+  }},
+  {relight = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s auto-relight non-artifact pipes.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s auto-relight pipes.", svo.getDefaultColor()) end,
+    installstart = function () conf.relight = true end,
+    installcheck = function () svo.echof("Should we keep non-artifact pipes lit?") end
+  }},
+  {gagrelight = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s hide relighting of pipes.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s hide relighting pipes.", svo.getDefaultColor()) end,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo(string.format("Re-light pipes quietly%s.\n", not conf.relight and " (when relighting is on)" or ""))
+    end,
+    installstart = function () conf.gagrelight = true end,
+    installcheck = function () svo.echof("Should we hide it when pipes are relit (it can get spammy)?") end
+  }},
+  {gagotherbreath = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s hide others breathing.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s hide others breathing.", svo.getDefaultColor()) end,
+    onshow = "Completely gag others breathing",
+    installstart = function () conf.gagotherbreath = true end
+  }},
+  {gagbreath = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s hide the breathing defence.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s hide the breathing defence.", svo.getDefaultColor()) end,
+    onshow = "Completely gag breathing",
+    installstart = function () conf.gagbreath = true end,
+    -- installcheck = function () svo.echof("Should we hide it when you use the breathing defence?") end
+  }},
+  {gageqbal = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s hide the 'you're off eq/bal' messages.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s hide the 'you're off eq/bal' messages.", svo.getDefaultColor()) end,
+    onshow = "Completely gag off eq/bal messages",
+    installstart = function () conf.gageqbal = true end,
+    installcheck = function () svo.echof("Should we hide the messages you get when you try and spam something off balance or equilibrium?") end
+  }},
+  {gagserverside = {
+    type = 'boolean',
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo("Gag Svof's use of serverside priorities/toggles.\n")
+    end,
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s hide info lines from the serverside curing system.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s hide info lines from the serverside curing system.", svo.getDefaultColor()) end,
+    installstart = function () conf.gagserverside = true end,
+  }},
+  {gagservercuring = {
+    type = 'boolean',
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo("Gag serverside [CURING] messages.\n")
+    end,
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s hide serverside's [CURING] messages.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s hide serverside's [CURING] messages.", svo.getDefaultColor()) end,
+    installstart = function () conf.gagservercuring = false end,
+  }},
+  {ccto = {
+    type = 'string',
+    onset = function ()
+      conf.ccto = conf.ccto:lower()
+      if conf.ccto == 'pt' or conf.ccto == 'party' then
+        svo.echof("Will report stuff to party.")
+      elseif conf.ccto == 'clt' then
+        svo.echof("Will report stuff to the current selected clan.")
+      elseif conf.ccto:find("^tell %w+") then
+        svo.echof("Will report stuff to %s via tells.", conf.ccto:match("^tell (%w+)"):title())
+      elseif conf.ccto == 'ot' then
+        svo.echof("Will report stuff to the Order channel.")
+      elseif conf.ccto == 'team' then
+        svo.echof("Will report stuff to the team channel.")
+      elseif conf.ccto == 'army' then
+        svo.echof("Will report stuff to the army channel.")
+      elseif conf.ccto == 'echo' then
+        svo.echof("Will echo ccto stuff back to you, instead of announcing it anywhere.")
+      else
+        svo.echof("Will report stuff to the %s clan.", conf.ccto)
+      end
+    end,
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo(string.format("Reporting stuff to %s.\n", tostring(conf.ccto)))
+    end,
+    installstart = function ()
+      conf.ccto = 'pt' end
+  }},
+  {mosshealth = {
+    type = 'number',
+    percentage = true,
+    min = 0,
+    max = 100,
+    onset = function () signals.changed_maxhealth:emit() svo.echof("Will eat moss/potash for health if it falls below %d%% (%dh).", conf.mosshealth, sys.mosshealth) end,
+    installstart = function () conf.mosshealth = nil end,
+    installcheck = function () svo.echof("At what %% of health do you want to start using moss/potash to heal, if enabled?") end
+  }},
+  {pagelength = {
+    type = 'number',
+    vconfig2string = true,
+    min = 1,
+    max = 250,
+    onset = function () svo.echof("Will reset your pagelength to %d after changing it.", conf.pagelength) end,
+    installstart = function () conf.pagelength = 20 end,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo("Default pagelength to reset to is ") fg('a_cyan')
+      echoLink(tostring(conf.pagelength), 'printCmdLine"vconfig pagelength "',
+      "Set the default pagelength to reset to after changing it",
+       true)
+      cecho("&lt;a_grey&gt; lines.\n")
+    end,
+  }},
+  {herbstatsize = {
+    type = 'number',
+    min = 1,
+    max = 100,
+    onset = function () rift.update_riftlabel(); svo.echof("Set the font size in the herbstat window to %d.", conf.herbstatsize) end,
+    installstart = function () conf.herbstatsize = 9 end
+  }},
+  {mossmana = {
+    type = 'number',
+    percentage = true,
+    min = 0,
+    max = 100,
+    onset = function () signals.changed_maxmana:emit() svo.echof("Will eat moss/potash for mana if it falls below %d%% (%dm).", conf.mossmana, sys.mossmana) end,
+    installstart = function () conf.mossmana = nil end,
+    installcheck = function () svo.echof("At what %% of mana do you want to start using moss/potash to heal, if enabled?") end
+  }},
+  {siphealth = {
+    type = 'number',
+    percentage = true,
+    min = 0,
+    max = 100,
+    onset = function () signals.changed_maxhealth:emit() svo.echof("Will start sipping health if it falls below %d%% (%dh).", conf.siphealth, sys.siphealth) end,
+    installstart = function () conf.siphealth = nil end,
+    installcheck = function () svo.echof("At what %% of health do you want to start sipping health?") end
+  }},
+  {sipmana = {
+    type = 'number',
+    percentage = true,
+    min = 0,
+    max = 100,
+    onset = function () signals.changed_maxmana:emit() svo.echof("Will start sipping mana if it falls below %d%% (%dm).", conf.sipmana, sys.sipmana) end,
+    installstart = function () conf.sipmana = nil end,
+    installcheck = function () svo.echof("At what %% of mana do you want to start sipping mana?") end
+  }},
+  {refillat = {
+    type = 'number',
+    min = 0,
+    max = 30,
+    onset = function () svo.echof("Will start refilling pipes when they're at %d puffs.", conf.refillat) end,
+    installstart = function () conf.refillat = 1 end
+  }},
+  {manause = {
+    type = 'number',
+    percentage = true,
+    min = 0,
+    max = 100,
+    onset = function () signals.changed_maxmana:emit() svo.echof("Will use mana-draining skills if only above %d%% mana (%d).", conf.manause, sys.manause) end,
+    installstart = function () conf.manause = 35 end,
+    installcheck = function () svo.echof("Above which %% of mana is the system allowed to use mana skills? Like focus, insomnia, etc. If you got below this %%, it'll revert to normal cures.") end
+  }},
+  {lag = {
+    type = 'number',
+    min = 0,
+    max = 4,
+    onset = function () cnrl.update_wait() svo.echof(svo.wait_tbl[conf.lag].m) end,
+    installstart = function () conf.lag = 0 end
+  }},
+  {unknownfocus = {
+    type = 'number',
+    min = 0,
+    onset = function () svo.echof("Will diagnose after we have %d or more unknown, but focusable afflictions.", conf.unknownfocus) end,
+    installstart = function ()
+        conf.unknownfocus = 2
+    end,
+  }},
+  {unknownany = {
+    type = 'number',
+    min = 0,
+    onset = function () svo.echof("Will diagnose after we have %d or more unknown affs.", conf.unknownany) end,
+    installstart = function ()
+        conf.unknownany = 2
+    end,
+  }},
+  {bleedamount = {
+    type = 'number',
+    vconfig2string = true,
+    min = 0,
+    onset = function () svo.echof("Will start clotting if bleeding for more than %d health.", conf.bleedamount) end,
+    installstart = function () conf.bleedamount = 60 end,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo("Will clot if bleeding for over ") fg('a_cyan')
+      echoLink(tostring(conf.bleedamount), 'printCmdLine"vconfig bleedamount "', "Set the # of health bleeding above which the system will start clotting", true)
+      fg(defaultcolour) echo(" health or ") fg('a_cyan')
+      echoLink(tostring(conf.manableedamount), 'printCmdLine"vconfig manableedamount "', "Set the # of mana bleeding above which the system will start clotting", true)
+      fg(defaultcolour) echo(" mana (and over ") fg('a_cyan')
+      echoLink(tostring(conf.corruptedhealthmin).."%", 'printCmdLine"vconfig corruptedhealthmin "', "Set the % of health below which the system will not clot your mana bleeding (due tp Alchemist corruption, which makes bleeding lose mana and clotting it will use health)", true)
+      fg(defaultcolour) echo(" health)\n")
+    end,
+  }},
+  {manableedamount = {
+    type = 'number',
+    vconfig2string = true,
+    min = 0,
+    onset = function () svo.echof("Will start clotting if bleeding for more than %d mana.", conf.manableedamount) end,
+    installstart = function () conf.manableedamount = 60 end,
+  }},
+  {corruptedhealthmin = {
+    type = 'number',
+    percentage = true,
+    min = 0,
+    max = 100,
+    onset = function () signals.changed_maxhealth:emit() svo.echof("Will not clot your mana bleeding if your health falls below %d%% (%dh).", conf.corruptedhealthmin, sys.corruptedhealthmin) end,
+    installstart = function () conf.corruptedhealthmin = 70 end
+  }},
+  {valerianid = {
+    type = 'number',
+    min = 0,
+    installstart = function () conf.valerianid = nil; pipes.valerian.id = 0 end,
+    installcheck = function () svo.echof("What pipe should we use for valerian? Answer with the ID, please.") end,
+    onset = function ()
+      pipes.valerian.id = tonumber(conf.valerianid)
+      svo.echof("Set the valerian pipe id to %d.", pipes.valerian.id) end,
+  }},
+  {skullcapid = {
+    type = 'number',
+    min = 0,
+    installstart = function () conf.skullcapid = nil; pipes.skullcap.id = 0 end,
+    installcheck = function () svo.echof("What pipe should we use for skullcap? Answer with the ID, please.") end,
+    onset = function ()
+      pipes.skullcap.id = tonumber(conf.skullcapid)
+      svo.echof("Set the skullcap pipe id to %d.", pipes.skullcap.id) end,
+  }},
+  {treefunc = {
+    type = 'custom',
+    onmenu = function ()
+      local underline = setUnderline; _G.setUnderline = function () end
+
+      svo.echof("Scenarios to use tree in:")
+      local sortednames = svo.keystolist(svo.tree)
+      table.sort(sortednames)
+      local longestfname = svo.longeststring(sortednames)
+
+      for i = 1, #sortednames do
+        local fname = sortednames[i]
+        local t = svo.tree[fname]
+
+        if not me.disabledtreefunc[fname] then
+          if dechoLink then
+            dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt;X&lt;153,204,204&gt;]", [[svo.me.disabledtreefunc["]]..fname..[["] = true; svo.config.set'treefunc']], "Disable "..fname, true)
+          else
+            decho("  &lt;153,204,204&gt;[&lt;0,204,0&gt;X&lt;153,204,204&gt;]")
+          end
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        else
+          if dechoLink then
+            dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt; &lt;153,204,204&gt;]", [[svo.me.disabledtreefunc["]]..fname..[["] = false; svo.config.set'treefunc']], "Enable "..fname, true)
+          else
+            decho("  &lt;153,204,204&gt;[&lt;0,204,0&gt; &lt;153,204,204&gt;]")
+          end
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        end
+      end
+
+      _G.setUnderline = underline
+
+      svo.showprompt()
+    end
+  }},
+  {restorefunc = {
+    type = 'custom',
+    onmenu = function ()
+      local underline = setUnderline; _G.setUnderline = function () end
+
+      svo.echof("Scenarios to use restore in:")
+      local sortednames = svo.keystolist(svo.restore)
+      table.sort(sortednames)
+      local longestfname = svo.longeststring(sortednames)
+
+      for i = 1, #sortednames do
+        local fname = sortednames[i]
+        local t = svo.restore[fname]
+
+        if not me.disabledrestorefunc[fname] then
+          if dechoLink then
+            dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt;X&lt;153,204,204&gt;]", [[svo.me.disabledrestorefunc["]]..fname..[["] = true; svo.config.set'restorefunc']], "Disable "..fname, true)
+          else
+            decho("  &lt;153,204,204&gt;[&lt;0,204,0&gt;X&lt;153,204,204&gt;]")
+          end
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        else
+          if dechoLink then
+            dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt; &lt;153,204,204&gt;]", [[svo.me.disabledrestorefunc["]]..fname..[["] = false; svo.config.set'restorefunc']], "Enable "..fname, true)
+          else
+            decho("  &lt;153,204,204&gt;[&lt;0,204,0&gt; &lt;153,204,204&gt;]")
+          end
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        end
+      end
+
+      _G.setUnderline = underline
+      svo.showprompt()
+    end
+  }},
+  {dragonhealfunc = {
+    type = 'custom',
+    onmenu = function ()
+      local underline = setUnderline; _G.setUnderline = function () end
+
+      svo.echof("Scenarios to use dragonheal in:")
+
+      local sortednames = svo.keystolist(svo.dragonheal)
+      table.sort(sortednames)
+      local longestfname = svo.longeststring(sortednames)
+
+      for i = 1, #sortednames do
+        local fname = sortednames[i]
+        local t = svo.dragonheal[fname]
+        if not me.disableddragonhealfunc[fname] then
+          if dechoLink then
+            dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt;X&lt;153,204,204&gt;]", [[svo.me.disableddragonhealfunc["]]..fname..[["] = true; svo.config.set'dragonhealfunc']], "Disable "..fname, true)
+          else
+            decho("  &lt;153,204,204&gt;[&lt;0,204,0&gt;X&lt;153,204,204&gt;]")
+          end
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        else
+          if dechoLink then
+            dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt; &lt;153,204,204&gt;]", [[svo.me.disableddragonhealfunc["]]..fname..[["] = false; svo.config.set'dragonhealfunc']], "Enable "..fname, true)
+          else
+            decho("  &lt;153,204,204&gt;[&lt;0,204,0&gt; &lt;153,204,204&gt;]")
+          end
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        end
+      end
+
+      _G.setUnderline = underline
+    end
+  }},
+  {elmid = {
+    type = 'number',
+    min = 0,
+    installstart = function () conf.elmid = nil; pipes.elm.id = 0 end,
+    installcheck = function () svo.echof("What pipe should we use for elm? Answer with the ID, please.") end,
+    onset = function ()
+      pipes.elm.id = tonumber(conf.elmid)
+      svo.echof("Set the elm pipe id to %d.", pipes.elm.id) end,
+  }},
+  {eventaffs = {
+    type = 'boolean',
+    -- vconfig2 = true,
+    -- onshow = "Raise Mudlet events on each affliction",
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s raise Mudlet events for gained/lost afflictions.", svo.getDefaultColor()) end,
+    ondisabled = function () conf.eventaffs = true svo.echof("eventaffs are on by default now - and this option is depreciated; there's no point in turning it off.") end,
+    installstart = function () conf.eventaffs = true end
+  }},
+  {gagclot = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Gag clotting",
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s gag the clotting spam.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s gag the clotting spam.", svo.getDefaultColor()) end,
+    installstart = function () conf.gagclot = true end,
+  }},
+  {autorewield = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      if next(gmcp) then
+        echo "Rewield forced unwield.\n"
+      else
+        echo "Rewield forced unwield (requires GMCP)\n"
+      end
+    end,
+    onenabled = function ()
+      if sys.enabledgmcp then
+        svo.echof("&lt;0,250,0&gt;Will%s automatically rewield items that we've been forced to unwield.", svo.getDefaultColor())
+      else
+        svo.echof("&lt;0,250,0&gt;Will%s automatically rewield items that we've been forced to unwield (requires GMCP being enabled).", svo.getDefaultColor())
+      end
+    end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s automatically rewield things.", svo.getDefaultColor()) end
+  }},
+  {preclot = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      if conf.preclot and conf.clot then
+        echo "Will preclot bleeding.\n"
+      elseif conf.preclot and not conf.clot then
+        echo "Will do preclotting (when clotting is enabled).\n"
+      else
+        echo "Won't preclot bleeding.\n"
+      end
+    end,
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s do preclotting (saves health at expense of willpower).", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s do preclotting (saves willpwer at expense of health).", svo.getDefaultColor()) end,
+    installstart = function () conf.preclot = true end,
+    installcheck = function () svo.echof("Should the system do preclotting? Doing so will save you from some bleeding damage, at the cost of more willpower.") end
+  }},
+  {org = {
+    type = 'string',
+    check = function (what)
+      if svo.contains({'Ashtan', 'Hashan', 'Mhaldor', 'Targossas', 'Cyrene', 'Eleusis', 'None', 'Rogue'}, what:title()) then return true end
+      return nil, {'Ashtan', 'Hashan', 'Mhaldor', 'Targossas', 'Cyrene', 'Eleusis', 'None', 'Rogue'}
+    end,
+    onset = function ()
+      if conf.org == 'none' or conf.org == 'rogue' then
+        conf.org = 'none'
+        -- reset echotype so the org change can have effect on echoes
+        conf.echotype = nil
+        signals.orgchanged:emit()
+        svo.echof("Will use the default plain echoes.")
+      else
+        conf.org = string.title(conf.org)
+        -- reset echotype so the org change can have effect on echoes
+        conf.echotype = nil
+
+        -- if NameDB is present, set own city to be allied - in case you weren't a citizen of this city before and it was an enemy to you
+        if ndb and ndb.conf and type(ndb.conf.citypolitics) == 'table' then
+          ndb.conf.citypolitics[conf.org] = 'ally'
+        end
+
+        signals.orgchanged:emit()
+        svo.echof("Will use %s-styled echoes.", conf.org)
+      end
+
+    end,
+    installstart = function ()
+      conf.org = nil end,
+    installcheck = function ()
+      svo.echof("What city do you live in? Select from: Ashtan, Hashan, Mhaldor, Targossas, Cyrene, Eleusis or none.") end
+  }},
+  {slowcurecolour = {
+    type = 'string',
+    vconfig2string = true,
+    check = function (what)
+      if color_table[what] or what == 'off' then return true end
+      return nil, "Please use `vlua showColors(searchString)` to see available colors. Default is 'blue'."
+
+    end,
+    onset = function ()
+      if conf.slowcurecolour == 'off' then conf.slowcurecolour = 'blue' end
+      local r,g,b = unpack(color_table[conf.slowcurecolour])
+      svo.echof("Will colour your actions in &lt;%d,%d,%d&gt;%s%s when in aeon or retardation.", r,g,b, conf.slowcurecolour, svo.getDefaultColor())
+    end,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo("Colouring aeon/retardation curing lines in ") fg(conf.slowcurecolour)
+      echoLink(tostring(conf.slowcurecolour), 'printCmdLine"vconfig slowcurecolour "',
+      "Set which colour you'd like curing lines to show as in aeon / retardation",
+       true)
+      cecho("&lt;a_grey&gt;.\n")
+    end,
+    installstart = function ()
+      conf.slowcurecolour = 'blue' end
+  }},
+  {hinderpausecolour = {
+    type = 'string',
+    vconfig2string = true,
+    check = function (what)
+      if color_table[what] or what == 'off' then return true end
+    end,
+    onset = function ()
+      local r,g,b = unpack(color_table[conf.hinderpausecolour])
+      svo.echof("Will colour hindering afflictions in &lt;%d,%d,%d&gt;%s%s when paused.", r,g,b, conf.hinderpausecolour, svo.getDefaultColor())
+    end,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo("Colouring hindering lines in ") fg(conf.hinderpausecolour)
+      echoLink(tostring(conf.hinderpausecolour), 'printCmdLine"vconfig hinderpausecolour "',
+      "Set which colour you'd like to see hindering lines in when paused",
+       true)
+      cecho("&lt;a_grey&gt; when paused.\n")
+    end,
+    installstart = function ()
+      conf.hinderpausecolour = 'orange' end
+  }},
+  {autoreject = {
+    type = 'string',
+    check = function (what)
+      if svo.contains({'black', 'white', 'off', 'on'}, what:sub(1,5):lower()) then sk.oldautoreject = conf.autoreject return true end
+      return nil, {'black','blacklist', 'white', 'whitelist', 'off', 'on'}
+    end,
+    onset = function ()
+      conf.autoreject = string.lower(conf.autoreject):sub(1,5)
+
+      if conf.autoreject == 'off' then
+        svo.ignore.lovers = true
+        conf.autoreject = sk.oldautoreject; sk.oldautoreject = nil
+        svo.echof("Disabled autoreject completely (ie, will ignore curing lovers aff).")
+      elseif conf.autoreject == 'on' then
+        svo.ignore.lovers = nil
+        conf.autoreject = sk.oldautoreject; sk.oldautoreject = nil
+        svo.echof("Enabled autoreject (won't ignore curing lovers anymore) - right now it's in %slist mode.", conf.autoreject)
+      elseif conf.autoreject == 'white' then
+        local c = table.size(me.lustlist)
+        svo.echof("Autoreject has been set to whitelist mode - that means we will be automatically rejecting everybody, except those on the lust list (%d %s).", c, (c == 1 and 'person' or 'people'))
+      elseif conf.autoreject == 'black' then
+        local c = table.size(me.lustlist)
+        svo.echof("Autoreject has been set to blacklist mode - that means we will only be rejecting people on the lust list (%d %s).", c, (c == 1 and 'person' or 'people'))
+      else
+        svo.echof("... how did you manage to set the option to '%s'?", tostring(conf.autoreject))
+      end
+    end,
+    installstart = function ()
+      conf.autoreject = 'white' end
+  }},
+  {lustlist = {
+    type = 'string',
+    check = function(what)
+      if what:find("^%w+$") then return true end
+    end,
+    onset = function ()
+      local name = string.title(conf.lustlist)
+      if not me.lustlist[name] then me.lustlist[name] = true else me.lustlist[name] = nil end
+
+      if me.lustlist[name] then
+        if conf.autoreject == 'black' then
+          svo.echof("Added %s to the lust list (so we will be autorejecting them).", name)
+        elseif conf.autoreject == 'white' then
+          svo.echof("Added %s to the lust list (so we won't be autorejecting them).", name)
+        else
+          svo.echof("Added %s to the lust list.", name)
+        end
+      else
+        if conf.autoreject == 'black' then
+          svo.echof("Removed %s from the lust list (so we will not be autorejecting them now).", name)
+        elseif conf.autoreject == 'white' then
+          svo.echof("Removed %s from the lust list (so we will be autorejecting them).", name)
+        else
+          svo.echof("Removed %s from the lust list.", name)
+        end
+      end
+    end
+  }},
+  {autowrithe = {
+    type = 'string',
+    check = function (what)
+      if svo.contains({'black', 'white', 'off', 'on'}, what:sub(1,5):lower()) then sk.oldautowrithe = conf.autowrithe return true end
+      return nil, {'black','blacklist', 'white', 'whitelist', 'off', 'on'}
+   end,
+    onset = function ()
+      conf.autowrithe = string.lower(conf.autowrithe):sub(1,5)
+
+      if conf.autowrithe == 'off' then
+        svo.ignore.hoisted = true
+        conf.autowrithe = sk.oldautowrithe; sk.oldautowrithe = nil
+        svo.echof("Disabled autowrithe completely (ie, will ignore curing hoisted aff).")
+      elseif conf.autowrithe == 'on' then
+        svo.ignore.hoisted = nil
+        conf.autowrithe = sk.oldautowrithe; sk.oldautowrithe = nil
+        svo.echof("Enabled autowrithe (won't ignore curing hoisted anymore) - right now it's in %slist mode.", conf.autowrithe)
+      elseif conf.autowrithe == 'white' then
+        local c = table.size(me.hoistlist)
+        svo.echof("Autowrithe has been set to whitelist mode - that means we will be automatically writhing against everybody, except those on the hoist list (%d %s).", c, (c == 1 and 'person' or 'people'))
+      elseif conf.autowrithe == 'black' then
+        local c = table.size(me.hoistlist)
+        svo.echof("Autowrithe has been set to blacklist mode - that means we will only be writhing against people on the hoist list (%d %s).", c, (c == 1 and 'person' or 'people'))
+      else
+        svo.echof("... how did you manage to set the option to '%s'?", tostring(conf.autowrithe))
+      end
+    end,
+    installstart = function ()
+      conf.autowrithe = 'white' end
+  }},
+  {hoistlist = {
+    type = 'string',
+    check = function(what)
+      if what:find("^%w+$") then return true end
+    end,
+    onset = function ()
+      local name = string.title(conf.hoistlist)
+      if not me.hoistlist[name] then me.hoistlist[name] = true else me.hoistlist[name] = nil end
+
+      if me.hoistlist[name] then
+        if conf.autowrithe == 'black' then
+          svo.echof("Added %s to the hoist list (so we will autowrithe against them).", name)
+        elseif conf.autowrithe == 'white' then
+          svo.echof("Added %s to the hoist list (so we won't autowrithe against them).", name)
+        else
+          svo.echof("Added %s to the hoist list.", name)
+        end
+      else
+        if conf.autowrithe == 'black' then
+          svo.echof("Removed %s from the hoist list (so we will not autowrithe against them now).", name)
+        elseif conf.autowrithe == 'white' then
+          svo.echof("Removed %s from the hoist list (so we will autowrithe against them).", name)
+        else
+          svo.echof("Removed %s from the hoist list.", name)
+        end
+      end
+    end
+  }},
+  {echotype = {
+    type = 'string',
+    check = function (what)
+      if svo.echos[what:title()] or svo.echos[what] then return true end
+      local ret = {}
+      for k,v in pairs(svo.echos) do table.insert(ret, k) end
+      return nil, ret
+    end,
+    onset = function ()
+      conf.echotype = svo.echos[conf.echotype:title()] and conf.echotype:title() or conf.echotype
+      signals.orgchanged:emit()
+      svo.echof("This is how system messages will look like now :)")
+    end,
+    vconfig2 = true,
+    installstart = function ()
+      conf.org = nil end,
+  }},
+  {dragonflex = {
+    type = 'boolean',
+    vconfig1 = 'dragonflex',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use dragonflex when we have balance.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use dragonflex.", svo.getDefaultColor()) end,
+    installstart = function () conf.dragonflex = nil end,
+    installcheck = function () svo.echof("Can you make use of the Dragonflex skill?") end
+  }},
+  {assumestats = {
+    type = 'number',
+    vconfig2 = true,
+    min = 0,
+    max = 100,
+    onset = function () svo.echof("Will assume we're at %d%% of health and mana when under blackout or recklessness.", conf.assumestats) end,
+    installstart = function () conf.assumestats = 15 end,
+  }},
+  {healthaffsabove = {
+    type = 'number',
+    vconfig2 = true,
+    min = 0,
+    max = 100,
+    onset = function () svo.echof("Will apply health to cure afflictions only when above %d%% health.", conf.healthaffsabove) end,
+    installstart = function () conf.healthaffsabove = 70 end,
+  }},
+  {warningtype = {
+    type = 'string',
+    vconfig2 = true,
+    check = function (what)
+      if svo.contains({'all', 'prompt', 'none', 'right', 'off'}, what) then return true end
+      return nil, {'all', 'prompt', 'none', 'right', 'off'}
+    end,
+    onset = function ()
+      if conf.warningtype == 'none' or conf.warningtype == 'off' then
+        conf.warningtype = false
+        svo.echof("Disabled extended instakill warnings.")
+      elseif conf.warningtype == 'all' then
+        svo.echof("Will prefix instakill warnings to all lines.")
+        if math.random(1, 10) == 1 then svo.echof("(muahah(") end
+      elseif conf.warningtype == 'prompt' then
+        svo.echof("Will prefix instakill warnings only to prompt lines.")
+      elseif conf.warningtype == 'right' then
+        svo.echof("Will place instakill warnings on all lines, aligned on the right side.")
+      end
+    end,
+    installstart = function ()
+      conf.warningtype = 'right' end,
+  }},
+  {burstmode = {
+    type = 'string',
+    vconfig2string = true,
+    check = function (what)
+      if defdefup[what:lower()] then return true end
+      local ret = {}
+      for k,_ in defdefup do table.insert(ret, k) end
+      return nil, ret
+    end,
+    onshow = function (defaultcolour)
+      local tooltip
+
+      if svo.haveskillset('necromancy') then
+        tooltip = "Set the defences mode system should autoswitch to upon starburst/soulcage"
+      elseif svo.haveskillset('occultism') then
+        tooltip = "Set the defences mode system should autoswitch to upon starburst/transmog"
+      else
+        tooltip = "Set the defences mode system should autoswitch to upon starburst"
+      end
+
+      fg(defaultcolour)
+      echo("Upon starbursting, will go into ") fg('a_cyan')
+      echoLink(tostring(conf.burstmode), 'printCmdLine"vconfig burstmode "', tooltip, true)
+      cecho("&lt;a_grey&gt; defences mode.\n")
+    end,
+    onset = function ()
+      conf.burstmode = conf.burstmode:lower()
+      if svo.haveskillset('necromancy') then
+            svo.echof("Upon starburst/soulcage, will go into %s defences mode.", conf.burstmode)
+      elseif svo.haveskillset('occultism') then
+            svo.echof("Upon starburst/transmogrify, will go into %s defences mode.", conf.burstmode)
+      else
+            svo.echof("Upon starburst, will go into %s defences mode.", conf.burstmode)
+      end
+    end,
+    installstart = function ()
+      conf.burstmode = 'empty' end
+  }},
+  {oldts = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Touch shield only once on ts",
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use oldschool ts - using ts one will shield once.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use oldschool ts - using ts will enable shield keepup.", svo.getDefaultColor()) end,
+    installstart = function () conf.oldts = false end,
+    installcheck = function () svo.echof("In Svof, &lt;0,255,0&gt;ts%s is a toggle for &lt;0,255,0&gt;vkeep shield%s - it'll reshield you if the shield gets stripped. Previously it used to shield you once only. Would you like to be a toggle (&lt;0,255,0&gt;vconfig oldts no%s) or a one-time thing (&lt;0,255,0&gt;vconfig oldts yes%s)?", svo.getDefaultColor(), svo.getDefaultColor(), svo.getDefaultColor(), svo.getDefaultColor()) end
+  }},
+  {batch = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Batch multiple curing commands",
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s batch multiple curing commands to be done at once, without prompts inbetween.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s batch curing commands to be done at once, but instead send them separately at once.", svo.getDefaultColor()) end,
+    installstart = function () conf.batch = true end,
+  }},
+  {steedfollow = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Auto-order steed to follow us",
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s make the steed follow us when we dismount (via va).", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s make the steed follow us anymore when we dismount (via va).", svo.getDefaultColor()) end,
+    installstart = function () conf.steedfollow = true end
+  }},
+  {autotsc = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Automatically toggle tsc in aeon/ret",
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s automatically toggle tsc - overrides in retardation and denies in aeon.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s automatically toggle tsc.", svo.getDefaultColor()) end,
+  }},
+  {medprone = {
+    type = 'boolean',
+    vconfig2string = true,
+    onshow = function (defaultcolour)
+      fg('a_cyan')
+      echoLink((conf.medprone and 'Do' or "Don't"), 'printCmdLine"vconfig medprone '..(conf.medprone and 'nope' or 'yep')..'"',
+      "Click to set whenever you'd like the system to put prone on ignore while meditating for you, so you can sit down while doing it. The drawback is that if you're trying to meditate in combat and get proned, the system won't get up",
+       true)
+      fg(defaultcolour)
+      echo(" ignore prone while meditating, and ")
+      fg('a_cyan')
+      echoLink((conf.unmed and 'do' or "don't"), 'printCmdLine"vconfig unmed '..(conf.unmed and 'nope' or 'yep')..'"',
+      "Click to set whenever you'd like the system take meditate off keepup when you reach full willpower",
+       true)
+      fg(defaultcolour)
+      echo(" stop at full willpower.\n")
+    end,
+    installstart = function() conf.medprone = false end,
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s put prone on ignore when meditating, so you can be sitting.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s put prone on ignore when meditating.", svo.getDefaultColor()) end,
+  }},
+  {unmed = {
+    type = 'boolean',
+    onshow = "Automatically disable med with full wp",
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s take meditate off keepup when you reach full willpower.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s take meditate off keepup when you reach full willpower - so we'll meditate again if you lose any mana/willpower.", svo.getDefaultColor()) end,
+  }},
+  {classattacksamount = {
+    type = 'number',
+    min = 0,
+    vconfig2string = true,
+    onset = function () svo.echof("Will enable a class after they hit us with %d attacks (within %d seconds).", conf.classattacksamount, conf.classattackswithin) end,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      -- Enable class as fighting with after x attacks in x seconds
+      echo("Enable class as fighting with after") fg('a_cyan')
+      echoLink(" "..tostring(conf.classattacksamount), 'printCmdLine"vconfig classattacksamount "',
+      "Set the amount of attacks an enemy will do to you within "..tostring(conf.classattackswithin).." seconds to enable the class tricks",
+       true)
+      cecho("&lt;a_grey&gt; attacks in") fg('a_cyan')
+      echoLink(" "..tostring(conf.classattackswithin), 'printCmdLine"vconfig classattackswithin "',
+      "Set the time within ".. tostring(conf.classattacksamount).. " attacks from a class will enable tricks for it",
+       true)
+      cecho(" seconds.\n")
+    end,
+    installstart = function () conf.classattacksamount = 3 end
+  }},
+  {classattackswithin = {
+    type = 'number',
+    min = 0,
+    onset = function () svo.echof("Will enable a class when they hit us within %d seconds (with %d attacks).", conf.classattackswithin, conf.classattacksamount) end,
+    installstart = function () conf.classattackswithin = 15 end
+  }},
+  {enableclassesfor = {
+    type = 'number',
+    min = 0,
+    vconfig2string = true,
+    onset = function () svo.echof("Will keep the class enabled for %s minutes after the fighting ends.", conf.enableclassesfor) end,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      -- Keep a class enabled for x minutes after fighting
+      echo("Keep a class enabled for") fg('a_cyan')
+      echoLink(" "..tostring(conf.enableclassesfor), 'printCmdLine"vconfig enableclassesfor "',
+      "Set (in minutes) how long to keep a class enabled for after the fighting ends",
+       true)
+      cecho("&lt;a_grey&gt; minutes after fighting.\n")
+    end,
+    installstart = function () conf.enableclassesfor = 2 end
+  }},
+  {gmcpaffechoes = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s notify you when GMCP updates your afflictions.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s notify you when GMCP updates your afflictions.", svo.getDefaultColor()) end,
+  }},
+  {gmcpdefechoes = {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s notify you when GMCP updates your defences.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s notify you when GMCP updates your defences.", svo.getDefaultColor()) end,
+  }},
+  {releasechannel = {
+    type = 'string',
+    vconfig2string = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo("Will use the ")
+      fg('a_cyan')
+      echoLink(tostring(conf.releasechannel),
+        'printCmdLine("vconfig releasechannel ")',
+        "Set the release channel to use for updates.",
+        true
+      )
+      fg(defaultcolour)
+      echo(" channel for downloading updates.\n")
+    end,
+    check = function (what)
+      if what == 'stable' or what == 'testing' or what == 'inclient' then return true end
+      return nil, {'stable', 'testing', 'inclient'}
+    end,
+    onset = function ()
+      conf.releasechannel = conf.releasechannel:lower()
+      svo.echof("Will use the '%s' release channel for updates.",
+        conf.releasechannel)
+    end,
+    installstart = function ()
+      conf.releasechannel = 'inclient'
+    end
+  }},
+}
+
+if svo.haveskillset('kaido') then
+  svo.config_dict:insert(1, 'transmute', {
+    type = 'string',
+    check = function (what)
+      if svo.convert_string(what) == false then return true end
+      if table.contains({'replaceall', 'replacehealth', 'supplement', 'none'}, what:lower()) then return true end
+      return nil, {'anything negative to disable', 'replaceall', 'replacehealth', 'supplement', 'none'}
+    end,
+    onset = function ()
+      conf.transmute = conf.transmute:lower()
+      if svo.convert_string(conf.transmute) == false or conf.transmute == 'none' then
+        conf.transmute = 'none'
+      end
+
+      if conf.transmute == 'none' then
+        svo.echof("Won't use transmute for anything.")
+      else
+        svo.echof("Will use transmute in the '%s' mode.", conf.transmute) end
+    end,
+    vconfig2 = true,
+    installstart = function () conf.transmute = nil end,
+    installcheck = function ()
+      svo.echof("Do you want to use transmute skill in the replaceall, replacehealth, supplement or none mode? replaceall means that it won't sip health nor eat moss/potash to heal your health, but only use transmute. replacehealth will mean that it will not sip health, but use moss/potash and transmute. supplement means that it'll use all three ways to heal you, and none means that it won't use transmute.") end
+  })
+  svo.config_dict:insert(1, 'transmuteamount', {
+    type = 'number',
+    percentage = true,
+    min = 0,
+    max = 100,
+    onset = function () signals.changed_maxhealth:emit()
+      svo.echof("Will start transmuting for health if it falls below %d%% (%dh)%s.", conf.transmuteamount, sys.transmuteamount, (conf.transmute ~= 'none' and "" or ", when you enable a transmute mode"))
+    end,
+    installstart = function () conf.transmuteamount = nil end,
+    installcheck = function () svo.echof("At what %% of health do you want to start transmuting for health?") end
+  })
+  svo.config_dict:insert(1, 'transsipprone', {
+      type = 'boolean',
+      vconfig2 = "Transmute while prone",
+      onenabled = function () svo.echof("If you're prone and using transmute in a replaceall or replacehealth mode, we &lt;0,250,0&gt;will%s sip health or vitality instead of waiting on transmute to be usable. This is most optimal for PK.", svo.getDefaultColor()) end,
+      ondisabled = function () svo.echof("If you're prone and using transmute in a replaceall or replacehealth mode, we'll keep sipping mana and wait until we can use transmute again to heal our health. This is mainly good for bashing.", svo.getDefaultColor()) end,
+      installstart = function () conf.transsipprone = true end
+    })
+end
+if svo.haveskillset('voicecraft') then
+  svo.config_dict:insert(1, 'dwinnu', {
+    type = 'boolean',
+    vconfig1 = 'dwinnu',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use dwinnu for writhing.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use dwinnu.", svo.getDefaultColor()) end,
+    installstart = function () conf.dwinnu = nil end,
+    installcheck = function () svo.echof("Can you make use of the Wwinnu skill?") end
+  })
+end
+if svo.haveskillset('weaponmastery') then
+  svo.config_dict:insert(1, 'recoverfooting', {
+      type = 'boolean',
+      vconfig1 = "recover footing",
+      onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use Recover Footing to get up faster when we can.", svo.getDefaultColor()) end,
+      ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use Recover Footing.", svo.getDefaultColor()) end,
+      installstart = function () conf.recoverfooting = nil end,
+      installcheck = function () svo.echof("Can you make use of the Recover Footing skill?") end
+    })
+end
+if svo.haveskillset('zeal') then
+  svo.config_dict:insert(1, 'benediction', {
+      type = 'boolean',
+      vconfig1 = "benediction",
+      onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use Benediction to apply Zeal blessings.", svo.getDefaultColor()) end,
+      ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use Benediction.", svo.getDefaultColor()) end,
+      installstart = function () conf.benediction = nil end,
+      installcheck = function () svo.echof("Can you make use of the Benediction skill?") end
+    })
+end
+if svo.haveskillset('venom') then
+  svo.config_dict:insert(1, 'shruggingfunc', {
+    type = 'custom',
+    onmenu = function ()
+      local underline = setUnderline; _G.setUnderline = function () end
+
+      svo.echof("Scenarios to use shrugging in:")
+
+      local sortednames = svo.keystolist(svo.shrugging)
+      table.sort(sortednames)
+      local longestfname = svo.longeststring(sortednames)
+
+      for i = 1, #sortednames do
+        local fname = sortednames[i]
+        local t = svo.shrugging[fname]
+
+        if not me.disabledshruggingfunc[fname] then
+          if dechoLink then
+            dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt;X&lt;153,204,204&gt;]", [[svo.me.disabledshruggingfunc["]]..fname..[["] = true; svo.config.set'shruggingfunc']], "Disable "..fname, true)
+          else
+            decho("  &lt;153,204,204&gt;[&lt;0,204,0&gt;X&lt;153,204,204&gt;]")
+          end
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        else
+          if dechoLink then
+            dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt; &lt;153,204,204&gt;]", [[svo.me.disabledshruggingfunc["]]..fname..[["] = false; svo.config.set'shruggingfunc']], "Enable "..fname, true)
+          else
+            decho("  &lt;153,204,204&gt;[&lt;0,204,0&gt; &lt;153,204,204&gt;]")
+          end
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        end
+      end
+
+      _G.setUnderline = underline
+    end
+  })
+end
+if svo.haveskillset('devotion') then
+  svo.config_dict:insert(1, 'bloodswornoff', {
+    type = 'number',
+    percentage = true,
+    min = 0,
+    max = 100,
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo(string.format("Unlinking Bloodsworn at %s%% (%sh).\n", conf.bloodswornoff or '?', sys.bloodswornoff or '?'))
+    end,
+    onset = function () signals.changed_maxhealth:emit() svo.echof("Will unlink from bloodsworn if below %d%% (%dh).", conf.bloodswornoff, sys.bloodswornoff) end,
+    installstart = function () conf.bloodswornoff = 30 end
+  })
+end
+if svo.haveskillset('woodlore') then
+  svo.config_dict:insert(1, 'weapon', {
+    type = 'string',
+    onset = function ()
+      conf.weapon = conf.weapon:lower()
+      svo.echof("Set your weapon to '%s'.", conf.weapon)
+    end,
+    vconfig2 = true,
+    onshow = string.format("Using a %s as a weapon", (conf.weapon and tostring(conf.weapon) or "(nothing)")),
+    installstart = function ()
+      conf.weapon = nil end,
+    installcheck = function ()
+      svo.echof("Are you using a spear or a trident as a weapon?") end
+  })
+end
+if svo.haveskillset('metamorphosis') then
+  svo.config_dict:insert(1, 'transmorph', {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Have%s transmorph - won't go human between morphing.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Don't%s have transmorph - will go human between morphing.", svo.getDefaultColor()) end,
+    onshow = "Have transmorph",
+    installstart = function () conf.transmorph = nil end,
+    installcheck = function () svo.echof("Do you have the Metamorphosis Transmorph skill?") end
+  })
+  svo.config_dict:insert(1, 'truemorph', {
+    type = 'boolean',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Have%s truemorph - expecting instant morphing.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Don't%s have truemorph - will wait for morphs.", svo.getDefaultColor()) end,
+    onshow = "Have truemorph",
+    installstart = function () conf.truemorph = nil end,
+    installcheck = function () svo.echof("Do you have the Metamorphosis Truemorph skill?") end
+  })
+  svo.config_dict:insert(1, 'morphskill', {
+    type = 'string',
+    check = function (what)
+      return sk.validmorphskill(what)
+    end,
+    onset = function ()
+      conf.morphskill = conf.morphskill:lower()
+      local t = {powers = 'squirrel', bonding = 'bear', transmorph = 'elephant', affinity = 'icewyrm'}
+      if svo.me.class == 'Druid' then
+            t.truemorph = 'hydra'
+      else
+            t.truemorph = 'icewyrm'
+      end
+      if t[conf.morphskill] then
+        svo.echof("Thanks! I've set your morphskill to '%s' though, because %s isn't a morph.", t[conf.morphskill], conf.morphskill)
+        conf.morphskill = t[conf.morphskill]
+      end
+      signals.morphskillchanged:emit()
+      svo.echof("Given your morph skill, these are all defences you can put up: %s.", svo.concatand(svo.keystolist(sk.morphsforskill)) ~= "" and svo.concatand(svo.keystolist(sk.morphsforskill)) or "(... none, actually. Nevermind!)")
+    end,
+    installstart = function () svo.sp_config.morphskill = nil end,
+    installcheck = function () svo.echof("What is the highest available morph that you can go into?") end
+  })
+end
+if not svo.haveskillset('tekura') then
+  svo.config_dict:insert(1, 'parry', {
+    type = 'boolean',
+    vconfig1 = 'parry',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s make use of parry.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s make use of parry.", svo.getDefaultColor()) end,
+    installstart = function () conf.parry = nil end,
+    installcheck = function () svo.echof("Are you able to use parry?") end
+  })
+else
+  svo.config_dict:insert(1, 'guarding', {
+    type = 'boolean',
+    vconfig1 = 'guarding',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s make use of guarding.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s make use of guarding.", svo.getDefaultColor()) end,
+    installstart = function () conf.guarding = nil end,
+    installcheck = function () svo.echof("Are you able to use guarding?") end
+  })
+end
+if svo.haveskillset('shindo') then
+  svo.config_dict:insert(1, 'shindodeaf', {
+    type = 'boolean',
+    vconfig1 = 'shindodeaf',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use the Shindo deaf skill for deaf.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use the Shindo deaf skill for deaf.", svo.getDefaultColor()) end,
+    installstart = function () conf.shindodeaf = nil end,
+    installcheck = function () svo.echof("Would you like to use Shindo deaf for deafness?") end
+  })
+  svo.config_dict:insert(1, 'shindoblind', {
+    type = 'boolean',
+    vconfig1 = 'shindoblind',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use the Shindo blind skill for blind.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use the Shindo blind skill for blind.", svo.getDefaultColor()) end,
+    installstart = function () conf.shindoblind = nil end,
+    installcheck = function () svo.echof("Would you like to use Shindo blind for blindness?") end
+  })
+end
+if svo.haveskillset('kaido') then
+  svo.config_dict:insert(1, 'kaidodeaf', {
+    type = 'boolean',
+    vconfig1 = 'kaidodeaf',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use the kaido deaf skill for deaf.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use the kaido deaf skill for deaf.", svo.getDefaultColor()) end,
+    installstart = function () conf.kaidodeaf = nil end,
+    installcheck = function () svo.echof("Would you like to use kaido deaf for deafness?") end
+  })
+  svo.config_dict:insert(1, 'kaidoblind', {
+    type = 'boolean',
+    vconfig1 = 'kaidoblind',
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use the kaido blind skill for blind.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use the kaido blind skill for blind.", svo.getDefaultColor()) end,
+    installstart = function () conf.kaidoblind = nil end,
+    installcheck = function () svo.echof("Would you like to use kaido blind for blindness?") end
+  })
+end
+if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
+  svo.config_dict:insert(1, 'fitness', {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo "Use fitness       ("
+      echoLink("view scenarios", "svo.config.set'fitnessfunc'", "View, enable and disable scenarios in which fitness will be used")
+      fg(defaultcolour) echo ")\n"
+      resetFormat()
+    end,
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use of Fitness.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use of Fitness.", svo.getDefaultColor()) end,
+    installstart = function () conf.fitness = nil end,
+    installcheck = function () svo.echof("Can you make use of the Fitness skill?") end
+  })
+  svo.config_dict:insert(1, 'fitnessfunc', {
+    type = 'custom',
+    onmenu = function ()
+      local underline = setUnderline; _G.setUnderline = function () end
+
+      svo.echof("Scenarios to use fitness in:")
+      local sortednames = svo.keystolist(svo.fitness)
+      table.sort(sortednames)
+      local longestfname = svo.longeststring(sortednames)
+
+      for i = 1, #sortednames do
+        local fname = sortednames[i]
+        local t = svo.fitness[fname]
+
+        if not me.disabledfitnessfunc[fname] then
+          if dechoLink then
+            dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt;X&lt;153,204,204&gt;]", [[svo.me.disabledfitnessfunc["]]..fname..[["] = true; svo.config.set'fitnessfunc']], "Disable "..fname, true)
+          else
+            decho("  &lt;153,204,204&gt;[&lt;0,204,0&gt;X&lt;153,204,204&gt;]")
+          end
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        else
+          if dechoLink then
+            dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt; &lt;153,204,204&gt;]", [[svo.me.disabledfitnessfunc["]]..fname..[["] = false; svo.config.set'fitnessfunc']], "Enable "..fname, true)
+          else
+            decho("  &lt;153,204,204&gt;[&lt;0,204,0&gt; &lt;153,204,204&gt;]")
+          end
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        end
+      end
+
+      _G.setUnderline = underline
+
+      svo.showprompt()
+    end
+  })
+end
+if svo.haveskillset('venom') then
+  svo.config_dict:insert(1, 'shrugging', {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo "Use shrugging  ("
+      echoLink("view scenarios", "svo.config.set'shruggingfunc'", "View, enable and disable scenarios in which shrugging will be used")
+      fg(defaultcolour) echo ")\n"
+      resetFormat()
+    end,
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use shrugging to cure when necessary.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use shrugging to cure.", svo.getDefaultColor()) end,
+    installstart = function () conf.shrugging = nil end,
+    installcheck = function () svo.echof("Can you make use of the shrugging?") end
+  })
+end
+if svo.haveskillset('chivalry') then
+  svo.config_dict:insert(1, 'rage', {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      fg(defaultcolour)
+      echo "Use rage       ("
+      echoLink("view scenarios", "svo.config.set'ragefunc'", "View, enable and disable scenarios in which rage will be used")
+      fg(defaultcolour) echo ")\n"
+      resetFormat()
+    end,
+    onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s use of Rage.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s use of Rage.", svo.getDefaultColor()) end,
+    installstart = function () conf.rage = nil end,
+    installcheck = function () svo.echof("Can you make use of the Rage skill?") end
+  })
+  svo.config_dict:insert(1, 'ragefunc', {
+    type = 'custom',
+    onmenu = function ()
+      local underline = setUnderline; _G.setUnderline = function () end
+
+      svo.echof("Scenarios to use rage in:")
+      local sortednames = svo.keystolist(svo.rage)
+      table.sort(sortednames)
+      local longestfname = svo.longeststring(sortednames)
+
+      for i = 1, #sortednames do
+        local fname = sortednames[i]
+        local t = svo.rage[fname]
+
+        if not me.disabledragefunc[fname] then
+          if dechoLink then
+            dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt;X&lt;153,204,204&gt;]", [[svo.me.disabledragefunc["]]..fname..[["] = true; svo.config.set'ragefunc']], "Disable "..fname, true)
+          else
+            decho("  &lt;153,204,204&gt;[&lt;0,204,0&gt;X&lt;153,204,204&gt;]")
+          end
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        else
+          if dechoLink then
+            dechoLink("  &lt;153,204,204&gt;[&lt;0,204,0&gt; &lt;153,204,204&gt;]", [[svo.me.disabledragefunc["]]..fname..[["] = false; svo.config.set'ragefunc']], "Enable "..fname, true)
+          else
+            decho("  &lt;153,204,204&gt;[&lt;0,204,0&gt; &lt;153,204,204&gt;]")
+          end
+          setFgColor(unpack(svo.getDefaultColorNums))
+          echo(string.format(" %-"..longestfname.."s - %s\n", fname, tostring(t.desc)))
+        end
+      end
+
+      _G.setUnderline = underline
+
+      svo.showprompt()
+    end
+  })
+end
+
+if not conf.releasechannel or true then --force everybody to use the 'inclient' channel at the moment.
+  conf.releasechannel = 'inclient'
+end
+
+if not conf.autowrithe then
+  conf.autowrithe = 'white'
+end
+
+do
+  local conf_t = {}
+  local conf_path = getMudletHomeDir() .. "/svo/config/conf"
+
+  if lfs.attributes(conf_path) then
+    local ok, msg = pcall(table.load,conf_path, conf_t)
+    if ok then
+      svo.update(conf, conf_t)
+    else
+      os.remove(conf_path)
+      tempTimer(10, function()
+        svo.echof("Your vconfig file got corrupted for some reason - I've deleted it so the system can load other stuff OK. You'll need to re-set all of the vconfig options again, though. (%q)", msg)
+      end)
+    end
+  end
+
+  if conf.ai_minherbbal == 0.7 or conf.ai_minherbbal == 1.2 then conf.ai_minherbbal = 1.1 end
+  if conf.ai_resetherbbal == 5 then conf.ai_resetherbbal = 2.5 end
+  -- recovered at 7.4s for Hirst for twohander aff
+  if conf.ai_resetsipbal == 5 then conf.ai_resetsipbal = 7 end
+  if conf.ai_resetsipbal == 7 then conf.ai_resetsipbal = 10 end
+  if conf.org == 'Shallam' then conf.org = 'Targossas' end
+  -- recovery was renamed as efficiency
+  if conf.recovery then conf.efficiency = true; conf.recovery = nil end
+
+  if conf.gagserverside == nil then conf.gagserverside = true end
+
+  -- purgative used to be set at a default 5 before it was even used, it is now 7 for voyria
+  if conf.ai_resetpurgativebal == 5 then conf.ai_resetpurgativebal = 10 end
+
+  conf.eventaffs = true
+
+  cnrl.update_wait()
+
+  if conf.bashing then enableTrigger"svo Bashing triggers"
+  else disableTrigger"svo Bashing triggers" end
+
+  -- update whenever our riding takes up balance. If it doens't, then balanceless actions should be done asap
+  if conf.freevault and svo.dict.riding.physical.balanceful_act then
+    svo.dict.riding.physical.balanceless_act = true
+    svo.dict.riding.physical.balanceful_act = nil
+    signals.dragonform:emit()
+  elseif not conf.freevault and svo.dict.riding.physical.balanceless_act then
+    svo.dict.riding.physical.balanceless_act = nil
+    svo.dict.riding.physical.balanceful_act = true
+    signals.dragonform:emit()
+  end
+
+  if conf.burrowpause then
+    signals.gmcproominfo:connect(sk.check_burrow_pause, 'check if we need to pause for burrow')
+  end
+
+  if not conf.customprompt and not conf.setdefaultprompt then
+    tempTimer(math.random(10, 15), function()
+      conf.setdefaultprompt = true
+      svo.setdefaultprompt()
+      -- disabled -- spammy for new users
+      -- echo"\n" svo.echof("I've setup a custom prompt for you that mimics the normal Achaean one, but also displays which afflictions have you got. See http://doc.svo.vadisystems.com/#setting-a-custom-prompt on how to customize it if you'd like, or if you don't like it, do 'vconfig customprompt off' to disable it.")
+      end)
+  end
+
+  if conf.singleprompt then
+    sk.enable_single_prompt()
+  end
+
+  if conf.riftlabel then
+    tempTimer(0, function()
+      svo.riftlabel:show()
+      rift.update_riftlabel()
+    end)
+  end
+  svo.updateloggingconfig()
+end
+
+for k,v in svo.config_dict:iter() do
+  -- pre-initialize values not declared
+  if conf[k] == nil and v.type == 'number' then
+    conf[k] = 0
+  elseif conf[k] == nil then
+    conf[k] = false
+  end
+end
+
+local tntf_tbl
+tntf_tbl = {
+  aillusion = { -- is used to change appropriate conf. option
+    shortcuts = {'ai', "anti-illusion", 'a', 'antiillusion'},
+    on = function () enableTrigger "Pre-parse anti-illusion";
+          svo.echof"Anti-illusion enabled." end,
+    alreadyon = function () enableTrigger "Pre-parse anti-illusion";
+          svo.echof"Anti-illusion is already enabled." end,
+    off = function () disableTrigger "Pre-parse anti-illusion";
+          svo.echof"Anti-illusion disabled." end,
+    alreadyoff = function () disableTrigger "Pre-parse anti-illusion";
+          svo.echof"Anti-illusion is already disabled." end,
+  },
+  arena = {
+    on = function()
+      local echos = {"Arena mode enabled. Good luck!", "Beat 'em up! Arena mode enabled.", "Arena mode on.", "Arena mode enabled. Kill them all!"}
+            svo.echof(echos[math.random(#echos)])
+    end,
+    alreadyon = function() svo.echof("Arena mode is already on.") end,
+    off = function() svo.echof("Arena mode disabled.") end,
+    alreadyoff = function() svo.echof("Arena mode is already off.") end
+  },
+  keepup = {
+    on = function () svo.echof"Auto keepup on." svo.make_gnomes_work() end,
+    alreadyon = function () svo.echof"Auto keepup is already on." end,
+    off = function () svo.echof"Auto keepup is now off."svo.make_gnomes_work() end,
+    alreadyoff = function() svo.echof"Auto keepup is already off." end
+  },
+  bashing = {
+    on = function () enableTrigger"svo Bashing triggers" svo.echof("Enabled bashing triggers.") end,
+    alreadyon = function () svo.echof("Bashing triggers are already on.") end,
+    off = function() disableTrigger"svo Bashing triggers" svo.echof("Disabled bashing triggers.") end,
+    alreadyoff = function() svo.echof("Bashing triggers are already off.") end,
+  },
+  raid = {
+    on = function ()
+      svo.tntf_set('keepup', true, true)
+      defs.switch('combat', true)
+      svo.echof("Switched into combat defence mode and keeping mass, cloak, insomnia, rebounding defences up.")
+      defs.keepup('mass', true)
+      defs.keepup('cloak', true)
+      defs.keepup('mass', true)
+      defs.keepup('insomnia', true)
+      defs.keepup('rebounding', true)
+    end,
+    off = function ()
+      defs.switch('basic', true)
+      svo.echof("Switched to basic defence mode.")
+    end
+  },
+  serverside = {
+    shortcuts = {'ss'},
+    on = function()
+		  svo.setup_default_serverignore()
+
+      -- take previous ignores off
+      local removelist = {}
+      for action, data in pairs(svo.ignore) do
+        if type(data) == 'table' and data.because == "using server-side curing" then
+          removelist[#removelist+1] = action
+        end
+      end
+
+      for _, action in ipairs(removelist) do
+        svo.ignore[action] = nil
+      end
+
+      if next(removelist) then
+        tempTimer(5, [[svo.echof("Took all affs set for serverside curing off ignore. 'vshow ignore' really means ignore again (both in Svof and serverside), use 'vshow server' to toggle what should be done by serverside or Svof.")]])
+      end
+
+      svo.echof("Serverside curing enabled (augmented with Svof's).")
+      svo.setupserverside()
+      svo.sendcuring("afflictions on")
+      svo.sendcuring("sipping on")
+      svo.sendcuring("defences on")
+      svo.sendcuring("focus " .. (conf.focus and 'on' or 'off'))
+      svo.sendcuring("batch on")
+      svo.sendc("config advancedcuring on")
+      svo.sendcuring("reporting on")
+      if not conf.paused then svo.sendcuring('on') end
+    end,
+    off = function()
+      svo.echof("Serverside curing disabled.")
+      svo.sendcuring('off')
+    end,
+    alreadyon = function() svo.echof("Serverside affliction curing is already on.") end,
+    alreadyoff = function() svo.echof("Serverside affliction curing is already off.") end,
+  }
+}
+
+for k,v in pairs(tntf_tbl) do
+  if v.shortcuts then
+    for _,shortcut in pairs(v.shortcuts) do
+      tntf_tbl[shortcut] = k
+    end
+    v.real = k
+  end
+end
+
+function svo.tntf_set(what, option, echoback)
+  local sendf
+  if echoback then sendf = svo.echof else sendf = svo.errorf end
+
+  option = svo.convert_string(option)
+  svo.assert(what and (option ~= nil), "syntax is: svo.tntf(what, option)", sendf)
+
+  if not tntf_tbl[what] then
+    if echoback ~= 'noerrors' then sendf("%s isn't something you can change.", what) end
+    return
+  end
+
+  local oldechof, oldshowprompt = svo.echof, svo.showprompt
+
+  if echoback == false then
+    svo.echof = function() end
+    oldshowprompt = svo.echof
+  end
+
+  if type(tntf_tbl[what]) == 'string' then what = tntf_tbl[what] end
+  if option and conf[what] then
+    (tntf_tbl[what].alreadyon or tntf_tbl[what].on)()
+  elseif not option and not conf[what] then
+    (tntf_tbl[what].alreadyoff or tntf_tbl[what].off)()
+  elseif not option then
+    conf[what] = false
+    tntf_tbl[what].off()
+    raiseEvent("svo config changed", what)
+  else
+    conf[what] = true
+    tntf_tbl[what].on()
+    raiseEvent("svo config changed", what)
+  end
+
+  if echoback == false then
+    svo.echof = oldechof
+    svo.showprompt = oldshowprompt
+  end
+
+  if echoback then svo.showprompt() end
+
+  return true
+end
+
+-- just display all options in 4 tabs
+function svo.sk.show_all_confs()
+  local count = 0
+  local t = {}; for name, _ in svo.config_dict:iter() do t[#t+1] = name end; table.sort(t)
+
+  for _, name in ipairs(t) do
+    if printCmdLine then
+      echoLink(string.format("%-20s", tostring(name)), 'printCmdLine("vconfig '..name..' ")', conf_installhint(name), true)
+    else
+      echo(string.format("%-20s", tostring(name))) end
+    count = count + 1
+    if count % 4 == 0 then echo "\n" end
+  end
+end
+
+function svo.config.setoption(name, data)
+  svo.config_dict:set(name, data)
+  if conf[name] == nil and svo.config_dict[name].type == 'number' then
+    conf[name] = conf[name] or 0
+  elseif conf[name] == nil then
+    conf[name] = conf[name] or false
+  end
+end
+
+function svo.config.deloption(name)
+  if svo.config_dict[name] then
+    svo.config_dict:set(name, nil)
+  end
+end
+
+function svo.config.set(what, option, echoback)
+  local sendf
+  local showprompt = svo.showprompt
+  local oldechof
+  if echoback then
+    sendf = svo.echof
+  else
+    sendf = svo.errorf
+    -- hide echoes and prompt
+    showprompt = function() end
+    oldechof = svo.echof
+    svo.echof = function() end
+  end
+
+  local function raiseevent(optionname)
+    tempTimer(0, function() raiseEvent("svo config changed", optionname) end)
+  end
+
+  if not svo.config_dict[what] or what == 'list' or what == 'options' then
+    sendf("%s - available ones are:", (what == 'list' or what == 'option') and "Listing all options" or "Don't know about such an option")
+    sk.show_all_confs()
+    echo"\n"
+    showprompt()
+    if not echoback then svo.echof = oldechof end
+    return
+  end
+  if svo.config_dict[what].type == 'boolean' then
+    if (type(option) == 'boolean' and option == true) or svo.convert_string(option) or (option == nil and not conf[what]) then
+      conf[what] = true
+      svo.config_dict[what].onenabled()
+      raiseevent(what)
+    elseif (type(option) == 'boolean' and option == false) or not svo.convert_string(option) or (option == nil and conf[what]) then
+      conf[what] = false
+      svo.config_dict[what].ondisabled()
+      raiseevent(what)
+    else
+      sendf("don't know about that option - try 'yes' or 'no' for %s.", what)
+    end
+
+  elseif svo.config_dict[what].type == 'number' then
+    if not option or tonumber(option) == nil then
+      if svo.config_dict[what].percentage then
+        sendf("What percentage do you want to set %s to?", what)
+      else
+        sendf("What number do you want to set %s to?", what)
+      end
+      if not echoback then svo.echof = oldechof end
+      return
+    end
+
+    local num = tonumber(option)
+    if svo.config_dict[what].max and num &gt; svo.config_dict[what].max then
+      sendf("%s can't be higher than %s.", what, svo.config_dict[what].max)
+    elseif svo.config_dict[what].min and num &lt; svo.config_dict[what].min then
+      sendf("%s can't be lower than %s.", what, svo.config_dict[what].min)
+    else
+      conf[what] = num
+      svo.config_dict[what].onset()
+      raiseevent(what)
+    end
+
+  elseif svo.config_dict[what].type == 'string' then
+    if not option then sendf("What do you want to set %s to?", what)
+      showprompt()
+      if not echoback then svo.echof = oldechof end
+      return
+    end
+
+    if svo.config_dict[what].check and not svo.config_dict[what].check(option) then
+      local _, options = svo.config_dict[what].check(option)
+      sendf("%s isn't something you can set %s to be.", option, what)
+      if type(options) == 'table' then
+        sendf("You can set %s to %s", what, svo.concatand(options))
+      elseif type(options) == 'string' then
+        sendf(options)
+      end
+      showprompt()
+      if not echoback then svo.echof = oldechof end
+      return
+    end
+
+    conf[what] = option
+    svo.config_dict[what].onset()
+    raiseevent(what)
+
+  elseif svo.config_dict[what].type == 'custom' then
+    if not option then
+      if svo.config_dict[what].onmenu then
+        svo.config_dict[what].onmenu()
+      else
+        sendf("What do you want to set %s to?", what)
+        showprompt()
+      end
+
+    else
+      if svo.config_dict[what].onset then
+        svo.config_dict[what].onset()
+        raiseevent(what)
+      end
+    end
+
+  else
+    sendf("meep... %s doesn't have a type associated with it. Tis broken.", what)
+    showprompt()
+  end
+
+  if not echoback then svo.echof = oldechof end
+  showprompt()
+  if svo.install.installing_system then svo.install.check_install_step() end
+  svo.make_gnomes_work()
+end
+
+
+signals.saveconfig:connect(function () svo.tablesave(getMudletHomeDir() .. "/svo/config/conf", conf) end, 'save settings config')
+
+function svo.config.showcolours()
+  svo.echof("Here's a list of available colors you can pick. To select, click on the name or use the %s command.", svo.green("vconfig echotype &lt;name&gt;"))
+
+  for name, f in pairs(svo.echos) do
+    local s = "  pick "..tostring(name).." -  "
+    echo("  pick ")
+    echoLink(tostring(name), 'svo.config.set([[echotype]], "'.. tostring(name) ..'", true)', 'Set it to '..tostring(name)..' colour style.', true)
+    echo(" -  ")
+    echo((" "):rep(30-#s)) f(true, "this is how it'll look")
+  end
+end
+
+function svo.config.showprompt()
+  if not conf.customprompt then
+    svo.echof("You don't have a custom prompt set currently.")
+  else
+    svo.echof("This is the script behind your custom prompt:\n")
+    echo(conf.customprompt)
+  end
+end
+
+end -- end of svo config loader
+
+if svo.systemloaded then svo.loader.config() end</script>
+			<eventHandlerList />
+		</Script>
+		<Script isActive="yes" isFolder="no">
+			<name>Pipes</name>
+			<packageName></packageName>
+			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
+
+-- Svof is licensed under a
+-- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+-- You should have received a copy of the license along with this
+-- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+svo = svo or {}; svo.loader = svo.loader or {}
+svo.loader.pipes = function()
+
+svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/pipes")
+
+svo.me.pipes = svo.me.pipes or {}
+
+local pipes, me = svo.pipes, svo.me
+
+pipes.valerian = pipes.valerian or
+  {lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = 'valerian', filledwith2 = 'valerian', maxpuffs = 10, maxpuffs2 = 10}
+me.pipes.valerian = pipes.valerian
+
+pipes.elm = pipes.elm or
+{lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = 'elm', filledwith2 = 'elm', maxpuffs = 10, maxpuffs2 = 10}
+me.pipes.elm = pipes.elm
+
+pipes.skullcap = pipes.skullcap or
+{lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = 'skullcap', filledwith2 = 'skullcap', maxpuffs = 10, maxpuffs2 = 10}
+me.pipes.skullcap = pipes.skullcap
+
+pipes.pnames = {'valerian','elm','skullcap'}
+
+pipes.expectations = {'valerian','elm','skullcap'}
+
+pipes.empties = {}
+
+function svo.lastlit(which)
+  for i = 1, #pipes.expectations do
+    local v = pipes.expectations[i]
+    if v == which then
+      table.remove(pipes.expectations, i)
+      pipes.expectations[#pipes.expectations+1] = which
+      return
+    end
+  end
+end
+
+function svo.pipeout()
+  local what = pipes.expectations[1]
+  pipes[what].lit = false
+  table.remove(pipes.expectations, 1)
+  pipes.expectations[#pipes.expectations+1] = what
+end
+
+function svo.pipestart()
+  local oldvalerianmaxpuffs, oldelmmaxpuffs, oldskullcapmaxpuffs = pipes.valerian.maxpuffs, pipes.elm.maxpuffs, pipes.skullcap.maxpuffs
+  local oldvalerianmaxpuffs2, oldelmmaxpuffs2, oldskullcapmaxpuffs2 = pipes.valerian.maxpuffs2, pipes.elm.maxpuffs2, pipes.skullcap.maxpuffs2
+
+  pipes.valerian = {lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = 'valerian', filledwith2 = 'valerian', maxpuffs = oldvalerianmaxpuffs, maxpuffs2 = oldvalerianmaxpuffs2}
+  me.pipes.valerian = pipes.valerian
+
+  pipes.elm = {lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = 'elm', filledwith2 = 'elm', maxpuffs = oldelmmaxpuffs, maxpuffs2 = oldelmmaxpuffs2}
+  me.pipes.elm = pipes.elm
+
+  pipes.skullcap = {lit = false, lit2 = false, id = 0, id2 = 0, arty = false, arty2 = false, puffs = 0, puffs2 = 0, filledwith = 'skullcap', filledwith2 = 'skullcap', maxpuffs = oldskullcapmaxpuffs, maxpuffs2 = oldskullcapmaxpuffs2}
+  me.pipes.skullcap = pipes.skullcap
+end
+
+function svo.parseplist()
+  local pipenames = {
+    ["slippery elm"]                = 'elm',
+    ["a valerian leaf"]             = 'valerian',
+    ["a skullcap flower"]           = 'skullcap',
+    ["a pinch of ground cinnabar"]  = 'elm',
+    ["a pinch of realgar crystals"] = 'valerian',
+    ["a pinch of ground malachite"] = 'skullcap'
+  }
+
+  local short_names = {
+    ["slippery elm"]                = 'elm',
+    ["a valerian leaf"]             = 'valerian',
+    ["a skullcap flower"]           = 'skullcap',
+    ["a pinch of ground cinnabar"]  = 'cinnabar',
+    ["a pinch of realgar crystals"] = 'realgar',
+    ["a pinch of ground malachite"] = 'malachite'
+  }
+
+  local id     = tonumber(matches[3])
+  local herb   = pipenames[matches[4]]
+  local puffs  = tonumber(matches[5])
+  local status = matches[2]
+
+  if not (id and herb and puffs and status) then return end
+
+  local filled,lit,arty,puffskey, maxpuffs
+  if pipes[herb].id == 0 then
+    pipes[herb].id = id
+    svo.firstpipe = true
+    filled = 'filledwith'
+    lit = 'lit'
+    arty = 'arty'
+    puffskey = 'puffs'
+    maxpuffs = 'maxpuffs'
+  else
+    pipes[herb].id2 = id
+    svo.firstpipe = false
+    filled = 'filledwith2'
+    lit = 'lit2'
+    arty = 'arty2'
+    puffskey = 'puffs2'
+    maxpuffs = 'maxpuffs2'
+  end
+
+  pipes[herb][arty] = false
+
+  pipes[herb][filled] = short_names[matches[4]]
+
+  if status == 'out' then
+    pipes[herb][lit] = false
+  elseif status == 'lit' then
+    pipes[herb][lit] = true
+   elseif status == 'artf' then
+    pipes[herb][arty] = true
+  end
+
+  pipes[herb][puffskey] = puffs
+
+  -- assume it's a 20 puff pipe if the puffs we have atm is over 10 (bigger than normal)
+  if puffs &gt; 10 then
+    pipes[herb][maxpuffs] = 20
+    echo(" ")
+    setFgColor(unpack(svo.getDefaultColorNums))
+    echo("(a 20-puff pipe)")
+  end
+
+  -- warn if relighting any pipes is on ignore, to make it more obvious - people tended to miss the original line
+  if svo.ignore['light'..herb] then
+    decho(" "..svo.getDefaultColor().."(")
+    setFgColor(unpack(svo.getDefaultColorNums))
+    setUnderline(true)
+    echoLink("re-enable lighting", 'svo.ignore.light'..herb..' = nil; svo.echof("Re-enabled lighting of the '..pipes[herb].filledwith..' pipe."); if not svo.conf.relight then svo.config.set([[relight]], [[on]], true) end', 'Re-lighting the '..pipes[herb].filledwith..' pipe was put on ignore because '..svo.ignore['light'..herb].because..' - click the link to re-enable it', true)
+    setUnderline(false)
+    decho(svo.getDefaultColor()..")")
+  end
+end
+
+function svo.parseplistempty()
+  local id = tonumber(matches[3])
+  local status = matches[2]
+  if not (id and status) then return end
+
+  -- save the data, to later assign the pipes to herbs
+  pipes.empties[#pipes.empties+1] = {id = id, arty = (status == 'artf' and true or false), status = status}
+end
+
+function svo.parseplistend()
+  -- fill up at least one of each first
+  for id = 1, #pipes.pnames do
+    local i = pipes.pnames[id]
+    if pipes[i] and pipes[i].id == 0 and next(pipes.empties) then
+      pipes[i].id = pipes.empties[#pipes.empties].id
+      if pipes.empties[#pipes.empties].status == 'Lit' then
+        pipes[i].lit = true
+      else
+        pipes[i].lit = false
+      end
+
+      if pipes.empties[#pipes.empties].arty then
+        pipes[i].arty = true
+      end
+
+      pipes.empties[#pipes.empties] = nil
+    end
+  end
+
+  -- fill up secondary ones
+  for id = 1, #pipes.pnames do
+    local i = pipes.pnames[id]
+    if pipes[i] and pipes[i].id2 == 0 and next(pipes.empties) then
+      pipes[i].id2 = pipes.empties[#pipes.empties].id
+      if pipes.empties[#pipes.empties].status2 == 'Lit' then
+        pipes[i].lit2 = true
+      else
+        pipes[i].lit2 = false
+      end
+
+      if pipes.empties[#pipes.empties].arty then
+        pipes[i].arty2 = true
+      end
+
+      pipes.empties[#pipes.empties] = nil
+    end
+  end
+
+  pipes.empties = {}
+  svo.signals.after_lifevision_processing:unblock(svo.cnrl.checkwarning) -- check for stain lock
+  svo.make_gnomes_work()
+end
+
+-- assumes that we set some pipe to 0 already. This is used during install only
+function svo.pipe_assignid(newid)
+  newid = tonumber(newid)
+  for id = 1, #pipes.pnames do
+    local i = pipes.pnames[id]
+    if pipes[i].id == 0 then
+      pipes[i].id = newid
+      svo.conf[i..'id'] = newid
+      pipes[i].lit = false
+      send("empty "..newid, false)
+      raiseEvent("svo config changed", i..'id')
+      return i
+    elseif pipes[i].id2 == 0 and pipes[pipes.pnames[#pipes.pnames]].id ~= 0 then
+      pipes[i].id2 = newid
+      svo.conf[i..'id2'] = newid
+      pipes[i].lit2 = false
+      send("empty "..newid, false)
+      raiseEvent("svo config changed", i..'id2')
+      return i
+    end
+  end
+end
+
+if lfs.attributes(getMudletHomeDir() .. "/svo/pipes/conf") then
+  local ok = pcall(table.load, getMudletHomeDir() .. "/svo/pipes/conf", pipes)
+  if ok then
+    -- maxpuffs were added later on in the game, so make sure this field exists for upgrading systems
+    pipes.elm.maxpuffs         = pipes.elm.maxpuffs or 10
+    pipes.skullcap.maxpuffs    = pipes.skullcap.maxpuffs or 10
+    pipes.valerian.maxpuffs    = pipes.valerian.maxpuffs or 10
+
+    -- secondary pipes were added later on, so drop it in
+    pipes.elm.maxpuffs2        = pipes.elm.maxpuffs2 or 10
+    pipes.skullcap.maxpuffs2   = pipes.skullcap.maxpuffs2 or 10
+    pipes.valerian.maxpuffs2   = pipes.valerian.maxpuffs2 or 10
+
+    pipes.elm.lit2             = pipes.elm.lit2 or false
+    pipes.skullcap.lit2        = pipes.skullcap.lit2 or false
+    pipes.valerian.lit2        = pipes.valerian.lit2 or false
+
+    pipes.elm.id2              = pipes.elm.id2 or 0
+    pipes.skullcap.id2         = pipes.skullcap.id2 or 0
+    pipes.valerian.id2         = pipes.valerian.id2 or 0
+
+    pipes.elm.arty2            = pipes.elm.arty2 or false
+    pipes.skullcap.arty2       = pipes.skullcap.arty2 or false
+    pipes.valerian.arty2       = pipes.valerian.arty2 or false
+
+    pipes.elm.puffs2           = pipes.elm.puffs2 or 0
+    pipes.skullcap.puffs2      = pipes.skullcap.puffs2 or 0
+    pipes.valerian.puffs2      = pipes.valerian.puffs2 or 0
+
+    pipes.elm.filledwith2      = pipes.elm.filledwith2 or 'elm'
+    pipes.skullcap.filledwith2 = pipes.skullcap.filledwith2 or 'skullcap'
+    pipes.valerian.filledwith2 = pipes.valerian.filledwith2 or 'valerian'
+
+    me.pipes.elm               = pipes.elm
+    me.pipes.skullcap          = pipes.skullcap
+    me.pipes.valerian          = pipes.valerian
+  end
+end
+
+svo.signals.connected:connect(function ()
+  if not pipes.valerian.arty then pipes.valerian.lit   = false end
+  if not pipes.elm.arty then pipes.elm.lit             = false end
+  if not pipes.skullcap.arty then pipes.skullcap.lit   = false end
+
+  if not pipes.valerian.arty2 then pipes.valerian.lit2 = false end
+  if not pipes.elm.arty2 then pipes.elm.lit2           = false end
+  if not pipes.skullcap.arty2 then pipes.skullcap.lit2 = false end
+
+  if not pipes.valerian.filledwith then pipes.valerian.filledwith   = 'valerian' end
+  if not pipes.elm.filledwith then pipes.elm.filledwith             = 'elm' end
+  if not pipes.skullcap.filledwith then pipes.skullcap.filledwith   = 'skullcap' end
+
+  if not pipes.valerian.filledwith2 then pipes.valerian.filledwith2 = 'valerian' end
+  if not pipes.elm.filledwith2 then pipes.elm.filledwith2           = 'elm' end
+  if not pipes.skullcap.filledwith2 then pipes.skullcap.filledwith2 = 'skullcap' end
+end, 'setup pipes on login')
+
+svo.signals.saveconfig:connect(function ()
+  local s,m = svo.tablesave(getMudletHomeDir() .. "/svo/pipes/conf", pipes)
+  if not s then
+    svo.echof("Couldn't save settings; %s", m)
+  end
+end, 'save pipes config')
+
+end -- end of svo pipes loader
+
+if svo.systemloaded then svo.loader.pipes() end</script>
+			<eventHandlerList />
+		</Script>
+		<Script isActive="yes" isFolder="no">
+			<name>Rift</name>
+			<packageName></packageName>
+			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
+
+-- Svof is licensed under a
+-- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+-- You should have received a copy of the license along with this
+-- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+-- rift, inventory tracking and use of right actions depending on 
+-- normal/aeon curing and previously with minerals, appropriate herb/mineral use
+
+svo = svo or {}; svo.loader = svo.loader or {}
+svo.loader.rift = function()
+
+--[[  basic idea: if asked to eat something, and we a) don't have it (or not enough),
+      or b) are in aeon and have it we outr it, and eat it
+
+      otherwise just eat
+  ]]
+svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/rift+inv")
+
+local rift, me, sys, sk, conf = svo.rift, svo.me, svo.sys, svo.sk, svo.conf
+local pipes = svo.pipes
+
+rift.riftcontents = rift.riftcontents or {}
+rift.invcontents = rift.invcontents or {}
+me.riftcontents = rift.riftcontents
+me.invcontents = rift.invcontents
+
+rift.precache = rift.precache or {}
+rift.precachedata = rift.precachedata or {}
+
+rift.doprecache = false
+
+rift.allherbs = {'ash', 'bayberry', 'bellwort', 'bloodroot', 'cohosh', 'echinacea', 'elm', 'ginger', 'ginseng', 'goldenseal', 'hawthorn', 'kelp', 'kola', 'kuzu', 'lobelia', 'myrrh', 'pear', 'sileris', 'skullcap', 'valerian', 'weed', 'slipper', 'irid', 'ferrum', 'stannum', 'dolomite', 'antimony', 'bisemutum', 'bellwort', 'magnesium', 'calamine', 'malachite', 'azurite', 'plumbum', 'realgar', 'arsenic', 'cohosh', 'argentum', 'calcite', 'potash', 'quicksilver', 'kelp', 'kola', 'cinnabar', 'cuprum', 'aurum', 'quartz', 'gypsum'}
+rift.herbsminerals = {'antimony', 'argentum', 'arsenic', 'ash', 'aurum', 'azurite', 'bayberry', 'bellwort', 'bisemutum', 'bloodroot', 'calamine', 'calcite', 'cinnabar', 'cohosh', 'cuprum', 'dolomite', 'echinacea', 'elm', 'ferrum', 'ginger', 'ginseng', 'goldenseal', 'gypsum', 'hawthorn', 'irid', 'kelp', 'kola', 'lobelia', 'magnesium', 'malachite', 'myrrh', 'plumbum', 'potash', 'quartz', 'quicksilver', 'realgar', 'sileris', 'skullcap', 'stannum', 'valerian', 'weed'}
+rift.functionalherbs = {'slipper', 'kuzu', 'pear'}
+
+rift.herblist = {'elm', 'valerian', 'ash', 'bayberry', 'bellwort', 'bloodroot', 'cohosh', 'echinacea', 'ginger', 'ginseng', 'goldenseal', 'hawthorn', 'kelp', 'kola', 'kuzu', 'lobelia', 'irid', 'myrrh', 'pear', 'sileris', 'skullcap', 'slipper', 'weed'}
+rift.curativeherbs = {'ash', 'bayberry', 'bellwort', 'bloodroot', 'cohosh', 'echinacea', 'elm', 'ginger', 'ginseng', 'goldenseal', 'hawthorn', 'irid', 'kelp', 'kola', 'lobelia', 'myrrh', 'pear', 'sileris', 'skullcap', 'valerian'}
+
+rift.minerallist = {'ferrum', 'stannum', 'dolomite', 'antimony', 'bisemutum', 'cuprum', 'magnesium', 'calamine', 'malachite', 'azurite', 'plumbum', 'realgar', 'arsenic', 'gypsum', 'argentum', 'calcite', 'potash', 'quicksilver', 'aurum', 'quartz', 'cinnabar'}
+
+me.herblist = rift.herblist
+me.minerallist = rift.minerallist
+
+rift.forestalvials = {'caloric', 'epidermal', 'frost', 'health', 'immunity', 'levitation', 'mana', 'mass', 'mending', 'restoration', 'speed', 'venom'}
+
+rift.resetriftcontents = function()
+  for _, herb in ipairs(rift.allherbs) do
+    rift.riftcontents[herb] = 0
+  end
+
+  svo.myrift = rift.riftcontents
+end
+
+rift.resetinvcontents = function()
+  for _, herb in ipairs(rift.allherbs) do
+    rift.invcontents[herb] = 0
+  end
+
+  svo.myinv = rift.invcontents
+end
+
+rift.resetriftcontents()
+rift.resetinvcontents()
+
+rift.herbs_plural = {
+  elm        = "(%d+) slippery elms",
+  valerian   = "(%d+) valerian leaves",
+  ash        = "(%d+) pieces of prickly ash bark",
+  bayberry   = "(%d+) pieces of bayberry bark",
+  bellwort   = "(%d+) bellwort flowers",
+  bloodroot  = "(%d+) bloodroot leaves",
+  cohosh     = "(%d+) cohosh roots",
+  echinacea  = "(%d+) echinacea roots",
+  ginger     = "(%d+) ginger roots",
+  ginseng    = "(%d+) ginseng roots",
+  goldenseal = "(%d+) goldenseal roots",
+  hawthorn   = "(%d+) hawthorn berries",
+  kelp       = "(%d+) pieces of kelp",
+  kola       = "(%d+) kola nuts",
+  kuzu       = "(%d+) kuzu roots",
+  lobelia    = "(%d+) lobelia seeds",
+  irid       = "(%d+) pieces of irid moss",
+  myrrh      = "(%d+) myrrh balls",
+  pear       = "(%d+) prickly pears",
+  sileris    = "(%d+) sileris berries",
+  skullcap   = "(%d+) skullcap flowers",
+  slipper    = "(%d+) lady's slipper roots",
+  weed       = "(%d+) sprigs of cactus weed",
+
+  ferrum      = "(%d+) ferrum flakes",
+  stannum     = "(%d+) stannum flakes",
+  dolomite    = "(%d+) dolomite grains",
+  antimony    = "(%d+) antimony flakes",
+  bisemutum   = "(%d+) bisemutum chips",
+  cuprum      = "(%d+) cuprum flakes",
+  magnesium   = "(%d+) magnesium chips",
+  calamine    = "(%d+) calamine crystals",
+  malachite   = "(%d+) pinches of ground malachite",
+  azurite     = "(%d+) azurite motes",
+  plumbum     = "(%d+) plumbum flakes",
+  realgar     = "(%d+) pinches of ground realgar",
+  arsenic     = "(%d+) arsenic pellets",
+  gypsum      = "(%d+) gypsum crystals",
+  argentum    = "(%d+) argentum flakes",
+  calcite     = "(%d+) calcite motes",
+  potash      = "(%d+) potash crystals",
+  quicksilver = "(%d+) quicksilver droplets",
+  aurum       = "(%d+) aurum flakes",
+  quartz      = "(%d+) quartz grains",
+  cinnabar    = "(%d+) pinches of ground cinnabar",
+}
+
+rift.herbs_singular = {
+  ["some prickly ash bark"]  = 'ash',
+  ["some bayberry bark"]     = 'bayberry',
+  ["a bellwort flower"]      = 'bellwort',
+  ["a bloodroot leaf"]       = 'bloodroot',
+  ["a black cohosh root"]    = 'cohosh',
+  ["an echinacea root"]      = 'echinacea',
+  ["slippery elm"]           = 'elm',
+  ["a ginger root"]          = 'ginger',
+  ["a ginseng root"]         = 'ginseng',
+  ["a goldenseal root"]      = 'goldenseal',
+  ["a hawthorn berry"]       = 'hawthorn',
+  ["a piece of kelp"]        = 'kelp',
+  ["a kola nut"]             = 'kola',
+  ["a kuzu root"]            = 'kuzu',
+  ["a lobelia seed"]         = 'lobelia',
+  ["some irid moss"]         = 'irid',
+  ["a ball of myrrh gum"]    = 'myrrh',
+  ["a prickly pear"]         = 'pear',
+  ["a sileris berry"]        = 'sileris',
+  ["a skullcap flower"]      = 'skullcap',
+  ["a lady's slipper root"]  = 'slipper',
+  ["a valerian leaf"]        = 'valerian',
+  ["a sprig of cactus weed"] = 'weed',
+
+  ["a ferrum flake"]              = 'ferrum',
+  ["a stannum flake"]             = 'stannum',
+  ["a dolomite grain"]            = 'dolomite',
+  ["an antimony flake"]           = 'antimony',
+  ["a bisemutum chip"]            = 'bisemutum',
+  ["a cuprum flake"]              = 'cuprum',
+  ["a magnesium chip"]            = 'magnesium',
+  ["a calamine crystal"]          = 'calamine',
+  ["a pinch of ground malachite"] = 'malachite',
+  ["an azurite mote"]             = 'azurite',
+  ["a plumbum flake"]             = 'plumbum',
+  ["a pinch of realgar crystals"] = 'realgar',
+  ["an arsenic pellet"]           = 'arsenic',
+  ["a gypsum crystal"]            = 'gypsum',
+  ["an argentum flake"]           = 'argentum',
+  ["a calcite mote"]              = 'calcite',
+  ["a potash crystal"]            = 'potash',
+  ["a quicksilver droplet"]       = 'quicksilver',
+  ["an aurum flake"]              = 'aurum',
+  ["a quartz grain"]              = 'quartz',
+  ["a pinch of ground cinnabar"]  = 'cinnabar',
+}
+
+-- outr line in Achaea uses some special naming - this is formatted for it
+rift.herbs_singular_sansprefix = {
+  ["prickly ash bark"]    = 'ash',
+  ["bayberry bark"]       = 'bayberry',
+  ["bellwort flower"]     = 'bellwort',
+  ["bloodroot leaf"]      = 'bloodroot',
+  ["black cohosh"]        = 'cohosh',
+  ['echinacea']           = 'echinacea',
+  ["slippery elm"]        = 'elm',
+  ["ginger root"]         = 'ginger',
+  ["ginseng root"]        = 'ginseng',
+  ["goldenseal root"]     = 'goldenseal',
+  ["hawthorn berry"]      = 'hawthorn',
+  ['kelp']                = 'kelp',
+  ["kola nut"]            = 'kola',
+  ["kuzu root"]           = 'kuzu',
+  ["lobelia seed"]        = 'lobelia',
+  ["irid moss"]           = 'irid',
+  ["myrrh gum"]           = 'myrrh',
+  ["prickly pear"]        = 'pear',
+  ['sileris']             = 'sileris',
+  ['skullcap']            = 'skullcap',
+  ["lady's slipper root"] = 'slipper',
+  ['valerian']            = 'valerian',
+  ['weed']                = 'weed',
+
+  ['ferrum']      = 'ferrum',
+  ['stannum']     = 'stannum',
+  ['dolomite']    = 'dolomite',
+  ['antimony']    = 'antimony',
+  ['bisemutum']   = 'bisemutum',
+  ['cuprum']      = 'cuprum',
+  ['magnesium']   = 'magnesium',
+  ['calamine']    = 'calamine',
+  ['malachite']   = 'malachite',
+  ['azurite']     = 'azurite',
+  ['plumbum']     = 'plumbum',
+  ['realgar']     = 'realgar',
+  ['arsenic']     = 'arsenic',
+  ['gypsum']      = 'gypsum',
+  ['argentum']    = 'argentum',
+  ['calcite']     = 'calcite',
+  ['potash']      = 'potash',
+  ['quicksilver'] = 'quicksilver',
+  ['aurum']       = 'aurum',
+  ['quartz']      = 'quartz',
+  ['cinnabar']    = 'cinnabar',
+}
+
+-- non-herb items - used in inra sorting. A space is used to accomodate the different materials without introducing complications in the code
+rift.items_plural = {
+  ["iron "]   = "(%d+) pinches of iron filings",
+  ["silver "] = "(%d+) bars of silver",
+  coal        = "(%d+) coal pieces",
+  gold        = "(%d+) nuggets of gold",
+  iron        = "(%d+) iron bars",
+  lead        = "(%d+) lead beads",
+  nodule      = "(%d+) nodules of copper",
+  silver      = "(%d+) silver bars",
+  tin         = "(%d+) chunks of tin",
+  scales      = "(%d+) piles of fish scales",
+  lacquer     = "(%d+) pots of lacquer",
+  stone       = "(%d+) stones",
+}
+
+rift.items_singular = {
+  ["a bar of silver"]        = 'silver',
+  ["a bead of lead"]         = 'lead',
+  ["a chunk of tin"]         = 'tin',
+  ["a nodule of copper"]     = 'nodule',
+  ["a piece of coal"]        = 'coal',
+  ["a small nugget of gold"] = 'gold',
+  ["an iron bar"]            = 'iron',
+  ["a pile of fish scales"]  = 'scales',
+  ["a small pot of lacquer"] = 'lacquer',
+  ["a block of stone"]       = 'stone',
+}
+
+rift.herb_conversions = {
+  ash        = 'stannum',
+  bayberry   = 'arsenic',
+  bellwort   = 'cuprum',
+  bloodroot  = 'magnesium',
+  cohosh     = 'gypsum',
+  echinacea  = 'dolomite',
+  elm        = 'cinnabar',
+  ginger     = 'antimony',
+  ginseng    = 'ferrum',
+  goldenseal = 'plumbum',
+  hawthorn   = 'calamine',
+  irid       = 'potash',
+  kelp       = 'aurum',
+  kola       = 'quartz',
+  lobelia    = 'argentum',
+  myrrh      = 'bisemutum',
+  pear       = 'calcite',
+  sileris    = 'quicksilver',
+  skullcap   = 'azurite',
+  valerian   = 'realgar',
+}
+
+rift.vial_conversions = {
+  caloric     = 'exothermic',
+  epidermal   = 'sensory',
+  frost       = 'endothermia',
+  health      = 'vitality',
+  immunity    = 'antigen',
+  levitation  = 'hovering',
+  mana        = 'mentality',
+  mass        = 'density',
+  mending     = 'renewal',
+  restoration = 'reconstructive',
+  speed       = 'haste',
+  venom       = 'toxin',
+}
+
+function svo.intlen(number)
+  return number == 0 and 1 or math.floor(math.log10(number)+1)
+end
+
+rift.update_riftlabel = function()
+  if not svo.riftlabel or svo.riftlabel.hidden then return end
+
+  local count = 0
+  local tbl = {}
+  local columncount = svo.conf.riftlabelcolumns or 3
+  local charwidth = 20
+
+  for _, j in pairs(rift.herbsminerals) do
+    count = count + 1
+
+    tbl[#tbl+1] = string.format([[&lt;font style="color:grey;"&gt;%s&lt;/font&gt;%s%d&lt;font style="color:grey;"&gt;/&lt;/font&gt;%d ]], j, string.rep("&amp;nbsp;", charwidth - #j- svo.intlen(rift.invcontents[j]) - svo.intlen(rift.riftcontents[j])), rift.invcontents[j], rift.riftcontents[j])
+    if count % columncount == 0 then tbl[#tbl+1] = "&lt;br /&gt;" end
+  end
+
+  -- fill up the rest with spaces for alignment
+  if count % columncount ~= 0 then
+    -- insert spaces for each column (20 chars default) + 1 between each column
+    local spacesneeded = (columncount - (count % columncount)) * (charwidth+1)
+    tbl[#tbl+1] = string.rep("&amp;nbsp;", spacesneeded)
+  end
+
+  echo("svo.riftlabel", string.format([[&lt;center&gt;&lt;p style="font-size: ]]..(svo.conf.herbstatsize and svo.conf.herbstatsize or 9)..[[px; color:white; font-weight:;"&gt;%s&lt;/p&gt;&lt;/center&gt;]], table.concat(tbl)))
+end
+
+rift.outr = function (what)
+  if not sys.canoutr then return end
+
+  if (rift.precache[what] and rift.precache[what] == 0) or not rift.invcontents[what] or not rift.precache[what] or (rift.invcontents[what] and rift.precache[what] and (rift.invcontents[what] - 1 &gt;= rift.precache[what])) then
+    send("outr " .. what, svo.conf.commandecho)
+  else
+    send("outr " .. (rift.precache[what] - rift.invcontents[what] + 1) .. " " .. what, svo.conf.commandecho)
+  end
+
+  -- allow other outrs to catch up, then re-check again
+  if sys.blockoutr then killTimer(sys.blockoutr); sys.blockoutr = nil end
+  sys.blockoutr = tempTimer(sys.wait + svo.syncdelay(), function () sys.blockoutr = nil; svo.debugf("sys.blockoutr expired") svo.make_gnomes_work() end)
+  svo.debugf("sys.blockoutr setup: ", debug.traceback())
+end
+
+rift.checkprecache = function()
+  rift.doprecache = false
+
+  for herb, _ in pairs(rift.precache) do
+    -- if we have addiction, then only precache 1, otherwise, however much is needed
+    if rift.precache[herb] ~= 0 and rift.riftcontents[herb] ~= 0 and 
+		  (not svo.affs.addiction and (rift.invcontents[herb] &lt; rift.precache[herb]) or (rift.invcontents[herb] == 0)) then
+			rift.doprecache = true; return
+    end
+  end
+end
+
+-- used by skeleton's check_herb to see that you can eat something. It checks the appropriate herb in inv if we can't outr
+-- takes in dict.&lt;aff&gt;.herb as an argument
+svo.signals.curemethodchanged:connect(function ()
+  if svo.conf.curemethod == 'conconly' then
+    sk.can_eat_for = function (aff)
+      return (rift.invcontents[aff.eatcure[1]] &gt; 0)
+    end
+  elseif svo.conf.curemethod == 'transonly' then
+    sk.can_eat_for = function (aff)
+      return (rift.invcontents[aff.eatcure[2]] &gt; 0)
+    end
+  else -- handles nil and prefer*s for curemethod
+    sk.can_eat_for = function (aff)
+      return (rift.invcontents[aff.eatcure[1]] &gt; 0) or (rift.invcontents[aff.eatcure[2]] &gt; 0)
+    end
+  end
+end, 'update svo.sk.can_eat_for on curemethod change')
+
+local function siprandom(what)
+  if not svo.es_vialids or not svo.es_vialids[what] or not svo.es_vialids[what][1] then return what end
+
+  return svo.es_vialids[what][math.random(#svo.es_vialids[what])]
+end
+
+-- determine the sip method. gets a table as arg with two things - the conc and trans cure
+svo.signals.curemethodchanged:connect(function ()
+  svo.sip = function (what)
+    local use = what.sipcure[1]
+    if conf.siprandom then use = siprandom(use) end
+    send("sip "..use, conf.commandecho)
+    sys.last_used[what.name] = use
+  end
+end, 'update svo.sip on curemethod change')
+
+-- determine the apply method
+svo.signals.curemethodchanged:connect(function ()
+  svo.apply = function (what, whereto)
+    whereto = whereto or ''
+    local use = what.applycure[1]
+    send('apply '..use..whereto, conf.commandecho)
+    sys.last_used[what.name] = use
+  end
+end, 'update svo.apply on curemethod change')
+
+-- used to determine what to eat, and set what we've eaten
+svo.signals.curemethodchanged:connect(function ()
+  if conf.curemethod == 'conconly' then
+    sk.synceat = function(what)
+      local use = what.eatcure[1]
+      if rift.invcontents[use] &gt; 0 then
+        send("eat " .. use, conf.commandecho)
+        sys.last_used[what.name] = use
+      else
+        rift.outr(use)
+      end
+    end
+    sk.asynceat = function(what)
+      local use = what.eatcure[1]
+      if rift.invcontents[use] and rift.invcontents[use] &gt; 0 then
+        send("eat " .. use, conf.commandecho)
+        rift.outr(use)
+      else
+        rift.outr(use)
+        send("eat " .. use, conf.commandecho)
+      end
+      sys.last_used[what.name] = use
+    end
+
+  elseif conf.curemethod == 'transonly' then
+    sk.synceat = function(what)
+      local use = what.eatcure[2]
+      if rift.invcontents[use] &gt; 0 then
+        send("eat " .. use, conf.commandecho)
+        sys.last_used[what.name] = use
+      else
+        rift.outr(use)
+      end
+    end
+    sk.asynceat = function(what)
+      local use = what.eatcure[2]
+      if rift.invcontents[use] and rift.invcontents[use] &gt; 0 then
+        send("eat " .. use, conf.commandecho)
+        rift.outr(use)
+      else
+        rift.outr(use)
+        send("eat " .. use, conf.commandecho)
+      end
+      sys.last_used[what.name] = use
+    end
+
+  elseif conf.curemethod == nil or conf.curemethod == 'preferconc' then
+    sk.synceat = function(what)
+      local use, use2 = what.eatcure[1], what.eatcure[2]
+      -- if we don't have the conc cure in inv, but have the alchemy one, use alchemy
+      if (not (rift.invcontents[use] &gt; 0) and (rift.invcontents[use2] &gt; 0))
+        -- or if we don't have the conc cure in rift either, use alchemy
+        or not (rift.riftcontents[use] &gt; 0) then
+          use = use2
+      end
+
+      if rift.invcontents[use] &gt; 0 then
+        send("eat " .. use, conf.commandecho)
+        sys.last_used[what.name] = use
+      else
+        rift.outr(use)
+      end
+    end
+    sk.asynceat = function(what)
+      local use, use2 = what.eatcure[1], what.eatcure[2]
+      -- if we don't have the conc cure in inv, but have the alchemy one, use alchemy
+      if (not (rift.invcontents[use] &gt; 0) and (rift.invcontents[use2] &gt; 0))
+        -- or if we don't have the conc cure in rift either, use alchemy
+        or not (rift.riftcontents[use] &gt; 0) then
+          use = use2
+      end
+
+      if rift.invcontents[use] and rift.invcontents[use] &gt; 0 then
+        send("eat " .. use, conf.commandecho)
+        rift.outr(use)
+      else
+        rift.outr(use)
+        send("eat " .. use, conf.commandecho)
+      end
+      sys.last_used[what.name] = use
+    end
+
+  elseif conf.curemethod == 'prefertrans' then
+    -- should eat trans if it's in inv
+    -- should eat trans if it's in the rift and no conc in inv
+    sk.synceat = function(what)
+      -- check if we should use trans
+      local use, use2 = what.eatcure[1], what.eatcure[2]
+      if (rift.invcontents[use2] &gt; 0)
+        or (not (rift.invcontents[use] &gt; 0) and (rift.riftcontents[use2] &gt; 0)) then
+          use = use2
+      end
+
+      if rift.invcontents[use] &gt; 0 then
+        send("eat " .. use, conf.commandecho)
+        sys.last_used[what.name] = use
+      else
+        rift.outr(use)
+      end
+    end
+    sk.asynceat = function(what)
+      local use, use2 = what.eatcure[1], what.eatcure[2]
+      if (rift.invcontents[use2] &gt; 0)
+        or (not (rift.invcontents[use] &gt; 0) and (rift.riftcontents[use2] &gt; 0)) then
+          use = use2
+      end
+
+      if rift.invcontents[use] and rift.invcontents[use] &gt; 0 then
+        send("eat " .. use, conf.commandecho)
+        rift.outr(use)
+      else
+        rift.outr(use)
+        send("eat " .. use, conf.commandecho)
+      end
+      sys.last_used[what.name] = use
+    end
+
+  elseif conf.curemethod == 'prefercustom' then
+    -- should eat trans if it's in inv
+    -- should eat trans if it's in the rift and no conc in inv
+    sk.synceat = function(what)
+      if me.curelist[what.eatcure[1]] == what.eatcure[1] then
+        local use, use2 = what.eatcure[1], what.eatcure[2]
+        -- if we don't have the conc cure in inv, but have the alchemy one, use alchemy
+        if (not (rift.invcontents[use] &gt; 0) and (rift.invcontents[use2] &gt; 0))
+          -- or if we don't have the conc cure in rift either, use alchemy
+          or not (rift.riftcontents[use] &gt; 0) then
+            use = use2
+        end
+
+        if rift.invcontents[use] &gt; 0 then
+          send("eat " .. use, conf.commandecho)
+          sys.last_used[what.name] = use
+        else
+          rift.outr(use)
+        end
+      else
+        local use, use2 = what.eatcure[1], what.eatcure[2]
+        if (rift.invcontents[use2] &gt; 0)
+          or (not (rift.invcontents[use] &gt; 0) and (rift.riftcontents[use2] &gt; 0)) then
+            use = use2
+        end
+
+        if rift.invcontents[use] &gt; 0 then
+          send("eat " .. use, conf.commandecho)
+          sys.last_used[what.name] = use
+        else
+          rift.outr(use)
+        end
+      end
+    end
+    sk.asynceat = function(what)
+      if me.curelist[what.eatcure[1]] == what.eatcure[1] then
+        local use, use2 = what.eatcure[1], what.eatcure[2]
+        -- if we don't have the conc cure in inv, but have the alchemy one, use alchemy
+        if (not (rift.invcontents[use] &gt; 0) and (rift.invcontents[use2] &gt; 0))
+          -- or if we don't have the conc cure in rift either, use alchemy
+          or not (rift.riftcontents[use] &gt; 0) then
+            use = use2
+        end
+
+        if rift.invcontents[use] and rift.invcontents[use] &gt; 0 then
+          send("eat " .. use, conf.commandecho)
+          rift.outr(use)
+        else
+          rift.outr(use)
+          send("eat " .. use, conf.commandecho)
+        end
+        sys.last_used[what.name] = use
+      else
+        local use, use2 = what.eatcure[1], what.eatcure[2]
+        if (rift.invcontents[use2] &gt; 0)
+          or (not (rift.invcontents[use] &gt; 0) and (rift.riftcontents[use2] &gt; 0)) then
+            use = use2
+        end
+
+        if rift.invcontents[use] and rift.invcontents[use] &gt; 0 then
+          send("eat " .. use, conf.commandecho)
+          rift.outr(use)
+        else
+          rift.outr(use)
+          send("eat " .. use, conf.commandecho)
+        end
+        sys.last_used[what.name] = use
+      end
+    end
+
+    -- disabled for now, because tracking which herb we used for an action is problematic
+  -- elseif conf.curemethod == 'auto' then
+  --   sk.synceat = function(what)
+  --     -- if we have the alchemy cure, use it, otherwise stick to usual
+  --     local haveusual, havealchemy = rift.invcontents[what], rift.invcontents[herb_conversions[what]]
+  --     if haveusual and havealchemy then
+  --       what = (math.random(1,2) == 1) and what or herb_conversions[what]
+  --     elseif not haveusual then
+  --       what = herb_conversions[what]
+  --     end
+
+  --     if rift.invcontents[what] &gt; 0 then
+  --       send("eat " .. what, conf.commandecho)
+  --     else
+  --       rift.outr(what)
+  --     end
+  --   end
+  --   sk.asynceat = function(what)
+  --     local haveusual, havealchemy = rift.invcontents[what], rift.invcontents[herb_conversions[what]]
+  --     if haveusual and havealchemy then
+  --       what = (math.random(1,2) == 1) and what or herb_conversions[what]
+  --     elseif not haveusual then
+  --       what = herb_conversions[what]
+  --     end
+
+  --     if rift.invcontents[what] and rift.invcontents[what] &gt; 0 then
+  --       send("eat " .. what, conf.commandecho)
+  --       rift.outr(what)
+  --     else
+  --       rift.outr(what)
+  --       send("eat " .. what, conf.commandecho)
+  --     end
+    -- end
+  end
+
+  -- update the actual 'eat' function
+  sk.checkaeony()
+  svo.signals.changecuring:emit()
+end, 'update svo.eat on curemethod change')
+
+svo.signals.systemstart:connect(function()
+  svo.signals.curemethodchanged:emit()
+end, 'create eat, apply, etc functions on system start')
+
+svo.signals.changecuring:connect(function ()
+  if sys.sync then
+    svo.eat = sk.synceat
+  else
+    svo.eat = sk.asynceat
+  end
+end, 'update svo.eat on aeon/retardation')
+
+local smoke_herb_conversions = {
+  elm      = 'cinnabar',
+  skullcap = 'malachite',
+  valerian = 'realgar',
+}
+
+-- pipes don't need to be refilled that often, so we'll do the herb selection realtime instead of recompiling this huge monster all the time
+function sk.asyncfill(what, where)
+  local orig = what
+
+  -- work out if we need to change what to its alternative
+  if conf.curemethod ~= 'conconly' and (
+
+    conf.curemethod == 'transonly' or
+
+    ((conf.curemethod == 'preferconc' or conf.curemethod == nil) and
+      -- we don't have in forestal inventory, but do have alchemy in inventory, use alchemy
+       (not (rift.invcontents[what] &gt; 0) and (rift.invcontents[smoke_herb_conversions[what]] &gt; 0)) or
+        -- or if we don't have the conc cure in rift either, use alchemy
+       (not (rift.riftcontents[what] &gt; 0))) or
+
+    (conf.curemethod == 'prefertrans' and -- we *do* have the trans available
+      (rift.invcontents[smoke_herb_conversions[what]] &gt; 0
+        or (not (rift.invcontents[what] &gt; 0) and (rift.riftcontents[smoke_herb_conversions[what]] &gt; 0)))) or
+
+    -- prefercustom, and we either prefer alchy and have it, or prefer conc and don't have it
+    (conf.curemethod == 'prefercustom' and
+      ((me.curelist[what] == smoke_herb_conversions[what] and rift.riftcontents[smoke_herb_conversions[what]] &gt; 0)
+        or
+       (me.curelist[what] == what and rift.riftcontents[what] &lt;= 0)
+      )
+    )) then
+      what = smoke_herb_conversions[what]
+  end
+
+  sys.last_used['fill'..orig..'_physical'] = what
+  pipes[orig].filledwith = what
+
+  if rift.invcontents[what] &gt; 0 then
+    if pipes[orig].puffs &gt; 0 then
+      if not svo.defc.selfishness then
+        send("empty "..where, conf.commandecho)
+      else
+        for _ = 1, (pipes[orig].puffs + 1) do
+          send("smoke "..where, conf.commandecho)
+        end
+      end
+    end
+		rift.outr(what)
+    send("put " .. what .. " in " .. where, conf.commandecho)
+  else
+    rift.outr(what)
+    if pipes[orig].puffs &gt; 0 then
+      if not svo.defc.selfishness then
+        send("empty "..where, conf.commandecho)
+      else
+        for _ = 1, (pipes[orig].puffs + 1) do
+          send("smoke "..where, conf.commandecho)
+        end
+      end
+    end
+    send("put " .. what .. " in " .. where, conf.commandecho)
+  end
+end
+
+function sk.syncfill(what, where)
+  local orig = what
+  -- work out if we need to change what to its alternative
+  if conf.curemethod ~= 'conconly' and (
+
+    conf.curemethod == 'transonly' or
+
+    ((conf.curemethod == 'preferconc' or conf.curemethod == nil) and
+       (not (rift.invcontents[what] &gt; 0) and (rift.invcontents[smoke_herb_conversions[what]] &gt; 0))
+        -- or if we don't have the conc cure in rift either, use alchemy
+        or not (rift.riftcontents[what] &gt; 0)) or
+
+    (conf.curemethod == 'prefertrans' and
+      (rift.invcontents[smoke_herb_conversions[what]] &gt; 0)
+        or (not (rift.invcontents[what] &gt; 0) and (rift.riftcontents[smoke_herb_conversions[what]] &gt; 0))) or
+
+    -- prefercustom, and we either prefer alchy and have it, or prefer conc and don't have it
+    (conf.curemethod == 'prefercustom' and (
+      (me.curelist[what] == what and rift.riftcontents[what] &lt;= 0)
+        or
+      (me.curelist[what] == smoke_herb_conversions[what] and rift.riftcontents[smoke_herb_conversions[what]] &gt; 0)
+    ))) then
+      what = smoke_herb_conversions[what]
+  end
+
+  sys.last_used['fill'..orig..'_physical'] = what
+  pipes[orig].filledwith = what
+
+  if pipes[orig].puffs &gt; 0 then
+    if svo.defc.selfishness then svo.echof("Problem - can't refill while selfish :/") return end
+    send("empty "..where, conf.commandecho)
+  elseif rift.invcontents[what] &gt; 0 then
+    send("put " .. what .. " in " .. where, conf.commandecho)
+  else
+    rift.outr(what)
+  end
+end
+
+svo.signals.changecuring:connect(function ()
+  if sys.sync then
+    svo.fillpipe = sk.syncfill
+  else
+    svo.fillpipe = sk.asyncfill
+  end
+end, 'update svo.fillpipe')
+
+
+function svo.riftline()
+  for i = 1, #matches, 3 do
+    local amount = tonumber(matches[i+1])
+    local rawherbstring, herb = matches[i+2], false
+
+    -- Achaea's rift doesn't use standard singular naming or even the short names,
+    -- so substring find which herb is it
+    for _, herbi in ipairs(rift.allherbs) do
+      if rawherbstring:find("%f[%a]"..herbi.."%f[%A]") then
+        herb = herbi
+        break
+      end
+    end
+
+    if herb and amount then
+      rift.riftcontents[herb] = amount
+    end
+  end
+
+  rift.update_riftlabel()
+end
+
+function svo.showrift()
+  display(rift.riftcontents)
+end
+
+function svo.showinv()
+  display(rift.invcontents)
+end
+
+function svo.showprecache()
+  local count = 1
+
+  local function makelink(herb, sign)
+    if sign == "-" and rift.precache[herb] == 0 then
+      echo " "
+    elseif sign == "+" then
+      echoLink(sign, [[svo.setprecache("]]..herb..[[", 1, 'add', nil, true)]], sign .. " the " .. herb .. " amount")
+    elseif sign == "-" then
+      echoLink(sign, [[svo.setprecache("]]..herb..[[", 1, 'subtract', nil, true)]], sign .. " the " .. herb .. " amount")
+    else
+      echo " "
+    end
+
+    return ""
+  end
+
+--[[  moveCursor('main', 0, getLastLineNumber('main'))
+  debugf("line: " .. getCurrentLine() .. ", latest: " .. getLastLineNumber('main'))
+  if getCurrentLine() == "-" or getCurrentLine() == " " then
+    insertText(" ")
+    for i = 1, 1000 do deleteLine()
+    debugf('deleting') end
+  end]]
+  svo.echof("Herb pre-cache list (%s defences):", svo.defs.mode)
+
+  local t = {}; for herb in pairs(rift.precache) do t[#t+1] = herb end; table.sort(t)
+  for i = 1, #t do
+    local herb, amount = t[i], rift.precache[t[i]]
+  -- for herb, amount in pairs(rift.precache) do
+    if count % 3 ~= 0 then
+      decho(string.format("&lt;153,204,204&gt;[&lt;91,134,214&gt;%d&lt;153,204,204&gt;%s%s] %-"..(svo.intlen(amount) == 1 and '23' or '22')..'s', amount, makelink(herb, "+"), makelink(herb, "-"), herb))
+    else
+      decho(string.format("&lt;153,204,204&gt;[&lt;91,134,214&gt;%d&lt;153,204,204&gt;%s%s] %s", amount, makelink(herb, "+"), makelink(herb, "-"), herb)) end
+
+    if count % 3 == 0 then echo("\n") end
+    count = count + 1
+  end
+
+--[[  moveCursor('main', 0, getLastLineNumber('main'))
+  moveCursor('main', #getCurrentLine(), getLastLineNumber('main'))
+  insertText("\n-\n")]]
+  echo"\n"
+  svo.showprompt()
+end
+
+function svo.setprecache(herb, amount, flag, echoback, show_list)
+  local sendf
+  if echoback then sendf = svo.echof else sendf = svo.errorf end
+
+  svo.assert(rift.precache[herb], "what herb do you want to set a precache amount for?", sendf)
+
+  if flag == 'add' then
+    rift.precache[herb] = rift.precache[herb] + amount
+  elseif flag == 'subtract' then
+    rift.precache[herb] = rift.precache[herb] - amount
+    if rift.precache[herb] &lt; 0 then rift.precache[herb] = 0 end
+  elseif not flag or flag == 'set' then
+    rift.precache[herb] = amount
+  end
+
+  if echoback then
+    svo.echof("Will keep at least %d of %s out in the inventory now.", rift.precache[herb], herb)
+  elseif show_list then
+    svo.showprecache()
+  end
+  rift.checkprecache()
+end
+
+function svo.invline()
+  rift.resetinvcontents()
+
+  -- lowercase as the first letter is capitalised
+  local line = line:lower()
+  local tabledline = line:split(", ")
+
+  -- strip out the last 'and'
+  if tabledline[#tabledline]:starts("and ") then
+    tabledline[#tabledline] = tabledline[#tabledline]:gsub("^and ", '')
+  end
+
+  -- for everything we got in our inv
+  for i = 1, #tabledline do
+    local riftable = tabledline[i]
+    if riftable:sub(-1) == "." then riftable = riftable:sub(1,#riftable - 1) end -- kill trailing dot
+
+    -- tally up rift.herbs_singular items
+    if rift.herbs_singular[riftable] then
+      rift.invcontents[rift.herbs_singular[riftable]] = rift.invcontents[rift.herbs_singular[riftable]] + 1
+    end
+
+    -- tally up rift.herbs_plural items
+    for k,l in pairs(rift.herbs_plural) do
+      local result = riftable:match(l)
+      if result then
+        rift.invcontents[k] = rift.invcontents[k] + tonumber(result)
+      end
+    end
+  end
+
+  rift.update_riftlabel()
+  rift.checkprecache()
+end
+
+function svo.riftremoved()
+  local removed = tonumber(matches[2])
+  local what = rift.herbs_singular_sansprefix[matches[3]]
+  local inrift = tonumber(matches[4])
+
+  if not (what and removed and inrift) then return end
+
+  if rift.riftcontents[what] then rift.riftcontents[what] = inrift end
+  if rift.invcontents[what] then rift.invcontents[what] = rift.invcontents[what] + removed end
+
+  rift.update_riftlabel()
+
+  svo.signals.removed_from_rift:emit(removed, what, inrift)
+
+  -- don't add if not doing it
+  svo.checkaction(svo.dict.doprecache.misc, false)
+  if svo.actions.doprecache_misc then
+    svo.lifevision.add(svo.actions.doprecache_misc.p)
+  end
+end
+
+function svo.pocketbelt_added()
+  local removedamount = tonumber(matches[2])
+  local what = matches[3]
+  if not rift.invcontents[what] then return end
+
+  rift.invcontents[what] = rift.invcontents[what] - removedamount
+end
+
+function svo.pocketbelt_removed()
+  local removedamount = tonumber(matches[2])
+  local what = matches[3]
+  if not rift.invcontents[what] then return end
+
+  rift.invcontents[what] = rift.invcontents[what] + removedamount
+end
+
+function svo.riftadded()
+  local removed = tonumber(matches[2])
+  local what = rift.herbs_singular_sansprefix[matches[3]]
+  if not what then return end
+  local inrift = tonumber(matches[4])
+
+  if rift.riftcontents[what] then rift.riftcontents[what] = inrift end
+  if rift.invcontents[what] then rift.invcontents[what] = rift.invcontents[what] - removed end
+  if rift.invcontents[what] and rift.invcontents[what] &lt; 0 then rift.invcontents[what] = 0 end
+
+  rift.update_riftlabel()
+  rift.checkprecache()
+end
+
+function svo.riftnada()
+  local what = matches[2]
+  if rift.invcontents[what] then rift.invcontents[what] = 0 end
+
+  rift.update_riftlabel()
+  rift.checkprecache()
+end
+
+function svo.riftate()
+  -- if conf.aillusion and not (usingbal'herb' or usingbal'moss') then
+  --   resetFormat()
+  --   echoLink(" (i)", '', "Precache considered this to be an illusion (because the system isn't eating anything right now) and didn't count the herb used", true)
+  --   return
+  -- end
+
+  local what = matches[2]
+
+  if not rift.herbs_singular[what] then return end
+
+  if not svo.conf.arena then
+    rift.invcontents[rift.herbs_singular[what]] = rift.invcontents[rift.herbs_singular[what]] - 1
+    if rift.invcontents[rift.herbs_singular[what]] &lt; 0 then rift.invcontents[rift.herbs_singular[what]] = 0 end
+  end
+
+  rift.update_riftlabel()
+  rift.checkprecache()
+end
+
+do
+  local oldCL = createLabel
+  function createLabel(name, posX, posY, width, height, fillBackground)
+    oldCL(name, 0, 0, 0, 0, fillBackground)
+    moveWindow(name, posX, posY)
+    resizeWindow(name, width, height)
+  end
+end
+
+function svo.toggle_riftlabel(toggle)
+  if (type(toggle) == 'nil' and svo.riftlabel.hidden) or (type(toggle) ~= 'nil' and toggle) then
+    svo.riftlabel:show()
+    rift.update_riftlabel()
+    svo.echof("Spawned the herbstat window.")
+    svo.conf.riftlabel = true
+    raiseEvent("svo config changed", 'riftlabel')
+  elseif (type(toggle) == 'nil' and not svo.riftlabel.hidden) or (type(toggle) ~= 'nil' and not toggle) then
+    svo.riftlabel:hide()
+    svo.echof("Hid the herbstat window.")
+    svo.conf.riftlabel = false
+    raiseEvent("svo config changed", 'riftlabel')
+  end
+end
+
+if not svo.systemloaded then
+svo.signals.systemstart:add_post_emit(function ()
+  if lfs.attributes(getMudletHomeDir() .. "/svo/rift+inv/rift") then
+    table.load(getMudletHomeDir() .. "/svo/rift+inv/rift", rift.riftcontents)
+  end
+  if lfs.attributes(getMudletHomeDir() .. "/svo/rift+inv/inv") then
+    table.load(getMudletHomeDir() .. "/svo/rift+inv/inv", rift.invcontents)
+  end
+
+  -- reset, because we can't have herbs in inv at login
+  rift.resetinvcontents()
+
+  for mode, _ in pairs(svo.defdefup) do
+    rift.precachedata[mode] = {}
+
+    for _,herb in pairs(rift.herbsminerals) do
+      rift.precachedata[mode][herb] = 0
+    end
+
+    if mode == 'combat' then
+      rift.precachedata[mode].irid = 1
+      rift.precachedata[mode].kelp = 1
+      rift.precachedata[mode].bloodroot = 1
+    end
+  end
+
+
+
+  local tmp = {}
+  if lfs.attributes(getMudletHomeDir() .. "/svo/rift+inv/precachedata") then
+    table.load(getMudletHomeDir() .. "/svo/rift+inv/precachedata", tmp)
+    svo.update(rift.precachedata, tmp)
+    rift.precache = rift.precachedata[svo.defs.mode] or {}
+
+    -- moss was removed, get rid of it
+    for _, m in pairs(rift.precachedata) do
+      if m.moss then m.moss = nil end
+    end
+  end
+  rift.update_riftlabel()
+end, 'post emit rift handling')
+end
+
+svo.signals.enablegmcp:connect(function()
+  sendGMCP([[Core.Supports.Add ["IRE.Rift 1"] ]])
+end, 'enable gmcp rift tracking')
+
+svo.signals.saveconfig:connect(function ()
+  svo.tablesave(getMudletHomeDir() .. "/svo/rift+inv/rift", rift.riftcontents)
+  svo.tablesave(getMudletHomeDir() .. "/svo/rift+inv/inv", rift.invcontents)
+  svo.tablesave(getMudletHomeDir() .. "/svo/rift+inv/precachedata", rift.precachedata)
+end, 'save rift config')
+
+
+sk.checkaeony()
+svo.signals.changecuring:emit()
+
+end -- end of svo rift loader
+
+if svo.systemloaded then svo.loader.rift() end</script>
+			<eventHandlerList />
+		</Script>
+		<Script isActive="yes" isFolder="no">
+			<name>Parry</name>
+			<packageName></packageName>
+			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
+
+-- Svof is licensed under a
+-- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+-- You should have received a copy of the license along with this
+-- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+svo = svo or {}; svo.loader = svo.loader or {}
+svo.loader.parry = function()
+
+local sys, affs, signals = svo.sys, svo.affs, svo.signals
+local me, sps, sp_config = svo.me, svo.sps, svo.sp_config
+local sp = svo.sp
+
+svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/config")
+
+-- check if we need to adjust parrying on any limbs or not
+function svo.check_sp_satisfied()
+  if sps.something_to_parry() then -- have we asked for any limbs to be parried?
+    for name, limb in pairs(sp_config.parry_shouldbe) do
+      if limb ~= sps.parry_currently[name] then
+       sys.sp_satisfied = false; return
+      end
+    end
+  elseif type(sp_config.parry) == 'string' and sp_config.parry == 'manual' then
+    -- check if we need to unparry in manual
+    for limb, status in pairs(sps.parry_currently) do
+      if status ~= sp_config.parry_shouldbe[limb] then
+       sys.sp_satisfied = false; return
+      end
+    end
+  elseif sp_config.priority[1] and not sps.parry_currently[sp_config.priority[1]] then
+    sp_config.parry_shouldbe[sp_config.priority[1]] = true
+    sys.sp_satisfied = false; return
+  end
+  sys.sp_satisfied = true
+end
+
+svo.sp_limbs = {
+  head = true,
+  torso = true,
+  ["right arm"] = true,
+  ["left arm"] = true,
+  ["right leg"] = true,
+  ["left leg"] = true
+}
+local sp_limbs = svo.sp_limbs
+
+sps.sp_fillup = function ()
+  local t = {}
+  for limb, _ in pairs(sp_limbs) do
+    t[limb] = false
+  end
+  return t
+end
+
+if table.is_empty(sp_config) then
+  svo.sp_config = { parry = "", priority = {}, parry_actionlevel = {}, parry_shouldbe = sps.sp_fillup() }
+	sp_config = svo.sp_config
+	
+  sps.parry_currently = sps.sp_fillup()
+end
+
+me.parry_currently = sps.parry_currently
+
+sps.parry_options = {
+  full = "Parry the currently damaged limb (one that's mangled/mutilated).",
+  lasthit = "Parry the last hit limb (ie got hit left leg - will parry left leg).",
+  ["lasthit opposite limb"] = "Parry the opposite of the last hit limb, by limbs (ie got hit left leg - will parry right  leg).",
+  ["lasthit opposite side"] = "Parry the opposite of the last hit limb, by sides (ie got hit left leg - will parry left arm).",
+  manual = "Allows you to manually control parry with the p* aliases."
+}
+
+-- ask users to click on limbs for priority first, then ask for each limb in order to select action level,
+-- then ask what to do with stancing when the action level happens, and what to do with parrying
+sps.install = {
+  {
+    check = function () return #sp_config.priority == table.size(sp_limbs) end,
+    act = function (step)
+      svo.echof("Step %d - assign priorities to the limbs. Click on the following in the order of most important, or use the %s command:", step, svo.green("vp nextprio &lt;limb&gt;"))
+      echo("  " .. svo.oneconcat(sp_limbs))
+          resetFormat()
+          deselect()
+      for name, _ in pairs(sp_limbs) do
+        moveCursor('main',  1, getLineNumber()+2)
+        if selectString(name, 1) ~= -1 then
+          setLink('svo.sp.nextprio ("' .. name .. '", true)', 'Set ' .. name .. ' as the next limb in importance.')
+          resetFormat()
+          deselect()
+        end
+      end
+      echo"\n"
+    end},
+  --[[{
+    check = function ()
+        for limb,_ in pairs(sp_limbs) do
+          if sp_config.parry_actionlevel[limb] == nil then return false end
+        end
+        return true
+      end,
+    act = function (step)
+      local function makecodestrings(name)
+        local t = {}
+        t[#t+1] = 'svo.sp.setparrylevel("'..name..'", false, true)'
+        for amount = 275, 2000, 275 do
+          t[#t+1] = 'svo.sp.setparrylevel("'..name..'", '..amount..', true)'
+        end
+        return t
+      end
+      local function maketooltipstrings(name)
+        local t = {}
+        t[#t+1] = 'Set ' .. name .. ' to ' .. 'none'
+        for amount = 275, 2000, 275 do
+          t[#t+1] = 'Set ' .. name .. ' to ' .. amount
+        end
+        return t
+      end
+
+
+      svo.echof("Step %d - assign a level above which parry should act for for each limb by right-clicking, or use the %s command:", step, svo.green("vp parrylevel &lt;limb&gt; &lt;amount, or 'none'&gt;"))
+      echo "  "
+      for name, _ in pairs(sp_limbs) do
+        echoPopup(name, makecodestrings(name), maketooltipstrings(name))
+        echo(" ")
+      end
+      echo"\n"
+    end},
+]]
+  {
+    check = function () return sp_config.parry ~= "" end,
+    act = function (step)
+      svo.echof("Step %d - decide what parry strategy to use when a limb is over the limit by clicking on it, or using the %s command:", step, svo.green("vp parrystrat &lt;strategy&gt;"))
+      echo "  "
+      for name, tooltip in pairs(sps.parry_options) do
+        echoLink(name, 'svo.sp.setparry ("' .. name .. '", true)', tooltip)
+        echo " "
+      end
+      echo"\n"
+    end},
+
+}
+
+sps.installnext = function()
+  if not sps.settingup then return end
+  for i, c in ipairs(sps.install) do
+    if not c.check() then
+      echo"\n"
+      c.act(i)
+      return
+    end
+  end
+
+  sps.settingup = nil
+  svo.echof("Parry setup done :)")
+end
+
+
+function sp.setup()
+  sp_config = { parry = "", priority = {}, parry_actionlevel = {}, parry_shouldbe = sps.sp_fillup() }
+  sps.settingup = true
+
+  sps.installnext()
+end
+
+function sp.nextprio(limb, echoback)
+  local sendf
+  if echoback then sendf = svo.echof else sendf = svo.errorf end
+  local prios = sp_config.priority
+
+  if not sp_limbs[limb] then
+    sendf("Sorry, %s isn't a proper limb name. They are:\n  %s", limb, svo.oneconcat(sp_limbs))
+    return; end
+
+  if svo.contains(prios, limb) then
+    sendf("%s is already in the list.", limb); return; end
+
+  prios[#prios+1] = limb
+  if echoback then
+    svo.echof("%s added; current list: %s", limb, table.concat(prios, ", "))
+  end
+
+  if #prios == table.size(sp_limbs) then sps.installnext() end
+end
+
+function sp.setparry(option, echoback)
+  local sendf
+  if echoback then sendf = svo.echof else sendf = svo.errorf end
+
+  if not option then
+    sendf("Possible options are:")
+    echo"  "
+    for name, tooltip in pairs(sps.parry_options) do
+      echoLink(name, 'svo.sp.setparry ("' .. name .. '", true)', tooltip)
+      echo "   "
+    end
+    echo'\n'
+    svo.showprompt()
+    return
+  elseif not sps.parry_options[option] then
+    sendf("Sorry, %s isn't a valid option for parry. They are:")
+    echo"  "
+    for name, tooltip in pairs(sps.parry_options) do
+      echoLink(name, 'svo.sp.setparry ("' .. name .. '", true)', tooltip)
+      echo "   "
+    end
+    echo'\n'
+    svo.showprompt()
+    return
+  end
+
+  sp_config.parry = option
+  if echoback then
+    svo.echof("Will use the %s strategy for parry.", sp_config.parry)
+    svo.showprompt()
+  end
+
+  svo.sp_checksp()
+  sps.installnext()
+end
+
+function sp.setparrylevel(limb, amount, echoback)
+  local sendf
+  if echoback then sendf = svo.echof else sendf = svo.errorf end
+
+  if not sp_limbs[limb] then
+    sendf("Sorry, %s isn't a proper limb name. They are:\n  %s", limb, svo.oneconcat(sp_limbs))
+    return; end
+
+  if not tonumber(amount) and amount ~= false then
+    sendf("To what amount do you want to set %s to?", limb)
+    return; end
+
+  sp_config.parry_actionlevel[limb] = tonumber(amount)
+
+  if echoback then
+    svo.echof("Set the %s parry action level to %s", limb, amount and tostring(amount) or 'none')
+  end
+
+  for limbname,_ in pairs(sp_limbs) do
+    if sp_config.parry_actionlevel[limbname] == nil then return end
+  end
+  sps.installnext()
+end
+
+function svo.sp_setparry(what, echoback)
+  local sendf
+  if echoback then sendf = svo.echof else sendf = svo.errorf end
+
+  local t = {
+    h = 'head',
+    tt = 'torso',
+    rl = "right leg",
+    ll = "left leg",
+    ra = "right arm",
+    la = "left arm",
+    n = 'nothing'
+  }
+
+  svo.assert(t[what], "invalid short letter for svo.sp_setparry", sendf)
+
+  for limb, _ in pairs(sp_limbs) do
+    if limb == t[what] then sp_config.parry_shouldbe[limb] = true
+      else sp_config.parry_shouldbe[limb] = false end
+  end
+
+  svo.sp_checksp()
+  svo.make_gnomes_work()
+end
+
+sp.show = function ()
+  svo.echof("Parry report:")
+
+  --[[svo.echof("Action levels:")
+  for limb, level in pairs(sp_config.parry_actionlevel) do
+    echo"  " svo.echof("%s: parry %s", limb, tostring(level))
+  end]]
+
+  svo.echof("Limb priorities: %s", table.concat(sp_config.priority, ", "))
+  svo.echof("Parry strategy: %s (currently parrying: %s)", type(sp_config.parry) == 'string' and sp_config.parry or "custom function",
+
+  (function ()
+    local parrying_list = {}
+    for limb, parrying in pairs(sp_config.parry_shouldbe) do
+      if parrying then parrying_list[#parrying_list+1] = limb end
+    end
+
+    return table.concat(parrying_list, ", ") end)())
+end
+
+svo.sp_checksp = function ()
+  -- check parry
+  -- see if any priories have been set for strategies that require them
+  local prios, priosset = sp_config.priority, true
+  if type(prios) ~= 'table' then
+    priosset = false
+  end
+
+  if priosset and sp_config.parry == 'full' then
+    local alreadyset
+    for i = 1, #prios do
+      local limb = prios[i]
+      if not alreadyset and type(sp_config.parry_actionlevel[limb]) == 'number' and (affs['mangled'..limb] or (limb == 'head' and (affs.serioustrauma or affs.mildtrauma)) or (limb == 'torso' and (affs.mildconcussion or affs.seriousconcussion))) then
+        sp_config.parry_shouldbe[limb] = true
+        alreadyset = true
+      else
+        sp_config.parry_shouldbe[limb] = false
+      end
+    end
+
+  elseif sp_config.parry == 'lasthit' then
+    for limb, _ in pairs(sp_config.parry_shouldbe) do
+      if limb == me.lasthitlimb then
+        sp_config.parry_shouldbe[limb] = true
+      else
+        sp_config.parry_shouldbe[limb] = false
+      end
+    end
+
+  elseif sp_config.parry == "lasthit opposite limb" then
+    local t = {
+      head = 'torso',
+      torso = 'head',
+      ["right arm"] = "left arm",
+      ["left arm"] = "right arm",
+      ["right leg"] = "left leg",
+      ["left leg"] = "right leg"
+    }
+
+    local wanted = t[me.lasthitlimb]
+
+    if wanted then
+      for limb, _ in pairs(sp_config.parry_shouldbe) do
+        if limb == wanted then
+          sp_config.parry_shouldbe[limb] = true
+        else
+          sp_config.parry_shouldbe[limb] = false
+        end
+      end
+    end
+
+  elseif sp_config.parry == "lasthit opposite side" then
+    local t = {
+      head = 'torso',
+      torso = 'head',
+      ["right arm"] = "right leg",
+      ["left arm"] = "left leg",
+      ["right leg"] = "right arm",
+      ["left leg"] = "left arm"
+    }
+
+    local wanted = t[me.lasthitlimb]
+
+    if wanted then
+      for limb, _ in pairs(sp_config.parry_shouldbe) do
+        if limb == wanted then
+          sp_config.parry_shouldbe[limb] = true
+        else
+          sp_config.parry_shouldbe[limb] = false
+        end
+      end
+    end
+
+  elseif type(sp_config.parry) == 'function' then
+    local s,m = pcall(sp_config.parry)
+    if not s then svo.echof("Your custom parry function had a problem:\n  %s", m) end
+  end
+
+  -- check if we need to adjust our parry
+  svo.check_sp_satisfied()
+
+  signals.after_lifevision_processing:block(svo.sp_checksp)
+end
+
+-- check custom parry functions whenever we gain or lose an aff
+-- implemented in another function and not svo.sp_checksp, because of https://github.com/katcipis/luanotify/issues/24
+sps.checkcustomparry = function()
+  if type(sp_config.parry) == 'function' then
+    sp_config.parry()
+
+    -- check if we need to adjust our parry
+    svo.check_sp_satisfied()
+  end
+end
+signals.svogotaff:connect(sps.checkcustomparry, 'check parry when afflicted')
+signals.svolostaff:connect(sps.checkcustomparry, 'check parry when cured')
+-- public API
+svo.checkcustomparry = sps.checkcustomparry
+
+signals.after_lifevision_processing:connect(svo.sp_checksp, 'check if we need to change parry on prompt')
+signals.after_lifevision_processing:block(svo.sp_checksp)
+
+sps.something_to_parry = function ()
+  for _, shouldparry in pairs(sp_config.parry_shouldbe) do
+    if shouldparry then return true end
+  end
+
+  return false -- don't unparry if we have all zero's as shouldparry
+end
+
+signals.saveconfig:connect(function () svo.tablesave(getMudletHomeDir() .. "/svo/config/sp_config", sp_config) end, 'save parry config')
+
+local sp_config_path = getMudletHomeDir() .. "/svo/config/sp_config"
+
+if lfs.attributes(sp_config_path) then
+  local ok, msg = pcall(table.load,sp_config_path, sp_config)
+  if not ok then
+    os.remove(sp_config_path)
+    tempTimer(10, function()
+      svo.echof("Your parry config file was corrupted - I've deleted it so the system can load other stuff OK. You'll need to set the parry options again with vconfig sp. (%q)", msg)
+    end)
+  end
+end
+
+end -- end of svo parry loader
+
+if svo.systemloaded then svo.loader.parry() end</script>
+			<eventHandlerList />
+		</Script>
+		<Script isActive="yes" isFolder="no">
+			<name>Priorities</name>
+			<packageName></packageName>
+			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
+
+-- Svof is licensed under a
+-- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+-- You should have received a copy of the license along with this
+-- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+
+--[[ Logic: keep the prios embedded in the svo.dict.*.*.spriority/svo.dict.*.*.aspriority, don't keep a table
+      of it's own. When exporting/importing, create such tables.]]
+
+svo = svo or {}; svo.loader = svo.loader or {}
+svo.loader.prio = function()
+
+local sys, signals, sk, prio = svo.sys, svo.signals, svo.sk, svo.prio
+
+svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/prios")
+
+function prio.export (name, options, echoback)
+  local sendf; if echoback then sendf = svo.echof end
+  svo.assert(name, "what name do you want to save this list as?", sendf)
+
+  -- kv table of what to export
+  local to_export = {
+    herb = {
+      prewrite = "Herb cures: ",
+    },
+    smoke = {
+      prewrite = "Smoke cures: ",
+    },
+    salve = {
+      prewrite = "Salve cures: ",
+    },
+    sip = {
+      prewrite = "Sipping balance: ",
+    },
+    purgative = {
+      prewrite = "Purgative cures: ",
+    },
+    physical = {
+      prewrite = "Balance or equilibrium actions: ",
+    },
+    focus = {
+      prewrite = "Focus cures: ",
+    },
+    moss = {
+      prewrite = "Moss balances (these don't really make sense to order): ",
+    },
+    misc = {
+      prewrite = "Miscallaneous actions: ",
+    },
+    slowcuring = {
+      prewrite = "Slow curing mode priorities: "
+    }
+  }
+
+  if not options or options == "" or options == " " then
+    for _, v in pairs(to_export) do
+      v.o = true
+    end
+  elseif type(options) == 'string' then
+    for w in string.gmatch(options, "%a+") do
+      if to_export[w] then to_export[w].o = true end
+    end
+  elseif type(options) == 'table' then
+    for _, w in ipairs(options) do
+      if to_export[w] then to_export[w].o = true end
+    end
+  end
+
+  --[[ generate a single table like so:
+  {
+    herb = {
+      'relapsing',
+      'paranoia',
+      'vapors',
+      ...
+    },
+
+    salve = {
+    ....
+    }
+
+  }
+
+  Writing out though, skip the initial whole table itself.
+  ]]
+
+  local data
+  local s = {
+    "-- Priorities list '".. name .. "' by ".. (sys.charname or "Unknown") .. ", exported @ " .. os.date().."\n",
+    "-- Note: The lower the priority in the list without a number, or the lower number - the more important the thing is. ie, things at the bottom of the list will get done before those on the top!"
+  }
+
+
+  for priority, priotbl in pairs(to_export) do
+    if priotbl.o then
+      if priority == 'slowcuring' then
+        data = svo.make_sync_prio_table("%s_%s")
+      else
+        data = svo.make_prio_table(priority)
+      end
+
+      s[#s+1] = "\n-- " .. priotbl.prewrite
+      s[#s+1] = priority .. " = " .. svo.pl.pretty.write(data)
+    end
+  end
+
+  s = table.concat(s, "\n")
+
+  svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/prios")
+  io.output(getMudletHomeDir() .. "/svo/prios/"..name, 'w')
+  io.write(s)
+  io.close()
+
+  if echoback then svo.echof("exported %s prio to %s", name, getMudletHomeDir() .. "/svo/prios/"..name) end
+  svo.debugf("exported %s prio to %s", name, getMudletHomeDir() .. "/svo/prios/"..name)
+end
+
+function prio.list(echoback)
+  local dir = getMudletHomeDir() .. "/svo/prios"
+  local list = {}
+
+  for file in lfs.dir(dir) do
+    if file ~= "." and file ~= ".." then
+      list[#list+1] = file
+    end
+  end
+
+  if echoback then
+    svo.echof("Priorities that we've got stored in '%s':\n  %s", dir, svo.concatand(list))
+  else
+    return list
+  end
+end
+
+-- returns the table of actions in a balance
+function prio.getlist(balance)
+  return svo.make_prio_table(balance)
+end
+
+-- returns a table of actions in a balance, sorted most important first, without gaps
+function prio.getsortedlist(balance)
+  -- get into table...
+  local data
+  if balance ~= 'slowcuring' then
+    data = svo.make_prio_table(balance)
+  else
+    data = svo.make_sync_prio_table("%s_%s")
+  end
+  local orderly = {}
+
+  -- create an indexed list of just the priorities only
+  for i,_ in pairs(data) do
+    orderly[#orderly+1] = i
+  end
+
+  -- invert the list, so actions are ordered most important first
+  table.sort(orderly, function(a,b) return a&gt;b end)
+
+  -- sort original keys usin the new sorting
+  local sortedprios = {}
+  for _, sortedprio in ipairs(orderly) do
+    sortedprios[#sortedprios+1] = data[sortedprio]
+  end
+
+  return sortedprios
+end
+
+-- returns the highest number used, and what uses it, in a balance
+function prio.gethighest(balance)
+  local t = svo.make_prio_table(balance)
+
+  -- there could be holes - can't use #
+  local maxprio, maxaction = 0
+  for prioname, action in pairs(t) do
+    if prioname &gt; maxprio then
+      maxprio = prioname
+      maxaction = action
+    end
+  end
+
+  return maxprio, maxaction
+end
+
+-- returns a sorted list of actions in a balance by priority
+function prio.sortlist(actions, balance)
+  svo.assert(type(actions) == 'table', "svo.prio.sortlist: actions must be an indexed table (a list)")
+  svo.assert(balance, "svo.prio.sortlist: in which balance do you want to check these actions in?")
+
+  table.sort(actions, function(a,b)
+    return svo.dict[a] and svo.dict[a][balance] and svo.dict[b] and svo.dict[b][balance] and
+      svo.dict[a][balance].aspriority &gt; svo.dict[b][balance].aspriority
+  end)
+
+  return actions
+end
+
+function prio.getaction(num, balance)
+  svo.assert(num and balance, "What number and balance to use?")
+  local data = svo.make_prio_table(balance)
+  return data[num]
+end
+
+function prio.getslowaction(num)
+  svo.assert(num, "What number to use?")
+  local data = svo.make_sync_prio_table("%s_%s")
+  if data[num] then
+    return data[num]:match("(%w+)_(%w+)")
+  end
+end
+
+-- inserts an action at balance and bumps all current actions down if necessary
+-- string, string, number -&gt; boolean
+-- inserts an action at balance and bumps all current actions down if necessary.
+-- because we're really only swapping items in the priority list and not inserting, we don't need to worry
+-- about items underflowing past 0 priority yet
+function prio.insert(action, balance, number, echoback)
+  number = tonumber(number)
+
+  if balance == 'balance' then balance = 'physical' end
+
+  if balance == 'slowcuring' then
+    local validaction, plainaction = svo.valid_sync_action(action)
+
+    if not validaction then return false, plainaction end
+  end
+
+  local function getpriotable(balancename)
+    if balancename ~= 'slowcuring' then
+      return svo.make_prio_table(balancename)
+    else
+      return svo.make_sync_prio_table("%s_%s")
+    end
+  end
+
+  local function insertat(actionname, balancename, newprio)
+    if balancename ~= 'slowcuring' then
+      svo.dict[actionname][balancename].aspriority = newprio
+    else
+      svo.dict[actionname][balancename].spriority = newprio
+    end
+    if echoback then svo.echof("Set %s's priority in %s balance to %d.", actionname, balancename, newprio) end
+    raiseEvent("svo prio changed", actionname, balancename, newprio, (balancename == 'slowcuring' and 'slowcuring'))
+  end
+
+  local t = getpriotable(balance)
+  local originalt = svo.deepcopy(t)
+
+  if balance ~= 'slowcuring' and not t then return nil, "no such balance: "..balance end
+
+  -- if nothing is in the desired index, then just insert. If something is, shuffle down first.
+  if not t[number] then
+    insertat(action, balance, number)
+  else
+    local function index_of(table, element)
+      for k,v in pairs(table) do
+        if v == element then return k end
+      end
+    end
+
+    -- remove from its current position
+    local oldnum = index_of(t, action)
+    t[oldnum] = nil
+
+    -- move everything below the old index (oldnum) one up
+    local newt = {}
+    for k,v in pairs(t) do
+      if k &lt;= oldnum then
+        newt[k+1] = v
+      else
+        newt[k] = v
+      end
+    end
+
+    -- copy items into a new table, one lower if they're at or below new index (number)
+    local l = {}
+    for k,v in pairs(newt) do
+      if k &lt;= number then -- if at or below - shuffle 1 down, unless it's at the previous position or below - then keep it
+        l[k-1] = v
+      else  -- if above: keep where it was
+        l[k] = v
+      end
+    end
+
+    l[number] = action -- insert our action back in
+    local action_prio = {} -- create an action-value list of the new priorities
+    for k,v in pairs(l) do action_prio[v] = k end
+
+    -- then read off our diff of new list and store away new prios.
+    local diff = svo.basictableindexdiff(originalt, l) -- obtain an indexed list of all the different positions
+    for _, a in pairs(diff) do
+      if balance ~= 'slowcuring' then
+        svo.dict[a][balance].aspriority = action_prio[a]
+        raiseEvent("svo prio changed", a, balance, action_prio[a])
+      else
+        local _, syncaction, syncbalance = svo.valid_sync_action(a)
+        svo.dict[syncaction][syncbalance].spriority = action_prio[a]
+        raiseEvent("svo prio changed", syncaction, syncbalance, action_prio[a], 'slowcuring')
+      end
+    end
+
+    if echoback then svo.echof("Set %s's priority in %s balance to %d.", action, balance, number) end
+  end
+
+  return true
+end
+
+function prio.getnumber(aff, balance)
+  svo.assert(aff and balance and svo.dict[aff] and svo.dict[aff][balance], "Such affliction/defence or balance doesn't exist")
+  return svo.dict[aff][balance].aspriority
+end
+
+function prio.cleargaps(balance, echoback)
+  -- sync mode
+  if balance == 'slowcuring' then
+    local data = svo.make_sync_prio_table("%s_%s")
+
+    local max=0
+    for k,_ in pairs(data) do
+      if k&gt;max then max=k end
+    end
+
+    local t, n = {}, 0
+
+    for i=1,max do
+      if data[i] then n=n+1 t[n]=data[i] end
+    end
+
+    -- create an action - prio table for retrieval of location using diffs
+    local action_prio = {}
+    for i = 1, #t do action_prio[t[i]] = i end
+
+    -- create a diff, using the old table first as it has no holes
+    local diff = svo.basictableindexdiff(t, data)
+
+    -- now only change &amp; notify for the delta differences
+    for _, a in pairs(diff) do
+      local _, syncaction, syncbalance = svo.valid_sync_action(a)
+      svo.dict[syncaction][syncbalance].spriority = action_prio[a]
+      raiseEvent("svo prio changed", syncaction, syncbalance, action_prio[a], 'slowcuring')
+    end
+
+    if echoback then svo.echof("Cleared all gaps for the slow curing prio.") end
+  -- normal modes
+  else
+    local data = svo.make_prio_table(balance)
+
+    local max=0
+    for k,_ in pairs(data) do
+      if k&gt;max then max=k end
+    end
+
+    local t, n = {}, 0
+
+    for i=1,max do
+      if data[i] then n=n+1 t[n]=data[i] end
+    end
+
+    -- create an action - prio table for retrieval of location using diffs
+    local action_prio = {}
+    for i = 1, #t do action_prio[t[i]] = i end
+
+    local diff = svo.basictableindexdiff(t, data)
+
+    for _, a in pairs(diff) do
+      svo.dict[a][balance].aspriority = action_prio[a]
+      raiseEvent("svo prio changed", a, balance, action_prio[a])
+    end
+
+    if echoback then svo.echof("Cleared all gaps for the %s prio.", balance) end
+  end
+  svo.showprompt()
+end
+
+function prio.usedefault(echoback)
+  local sendf; if echoback then sendf = svo.echof else sendf = function() end end
+
+  -- um. this fails for some reason on Windows.
+--[[  local s,m = os.remove(getMudletHomeDir() .. "/svo/prios/current")
+  if not s then svo.echof("Couldn't update because of: "..tostring(m)) return end]]
+
+  if prio.import('current', false, false, true) then
+    sendf("Updated to default priorities.")
+  else
+    sendf("Couldn't update to default priorities :|") end
+end
+
+function prio.import(name, echoback, report_errors, use_default)
+  local sendf; if echoback then sendf = svo.echof else sendf = function() end end
+
+  local filename
+  if not name then
+    filename = invokeFileDialog(true, "Select the priority list you'd like to import")
+    if filename == "" then
+      sendf("Cancelled; don't have anything to import.")
+      return
+    end
+  end
+
+  local path = filename or getMudletHomeDir() .. "/svo/prios/".. name
+
+  local importables = {
+    'herb',
+    'smoke',
+    'salve',
+    'sip',
+    'purgative',
+    'physical',
+    'focus',
+    'moss',
+    'misc',
+    'slowcuring',
+  }
+
+  local s
+  if name == 'current' and (use_default or not lfs.attributes(path)) then
+    io.input(svo.installationfolder() .. "/default_prios")
+    s = io.read("*a")
+  else
+    svo.assert(lfs.attributes(path), name .. " prio doesn't exist.", sendf)
+
+    io.input(path)
+    s = io.read("*all")
+  end
+
+  -- load file into our sandbox; credit to http://lua-users.org/wiki/SandBoxes
+  local i = {}
+  -- run code under environment
+  local function run(untrusted_code)
+    local untrusted_function, message = loadstring(untrusted_code)
+    if not untrusted_function then return nil, message end
+    setfenv(untrusted_function, i)
+    return pcall(untrusted_function)
+  end
+
+  local ok, m = run(s)
+  if not ok then sendf("There's a syntax problem in the prios file, we couldn't load it:\n  %s", m) return end
+
+  local function set(num, action, balance, priority)
+    if not (svo.dict[action] and svo.dict[action][balance]) then
+      if report_errors then
+        if not svo.dict[action] then sendf("Skipping %s, don't know such thing.", action) else
+          sendf("Skipping %s, it doesn't use %s balance.", action, balance) end
+      end
+    else
+      svo.dict[action][balance][priority] = num
+    end
+  end
+
+  -- create a snapshot of the before state for all balances, since dict_setup might mess with any
+  local beforestate = sk.getbeforestateprios()
+
+  local contains, sfind = table.contains, string.find
+  -- table i now contains subtables with all of our stuff
+  for balance,balancet in pairs(i) do
+    if contains(importables, balance) then
+      if balance == 'slowcuring' then
+        -- reset all current ones to zero
+        svo.clear_sync_prios()
+
+        for num, action in pairs(balancet) do
+          -- have to weed out action name _ balance name first
+          local _,_, actionname, balancename = sfind(action, '(%w+)_(%w+)')
+          set(num, actionname, balancename, 'spriority')
+        end
+      else
+        -- reset all current ones to zero
+        svo.clear_balance_prios(balance)
+        for num, action in pairs(balancet) do
+          set(num, action, balance, 'aspriority')
+        end
+      end
+    end
+  end
+  svo.dict_setup()
+  svo.dict_validate()
+
+  local afterstate = sk.getafterstateprios()
+  sk.notifypriodiffs(beforestate, afterstate)
+
+  if echoback then svo.echof("Imported %s prio list.", name) end
+  svo.debugf("imported %s prio.", name)
+  return true
+end
+
+signals.saveconfig:connect(function ()
+  prio.export('current')
+end, 'save prios on quit')
+
+signals.systemstart:connect(function ()
+  prio.import('current')
+end, 'load prios on start')
+
+end -- end of svo prio loader
+
+if svo.systemloaded then svo.loader.prio() end</script>
+			<eventHandlerList />
+		</Script>
+	</ScriptPackage>
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL>https://svof.github.io/svof/</helpURL>
+	</HelpPackage>
+</MudletPackage>
