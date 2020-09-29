@@ -3584,8 +3584,41 @@ end
 
 -- capture the incoming values for gmcp balance and eq
 signals.gmcpcharvitals:connect(function()
+  for _, balance in pairs{"balance", "equilibrium"} do
+    if svo.bals[balance] then svo["had_"..balance] = true end
+  end
+  
+  svo.bals.balance     = gmcp.Char.Vitals.bal == '1' and true or false
+  svo.bals.equilibrium = gmcp.Char.Vitals.eq == '1' and true or false
+  
+  svo.watch = svo.watch or {}
+
+if not svo.innews then
+  for _, balance in pairs{"balance", "equilibrium"} do
+    if svo["had_"..balance] and not svo.bals[balance] then
+      raiseEvent("svo lost balance", balance)
+
+      svo.watch["bal_"..balance] = svo.watch["bal_"..balance] or createStopWatch()
+      startStopWatch(svo.watch["bal_"..balance])
+    elseif not svo["had_"..balance] and svo.bals[balance] then
+      raiseEvent("svo got balance", balance)
+
+      if svo.watch["bal_"..balance] then
+        local s = stopStopWatch(svo.watch["bal_"..balance])
+        svo.stats["last"..balance] = s
+        if svo.conf.showbaltimes then svo.echotime(s) end
+      end
+    end
+
+    svo["had_"..balance] = nil
+  end
+end
+
+--svo.onprompt()
+  
   svo.newbals.balance     = gmcp.Char.Vitals.bal == '1' and true or false
   svo.newbals.equilibrium = gmcp.Char.Vitals.eq == '1' and true or false
+
 end, "new balance detection")
 
 -- feed the curing systems curing command through the system, so it can track actions
