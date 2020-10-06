@@ -6356,7 +6356,7 @@ stupidityCheckTable = {
     svo.checkingupdates = false
 
     local s = io.open(filename):read("*a")
-    if svo.version == s:trim() then
+    if tonumber(svo.version) &gt; tonumber(s:trim()) then
       if svo.announceupdates == "checking" then
         svo.announceupdates = nil
         svo.echof("You're all good! Latest version is %s and you're on it.", svo.version)
