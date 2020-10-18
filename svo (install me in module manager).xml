@@ -5350,7 +5350,7 @@ function svo.echotime(s, sameline)
   moveCursor(#getCurrentLine(), getLineNumber())
 
   fg("dark_slate_gray")
-  insertText(' ('..s..'s)')
+  insertText(' ('..(s or '?')..'s)')
   deselect()
   resetFormat()
   moveCursorEnd()
