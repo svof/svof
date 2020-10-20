@@ -6301,7 +6301,7 @@ end
 function commandCheck(what)
    local found = false
    for k,v in ipairs(lastCommands) do
-      if v:find(stupidityCheckTable[what]) then
+      if rex.match(v, stupidityCheckTable[what]) then
          found = true
       end
    end
@@ -6318,7 +6318,7 @@ stupidityCheckTable = {
 	["Your mind is whirling with thoughts - you cannot settle down to sleep."]                                          = "^sleep",
 	["You get down on one knee and serenade the world."]                                                                = "^serenade",
 	["You make a strangled meowing noise and quickly shut up in embarrassment."]                                        = "^meow",
-	["You burp obscenely."]                                                                                             = "^burp",
+	["You burp obscenely."]                                                                                             = "^(?:burp|belch)",
 	["You flap your arms madly."]                                                                                       = "^flap",
 	["You wouldn't want to drink a salve. It would not be tasty at all."]                                               = "^sip",
 	["Tears fill your eyes and begin to slowly run down your face."]                                                    = "^cry",
