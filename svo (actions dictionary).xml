@@ -11027,7 +11027,7 @@ if svo.haveskillset('metamorphosis') then
 
       oncompleted = function() defences.got('flame') end,
 
-      actions = {"summon flame", "summon fire"},
+      actions = {"summon flame", "summon fire", "ignite"},
       onstart = function()
         if not conf.transmorph and sk.inamorph() and not sk.inamorphfor'flame' then
           if defc.flame then send("relax flame", conf.commandecho) end
