@@ -12,9 +12,6 @@
 local args = {...}
 local systemversion = args[1]
 
--- copy to template
-os.execute([[cp 'svo (install the zip, not me).xml' 'svo template/svo (install the zip, not me).xml']])
-
 -- update version in docs
 io.input("doc/conf.py")
 t = io.read("*all")
@@ -26,18 +23,3 @@ io.write(t)
 
 -- make
 os.execute([[cd doc && sphinx-build -b html -d _build/doctrees . _build/html]])
-
--- update ndb cache listing
-package.path = package.path .. ";./doc/?.lua"
-gl     = require"parse_glossary"
-pretty = require"pl.pretty"
-
-local data = gl.striptrailinglines(gl.readfile("doc/namedb.rst"))
-
-local f = io.open([[svo template/ndb-help.lua]], "w+")
-f:write(pretty.write(data))
-f:close()
-
-local f = io.open([[own svo/ndb-help.lua]], "w+")
-f:write(pretty.write(data))
-f:close()
