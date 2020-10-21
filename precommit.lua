@@ -23,3 +23,13 @@ io.write(t)
 
 -- make
 os.execute([[cd doc && sphinx-build -b html -d _build/doctrees . _build/html]])
+
+package.path = package.path .. ";./doc/?.lua"
+gl     = require"parse_glossary"
+pretty = require"pl.pretty"
+
+local data = gl.striptrailinglines(gl.readfile("doc/namedb.rst"))
+
+local f = io.open([[ndb-help.lua]], "w+")
+f:write(pretty.write(data))
+f:close()
