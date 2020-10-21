@@ -1,6 +1,6 @@
 lua precommit.lua "$TRAVIS_TAG"
 
-zip svof.zip '*.xml' ndb-help.lua default_prios config.lua
+zip svof.zip ndb-help.lua default_prios config.lua *.xml
 
 stat=$?
 if [ $stat -ne 0 ]
