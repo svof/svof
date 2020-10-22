@@ -13838,7 +13838,6 @@ if svo.haveskillset('oppression') then
   basicdef('deathaura', "deathaura")
 end
 if svo.haveskillset('chivalry') then
-  basicdef('mastery', "mastery on", true, 'blademastery')
   basicdef('sturdiness', "stand firm", false, 'standingfirm')
   basicdef('weathering', 'weathering', true)
   basicdef('resistance', 'resistance', true)
@@ -13955,6 +13954,11 @@ end
 if svo.haveskillset('weaponmastery') then
   basicdef('deflect', 'deflect', true)
 end
+
+if svo.haveskillset('weaponmastery') and string.find(gmcp.Char.Vitals.charstats[4], "Dual Cutting") then
+  basicdef('mastery', "mastery on", true, 'blademastery')
+end
+
 if svo.haveskillset('subterfuge') then
   basicdef('scales', 'scales')
   basicdef('hiding', 'hide', false, 'hiding', true)
