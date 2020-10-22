@@ -1062,11 +1062,14 @@ end
   },
   waterbubble = {
     gamename = 'airpocket',
+    onservereignore = function()
+      return svo.me.class == "water Elemental Lady" or svo.me.class == "fire Elemental Lord"
+      end,
     herb = {
       def = true,
 
       isadvisable = function()
-        return not defc.waterbubble and ((sys.deffing and defdefup[defs.mode].waterbubble) or (conf.keepup and defkeepup[defs.mode].waterbubble)) and not affs.anorexia and me.is_underwater
+        return not defc.waterbubble and ((sys.deffing and defdefup[defs.mode].waterbubble) or (conf.keepup and defkeepup[defs.mode].waterbubble)) and not affs.anorexia and me.is_underwater and not (svo.me.class == "water Elemental Lady" or svo.me.class == "water Elemental Lord")
       end,
 
       eatcure = {'pear', 'calcite'},
