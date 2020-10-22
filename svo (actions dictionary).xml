@@ -1063,7 +1063,7 @@ end
   waterbubble = {
     gamename = 'airpocket',
     onservereignore = function()
-      return svo.me.class == "water Elemental Lady" or svo.me.class == "fire Elemental Lord"
+      return svo.me.class == "water Elemental Lady" or svo.me.class == "water Elemental Lord"
       end,
     herb = {
       def = true,
