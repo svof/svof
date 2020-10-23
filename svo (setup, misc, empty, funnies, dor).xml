@@ -512,7 +512,7 @@ signals.gmcpcharafflictionsremove:connect(function()
   if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
   gaffl[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
-  if svo.dict.unknownany.count >= 1 and not svo.affl[thisaff] then
+  if svo.dict.unknownany.count &gt;= 1 and not svo.affl[thisaff] then
     svo.valid.remove_unknownany(thisaff)
   end
   if svo.dict.sstosvoa[thisaff] then
@@ -2163,9 +2163,9 @@ end
 
 function svo.concatand(t)
   svo.assert(type(t) == 'table', 'svo.concatand: argument must be a table')
-
   if #t == 0 then return ''
   elseif #t == 1 then return t[1]
+  elseif #t == 2 then return t[1] .. " and " .. t[2]
   else
     return table.concat(t, ', ', 1, #t-1) .. ', and '..t[#t]
   end
