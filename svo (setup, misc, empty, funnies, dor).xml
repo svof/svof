@@ -458,6 +458,24 @@ signals.gmcpcharvitals:connect(function()
 end, 'update path and form')
 end
 
+if svo.haveskillset('weaponmastery') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local spec = val:match("^Spec: (.+)")
+      if spec then
+        me.knightspec = spec
+        break
+      end
+    end
+  end
+  if not me.knightspec then
+    me.knightspec = "None"
+  end
+end, 'update knight spec')
+end
+
+
 signals.gmcpiretimelist = signals.gmcpiretimelist or luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
   me.gametime = svo.deepcopy(gmcp.IRE.Time.List)
@@ -512,7 +530,7 @@ signals.gmcpcharafflictionsremove:connect(function()
   if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
   gaffl[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
-  if svo.dict.unknownany.count >= 1 and not svo.affl[thisaff] then
+  if svo.dict.unknownany.count &gt;= 1 and not svo.affl[thisaff] then
     svo.valid.remove_unknownany(thisaff)
   end
   if svo.dict.sstosvoa[thisaff] then
