@@ -7127,7 +7127,8 @@ function svo_init_system()
   -- addons that make use of the loader mechanism to load after the system is loaded
 	local addons = {
 	  'limbcounter',
-		'priestreporter'
+		'priestreporter',
+    'inker',
 	}
 	
 	-- Penlight is not loaded yet	
