@@ -51961,7 +51961,7 @@ setUnderline(true) setLink([[send("messages unread", false)]], "(svo): Read new 
 						<script>-- credit to: http://forums.mudlet.org/viewtopic.php?f=6&amp;t=1818#p9641
 local prefix = ""
 --if http(s), ftp, or telnet is not in the beginning of the string then http:// will be used instead to prefix the string.
-if not rex.find(matches[1], "^(https?:\/\/|ftps?|telnet)",1,"i") then
+if not rex.find(matches[1], "^(https?:\/\/|ftp|telnet)",1,"i") then
   prefix = "http://"
 end
 
