@@ -53996,7 +53996,7 @@ end)
 send(command)</script>
 				<command></command>
 				<packageName></packageName>
-				<regex>^(?:sit|sit .+)$</regex>
+				<regex>^(?:sit|sit .+|sit:.+|lie|lie .+|lie:.+)$</regex>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
 				<name>Sleep</name>
