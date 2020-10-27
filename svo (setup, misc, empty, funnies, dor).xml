@@ -458,24 +458,6 @@ signals.gmcpcharvitals:connect(function()
 end, 'update path and form')
 end
 
-if svo.haveskillset('weaponmastery') then
-signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      local spec = val:match("^Spec: (.+)")
-      if spec then
-        me.knightspec = spec
-        break
-      end
-    end
-  end
-  if not me.knightspec then
-    me.knightspec = "None"
-  end
-end, 'update knight spec')
-end
-
-
 signals.gmcpiretimelist = signals.gmcpiretimelist or luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
   me.gametime = svo.deepcopy(gmcp.IRE.Time.List)
@@ -2181,9 +2163,9 @@ end
 
 function svo.concatand(t)
   svo.assert(type(t) == 'table', 'svo.concatand: argument must be a table')
-
   if #t == 0 then return ''
   elseif #t == 1 then return t[1]
+  elseif #t == 2 then return t[1] .. " and " .. t[2]
   else
     return table.concat(t, ', ', 1, #t-1) .. ', and '..t[#t]
   end

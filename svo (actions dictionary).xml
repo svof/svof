@@ -13841,7 +13841,6 @@ if svo.haveskillset('oppression') then
   basicdef('deathaura', "deathaura")
 end
 if svo.haveskillset('chivalry') then
---  basicdef('mastery', "mastery on", true, 'blademastery')
   basicdef('sturdiness', "stand firm", false, 'standingfirm')
   basicdef('weathering', 'weathering', true)
   basicdef('resistance', 'resistance', true)
@@ -13957,8 +13956,6 @@ if svo.haveskillset('skirmishing') then
 end
 if svo.haveskillset('weaponmastery') then
   basicdef('deflect', 'deflect', true)
-end
-if svo.haveskillset('weaponmastery') and svo.me.knightspec == "Dual Cutting" then
   basicdef('mastery', "mastery on", true, 'blademastery')
 end
 if svo.haveskillset('subterfuge') then
