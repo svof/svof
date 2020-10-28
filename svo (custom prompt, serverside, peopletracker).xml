@@ -374,7 +374,7 @@ cpp.compute_stanceform_verbose = function()
 end
 end
 
-if svo.haveskillset('necromancy') then
+if svo.haveskillset('necromancy') or svo.haveskillset('oppression') then
 cpp.compute_essence = function()
   return stats.essence &gt; 0 and tostring(stats.essence) or ""
 end

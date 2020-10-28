@@ -458,11 +458,11 @@ signals.gmcpcharvitals:connect(function()
 end, 'update path and form')
 end
 
-if svo.haveskillset('necromancy') then
+if svo.haveskillset('necromancy') or svo.haveskillset('oppression') then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      local essence = val:match("^Essence: (%d+)$")
+      local essence = val:match("^Essence: (%d+)%%$")
       if essence then
         stats.essence = tonumber(essence)
         break
