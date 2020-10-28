@@ -1658,10 +1658,6 @@ if svo.haveskillset('chivalry') then
     on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
     def = "Your hands are gripping your wielded items tightly.",
     off = "You relax your grip."})
-  defs_data:set('mastery', { type = 'chivalry',
-    on = {"You have begun exercising true mastery of the blades through superior concentration.", "You already have mastery on."},
-    def = "You are concentrating on mastery of bladecraft.",
-    off = "You relax your mastery of the blades a bit, finding it too taxing to maintain."})
   defs_data:set('resistance', { type = 'chivalry',
     on = "You call aloud and feel an aura of resistance shroud itself silently about you.",
     def = "You are resisting magical damage."})
@@ -1677,6 +1673,10 @@ if svo.haveskillset('weaponmastery') then
   defs_data:set('deflect', { type = 'weaponmastery',
     on = "You will now attempt to deflect arrows toward less vital areas.",
     def = "You are attempting to deflect arrows toward less vital areas."})
+  defs_data:set('mastery', { type = 'weaponmastery',
+    on = {"You have begun exercising true mastery of the blades through superior concentration.", "You already have mastery on."},
+    def = "You are concentrating on mastery of bladecraft.",
+    off = "You relax your mastery of the blades a bit, finding it too taxing to maintain."})
 end
 
 if svo.haveskillset('shindo') then
