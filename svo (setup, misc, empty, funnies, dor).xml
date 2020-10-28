@@ -458,6 +458,23 @@ signals.gmcpcharvitals:connect(function()
 end, 'update path and form')
 end
 
+if svo.haveskillset('necromancy') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local essence = val:match("^Essence: (%d+)$")
+      if essence then
+        stats.essence = tonumber(essence)
+        break
+      end
+    end
+  end
+  if not stats.essence then
+    stats.essence = 0
+  end
+end, 'update necromancy essence')
+end
+
 signals.gmcpiretimelist = signals.gmcpiretimelist or luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
   me.gametime = svo.deepcopy(gmcp.IRE.Time.List)
