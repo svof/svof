@@ -475,6 +475,23 @@ signals.gmcpcharvitals:connect(function()
 end, 'update necromancy essence')
 end
 
+if svo.haveskillset('weaponmastery') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local momentum = val:match("^Momentum: (%d+)$")
+      if momentum then
+        stats.momentum = tonumber(momentum)
+        break
+      end
+    end
+  end
+  if not stats.momentum then
+    stats.momentum = 0
+  end
+end, 'update dual blunt momentum')
+end
+
 signals.gmcpiretimelist = signals.gmcpiretimelist or luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
   me.gametime = svo.deepcopy(gmcp.IRE.Time.List)
