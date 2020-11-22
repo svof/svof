@@ -2335,11 +2335,8 @@ function svo.lc_checklimbcounter()
       end
     )
   if not s then
-    echoLink(
-      "(e!)",
-      [[echo("The problem was: ']] .. tostring(m) .. [['")]],
-      'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.'
-    )
+    echoLink("(e!)", [[echo([=[The problem was: ']] .. tostring(m) .. [[']=])]], 'Oy - there was a problem. Click on this link '
+         ..'and submit a bug report with what it says along with a copy/paste of what you saw.')
   end
   hittable = {}
   disableTrigger("svolc Don't register")

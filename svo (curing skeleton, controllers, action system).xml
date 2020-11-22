@@ -1413,7 +1413,7 @@ sk.onprompt_beforeaction_do = function()
     local s,m = pcall(func)
     if not s then
     svo.debugf("sk.onprompt_beforeaction_do error from %s: %q", name, m)
-      echoLink("(e!)", "echo([[The problem was: "..tostring(name).." prompttrigger failed to work: "..string.format("%q", m).."]])", 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw if this isn\'t your own function.')
+      echoLink("(e!)", [[echo([=[The problem was: ']]..tostring(name)..[[' prompttrigger failed to work: ']]..tostring( m)..[[']=])]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw if this isn\'t your own function.')
     end
   end
   sk.onpromptfuncs = {}
@@ -1430,7 +1430,7 @@ sk.onprompt_beforelifevision_do = function()
   for name, func in pairs(sk.onpromptaifuncs) do
     local s,m = pcall(func)
     if not s then
-      echoLink("(e!)", "echo([[The problem was: "..tostring(name).." aiprompt failed to work: "..string.format("%q", m).."]])", 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw if this isn\'t your own function.')
+      echoLink("(e!)", [[echo([=[The problem was: ']]..tostring(name)..[[' aiprompt failed to work: ']]..tostring( m)..[[']=])]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw if this isn\'t your own function.')
     end
   end
   sk.onpromptaifuncs = {}
@@ -2368,8 +2368,8 @@ function svo.sk.checkrewield()
     end
   end)
   if not s then
-    echoLink("(e!)", [[echo("The problem was: ']]..tostring(m)..[['")]], 'Oy - there was a problem. Click on this link '
-      ..'and submit a bug report with what it says along with a copy/paste of what you saw.')
+    echoLink("(e!)", [[echo([=[The problem was: ']] .. tostring(m) .. [[']=])]], 'Oy - there was a problem. Click on this link '
+         ..'and submit a bug report with what it says along with a copy/paste of what you saw.')
   end
 
   sk.rewielddables = nil
@@ -2646,7 +2646,7 @@ function svo.onprompt()
 
   local s,m = pcall(signals.before_prompt_processing.emit, signals.before_prompt_processing)
   if not s then
-    echoLink("(e!)", [[svo.echof("The problem was: stuff before the actual work failed (]]..tostring(m)..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+    echoLink("(e!)", [[svo.echof([=[The problem was: stuff before the actual work failed (]]..tostring(m)..[[)]=])]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
   end
 
   svo.send_in_the_gnomes()
@@ -2658,7 +2658,7 @@ function svo.onprompt()
   local processing_status, processing_message = pcall(signals.after_prompt_processing.emit, signals.after_prompt_processing)
   if not processing_status then
     svo.debugf(processing_message)
-    echoLink("(e!)", string.format("svo.echof([[The problem was: stuff after the actual work failed (%q)]])", processing_message), 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+    echoLink("(e!)", [[svo.echof([=[The problem was: stuff after the actual work failed (]]..processing_message..[[)]=])]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
   end
 
   if conf.showchanges and conf.commandecho and conf.commandechotype ~= 'fancynewline' then sk.showstatchanges() end
@@ -3001,7 +3001,7 @@ svo.prompt_stats = function ()
   end)
 
   if not s then
-    echoLink("(e!)", [[echo("The problem was: prompt vitals function failed - (]]..tostring(m)..[[). Maybe the system isn't installed yet?")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+    echoLink("(e!)", [[echo([=[The problem was: prompt vitals function failed - (]]..tostring(m)..[[). Maybe the system isn't installed yet?]=])]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
   end
 end
 
@@ -3308,7 +3308,7 @@ function svo.cnrl.processusercommand(what, now)
       _G.sendAll = function() end
       local s,m = pcall(svo.doaction, sys.input_to_actions[what])
       if not s then
-        echoLink("(e!)", [[svo.echof("The problem was: re-mapping commands to system actions failed: (]]..tostring(m)..[[)")]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
+        echoLink("(e!)", [[svo.echof([=[The problem was: re-mapping commands to system actions failed: (]]..tostring(m)..[[)]=])]], 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.')
       end
       _G.send = oldsend
       svo.sendc = oldsendc
@@ -3743,9 +3743,9 @@ svo.doaction = function(arg1, arg2)
   local s,m = pcall(act.onstart)
   if not s then
     debugf("error from onstart(): "..m)
-    echoLink("(e!)", [[echo("The problem was: ]]..tostring(act.action_name)..[[ failed to start (]]..
+    echoLink("(e!)", [[echo([=[The problem was: ']]..tostring(act.action_name)..[[ failed to start (]]..
       tostring(m)..[[). If this is curing-related, please include that your curemethod is set to ]]..
-      tostring(conf.curemethod)..[[")]],
+      tostring(conf.curemethod)..[["]=])]],
       'Oy - there was a problem. Click this link to show the error')
   else
     -- action started successfully - start the stopwatch for it.
@@ -3855,11 +3855,11 @@ svo.actionclear = function(act)
     local s,m = pcall(act.oncancel)
     if not s then
       debugf("error from oncancel(): "..m)
-      echoLink("(e!)", [[echo("The problem was: ]]..tostring(act.action_name)..[[ failed to cancel (]]..tostring(m)..
-        [[). If this is curing-related, please include that your curemethod is set to ]]..tostring(conf.curemethod)..
-        [[")]],
+      echoLink("(e!)", [[echo([=[The problem was: ']]..tostring(act.action_name)..[[ failed to cancel (]]..
+        tostring(m)..[[). If this is curing-related, please include that your curemethod is set to ]]..
+        tostring(conf.curemethod)..[["]=])]],
         'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a '..
-        'copy/paste of what you saw.')
+          'copy/paste of what you saw.')
     end
   end
 end
@@ -3882,7 +3882,7 @@ svo.actionfinished = function(act, other_action, arg)
   if not result then
     debugf("error from completed() "..msg)
     if other_action then debugf("other_action was: %s", other_action) end
-    echoLink("(e!)", [[svo.echof("The problem was: ]]..tostring(act.action_name)..[[ failed to complete: ]]..msg..[[")]]
+    echoLink("(e!)", [[svo.echof([=[The problem was: ']]..tostring(act.action_name)..[[' failed to complete: ]]..msg..[[]=])]]
       , 'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a '..
         'copy/paste of what you saw.')
      end

@@ -783,7 +783,7 @@ sys.update_people_labels = function ()
   end)
 
   if not s then
-    echoLink("(e!)", string.format("echo([=[The problem was: %q]=])", m), 'Oy - there was a problem with the peopletracker. Click on this link and submit a bug report with what it says.')
+    echoLink("(e!)", [[echo([=[The problem was: ]]..m..[[]=])]], 'Oy - there was a problem with the peopletracker. Click on this link and submit a bug report with what it says.')
   end
 
   -- svo.echof("update took %s", stopStopWatch(drawwatch))
