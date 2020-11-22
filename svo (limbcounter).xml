@@ -1884,7 +1884,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo earth Elemental Lord limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -2335,11 +2335,8 @@ function svo.lc_checklimbcounter()
       end
     )
   if not s then
-    echoLink(
-      "(e!)",
-      [[echo("The problem was: ']] .. tostring(m) .. [['")]],
-      'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a copy/paste of what you saw.'
-    )
+    echoLink("(e!)", [[echo([=[The problem was: ']] .. tostring(m) .. [[']=])]], 'Oy - there was a problem. Click on this link '
+         ..'and submit a bug report with what it says along with a copy/paste of what you saw.')
   end
   hittable = {}
   disableTrigger("svolc Don't register")
