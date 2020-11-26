@@ -526,11 +526,11 @@ signals.gmcpcharafflictionsadd:connect(function()
   end
   if affname ~= "" then
     if svo.dict.sstosvoa[affname] then
-     svo.addaffdict(svo.dict[svo.dict.sstosvoa[affname]])
+      svo.addaffdict(svo.dict[svo.dict.sstosvoa[affname]])
     end
   end
   if affcount ~= nil and svo.dict[svo.dict.sstosvoa[affname]].count ~= nil then
-    svo.dict[svo.dict.sstosvoa[affname]].count = affcount
+     svo.dict[svo.dict.sstosvoa[affname]].count = affcount
   end
   if affcount ~= nil and table.contains(svo.affl, svo.dict[svo.dict.sstosvoa[affname]].name) then
     svo.updateaffcount(svo.dict[svo.dict.sstosvoa[affname]])
