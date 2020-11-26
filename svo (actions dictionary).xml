@@ -12208,15 +12208,8 @@ if svo.haveskillset('apostasy') then
       balanceful_act = true, def = true, undeffable = true,
 
       isadvisable = function()
-        if (not defc.baalzadeen and ((sys.deffing and defdefup[defs.mode].baalzadeen) or (conf.keepup and defkeepup[defs.mode].baalzadeen)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone) then
+        return (not defc.baalzadeen and ((sys.deffing and defdefup[defs.mode].baalzadeen) or (conf.keepup and defkeepup[defs.mode].baalzadeen)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone) or false
 
-          if (stats.mp &gt;= 100) then
-             return true
-           elseif not sk.gettingfullstats then
-             svo.fullstats(true)
-             svo.echof("Getting fullstats for Baalzadeen summoning...")
-           end
-        end
       end,
 
       oncompleted = function() defences.got('baalzadeen') end,
