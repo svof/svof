@@ -522,11 +522,11 @@ signals.gmcpcharafflictionsadd:connect(function()
   gaffl[thisaff] = true
   if conf.gmcpaffechoes then svo.echof("Gained aff %s", thisaff) end
   if svo.dict.sstosvoa[thisaff] then
-  svo.addaffdict(svo.dict[svo.dict.sstosvoa[thisaff]])
+   svo.addaffdict(svo.dict[svo.dict.sstosvoa[thisaff]])
   end
   if affname ~= "" then
     if svo.dict.sstosvoa[affname] then
-    svo.addaffdict(svo.dict[svo.dict.sstosvoa[affname]])
+     svo.addaffdict(svo.dict[svo.dict.sstosvoa[affname]])
     end
   end
   if affcount ~= nil and svo.dict[svo.dict.sstosvoa[affname]].count ~= nil then
