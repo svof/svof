@@ -522,7 +522,7 @@ signals.gmcpcharafflictionsadd:connect(function()
   gaffl[thisaff] = true
   if conf.gmcpaffechoes then svo.echof("Gained aff %s", thisaff) end
   if svo.dict.sstosvoa[thisaff] then
-   svo.addaffdict(svo.dict[svo.dict.sstosvoa[thisaff]])
+    svo.addaffdict(svo.dict[svo.dict.sstosvoa[thisaff]])
   end
   if affname ~= "" then
     if svo.dict.sstosvoa[affname] then
@@ -530,7 +530,7 @@ signals.gmcpcharafflictionsadd:connect(function()
     end
   end
   if affcount ~= nil and svo.dict[svo.dict.sstosvoa[affname]].count ~= nil then
-     svo.dict[svo.dict.sstosvoa[affname]].count = affcount
+    svo.dict[svo.dict.sstosvoa[affname]].count = affcount
   end
   if affcount ~= nil and table.contains(svo.affl, svo.dict[svo.dict.sstosvoa[affname]].name) then
     svo.updateaffcount(svo.dict[svo.dict.sstosvoa[affname]])
