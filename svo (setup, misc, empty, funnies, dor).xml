@@ -535,6 +535,8 @@ signals.gmcpcharafflictionsadd:connect(function()
   if affcount ~= nil and table.contains(svo.affl, svo.dict[svo.dict.sstosvoa[affname]].name) then
     svo.updateaffcount(svo.dict[svo.dict.sstosvoa[affname]])
   end
+  sk.checkaeony()
+  signals.changecuring:emit()
 end, 'track gained gmcp aff')
 
 signals.gmcpcharafflictionsremove:connect(function()
@@ -555,6 +557,8 @@ signals.gmcpcharafflictionsremove:connect(function()
   if affcount ~= nil and svo.dict[svo.dict.sstosvoa[affname]].count ~= nil then
     svo.dict[svo.dict.sstosvoa[affname]].count = 0
   end
+  sk.checkaeony()
+  signals.changecuring:emit()
 end, 'track lost gmcp aff')
 
 signals.gmcpcharafflictionslist:connect(function()
@@ -574,6 +578,8 @@ signals.gmcpcharafflictionslist:connect(function()
         svo.addaff(svoAffliction)
       end
     end
+  sk.checkaeony()
+  signals.changecuring:emit()
   end
 
   for key, val in pairs(preaffl) do
