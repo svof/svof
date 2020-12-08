@@ -2358,7 +2358,8 @@ function svo.sk.checkrewield()
     if svo.paragraph_length &gt; 1 and not svo.find_until_last_paragraph("You cease to prop up a tall totem pole.", 'exact') and
       not svo.find_until_last_paragraph("You lob", 'substring') and not svo.lifevision.l.breath_gone and
       not svo.find_until_last_paragraph("You begin to wield", 'substring') and
-      not svo.find_until_last_paragraph("You start to wield", 'substring') then
+      not svo.find_until_last_paragraph("You start to wield", 'substring') and
+      sk.rewielddables then
       -- we wish to rewield wieldables!
       svo.dict.rewield.rewieldables = deepcopy(sk.rewielddables)
       svo.debugf("dict.rewield.rewieldables - %s", svo.pl.pretty.write(svo.dict.rewield.rewieldables))
