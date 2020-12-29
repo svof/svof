@@ -5350,7 +5350,7 @@ function svo.echotime(s, sameline)
   moveCursor(#getCurrentLine(), getLineNumber())
 
   fg("dark_slate_gray")
-  insertText(' ('..s..'s)')
+  insertText(' ('..(s or '?')..'s)')
   deselect()
   resetFormat()
   moveCursorEnd()
@@ -6301,7 +6301,7 @@ end
 function commandCheck(what)
    local found = false
    for k,v in ipairs(lastCommands) do
-      if v:find(stupidityCheckTable[what]) then
+      if rex.match(v, stupidityCheckTable[what]) then
          found = true
       end
    end
@@ -6318,11 +6318,11 @@ stupidityCheckTable = {
 	["Your mind is whirling with thoughts - you cannot settle down to sleep."]                                          = "^sleep",
 	["You get down on one knee and serenade the world."]                                                                = "^serenade",
 	["You make a strangled meowing noise and quickly shut up in embarrassment."]                                        = "^meow",
-	["You burp obscenely."]                                                                                             = "^burp",
+	["You burp obscenely."]                                                                                             = "^(?:burp|belch)",
 	["You flap your arms madly."]                                                                                       = "^flap",
-	["You wouldn't want to drink a salve. It would not be tasty at all."]                                               = "^sip",
+	["You wouldn't want to drink a salve. It would not be tasty at all."]                                               = "^(?:sip|drink|sup|quaff) ",
 	["Tears fill your eyes and begin to slowly run down your face."]                                                    = "^cry",
-	["You drop to one knee, demonstrating your humility and respect."]                                                  = "^kneel",
+	["You drop to one knee, demonstrating your humility and respect."]                                                  = "^humblekneel",
 	["You pick your nose absently."]                                                                                    = "^picknose",
 	["You wail like an old woman."]                                                                                     = "^wail",
 	[ [[You grunt a bit and then let out a loud "OINK!"]] ]                                                             = "^oink",
@@ -6356,7 +6356,7 @@ stupidityCheckTable = {
     svo.checkingupdates = false
 
     local s = io.open(filename):read("*a")
-    if svo.version == s:trim() then
+    if tonumber(svo.version) &gt;= tonumber(s:trim()) then
       if svo.announceupdates == "checking" then
         svo.announceupdates = nil
         svo.echof("You're all good! Latest version is %s and you're on it.", svo.version)
@@ -6862,6 +6862,7 @@ end</script>
 			<script>--[[ start of a class management (tn class/tn classonly) + class-specifics tricks ]]
 
 svo.classes = {
+  ["air elemental"] = {fighting = false, skills = {"duress"}},
   alchemist    = {fighting = false, skills = {"transmutation", "physiology", "alchemy"}},
   apostate     = {fighting = false, skills = {"evileye", "necromancy", "apostasy"}},
   bard         = {fighting = false, skills = {"voicecraft", "swashbuckling", "harmonics"}},
@@ -6869,20 +6870,22 @@ svo.classes = {
   depthswalker = {fighting = false, skills = {"shadowmancy", "aeonics", "terminus"}},
   dragon       = {fighting = false, skills = {"dragoncraft"}},
   druid        = {fighting = false, skills = {"groves", "metamorphosis", "concoctions"}},
-	["earth elemental lord"] = {fighting = false, skills = {"sculpting"}},
-  infernal     = {fighting = false, skills = {"necromancy", "chivalry", "forging"}},
+  ["earth elemental"] = {fighting = false, skills = {"sculpting"}},
+  ["fire elemental"] = {fighting = false, skills = {"ignition"}},
+  infernal     = {fighting = false, skills = {"oppression", "chivalry", "weaponmastery"}},
   jester       = {fighting = false, skills = {"tarot", "pranks", "puppetry"}},
   magi         = {fighting = false, skills = {"elementalism", "crystalism", "enchantment"}},
   monk         = {fighting = false, skills = {"tekura", "kaido", "telepathy"}},
   occultist    = {fighting = false, skills = {"occultism", "tarot", "domination"}},
-  paladin      = {fighting = false, skills = {"chivalry", "devotion", "forging"}},
+  paladin      = {fighting = false, skills = {"chivalry", "devotion", "weaponmastery"}},
   priest       = {fighting = false, skills = {"spirituality", "devotion", "zeal"}},
-	psion        = {fighting = false, skills = {"weaving", "psionics", "emulation"}},
-  runewarden   = {fighting = false, skills = {"runelore", "chivalry", "forging"}},
+  psion        = {fighting = false, skills = {"weaving", "psionics", "emulation"}},
+  runewarden   = {fighting = false, skills = {"runelore", "chivalry", "weaponmastery"}},
   sentinel     = {fighting = false, skills = {"metamorphosis", "woodlore", "concoctions"}},
   serpent      = {fighting = false, skills = {"subterfuge", "venom", "hypnosis"}},
   shaman       = {fighting = false, skills = {"spiritlore", "curses", "vodun"}},
   sylvan       = {fighting = false, skills = {"elementalism", "groves", "concoctions"}},
+  ["water elemental"] = {fighting = false, skills = {"pervasion"}},
 }
 -- keeps track of what skills are actually enabled
 svo.enabledskills, svo.enabledclasses = svo.enabledskills or {}, svo.enabledclasses or {}
@@ -7124,7 +7127,8 @@ function svo_init_system()
   -- addons that make use of the loader mechanism to load after the system is loaded
 	local addons = {
 	  'limbcounter',
-		'priestreporter'
+		'priestreporter',
+    'inker',
 	}
 	
 	-- Penlight is not loaded yet	

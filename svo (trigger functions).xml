@@ -1413,6 +1413,9 @@ function svo.valid.defstrip(which)
   if svo.haveskillset('necromancy') then
     t["death aura"]             = 'deathaura'
   end
+  if svo.haveskillset('oppression') then
+    t["death aura"]             = 'deathaura'
+  end
   if svo.haveskillset('zeal') then
     t["earth spiritshield"]     = 'earthblessing'
     t["endurance spiritshield"] = 'enduranceblessing'
@@ -3135,6 +3138,7 @@ end
 -- normal smokes
 for _, smoke in pairs({
   valerian = {'disloyalty', 'slickness', 'manaleech'},
+  pear = {'pressure'},
   elm = {'deadening', 'hellsight', 'madness', 'aeon', 'tension'}}) do
   local other_smoke_cures = {}
 
@@ -3167,7 +3171,6 @@ for _, herb in pairs({
   ash        = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia'},
   bellwort   = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'},
   bloodroot  = {'paralysis', 'slickness'},
-	pear       = {'pressure'},
   ginger     = {'melancholichumour', 'cholerichumour', 'phlegmatichumour', 'sanguinehumour'},
   ginseng    = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy'},
   goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression', 'shadowmadness'},
@@ -3232,8 +3235,7 @@ end
 
 -- humour cures
 for _, herb in pairs({
-  ginger     = {'melancholichumour', 'cholerichumour', 'phlegmatichumour', 'sanguinehumour'},
-	pear       = {'pressure'}}) do
+  ginger     = {'melancholichumour', 'cholerichumour', 'phlegmatichumour', 'sanguinehumour'}}) do
   local other_humour_cures = {}
   for _, aff in pairs(herb) do
     other_humour_cures[#other_humour_cures+1] = svo.dict[aff].herb
@@ -3273,6 +3275,35 @@ for _, herb in pairs({
   end
 end
 
+--pressure cures
+
+for _, smoke in pairs({
+  pear = {'pressure'}}) do
+  local other_smoke_cures = {}
+
+  for _, aff in pairs(smoke) do
+    other_smoke_cures[#other_smoke_cures+1] = svo.dict[aff].smoke
+  end
+
+  for _, aff in pairs(smoke) do
+    valid['smoke_helped_'..aff] = function()
+      local result = svo.checkany(svo.dict[aff].smoke, unpack(other_smoke_cures))
+     -- aff twice in the svo.checkany list, first so most cases it gets returned first when it's the only aff
+
+      if not result then return end
+
+      svo.smoke_cure = true
+      if result.name == aff..'_smoke' then
+        lifevision.add(actions[aff..'_smoke'].p, 'cured')
+      else
+        svo.killaction(svo.dict[result.action_name].smoke)
+        svo.checkaction(svo.dict[aff].smoke, true)
+        lifevision.add(svo.dict[aff].smoke, 'cured')
+      end
+    end
+
+  end
+end
 -- common ninkharsag code across tree and passive cures
 function sk.ninkharsag()
   svo.checkaction(svo.dict.ninkharsag.gone, true)

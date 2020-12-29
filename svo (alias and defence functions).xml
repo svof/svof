@@ -1636,7 +1636,12 @@ if svo.haveskillset('necromancy') then
     def = "You have sworn vengeance upon those who would slay you.",
     off = {"You forswear your previous oath for vengeance, sudden forgiveness entering your heart.", "You have sworn vengeance against none, Necromancer."}})
 end
-
+if svo.haveskillset('oppression') then
+  defs_data:set('deathaura', { type = 'oppression',
+    on = {"You let the blackness of your soul pour forth.", "You already possess an aura of death."},
+    def = "You are emanating an aura of death.",
+    off = "Your aura of death has worn off."})
+end
 if svo.haveskillset('chivalry') then
   defs_data:set('weathering', { type = 'chivalry',
     on = "A brief shiver runs through your body.",
@@ -1653,10 +1658,6 @@ if svo.haveskillset('chivalry') then
     on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
     def = "Your hands are gripping your wielded items tightly.",
     off = "You relax your grip."})
-  defs_data:set('mastery', { type = 'chivalry',
-    on = {"You have begun exercising true mastery of the blades through superior concentration.", "You already have mastery on."},
-    def = "You are concentrating on mastery of bladecraft.",
-    off = "You relax your mastery of the blades a bit, finding it too taxing to maintain."})
   defs_data:set('resistance', { type = 'chivalry',
     on = "You call aloud and feel an aura of resistance shroud itself silently about you.",
     def = "You are resisting magical damage."})
@@ -1672,6 +1673,10 @@ if svo.haveskillset('weaponmastery') then
   defs_data:set('deflect', { type = 'weaponmastery',
     on = "You will now attempt to deflect arrows toward less vital areas.",
     def = "You are attempting to deflect arrows toward less vital areas."})
+  defs_data:set('mastery', { type = 'weaponmastery',
+    on = {"You have begun exercising true mastery of the blades through superior concentration.", "You already have mastery on."},
+    def = "You are concentrating on mastery of bladecraft.",
+    off = "You relax your mastery of the blades a bit, finding it too taxing to maintain."})
 end
 
 if svo.haveskillset('shindo') then
@@ -2084,13 +2089,12 @@ if svo.haveskillset('metamorphosis') then
           if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
-
       return true
     end,
     invisibledef = true,
-    on = {"You take a deep breath and realise your error - you sputter and engulf yourself in fire!", "You take a deep breath and feel the heat begin to build within you.", "You are ready to breathe yellow fire.", "You are ready to breathe blue fire.","You are ready to breathe white fire.", "With a roar you channel your reserves into your inner flame, instantly summoning forth a raging inferno."},
+    on = {"You take a deep breath and realise your error - you sputter and engulf yourself in fire!", "You take a deep breath and feel the heat begin to build within you.", "You may now breathe yellow fire.", "You may now breathe blue fire.","You may now breathe white fire.", "With a roar you channel your reserves into your inner flame, instantly summoning forth a raging inferno.","You are already summoning your flame.",},
     offr = [[^You inhale deeply, allowing the raging flames to build up inside you. With an earth-shaking roar, you release a white-hot jet of fire directly at \w+\.$]],
-    off = {"A small gout of fire erupts harmlessly from your mouth.", "You take a deep breath and realise your error - you sputter and engulf yourself in fire!", "Unleashing white-hot flames in a reckless burst of fire, you create a roaring inferno about your person.", "Your inner fire does not burn with sufficient intensity, Metamorph.", "You take a deep breath and realise your error - you splutter and engulf yourself in fire!"},
+    off = {"You can not relax a flame that you have not yet summoned.","A small gout of fire erupts harmlessly from your mouth.", "You take a deep breath and realise your error - you sputter and engulf yourself in fire!", "Unleashing white-hot flames in a reckless burst of fire, you create a roaring inferno about your person.", "Your inner fire does not burn with sufficient intensity, Metamorph.", "You take a deep breath and realise your error - you splutter and engulf yourself in fire!"},
     })
     --Wyvern, Basilisk
 
@@ -3495,6 +3499,13 @@ if svo.haveskillset('ignition') then
   def = "You have shrouded yourself with flame.",
   on = "A shroud of flame bursts into being, cloaking you in a burning aura of crimson.",
   off = "The burning shroud that cloaks you winks out of existence."})
+  
+  defs_data:set('torch', { type = 'ignition',
+  invisibledef = true,
+  on = "You flare your flames, burning ever brighter.",
+  off = {"The raging fire about your skin goes out.","Steam rises from your skin as the fires that plague you are extinguished.","Waves of elemental water surge over your body, quenching the tongues of flame."}
+  })
+  
 end
 
 if svo.haveskillset('duress') then

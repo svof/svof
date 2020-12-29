@@ -107,7 +107,7 @@ end</script>
 			<packageName></packageName>
 			<script>function mindnetPrio(_, module)
   if module ~= "svo (mindnet)" then return true end
-  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
+  tempTimer(0, [[setModulePriority("]]..module..[[", 0)]])
 end
 
 registerAnonymousEventHandler("sysInstall", "mindnetPrio", true)

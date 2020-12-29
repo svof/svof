@@ -302,7 +302,7 @@ fdistance = false</script>
 			<packageName></packageName>
 			<script>function fishdistPrio(_, module)
   if module ~= "svo (fishdist)" then return true end
-  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
+  tempTimer(0, [[setModulePriority("]]..module..[[", 0)]])
 end
 
 registerAnonymousEventHandler("sysInstall", "fishdistPrio",true)

@@ -22,7 +22,7 @@ svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (setup, misc, empty, funnies, dor)"] = 1
 svo.loader.setup = function()
 
-svo.version = "38"
+svo.version = "41"
 
 if Logger and not svo.systemloaded then
   Logger:LogSection('svof', {'timestamp', split = 5000, 'keepOpen'})
@@ -328,9 +328,10 @@ if lfs.attributes(my_class_location) then
 end
 
 me.class = me.class or (table.is_empty(my_class) and 'Infernal' or my_class.class)
+me.path = me.path or (table.is_empty(my_class)  and ""  or my_class.path)
 
 signals.saveconfig:connect(function()
-  svo.tablesave(my_class_location, {class = svo.me.class})
+  svo.tablesave(my_class_location, {class = svo.me.class, path = svo.me.path})
 end, 'save my class')
 
 
@@ -341,7 +342,7 @@ svo.knownskills = {
   blademaster              = {'twoarts', 'striking', 'shindo'},
   depthswalker             = {'shadowmancy','aeonics','terminus'},
   druid                    = {'groves', 'metamorphosis', 'reclamation'},
-  infernal                 = {'necromancy', 'chivalry', 'weaponmastery'},
+  infernal                 = {'oppression', 'chivalry', 'weaponmastery'},
   jester                   = {'tarot', 'pranks', 'puppetry'},
   magi                     = {'elementalism', 'crystalism', 'artificing'},
   monk                     = {'tekura', 'kaido', 'telepathy', 'shikudo'},
@@ -457,6 +458,40 @@ signals.gmcpcharvitals:connect(function()
 end, 'update path and form')
 end
 
+if svo.haveskillset('necromancy') or svo.haveskillset('oppression') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local essence = val:match("^Essence: (%d+)%%$")
+      if essence then
+        stats.essence = tonumber(essence)
+        break
+      end
+    end
+  end
+  if not stats.essence then
+    stats.essence = 0
+  end
+end, 'update necromancy essence')
+end
+
+if svo.haveskillset('weaponmastery') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local momentum = val:match("^Momentum: (%d+)$")
+      if momentum then
+        stats.momentum = tonumber(momentum)
+        break
+      end
+    end
+  end
+  if not stats.momentum then
+    stats.momentum = 0
+  end
+end, 'update dual blunt momentum')
+end
+
 signals.gmcpiretimelist = signals.gmcpiretimelist or luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
   me.gametime = svo.deepcopy(gmcp.IRE.Time.List)
@@ -480,21 +515,50 @@ signals.gmcpchardefencesadd = signals.gmcpchardefencesadd or luanotify.signal.ne
 
 signals.gmcpcharafflictionsadd:connect(function()
   local thisaff = gmcp.Char.Afflictions.Add.name
+  local affcount = tonumber(string.match(gmcp.Char.Afflictions.Add.name, "%d"))
+  local affname = ""
+  if string.match(gmcp.Char.Afflictions.Add.name, "%d") then affname = thisaff:sub(1, -5) end
   if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
   gaffl[thisaff] = true
   if conf.gmcpaffechoes then svo.echof("Gained aff %s", thisaff) end
   if svo.dict.sstosvoa[thisaff] then
     svo.addaffdict(svo.dict[svo.dict.sstosvoa[thisaff]])
   end
+  if affname ~= "" then
+    if svo.dict.sstosvoa[affname] then
+      svo.addaffdict(svo.dict[svo.dict.sstosvoa[affname]])
+    end
+  end
+  if affcount ~= nil and svo.dict[svo.dict.sstosvoa[affname]].count ~= nil then
+    svo.dict[svo.dict.sstosvoa[affname]].count = affcount
+  end
+  if affcount ~= nil and table.contains(svo.affl, svo.dict[svo.dict.sstosvoa[affname]].name) then
+    svo.updateaffcount(svo.dict[svo.dict.sstosvoa[affname]])
+  end
+  sk.checkaeony()
+  signals.changecuring:emit()
 end, 'track gained gmcp aff')
 
 signals.gmcpcharafflictionsremove:connect(function()
   local thisaff = gmcp.Char.Afflictions.Remove[1]
+  local affcount = tonumber(string.match(gmcp.Char.Afflictions.Remove[1], "%d"))
+  local affname = ""
+  if string.match(gmcp.Char.Afflictions.Remove[1], "%d") then affname = thisaff:sub(1, -5) end
+  --If level 1 of an affliction is removed, then the aff is completely gone
+  if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
   gaffl[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
+  if svo.dict.unknownany.count &gt;= 1 and not svo.affl[thisaff] then
+    svo.valid.remove_unknownany(thisaff)
+  end
   if svo.dict.sstosvoa[thisaff] then
     svo.rmaff(svo.dict[svo.dict.sstosvoa[thisaff]])
   end
+  if affcount ~= nil and svo.dict[svo.dict.sstosvoa[affname]].count ~= nil then
+    svo.dict[svo.dict.sstosvoa[affname]].count = 0
+  end
+  sk.checkaeony()
+  signals.changecuring:emit()
 end, 'track lost gmcp aff')
 
 signals.gmcpcharafflictionslist:connect(function()
@@ -514,6 +578,8 @@ signals.gmcpcharafflictionslist:connect(function()
         svo.addaff(svoAffliction)
       end
     end
+  sk.checkaeony()
+  signals.changecuring:emit()
   end
 
   for key, val in pairs(preaffl) do
@@ -634,6 +700,7 @@ signals.enablegmcp:add_post_emit(function ()
 end, 'post emit enablegmcp')
 end
 
+registerAnonymousEventHandler("sysLoadEvent", function () svo.logging_in = true signals.changecuring:emit() end)
 registerAnonymousEventHandler("sysConnectionEvent", function () svo.logging_in = true signals.changecuring:emit() end)
 
 signals.newroom = signals.newroom or luanotify.signal.new()
@@ -1165,6 +1232,8 @@ sk.priosbeforechange = sk.priosbeforechange or {}
 sk.priochangecache = sk.priochangecache or { special = {} }
 -- queue of commands to batch into a serverside alias for curing
 sk.sendqueue = sk.sendqueue or {}
+sk.affqueue = sk.affqueue or {}
+sk.defqueue = sk.defqueue or {}
 -- keep track of the length of the command - max command length in Achaea is 2048
 sk.sendqueuel = 18 -- 'setalias multicmd ' is 24 characters
 sk.achaea_command_max_length = 2048
@@ -2134,9 +2203,9 @@ end
 
 function svo.concatand(t)
   svo.assert(type(t) == 'table', 'svo.concatand: argument must be a table')
-
   if #t == 0 then return ''
   elseif #t == 1 then return t[1]
+  elseif #t == 2 then return t[1] .. " and " .. t[2]
   else
     return table.concat(t, ', ', 1, #t-1) .. ', and '..t[#t]
   end

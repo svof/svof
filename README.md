@@ -2,7 +2,7 @@
 Svof is an AI system for Achaea, an online MUD. It has advanced and adaptable curing capabilities, defence raising, name highlighting, limbcounter tracking and other features. It is the free and open-source version of what used to be Svo.
 
 # Downloading
-Download the system for free from [here](https://github.com/svof/svof/releases) :)
+Download the system for free from [here](https://github.com/svof/svof/archive/in-client-svof.zip) :)
 
 # Documentation
 See [documentation](https://svof.github.io/svof/) on how to install, use, and take advantage of the powerful system in your scripts.
