@@ -476,7 +476,7 @@ Colour               What colour it sets
 ^2                   proper colour for your current mana
 ^4                   proper colour for your current willpower
 ^5                   proper colour for your current endurance
-^6                   (monk or blademaster only) proper colour for your kai/shin (color is set depending on the ability to do to use kaido/shindo skills)
+^6                   (monk/blademaster/depthswalker only) proper colour for your kai/shin (color is set depending on the ability to do to use kaido/shindo skills) and also your age resource (color based on the amount of age)
 ^7                   proper color for the @power tag
 ^gametarget          proper colour for the gametarget's colour (red - nearly dead, orange_red - grievously wounded, dark_orange - injured, orange - slightly injured)
 ^r                   red
