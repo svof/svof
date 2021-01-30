@@ -7249,7 +7249,7 @@ end</script>
 	-- -4 to account for the .xml ending
 	basepath = basepath:sub(1, #basepath-#current_module_name-4)
 	
-	-- if Mudlet does not support syncModule(), ask the person to do it manually
+	-- if Mudlet does not support enableModuleSync(), ask the person to do it manually
 	local warn_manual_sync
 	
 	-- install missing modules &amp; sync if Mudlet supports it
@@ -7261,8 +7261,8 @@ end</script>
   		  -- workaround for https://github.com/Mudlet/Mudlet/issues/1223
   			tempTimer(0, function()
 				  installModule(basepath..modulename..".xml")
-					if syncModule then
-					  syncModule(modulename)
+					if enableModuleSync then
+					  enableModuleSync(modulename)
 					else
 					  if warn_manual_sync then killTimer(warn_manual_sync) end
 					  warn_manual_sync = tempTimer(0, svo.ask_to_sync_manual)
@@ -7273,7 +7273,7 @@ end</script>
 	end
 	
 	-- sync this module too
-	if syncModule then syncModule('svo (install me in module manager)') end
+	if enableModuleSync then enableModuleSync('svo (install me in module manager)') end
 end
 
 function svo.ask_to_sync_manual()

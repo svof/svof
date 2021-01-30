@@ -28,9 +28,7 @@ To install the system, make sure that you're connected to server **achaea.com** 
 
 .. image:: images/install-in-module-manager.png
 
-4) Tick sync for all modules.
-
-5) Done. Don't delete the unzipped files - that's where the system is always loaded from now.
+4) Done. Don't delete the unzipped files - that's where the system is always loaded from now.
 
 Now, use the **vinstall** command. This'll have the system run auto-configuration first - where it'll detect and enable skills that you have. After that, it'll ask you preference questions about the basic and essential options. Feel free to take your time to ask someone else as to what should you set an option to (like for sipping health). The installation otherwise is fairly painless - and you can always change any option you'd like later with the same command.
 
