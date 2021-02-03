@@ -10113,6 +10113,7 @@ end
     kola = 'kola',
     lament = false,
     lay = 'lay',
+    leechlogograph = 'traceleech',
     levitating = 'levitation',
     lifegiver = false,
     lifesteal = false,
@@ -10157,6 +10158,7 @@ end
     selfishness = 'selfishness',
     shadowveil = 'shadowveil',
     shield = 'shield',
+    shieldlogograph = 'traceshield',
     shikudoform = false,
     shinbinding = 'bind',
     shinclarity = 'clarity',
@@ -13767,7 +13769,74 @@ if svo.haveskillset('ignition') then
       }
     }
     end
+    
+if svo.haveskillset('memorium') then
+  svo.dict.traceshield = {
+  gamename = 'shieldlogograph',
+    physical = {
+      balanceful_act = true,
+      def = true,
+      
+        isadvisable = function ()
+        return (not defc.traceshield and ((sys.deffing and defdefup[defs.mode].traceshield) or (conf.keepup and defkeepup[defs.mode].traceshield)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
+      end,
+      
+        oncompleted = function ()
+          defences.got('traceshield')
+        end,
+        
+      actions = {"crux let me","trace shield me"},
+      onstart = function ()
+        svo.doaction("crux let me")
+        svo.doaction("trace shield me")
+      end
+      }
+    }
+    
+    svo.dict.traceleech = {
+    gamename = 'leechlogograph',
+    physical = {
+      balanceful_act = true,
+      def = true,
+      
+        isadvisable = function ()
+        return (not defc.traceleech and ((sys.deffing and defdefup[defs.mode].traceleech) or (conf.keepup and defkeepup[defs.mode].traceleech)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
+      end,
+      
+        oncompleted = function ()
+          defences.got('traceleech')
+        end,
+        
+      actions = {"trace leech me"},
+      onstart = function ()
+        send('trace leech me', conf.commandecho)
+      end
+      }
+    }
+    end
 
+if svo.haveskillset('charnel') then
+  svo.dict.accursedresolve = {
+    physical = {
+      balanceful_act = true,
+      def = true,
+      
+        isadvisable = function ()
+        return (not defc.accursedresolve and ((sys.deffing and defdefup[defs.mode].accursedresolve) or (conf.keepup and defkeepup[defs.mode].accursedresolve)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
+      end,
+      
+        oncompleted = function ()
+          defences.got('accursedresolve')
+        end,
+        
+      actions = {"accursed resolve"},
+      onstart = function ()
+        send('accursed resolve', conf.commandecho)
+      end
+      }
+    }
+    end
+    
 -- shortcut function to help create a dict action for a defence
 -- 'which' is the Svof defence name, use the same name in the 'Defences' script
 -- 'command' is the game command to raise the defence
