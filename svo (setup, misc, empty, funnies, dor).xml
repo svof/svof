@@ -2708,13 +2708,15 @@ local madness_affs = {'addiction', 'confusion', 'dementia', 'hallucinations', 'h
 
 for herbname, herbaffs in pairs({
   goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression',
-   'shadowmadness'},
-  kelp = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness'},
+   'shadowmadness', 'mycalium', 'sandfever'},
+  kelp = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'rebbies'},
   lobelia = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'spiritburn', 'tenderskin'},
-  ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy'},
+  ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy', 'flushings'},
   ash = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia'},
 	pear = {'pressure'},
-  bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'}
+  bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'},
+  bloodroot = {'paralysis', 'pyramides'}
+  
 }) do
   empty['eat_'..herbname] = function()
     svo.lostbal_herb()

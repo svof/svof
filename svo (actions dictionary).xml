@@ -8574,6 +8574,8 @@ end
       signals.newroom:unblock(sk.check_retardation)
     end
   },
+  
+  
   nomana = {
     waitingfor = {
       customwait = 30,
@@ -8588,6 +8590,194 @@ end
         svo.killaction(svo.dict.nomana.waitingfor)
         svo.make_gnomes_work()
       end
+    }
+  },
+  
+  mycalium = {
+    herb = {
+      isadvisable = function()
+        return affs.mycalium or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('mycalium')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'goldenseal', 'plumbum'},
+      onstart = function() svo.eat(svo.dict.mycalium.herb) end,
+
+      empty = function() empty.eat_goldenseal() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.mycalium)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('mycalium') end,
+    }
+  },
+  
+  flushings = {
+    herb = {
+      isadvisable = function()
+        return affs.flushings or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('flushings')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'ginseng', 'ferrum'},
+      onstart = function() svo.eat(svo.dict.flushings.herb) end,
+
+      empty = function() empty.eat_ginseng() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.flushings)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('flushings') end,
+    }
+  },
+
+  rebbies = {
+    herb = {
+      isadvisable = function()
+        return affs.rebbies or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('rebbies')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'kelp', 'aurum'},
+      onstart = function() svo.eat(svo.dict.rebbies.herb) end,
+
+      empty = function() empty.eat_kelp() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.rebbies)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('rebbies') end,
+    }
+  },
+  
+  sandfever = {
+    herb = {
+      isadvisable = function()
+        return affs.sandfever or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('sandfever')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'goldenseal', 'plumbum'},
+      onstart = function() svo.eat(svo.dict.sandfever.herb) end,
+
+      empty = function() empty.eat_goldenseal() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.sandfever)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('sandfever') end,
+    }
+  },
+  
+  pyramides = {
+    herb = {
+      isadvisable = function()
+        return affs.pyramides or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('pyramides')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'bloodroot', 'magnesium'},
+      onstart = function() svo.eat(svo.dict.pyramides.herb) end,
+
+      empty = function() empty.eat_bloodroot() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.pyramides)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('pyramides') end,
+    }
+  },
+
+  ensorcelled = {
+    waitingfor = {
+      customwait = 20,
+
+      isadvisable = function()
+        return false
+      end,
+
+      onstart = function() end,
+
+      oncompleted = function()
+        svo.rmaff('ensorcelled')
+        svo.make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.ensorcelled)
+        if not svo.actions.ensorcelled_waitingfor then svo.doaction(svo.dict.ensorcelled.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function()
+        svo.rmaff('ensorcelled')
+        svo.killaction(svo.dict.ensorcelled.waitingfor)
+      end,
+    }
+  },
+
+  latency = {
+    waitingfor = {
+      customwait = 13,
+
+      isadvisable = function()
+        return false
+      end,
+
+      onstart = function() end,
+
+      oncompleted = function()
+        svo.rmaff('latency')
+        svo.make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.latency)
+        if not svo.actions.latency_waitingfor then svo.doaction(svo.dict.latency.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function()
+        svo.rmaff('latency')
+        svo.killaction(svo.dict.latency.waitingfor)
+      end,
     }
   },
 
@@ -13785,10 +13975,9 @@ if svo.haveskillset('memorium') then
           defences.got('traceshield')
         end,
         
-      actions = {"crux let me","trace shield me"},
+      actions = {"trace shield me"},
       onstart = function ()
-        svo.doaction("crux let me")
-        svo.doaction("trace shield me")
+        send('trace shield me', conf.commandecho)
       end
       }
     }
