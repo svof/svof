@@ -5119,7 +5119,7 @@ end
   voyria = {
     purgative = {
       isadvisable = function()
-        return (affs.voyria) or false
+        return not affs.latency and ((affs.voyria) or false)
       end,
 
       oncompleted = function()
@@ -8777,6 +8777,7 @@ end
       oncompleted = function()
         svo.rmaff('latency')
         svo.killaction(svo.dict.latency.waitingfor)
+        svo.echof("Latency gone. Can sip immunity now")
       end,
     }
   },
@@ -10213,6 +10214,7 @@ end
   },
   sstosvod = {
     acrobatics = 'acrobatics',
+    accursedresolve = 'accursedresolve',
     affinity = 'affinity',
     aiming = false,
     airpocket = 'waterbubble',
