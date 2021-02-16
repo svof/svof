@@ -53208,7 +53208,7 @@ if count &gt;= 3 then
   svo.givewarning({
   	initialmsg = "Afflicted with Latency, cannot sip immunity for 13 seconds.",
   	prefixwarning = "Can't sip immunity",
-  	duration = 8
+  	duration = 3
   })
 end</script>
 					<triggerType>0</triggerType>

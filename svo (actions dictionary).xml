@@ -13976,7 +13976,7 @@ if svo.haveskillset('memorium') then
       def = true,
       
         isadvisable = function ()
-        return (not defc.traceshield and ((sys.deffing and defdefup[defs.mode].traceshield) or (conf.keepup and defkeepup[defs.mode].traceshield)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
+        return (defc.bloodiedknife and not defc.traceshield and ((sys.deffing and defdefup[defs.mode].traceshield) or (conf.keepup and defkeepup[defs.mode].traceshield)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
       end,
       
         oncompleted = function ()
@@ -13997,7 +13997,7 @@ if svo.haveskillset('memorium') then
       def = true,
       
         isadvisable = function ()
-        return (not defc.traceleech and ((sys.deffing and defdefup[defs.mode].traceleech) or (conf.keepup and defkeepup[defs.mode].traceleech)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
+        return (defc.bloodiedknife and not defc.traceleech and ((sys.deffing and defdefup[defs.mode].traceleech) or (conf.keepup and defkeepup[defs.mode].traceleech)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
       end,
       
         oncompleted = function ()
@@ -14011,6 +14011,28 @@ if svo.haveskillset('memorium') then
       }
     }
     end
+    
+  svo.dict.bloodiedknife = {
+    physical = {
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      
+        isadvisable = function ()
+        return (not defc.bloodiedknife and ((sys.deffing and defdefup[defs.mode].bloodiedknife) or (conf.keepup and defkeepup[defs.mode].bloodiedknife)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
+      end,
+      
+        oncompleted = function ()
+          defences.got('bloodiedknife')
+        end,
+        
+      actions = {"crux let me"},
+      onstart = function ()
+        send('crux let me', conf.commandecho)
+      end
+      }
+    }
+
 
 if svo.haveskillset('charnel') then
   svo.dict.accursedresolve = {

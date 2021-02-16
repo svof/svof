@@ -3536,6 +3536,16 @@ if svo.haveskillset('memorium') then
     def = "The power of the leech draws afflictions from you.",
     on = "Your knife moves in perfect harmony with your mind as you trace the image of the leech in the air, its outline bursting into crimson fire.",
     off = "You sense that the power of the leeching logograph has dwindled."})
+
+  defs_data:set('bloodiedknife', {type = 'memorium',
+    invisibledef = true,
+    on = "You bring your blade to your opposite hand and blood it in preparation for the work to come.",
+    onr = {[[^You sweep your blade in a circle above your head, the point coming to rest pointed at \w+\. A fine crimson spray follows the arc of your blade, and you know that your ensorcelment has born fruit\.$]],
+    [[^Reaching into a pouch, you withdraw a small stone jar containing the blood of \w+\. With deft motions, you unscrew the lid and tip some drops onto your ritual blade, your focus drinking hungrily of that which sustains\.$]]},
+    off = {"The last of your blood has dried upon your ritual blade.", "A leaf-bladed ritual knife must have been bloodied if you wish to trace a logograph."},
+    offr = [[^The last of (\w+)'s blood has dried upon your ritual blade\.$]]
+    })    
+  
 end
 
 if svo.haveskillset('charnel') then
