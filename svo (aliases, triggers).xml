@@ -53200,7 +53200,6 @@ for k, v in pairs(svo.affl) do
   if k == "sandfever" or k == "mycalium" or k == "pyramides" or 
   k == "flushings" or k == "rebbies" then
     count = count + 1    
-    --display(count)
   end
 end
 if count &gt;= 3 then
