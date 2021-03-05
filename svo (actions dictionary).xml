@@ -14019,7 +14019,7 @@ if svo.haveskillset('memorium') then
       undeffable = true,
       
         isadvisable = function ()
-        return (not defc.bloodiedknife and ((sys.deffing and defdefup[defs.mode].bloodiedknife) or (conf.keepup and defkeepup[defs.mode].bloodiedknife)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
+        return svo.me.class == "Pariah" and (not defc.bloodiedknife and ((sys.deffing and defdefup[defs.mode].bloodiedknife) or (conf.keepup and defkeepup[defs.mode].bloodiedknife)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
       end,
       
         oncompleted = function ()

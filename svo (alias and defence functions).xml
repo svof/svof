@@ -3539,6 +3539,9 @@ if svo.haveskillset('memorium') then
 
   defs_data:set('bloodiedknife', {type = 'memorium',
     invisibledef = true,
+    offline_defence = true,
+    stays_on_death = true,
+    staysindragon = true,
     on = "You bring your blade to your opposite hand and blood it in preparation for the work to come.",
     onr = {[[^You sweep your blade in a circle above your head, the point coming to rest pointed at \w+\. A fine crimson spray follows the arc of your blade, and you know that your ensorcelment has born fruit\.$]],
     [[^Reaching into a pouch, you withdraw a small stone jar containing the blood of \w+\. With deft motions, you unscrew the lid and tip some drops onto your ritual blade, your focus drinking hungrily of that which sustains\.$]]},
