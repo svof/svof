@@ -14010,7 +14010,6 @@ if svo.haveskillset('memorium') then
       end
       }
     }
-    end
     
   svo.dict.bloodiedknife = {
     physical = {
@@ -14019,7 +14018,7 @@ if svo.haveskillset('memorium') then
       undeffable = true,
       
         isadvisable = function ()
-        return svo.me.class == "Pariah" and (not defc.bloodiedknife and ((sys.deffing and defdefup[defs.mode].bloodiedknife) or (conf.keepup and defkeepup[defs.mode].bloodiedknife)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
+        return (not defc.bloodiedknife and ((sys.deffing and defdefup[defs.mode].bloodiedknife) or (conf.keepup and defkeepup[defs.mode].bloodiedknife)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
       end,
       
         oncompleted = function ()
@@ -14032,7 +14031,7 @@ if svo.haveskillset('memorium') then
       end
       }
     }
-
+    end
 
 if svo.haveskillset('charnel') then
   svo.dict.accursedresolve = {
