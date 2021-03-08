@@ -5119,7 +5119,7 @@ end
   voyria = {
     purgative = {
       isadvisable = function()
-        return (affs.voyria) or false
+        return not affs.latency and ((affs.voyria) or false)
       end,
 
       oncompleted = function()
@@ -8574,6 +8574,8 @@ end
       signals.newroom:unblock(sk.check_retardation)
     end
   },
+  
+  
   nomana = {
     waitingfor = {
       customwait = 30,
@@ -8588,6 +8590,195 @@ end
         svo.killaction(svo.dict.nomana.waitingfor)
         svo.make_gnomes_work()
       end
+    }
+  },
+  
+  mycalium = {
+    herb = {
+      isadvisable = function()
+        return affs.mycalium or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('mycalium')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'goldenseal', 'plumbum'},
+      onstart = function() svo.eat(svo.dict.mycalium.herb) end,
+
+      empty = function() empty.eat_goldenseal() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.mycalium)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('mycalium') end,
+    }
+  },
+  
+  flushings = {
+    herb = {
+      isadvisable = function()
+        return affs.flushings or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('flushings')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'ginseng', 'ferrum'},
+      onstart = function() svo.eat(svo.dict.flushings.herb) end,
+
+      empty = function() empty.eat_ginseng() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.flushings)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('flushings') end,
+    }
+  },
+
+  rebbies = {
+    herb = {
+      isadvisable = function()
+        return affs.rebbies or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('rebbies')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'kelp', 'aurum'},
+      onstart = function() svo.eat(svo.dict.rebbies.herb) end,
+
+      empty = function() empty.eat_kelp() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.rebbies)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('rebbies') end,
+    }
+  },
+  
+  sandfever = {
+    herb = {
+      isadvisable = function()
+        return affs.sandfever or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('sandfever')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'goldenseal', 'plumbum'},
+      onstart = function() svo.eat(svo.dict.sandfever.herb) end,
+
+      empty = function() empty.eat_goldenseal() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.sandfever)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('sandfever') end,
+    }
+  },
+  
+  pyramides = {
+    herb = {
+      isadvisable = function()
+        return affs.pyramides or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('pyramides')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'bloodroot', 'magnesium'},
+      onstart = function() svo.eat(svo.dict.pyramides.herb) end,
+
+      empty = function() empty.eat_bloodroot() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.pyramides)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('pyramides') end,
+    }
+  },
+
+  ensorcelled = {
+    waitingfor = {
+      customwait = 20,
+
+      isadvisable = function()
+        return false
+      end,
+
+      onstart = function() end,
+
+      oncompleted = function()
+        svo.rmaff('ensorcelled')
+        svo.make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.ensorcelled)
+        if not svo.actions.ensorcelled_waitingfor then svo.doaction(svo.dict.ensorcelled.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function()
+        svo.rmaff('ensorcelled')
+        svo.killaction(svo.dict.ensorcelled.waitingfor)
+      end,
+    }
+  },
+
+  latency = {
+    waitingfor = {
+      customwait = 13,
+
+      isadvisable = function()
+        return false
+      end,
+
+      onstart = function() end,
+
+      oncompleted = function()
+        svo.rmaff('latency')
+        svo.make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.latency)
+        if not svo.actions.latency_waitingfor then svo.doaction(svo.dict.latency.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function()
+        svo.rmaff('latency')
+        svo.killaction(svo.dict.latency.waitingfor)
+        svo.echof("Latency gone. Can sip immunity now")
+      end,
     }
   },
 
@@ -9906,11 +10097,13 @@ end
     dizziness = 'dizziness',
     enlightenment = false,
     enmesh = false,
+    ensorcelled = 'ensorcelled',
     entangled = 'roped',
     entropy = false,
     epilepsy = 'epilepsy',
     fear = 'fear',
     flamefisted = 'burning',
+    flushings = 'flushings',
     frozen = 'frozen',
     generosity = 'generosity',
     guilt = 'guilt',
@@ -9952,6 +10145,7 @@ end
     masochism = 'masochism',
     mildtrauma = 'mildtrauma',
     mindclamp = false,
+    mycalium = 'mycalium',
     nausea = 'illness',
     numbedleftarm = 'numbedleftarm',
     numbedrightarm = 'numbedrightarm',
@@ -9967,9 +10161,12 @@ end
     pinshot = 'pinshot',
     prone = 'prone',
     pressure = 'pressure',
+    pyramides = 'pyramides',
+    rebbies = 'rebbies',
     recklessness = 'recklessness',
     retribution = 'retribution',
     revealed = false,
+    sandfever = 'sandfever',
     scalded = 'scalded',
     scrambledbrains = false,
     scytherus = 'relapsing',
@@ -10017,6 +10214,7 @@ end
   },
   sstosvod = {
     acrobatics = 'acrobatics',
+    accursedresolve = 'accursedresolve',
     affinity = 'affinity',
     aiming = false,
     airpocket = 'waterbubble',
@@ -10113,6 +10311,7 @@ end
     kola = 'kola',
     lament = false,
     lay = 'lay',
+    leechlogograph = 'traceleech',
     levitating = 'levitation',
     lifegiver = false,
     lifesteal = false,
@@ -10157,6 +10356,7 @@ end
     selfishness = 'selfishness',
     shadowveil = 'shadowveil',
     shield = 'shield',
+    shieldlogograph = 'traceshield',
     shikudoform = false,
     shinbinding = 'bind',
     shinclarity = 'clarity',
@@ -13767,7 +13967,94 @@ if svo.haveskillset('ignition') then
       }
     }
     end
+    
+if svo.haveskillset('memorium') then
+  svo.dict.traceshield = {
+  gamename = 'shieldlogograph',
+    physical = {
+      balanceful_act = true,
+      def = true,
+      
+        isadvisable = function ()
+        return (defc.bloodiedknife and not defc.traceshield and ((sys.deffing and defdefup[defs.mode].traceshield) or (conf.keepup and defkeepup[defs.mode].traceshield)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
+      end,
+      
+        oncompleted = function ()
+          defences.got('traceshield')
+        end,
+        
+      actions = {"trace shield me"},
+      onstart = function ()
+        send('trace shield me', conf.commandecho)
+      end
+      }
+    }
+    
+    svo.dict.traceleech = {
+    gamename = 'leechlogograph',
+    physical = {
+      balanceful_act = true,
+      def = true,
+      
+        isadvisable = function ()
+        return (defc.bloodiedknife and not defc.traceleech and ((sys.deffing and defdefup[defs.mode].traceleech) or (conf.keepup and defkeepup[defs.mode].traceleech)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
+      end,
+      
+        oncompleted = function ()
+          defences.got('traceleech')
+        end,
+        
+      actions = {"trace leech me"},
+      onstart = function ()
+        send('trace leech me', conf.commandecho)
+      end
+      }
+    }
+    
+  svo.dict.bloodiedknife = {
+    physical = {
+      balanceful_act = true,
+      def = true,
+      undeffable = true,
+      
+        isadvisable = function ()
+        return (not defc.bloodiedknife and ((sys.deffing and defdefup[defs.mode].bloodiedknife) or (conf.keepup and defkeepup[defs.mode].bloodiedknife)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
+      end,
+      
+        oncompleted = function ()
+          defences.got('bloodiedknife')
+        end,
+        
+      actions = {"crux let me"},
+      onstart = function ()
+        send('crux let me', conf.commandecho)
+      end
+      }
+    }
+    end
 
+if svo.haveskillset('charnel') then
+  svo.dict.accursedresolve = {
+    physical = {
+      balanceful_act = true,
+      def = true,
+      
+        isadvisable = function ()
+        return (not defc.accursedresolve and ((sys.deffing and defdefup[defs.mode].accursedresolve) or (conf.keepup and defkeepup[defs.mode].accursedresolve)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
+      end,
+      
+        oncompleted = function ()
+          defences.got('accursedresolve')
+        end,
+        
+      actions = {"accursed resolve"},
+      onstart = function ()
+        send('accursed resolve', conf.commandecho)
+      end
+      }
+    }
+    end
+    
 -- shortcut function to help create a dict action for a defence
 -- 'which' is the Svof defence name, use the same name in the 'Defences' script
 -- 'command' is the game command to raise the defence

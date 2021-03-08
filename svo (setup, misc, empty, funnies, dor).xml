@@ -349,6 +349,7 @@ svo.knownskills = {
   none                     = {},
   occultist                = {'occultism', 'tarot', 'domination'},
   paladin                  = {'chivalry', 'devotion', 'weaponmastery'},
+  pariah                   = {'memorium', 'pestilence', 'charnel'},
   priest                   = {'spirituality', 'devotion', 'zeal'},
   runewarden               = {'runelore', 'chivalry', 'weaponmastery'},
   sentinel                 = {'metamorphosis', 'woodlore', 'skirmishing'},
@@ -491,6 +492,24 @@ signals.gmcpcharvitals:connect(function()
   end
 end, 'update dual blunt momentum')
 end
+
+if svo.haveskillset('memorium') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local epitaph_length = val:match("^epitaph_length: (%d+)$")
+      if epitaph_length then
+        stats.epitaph_length = tonumber(epitaph_length)
+        break
+      end
+    end
+  end
+  if not stats.epitaph_length then
+    stats.epitaph_length = 0
+  end
+end, 'update memorium epitaph length')
+end
+
 
 signals.gmcpiretimelist = signals.gmcpiretimelist or luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
@@ -2689,13 +2708,15 @@ local madness_affs = {'addiction', 'confusion', 'dementia', 'hallucinations', 'h
 
 for herbname, herbaffs in pairs({
   goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression',
-   'shadowmadness'},
-  kelp = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness'},
+   'shadowmadness', 'mycalium', 'sandfever'},
+  kelp = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'rebbies'},
   lobelia = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'spiritburn', 'tenderskin'},
-  ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy'},
+  ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy', 'flushings'},
   ash = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia'},
 	pear = {'pressure'},
-  bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'}
+  bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'},
+  bloodroot = {'paralysis', 'pyramides'}
+  
 }) do
   empty['eat_'..herbname] = function()
     svo.lostbal_herb()
