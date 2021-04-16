@@ -3853,7 +3853,7 @@ end
 
 function svo.riftremoved()
   local removed = tonumber(matches[2])
-  local what = rift.herbs_singular_sansprefix[matches[3]]
+  local what = rift.herbs_singular_sansprefix[matches[3]] or matches[3]
   local inrift = tonumber(matches[4])
 
   if not (what and removed and inrift) then return end
@@ -3890,7 +3890,7 @@ end
 
 function svo.riftadded()
   local removed = tonumber(matches[2])
-  local what = rift.herbs_singular_sansprefix[matches[3]]
+  local what = rift.herbs_singular_sansprefix[matches[3]] or matches[3]
   if not what then return end
   local inrift = tonumber(matches[4])
 
