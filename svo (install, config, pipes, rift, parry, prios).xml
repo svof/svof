@@ -529,6 +529,11 @@ svo.config_dict = svo.pl.OrderedMap {
     onenabled = function () defences.enablelifevision() svo.echof("&lt;0,250,0&gt;Have%s Lifevision mask - added it to defup/keepup.", svo.getDefaultColor()) end,
     ondisabled = function () svo.echof("&lt;250,0,0&gt;Don't%s have Lifevision mask - won't be adding it to defup/keepup.", svo.getDefaultColor()) end,
   }},
+  {havemindnet = {
+    type = 'boolean',
+    onenabled = function () defences.enablelifevision() svo.echof("&lt;0,250,0&gt;Have%s Phylactery of Sixth Sense - added it to defup/keepup.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Don't%s have Phylactery of Sixth Sense - won't be adding it to defup/keepup.", svo.getDefaultColor()) end,
+  }},
   {autoarena = {
     type = 'boolean',
     onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s automatically enable/disable arena mode as you enter into the arena.", svo.getDefaultColor()) end,
