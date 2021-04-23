@@ -976,10 +976,13 @@ vconfig options
     toggles whenever the system should gag (hide) system's of serverside commands when serverside is enabled - this is things like priority switching, option changing and so on. This does not cover serverside's ``[CURING]:`` messages, use the ``gagservercuring`` option for that.
 
   havelifevision
-    sets whenever you have the ability to raise the Lifevision defence through a customised artefact. If you have the skill, you don't need to enable this, and the system autodetects the uncostomised artefact for you as well.
+    sets whenever you have the ability to raise the Lifevision defence through a customised artefact. If you have the skill, you don't need to enable this, and the system autodetects the uncustomised artefact for you as well.
 
+  havemindnet
+    sets whenever you have the ability to raise the mindnet defence through a customised artefact. If you have the skill, you don't need to enable this, and the system autodetects the uncustomised artefact for you as well.
+    
   haveshroud
-    sets whenever you have the ability to raise the shroud defence through a customised artefact. If you have the skill, you don't need to enable this, and the system autodetects the uncostomised artefact for you as well.
+    sets whenever you have the ability to raise the shroud defence through a customised artefact. If you have the skill, you don't need to enable this, and the system autodetects the uncustomised artefact for you as well.
 
   healthaffsabove
     sets the % of health above which the system will be curing fractures (skullfractures, crackedribs, wristfractures, torntendons). If you're below this %, the system will sip health instead. This option ignores priorities between healhealth and other afflictions you have on the sip balance.
