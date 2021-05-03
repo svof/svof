@@ -3170,11 +3170,11 @@ end
 for _, herb in pairs({
   ash        = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia'},
   bellwort   = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'},
-  bloodroot  = {'paralysis', 'slickness'},
+  bloodroot  = {'paralysis', 'slickness', 'pyramides'},
   ginger     = {'melancholichumour', 'cholerichumour', 'phlegmatichumour', 'sanguinehumour'},
-  ginseng    = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy'},
-  goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression', 'shadowmadness'},
-  kelp       = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'parasite'},
+  ginseng    = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy','flushings'},
+  goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression', 'shadowmadness', 'mycalium', 'sandfever'},
+  kelp       = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'parasite', 'rebbies'},
   lobelia    = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'tenderskin', 'spiritburn'}}) do
   local other_herb_cures = {}
 
