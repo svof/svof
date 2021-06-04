@@ -1,12 +1,13 @@
 # Svof
 Svof is an AI system for Achaea, an online MUD. It has advanced and adaptable curing capabilities, defence raising, name highlighting, limbcounter tracking and other features. It is the free and open-source version of what used to be Svo.
 
-# Downloading
-To download the system for use, [see here](https://github.com/svof/svof/releases).
-# In-Client Beta
-The system currently has a beta version called in-client Svof. This version supports multi-class, elemental lords, and some of the newer classes. However, it is still in beta.
+# In-Client Svof
+The system currently has a beta version called in-client Svof. This version supports multi-class, elemental lords, and some of the newer classes. However, while it is in beta this is the most up-to-date version of svof.
 
 To download the in-client system for use, [see here](https://github.com/svof/svof/tree/in-client-svof).
+
+# Outdated Class-Based Svof
+The outdated class based system, [see here](https://github.com/svof/svof/releases).
 # Documentation
 Extensive documentation for the system is available [here](https://svof.github.io/svof/).
 # Contributing
