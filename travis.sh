@@ -1,5 +1,6 @@
 lua precommit.lua "$TRAVIS_TAG"
-lua generate.lua -r "$TRAVIS_TAG"
+
+zip svof.zip ndb-help.lua default_prios config.lua *.xml
 
 stat=$?
 if [ $stat -ne 0 ]
@@ -19,28 +20,15 @@ cd output
 # Create current_version file
 echo "${TRAVIS_TAG}" > current_version.txt
 
-# upload everything here.
-for f in *
-do
-  echo "Uploading ${f}"
-  curl -3 --disable-epsv --ftp-skip-pasv-ip \
-  -u "svof-machine-account:${FTP_PASS}" -T "${f}" "ftp://ftp.pathurs.com" &> /dev/null
-  stat=$?
-  if [ "$stat" -ne 0 ]; then
-    echo "Could not upload ${f}: Return code was ${stat}"
-    exit 1
-  fi
-done
-
 # Create documentation for the release
 cd ../doc/_build/html
 touch .nojekyll
 
 mkdir stable
-cp ../../../output/* stable/
+cp ../../../svof.zip stable/
 
 mkdir testing
-cp ../../../output/* testing/
+cp ../../../svof.zip testing/
 
 git init
 

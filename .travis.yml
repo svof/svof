@@ -22,8 +22,7 @@ env:
   - secure: "UZ3zfIUNG526fjNP0QgBtcQJh0QuH+JdMe1j/aHYJmMvKvQK24Tn1sFgpR5C8vYiHXIvGLBDZNCXipKuQLsLC0dZ+Rx9OMkefUDdq0gDIcAntwDYnzF4Z6kAKRS9qyJbobl7TfaHM3iC+oN2u4MAzQeA1Sv5i1PgqzfKgG+jfRQXh0LQsnpASiLhKGMESifb0O6wrPQeK+6+5LwyAiYIsMlF3ZHUiZai57mTYfPoYiHDiWxFO26HzxAuU5bDXs12rlRUQeK61IODtGk+5jaymmQvzI6RuVWz+OPT5iH8l5p68fWgyDot/mjlDP6zr1k1LeNyFpVmJs+MdCqNZy7tbr/4NDThfzgaR6m4Ji6hXdW8Pcl0FhfAzjj63x5kJFPvBhyIvbWkpEA6UujyalXLTXAvr9m1WMO4JXAZcKzSkwaavOmC2PITf5Rr2FUpbBBRcZEHb9hdqYt00tkGYEfoVLwGuXImiez0cWYU8D/hUtHrF75eViTh3VQ4yeg3X9lotsxGGchTMTGhPIhe7wc55p60GLeewOukwrskrM6NTBEZuVeWBCtc8pFZy3AAYt85V/8Y/WMzjpmWh13s2SdBkA/Uhd/kUiceHUpA5Kmyu2XMgw0iheRCHWkd6v7bw7Or5Ko0d0wCS/t57l4KBjMybpDt99a6PqyeB7UZ8R5Xx+o="
 deploy:
   provider: releases
-  file_glob: true
-  file: output/*.zip
+  file: svof.zip
   skip_cleanup: true
   on:
     tags: true
