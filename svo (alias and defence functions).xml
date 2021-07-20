@@ -3558,6 +3558,98 @@ if svo.haveskillset('charnel') then
     off = "Your resolve wavers, and the pains of existence are once more made manifest."})
 end
 
+do 
+  function svo.defences.enablemindnet()
+    if svo.dict.mindnet then return end
+
+    defs_data:set('mindnet', { type = 'general',
+    on = {"You cast an invisible mind net out into the distance, allowing it to settle about the surrounding land.", "You already have mindnet active."},
+    off = "You cease concentration and your mind net vanishes.",
+    mana = 'little',
+    def = "You have cast a mindnet over the local area."
+    })
+
+    svo.basicdef('mindnet', "mindnet on")
+    
+    for mode, _ in pairs(defdefup) do
+      defdefup[mode].mindnet = defdefup[mode].mindnet or false
+      defkeepup[mode].mindnet = defkeepup[mode].mindnet or false
+    end
+
+    sk.ignored_defences.general.t.mindnet = sk.ignored_defences.general.t.mindnet or false
+    sk.ignored_defences_map['mindnet'] = 'general'
+    
+    defences.def_types['general'][#defences.def_types['general']+1] = 'mindnet'
+
+    local v = svo.defs_data.mindnet;
+    local k = 'mindnet';
+    if v.on and type(v.on) == 'table' then
+      for _,pattern in ipairs(v.on) do
+        (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
+      end
+    elseif v.on then
+      (tempExactMatchTrigger or tempTrigger)(v.on, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
+    end
+
+    (tempExactMatchTrigger or tempTrigger)(v.def, 'svo.defs.def_' .. sk.sanitize(k) .. '()');
+
+    defs['def_'..sk.sanitize(k)] = function ()
+      if not v.ondef then
+        defences.def_def_list[k] = true
+      else
+        defences.def_def_list[k] = v.ondef()
+      end
+      deleteLine()
+    end
+    defs['got_' .. k] = function ()
+      defences.got(k)
+    end
+    defs['lost_' .. k] = function ()
+      defences.lost(k)
+    end
+
+    -- create a snapshot of the before state for all balances, since svo.dict_setup might mess with any
+    local beforestate = sk.getbeforestateprios()
+
+    svo.dict_setup()
+    svo.dict_validate()
+
+    -- notify any prio diffs
+    local afterstate = sk.getafterstateprios()
+    sk.notifypriodiffs(beforestate, afterstate)
+
+    signals.dragonform:emit()
+
+    svo.echof("Have Phylactery of Sixth Sense - enabled it for defup/keepup.")
+  
+end
+
+  function defences.checkmindnet()
+    local t = _G.gmcp.Char.Items.List
+    if not t.location == 'inv' then return end
+
+    for _, it in pairs(t.items) do
+      -- if it.name == "a Veil of the Sphinx" then
+      if it.name == "a  phylactery of sixth sense" then
+        defences.enablemindnet()
+        conf.havemindnet = true
+        raiseEvent("svo config changed", 'havemindnet')
+        signals.gmcpcharitemslist:disconnect(defences.checkmindnet)
+      end
+    end
+
+  end
+  signals.systemstart:connect(function()
+    tempTimer(0, function()
+      if conf.havemindnet then
+        defences.enablemindnet()
+        signals.gmcpcharitemslist:disconnect(defences.checkmindnet)
+      end
+    end)
+  end, 'enable mindnet when system loaded')
+  signals.gmcpcharitemslist:connect(defences.checkmindnet, 'check mindnet on gmcpcharitemslist')
+end
+
 do
   function defences.enablelifevision()
     if svo.dict.lifevision then return end
