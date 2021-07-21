@@ -854,7 +854,6 @@ svo.config_dict = svo.pl.OrderedMap {
       svo.updateloggingconfig()
       if conf.log == 'off' then
         svo.echof("Logging disabled.")
-        conf.log = false
       elseif conf.log == 'file' then
         if Logger then
           svo.echof("Will log to the file in %s.", (getMudletHomeDir() .. "/log/svof.txt"))
