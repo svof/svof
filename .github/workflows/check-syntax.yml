@@ -21,7 +21,8 @@ jobs:
 
     - name: install luarocks dependencies
       run: |
-        luarocks install filesystem luaexpat
+        luarocks install luafilesystem
+        luarocks install luaexpat
 
     - name: test
       run: |
