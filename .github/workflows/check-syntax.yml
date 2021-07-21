@@ -1,0 +1,28 @@
+name: test
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+
+    - uses: leafo/gh-actions-lua@v8.0.0
+      with:
+        luaVersion: "5.1.5"
+
+    - uses: leafo/gh-actions-luarocks@v4.0.0
+
+    - name: install system dependencies
+      run: |
+        run: sudo apt-get -y expat
+
+    - name: install luarocks dependencies
+      run: |
+        luarocks install filesystem luaexpat
+
+    - name: test
+      run: |
+        lua validate-syntax.lua .
