@@ -1,0 +1,22 @@
+
+# File: .github/workflows/repo-sync.yml
+name: Repo Sync
+on:
+  schedule:
+  - cron:  "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  repo-sync:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+    - name: repo-sync
+      uses: repo-sync/github-sync@v2
+      with:
+        source_repo: "svof/svof"
+        source_branch: "in-client-svof"
+        destination_branch: "TheLastDarkthorne/svof"
+        github_token: ${{ secrets.TK }}
