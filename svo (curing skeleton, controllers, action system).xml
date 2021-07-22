@@ -1222,7 +1222,7 @@ function svo.sk.hypochondria_symptom()
     sk.hypochondria_count = 0
   end
 
-  tempTimer(12, function ()
+  tempTimer(3, function ()
     sk.hypochondria_count = sk.hypochondria_count - 1
     if sk.hypochondria_count &lt; 0 then sk.hypochondria_count = 0 end
   end)
