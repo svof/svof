@@ -1567,6 +1567,7 @@ function svo.valid.proper_impatience()
     local previousline = (svo.find_until_last_paragraph("glares at you and your brain suddenly feels slower", 'substring') or svo.find_until_last_paragraph("evil eye", 'substring') or svo.find_until_last_paragraph('wracks', 'substring') or svo.find_until_last_paragraph("You recoil in horror as countless maggots squirm over your flesh", 'substring') or line:find("jaunty limerick", 1, true) or svo.find_until_last_paragraph("points an imperious finger at you", 'substring') or svo.find_until_last_paragraph("glowers at you with a look of repressed disgust before making a slight gesture toward you.", 'substring') or svo.find_until_last_paragraph("hand at you, a wash of cold causing your blood to evolve into something new.", 'substring') or svo.find_until_last_paragraph("Horror overcomes you as you realise that the curse of impatience", 'substring') or svo.find_until_last_paragraph("palm towards your face.", 'substring')) and true or false
     if svo.paragraph_length == 1 or previousline then
       svo.checkaction(svo.dict.checkimpatience.aff, true)
+      sk.hypochondria_symptom()
       if previousline then
         lifevision.add(actions.checkimpatience_aff.p)
       else
