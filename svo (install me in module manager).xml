@@ -6380,37 +6380,18 @@ stupidityCheckTable = {
     if f then
       writtenversion = f:read("*a")
     end
-
-    if not writtenversion or writtenversion:trim() ~= s:trim() 
-		  or not lfs.attributes(getMudletHomeDir().."/svo/downloads/".."Svof.current.zip") then
-      if svo.announceupdates == "checking" then svo.echof("A new Svof is available! You're on %s, latest is %s. I'll download it for you.", svo.version, s:trim()) end
+    
+    if svo.announceupdates == "force" then
       svo.downloadnewsystem(s:trim())
     else
-      if svo.announceupdates == "checking" then svo.echof("A new Svof is available and has been downloaded for you! You're on %s, latest is %s.", svo.version, s:trim()) end
-      svo.showupdatereminder(writtenversion)
+      if not writtenversion or writtenversion:trim() ~= s:trim() then
+        if svo.announceupdates == "checking" then svo.echof("A new Svof is available! You're on %s, latest is %s. Want to download it now?", svo.version, s:trim()) end
+          svo.showupdatereminder(s:trim())
+      end
     end
   
   elseif filename:match("(svo \(.+\)\.xml)$") then
-    local moduleName = filename:match("(svo \(.+\))\.xml$")
-    downloadingModules = downloadingModules - 1
-    svo.downloadedsystem[moduleName] = true
-    if downloadingModules and downloadingModules ~= 0 then return end
-    local dlDir = getMudletHomeDir() .. "/svo/downloads/"
-    local installDir = getModulePath("svo (install me in module manager)") 
-    installDir= installDir:sub(1, #installDir-38)
-    for k in lfs.dir(installDir) do
-      if k:ends(".xml") then
-        os.remove(installDir .. k)
-      end
-    end
-    for k,v in pairs(svo.downloadedsystem) do 
-      if v then
-        os.rename(dlDir .. k .. ".xml", installDir .. k .. ".xml")
-        reloadModule(k)
-        svo.downloadedsystem[k] = nil
-      end
-    end
-    svo.echof("New version installed and ready to go! Please restart mudlet to finalize cleanup.")
+    svo.installsystem(filename)
   end  
 end</script>
 				<eventHandlerList>
@@ -6499,11 +6480,10 @@ end</script>
 				</Script>
 			</Script>
 			<Script isActive="yes" isFolder="no">
-				<name>Update UI</name>
+				<name>Update UI and Install Engine</name>
 				<packageName></packageName>
 				<script>function svo.showupdatereminder(newversion)
-  svo.announceupdates = nil
-
+  --svo.announceupdates = nil
   svo.updatelabel = svo.updatelabel or Geyser.Label:new({
     name = "svo.updatelabel",
     x = "-340px", y = "-115px",
@@ -6559,9 +6539,9 @@ end</script>
     font-family: monospace;
   ]])
 
-  svo.updatelabel:echo(string.format([[&lt;p align="center" style="font-size:10pt; color:white"&gt;Hey, a new Svof (%s) has been downloaded and is available for install.&lt;br&gt;&lt;br&gt;Install and restart now, or install later?&lt;p&gt;]], newversion))
+  svo.updatelabel:echo(string.format([[&lt;p align="center" style="font-size:10pt; color:white"&gt;Hey, a new Svof (%s) is available for download!&lt;br&gt;&lt;br&gt;Install and restart now, or install later?&lt;p&gt;]], newversion))
 
-  svo.doupdatelabel:echo([[&lt;p align="center" style="font-size:8pt; color:white"&gt;Restart&lt;/p]])
+  svo.doupdatelabel:echo([[&lt;p align="center" style="font-size:8pt; color:white"&gt;Install&lt;/p]])
 
   svo.dontupdatelabel:echo([[&lt;p align="center" style="font-size:8pt; color:white"&gt;Later&lt;/p]])
 
@@ -6583,26 +6563,33 @@ function svo_doupdate_click()
   svo.updatelabel:echo([[&lt;p align="center" style="font-size:10pt; color:white"&gt;Updating Svo...&lt;p&gt;]])
   svo.doupdatelabel:hide()
   svo.dontupdatelabel:hide()
+  svo.downloadnewsystem(newversion)
+end
 
-  local class = svo.me.class
-
-  if not io.exists(getMudletHomeDir().."/svo/downloads/Svof.current.zip") then
-    svo.updatelabel:echo([[&lt;p align="center" style="font-size:10pt; color:white"&gt;Hm, can't update Svo - seems the new system we downloaded dissapeared. Do 'vupdate force' to download it again.&lt;p&gt;]])
-    return
-  end
-
-  function svo_update_system()
-    svo_updating_system = "uninstalling"
-    svo.uninstall_all_modules()
-
-    svo_updating_system = "installing"
-    svo.updatelabel:echo([[&lt;p align="center" style="font-size:10pt; color:white"&gt;Uninstalled the old Svof, installing the new one now...&lt;p&gt;]])
-    svo.install_from_zip(getMudletHomeDir().."/svo/downloads/Svof.current.zip")
-
-    svo_updating_system = nil
-    svo.echof("Svof updated! You can find the changelog on github.com/svof/svof/releases")
-
-    svo.updatelabel:echo([[&lt;p align="center" style="font-size:10pt; color:white"&gt;Svo updated!&lt;p&gt;]])
+function svo.installsystem(filename)
+    local moduleName = filename:match("(svo \(.+\))\.xml$")
+    downloadingModules = downloadingModules - 1
+    svo.downloadedsystem[moduleName] = true
+    if downloadingModules and downloadingModules ~= 0 then return end
+    local dlDir = getMudletHomeDir() .. "/svo/downloads/"
+    local installDir = getModulePath("svo (install me in module manager)") 
+    installDir= installDir:sub(1, #installDir-38)
+    for k in lfs.dir(installDir) do
+      if k:ends(".xml") then
+        os.remove(installDir .. k)
+      end
+    end
+    for k,v in pairs(svo.downloadedsystem) do 
+      if v then
+        os.rename(dlDir .. k .. ".xml", installDir .. k .. ".xml")
+        reloadModule(k)
+        svo.downloadedsystem[k] = nil
+      end
+    end
+    svo.echof("New version installed and ready to go! Please restart mudlet to finalize cleanup.")
+    
+    if svo.updatelabel and svo.announceupdates == "checking" then 
+    svo.updatelabel:echo([[&lt;p align="center" style="font-size:10pt; color:white"&gt;Svof updated! Please restart Mudlet.&lt;p&gt;]])
     svo.updatelabel:setStyleSheet([[
         margin: 0px;
         padding: 2px;
@@ -6625,9 +6612,6 @@ function svo_doupdate_click()
 		
 		tempTimer(10, function() svo.updatelabel:hide() end)
   end
-
-  svo_updating_system = "started"
-  svo_update_system()
 end</script>
 				<eventHandlerList />
 			</Script>
