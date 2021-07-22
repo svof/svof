@@ -571,7 +571,11 @@ signals.gmcpcharafflictionsremove:connect(function()
     svo.valid.remove_unknownany(affname)
   end
   if svo.dict.sstosvoa[thisaff] then
-    svo.rmaff(svo.dict[svo.dict.sstosvoa[affname]])
+    svo.rmaff(svo.dict[svo.dict.sstosvoa[thisaff]])
+  elseif affname ~= "" then
+    if svo.dict.sstosvoa[affname] then
+      svo.rmaff(svo.dict[svo.dict.sstosvoa[affname]])
+    end
   end
   if affcount ~= nil and svo.dict[svo.dict.sstosvoa[affname]].count ~= nil then
     svo.dict[svo.dict.sstosvoa[affname]].count = 0
