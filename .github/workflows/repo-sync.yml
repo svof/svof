@@ -2,10 +2,10 @@
 # File: .github/workflows/repo-sync.yml
 name: Repo Sync
 on:
-  schedule:
-  - cron:  "*/15 * * * *"
-  workflow_dispatch:
-
+  #schedule:
+  #- cron:  "*/15 * * * *"
+  #workflow_dispatch:
+  push:
 jobs:
   repo-sync:
     runs-on: ubuntu-latest
