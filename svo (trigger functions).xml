@@ -1567,7 +1567,6 @@ function svo.valid.proper_impatience()
     local previousline = (svo.find_until_last_paragraph("glares at you and your brain suddenly feels slower", 'substring') or svo.find_until_last_paragraph("evil eye", 'substring') or svo.find_until_last_paragraph('wracks', 'substring') or svo.find_until_last_paragraph("You recoil in horror as countless maggots squirm over your flesh", 'substring') or line:find("jaunty limerick", 1, true) or svo.find_until_last_paragraph("points an imperious finger at you", 'substring') or svo.find_until_last_paragraph("glowers at you with a look of repressed disgust before making a slight gesture toward you.", 'substring') or svo.find_until_last_paragraph("hand at you, a wash of cold causing your blood to evolve into something new.", 'substring') or svo.find_until_last_paragraph("Horror overcomes you as you realise that the curse of impatience", 'substring') or svo.find_until_last_paragraph("palm towards your face.", 'substring')) and true or false
     if svo.paragraph_length == 1 or previousline then
       svo.checkaction(svo.dict.checkimpatience.aff, true)
-      sk.hypochondria_symptom()
       if previousline then
         lifevision.add(actions.checkimpatience_aff.p)
       else
@@ -3807,53 +3806,51 @@ function svo.valid.got_blind()
 end
 
 function svo.valid.venom_crippledrightleg()
+  if svo.paragraph_length ~= 1 then
     valid.simplecrippledrightleg()
+  end
 end
-
 function svo.valid.venom_crippledleftleg()
+  if svo.paragraph_length ~= 1 then
     valid.simplecrippledleftleg()
+  end
 end
-
+-- might not be hypochondria, but plague vibe
 function svo.valid.proper_clumsiness()
     valid.simpleclumsiness()
 end
 
 function svo.valid.proper_weakness()
+  if svo.paragraph_length ~= 1 then
     valid.simpleweakness()
+  end
 end
-
 function svo.valid.proper_disloyalty()
+  if svo.paragraph_length ~= 1 then
     valid.simpledisloyalty()
+  end
 end
-
 function svo.valid.proper_illness()
   if svo.paragraph_length ~= 1 then
     valid.simpleillness()
-  else
-    sk.hypochondria_symptom()
   end
 end
-
 function svo.valid.proper_lethargy()
   if svo.paragraph_length ~= 1 or affs.torntendons or svo.find_until_last_paragraph("You stumble as you are afflicted with", 'substring') then
     valid.simplelethargy()
-  else
-    sk.hypochondria_symptom()
   end
 end
-
 -- skullfractures makes the affliction come back on its own
 function svo.valid.proper_addiction()
   if svo.paragraph_length ~= 1 or affs.skullfractures then
     valid.simpleaddiction()
-  else
-    sk.hypochondria_symptom()
   end
 end
-
 function svo.valid.proper_anorexia()
   if not conf.aillusion then
-    valid.simpleanorexia()
+    if svo.paragraph_length ~= 1 or svo.find_until_last_paragraph("With a characteristic Jaziran trill", 'substring') then
+      valid.simpleanorexia()
+    end
   else
     svo.checkaction(svo.dict.checkanorexia.aff, true)
     lifevision.add(actions.checkanorexia_aff.p)
@@ -3862,9 +3859,10 @@ end
 
 -- traps can give this
 function svo.valid.proper_slickness()
+  if svo.paragraph_length ~= 1 then
     valid.simpleslickness()
+  end
 end
-
 function svo.valid.proper_recklessness(attacktype)
   if not conf.aillusion then
     valid.simplerecklessness()
@@ -3890,10 +3888,14 @@ function svo.valid.proper_recklessness2(attacktype)
   end
 end
 function svo.valid.venom_crippledleftarm()
+  if svo.paragraph_length ~= 1 then
     valid.simplecrippledleftarm()
+  end
 end
 function svo.valid.venom_crippledrightarm()
+  if svo.paragraph_length ~= 1 then
     valid.simplecrippledrightarm()
+  end
 end
 
 function svo.valid.lost_arena()
