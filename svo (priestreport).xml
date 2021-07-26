@@ -214,7 +214,7 @@ end</script>
 			</Trigger>
 			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>Angel trace</name>
-				<script>svo.angel_trace(multimatches[2][2], multimatches[2][3])</script>
+				<script>svo.priestapo_trace(multimatches[2][2], multimatches[2][3])</script>
 				<triggerType>0</triggerType>
 				<conditonLineDelta>0</conditonLineDelta>
 				<mStayOpen>0</mStayOpen>
@@ -228,6 +228,28 @@ end</script>
 				<regexCodeList>
 					<string>Your guardian angel reports that</string>
 					<string>^Your guardian angel reports that (\w+) has moved to (.+)\.$</string>
+				</regexCodeList>
+				<regexCodePropertyList>
+					<integer>2</integer>
+					<integer>1</integer>
+				</regexCodePropertyList>
+			</Trigger>
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Demon Trace</name>
+				<script>svo.priestapo_trace(multimatches[2][2], multimatches[2][3])</script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList>
+					<string>Your Baalzadeen reports that</string>
+					<string>^Your Baalzadeen reports that (\w+) has moved to (.+)\.$</string>
 				</regexCodeList>
 				<regexCodePropertyList>
 					<integer>2</integer>
@@ -274,13 +296,22 @@ svo.doaddfree("angel seek "..svo.locating.name)</script>
 			<Alias isActive="yes" isFolder="no">
 				<name>(tr person) Trace</name>
 				<script>if matches[2] == "off" then
-  svo.doadd("angel trace off", false, false)
-  svo.tracing = nil
+  if svo.me.class == "Priest" then
+    svo.doadd("angel trace off", false, false)
+    svo.tracing = nil
+  elseif svo.me.class == "Apostate" then
+    svo.doadd("demon trace off", false, false)
+    svo.tracing = nil
+  end
 else
   svo.tracing = matches[2]:title()
   svo.tracingarea = matches[3]
-  svo.doadd("angel trace "..tracing)
-  svo.echof("Tracing and reporting %s%s", tracing, (svo.tracingarea and " only when they're in "..svo.tracingarea:title() or ''))
+  if svo.me.class == "Priest" then
+    svo.doadd("angel trace "..svo.tracing)
+  elseif svo.me.class == "Apostate" then
+    svo.doadd("demon trace "..svo.tracing)
+  end
+  svo.echof("Tracing and reporting %s%s", svo.tracing, (svo.tracingarea and " only when they're in "..svo.tracingarea:title() or ''))
 end</script>
 				<command></command>
 				<packageName></packageName>
@@ -294,10 +325,12 @@ svo.echof("People on the locatelist list: %s", l)</script>
 				<packageName></packageName>
 				<regex>^vshow locatelist$</regex>
 			</Alias>
-			<Alias isActive="no" isFolder="no">
+			<Alias isActive="yes" isFolder="no">
 				<name>(seek person) Manually seek &amp; report a person</name>
-				<script>svo.locating = {name = matches[2]:title()}
-svo.doaddfree("angel seek "..svo.locating.name)</script>
+				<script>if svo.me.class == "Priest" then
+  svo.locating = {name = matches[2]:title()}
+  svo.doaddfree("angel seek "..svo.locating.name)
+end</script>
 				<command></command>
 				<packageName></packageName>
 				<regex>^seek (\w+)$</regex>
@@ -445,7 +478,7 @@ end</script>
 
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.priestreporter = function()
-if svo.me.class ~= "Priest" then return end
+if not svo.me.class == "Priest" or not svo.me.class == "Apostate" then return end
 
 local conf = svo.conf
 
@@ -503,7 +536,7 @@ svo.trace = function()
   svo.rooms_to_announce = nil
 end
 
-function svo.angel_trace(name, newroom)
+function svo.priestapo_trace(name, newroom)
   if svo.defc.dragonform then return end
 
   if not (svo.tracing and name == svo.tracing) then return end

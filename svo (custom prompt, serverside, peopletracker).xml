@@ -374,6 +374,18 @@ cpp.compute_stanceform_verbose = function()
 end
 end
 
+if svo.haveskillset('weaponmastery') then
+cpp.compute_momentum = function()
+  return stats.momentum &gt; 0 and tostring(stats.momentum) or ""
+end
+end
+
+if svo.haveskillset('necromancy') or svo.haveskillset('oppression') then
+cpp.compute_essence = function()
+  return stats.essence &gt; 0 and tostring(stats.essence) or ""
+end
+end
+
 cpp.compute_promptstring = function()
   local text = ("&lt;LightSlateGrey&gt;")..
         (defc.cloak and 'c' or "") ..
@@ -413,6 +425,7 @@ end
   composition[#composition+1] = '-&lt;grey&gt;'
   return table.concat(composition)
 end
+
 
 cpp.compute_promptstringorig = function()
  return ("&lt;grey&gt;")..
@@ -573,6 +586,11 @@ if svo.haveskillset('weaponmastery') then
 else
   cp.definitions["@weaponmastery"] = "''"
 end
+if svo.haveskillset('weaponmastery') then
+  cp.definitions["@momentum"] = "svo.cpp.compute_momentum()"
+else
+  cp.definitions["@momentum"] = "''"
+end
 if svo.haveskillset('metamorphosis') then
   cp.definitions["@morph"]         = "svo.cpp.compute_morph()"
 else
@@ -605,6 +623,11 @@ elseif svo.haveskillset('aeonics') then
   cp.definitions["^6"]             = "svo.cpp.compute_age_colour()"
 else
   cp.definitions["^6"]             = "''"
+end
+if svo.haveskillset('necromancy') then
+  cp.definitions["@essence"]      = "svo.cpp.compute_essence()"
+else
+  cp.definitions["@essence"]      = "''"
 end
 
 function cp.adddefinition(tag, func)

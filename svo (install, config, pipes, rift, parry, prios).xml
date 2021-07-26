@@ -529,6 +529,11 @@ svo.config_dict = svo.pl.OrderedMap {
     onenabled = function () defences.enablelifevision() svo.echof("&lt;0,250,0&gt;Have%s Lifevision mask - added it to defup/keepup.", svo.getDefaultColor()) end,
     ondisabled = function () svo.echof("&lt;250,0,0&gt;Don't%s have Lifevision mask - won't be adding it to defup/keepup.", svo.getDefaultColor()) end,
   }},
+  {havemindnet = {
+    type = 'boolean',
+    onenabled = function () defences.enablelifevision() svo.echof("&lt;0,250,0&gt;Have%s Phylactery of Sixth Sense - added it to defup/keepup.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Don't%s have Phylactery of Sixth Sense - won't be adding it to defup/keepup.", svo.getDefaultColor()) end,
+  }},
   {autoarena = {
     type = 'boolean',
     onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s automatically enable/disable arena mode as you enter into the arena.", svo.getDefaultColor()) end,
@@ -849,7 +854,6 @@ svo.config_dict = svo.pl.OrderedMap {
       svo.updateloggingconfig()
       if conf.log == 'off' then
         svo.echof("Logging disabled.")
-        conf.log = false
       elseif conf.log == 'file' then
         if Logger then
           svo.echof("Will log to the file in %s.", (getMudletHomeDir() .. "/log/svof.txt"))
@@ -3853,7 +3857,7 @@ end
 
 function svo.riftremoved()
   local removed = tonumber(matches[2])
-  local what = rift.herbs_singular_sansprefix[matches[3]]
+  local what = rift.herbs_singular_sansprefix[matches[3]] or matches[3]
   local inrift = tonumber(matches[4])
 
   if not (what and removed and inrift) then return end
@@ -3890,7 +3894,7 @@ end
 
 function svo.riftadded()
   local removed = tonumber(matches[2])
-  local what = rift.herbs_singular_sansprefix[matches[3]]
+  local what = rift.herbs_singular_sansprefix[matches[3]] or matches[3]
   if not what then return end
   local inrift = tonumber(matches[4])
 

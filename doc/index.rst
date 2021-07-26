@@ -24,13 +24,11 @@ To install the system, make sure that you're connected to server **achaea.com** 
 
 2) Unzip it somewhere permanent. Don't delete the unzipped files.
 
-3) Install svo (install me in module manager).xml in the Module Manager:
+3) Install ``svo (install me in module manager).xml`` in the ``Module Manager``:
 
 .. image:: images/install-in-module-manager.png
 
-4) Tick sync for all modules.
-
-5) Done. Don't delete the unzipped files - that's where the system is always loaded from now.
+4) Done. Don't delete the unzipped files - that's where the system is always loaded from now.
 
 Now, use the **vinstall** command. This'll have the system run auto-configuration first - where it'll detect and enable skills that you have. After that, it'll ask you preference questions about the basic and essential options. Feel free to take your time to ask someone else as to what should you set an option to (like for sipping health). The installation otherwise is fairly painless - and you can always change any option you'd like later with the same command.
 
@@ -476,7 +474,7 @@ Colour               What colour it sets
 ^2                   proper colour for your current mana
 ^4                   proper colour for your current willpower
 ^5                   proper colour for your current endurance
-^6                   (monk or blademaster only) proper colour for your kai/shin (color is set depending on the ability to do to use kaido/shindo skills)
+^6                   (monk/blademaster/depthswalker only) proper colour for your kai/shin (color is set depending on the ability to do to use kaido/shindo skills) and also your age resource (color based on the amount of age)
 ^7                   proper color for the @power tag
 ^gametarget          proper colour for the gametarget's colour (red - nearly dead, orange_red - grievously wounded, dark_orange - injured, orange - slightly injured)
 ^r                   red
@@ -978,10 +976,13 @@ vconfig options
     toggles whenever the system should gag (hide) system's of serverside commands when serverside is enabled - this is things like priority switching, option changing and so on. This does not cover serverside's ``[CURING]:`` messages, use the ``gagservercuring`` option for that.
 
   havelifevision
-    sets whenever you have the ability to raise the Lifevision defence through a customised artefact. If you have the skill, you don't need to enable this, and the system autodetects the uncostomised artefact for you as well.
+    sets whenever you have the ability to raise the Lifevision defence through a customised artefact. If you have the skill, you don't need to enable this, and the system autodetects the uncustomised artefact for you as well.
 
+  havemindnet
+    sets whenever you have the ability to raise the mindnet defence through a customised artefact. If you have the skill, you don't need to enable this, and the system autodetects the uncustomised artefact for you as well.
+    
   haveshroud
-    sets whenever you have the ability to raise the shroud defence through a customised artefact. If you have the skill, you don't need to enable this, and the system autodetects the uncostomised artefact for you as well.
+    sets whenever you have the ability to raise the shroud defence through a customised artefact. If you have the skill, you don't need to enable this, and the system autodetects the uncustomised artefact for you as well.
 
   healthaffsabove
     sets the % of health above which the system will be curing fractures (skullfractures, crackedribs, wristfractures, torntendons). If you're below this %, the system will sip health instead. This option ignores priorities between healhealth and other afflictions you have on the sip balance.

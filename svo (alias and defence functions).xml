@@ -1658,10 +1658,6 @@ if svo.haveskillset('chivalry') then
     on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
     def = "Your hands are gripping your wielded items tightly.",
     off = "You relax your grip."})
-  defs_data:set('mastery', { type = 'chivalry',
-    on = {"You have begun exercising true mastery of the blades through superior concentration.", "You already have mastery on."},
-    def = "You are concentrating on mastery of bladecraft.",
-    off = "You relax your mastery of the blades a bit, finding it too taxing to maintain."})
   defs_data:set('resistance', { type = 'chivalry',
     on = "You call aloud and feel an aura of resistance shroud itself silently about you.",
     def = "You are resisting magical damage."})
@@ -1677,6 +1673,10 @@ if svo.haveskillset('weaponmastery') then
   defs_data:set('deflect', { type = 'weaponmastery',
     on = "You will now attempt to deflect arrows toward less vital areas.",
     def = "You are attempting to deflect arrows toward less vital areas."})
+  defs_data:set('mastery', { type = 'weaponmastery',
+    on = {"You have begun exercising true mastery of the blades through superior concentration.", "You already have mastery on."},
+    def = "You are concentrating on mastery of bladecraft.",
+    off = "You relax your mastery of the blades a bit, finding it too taxing to maintain."})
 end
 
 if svo.haveskillset('shindo') then
@@ -2089,13 +2089,12 @@ if svo.haveskillset('metamorphosis') then
           if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", morph, whereto, newdef) end
         end
       end
-
       return true
     end,
     invisibledef = true,
-    on = {"You take a deep breath and realise your error - you sputter and engulf yourself in fire!", "You take a deep breath and feel the heat begin to build within you.", "You are ready to breathe yellow fire.", "You are ready to breathe blue fire.","You are ready to breathe white fire.", "With a roar you channel your reserves into your inner flame, instantly summoning forth a raging inferno."},
+    on = {"You take a deep breath and realise your error - you sputter and engulf yourself in fire!", "You take a deep breath and feel the heat begin to build within you.", "You may now breathe yellow fire.", "You may now breathe blue fire.","You may now breathe white fire.", "With a roar you channel your reserves into your inner flame, instantly summoning forth a raging inferno.","You are already summoning your flame.",},
     offr = [[^You inhale deeply, allowing the raging flames to build up inside you. With an earth-shaking roar, you release a white-hot jet of fire directly at \w+\.$]],
-    off = {"A small gout of fire erupts harmlessly from your mouth.", "You take a deep breath and realise your error - you sputter and engulf yourself in fire!", "Unleashing white-hot flames in a reckless burst of fire, you create a roaring inferno about your person.", "Your inner fire does not burn with sufficient intensity, Metamorph.", "You take a deep breath and realise your error - you splutter and engulf yourself in fire!"},
+    off = {"You can not relax a flame that you have not yet summoned.","A small gout of fire erupts harmlessly from your mouth.", "You take a deep breath and realise your error - you sputter and engulf yourself in fire!", "Unleashing white-hot flames in a reckless burst of fire, you create a roaring inferno about your person.", "Your inner fire does not burn with sufficient intensity, Metamorph.", "You take a deep breath and realise your error - you splutter and engulf yourself in fire!"},
     })
     --Wyvern, Basilisk
 
@@ -3527,6 +3526,130 @@ if svo.haveskillset('pervasion') then
     def = "You have altered the cohesion of your form.",
     on = {"You alter the cohesion of your fluid form.", "You have already altered the cohesiveness of your form."}})
 end
+
+if svo.haveskillset('memorium') then
+  defs_data:set('traceshield', {type = 'memorium',
+    def = "The power of the shield logograph wards damage from you.",
+    on = "Your knife moves in perfect harmony with your mind as you trace the image of the shield in the air, its outline bursting into crimson fire."})
+    
+  defs_data:set('traceleech', {type = 'memorium',
+    def = "The power of the leech draws afflictions from you.",
+    on = "Your knife moves in perfect harmony with your mind as you trace the image of the leech in the air, its outline bursting into crimson fire.",
+    off = "You sense that the power of the leeching logograph has dwindled."})
+
+  defs_data:set('bloodiedknife', {type = 'memorium',
+    invisibledef = true,
+    offline_defence = true,
+    stays_on_death = true,
+    staysindragon = true,
+    on = "You bring your blade to your opposite hand and blood it in preparation for the work to come.",
+    onr = {[[^You sweep your blade in a circle above your head, the point coming to rest pointed at \w+\. A fine crimson spray follows the arc of your blade, and you know that your ensorcelment has born fruit\.$]],
+    [[^Reaching into a pouch, you withdraw a small stone jar containing the blood of \w+\. With deft motions, you unscrew the lid and tip some drops onto your ritual blade, your focus drinking hungrily of that which sustains\.$]]},
+    off = {"The last of your blood has dried upon your ritual blade.", "A leaf-bladed ritual knife must have been bloodied if you wish to trace a logograph."},
+    offr = [[^The last of (\w+)'s blood has dried upon your ritual blade\.$]]
+    })    
+  
+end
+
+if svo.haveskillset('charnel') then
+  defs_data:set('accursedresolve', {type = 'charnel',
+    def = "Your resolve is something beyond the frailties of the flesh.",
+    on = "Your resolve is as eternal as the desert. You will endure.",
+    off = "Your resolve wavers, and the pains of existence are once more made manifest."})
+end
+
+do 
+  function svo.defences.enablemindnet()
+    if svo.dict.mindnet then return end
+
+    defs_data:set('mindnet', { type = 'general',
+    on = {"You cast an invisible mind net out into the distance, allowing it to settle about the surrounding land.", "You already have mindnet active."},
+    off = "You cease concentration and your mind net vanishes.",
+    mana = 'little',
+    def = "You have cast a mindnet over the local area."
+    })
+
+    svo.basicdef('mindnet', "mindnet on")
+    
+    for mode, _ in pairs(defdefup) do
+      defdefup[mode].mindnet = defdefup[mode].mindnet or false
+      defkeepup[mode].mindnet = defkeepup[mode].mindnet or false
+    end
+
+    sk.ignored_defences.general.t.mindnet = sk.ignored_defences.general.t.mindnet or false
+    sk.ignored_defences_map['mindnet'] = 'general'
+    
+    defences.def_types['general'][#defences.def_types['general']+1] = 'mindnet'
+
+    local v = svo.defs_data.mindnet;
+    local k = 'mindnet';
+    if v.on and type(v.on) == 'table' then
+      for _,pattern in ipairs(v.on) do
+        (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
+      end
+    elseif v.on then
+      (tempExactMatchTrigger or tempTrigger)(v.on, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
+    end
+
+    (tempExactMatchTrigger or tempTrigger)(v.def, 'svo.defs.def_' .. sk.sanitize(k) .. '()');
+
+    defs['def_'..sk.sanitize(k)] = function ()
+      if not v.ondef then
+        defences.def_def_list[k] = true
+      else
+        defences.def_def_list[k] = v.ondef()
+      end
+      deleteLine()
+    end
+    defs['got_' .. k] = function ()
+      defences.got(k)
+    end
+    defs['lost_' .. k] = function ()
+      defences.lost(k)
+    end
+
+    -- create a snapshot of the before state for all balances, since svo.dict_setup might mess with any
+    local beforestate = sk.getbeforestateprios()
+
+    svo.dict_setup()
+    svo.dict_validate()
+
+    -- notify any prio diffs
+    local afterstate = sk.getafterstateprios()
+    sk.notifypriodiffs(beforestate, afterstate)
+
+    signals.dragonform:emit()
+
+    svo.echof("Have Phylactery of Sixth Sense - enabled it for defup/keepup.")
+  
+end
+
+  function defences.checkmindnet()
+    local t = _G.gmcp.Char.Items.List
+    if not t.location == 'inv' then return end
+
+    for _, it in pairs(t.items) do
+      -- if it.name == "a Veil of the Sphinx" then
+      if it.name == "a  phylactery of sixth sense" then
+        defences.enablemindnet()
+        conf.havemindnet = true
+        raiseEvent("svo config changed", 'havemindnet')
+        signals.gmcpcharitemslist:disconnect(defences.checkmindnet)
+      end
+    end
+
+  end
+  signals.systemstart:connect(function()
+    tempTimer(0, function()
+      if conf.havemindnet then
+        defences.enablemindnet()
+        signals.gmcpcharitemslist:disconnect(defences.checkmindnet)
+      end
+    end)
+  end, 'enable mindnet when system loaded')
+  signals.gmcpcharitemslist:connect(defences.checkmindnet, 'check mindnet on gmcpcharitemslist')
+end
+
 do
   function defences.enablelifevision()
     if svo.dict.lifevision then return end

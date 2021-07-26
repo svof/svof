@@ -2,146 +2,17 @@
 <!DOCTYPE MudletPackage>
 <MudletPackage version="1.001">
 	<TriggerPackage>
-		<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-			<name>Corpse lists</name>
-			<script></script>
-			<triggerType>0</triggerType>
-			<conditonLineDelta>0</conditonLineDelta>
-			<mStayOpen>0</mStayOpen>
-			<mCommand></mCommand>
-			<packageName></packageName>
-			<mFgColor>#ff0000</mFgColor>
-			<mBgColor>#ffff00</mBgColor>
-			<mSoundFile></mSoundFile>
-			<colorTriggerFgColor>#000000</colorTriggerFgColor>
-			<colorTriggerBgColor>#000000</colorTriggerBgColor>
-			<regexCodeList />
-			<regexCodePropertyList />
-			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-				<name>corpse stuff inventory</name>
-				<script></script>
-				<triggerType>0</triggerType>
-				<conditonLineDelta>0</conditonLineDelta>
-				<mStayOpen>250</mStayOpen>
-				<mCommand></mCommand>
-				<packageName></packageName>
-				<mFgColor>#ff0000</mFgColor>
-				<mBgColor>#ffff00</mBgColor>
-				<mSoundFile></mSoundFile>
-				<colorTriggerFgColor>#000000</colorTriggerFgColor>
-				<colorTriggerBgColor>#000000</colorTriggerBgColor>
-				<regexCodeList>
-					<string>You are holding:</string>
-				</regexCodeList>
-				<regexCodePropertyList>
-					<integer>3</integer>
-				</regexCodePropertyList>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>A corpse</name>
-					<script>if not svo.off_action then return end
-
-if svo.off_action == "offer" then
-  svo.doaddfree("offer "..matches[3])
-elseif svo.off_action == "defile" then
-  svo.doadd("offer "..matches[3].." to defile")
-elseif svo.off_action == "sanctify" then
-  svo.doadd("offer "..matches[3].." to sanctify")
-else
-  svo.doaddfree("give "..matches[3].." to "..svo.off_action)
-end
-    </script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string>^\s+([A-Za-z']+)(\d+)\s+the corpse of</string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>1</integer>
-					</regexCodePropertyList>
-				</Trigger>
-				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>corpse stuff inventory stop</name>
-					<script>setTriggerStayOpen("corpse stuff inventory", 0)
-
-disableTrigger("Corpse lists")
-svo.off_action = nil</script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList>
-						<string></string>
-					</regexCodeList>
-					<regexCodePropertyList>
-						<integer>7</integer>
-					</regexCodePropertyList>
-				</Trigger>
-			</Trigger>
-			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-				<name>corpse stuff ground</name>
-				<script>if not svo.off_action then return end
-
-if svo.off_action == "get" then
-  svo.doaddfree("get "..matches[3])
-end</script>
-				<triggerType>0</triggerType>
-				<conditonLineDelta>0</conditonLineDelta>
-				<mStayOpen>0</mStayOpen>
-				<mCommand></mCommand>
-				<packageName></packageName>
-				<mFgColor>#ff0000</mFgColor>
-				<mBgColor>#ffff00</mBgColor>
-				<mSoundFile></mSoundFile>
-				<colorTriggerFgColor>#000000</colorTriggerFgColor>
-				<colorTriggerBgColor>#000000</colorTriggerBgColor>
-				<regexCodeList>
-					<string>^([A-Za-z']+)(\d+)\s+the corpse of</string>
-				</regexCodeList>
-				<regexCodePropertyList>
-					<integer>1</integer>
-				</regexCodePropertyList>
-			</Trigger>
-			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-				<name>corpse stuff ground stop</name>
-				<script>setTriggerStayOpen("corpse stuff inventory", 0)
-
-disableTrigger("Corpse lists")
-svo.off_action = nil</script>
-				<triggerType>0</triggerType>
-				<conditonLineDelta>99</conditonLineDelta>
-				<mStayOpen>0</mStayOpen>
-				<mCommand></mCommand>
-				<packageName></packageName>
-				<mFgColor>#ff0000</mFgColor>
-				<mBgColor>#ffff00</mBgColor>
-				<mSoundFile></mSoundFile>
-				<colorTriggerFgColor>#000000</colorTriggerFgColor>
-				<colorTriggerBgColor>#000000</colorTriggerBgColor>
-				<regexCodeList>
-					<string>Number of matching objects</string>
-				</regexCodeList>
-				<regexCodePropertyList>
-					<integer>2</integer>
-				</regexCodePropertyList>
-			</Trigger>
-		</TriggerGroup>
-		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+		<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 			<name>Shrine full/gone</name>
-			<script>if svo.me.doqueue[1] and svo.me.doqueue[1]:find("^offer") then svo.undoall() end</script>
+			<script>local haveselfish = svo.me.doqueue[#svo.me.doqueue-1]:find("^vkeep selfishness on$")
+if svo.me.doqueue[1] and
+   svo.me.doqueue[1]:find("^offer") then 
+     svo.undoall()
+    if haveselfish then
+      svo.doadd("vkeep selfishness on")
+    end
+end
+disableTriger("Shrine full/gone")</script>
 			<triggerType>0</triggerType>
 			<conditonLineDelta>0</conditonLineDelta>
 			<mStayOpen>0</mStayOpen>
@@ -166,19 +37,22 @@ svo.off_action = nil</script>
 	<AliasPackage>
 		<Alias isActive="yes" isFolder="no">
 			<name>Offering aliases</name>
-			<script>enableTrigger("Corpse lists")
-svo.off_preaction = matches[2]
+			<script>svo.off_preaction = matches[2]
 svo.off_action = matches[3]
-
 if svo.off_preaction ~= "get" then
+  if svo.off_preaction ~= "give" and 
+     svo.off_preaction ~= "put" and 
+     svo.off_preaction ~= "drop" then
+       enableTrigger("Shrine full/gone")
+  end
   sendGMCP("Char.Items.Inv")
-  send("\n")
 else
-  sendAll("config pagelength 250", "ih corpse", "config pagelength "..(svo.conf.pagelength &gt; 0 and svo.conf.pagelength or 20))
-end</script>
+  sendGMCP("Char.Items.Room")
+end
+send(" ")</script>
 			<command></command>
 			<packageName></packageName>
-			<regex>^v(offer|get|defile|sanctify|give|put) ?(\w+)?$</regex>
+			<regex>^v(offer|drop|get|defile|sanctify|give|put)(?: (?!herb)(\w+))?$</regex>
 		</Alias>
 	</AliasPackage>
 	<ActionPackage />
@@ -201,57 +75,68 @@ svo.modules_version["svo (offering)"] = 1</script>
 				<name>svo.corpse_stuff</name>
 				<packageName></packageName>
 				<script>function svo.corpse_stuff()
-  if not svo.off_preaction or gmcp.Char.Items.List.location ~= "inv" then return end
-
-  local t = gmcp.Char.Items.List.items
-  local havekris, haveselfish
-
-  if svo.defkeepup[svo.defs.mode].selfishness then
-    svo.defs.keepup("selfishness", false)
-    haveselfish = true
-  end
-
-  if svo.off_preaction == "offer" then
-    -- see if we got a kris, if we need it
-    for _, item in pairs(t) do
-      if item.name and item.name == "a sacrificial kris" then
-        svo.doaddfree("unwield right$wield kris")
-        havekris = true
-        break
+  local List = gmcp.Char.Items.List
+  if not svo.off_preaction or
+     not ((List.location == "inv" and svo.off_preaction ~= "get") or
+          (List.location == "room" and svo.off_preaction == "get")) then
+    return
+  end -- end early if we won't be handling this anyhow.
+  local preaction = svo.off_preaction
+  local action = svo.off_action
+  if List.location == "room" and preaction == "get" then
+    for k,v in pairs(List.items) do
+      if v.attrib and v.attrib:find("d") then
+        svo.doaddfree("get " .. v.id)
+      elseif v.name:find("the corpse of") then
+        svo.doaddfree("get " .. v.id)
       end
     end
-
-    -- now do business
-    svo.doaddfree("offer corpses")
   else
-
-    for _, item in pairs(t) do
-      if item.name and string.find(item.name, "the corpse of", 1, true) then
-        if svo.off_preaction == "defile" then
-          svo.doadd("offer "..item.id.." to defile")
-        elseif svo.off_preaction == "sanctify" then
-          svo.doadd("offer "..item.id.." to sanctify")
-        elseif svo.off_preaction == "give" then
-          svo.doaddfree("give "..item.id.." to "..svo.off_action)
-				elseif svo.off_preaction == "put" then
-					svo.doaddfree("put "..item.id.." in "..svo.off_action)
+    local t = List.items
+    local havekris, haveselfish
+    if svo.defkeepup[svo.defs.mode].selfishness then
+      svo.defs.keepup("selfishness", false)
+      haveselfish = true
+    end
+    if svo.off_preaction == "offer" then 
+      -- see if we got a kris, if we need it
+      for _, item in pairs(t) do
+        if item.name and item.name == "a sacrificial kris" then
+          svo.doaddfree("unwield right$wield kris")
+          havekris = true
+          break
+        end
+      end
+      -- now do business
+      svo.doaddfree("offer corpses")
+    else
+      for _, item in pairs(t) do
+        if item.name and string.find(item.name, "the corpse of", 1, true) then
+          if svo.off_preaction == "defile" then
+            svo.doadd("offer "..item.id.." to defile")
+          elseif svo.off_preaction == "sanctify" then
+            svo.doadd("offer "..item.id.." to sanctify")
+          elseif svo.off_preaction == "give" then
+            svo.doaddfree("give "..item.id.." to "..svo.off_action)
+				  elseif svo.off_preaction == "put" then
+				  	svo.doaddfree("put "..item.id.." in "..svo.off_action)
+				  elseif svo.off_preaction == "drop" then
+					  svo.doaddfree("drop "..item.id)
+          end
         end
       end
     end
-  end
+    if havekris then
+      svo.doaddfree("unwield kris")
+    end
 
-  if havekris then
-    svo.doaddfree("unwield kris")
+    if haveselfish then
+      svo.doadd("vkeep selfishness on")
+    end
   end
-
-  if haveselfish then
-    svo.doadd("vkeep selfishness on")
-  end
-
+  svo.doadd(function() disableTrigger("Shrine full/gone") end)
   svo.off_preaction = nil
-  deleteLine()
-end
-</script>
+end</script>
 				<eventHandlerList>
 					<string>gmcp.Char.Items.List</string>
 				</eventHandlerList>

@@ -22,7 +22,7 @@ svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (setup, misc, empty, funnies, dor)"] = 1
 svo.loader.setup = function()
 
-svo.version = "40"
+svo.version = "42"
 
 if Logger and not svo.systemloaded then
   Logger:LogSection('svof', {'timestamp', split = 5000, 'keepOpen'})
@@ -349,6 +349,7 @@ svo.knownskills = {
   none                     = {},
   occultist                = {'occultism', 'tarot', 'domination'},
   paladin                  = {'chivalry', 'devotion', 'weaponmastery'},
+  pariah                   = {'memorium', 'pestilence', 'charnel'},
   priest                   = {'spirituality', 'devotion', 'zeal'},
   runewarden               = {'runelore', 'chivalry', 'weaponmastery'},
   sentinel                 = {'metamorphosis', 'woodlore', 'skirmishing'},
@@ -458,6 +459,58 @@ signals.gmcpcharvitals:connect(function()
 end, 'update path and form')
 end
 
+if svo.haveskillset('necromancy') or svo.haveskillset('oppression') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local essence = val:match("^Essence: (%d+)%%$")
+      if essence then
+        stats.essence = tonumber(essence)
+        break
+      end
+    end
+  end
+  if not stats.essence then
+    stats.essence = 0
+  end
+end, 'update necromancy essence')
+end
+
+if svo.haveskillset('weaponmastery') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local momentum = val:match("^Momentum: (%d+)$")
+      if momentum then
+        stats.momentum = tonumber(momentum)
+        break
+      end
+    end
+  end
+  if not stats.momentum then
+    stats.momentum = 0
+  end
+end, 'update dual blunt momentum')
+end
+
+if svo.haveskillset('memorium') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local epitaph_length = val:match("^epitaph_length: (%d+)$")
+      if epitaph_length then
+        stats.epitaph_length = tonumber(epitaph_length)
+        break
+      end
+    end
+  end
+  if not stats.epitaph_length then
+    stats.epitaph_length = 0
+  end
+end, 'update memorium epitaph length')
+end
+
+
 signals.gmcpiretimelist = signals.gmcpiretimelist or luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
   me.gametime = svo.deepcopy(gmcp.IRE.Time.List)
@@ -501,6 +554,8 @@ signals.gmcpcharafflictionsadd:connect(function()
   if affcount ~= nil and table.contains(svo.affl, svo.dict[svo.dict.sstosvoa[affname]].name) then
     svo.updateaffcount(svo.dict[svo.dict.sstosvoa[affname]])
   end
+  sk.checkaeony()
+  signals.changecuring:emit()
 end, 'track gained gmcp aff')
 
 signals.gmcpcharafflictionsremove:connect(function()
@@ -512,15 +567,17 @@ signals.gmcpcharafflictionsremove:connect(function()
   if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
   gaffl[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
-  if svo.dict.unknownany.count >= 1 and not svo.affl[thisaff] then
-    svo.valid.remove_unknownany(thisaff)
+  if svo.dict.unknownany.count &gt;= 1 and not svo.affl[affname] then
+    svo.valid.remove_unknownany(affname)
   end
   if svo.dict.sstosvoa[thisaff] then
-    svo.rmaff(svo.dict[svo.dict.sstosvoa[thisaff]])
+    svo.rmaff(svo.dict[svo.dict.sstosvoa[affname]])
   end
   if affcount ~= nil and svo.dict[svo.dict.sstosvoa[affname]].count ~= nil then
     svo.dict[svo.dict.sstosvoa[affname]].count = 0
   end
+  sk.checkaeony()
+  signals.changecuring:emit()
 end, 'track lost gmcp aff')
 
 signals.gmcpcharafflictionslist:connect(function()
@@ -540,6 +597,8 @@ signals.gmcpcharafflictionslist:connect(function()
         svo.addaff(svoAffliction)
       end
     end
+  sk.checkaeony()
+  signals.changecuring:emit()
   end
 
   for key, val in pairs(preaffl) do
@@ -2163,9 +2222,9 @@ end
 
 function svo.concatand(t)
   svo.assert(type(t) == 'table', 'svo.concatand: argument must be a table')
-
   if #t == 0 then return ''
   elseif #t == 1 then return t[1]
+  elseif #t == 2 then return t[1] .. " and " .. t[2]
   else
     return table.concat(t, ', ', 1, #t-1) .. ', and '..t[#t]
   end
@@ -2649,13 +2708,15 @@ local madness_affs = {'addiction', 'confusion', 'dementia', 'hallucinations', 'h
 
 for herbname, herbaffs in pairs({
   goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression',
-   'shadowmadness'},
-  kelp = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness'},
+   'shadowmadness', 'mycalium', 'sandfever'},
+  kelp = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'rebbies'},
   lobelia = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'spiritburn', 'tenderskin'},
-  ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy'},
+  ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy', 'flushings'},
   ash = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia'},
 	pear = {'pressure'},
-  bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'}
+  bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'},
+  bloodroot = {'paralysis', 'pyramides'}
+  
 }) do
   empty['eat_'..herbname] = function()
     svo.lostbal_herb()
