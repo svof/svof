@@ -6894,11 +6894,6 @@ end
         else
           svo.affsp.anorexia = true
         end
-
-        -- register it as a possible hypochondria symptom
-        if svo.paragraph_length == 1 then
-          sk.hypochondria_symptom()
-        end
       end
     },
   },

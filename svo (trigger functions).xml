@@ -3808,63 +3808,48 @@ end
 function svo.valid.venom_crippledrightleg()
   if svo.paragraph_length ~= 1 then
     valid.simplecrippledrightleg()
-  else
-    sk.hypochondria_symptom()
   end
 end
 function svo.valid.venom_crippledleftleg()
   if svo.paragraph_length ~= 1 then
     valid.simplecrippledleftleg()
-  else
-    sk.hypochondria_symptom()
   end
 end
 -- might not be hypochondria, but plague vibe
 function svo.valid.proper_clumsiness()
     valid.simpleclumsiness()
 end
+
 function svo.valid.proper_weakness()
   if svo.paragraph_length ~= 1 then
     valid.simpleweakness()
-  else
-    sk.hypochondria_symptom()
   end
 end
 function svo.valid.proper_disloyalty()
   if svo.paragraph_length ~= 1 then
     valid.simpledisloyalty()
-  else
-    sk.hypochondria_symptom()
   end
 end
 function svo.valid.proper_illness()
   if svo.paragraph_length ~= 1 then
     valid.simpleillness()
-  else
-    sk.hypochondria_symptom()
   end
 end
 function svo.valid.proper_lethargy()
   if svo.paragraph_length ~= 1 or affs.torntendons or svo.find_until_last_paragraph("You stumble as you are afflicted with", 'substring') then
     valid.simplelethargy()
-  else
-    sk.hypochondria_symptom()
   end
 end
 -- skullfractures makes the affliction come back on its own
 function svo.valid.proper_addiction()
   if svo.paragraph_length ~= 1 or affs.skullfractures then
     valid.simpleaddiction()
-  else
-    sk.hypochondria_symptom()
   end
 end
 function svo.valid.proper_anorexia()
   if not conf.aillusion then
     if svo.paragraph_length ~= 1 or svo.find_until_last_paragraph("With a characteristic Jaziran trill", 'substring') then
       valid.simpleanorexia()
-    else
-      sk.hypochondria_symptom()
     end
   else
     svo.checkaction(svo.dict.checkanorexia.aff, true)
@@ -3876,8 +3861,6 @@ end
 function svo.valid.proper_slickness()
   if svo.paragraph_length ~= 1 then
     valid.simpleslickness()
-  else
-    sk.hypochondria_symptom()
   end
 end
 function svo.valid.proper_recklessness(attacktype)
@@ -3907,15 +3890,11 @@ end
 function svo.valid.venom_crippledleftarm()
   if svo.paragraph_length ~= 1 then
     valid.simplecrippledleftarm()
-  else
-    sk.hypochondria_symptom()
   end
 end
 function svo.valid.venom_crippledrightarm()
   if svo.paragraph_length ~= 1 then
     valid.simplecrippledrightarm()
-  else
-    sk.hypochondria_symptom()
   end
 end
 

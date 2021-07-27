@@ -1216,13 +1216,16 @@ function svo.sk.hypochondria_symptom()
   if svo.find_until_last_paragraph(line, 'exact') or affs.hypochondria then return end
 
   sk.hypochondria_count = sk.hypochondria_count + 1
-
-  if sk.hypochondria_count &gt;= 3 then
+  
+  if sk.hypochondria_count == 2 then
+    svo.echof("We might have Hypochondria")
+  elseif sk.hypochondria_count &gt;= 3 then
+    svo.echof("Enough Afflictions Ticked, Adding Hypochondria")
     svo.valid.simplehypochondria()
     sk.hypochondria_count = 0
   end
 
-  tempTimer(12, function ()
+  tempTimer(3, function ()
     sk.hypochondria_count = sk.hypochondria_count - 1
     if sk.hypochondria_count &lt; 0 then sk.hypochondria_count = 0 end
   end)
