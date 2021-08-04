@@ -145,27 +145,27 @@ end
 
 if svo.haveskillset('kaido') then
 cpp.compute_kai = function ()
-  if stats.kai ~= 0 then
-    return stats.kai
+  if classinfo.kai ~= 0 then
+    return classinfo.kai
   end
 
   return ""
 end
 
 cpp.compute_kai_colour = function ()
-  if not stats.kai or stats.kai == 0 then
+  if not classinfo.kai or classinfo.kai == 0 then
     return ""
-  elseif stats.kai &lt;= 11 then
+  elseif classinfo.kai &lt;= 11 then
     return "&lt;a_onelevel&gt;"
-  elseif stats.kai &lt;= 21 then
+  elseif classinfo.kai &lt;= 21 then
     return "&lt;a_twolevel&gt;"
-  elseif stats.kai &lt;= 41 then
+  elseif classinfo.kai &lt;= 41 then
     return "&lt;a_threelevel&gt;"
-  elseif stats.kai &lt;= 61 then
+  elseif classinfo.kai &lt;= 61 then
     return "&lt;a_fourlevel&gt;"
-  elseif stats.kai &lt;= 81 then
+  elseif classinfo.kai &lt;= 81 then
     return "&lt;a_fivelevel&gt;"
-  elseif stats.kai &lt;= 100 then
+  elseif classinfo.kai &lt;= 100 then
     return "&lt;a_sixlevel&gt;"
   else
     return ""
@@ -176,26 +176,26 @@ end
 
 if svo.haveskillset('shindo') then
 cpp.compute_shin = function ()
-  if stats.shin ~= 0 then
-    return stats.shin
+  if classinfo.shin ~= 0 then
+    return classinfo.shin
   end
   return ""
 end
 
 cpp.compute_shin_colour = function ()
-  if not stats.shin or stats.shin == 0 then
+  if not classinfo.shin or classinfo.shin == 0 then
     return ""
-  elseif stats.shin &lt;= 5 then
+  elseif classinfo.shin &lt;= 5 then
     return "&lt;a_onelevel&gt;"
-  elseif stats.shin &lt;= 15 then
+  elseif classinfo.shin &lt;= 15 then
     return "&lt;a_twolevel&gt;"
-  elseif stats.shin &lt;= 30 then
+  elseif classinfo.shin &lt;= 30 then
     return "&lt;a_threelevel&gt;"
-  elseif stats.shin &lt;= 40 then
+  elseif classinfo.shin &lt;= 40 then
     return "&lt;a_fourlevel&gt;"
-  elseif stats.shin &lt;= 90 then
+  elseif classinfo.shin &lt;= 90 then
     return "&lt;a_fivelevel&gt;"
-  elseif stats.shin &lt;= 100 then
+  elseif classinfo.shin &lt;= 100 then
     return "&lt;a_sixlevel&gt;"
   else
     return ""
@@ -205,19 +205,19 @@ end
 
 if svo.haveskillset('aeonics') then
 cpp.compute_age_colour = function ()
-  if not stats.age or stats.age == 0 then
+  if not classinfo.age or classinfo.age == 0 then
     return "&lt;grey&gt;"
-  elseif stats.age &lt;= 150 then
+  elseif classinfo.age &lt;= 150 then
     return "&lt;ansi_light_green&gt;"
-  elseif stats.age &lt;= 300 then
+  elseif classinfo.age &lt;= 300 then
     return "&lt;ansiGreen&gt;"
-  elseif stats.age &lt;= 450 then
+  elseif classinfo.age &lt;= 450 then
     return "&lt;ansi_yellow&gt;"
-  elseif stats.age &lt;= 600 then
+  elseif classinfo.age &lt;= 600 then
     return "&lt;gold&gt;"
-  elseif stats.age &lt;= 800 then
+  elseif classinfo.age &lt;= 800 then
     return "&lt;blaze_orange&gt;"
-  elseif stats.age &lt;= 1000 then
+  elseif classinfo.age &lt;= 1000 then
     return "&lt;red&gt;"
   else
     return ""
@@ -317,7 +317,7 @@ cpp.compute_gametargethp = function()
 end
 
 cpp.compute_weaponmastery = function()
-  return stats.weaponmastery or 0
+  return classinfo.weaponmastery or 0
 end
 
 cpp.compute_power = function()
@@ -332,7 +332,7 @@ end
 
 cpp.compute_power_color = function()
   local powerColor
-  local power = stats.shin or stats.kai
+  local power = classinfo.shin or classinfo.kai
   if not power or power == 0 then
    powerColor = ""
   else
@@ -345,24 +345,24 @@ end
 
 if svo.haveskillset('metamorphosis') then
 cpp.compute_morph = function()
-  return me.morph or ""
+  return classinfo.morph or ""
 
 end
 end
 
 if svo.haveskillset('groves') then
 cpp.compute_sunlight = function()
-  return stats.sunlight &gt; 0 and tostring(stats.sunlight) or ""
+  return classinfo.sunlight &gt; 0 and tostring(classinfo.sunlight) or ""
 end
 end
 
 if svo.haveskillset('tekura') then
 cpp.compute_monkpath = function()
-  return me.path or ""
+  return classinfo.path or ""
 end
 
 cpp.compute_stanceform = function()
-  return me.stance or me.form or ""
+  return classinfo.stance or classinfo.form or ""
 end
 
 cpp.compute_stanceform_verbose = function()
@@ -376,13 +376,13 @@ end
 
 if svo.haveskillset('weaponmastery') then
 cpp.compute_momentum = function()
-  return stats.momentum &gt; 0 and tostring(stats.momentum) or ""
+  return classinfo.momentum &gt; 0 and tostring(classinfo.momentum) or ""
 end
 end
 
 if svo.haveskillset('necromancy') or svo.haveskillset('oppression') then
 cpp.compute_essence = function()
-  return stats.essence &gt; 0 and tostring(stats.essence) or ""
+  return classinfo.essence &gt; 0 and tostring(classinfo.essence) or ""
 end
 end
 
