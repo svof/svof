@@ -28,7 +28,7 @@ svo.loader.customprompt = function()
 
 local sys, affs, signals = svo.sys, svo.affs, svo.signals
 local conf, sk, me, defc = svo.conf, svo.sk, svo.me, svo.defc
-local stats = svo.stats
+local stats, classinfo = svo.stats, svo.classinfo
 local bals, cp, cpp = svo.bals, svo.cp, svo.cpp
 
 for _, stat in ipairs {'health', 'mana', 'endurance', 'willpower'} do
@@ -352,7 +352,7 @@ end
 
 if svo.haveskillset('groves') then
 cpp.compute_sunlight = function()
-  return classinfo.sunlight &gt; 0 and tostring(classinfo.sunlight) or ""
+  return classinfo.sunlight &gt; 0 and tonumber(classinfo.sunlight) or 0
 end
 end
 
@@ -376,13 +376,13 @@ end
 
 if svo.haveskillset('weaponmastery') then
 cpp.compute_momentum = function()
-  return classinfo.momentum &gt; 0 and tostring(classinfo.momentum) or ""
+  return classinfo.momentum &gt; 0 and tonumber(classinfo.momentum) or 0
 end
 end
 
 if svo.haveskillset('necromancy') or svo.haveskillset('oppression') then
 cpp.compute_essence = function()
-  return classinfo.essence &gt; 0 and tostring(classinfo.essence) or ""
+  return classinfo.essence &gt; 0 and tonumber(classinfo.essence) or 0
 end
 end
 
