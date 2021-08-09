@@ -292,7 +292,7 @@ end
 
 if svo.haveskillset('aeonics') then
   cpp.compute_age = function()
-    return ((stats.age and stats.age &gt; 0) and tostring(stats.age) or "")
+    return ((classinfo.age and classinfo.age &gt; 0) and tostring(classinfo.age) or "")
   end
 end
 
