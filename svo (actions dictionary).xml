@@ -1086,7 +1086,7 @@ end
     herb = {
       isadvisable = function()
         return (affs.pacifism and
-          not svo.doingaction('pacifism') and (not svo.haveskillset('chivalry') or not svo.dict.rage.misc.isadvisable())) or false
+          not svo.doingaction('pacifism') and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity')or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function()
@@ -1102,7 +1102,7 @@ end
     focus = {
       isadvisable = function()
         return (affs.pacifism and
-          not svo.doingaction('pacifism') and (not svo.haveskillset('chivalry') or not svo.dict.rage.misc.isadvisable())) or false
+          not svo.doingaction('pacifism') and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity')or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function()
@@ -1133,7 +1133,7 @@ end
   peace = {
     herb = {
       isadvisable = function()
-        return (affs.peace and (not svo.haveskillset('chivalry') or not svo.dict.rage.misc.isadvisable())) or false
+        return (affs.peace and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function()
@@ -1159,7 +1159,7 @@ end
     gamename = 'lovers',
     herb = {
       isadvisable = function()
-        return (affs.inlove and (not svo.haveskillset('chivalry') or not svo.dict.rage.misc.isadvisable())) or false
+        return (affs.inlove and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function()
@@ -1690,7 +1690,7 @@ end
   justice = {
     herb = {
       isadvisable = function()
-        return (affs.justice and (not svo.haveskillset('chivalry') or not svo.dict.rage.misc.isadvisable())) or false
+        return (affs.justice and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function()
@@ -1716,7 +1716,7 @@ end
     herb = {
       isadvisable = function()
         return (affs.generosity and
-          not svo.doingaction('generosity') and (not svo.haveskillset('chivalry') or not svo.dict.rage.misc.isadvisable())) or false
+          not svo.doingaction('generosity') and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity')or svo.haveskillset('valour')) or not svo.dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function()
@@ -1732,7 +1732,7 @@ end
     focus = {
       isadvisable = function()
         return (affs.generosity and
-          not svo.doingaction('generosity') and (not svo.haveskillset('chivalry') or not svo.dict.rage.misc.isadvisable())) or false
+          not svo.doingaction('generosity') and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity')or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function()
@@ -13763,7 +13763,7 @@ if svo.haveskillset('voicecraft') then
   }
 end
 
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')  then
   svo.dict.rage = {
     misc = {
       uncurable = true,
@@ -13881,7 +13881,7 @@ if svo.haveskillset('aeonics') then
     }
   }
 end
-if svo.haveskillset('chivalry') or svo.haveskillset('striking') or svo.haveskillset('kaido') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') or svo.haveskillset('striking') or svo.haveskillset('kaido') then
   svo.dict.fitness = {
     physical = {
       balanceful_act = true,
@@ -14115,7 +14115,7 @@ end
 if svo.haveskillset('oppression') then
   basicdef('deathaura', "deathaura")
 end
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') then
   basicdef('sturdiness', "stand firm", false, 'standingfirm')
   basicdef('weathering', 'weathering', true)
   basicdef('resistance', 'resistance', true)

@@ -983,11 +983,14 @@ end
 if svo.haveskillset('venom') then
   svo.bals.shrugging = true
 end
-if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or
-  svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or 
+  svo.haveskillset('valour') or svo.haveskillset('dominion') or 
+  svo.haveskillset('shindo') or svo.haveskillset('kaido') or
+  svo.haveskillset('metamorphosis') then
   svo.bals.fitness = true
 end
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or 
+  svo.haveskillset('valour') or svo.haveskillset('dominion')  then
   svo.bals.rage = true
 end
 if svo.haveskillset('physiology') then
@@ -1268,7 +1271,7 @@ local defs_data = svo.defs_data
     off = "You are no longer watching the skies."})
   defs_data:set('toughness', { nodef = true,
     def = "Your skin is toughened." })
-  defs_data:set("chivalry defended", { nodef = true,
+  defs_data:set("defended", { nodef = true,
     def = "You are being defended by a stalwart ally." })
   defs_data:set('waterbubble', { type = 'general',
     def = "You are surrounded by a pocket of air."})
@@ -1642,23 +1645,83 @@ if svo.haveskillset('oppression') then
     def = "You are emanating an aura of death.",
     off = "Your aura of death has worn off."})
 end
-if svo.haveskillset('chivalry') then
-  defs_data:set('weathering', { type = 'chivalry',
+if svo.haveskillset('discipline') then
+  defs_data:set('weathering', { type = 'discipline',
     on = "A brief shiver runs through your body.",
     def = "Your body is weathering the storm of life a little better."})
-  defs_data:set('fury', { type = 'chivalry',
+  defs_data:set('fury', { type = 'discipline',
     on = {"Your eyes rage with fury.", "You're already raged with fury!", "Too much fury in a day is unhealthy!"},
     off = {"You suddenly lose the fury in your eyes.", "You are already calm and not feeling any fury."},
     def = "Fury rages in your eyes."})
-  defs_data:set('sturdiness', { type = 'chivalry',
+  defs_data:set('sturdiness', { type = 'discipline',
     on = "You cross your arms, standing firm and resolute.",
     def = "You are standing firm against attempts to move you.",
     off = "You cease to stand firm against attempts to move you."})
-  defs_data:set('grip', { type = 'chivalry',
+  defs_data:set('grip', { type = 'discipline',
     on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
     def = "Your hands are gripping your wielded items tightly.",
     off = "You relax your grip."})
-  defs_data:set('resistance', { type = 'chivalry',
+  defs_data:set('resistance', { type = 'discipline',
+    on = "You call aloud and feel an aura of resistance shroud itself silently about you.",
+    def = "You are resisting magical damage."})
+end
+if svo.haveskillset('malignity') then
+  defs_data:set('weathering', { type = 'malignity',
+    on = "A brief shiver runs through your body.",
+    def = "Your body is weathering the storm of life a little better."})
+  defs_data:set('fury', { type = 'malignity',
+    on = {"Your eyes rage with fury.", "You're already raged with fury!", "Too much fury in a day is unhealthy!"},
+    off = {"You suddenly lose the fury in your eyes.", "You are already calm and not feeling any fury."},
+    def = "Fury rages in your eyes."})
+  defs_data:set('sturdiness', { type = 'malignity',
+    on = "You cross your arms, standing firm and resolute.",
+    def = "You are standing firm against attempts to move you.",
+    off = "You cease to stand firm against attempts to move you."})
+  defs_data:set('grip', { type = 'malignity',
+    on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
+    def = "Your hands are gripping your wielded items tightly.",
+    off = "You relax your grip."})
+  defs_data:set('resistance', { type = 'malignity',
+    on = "You call aloud and feel an aura of resistance shroud itself silently about you.",
+    def = "You are resisting magical damage."})
+end
+if svo.haveskillset('valour') then
+  defs_data:set('weathering', { type = 'valour',
+    on = "A brief shiver runs through your body.",
+    def = "Your body is weathering the storm of life a little better."})
+  defs_data:set('fury', { type = 'valour',
+    on = {"Your eyes rage with fury.", "You're already raged with fury!", "Too much fury in a day is unhealthy!"},
+    off = {"You suddenly lose the fury in your eyes.", "You are already calm and not feeling any fury."},
+    def = "Fury rages in your eyes."})
+  defs_data:set('sturdiness', { type = 'valour',
+    on = "You cross your arms, standing firm and resolute.",
+    def = "You are standing firm against attempts to move you.",
+    off = "You cease to stand firm against attempts to move you."})
+  defs_data:set('grip', { type = 'valour',
+    on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
+    def = "Your hands are gripping your wielded items tightly.",
+    off = "You relax your grip."})
+  defs_data:set('resistance', { type = 'valour',
+    on = "You call aloud and feel an aura of resistance shroud itself silently about you.",
+    def = "You are resisting magical damage."})
+end
+if svo.haveskillset('dominion') then
+  defs_data:set('weathering', { type = 'dominion',
+    on = "A brief shiver runs through your body.",
+    def = "Your body is weathering the storm of life a little better."})
+  defs_data:set('fury', { type = 'dominion',
+    on = {"Your eyes rage with fury.", "You're already raged with fury!", "Too much fury in a day is unhealthy!"},
+    off = {"You suddenly lose the fury in your eyes.", "You are already calm and not feeling any fury."},
+    def = "Fury rages in your eyes."})
+  defs_data:set('sturdiness', { type = 'dominion',
+    on = "You cross your arms, standing firm and resolute.",
+    def = "You are standing firm against attempts to move you.",
+    off = "You cease to stand firm against attempts to move you."})
+  defs_data:set('grip', { type = 'dominion',
+    on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
+    def = "Your hands are gripping your wielded items tightly.",
+    off = "You relax your grip."})
+  defs_data:set('resistance', { type = 'dominion',
     on = "You call aloud and feel an aura of resistance shroud itself silently about you.",
     def = "You are resisting magical damage."})
 end

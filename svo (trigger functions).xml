@@ -530,7 +530,7 @@ function svo.valid.smoke_have_rebounding()
   end
 end
 
-if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
   function svo.defs.got_fitness()
     svo.checkaction(svo.dict.fitness.physical)
     if actions.fitness_physical then
@@ -576,7 +576,7 @@ else
   function svo.valid.fitness_allgood() end
 end
 
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') then
 function svo.valid.gotragebalance()
   svo.checkaction(svo.dict.gotbalance.happened, true)
   svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'rage' -- hack to allow multiple balances at once
@@ -4259,7 +4259,7 @@ end
 valid.low_willpower = sk.checkwillpower
 
 
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') then
   sk.check_emptyrage = function ()
     if sk.currentragecount+1 == getLineCount() then
       lifevision.add(actions.rage_misc.p, 'empty')
@@ -4274,7 +4274,7 @@ if svo.haveskillset('chivalry') then
     svo.checkaction(svo.dict.rage.misc)
     if actions.rage_misc then
       sk.currentragecount = getLineCount()
-      signals.before_prompt_processing:connect(sk.check_emptyrage, 'check for chivalry rage not curing anything')
+      signals.before_prompt_processing:connect(sk.check_emptyrage, 'check for rage not curing anything')
       valid.passive_cure()
     end
   end
