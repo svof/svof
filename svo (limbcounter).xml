@@ -2147,7 +2147,7 @@ if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == t
 		svo.lc_myclass = svo.me.class
     svo.echof("Loaded svo limbcounter, %s %s.", "Dragon", tostring(svo.modules_version["svo (limbcounter)"]))
   elseif svo.me.class == "Monk" then
-    if svo.me.path == "tekura" then
+    if svo.classinfo.path == "tekura" then
       enableTrigger("svo Monk limbcounter")
       enableTrigger("Tekura")
       disableTrigger("Shikudo")
@@ -2186,7 +2186,7 @@ if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == t
         end,
       })
       svo.echof("Loaded svo limbcounter, %s %s.", "Monk Tekura", tostring(svo.modules_version["svo (limbcounter)"]))
-    elseif svo.me.path == "Shikudo" then
+    elseif svo.classinfo.path == "Shikudo" then
       enableTrigger("svo Monk limbcounter")
       enableTrigger("Shikudo")
       disablTrigger("Tekura")

@@ -143,6 +143,8 @@ local gaffl          = svo.gaffl
 svo.gdefc            = svo.gdefc or {}
 svo.me               = svo.me or {}
 local me             = svo.me
+svo.classinfo        = svo.classinfo or {}
+local classinfo      = svo.classinfo
 svo.sk               = svo.sk or {}
 local sk             = svo.sk
 svo.vm               = svo.vm or {}
@@ -328,10 +330,11 @@ if lfs.attributes(my_class_location) then
 end
 
 me.class = me.class or (table.is_empty(my_class) and 'Infernal' or my_class.class)
-me.path = me.path or (table.is_empty(my_class)  and ""  or my_class.path)
+classinfo.path = classinfo.path or (table.is_empty(my_class)  and ""  or my_class.path)
+
 
 signals.saveconfig:connect(function()
-  svo.tablesave(my_class_location, {class = svo.me.class, path = svo.me.path})
+  svo.tablesave(my_class_location, {class = svo.me.class, path = svo.classinfo.path})
 end, 'save my class')
 
 
@@ -386,128 +389,655 @@ do
   end
 end
 
-if svo.haveskillset('groves') then
+--signal to reset the class info table
 signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      local sunlight = val:match("^Sunlight: (%d+)$")
-      if sunlight then
-        stats.sunlight = tonumber(sunlight)
-        break
+  svo.classinfo = {}
+end, 'update classinfo')
+
+--Alchemist
+if svo.me.class == "Alchemist" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local wellspring = val:match("^Wellspring: (%d+)$")
+        if wellspring then
+          svo.classinfo.wellspring = tonumber(wellspring)
+          break
+        end
       end
     end
-  end
-  if not stats.sunlight then
-    stats.sunlight = 0
-  end
-end, 'update sunlight')
+    if not svo.classinfo.wellspring then
+      svo.classinfo.wellspring = 0
+    end
+  end, 'update wellspring')
 end
-if svo.haveskillset('metamorphosis') then
-signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      local morph = val:match("^Morph: (%w+)$")
-      if morph then
-        morph = morph:lower()
-        me.morph = morph
-        if not defc[morph] then
-          sk.clearmorphs()
-          if morph ~= 'none' then
-            defences.got(morph)
+
+--Apostate
+if svo.me.class == "Apostate" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local essence = val:match("^Essence: (%d+)%%$")
+        if essence then
+          svo.classinfo.essence = tonumber(essence)
+          break
+        end
+      end
+    end
+    if not svo.classinfo.essence then
+      svo.classinfo.essence = 0
+    end
+  end, 'update essence')
+end
+
+--Bard
+if svo.me.class == "Bard" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local voice = val:match("^Voice: (%w+)$")
+        if voice and voice == "Yes" then
+          svo.bals.voice = true
+        elseif voice and voice == "No" then
+          svo.bals.voice = false
+          break
+        end
+      end
+    end
+    if not svo.bals.voice then
+      svo.bals.voice = true
+    end
+  end, 'update voice balance')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local stance = val:match("^Stance: (%w+)$")
+        if stance then
+          svo.classinfo.stance = stance
+          break
+        end
+      end
+    end
+    if not svo.classinfo.stance then
+      svo.classinfo.stance = "None"
+    end
+  end, 'update stance')
+end
+
+--Blademaster
+if svo.me.class == "Blademaster" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local shin = val:match("^Shin: (%d+)$")
+        if shin then
+          svo.classinfo.shin = tonumber(shin)
+          break
+        end
+      end
+    end
+    if not svo.classinfo.shin then
+      svo.classinfo.shin = 0
+    end
+  end, 'update shin')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local stance = val:match("^Stance: (%w+)$")
+        if stance then
+          svo.classinfo.stance = stance
+          break
+        end
+      end
+    end
+    if not svo.classinfo.stance then
+      svo.classinfo.stance = "None"
+    end
+  end, 'update stance')
+end
+
+--Depthswalker
+if svo.me.class == "Depthswalker" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local word = val:match("^Word: (%w+)$")
+        if word and word == "Yes" then
+          svo.bals.word = true
+        elseif word and word == "No" then
+          svo.bals.word = false
+          break
+        end
+      end
+    end
+    if not svo.bals.word then
+      svo.bals.word = true
+    end
+  end, 'update word balance')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local age = val:match("^Age: (%d+)$")
+        if age then
+         svo.classinfo.age = tonumber(age)
+          break
+        end
+      end
+    end
+    if not svo.classinfo.age then
+      svo.classinfo.age = 0
+    end
+  end, 'update age')
+end
+
+--Druid
+if svo.me.class == "Druid" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local sunlight = val:match("^Sunlight: (%d+)$")
+        if sunlight then
+          svo.classinfo.sunlight = tonumber(sunlight)
+          break
+        end
+      end
+    end
+    if not svo.classinfo.sunlight then
+      svo.classinfo.sunlight = 0
+    end
+  end, 'update sunlight')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local morph = val:match("^Morph: (%w+)$")
+        if morph then
+          morph = morph:lower()
+          svo.classinfo.morph = morph
+          if not defc[morph] then
+            sk.clearmorphs()
+            if morph ~= 'none' then
+              defences.got(morph)
+            end
+          end
+          break
+        end
+      end
+    end
+    if not svo.classinfo.morph then
+      svo.classinfo.morph = ""
+    end
+  end, 'update morph')
+end
+
+--Infernal
+if svo.me.class == "Infernal" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local essence = val:match("^Essence: (%w+)$")
+        if essence then
+          svo.classinfo.essence = tonumber(essence)
+          break
+        end
+      end
+    end
+    if not svo.classinfo.essence then
+      svo.classinfo.essence = 0
+    end
+  end, 'update essence')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local spec = val:match("^Spec: (.*)$")
+        if spec then
+          svo.classinfo.spec = spec
+        end
+      end
+    end
+    if not svo.classinfo.spec then
+       svo.classinfo.spec = "None"
+    end
+  end, 'update knightspec')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local ferocity = val:match("^Ferocity: (%d+)$")
+        local momentum = val:match("^Momentum: (%d+)$")
+        if momentum then
+          svo.classinfo.momentum = tonumber(momentum)
+          svo.classinfo.ferocity = nil
+        elseif ferocity then
+          svo.classinfo.ferocity = tonumber(ferocity)
+          svo.classinfo.momentum = nil
+        elseif not momentum and not ferocity then
+          svo.classinfo.ferocity = nil
+          svo.classinfo.momentum = nil
+        end
+      end
+    end
+  end, 'update spec stats')
+end
+
+--Jester (Nothing to track)
+if svo.me.class == "Jester" then
+end
+
+--Magi
+if svo.me.class == "Magi" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      local element 
+      element = {["A"] = "air", ["E"] = "earth", ["F"] = "fire", ["W"] = "water",}
+      local channels = string.match(gmcp.Char.Vitals.charstats[3], "Channels: (.*)")
+      if channels == "None" then
+        for _, v in pairs(element) do
+          defences.lost(v)
+        end
+      else
+        for k,v in pairs(element) do
+          if channels:find(k) then
+            defences.got(v)
+          else
+            defences.lost(v)
           end
         end
-        break
       end
     end
-  end
-  if not me.morph then
-    me.morph = ""
-  end
-end, 'update morph')
+  end, 'update channels')
 end
 
+--Monk
 if svo.me.class == 'Monk' then
-signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      local stance = val:match("^Stance: (%w+)$")
-      local form = val:match("^Form: (%w+)$")
-
-      if stance then
-        me.path = 'tekura'
-        me.form = nil
-        me.stance = stance:lower()
-        sk.ignored_defences['tekura'].status = false
-        sk.ignored_defences['shikudo'].status = true
-
-        break
-      elseif form then
-        me.path = 'shikudo'
-        me.form = form:lower()
-        me.stance = nil
-        sk.ignored_defences['tekura'].status = true
-        sk.ignored_defences['shikudo'].status = false
-
-        break
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local stance = val:match("^Stance: (%w+)$")
+        local form = val:match("^Form: (%w+)$")
+        local kata = val:match("^Kata: (%w+)$")
+        if stance then
+          svo.classinfo.path = 'tekura'
+          svo.classinfo.form = nil
+          svo.classinfo.stance = stance:lower()
+          svo.classinfo.kata = kata
+          sk.ignored_defences['tekura'].status = false
+          sk.ignored_defences['shikudo'].status = true
+          break
+        elseif form then
+          svo.classinfo.path = 'shikudo'
+          svo.classinfo.form = form:lower()
+          svo.classinfo.stance = nil
+          svo.classinfo.kata = kata
+          sk.ignored_defences['tekura'].status = true
+          sk.ignored_defences['shikudo'].status = false
+          break
+        end
       end
     end
-  end
-
-  if not me.path then
-    me.path = 'tekura'
-  end
-end, 'update path and form')
-end
-
-if svo.haveskillset('necromancy') or svo.haveskillset('oppression') then
-signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      local essence = val:match("^Essence: (%d+)%%$")
-      if essence then
-        stats.essence = tonumber(essence)
-        break
+    if not svo.classinfo.path then
+      svo.classinfo.path = 'tekura'
+    end
+  end, 'update path and form')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local kai = val:match("^Kai: (%d+)%$")
+        if kai then
+          svo.classinfo.kai = tonumber(kai)
+          break
+        end
       end
     end
-  end
-  if not stats.essence then
-    stats.essence = 0
-  end
-end, 'update necromancy essence')
+    if not svo.classinfo.kai then
+      svo.classinfo.kai = 0
+    end
+  end, 'update kai')
 end
 
-if svo.haveskillset('weaponmastery') then
-signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      local momentum = val:match("^Momentum: (%d+)$")
-      if momentum then
-        stats.momentum = tonumber(momentum)
-        break
+--Occultist
+if svo.me.class == "Occultist" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local karma = val:match("^Karma: (%d+)%$")
+        if karma then
+          svo.classinfo.karma = tonumber(karma)
+          break
+        end
       end
     end
-  end
-  if not stats.momentum then
-    stats.momentum = 0
-  end
-end, 'update dual blunt momentum')
+    if not svo.classinfo.karma then
+      svo.classinfo.karma = 0
+    end
+  end, 'update karma')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local entity = val:match("^Entity: (%w+)$")
+        if entity then
+          svo.classinfo.entity = entity
+          break
+        end
+      end
+    end
+    if not svo.classinfo.entity then
+      svo.classinfo.entity = "No"
+    end
+  end, 'update entity')
 end
 
+--Paladin
+if svo.me.class == "Paladin" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local devotion = val:match("^Devotion: (%d+)%$")
+        if devotion then
+          svo.classinfo.devotion = tonumber(devotion)
+          break
+        end
+      end
+    end
+    if not svo.classinfo.devotion then
+      svo.classinfo.devotion = 0
+    end
+  end, 'update devotion')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local spec = val:match("^Spec: (.*)$")
+        if spec then
+          svo.classinfo.spec = spec
+        end
+      end
+    end
+    if not svo.classinfo.spec then
+       svo.classinfo.spec = "None"
+    end
+  end, 'update knightspec')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local ferocity = val:match("^Ferocity: (%d+)$")
+        local momentum = val:match("^Momentum: (%d+)$")
+        if momentum then
+          svo.classinfo.momentum = tonumber(momentum)
+          svo.classinfo.ferocity = nil
+        elseif ferocity then
+          svo.classinfo.ferocity = tonumber(ferocity)
+          svo.classinfo.momentum = nil
+        elseif not momentum and not ferocity then
+          svo.classinfo.ferocity = nil
+          svo.classinfo.momentum = nil
+        end
+      end
+    end
+  end, 'update spec stats')
+end
+
+--Pariah 
 if svo.haveskillset('memorium') then
-signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      local epitaph_length = val:match("^epitaph_length: (%d+)$")
-      if epitaph_length then
-        stats.epitaph_length = tonumber(epitaph_length)
-        break
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local epitaph_length = val:match("^epitaph_length: (%d+)$")
+        if epitaph_length then
+          svo.classinfo.epitaph_length = tonumber(epitaph_length)
+          break
+        end
       end
     end
-  end
-  if not stats.epitaph_length then
-    stats.epitaph_length = 0
-  end
-end, 'update memorium epitaph length')
+    if not svo.classinfo.epitaph_length then
+      svo.classinfo.epitaph_length = 0
+    end
+  end, 'update memorium epitaph length')
+end
+
+--Priest
+if svo.me.class == "Priest" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local devotion = val:match("^Devotion: (%d+)%$")
+        if devotion then
+          svo.classinfo.devotion = tonumber(devotion)
+          break
+        end
+      end
+    end
+    if not svo.classinfo.devotion then
+      svo.classinfo.devotion = 0
+    end
+  end, 'update devotion')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local conviction = val:match("^conviction: (%w+)$")
+        if conviction then
+          svo.classinfo.conviction = tonumber(conviction)
+          break
+        end
+      end
+    end
+    if not svo.classinfo.conviction then
+      svo.classinfo.conviction = 0
+    end
+  end, 'update conviction')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local prayer_length = val:match("^prayer_length: (%w+)$")
+        if prayer_length then
+          svo.classinfo.prayer_length = tonumber(prayer_length)
+          break
+        end
+      end
+    end
+    if not svo.classinfo.prayer_length then
+      svo.classinfo.prayer_length = 0
+    end
+  end, 'update prayer_length')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local prayer = val:match("^prayer: (%w+)$")
+        if prayer and prayer == "Yes" then
+          svo.classinfo.prayer = true
+        elseif prayer and prayer == "No" then
+          svo.classinfo.prayer = false
+          break
+        end
+      end
+    end
+    if not svo.classinfo.prayer then
+      svo.classinfo.prayer = true
+    end
+  end, 'update prayer balance')
+end
+
+--Psion (Nothing to track)
+if svo.me.class == "Psion" then
+end
+
+--Runewarden 
+if svo.me.class == "Runewarden" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local spec = val:match("^Spec: (.*)$")
+        if spec then
+          svo.classinfo.spec = spec
+        end
+      end
+    end
+    if not svo.classinfo.spec then
+       svo.classinfo.spec = "None"
+    end
+  end, 'update knightspec')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local ferocity = val:match("^Ferocity: (%d+)$")
+        local momentum = val:match("^Momentum: (%d+)$")
+        if momentum then
+          svo.classinfo.momentum = tonumber(momentum)
+          svo.classinfo.ferocity = nil
+        elseif ferocity then
+          svo.classinfo.ferocity = tonumber(ferocity)
+          svo.classinfo.momentum = nil
+        elseif not momentum and not ferocity then
+          svo.classinfo.ferocity = nil
+          svo.classinfo.momentum = nil
+        end
+      end
+    end
+  end, 'update spec stats')
+end
+
+--Sentinel
+if svo.me.class == "Sentinel" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local morph = val:match("^Morph: (%w+)$")
+        if morph then
+          morph = morph:lower()
+          svo.classinfo.morph = morph
+          if not defc[morph] then
+            sk.clearmorphs()
+            if morph ~= 'none' then
+              defences.got(morph)
+            end
+          end
+          break
+        end
+      end
+    end
+    if not svo.classinfo.morph then
+      svo.classinfo.morph = ""
+    end
+  end, 'update morph')
+end
+
+--Serpent
+if svo.me.class == "Serpent" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local venom = val:match("^Venom: (%w+)$")
+        if venom then
+          svo.classinfo.venom = venom
+          break
+        end
+      end
+    end
+    if not svo.classinfo.venom then
+      svo.classinfo.venom = "None"
+    end
+  end, 'update venom')
+end
+
+--Shaman
+if svo.me.class == "Shaman" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local spirits = val:match("^Spirits: (%d+)$")
+        if spirits then
+          svo.classinfo.spirits = tonumber(spirits)
+          break
+        end
+      end
+    end
+    if not svo.classinfo.spirits then
+      svo.classinfo.spirits = 0
+    end
+  end, 'update spirits')
+end
+
+--Sylvan
+if svo.me.class == "Sylvan" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local sunlight = val:match("^Sunlight: (%d+)$")
+        if sunlight then
+          svo.classinfo.sunlight = tonumber(sunlight)
+          break
+        end
+      end
+    end
+    if not svo.classinfo.sunlight then
+      svo.classinfo.sunlight = 0
+    end
+  end, 'update sunlight')
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      local element 
+      element = {["A"] = "air", ["E"] = "earth", ["F"] = "fire", ["W"] = "water",}
+      local channels = string.match(gmcp.Char.Vitals.charstats[3], "Channels: (.*)")
+      if channels == "None" then
+        for _, v in pairs(element) do
+          defences.lost(v)
+        end
+      else
+        for k,v in pairs(element) do
+          if channels:find(k) then
+            defences.got(v)
+          else
+            defences.lost(v)
+          end
+        end
+      end
+    end
+  end, 'update channels')
+end
+
+--Dragon (None class)(Nothing to track)
+if svo.me.class == "None" then
+end
+
+--Earth
+if svo.me.class:find("earth Elemental") then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local shaping = val:match("^Shaping: (%w+)$")
+        if shaping then
+          svo.classinfo.shaping = tonumber(shaping)
+          break
+        end
+      end
+    end
+    if not svo.classinfo.shaping then
+      svo.classinfo.shaping = 0
+    end
+  end, 'update shaping')
+end
+
+--Air (Nothing to track)
+if svo.me.class:find("air Elemental") then
+end
+
+--Fire
+if svo.me.class:find("fire Elemental") then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local spark = val:match("^Spark: (%d+)$")
+        if spark then
+          svo.classinfo.spark = tonumber(spark)
+          break
+        end
+      end
+    end
+    if not svo.classinfo.spark then
+      svo.classinfo.spark = 0
+    end
+  end, 'update spark')
+end
+
+--Water (Nothing to track)
+if svo.me.class:find("water Elemental") then
 end
 
 

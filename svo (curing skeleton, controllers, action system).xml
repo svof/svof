@@ -2572,11 +2572,11 @@ local function check_promptflags()
   end
 
 if svo.haveskillset('shindo') then
-  stats.shin = line:match("%-(%d+)%-") or line:match("%-(%d+) Vote%-") or 0
+  classinfo.shin = line:match("%-(%d+)%-") or line:match("%-(%d+) Vote%-") or 0
 end
 
 if svo.haveskillset('kaido') then
-  stats.kai = line:match("%-(%d+)%-") or line:match("%-(%d+) Vote%-") or 0
+  classinfo.kai = line:match("%-(%d+)%-") or line:match("%-(%d+) Vote%-") or 0
 end
 
 if svo.haveskillset('necromancy') then
@@ -2602,7 +2602,7 @@ end
   end
 
 if svo.haveskillset('weaponmastery') then
-  stats.weaponmastery = line:match("k(%d+)")
+  classinfo.weaponmastery = line:match("k(%d+)")
 end
 
   me.servertime = line:match("-s(%d+:%d+:%d+%.%d+)")

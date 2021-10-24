@@ -79,7 +79,7 @@ local tekura_ability_isadvisable = function (new_stance)
         and not defc[new_stance]
       )
     )
-    and me.path == 'tekura'
+    and classinfo.path == 'tekura'
     and not codepaste.balanceful_defs_codepaste()
     and not defc.riding
   ) or false
@@ -99,7 +99,7 @@ local shikudo_ability_isadvisable = function (new_form)
         and not defc[new_form]
       )
     )
-    and me.path == 'shikudo'
+    and classinfo.path == 'shikudo'
     and not codepaste.balanceful_defs_codepaste()
     and not defc.riding
   ) or false
@@ -12574,7 +12574,7 @@ if svo.haveskillset('shikudo') then
             (sys.deffing and defdefup[defs.mode].grip)
             or (conf.keepup and defkeepup[defs.mode].grip)
           )
-          and me.path == 'shikudo'
+          and classinfo.path == 'shikudo'
           and not codepaste.balanceful_defs_codepaste()
           and sys.canoutr
           and not affs.paralysis
