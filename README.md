@@ -13,7 +13,7 @@ See [documentation](https://svof.github.io/svof/) on how to install, use, and ta
 # Contributing
 
 1. Create or login to your github account.
-2. Create a fork of the [svof repository]https://github.com/svof/svof (It's in the top right corner)
+2. Create a fork of the [svof repository](https://github.com/svof/svof) (It's in the top right corner)
 3. Switch to the in-client-svof branch, it's in the drop down menu below Commits.
 4. Click the clone or download button.
 5. Extract the zip.
