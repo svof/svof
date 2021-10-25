@@ -342,21 +342,22 @@ svo.knownskills = {
   blademaster              = {'twoarts', 'striking', 'shindo'},
   depthswalker             = {'shadowmancy','aeonics','terminus'},
   druid                    = {'groves', 'metamorphosis', 'reclamation'},
-  infernal                 = {'oppression', 'chivalry', 'weaponmastery'},
+  infernal                 = {'oppression', 'malignity', 'weaponmastery'},
   jester                   = {'tarot', 'pranks', 'puppetry'},
   magi                     = {'elementalism', 'crystalism', 'artificing'},
   monk                     = {'tekura', 'kaido', 'telepathy', 'shikudo'},
   none                     = {},
   occultist                = {'occultism', 'tarot', 'domination'},
-  paladin                  = {'chivalry', 'devotion', 'weaponmastery'},
+  paladin                  = {'valour', 'devotion', 'weaponmastery'},
   pariah                   = {'memorium', 'pestilence', 'charnel'},
   priest                   = {'spirituality', 'devotion', 'zeal'},
-  runewarden               = {'runelore', 'chivalry', 'weaponmastery'},
+  runewarden               = {'runelore', 'discipline', 'weaponmastery'},
   sentinel                 = {'metamorphosis', 'woodlore', 'skirmishing'},
   serpent                  = {'subterfuge', 'venom', 'hypnosis'},
   shaman                   = {'runelore', 'curses', 'vodun'},
   sylvan                   = {'weatherweaving', 'groves', 'propagation'},
   psion                    = {"weaving", "psionics", "emulation"},
+  unnamable                = {"anathema,","dominion","weaponmastery"},
   ["earth elemental lord"] = {'sculpting'},
   ["fire elemental lord"]  = {'ignition'},
   ["air elemental lord"]   = {'duress'},
@@ -1113,14 +1114,16 @@ else
 disableTrigger("Prayer balance")
 end
 
-if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido')
-  or svo.haveskillset('metamorphosis') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or 
+  svo.haveskillset('valour') or svo.haveskillset('dominion') or 
+  svo.haveskillset('shindo') or svo.haveskillset('kaido') or 
+  svo.haveskillset('metamorphosis') then
 enableTrigger("Fitness balance")
 else
 disableTrigger("Fitness balance")
 end
 
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') then
 enableTrigger("Rage balance")
 else
 disableTrigger("Rage balance")
@@ -1238,11 +1241,13 @@ end
 if svo.haveskillset('venom') then
 sk.shruggingtick = 0
 end
-if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido')
-  or svo.haveskillset('metamorphosis') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or 
+  svo.haveskillset('valour') or svo.haveskillset('dominion') or 
+  svo.haveskillset('shindo') or svo.haveskillset('kaido') or 
+  svo.haveskillset('metamorphosis') then
 sk.fitnesstick = 0
 end
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') then
 sk.ragetick = 0
 end
 if svo.haveskillset('weaponmastery') then

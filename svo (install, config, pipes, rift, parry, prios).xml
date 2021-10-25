@@ -78,10 +78,22 @@ local installdata = {
   }
 }
 
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') then
   installdata.fitness = {
-    command = "ab chivalry fitness",
-    gmcp = {group = 'chivalry', name = 'fitness'}}
+    command = "ab discipline fitness",
+    gmcp = {group = 'discipline', name = 'fitness'}}
+elseif svo.haveskillset('malignity') then
+  installdata.fitness = {
+    command = "ab malignity fitness",
+    gmcp = {group = 'malignity', name = 'fitness'}}
+elseif svo.haveskillset('valour') then
+  installdata.fitness = {
+    command = "ab valour fitness",
+    gmcp = {group = 'valour', name = 'fitness'}}
+elseif svo.haveskillset('dominion') then
+  installdata.fitness = {
+    command = "ab dominion fitness",
+    gmcp = {group = 'dominion', name = 'fitness'}}
 elseif svo.haveskillset('kaido') then
   installdata.fitness = {
     command = "ab kaido fitness",
@@ -111,9 +123,24 @@ else
     gmcp = {group = 'tekura', name = 'guarding'},
   }
 end
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') then
   installdata.rage = {
-    gmcp = {group = 'chivalry', name = 'rage'},
+    gmcp = {group = 'discipline', name = 'rage'},
+  }
+end
+if svo.haveskillset('malignity') then
+  installdata.rage = {
+    gmcp = {group = 'malignity', name = 'rage'},
+  }
+end
+if svo.haveskillset('valour') then
+  installdata.rage = {
+    gmcp = {group = 'valour', name = 'rage'},
+  }
+end
+if svo.haveskillset('dominion') then
+  installdata.rage = {
+    gmcp = {group = 'dominion', name = 'rage'},
   }
 end
 if svo.haveskillset('shindo') then
@@ -2161,7 +2188,7 @@ if svo.haveskillset('kaido') then
     installcheck = function () svo.echof("Would you like to use kaido blind for blindness?") end
   })
 end
-if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
   svo.config_dict:insert(1, 'fitness', {
     type = 'boolean',
     vconfig2 = true,
@@ -2233,7 +2260,7 @@ if svo.haveskillset('venom') then
     installcheck = function () svo.echof("Can you make use of the shrugging?") end
   })
 end
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') then
   svo.config_dict:insert(1, 'rage', {
     type = 'boolean',
     vconfig2 = true,
