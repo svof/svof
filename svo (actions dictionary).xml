@@ -8777,6 +8777,32 @@ end
     }
   },
 
+  indifference = {
+    herb = {
+      isadvisable = function()
+        return affs.indifference or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('indifference')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'bellwort', 'cuprum'},
+      onstart = function() svo.eat(svo.dict.indifference.herb) end,
+
+      empty = function() empty.eat_bellwort() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.indifference)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('indifference') end,
+    }
+  },
+
   -- random actions that should be protected by AI
   givewarning = {
     happened = {
@@ -10118,6 +10144,7 @@ end
     icefisted = 'icing',
     impaled = 'impale',
     impatience = 'impatience',
+    indifference = 'indifference',
     inquisition = 'inquisition',
     insomnia = false,
     internalbleeding = false,
