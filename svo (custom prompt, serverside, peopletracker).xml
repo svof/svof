@@ -296,6 +296,12 @@ if svo.haveskillset('aeonics') then
   end
 end
 
+if svo.haveskillset('anathema') then
+cpp.compute_anathemabal = function()
+  return (bals.anathema and 'a' or "")
+end
+end
+
 cpp.compute_timestamp = function()
   return getTime(true, 'hh:mm:ss.zzz')
 end
@@ -610,6 +616,11 @@ if svo.haveskillset('aeonics') then
   cp.definitions["@age"]           = "svo.cpp.compute_age()"
 else
   cp.definitions["@age"]           = "''"
+end
+if svo.haveskillset('anathema') then
+  cp.definitions["@anathemabal"]       = "svo.cpp.compute_anathemabal()"
+else
+  cp.definitions["@anathemabal"]       = "''"
 end
   cp.definitions["^1"]             = "svo.cpp.compute_health_colour()"
   cp.definitions["^2"]             = "svo.cpp.compute_mana_colour()"

@@ -4677,6 +4677,19 @@ function svo.valid.gotwordbalance()
 end
 end
 
+if svo.haveskillset('anathema') then
+function svo.valid.usedanathemabalance()
+  svo.checkaction(svo.dict.stolebalance.happened, true)
+  lifevision.add(actions.stolebalance_happened.p, nil, 'anathema')
+end
+
+function svo.valid.gotanathemabalance()
+  svo.checkaction(svo.dict.gotbalance.happened, true)
+  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'anathema' -- hack to allow multiple balances at once
+  lifevision.add(actions.gotbalance_happened.p)
+end
+end
+
 function svo.valid.proper_hamstring()
   svo.checkaction(svo.dict.hamstring.aff, true)
   lifevision.add(actions['hamstring_aff'].p, 'renew')

@@ -357,7 +357,7 @@ svo.knownskills = {
   shaman                   = {'runelore', 'curses', 'vodun'},
   sylvan                   = {'weatherweaving', 'groves', 'propagation'},
   psion                    = {"weaving", "psionics", "emulation"},
-  unnamable                = {"anathema,","dominion","weaponmastery"},
+  unnamable                = {"anathema","dominion","weaponmastery"},
   ["earth elemental lord"] = {'sculpting'},
   ["fire elemental lord"]  = {'ignition'},
   ["air elemental lord"]   = {'duress'},
@@ -552,8 +552,18 @@ signals.gmcpcharvitals:connect(function()
     for _, val in ipairs(gmcp.Char.Vitals.charstats) do
       local anathema = val:match("^Anathema: (%w+)$")
       if anathema then
-        --stuff here
+        if svo.bals.anathema ~= nil and (svo.bals.anathema == false and anathema == "Yes") then       
+          svo.valid.gotanathemabalance()
+          echo("\nGOT ANATHEMA")
+          echo("\nGOT ANATHEMA")
         break
+        elseif svo.bals.anathema ~= nil and (svo.bals.anathema == true and anathema == "No") then
+          svo.valid.usedanathemabalance()
+          echo("\nUSED ANATHEMA")
+          echo("\nUSED ANATHEMA")
+          --raiseEvent("svo lost balance", 'anathema')
+        break
+        end
       end
     end
   end
