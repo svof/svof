@@ -298,7 +298,13 @@ end
 
 if svo.haveskillset('anathema') then
 cpp.compute_anathemabal = function()
-  return (bals.anathema and 'a' or "")
+  return (bals.anathema and 'A' or "")
+end
+end
+
+if svo.haveskillset('anathema') or svo.haveskillset('occultism') then
+cpp.compute_karma = function()
+  return ((stats.karma and stats.karma &gt; 0) and tostring(stats.karma) or "")
 end
 end
 
@@ -621,6 +627,11 @@ if svo.haveskillset('anathema') then
   cp.definitions["@anathemabal"]       = "svo.cpp.compute_anathemabal()"
 else
   cp.definitions["@anathemabal"]       = "''"
+end
+if svo.haveskillset('anathema') or svo.haveskillset('occultism') then
+  cp.definitions["@karma"]       = "svo.cpp.compute_karma()"
+else
+  cp.definitions["@karma"]       = "''"
 end
   cp.definitions["^1"]             = "svo.cpp.compute_health_colour()"
   cp.definitions["^2"]             = "svo.cpp.compute_mana_colour()"
