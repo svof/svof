@@ -387,6 +387,7 @@ do
   end
 end
 
+-- Class resources: Some classes have resources that it is good to keep track. Put them here!
 if svo.haveskillset('groves') then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
@@ -511,6 +512,55 @@ signals.gmcpcharvitals:connect(function()
 end, 'update memorium epitaph length')
 end
 
+if svo.haveskillset('anathema') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local manifestation = val:match("^Manifestation: (%d+)%%$")
+      if manifestation then
+        stats.manifestation = tonumber(manifestation)
+        break
+      end
+    end
+  end
+  if not stats.manifestation then
+    stats.essence = 0
+  end
+end, 'update anathema manifestation')
+end
+
+if svo.haveskillset('anathema') or svo.haveskillset('occultism') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local karma = val:match("^Karma: (%d+)%%$")
+      if karma then
+        stats.karma = tonumber(karma)
+        break
+      end
+    end
+  end
+  if not stats.manifestation then
+    stats.essence = 0
+  end
+end, 'update anathema/occultism karma')
+end
+
+if svo.haveskillset('anathema') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local anathema = val:match("^Anathema: (%w+)$")
+      if anathema then
+        --stuff here
+        break
+      end
+    end
+  end
+end, 'update anathema balance')
+end
+
+-- End of class resources
 
 signals.gmcpiretimelist = signals.gmcpiretimelist or luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()

@@ -14076,7 +14076,8 @@ if svo.haveskillset('charnel') then
       }
     }
     end
-    
+
+
 -- shortcut function to help create a dict action for a defence
 -- 'which' is the Svof defence name, use the same name in the 'Defences' script
 -- 'command' is the game command to raise the defence

@@ -1001,6 +1001,10 @@ if svo.haveskillset('terminus') then
   svo.bals.word = true
 end
 
+if svo.haveskillset('anathema') then
+  svo.bals.anathema = true
+end
+
   for balance in pairs(svo.bals) do raiseEvent("svo got balance", balance) end
 
   if echoback then svo.echof("All balances svo.reset.") end
