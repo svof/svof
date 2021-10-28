@@ -524,7 +524,7 @@ signals.gmcpcharvitals:connect(function()
     end
   end
   if not stats.manifestation then
-    stats.essence = 0
+    stats.manifestation = 0
   end
 end, 'update anathema manifestation')
 end
