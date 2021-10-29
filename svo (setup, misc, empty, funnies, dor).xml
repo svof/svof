@@ -546,6 +546,10 @@ signals.gmcpcharvitals:connect(function()
 end, 'update anathema/occultism karma')
 end
 
+--[[
+new model for tertiary balances that don't need to rely on dozens of attack triggers and timers. 
+If this works properly and don't error anything out down the road we can extend it to the other balances as well :)
+]] 
 if svo.haveskillset('anathema') then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
@@ -554,14 +558,9 @@ signals.gmcpcharvitals:connect(function()
       if anathema then
         if svo.bals.anathema ~= nil and (svo.bals.anathema == false and anathema == "Yes") then       
           svo.valid.gotanathemabalance()
-          echo("\nGOT ANATHEMA")
-          echo("\nGOT ANATHEMA")
         break
         elseif svo.bals.anathema ~= nil and (svo.bals.anathema == true and anathema == "No") then
           svo.valid.usedanathemabalance()
-          echo("\nUSED ANATHEMA")
-          echo("\nUSED ANATHEMA")
-          --raiseEvent("svo lost balance", 'anathema')
         break
         end
       end
@@ -2777,7 +2776,7 @@ local madness_affs = {'addiction', 'confusion', 'dementia', 'hallucinations', 'h
 
 for herbname, herbaffs in pairs({
   goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression',
-   'shadowmadness', 'mycalium', 'sandfever'},
+   'shadowmadness', 'mycalium', 'sandfever', 'horror'},
   kelp = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'rebbies'},
   lobelia = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'spiritburn', 'tenderskin'},
   ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy', 'flushings'},

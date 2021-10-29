@@ -1060,6 +1060,65 @@ end
       end,
     }
   },
+  
+horror = {
+    count = 0,
+    gamename = 'horror',
+    name = 'horror',
+    herb = {
+      isadvisable = function()
+        return (affs.horror and bals.herb) or false
+      end,
+
+      -- this is called when you still have some left 
+      oncompleted = function()
+        svo.lostbal_herb()
+        svo.updateaffcount(svo.dict.horror)
+      end,
+
+      empty = function()
+        empty.eat_goldenseal()
+        svo.lostbal_herb()
+      end,
+
+      cured = function()
+        svo.lostbal_herb()
+        svo.rmaff('horror')
+        svo.dict.horror.count = 0
+      end,
+
+      noeffect = function()
+			  svo.rmaff('horror')
+			  svo.lostbal_herb()
+		  end,
+
+      eatcure = {'goldenseal', 'plumbum'},
+
+      onstart = function() svo.eat(svo.dict.horror.herb) end
+    },
+    aff = {
+      oncompleted = function (number)
+        svo.addaffdict(svo.dict.horror)
+        svo.updateaffcount(svo.dict.horror)
+      end
+    },
+    gone = {
+      oncompleted = function()
+        svo.rmaff('horror')
+        svo.dict.horror.count = 0
+      end,
+      
+      general_cure = function(amount, dontkeep)
+        svo.updateaffcount(svo.dict.horror)
+      end,
+
+      general_cured = function()
+        svo.rmaff('horror')
+        svo.dict.horror.count = 0
+      end,
+    }
+  },
+  
   waterbubble = {
     gamename = 'airpocket',
     onservereignore = function()
@@ -14076,7 +14135,134 @@ if svo.haveskillset('charnel') then
       }
     }
     end
+    
+if svo.haveskillset('anathema') then
+  svo.dict.mouths = {
+    gamename = 'mouths',
+    physical = {
+      balanceful_act = true, def = true,
 
+      isadvisable = function()
+        return (not defc.dragonform and not defc.mouths and ((sys.deffing and defdefup[defs.mode].mouths) or (conf.keepup and defkeepup[defs.mode].mouths)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.anathema) or false
+      end,
+
+      oncompleted = function() defences.got('mouths') end,
+
+      action = "mutate mouths",
+      onstart = function() send('mutate mouths', conf.commandecho) 
+	  end
+    }
+  }
+  
+  svo.dict.bulk = {
+    gamename = 'bulk',
+    physical = {
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+        return (not defc.dragonform and not defc.bulk and ((sys.deffing and defdefup[defs.mode].bulk) or (conf.keepup and defkeepup[defs.mode].bulk)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.anathema) or false
+      end,
+
+      oncompleted = function() defences.got('bulk') end,
+
+      action = "mutate bulk",
+      onstart = function()
+        send('mutate bulk', conf.commandecho) 
+	    end
+    }
+  }
+  
+  svo.dict.eyes = {
+    gamename = 'eyes',
+    physical = {
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+        return (not defc.dragonform and not defc.eyes and ((sys.deffing and defdefup[defs.mode].eyes) or (conf.keepup and defkeepup[defs.mode].eyes)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.anathema) or false
+      end,
+
+      oncompleted = function() defences.got('eyes') end,
+
+      action = "mutate eyes",
+      onstart = function()
+        send('mutate eyes', conf.commandecho) 
+	    end
+    }
+  }  
+
+  svo.dict.joints = {
+    gamename = 'joints',
+    physical = {
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+        return (not defc.dragonform and not defc.joints and ((sys.deffing and defdefup[defs.mode].joints) or (conf.keepup and defkeepup[defs.mode].joints)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.anathema) or false
+      end,
+
+      oncompleted = function() defences.got('joints') end,
+
+      action = "mutate joints",
+      onstart = function()
+        send('mutate joints', conf.commandecho) 
+	    end
+    }
+  }
+
+  svo.dict.tentacles = {
+    gamename = 'tentacles',
+    physical = {
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+        return (not defc.dragonform and not defc.tentacles and ((sys.deffing and defdefup[defs.mode].tentacles) or (conf.keepup and defkeepup[defs.mode].tentacles)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.anathema) or false
+      end,
+
+      oncompleted = function() defences.got('tentacles') end,
+
+      action = "mutate tentacles",
+      onstart = function()
+        send('mutate tentacles', conf.commandecho) 
+	    end
+    }
+  }
+  
+  svo.dict.unnamablepresence = {
+    gamename = 'unnamablepresence',
+    physical = {
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+        return (not defc.dragonform and not defc.unnamablepresence and ((sys.deffing and defdefup[defs.mode].unnamablepresence) or (conf.keepup and defkeepup[defs.mode].unnamablepresence)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.anathema) or false
+      end,
+
+      oncompleted = function() defences.got('unnamablepresence') end,
+
+      action = "unnamable presence",
+      onstart = function()
+        send('unnamable presence', conf.commandecho) 
+	    end
+    }
+  }
+
+  svo.dict.devour = {
+    gamename = 'devour',
+    physical = {
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+        return (not defc.dragonform and not defc.devour and ((sys.deffing and defdefup[defs.mode].devour) or (conf.keepup and defkeepup[defs.mode].devour)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and (defc.mouths and defc.tentacles) and bals.anathema) or false
+      end,
+
+      oncompleted = function() defences.got('devour') end,
+
+      action = "unnamable devour",
+      onstart = function()
+        send('unnamable devour', conf.commandecho) 
+	    end
+    }
+  }
+  
+  end
 
 -- shortcut function to help create a dict action for a defence
 -- 'which' is the Svof defence name, use the same name in the 'Defences' script

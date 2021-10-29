@@ -5982,6 +5982,7 @@ local aff_abbrev = {
   healthleech         = "hthl",
   heartseed           = "heart",
   hellsight           = "hell",
+  horror              = "hor",
   hypersomnia         = "hypers",
   hypochondria        = "hypoch",
   icing               = "ice",
