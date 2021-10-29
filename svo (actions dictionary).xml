@@ -5283,7 +5283,7 @@ horror = {
   fear = {
     misc = {
       isadvisable = function()
-        return (affs.fear and not svo.doingaction('fear')) or false
+        return (affs.fear and not affs.horror and not svo.doingaction('fear')) or false
       end,
 
       oncompleted = function() svo.rmaff('fear') end,
