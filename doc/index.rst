@@ -2663,6 +2663,10 @@ Svof API functions
 
    Deletes the current line and if the next line is a prompt, it as well.
 
+.. function:: svo.showprompt()
+
+   Echos the custom prompt to the main display. 
+   
 .. function:: svo.concatand(table)
 
    Returns a concatenated string, separated by command with the proper use of 'and' at the end. ::
