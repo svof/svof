@@ -37,21 +37,7 @@ svo.modules_version["svo (enchanter)"] = 1</script>
 			<Script isActive="yes" isFolder="no">
 				<name>enchanter script</name>
 				<packageName></packageName>
-				<script>local ourobori_data = {
-  [18864] = { "ouroboros60684",  "ouroboros203598" },
-  [21191] = { "ouroboros34462",  "ouroboros49014"  },
-  [21192] = { "ouroboros191596", "ouroboros191631" },
-  [47270] = { "ouroboros36673",  "ouroboros36838"  },
-  [47271] = { "ouroboros23502",  "ouroboros57255"  },
-  [47272] = { "ouroboros1263",   "ouroboros30460"  },
-  [47301] = { "ouroboros205397", "ouroros219350"   },
-  [11016] = { "ouroboros71982",  "ouroboros94567"  },
-  [11014] = { "ouroboros54000",  "ouroboros27606"  },
-  [11018] = { "ouroboros48748",  "ouroboros69603"  },
-  [11017] = { "ouroboros105971", "ouroboros106382" },
-  [12518] = { "ouroboros77138", "ouroboros159812"  },
-  [42336] = { "ouroboros133228", "ouroboros204600" }
-}
+				<script>local ourobori_data = {}
 
 -- Keep track if we are already ennchating
 local enchanting = false
@@ -1018,7 +1004,7 @@ end
 -- exported via the svo namespace below. Parses gmcp.Char.Items.List for ourorboros
 local function check_ourobori()
   if not checking_ourobori or gmcp.Char.Items.List.location ~= "room" then return end
-
+  
   for _, item in ipairs(gmcp.Char.Items.List.items) do
     if item.name == 'a beguiling ouroboros' then
       ourobori_data[gmcp.Room.Info.num] = ourobori_data[gmcp.Room.Info.num] or {}
@@ -1076,6 +1062,9 @@ end
 --   enchantment: The name of a known enchantment
 --   number: How many items to create or which item id should be enchanted (depends on enchantment type)
 local function enchant( enchantment, number, exampleItem )
+
+    ourobori_data = {}
+
   if not enchantment then
     svo.echof("What do you want to echant? (Hint: 'enchant (number) (with what)[, (number) (with what)]*')")
     return
