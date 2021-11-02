@@ -10197,6 +10197,7 @@ end
     hellsight = 'hellsight',
     hindered = false,
     homunculusmercury = false,
+    horror = 'horror',
     hypersomnia = 'hypersomnia',
     hypochondria = 'hypochondria',
     hypothermia = 'hypothermia',
