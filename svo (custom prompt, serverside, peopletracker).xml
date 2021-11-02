@@ -297,9 +297,13 @@ if svo.haveskillset('aeonics') then
 end
 
 if svo.haveskillset('anathema') then
-cpp.compute_anathemabal = function()
-  return (bals.anathema and 'A' or "")
-end
+  cpp.compute_anathemabal = function()
+    return (bals.anathema and 'A' or "")
+  end
+  
+  cpp.compute_manifestation = function()
+    return ((stats.manifestation and stats.manifestation &gt; 0) and tostring(stats.manifestation) or "")
+  end
 end
 
 if svo.haveskillset('anathema') or svo.haveskillset('occultism') then
@@ -625,8 +629,10 @@ else
 end
 if svo.haveskillset('anathema') then
   cp.definitions["@anathemabal"]       = "svo.cpp.compute_anathemabal()"
+  cp.definitions["@manifestation"]     = "svo.cpp.compute_manifestation()"
 else
   cp.definitions["@anathemabal"]       = "''"
+  cp.definitions["@manifestation"]     = "''"
 end
 if svo.haveskillset('anathema') or svo.haveskillset('occultism') then
   cp.definitions["@karma"]       = "svo.cpp.compute_karma()"
