@@ -540,8 +540,8 @@ signals.gmcpcharvitals:connect(function()
       end
     end
   end
-  if not stats.manifestation then
-    stats.essence = 0
+  if not stats.karma then
+    stats.karma = 0
   end
 end, 'update anathema/occultism karma')
 end
