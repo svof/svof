@@ -1750,6 +1750,14 @@ svo.lostbal_word = function()
 end
 end
 
+if svo.haveskillset('anathema') then
+svo.lostbal_anathema = function()
+  if not bals.anathema then return end
+  bals.anathema = false
+  raiseEvent("svo lost balance", 'anathema')
+  end
+end
+
 function sk.doingstuff_inslowmode()
   local result
   for balance,actions in pairs(svo.bals_in_use) do

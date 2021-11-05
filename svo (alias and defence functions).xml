@@ -1001,6 +1001,10 @@ if svo.haveskillset('terminus') then
   svo.bals.word = true
 end
 
+if svo.haveskillset('anathema') then
+  svo.bals.anathema = true
+end
+
   for balance in pairs(svo.bals) do raiseEvent("svo got balance", balance) end
 
   if echoback then svo.echof("All balances svo.reset.") end
@@ -3619,6 +3623,77 @@ if svo.haveskillset('charnel') then
     def = "Your resolve is something beyond the frailties of the flesh.",
     on = "Your resolve is as eternal as the desert. You will endure.",
     off = "Your resolve wavers, and the pains of existence are once more made manifest."})
+end
+
+if svo.haveskillset('anathema') then
+--mutations
+  defs_data:set('mouths', {type = 'anathema',
+    def = "Many mouths have torn open in your flesh.",
+    on = "With a gurgling sound, dozens of mouths rip open in your flesh, the soft rasp of impossible breath filling your ears.",
+    off = "With the menacing clack of teeth, all of the mouths in your flesh snap abruptly shut."})
+  
+  defs_data:set('bulk', {type = 'anathema',
+    def = "You have grown your bulk to monstrous proportions.",
+    on = "Muscle warps and expands, flesh stretches and twists, your body swelling to monstrous proportions as you embrace the benefits of a superior form.",
+    off = "Your excess mass drops away, and you return to a form more natural in proportions."})
+
+  defs_data:set('eyes', {type = 'anathema',
+    def = "Dozens of lidless eyes cover your body.",
+    on = "Dozens of lidless eyes snap open in your flesh, gazing out upon Creation."})
+    
+  defs_data:set('joints', {type = 'anathema',
+    def = "You have developed flexible joints.",
+    on = "Your bones crackle and pop as they shift beneath your skin, adapting to a higher range of movement.",
+    off = "Your limbs suddenly feel more stiff, your range of motion returning to the mundane."})
+
+  defs_data:set('tentacles', {type = 'anathema',
+    def = "You have tentacles flailing from your body.",
+    on = "You raise your hands above your head, focusing your will to warp your own body. Ignoring the excruciating pain, tentacles spring out from the sides of your body and flail about of their own accord.",
+    off = "You breathe a sigh of comfort as the flailing tentacles recede back into your body."})
+
+--recondite works
+  defs_data:set('unnamablepresence', {type = 'anathema',
+    defr = [[^You (?:is|are) radiating the presence of the first foe.$]], -- the line has a typo and i don't really want it to break when they fix it!
+    on = "You reach out to that which lies beyond, without, untapped; and you take of it into yourself.",
+    off = "The presence of the Unnamable lifts, and you walk alone once more."})
+
+  defs_data:set('devour', {type = 'anathema',
+    def = "You will feast upon the work of ruin.",
+    on = "Power thrums beneath your skin as you prepare for the rampage ahead.",
+    off = "You let out a disappointed sigh as you realise the time for ruin is not yet upon you."})
+    
+--manifestations (these cannot be defup or keepup, it seems like they appear randomly as the Manifestation resource grows (further study needed)
+  defs_data:set('brains', {nodef = true,
+    def = "Geometric organs have thrust out of the sides of your head.",
+    on = "Your head feels as if it shall burst apart as bone parts and warps, twisted geometric shapes formed of grey tissue bursting out of the sides of your skull under the force of your mutation.",
+    off = "A measure of relief comes to your pounding skull as the grey tissue finally tears loose of your ravaged head, the geometric formations breaking apart and dissolving into a vile slurry."})
+  
+  defs_data:set('heads', {nodef = true,
+    def = "Multiple heads have sprouted from your shoulders and back.",
+    on = "The flesh across your shoulders and back bubbles and writhes, then multiple heads erupt from within your body as you undergo mutation.",
+    off = "The multiple heads sprouting from your shoulders and back quake and tremble, before ripping away and falling to the ground in a bloody mess."})
+  
+  defs_data:set('tumors', {nodef = true,
+    def = "Fluid-filled tumors cover your skin.",
+    on = "With a series of popping sounds, fluid-filled tumors rapidly grow all over your body as you undergo mutation.",
+    off = "The tumors covering your body shrink before vanishing with a series of stabbing pains."})  
+  
+  defs_data:set('tongues', {nodef = true,
+    def = "The mouths in your flesh have sprouted tongues.",
+    on = "With a horrible sucking sound, each of the mouths that have opened in your flesh produce a long tongue as you undergo mutation.",
+    off = "The mouths in your flesh as one withdraw their tongues."})
+    
+  defs_data:set('venomsacks', {nodef = true,
+    def = "You have grown sacks of venom within your mouth.",
+    on = "You feel your jaw and cheeks distorting as you undergo mutation.",
+    off = "You feel your face returning to normal, the sacks of toxin concealed within your mouth breaking apart."})
+
+--croon (this is an aggressive ability that gives a temporary passive curing effect
+  defs_data:set('croonmirror', {nodef = true,
+    invisibledef = true,
+    onr = [[^You sense the connection snap into place between the reality of (\w+) and your own.$]],
+    on = "You sense no change.",
+    offr = [["^You are no longer mirroring the reality of (\w+).$]]})
 end
 
 do 
