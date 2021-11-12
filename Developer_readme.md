@@ -2,49 +2,45 @@
 
     doc/                                                  = documentation in Sphinx.
     default_prios                                         = default priorities for Svof
-    svo (actions dictionary).xml                          = Svof's action system. Every single thing that Svof does like cure an affliction, put up a defence, regain a balance, is an action. Rule of thumb is that all send()'s should be an action (there's just an exception to send commands to serverside to be done, as those commands cannot be interrupted in any way). For the core functions that validates these actions and see how it works, see 'Action system' below.
+    svo (actions dictionary).xml                          = brains of Svof, where it knows every action (affliction, defence, balance, etc) - when to use it, how to use it. For the core functions that validates these actions, see 'Action system' below.
     svo (alias and defence functions).xml                 = functions for Svof's aliases, that should call other core functions as necessary to do their work as well as everything to do about Svof's defences - database, tracking, switching, etc.
-    svo (aliases, triggers).xml                           = The actual Mudlet aliases and triggers that uses the functions from the script mentioned above.
+    svo (aliases, triggers).xml                           = the actual Mudlet aliases and triggers that uses the functions from the script mentioned above.
     svo (burncounter).xml                                 = Magi burn counter addon
-    svo (curing skeleton, controllers, action system).xml = ↓↓
-         Curing skeleton                                  = essential core files, including balance checks that decide what should be done
-         Controllers                                      = core system functions that can be behind aliases/triggers - includes prompt function, GMCP stats function, affliction lock tracking, aeon/retardation deny/override system, etc.
-         Action system                                    = Svof's action system. Every single thing that Svof does like cure an affliction, put up a defence, regain a balance, is an action - defined in the actions dictionary. These functions manages and validates those actions.
-    svo (custom prompt, serverside, peopletracker).xml
-    
-    raw-svo.config.lua                                    = Svof's configuration (vconfig) and tn/tf system
-    raw-svo.controllers.lua                               = core system functions that can be behind aliases/triggers - includes prompt function, GMCP stats function, affliction lock tracking, aeon/retardation deny/override system, etc.
-    raw-svo.customprompt.lua                              = Svof's custom prompt feature
-    raw-svo.dict.lua                                      = brains of Svof, where it knows every action (affliction, defence, balance, etc) - when to use it, how to use it
+    svo (curing skeleton, controllers, action system).xml
+        curing skeleton                                   = essential core files, including balance checks that decide what should be done
+        controllers                                       = core system functions that can be behind aliases/triggers - includes prompt function, GMCP stats function, affliction lock tracking, aeon/retardation deny/override system, etc.
+        action system                                     = Svof's action system. Every single thing that Svof does like cure an affliction, put up a defence, regain a balance, is an action - defined in the actions dictionary. These functions manages and validates those actions.
+    svo (custom prompt, serverside, peopletracker).xml 
+        custom prompt                                     = Svof's custom prompt feature
+        serverside                                        = Integration with serverside curing - mirroring of Svof's priorities to serverside in most efficient manner
+        peopletracker                                     = Peopletracker addon, integrates with Mudlet's mapper
+    svo (elistsorter).xml                                 = Elist sorter addon
+    svo (enchanter).xml                                   = Jenny's enchanter addon
+    svo (fishdist).xml                                    = Trilliana's fishing distance addon
+    svo (inker).xml                                       = Inker addon
+    svo (install me in module manager).xml                = The core system functions to install/uninstall modules, initialization, updates, classchange for multiclass, event handlers, utilities and other things necessary for the system to function. Also contains a few scripting examples.
+    svo (install, config, pipes, rift, parry, prios).xml
+        install                                           = Installation procedure (vinstall) - autodetects skills and asks questions for things it couldn't
+        config                                            = Svof's configuration (vconfig) and tn/tf system
+        pipes                                             = pipe tracking
+        rift                                              = rift, inventory tracking and use of right actions depending on normal/aeon curing and previously with minerals, appropriate herb/mineral use
+        parry                                             = parry system
+        prios                                             = Svof's priority handling functions
+    svo (limbcounter).xml                                 = Limbcounter addon for the classes that uses it
+    raw-svo.dict.lua                                      = 
     raw-svo.dor.lua                                       = Svof's DOR system, implemented as a balanceless and a balancefun action
-    raw-svo.dragonlimbcounter.lua                         = Dragon limbcounter addon
-    raw-svo.elistsorter.lua                               = Elist sorter addon
     raw-svo.empty.lua                                     = functions tracking all of the empty cures
-    raw-svo.enchanter.lua                                 = Jenny's enchanter addon
-    raw-svo.fishdist.lua                                  = Trilliana's fishing distance addon
     raw-svo.funnies.lua                                   = Svof's humour - welcome message, protips and dying messages
-    raw-svo.inker.lua                                     = Inker addon
-    raw-svo.install.lua                                   = Installation procedure - autodetects skills (before GMCP came along, by ABing and gagging) and asks questions for things it couldn't
-    raw-svo.knightlimbcounter.lua                         = Knight limbcounter addon
     raw-svo.logger.lua                                    = Svof's logger (startlog / stoplog aliases)
-    raw-svo.magilimbcounter.lua                           = Magi limbcounter addon
-    raw-svo.metalimbcounter.lua                           = Sentinel/Sylvan/Druid limbcounter addon
     raw-svo.mindnet.lua                                   = Mindnet addon
     raw-svo.misc.lua                                      = Miscallaneous functions that don't have a place elsewhere plus a few Lua helpers
     raw-svo.namedb.lua                                    = NameDB addon
-    raw-svo.offering.lua                                  = Offering/defiling/sanctifying addon
-    raw-svo.peopletracker.lua                             = Peopletracker addon, integrates with Mudlet's mapper
-    raw-svo.pipes.lua                                     = pipe tracking
     raw-svo.priestreport.lua                              = Priest reporting addon
-    raw-svo.prio.lua                                      = Svof's priority handling functions
     raw-svo.reboundingsileristracker.lua                  = Rebounding & sileris tracker addon
     raw-svo.refiller.lua                                  = Refiller addon
-    raw-svo.rift.lua                                      = rift, inventory tracking and use of right actions depending on normal/aeon curing and previously with minerals, appropriate herb/mineral use
     raw-svo.runeidentifier.lua                            = Rune identifier addon
-    raw-svo.serverside.lua                                = Integration with serverside curing - mirroring of Svof's priorities to serverside in most efficient manner
     raw-svo.setup.lua                                     = Svof loading files
     raw-svo.skeleton.lua                                  = essential core files, including balance checks that decide what should be done
-    raw-svo.sp.lua                                        = parry system
     raw-svo.stormhammertarget.lua                         = Stormhammer target addon
     raw-svo.valid.diag.lua                                = Diagnose tracking
     raw-svo.valid.main.lua                                = Definitions of all trigger functions - recording in-game data in most accurate way, while not getting tricked by illusions
