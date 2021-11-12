@@ -24,7 +24,7 @@
         config                                            = Svof's configuration (vconfig) and tn/tf system
         pipes                                             = pipe tracking
         rift                                              = rift, inventory tracking and use of right actions depending on normal/aeon curing and previously with minerals, appropriate herb/mineral use
-        parry                                             = parry system
+        parry                                             = parry system (sp)
         prios                                             = Svof's priority handling functions
     svo (limbcounter).xml                                 = Limbcounter addon for the classes that uses it
     raw-svo.dict.lua                                      = 
