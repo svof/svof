@@ -168,12 +168,12 @@ send(command, false)</script>
 			<packageName></packageName>
 			<script>function elistPrio(_, module)
   if module ~= "svo (elistsorter)" then return true end
-  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
+  tempTimer(0, [[setModulePriority("]]..module..[[", 0)]])
 end
 
 registerAnonymousEventHandler("sysInstall", "elistPrio", true)
 
-svo = svo or {}
+svo = svo or {}; svo.loader = svo.loader or {}
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (elistsorter)"] = 1.1</script>
 			<eventHandlerList />
@@ -190,7 +190,8 @@ svo.modules_version["svo (elistsorter)"] = 1.1</script>
 
 -- load elistsorter after all of the main code has
 -- loaded, so svo.signal is available
-tempTimer(0, function()
+svo.loader.elistsorter = function()
+
 local firstload = not svo.es_vials
 
 -- stores vial ID and months left
@@ -530,7 +531,7 @@ end, 'save vial configuration')
 if firstload then
   svo.echof("Loaded svo Elist Sorter, version %s.", tostring(svo.modules_version["svo (elistsorter)"]))
 end
-end)</script>
+end</script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">

@@ -150,7 +150,7 @@ svo.deleteLineP()</script>
 				<colorTriggerFgColor>#00b300</colorTriggerFgColor>
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList>
-					<string>ANSI_COLORS_F{002}_B{000}</string>
+					<string>FG6BG2</string>
 					<string>return not isPrompt()</string>
 				</regexCodeList>
 				<regexCodePropertyList>
@@ -408,7 +408,7 @@ svo.showprompt()</script>
 		<ScriptGroup isActive="yes" isFolder="yes">
 			<name>svo People Tracker</name>
 			<packageName></packageName>
-			<script>svo = svo or {}
+			<script>svo = svo or {}; svo.loader = svo.loader or {}
 function svo.buildwhosummary()
   local time = createStopWatch(); startStopWatch(time)
   local areas = {}
@@ -533,7 +533,7 @@ end
 
 function trackerPrio(_, module)
   if module ~= "svo (peopletracker)" then return true end
-  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
+  tempTimer(0, [[setModulePriority("]]..module..[[", 0)]])
 end
 
 registerAnonymousEventHandler("sysInstall", "trackerPrio", true)
@@ -542,36 +542,7 @@ svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (peopletracker)"] = 1</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
-				<name>svo.add_peopletracker_config</name>
-				<packageName></packageName>
-				<script>function svo.add_peopletracker_config()
-  svo.me.watchfor = svo.me.watchfor or {}
-
-  svo.config.setoption("watchfor", {
-    type = "string",
-    check = function(what)
-      if what:find("^%w+$") then return true end
-    end,
-    onset = function ()
-      local name = string.title(svo.conf.watchfor)
-      -- we want nil, not false so 'or' doesn't help
-      if svo.me.watchfor[name] then svo.me.watchfor[name] = nil else svo.me.watchfor[name] = true end
-
-      if svo.me.watchfor[name] then
-        svo.echof("Added &lt;0,255,0&gt;%s%s to the watchfor list - use qwhow to see them.", name, svo.getDefaultColor())
-      else
-		svo.echof("Removed %s from the watchfor list.", name)
-      end
-      raiseEvent("svo watchfor name changed", name)
-    end
-  })
-end</script>
-				<eventHandlerList>
-					<string>svo system loaded</string>
-				</eventHandlerList>
-			</Script>
-			<Script isActive="yes" isFolder="no">
-				<name>Map label drawing code</name>
+				<name>Peopletracker code</name>
 				<packageName></packageName>
 				<script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
@@ -593,10 +564,31 @@ handling multiple rooms ideas:
 ]]
 
 
-tempTimer(0, function()
+svo.loader.peopletracker = function()
 
 local sys, signals = svo.sys, svo.signals
 local conf, sk = svo.conf, svo.sk
+
+svo.me.watchfor = svo.me.watchfor or {}
+
+svo.config.setoption("watchfor", {
+  type = "string",
+  check = function(what)
+    if what:find("^%w+$") then return true end
+  end,
+  onset = function ()
+    local name = string.title(svo.conf.watchfor)
+    -- we want nil, not false so 'or' doesn't help
+    if svo.me.watchfor[name] then svo.me.watchfor[name] = nil else svo.me.watchfor[name] = true end
+
+    if svo.me.watchfor[name] then
+      svo.echof("Added &lt;0,255,0&gt;%s%s to the watchfor list - use qwhow to see them.", name, svo.getDefaultColor())
+    else
+	svo.echof("Removed %s from the watchfor list.", name)
+    end
+    raiseEvent("svo watchfor name changed", name)
+  end
+})
 
 -- area = {labels}
 local labels = {}
@@ -799,7 +791,7 @@ end, 'redraw labels')
 
 signals.quit:connect(sys.clean_old_labels, 'clean up old labels on quit')
 
-end)</script>
+end</script>
 				<eventHandlerList />
 			</Script>
 		</ScriptGroup>

@@ -696,7 +696,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Meta limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -2074,6 +2074,7 @@ svo.lc_sethitsneeded(name,hits)</script>
   tempTimer(0, [[setModulePriority("]]..module..[[", 0)]])
 end
 
+svo = svo or {}; svo.loader = svo.loader or {}
 registerAnonymousEventHandler("sysInstall", "limbcounterPrio", true)</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
@@ -2084,7 +2085,7 @@ registerAnonymousEventHandler("sysInstall", "limbcounterPrio", true)</script>
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
-svo = svo or {}; svo.loader = svo.loader or {}
+
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (limbcounter)"] = 1
 svo.loader.limbcounter = function()

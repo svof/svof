@@ -17,7 +17,7 @@
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList />
 			<regexCodePropertyList />
-			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>Seek request</name>
 				<script>if svo.defc.dragonform then return end
 
@@ -349,14 +349,16 @@ end
 
 registerAnonymousEventHandler("sysInstall", "priestReportPrio", true)
 
-svo = svo or {}
+svo = svo or {}; svo.loader = svo.loader or {}
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (priestreport)"] = 1</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
-				<name>svo_load_priestreport</name>
+				<name>svo_load_maincode_priestreport</name>
 				<packageName></packageName>
-				<script>function svo_load_priestreport()
+				<script>svo.loader.priestreporter = function()
+  if not svo.me.class == "Priest" or not svo.me.class == "Apostate" then return end
+  
   if type(svo.conf.autoseek) ~= 'nil' then
     if svo.conf.autoseek then enableTrigger"Seek request" else
     disableTrigger"Seek request" end
@@ -429,56 +431,6 @@ svo.modules_version["svo (priestreport)"] = 1</script>
       svo.echof("Will report movement every %d seconds max for someone speedwalking.", svo.conf.reportdelay)
     end,
   })
-end</script>
-				<eventHandlerList>
-					<string>svo system loaded</string>
-				</eventHandlerList>
-			</Script>
-			<Script isActive="yes" isFolder="no">
-				<name>svo_onshow_priestreport</name>
-				<packageName></packageName>
-				<script>function svo_onshow_priestreport()
-    local c = table.size(svo.me.locatelist)
-
-    svo.echofn("# of people on the locatelist: %d ", c)
-
-    setFgColor(unpack(svo.getDefaultColorNums))
-    setUnderline(true)
-    echoLink("(view)", 'echo"\\n" expandAlias"vshow locatelist"', 'Click here open the locatelist list menu', true)
-    echo"\n"
-end</script>
-				<eventHandlerList>
-					<string>svo onshow</string>
-				</eventHandlerList>
-			</Script>
-			<Script isActive="yes" isFolder="no">
-				<name>svo.disable_seek</name>
-				<packageName></packageName>
-				<script>-- disable seek alias in dragonform, because it's for priest only
-function svo.disable_seek()
-  if svo and svo.defc.dragonform then disableAlias"(seek person) Manually seek &amp; report a person"
-  else enableAlias"(seek person) Manually seek &amp; report a person" end
-end</script>
-				<eventHandlerList>
-					<string>svo got dragonform</string>
-					<string>svo lost dragonform</string>
-					<string>svo system loaded</string>
-				</eventHandlerList>
-			</Script>
-			<Script isActive="yes" isFolder="no">
-				<name>priest repoter main code</name>
-				<packageName></packageName>
-				<script>-- Svof (c) 2011-2018 by Vadim Peretokin
-
--- Svof is licensed under a
--- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
-
--- You should have received a copy of the license along with this
--- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
-
-svo = svo or {}; svo.loader = svo.loader or {}
-svo.loader.priestreporter = function()
-if not svo.me.class == "Priest" or not svo.me.class == "Apostate" then return end
 
 local conf = svo.conf
 
@@ -573,9 +525,41 @@ end
 
 end -- end of svo priest reporter loader
 
-if svo.systemloaded then svo.loader.priestreporter() end
-</script>
+if svo.systemloaded then svo.loader.priestreporter() end</script>
 				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo_onshow_priestreport</name>
+				<packageName></packageName>
+				<script>function svo_onshow_priestreport()
+  if not svo.loader.priestreporter then return end
+    local c = table.size(svo.me.locatelist)
+
+    svo.echofn("# of people on the locatelist: %d ", c)
+
+    setFgColor(unpack(svo.getDefaultColorNums))
+    setUnderline(true)
+    echoLink("(view)", 'echo"\\n" expandAlias"vshow locatelist"', 'Click here open the locatelist list menu', true)
+    echo"\n"
+end</script>
+				<eventHandlerList>
+					<string>svo onshow</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.disable_seek</name>
+				<packageName></packageName>
+				<script>-- disable seek alias in dragonform, because it's for priest only
+function svo.disable_seek()
+  if not svo.loader.priestreporter then return end
+  if svo and svo.defc.dragonform then disableAlias"(seek person) Manually seek &amp; report a person"
+  else enableAlias"(seek person) Manually seek &amp; report a person" end
+end</script>
+				<eventHandlerList>
+					<string>svo got dragonform</string>
+					<string>svo lost dragonform</string>
+					<string>svo system loaded</string>
+				</eventHandlerList>
 			</Script>
 		</ScriptGroup>
 	</ScriptPackage>

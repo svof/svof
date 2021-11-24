@@ -316,12 +316,11 @@ svo.doadd("give 50 vial to "..svo.givevials.person)</script>
 			<packageName></packageName>
 			<script>function refillerPrio(_, module)
   if module ~= "svo (refiller)" then return true end
-  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
+  tempTimer(0, [[setModulePriority("]]..module..[[", 0)]])
 end
 
 registerAnonymousEventHandler("sysInstall", "refillerPrio", true)
-
-svo = svo or {}
+svo = svo or {}; svo.loader = svo.loader or {}
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (refiller)"] = 1</script>
 			<eventHandlerList />
@@ -336,7 +335,7 @@ svo.modules_version["svo (refiller)"] = 1</script>
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
 
-tempTimer(0, function()
+svo.loader.refiller = function()
 
 local conf = svo.conf
 
@@ -542,14 +541,15 @@ function svo.rf_missingstuff()
   echo'\n' svo.echof("Ack, looks like you're out of enough ingredients. :(")
   svo.rf_cancel()
 end
-
-end)</script>
+print("\nREFILLER LOADED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+end</script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
 				<name>svo.rf_check_trans</name>
 				<packageName></packageName>
 				<script>function svo.rf_check_trans()
+  if not svo.loader.refiller then return end
   if not (gmcp and gmcp.Char and gmcp.Char.Skills and gmcp.Char.Skills.Groups) then return end
 
   svo.rf_transrefiller = false
