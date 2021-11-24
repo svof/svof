@@ -541,7 +541,6 @@ function svo.rf_missingstuff()
   echo'\n' svo.echof("Ack, looks like you're out of enough ingredients. :(")
   svo.rf_cancel()
 end
-print("\nREFILLER LOADED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 end</script>
 				<eventHandlerList />
 			</Script>
