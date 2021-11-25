@@ -357,7 +357,7 @@ svo.modules_version["svo (priestreport)"] = 1</script>
 				<name>svo_load_maincode_priestreport</name>
 				<packageName></packageName>
 				<script>svo.loader.priestreporter = function()
-  if not svo.me.class == "Priest" or not svo.me.class == "Apostate" then return end
+  if not (svo.me.class == "Priest" or svo.me.class == "Apostate") then return end
   
   if type(svo.conf.autoseek) ~= 'nil' then
     if svo.conf.autoseek then enableTrigger"Seek request" else
@@ -525,7 +525,7 @@ end
 
 end -- end of svo priest reporter loader
 
-if svo.systemloaded then svo.loader.priestreporter() end</script>
+--if svo.systemloaded then svo.loader.priestreporter() end</script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
