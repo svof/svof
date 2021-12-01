@@ -10,10 +10,9 @@
         curing skeleton                                   = essential core files, including balance checks that decide what should be done
         controllers                                       = core system functions that can be behind aliases/triggers - includes prompt function, GMCP stats function, affliction lock tracking, aeon/retardation deny/override system, etc.
         action system                                     = Svof's action system. Every single thing that Svof does like cure an affliction, put up a defence, regain a balance, is an action - defined in the actions dictionary. These functions manages and validates those actions.
-    svo (custom prompt, serverside, peopletracker).xml 
+    svo (custom prompt, serverside).xml 
         custom prompt                                     = Svof's custom prompt feature
         serverside                                        = Integration with serverside curing - mirroring of Svof's priorities to serverside in most efficient manner
-        peopletracker                                     = Peopletracker addon, integrates with Mudlet's mapper
     svo (elistsorter).xml                                 = Elist sorter addon
     svo (enchanter).xml                                   = Jenny's enchanter addon
     svo (fishdist).xml                                    = Trilliana's fishing distance addon
@@ -31,20 +30,19 @@
     svo (mindnet).xml                                     = Mindnet addon
     svo (namedb).xml                                      = NameDB addon
     svo (offering).xml                                    = Offering addon
-    raw-svo.dor.lua                                       = Svof's DOR system, implemented as a balanceless and a balancefun action
-    raw-svo.empty.lua                                     = functions tracking all of the empty cures
-    raw-svo.funnies.lua                                   = Svof's humour - welcome message, protips and dying messages
-    raw-svo.misc.lua                                      = Miscallaneous functions that don't have a place elsewhere plus a few Lua helpers
-    raw-svo.priestreport.lua                              = Priest reporting addon
-    raw-svo.reboundingsileristracker.lua                  = Rebounding & sileris tracker addon
-    raw-svo.refiller.lua                                  = Refiller addon
-    raw-svo.runeidentifier.lua                            = Rune identifier addon
-    raw-svo.setup.lua                                     = Svof loading files
-    raw-svo.skeleton.lua                                  = essential core files, including balance checks that decide what should be done
-    raw-svo.stormhammertarget.lua                         = Stormhammer target addon
-    raw-svo.valid.diag.lua                                = Diagnose tracking
-    raw-svo.valid.main.lua                                = Definitions of all trigger functions - recording in-game data in most accurate way, while not getting tricked by illusions
-    raw-svo.valid.simple.lua                              = functions for adding afflictions directly from triggers
+    svo (peopletracker).xml                               = Peopletracker addon, integrates with Mudlet's mapper
+    svo (priestreport).xml                                = Priest reporting addon
+    svo (reboundingsileristracker).xml                    = Rebounding & sileris tracker addon
+    svo (refiller).xml                                    = Refiller addon
+    svo (runeidentifier).xml                              = Rune identifier addon
+    svo (setup, misc, empty, funnies, dor).xml
+        setup                                             = Svof loading files
+        misc                                              = Miscallaneous functions that don't have a place elsewhere plus a few Lua helpers
+        empty                                             = functions tracking all of the empty cures
+        funnies                                           = Svof's humour - welcome message, protips and dying messages
+        dor                                               = Svof's DOR system, implemented as a balanceless and a balancefun action
+    svo (stormhammertarget).xml                           = Stormhammer target addon
+    svo (trigger functions).xml                           = Diagnose tracking, definitions of all trigger functions - recording in-game data in most accurate way, while not getting tricked by illusions, functions for adding afflictions directly from triggers
 
 
 This the order that things happen on the prompt function:
