@@ -1,3 +1,4 @@
+
 # Source code layout
 
     doc/                                                  = documentation in Sphinx.
@@ -75,13 +76,12 @@ This the order that things happen on the prompt function:
 # How to's
 
 ## How to add a new affliction
-1. add it in raw-svo.dict.lua in the dict table, with the appropriate functions and curing logic
-1. add it in raw-svo.empty.lua
-1. add it in raw-svo.valid.diag.lua and add a new diagnose trigger for it
-1. add gaining affliction raw-svo.valid.simple.lua, and if there's any complicated logic around it, to raw-svo.valid.main.lua. Add triggers receiving the affliction.
-1. add losing/curing affliction in raw-svo.valid.main.lua and the appropriate triggers
-1. add to tree curing system (touchtree action in raw-svo.dict.lua and raw-svo.valid.main.lua)
-1. add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in raw-svo.valid.main.lua)
+1. add it in **svo (actions dictionary)** in the dict table, with the appropriate functions and curing logic.
+1. add it in empty cures on **svo (setup, misc, empty, funnies, dor)**, **Empty cure handling* script.
+1. add new diagnose trigger for it on **svo (aliases, triggers)**.
+1. (Optional) add triggers receiving and losing affliction. Note: This should only be necessary for afflictions that are not shown on GMCP for some reason (best example I can give is Pariah's latency), the system already handles gaining/removing aff through GMCP so no need to add triggers for that on normal circumstances.
+1. add to tree curing system in **Main trigger functions** on **svo (trigger functions)** (search for the `-- tree cures` section specifically and add it to the tree table)
+1. add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in **Main trigger functions** on **svo (trigger functions)**)
 1. check failure conditions and add them, ie salves fizzling off balance
 
 ## How to update madness status of an affliction
