@@ -77,16 +77,17 @@ This the order that things happen on the prompt function:
 
 ## How to add a new affliction
 1. add it in **svo (actions dictionary)** in the dict table, with the appropriate functions and curing logic.
-1. add it in empty cures on **svo (setup, misc, empty, funnies, dor)**, **Empty cure handling* script.
-1. add new diagnose trigger for it on **svo (aliases, triggers)**.
-1. (Optional) add triggers receiving and losing affliction. Note: This should only be necessary for afflictions that are not shown on GMCP for some reason (best example I can give is Pariah's latency), the system already handles gaining/removing aff through GMCP so no need to add triggers for that on normal circumstances.
-1. add to tree curing system in **Main trigger functions** on **svo (trigger functions)** (search for the `-- tree cures` section specifically and add it to the tree table)
-1. add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in **Main trigger functions** on **svo (trigger functions)**)
-1. check failure conditions and add them, ie salves fizzling off balance
+1. add it in empty cures on **svo (setup, misc, empty, funnies, dor) > Empty cure handling* script.
+2. add to the herb cures 
+3. add new diagnose trigger for it on **svo (aliases, triggers)**.
+4. (Optional) add triggers receiving and losing affliction. Note: This should only be necessary for afflictions that are not shown on GMCP for some reason (best example I can think of is Pariah's latency), the system already handles gaining/removing aff through GMCP so no need to add triggers for that on normal circumstances.
+5. add to herb cures/restoration/smoke/focus/humour/etc tables (whatever that is applicable) on **svo (trigger functions) > Main trigger functions** (the comment lines `-- normal herbs`, `-- normal smokes`. `-- focus`, etc can help you find your way)
+6. add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in **Main trigger functions** on **svo (trigger functions)**)
+7. check failure conditions and add them, ie salves fizzling off balance
 
 ## How to update madness status of an affliction
-1. update raw-svo.dict for the affliction - check every balance
-1. update madness_affs table in raw-svo.empty
+1. update the dict entry for the affliction to account for madness - check every balance
+1. update madness_affs table in empty cures on **svo (setup, misc, empty, funnies, dor) > Empty cure handling**.
 
 ## View system debug log
 1. install [Logger](http://forums.mudlet.org/viewtopic.php?f=6&t=1424)
