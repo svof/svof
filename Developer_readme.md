@@ -79,10 +79,10 @@ This the order that things happen on the prompt function:
 1. add it in **svo (actions dictionary)** in the dict table, with the appropriate functions and curing logic.
 1. add it in empty cures on **svo (setup, misc, empty, funnies, dor) > Empty cure handling** script.
 3. add new diagnose trigger for it on **svo (aliases, triggers)**.
-4. (Optional) add triggers receiving and losing affliction. Note: This should only be necessary for afflictions that are not shown on GMCP for some reason (best example I can think of is Pariah's latency), the system already handles gaining/removing aff through GMCP so no need to add triggers for that on normal circumstances.
-5. add to herb cures/restoration/smoke/focus/humour/etc tables (whatever that is applicable) on **svo (trigger functions) > Main trigger functions** (the comment lines `-- normal herbs`, `-- normal smokes`. `-- focus`, etc can help you find your way)
-6. add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in **Main trigger functions** on **svo (trigger functions)**)
-7. (Optional) check failure conditions and add them (in case it is an affliction that is not trackeable on gmcp). You can add the logic on the dict entry or on triggers, wherever applicable.
+5. add to herb cures/restoration/smoke/focus/humour/etc tables (whatever that is applicable) on **svo (trigger functions) > Main trigger functions** (the comment lines `-- normal herbs`, `-- normal smokes`. `-- focus`, etc can help you find your way).
+7. add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in **Main trigger functions** on **svo (trigger functions)**)
+8. (Optional) add triggers receiving and losing affliction. Note: This should only be necessary for afflictions that are not shown on GMCP for some reason (best example I can think of is Pariah's latency), the system already handles gaining/removing aff through GMCP so no need to add triggers for that on normal circumstances.
+9. (Optional) check failure conditions and add them (in case it is an affliction that is not trackeable on gmcp). You can add the logic on the dict entry or on triggers, wherever applicable.
 
 ## How to update madness status of an affliction
 1. update the dict entry for the affliction to account for madness - check every balance
