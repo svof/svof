@@ -42,7 +42,7 @@
         funnies                                           = Svof's humour - welcome message, protips and dying messages
         dor                                               = Svof's DOR system, implemented as a balanceless and a balancefun action
     svo (stormhammertarget).xml                           = Stormhammer target addon
-    svo (trigger functions).xml                           = Diagnose tracking, definitions of all trigger functions - recording in-game data in most accurate way, while not getting tricked by illusions, functions for adding afflictions directly from triggers
+    svo (trigger functions).xml                           = Diagnose tracking; definitions of all trigger functions - recording in-game data in most accurate way, while not getting tricked by illusions; functions for adding afflictions directly from triggers
 
 
 This the order that things happen on the prompt function:
