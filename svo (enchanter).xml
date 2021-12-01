@@ -38,10 +38,6 @@ svo.modules_version["svo (enchanter)"] = 1</script>
 				<name>enchanter script</name>
 				<packageName></packageName>
 				<script>svo.loader.enchanter = function()
---  svo.check_ourobori = check_ourobori
-  svo.parse_enchant_arguments = parseEnchantArguments
-  svo.reenchant = reenchant
-  svo.get_enchant_cost = getEnchantCost
   svo.config.setoption("haveenchantmentmedallion",
   {
     vconfig2string = true,
@@ -86,7 +82,7 @@ svo.modules_version["svo (enchanter)"] = 1</script>
       svo.echof("Okay, will put gold coins away with '%s'.", svo.conf.enchantputgold)
     end
   })
-	  
+  
 local ourobori_data = {}
 
 -- Keep track if we are already ennchating
@@ -909,10 +905,12 @@ local function getOIDs()
   send("\n")
 end
 
+--[[
 -- Repeats the last order
-local function reenchant()
+function svo.reenchant()
   enchant(enchanting[1], enchanting[2])
 end
+]]
 
 local function addToActionQueue(command, balanceful)
   enchantmentActions[#enchantmentActions + 1] = {
@@ -948,9 +946,9 @@ local function enchantNextItem()
       -- lets handle arrows differently. Since 'arrow' also applies to meteors, we will need special encoding
       if totalAmount == 1 then
         addToActionQueue("put @an arrow@ in " .. ouroboros1, false)
-		else
+  else
         addToActionQueue(string.format("put group @a group of %d arrows@ in %s", totalAmount, ouroboros1), false)
-		end
+  end
     else
       addToActionQueue("outr " .. totalAmount .. " " .. name, false)
       addToActionQueue("put " .. (totalAmount &gt; 1 and "group " or "") .. name .. " in " .. ouroboros1, false)
@@ -1164,7 +1162,7 @@ end
 --   _: only needed for enchant
 --   costCollection: table where costs get added. This is useful if the function is called multiple times in a row, because costs get added up here
 -- returns the calculated cost in a table
-local function getEnchantCost(what, num, exampleItem, costCollection)
+function svo.get_enchant_cost(what, num, exampleItem, costCollection)
   local enchantObject = enchantments[what]
   costCollection = type(costCollection) == "table" and costCollection or {}
   if not enchantObject then return end
@@ -1188,7 +1186,7 @@ local function getEnchantCost(what, num, exampleItem, costCollection)
   return costCollection
 end
 
--- Prints the costs calculated by getEnchantCost
+-- Prints the costs calculated by svo.get_enchant_cost
 local function printEnchantCosts(cost)
   local echo = cecho
   echo("Your order uses the following commodities:\n")
@@ -1198,7 +1196,7 @@ local function printEnchantCosts(cost)
 end
 
 -- Parses the argument(s) given to the enchant alias
-local function parseEnchantArguments(arg)
+function svo.parse_enchant_arguments(arg)
 
   -- if a list was requested, print it
   if arg == "list" then
@@ -1253,7 +1251,7 @@ local function parseEnchantArguments(arg)
 
     -- Differ between cost calculation and real enchantment
     if string.starts(arg, "cost") then
-      functionToUse = getEnchantCost
+      functionToUse = svo.get_enchant_cost
       arg = arg:sub(5)
       getCosts = true
     else
@@ -1278,8 +1276,8 @@ local function parseEnchantArguments(arg)
 end
 
 -- repeat the last order
-local function reenchant()
-  parseEnchantArguments(lastOrder)
+function svo.reenchant()
+  svo.parse_enchant_arguments(lastOrder)
 end
 
 svo.echof("Loaded svo Enchanter.")
