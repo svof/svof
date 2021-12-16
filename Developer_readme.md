@@ -144,7 +144,7 @@ Important notes:
     - mana -> optional setting that sets the mana usage for said defence: 'lots' for high mana usag, 'little' for low mana usage.
 
 3. add the definition for serverside-svof integration (sstosvod)
-4. (Optional) add triggers for defup, already on and defoff messages in case of custom (invisible) defences.
+4. (Optional) add any extra triggers for special interactions with this defence in case any exists and add proper logic to handle them.
 
 
 
