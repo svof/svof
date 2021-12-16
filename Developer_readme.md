@@ -92,7 +92,7 @@ This the order that things happen on the prompt function:
     <summary>For example, you want to add entries for defs of a class specific skill, let's see how Necromancy defences are set, with comments!</summary>
     
 ```lua
-if svo.haveskillset('necromancy') then --this is important, as you don't want the defence list to be cluttered with a lot of defences that a specific class cannot put up! Always check if the skillset is available before populating it!
+if svo.haveskillset('necromancy') then --this is important, as you don't want the defence list to be cluttered with a lot of defences that the user's current class cannot put up! Always check if the skillset is available before populating it!
   defs_data:set('deathsight', { type = 'necromancy', -- the type determines from what skillset the defence will be put into, usually you want the type to be the same name as the skillset you are adding it for
     staysindragon = true, -- means that the defence will stay on even after dragonforming
     availableindragon = true, -- means it can be putup while in dragonform. For this specific case, 'deathsight' is also a general defence that can be put up in dragonform so this flag this defence so svo to not unnecessarily drop it after the defence table is repopulated upon dragonforming
