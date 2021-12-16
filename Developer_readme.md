@@ -85,6 +85,69 @@ This the order that things happen on the prompt function:
 9. (Optional) add triggers receiving and losing affliction. Note: This should only be necessary for afflictions that are not shown on GMCP for some reason (best example I can think of is Pariah's latency), the system already handles gaining/removing aff through GMCP so no need to add triggers for that on normal circumstances.
 10. (Optional) check failure conditions and add them (in case it is an affliction that is not trackeable on gmcp). You can add the logic on the dict entry or on triggers, wherever applicable.
 
+## How to add a new defence
+1. add it in **svo (actions dictionary)** in the dict table, with the appropriate functions and defup/keepup logic.
+2. add its entry in the defences dataset (defs_data) in **svo (alias and defence functions) > Defences**  with all the on/off lines as well as the appropriate configurations.
+<details>
+    <summary>For example, you want to add entries for defs of a class specific skill, let's see how Necromancy defences are set, with comments!</summary>
+    
+```lua
+if svo.haveskillset('necromancy') then --this is important, as you don't want the defence list to be cluttered with a lot of defences that a specific class cannot put up! Always check if the skillset is available before populating it!
+  defs_data:set('deathsight', { type = 'necromancy', -- the type determines from what skillset the defence will be put into, usually you want the type to be the same name as the skillset you are adding it for
+    staysindragon = true, -- means that the defence will stay on even after dragonforming
+    availableindragon = true, -- means it can be putup while in dragonform. For this specific case, 'deathsight' is also a general defence that can be put up in dragonform so this flag this defence so svo to not unnecessarily drop it after the defence table is repopulated upon dragonforming
+    def = "Your mind has been attuned to the realm of Death.", -- the line that appears when you check DEF ingame
+    on = {"Your mind is already attuned to the realm of Death.", "You shut your eyes and concentrate on the Soulrealms. A moment later, you feel inextricably linked with realm of Death."}, -- these are the lines that are fired when you put the defence up. 
+    onr = "^A miasma of darkness passes over your eyes and you feel a link to the realm of Death,? form in your mind\\.$", --same as above, except that it uses regex. Use onr anytime you need regex instead of a normal trigger.
+    off = {"You relax your link with the realm of Death.", "You are not linked with the realm of Death."}}) -- the lines for when the defence is dropped so svo can properly recognize it.
+  defs_data:set('soulcage', { type = 'necromancy',
+    staysindragon = true,
+    offline_defence = true, -- means that the defence will stay on even after disconnecting. This is useful, for example, to tag defences that are items, like shadowmancy cloak or pariah blood on knife.
+    on = {"Your soul is already protected by the soulcage.", "You lower the barrier between your spirit and the soulcage.", "You begin to spin a web of necromantic power about your soul, drawing on your vast reserves of life essence. Moment by moment the bonds grow stronger, until your labours are complete. Your soul is entirely safe from harm, fortified in a cage of immortal power."},
+    off = {"You have not caged your soul in life essence.", "You carefully raise a barrier between your spirit and the soulcage.", "As you feel the last remnants of strength ebb from your tormented body, you close your eyes and let darkness embrace you. Suddenly, you feel your consciousness wrenched from its pitiful mortal frame and your soul is free. You feel your form shifting, warping and changing as you whirl and spiral outward, ever outward. A jolt of sensation awakens you, and you open your eyes tentatively to find yourself trapped within a physical body once more."},
+    onr = [[^You may not use soulcage for another \d+ Achaean day\(s\)\.$]],
+    def = "Your being is protected by the soulcage."})
+  defs_data:set('deathaura', { type = 'necromancy',
+    on = {"You let the blackness of your soul pour forth.", "You already possess an aura of death."},
+    def = "You are emanating an aura of death.",
+    off = "Your aura of death has worn off."})
+  defs_data:set('shroud', { type = 'necromancy',
+    on = {"Calling on your dark power, you draw a thick shroud of concealment about yourself to cover your every action.", "You draw a Shadowcloak about you and blend into your surroundings.", "You draw a cloak of the Blood Maiden about you and blend into your surroundings."},
+    def = "Your actions are cloaked in secrecy.",
+    off = {"Your shroud dissipates and you return to the realm of perception.", "The flash of light illuminates you - you have been discovered!"}})
+  defs_data:set('lifevision', { type = 'necromancy',
+    on = {"You narrow your eyes and blink rapidly, enhancing your vision to seek out sources of lifeforce in others.", "You already possess enhanced vision."},
+    def = "You have enhanced your vision to be able to see traces of lifeforce."})
+  defs_data:set('putrefaction', { type = 'necromancy',
+    on = {"You concentrate for a moment and your flesh begins to dissolve away, becoming slimy and wet.", "You have already melted your flesh. Why do it again?"},
+    def = "You are bathed in the glorious protection of decaying flesh.",
+    off = "You concentrate briefly and your flesh is once again solid."})
+  defs_data:set('vengeance', { type = 'necromancy',
+    staysindragon = true,
+    offline_defence = true,
+    on = {"You swear to yourself that you will wreak vengeance on your slayer.", "Vengeance already burns within your heart, Necromancer."},
+    def = "You have sworn vengeance upon those who would slay you.",
+    off = {"You forswear your previous oath for vengeance, sudden forgiveness entering your heart.", "You have sworn vengeance against none, Necromancer."}})
+end
+```
+</details>
+
+Important notes:
+- You can use defr, onr and offr whenever you need to use regex for def, defup and defoff messages respectively. They are not mutually exclusive with normal def, on, off messages so you can use normal and regex triggers on the same entry.
+- Available flags and configuration functions are:
+    - availableindragon -> boolean value that flags when a defence is available and can be put up even in dragonform (usually only for defences that also shares a general or dragon equivalent with the same name and behavior, like deathsight.
+    - invisibledef -> boolean value that determines whether the defence is invisible (not recognized as a real defence by achaea). This is useful for certain abilities that are not naturally defences per se, but still useful to keep track of.
+    - offline_defence -> boolean value that flags defences that can stay up even after logging out, see the comments in the code above for example
+    - on_enable -> custom function, this is mostly only used for monks and blademasters to assure the form they are in can use said defence. See `retaliationstrike` as an example. Can become useful in case new classes that contain different forms as well are launched.
+    - specialskip -> flags defences that for some reason you want to ignore from defup (meaning svo will skip them instead of trying to put them up before proceeding to the next defences in queue to be put up)
+    - stays_in_dragon - > boolean value that determines whether or not the defence stays up after dragonforming
+    - mana -> optional setting that sets the mana usage for said defence: 'lots' for high mana usag, 'little' for low mana usage.
+
+3. add the definition for serverside-svof integration (sstosvod)
+4. (Optional) add triggers for defup, already on and defoff messages in case of custom (invisible) defences.
+
+
+
 ## How to update madness status of an affliction
 1. update the dict entry for the affliction to account for madness - check every balance
 1. update madness_affs table in empty cures on **svo (setup, misc, empty, funnies, dor) > Empty cure handling**.
