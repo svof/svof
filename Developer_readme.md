@@ -224,7 +224,7 @@ Important notes:
 2. Add the class and its skills in **svo.knownskills** table located in **svo (setup, misc, empty, funnies, dor) > Setup** so that svof can recognize them
 3. Add all of the class defences as explained above.
 4. Add all of the class resources as well as new balances if applicable to the resources in **svo (setup, misc, empty, funnies, dor) > Setup**. Find the `-- Class resources` commentary if you are lost.
-    - In case of new balances or any useable resource that should be tracked whether they are on/off, create a svo.valid function for it in **svo (trigger functions) > Main trigger functions*. 
+    - In case of new balances or any useable resource that should be tracked whether they are on/off, create a svo.valid function for it in **svo (trigger functions) > Main trigger functions**. 
 6. Add the class' prompttags (resources, balances, special forms, etc) for the custom prompt in **svo (custom prompt, serverside) > Custom prompt**.
 7. Update the public documentation with all the changes implemented.
 
