@@ -123,31 +123,32 @@ This the order that things happen on the prompt function:
 
 ## How to add a new defence
 1. add it in **svo (actions dictionary)** in the dict table, with the appropriate functions and defup/keepup logic.
-    - There are two ways of making svo recognize a defence: through the basicdef function and through a hardcoded entry. Use basicdef whenever you have a simple defence that can be turned on or off without any special logic required. Alternatively, use a dictionary entry whenever you need custom defence logic. Examples:
+    - There are two ways of making svo recognize a defence dict entry: through the basicdef function and through a hardcoded entry. Use basicdef whenever you have a simple defence that can be turned on or off without any special logic required. Alternatively, use a dictionary entry whenever you need custom defence logic. Examples:
     
     basicdef example:
     
     ```lua
     if svo.haveskillset('curses') then
-      basicdef('swiftcurse', 'swiftcurse')
+      basicdef('swiftcurse', 'swiftcurse') -- refer to the notes on the svo.basicdef function to see the usage, this basically means 'defencename', 'command'
     end
     ```
     
     dictionary entry with custom defence logic:
     ```lua
       svo.dict.devour = {
-        gamename = 'devour',
+        gamename = 'devour', -- ingame name
         physical = {
-          balanceful_act = true, def = true,
+          balanceful_act = true, def = true, -- means it is a def that takes balance and flags this dict entry as a defence entry
 
-          isadvisable = function()
+          isadvisable = function() -- logic that tells svo when to put this defence
             return (not defc.dragonform and not defc.devour and ((sys.deffing and defdefup[defs.mode].devour) or (conf.keepup and defkeepup[defs.mode].devour)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and (defc.mouths and defc.tentacles) and bals.anathema) or false
           end,
+          -- ^ means svo will only put this defence if the user is not dragon, don't already have devour up, is not in the process of putting up or keeping up a defence at the time, has passed balanceful defs checks, is not paralysed and not prone, has the mouths and tentacles defences already up and has anathema balance available. 
 
-          oncompleted = function() defences.got('devour') end,
+          oncompleted = function() defences.got('devour') end, -- defence is sucessfully up? tell svo you got it.
 
-          action = "unnamable devour",
-          onstart = function()
+          action = "unnamable devour", -- defines the action that will put this defence up
+          onstart = function() -- logic to put the defence up, add what needs to be sent and any other applicable logic to it here.
             send('unnamable devour', conf.commandecho) 
             end
         }
