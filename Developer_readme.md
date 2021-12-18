@@ -120,6 +120,10 @@ This the order that things happen on the prompt function:
     
 </details>
 
+## How to update madness status of an affliction
+1. update the dict entry for the affliction to account for madness - check every balance
+1. update madness_affs table in empty cures on **svo (setup, misc, empty, funnies, dor) > Empty cure handling**.
+
 
 ## How to add a new defence
 1. add it in **svo (actions dictionary)** in the dict table, with the appropriate functions and defup/keepup logic.
@@ -209,20 +213,25 @@ Important notes:
     - on_enable -> custom function, this is mostly only used for monks and blademasters to assure the form they are in can use said defence. See `retaliationstrike` as an example. Can become useful in case new classes that contain different forms as well are launched.
     - specialskip -> flags defences that for some reason you want to ignore from defup (meaning svo will skip them instead of trying to put them up before proceeding to the next defences in queue to be put up)
     - stays_in_dragon -> boolean value that determines whether or not the defence stays up after dragonforming
-    - mana -> optional setting that sets the mana usage for said defence: 'lots' for high mana usag, 'little' for low mana usage.
+    - stays_on_death -> boolena value that flags this defence as one that stays up even upon death
+    - mana -> optional setting that sets the mana usage for said defence: 'lots' for high mana usag, 'little' for low mana usage. This will put a lowercase 'm' or an uppercase 'M' respectively on vshow defup/keepup for defences that drains mana.
 
 3. add the definition for serverside-svof integration (sstosvod)
 4. (Optional) add any extra triggers for special interactions with this defence in case any exists and add proper logic to handle them.
 
+## How to add a new class
+1. Add any new afflictions given by the new class as explained above.
+2. Add the class and its skills in **svo.knownskills** table located in **svo (setup, misc, empty, funnies, dor) > Setup** so that svof can recognize them
+3. Add all of the class defences as explained above.
+4. Add all of the class resources as well as new balances if applicable to the resources in **svo (setup, misc, empty, funnies, dor) > Setup**. Find the `-- Class resources` commentary if you are lost.
+    - In case of new balances or any useable resource that should be tracked whether they are on/off, create a svo.valid function for it in **svo (trigger functions) > Main trigger functions*. 
+6. Add the class' prompttags (resources, balances, special forms, etc) for the custom prompt in **svo (custom prompt, serverside) > Custom prompt**.
+7. Update the public documentation with all the changes implemented.
 
+### Halp! I'm still lost, can you please give me a full example?
+Sure thingy!! Head over to my [Anathema](https://github.com/svof/svof/pull/742) and [Pariah](https://github.com/svof/svof/pull/717) PRs to see how I implemented all the changes that introduced support for these classes in svof, their affs, defs and all the other stuffs! 
 
-## How to update madness status of an affliction
-1. update the dict entry for the affliction to account for madness - check every balance
-1. update madness_affs table in empty cures on **svo (setup, misc, empty, funnies, dor) > Empty cure handling**.
 
 ## View system debug log
 1. install [Logger](http://forums.mudlet.org/viewtopic.php?f=6&t=1424)
 1. view mudlet-data/profiles/\<profile>/log/svof.txt
-
-## Gotcha with luapp
-If luapp, the pre-processor has an error compiling, it doesn't seem to print any errors. The preprocessed file will just stop at the erroring line.
