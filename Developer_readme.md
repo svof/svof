@@ -84,10 +84,77 @@ This the order that things happen on the prompt function:
 8. add its definition on svof-serverside integration (sstosvoa on dict).
 9. (Optional) add triggers receiving and losing affliction. Note: This should only be necessary for afflictions that are not shown on GMCP for some reason (best example I can think of is Pariah's latency), the system already handles gaining/removing aff through GMCP so no need to add triggers for that on normal circumstances.
 10. (Optional) check failure conditions and add them (in case it is an affliction that is not trackeable on gmcp). You can add the logic on the dict entry or on triggers, wherever applicable.
+<details>
+    <summary>This is an example of how an affliction entry is structured: </summary>
+    
+```lua
+  paralysis = {
+    herb = {
+      isadvisable = function() -- add all the conditions necessary for the system to consider that you have been afflicted by this here
+        return (affs.paralysis) or false -- means if you are paralysed already, it won't double paralysis
+      end,
+
+      oncompleted = function() -- affliction got cured, signal svo to remove it from the affs list and that herb balance has been lost since you just ate the herb to cure this, add other logic if necessary
+        svo.rmaff('paralysis')
+        svo.lostbal_herb()
+        svo.killaction(svo.dict.checkparalysis.misc)
+      end,
+
+      eatcure = {'bloodroot', 'magnesium'}, -- tells svo what kind of cure to make this go away
+      onstart = function() svo.eat(svo.dict.paralysis.herb) end, -- svo started the curing procedure, tell it what it should do (in this case, it will eat the specified cure above)
+
+      empty = function() empty.eat_bloodroot() end -- for empty cure handling
+    },
+    aff = { -- additional affliction behavior logic
+      oncompleted = function() -- to be executed upon gaining this aff
+        svo.addaffdict(svo.dict.paralysis)
+        signals.after_lifevision_processing:unblock(cnrl.checkwarning)
+      end,
+    },
+    gone = { -- logic to be executed after paralysis is cured, in this case, just remove it from the aff list
+      oncompleted = function() svo.rmaff('paralysis') end,
+    },
+    onremoved = function() svo.affsp.paralysis = nil svo.donext() end -- additional logic to be executed after paralysis has been sucessfully removed/cured, means the system can now do any schedule actions
+},
+```
+    
+</details>
+
 
 ## How to add a new defence
 1. add it in **svo (actions dictionary)** in the dict table, with the appropriate functions and defup/keepup logic.
-2. add its entry in the defences dataset (defs_data) in **svo (alias and defence functions) > Defences**  with all the on/off lines as well as the appropriate configurations.
+    - There are two ways of making svo recognize a defence: through the basicdef function and through a hardcoded entry. Use basicdef whenever you have a simple defence that can be turned on or off without any special logic required. Alternatively, use a dictionary entry whenever you need custom defence logic. Examples:
+    
+    basicdef example:
+    
+    ```lua
+    if svo.haveskillset('curses') then
+      basicdef('swiftcurse', 'swiftcurse')
+    end
+    ```
+    
+    dictionary entry with custom defence logic:
+    ```lua
+      svo.dict.devour = {
+        gamename = 'devour',
+        physical = {
+          balanceful_act = true, def = true,
+
+          isadvisable = function()
+            return (not defc.dragonform and not defc.devour and ((sys.deffing and defdefup[defs.mode].devour) or (conf.keepup and defkeepup[defs.mode].devour)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and (defc.mouths and defc.tentacles) and bals.anathema) or false
+          end,
+
+          oncompleted = function() defences.got('devour') end,
+
+          action = "unnamable devour",
+          onstart = function()
+            send('unnamable devour', conf.commandecho) 
+            end
+        }
+      }
+    ```
+    
+3. add its entry in the defences dataset (defs_data) in **svo (alias and defence functions) > Defences**  with all the on/off lines as well as the appropriate configurations.
 <details>
     <summary>For example, you want to add entries for defs of a class specific skill, let's see how Necromancy defences are set, with comments!</summary>
     
