@@ -214,7 +214,7 @@ Important notes:
     - specialskip -> flags defences that for some reason you want to ignore from defup (meaning svo will skip them instead of trying to put them up before proceeding to the next defences in queue to be put up)
     - stays_in_dragon -> boolean value that determines whether or not the defence stays up after dragonforming
     - stays_on_death -> boolena value that flags this defence as one that stays up even upon death
-    - mana -> optional setting that sets the mana usage for said defence: 'lots' for high mana usag, 'little' for low mana usage. This will put a lowercase 'm' or an uppercase 'M' respectively on vshow defup/keepup for defences that drains mana.
+    - mana -> optional setting that sets the mana usage for said defence: 'lots' for high mana usag, 'little' for low mana usage. This will put an uppercase 'M' or a lowercase 'm' respectively on vshow defup/keepup for defences that drains mana.
 
 3. add the definition for serverside-svof integration (sstosvod)
 4. (Optional) add any extra triggers for special interactions with this defence in case any exists and add proper logic to handle them.
