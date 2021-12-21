@@ -144,7 +144,7 @@ This the order that things happen on the prompt function:
         physical = {
           balanceful_act = true, def = true, -- means it is a def that takes balance and flags this dict entry as a defence entry
 
-          isadvisable = function() -- logic that tells svo when to put this defence
+          isadvisable = function() -- logic that tells svo when to put up this defence
             return (not defc.dragonform and not defc.devour and ((sys.deffing and defdefup[defs.mode].devour) or (conf.keepup and defkeepup[defs.mode].devour)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and (defc.mouths and defc.tentacles) and bals.anathema) or false
           end,
           -- ^ means svo will only put this defence if the user is not dragon, don't already have devour up, is not in the process of putting up or keeping up a defence at the time, has passed balanceful defs checks, is not paralysed and not prone, has the mouths and tentacles defences already up and has anathema balance available. 
