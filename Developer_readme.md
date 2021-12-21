@@ -111,7 +111,7 @@ This the order that things happen on the prompt function:
         signals.after_lifevision_processing:unblock(cnrl.checkwarning)
       end,
     },
-    gone = { -- logic to be executed after paralysis is cured, in this case, just remove it from the aff list
+    gone = { -- logic to be executed when we get a line from the game saying the aff is gone/cured, in this case, just remove it from the aff list
       oncompleted = function() svo.rmaff('paralysis') end,
     },
     onremoved = function() svo.affsp.paralysis = nil svo.donext() end -- additional logic to be executed after paralysis has been sucessfully removed/cured, means the system can now do any schedule actions
