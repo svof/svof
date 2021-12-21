@@ -154,7 +154,7 @@ This the order that things happen on the prompt function:
           action = "unnamable devour", -- defines the action that will put this defence up
           onstart = function() -- logic to put the defence up, add what needs to be sent and any other applicable logic to it here.
             send('unnamable devour', conf.commandecho) 
-            end
+          end
         }
       }
     ```
