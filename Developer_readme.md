@@ -103,7 +103,7 @@ This the order that things happen on the prompt function:
       eatcure = {'bloodroot', 'magnesium'}, -- tells svo what kind of cure to make this go away
       onstart = function() svo.eat(svo.dict.paralysis.herb) end, -- svo started the curing procedure, tell it what it should do (in this case, it will eat the specified cure above)
 
-      empty = function() empty.eat_bloodroot() end -- for empty cure handling
+      empty = function() empty.eat_bloodroot() end -- what to do when you ate the herb but no affliction got cured
     },
     aff = { -- additional affliction behavior logic
       oncompleted = function() -- to be executed upon gaining this aff
