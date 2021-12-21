@@ -3,27 +3,47 @@
 
     doc/                                                  = documentation in Sphinx.
     default_prios                                         = default priorities for Svof
-    svo (actions dictionary).xml                          = brains of Svof, where it knows every action (affliction, defence, balance, etc) - when to use it, how to use it. For the core functions that validates these actions, see 'Action system' below.
-    svo (alias and defence functions).xml                 = functions for Svof's aliases, that should call other core functions as necessary to do their work as well as everything to do about Svof's defences - database, tracking, switching, etc.
-    svo (aliases, triggers).xml                           = the actual Mudlet aliases and triggers that uses the functions from the script mentioned above.
+    svo (actions dictionary).xml                          = brains of Svof, where it knows every action (affliction, defence, 
+                                                            balance, etc) - when to use it, how to use it. 
+                                                            For the core functions that validates these actions, see 'Action
+                                                            system' below.
+    svo (alias and defence functions).xml                 = functions for Svof's aliases, that should call other core 
+                                                            functions as necessary to do their work as well as 
+                                                            everything to do about Svof's defences - database, tracking, 
+                                                            switching, etc.
+    svo (aliases, triggers).xml                           = the actual Mudlet aliases and triggers that uses the functions
+                                                            from the script mentioned above.
     svo (burncounter).xml                                 = Magi burn counter addon
     svo (curing skeleton, controllers, action system).xml
-        curing skeleton                                   = essential core files, including balance checks that decide what should be done
-        controllers                                       = core system functions that can be behind aliases/triggers - includes prompt function, GMCP stats function, affliction lock tracking, aeon/retardation deny/override system, etc.
-        action system                                     = Svof's action system. Every single thing that Svof does like cure an affliction, put up a defence, regain a balance, is an action - defined in the actions dictionary. These functions manages and validates those actions.
+        curing skeleton                                   = essential core files, including balance checks that decide what 
+                                                            should be done
+        controllers                                       = core system functions that can be behind aliases/triggers - 
+                                                            includes prompt function, GMCP stats function, affliction
+                                                            lock tracking, aeon/retardation deny/override system, etc.
+        action system                                     = Svof's action system. Every single thing that Svof does like cure
+                                                            an affliction, put up a defence, regain a balance, 
+                                                            is an action - defined in the actions dictionary. These functions 
+                                                            manages and validates those actions.
     svo (custom prompt, serverside).xml 
         custom prompt                                     = Svof's custom prompt feature
-        serverside                                        = Integration with serverside curing - mirroring of Svof's priorities to serverside in most efficient manner
+        serverside                                        = Integration with serverside curing - mirroring of Svof's priorities 
+                                                            to serverside in most efficient manner
     svo (elistsorter).xml                                 = Elist sorter addon
     svo (enchanter).xml                                   = Jenny's enchanter addon
     svo (fishdist).xml                                    = Trilliana's fishing distance addon
     svo (inker).xml                                       = Inker addon
-    svo (install me in module manager).xml                = The core system functions to install/uninstall modules, initialization, updates, classchange for multiclass, event handlers, utilities and other things necessary for the system to function. Also contains a few scripting examples.
+    svo (install me in module manager).xml                = The core system functions to install/uninstall modules, 
+                                                            initialization, updates, classchange for multiclass, event handlers, 
+                                                            utilities and other things necessary for the system to function. 
+                                                            Also contains a few scripting examples.
     svo (install, config, pipes, rift, parry, prios).xml
-        install                                           = Installation procedure (vinstall) - autodetects skills and asks questions for things it couldn't
+        install                                           = Installation procedure (vinstall) - autodetects skills and asks 
+                                                            questions for things it couldn't
         config                                            = Svof's configuration (vconfig) and tn/tf system
         pipes                                             = pipe tracking
-        rift                                              = rift, inventory tracking and use of right actions depending on normal/aeon curing and previously with minerals, appropriate herb/mineral use
+        rift                                              = rift, inventory tracking and use of right actions depending on 
+                                                            normal/aeon curing and previously with minerals, appropriate 
+                                                            herb/mineral use
         parry                                             = parry system (sp)
         prios                                             = Svof's priority handling functions
     svo (limbcounter).xml                                 = Limbcounter addon for the classes that uses it
@@ -38,12 +58,16 @@
     svo (runeidentifier).xml                              = Rune identifier addon
     svo (setup, misc, empty, funnies, dor).xml
         setup                                             = Svof loading files
-        misc                                              = Miscallaneous functions that don't have a place elsewhere plus a few Lua helpers
+        misc                                              = Miscallaneous functions that don't have a place elsewhere plus a 
+                                                            few Lua helpers
         empty                                             = functions tracking all of the empty cures
         funnies                                           = Svof's humour - welcome message, protips and dying messages
-        dor                                               = Svof's DOR system, implemented as a balanceless and a balancefun action
+        dor                                               = Svof's DOR system, implemented as a balanceless and a 
+                                                            balancefun action
     svo (stormhammertarget).xml                           = Stormhammer target addon
-    svo (trigger functions).xml                           = Diagnose tracking; definitions of all trigger functions - recording in-game data in most accurate way, while not getting tricked by illusions; functions for adding afflictions directly from triggers
+    svo (trigger functions).xml                           = Diagnose tracking; definitions of all trigger functions - recording
+                                                            in-game data in most accurate way, while not getting tricked by 
+                                                            illusions; functions for adding afflictions directly from triggers
 
 
 This the order that things happen on the prompt function:
