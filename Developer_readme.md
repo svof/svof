@@ -212,7 +212,7 @@ Important notes:
     - offline_defence -> boolean value that flags defences that can stay up even after logging out, see the comments in the code above for example
     - on_enable -> custom function, this is mostly only used for monks and blademasters to assure the form they are in can use said defence. See `retaliationstrike` as an example. Can become useful in case new classes that contain different forms as well are launched.
     - specialskip -> flags defences that for some reason you want to ignore from defup (meaning svo will skip them instead of trying to put them up before proceeding to the next defences in queue to be put up)
-    - stays_in_dragon -> boolean value that determines whether or not the defence stays up after dragonforming
+    - `stays_in_dragon` -> boolean value that determines whether or not the defence stays up after dragonforming
     - stays_on_death -> boolena value that flags this defence as one that stays up even upon death
     - mana -> optional setting that sets the mana usage for said defence: 'lots' for high mana usag, 'little' for low mana usage. This will put an uppercase 'M' or a lowercase 'm' respectively on vshow defup/keepup for defences that drains mana.
 
