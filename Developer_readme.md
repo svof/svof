@@ -205,7 +205,7 @@ end
 </details>
 
 Important notes:
-- You can use defr, onr and offr whenever you need to use regex for def, defup and defoff messages respectively. They are not mutually exclusive with normal def, on, off messages so you can use normal and regex triggers on the same entry.
+- You can use `defr`, `onr` and `offr` whenever you need to use regex for def, defup and defoff messages respectively. They are not mutually exclusive with normal `def`, `on`, `off` messages so you can use normal and regex triggers on the same entry.
 - Available flags and configuration functions are:
     - availableindragon -> boolean value that flags when a defence is available and can be put up even in dragonform (usually only for defences that also shares a general or dragon equivalent with the same name and behavior, like deathsight.
     - invisibledef -> boolean value that determines whether the defence is invisible (not recognized as a real defence by achaea). This is useful for certain abilities that are not naturally defences per se, but still useful to keep track of.
