@@ -91,7 +91,7 @@ This the order that things happen on the prompt function:
   paralysis = {
     herb = { -- balance to cure / do the action with - in this case, cure paralysis with herbs
       isadvisable = function() -- add all the conditions necessary for the system to consider that you can & should cure it with this balance. Some checks common to all actions on this balance aren't repeated here (for example herbs won't check if you have herb balance here, that'd be repetitive)
-        return (affs.paralysis) or false -- means if you are paralysed already, it won't double paralysis
+        return (affs.paralysis) or false -- run this action if you've got paralysis, some of these can get pretty complex
       end,
 
       oncompleted = function() -- affliction got cured, signal svo to remove it from the affs list and that herb balance has been lost since you just ate the herb to cure this, add other logic if necessary
