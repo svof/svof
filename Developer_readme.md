@@ -114,7 +114,7 @@ This the order that things happen on the prompt function:
     gone = { -- logic to be executed when we get a line from the game saying the aff is gone/cured, in this case, just remove it from the aff list
       oncompleted = function() svo.rmaff('paralysis') end,
     },
-    onremoved = function() svo.affsp.paralysis = nil svo.donext() end -- additional logic to be executed after paralysis has been sucessfully removed/cured, means the system can now do any schedule actions
+    onremoved = function() svo.affsp.paralysis = nil svo.donext() end -- additional logic to be executed after paralysis has been removed from the aff list (so after the gone.oncompleted right above ran), means the system can now do any schedule 'do' actions
 },
 ```
     
