@@ -25,7 +25,7 @@ local ignore = {"totem", "sigil", "blanket", "shrine", "steed", "hippogriff", "p
 
 if table.contains(ignore, matches[2]) then return end
 local id = tonumber(matches[3])
-if id == svo.bees or id == svo.efreeti or id == svo.weird then return end
+if id == svo.bees or id == svo.efreeti or id == svo.weird or id == svo.golem then return end
 
 if target1 == 0 then
   target1 = id
@@ -158,6 +158,26 @@ svo.set_target = nil</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>weird#(\d+)</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>1</integer>
+					</regexCodePropertyList>
+				</Trigger>
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>golem</name>
+					<script>svo.golem = tonumber(matches[2])</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>golem#(\d+)</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
