@@ -11,7 +11,7 @@ Install instructions can be found [here](https://github.com/svof/svof/blob/in-cl
 See [documentation](https://svof.github.io/svof/) on how to install, use, and take advantage of the powerful system in your scripts.
 
 # Contributing
-1. Read the [Developer Readme](https://github.com/svof/svof/blob/in-client-svof/Developer_readme.md) for an introduction and useful how-tos
+1. Read the [Developer Readme](https://github.com/svof/svof/blob/in-client-svof/Developer_readme.md) for an introduction and useful how-tos.
 1. Create or login to your github account.
 2. Create a fork of the [svof repository](https://github.com/svof/svof) (It's in the top right corner)
 3. Switch to the in-client-svof branch, it's in the drop down menu below Commits.
