@@ -7053,7 +7053,7 @@ svo.modules_list = {
     'svo (actions dictionary)',
     'svo (alias and defence functions)',
     'svo (curing skeleton, controllers, action system)',
-    'svo (custom prompt, serverside, peopletracker)',
+    'svo (custom prompt, serverside)',
     'svo (install, config, pipes, rift, parry, prios)',
     'svo (setup, misc, empty, funnies, dor)',
     'svo (trigger functions)',
@@ -7115,7 +7115,7 @@ function svo_init_system()
     'dor',
     'customprompt',
     'serverside',
-    'peopletracker',
+    --'peopletracker',
   }
 	
   -- addons that make use of the loader mechanism to load after the system is loaded
@@ -7123,6 +7123,15 @@ function svo_init_system()
 	  'limbcounter',
 		'priestreporter',
     'inker',
+    --new ones
+    'mindnet',
+    'burncounter',
+    'elistsorter',
+    'enchanter',
+    'refiller',
+    'peopletracker',
+    'fishdist',
+    
 	}
 	
 	-- Penlight is not loaded yet	

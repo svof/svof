@@ -222,13 +222,13 @@ svo.bl_ignore()</script>
 		<ScriptGroup isActive="yes" isFolder="yes">
 			<name>svo Magi burncounter</name>
 			<packageName></packageName>
-			<script>svo = svo or {}
+			<script>svo = svo or {}; svo.loader = svo.loader or {}
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (burncounter)"] = 1
 
 function burnPrio(_, module)
   if module ~= "svo (burncounter)" then return true end
-  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
+  tempTimer(0, [[setModulePriority("]]..module..[[", 0)]])
 end
 
 registerAnonymousEventHandler("sysInstall", "burnPrio", true)
@@ -269,6 +269,7 @@ tempTimer(
 
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
+svo.loader.burncounter = function()
 
 local sk = svo.sk
 
@@ -439,7 +440,8 @@ function svo.bl_show()
   echo(string.rep("-", 91))
 end
 
-svo.echof("Loaded svo Magi burncounter.")</script>
+svo.echof("Loaded svo Magi burncounter.")
+end</script>
 				<eventHandlerList />
 			</Script>
 		</ScriptGroup>

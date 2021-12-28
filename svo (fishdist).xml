@@ -307,13 +307,14 @@ end
 
 registerAnonymousEventHandler("sysInstall", "fishdistPrio",true)
 
+svo = svo or {}; svo.loader = svo.loader or {}
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (fishdist)"] = 1</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>svo_load_fishingdistance</name>
 				<packageName></packageName>
-				<script>function svo_load_fishingdistance()
+				<script>svo.loader.fishdist = function()
   svo.adddefinition("@fishdist", "svo.telldistance()")
   -- returns the value of the 'baited' 'no line out' or the distance
   function svo.telldistance()
@@ -357,9 +358,7 @@ svo.modules_version["svo (fishdist)"] = 1</script>
       echo(".\n")
   end})
 end</script>
-				<eventHandlerList>
-					<string>svo system loaded</string>
-				</eventHandlerList>
+				<eventHandlerList />
 			</Script>
 		</ScriptGroup>
 	</ScriptPackage>
