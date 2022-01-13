@@ -4930,6 +4930,39 @@ end
       end,
     }
   },
+revealed = {
+    waitingfor = {
+      customwait = 80, -- lasts 80s
+
+      isadvisable = function()
+        return false
+      end,
+
+      onstart = function() end,
+
+      ontimeout = function()
+        svo.rmaff('revealed')
+        svo.make_gnomes_work()
+      end,
+
+      oncompleted = function()
+        svo.rmaff('revealed')
+        svo.make_gnomes_work()
+      end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.revealed)
+        if not svo.actions.revealed_waitingfor then svo.doaction(svo.dict.revealed.waitingfor) end
+      end
+    },
+    gone = {
+      oncompleted = function()
+        svo.rmaff('revealed')
+        svo.killaction(svo.dict.revealed.waitingfor)
+      end,
+    }
+  },
   blindaff = {
     gamename = 'blind',
     onservereignore = function()

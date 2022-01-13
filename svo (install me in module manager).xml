@@ -6032,6 +6032,7 @@ local aff_abbrev = {
   relapsing           = "scy",
   retardation         = "ret",
   retribution         = "reb",
+  revealed            = "rev",
   roped               = "rop",
   sandfever           = "sndf",
   sanguinehumour      = "sanH",
