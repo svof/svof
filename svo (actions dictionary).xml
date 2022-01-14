@@ -9843,7 +9843,8 @@ end
         return (
           ((sys.deffing and defdefup[defs.mode].riding and not defc.riding)
             or (not sys.deffing and conf.keepup and ((defkeepup[defs.mode].riding and not defc.riding) or (not defkeepup[defs.mode].riding and defc.riding))))
-          and not codepaste.balanceful_defs_codepaste() and not defc.dragonform and not affs.hamstring and (not affs.prone or svo.doingaction'prone') and not affs.crippledleftarm and not affs.crippledrightarm and not affs.mangledleftarm and not affs.mangledrightarm and not affs.mutilatedleftarm and not affs.mutilatedrightarm and not affs.unknowncrippledleg and not affs.parestolegs and not svo.doingaction'riding' and not affs.pinshot and not affs.paralysis) or false
+          and not codepaste.balanceful_defs_codepaste() and not defc.dragonform and not affs.hamstring and (not affs.prone or svo.doingaction'prone') and not affs.crippledleftarm and not affs.crippledrightarm and not affs.mangledleftarm and not affs.mangledrightarm and not affs.mutilatedleftarm and not affs.mutilatedrightarm and not affs.unknowncrippledleg and not affs.parestolegs and not svo.doingaction'riding' and not affs.pinshot and not affs.paralysis
+          and not string.find(svo.me.class, "Elemental")) or false
       end,
 
       oncompleted = function()

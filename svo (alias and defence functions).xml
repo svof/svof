@@ -1562,7 +1562,7 @@ end
     },
     def = "You are surrounded by a nearly invisible magical shield."})
   defs_data:set('riding', { type = 'general',
-    specialskip = function() return defc.dragonform end,
+    specialskip = function() return defc.dragonform or string.find(svo.me.class, "Elemental") end,
     ondef = function ()
       if tostring(conf.ridingsteed) and tostring(conf.ridingsteed):match("([A-Za-z]+)") and string.find(matches[2], tostring(conf.ridingsteed):match("([A-Za-z]+)"), nil, true) then
         return "("..tostring(conf.ridingsteed):match("([A-Za-z]+)")..")"
