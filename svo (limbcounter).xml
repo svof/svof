@@ -696,7 +696,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Meta limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -1884,7 +1884,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo earth Elemental Lord limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -2074,6 +2074,7 @@ svo.lc_sethitsneeded(name,hits)</script>
   tempTimer(0, [[setModulePriority("]]..module..[[", 0)]])
 end
 
+svo = svo or {}; svo.loader = svo.loader or {}
 registerAnonymousEventHandler("sysInstall", "limbcounterPrio", true)</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
@@ -2084,7 +2085,7 @@ registerAnonymousEventHandler("sysInstall", "limbcounterPrio", true)</script>
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 -- You should have received a copy of the license along with this
 -- work. If not, see &lt;http://creativecommons.org/licenses/by-nc-sa/4.0/&gt;.
-svo = svo or {}; svo.loader = svo.loader or {}
+
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (limbcounter)"] = 1
 svo.loader.limbcounter = function()
@@ -2122,6 +2123,7 @@ svo.lc_classlist =
     "Sentinel",
     "Sylvan",
     "earth Elemental Lord",
+    "Unnamable",
 		"None",
   }
 if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == true then
@@ -2134,7 +2136,7 @@ if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == t
 		disableTrigger("svo earth Elemental Lord limbcounter")
 		disableTrigger("svo Dragon limbcounter")
 		disableTrigger("svo Knight limbcounter")
-  if svo.me.class == "Paladin" or svo.me.class == "Runewarden" or svo.me.class == "Infernal" then
+  if svo.me.class == "Paladin" or svo.me.class == "Runewarden" or svo.me.class == "Infernal" or svo.me.class == "Unnamable" then
     enableTrigger("svo Knight limbcounter")
 		svo.lc_myclass = svo.me.class
     svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.modules_version["svo (limbcounter)"]))

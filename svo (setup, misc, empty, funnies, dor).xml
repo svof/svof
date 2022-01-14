@@ -22,7 +22,7 @@ svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (setup, misc, empty, funnies, dor)"] = 1
 svo.loader.setup = function()
 
-svo.version = "42"
+svo.version = "43"
 
 if Logger and not svo.systemloaded then
   Logger:LogSection('svof', {'timestamp', split = 5000, 'keepOpen'})
@@ -342,21 +342,22 @@ svo.knownskills = {
   blademaster              = {'twoarts', 'striking', 'shindo'},
   depthswalker             = {'shadowmancy','aeonics','terminus'},
   druid                    = {'groves', 'metamorphosis', 'reclamation'},
-  infernal                 = {'oppression', 'chivalry', 'weaponmastery'},
+  infernal                 = {'oppression', 'malignity', 'weaponmastery'},
   jester                   = {'tarot', 'pranks', 'puppetry'},
   magi                     = {'elementalism', 'crystalism', 'artificing'},
   monk                     = {'tekura', 'kaido', 'telepathy', 'shikudo'},
   none                     = {},
   occultist                = {'occultism', 'tarot', 'domination'},
-  paladin                  = {'chivalry', 'devotion', 'weaponmastery'},
+  paladin                  = {'valour', 'devotion', 'weaponmastery'},
   pariah                   = {'memorium', 'pestilence', 'charnel'},
   priest                   = {'spirituality', 'devotion', 'zeal'},
-  runewarden               = {'runelore', 'chivalry', 'weaponmastery'},
+  runewarden               = {'runelore', 'discipline', 'weaponmastery'},
   sentinel                 = {'metamorphosis', 'woodlore', 'skirmishing'},
   serpent                  = {'subterfuge', 'venom', 'hypnosis'},
   shaman                   = {'runelore', 'curses', 'vodun'},
   sylvan                   = {'weatherweaving', 'groves', 'propagation'},
   psion                    = {"weaving", "psionics", "emulation"},
+  unnamable                = {"anathema","dominion","weaponmastery"},
   ["earth elemental lord"] = {'sculpting'},
   ["fire elemental lord"]  = {'ignition'},
   ["air elemental lord"]   = {'duress'},
@@ -386,6 +387,7 @@ do
   end
 end
 
+-- Class resources: Some classes have resources that it is good to keep track. Put them here!
 if svo.haveskillset('groves') then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
@@ -510,6 +512,64 @@ signals.gmcpcharvitals:connect(function()
 end, 'update memorium epitaph length')
 end
 
+if svo.haveskillset('anathema') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local manifestation = val:match("^Manifestation: (%d+)%%$")
+      if manifestation then
+        stats.manifestation = tonumber(manifestation)
+        break
+      end
+    end
+  end
+  if not stats.manifestation then
+    stats.manifestation = 0
+  end
+end, 'update anathema manifestation')
+end
+
+if svo.haveskillset('anathema') or svo.haveskillset('occultism') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local karma = val:match("^Karma: (%d+)%%$")
+      if karma then
+        stats.karma = tonumber(karma)
+        break
+      end
+    end
+  end
+  if not stats.karma then
+    stats.karma = 0
+  end
+end, 'update anathema/occultism karma')
+end
+
+--[[
+new model for tertiary balances that don't need to rely on dozens of attack triggers and timers. 
+If this works properly and don't error anything out down the road we can extend it to the other balances as well :)
+]] 
+if svo.haveskillset('anathema') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local anathema = val:match("^Anathema: (%w+)$")
+      if anathema then
+        if svo.bals.anathema ~= nil and (svo.bals.anathema == false and anathema == "Yes") then       
+          svo.valid.gotanathemabalance()
+        break
+        elseif svo.bals.anathema ~= nil and (svo.bals.anathema == true and anathema == "No") then
+          svo.valid.usedanathemabalance()
+        break
+        end
+      end
+    end
+  end
+end, 'update anathema balance')
+end
+
+-- End of class resources
 
 signals.gmcpiretimelist = signals.gmcpiretimelist or luanotify.signal.new()
 signals.gmcpiretimelist:connect(function()
@@ -567,11 +627,15 @@ signals.gmcpcharafflictionsremove:connect(function()
   if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
   gaffl[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
-  if svo.dict.unknownany.count &gt;= 1 and not svo.affl[thisaff] then
-    svo.valid.remove_unknownany(thisaff)
+  if svo.dict.unknownany.count &gt;= 1 and not svo.affl[affname] then
+    svo.valid.remove_unknownany(affname)
   end
   if svo.dict.sstosvoa[thisaff] then
     svo.rmaff(svo.dict[svo.dict.sstosvoa[thisaff]])
+  elseif affname ~= "" then
+    if svo.dict.sstosvoa[affname] then
+      svo.rmaff(svo.dict[svo.dict.sstosvoa[affname]])
+    end
   end
   if affcount ~= nil and svo.dict[svo.dict.sstosvoa[affname]].count ~= nil then
     svo.dict[svo.dict.sstosvoa[affname]].count = 0
@@ -1109,14 +1173,16 @@ else
 disableTrigger("Prayer balance")
 end
 
-if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido')
-  or svo.haveskillset('metamorphosis') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or 
+  svo.haveskillset('valour') or svo.haveskillset('dominion') or 
+  svo.haveskillset('shindo') or svo.haveskillset('kaido') or 
+  svo.haveskillset('metamorphosis') then
 enableTrigger("Fitness balance")
 else
 disableTrigger("Fitness balance")
 end
 
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') then
 enableTrigger("Rage balance")
 else
 disableTrigger("Rage balance")
@@ -1234,11 +1300,13 @@ end
 if svo.haveskillset('venom') then
 sk.shruggingtick = 0
 end
-if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido')
-  or svo.haveskillset('metamorphosis') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or 
+  svo.haveskillset('valour') or svo.haveskillset('dominion') or 
+  svo.haveskillset('shindo') or svo.haveskillset('kaido') or 
+  svo.haveskillset('metamorphosis') then
 sk.fitnesstick = 0
 end
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') then
 sk.ragetick = 0
 end
 if svo.haveskillset('weaponmastery') then
@@ -2708,13 +2776,13 @@ local madness_affs = {'addiction', 'confusion', 'dementia', 'hallucinations', 'h
 
 for herbname, herbaffs in pairs({
   goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression',
-   'shadowmadness', 'mycalium', 'sandfever'},
+   'shadowmadness', 'mycalium', 'sandfever', 'horror'},
   kelp = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'rebbies'},
   lobelia = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'spiritburn', 'tenderskin'},
   ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy', 'flushings'},
   ash = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia'},
 	pear = {'pressure'},
-  bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'},
+  bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop', 'indifference'},
   bloodroot = {'paralysis', 'pyramides'}
   
 }) do

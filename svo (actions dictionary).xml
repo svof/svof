@@ -1060,6 +1060,65 @@ end
       end,
     }
   },
+  
+horror = {
+    count = 0,
+    gamename = 'horror',
+    name = 'horror',
+    herb = {
+      isadvisable = function()
+        return (affs.horror and bals.herb) or false
+      end,
+
+      -- this is called when you still have some left 
+      oncompleted = function()
+        svo.lostbal_herb()
+        svo.updateaffcount(svo.dict.horror)
+      end,
+
+      empty = function()
+        empty.eat_goldenseal()
+        svo.lostbal_herb()
+      end,
+
+      cured = function()
+        svo.lostbal_herb()
+        svo.rmaff('horror')
+        svo.dict.horror.count = 0
+      end,
+
+      noeffect = function()
+			  svo.rmaff('horror')
+			  svo.lostbal_herb()
+		  end,
+
+      eatcure = {'goldenseal', 'plumbum'},
+
+      onstart = function() svo.eat(svo.dict.horror.herb) end
+    },
+    aff = {
+      oncompleted = function (number)
+        svo.addaffdict(svo.dict.horror)
+        svo.updateaffcount(svo.dict.horror)
+      end
+    },
+    gone = {
+      oncompleted = function()
+        svo.rmaff('horror')
+        svo.dict.horror.count = 0
+      end,
+      
+      general_cure = function(amount, dontkeep)
+        svo.updateaffcount(svo.dict.horror)
+      end,
+
+      general_cured = function()
+        svo.rmaff('horror')
+        svo.dict.horror.count = 0
+      end,
+    }
+  },
+  
   waterbubble = {
     gamename = 'airpocket',
     onservereignore = function()
@@ -1086,7 +1145,7 @@ end
     herb = {
       isadvisable = function()
         return (affs.pacifism and
-          not svo.doingaction('pacifism') and (not svo.haveskillset('chivalry') or not svo.dict.rage.misc.isadvisable())) or false
+          not svo.doingaction('pacifism') and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity')or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function()
@@ -1102,7 +1161,7 @@ end
     focus = {
       isadvisable = function()
         return (affs.pacifism and
-          not svo.doingaction('pacifism') and (not svo.haveskillset('chivalry') or not svo.dict.rage.misc.isadvisable())) or false
+          not svo.doingaction('pacifism') and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity')or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function()
@@ -1133,7 +1192,7 @@ end
   peace = {
     herb = {
       isadvisable = function()
-        return (affs.peace and (not svo.haveskillset('chivalry') or not svo.dict.rage.misc.isadvisable())) or false
+        return (affs.peace and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function()
@@ -1159,7 +1218,7 @@ end
     gamename = 'lovers',
     herb = {
       isadvisable = function()
-        return (affs.inlove and (not svo.haveskillset('chivalry') or not svo.dict.rage.misc.isadvisable())) or false
+        return (affs.inlove and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function()
@@ -1690,7 +1749,7 @@ end
   justice = {
     herb = {
       isadvisable = function()
-        return (affs.justice and (not svo.haveskillset('chivalry') or not svo.dict.rage.misc.isadvisable())) or false
+        return (affs.justice and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function()
@@ -1716,7 +1775,7 @@ end
     herb = {
       isadvisable = function()
         return (affs.generosity and
-          not svo.doingaction('generosity') and (not svo.haveskillset('chivalry') or not svo.dict.rage.misc.isadvisable())) or false
+          not svo.doingaction('generosity') and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity')or svo.haveskillset('valour')) or not svo.dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function()
@@ -1732,7 +1791,7 @@ end
     focus = {
       isadvisable = function()
         return (affs.generosity and
-          not svo.doingaction('generosity') and (not svo.haveskillset('chivalry') or not svo.dict.rage.misc.isadvisable())) or false
+          not svo.doingaction('generosity') and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity')or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
       end,
 
       oncompleted = function()
@@ -5257,7 +5316,7 @@ revealed = {
   fear = {
     misc = {
       isadvisable = function()
-        return (affs.fear and not svo.doingaction('fear')) or false
+        return (affs.fear and not affs.horror and not svo.doingaction('fear')) or false
       end,
 
       oncompleted = function() svo.rmaff('fear') end,
@@ -6926,11 +6985,6 @@ end
           svo.killaction(svo.dict.checkanorexia.misc)
         else
           svo.affsp.anorexia = true
-        end
-
-        -- register it as a possible hypochondria symptom
-        if svo.paragraph_length == 1 then
-          sk.hypochondria_symptom()
         end
       end
     },
@@ -8815,6 +8869,32 @@ end
     }
   },
 
+  indifference = {
+    herb = {
+      isadvisable = function()
+        return affs.indifference or false
+      end,
+
+      oncompleted = function()
+        svo.rmaff('indifference')
+        svo.lostbal_herb()
+      end,
+
+      eatcure = {'bellwort', 'cuprum'},
+      onstart = function() svo.eat(svo.dict.indifference.herb) end,
+
+      empty = function() empty.eat_bellwort() end
+    },
+    aff = {
+      oncompleted = function()
+        svo.addaffdict(svo.dict.indifference)
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff('indifference') end,
+    }
+  },
+
   -- random actions that should be protected by AI
   givewarning = {
     happened = {
@@ -10150,12 +10230,14 @@ end
     hellsight = 'hellsight',
     hindered = false,
     homunculusmercury = false,
+    horror = 'horror',
     hypersomnia = 'hypersomnia',
     hypochondria = 'hypochondria',
     hypothermia = 'hypothermia',
     icefisted = 'icing',
     impaled = 'impale',
     impatience = 'impatience',
+    indifference = 'indifference',
     inquisition = 'inquisition',
     insomnia = false,
     internalbleeding = false,
@@ -10275,6 +10357,8 @@ end
     bodyaugment = 'mainaas',
     bodyblock = 'bodyblock',
     boostedregeneration = 'boosting',
+    brains = 'brains',
+    bulk = 'bulk',
     chameleon = 'chameleon',
     chargeshield = 'chargeshield',
     circulate = 'circulate',
@@ -10283,6 +10367,7 @@ end
     coldresist = 'coldresist',
     consciousness = 'consciousness',
     constitution = 'constitution',
+    croonmirror = false,
     curseward = 'curseward',
     deafness = 'deaf',
     deathaura = 'deathaura',
@@ -10293,6 +10378,7 @@ end
     demonfury = false,
     density = 'mass',
     devilmark = 'devilmark',
+    devour = 'devour',
     diamondskin = 'diamondskin',
     disassociate = false,
     distortedaura = 'distortedaura',
@@ -10311,6 +10397,7 @@ end
     evadeblock = 'evadeblock',
     evasion = false,
     extispicy = 'extispicy',
+    eyes = 'eyes',
     fangbarrier = 'sileris',
     firefly = false,
     fireresist = 'fireresist',
@@ -10326,6 +10413,7 @@ end
     groundwatch = 'groundwatch',
     harmony = 'harmony',
     haste = false,
+    heads = 'heads',
     heartsfury = 'heartsfury',
     heldbreath = 'breath',
     heresy = 'heresy',
@@ -10339,6 +10427,7 @@ end
     insulation = false,
     ironform = false,
     ironwill = 'qamad',
+    joints = 'joints',
     kaiboost = 'kaiboost',
     kaitrance = 'trance',
     kola = 'kola',
@@ -10360,6 +10449,7 @@ end
     mindtelesense = 'mindtelesense',
     moontattoo = false,
     morph = false,
+    mouths = 'mouths',
     mosstattoo = false,
     nightsight = 'nightsight',
     numbness = 'numb',
@@ -10421,12 +10511,16 @@ end
     thermalshield = 'thermalblessing',
     thirdeye = 'thirdeye',
     tin = 'tin',
+    tongues = 'tongues',
     toughness = 'toughness',
     treewatch = 'treewatch',
     truestare = 'truestare',
+    tumors = 'tumors',
     tune = 'tune',
     twoartsstance = false,
+    unnamablepresence = 'unnamablepresence',
     vengeance = 'vengeance',
+    venomsacks = 'venomsacks',
     vigilance = 'vigilance',
     vigour = 'vigour',
     viridian = 'viridian',
@@ -13801,7 +13895,7 @@ if svo.haveskillset('voicecraft') then
   }
 end
 
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')  then
   svo.dict.rage = {
     misc = {
       uncurable = true,
@@ -13919,7 +14013,7 @@ if svo.haveskillset('aeonics') then
     }
   }
 end
-if svo.haveskillset('chivalry') or svo.haveskillset('striking') or svo.haveskillset('kaido') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') or svo.haveskillset('striking') or svo.haveskillset('kaido') then
   svo.dict.fitness = {
     physical = {
       balanceful_act = true,
@@ -14088,6 +14182,134 @@ if svo.haveskillset('charnel') then
     }
     end
     
+if svo.haveskillset('anathema') then
+  svo.dict.mouths = {
+    gamename = 'mouths',
+    physical = {
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+        return (not defc.dragonform and not defc.mouths and ((sys.deffing and defdefup[defs.mode].mouths) or (conf.keepup and defkeepup[defs.mode].mouths)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.anathema) or false
+      end,
+
+      oncompleted = function() defences.got('mouths') end,
+
+      action = "mutate mouths",
+      onstart = function() send('mutate mouths', conf.commandecho) 
+	  end
+    }
+  }
+  
+  svo.dict.bulk = {
+    gamename = 'bulk',
+    physical = {
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+        return (not defc.dragonform and not defc.bulk and ((sys.deffing and defdefup[defs.mode].bulk) or (conf.keepup and defkeepup[defs.mode].bulk)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.anathema) or false
+      end,
+
+      oncompleted = function() defences.got('bulk') end,
+
+      action = "mutate bulk",
+      onstart = function()
+        send('mutate bulk', conf.commandecho) 
+	    end
+    }
+  }
+  
+  svo.dict.eyes = {
+    gamename = 'eyes',
+    physical = {
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+        return (not defc.dragonform and not defc.eyes and ((sys.deffing and defdefup[defs.mode].eyes) or (conf.keepup and defkeepup[defs.mode].eyes)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.anathema) or false
+      end,
+
+      oncompleted = function() defences.got('eyes') end,
+
+      action = "mutate eyes",
+      onstart = function()
+        send('mutate eyes', conf.commandecho) 
+	    end
+    }
+  }  
+
+  svo.dict.joints = {
+    gamename = 'joints',
+    physical = {
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+        return (not defc.dragonform and not defc.joints and ((sys.deffing and defdefup[defs.mode].joints) or (conf.keepup and defkeepup[defs.mode].joints)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.anathema) or false
+      end,
+
+      oncompleted = function() defences.got('joints') end,
+
+      action = "mutate joints",
+      onstart = function()
+        send('mutate joints', conf.commandecho) 
+	    end
+    }
+  }
+
+  svo.dict.tentacles = {
+    gamename = 'tentacles',
+    physical = {
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+        return (not defc.dragonform and not defc.tentacles and ((sys.deffing and defdefup[defs.mode].tentacles) or (conf.keepup and defkeepup[defs.mode].tentacles)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.anathema) or false
+      end,
+
+      oncompleted = function() defences.got('tentacles') end,
+
+      action = "mutate tentacles",
+      onstart = function()
+        send('mutate tentacles', conf.commandecho) 
+	    end
+    }
+  }
+  
+  svo.dict.unnamablepresence = {
+    gamename = 'unnamablepresence',
+    physical = {
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+        return (not defc.dragonform and not defc.unnamablepresence and ((sys.deffing and defdefup[defs.mode].unnamablepresence) or (conf.keepup and defkeepup[defs.mode].unnamablepresence)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and bals.anathema) or false
+      end,
+
+      oncompleted = function() defences.got('unnamablepresence') end,
+
+      action = "unnamable presence",
+      onstart = function()
+        send('unnamable presence', conf.commandecho) 
+	    end
+    }
+  }
+
+  svo.dict.devour = {
+    gamename = 'devour',
+    physical = {
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+        return (not defc.dragonform and not defc.devour and ((sys.deffing and defdefup[defs.mode].devour) or (conf.keepup and defkeepup[defs.mode].devour)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone and (defc.mouths and defc.tentacles) and bals.anathema) or false
+      end,
+
+      oncompleted = function() defences.got('devour') end,
+
+      action = "unnamable devour",
+      onstart = function()
+        send('unnamable devour', conf.commandecho) 
+	    end
+    }
+  }
+  
+  end
+
 -- shortcut function to help create a dict action for a defence
 -- 'which' is the Svof defence name, use the same name in the 'Defences' script
 -- 'command' is the game command to raise the defence
@@ -14153,7 +14375,7 @@ end
 if svo.haveskillset('oppression') then
   basicdef('deathaura', "deathaura")
 end
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') then
   basicdef('sturdiness', "stand firm", false, 'standingfirm')
   basicdef('weathering', 'weathering', true)
   basicdef('resistance', 'resistance', true)

@@ -112,14 +112,14 @@ end
 
 registerAnonymousEventHandler("sysInstall", "mindnetPrio", true)
 
-svo = svo or {}
+svo = svo or {}; svo.loader = svo.loader or {}
 svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (mindnet)"] = 1</script>
 			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
 				<name>svo_load_mindreport</name>
 				<packageName></packageName>
-				<script>function svo_load_mindreport()
+				<script>svo.loader.mindnet = function()
   -- adds the vconfig mindnet option with the following code:
 
   svo.config.setoption("mindnet", {
@@ -142,9 +142,7 @@ svo.modules_version["svo (mindnet)"] = 1</script>
     end
   })
 end</script>
-				<eventHandlerList>
-					<string>svo system loaded</string>
-				</eventHandlerList>
+				<eventHandlerList />
 			</Script>
 		</ScriptGroup>
 	</ScriptPackage>

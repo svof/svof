@@ -78,10 +78,22 @@ local installdata = {
   }
 }
 
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') then
   installdata.fitness = {
-    command = "ab chivalry fitness",
-    gmcp = {group = 'chivalry', name = 'fitness'}}
+    command = "ab discipline fitness",
+    gmcp = {group = 'discipline', name = 'fitness'}}
+elseif svo.haveskillset('malignity') then
+  installdata.fitness = {
+    command = "ab malignity fitness",
+    gmcp = {group = 'malignity', name = 'fitness'}}
+elseif svo.haveskillset('valour') then
+  installdata.fitness = {
+    command = "ab valour fitness",
+    gmcp = {group = 'valour', name = 'fitness'}}
+elseif svo.haveskillset('dominion') then
+  installdata.fitness = {
+    command = "ab dominion fitness",
+    gmcp = {group = 'dominion', name = 'fitness'}}
 elseif svo.haveskillset('kaido') then
   installdata.fitness = {
     command = "ab kaido fitness",
@@ -111,9 +123,24 @@ else
     gmcp = {group = 'tekura', name = 'guarding'},
   }
 end
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') then
   installdata.rage = {
-    gmcp = {group = 'chivalry', name = 'rage'},
+    gmcp = {group = 'discipline', name = 'rage'},
+  }
+end
+if svo.haveskillset('malignity') then
+  installdata.rage = {
+    gmcp = {group = 'malignity', name = 'rage'},
+  }
+end
+if svo.haveskillset('valour') then
+  installdata.rage = {
+    gmcp = {group = 'valour', name = 'rage'},
+  }
+end
+if svo.haveskillset('dominion') then
+  installdata.rage = {
+    gmcp = {group = 'dominion', name = 'rage'},
   }
 end
 if svo.haveskillset('shindo') then
@@ -529,6 +556,11 @@ svo.config_dict = svo.pl.OrderedMap {
     onenabled = function () defences.enablelifevision() svo.echof("&lt;0,250,0&gt;Have%s Lifevision mask - added it to defup/keepup.", svo.getDefaultColor()) end,
     ondisabled = function () svo.echof("&lt;250,0,0&gt;Don't%s have Lifevision mask - won't be adding it to defup/keepup.", svo.getDefaultColor()) end,
   }},
+  {havemindnet = {
+    type = 'boolean',
+    onenabled = function () defences.enablelifevision() svo.echof("&lt;0,250,0&gt;Have%s Phylactery of Sixth Sense - added it to defup/keepup.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Don't%s have Phylactery of Sixth Sense - won't be adding it to defup/keepup.", svo.getDefaultColor()) end,
+  }},
   {autoarena = {
     type = 'boolean',
     onenabled = function () svo.echof("&lt;0,250,0&gt;Will%s automatically enable/disable arena mode as you enter into the arena.", svo.getDefaultColor()) end,
@@ -849,7 +881,6 @@ svo.config_dict = svo.pl.OrderedMap {
       svo.updateloggingconfig()
       if conf.log == 'off' then
         svo.echof("Logging disabled.")
-        conf.log = false
       elseif conf.log == 'file' then
         if Logger then
           svo.echof("Will log to the file in %s.", (getMudletHomeDir() .. "/log/svof.txt"))
@@ -2157,7 +2188,7 @@ if svo.haveskillset('kaido') then
     installcheck = function () svo.echof("Would you like to use kaido blind for blindness?") end
   })
 end
-if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
   svo.config_dict:insert(1, 'fitness', {
     type = 'boolean',
     vconfig2 = true,
@@ -2229,7 +2260,7 @@ if svo.haveskillset('venom') then
     installcheck = function () svo.echof("Can you make use of the shrugging?") end
   })
 end
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') then
   svo.config_dict:insert(1, 'rage', {
     type = 'boolean',
     vconfig2 = true,

@@ -101,7 +101,7 @@ function svo.valid.diagnose_end()
   svo.sk.diag_list = {}
 end
 
-for _,affname in ipairs({'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'bleeding', 'bound', 'burning', 'claustrophobia', 'clumsiness', 'mildconcussion', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade', 'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'galed', 'generosity', 'haemophilia', 'hallucinations', 'healthleech', 'heartseed', 'hellsight', 'hypersomnia', 'hypochondria', 'icing', 'illness', 'impale', 'impatience', 'inlove', 'inquisition', 'itching', 'justice', 'laceratedthroat', 'lethargy', 'loneliness', 'lovers', 'madness', 'mangledleftarm', 'mangledleftleg', 'mangledrightarm', 'mangledrightleg', 'masochism', 'mildtrauma', 'mutilatedleftarm', 'mutilatedleftleg', 'mutilatedrightarm', 'mutilatedrightleg', 'pacifism', 'paralysis', 'paranoia', 'peace', 'prone', 'recklessness', 'relapsing', 'roped', 'selarnia', 'sensitivity', 'seriousconcussion', 'serioustrauma', 'shyness', 'slashedthroat', 'slickness', 'stun', 'stupidity', 'stuttering', 'transfixed', 'unknownany', 'unknowncrippledarm', 'unknowncrippledleg', 'unknownmental', 'vertigo', 'voided', 'voyria', 'weakness', 'webbed', 'hamstring', 'shivering', 'frozen', 'manaleech', 'voyria', 'slightfluid', 'elevatedfluid', 'highfluid', 'seriousfluid', 'criticalfluid', 'godfeelings', 'phlogistication', 'vitrification', 'corrupted', 'stain', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'hoisted', 'swellskin', 'pinshot', 'hypothermia', 'scalded', 'dehydrated', 'timeflux', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'depression', 'parasite', 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'hatred', 'guilt', 'tenderskin', 'spiritburn', 'crushedthroat', 'tension', 'unweavingmind','unweavingbody', 'unweavingspirit', 'tonguetied', 'mycalium', 'flushings', 'rebbies', 'pyramides', 'sandfever', 'ensorcelled','revealed'}) do
+for _,affname in ipairs({'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'bleeding', 'bound', 'burning', 'claustrophobia', 'clumsiness', 'mildconcussion', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade', 'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'galed', 'generosity', 'haemophilia', 'hallucinations', 'healthleech', 'heartseed', 'hellsight', 'hypersomnia', 'hypochondria', 'icing', 'illness', 'impale', 'impatience', 'inlove', 'inquisition', 'itching', 'justice', 'laceratedthroat', 'lethargy', 'loneliness', 'lovers', 'madness', 'mangledleftarm', 'mangledleftleg', 'mangledrightarm', 'mangledrightleg', 'masochism', 'mildtrauma', 'mutilatedleftarm', 'mutilatedleftleg', 'mutilatedrightarm', 'mutilatedrightleg', 'pacifism', 'paralysis', 'paranoia', 'peace', 'prone', 'recklessness', 'relapsing', 'roped', 'selarnia', 'sensitivity', 'seriousconcussion', 'serioustrauma', 'shyness', 'slashedthroat', 'slickness', 'stun', 'stupidity', 'stuttering', 'transfixed', 'unknownany', 'unknowncrippledarm', 'unknowncrippledleg', 'unknownmental', 'vertigo', 'voided', 'voyria', 'weakness', 'webbed', 'hamstring', 'shivering', 'frozen', 'manaleech', 'voyria', 'slightfluid', 'elevatedfluid', 'highfluid', 'seriousfluid', 'criticalfluid', 'godfeelings', 'phlogistication', 'vitrification', 'corrupted', 'stain', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'hoisted', 'swellskin', 'pinshot', 'hypothermia', 'scalded', 'dehydrated', 'timeflux', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'depression', 'parasite', 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'hatred', 'guilt', 'tenderskin', 'spiritburn', 'crushedthroat', 'tension', 'unweavingmind','unweavingbody', 'unweavingspirit', 'tonguetied', 'mycalium', 'flushings', 'rebbies', 'pyramides', 'sandfever', 'ensorcelled', 'indifference', 'horror', 'revealed'}) do
   svo.valid['diag_'..affname] = function()
     svo.sk.diag_list[affname] = true
 
@@ -153,7 +153,7 @@ local valid, actions = svo.valid, svo.actions
 local lifevision = svo.lifevision
 
 do
-  local afflist = {'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'bleeding', 'bound', 'burning', 'claustrophobia', 'clumsiness', 'mildconcussion', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade', 'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'galed', 'generosity', 'haemophilia', 'hallucinations', 'healthleech', 'heartseed', 'hellsight', 'hypersomnia', 'hypochondria', 'icing', 'illness', 'impale', 'impatience', 'inlove', 'inquisition', 'itching', 'justice', 'laceratedthroat', 'lethargy', 'loneliness', 'lovers', 'madness', 'mangledleftarm', 'mangledleftleg', 'mangledrightarm', 'mangledrightleg', 'masochism', 'mildtrauma', 'mutilatedleftarm', 'mutilatedleftleg', 'mutilatedrightarm', 'mutilatedrightleg', 'pacifism', 'paralysis', 'paranoia', 'peace', 'prone', 'recklessness', 'relapsing', 'roped', 'selarnia', 'sensitivity', 'seriousconcussion', 'serioustrauma', 'shyness', 'slashedthroat', 'slickness', 'stun', 'stupidity', 'stuttering', 'transfixed', 'unknownany', 'unknowncrippledarm', 'unknowncrippledleg', 'unknownmental', 'vertigo', 'voided', 'voyria', 'weakness', 'webbed', 'hamstring', 'shivering', 'frozen', 'blindaff', 'deafaff', 'retardation', 'manaleech', 'sleep', 'amnesia', 'unknowncrippledlimb', 'cholerichumour', 'melancholichumour', 'phlegmatichumour', 'sanguinehumour', 'phlogistication', 'vitrification', 'corrupted', 'stain', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'hypothermia', 'scalded', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'depression', 'parasite', 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'hatred', 'guilt', 'spiritburn', 'tenderskin', 'crushedthroat', 'calcifiedtorso', 'calcifiedskull', 'tonguetied', 'mycalium', 'flushings', 'rebbies', 'pyramides', 'sandfever', 'ensorcelled', 'latency','revealed'}
+  local afflist = {'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'bleeding', 'bound', 'burning', 'claustrophobia', 'clumsiness', 'mildconcussion', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade', 'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'galed', 'generosity', 'haemophilia', 'hallucinations', 'healthleech', 'heartseed', 'hellsight', 'hypersomnia', 'hypochondria', 'icing', 'illness', 'impale', 'impatience', 'inlove', 'inquisition', 'itching', 'justice', 'laceratedthroat', 'lethargy', 'loneliness', 'lovers', 'madness', 'mangledleftarm', 'mangledleftleg', 'mangledrightarm', 'mangledrightleg', 'masochism', 'mildtrauma', 'mutilatedleftarm', 'mutilatedleftleg', 'mutilatedrightarm', 'mutilatedrightleg', 'pacifism', 'paralysis', 'paranoia', 'peace', 'prone', 'recklessness', 'relapsing', 'roped', 'selarnia', 'sensitivity', 'seriousconcussion', 'serioustrauma', 'shyness', 'slashedthroat', 'slickness', 'stun', 'stupidity', 'stuttering', 'transfixed', 'unknownany', 'unknowncrippledarm', 'unknowncrippledleg', 'unknownmental', 'vertigo', 'voided', 'voyria', 'weakness', 'webbed', 'hamstring', 'shivering', 'frozen', 'blindaff', 'deafaff', 'retardation', 'manaleech', 'sleep', 'amnesia', 'unknowncrippledlimb', 'cholerichumour', 'melancholichumour', 'phlegmatichumour', 'sanguinehumour', 'phlogistication', 'vitrification', 'corrupted', 'stain', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'hypothermia', 'scalded', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'depression', 'parasite', 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'hatred', 'guilt', 'spiritburn', 'tenderskin', 'crushedthroat', 'calcifiedtorso', 'calcifiedskull', 'tonguetied', 'mycalium', 'flushings', 'rebbies', 'pyramides', 'sandfever', 'ensorcelled', 'latency', 'indifference', 'horror', 'revealed'}
   if svo.haveskillset('metamorphosis') then
     afflist[#afflist+1] = 'cantmorph'
   end
@@ -530,7 +530,7 @@ function svo.valid.smoke_have_rebounding()
   end
 end
 
-if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') or svo.haveskillset('shindo') or svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
   function svo.defs.got_fitness()
     svo.checkaction(svo.dict.fitness.physical)
     if actions.fitness_physical then
@@ -576,7 +576,7 @@ else
   function svo.valid.fitness_allgood() end
 end
 
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') then
 function svo.valid.gotragebalance()
   svo.checkaction(svo.dict.gotbalance.happened, true)
   svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'rage' -- hack to allow multiple balances at once
@@ -1793,7 +1793,7 @@ end
 
 
 do
-  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'burning', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'mucous', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency','revealed'}
+  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'burning', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'mucous', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed'}
   if svo.haveskillset('metamorphosis') then
     afflist[#afflist+1] = 'cantmorph'
   end
@@ -3169,11 +3169,11 @@ end
 -- normal herbs
 for _, herb in pairs({
   ash        = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia'},
-  bellwort   = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop'},
+  bellwort   = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'retribution', 'timeloop', 'indifference'},
   bloodroot  = {'paralysis', 'slickness', 'pyramides'},
   ginger     = {'melancholichumour', 'cholerichumour', 'phlegmatichumour', 'sanguinehumour'},
   ginseng    = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy','flushings'},
-  goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression', 'shadowmadness', 'mycalium', 'sandfever'},
+  goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression', 'shadowmadness', 'mycalium', 'sandfever', 'horror'},
   kelp       = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'parasite', 'rebbies'},
   lobelia    = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'tenderskin', 'spiritburn'}}) do
   local other_herb_cures = {}
@@ -3808,63 +3808,48 @@ end
 function svo.valid.venom_crippledrightleg()
   if svo.paragraph_length ~= 1 then
     valid.simplecrippledrightleg()
-  else
-    sk.hypochondria_symptom()
   end
 end
 function svo.valid.venom_crippledleftleg()
   if svo.paragraph_length ~= 1 then
     valid.simplecrippledleftleg()
-  else
-    sk.hypochondria_symptom()
   end
 end
 -- might not be hypochondria, but plague vibe
 function svo.valid.proper_clumsiness()
     valid.simpleclumsiness()
 end
+
 function svo.valid.proper_weakness()
   if svo.paragraph_length ~= 1 then
     valid.simpleweakness()
-  else
-    sk.hypochondria_symptom()
   end
 end
 function svo.valid.proper_disloyalty()
   if svo.paragraph_length ~= 1 then
     valid.simpledisloyalty()
-  else
-    sk.hypochondria_symptom()
   end
 end
 function svo.valid.proper_illness()
   if svo.paragraph_length ~= 1 then
     valid.simpleillness()
-  else
-    sk.hypochondria_symptom()
   end
 end
 function svo.valid.proper_lethargy()
   if svo.paragraph_length ~= 1 or affs.torntendons or svo.find_until_last_paragraph("You stumble as you are afflicted with", 'substring') then
     valid.simplelethargy()
-  else
-    sk.hypochondria_symptom()
   end
 end
 -- skullfractures makes the affliction come back on its own
 function svo.valid.proper_addiction()
   if svo.paragraph_length ~= 1 or affs.skullfractures then
     valid.simpleaddiction()
-  else
-    sk.hypochondria_symptom()
   end
 end
 function svo.valid.proper_anorexia()
   if not conf.aillusion then
     if svo.paragraph_length ~= 1 or svo.find_until_last_paragraph("With a characteristic Jaziran trill", 'substring') then
       valid.simpleanorexia()
-    else
-      sk.hypochondria_symptom()
     end
   else
     svo.checkaction(svo.dict.checkanorexia.aff, true)
@@ -3876,8 +3861,6 @@ end
 function svo.valid.proper_slickness()
   if svo.paragraph_length ~= 1 then
     valid.simpleslickness()
-  else
-    sk.hypochondria_symptom()
   end
 end
 function svo.valid.proper_recklessness(attacktype)
@@ -3907,15 +3890,11 @@ end
 function svo.valid.venom_crippledleftarm()
   if svo.paragraph_length ~= 1 then
     valid.simplecrippledleftarm()
-  else
-    sk.hypochondria_symptom()
   end
 end
 function svo.valid.venom_crippledrightarm()
   if svo.paragraph_length ~= 1 then
     valid.simplecrippledrightarm()
-  else
-    sk.hypochondria_symptom()
   end
 end
 
@@ -4280,7 +4259,7 @@ end
 valid.low_willpower = sk.checkwillpower
 
 
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion') then
   sk.check_emptyrage = function ()
     if sk.currentragecount+1 == getLineCount() then
       lifevision.add(actions.rage_misc.p, 'empty')
@@ -4295,7 +4274,7 @@ if svo.haveskillset('chivalry') then
     svo.checkaction(svo.dict.rage.misc)
     if actions.rage_misc then
       sk.currentragecount = getLineCount()
-      signals.before_prompt_processing:connect(sk.check_emptyrage, 'check for chivalry rage not curing anything')
+      signals.before_prompt_processing:connect(sk.check_emptyrage, 'check for rage not curing anything')
       valid.passive_cure()
     end
   end
@@ -4694,6 +4673,19 @@ end
 function svo.valid.gotwordbalance()
   svo.checkaction(svo.dict.gotbalance.happened, true)
   svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'word' -- hack to allow multiple balances at once
+  lifevision.add(actions.gotbalance_happened.p)
+end
+end
+
+if svo.haveskillset('anathema') then
+function svo.valid.usedanathemabalance()
+  svo.checkaction(svo.dict.stolebalance.happened, true)
+  lifevision.add(actions.stolebalance_happened.p, nil, 'anathema')
+end
+
+function svo.valid.gotanathemabalance()
+  svo.checkaction(svo.dict.gotbalance.happened, true)
+  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'anathema' -- hack to allow multiple balances at once
   lifevision.add(actions.gotbalance_happened.p)
 end
 end

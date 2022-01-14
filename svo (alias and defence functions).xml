@@ -983,11 +983,14 @@ end
 if svo.haveskillset('venom') then
   svo.bals.shrugging = true
 end
-if svo.haveskillset('chivalry') or svo.haveskillset('shindo') or
-  svo.haveskillset('kaido') or svo.haveskillset('metamorphosis') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or 
+  svo.haveskillset('valour') or svo.haveskillset('dominion') or 
+  svo.haveskillset('shindo') or svo.haveskillset('kaido') or
+  svo.haveskillset('metamorphosis') then
   svo.bals.fitness = true
 end
-if svo.haveskillset('chivalry') then
+if svo.haveskillset('discipline') or svo.haveskillset('malignity') or 
+  svo.haveskillset('valour') or svo.haveskillset('dominion')  then
   svo.bals.rage = true
 end
 if svo.haveskillset('physiology') then
@@ -996,6 +999,10 @@ if svo.haveskillset('physiology') then
 end
 if svo.haveskillset('terminus') then
   svo.bals.word = true
+end
+
+if svo.haveskillset('anathema') then
+  svo.bals.anathema = true
 end
 
   for balance in pairs(svo.bals) do raiseEvent("svo got balance", balance) end
@@ -1268,7 +1275,7 @@ local defs_data = svo.defs_data
     off = "You are no longer watching the skies."})
   defs_data:set('toughness', { nodef = true,
     def = "Your skin is toughened." })
-  defs_data:set("chivalry defended", { nodef = true,
+  defs_data:set("defended", { nodef = true,
     def = "You are being defended by a stalwart ally." })
   defs_data:set('waterbubble', { type = 'general',
     def = "You are surrounded by a pocket of air."})
@@ -1642,23 +1649,83 @@ if svo.haveskillset('oppression') then
     def = "You are emanating an aura of death.",
     off = "Your aura of death has worn off."})
 end
-if svo.haveskillset('chivalry') then
-  defs_data:set('weathering', { type = 'chivalry',
+if svo.haveskillset('discipline') then
+  defs_data:set('weathering', { type = 'discipline',
     on = "A brief shiver runs through your body.",
     def = "Your body is weathering the storm of life a little better."})
-  defs_data:set('fury', { type = 'chivalry',
+  defs_data:set('fury', { type = 'discipline',
     on = {"Your eyes rage with fury.", "You're already raged with fury!", "Too much fury in a day is unhealthy!"},
     off = {"You suddenly lose the fury in your eyes.", "You are already calm and not feeling any fury."},
     def = "Fury rages in your eyes."})
-  defs_data:set('sturdiness', { type = 'chivalry',
+  defs_data:set('sturdiness', { type = 'discipline',
     on = "You cross your arms, standing firm and resolute.",
     def = "You are standing firm against attempts to move you.",
     off = "You cease to stand firm against attempts to move you."})
-  defs_data:set('grip', { type = 'chivalry',
+  defs_data:set('grip', { type = 'discipline',
     on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
     def = "Your hands are gripping your wielded items tightly.",
     off = "You relax your grip."})
-  defs_data:set('resistance', { type = 'chivalry',
+  defs_data:set('resistance', { type = 'discipline',
+    on = "You call aloud and feel an aura of resistance shroud itself silently about you.",
+    def = "You are resisting magical damage."})
+end
+if svo.haveskillset('malignity') then
+  defs_data:set('weathering', { type = 'malignity',
+    on = "A brief shiver runs through your body.",
+    def = "Your body is weathering the storm of life a little better."})
+  defs_data:set('fury', { type = 'malignity',
+    on = {"Your eyes rage with fury.", "You're already raged with fury!", "Too much fury in a day is unhealthy!"},
+    off = {"You suddenly lose the fury in your eyes.", "You are already calm and not feeling any fury."},
+    def = "Fury rages in your eyes."})
+  defs_data:set('sturdiness', { type = 'malignity',
+    on = "You cross your arms, standing firm and resolute.",
+    def = "You are standing firm against attempts to move you.",
+    off = "You cease to stand firm against attempts to move you."})
+  defs_data:set('grip', { type = 'malignity',
+    on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
+    def = "Your hands are gripping your wielded items tightly.",
+    off = "You relax your grip."})
+  defs_data:set('resistance', { type = 'malignity',
+    on = "You call aloud and feel an aura of resistance shroud itself silently about you.",
+    def = "You are resisting magical damage."})
+end
+if svo.haveskillset('valour') then
+  defs_data:set('weathering', { type = 'valour',
+    on = "A brief shiver runs through your body.",
+    def = "Your body is weathering the storm of life a little better."})
+  defs_data:set('fury', { type = 'valour',
+    on = {"Your eyes rage with fury.", "You're already raged with fury!", "Too much fury in a day is unhealthy!"},
+    off = {"You suddenly lose the fury in your eyes.", "You are already calm and not feeling any fury."},
+    def = "Fury rages in your eyes."})
+  defs_data:set('sturdiness', { type = 'valour',
+    on = "You cross your arms, standing firm and resolute.",
+    def = "You are standing firm against attempts to move you.",
+    off = "You cease to stand firm against attempts to move you."})
+  defs_data:set('grip', { type = 'valour',
+    on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
+    def = "Your hands are gripping your wielded items tightly.",
+    off = "You relax your grip."})
+  defs_data:set('resistance', { type = 'valour',
+    on = "You call aloud and feel an aura of resistance shroud itself silently about you.",
+    def = "You are resisting magical damage."})
+end
+if svo.haveskillset('dominion') then
+  defs_data:set('weathering', { type = 'dominion',
+    on = "A brief shiver runs through your body.",
+    def = "Your body is weathering the storm of life a little better."})
+  defs_data:set('fury', { type = 'dominion',
+    on = {"Your eyes rage with fury.", "You're already raged with fury!", "Too much fury in a day is unhealthy!"},
+    off = {"You suddenly lose the fury in your eyes.", "You are already calm and not feeling any fury."},
+    def = "Fury rages in your eyes."})
+  defs_data:set('sturdiness', { type = 'dominion',
+    on = "You cross your arms, standing firm and resolute.",
+    def = "You are standing firm against attempts to move you.",
+    off = "You cease to stand firm against attempts to move you."})
+  defs_data:set('grip', { type = 'dominion',
+    on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
+    def = "Your hands are gripping your wielded items tightly.",
+    off = "You relax your grip."})
+  defs_data:set('resistance', { type = 'dominion',
     on = "You call aloud and feel an aura of resistance shroud itself silently about you.",
     def = "You are resisting magical damage."})
 end
@@ -3556,6 +3623,169 @@ if svo.haveskillset('charnel') then
     def = "Your resolve is something beyond the frailties of the flesh.",
     on = "Your resolve is as eternal as the desert. You will endure.",
     off = "Your resolve wavers, and the pains of existence are once more made manifest."})
+end
+
+if svo.haveskillset('anathema') then
+--mutations
+  defs_data:set('mouths', {type = 'anathema',
+    def = "Many mouths have torn open in your flesh.",
+    on = "With a gurgling sound, dozens of mouths rip open in your flesh, the soft rasp of impossible breath filling your ears.",
+    off = "With the menacing clack of teeth, all of the mouths in your flesh snap abruptly shut."})
+  
+  defs_data:set('bulk', {type = 'anathema',
+    def = "You have grown your bulk to monstrous proportions.",
+    on = "Muscle warps and expands, flesh stretches and twists, your body swelling to monstrous proportions as you embrace the benefits of a superior form.",
+    off = "Your excess mass drops away, and you return to a form more natural in proportions."})
+
+  defs_data:set('eyes', {type = 'anathema',
+    def = "Dozens of lidless eyes cover your body.",
+    on = "Dozens of lidless eyes snap open in your flesh, gazing out upon Creation."})
+    
+  defs_data:set('joints', {type = 'anathema',
+    def = "You have developed flexible joints.",
+    on = "Your bones crackle and pop as they shift beneath your skin, adapting to a higher range of movement.",
+    off = "Your limbs suddenly feel more stiff, your range of motion returning to the mundane."})
+
+  defs_data:set('tentacles', {type = 'anathema',
+    def = "You have tentacles flailing from your body.",
+    on = "You raise your hands above your head, focusing your will to warp your own body. Ignoring the excruciating pain, tentacles spring out from the sides of your body and flail about of their own accord.",
+    off = "You breathe a sigh of comfort as the flailing tentacles recede back into your body."})
+
+--recondite works
+  defs_data:set('unnamablepresence', {type = 'anathema',
+    defr = [[^You (?:is|are) radiating the presence of the first foe.$]], -- the line has a typo and i don't really want it to break when they fix it!
+    on = "You reach out to that which lies beyond, without, untapped; and you take of it into yourself.",
+    off = "The presence of the Unnamable lifts, and you walk alone once more."})
+
+  defs_data:set('devour', {type = 'anathema',
+    def = "You will feast upon the work of ruin.",
+    on = "Power thrums beneath your skin as you prepare for the rampage ahead.",
+    off = "You let out a disappointed sigh as you realise the time for ruin is not yet upon you."})
+    
+--manifestations (these cannot be defup or keepup, it seems like they appear randomly as the Manifestation resource grows (further study needed)
+  defs_data:set('brains', {nodef = true,
+    def = "Geometric organs have thrust out of the sides of your head.",
+    on = "Your head feels as if it shall burst apart as bone parts and warps, twisted geometric shapes formed of grey tissue bursting out of the sides of your skull under the force of your mutation.",
+    off = "A measure of relief comes to your pounding skull as the grey tissue finally tears loose of your ravaged head, the geometric formations breaking apart and dissolving into a vile slurry."})
+  
+  defs_data:set('heads', {nodef = true,
+    def = "Multiple heads have sprouted from your shoulders and back.",
+    on = "The flesh across your shoulders and back bubbles and writhes, then multiple heads erupt from within your body as you undergo mutation.",
+    off = "The multiple heads sprouting from your shoulders and back quake and tremble, before ripping away and falling to the ground in a bloody mess."})
+  
+  defs_data:set('tumors', {nodef = true,
+    def = "Fluid-filled tumors cover your skin.",
+    on = "With a series of popping sounds, fluid-filled tumors rapidly grow all over your body as you undergo mutation.",
+    off = "The tumors covering your body shrink before vanishing with a series of stabbing pains."})  
+  
+  defs_data:set('tongues', {nodef = true,
+    def = "The mouths in your flesh have sprouted tongues.",
+    on = "With a horrible sucking sound, each of the mouths that have opened in your flesh produce a long tongue as you undergo mutation.",
+    off = "The mouths in your flesh as one withdraw their tongues."})
+    
+  defs_data:set('venomsacks', {nodef = true,
+    def = "You have grown sacks of venom within your mouth.",
+    on = "You feel your jaw and cheeks distorting as you undergo mutation.",
+    off = "You feel your face returning to normal, the sacks of toxin concealed within your mouth breaking apart."})
+
+--croon (this is an aggressive ability that gives a temporary passive curing effect
+  defs_data:set('croonmirror', {nodef = true,
+    invisibledef = true,
+    onr = [[^You sense the connection snap into place between the reality of (\w+) and your own.$]],
+    on = "You sense no change.",
+    offr = [["^You are no longer mirroring the reality of (\w+).$]]})
+end
+
+do 
+  function svo.defences.enablemindnet()
+    if svo.dict.mindnet then return end
+
+    defs_data:set('mindnet', { type = 'general',
+    on = {"You cast an invisible mind net out into the distance, allowing it to settle about the surrounding land.", "You already have mindnet active."},
+    off = "You cease concentration and your mind net vanishes.",
+    mana = 'little',
+    def = "You have cast a mindnet over the local area."
+    })
+
+    svo.basicdef('mindnet', "mindnet on")
+    
+    for mode, _ in pairs(defdefup) do
+      defdefup[mode].mindnet = defdefup[mode].mindnet or false
+      defkeepup[mode].mindnet = defkeepup[mode].mindnet or false
+    end
+
+    sk.ignored_defences.general.t.mindnet = sk.ignored_defences.general.t.mindnet or false
+    sk.ignored_defences_map['mindnet'] = 'general'
+    
+    defences.def_types['general'][#defences.def_types['general']+1] = 'mindnet'
+
+    local v = svo.defs_data.mindnet;
+    local k = 'mindnet';
+    if v.on and type(v.on) == 'table' then
+      for _,pattern in ipairs(v.on) do
+        (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
+      end
+    elseif v.on then
+      (tempExactMatchTrigger or tempTrigger)(v.on, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
+    end
+
+    (tempExactMatchTrigger or tempTrigger)(v.def, 'svo.defs.def_' .. sk.sanitize(k) .. '()');
+
+    defs['def_'..sk.sanitize(k)] = function ()
+      if not v.ondef then
+        defences.def_def_list[k] = true
+      else
+        defences.def_def_list[k] = v.ondef()
+      end
+      deleteLine()
+    end
+    defs['got_' .. k] = function ()
+      defences.got(k)
+    end
+    defs['lost_' .. k] = function ()
+      defences.lost(k)
+    end
+
+    -- create a snapshot of the before state for all balances, since svo.dict_setup might mess with any
+    local beforestate = sk.getbeforestateprios()
+
+    svo.dict_setup()
+    svo.dict_validate()
+
+    -- notify any prio diffs
+    local afterstate = sk.getafterstateprios()
+    sk.notifypriodiffs(beforestate, afterstate)
+
+    signals.dragonform:emit()
+
+    svo.echof("Have Phylactery of Sixth Sense - enabled it for defup/keepup.")
+  
+end
+
+  function defences.checkmindnet()
+    local t = _G.gmcp.Char.Items.List
+    if not t.location == 'inv' then return end
+
+    for _, it in pairs(t.items) do
+      -- if it.name == "a Veil of the Sphinx" then
+      if it.name == "a  phylactery of sixth sense" then
+        defences.enablemindnet()
+        conf.havemindnet = true
+        raiseEvent("svo config changed", 'havemindnet')
+        signals.gmcpcharitemslist:disconnect(defences.checkmindnet)
+      end
+    end
+
+  end
+  signals.systemstart:connect(function()
+    tempTimer(0, function()
+      if conf.havemindnet then
+        defences.enablemindnet()
+        signals.gmcpcharitemslist:disconnect(defences.checkmindnet)
+      end
+    end)
+  end, 'enable mindnet when system loaded')
+  signals.gmcpcharitemslist:connect(defences.checkmindnet, 'check mindnet on gmcpcharitemslist')
 end
 
 do
