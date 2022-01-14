@@ -18330,7 +18330,7 @@ raiseEvent("svo got balance", "entities")</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Shrugging balance</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -18979,7 +18979,7 @@ svo.app("on", true)</script>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>Achaea Registration</string>
-							<string>FG7BG2</string>
+							<string>ANSI_COLORS_F{011}_B{000}</string>
 							<string>1</string>
 							<string>-----------------------------</string>
 							<string>Welcome to the Achaea Character Registration system. A common registration is shared with all your characters, identified by your unique email address. This will allow you to easily update registration details for all your characters at once and request password resets from the website should you forget it.</string>
@@ -21455,7 +21455,7 @@ end)</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>Status  Pipe         Contents                       Puffs Months</string>
-						<string>FG8BG2</string>
+						<string>ANSI_COLORS_F{003}_B{000}</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -54628,7 +54628,7 @@ svo.modules_version["svo (aliases, triggers)"] = 1</script>
 			<script></script>
 			<command></command>
 			<keyCode>-1</keyCode>
-			<keyModifier>4294967295</keyModifier>
+			<keyModifier>-1</keyModifier>
 			<Key isActive="yes" isFolder="no">
 				<name>Toggle bashing</name>
 				<packageName></packageName>
