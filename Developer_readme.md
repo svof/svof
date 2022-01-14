@@ -106,8 +106,12 @@ This the order that things happen on the prompt function:
 5. add to herb cures/restoration/smoke/focus/humour/etc tables (whatever that is applicable) on **svo (trigger functions) > Main trigger functions** (the comment lines `-- normal herbs`, `-- normal smokes`. `-- focus`, etc can help you find your way).
 7. add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in **Main trigger functions** on **svo (trigger functions)**)
 8. add its definition on svof-serverside integration (sstosvoa on dict).
-9. (Optional) add triggers receiving and losing affliction. Note: This should only be necessary for afflictions that are not shown on GMCP for some reason (best example I can think of is Pariah's latency), the system already handles gaining/removing aff through GMCP so no need to add triggers for that on normal circumstances.
-10. (Optional) check failure conditions and add them (in case it is an affliction that is not trackeable on gmcp). You can add the logic on the dict entry or on triggers, wherever applicable.
+9. add its prompt tag to **svo (install me in module manager) > svo Utilities > Custom prompt tags > @affs**
+10. add it to the for loop in **svo (trigger functions) > Diag trigger functions ** 
+11. add it to afflist in **svo (trigger functions) > Simple aff trigger functions**
+12. (Optional) add the triggers to skill in **svo.knownskills** (if it is unique to a class) to the table located in **svo (setup, misc, empty, funnies, dor) > Setup so that svof can recognize them.**
+13. (Optional) add triggers receiving and losing affliction. Note: This should only be necessary for afflictions that are not shown on GMCP for some reason (best example I can think of is Pariah's latency), the system already handles gaining/removing aff through GMCP so no need to add triggers for that on normal circumstances.
+14. (Optional) check failure conditions and add them (in case it is an affliction that is not trackeable on gmcp). You can add the logic on the dict entry or on triggers, wherever applicable.
 <details>
     <summary>This is an example of how an affliction entry is structured: </summary>
     
