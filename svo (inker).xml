@@ -255,13 +255,29 @@ svo.loader.inker = function()
   
   -- if ends with 'on person' or 'of person', then it's on a person!
   function svo.ti_ink(order)
-    local anotherperson = order:match(" on (%w+)$")
-    if anotherperson then order = order:sub(1, #order-#anotherperson-4) end
+    local anotherperson = order:match(" on (%w+)$") or order:match(" of (%w+)$")
+    local bodypart = order:match(" on (.+) of ")
+    if bodypart then
+      order = order:sub(1, #order - #bodypart - #anotherperson - 8)
+    elseif anotherperson then
+      order = order:sub(1, #order - #anotherperson - 4)
+    end
     local tattoosorder = string.split(order, ",")
     for i = 1, #tattoosorder do tattoosorder[i] = string.trim(tattoosorder[i]) end
   
-    svo.ti_inking = {on = anotherperson or 'me', tattoos = tattoosorder, tattoo_counter = 1}
-    svo.echof("Going to ink %s on %s.", svo.concatand(svo.ti_inking.tattoos), svo.ti_inking.on)
+    svo.ti_inking =
+    {
+      on = anotherperson or 'me',
+      tattoos = tattoosorder,
+      part = bodypart or 'open part',
+      tattoo_counter = 1,
+    }
+    svo.echof(
+    "Going to ink %s on %s of %s.",
+    svo.concatand(svo.ti_inking.tattoos),
+    svo.ti_inking.part,
+    svo.ti_inking.on
+    )
     svo.showprompt() echo"\n"
     svo.app('on')
     
@@ -331,7 +347,11 @@ svo.loader.inker = function()
       end
     end
     if not stencil then
-      svo.sendc(string.format("ink %s on %s", svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter], svo.ti_inking.on))
+      if svo.ti_inking.part == "open part" then
+        svo.sendc(string.format("ink %s on %s", svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter], svo.ti_inking.on))
+      else
+        svo.sendc(string.format("ink %s on %s of %s", svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter], svo.ti_inking.on, svo.ti_inking.part))
+      end
     else
       svo.sendc(string.format("queue add eqbal ink %s on %s", svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter], svo.ti_inking.on))
     end
@@ -339,6 +359,11 @@ svo.loader.inker = function()
   
   function svo.ti_interrupted()
     if not svo.ti_inking then return end
+    if not svo.conf.autoreink then 
+      echo"\n" svo.echofn("Not reinking interrupted tattoos...")
+      fg('green') echoLink(" (ENABLE) ", "svo.config.set('autoreink', true, true)", "Click to start auto reinking interrupted tattoos", true)
+      svo.ti_cancelinking() 
+    end
     if svo.ti_inking.on == 'me' then
       echo"\n" svo.echofn("Be still! Going to ink again in a few... ")
       cechoLink("&lt;red&gt;(CANCEL)","svo.ti_cancelinking()","Cancel inking",true)
@@ -382,6 +407,28 @@ svo.loader.inker = function()
       svo.echof("&lt;0,250,0&gt;Will%s tell people to touch tattoos they need to after inking.", svo.getDefaultColor())
     end,
     ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s tell people to touch tattoos they need to after inking.", svo.getDefaultColor()) end
+  })
+  
+  svo.config.setoption('autoreink',
+  {
+    type = 'boolean',
+    vconfig2string = true,
+    onshow = function (defaultcolour)
+      fg('gold')
+      echoLink("ti:", "", "svo Tattoo Inker", true)
+      -- &lt;Reink/Don't reink&gt; interrupted tattoos
+      if svo.conf.autoreink then
+        fg('a_cyan') echoLink(" Will", "svo.config.set('autoreink', false, true)", "Click to stop auto reinking interrupted tattoos", true)
+      else
+        fg('a_cyan') echoLink(" Won't", "svo.config.set('autoreink', true, true)", "Click to start auto reinking interrupted tattoos", true)
+      end
+      fg(defaultcolour) echo(" reink interrupted tattoos")
+      echo(".\n")
+    end,
+    onenabled = function ()
+      svo.echof("&lt;0,250,0&gt;Will%s reink interrupted tattoos.", svo.getDefaultColor())
+    end,
+    ondisabled = function () svo.echof("&lt;250,0,0&gt;Won't%s reink interrupted tattoos.", svo.getDefaultColor()) end
   })
   svo.inkerLoaded = true 
   if firstload then
