@@ -183,7 +183,7 @@
 			<script>svo.ti_ink(matches[2], matches[3], matches[4])</script>
 			<command></command>
 			<packageName></packageName>
-			<regex>ink (.+) on (\w+(?: arm|leg)?)(?: of (\w+))?</regex>
+			<regex>^ink (.+) on (\w+(?: arm|leg)?)(?: of (\w+))?</regex>
 		</Alias>
 	</AliasPackage>
 	<ActionPackage />
@@ -288,7 +288,7 @@ svo.loader.inker = function()
     
     svo.ti_inknext()
   end
-  function isPlace(word)
+  local function isPlace(word)
     for _, limb in pairs(places) do
      if word:lower() == limb then return true end
     end
