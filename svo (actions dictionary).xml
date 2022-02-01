@@ -12056,7 +12056,10 @@ if svo.haveskillset('voicecraft') then
       end,
 
       action = "sing aria at me",
-      onstart = function() send('sing aria at me', conf.commandecho) end
+      onstart = function()
+        if defc.deaf then send('apply epidermal to ears', conf.commandecho) end
+        send('sing aria at me', conf.commandecho)   
+      end
     },
   }
 end
