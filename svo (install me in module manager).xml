@@ -7187,6 +7187,7 @@ end</script>
 				<name>svo.classchange</name>
 				<packageName></packageName>
 				<script>function svo.classchange(override)
+
   local newclass = (override ~= "gmcp.Char.Status") and override or gmcp.Char.Status.class
 	local temp_defs = {}
   
@@ -7208,6 +7209,8 @@ end</script>
   end
 	
   if svo.me.class ~= newclass then
+    svo.sk.gettingfullstats = false
+    svo.signals.after_prompt_processing = nil
     local oldclass = svo.me.class
     
     -- kill temporary defense triggers for old class
@@ -7223,7 +7226,6 @@ end</script>
     svo.sk.resetserversideprios()
 		
     svo.systemloaded = false; svo_init_system()
-    
     for defname,v in pairs(temp_defs) do
       svo.defences.got(defname)
     end
