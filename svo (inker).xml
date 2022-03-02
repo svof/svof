@@ -258,7 +258,7 @@ svo.loader.inker = function()
   function svo.ti_ink(tattoos, place, person)
    
     if not person then
-      if isPlace(place) then
+      if svo.isPlace(place) then
         person = "me"
       else
         person = place
@@ -288,7 +288,7 @@ svo.loader.inker = function()
     
     svo.ti_inknext()
   end
-  local function isPlace(word)
+  function svo.isPlace(word)
     for _, limb in pairs(places) do
      if word:lower() == limb then return true end
     end
