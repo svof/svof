@@ -1934,7 +1934,7 @@ if svo.haveskillset('subterfuge') then
     on = {"You will now lip read to overcome the effects of deafness.", "You are already lipreading."},
     def = "You are lipreading to overcome deafness.",
     specialskip = function()
-      return ((not defc.deaf and not affs.deafaff) or defc.mindseye)
+      return (not mindseye or (defc.blind or affs.blindaff))
     end })
   defs_data:set('weaving', { type = 'subterfuge',
     mana = 'lots',
