@@ -14182,7 +14182,20 @@ if svo.haveskillset('charnel') then
       }
     }
     end
-    
+if svo.haveskillset('subterfuge') then
+  svo.dict.lipread  = {
+    gamename = 'lipreading',
+    physical = {
+      balanceful_act = true, def = true,
+      isadvisable = function()
+        return (not defc.dragonform and not defc.lipread and ((sys.deffing and defdefup[defs.mode].lipread) or (conf.keepup and defkeepup[defs.mode].lipread)) and (defc.mindseye or (not defc.blind and not affs.blindaff)) and not codepaste.balanceful_defs_codepaste() and not affs.paralysis and not affs.prone) or false
+      end,
+      oncompleted = function () defences.got('lipread') end,
+      action = 'lipread',
+      onstart = function () send('lipread', conf.commandecho) end
+    }
+  }
+end
 if svo.haveskillset('anathema') then
   svo.dict.mouths = {
     gamename = 'mouths',
@@ -14501,7 +14514,7 @@ if svo.haveskillset('subterfuge') then
   basicdef('bask', 'bask', false, 'basking')
   basicdef('listen', 'listen', false, false, true)
   basicdef('eavesdrop', 'eavesdrop', false, 'eavesdropping', true) -- serverside bugs out and doesn't accept it
-  basicdef('lipread', 'lipread', false, 'lipreading', true) -- serverside bugs and does it while blind
+  
   basicdef('weaving', "weaving on")
   basicdef('cloaking', "conjure cloak", false, 'shroud')
   basicdef('ghost', "conjure ghost")
