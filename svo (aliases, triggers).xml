@@ -19130,7 +19130,9 @@ echo'\n' svo.config.set("shipmode", "off", true)</script>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Ship prompt detect</name>
-						<script></script>
+						<script>if svo.conf.shipmode then return end
+
+echo'\n' svo.config.set("shipmode", "on", true)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
 						<mStayOpen>0</mStayOpen>
@@ -19142,10 +19144,10 @@ echo'\n' svo.config.set("shipmode", "off", true)</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>= </string>
+							<string>^= </string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>0</integer>
+							<integer>1</integer>
 						</regexCodePropertyList>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 							<name>Battle</name>
