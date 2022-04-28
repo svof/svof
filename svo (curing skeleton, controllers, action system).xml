@@ -1496,8 +1496,9 @@ svo.lostbal_shrugging = function()
   svo.startbalancewatch('shrugging')
   sk.shruggingtick = sk.shruggingtick + 1
   local oldshruggingtick = sk.shruggingtick
-
-  tempTimer(10+svo.getping(), function ()
+  
+  --takes 13 to recover
+  tempTimer(15+svo.getping(), function ()
     if not bals.shrugging and sk.shruggingtick == oldshruggingtick then
       bals.shrugging = true
       svo.make_gnomes_work()
