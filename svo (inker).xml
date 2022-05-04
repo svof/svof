@@ -360,7 +360,7 @@ svo.loader.inker = function()
       if svo.ti_inking.part == "open place" then
         svo.sendc(string.format("ink %s on %s", svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter], svo.ti_inking.on))
       else
-        svo.sendc(string.format("ink %s on %s of %s", svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter], svo.ti_inking.on, svo.ti_inking.part))
+        svo.sendc(string.format("ink %s on %s of %s", svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter], svo.ti_inking.part, svo.ti_inking.on))
       end
     else
       svo.sendc(string.format("queue add eqbal ink %s on %s", svo.ti_inking.tattoos[svo.ti_inking.tattoo_counter], svo.ti_inking.on))
