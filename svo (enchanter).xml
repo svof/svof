@@ -885,8 +885,8 @@ local enchantments = {
     type         = "creation",
     nameToGet    = "star",
     ingredients  = {
-      silverbar = 1,
-      goldbar   = 2,
+      silverbar  = 1,
+      dust       = 1,
     },
     otherItems = {},
     actions      = {
