@@ -48006,9 +48006,9 @@ svo.startedfighting("blademaster", multimatches[2][3])</script>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Limb damage</name>
-					<script>svo.valid.limb_hit(multimatches[2][2], "centreslash")
+					<script>svo.valid.limb_hit(multimatches[2][3], "centreslash")
 
-svo.startedfighting("blademaster", multimatches[2][3])</script>
+svo.startedfighting("blademaster", multimatches[2][2])</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
