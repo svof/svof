@@ -2534,8 +2534,8 @@ function svo.valid.setup_prompt()
     bals.rightarm = 'unset'
     bals.leftarm = 'unset'
   else
-    bals.balance = false
-    bals.equilibrium = false
+    --bals.balance = false
+    --bals.equilibrium = false
     svo.pflags = {}
   end
 end
@@ -2649,6 +2649,18 @@ function svo.onprompt()
   sk.systemscommands = {}
 
   svo.promptcount = svo.promptcount + 1
+       
+  if svo.conf.showbaltimes then 
+    
+    if svo.sk.balchange and svo.stats['lastbalance'] then
+      svo.echotime(svo.stats['lastbalance'])
+      svo.sk.balchange = nil
+    end
+    if svo.sk.eqchange then
+      svo.echotime(svo.stats['lastequilibrium']) 
+      svo.sk.eqchange = nil
+    end
+  end
 
   checkblackout()
   check_promptflags()
@@ -2667,6 +2679,8 @@ function svo.onprompt()
   if conf.showchanges and not conf.commandecho or (conf.commandecho and conf.commandechotype == 'fancynewline') then
     sk.showstatchanges()
   end
+  
+  
 
   local processing_status, processing_message = pcall(signals.after_prompt_processing.emit, signals.after_prompt_processing)
   if not processing_status then
@@ -3026,6 +3040,7 @@ end
 svo.savesettings = svo.QQ
 
 -- add in blackout only, otherwise go off the prompt - this allows for time tracking
+--maybe can remove this now if it was only for tracking eq in blackout?
 function svo.goteq()
   sys.balancetick = sys.balancetick + 1
   if sys.actiontimeoutid then
@@ -3035,20 +3050,15 @@ function svo.goteq()
 
   if sys.misseddisrupt then killTimer(sys.misseddisrupt); sys.misseddisrupt = nil end
   sys.extended_eq = nil
-
-  if affs.blackout and not bals.equilibrium then bals.equilibrium = true; raiseEvent("svo got balance", 'equilibrium') end
 end
 
+--maybe can remove this now if it was only for tracking bal in blackout?
 function svo.gotbalance()
-  if affs.blackout then bals.balance = true end
   sys.balancetick = sys.balancetick + 1
   if sys.actiontimeoutid then
     killTimer(sys.actiontimeoutid)
     sys.actiontimeoutid = false
   end
-
-  -- FIXME
-  if affs.blackout and not bals.balance then bals.balance = true; raiseEvent("svo got balance", 'balance') end
 end
 
 function svo.gotarmbalance()
@@ -3597,8 +3607,44 @@ end
 
 -- capture the incoming values for gmcp balance and eq
 signals.gmcpcharvitals:connect(function()
-  svo.newbals.balance     = gmcp.Char.Vitals.bal == '1' and true or false
-  svo.newbals.equilibrium = gmcp.Char.Vitals.eq == '1' and true or false
+
+  svo.watch = svo.watch or {}
+  
+  local newbal = gmcp.Char.Vitals.bal == '1' and true or false
+  local neweq = gmcp.Char.Vitals.eq == '1' and true or false
+  
+  if svo.bals['balance'] and not newbal then
+    raiseEvent('svo lost balance', 'balance')
+    svo.watch['bal_balance'] = svo.watch['bal_balance'] or createStopWatch()
+    startStopWatch(svo.watch['bal_balance'])
+  elseif not svo.bals['balance'] and newbal then
+    raiseEvent('svo got balance', 'balance')
+    if svo.watch['bal_balance'] then
+      local s = stopStopWatch(svo.watch['bal_balance'])
+      svo.stats['lastbalance'] = s
+      
+      -- note to show changes on the actual line
+      svo.sk.balchange = true
+    end
+  end
+  
+  if svo.bals['equilibrium'] and not neweq then
+    raiseEvent('svo lost balance', 'equilibrium')
+    svo.watch['equilibrium'] = svo.watch['equilibrium'] or createStopWatch()
+    startStopWatch(svo.watch['equilibrium'])
+  elseif not svo.bals['equilibrium'] and neweq then
+    raiseEvent('svo got balance', 'equilibrium')
+    if svo.watch['equilibrium'] then
+      local s = stopStopWatch(svo.watch['equilibrium'])
+      svo.stats['lastequilibrium'] = s
+      -- note to show changes on the actual line
+      svo.sk.eqchange = true
+    end
+  end  
+
+  svo.bals.balance     = newbal
+  svo.bals.equilibrium = neweq
+
 end, "new balance detection")
 
 -- feed the curing systems curing command through the system, so it can track actions
