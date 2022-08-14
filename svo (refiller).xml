@@ -25,7 +25,7 @@
 			</regexCodePropertyList>
 		</Trigger>
 		<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-			<name>Filled a vial</name>
+			<name>Filled a container</name>
 			<script>svo.rf_fillnext()</script>
 			<triggerType>0</triggerType>
 			<conditonLineDelta>0</conditonLineDelta>
@@ -39,8 +39,10 @@
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList>
 				<string>You slowly pour the liquid from</string>
+				<string>You carefully pour</string>
 			</regexCodeList>
 			<regexCodePropertyList>
+				<integer>2</integer>
 				<integer>2</integer>
 			</regexCodePropertyList>
 		</Trigger>
@@ -361,13 +363,29 @@ svo.config.setoption('potid', {
     fg('gold')
     echoLink("refiller: ", "", "svo Refiller", true)
     fg(defaultcolour) echo("Pot/Alembic to use is ")
-    fg('a_cyan') echoLink((conf.potid or 'pot'), "printCmdLine 'vconfig potid pot###'", "Click to set the pot/alembic ID to use for brewing/compounding in", true)
-    fg(defaultcolour) echo("; storing your vials in")
+    fg('a_cyan') echoLink((conf.potid or 'pot'), "printCmdLine 'vconfig potid '", "Click to set the pot/alembic ID to use for brewing/compounding in", true)
+    fg(defaultcolour) echo("; storing your containers in")
     fg('a_cyan') echoLink(" "..(conf.packid or 'pack'), "printCmdLine'vconfig packid '", "Click to set the pack ID to stuff your vials into when you do 'putvials'", true)
     fg(defaultcolour) echo(".\n")
   end,
   onset = function ()
     svo.echof("Okay, will brew/compound in the %s item.", conf.potid)
+  end
+})
+
+conf.containerid = conf.containerid or 'emptyvial'
+svo.config.setoption('containerid', {
+  type = 'string',
+  vconfig2string = true,
+  onshow = function (defaultcolour)
+    fg('gold')
+    echoLink("refiller: ", "", "svo Refiller", true)
+    fg(defaultcolour) echo("Container to fill is ")
+    fg('a_cyan') echoLink((conf.containerid or 'emptyvial'), "printCmdLine 'vconfig containerid '", "Click to set the container ID that you want to fill after finished brewing", true)
+    fg(defaultcolour) echo(".\n")
+  end,
+  onset = function ()
+    svo.echof("Okay, will pour liquids in %s when finished.", conf.containerid)
   end
 })
 
@@ -452,7 +470,7 @@ function svo.rf_fillnext()
   local pot = conf.potid
   if pot == "pot" and svo.rf_refillaction == "compound" then pot = "alembic" end
   if not svo.rf_refilling then return end
-  svo.sendc("pour ".. pot .. " in emptyvial", svo.rf_debug)
+  svo.sendc("pour ".. pot .. " in " .. config.containerid, svo.rf_debug)
 end
 
 function svo.rf_cancel()
