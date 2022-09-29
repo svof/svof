@@ -2237,34 +2237,127 @@ function svo.sendcuring(what)
   sk.sendqueuecmd(what)
 end
 
-function svo.sendcuringprio(prio, iter, type)
+local function table_length( table )
+  if not table then return end
+  local len
+  len = 0
+  for i, v in ipairs( table ) do
+    len = len + #v
+  end
+  return len
+end
+
+sk.affqueueslow = {}
+sk.defqueueslow = {}
+function sk.dosendprios()
+  local sys = svo.sys
+  local count = count or 0
+  local function sendstuff(what, queue)
+    if queue == "normal" then
+      send(what,false)
+    elseif queue == "slow" then
+      if sys.sync then
+        sendAll("curingset switch slowcuring", what, false)
+      else
+        sendAll("curingset switch slowcuring", what, "curingset switch normal", false)
+      end
+    end
+  end
+  
+  if sk.sendpriotimer then killTimer( sk.sendpriotimer ) end
+  if #sk.affqueue &gt; 0 then
+      local what = "curing priority"..table.concat(sk.affqueue)
+      if count &gt;= 5 then
+        tempTimer(1,function()
+          --send(what, false)
+          sendstuff(what,"normal")
+          sk.affqueue = {}
+          count = 0
+        end)
+      else
+        sendstuff(what,"normal")
+        sk.affqueue = {}
+        count = count + 1
+      end
+  end
+  if #sk.defqueue &gt; 0 then
+      local what = "curing priority defence"..table.concat(sk.defqueue)
+      if count &gt;= 5 then
+        tempTimer(1,function()
+        sendstuff(what,"normal")
+        sk.defqueue = {}
+        count = 0
+        end)
+      else
+        sendstuff(what,"normal")
+        sk.defqueue = {}
+        count = count + 1
+      end
+  end
+  if #sk.affqueueslow &gt; 0 then
+      local what = "curing priority"..table.concat(sk.affqueueslow)
+      if count &gt;= 5 then
+        tempTimer(1,function()
+        sendstuff(what,"slow")
+        sk.affqueueslow = {}
+        count = 0
+        end)
+      else
+        sendstuff(what,"slow")
+        sk.affqueueslow = {}
+        count = count + 1
+      end
+  end
+  if #sk.defqueueslow &gt; 0 then
+      local what = "curing priority defence"..table.concat(sk.defqueueslow)
+      if count &gt;= 5 then
+        tempTimer(1,function()
+        sendstuff(what,"slow")
+        sk.defqueueslow = {}
+        count = 0
+        end)
+      else
+        sendstuff(what,"slow")
+        sk.defqueueslow = {}
+        count = count + 1
+      end
+  end
+  tempTimer(5,function() count = 0 end)      
+  sk.sendpriotimer = nil
+end
+
+function svo.sendcuringprio(prio, type, slow)
+  local sys = svo.sys
   prio = " "..prio
-  local what
+  local what, tab, cmd
   if type == 'affliction' then
-    if not table.contains(sk.affqueue, prio) then 
-      table.insert(sk.affqueue, prio)
-    end
-    if #sk.affqueue &gt;= 20 then
-      if #sk.sendqueue &gt;= 6 then
-        sk.dosendqueue()
-      end
-      what = "curing priority"..table.concat(sk.affqueue)
-      sk.sendqueuecmd(what)
-      sk.affqueue = {}
-    end
+    tab = "affqueue"
+    cmd = "curing priority"
   elseif type == 'defence' then
-    if not table.contains(sk.defqueue, prio) then
-      table.insert(sk.defqueue, prio)
-    end
-    if #sk.defqueue &gt;= 20 then
-      if #sk.sendqueue &gt;= 6 then
-        sk.dosendqueue()
-      end
-      what = "curing priority defence"..table.concat(sk.defqueue)
-      sk.sendqueuecmd(what)
-      sk.defqueue = {}
-    end
+    tab = "defqueue"
+    cmd = "curing priority defence"
   else
+    return
+  end
+  if slow == true then tab = tab.."slow" end
+  if ( table_length( sk[tab] ) + #cmd + #prio ) &gt; sk.achaea_command_max_length then
+    what = cmd..table.concat(sk[tab])
+    if slow == true then
+      if sys.sync then
+        sendAll( "curingset switch slowcuring", what, false )
+      else
+        sendAll( "curingset switch slowcuring", what, "curingset switch normal", false )
+      end
+    else
+      send( what )
+    end
+    sk[tab] = {}
+  end
+  if not table.contains(sk[tab], prio) then 
+    table.insert(sk[tab], prio)
+  end
+  if not sk.sendpriotimer then
+    sk.sendpriotimer = tempTimer(0.1, sk.dosendprios)
   end
 end
 
