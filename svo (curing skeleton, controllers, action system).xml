@@ -29,6 +29,11 @@ local deepcopy, conf, sk, me, defs, defc = svo.deepcopy, svo.conf, svo.sk, svo.m
 local defences, stats, cnrl, rift = svo.defences, svo.stats, svo.cnrl, svo.rift
 local bals, pipes, watch = svo.bals, svo.pipes, svo.watch
 
+sk.affqueueslow = {}
+sk.defqueueslow = {}
+sk.queuecount = sk.queuecount or 0
+sk.priolength = sk.priolength or {affqueue = 0, affqueueslow = 0, defqueue = 0, defqueueslow = 0}
+
 -- misc functions
 function svo.errorf(...)
   error(string.format(...))
@@ -2237,24 +2242,14 @@ function svo.sendcuring(what)
   sk.sendqueuecmd(what)
 end
 
-local function table_length( table )
-  if not table then return end
-  local len
-  len = 0
-  for i, v in ipairs( table ) do
-    len = len + #v
-  end
-  return len
-end
-
-sk.affqueueslow = {}
-sk.defqueueslow = {}
-sk.queuecount = sk.queuecount or 0
 function sk.dosendprios()
     local sys = svo.sys
+    local function resetpriolength()
+      sk.priolength = {affqueue = 0, affqueueslow = 0, defqueue = 0, defqueueslow = 0}
+    end
     local function sendstuff(what, queue)
       if queue == "normal" then
-        send(what, false)
+        send(what,false)
       elseif queue == "slow" then
         if sys.sync == true then
           sendAll("curingset switch slowcuring", what, false)
@@ -2264,18 +2259,18 @@ function sk.dosendprios()
       end
     end
     
-    if sk.sendpriotimer then killTimer(sk.sendpriotimer) end
+    if sk.sendpriotimer then killTimer( sk.sendpriotimer ) end
   
     if #sk.affqueue &gt; 0 then
         local what = "curing priority"..table.concat(sk.affqueue)
         if sk.queuecount &gt; 4 then
           tempTimer(1,function()
-            sendstuff(what, "normal")
+            sendstuff(what,"normal")
             sk.affqueue = {}
             sk.queuecount = 0
           end)
         else
-          sendstuff(what, "normal")
+          sendstuff(what,"normal")
           sk.affqueue = {}
           sk.queuecount = sk.queuecount + 1
         end
@@ -2284,12 +2279,12 @@ function sk.dosendprios()
         local what = "curing priority defence"..table.concat(sk.defqueue)
         if sk.queuecount &gt; 4 then
           tempTimer(1,function()
-          sendstuff(what, "normal")
+          sendstuff(what,"normal")
           sk.defqueue = {}
           sk.queuecount = 0
           end)
         else
-          sendstuff(what, "normal")
+          sendstuff(what,"normal")
           sk.defqueue = {}
           sk.queuecount = sk.queuecount + 1
         end
@@ -2298,12 +2293,12 @@ function sk.dosendprios()
         local what = "curing priority"..table.concat(sk.affqueueslow)
         if sk.queuecount &gt; 4 then
           tempTimer(1,function()
-          sendstuff(what, "slow")
+          sendstuff(what,"slow")
           sk.affqueueslow = {}
           sk.queuecount = 0
           end)
         else
-          sendstuff(what, "slow")
+          sendstuff(what,"slow")
           sk.affqueueslow = {}
           sk.queuecount = sk.queuecount + 1
         end
@@ -2312,55 +2307,54 @@ function sk.dosendprios()
         local what = "curing priority defence"..table.concat(sk.defqueueslow)
         if sk.queuecount &gt; 4 then
           tempTimer(1,function()
-          sendstuff(what, "slow")
+          sendstuff(what,"slow")
           sk.defqueueslow = {}
           sk.queuecount = 0
           end)
         else
-          sendstuff(what, "slow")
+          sendstuff(what,"slow")
           sk.defqueueslow = {}
           sk.queuecount = sk.queuecount + 1
-          display(sk.queuecount)
         end
     end
-  
-  if queuetimer then killTimer(queuetimer) end
-  local queuetimer = tempTimer(1, function() sk.queuecount = 0 end)     
+  tempTimer(1,function() sk.queuecount = 0 end)     
   sk.sendpriotimer = nil
+  resetpriolength()
 end
 
-function svo.sendcuringprio(prio, type, slow)
+function svo.sendcuringprio(prio, kind, slow)
   local sys = svo.sys
   prio = " "..prio
   local what, tab, cmd
-  if type == 'affliction' then
+  if kind == 'affliction' then
     tab = "affqueue"
     cmd = "curing priority"
-  elseif type == 'defence' then
+  elseif kind == 'defence' then
     tab = "defqueue"
     cmd = "curing priority defence"
   else
     return
   end
   if slow == true then tab = tab.."slow" end
-  if ( table_length( sk[tab] ) + #cmd + #prio ) &gt; sk.achaea_command_max_length then
+  if (sk.priolength[tab] + #cmd + #prio) &gt;= sk.achaea_command_max_length then
     what = cmd..table.concat(sk[tab])
     if slow == true then
       if sys.sync then
-        sendAll("curingset switch slowcuring", what, false)
+        sendAll( "curingset switch slowcuring", what, false )
       else
-        sendAll("curingset switch slowcuring", what, "curingset switch normal", false)
+        sendAll( "curingset switch slowcuring", what, "curingset switch normal", false )
       end
     else
-      send(what)
+      send( what )
     end
     sk[tab] = {}
   end
   if not table.contains(sk[tab], prio) then 
     sk[tab][#sk[tab]+1] = prio
+    sk.priolength[tab] = sk.priolength[tab] + #prio
   end
   if not sk.sendpriotimer then
-    sk.sendpriotimer = tempTimer(0.1, sk.dosendprios)
+    sk.sendpriotimer = tempTimer(0, sk.dosendprios)
   end
 end
 
