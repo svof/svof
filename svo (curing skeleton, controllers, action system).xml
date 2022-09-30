@@ -2249,80 +2249,83 @@ end
 
 sk.affqueueslow = {}
 sk.defqueueslow = {}
+sk.queuecount = sk.queuecount or 0
 function sk.dosendprios()
-  local sys = svo.sys
-  local count = count or 0
-  local function sendstuff(what, queue)
-    if queue == "normal" then
-      send(what,false)
-    elseif queue == "slow" then
-      if sys.sync then
-        sendAll("curingset switch slowcuring", what, false)
-      else
-        sendAll("curingset switch slowcuring", what, "curingset switch normal", false)
+    local sys = svo.sys
+    local function sendstuff(what, queue)
+      if queue == "normal" then
+        send(what,false)
+      elseif queue == "slow" then
+        if sys.sync == true then
+          sendAll("curingset switch slowcuring", what, false)
+        else
+          sendAll("curingset switch slowcuring", what, "curingset switch normal", false)
+        end
       end
     end
-  end
+    
+    if sk.sendpriotimer then killTimer( sk.sendpriotimer ) end
   
-  if sk.sendpriotimer then killTimer( sk.sendpriotimer ) end
-  if #sk.affqueue &gt; 0 then
-      local what = "curing priority"..table.concat(sk.affqueue)
-      if count &gt;= 5 then
-        tempTimer(1,function()
-          --send(what, false)
+    if #sk.affqueue &gt; 0 then
+        local what = "curing priority"..table.concat(sk.affqueue)
+        if sk.queuecount &gt; 4 then
+          tempTimer(1,function()
+            sendstuff(what,"normal")
+            sk.affqueue = {}
+            sk.queuecount = 0
+          end)
+        else
           sendstuff(what,"normal")
           sk.affqueue = {}
-          count = 0
-        end)
-      else
-        sendstuff(what,"normal")
-        sk.affqueue = {}
-        count = count + 1
-      end
-  end
-  if #sk.defqueue &gt; 0 then
-      local what = "curing priority defence"..table.concat(sk.defqueue)
-      if count &gt;= 5 then
-        tempTimer(1,function()
-        sendstuff(what,"normal")
-        sk.defqueue = {}
-        count = 0
-        end)
-      else
-        sendstuff(what,"normal")
-        sk.defqueue = {}
-        count = count + 1
-      end
-  end
-  if #sk.affqueueslow &gt; 0 then
-      local what = "curing priority"..table.concat(sk.affqueueslow)
-      if count &gt;= 5 then
-        tempTimer(1,function()
-        sendstuff(what,"slow")
-        sk.affqueueslow = {}
-        count = 0
-        end)
-      else
-        sendstuff(what,"slow")
-        sk.affqueueslow = {}
-        count = count + 1
-      end
-  end
-  if #sk.defqueueslow &gt; 0 then
-      local what = "curing priority defence"..table.concat(sk.defqueueslow)
-      if count &gt;= 5 then
-        tempTimer(1,function()
-        sendstuff(what,"slow")
-        sk.defqueueslow = {}
-        count = 0
-        end)
-      else
-        sendstuff(what,"slow")
-        sk.defqueueslow = {}
-        count = count + 1
-      end
-  end
-  tempTimer(5,function() count = 0 end)      
+          sk.queuecount = sk.queuecount + 1
+        end
+    end
+    if #sk.defqueue &gt; 0 then
+        local what = "curing priority defence"..table.concat(sk.defqueue)
+        if sk.queuecount &gt; 4 then
+          tempTimer(1,function()
+          sendstuff(what,"normal")
+          sk.defqueue = {}
+          sk.queuecount = 0
+          end)
+        else
+          sendstuff(what,"normal")
+          sk.defqueue = {}
+          sk.queuecount = sk.queuecount + 1
+        end
+    end
+    if #sk.affqueueslow &gt; 0 then
+        local what = "curing priority"..table.concat(sk.affqueueslow)
+        if sk.queuecount &gt; 4 then
+          tempTimer(1,function()
+          sendstuff(what,"slow")
+          sk.affqueueslow = {}
+          sk.queuecount = 0
+          end)
+        else
+          sendstuff(what,"slow")
+          sk.affqueueslow = {}
+          sk.queuecount = sk.queuecount + 1
+        end
+    end
+    if #sk.defqueueslow &gt; 0 then
+        local what = "curing priority defence"..table.concat(sk.defqueueslow)
+        if sk.queuecount &gt; 4 then
+          tempTimer(1,function()
+          sendstuff(what,"slow")
+          sk.defqueueslow = {}
+          sk.queuecount = 0
+          end)
+        else
+          sendstuff(what,"slow")
+          sk.defqueueslow = {}
+          sk.queuecount = sk.queuecount + 1
+          display(sk.queuecount)
+        end
+    end
+  
+  if queuetimer then killTimer(queuetimer) end
+  local queuetimer = tempTimer(1,function() sk.queuecount = 0 end)     
   sk.sendpriotimer = nil
 end
 
