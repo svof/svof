@@ -2254,7 +2254,7 @@ function sk.dosendprios()
     local sys = svo.sys
     local function sendstuff(what, queue)
       if queue == "normal" then
-        send(what,false)
+        send(what, false)
       elseif queue == "slow" then
         if sys.sync == true then
           sendAll("curingset switch slowcuring", what, false)
@@ -2264,18 +2264,18 @@ function sk.dosendprios()
       end
     end
     
-    if sk.sendpriotimer then killTimer( sk.sendpriotimer ) end
+    if sk.sendpriotimer then killTimer(sk.sendpriotimer) end
   
     if #sk.affqueue &gt; 0 then
         local what = "curing priority"..table.concat(sk.affqueue)
         if sk.queuecount &gt; 4 then
           tempTimer(1,function()
-            sendstuff(what,"normal")
+            sendstuff(what, "normal")
             sk.affqueue = {}
             sk.queuecount = 0
           end)
         else
-          sendstuff(what,"normal")
+          sendstuff(what, "normal")
           sk.affqueue = {}
           sk.queuecount = sk.queuecount + 1
         end
@@ -2284,12 +2284,12 @@ function sk.dosendprios()
         local what = "curing priority defence"..table.concat(sk.defqueue)
         if sk.queuecount &gt; 4 then
           tempTimer(1,function()
-          sendstuff(what,"normal")
+          sendstuff(what, "normal")
           sk.defqueue = {}
           sk.queuecount = 0
           end)
         else
-          sendstuff(what,"normal")
+          sendstuff(what, "normal")
           sk.defqueue = {}
           sk.queuecount = sk.queuecount + 1
         end
@@ -2298,12 +2298,12 @@ function sk.dosendprios()
         local what = "curing priority"..table.concat(sk.affqueueslow)
         if sk.queuecount &gt; 4 then
           tempTimer(1,function()
-          sendstuff(what,"slow")
+          sendstuff(what, "slow")
           sk.affqueueslow = {}
           sk.queuecount = 0
           end)
         else
-          sendstuff(what,"slow")
+          sendstuff(what, "slow")
           sk.affqueueslow = {}
           sk.queuecount = sk.queuecount + 1
         end
@@ -2312,12 +2312,12 @@ function sk.dosendprios()
         local what = "curing priority defence"..table.concat(sk.defqueueslow)
         if sk.queuecount &gt; 4 then
           tempTimer(1,function()
-          sendstuff(what,"slow")
+          sendstuff(what, "slow")
           sk.defqueueslow = {}
           sk.queuecount = 0
           end)
         else
-          sendstuff(what,"slow")
+          sendstuff(what, "slow")
           sk.defqueueslow = {}
           sk.queuecount = sk.queuecount + 1
           display(sk.queuecount)
@@ -2325,7 +2325,7 @@ function sk.dosendprios()
     end
   
   if queuetimer then killTimer(queuetimer) end
-  local queuetimer = tempTimer(1,function() sk.queuecount = 0 end)     
+  local queuetimer = tempTimer(1, function() sk.queuecount = 0 end)     
   sk.sendpriotimer = nil
 end
 
@@ -2347,17 +2347,17 @@ function svo.sendcuringprio(prio, type, slow)
     what = cmd..table.concat(sk[tab])
     if slow == true then
       if sys.sync then
-        sendAll( "curingset switch slowcuring", what, false )
+        sendAll("curingset switch slowcuring", what, false)
       else
-        sendAll( "curingset switch slowcuring", what, "curingset switch normal", false )
+        sendAll("curingset switch slowcuring", what, "curingset switch normal", false)
       end
     else
-      send( what )
+      send(what)
     end
     sk[tab] = {}
   end
   if not table.contains(sk[tab], prio) then 
-    table.insert(sk[tab], prio)
+    sk[tab][#sk[tab]+1] = prio
   end
   if not sk.sendpriotimer then
     sk.sendpriotimer = tempTimer(0.1, sk.dosendprios)
