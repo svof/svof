@@ -813,8 +813,9 @@ signals["svo system loaded"]:connect(function()
 end, 'get initial state of prios')
 
 function sk.resetserversideprios()
-  svo.sendc("curing priority reset")
-  svo.sendc("curing priority defense list reset")
+  svo.sendcuringprio("reset","affliction")
+  svo.sendcuringprio("list reset","defence")
+  
 	sk.priochangecache = {
     special = {
       focustoggle = conf.focus
@@ -823,7 +824,7 @@ function sk.resetserversideprios()
   sk.priosbeforechange = sk.getblankbeforestateprios()
 end
 
-function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache)
+function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache, slow)
   local isdefence, priority, gamename, istype
 	
   if svo.dict[action][balance].def then
@@ -851,13 +852,10 @@ function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache)
   end
 
   gamename = svo.dict[action].gamename and svo.dict[action].gamename or action
-
-  local command = string.format("priority %s%s %s", isdefence, gamename, priority)
-
-  svo.sendcuring(command)
+  svo.sendcuringprio(gamename .. " " .. priority, istype, slow)
 end
 
-function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache)
+function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache, slow)
   if svo.logging_in then return end
   local isdefence, priority, gamename, istype
 
@@ -884,9 +882,7 @@ function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache)
 
   gamename = svo.dict[action].gamename and svo.dict[action].gamename or action
 
-  local command = string.format("priority %s%s %s", isdefence, gamename, priority)
-
-  svo.sendcuring(command)
+  svo.sendcuringprio(gamename .. " " .. priority, istype, slow)
 end
 
 function sk.updateserversideprios()
@@ -920,11 +916,6 @@ function sk.updateserversideprios()
       local neworderbals = sk.splitbals(neworderslow)
 
       -- if not in slowcuring mode, switch to slowcuring prios first
-      local needtoswitch, needtoswitchback = false, false
-      if not sys.sync then
-        needtoswitch = true
-      end
-
       for balance, neworder in pairs(neworderbals) do
         if diff[balance] then
           priochangecache[balance] = priochangecache[balance] or {}
@@ -939,20 +930,13 @@ function sk.updateserversideprios()
           for _, action in pairs(diff[balance]) do
             -- check if this is something actually on prios. an aff could be ignored, a def not on keepup
             if raffs[action] or rdefs[action] then
-              if needtoswitch then svo.sendc("curingset switch slowcuring"); needtoswitch = false; needtoswitchback = true end
 
-              sk.sendpriorityswitch(action, balance, raffs, rdefs, priochangecache[balance])
+              sk.sendpriorityswitch(action, balance, raffs, rdefs, priochangecache[balance], true)
             elseif rignoreaffs[action] or rignoredefs[action] then
-              if needtoswitch then svo.sendc("curingset switch slowcuring"); needtoswitch = false; needtoswitchback = true end
-
-              sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, priochangecache[balance])
+              sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, priochangecache[balance], true)
             end
           end
         end
-      end
-
-      if needtoswitchback then
-        svo.sendc("curingset switch normal")
       end
     else
       sk.priochangecache[balance] = sk.priochangecache[balance] or {}
@@ -968,29 +952,16 @@ function sk.updateserversideprios()
       for index, def in pairs(defs) do rdefs[def] = index end
       for index, aff in pairs(ignoreaffs) do rignoreaffs[aff] = index end
       for index, def in pairs(ignoredefs) do rignoredefs[def] = index end
-
-      -- if not in slowcuring mode, switch to slowcuring prios first
-      local needtoswitch, needtoswitchback = false, false
-      if sys.sync then
-        needtoswitch = true
-      end
-
+      
       -- update for the changes
       for _, action in pairs(diff) do
         -- check if this is something actually on prios. an aff could be ignored, a def not on keepup
         if raffs[action] or rdefs[action] then
-          if needtoswitch then svo.sendc("curingset switch normal"); needtoswitch = false; needtoswitchback = true end
 
-          sk.sendpriorityswitch(action, balance, raffs, rdefs, sk.priochangecache[balance])
+          sk.sendpriorityswitch(action, balance, raffs, rdefs, sk.priochangecache[balance], false)
         elseif rignoreaffs[action] or rignoredefs[action] then
-          if needtoswitch then svo.sendc("curingset switch normal"); needtoswitch = false; needtoswitchback = true end
-
-          sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, sk.priochangecache[balance])
+          sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, sk.priochangecache[balance], false)
         end
-      end
-
-      if needtoswitchback then
-        svo.sendc("curingset switch slowcuring")
       end
     end
   end
