@@ -1562,19 +1562,13 @@ moveCursorEnd()</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>^\w+ is \d+ years old,</string>
-						<string>His date of birth is hidden by the sand of Aeon.</string>
-						<string>Her date of birth is hidden by the sand of Aeon.</string>
-						<string>Faes date of birth is hidden by the sand of Aeon.</string>
-						<string>He was born before the fall of the Seleucarian Empire.</string>
-						<string>She was born before the fall of the Seleucarian Empire.</string>
-						<string>Fae was born before the fall of the Seleucarian Empire.</string>
+						<string>\w+ date of birth is hidden by the sand of Aeon.$</string>
+						<string>\w+ was born before the fall of the Seleucarian Empire.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
+						<integer>1</integer>
+						<integer>1</integer>
 					</regexCodePropertyList>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Stop getting (honors)</name>
@@ -1710,18 +1704,12 @@ temp_name_list[1].xp_rank = -2</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>He is unranked in Achaea.</string>
-							<string>She is unranked in Achaea.</string>
-							<string>Fae is unranked in Achaea.</string>
-							<string>He has given up the adventuring life.</string>
-							<string>She has given up the adventuring life.</string>
-							<string>Fae has given up the adventuring life.</string>
+							<string>^\w+ is unranked in Achaea.$</string>
+							<string>^\w+ has given up the adventuring life.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
+							<integer>1</integer>
+							<integer>1</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -1856,13 +1844,10 @@ temp_name_list[1].might = 100</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>He is considered to be approximately equal to your might.</string>
-							<string>She is considered to be approximately equal to your might.</string>
-							<string>Fae is considered to be approximately equal to your might.</string>
+							<string>^\w+ is considered to be approximately equal to your might.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>3</integer>
-							<integer>3</integer>
+							<integer>1</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -1901,15 +1886,13 @@ temp_name_list[1].mark = "Ivory"</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>He is a member of the Ivory Mark.</string>
-							<string>She is a member of the Ivory Mark.</string>
-							<string>Fae is a member of the Ivory Mark.</string>
+							<string>^\w+ is a member of the Ivory Mark.$</string>
 							<string>^\w+ is the .+? in the Ivory Mark\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>3</integer>
-							<integer>3</integer>
 							<integer>1</integer>
+							<integer>1</integer>
+							<integer>-1509852592</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -1928,18 +1911,13 @@ temp_name_list[1].mark = "Quisalis"</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>He is the Silent Executioner in the Quisalis Mark.</string>
-							<string>She is the Silent Executioner in the Quisalis Mark.</string>
-							<string>Fae is the Silent Executioner in the Quisalis Mark.</string>
-							<string>He is a member of the Quisalis Mark.</string>
-							<string>She is a member of the Quisalis Mark.</string>
-							<string>Fae is a member of the Quisalis Mark.</string>
+							<string>^\w+ is the Silent Executioner in the Quisalis Mark.$</string>
+							<string>^\w+ is a member of the Quisalis Mark.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>3</integer>
+							<integer>1</integer>
+							<integer>1</integer>
+							<integer>-1518365872</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -2022,13 +2000,11 @@ temp_name_list[1][matches[2]] = matches[3]:trim()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>Fae is not known for acts of infamy.</string>
-							<string>She is not known for acts of infamy.</string>
-							<string>He is not known for acts of infamy.</string>
+							<string>^\w+ is not known for acts of infamy.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>3</integer>
-							<integer>3</integer>
+							<integer>1</integer>
+							<integer>0</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -2047,7 +2023,7 @@ temp_name_list[1].infamous = ndb.valid.infamous[line]</script>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>Infamous</string>
-							<string>^(She|He) (.+)\.$</string>
+							<string>^(\w+) (.+)\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>0</integer>
@@ -2120,19 +2096,17 @@ raiseEvent("NameDB finished honors", ndb.honorsname, (gaghonours and "quiet" or 
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>She was born before time was counted.</string>
-						<string>He was born before time was counted.</string>
-						<string>Fae was born before time was counted.</string>
+						<string>^\w+ was born before time was counted.$</string>
 						<string>His birth was foretold in legend.</string>
 						<string>He was born from the Spiral Ribbons of Creation.</string>
 						<string>He is the last of the line of Nicator.</string>
 					</regexCodeList>
 					<regexCodePropertyList>
+						<integer>1</integer>
 						<integer>3</integer>
 						<integer>3</integer>
 						<integer>3</integer>
-						<integer>3</integer>
-						<integer>3</integer>
+						<integer>991694528</integer>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>

@@ -52432,13 +52432,10 @@ selectCurrentLine() fg("red") selectString(matches[2], 1) fg("pink") deselect() 
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>He wields a runic totem in both hands</string>
-							<string>She wields a runic totem in both hands</string>
-							<string>Fae wields a runic totem in both hands</string>
+							<string>\w+ wields a runic totem in both hands</string>
 						</regexCodeList>
 						<regexCodePropertyList>
-							<integer>0</integer>
-							<integer>0</integer>
+							<integer>1</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
