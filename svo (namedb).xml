@@ -1562,8 +1562,8 @@ moveCursorEnd()</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>^\w+ is \d+ years old,</string>
-						<string>\w+ date of birth is hidden by the sand of Aeon.$</string>
-						<string>\w+ was born before the fall of the Seleucarian Empire.$</string>
+						<string>^\w+ date of birth is hidden by the sand of Aeon.$</string>
+						<string>^\w+ was born before the fall of the Seleucarian Empire.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
