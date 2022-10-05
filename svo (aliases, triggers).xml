@@ -52434,6 +52434,7 @@ selectCurrentLine() fg("red") selectString(matches[2], 1) fg("pink") deselect() 
 						<regexCodeList>
 							<string>He wields a runic totem in both hands</string>
 							<string>She wields a runic totem in both hands</string>
+							<string>Fae wields a runic totem in both hands</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>0</integer>

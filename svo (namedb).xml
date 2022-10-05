@@ -1564,8 +1564,10 @@ moveCursorEnd()</script>
 						<string>^\w+ is \d+ years old,</string>
 						<string>His date of birth is hidden by the sand of Aeon.</string>
 						<string>Her date of birth is hidden by the sand of Aeon.</string>
+						<string>Faes date of birth is hidden by the sand of Aeon.</string>
 						<string>He was born before the fall of the Seleucarian Empire.</string>
 						<string>She was born before the fall of the Seleucarian Empire.</string>
+						<string>Fae was born before the fall of the Seleucarian Empire.</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -1710,8 +1712,10 @@ temp_name_list[1].xp_rank = -2</script>
 						<regexCodeList>
 							<string>He is unranked in Achaea.</string>
 							<string>She is unranked in Achaea.</string>
+							<string>Fae is unranked in Achaea.</string>
 							<string>He has given up the adventuring life.</string>
 							<string>She has given up the adventuring life.</string>
+							<string>Fae has given up the adventuring life.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>3</integer>
@@ -1854,6 +1858,7 @@ temp_name_list[1].might = 100</script>
 						<regexCodeList>
 							<string>He is considered to be approximately equal to your might.</string>
 							<string>She is considered to be approximately equal to your might.</string>
+							<string>Fae is considered to be approximately equal to your might.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>3</integer>
@@ -1898,6 +1903,7 @@ temp_name_list[1].mark = "Ivory"</script>
 						<regexCodeList>
 							<string>He is a member of the Ivory Mark.</string>
 							<string>She is a member of the Ivory Mark.</string>
+							<string>Fae is a member of the Ivory Mark.</string>
 							<string>^\w+ is the .+? in the Ivory Mark\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
@@ -1924,8 +1930,10 @@ temp_name_list[1].mark = "Quisalis"</script>
 						<regexCodeList>
 							<string>He is the Silent Executioner in the Quisalis Mark.</string>
 							<string>She is the Silent Executioner in the Quisalis Mark.</string>
+							<string>Fae is the Silent Executioner in the Quisalis Mark.</string>
 							<string>He is a member of the Quisalis Mark.</string>
 							<string>She is a member of the Quisalis Mark.</string>
+							<string>Fae is a member of the Quisalis Mark.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>3</integer>
@@ -2014,6 +2022,7 @@ temp_name_list[1][matches[2]] = matches[3]:trim()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
+							<string>Fae is not known for acts of infamy.</string>
 							<string>She is not known for acts of infamy.</string>
 							<string>He is not known for acts of infamy.</string>
 						</regexCodeList>
@@ -2113,6 +2122,7 @@ raiseEvent("NameDB finished honors", ndb.honorsname, (gaghonours and "quiet" or 
 					<regexCodeList>
 						<string>She was born before time was counted.</string>
 						<string>He was born before time was counted.</string>
+						<string>Fae was born before time was counted.</string>
 						<string>His birth was foretold in legend.</string>
 						<string>He was born from the Spiral Ribbons of Creation.</string>
 						<string>He is the last of the line of Nicator.</string>
