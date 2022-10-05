@@ -2153,7 +2153,7 @@ end</script>
 					<string>^(\w+) begins to flap \w+ wings powerfully, and rises quickly up into the firmament\.$</string>
 					<string>^(\w+) is quickly carried up into the skies\.$</string>
 					<string>^(\w+) grabs hold of a nearby branch and swings up and out of sight into the treetops\.$</string>
-					<string>^(\w+) crouches down upon \w+ haunches, then with a powerful thrust of \w+ legs, launches \w+self straight up into the air\.$</string>
+					<string>^(\w+) crouches down upon \w+ haunches, then with a powerful thrust of \w+ legs, launches \w+ straight up into the air\.$</string>
 					<string>^(\w+) swoops down from above, tries to hoist \w+, and fails\.$</string>
 					<string>^(\w+) sucks in \w+ breath, and with a mighty blast of air exhales while uttering a word of magic\. Suddenly, \w+ is lifted into the skies by an unseen force\.$</string>
 				</regexCodeList>
