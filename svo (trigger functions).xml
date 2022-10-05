@@ -4170,7 +4170,7 @@ for _,name in ipairs({'rightarm', 'leftarm', 'leftleg', 'rightleg'}) do
           -- special exception for blademaster breaks, which do so little damage, you can regen it:
           --[[Spinning to the right as he draws 11 11 from its sheath, 11 delivers a precise slash across your arms.
               Your left arm is greatly damaged from the beating. (+65h, 0.8%, +75m, 1.1%) ]]
-          if svo.find_until_last_paragraph("^Spinning to the right as s?he draws %w+ %w+ from its sheath, %w+ delivers a precise slash across your arms%.$", 'pattern') then
+          if svo.find_until_last_paragraph("^Spinning to the right as \w+ draws %w+ %w+ from its sheath, %w+ delivers a precise slash across your arms%.$", 'pattern') then
             valid['simple'..status..name]()
           elseif saw_tekura_in_paragraph() then
             svo.checkaction(svo.dict[status..name].aff, true)

@@ -172,7 +172,7 @@ svo.prompttrigger("clear fehu", function() svo.fehu = nil end)</script>
 				<colorTriggerFgColor>#000000</colorTriggerFgColor>
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList>
-					<string>A rune (.+?) has been sketched onto (?:him|her)\.</string>
+					<string>A rune (.+?) has been sketched onto \w+\.</string>
 					<string>A rune (.+?) has been sketched into the ground here\.</string>
 				</regexCodeList>
 				<regexCodePropertyList>

@@ -32,7 +32,7 @@
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList>
 					<string>^You call upon Kkractle and unleash a forceful blow towards (\w+)'s .+? with your trusty staff\.$</string>
-					<string>^(\w+) bursts into flame as a fiery efreeti spins into (?:him|her)\.$</string>
+					<string>^(\w+) bursts into flame as a fiery efreeti spins into \w+\.$</string>
 				</regexCodeList>
 				<regexCodePropertyList>
 					<integer>1</integer>
@@ -115,7 +115,7 @@ svo.bl_ignore()</script>
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList>
 					<string>^\w+ dodges nimbly out of the way\.$</string>
-					<string>^\w+ twists (?:his|her) body out of harm's way\.$</string>
+					<string>^\w+ twists \w+ body out of harm's way\.$</string>
 					<string>^\w+ parries the attack with a deft manoeuvre\.$</string>
 					<string>^\w+ steps into the attack, grabs your arm, and throws you violently to the ground\.$</string>
 					<string>^\w+ quickly jumps back, avoiding the attack\.$</string>
@@ -152,7 +152,7 @@ svo.bl_ignore()</script>
 				<colorTriggerFgColor>#000000</colorTriggerFgColor>
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList>
-					<string>^(\w+) winces in evident discomfort as a crystalline golem points a single appendage at (?:him|her)\.$</string>
+					<string>^(\w+) winces in evident discomfort as a crystalline golem points a single appendage at \w+\.$</string>
 				</regexCodeList>
 				<regexCodePropertyList>
 					<integer>1</integer>
@@ -192,7 +192,7 @@ svo.bl_ignore()</script>
 				<colorTriggerFgColor>#000000</colorTriggerFgColor>
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList>
-					<string>^(\w+) takes some salve from a vial and rubs it on (?:his|her) (?:body|torso)\.$</string>
+					<string>^(\w+) takes some salve from a vial and rubs it on \w+ (?:body|torso)\.$</string>
 				</regexCodeList>
 				<regexCodePropertyList>
 					<integer>1</integer>

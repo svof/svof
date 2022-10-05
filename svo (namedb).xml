@@ -1465,7 +1465,7 @@ raiseEvent("NameDB got new data")</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>You ask</string>
-						<string>^You ask (\w+) to repeat the oaths of citizenship after you\. (?:He|She) does, and you admit (?:him|her) as the newest, proudest member of (\w+)\.$</string>
+						<string>^You ask (\w+) to repeat the oaths of citizenship after you\. \w+ does, and you admit \w+ as the newest, proudest member of (\w+)\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -1561,7 +1561,7 @@ moveCursorEnd()</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(?:H|Sh)e is \d+ years old,</string>
+						<string>^\w+ is \d+ years old,</string>
 						<string>His date of birth is hidden by the sand of Aeon.</string>
 						<string>Her date of birth is hidden by the sand of Aeon.</string>
 						<string>He was born before the fall of the Seleucarian Empire.</string>
@@ -1637,7 +1637,7 @@ temp_name_list[1].birth_hidden = 0</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(?:H|Sh)e is (\d+) years old, having been born on the (\d+)(?:st|nd|rd|th) of (Sarapin|Daedalan|Aeguary|Miraman|Scarlatan|Ero|Valnuary|Lupar|Phaestian|Chronos|Glacian|Mayan), (\d+) years after the fall of the Seleucarian Empire\.$</string>
+							<string>^\w+ is (\d+) years old, having been born on the (\d+)(?:st|nd|rd|th) of (Sarapin|Daedalan|Aeguary|Miraman|Scarlatan|Ero|Valnuary|Lupar|Phaestian|Chronos|Glacian|Mayan), (\d+) years after the fall of the Seleucarian Empire\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -1686,7 +1686,7 @@ if tonumber(matches[2]) &lt; 240 then temp_name_list[1].dragon = 1 end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(?:She|He) is ranked (\d+)\w+ in Achaea\.</string>
+							<string>^\w+ is ranked (\d+)\w+ in Achaea\.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -1737,7 +1737,7 @@ temp_name_list[1].combat_rating = tonumber(matches[3])</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(?:H|Sh)e is the (\d+)(?:st|nd|rd|th) ranked combatant with a rating of (\d+)\.$</string>
+							<string>^\w+ is the (\d+)(?:st|nd|rd|th) ranked combatant with a rating of (\d+)\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -1760,7 +1760,7 @@ temp_name_list[1].city = matches[3]</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(?:She|He) is an? (\w+) in (\w+)\.$</string>
+							<string>^\w+ is an? (\w+) in (\w+)\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -1782,7 +1782,7 @@ temp_name_list[1].city_soldier = -2</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(?:H|Sh)e is .+ in the army of (?:Ashtan|Cyrene|Eleusis|Hashan|Mhaldor|Targossas)\.$</string>
+							<string>^\w+ is .+ in the army of (?:Ashtan|Cyrene|Eleusis|Hashan|Mhaldor|Targossas)\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -1806,7 +1806,7 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(?:She|He) is .* in the (\w+)\.$</string>
+							<string>^\w+ is .* in the (\w+)\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -1830,7 +1830,7 @@ temp_name_list[1].might = tonumber(matches[2])
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(?:She|He|It) is considered to be approximately (\d+)% of your might\.$</string>
+							<string>^\w+ is considered to be approximately (\d+)% of your might\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -1898,7 +1898,7 @@ temp_name_list[1].mark = "Ivory"</script>
 						<regexCodeList>
 							<string>He is a member of the Ivory Mark.</string>
 							<string>She is a member of the Ivory Mark.</string>
-							<string>^(?:He|She) is the .+? in the Ivory Mark\.$</string>
+							<string>^\w+ is the .+? in the Ivory Mark\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>3</integer>
@@ -1950,7 +1950,7 @@ temp_name_list[1].divorces = tonumber(matches[2]) or 1</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(?:H|Sh)e has been divorced (?:(\d+) times|once)\.$</string>
+							<string>^\w+ has been divorced (?:(\d+) times|once)\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -1972,7 +1972,7 @@ temp_name_list[1].arms = matches[2]</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(?:H|Sh)e bears the arms: (.+)\.$</string>
+							<string>^\w+ bears the arms: (.+)\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -1994,7 +1994,7 @@ temp_name_list[1][matches[2]] = matches[3]:trim()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^H(?:is|er) (motto|warcry): '(.+)'$</string>
+							<string>^\w+ (motto|warcry): '(.+)'$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -2166,12 +2166,12 @@ end</script>
 				<regexCodeList>
 					<string>^(\w+) flits into view directly overhead\.$</string>
 					<string>^You recognise the form of (\w+) high above\.$</string>
-					<string>^(\w+) begins to flap (?:his|her) wings powerfully, and rises quickly up into the firmament\.$</string>
+					<string>^(\w+) begins to flap \w+ wings powerfully, and rises quickly up into the firmament\.$</string>
 					<string>^(\w+) is quickly carried up into the skies\.$</string>
 					<string>^(\w+) grabs hold of a nearby branch and swings up and out of sight into the treetops\.$</string>
-					<string>^(\w+) crouches down upon (?:his|her) haunches, then with a powerful thrust of (?:his|her) legs, launches (?:him|her)self straight up into the air\.$</string>
+					<string>^(\w+) crouches down upon \w+ haunches, then with a powerful thrust of \w+ legs, launches \w+self straight up into the air\.$</string>
 					<string>^(\w+) swoops down from above, tries to hoist \w+, and fails\.$</string>
-					<string>^(\w+) sucks in (?:his|her) breath, and with a mighty blast of air exhales while uttering a word of magic\. Suddenly, s?he is lifted into the skies by an unseen force\.$</string>
+					<string>^(\w+) sucks in \w+ breath, and with a mighty blast of air exhales while uttering a word of magic\. Suddenly, \w+ is lifted into the skies by an unseen force\.$</string>
 				</regexCodeList>
 				<regexCodePropertyList>
 					<integer>1</integer>

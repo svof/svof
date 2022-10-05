@@ -97,7 +97,7 @@ if svo.conf.aillusion then svo.ignore_illusion() end
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ stands a tarot on (?:his|her) open palm, and blows it lightly at you\. Suddenly your movement through the time stream is slowed\.$</string>
+						<string>^\w+ stands a tarot on \w+ open palm, and blows it lightly at you\. Suddenly your movement through the time stream is slowed\.$</string>
 						<string>You feel a tightening sensation grow in your lungs.</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -431,7 +431,7 @@ end</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ sinks (?:his|her) fangs into your body and you wince in pain\.$</string>
+						<string>^\w+ sinks \w+ fangs into your body and you wince in pain\.$</string>
 						<string>2</string>
 						<string></string>
 					</regexCodeList>
@@ -457,7 +457,7 @@ end</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ pricks you twice in rapid succession with (?:his|her) dirk\.?$</string>
+						<string>^\w+ pricks you twice in rapid succession with \w+ dirk\.?$</string>
 						<string>2</string>
 						<string></string>
 					</regexCodeList>
@@ -662,7 +662,7 @@ tempTimer(0, function() svo.addaff("anorexia") end)</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ sinks (?:his|her) fangs into your body and you wince in pain\.$</string>
+						<string>^\w+ sinks \w+ fangs into your body and you wince in pain\.$</string>
 						<string>The idea of eating or drinking is repulsive to you.</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -11167,7 +11167,7 @@ svo.onprompt()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(\w+) suddenly releases (?:her|his) vice-like grip on you\.$</string>
+							<string>^(\w+) suddenly releases \w+ vice-like grip on you\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -12445,7 +12445,7 @@ if svo.conf.gagrelight and not svo.inslowcuringmode() then svo.deleteLineP() end
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ invokes the powers of Air and lays (?:his|her) hands on you\.$</string>
+						<string>^\w+ invokes the powers of Air and lays \w+ hands on you\.$</string>
 						<string>^You feel the spiritual presence of \w+ touch you momentarily\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -13831,7 +13831,7 @@ if svo.conf.gagrelight and not svo.inslowcuringmode() then svo.deleteLineP() end
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ claps (?:her|his) hands and the retardation vibration is dampened\.$</string>
+						<string>^\w+ claps \w+ hands and the retardation vibration is dampened\.$</string>
 						<string>You clap your hands and the retardation vibration is dampened.</string>
 						<string>Blustering past, swirling autumnal leaves carry the retardation vibration away.</string>
 					</regexCodeList>
@@ -14781,7 +14781,7 @@ svo.valid.simpleprone()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(\w+) pulls back a.+, readying (?:him|her)self for a deadly strike\.$</string>
+							<string>^(\w+) pulls back a.+, readying \w+ for a deadly strike\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -14826,7 +14826,7 @@ svo.valid.simpleprone()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(\w+) raises (?:his|her) .+ over (?:his|her) head and begins to swing it in a wide circle, gaining speed as s?he goes\.$</string>
+							<string>^(\w+) raises \w+ .+ over \w+ head and begins to swing it in a wide circle, gaining speed as \w+ goes\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -14850,7 +14850,7 @@ svo.valid.simpleprone()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(\w+) begins to bear down on you with (?:his|her) whirling .+\.$</string>
+							<string>^(\w+) begins to bear down on you with \w+ whirling .+\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -14951,7 +14951,7 @@ svo.defs.lost_riding()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(\w+) points (?:his|her) fists at you and blasts you with frigidly cold air\.$</string>
+							<string>^(\w+) points \w+ fists at you and blasts you with frigidly cold air\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -15351,7 +15351,7 @@ svo.valid.simpleprone()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^\w+ raises Earthshaker above (?:her|his) head and smashes its face into the ground with a mighty roar\. The earth around you shakes violently\.$</string>
+							<string>^\w+ raises Earthshaker above \w+ head and smashes its face into the ground with a mighty roar\. The earth around you shakes violently\.$</string>
 							<string>You are stunned by the violent impact.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
@@ -17413,7 +17413,7 @@ svo.valid.passive_cure()</script>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>^You feel the spiritual presence of \w+ touch you momentarily\.$</string>
-							<string>^\w+ invokes the powers of .+ and lays (?:his|her) hands on you\.$</string>
+							<string>^\w+ invokes the powers of .+ and lays \w+ hands on you\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -17787,7 +17787,7 @@ raiseEvent("svo lost balance", "hydra")</script>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>You strike out at</string>
-							<string>^You strike out at \w+ with your deadly tail, and sting (?:her|him)\.$</string>
+							<string>^You strike out at \w+ with your deadly tail, and sting \w+\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>2</integer>
@@ -17971,7 +17971,7 @@ svo.gotarmbalance()</script>
 							<string>^"And you shall be naught but cinders," you decree, focussing your holy might upon (\w+).$</string>
 							<string>^"Attend me," you intone to (\w+).$</string>
 							<string>^"So listen well," you intone to (\w+).$</string>
-							<string>^"Burn!" you command (\w+), fire leaping forth to sear (?:him|her).</string>
+							<string>^"Burn!" you command (\w+), fire leaping forth to sear \w+.</string>
 							<string>^"Your crimes shall not go unpunished," you recite to (\w+), voice hard with condemnation.$</string>
 							<string>^"Your sins condemn you to this fate," you recite to (\w+), voice hard with condemnation.$</string>
 							<string>^"We will endure until our work is done," you murmur, laying a hand upon the brow of (\w+).$</string>
@@ -18002,8 +18002,8 @@ svo.gotarmbalance()</script>
 							<string>^"For we shall not falter," you murmur, laying a hand upon the brow of (\w+).$</string>
 							<string>"We shall not falter," you murmur.</string>
 							<string>"For we shall not falter," you murmur.</string>
-							<string>^"Burn, blight upon Creation!" you dictate to (\w+), holy flame wreathing (?:her|him) in cleansing fury.$</string>
-							<string>^"And may the cleansing fires consume you!" you dictate to (w\+), holy flame wreathing (?:her|him) incleansing fury.$</string>
+							<string>^"Burn, blight upon Creation!" you dictate to (\w+), holy flame wreathing \w+ in cleansing fury.$</string>
+							<string>^"And may the cleansing fires consume you!" you dictate to (w\+), holy flame wreathing \w+ incleansing fury.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -18150,8 +18150,8 @@ end</script>
 							<string>^Using a heavy tremolo you crush (\w+)'s (?:left|right) leg\.$</string>
 							<string>^Using a heavy tremolo you brutally punish (\w+)'s already shattered (?:left|right) leg\.$</string>
 							<string>^With a trilling vibrato you shatter the (?:left|right) arm of (\w+)\.$</string>
-							<string>^With a trilling vibrato you attack (\w+)'s broken (?:left|right) arm. (?:She|He) screams in pain\.$</string>
-							<string>^You begin reciting an epic tale of the heroism of Nicator to (\w+), holding (?:him|her) spellbound\.$</string>
+							<string>^With a trilling vibrato you attack (\w+)'s broken (?:left|right) arm. \w+ screams in pain\.$</string>
+							<string>^You begin reciting an epic tale of the heroism of Nicator to (\w+), holding \w+ spellbound\.$</string>
 							<string>^Your voice rises to the heavens with your instrument as you sing an Aria of healing to (\w+)\.$</string>
 							<string>^With a wink, you recite "Ode to Elixirs" to (\w+)\.$</string>
 							<string>^Your cantata shatters the defences surrounding (\w+)\.$</string>
@@ -18436,7 +18436,7 @@ raiseEvent("svo lost balance", "humour")</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^You glower at \w+, preparing to assault (?:his|her) humours\. You make a gesture toward (?:him|her), grabbing at the ether strand binding you\.$</string>
+							<string>^You glower at \w+, preparing to assault \w+ humours\. You make a gesture toward \w+, grabbing at the ether strand binding you\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -18488,8 +18488,8 @@ raiseEvent("svo lost balance", "homunculus")</script>
 							<string>^You command a diminutive homunculus resembling \w+ to give .+ to \w+\.$</string>
 							<string>^You order a diminutive homunculus resembling \w+ to get .+\.$</string>
 							<string>^You order your homunculus to drop .+\.$</string>
-							<string>^Focusing your mind on a diminutive homunculus resembling \w+, you command it to disrupt \w+'s focus\. The homunculus turns towards (?:him|her) before letting out an ear-piercing shriek\.$</string>
-							<string>^Channeling your focus through your link to your homunculus, you reach out to find the ethereal hook for \w+'s humours\. Finding it, you use the alien connection with a diminutive homunculus resembling \w+ to corrupt (?:his|her) humours\.$</string>
+							<string>^Focusing your mind on a diminutive homunculus resembling \w+, you command it to disrupt \w+'s focus\. The homunculus turns towards \w+ before letting out an ear-piercing shriek\.$</string>
+							<string>^Channeling your focus through your link to your homunculus, you reach out to find the ethereal hook for \w+'s humours\. Finding it, you use the alien connection with a diminutive homunculus resembling \w+ to corrupt \w+ humours\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -18677,7 +18677,7 @@ raiseEvent("svo got balance", "homunculus")</script>
 							<string>^You speak words of power over .+\.$</string>
 							<string>Taking a steadying breath, you turn your focus inward and proclaim, "Mainaas".</string>
 							<string>Drawing on ancestral memory, you let the lament of deSangre pour forth:</string>
-							<string>^Directing your voice so only \S+ may hear, you command (?:her|him) to serve\.$</string>
+							<string>^Directing your voice so only \S+ may hear, you command \w+ to serve\.$</string>
 							<string>Your mouth falls open as the all-consuming litany pours forth, and you know that in moments all that hear shall serve your will.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
@@ -25364,7 +25364,7 @@ svo.valid.simpleprone()</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>With all (?:his|her) wooden strength, a stick(?:man|woman) picks you up as though you were a rag doll and smashes you into the ground.</string>
+								<string>With all \w+ wooden strength, a stick(?:man|woman) picks you up as though you were a rag doll and smashes you into the ground.</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -37748,7 +37748,7 @@ svo.valid.simpledizziness()</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^Grabbing your arm in h(?:is|er) vice-like hands, an iron malagma snaps the bone in two\.$</string>
+								<string>^Grabbing your arm in \w+ vice-like hands, an iron malagma snaps the bone in two\.$</string>
 								<string>Grabbing a pick from the floor of the mine, an iron malagma swings sharply and embeds the rusted head into your arm.</string>
 								<string>Grabbing a pick from the floor of the mine, Ferran, an iron malagma swings sharply and embeds the rusted head into your arm.</string>
 								<string>Grabbing your arm in his vice-like hands, Ferran, an iron malagma snaps the bone in two.</string>
@@ -37805,7 +37805,7 @@ svo.valid.simpleprone()</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^H(?:is|er) mouth moving rapidly, a hepatizon malagma gestures at you and you drop to the ground, all of your limbs suddenly heavy beyond belief\.$</string>
+								<string>^\w+ mouth moving rapidly, a hepatizon malagma gestures at you and you drop to the ground, all of your limbs suddenly heavy beyond belief\.$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -38287,7 +38287,7 @@ svo.valid.simplesleep()</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) grows very still, (?:his|her) unblinking gaze locking to your own\.$</string>
+						<string>^(\w+) grows very still, \w+ unblinking gaze locking to your own\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -38672,7 +38672,7 @@ svo.startedfighting("apostate", multimatches[2][2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^"Hunt!" (\w+) orders (?:her|his) daegger\.$</string>
+						<string>^"Hunt!" (\w+) orders \w+ daegger\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -39714,7 +39714,7 @@ svo.valid.simplebleeding(400) </script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>With a vicious snarl</string>
-						<string>^With a vicious snarl (\w+) carves a merciless swathe through your steaming guts\. You gurgle and choke as s?he withdraws (?:his|her) dripping blade, glistening with gore\.$</string>
+						<string>^With a vicious snarl (\w+) carves a merciless swathe through your steaming guts\. You gurgle and choke as \w+ withdraws \w+ dripping blade, glistening with gore\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -39736,7 +39736,7 @@ svo.valid.simplebleeding(400) </script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>With a snarl of contempt,</string>
-						<string>^With a snarl of contempt, \w+ allows you to slide free of (?:her|his) weapon\.$</string>
+						<string>^With a snarl of contempt, \w+ allows you to slide free of \w+ weapon\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -39758,7 +39758,7 @@ svo.valid.simplebleeding(37)</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ draws (?:his|her) blade back and plunges it deep into your helpless body impaling it to the hilt\.$</string>
+						<string>^\w+ draws \w+ blade back and plunges it deep into your helpless body impaling it to the hilt\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -39779,7 +39779,7 @@ svo.valid.simpleprone()</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ gathers (?:his|her) breath and hurls a piercing battlecry towards you\.$</string>
+						<string>^\w+ gathers \w+ breath and hurls a piercing battlecry towards you\.$</string>
 						<string>You fall to your knees and clutch your ears as the terrifying shaft of sound shatters your will.</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -39843,7 +39843,7 @@ svo.valid.simpleprone()</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>You writhe and scream as</string>
-						<string>^You writhe and scream as s?he drives the cruel blade deep into your side\.$</string>
+						<string>^You writhe and scream as \w+ drives the cruel blade deep into your side\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -39888,7 +39888,7 @@ svo.valid.simpleprone()</script>
 					<regexCodeList>
 						<string>^\w+ viciously jabs .+ into your (.+)\.$</string>
 						<string>^\w+ slashes into your (.+) with</string>
-						<string>^\w+ swings .+ at your (.+) with all (?:his|her) might\.$</string>
+						<string>^\w+ swings .+ at your (.+) with all \w+ might\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -39911,7 +39911,7 @@ svo.valid.simpleprone()</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>Searing pain tears through your midsection as you wrench away from</string>
-						<string>^Searing pain tears through your midsection as you wrench away from \w+, (?:her|his) weapon ripping unceremoniously through your innards\.$</string>
+						<string>^Searing pain tears through your midsection as you wrench away from \w+, \w+ weapon ripping unceremoniously through your innards\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -40154,7 +40154,7 @@ svo.startedfighting("magi", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) calls upon \w+ and unleashes a forceful blow at your (.+) with (?:his|her) staff\.$</string>
+						<string>^(\w+) calls upon \w+ and unleashes a forceful blow at your (.+) with \w+ staff\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -40288,7 +40288,7 @@ svo.startedfighting("shaman", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ draws you into (?:his|her) gaze, lowering (?:his|her) brow and glaring at you with righteous fury\. Pointing at you with a single raised finger, \w+ recites a list of your transgressions, condemning your actions and words\. A blaze of holy fire surges about \w+ as s?he dictates your sentence\.$</string>
+						<string>^\w+ draws you into \w+ gaze, lowering \w+ brow and glaring at you with righteous fury\. Pointing at you with a single raised finger, \w+ recites a list of your transgressions, condemning your actions and words\. A blaze of holy fire surges about \w+ as \w+ dictates your sentence\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -40430,7 +40430,7 @@ svo.valid.simpledizziness()</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>Horrifying visions overcome you as</string>
-						<string>^Horrifying visions overcome you as \w+ turns (?:his|her) righteous gaze upon you\.$</string>
+						<string>^Horrifying visions overcome you as \w+ turns \w+ righteous gaze upon you\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -40704,7 +40704,7 @@ svo.startedfighting("dragon", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) turns to fix (?:his|her) gaze upon you, and you feel your heart increase its palpitations as a low keening echoes from (?:his|her) throat\.$</string>
+						<string>^(\w+) turns to fix \w+ gaze upon you, and you feel your heart increase its palpitations as a low keening echoes from \w+ throat\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -40769,7 +40769,7 @@ svo.startedfighting("dragon", multimatches[2][2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>An ominous feeling descends upon you as</string>
-						<string>^An ominous feeling descends upon you as (\w+) turns (?:his|her) gaze upon you\.$</string>
+						<string>^An ominous feeling descends upon you as (\w+) turns \w+ gaze upon you\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -40814,7 +40814,7 @@ svo.startedfighting("dragon", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+'s nostrils flare wildly with a great rush of air as (?:his|her) sinuous body contracts and (\w+) mouth opens wide to emit a rippling, unbroken roar that reverberates through your body\.$</string>
+						<string>^\w+'s nostrils flare wildly with a great rush of air as \w+ sinuous body contracts and (\w+) mouth opens wide to emit a rippling, unbroken roar that reverberates through your body\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -40834,7 +40834,7 @@ svo.startedfighting("dragon", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) rises back on (?:his|her) hind legs, more than doubling in height as s?he towers above you\. The ground shakes violently as s?he slams (?:his|her) feet back down, recklessly crushing everyone in (?:his|her) path\.$</string>
+						<string>^(\w+) rises back on \w+ hind legs, more than doubling in height as \w+ towers above you\. The ground shakes violently as \w+ slams \w+ feet back down, recklessly crushing everyone in \w+ path\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -40965,7 +40965,7 @@ svo.startedfighting("dragon", multimatches[2][2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>High above, </string>
-						<string>^High above, (\w+) opens (?:his|her) glistening, tooth-lined maw wide and rains a great tempest of ice down upon you, from which there is no escape or reprieve\.$</string>
+						<string>^High above, (\w+) opens \w+ glistening, tooth-lined maw wide and rains a great tempest of ice down upon you, from which there is no escape or reprieve\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -41036,7 +41036,7 @@ svo.startedfighting("dragon", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+)'s eyes narrow as (?:his|her) massive jaws yawn open and s?he expels a sluggish cloud of \w+\. The nebulous haze clings to you for a moment, and you feel your (.+) defence vanish\.$</string>
+						<string>^(\w+)'s eyes narrow as \w+ massive jaws yawn open and \w+ expels a sluggish cloud of \w+\. The nebulous haze clings to you for a moment, and you feel your (.+) defence vanish\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -41059,7 +41059,7 @@ svo.startedfighting("dragon", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+)'s eyes narrow as (?:his|her) massive jaws yawn open and s?he expels a sluggish cloud of \w+\. The nebulous haze clings to you for a moment, and you feel your (.+) and (.+) defences vanish\.$</string>
+						<string>^(\w+)'s eyes narrow as \w+ massive jaws yawn open and \w+ expels a sluggish cloud of \w+\. The nebulous haze clings to you for a moment, and you feel your (.+) and (.+) defences vanish\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -41150,7 +41150,7 @@ svo.startedfighting("dragon", multimatches[2][2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>High above, </string>
-						<string>^High above, (\w+) opens (?:his|her) glistening, tooth-lined maw wide and rains a great tempest of lightning down upon you, from which there is no escape or reprieve\.$</string>
+						<string>^High above, (\w+) opens \w+ glistening, tooth-lined maw wide and rains a great tempest of lightning down upon you, from which there is no escape or reprieve\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -41174,7 +41174,7 @@ svo.startedfighting("dragon", multimatches[2][2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>Opening </string>
-						<string>^Opening (?:his|her) massive maw, (\w+) throws (?:his|her) head forward and blasts wave after wave of deadly, all-consuming cold at you\.$</string>
+						<string>^Opening \w+ massive maw, (\w+) throws \w+ head forward and blasts wave after wave of deadly, all-consuming cold at you\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -41201,7 +41201,7 @@ svo.startedfighting("dragon", multimatches[2][2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>In a single, sinuous motion, </string>
-						<string>^In a single, sinuous motion, (\w+) manoeuvres (?:her|his) imposing form to encircle (\w+)'s feet, fixing (?:her|him) with a penetrating gaze as (?:her|his) tremendous jaws open wide\.$</string>
+						<string>^In a single, sinuous motion, (\w+) manoeuvres \w+ imposing form to encircle (\w+)'s feet, fixing \w+ with a penetrating gaze as \w+ tremendous jaws open wide\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -41250,7 +41250,7 @@ svo.startedfighting("dragon", matches[2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>A deathly calm descends upon your surroundings as</string>
-						<string>^A deathly calm descends upon your surroundings as (\w+) draws (?:him|her)self up regally, eyes gleaming with murderous intent\.$</string>
+						<string>^A deathly calm descends upon your surroundings as (\w+) draws \w+ up regally, eyes gleaming with murderous intent\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -41278,7 +41278,7 @@ svo.startedfighting("dragon", multimatches[2][2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>In a single, sinuous motion,</string>
-						<string>^In a single, sinuous motion, (\w+) manoeuvres (?:his|her) imposing form to encircle your feet, fixing you with a penetrating gaze as (?:his|her) tremendous jaws open wide\.$</string>
+						<string>^In a single, sinuous motion, (\w+) manoeuvres \w+ imposing form to encircle your feet, fixing you with a penetrating gaze as \w+ tremendous jaws open wide\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -41325,7 +41325,7 @@ svo.startedfighting("dragon", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) snaps (?:his|her) massive jaws close around you, flinging you effortlessly into the air before catching you with a second powerful bite\.$</string>
+						<string>^(\w+) snaps \w+ massive jaws close around you, flinging you effortlessly into the air before catching you with a second powerful bite\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -41639,7 +41639,7 @@ svo.startedfighting("dragon", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ calls upon Whiirh and strikes you with (?:her|his) staff, the power of air dispersing your aura of rebounding\.$</string>
+						<string>^\w+ calls upon Whiirh and strikes you with \w+ staff, the power of air dispersing your aura of rebounding\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -41659,7 +41659,7 @@ svo.startedfighting("dragon", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ calls upon Whiirh and strikes you with (?:her|his) staff, throwing you down with a gust of wind\.$</string>
+						<string>^\w+ calls upon Whiirh and strikes you with \w+ staff, throwing you down with a gust of wind\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -41771,7 +41771,7 @@ svo.startedfighting("dragon", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ gestures grandly, and causes a deepfreeze to settle over (?:his|her) enemies\.$</string>
+						<string>^\w+ gestures grandly, and causes a deepfreeze to settle over \w+ enemies\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -41814,7 +41814,7 @@ svo.givewarning({
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>Lunging forward with one palm outstretched,</string>
-						<string>^Lunging forward with one palm outstretched, (\w+) aims a blow at your heart\. A warm pulse accompanies (?:her|his) attack, leaving a dull ache in your chest\.$</string>
+						<string>^Lunging forward with one palm outstretched, (\w+) aims a blow at your heart\. A warm pulse accompanies \w+ attack, leaving a dull ache in your chest\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -41882,7 +41882,7 @@ svo.givewarning({
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>With a swipe of</string>
-						<string>^With a swipe of (?:his|her) arm, \w+ sends two barbed vines slicing through the air toward your throat\.$</string>
+						<string>^With a swipe of \w+ arm, \w+ sends two barbed vines slicing through the air toward your throat\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -42244,7 +42244,7 @@ svo.startedfighting("druid", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ swings (?:her|his) quarterstaff with all (?:her|his) might, generating a great wind\.$</string>
+						<string>^\w+ swings \w+ quarterstaff with all \w+ might, generating a great wind\.$</string>
 						<string>The wave of force knocks you to the ground.</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -42268,7 +42268,7 @@ svo.startedfighting("druid", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) viciously smashes (?:his|her) quarterstaff into your legs, sending you sprawling\.$</string>
+						<string>^(\w+) viciously smashes \w+ quarterstaff into your legs, sending you sprawling\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -42482,7 +42482,7 @@ svo.startedfighting("priest", multimatches[2][2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>With a grand gesture of righteous fury,</string>
-						<string>^With a grand gesture of righteous fury, (\w+) bedevils you with (?:his|her) afflictions\.$</string>
+						<string>^With a grand gesture of righteous fury, (\w+) bedevils you with \w+ afflictions\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -42873,7 +42873,7 @@ svo.startedfighting("monk", multimatches[2][2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) bows (?:his|her) head in silent prayer\.$</string>
+						<string>^(\w+) bows \w+ head in silent prayer\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -42897,7 +42897,7 @@ svo.startedfighting("monk", multimatches[2][2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) slowly raises (?:his|her) head and you see (?:his|her) eyes glowing bright white\.$</string>
+						<string>^(\w+) slowly raises \w+ head and you see \w+ eyes glowing bright white\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -42920,7 +42920,7 @@ svo.startedfighting("monk", multimatches[2][2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) turns to face \w+, eyes glowing ominously\. Two radiant arcs of white lightning dart forth from them, enveloping \w+ who screams and slowly dies as s?he is burned alive\.$</string>
+						<string>^(\w+) turns to face \w+, eyes glowing ominously\. Two radiant arcs of white lightning dart forth from them, enveloping \w+ who screams and slowly dies as \w+ is burned alive\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -42949,7 +42949,7 @@ svo.givewarning_multi({
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>glowing white nimbus</string>
-						<string>([^\.]+) is here(?:\.|, sleeping soundly\.|, shrouded\.) (?:She|He) is surrounded by a glowing white nimbus\.</string>
+						<string>([^\.]+) is here(?:\.|, sleeping soundly\.|, shrouded\.) \w+ is surrounded by a glowing white nimbus\.</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>0</integer>
@@ -42986,7 +42986,7 @@ svo.givewarning_multi({
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ inhales deeply, then lets out an earth\-shaking roar as a jet of white\-hot fire shoots from (?:his|her) nostrils directly at you\.$</string>
+						<string>^\w+ inhales deeply, then lets out an earth\-shaking roar as a jet of white\-hot fire shoots from \w+ nostrils directly at you\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -43029,7 +43029,7 @@ svo.givewarning_multi({
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>Opening</string>
-						<string>^Opening (?:his|her) great maw, \w+ envelopes you with a glacial plume of freezing air\.$</string>
+						<string>^Opening \w+ great maw, \w+ envelopes you with a glacial plume of freezing air\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -43050,7 +43050,7 @@ svo.givewarning_multi({
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ directs (?:her|his) searing gaze towards you\.$</string>
+						<string>^\w+ directs \w+ searing gaze towards you\.$</string>
 						<string>^Your (.+) defence is stripped away\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -43073,7 +43073,7 @@ svo.valid.simpleprone()</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ tramples over you with (?:his|her) enormous body\.$</string>
+						<string>^\w+ tramples over you with \w+ enormous body\.$</string>
 						<string>^You feel your (right|left) (arm|leg) snap\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -43096,7 +43096,7 @@ if svo.affl.prone then svo.valid.proper_stun() end</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ raises (?:his|her) trunk into the air and trumpets mightily, knocking you to the ground\.$</string>
+						<string>^\w+ raises \w+ trunk into the air and trumpets mightily, knocking you to the ground\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -43158,7 +43158,7 @@ if svo.affl.prone then svo.valid.proper_stun() end</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ sucks in a huge lungful of air and blasts (?:his|her) fiery breath at you\. You scream in agony as the horrific flames crackle over your melting flesh\.$</string>
+						<string>^\w+ sucks in a huge lungful of air and blasts \w+ fiery breath at you\. You scream in agony as the horrific flames crackle over your melting flesh\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -43178,7 +43178,7 @@ if svo.affl.prone then svo.valid.proper_stun() end</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) unleashes a reckless burst of white-hot flames, creating a roaring inferno about (?:his|her) person\.$</string>
+						<string>^(\w+) unleashes a reckless burst of white-hot flames, creating a roaring inferno about \w+ person\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -43475,7 +43475,7 @@ svo.valid["simplecrippled"..matches[4]..matches[5]]()</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ begins to chant darkly and crusty green sores coat (?:his|her) hands\. (?:He|She) begins to flail (?:his|her) arms wildly and one of (?:his|her) hands brushes your skin\. Immediately, your (left|right) (arm|leg) and (left|right) (arm|leg) shrivel up in response\.$</string>
+						<string>^\w+ begins to chant darkly and crusty green sores coat \w+ hands\. \w+ begins to flail \w+ arms wildly and one of \w+ hands brushes your skin\. Immediately, your (left|right) (arm|leg) and (left|right) (arm|leg) shrivel up in response\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -43851,7 +43851,7 @@ svo.startedfighting("occultist", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) makes a sudden, quick gesture in front of you, almost hitting your nose\. (?:His|Her) hand glows with a vibrant violet light before snapping back to (?:her|his) side\.$</string>
+						<string>^(\w+) makes a sudden, quick gesture in front of you, almost hitting your nose\. \w+ hand glows with a vibrant violet light before snapping back to \w+ side\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -43873,7 +43873,7 @@ svo.startedfighting("occultist", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) passes (?:his|her) hand in front of you\. You feel an invisible claw brush the back of your skull\.$</string>
+						<string>^(\w+) passes \w+ hand in front of you\. You feel an invisible claw brush the back of your skull\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -44056,7 +44056,7 @@ svo.valid.proper_impatience()</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ does a back handspring to the \w+, striking you with (?:his|her) feet on the way out\.$</string>
+						<string>^\w+ does a back handspring to the \w+, striking you with \w+ feet on the way out\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -44132,7 +44132,7 @@ svo.givewarning({
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ slams into you, knocking you to the ground as (?:his|her) feet slam into your chest\.$</string>
+						<string>^\w+ slams into you, knocking you to the ground as \w+ feet slam into your chest\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -44174,7 +44174,7 @@ svo.startedfighting("jester", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) reaches out and bops you on the nose with (?:her|his) blackjack\.$</string>
+						<string>^(\w+) reaches out and bops you on the nose with \w+ blackjack\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -44737,7 +44737,7 @@ svo.startedfighting("shaman", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+)'s eyes flutter and close as s?he begins to rock back and forth, chanting ominously under (?:his|her) breath\.$</string>
+						<string>^(\w+)'s eyes flutter and close as \w+ begins to rock back and forth, chanting ominously under \w+ breath\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -44926,7 +44926,7 @@ svo.givewarning({
 						<string>^(\w+) quickly trusses you up\.$</string>
 						<string>^Agony radiates out from the point of impact as (\w+) brings the haft of .+? down upon your head with crushing force\.$</string>
 						<string>^(\w+) savagely gouges into you with .+?\.$</string>
-						<string>^(\w+) locks (?:her|his) unnatural gaze to yours, and a terrible pressure begins to build behind your eyes\.$</string>
+						<string>^(\w+) locks \w+ unnatural gaze to yours, and a terrible pressure begins to build behind your eyes\.$</string>
 						<string>^(\w+) lays open your flesh with an expert lateral slice with .+?\.$</string>
 						<string>^Terrible pain radiates from the weapon impaling you as (\w+) gives it a violent twist\.$</string>
 						<string>^(\w+) viciously lacerates you with .+?\.$</string>
@@ -45090,7 +45090,7 @@ svo.valid.limb_hit(matches[3], "skirmish doublestrike")</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>The eyes of</string>
-						<string>^The eyes of (\w+) go out of focus for a moment as (?:her|his) mouth falls wide, a terrible, unearthly sound rippling forth\.$</string>
+						<string>^The eyes of (\w+) go out of focus for a moment as \w+ mouth falls wide, a terrible, unearthly sound rippling forth\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -45134,7 +45134,7 @@ svo.startedfighting("shaman", matches[2])
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) grows very still for a moment, before (?:her|his) eyes snap wide open and you feel something icy wrap about your limbs, binding you in place\.$</string>
+						<string>^(\w+) grows very still for a moment, before \w+ eyes snap wide open and you feel something icy wrap about your limbs, binding you in place\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -45392,7 +45392,7 @@ svo.startedfighting("priest", multimatches[1][2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) swings the crackling mace about (?:his|her) head, gathering momentum as s?he bears down on you\.$</string>
+						<string>^(\w+) swings the crackling mace about \w+ head, gathering momentum as \w+ bears down on you\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -45416,7 +45416,7 @@ svo.startedfighting("priest", multimatches[1][2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+)'s mace begins to make a high-pitched keening sound as it rapidly spins over (?:his|her) head\. You have only moments left to escape before you are judged!$</string>
+						<string>^(\w+)'s mace begins to make a high-pitched keening sound as it rapidly spins over \w+ head\. You have only moments left to escape before you are judged!$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -45738,7 +45738,7 @@ svo.startedfighting("blademaster", multimatches[2][2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>Icy vapour escapes from </string>
-						<string>^Icy vapour escapes from (\w+)'s clenched fist as s?he aims a blow towards you\.$</string>
+						<string>^Icy vapour escapes from (\w+)'s clenched fist as \w+ aims a blow towards you\.$</string>
 						<string>A thin rime of ice encases your body, numbing your extremities.</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -45789,7 +45789,7 @@ svo.startedfighting("blademaster", multimatches[1][2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(?:His|Her) eyes dark and expression blank, (\w+) strikes you a hollow blow\.$</string>
+						<string>^\w+ eyes dark and expression blank, (\w+) strikes you a hollow blow\.$</string>
 						<string>The emptiness of the void clutches at your soul.</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -45866,7 +45866,7 @@ svo.startedfighting("blademaster", multimatches[2][2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>As </string>
-						<string>^As (\w+) draws \w+ \w+ from its scabbard, s?he drives the pommel into your chin\.$</string>
+						<string>^As (\w+) draws \w+ \w+ from its scabbard, \w+ drives the pommel into your chin\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -45937,7 +45937,7 @@ svo.startedfighting("blademaster", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) darts to your mount's flank in a rapid dash\. Grabbing your ankle and executing a graceful twist, s?he sends you tumbling from the saddle\.$</string>
+						<string>^(\w+) darts to your mount's flank in a rapid dash\. Grabbing your ankle and executing a graceful twist, \w+ sends you tumbling from the saddle\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -45985,7 +45985,7 @@ svo.startedfighting("blademaster", multimatches[2][2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>Fists clenched,</string>
-						<string>^Fists clenched, (\w+) focuses on you with a deadly look in (?:his|her) eyes\.$</string>
+						<string>^Fists clenched, (\w+) focuses on you with a deadly look in \w+ eyes\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -46014,7 +46014,7 @@ svo.startedfighting("blademaster", multimatches[2][2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>Leaping forwards with lightning speed, </string>
-						<string>^Leaping forwards with lightning speed, (\w+) strikes you in the chest with a single, powerful blow\. Its rhythm interrupted by (?:his|her) precise attack, your heartbeat begins to fluctuate erratically, a painful pressure building in your arteries\.$</string>
+						<string>^Leaping forwards with lightning speed, (\w+) strikes you in the chest with a single, powerful blow\. Its rhythm interrupted by \w+ precise attack, your heartbeat begins to fluctuate erratically, a painful pressure building in your arteries\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -46199,7 +46199,7 @@ svo.startedfighting("serpent", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) sinks (?:her|his) fangs into your body and you wince in pain\.$</string>
+						<string>^(\w+) sinks \w+ fangs into your body and you wince in pain\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -46219,8 +46219,8 @@ svo.startedfighting("serpent", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) pricks you twice in rapid succession with (?:his|her) dirk\.?$</string>
-						<string>^(\w+) quickly pricks you with (?:his|her) dirk\.$</string>
+						<string>^(\w+) pricks you twice in rapid succession with \w+ dirk\.?$</string>
+						<string>^(\w+) quickly pricks you with \w+ dirk\.$</string>
 						<string>^Striking like a snake, (\w+) follows the first attack with another\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -46243,7 +46243,7 @@ svo.startedfighting("serpent", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ sinks (?:her|his) fangs into your body and you wince in pain\.$</string>
+						<string>^\w+ sinks \w+ fangs into your body and you wince in pain\.$</string>
 						<string>You scream out in agony as a vicious venom tears through your body.</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -46265,7 +46265,7 @@ svo.startedfighting("serpent", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ sinks (?:her|his) fangs into your body and you wince in pain\.$</string>
+						<string>^\w+ sinks \w+ fangs into your body and you wince in pain\.$</string>
 						<string>You gasp as a terrible aching strikes all your limbs.</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -46383,7 +46383,7 @@ svo.startedfighting("serpent", multimatches[2][2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>With a pop of</string>
-						<string>^With a pop of (?:his|her) knuckles, (\w+) buries (?:his|her) foot under your back and flips you overonto your stomach\.$</string>
+						<string>^With a pop of \w+ knuckles, (\w+) buries \w+ foot under your back and flips you overonto your stomach\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -46411,7 +46411,7 @@ svo.startedfighting("serpent", multimatches[2][2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>Holding your head up</string>
-						<string>^Holding your head up, (\w+) snaps (?:his|her) wrist, sending (?:his|her) whip to wrap around your neck\. (?:He|She) casually places (?:his|her) foot upon the small of your back and jerks the whip viciously backwards so that it bites deeply into your throat\. Blood streams down from your shattered windpipe as you gasp uselessly for air\.$</string>
+						<string>^Holding your head up, (\w+) snaps \w+ wrist, sending \w+ whip to wrap around your neck\. \w+ casually places \w+ foot upon the small of your back and jerks the whip viciously backwards so that it bites deeply into your throat\. Blood streams down from your shattered windpipe as you gasp uselessly for air\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -46515,7 +46515,7 @@ svo.valid.simpleprone()</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>You writhe and scream as</string>
-						<string>^You writhe and scream as s?he drives the cruel blade deep into your side\.$</string>
+						<string>^You writhe and scream as \w+ drives the cruel blade deep into your side\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -46563,7 +46563,7 @@ svo.startedfighting("bard", multimatches[2][2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>You're knocked to the ground by the impact of</string>
-						<string>^You're knocked to the ground by the impact of (\w+)'s feet\. Your surprise is quickly supplanted by pain as s?he skewers you like a wild boar\.$</string>
+						<string>^You're knocked to the ground by the impact of (\w+)'s feet\. Your surprise is quickly supplanted by pain as \w+ skewers you like a wild boar\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -46665,7 +46665,7 @@ svo.startedfighting("bard", multimatches[2][2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ does a back handspring to the \w+, striking you with (?:his|her) feet on the way out\.$</string>
+						<string>^\w+ does a back handspring to the \w+, striking you with \w+ feet on the way out\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -46687,7 +46687,7 @@ svo.startedfighting("bard", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) lightly strikes the side of your head with (?:his|her) rapier, restoring your hearing\.$</string>
+						<string>^(\w+) lightly strikes the side of your head with \w+ rapier, restoring your hearing\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -46707,7 +46707,7 @@ svo.startedfighting("bard", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ slams into you, knocking you to the ground as (?:his|her) feet slam into your chest\.$</string>
+						<string>^\w+ slams into you, knocking you to the ground as \w+ feet slam into your chest\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -46891,7 +46891,7 @@ svo.startedfighting("bard", svo.potential_bard)</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^[A-Z].+ stands a tarot on (?:his|her) open palm, and blows it lightly at you\. Suddenly your movement through the time stream is slowed\.$</string>
+						<string>^[A-Z].+ stands a tarot on \w+ open palm, and blows it lightly at you\. Suddenly your movement through the time stream is slowed\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -46952,7 +46952,7 @@ svo.startedfighting("bard", svo.potential_bard)</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>Justice is dealt out and your attack rebounds onto you.</string>
-						<string>^\w+ bows (?:his|her) head and mutters something, then flings a tarot card at you\. A set of scales appears above your head and one side of the scale quickly descends\. You have a bad feeling about this\.$</string>
+						<string>^\w+ bows \w+ head and mutters something, then flings a tarot card at you\. A set of scales appears above your head and one side of the scale quickly descends\. You have a bad feeling about this\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>3</integer>
@@ -46973,7 +46973,7 @@ svo.startedfighting("bard", svo.potential_bard)</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) throws a Lovers tarot at you and as it strikes true, you fall hopelessly in love with (?:him|her)\.$</string>
+						<string>^(\w+) throws a Lovers tarot at you and as it strikes true, you fall hopelessly in love with \w+\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -47041,7 +47041,7 @@ svo.startedfighting("bard", svo.potential_bard)</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) quickly flings a tarot card at you, and you feel unreasonable lust for (?:him|her)\.$</string>
+						<string>^(\w+) quickly flings a tarot card at you, and you feel unreasonable lust for \w+\.$</string>
 						<string>^You feel an unusually strong lust for (\w+)(\.| \(M\)\.)$</string>
 						<string>^As your gaze falls upon the depiction, an insatiable lust for the glorious (\w+) comes over you.$</string>
 					</regexCodeList>
@@ -47065,8 +47065,8 @@ svo.startedfighting("bard", svo.potential_bard)</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ shuffles some cards with the image of the Aeon out of (?:his|her) deck\.$</string>
-						<string>^\w+ rubs (?:his|her) fingers briskly on a Tarot card\.$</string>
+						<string>^\w+ shuffles some cards with the image of the Aeon out of \w+ deck\.$</string>
+						<string>^\w+ rubs \w+ fingers briskly on a Tarot card\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -47087,7 +47087,7 @@ svo.startedfighting("bard", svo.potential_bard)</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ shuffles some cards with the image of Lust out of (?:his|her) deck\.$</string>
+						<string>^\w+ shuffles some cards with the image of Lust out of \w+ deck\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -47152,7 +47152,7 @@ svo.startedfighting("monk", matches[2])</script>
 						<string>^(\w+) knocks your legs out from under you and sends you sprawling to the floor\.$</string>
 						<string>^(\w+) moves in and delivers a precision strike to your neck as you attack\.$</string>
 						<string>^(\w+) violently grabs your already damaged \w+ \w+, wrenches you off balance, then throws you violently to the ground\.$</string>
-						<string>^Your only warning of the impending danger is a great shout from (\w+) as s?he comes launching up from below\. Then (?:his|her) heel drives into your chest with shocking power, driving you back to the earth below with bone jarring force\.$</string>
+						<string>^Your only warning of the impending danger is a great shout from (\w+) as \w+ comes launching up from below\. Then \w+ heel drives into your chest with shocking power, driving you back to the earth below with bone jarring force\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -47201,7 +47201,7 @@ svo.startedfighting("monk", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) twists (?:his|her) torso and sends a roundhouse towards you\.$</string>
+						<string>^(\w+) twists \w+ torso and sends a roundhouse towards you\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -47323,7 +47323,7 @@ svo.startedfighting("monk", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) throws h(?:is|er) palm towards your face\.$</string>
+						<string>^(\w+) throws \w+ palm towards your face\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -47866,7 +47866,7 @@ svo.startedfighting("blademaster", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ draws (?:his|her) blade back and plunges it deep into your helpless body impaling it to the hilt\.$</string>
+						<string>^\w+ draws \w+ blade back and plunges it deep into your helpless body impaling it to the hilt\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -47887,7 +47887,7 @@ svo.startedfighting("blademaster", matches[2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>With a snarl of contempt,</string>
-						<string>^With a snarl of contempt, \w+ allows you to slide free of (?:her|his) weapon\.$</string>
+						<string>^With a snarl of contempt, \w+ allows you to slide free of \w+ weapon\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -47997,7 +47997,7 @@ svo.startedfighting("blademaster", multimatches[2][3])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>Spinning to the</string>
-						<string>^Spinning to the (left|right) as s?he draws \w+ \w+ from its sheath, (\w+) delivers a precise slash across your arms\.$</string>
+						<string>^Spinning to the (left|right) as \w+ draws \w+ \w+ from its sheath, (\w+) delivers a precise slash across your arms\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -48042,7 +48042,7 @@ svo.startedfighting("blademaster", multimatches[2][2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) unleashes a vicious slash towards you before resheathing (?:his|her) blade, \w+ \w+\.$</string>
+						<string>^(\w+) unleashes a vicious slash towards you before resheathing \w+ blade, \w+ \w+\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -48389,7 +48389,7 @@ end</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ waves (?:his|her) hands quickly in front of the eyes of a (?:Vodun doll|puppet) of (\w+)\.$</string>
+						<string>^\w+ waves \w+ hands quickly in front of the eyes of a (?:Vodun doll|puppet) of (\w+)\.$</string>
 						<string>return line:find(svo.me.name, 1, true) and true or false</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -48497,7 +48497,7 @@ end</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) looks at your eyes and makes some alterations to (?:his|her) puppet\.$</string>
+						<string>^(\w+) looks at your eyes and makes some alterations to \w+ puppet\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -48621,7 +48621,7 @@ end</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) looks at your eyes and makes some alterations to (?:his|her) doll\.$</string>
+						<string>^(\w+) looks at your eyes and makes some alterations to \w+ doll\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -49270,7 +49270,7 @@ svo.startedfighting("bard", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(?:His|Her) eyes gleaming, (\w+) smiles and quickly sings a jaunty limerick at you\.$</string>
+						<string>^\w+ eyes gleaming, (\w+) smiles and quickly sings a jaunty limerick at you\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -49466,7 +49466,7 @@ end</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) masterfully adds heavier, darker tones to (?:his|her) song, which rises and falls with a melancholy rhythm\.$</string>
+						<string>^(\w+) masterfully adds heavier, darker tones to \w+ song, which rises and falls with a melancholy rhythm\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -49608,7 +49608,7 @@ svo.startedfighting("sentinel", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) cocks back (?:his|her) arm and throws a throwing axe at your (.+)\.$</string>
+						<string>^(\w+) cocks back \w+ arm and throws a throwing axe at your (.+)\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -49812,7 +49812,7 @@ svo.valid.simplelethargy()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(\w+) falls upon you with both of (?:her|his) weapons whirling, viciously assaulting your (.+?)\.$</string>
+							<string>^(\w+) falls upon you with both of \w+ weapons whirling, viciously assaulting your (.+?)\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -49856,7 +49856,7 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^\w+ falls upon you with both of (?:her|his) weapons whirling, viciously assaulting your head\.$</string>
+							<string>^\w+ falls upon you with both of \w+ weapons whirling, viciously assaulting your head\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -50111,8 +50111,8 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^\w+ draws back (?:his|her) warhammer, then unleashes a precise blow that smashes into your arms with bone cracking force\.$</string>
-							<string>^\w+ launches a devastating slash at your already injured arms, (?:his|her) blade cleaving to the bone\.$</string>
+							<string>^\w+ draws back \w+ warhammer, then unleashes a precise blow that smashes into your arms with bone cracking force\.$</string>
+							<string>^\w+ launches a devastating slash at your already injured arms, \w+ blade cleaving to the bone\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -50177,8 +50177,8 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^\w+ launches a devastating slash at your already injured legs, (?:his|her) blade cleaving to the bone\.$</string>
-							<string>^\w+ draws back (?:his|her) warhammer, then unleashes a precise blow that smashes into your legs with bone cracking force\.$</string>
+							<string>^\w+ launches a devastating slash at your already injured legs, \w+ blade cleaving to the bone\.$</string>
+							<string>^\w+ draws back \w+ warhammer, then unleashes a precise blow that smashes into your legs with bone cracking force\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -50339,7 +50339,7 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^\w+ drives the edge of (?:her|his) shield into your throat, cutting off your air supply\.$</string>
+							<string>^\w+ drives the edge of \w+ shield into your throat, cutting off your air supply\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -50359,7 +50359,7 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^\w+ ducks low and smashes (?:her|his) shield into your knees, causing them to buckle underneath you\.$</string>
+							<string>^\w+ ducks low and smashes \w+ shield into your knees, causing them to buckle underneath you\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -50379,7 +50379,7 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^\w+ brings (?:her|his) shield crashing down onto your sternum, stunning you!</string>
+							<string>^\w+ brings \w+ shield crashing down onto your sternum, stunning you!</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -50670,7 +50670,7 @@ svo.startedfighting("sylvan", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) clicks (?:his|her) fingers and a brilliant flash of light bursts forth, restoring your vision\.$</string>
+						<string>^(\w+) clicks \w+ fingers and a brilliant flash of light bursts forth, restoring your vision\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -50692,7 +50692,7 @@ svo.startedfighting("sylvan", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) clicks (?:his|her) fingers at you and a brilliant flash of light bursts forth, transfixing you with its brilliance\.$</string>
+						<string>^(\w+) clicks \w+ fingers at you and a brilliant flash of light bursts forth, transfixing you with its brilliance\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -50712,7 +50712,7 @@ svo.startedfighting("sylvan", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) raises (?:his|her) hands above (?:his|her) head, gaze focused intently upon you\. Moments later, a single lightning bolt streaks down from above, slamming into you with an explosion of brilliant power\.$</string>
+						<string>^(\w+) raises \w+ hands above \w+ head, gaze focused intently upon you\. Moments later, a single lightning bolt streaks down from above, slamming into you with an explosion of brilliant power\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -50902,7 +50902,7 @@ svo.startedfighting("sylvan", matches[2])</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) negligently waves (?:his|her) hand in your direction, conjuring forth a hailstone which strikes you sharply in the side of the head\.$</string>
+						<string>^(\w+) negligently waves \w+ hand in your direction, conjuring forth a hailstone which strikes you sharply in the side of the head\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -50983,7 +50983,7 @@ svo.startedfighting("sylvan", matches[2])</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>Drawing</string>
-						<string>^Drawing (?:him|her)self up to (?:his|her) full height, (\w+) throws (?:his|her) arms wide\. The clouds above roil, then bolt after bolt of incandescent lightning falls upon you\. The world becomes nothing but light and pain\.$</string>
+						<string>^Drawing \w+ up to \w+ full height, (\w+) throws \w+ arms wide\. The clouds above roil, then bolt after bolt of incandescent lightning falls upon you\. The world becomes nothing but light and pain\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -52108,7 +52108,7 @@ svo.givewarning_multi({
 						<regexCodeList>
 							<string>The beginnings of a fiery portal appear before you.</string>
 							<string>A fiery portal opens in the air before you.</string>
-							<string>^\w+ draws a circle in the air with (?:his|her) wand, and a fiery outline appears\.$</string>
+							<string>^\w+ draws a circle in the air with \w+ wand, and a fiery outline appears\.$</string>
 							<string>A gateway of light blazes into existence before your eyes.</string>
 							<string>Gray feathers begin to swirl into the shape of an arched portal before you.</string>
 							<string>With a final burst, the feathers swirl into the shape of an archway and a portal opens within.</string>
@@ -52587,7 +52587,7 @@ deselect() resetFormat()</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^(?:Her|His) health is at (\d+) out of (\d+)\.$</string>
+								<string>^\w+ health is at (\d+) out of (\d+)\.$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -52616,7 +52616,7 @@ fg("a_darkgrey") echo(" " .. percent .. "% mana") resetFormat()</script>
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^(?:Her|His) mana is at (\d+) out of (\d+)\.$</string>
+								<string>^\w+ mana is at (\d+) out of (\d+)\.$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -52653,7 +52653,7 @@ deselect() resetFormat()</script>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>You glance over</string>
-							<string>^You glance over \w+ and see that (?:his|her) health is at (\d+)/(\d+)\.$</string>
+							<string>^You glance over \w+ and see that \w+ health is at (\d+)/(\d+)\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>2</integer>
@@ -53319,7 +53319,7 @@ svo.updatemeteors()</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^(\w+) stands, wide-eyed with terror, as the blazing sphere slams into (?:his|her) body, burning (?:him|her) horribly\.$</string>
+							<string>^(\w+) stands, wide-eyed with terror, as the blazing sphere slams into \w+ body, burning \w+ horribly\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -53398,7 +53398,7 @@ end)</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(\w+) howls in pain as thorny vines lash out at (?:him|her) from all sides\.$</string>
+						<string>^(\w+) howls in pain as thorny vines lash out at \w+ from all sides\.$</string>
 						<string>You howl in pain as thorny vines lash out at you from all sides.</string>
 					</regexCodeList>
 					<regexCodePropertyList>
@@ -53428,7 +53428,7 @@ end)</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>With almost magical swiftness, a snarling wolf leaps out at</string>
-						<string>^With almost magical swiftness, a snarling wolf leaps out at (\w+), rakes its claws across (?:his|her) face, and disappears into the surrounding forest\.$</string>
+						<string>^With almost magical swiftness, a snarling wolf leaps out at (\w+), rakes its claws across \w+ face, and disappears into the surrounding forest\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -53479,7 +53479,7 @@ end)</script>
 						<string>^\w+ suddenly inhales deeply\.$</string>
 						<string>^\w+ exhales loudly\.$</string>
 						<string>^\w+ exhales softly\.$</string>
-						<string>^\w+ inhales and begins holding (?:her|his) breath\.$</string>
+						<string>^\w+ inhales and begins holding \w+ breath\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>
@@ -53514,11 +53514,11 @@ end)</script>
 						<string>You stride to the tipmost of the ship's bow and reach out to place your hands upon the ship's figurehead. Throwing back your head and closing your eyes, you focus and send your energy flowing into</string>
 						<string>As you touch the crystal tattoo, you feel your wounds melt away.</string>
 						<string>Your surroundings shatter into a cloud of glowing stars which dissipate to leave you back where you began.</string>
-						<string>^You extend your palms towards \w+ and in an instant, a stream of radiant light pours forth to engulf (?:her|him)\. Within seconds the shining aura fades and \w+ stands alive again before you\.$</string>
+						<string>^You extend your palms towards \w+ and in an instant, a stream of radiant light pours forth to engulf \w+\. Within seconds the shining aura fades and \w+ stands alive again before you\.$</string>
 						<string>You raise your hands, palm outward, and focus. A patch of air before you begins to shimmer with a pale light while swirling inward, channeled through the ether towards</string>
 						<string>You call upon the power of the elements to extend the life of your vibrations.</string>
 						<string>Your draconic form melts away, leaving you suddenly weaker and more vulnerable.</string>
-						<string>^Thrusting at \w+'s chest with a blade hand outstretched, you release an unmitigated torrent of Shin energy upon (?:him|her), and s?he crumples helplessly\.$</string>
+						<string>^Thrusting at \w+'s chest with a blade hand outstretched, you release an unmitigated torrent of Shin energy upon \w+, and \w+ crumples helplessly\.$</string>
 						<string>You are in perfect health.</string>
 						<string>With a thought you project your power into the heart of your angel guardian.</string>
 						<string>You weave a layer of protective magic about your open elemental channels.</string>
@@ -53538,7 +53538,7 @@ end)</script>
 						<string>Drawing upon considerable reserves of karma, you bow your head in deep concentration, suddenly transmogrifying your aura into pure chaotic energy and preparing your body for the ultimate transformation.</string>
 						<string>Your attempt to reach through the ether is deflected by a monolith sigil. </string>
 						<string>You raise your hands, palm outward, and focus. A patch of air before you begins to shimmer with a pale light while swirling inward, channeled through the ether towards</string>
-						<string>^You take the hand of \w+ and clasp your own hands around it. You stare deep into (?:her|his) eyes, summoning forth the karmic knowledge deep within you and willing it towards (?:her|him)\.$</string>
+						<string>^You take the hand of \w+ and clasp your own hands around it. You stare deep into \w+ eyes, summoning forth the karmic knowledge deep within you and willing it towards \w+\.$</string>
 						<string>You begin to undulate and hiss, attempting to attract a snake.</string>
 						<string>With a powerful bellow, your Baalzadeen inspires those around you into a fury.</string>
 					</regexCodeList>
@@ -53883,7 +53883,7 @@ end</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^\w+ fixes (?:his|her) gaze to yours, raising (?:his|her) right hand, before sharply snapping (?:his|her) fingers\.$</string>
+						<string>^\w+ fixes \w+ gaze to yours, raising \w+ right hand, before sharply snapping \w+ fingers\.$</string>
 						<string>You feel a sudden flush of heat as your heart begins to pound eratically.</string>
 					</regexCodeList>
 					<regexCodePropertyList>
