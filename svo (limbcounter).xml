@@ -35,7 +35,7 @@ end</script>
 				<colorTriggerFgColor>#000000</colorTriggerFgColor>
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList>
-					<string>^(\w+) takes some salve from a vial and rubs it on (?:his|her) (.+?)\.$</string>
+					<string>^(\w+) takes some salve from a vial and rubs it on \w+ (.+?)\.$</string>
 				</regexCodeList>
 				<regexCodePropertyList>
 					<integer>1</integer>
@@ -57,7 +57,7 @@ svo.lc_ignore()</script>
 				<colorTriggerBgColor>#000000</colorTriggerBgColor>
 				<regexCodeList>
 					<string>^\w+ dodges nimbly out of the way\.$</string>
-					<string>^\w+ twists (?:his|her) body out of harm's way\.$</string>
+					<string>^\w+ twists \w+ body out of harm's way\.$</string>
 					<string>^\w+ parries the attack with a deft manoeuvre\.$</string>
 					<string>^\w+ steps into the attack, grabs your arm, and throws you violently to the ground\.$</string>
 					<string>^\w+ quickly jumps back, avoiding the attack\.$</string>
@@ -148,7 +148,7 @@ echo"\n" svo.echof("My guess would be %d hits.", hits)</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>You glance over</string>
-						<string>^You glance over \w+ and see that (?:his|her) health is at \d+/(\d+)\.$</string>
+						<string>^You glance over \w+ and see that \w+ health is at \d+/(\d+)\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -369,7 +369,7 @@ echo"\n" svo.echof("My guess would be %d hits.", hits)</script>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>You lash out at</string>
-							<string>^You lash out at (\w+)'s (.+?) with .+?, flaying (?:her|his) flesh\.$</string>
+							<string>^You lash out at (\w+)'s (.+?) with .+?, flaying \w+ flesh\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>2</integer>
@@ -822,7 +822,7 @@ svo.lc_hit(multimatches[2][2], multimatches[2][3], hit)</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>You swiftly sweep </string>
-						<string>^You swiftly sweep (\w+)'s feet out from beneath (?:him|her) with .+? before driving the point of the weapon into (?:his|her) (.+?)\.$</string>
+						<string>^You swiftly sweep (\w+)'s feet out from beneath \w+ with .+? before driving the point of the weapon into \w+ (.+?)\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -844,7 +844,7 @@ svo.lc_hit(multimatches[2][2], multimatches[2][3], hit)</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>You deftly hook </string>
-						<string>^You deftly hook .+? behind (\w+)'s foot and send (?:him|her) tumbling off .+? before driving the point of the weapon into (?:his|her) (.+?)\.$</string>
+						<string>^You deftly hook .+? behind (\w+)'s foot and send \w+ tumbling off .+? before driving the point of the weapon into \w+ (.+?)\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -925,7 +925,7 @@ svo.echof("My guess would be Group 1: %s, Group 2: %s, Group 3: %s.", svo.lc_shi
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
 							<string>You glance over</string>
-							<string>^You glance over (\w+) and see that (?:his|her) health is at \d+/(\d+)\.$</string>
+							<string>^You glance over (\w+) and see that \w+ health is at \d+/(\d+)\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>2</integer>
@@ -1045,7 +1045,7 @@ svo.echof("My guess would be Group 1: %s, Group 2: %s, Group 3: %s.", svo.lc_shi
 							<colorTriggerFgColor>#000000</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>^Your foot catches (\w+) under the chin, snapping (?:his|her) head back.$</string>
+								<string>^Your foot catches (\w+) under the chin, snapping \w+ head back.$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
 								<integer>1</integer>
@@ -1092,7 +1092,7 @@ end</script>
 						<regexCodeList>
 							<string>You lash out with a straight kick at</string>
 							<string>1</string>
-							<string>^The instep of your foot smashes into the (\w+) underarm of (\w+), throwing (?:him|her) from (?:his|her) feet and sending (?:him|her) spinning to the ground.$</string>
+							<string>^The instep of your foot smashes into the (\w+) underarm of (\w+), throwing \w+ from \w+ feet and sending \w+ spinning to the ground.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>2</integer>
@@ -1140,7 +1140,7 @@ end</script>
 						<regexCodeList>
 							<string>Lunging forward, you drive the end of</string>
 							<string>1</string>
-							<string>^The breath of (\w+) leaves (?:him|her) in an explosive gasp as the end of the staff smashes home.$</string>
+							<string>^The breath of (\w+) leaves \w+ in an explosive gasp as the end of the staff smashes home.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>2</integer>
@@ -1252,7 +1252,7 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^You whip .+? at (\w+) in a controlled arc, bringing its length to crack against (?:his|her) (.+?) arm.$</string>
+							<string>^You whip .+? at (\w+) in a controlled arc, bringing its length to crack against \w+ (.+?) arm.$</string>
 							<string>1</string>
 							<string>^The staff connects to the (\w+) arm with a resounding crack, the limb flopping uselessly.$</string>
 						</regexCodeList>
@@ -1278,7 +1278,7 @@ end</script>
 						<regexCodeList>
 							<string>^You spin a full rotation, bringing .+? around in a blur of motion to smash into the (.+?) of (\w+).$</string>
 							<string>1</string>
-							<string>^(\w+) staggers as the staff cracks across (?:his|her) ribs, sweat breaking out upon (?:his|her) forehead.$</string>
+							<string>^(\w+) staggers as the staff cracks across \w+ ribs, sweat breaking out upon \w+ forehead.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -1300,9 +1300,9 @@ end</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^You whip .+? at (\w+) in a controlled arc, bringing its length to crack against (?:his|her) (.+?).$</string>
+							<string>^You whip .+? at (\w+) in a controlled arc, bringing its length to crack against \w+ (.+?).$</string>
 							<string>1</string>
-							<string>^(\w+) staggers as the staff cracks across (?:his|her) ribs, sweat breaking out upon (?:his|her) forehead.$</string>
+							<string>^(\w+) staggers as the staff cracks across \w+ ribs, sweat breaking out upon \w+ forehead.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -1823,7 +1823,7 @@ svo.echof("My guess would be %d hits.", hits)</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>You glance over</string>
-						<string>^You glance over \w+ and see that (?:his|her) health is at \d+/(\d+)\.$</string>
+						<string>^You glance over \w+ and see that \w+ health is at \d+/(\d+)\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -1918,7 +1918,7 @@ svo.lc_sethitsneeded(person, 5)</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>You glance over</string>
-						<string>^You glance over (\w+) and see that (?:his|her) health is at \d+/(\d+)\.$</string>
+						<string>^You glance over (\w+) and see that \w+ health is at \d+/(\d+)\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>
@@ -1991,7 +1991,7 @@ svo.lc_sethitsneeded(person, 4)</script>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
 						<string>You glance over</string>
-						<string>^You glance over (\w+) and see that (?:his|her) health is at \d+/(\d+)\.$</string>
+						<string>^You glance over (\w+) and see that \w+ health is at \d+/(\d+)\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>2</integer>

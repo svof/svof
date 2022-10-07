@@ -96,7 +96,7 @@ svo.locating.ents[#svo.locating.ents+1] = matches[2]</script>
 					<colorTriggerFgColor>#000000</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>^(?:She|He|You) is with (\w+)\.$</string>
+						<string>^\w+ is with (\w+)\.$</string>
 					</regexCodeList>
 					<regexCodePropertyList>
 						<integer>1</integer>

@@ -82,7 +82,7 @@ deselect()</script>
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList>
 				<string>You call upon Whiirh to empower your staff and strike</string>
-				<string>^You call upon Whiirh to empower your staff and strike (\w+), the power of air dispersing (?:her|his) aura of rebounding\.$</string>
+				<string>^You call upon Whiirh to empower your staff and strike (\w+), the power of air dispersing \w+ aura of rebounding\.$</string>
 			</regexCodeList>
 			<regexCodePropertyList>
 				<integer>2</integer>
@@ -198,7 +198,7 @@ deselect()</script>
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList>
 				<string>Planting your feet, you whirl </string>
-				<string>^Planting your feet, you whirl .+? over your head before bringing it down with terrible force upon (\w+), shattering (?:his|her) aura of rebounding\.$</string>
+				<string>^Planting your feet, you whirl .+? over your head before bringing it down with terrible force upon (\w+), shattering \w+ aura of rebounding\.$</string>
 			</regexCodeList>
 			<regexCodePropertyList>
 				<integer>2</integer>
@@ -221,7 +221,7 @@ svo.rt_razed = nil</script>
 			<colorTriggerFgColor>#000000</colorTriggerFgColor>
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList>
-				<string>^\w+ takes a long drag off (?:his|her)? ?.*pipe\.$|^A great gurgling sound is heard as \w+ takes a long drag from an enamel bubble pipe\. A series of shining bubbles erupt from the bowl of (?:her|his) pipe\.$</string>
+				<string>^\w+ takes a long drag off (?:\w+)? ?.*pipe\.$|^A great gurgling sound is heard as \w+ takes a long drag from an enamel bubble pipe\. A series of shining bubbles erupt from the bowl of \w+ pipe\.$</string>
 				<string>return (svo.rt_razed and line:find(svo.rt_name, 1, true)) and true or false</string>
 			</regexCodeList>
 			<regexCodePropertyList>
@@ -381,7 +381,7 @@ svo.rt_flayed = nil</script>
 			<colorTriggerFgColor>#000000</colorTriggerFgColor>
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList>
-				<string>^(\w+) applies a sileris berry to (?:him|her)self\.$</string>
+				<string>^(\w+) applies a sileris berry to \w+\.$</string>
 				<string>return (svo.rt_flayed and line:find(svo.rt_sname, 1, true)) and true or false</string>
 			</regexCodeList>
 			<regexCodePropertyList>
@@ -405,7 +405,7 @@ svo.rt_flayed = nil</script>
 			<colorTriggerFgColor>#000000</colorTriggerFgColor>
 			<colorTriggerBgColor>#000000</colorTriggerBgColor>
 			<regexCodeList>
-				<string>^(\w+) applies a quicksilver droplet to (?:him|her)self\.$</string>
+				<string>^(\w+) applies a quicksilver droplet to \w+\.$</string>
 				<string>return (svo.rt_flayed and line:find(svo.rt_sname, 1, true)) and true or false</string>
 			</regexCodeList>
 			<regexCodePropertyList>
