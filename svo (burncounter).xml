@@ -99,7 +99,7 @@
 					<integer>1</integer>
 				</regexCodePropertyList>
 			</Trigger>
-			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svobl Don't register</name>
 				<script>-- it's OK, the trigger is supposed to be off by default
 svo.bl_ignore()</script>
@@ -441,7 +441,8 @@ function svo.bl_show()
 end
 
 svo.echof("Loaded svo Magi burncounter.")
-end</script>
+end
+if svo.systemloaded then svo.loader.burncounter() end</script>
 				<eventHandlerList />
 			</Script>
 		</ScriptGroup>
