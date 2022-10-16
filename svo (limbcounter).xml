@@ -2617,13 +2617,14 @@ function svo.lc_prompttag3()
 end
 
 svo.adddefinition("@lc_prompttag3", "svo.lc_prompttag3()")
-end</script>
+end
+if svo.systemloaded then svo.loader.limbcounter() end</script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
 				<name>svo count show</name>
 				<packageName></packageName>
-				<script>svo.lc_counttable = {
+				<script>svo.lc_counttable = svo.lc_counttable or {
 	Runewarden = {
 		["Two Handed"] = {
 			[1] = {0, 1200},

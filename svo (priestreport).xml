@@ -525,7 +525,7 @@ end
 
 end -- end of svo priest reporter loader
 
---if svo.systemloaded then svo.loader.priestreporter() end</script>
+if svo.systemloaded then svo.loader.priestreporter() end</script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">

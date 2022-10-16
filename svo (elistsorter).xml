@@ -531,7 +531,8 @@ end, 'save vial configuration')
 if firstload then
   svo.echof("Loaded svo Elist Sorter, version %s.", tostring(svo.modules_version["svo (elistsorter)"]))
 end
-end</script>
+end
+if svo.systemloaded then svo.loader.elistsorter() end</script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
