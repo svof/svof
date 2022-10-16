@@ -19121,11 +19121,15 @@ echo'\n' svo.config.set("shipmode", "off", true)</script>
 							<string>You solemnly transfer the command of the ship</string>
 							<string>Ship configured for no prompt.</string>
 							<string>^You allow \d+ to assume command of the ship ".+?"\.$</string>
+							<string>You disembark the ship via the lowered gangplank.</string>
+							<string>A burly man lowers you to the ground below on a thick rope which he swiftly pulls up after you've let go.</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>2</integer>
 							<integer>3</integer>
 							<integer>1</integer>
+							<integer>3</integer>
+							<integer>3</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
