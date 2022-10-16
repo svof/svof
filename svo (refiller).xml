@@ -470,7 +470,7 @@ function svo.rf_fillnext()
   local pot = conf.potid
   if pot == "pot" and svo.rf_refillaction == "compound" then pot = "alembic" end
   if not svo.rf_refilling then return end
-  svo.sendc("pour ".. pot .. " in " .. config.containerid, svo.rf_debug)
+  svo.sendc("pour ".. pot .. " in " .. conf.containerid, svo.rf_debug)
 end
 
 function svo.rf_cancel()
@@ -559,6 +559,7 @@ function svo.rf_missingstuff()
   echo'\n' svo.echof("Ack, looks like you're out of enough ingredients. :(")
   svo.rf_cancel()
 end
+if svo.systemloaded then svo.loader.refiller() end
 end</script>
 				<eventHandlerList />
 			</Script>
