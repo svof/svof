@@ -559,8 +559,8 @@ function svo.rf_missingstuff()
   echo'\n' svo.echof("Ack, looks like you're out of enough ingredients. :(")
   svo.rf_cancel()
 end
-if svo.systemloaded then svo.loader.refiller() end
-end</script>
+end
+if svo.systemloaded then svo.loader.refiller() end</script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
