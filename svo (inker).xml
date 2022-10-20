@@ -183,7 +183,7 @@
 			<script>svo.ti_ink(matches[2], matches[3], matches[4])</script>
 			<command></command>
 			<packageName></packageName>
-			<regex>^ink (.+) on (\w+(?: arm| leg)?)(?: of (\w+))?</regex>
+			<regex>^ink (\w+) on (\w+(?: arm| leg)?)(?: of (\w+))?</regex>
 		</Alias>
 	</AliasPackage>
 	<ActionPackage />
