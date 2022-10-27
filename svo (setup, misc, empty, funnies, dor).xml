@@ -22,7 +22,7 @@ svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (setup, misc, empty, funnies, dor)"] = 1
 svo.loader.setup = function()
 
-svo.version = "51"
+svo.version = "52"
 
 if Logger and not svo.systemloaded then
   Logger:LogSection('svof', {'timestamp', split = 5000, 'keepOpen'})
@@ -3112,7 +3112,17 @@ svo.protips = {
   "You can use 'ndb delete unranked' to wipe unranked (dormant / newbies) players from NameDB",
   "You can export all priorities in a file and edit them there, see 'vshow'",
   "Svof comes with some scripting examples of the API built-in - take a look at Svof's scripts folder",
+  "You can refill vials directly into rift while using the refiller by setting your container to 'rift', you can try it by using 'vconfig containerid rift'.",
+  "Backup your profile and settings regularly so you don't risk losing your things if something bad happens!",
+  "The tattoo inker can queue tattoos! You can give it multiple tattoos separate by comma and it will ink them all one after the other.",
+  "Got blackouted by a monk and suddenly cannot move anymore? Try to CONCENTRATE.",
+  "Svof is 100% open-source which means anyone can contribute to it!",
+  "'vshow server' will show you a list of things that serverside curing can do but svo will handle it instead. You can uncheck anything there to make serveride default behavior take control over that specific affliction or defence, or check if you want Svof to handle it instead.",
+  "If you have a mindnet artefact or similar, you can enable mindnet support in the settings even if your class doesn't have it. Same goes for lifevision! Try vconfig havemindnet for example (requires a restart upon disabling to remove it from the list)",
+  "Svof has a lot of settings that can be configured manually as well as some debug options! Check them out at vconfig list.",
+  "Stay tuned! Svof has a clan you can join (CLANHELP SVOF), make sure you are up to date with the news and announcements made there. We also have a discord server -&gt; https://discord.gg/nqmAUr66nY"
 }
+
 if svo.haveskillset('spirituality') then
   svo.protips[#svo.protips+1] = "You can do 'fx' or 'fxx' to fix up your angel (if you have Angels in Vision)"
 end
@@ -3121,6 +3131,9 @@ if svo.haveskillset('elementalism') then
 end
 if svo.haveskillset('devotion') then
   svo.protips[#svo.protips+1] = "The vconfig bloodswornoff &lt;health %&gt; feature of Svof will automatically unlink you from Bloodswon if you call below that health amount"
+end
+if svo.haveskillset('apostasy') then
+  svo.protips[#svo.protips+1] = "The priestreport addon also works for apostates! Try it out."
 end
 
 svo.lifep.sayhello = function()
