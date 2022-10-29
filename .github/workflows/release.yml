@@ -1,0 +1,76 @@
+name: 'RELEASE TEST'
+on:
+  push:
+    tags:
+    - 'v*'
+jobs:
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@master
+      with:
+        ref: in-client-svof
+        fetch-depth: 0
+      
+    - name: Build Changelog
+      id: generatechangelog
+      uses: mikepenz/release-changelog-builder-action@v3.4.0
+      with:
+        configuration: "release-changelog-configuration.json"
+        ignorePreReleases: "true"
+        token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create zipped package
+      id: makezip
+      run: >
+        zip in-client-svof
+        "svo (actions dictionary).xml"
+        "svo (alias and defence functions).xml"
+        "svo (aliases, triggers).xml"
+        "svo (burncounter).xml"
+        "svo (curing skeleton, controllers, action system).xml"
+        "svo (custom prompt, serverside).xml"
+        "svo (elistsorter).xml"
+        "svo (enchanter).xml"
+        "svo (fishdist).xml"
+        "svo (inker).xml"
+        "svo (install me in module manager).xml"
+        "svo (install, config, pipes, rift, parry, prios).xml"
+        "svo (limbcounter).xml"
+        "svo (logger).xml"
+        "svo (mindnet).xml"
+        "svo (namedb).xml"
+        "svo (offering).xml"
+        "svo (peopletracker).xml"
+        "svo (priestreport).xml"
+        "svo (reboundingsileristracker).xml"
+        "svo (refiller).xml"
+        "svo (runeidentifier).xml"
+        "svo (setup, misc, empty, funnies, dor).xml"
+        "svo (stormhammertarget).xml"
+        "svo (trigger functions).xml"
+        "config.lua"
+        "default_prios"
+        "ndb-help.lua"
+        "LICENSES.txt"
+        "LICENSE.txt"
+
+    - name: Make release
+      id: release
+      uses: softprops/action-gh-release@master
+      with:
+        #tag_name: ${{ format('v{0}', needs.checkversion.outputs.version) }}
+        tag_name: ${{ github.ref_name }}
+        name: ${{ github.ref_name }}
+        body: ${{ steps.generatechangelog.outputs.changelog }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+    - name: Upload zip
+      uses: shogo82148/actions-upload-release-asset@v1.6.3
+      with:
+        upload_url: ${{ steps.release.outputs.upload_url }}
+        asset_path: ${{ github.workspace }}/in-client-svof.zip
+
+    
