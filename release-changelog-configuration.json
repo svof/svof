@@ -1,0 +1,35 @@
+{
+    "categories": [
+        {
+            "title": "## 🚀 Enhancements",
+            "labels": ["enhancement"]
+        },
+        {
+            "title": "## 🐛 Fixes",
+            "labels": ["fixes"]
+        },
+        {
+            "title": "## 🧪 Tests",
+            "labels": ["test"]
+        }
+    ],
+    "sort": "ASC",
+    "template": "${{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n${{UNCATEGORIZED}}\n</details>",
+    "pr_template": "- ${{TITLE}}\n   - PR: #${{NUMBER}}",
+    "empty_template": "- no changes",
+    "transformers": [
+        {
+            "pattern": "[\\-\\*] (\\[(...|TEST|CI|SKIP)\\])( )?(.+?)\n(.+?[\\-\\*] )(.+)",
+            "target": "- $4\n  - $6"
+        }
+    ],
+    "max_pull_requests": 100,
+    "max_back_track_time_days": 365,
+    "exclude_merge_branches": [
+      "master",
+      "gh-pages"
+    ],
+    "base_branches": [
+      "in-client-svof"
+    ]
+}
