@@ -14,14 +14,13 @@ jobs:
         ref: in-client-svof
         fetch-depth: 0
       
-    #- name: Build Changelog
-    #  id: generatechangelog
-    #  uses: mikepenz/release-changelog-builder-action@v3.4.0
-    #  with:
-    #    configuration: "release-changelog-configuration.json"
-    #    ignorePreReleases: "true"
-    #    toTag: "52"
-    #    token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build Changelog
+      id: generatechangelog
+      uses: mikepenz/release-changelog-builder-action@v3.4.0
+      with:
+        configuration: "release-changelog-configuration.json"
+        ignorePreReleases: "true"
+        token: ${{ secrets.GITHUB_TOKEN }}
     - name: Create zipped package
       id: makezip
       run: >
@@ -64,7 +63,7 @@ jobs:
         #tag_name: ${{ format('v{0}', needs.checkversion.outputs.version) }}
         tag_name: ${{ github.ref_name }}
         name: ${{ github.ref_name }}
-        generate_release_notes: true
+        body: ${{ steps.generatechangelog.outputs.changelog }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
