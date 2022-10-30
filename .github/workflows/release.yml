@@ -72,5 +72,8 @@ jobs:
       with:
         upload_url: ${{ steps.release.outputs.upload_url }}
         asset_path: ${{ github.workspace }}/in-client-svof.zip
-
     
+    - name: Make Mudlet-ready changelog
+      id: mudletlog
+      run: >
+        git log --graph --pretty=format:'%C(magenta)(%h)%C(reset) - %C(yellow)[%s]%C(reset) %b %C(bold blue)<%an>%Creset' --abbrev-commit --color=always --since="1 month" > ANSICHANGELOG.txt
