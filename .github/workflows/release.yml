@@ -24,7 +24,7 @@ jobs:
     - name: Create zipped package
       id: makezip
       run: >
-        zip in-client-svof
+        zip in-client-svof -mm
         "svo (actions dictionary).xml"
         "svo (alias and defence functions).xml"
         "svo (aliases, triggers).xml"
@@ -64,14 +64,15 @@ jobs:
         tag_name: ${{ github.ref_name }}
         name: ${{ github.ref_name }}
         body: ${{ steps.generatechangelog.outputs.changelog }}
+        files: ${{ github.workspace }}/in-client-svof.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-    - name: Upload zip
-      uses: shogo82148/actions-upload-release-asset@v1.6.3
-      with:
-        upload_url: ${{ steps.release.outputs.upload_url }}
-        asset_path: ${{ github.workspace }}/in-client-svof.zip
+    #- name: Upload zip
+    #  uses: shogo82148/actions-upload-release-asset@v1.6.3
+    #  with:
+    #    upload_url: ${{ steps.release.outputs.upload_url }}
+    #    asset_path: ${{ github.workspace }}/in-client-svof.zip
     
     - name: Make Mudlet-ready changelog
       id: mudletlog
