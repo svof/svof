@@ -1,4 +1,4 @@
-name: 'CI TEST'
+name: 'Versioning and Tagging'
 on:
   push:
     branches: [ gh-pages ]
