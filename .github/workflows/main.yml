@@ -22,13 +22,25 @@ jobs:
           version-file: inclient/current_version.txt
           schema: major
           
-      - name: File contents
-        run: echo "${{ steps.getversion.outputs.version }}"
+      - name: Verify tag
+        id: verifytag
+        env:
+          VersionToVerify: ${{ format('v{0}', steps.getversion.outputs.version) }}
+        run: |
+          echo "$VersionToVerify"
+          if [ $(git tag -l "VersionToVerify") ]; then
+            echo "{pushtag}={false}" >> $GITHUB_OUTPUT
+          else
+            echo "{pushtag}={true}" >> $GITHUB_OUTPUT
+          fi
+        
     outputs:
       version: ${{ steps.getversion.outputs.version }}
+      canpushtag: ${{ steps.verifytag.outputs.pushtag }}
   
   createtag:
     needs: [checkversion]
+    if: ${{ needs.checkversion.outputs.canpushtag == true }}
     runs-on: ubuntu-latest
     env:
       Version: ${{ format('v{0}', needs.checkversion.outputs.version) }}
