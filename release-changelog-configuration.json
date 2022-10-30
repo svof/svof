@@ -1,7 +1,11 @@
 {
     "categories": [
+         {
+            "title": "## 📚 Documentation",
+            "labels": ["documentation"]
+        },
         {
-            "title": "## 🚀 Enhancements",
+            "title": "## ✨ Enhancements",
             "labels": ["enhancement"]
         },
         {
@@ -14,7 +18,7 @@
         }
     ],
     "sort": "ASC",
-    "template": "${{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n${{UNCATEGORIZED}}\n</details>",
+    "template": "${{CHANGELOG}}\n\n<details>\n<summary>➕ Uncategorized</summary>\n\n${{UNCATEGORIZED}}\n</details>",
     "pr_template": "- ${{TITLE}}\n   - PR: #${{NUMBER}}",
     "empty_template": "- no changes",
     "transformers": [
