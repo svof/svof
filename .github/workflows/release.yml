@@ -24,7 +24,7 @@ jobs:
     - name: Create zipped package
       id: makezip
       run: >
-        zip in-client-svof -mm
+        zip in-client-svof -MM
         "svo (actions dictionary).xml"
         "svo (alias and defence functions).xml"
         "svo (aliases, triggers).xml"
