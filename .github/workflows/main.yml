@@ -25,7 +25,7 @@ jobs:
       - name: Verify tag
         id: verifytag
         env:
-          VersionToVerify: ${{ steps.getversion.outputs.version) }}
+          VersionToVerify: ${{ steps.getversion.outputs.version }}
         run: |
           echo "$VersionToVerify"
           if [ $(git tag -l "VersionToVerify") ]; then
@@ -43,7 +43,7 @@ jobs:
     if: ${{ needs.checkversion.outputs.canpushtag == true }}
     runs-on: ubuntu-latest
     env:
-      Version: ${{ needs.checkversion.outputs.version) }}
+      Version: ${{ needs.checkversion.outputs.version }}
     steps:
     - name: checkout
       uses: actions/checkout@master
