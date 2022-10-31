@@ -21,26 +21,13 @@ jobs:
           # specify here the path to your version file (e.g. package.json, pom.xml...)
           version-file: inclient/current_version.txt
           schema: major
-          
-      - name: Verify tag
-        id: verifytag
-        env:
-          VersionToVerify: ${{ steps.getversion.outputs.version }}
-        run: |
-          echo "$VersionToVerify"
-          if [ $(git tag -l $VersionToVerify) ]; then
-            echo "{pushtag}={false}" >> $GITHUB_OUTPUT
-          else
-            echo "{pushtag}={true}" >> $GITHUB_OUTPUT
-          fi
         
     outputs:
       version: ${{ steps.getversion.outputs.version }}
-      canpushtag: ${{ steps.verifytag.outputs.pushtag }}
-  
+
   createtag:
     needs: [checkversion]
-    if: ${{ needs.checkversion.outputs.canpushtag == true }}
+    if: contains(github.ref, format('refs/tags/{0}', needs.checkversion.outputs.version)) == false
     runs-on: ubuntu-latest
     env:
       Version: ${{ needs.checkversion.outputs.version }}
