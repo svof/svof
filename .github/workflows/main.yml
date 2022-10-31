@@ -28,7 +28,7 @@ jobs:
           VersionToVerify: ${{ steps.getversion.outputs.version }}
         run: |
           echo "$VersionToVerify"
-          if [ $(git tag -l "VersionToVerify") ]; then
+          if [ $(git tag -l $VersionToVerify) ]; then
             echo "{pushtag}={false}" >> $GITHUB_OUTPUT
           else
             echo "{pushtag}={true}" >> $GITHUB_OUTPUT
