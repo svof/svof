@@ -13,7 +13,7 @@ jobs:
       with:
         ref: in-client-svof
         fetch-depth: 0
-      
+    
     - name: Build Changelog
       id: generatechangelog
       uses: mikepenz/release-changelog-builder-action@v3.4.0
@@ -21,6 +21,12 @@ jobs:
         configuration: "release-changelog-configuration.json"
         ignorePreReleases: "true"
         token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Make Mudlet-ready changelog
+      id: mudletlog
+      run: >
+        git log --graph --pretty=format:'%C(magenta)(%h)%C(reset) - %C(yellow)[%s]%C(reset) %b %C(bold blue)<%an>%Creset' --abbrev-commit --color=always --since="1 month" > ANSICHANGELOG.txt
+    
     - name: Create zipped package
       id: makezip
       run: >
@@ -55,6 +61,7 @@ jobs:
         "ndb-help.lua"
         "LICENSES.txt"
         "LICENSE.txt"
+        "${{ github.workspace }}/ANSICHANGELOG.txt"
 
     - name: Make release
       id: release
@@ -67,14 +74,3 @@ jobs:
         files: ${{ github.workspace }}/in-client-svof.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-    #- name: Upload zip
-    #  uses: shogo82148/actions-upload-release-asset@v1.6.3
-    #  with:
-    #    upload_url: ${{ steps.release.outputs.upload_url }}
-    #    asset_path: ${{ github.workspace }}/in-client-svof.zip
-    
-    - name: Make Mudlet-ready changelog
-      id: mudletlog
-      run: >
-        git log --graph --pretty=format:'%C(magenta)(%h)%C(reset) - %C(yellow)[%s]%C(reset) %b %C(bold blue)<%an>%Creset' --abbrev-commit --color=always --since="1 month" > ANSICHANGELOG.txt
