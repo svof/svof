@@ -35,7 +35,7 @@ jobs:
       uses: actions/checkout@master
       with:
         token: ${{ secrets.SVOF_PAT }}
-        ref: in-client-svof
+        ref: master
         fetch-depth: 0
     
     - name: Push tag
