@@ -11,7 +11,7 @@ jobs:
     - name: checkout
       uses: actions/checkout@master
       with:
-        ref: in-client-svof
+        ref: master
         fetch-depth: 0
     
     - name: Build Changelog
