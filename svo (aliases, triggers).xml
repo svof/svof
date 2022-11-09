@@ -17703,7 +17703,7 @@ svo.valid.passive_cure()</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Hydra balance</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -18604,7 +18604,7 @@ raiseEvent("svo got balance", "homunculus")</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Rage balance</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -19547,7 +19547,7 @@ echo'\n' svo.config.set("shipmode", "on", true)</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Two-hander recover footing</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -24010,7 +24010,7 @@ end
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Groves defences</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -54790,10 +54790,14 @@ svo.showprompt()</script>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
 				<name>(vversion) Show system version</name>
-				<script>svo.echof("You are on the %s release stream!\nYour Svof version is " .. svo.version .. "\n\nYou have the following modules installed:", svo.conf.releasechannel)
+				<script>
+svo.echof("You are on the %s release stream!\nYour Svof version is " .. svo.version .. "\n\nYou have the following modules installed:", svo.conf.releasechannel)
 for k,v in pairs(svo.modules_version) do
   decho(string.format("%sv%s: %s\n", svo.getDefaultColor(), v, k))
 end
+dechoLink(svo.getDefaultColor() .. "\n&lt;u&gt;Click to view the latest releases&lt;/u&gt;", function() openUrl("https://github.com/svof/svof/releases") end, "View releases in Github", true)
+dechoLink(svo.getDefaultColor() .. "\n&lt;u&gt;Click to view the changelog&lt;/u&gt;", 'svo.createLogWindow()', "View changelog", true)
+  
 svo.showprompt()</script>
 				<command></command>
 				<packageName></packageName>
