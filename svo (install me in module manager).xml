@@ -7322,7 +7322,10 @@ function svo.uninstall_all_modules(event,modulename)
 
   for ourmodule,_ in pairs(svo.modules_version) do
     if not event or (ourmodule ~= "svo (install me in module manager)") then
+      disableModuleSync(ourmodule) -- need to disable module before uninstalling first due to a bug in Mudlet module sync
+      tempTimer(0, function()
   	  uninstallModule(ourmodule)
+      end)
     end
   end
 	svo.systemloaded = nil
