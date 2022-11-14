@@ -3039,7 +3039,7 @@ end
 
 svo.savesettings = svo.QQ
 
--- add in blackout only, otherwise go off the prompt - this allows for time tracking
+-- add in blackout only, otherwise go off the prompt - this allows for time tracking for hidden eq loss
 function svo.goteq()
   sys.balancetick = sys.balancetick + 1
   if sys.actiontimeoutid then
@@ -3051,7 +3051,6 @@ function svo.goteq()
   sys.extended_eq = nil
 end
 
---maybe can remove this now if it was only for tracking bal in blackout?
 function svo.gotbalance()
   sys.balancetick = sys.balancetick + 1
   if sys.actiontimeoutid then
