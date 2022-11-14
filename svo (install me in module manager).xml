@@ -7153,7 +7153,7 @@ function svo_init_system()
 	end
 	
   --clears all signals in case of a reload (e.g. classchange)
-  --svo.signals = nil
+  svo.signals = nil
   
 	for _, subsystem in ipairs(required_subsystems) do
 	  svo.loader[subsystem]()
