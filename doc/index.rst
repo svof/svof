@@ -463,11 +463,6 @@ Tag                  What it shows
 @weaponmastery       shows the weaponmastery's - either momentum or ferocity - amount
 @age                 shows the current additional age gained via aeonics
 @wordbal             adds a 'w' to the prompt, if you have word balance
-@anathemabal         (unnamable only) adds 'A' to the prompt for Anathema balance
-@manifestation       (unnamable only) current manifestations
-@karma               (unnamable & occultists only) current karma
-@wrathbal            (paladin only) adds 'W' to the prompt for Wrath balance
-@wrath               (paladin only) current wrath
 ==================== ===============
 
 Available colours are:

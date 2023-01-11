@@ -312,16 +312,6 @@ cpp.compute_karma = function()
 end
 end
 
-if svo.haveskillset('excision') then
-  cpp.compute_wrathbal = function()
-    return (bals.wrathbal and 'W' or "")
-  end
-  
-  cpp.compute_wrath = function()
-    return ((stats.wrath and stats.wrath &gt; 0) and tostring(stats.wrath) or "")
-  end
-end
-
 cpp.compute_timestamp = function()
   return getTime(true, 'hh:mm:ss.zzz')
 end
@@ -648,13 +638,6 @@ if svo.haveskillset('anathema') or svo.haveskillset('occultism') then
   cp.definitions["@karma"]       = "svo.cpp.compute_karma()"
 else
   cp.definitions["@karma"]       = "''"
-end
-if svo.haveskillset('excision') then
-  cp.definitions['@wrathbal']       = 'svo.cpp.compute_wrathbal()'
-  cp.definitions['@wrath']          = 'svo.cpp.compute_wrath()'
-else
-  cp.definitions['@wrathbal']       = "''"
-  cp.definitions['@wrath']          = "''"
 end
   cp.definitions["^1"]             = "svo.cpp.compute_health_colour()"
   cp.definitions["^2"]             = "svo.cpp.compute_mana_colour()"

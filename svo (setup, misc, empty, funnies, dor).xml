@@ -348,7 +348,7 @@ svo.knownskills = {
   monk                     = {'tekura', 'kaido', 'telepathy', 'shikudo'},
   none                     = {},
   occultist                = {'occultism', 'tarot', 'domination'},
-  paladin                  = {'valour', 'excision', 'weaponmastery'},
+  paladin                  = {'valour', 'devotion', 'weaponmastery'},
   pariah                   = {'memorium', 'pestilence', 'charnel'},
   priest                   = {'spirituality', 'devotion', 'zeal'},
   runewarden               = {'runelore', 'discipline', 'weaponmastery'},
@@ -546,23 +546,6 @@ signals.gmcpcharvitals:connect(function()
 end, 'update anathema/occultism karma')
 end
 
-if svo.haveskillset('excision') then
-signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      local wrath = val:match('^Wrath: (%d+)%%$')
-      if wrath then
-        stats.wrath = tonumber(wrath)
-        break
-      end
-    end
-  end
-  if not stats.wrath then
-    stats.wrath = 0
-  end
-end, 'update excision wrath')
-end
-
 --[[
 new model for tertiary balances that don't need to rely on dozens of attack triggers and timers. 
 If this works properly and don't error anything out down the road we can extend it to the other balances as well :)
@@ -584,28 +567,6 @@ signals.gmcpcharvitals:connect(function()
     end
   end
 end, 'update anathema balance')
-end
-
-if svo.haveskillset('excision') then
-signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      
-      local wrathbal = val:match('^wrathbal: (%w+)$')
-      if wrathbal then
-        echo("got wrathbal")
-        if svo.bals.wrathbal ~= nil and (svo.bals.wrathbal == false and wrathbal == 'Yes') then       
-          svo.valid.gotwrathbalbalance()
-        break
-        elseif svo.bals.wrathbal ~= nil and (svo.bals.wrathbal == true and wrathbal == 'No') then
-          svo.valid.usedwrathbalbalance()
-        break
-        end
-      end
-    end
-  end
-end, 'update wrathbal balance')
 end
 
 -- End of class resources

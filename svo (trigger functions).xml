@@ -4624,83 +4624,70 @@ end
 end
 
 if svo.haveskillset('venom') then
-  function svo.valid.shrugging()
-    svo.checkaction(svo.dict.shrugging.physical)
-    if actions.shrugging_physical then
-      valid.passive_cure()
-      lifevision.add(actions.shrugging_physical.p, nil, getLineNumber())
-  
-      selectCurrentLine()
-      setBgColor(0,0,0)
-      setFgColor(0,170,255)
-      resetFormat()
-    end
+function svo.valid.shrugging()
+  svo.checkaction(svo.dict.shrugging.physical)
+  if actions.shrugging_physical then
+    valid.passive_cure()
+    lifevision.add(actions.shrugging_physical.p, nil, getLineNumber())
+
+    selectCurrentLine()
+    setBgColor(0,0,0)
+    setFgColor(0,170,255)
+    resetFormat()
   end
-  
-  function svo.valid.noshruggingbalance()
-    svo.checkaction(svo.dict.shrugging.physical)
-    if actions.shrugging_physical then
-      lifevision.add(actions.shrugging_physical.p, 'offbal')
-    end
+end
+
+function svo.valid.noshruggingbalance()
+  svo.checkaction(svo.dict.shrugging.physical)
+  if actions.shrugging_physical then
+    lifevision.add(actions.shrugging_physical.p, 'offbal')
   end
-  
-  function svo.valid.gotshruggingbalance()
-    svo.checkaction(svo.dict.gotbalance.happened, true)
-    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'shrugging' -- hack to allow multiple balances at once
-    lifevision.add(actions.gotbalance_happened.p)
-  end
+end
+
+function svo.valid.gotshruggingbalance()
+  svo.checkaction(svo.dict.gotbalance.happened, true)
+  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'shrugging' -- hack to allow multiple balances at once
+  lifevision.add(actions.gotbalance_happened.p)
+end
 end
 
 if svo.haveskillset('voicecraft') then
-  function svo.valid.usedvoicebalance()
-    svo.checkaction(svo.dict.stolebalance.happened, true)
-    lifevision.add(actions.stolebalance_happened.p, nil, 'voice')
-  end
-  
-  function svo.valid.gotvoicebalance()
-    svo.checkaction(svo.dict.gotbalance.happened, true)
-    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'voice' -- hack to allow multiple balances at once
-    lifevision.add(actions.gotbalance_happened.p)
-  end
+function svo.valid.usedvoicebalance()
+  svo.checkaction(svo.dict.stolebalance.happened, true)
+  lifevision.add(actions.stolebalance_happened.p, nil, 'voice')
+end
+
+function svo.valid.gotvoicebalance()
+  svo.checkaction(svo.dict.gotbalance.happened, true)
+  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'voice' -- hack to allow multiple balances at once
+  lifevision.add(actions.gotbalance_happened.p)
+end
 end
 
 if svo.haveskillset('terminus') then
-  function svo.valid.usedwordbalance()
-    svo.checkaction(svo.dict.stolebalance.happened, true)
-    lifevision.add(actions.stolebalance_happened.p, nil, 'word')
-  end
-  
-  function svo.valid.gotwordbalance()
-    svo.checkaction(svo.dict.gotbalance.happened, true)
-    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'word' -- hack to allow multiple balances at once
-    lifevision.add(actions.gotbalance_happened.p)
-  end
+function svo.valid.usedwordbalance()
+  svo.checkaction(svo.dict.stolebalance.happened, true)
+  lifevision.add(actions.stolebalance_happened.p, nil, 'word')
+end
+
+function svo.valid.gotwordbalance()
+  svo.checkaction(svo.dict.gotbalance.happened, true)
+  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'word' -- hack to allow multiple balances at once
+  lifevision.add(actions.gotbalance_happened.p)
+end
 end
 
 if svo.haveskillset('anathema') then
-  function svo.valid.usedanathemabalance()
-    svo.checkaction(svo.dict.stolebalance.happened, true)
-    lifevision.add(actions.stolebalance_happened.p, nil, 'anathema')
-  end
-  
-  function svo.valid.gotanathemabalance()
-    svo.checkaction(svo.dict.gotbalance.happened, true)
-    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'anathema' -- hack to allow multiple balances at once
-    lifevision.add(actions.gotbalance_happened.p)
-  end
+function svo.valid.usedanathemabalance()
+  svo.checkaction(svo.dict.stolebalance.happened, true)
+  lifevision.add(actions.stolebalance_happened.p, nil, 'anathema')
 end
 
-if svo.haveskillset('excision') then
-  function svo.valid.usedwrathbalbalance()
-    svo.checkaction(svo.dict.stolebalance.happened, true)
-    lifevision.add(actions.stolebalance_happened.p, nil, 'anathema')
-  end
-  
-  function svo.valid.gotwrathbalbalance()
-    svo.checkaction(svo.dict.gotbalance.happened, true)
-    svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'wrathbal'
-    lifevision.add(actions.gotbalance_happened.p)
-  end
+function svo.valid.gotanathemabalance()
+  svo.checkaction(svo.dict.gotbalance.happened, true)
+  svo.dict.gotbalance.happened.tempmap[#svo.dict.gotbalance.happened.tempmap+1] = 'anathema' -- hack to allow multiple balances at once
+  lifevision.add(actions.gotbalance_happened.p)
+end
 end
 
 function svo.valid.proper_hamstring()
