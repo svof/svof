@@ -12047,16 +12047,19 @@ if svo.haveskillset('voicecraft') then
       balanceful_act = true, def = true,
 
       isadvisable = function()
-        return (((sys.deffing and defdefup[defs.mode].aria and not defc.aria) or (conf.keepup and defkeepup[defs.mode].aria and not defc.aria)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'aria' and bals.voice and not affs.deafaff and not defc.deaf) or false
+        return (((sys.deffing and defdefup[defs.mode].aria and not defc.aria) or (conf.keepup and defkeepup[defs.mode].aria and not defc.aria)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'aria' and bals.voice) or false
       end,
 
       oncompleted = function()
         defences.got('aria')
         svo.lostbal_voice()
       end,
-
-      action = "sing aria at me",
-      onstart = function() send('sing aria at me', conf.commandecho) end
+      applycure = {'epidermal'}
+      action = 'sing aria at me',
+      onstart = function()
+        if defc.deaf or affs.deafaff then svo.apply(svo.dict.aria.salve, ' to ears', conf.commandecho) end
+        send('sing aria at me', conf.commandecho)   
+      end
     },
   }
 end
