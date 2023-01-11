@@ -7152,9 +7152,6 @@ function svo_init_system()
 		return
 	end
 	
-  --clears all signals in case of a reload (e.g. classchange)
-  svo.signals = nil
-  
 	for _, subsystem in ipairs(required_subsystems) do
 	  svo.loader[subsystem]()
 	end
@@ -7190,7 +7187,8 @@ end</script>
 				<name>svo.classchange</name>
 				<packageName></packageName>
 				<script>function svo.classchange(override)
-  local newclass = (override ~= gmcp.Char.Status.class) and override or gmcp.Char.Status.class
+
+  local newclass = (override ~= "gmcp.Char.Status") and override or gmcp.Char.Status.class
 	local temp_defs = {}
   
 	-- if you're in an unrecognised class, use the None system
@@ -7212,6 +7210,7 @@ end</script>
 	
   if svo.me.class ~= newclass then
     svo.sk.gettingfullstats = false
+    svo.signals.after_prompt_processing = nil
     local oldclass = svo.me.class
     
     -- kill temporary defense triggers for old class
