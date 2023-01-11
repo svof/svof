@@ -12058,7 +12058,7 @@ if svo.haveskillset('voicecraft') then
         defences.got('aria')
         svo.lostbal_voice()
       end,
-      applycure = {'epidermal'}
+      applycure = {'epidermal'},
       action = 'sing aria at me',
       onstart = function()
         if defc.deaf or affs.deafaff then svo.apply(svo.dict.aria.salve, ' to ears', conf.commandecho) end
