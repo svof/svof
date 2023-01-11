@@ -1005,10 +1005,6 @@ if svo.haveskillset('anathema') then
   svo.bals.anathema = true
 end
 
-if svo.haveskillset('excision') then
-  svo.bals.wrathbal = true
-end
-
   for balance in pairs(svo.bals) do raiseEvent("svo got balance", balance) end
 
   if echoback then svo.echof("All balances svo.reset.") end
@@ -3698,29 +3694,6 @@ if svo.haveskillset('anathema') then
     onr = [[^You sense the connection snap into place between the reality of (\w+) and your own.$]],
     on = "You sense no change.",
     offr = [["^You are no longer mirroring the reality of (\w+).$]]})
-end
-
-if svo.haveskillset('excision') then
-  defs_data:set('fervour', { type = 'excision',
-    def = 'Your fervour for the cause is great.',    
-    on = 'Righteous fervour fills you; may the enemies of Creation be driven before Their armies.',
-    off = 'Your righteous fervour is diminished, though your faith is not.'})
-  defs_data:set('dawnhand', { type = 'excision',
-    def = 'The light of dawn guides your hand.',    
-    on = 'The unbroken strength of the Lightbringer fills you, and you know that you will strike true.',
-    off = 'You feel diminished as the strength of the Lightbringer flees you, though you know that it will come again.'})
-  defs_data:set('faith', { type = 'excision',
-    def = 'You are clad in the armour of your faith.',
-    on = 'You utter a soft prayer, and feel the shielding hand of the Bloodsworn protecting you.',
-    off = 'The armour of your faith cracks and falls away.'})
-  defs_data:set('retributionvow', { type = 'excision',
-    def = 'You will take retribution against the enemies of Creation.',    
-    on = 'You swear a vow of retribution, and the Bloodsworn acknowledge your prayer.',
-    off = 'You will no longer bring retribution against the enemies of Creation.'})
-  defs_data:set('unbowed', { type = 'excision',
-    def = 'You stand unbowed in the face of all that would harm Creation.',    
-    on = 'Planting your feet, you vow that you will stand unbowed.',
-    off = 'You let out a great shout of defiance, holy wrath surging through you as your wounds close and your determination grows.'})
 end
 
 do 

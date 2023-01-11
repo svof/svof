@@ -1764,14 +1764,6 @@ svo.lostbal_anathema = function()
   end
 end
 
-if svo.haveskillset('excision') then
-svo.lostbal_wrathbal = function()
-  if not bals.wrathbal then return end
-  bals.wrathbal = false
-  raiseEvent("svo lost balance", 'wrathbal')
-  end
-end
-
 function sk.doingstuff_inslowmode()
   local result
   for balance,actions in pairs(svo.bals_in_use) do
