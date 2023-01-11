@@ -428,7 +428,7 @@ signals.gmcpcharvitals:connect(function()
 end, 'update morph')
 end
 
-if svo.me.class == 'Monk' then
+if svo.haveskillset('tekura') or svo.haveskillset('shikudo') then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for _, val in ipairs(gmcp.Char.Vitals.charstats) do
