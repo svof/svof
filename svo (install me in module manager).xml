@@ -7190,7 +7190,7 @@ end</script>
 				<name>svo.classchange</name>
 				<packageName></packageName>
 				<script>function svo.classchange(override)
-  local newclass = (override ~= gmcp.Char.Status.class) and override or gmcp.Char.Status.class
+  local newclass = (override ~= "gmcp.Char.Status") and override or gmcp.Char.Status.class
 	local temp_defs = {}
   
 	-- if you're in an unrecognised class, use the None system
