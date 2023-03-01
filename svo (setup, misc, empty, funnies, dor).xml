@@ -22,7 +22,7 @@ svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (setup, misc, empty, funnies, dor)"] = 1
 svo.loader.setup = function()
 
-svo.version = "53"
+svo.version = "55"
 
 if Logger and not svo.systemloaded then
   Logger:LogSection('svof', {'timestamp', split = 5000, 'keepOpen'})
@@ -348,7 +348,7 @@ svo.knownskills = {
   monk                     = {'tekura', 'kaido', 'telepathy', 'shikudo'},
   none                     = {},
   occultist                = {'occultism', 'tarot', 'domination'},
-  paladin                  = {'valour', 'devotion', 'weaponmastery'},
+  paladin                  = {'valour', 'excision', 'weaponmastery'},
   pariah                   = {'memorium', 'pestilence', 'charnel'},
   priest                   = {'spirituality', 'devotion', 'zeal'},
   runewarden               = {'runelore', 'discipline', 'weaponmastery'},
@@ -428,7 +428,7 @@ signals.gmcpcharvitals:connect(function()
 end, 'update morph')
 end
 
-if svo.me.class == 'Monk' then
+if svo.haveskillset('tekura') or svo.haveskillset('shikudo') then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for _, val in ipairs(gmcp.Char.Vitals.charstats) do
@@ -546,6 +546,23 @@ signals.gmcpcharvitals:connect(function()
 end, 'update anathema/occultism karma')
 end
 
+if svo.haveskillset('excision') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local wrath = val:match('^Wrath: (%d+)%%$')
+      if wrath then
+        stats.wrath = tonumber(wrath)
+        break
+      end
+    end
+  end
+  if not stats.wrath then
+    stats.wrath = 0
+  end
+end, 'update excision wrath')
+end
+
 --[[
 new model for tertiary balances that don't need to rely on dozens of attack triggers and timers. 
 If this works properly and don't error anything out down the road we can extend it to the other balances as well :)
@@ -567,6 +584,28 @@ signals.gmcpcharvitals:connect(function()
     end
   end
 end, 'update anathema balance')
+end
+
+if svo.haveskillset('excision') then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      
+      local wrathbal = val:match('^wrathbal: (%w+)$')
+      if wrathbal then
+        echo("got wrathbal")
+        if svo.bals.wrathbal ~= nil and (svo.bals.wrathbal == false and wrathbal == 'Yes') then       
+          svo.valid.gotwrathbalbalance()
+        break
+        elseif svo.bals.wrathbal ~= nil and (svo.bals.wrathbal == true and wrathbal == 'No') then
+          svo.valid.usedwrathbalbalance()
+        break
+        end
+      end
+    end
+  end
+end, 'update wrathbal balance')
 end
 
 -- End of class resources

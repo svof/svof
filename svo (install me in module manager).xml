@@ -6870,7 +6870,7 @@ svo.classes = {
   magi         = {fighting = false, skills = {"elementalism", "crystalism", "enchantment"}},
   monk         = {fighting = false, skills = {"tekura", "kaido", "telepathy"}},
   occultist    = {fighting = false, skills = {"occultism", "tarot", "domination"}},
-  paladin      = {fighting = false, skills = {"valour", "devotion", "weaponmastery"}},
+  paladin      = {fighting = false, skills = {"valour", "excision", "weaponmastery"}},
   pariah       = {fighting = false, skills = {"memorium", "pestilence", "charnel"}},
   priest       = {fighting = false, skills = {"spirituality", "devotion", "zeal"}},
   psion        = {fighting = false, skills = {"weaving", "psionics", "emulation"}},
@@ -7152,6 +7152,9 @@ function svo_init_system()
 		return
 	end
 	
+  --clears all signals in case of a reload (e.g. classchange)
+  svo.signals = nil
+  
 	for _, subsystem in ipairs(required_subsystems) do
 	  svo.loader[subsystem]()
 	end
@@ -7187,7 +7190,6 @@ end</script>
 				<name>svo.classchange</name>
 				<packageName></packageName>
 				<script>function svo.classchange(override)
-
   local newclass = (override ~= "gmcp.Char.Status") and override or gmcp.Char.Status.class
 	local temp_defs = {}
   
@@ -7210,7 +7212,6 @@ end</script>
 	
   if svo.me.class ~= newclass then
     svo.sk.gettingfullstats = false
-    svo.signals.after_prompt_processing = nil
     local oldclass = svo.me.class
     
     -- kill temporary defense triggers for old class

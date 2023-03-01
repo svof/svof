@@ -10370,6 +10370,7 @@ end
     constitution = 'constitution',
     croonmirror = false,
     curseward = 'curseward',
+    dawnhand = 'dawnhand',
     deafness = 'deaf',
     deathaura = 'deathaura',
     deathsight = 'deathsight',
@@ -10400,6 +10401,7 @@ end
     extispicy = 'extispicy',
     eyes = 'eyes',
     fangbarrier = 'sileris',
+    fervour = 'fervour',
     firefly = false,
     fireresist = 'fireresist',
     firstaid = 'firstaid',
@@ -10472,6 +10474,7 @@ end
     regeneration = 'regeneration',
     resistance = 'resistance',
     retaliation = 'retaliationstrike',
+    retribution = 'retributionvow',
     satiation = 'satiation',
     scales = 'scales',
     scholasticism = 'myrrh',
@@ -10519,6 +10522,7 @@ end
     tumors = 'tumors',
     tune = 'tune',
     twoartsstance = false,
+    unbowed = 'unbowed',
     unnamablepresence = 'unnamablepresence',
     vengeance = 'vengeance',
     venomsacks = 'venomsacks',
@@ -12047,16 +12051,19 @@ if svo.haveskillset('voicecraft') then
       balanceful_act = true, def = true,
 
       isadvisable = function()
-        return (((sys.deffing and defdefup[defs.mode].aria and not defc.aria) or (conf.keepup and defkeepup[defs.mode].aria and not defc.aria)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'aria' and bals.voice and not affs.deafaff and not defc.deaf) or false
+        return (((sys.deffing and defdefup[defs.mode].aria and not defc.aria) or (conf.keepup and defkeepup[defs.mode].aria and not defc.aria)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'aria' and bals.voice) or false
       end,
 
       oncompleted = function()
         defences.got('aria')
         svo.lostbal_voice()
       end,
-
-      action = "sing aria at me",
-      onstart = function() send('sing aria at me', conf.commandecho) end
+      applycure = {'epidermal'},
+      action = 'sing aria at me',
+      onstart = function()
+        if defc.deaf or affs.deafaff then svo.apply(svo.dict.aria.salve, ' to ears', conf.commandecho) end
+        send('sing aria at me', conf.commandecho)   
+      end
     },
   }
 end
@@ -14323,6 +14330,66 @@ if svo.haveskillset('anathema') then
   }
   
   end
+  
+ if svo.haveskillset('excision') then
+  svo.dict.unbowed = {
+    physical = {
+      balanceful_act = true, def = true,
+
+      isadvisable = function()
+        if (not defc.unbowed and ((sys.deffing and defdefup[defs.mode].unbowed) or (conf.keepup and defkeepup[defs.mode].unbowed)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'cantunbowed') then
+
+         if (stats.currenthealth &gt;= stats.maxhealth and stats.currentmana &gt;= stats.maxmana)
+          then
+            return true
+          elseif not sk.gettingfullstats then
+            svo.fullstats(true)
+            svo.echof("Getting fullstats for unbowed now...")
+          end
+        end
+      end,
+
+      oncompleted = function() defences.got('unbowed') end,
+
+      action = 'perform unbowed',
+      onstart = function() send('perform unbowed', conf.commandecho) end
+      },
+    gone = {
+      oncompleted = function()
+        defences.lost('unbowed')
+        if not svo.actions.cantunbowed_waitingfor then svo.doaction(svo.dict.cantunbowed.waitingfor) end
+      end
+    }
+  }
+
+  svo.dict.cantunbowed = {
+    waitingfor = {
+      customwait = 122,
+
+      isadvisable = function()
+        return false
+      end,
+
+      onstart = function() end,
+      ontimeout = function()
+        if not defc.unbowed then
+          echo"\n"svo.echof("We can perform unbowed again now.")
+          svo.make_gnomes_work()
+        end
+      end,
+
+      oncompleted = function()
+        svo.dict.cantunbowed.waitingfor.ontimeout()
+      end
+    },
+    gone = {
+      oncompleted = function()
+        svo.killaction(svo.dict.cantunbowed.waitingfor)
+      end
+    }
+  }
+
+end
 
 -- shortcut function to help create a dict action for a defence
 -- 'which' is the Svof defence name, use the same name in the 'Defences' script
@@ -14552,39 +14619,46 @@ if svo.haveskillset('domination') then
 end
 
 if svo.haveskillset('weaving') then
-basicdef("secondskin", "weave secondskin")
+  basicdef("secondskin", "weave secondskin")
 end
 if svo.haveskillset('psionics') then
-basicdef("comprehend", "psi comprehend", false, "psicomprehend")
-basicdef("transcend", "psi transcend", false, "psitranscend")
-basicdef("breakthrough", "psi breakthrough", false, "psibreakthrough")
-basicdef("vanish", "psi vanish partial", false, "psivanish")
+  basicdef("comprehend", "psi comprehend", false, "psicomprehend")
+  basicdef("transcend", "psi transcend", false, "psitranscend")
+  basicdef("breakthrough", "psi breakthrough", false, "psibreakthrough")
+  basicdef("vanish", "psi vanish partial", false, "psivanish")
 end
 if svo.haveskillset('emulation') then
-basicdef("guidedstrike", "enact guidedstrike")
-basicdef("mentalclarity", "enact clarity", false, "mentalclarity")
-basicdef("rupture", "enact rupture", false, "rupturesight")
-basicdef("indomitability", "enact indomitability")
+  basicdef("guidedstrike", "enact guidedstrike")
+  basicdef("mentalclarity", "enact clarity", false, "mentalclarity")
+  basicdef("rupture", "enact rupture", false, "rupturesight")
+  basicdef("indomitability", "enact indomitability")
 end
 
 if svo.haveskillset('sculpting') then
-    basicdef('strata', "terran strata", false, 'strata')
-    basicdef('tremorsense', "terran tremorsense", false, 'tremorsense')
-    basicdef('extrusion', "terran extrusion", false, 'extrusion')
+  basicdef('strata', "terran strata", false, 'strata')
+  basicdef('tremorsense', "terran tremorsense", false, 'tremorsense')
+  basicdef('extrusion', "terran extrusion", false, 'extrusion')
 end
 
 if svo.haveskillset('ignition') then
-    basicdef('fireshroud', "ignite shroud", false, 'fireshroud')
+  basicdef('fireshroud', "ignite shroud", false, 'fireshroud')
 end
 
 if svo.haveskillset('duress') then
-    basicdef('skysight', "manifest skysight", false, 'skysight')
-    basicdef('tempest', "manifest tempest", false, 'tempest')
-    basicdef('susurrating', "manifest susurration", false, 'susurrating')
+  basicdef('skysight', "manifest skysight", false, 'skysight')
+  basicdef('tempest', "manifest tempest", false, 'tempest')
+  basicdef('susurrating', "manifest susurration", false, 'susurrating')
 end
 
 if svo.haveskillset("pervasion") then
-    basicdef("cohesion", "manifest cohesion", false, "cohesion")
+  basicdef("cohesion", "manifest cohesion", false, "cohesion")
+end
+
+if svo.haveskillset('excision') then
+  basicdef('fervour', 'perform fervour')
+  basicdef('dawnhand', 'perform dawnhand')
+  basicdef('faith', 'perform faith')
+  basicdef('retributionvow', 'perform retribution', false, 'retribution')
 end
 
 for ssa, svoa in pairs(svo.dict.sstosvoa) do
