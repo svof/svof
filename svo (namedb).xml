@@ -981,7 +981,16 @@ end
 ]]
 
 if not ndb.checkingfor then return end
-field = ndb.checkingfor
+if ndb.checkingfor == "city" then
+  ndb.fixed_set(ndb.db.people.cityenemy, 0)
+  field = "city"
+elseif ndb.checkingfor == "order" then
+  ndb.fixed_set(ndb.db.people.orderenemy, 0)
+  field = "order"
+else
+  ndb.fixed_set(ndb.db.people.houseenemy, 0)
+  field = "house"
+end
 
 local names = string.split(multimatches[4][1], ",")
 
