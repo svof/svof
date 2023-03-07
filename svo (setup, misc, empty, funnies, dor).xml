@@ -594,7 +594,6 @@ signals.gmcpcharvitals:connect(function()
       
       local wrathbal = val:match('^wrathbal: (%w+)$')
       if wrathbal then
-        echo("got wrathbal")
         if svo.bals.wrathbal ~= nil and (svo.bals.wrathbal == false and wrathbal == 'Yes') then       
           svo.valid.gotwrathbalbalance()
         break
