@@ -967,18 +967,6 @@ disableTrigger("NameDB qw")</script>
 				<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="yes" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>City/House/Order enemies</name>
 					<script>local field
---[[
-if multimatches[2][1]:find("City") then
-  ndb.fixed_set(ndb.db.people.cityenemy, 0)
-  field = "city"
-elseif multimatches[2][1]:find("Order") then
-  ndb.fixed_set(ndb.db.people.orderenemy, 0)
-  field = "order"
-else
-  ndb.fixed_set(ndb.db.people.houseenemy, 0)
-  field = "house"
-end
-]]
 
 if not ndb.checkingfor then return end
 if ndb.checkingfor == "city" then
@@ -991,7 +979,6 @@ else
   ndb.fixed_set(ndb.db.people.houseenemy, 0)
   field = "house"
 end
-
 local names = string.split(multimatches[4][1], ",")
 
 for i = 1, #names do
@@ -1037,7 +1024,7 @@ ndb.checkingfor = nil</script>
 					<colorTriggerFgColor>#00b300</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>Enemies of the </string>
+						<string>Enemies of</string>
 						<string>FG6BG2</string>
 						<string>1</string>
 						<string>.+</string>
@@ -2615,6 +2602,7 @@ svo.showprompt()</script>
 				<name>Enemies lists</name>
 				<script>if ndb.checkingenemies then killTimer(ndb.checkingenemies[1]) end
 ndb.checkingfor = matches[2]
+
 ndb.checkingenemies = {
   tempTimer(10+getNetworkLatency(), [[
     ndb.checkingenemies = nil
