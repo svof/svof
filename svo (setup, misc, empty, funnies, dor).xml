@@ -22,7 +22,7 @@ svo.modules_version = svo.modules_version or {}
 svo.modules_version["svo (setup, misc, empty, funnies, dor)"] = 1
 svo.loader.setup = function()
 
-svo.version = "55"
+svo.version = "56"
 
 if Logger and not svo.systemloaded then
   Logger:LogSection('svof', {'timestamp', split = 5000, 'keepOpen'})
@@ -594,7 +594,6 @@ signals.gmcpcharvitals:connect(function()
       
       local wrathbal = val:match('^wrathbal: (%w+)$')
       if wrathbal then
-        echo("got wrathbal")
         if svo.bals.wrathbal ~= nil and (svo.bals.wrathbal == false and wrathbal == 'Yes') then       
           svo.valid.gotwrathbalbalance()
         break

@@ -967,17 +967,18 @@ disableTrigger("NameDB qw")</script>
 				<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="yes" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>City/House/Order enemies</name>
 					<script>local field
-if multimatches[2][1]:find("City") then
+
+if not ndb.checkingfor then return end
+if ndb.checkingfor == "city" then
   ndb.fixed_set(ndb.db.people.cityenemy, 0)
   field = "city"
-elseif multimatches[2][1]:find("Order") then
+elseif ndb.checkingfor == "order" then
   ndb.fixed_set(ndb.db.people.orderenemy, 0)
   field = "order"
 else
   ndb.fixed_set(ndb.db.people.houseenemy, 0)
   field = "house"
 end
-
 local names = string.split(multimatches[4][1], ",")
 
 for i = 1, #names do
@@ -1010,7 +1011,8 @@ end
 
 disableTrigger("City/House/Order enemies")
 if ndb.checkingenemies then killTimer(ndb.checkingenemies[1]) end
-ndb.checkingenemies = nil</script>
+ndb.checkingenemies = nil
+ndb.checkingfor = nil</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>3</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -1022,8 +1024,8 @@ ndb.checkingenemies = nil</script>
 					<colorTriggerFgColor>#00b300</colorTriggerFgColor>
 					<colorTriggerBgColor>#000000</colorTriggerBgColor>
 					<regexCodeList>
-						<string>Enemies of the </string>
-						<string>ANSI_COLORS_F{002}_B{000}</string>
+						<string>Enemies of</string>
+						<string>FG6BG2</string>
 						<string>1</string>
 						<string>.+</string>
 						<string>1</string>
@@ -1224,7 +1226,7 @@ setTriggerStayOpen("Clan Position Start",99)</script>
 						<colorTriggerFgColor>#0000ff</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>ANSI_COLORS_F{012}_B{000}</string>
+							<string>FG9BG2</string>
 							<string>.+</string>
 						</regexCodeList>
 						<regexCodePropertyList>
@@ -1252,7 +1254,7 @@ setTriggerStayOpen("Clan Position Start",99)</script>
 							<colorTriggerFgColor>#c0c0c0</colorTriggerFgColor>
 							<colorTriggerBgColor>#000000</colorTriggerBgColor>
 							<regexCodeList>
-								<string>ANSI_COLORS_F{007}_B{000}</string>
+								<string>FG16BG2</string>
 								<string>^   (.+)$</string>
 							</regexCodeList>
 							<regexCodePropertyList>
@@ -1892,7 +1894,6 @@ temp_name_list[1].mark = "Ivory"</script>
 						<regexCodePropertyList>
 							<integer>1</integer>
 							<integer>1</integer>
-							<integer>-1509852592</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -1917,7 +1918,6 @@ temp_name_list[1].mark = "Quisalis"</script>
 						<regexCodePropertyList>
 							<integer>1</integer>
 							<integer>1</integer>
-							<integer>-1518365872</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -2004,7 +2004,6 @@ temp_name_list[1][matches[2]] = matches[3]:trim()</script>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
-							<integer>0</integer>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
@@ -2106,7 +2105,6 @@ raiseEvent("NameDB finished honors", ndb.honorsname, (gaghonours and "quiet" or 
 						<integer>3</integer>
 						<integer>3</integer>
 						<integer>3</integer>
-						<integer>991694528</integer>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
@@ -2603,6 +2601,7 @@ svo.showprompt()</script>
 			<Alias isActive="yes" isFolder="no">
 				<name>Enemies lists</name>
 				<script>if ndb.checkingenemies then killTimer(ndb.checkingenemies[1]) end
+ndb.checkingfor = matches[2]
 
 ndb.checkingenemies = {
   tempTimer(10+getNetworkLatency(), [[
