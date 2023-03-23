@@ -3963,13 +3963,6 @@ end
 
 do
   local oldCL = createLabel
-  --[[
-  function createLabel(name, posX, posY, width, height, fillBackground)
-    oldCL(name, 0, 0, 0, 0, fillBackground)
-    moveWindow(name, posX, posY)
-    resizeWindow(name, width, height)
-  end
-  ]]
 end
 
 function svo.toggle_riftlabel(toggle)
@@ -4959,12 +4952,6 @@ function prio.import(name, echoback, report_errors, use_default)
   svo.debugf("imported %s prio.", name)
   return true
 end
-
---[[
-signals.saveconfig:connect(function ()
-  prio.export('current')
-end, 'save prios on quit')
-]]
 
 signals.saveconfig:add_pre_emit(function ()
   prio.export('current')
