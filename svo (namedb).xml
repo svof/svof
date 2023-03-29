@@ -745,7 +745,8 @@ local city_colours = {
   ["255,0,0"] = "Mhaldor",
   ["128,128,0"] = "Hashan",
   ["128,0,128"] = "Ashtan",
-  ["255,255,255"] = "Targossas"
+  ["255,255,255"] = "Targossas",
+  ["128,0,0"] = "Undead"
 }
 
 temp_name_list = {}
@@ -763,7 +764,7 @@ for _, name in ipairs(data) do
     if city_colours[rgb] then
       temp_name_list[#temp_name_list].city = city_colours[rgb]
     else
-      temp_name_list[#temp_name_list].city = "rogue"
+      temp_name_list[#temp_name_list].city = "Rogue"
     end
     setFgColor(192,192,192)
     deselect()
@@ -2942,7 +2943,7 @@ ndb.init()</script>
 				<script>ndb.valid = ndb.valid or {}
 
 ndb.valid.cities = {
-  "Ashtan", "Cyrene", "Hashan", "Eleusis", "Mhaldor", "Targossas"
+  "Ashtan", "Cyrene", "Hashan", "Eleusis", "Mhaldor", "Targossas", "Undead"
 }
 ndb.valid.classes = {
   "alchemist", "apostate", "bard", "blademaster", "depthswalker", "druid", "infernal", "jester", "magi", "monk", "occultist", "paladin", "priest", "psion", "runewarden", "sentinel", "serpent", "shaman", "sylvan"
