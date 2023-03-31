@@ -410,7 +410,8 @@ end
       typically expect not to check for the common things because pre-
       filtering is done.
   ]]
-
+svo.old_dict = svo.dict
+if not next(svo.dict) then
 svo.dict = {
   -- (string) what serverside calls this by - names can be different as they were revealed years after Svof was made
   gamename = nil,
@@ -14389,8 +14390,11 @@ if svo.haveskillset('anathema') then
     }
   }
 
+end --end of defs
+else
+  --Keep dict state intact upon loading/reloading the script
+  svo.dict = svo.old_dict
 end
-
 -- shortcut function to help create a dict action for a defence
 -- 'which' is the Svof defence name, use the same name in the 'Defences' script
 -- 'command' is the game command to raise the defence
