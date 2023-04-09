@@ -7225,7 +7225,7 @@ end</script>
 		-- reset all serverside prios so serverside doesn't spam class-specific defences
 		-- it's a bug in the game that serverside still tries to put up defences you can't
     svo.sk.resetserversideprios()
-		
+		svo.dict = {}
     svo.systemloaded = false; svo_init_system()
     for defname,v in pairs(temp_defs) do
       svo.defences.got(defname)
