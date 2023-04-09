@@ -745,7 +745,8 @@ local city_colours = {
   ["255,0,0"] = "Mhaldor",
   ["128,128,0"] = "Hashan",
   ["128,0,128"] = "Ashtan",
-  ["255,255,255"] = "Targossas"
+  ["255,255,255"] = "Targossas",
+  ["128,0,0"] = "Undead"
 }
 
 temp_name_list = {}
@@ -2942,16 +2943,16 @@ ndb.init()</script>
 				<script>ndb.valid = ndb.valid or {}
 
 ndb.valid.cities = {
-  "Ashtan", "Cyrene", "Hashan", "Eleusis", "Mhaldor", "Targossas"
+  "Ashtan", "Cyrene", "Hashan", "Eleusis", "Mhaldor", "Targossas", "Undead"
 }
 ndb.valid.classes = {
-  "alchemist", "apostate", "bard", "blademaster", "depthswalker", "druid", "infernal", "jester", "magi", "monk", "occultist", "paladin", "priest", "psion", "runewarden", "sentinel", "serpent", "shaman", "sylvan"
+  "alchemist", "apostate", "bard", "blademaster", "depthswalker", "druid", "infernal", "jester", "magi", "monk", "occultist", "paladin", "pariah", "priest", "psion", "runewarden", "sentinel", "serpent", "shaman", "sylvan", "unnamable"
 }
 ndb.valid.houses = {
-  "Scions", "Merchants", "Heartwood", "Cij", "Somatikos", "Shield", "Krymenian", "Virtuosi", "Outriders", "Dawnblade", "Harbingers", "Luminai", "Legates", "Insidium", "Consortium", "Savants", "Vanguard"
+  "Scions", "Merchants", "Heartwood", "Cij", "Somatikos", "Shield", "Krymenian", "Virtuosi", "Outriders", "Dawnblade", "Harbingers", "Legates", "Insidium", "Consortium", "Savants", "Vanguard"
 }
 ndb.valid.races = {
-  "tsol'aa", "dwarf", "human", "troll", "atavian", "rajamala", "horkval", "grook", "xoran", "siren", "satyr", "mhun", "tash'la", "elemental lord", "elemental lady"
+  "tsol'aa", "dwarf", "fayad", "human", "troll", "atavian", "rajamala", "horkval", "grook", "xoran", "siren", "satyr", "mhun", "tash'la", "elemental lord", "elemental lady"
 }
 ndb.valid.infamous = {
   ["is rapidly approaching the ranks of the Infamous"] = 1,
