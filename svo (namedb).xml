@@ -1741,7 +1741,12 @@ temp_name_list[1].combat_rating = tonumber(matches[3])</script>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>City &amp; rank</name>
 						<script>if not temp_name_list then return end
-
+if string.find(matches[3],"underworld") then
+  temp_name_list[1].city = "Undead"
+  temp_name_list[1].class = "undead"
+  temp_name_list[1].city_rank = matches[2]
+  return
+end
 temp_name_list[1].city_rank = ndb.getrankincity(matches[3], matches[2])
 temp_name_list[1].city = matches[3]</script>
 						<triggerType>0</triggerType>
@@ -1755,7 +1760,7 @@ temp_name_list[1].city = matches[3]</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^\w+ is an? (\w+) in (\w+)\.$</string>
+							<string>^\w+ is an? (.+) in (.+)\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
@@ -2952,7 +2957,7 @@ ndb.valid.houses = {
   "Scions", "Merchants", "Heartwood", "Cij", "Somatikos", "Shield", "Krymenian", "Virtuosi", "Outriders", "Dawnblade", "Harbingers", "Legates", "Insidium", "Consortium", "Savants", "Vanguard"
 }
 ndb.valid.races = {
-  "tsol'aa", "dwarf", "fayad", "human", "troll", "atavian", "rajamala", "horkval", "grook", "xoran", "siren", "satyr", "mhun", "tash'la", "elemental lord", "elemental lady"
+  "tsol'aa", "dwarf", "fayad", "human", "troll", "atavian", "rajamala", "horkval", "grook", "xoran", "siren", "satyr", "mhun", "tash'la", "undead", "elemental lord", "elemental lady"
 }
 ndb.valid.infamous = {
   ["is rapidly approaching the ranks of the Infamous"] = 1,
@@ -4055,36 +4060,9 @@ end</script>
 
   -- include own city in table in case of org switch
   if svo.conf.org == "Shallam" then svo.config.set("org", "Targossas") end
-
-  if svo.conf.org == "Targossas" then
-    ndb.conf.citypolitics = {
-      Ashtan = "enemy", Hashan = "enemy", Eleusis = "neutral", Cyrene = "ally", Mhaldor = "enemy", Targossas = "ally"
-    }
-  elseif svo.conf.org == "Mhaldor"  then
-    ndb.conf.citypolitics = {
-      Ashtan = "enemy", Hashan = "enemy", Eleusis = "enemy", Cyrene = "enemy", Targossas = "enemy", Mhaldor = "ally"
-    }
-  elseif svo.conf.org == "Ashtan"  then
-    ndb.conf.citypolitics = {
-      Mhaldor = "enemy", Hashan = "neutral", Eleusis = "enemy", Cyrene = "enemy", Targossas = "enemy", Ashtan = "ally"
-    }
-  elseif svo.conf.org == "Hashan"  then
-    ndb.conf.citypolitics = {
-      Mhaldor = "enemy", Ashtan = "neutral", Eleusis = "neutral", Cyrene = "neutral", Targossas = "enemy", Hashan = "ally"
-    }
-  elseif svo.conf.org == "Cyrene"  then
-    ndb.conf.citypolitics = {
-      Mhaldor = "neutral", Ashtan = "neutral", Eleusis = "neutral", Hashan = "neutral", Targossas = "ally", Cyrene = "ally"
-    }
-  elseif svo.conf.org == "Eleusis"  then
-    ndb.conf.citypolitics = {
-      Mhaldor = "enemy", Ashtan = "enemy", Cyrene = "neutral", Hashan = "neutral", Targossas = "neutral", Eleusis = "ally"
-    }
-  else
-    ndb.conf.citypolitics = {
-      Mhaldor = "neutral", Ashtan = "neutral", Cyrene = "neutral", Hashan = "neutral", Targossas = "neutral", Eleusis = "neutral"
-    }
-  end
+  ndb.conf.citypolitics = {
+    Mhaldor = "neutral", Ashtan = "neutral", Cyrene = "neutral", Hashan = "neutral", Targossas = "neutral", Eleusis = "neutral", Undead = "neutral"
+  }
 end</script>
 					<eventHandlerList>
 						<string>svo system loaded</string>
@@ -5016,7 +4994,8 @@ local singular_city = {
   Eleusis = 'Eleusian',
   Shallam = 'Shallamese',
   Targossas = 'Targossian',
-  Cyrene = 'Cyrenian'
+  Cyrene = 'Cyrenian',
+  Undead = 'Undead'
 }
 
 local plural_city = {
@@ -5027,7 +5006,8 @@ local plural_city = {
   Eleusis = 'Eleusians',
   Shallam = 'Shallamese',
   Targossas = 'Targossians',
-  Cyrene = 'Cyrenians'
+  Cyrene = 'Cyrenians',
+  Undead = 'Undead'
 }
 
 local plural_class = {
@@ -5048,6 +5028,7 @@ local plural_class = {
   Serpent     = 'Serpents',
   Shaman      = 'Shamans',
   Sylvan      = 'Sylvans',
+  Undead      = 'Undead'
 }
 
 function ndb.getpluralclass(class, count)
@@ -5278,7 +5259,6 @@ end
 
 function ndb.getrankincity(city, name)
   city, name = city:title(), name:title()
-
   if ndb.valid.cityranks[city] then return ndb.valid.cityranks[city][name] end
 end
 
