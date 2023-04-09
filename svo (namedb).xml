@@ -764,7 +764,7 @@ for _, name in ipairs(data) do
     if city_colours[rgb] then
       temp_name_list[#temp_name_list].city = city_colours[rgb]
     else
-      temp_name_list[#temp_name_list].city = "Rogue"
+      temp_name_list[#temp_name_list].city = "rogue"
     end
     setFgColor(192,192,192)
     deselect()
