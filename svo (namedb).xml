@@ -1760,7 +1760,7 @@ temp_name_list[1].city = matches[3]</script>
 						<colorTriggerFgColor>#000000</colorTriggerFgColor>
 						<colorTriggerBgColor>#000000</colorTriggerBgColor>
 						<regexCodeList>
-							<string>^\w+ is an? (.+) in (.+)\.$</string>
+							<string>^\w+ is an? (\w+) in (\w+)\.$</string>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>1</integer>
