@@ -3235,6 +3235,10 @@ function ndb.downloaded_file(_, filename)
     if city ~= "(hidden)" then
         temp_name_list[1].city = (city ~= "(none)" and string.title(city) or "rogue")
     end
+    -- API returns 'underworld' for the Undead.
+    if city == 'underworld' then
+        temp_name_list[1].city = 'Undead'
+    end										
     -- house info isn't shown if you're logged in to the website for some people
     if not(house == "(hidden)" or house == "(none)") then
       temp_name_list[1].guild = string.title(house)
@@ -4783,6 +4787,10 @@ function ndb.ishashani(name)
   return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.city, 'Hashan'), db:eq(ndb.db.people.name, name)})) ~= 0
 end
 
+function ndb.isundead(name)
+  return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.city, 'Undead'), db:eq(ndb.db.people.name, name)})) ~= 0
+end
+				
 function ndb.isclass(name, class)
   name, class = name:title(), class:lower()
   return #(db:fetch(ndb.db.people, {db:eq(ndb.db.people.class, class), db:eq(ndb.db.people.name, name)})) ~= 0
