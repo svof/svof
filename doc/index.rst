@@ -288,14 +288,14 @@ Warnings are done automatically for you on the prompt, and are specially coloure
 ==========    =================================  ==================
 Lock name     Cure                               Afflictions needed
 ==========    =================================  ==================
-soft          focus, fitness, tree               affs.slickness and affs.anorexia and affs.asthma
-venom         focus, fitness                     affs.slickness and affs.anorexia and affs.asthma and affs.paralysis)
-hard          fitness, tree                      affs.slickness and affs.anorexia and affs.asthma and affs.impatience)
+soft          focus, fitness, tree               slickness, affs.anorexia, affs.asthma
+venom         focus, fitness                     slickness, anorexia, affs.asthma, paralysis
+hard          fitness, tree                      slickness, anorexia, asthma, impatience or sandfever
+dragon        (none)                             dragonform, slickness, anorexia, asthma, imatience or sandfever, recklessness, weariness
 rift          eat kelp or bloodroot, fitness     asthma, slickness or an empty valerian pipe and both arms damaged
 rift 2        eat kelp or bloodroot              asthma, slickness, paralysis or disrupt and both arms damaged
 slow          eat kelp or bloodroot, fitness     asthma, slickness, both arms damaged, concussion and aeon
-true          (none)                             slickness, anorexia, asthma, paralysis, impatience, disrupt, confusion
-stain         (restore, dragonheal)              stain, slickness, empty valerian/realgar pipe and broken arms
+true          (none)                             slickness, anorexia, asthma, paralysis, impatience or sandfever, disrupt, confusion
 ==========    =================================  ==================
 
 Note that passive curing is not included here, and weariness prevents fitness.
