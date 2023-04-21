@@ -2893,7 +2893,7 @@ if not next(svo.dict) then
       },
       herb = {
         isadvisable = function()
-          return (affs.slickness and not affs.anorexia and not svo.doingaction'slickness' and not affs.stain) or false -- anorexia is redundant, but just in for now
+          return (affs.slickness and not affs.anorexia and not svo.doingaction'slickness') or false -- anorexia is redundant, but just in for now
         end,
   
         oncompleted = function()
