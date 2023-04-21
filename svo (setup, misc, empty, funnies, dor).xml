@@ -2840,7 +2840,7 @@ end
 
 empty.eat_bloodroot = function()
   svo.lostbal_herb()
-  svo.rmaff('paralysis')
+  svo.rmaff('paralysis', 'slickness')
 end
 
 empty.degenerateaffs = {'weakness', 'clumsiness', 'lethargy', 'illness', 'asthma', 'paralysis'}
