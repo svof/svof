@@ -11,7 +11,7 @@
 			<packageName></packageName>
 			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
 
--- Svof is licensed under a
+-- Svof is licensed under av
 -- Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 
 -- You should have received a copy of the license along with this
@@ -2840,7 +2840,7 @@ end
 
 empty.eat_bloodroot = function()
   svo.lostbal_herb()
-  svo.rmaff('paralysis', 'slickness')
+  svo.rmaff({'paralysis', 'slickness'})
 end
 
 empty.degenerateaffs = {'weakness', 'clumsiness', 'lethargy', 'illness', 'asthma', 'paralysis'}
