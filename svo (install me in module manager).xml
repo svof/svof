@@ -5680,15 +5680,6 @@ svo.restore.riftlock = {
   end
 }
 
-
-svo.restore.stainlock = {
-  desc = "Use restore to cure stain locks (stain, slickness, broken arm and empty valerian/realgar pipe)",
-
-  function ()
-    return svo.me.locks.stain and (affs.crippledleftarm or affs.crippledrightarm) -- don't restore if we can't restore anything useful.
-  end
-}
-
 -- restore if we have 3+ limbs damaged and at least one of them is curable with restore
 svo.restore.maybevivi = {
   desc = "Use restore if you have 3+ limbs damaged and at least one of them is curable with restore",
@@ -5743,15 +5734,6 @@ svo.dragonheal.hardlock = {
   end
 }
 
-svo.dragonheal.stainlock = {
-  desc = "Use dragonheal to cure stain locks (stain, slickness, broken arm and empty valerian/realgar pipe)",
-
-  function ()
-
-    return svo.me.locks.stain
-  end
-}
-
 -- dragonheal if we have 3+ limbs damaged and at least one of them is curable with dragonheal
 svo.dragonheal.maybevivi = {
   desc = "Use dragonheal in a situation when you might get vivisected - if we have 3+ limbs damaged and at least one of them is curable with dragonheal",
@@ -5802,14 +5784,6 @@ svo.shrugging.hardlock = {
 
   function ()
     return svo.me.locks.hard
-  end
-}
-
-svo.shrugging.stainlock = {
-  desc = "when we have a stain lock (stain, slickness, broken arm and empty valerian/realgar pipe)",
-
-  function ()
-    return svo.me.locks.stain
   end
 }
 
