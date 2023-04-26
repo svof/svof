@@ -2817,7 +2817,7 @@ function svo.valid.failed_focus_impatience()
       valid.simpleimpatience()
     end
   -- don't show a false (i) when we already know we've got impatience
-  elseif conf.aillusion and not affs.impatience then
+  elseif conf.aillusion and not affs.impatience and not affs.sandfever then
     svo.ignore_illusion("Not actually trying to focus right now (or we were forced).")
   end
 end
