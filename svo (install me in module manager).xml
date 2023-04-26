@@ -6334,7 +6334,6 @@ stupidityCheckTable = {
 				<packageName></packageName>
 				<script>function svo_downloaded_file(_, filename)
   -- is the file that downloaded our oursystem?
-
   if filename == tostring(svo.versionfile) then
     svo.checkingupdates = false
 
@@ -6368,6 +6367,10 @@ stupidityCheckTable = {
   
   elseif filename:match("(svo \(.+\)\.xml)$") then
     svo.installsystem(filename)
+  
+  --make it install from zip again
+  elseif filename:match("(in%-client%-svof%.zip)$") then
+    svo.install_from_zip(filename)
   end  
 end</script>
 				<eventHandlerList>
@@ -6382,7 +6385,8 @@ end</script>
 -- this should get called at start and every hour after that
 function svo.checkforupdates(type)
   local baseUrl = string.format("http://svof.github.io/svof/%s/", svo.conf.releasechannel)
- 
+  
+  
 	if svo.checkingupdates then return end
   svo.versionfile = downloadfolder.."svo_version"
 
@@ -6423,24 +6427,44 @@ end
 -- downloads the system &amp; updates the system version saved
 function svo.downloadnewsystem(newversion)
 --  local baseUrl = string.format("http://svof.github.io/svof/%s/", svo.conf.releasechannel)
-  local baseUrl = "https://github.com/svof/svof/raw/in-client-svof/"
-	svo.downloadedsystem = svo.downloadedsystem or {}
-  downloadingModules = 0
-  if downloadTimer then killTimer(downloadTimer) end
-  downloadTimer = tempTimer(10, "downloadingModules = nil killTimer(downloadTimer) downloadTimer = nil")
-  -- also include base install file 
-  local downloadUrl = baseUrl .. string.gsub("svo (install me in module manager)"," ", "%%20") .. ".xml"
-  downloadFile(downloadfolder .. "svo (install me in module manager).xml", downloadUrl)
-  svo.downloadedsystem["svo (install me in module manager)"] = false
-  downloadingModules = downloadingModules + 1
-  --download all the modules in the modules_list
-  for k,v in pairs(svo.modules_list) do
-    local downloadUrl = baseUrl .. v:gsub(" ", "%%20") .. ".xml"
-    downloadFile(downloadfolder .. v .. ".xml", downloadUrl)
-    svo.downloadedsystem[v] = false
-    downloadingModules = downloadingModules + 1
+  local baseUrl
+  local downloadUrl
+  if svo.conf.releasechannel == "stable" then
+    baseUrl = string.format("https://github.com/svof/svof/releases/tag/%d/", newversion)
+    downloadUrl = string.format("https://github.com/svof/svof/releases/download/%d/in-client-svof.zip", newversion)
+
+  elseif svo.conf.releasechannel == "testing" then
+    baseUrl = "https://github.com/svof/svof/raw/master/"
+    downloadUrl = baseUrl .. string.gsub("svo (install me in module manager)"," ", "%%20") .. ".xml"  
   end
   
+	svo.downloadedsystem = svo.downloadedsystem or {}
+  downloadingModules = 0
+  
+  -- since main releases are in zip, modules don't need to be downloaded one by one on stable channel
+  if svo.conf.releasechannel == "stable" then
+    downloadFile(downloadfolder .. "in-client-svof.zip", downloadUrl)
+    for k,v in pairs(svo.modules_list) do
+      svo.downloadedsystem[v] = false
+      downloadingModules = downloadingModules + 1 
+    end
+    
+  elseif svo.conf.releasechannel == "testing" then
+    if downloadTimer then killTimer(downloadTimer) end
+    downloadTimer = tempTimer(10, "downloadingModules = nil killTimer(downloadTimer) downloadTimer = nil")
+    -- also include base install file 
+    
+    downloadFile(downloadfolder .. "svo (install me in module manager).xml", downloadUrl)
+    svo.downloadedsystem["svo (install me in module manager)"] = false
+    downloadingModules = downloadingModules + 1
+    --download all the modules in the modules_list
+    for k,v in pairs(svo.modules_list) do
+      local downloadUrl = baseUrl .. v:gsub(" ", "%%20") .. ".xml"
+      downloadFile(downloadfolder .. v .. ".xml", downloadUrl)
+      svo.downloadedsystem[v] = false
+      downloadingModules = downloadingModules + 1
+    end
+  end
   svo.newdownloadedversion = newversion
 end</script>
 				<eventHandlerList />
@@ -6456,9 +6480,11 @@ end</script>
 				</Script>
 			</Script>
 			<Script isActive="yes" isFolder="no">
-				<name>Update UI and Install Engine</name>
+				<name>Update UI</name>
 				<packageName></packageName>
-				<script>function svo.showupdatereminder(newversion)
+				<script>local updateversion
+function svo.showupdatereminder(newversion)
+  updateversion = newversion
   --svo.announceupdates = nil
   svo.updatelabel = svo.updatelabel or Geyser.Label:new({
     name = "svo.updatelabel",
@@ -6539,32 +6565,11 @@ function svo_doupdate_click()
   svo.updatelabel:echo([[&lt;p align="center" style="font-size:10pt; color:white"&gt;Updating Svo...&lt;p&gt;]])
   svo.doupdatelabel:hide()
   svo.dontupdatelabel:hide()
-  svo.downloadnewsystem(newversion)
+  svo.downloadnewsystem(updateversion)
 end
 
-function svo.installsystem(filename)
-    local moduleName = filename:match("(svo \(.+\))\.xml$")
-    downloadingModules = downloadingModules - 1
-    svo.downloadedsystem[moduleName] = true
-    if downloadingModules and downloadingModules ~= 0 then return end
-    local dlDir = getMudletHomeDir() .. "/svo/downloads/"
-    local installDir = getModulePath("svo (install me in module manager)") 
-    installDir= installDir:sub(1, #installDir-38)
-    for k in lfs.dir(installDir) do
-      if k:ends(".xml") then
-        os.remove(installDir .. k)
-      end
-    end
-    for k,v in pairs(svo.downloadedsystem) do 
-      if v then
-        os.rename(dlDir .. k .. ".xml", installDir .. k .. ".xml")
-        reloadModule(k)
-        svo.downloadedsystem[k] = nil
-      end
-    end
-    svo.echof("New version installed and ready to go! Please restart mudlet to finalize cleanup.")
-    
-    if svo.updatelabel and svo.announceupdates == "checking" then 
+function svo.updateNotification()
+  if svo.updatelabel and svo.announceupdates == "checking" then 
     svo.updatelabel:echo([[&lt;p align="center" style="font-size:10pt; color:white"&gt;Svof updated! Please restart Mudlet.&lt;p&gt;]])
     svo.updatelabel:setStyleSheet([[
         margin: 0px;
@@ -7313,12 +7318,7 @@ end</script>
 			<Script isActive="yes" isFolder="no">
 				<name>svo.install_from_zip</name>
 				<packageName></packageName>
-				<script>-------------------------------------------------
---         Put your Lua functions here.        --
---                                             --
--- Note that you can also use external Scripts --
--------------------------------------------------
-local templocation = getMudletHomeDir() .. "/svo/downloads/temp/"
+				<script>local templocation = getMudletHomeDir() .. "/svo/downloads/temp/"
 
 -- deletedir credit: https://stackoverflow.com/a/43407750/72944
 local deletedir =
@@ -7327,59 +7327,27 @@ local deletedir =
       local file_path = dir .. '/' .. file
       if file ~= "." and file ~= ".." then
         if lfs.attributes(file_path, 'mode') == 'file' then
-          os.remove(file_path)
+          --os.remove(file_path)
+          local ok, message = os.remove(file_path)
+          if not ok then debugf("didn't delete %s because of ", file_path, message) end
         elseif lfs.attributes(file_path, 'mode') == 'directory' then
           deletedir(file_path)
         end
       end
     end
-    lfs.rmdir(dir)
+    local ok, message = lfs.rmdir(dir)
+    if not ok then debugf("didn't delete %s because of ", dir, message) end
   end
 
 local function maketemplocation(location)
-  if lfs.attributes(location) then
+  if lfs.attributes(location:sub(1,-2)) then
     deletedir(location)
   end
   return lfs.mkdir(location)
 end
 
 local function getmoduleslist(location)
-  return svo.pl.dir.getfiles(location, "*.xml")
-end
-
-local function get_names_from_paths(locations, location)
-	-- get a list of module names from their locations
-	local modules_list = svo.pl.tablex.imap(string.sub, locations, #location+1)
-	-- strip the final .xml as well
-	modules_list = svo.pl.tablex.imap(string.sub, modules_list, 1, -5)
-	return modules_list
-end
-
-function svo.install_all_modules_in(location)
-  if not string.ends(location, '/') then
-    location = location .. "/"
-  end
-  local modules_locations_list = getmoduleslist(location)
-  local modules_list = get_names_from_paths(modules_locations_list, location)
-  -- if Mudlet does not support syncModule(), ask the person to do it manually
-  local warn_manual_sync
-  -- install missing modules &amp; sync if Mudlet supports it
-  for i, modulelocation in ipairs(modules_locations_list) do
-    tempTimer(
-      0,
-      function()
-        local s, m = installModule(modulelocation)
-        if syncModule then
-          syncModule(modules_list[i])
-        else
-          if warn_manual_sync then
-            killTimer(warn_manual_sync)
-          end
-          warn_manual_sync = tempTimer(0, svo.ask_to_sync_manual)
-        end
-      end
-    )
-  end
+  return svo.pl.dir.getfiles(location:sub(1,-2), "*.xml")
 end
 
 function svo.install_from_zip(ziplocation)
@@ -7390,18 +7358,58 @@ function svo.install_from_zip(ziplocation)
   end
   -- create temporary location to extract zip into
   if not maketemplocation(templocation) then
-    return nil, "couldn't create temporary download location"
+    return nil, "couldn't create temp location"
   end
+  
   -- extract zip into said temporary location
   unzip(ziplocation, templocation)
+  
+  local modules_locations_list = getmoduleslist(templocation)
   -- install all modules
-  svo.install_all_modules_in(templocation)
+  for i, modulelocation in ipairs(modules_locations_list) do
+    svo.installsystem(modulelocation,true)
+  end
+  
   -- delete temporary location
   deletedir(templocation)
   -- reset the loaded flag
   svo.systemloaded = nil
   -- happy times
-  svo_init_system()
+  --svo_init_system()
+end</script>
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.installsystem</name>
+				<packageName></packageName>
+				<script>--function to install modules
+function svo.installsystem(filename, fromzip)
+  local moduleName = filename:match("(svo \(.+\))\.xml$")
+  downloadingModules = downloadingModules - 1
+  svo.downloadedsystem[moduleName] = true
+  if downloadingModules and downloadingModules ~= 0 then return end
+  local dlDir
+  if fromzip then
+    dlDir = getMudletHomeDir() .. "/svo/downloads/temp/"
+  else
+    dlDir = getMudletHomeDir() .. "/svo/downloads/"
+  end
+  local installDir = getModulePath("svo (install me in module manager)") 
+  installDir= installDir:sub(1, #installDir-38)
+  for k in lfs.dir(installDir) do
+    if k:ends(".xml") then
+      os.remove(installDir .. k)
+    end
+  end
+  for k,v in pairs(svo.downloadedsystem) do 
+    if v then
+      os.rename(dlDir .. k .. ".xml", installDir .. k .. ".xml")
+      reloadModule(k)
+      svo.downloadedsystem[k] = nil
+    end
+  end
+  svo.echof("New version installed and ready to go! Please restart mudlet to finalize cleanup.")
+  svo.updateNotification()
 end</script>
 				<eventHandlerList />
 			</Script>

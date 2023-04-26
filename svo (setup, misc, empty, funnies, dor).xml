@@ -2784,6 +2784,58 @@ function svo.installationfolder()
 	return systempath
 end
 
+-- Creates the window to show the changelog
+function svo.createLogWindow()
+  local svocolor = string.gsub(svo.getDefaultColor(),"&lt;","")
+  svocolor = string.gsub(svocolor,"&gt;","")
+  
+  --Initialize the container
+  svo.logcontainer = svo.logcontainer or Adjustable.Container:new({
+    name="svoLogContainer",
+    titleText="Svof Changelog",
+    width=1000, height=500,
+    titleTxtColor="green",
+    --Add the chosen svo colors to the window borders and buttons because we can!
+    adjLabelstyle="background-color:black; border: 3px solid rgb(".. svocolor .. ");",
+    buttonstyle=[[
+    QLabel{ border-radius: 7px; background-color: rgb(]] .. svocolor .. [[); color: white;}
+    QLabel::hover{ background-color: grey; color: white;}
+    ]],
+  })
+  
+  --Initialize console
+  if svo.logconsole then svo.logconsole:clear() end
+  svo.logconsole = Geyser.MiniConsole:new({
+    name="LogConsole",
+    x=0, y=0,
+    autoWrap = true,
+    color = "black",
+    scrollBar = true,
+    fontSize = 9,
+    width="100%", height="100%",
+  }, svo.logcontainer)
+  
+  --Read the logfile
+  local logfile = getMudletHomeDir() .. "/ANSICHANGELOG.txt"
+  local svochangelog = nil
+  if io.exists(logfile) then
+    svochangelog = io.open(getMudletHomeDir() .. "/ANSICHANGELOG.txt", "r")
+  end
+  
+  if svochangelog ~= nil then
+    local entry
+    -- this is necessary due to the way Mudlet interprets ANSI currently
+    for line in svochangelog:lines() do
+      entry = line:gsub("￼␛%[m", "￼␛[0m")
+      entry = ansi2decho(entry)
+      svo.logconsole:decho(entry .. "\n")
+    end
+  else
+    svo.logconsole:cecho("&lt;red&gt;No changelog file found.")
+  end
+  svo.logcontainer:show()
+end
+
 end -- end of svo misc loader
 
 if svo.systemloaded then svo.loader.misc() end</script>

@@ -265,3 +265,8 @@ Sure thingy!! Head over to my [Anathema](https://github.com/svof/svof/pull/742) 
 ## View system debug log
 1. install [Logger](http://forums.mudlet.org/viewtopic.php?f=6&t=1424)
 1. view mudlet-data/profiles/\<profile>/log/svof.txt
+
+## Release workflow
+To trigger a new release is very simple:
+1. Merge a properly labelled pull request for the proposed changes (recommended) or commit your changes directly. **Only merge commits are included in the github release page**. 
+2. Manually raise the version in the gh-pages branch in the 'stable' folder and that will trigger the workflows that will tag and create a new release automatically with the new version.
