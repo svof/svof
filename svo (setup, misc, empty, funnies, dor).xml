@@ -167,7 +167,6 @@ svo.defkeepup = svo.defkeepup or {
   empty  = {},
 }
 
-
 local affmt = {
   __tostring = function (self)
       local result = {}
@@ -388,6 +387,16 @@ do
 end
 
 -- Class resources: Some classes have resources that it is good to keep track. Put them here!
+function svo.got_class_balance(balance)
+  svo.bals[balance] = true
+  raiseEvent("svo lost balance", balance)
+  print("\n GOT " .. balance)
+end
+function svo.lost_class_balance(balance)
+  svo.bals[balance] = false
+  raiseEvent("svo lost balance", balance)
+  print("\n LOST " .. balance)
+end
 
 -- Alchemist
 if svo.haveskillset('sublimation') then -- this is exclusive to sublimation, so gonna use haveskillset here and hopefully it won't break anything!
@@ -432,17 +441,22 @@ if svo.me.class == "Bard" then
       for _, val in ipairs(gmcp.Char.Vitals.charstats) do
         local voice = val:match("^Voice: (%w+)$")
         if voice and voice == "Yes" then
-          svo.bals.voice = true
+          if svo.bals.voice == false then
+            svo.got_class_balance('voice')
+          end
         elseif voice and voice == "No" then
-          svo.bals.voice = false
+          if svo.bals.voice == true then
+            svo.lost_class_balance('voice')
+          end
           break
         end
       end
-    end
-    if not svo.bals.voice then
+    if svo.bals.voice == nil then
       svo.bals.voice = true
     end
+    end
   end, 'update voice balance')
+  
   signals.gmcpcharvitals:connect(function()
     if gmcp.Char.Vitals.charstats then
       for _, val in ipairs(gmcp.Char.Vitals.charstats) do
@@ -499,17 +513,22 @@ if svo.me.class == "Depthswalker" then
       for _, val in ipairs(gmcp.Char.Vitals.charstats) do
         local word = val:match("^Word: (%w+)$")
         if word and word == "Yes" then
-          svo.bals.word = true
+          if svo.bals.word == false then
+            svo.got_class_balance('word')
+          end
         elseif word and word == "No" then
-          svo.bals.word = false
+          if svo.bals.word == true then
+            svo.lost_class_balance('word')
+          end
           break
         end
       end
     end
-    if not svo.bals.word then
+    if svo.bals.word == nil then
       svo.bals.word = true
     end
   end, 'update word balance')
+  
   signals.gmcpcharvitals:connect(function()
     if gmcp.Char.Vitals.charstats then
       for _, val in ipairs(gmcp.Char.Vitals.charstats) do
@@ -717,21 +736,23 @@ end, 'update excision wrath')
 
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
-    
     for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      
       local wrathbal = val:match('^wrathbal: (%w+)$')
-      if wrathbal then
-        if svo.bals.wrathbal ~= nil and (svo.bals.wrathbal == false and wrathbal == 'Yes') then       
-          svo.valid.gotwrathbalbalance()
-        break
-        elseif svo.bals.wrathbal ~= nil and (svo.bals.wrathbal == true and wrathbal == 'No') then
-          svo.valid.usedwrathbalbalance()
-        break
+      if wrathbal and wrathbal == "Yes" then
+          if svo.bals.wrathbal == false then
+            svo.got_class_balance('wrathbal')
+          end
+        elseif wrathbal and wrathbal == "No" then
+          if svo.bals.wrathbal == true then
+            svo.lost_class_balance('wrathbal')
+          end
+          break
         end
       end
     end
-  end
+    if svo.bals.wrathbal == nil then
+      svo.bals.wrathbal = true
+    end
 end, 'update wrathbal balance')
 end
 
@@ -790,15 +811,19 @@ if svo.me.class == "Priest" then
       for _, val in ipairs(gmcp.Char.Vitals.charstats) do
         local prayer = val:match("^prayer: (%w+)$")
         if prayer and prayer == "Yes" then
-          svo.me.prayer = true
+          if svo.bals.prayer == false then
+            svo.got_class_balance('prayer')
+          end
         elseif prayer and prayer == "No" then
-          svo.me.prayer = false
+          if svo.bals.prayer == true then
+            svo.lost_class_balance('prayer')
+          end
           break
         end
       end
     end
-    if not svo.me.prayer then
-      svo.me.prayer = true
+    if svo.bals.prayer == nil then
+      svo.bals.prayer = true
     end
   end, 'update prayer balance')
 end
@@ -862,17 +887,21 @@ signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for _, val in ipairs(gmcp.Char.Vitals.charstats) do
       local anathema = val:match("^Anathema: (%w+)$")
-      if anathema then
-        if svo.bals.anathema ~= nil and (svo.bals.anathema == false and anathema == "Yes") then       
-          svo.valid.gotanathemabalance()
-        break
-        elseif svo.bals.anathema ~= nil and (svo.bals.anathema == true and anathema == "No") then
-          svo.valid.usedanathemabalance()
-        break
+      if anathema and anathema == "Yes" then
+          if svo.bals.anathema == false then
+            svo.got_class_balance('anathema')
+          end
+        elseif anathema and anathema == "No" then
+          if svo.bals.anathema == true then
+            svo.lost_class_balance('anathema')
+          end
+          break
         end
       end
     end
-  end
+    if svo.bals.anathema == nil then
+      svo.bals.anathema = true
+    end
 end, 'update anathema balance')
 end
 

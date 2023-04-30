@@ -1445,6 +1445,7 @@ sk.onprompt_beforelifevision_do = function()
 end
 signals.before_prompt_processing:connect(sk.onprompt_beforelifevision_do, "add onprompt_beforelifevision_do")
 
+-- Functions that track several miscellaneous balances (focus, tree, shrugging, etc)
 svo.lostbal_tree = function()
   if bals.tree then tempTimer(0, [[raiseEvent("svo lost balance", 'tree')]]) end
   bals.tree = false
@@ -1735,42 +1736,7 @@ svo.lostbal_dragonheal = function()
   raiseEvent("svo lost balance", 'dragonheal')
 end
 
-if svo.haveskillset('terminus') then
-svo.lostbal_word = function()
-  if not bals.word then return end
-
-  bals.word = false
-  svo.startbalancewatch('word')
-  sk.wordtick = sk.wordtick + 1
-  local oldwordtick = sk.wordtick
-
-  tempTimer(17+svo.getping(), function ()
-    if not bals.word and sk.wordtick == oldwordtick then
-      bals.word = true
-      svo.make_gnomes_work()
-      raiseEvent("svo got balance", 'word')
-    end
-  end)
-
-  raiseEvent("svo lost balance", 'word')
-end
-end
-
-if svo.haveskillset('anathema') then
-svo.lostbal_anathema = function()
-  if not bals.anathema then return end
-  bals.anathema = false
-  raiseEvent("svo lost balance", 'anathema')
-  end
-end
-
-if svo.haveskillset('excision') then
-svo.lostbal_wrathbal = function()
-  if not bals.wrathbal then return end
-  bals.wrathbal = false
-  raiseEvent("svo lost balance", 'wrathbal')
-  end
-end
+-- End of lost balance tracking functions
 
 function sk.doingstuff_inslowmode()
   local result

@@ -8741,26 +8741,6 @@ svo.valid.setup_prompt()</script>
 								<integer>0</integer>
 							</regexCodePropertyList>
 						</Trigger>
-						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-							<name>Prayer</name>
-							<script>svo.bals.prayer = true</script>
-							<triggerType>0</triggerType>
-							<conditonLineDelta>0</conditonLineDelta>
-							<mStayOpen>0</mStayOpen>
-							<mCommand></mCommand>
-							<packageName></packageName>
-							<mFgColor>#ff0000</mFgColor>
-							<mBgColor>#ffff00</mBgColor>
-							<mSoundFile></mSoundFile>
-							<colorTriggerFgColor>#000000</colorTriggerFgColor>
-							<colorTriggerBgColor>#000000</colorTriggerBgColor>
-							<regexCodeList>
-								<string>E</string>
-							</regexCodeList>
-							<regexCodePropertyList>
-								<integer>0</integer>
-							</regexCodePropertyList>
-						</Trigger>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>Blackout</name>
@@ -17939,324 +17919,6 @@ svo.gotarmbalance()</script>
 					</Trigger>
 				</TriggerGroup>
 				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Prayer balance</name>
-					<script></script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList />
-					<regexCodePropertyList />
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo lost prayer</name>
-						<script>svo.valid.usedprayerbalance()</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>^"Return to ash," you decree, focussing your holy might upon (\w+).$</string>
-							<string>^"And you shall be naught but cinders," you decree, focussing your holy might upon (\w+).$</string>
-							<string>^"Attend me," you intone to (\w+).$</string>
-							<string>^"So listen well," you intone to (\w+).$</string>
-							<string>^"Burn!" you command (\w+), fire leaping forth to sear \w+.</string>
-							<string>^"Your crimes shall not go unpunished," you recite to (\w+), voice hard with condemnation.$</string>
-							<string>^"Your sins condemn you to this fate," you recite to (\w+), voice hard with condemnation.$</string>
-							<string>^"We will endure until our work is done," you murmur, laying a hand upon the brow of (\w+).$</string>
-							<string>"We will endure until our work is done," you murmur.</string>
-							<string>^"Sheltered by His duty," you murmur, laying a hand upon the brow of (\w+).$</string>
-							<string>^"And sheltered by His duty," you murmur, laying a hand upon the brow of (\w+).$</string>
-							<string>"Sheltered by His duty," you murmur."</string>
-							<string>^"May your body reflect your faith," you intone, readying yourself for a crushing blow against (\w+).$</string>
-							<string>^"As you fall before the weapons of Their faithful," you intone, readying yourself for a crushing blow against (\w+).$</string>
-							<string>"Onward for the Bloodsworn. Onward for Creation!" you cry, raising your arms in a beckoning gesture.</string>
-							<string>^"Know the pain which you have caused," you proselytise to (\w+).$</string>
-							<string>^"And your guilt will be made plain," you proselytise to (\w+).$</string>
-							<string>"May the Light lead, and we never fail to follow!" you cry out.</string>
-							<string>^"Repent for your crimes!" you denounce (\w+).$</string>
-							<string>^"And face your penance!" you denounce (\w+).$</string>
-							<string>^"Their blades shall break upon our shields," you murmur, laying a hand upon the brow of (\w+).$</string>
-							<string>"Their blades shall break upon our shields," you murmur.</string>
-							<string>^"I deem you unfit for Creation!" you proclaim, pointing imperiously at (\w+).$</string>
-							<string>^"And thus I deem you unfit for Creation!" you proclaim, pointing imperiously at (\w+).$</string>
-							<string>^"May you yet feel the pain you so inflict." you recite to (\w+), your holy protections surging around you.$</string>
-							<string>^"And see that which Evil reaps!" you recite to (\w+).$</string>
-							<string>"A bulwark to stave off the darkness!" you thunder, spreading your arms wide in supplication.</string>
-							<string>^"The light shall not be denied," you declare, as you prepare for your clash with (\w+).$</string>
-							<string>^"For justice shall not be averted," you declare, as you prepare for your clash with (\w+).$</string>
-							<string>^"Protected from the ravages of the Outer Cold," you murmur, laying a hand upon the brow of (\w+).$</string>
-							<string>"Protected from the ravages of the Outer Cold," you murmur.</string>
-							<string>^"We shall not falter," you murmur, laying a hand upon the brow of (\w+).$</string>
-							<string>^"For we shall not falter," you murmur, laying a hand upon the brow of (\w+).$</string>
-							<string>"We shall not falter," you murmur.</string>
-							<string>"For we shall not falter," you murmur.</string>
-							<string>^"Burn, blight upon Creation!" you dictate to (\w+), holy flame wreathing \w+ in cleansing fury.$</string>
-							<string>^"And may the cleansing fires consume you!" you dictate to (w\+), holy flame wreathing \w+ incleansing fury.$</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>3</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>3</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>3</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>3</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>3</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>3</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>3</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo missing prayer</name>
-						<script>-- separate trigger not to reset the stopwatch often
-if svo.bals.prayer ~= nil then
-  svo.valid.usedprayerbalance()
-end</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>It is not yet time to recite the next verse of your prayer.</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>3</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo got prayer</name>
-						<script>svo.valid.gotprayerbalance()</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>You may speak another holy verse.</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>3</integer>
-						</regexCodePropertyList>
-					</Trigger>
-				</TriggerGroup>
-				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Voice balance</name>
-					<script></script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList />
-					<regexCodePropertyList />
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo lost voice</name>
-						<script>svo.valid.usedvoicebalance()</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>You begin an unearthly dirge, but find no hands reaching from the grave to be banished.</string>
-							<string>You recite an obscure</string>
-							<string>You sing a pastorale of the fields and streams to</string>
-							<string>You sing an irritating, mind-numbing ditty at </string>
-							<string>You sing a graceful maqam of el'Jazira at </string>
-							<string>You sense futility as you recite an obscure Kamleikan haiku to </string>
-							<string>You recite an obscure Kamleikan haiku to </string>
-							<string>In droning song you subject </string>
-							<string>With an unearthly dirge, you banish the hands that reach from the grave.</string>
-							<string>Weaving a complex counterpoint between instrument and voice, you fail to instill anything like fear in </string>
-							<string>Weaving a complex counterpoint between instrument and voice, you fill </string>
-							<string>You invoke chaotic powers in a dark solo but fail to drain the essential magic of </string>
-							<string>You invoke chaotic powers in a dark solo, draining away some of the essential magic of </string>
-							<string>You direct a poem of gluttony and decay at </string>
-							<string>Your poem of gluttony and decay makes </string>
-							<string>Belting out an echoing yodel, you halt in confusion, finding no crystal forest to shatter.</string>
-							<string>Belting out an echoing yodel, you shatter the the crystal forest that lies at your feet.</string>
-							<string>You sing a pastorale of the fields and streams to </string>
-							<string>^You belt out a meaningless screech of varying pitch at (\w+) who appears unaware of your artistry\.$</string>
-							<string>^You chant 'GIMMEGIMME' at (\w+), who does not react\.$</string>
-							<string>^With a mournful cry you begin the requiem for Seleucar to (\w+), who appears unmoved\.$</string>
-							<string>^With a frustratingly irrelevant vibrato you aim at (\w+)'s (?:left|right) arm\.$</string>
-							<string>^Your recitation of an epic tale of the heroism of Nicator has no effect on (\w+)\.$</string>
-							<string>^Your voice rises to the heavens with your instrument, but without your audience, as you sing an Aria of healing to (\w+)\.$</string>
-							<string>^With a wink, you recite "Ode to Elixirs" to (\w+), who looks on, unimpressed\.$</string>
-							<string>^Starting with the characteristic Jaziran trill, you sing a qasida of asceticism to (\w+), who seems undaunted\.$</string>
-							<string>^With a gravity born of respect, you sing of the saintly Imithia, if only for yourself\.$</string>
-							<string>^Composing a few clever lines in your head, you quickly sing a jaunty limerick at (\w+), who seems to pay no notice\.$</string>
-							<string>^You sing a sonorous chant which fails to strip the defences of (\w+)\.$</string>
-							<string>^Using a heavy tremolo you crush (\w+)'s (?:left|right) leg\.$</string>
-							<string>^Using a heavy tremolo you brutally punish (\w+)'s already shattered (?:left|right) leg\.$</string>
-							<string>^With a trilling vibrato you shatter the (?:left|right) arm of (\w+)\.$</string>
-							<string>^With a trilling vibrato you attack (\w+)'s broken (?:left|right) arm. \w+ screams in pain\.$</string>
-							<string>^You begin reciting an epic tale of the heroism of Nicator to (\w+), holding \w+ spellbound\.$</string>
-							<string>^Your voice rises to the heavens with your instrument as you sing an Aria of healing to (\w+)\.$</string>
-							<string>^With a wink, you recite "Ode to Elixirs" to (\w+)\.$</string>
-							<string>^Your cantata shatters the defences surrounding (\w+)\.$</string>
-							<string>^Starting with the characteristic Jaziran trill, you sing a qasida of asceticism to (\w+)\.$</string>
-							<string>^With a gravity born of respect, you sing of the saintly Imithia of legend, bringing a certain dull look to (\w+)'s face\.$</string>
-							<string>^Composing a few clever lines in your head, you quickly sing a jaunty limerick at (\w+)\.$</string>
-							<string>You strike up a march, inserting strong discordant undertones aimed at the mounts nearby.</string>
-							<string>You play a prelude, summoning a fantastically believable illusion.</string>
-							<string>You sing a sonorous chant, stripping the </string>
-							<string>^You let the grace of your voice shine forth with a Scarlattan cantata at (.+)\.$</string>
-							<string>^Your cantata shatters the magical shield surrounding (.+)\.$</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>3</integer>
-							<integer>2</integer>
-							<integer>2</integer>
-							<integer>2</integer>
-							<integer>2</integer>
-							<integer>2</integer>
-							<integer>2</integer>
-							<integer>2</integer>
-							<integer>3</integer>
-							<integer>2</integer>
-							<integer>2</integer>
-							<integer>2</integer>
-							<integer>2</integer>
-							<integer>2</integer>
-							<integer>2</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>2</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>2</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo missing voice</name>
-						<script>-- separate trigger not to reset the stopwatch often
-if svo.bals.voice then
-  svo.valid.usedvoicebalance()
-end</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>You have not yet regained voice balance.</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>3</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo got voice</name>
-						<script>svo.valid.gotvoicebalance()</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>You have recovered voice balance.</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>3</integer>
-						</regexCodePropertyList>
-					</Trigger>
-				</TriggerGroup>
-				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Domination entities balance</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -18528,7 +18190,7 @@ raiseEvent("svo got balance", "homunculus")</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Fitness balance</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -18604,7 +18266,7 @@ raiseEvent("svo got balance", "homunculus")</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Rage balance</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -18637,164 +18299,6 @@ raiseEvent("svo got balance", "homunculus")</script>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>3</integer>
-						</regexCodePropertyList>
-					</Trigger>
-				</TriggerGroup>
-				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Word balance</name>
-					<script></script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList />
-					<regexCodePropertyList />
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo lost word</name>
-						<script>svo.valid.usedwordbalance()</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>^Imbuing your voice with power, you intone, "\S+"\.$</string>
-							<string>Injecting your voice with scorn, you proclaim: "Hailad".</string>
-							<string>^Fixing your gaze upon .+, you intone, "Laiad"\.$</string>
-							<string>^Turning to face \S+ you utter, "Uraiad"\.$</string>
-							<string>^Locking the image of \S+ in your minds eye, you utter, "[Hh]iemeth"\.$</string>
-							<string>^You speak words of power over .+\.$</string>
-							<string>Taking a steadying breath, you turn your focus inward and proclaim, "Mainaas".</string>
-							<string>Drawing on ancestral memory, you let the lament of deSangre pour forth:</string>
-							<string>^Directing your voice so only \S+ may hear, you command \w+ to serve\.$</string>
-							<string>Your mouth falls open as the all-consuming litany pours forth, and you know that in moments all that hear shall serve your will.</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>1</integer>
-							<integer>3</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>3</integer>
-							<integer>3</integer>
-							<integer>1</integer>
-							<integer>3</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo missing word</name>
-						<script>if svo.bals.word then
-  svo.valid.usedwordbalance()
-end</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>You have not recovered enough to intone another word of power.</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>3</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo got word</name>
-						<script>svo.valid.gotwordbalance()</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>You may intone another word of power.</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>3</integer>
-						</regexCodePropertyList>
-					</Trigger>
-				</TriggerGroup>
-				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Age tracking</name>
-					<script></script>
-					<triggerType>0</triggerType>
-					<conditonLineDelta>0</conditonLineDelta>
-					<mStayOpen>0</mStayOpen>
-					<mCommand></mCommand>
-					<packageName></packageName>
-					<mFgColor>#ff0000</mFgColor>
-					<mBgColor>#ffff00</mBgColor>
-					<mSoundFile></mSoundFile>
-					<colorTriggerFgColor>#000000</colorTriggerFgColor>
-					<colorTriggerBgColor>#000000</colorTriggerBgColor>
-					<regexCodeList />
-					<regexCodePropertyList />
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>No additional age</name>
-						<script>svo.valid.simpleage(0)</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>You are no longer artificially aged due to having manipulated time.</string>
-							<string>Having fully regressed to your normal age, you cease dilating time.</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>3</integer>
-							<integer>3</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>aged</name>
-						<script>svo.valid.simpleage(matches[2])</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string>^You are now unnaturally aged by (\d+) years\.$</string>
-							<string>^The effects of your time manipulation fade somewhat, leaving you only aged by (\d+) years\.$</string>
-							<string>^You have now aged yourself by (\d+) years\.$</string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>1</integer>
-							<integer>1</integer>
-							<integer>1</integer>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
@@ -19547,7 +19051,7 @@ echo'\n' svo.config.set("shipmode", "on", true)</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Two-hander recover footing</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -55463,6 +54967,29 @@ end</script>
 				<command></command>
 				<packageName></packageName>
 				<regex>^dil(?: (\w+))?$</regex>
+			</Alias>
+			<Alias isActive="yes" isFolder="no">
+				<name>Force balance</name>
+				<script>--Forces the system to believe you already got a curing balance (useful for debug or in rare cases where you want
+--to override the system tracking). Valid for focus, herb and salve balance.
+if matches[2] == "salve" then
+  svo.valid.forcesalve()
+  svo.echof("Forced salve balance")
+elseif matches[2] == "focus" then
+  svo.valid.forcefocus()
+  svo.echof("Forced focus balance")
+elseif matches[2] == "herb" then
+  svo.valid.forceherb()
+  svo.echof("Forced herb balance")
+elseif matches[2] == "all" then
+  svo.valid.forcesalve() 
+  svo.valid.forcefocus() 
+  svo.valid.forceherb()
+  svo.echof("Forced focus, herb and salve balance")
+end</script>
+				<command></command>
+				<packageName></packageName>
+				<regex>^vforce (\w+)$</regex>
 			</Alias>
 		</AliasGroup>
 	</AliasPackage>
