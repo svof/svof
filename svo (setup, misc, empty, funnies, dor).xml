@@ -167,7 +167,6 @@ svo.defkeepup = svo.defkeepup or {
   empty  = {},
 }
 
-
 local affmt = {
   __tostring = function (self)
       local result = {}
@@ -388,24 +387,186 @@ do
 end
 
 -- Class resources: Some classes have resources that it is good to keep track. Put them here!
-if svo.haveskillset('groves') then
+function svo.got_class_balance(balance)
+  svo.bals[balance] = true
+  raiseEvent("svo lost balance", balance)
+  print("\n GOT " .. balance)
+end
+function svo.lost_class_balance(balance)
+  svo.bals[balance] = false
+  raiseEvent("svo lost balance", balance)
+  print("\n LOST " .. balance)
+end
+
+-- Alchemist
+if svo.haveskillset('sublimation') then -- this is exclusive to sublimation, so gonna use haveskillset here and hopefully it won't break anything!
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local wellspring = val:match("^Wellspring: (%d+)$")
+        if wellspring then
+          svo.me.wellspring = tonumber(wellspring)
+          break
+        end
+      end
+    end
+    if not svo.me.wellspring then
+      svo.me.wellspring = 0
+    end
+  end, 'update wellspring')
+end
+
+-- Apostate / Infernal
+if svo.me.class == "Apostate" or svo.me.class == "Infernal" then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local essence = val:match("^Essence: (%d+)%%$")
+      if essence then
+        stats.essence = tonumber(essence)
+        break
+      end
+    end
+  end
+  if not stats.essence then
+    stats.essence = 0
+  end
+end, 'update necromancy essence')
+end
+
+--Bard
+if svo.me.class == "Bard" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local voice = val:match("^Voice: (%w+)$")
+        if voice and voice == "Yes" then
+          if svo.bals.voice == false then
+            svo.got_class_balance('voice')
+          end
+        elseif voice and voice == "No" then
+          if svo.bals.voice == true then
+            svo.lost_class_balance('voice')
+          end
+          break
+        end
+      end
+    if svo.bals.voice == nil then
+      svo.bals.voice = true
+    end
+    end
+  end, 'update voice balance')
+  
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local stance = val:match("^Stance: (%w+)$")
+        if stance then
+          svo.me.stance = stance
+          break
+        end
+      end
+    end
+    if not svo.me.stance then
+      svo.me.stance = "None"
+    end
+  end, 'update bard stance')
+end
+
+--Blademaster
+if svo.me.class == "Blademaster" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local shin = val:match("^Shin: (%d+)$")
+        if shin then
+          svo.stats.shin = tonumber(shin)
+          break
+        end
+      end
+    end
+    if not svo.stats.shin then
+      svo.stats.shin = 0
+    end
+  end, 'update shin')
+  
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local stance = val:match("^Stance: (%w+)$")
+        if stance then
+          svo.me.stance = stance
+          break
+        end
+      end
+    end
+    if not svo.me.stance then
+      svo.me.stance = "None"
+    end
+  end, 'update bm stance')
+end
+
+--Depthswalker
+if svo.me.class == "Depthswalker" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local word = val:match("^Word: (%w+)$")
+        if word and word == "Yes" then
+          if svo.bals.word == false then
+            svo.got_class_balance('word')
+          end
+        elseif word and word == "No" then
+          if svo.bals.word == true then
+            svo.lost_class_balance('word')
+          end
+          break
+        end
+      end
+    end
+    if svo.bals.word == nil then
+      svo.bals.word = true
+    end
+  end, 'update word balance')
+  
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local age = val:match("^Age: (%d+)$")
+        if age then
+         svo.stats.age = tonumber(age)
+          break
+        end
+      end
+    end
+    if not svo.stats.age then
+      svo.stats.age = 0
+    end
+  end, 'update age')
+end
+
+
+--Druid/Sylvan Sunlight
+if svo.me.class == "Druid" or svo.me.class == "Sylvan" then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for _, val in ipairs(gmcp.Char.Vitals.charstats) do
       local sunlight = val:match("^Sunlight: (%d+)$")
       if sunlight then
-        stats.sunlight = tonumber(sunlight)
+        svo.stats.sunlight = tonumber(sunlight)
         break
       end
     end
   end
-  if not stats.sunlight then
-    stats.sunlight = 0
+  if not svo.stats.sunlight then
+    svo.stats.sunlight = 0
   end
 end, 'update sunlight')
 end
-if svo.haveskillset('metamorphosis') then
-signals.gmcpcharvitals:connect(function()
+
+-- Druid/Sentinel Metamorphosis
+if svo.me.class == "Druid" or svo.me.class == "Sentinel" then
+  signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for _, val in ipairs(gmcp.Char.Vitals.charstats) do
       local morph = val:match("^Morph: (%w+)$")
@@ -428,108 +589,83 @@ signals.gmcpcharvitals:connect(function()
 end, 'update morph')
 end
 
-if svo.haveskillset('tekura') or svo.haveskillset('shikudo') then
-signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      local stance = val:match("^Stance: (%w+)$")
-      local form = val:match("^Form: (%w+)$")
+--Jester (Nothing to track)
 
-      if stance then
-        me.path = 'tekura'
-        me.form = nil
-        me.stance = stance:lower()
-        sk.ignored_defences['tekura'].status = false
-        sk.ignored_defences['shikudo'].status = true
-
-        break
-      elseif form then
-        me.path = 'shikudo'
-        me.form = form:lower()
-        me.stance = nil
-        sk.ignored_defences['tekura'].status = true
-        sk.ignored_defences['shikudo'].status = false
-
-        break
+-- Magi/Sylvan Channel
+if svo.me.class == "Magi" or svo.me.class == "Sylvan" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      local element 
+      element = {["A"] = "air", ["E"] = "earth", ["F"] = "fire", ["W"] = "water",}
+      local channels = string.match(gmcp.Char.Vitals.charstats[3], "Channels: (.*)")
+      if channels == "None" then
+        for _, v in pairs(element) do
+          defences.lost("bound"..v)
+        end
+      else
+        for k,v in pairs(element) do
+          if channels:find(k) then
+            defences.got("bound"..v)
+          else
+            defences.lost("bound"..v)
+          end
+        end
       end
     end
-  end
-
-  if not me.path then
-    me.path = 'tekura'
-  end
-end, 'update path and form')
+  end, 'update channels')
 end
 
-if svo.haveskillset('necromancy') or svo.haveskillset('oppression') then
-signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      local essence = val:match("^Essence: (%d+)%%$")
-      if essence then
-        stats.essence = tonumber(essence)
-        break
+
+--Monk
+if svo.me.class == 'Monk' then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local stance = val:match("^Stance: (%w+)$")
+        local form = val:match("^Form: (%w+)$")
+        local kata = val:match("^Kata: (%w+)$")
+        if stance then
+          svo.me.path = 'tekura'
+          svo.me.form = nil
+          svo.me.stance = stance:lower()
+          svo.me.kata = kata
+          sk.ignored_defences['tekura'].status = false
+          sk.ignored_defences['shikudo'].status = true
+          break
+        elseif form then
+          svo.me.path = 'shikudo'
+          svo.me.form = form:lower()
+          svo.me.stance = nil
+          svo.me.kata = kata
+          sk.ignored_defences['tekura'].status = true
+          sk.ignored_defences['shikudo'].status = false
+          break
+        end
       end
     end
-  end
-  if not stats.essence then
-    stats.essence = 0
-  end
-end, 'update necromancy essence')
-end
-
-if svo.haveskillset('weaponmastery') then
-signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      local momentum = val:match("^Momentum: (%d+)$")
-      if momentum then
-        stats.momentum = tonumber(momentum)
-        break
+    if not svo.me.path then
+      svo.me.path = 'tekura'
+    end
+  end, 'update path and form')
+  
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local kai = val:match("^Kai: (%d+)%$")
+        if kai then
+          svo.me.kai = tonumber(kai)
+          break
+        end
       end
     end
-  end
-  if not stats.momentum then
-    stats.momentum = 0
-  end
-end, 'update dual blunt momentum')
-end
-
-if svo.haveskillset('memorium') then
-signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      local epitaph_length = val:match("^epitaph_length: (%d+)$")
-      if epitaph_length then
-        stats.epitaph_length = tonumber(epitaph_length)
-        break
-      end
+    if not svo.me.kai then
+      svo.me.kai = 0
     end
-  end
-  if not stats.epitaph_length then
-    stats.epitaph_length = 0
-  end
-end, 'update memorium epitaph length')
+  end, 'update kai')
 end
 
-if svo.haveskillset('anathema') then
-signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      local manifestation = val:match("^Manifestation: (%d+)%%$")
-      if manifestation then
-        stats.manifestation = tonumber(manifestation)
-        break
-      end
-    end
-  end
-  if not stats.manifestation then
-    stats.manifestation = 0
-  end
-end, 'update anathema manifestation')
-end
-
-if svo.haveskillset('anathema') or svo.haveskillset('occultism') then
+-- Occultist / Unnamable Karma
+if svo.me.class == "Occultist" or svo.me.class == "Unnamable" then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for _, val in ipairs(gmcp.Char.Vitals.charstats) do
@@ -546,7 +682,50 @@ signals.gmcpcharvitals:connect(function()
 end, 'update anathema/occultism karma')
 end
 
-if svo.haveskillset('excision') then
+-- Occultist specific
+if svo.me.class == "Occultist" then
+  signals.gmcpcharvitals:connect(function()
+      if gmcp.Char.Vitals.charstats then
+        for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+          local entity = val:match("^Entity: (%w+)$")
+          if entity and entity == "Yes" then
+            if svo.bals.entity == false then
+              svo.got_class_balance('entity')
+            end
+          elseif entity and entity == "No" then
+            if svo.bals.entity == true then
+              svo.lost_class_balance('entity')
+            end
+            break
+          end
+        end
+      end
+      if svo.bals.entity == nil then
+        svo.bals.entity = true
+      end
+    end, 'update entity')
+end
+
+--Paladin / Priest Devotion
+if svo.me.class == "Priest" or svo.me.class == "Paladin" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local devotion = val:match("^Devotion: (%d+)%$")
+        if devotion then
+          svo.stats.devotion = tonumber(devotion)
+          break
+        end
+      end
+    end
+    if not svo.stats.devotion then
+      svo.stats.devotion = 0
+    end
+  end, 'update devotion')
+ end 
+  
+-- Paladin specific
+if svo.me.class == "Paladin" then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for _, val in ipairs(gmcp.Char.Vitals.charstats) do
@@ -561,51 +740,255 @@ signals.gmcpcharvitals:connect(function()
     stats.wrath = 0
   end
 end, 'update excision wrath')
+
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local wrathbal = val:match('^wrathbal: (%w+)$')
+      if wrathbal and wrathbal == "Yes" then
+          if svo.bals.wrathbal == false then
+            svo.got_class_balance('wrathbal')
+          end
+        elseif wrathbal and wrathbal == "No" then
+          if svo.bals.wrathbal == true then
+            svo.lost_class_balance('wrathbal')
+          end
+          break
+        end
+      end
+    end
+    if svo.bals.wrathbal == nil then
+      svo.bals.wrathbal = true
+    end
+end, 'update wrathbal balance')
 end
 
---[[
-new model for tertiary balances that don't need to rely on dozens of attack triggers and timers. 
-If this works properly and don't error anything out down the road we can extend it to the other balances as well :)
-]] 
-if svo.haveskillset('anathema') then
+--Pariah
+if svo.me.class == "Pariah" then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local epitaph_length = val:match("^epitaph_length: (%d+)$")
+      if epitaph_length then
+        stats.epitaph_length = tonumber(epitaph_length)
+        break
+      end
+    end
+  end
+  if not stats.epitaph_length then
+    stats.epitaph_length = 0
+  end
+end, 'update memorium epitaph length')
+end
+
+-- Priest specific
+if svo.me.class == "Priest" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local conviction = val:match("^conviction: (%w+)$")
+        if conviction then
+          svo.stats.conviction = tonumber(conviction)
+          break
+        end
+      end
+    end
+    if not svo.stats.conviction then
+      svo.stats.conviction = 0
+    end
+  end, 'update conviction')
+  
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local prayer_length = val:match("^prayer_length: (%w+)$")
+        if prayer_length then
+          svo.stats.prayer_length = tonumber(prayer_length)
+          break
+        end
+      end
+    end
+    if not svo.stats.prayer_length then
+      svo.stats.prayer_length = 0
+    end
+  end, 'update prayer_length')
+  
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local prayer = val:match("^prayer: (%w+)$")
+        if prayer and prayer == "Yes" then
+          if svo.bals.prayer == false then
+            svo.got_class_balance('prayer')
+          end
+        elseif prayer and prayer == "No" then
+          if svo.bals.prayer == true then
+            svo.lost_class_balance('prayer')
+          end
+          break
+        end
+      end
+    end
+    if svo.bals.prayer == nil then
+      svo.bals.prayer = true
+    end
+  end, 'update prayer balance')
+end
+
+--Psion (Nothing to track)
+
+--Serpent
+if svo.me.class == "Serpent" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local venom = val:match("^Venom: (%w+)$")
+        if venom then
+          svo.me.venom = venom
+          break
+        end
+      end
+    end
+    if not svo.me.venom then
+      svo.me.venom = "None"
+    end
+  end, 'update venom')
+end
+
+--Shaman
+if svo.me.class == "Shaman" then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local spirits = val:match("^Spirits: (%d+)$")
+        if spirits then
+          svo.stats.spirits = tonumber(spirits)
+          break
+        end
+      end
+    end
+    if not svo.stats.spirits then
+      svo.stats.spirits = 0
+    end
+  end, 'update spirits')
+end
+
+-- Unnamable
+if svo.me.class == "Unnamable" then
+signals.gmcpcharvitals:connect(function()
+  if gmcp.Char.Vitals.charstats then
+    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+      local manifestation = val:match("^Manifestation: (%d+)%%$")
+      if manifestation then
+        stats.manifestation = tonumber(manifestation)
+        break
+      end
+    end
+  end
+  if not stats.manifestation then
+    stats.manifestation = 0
+  end
+end, 'update anathema manifestation')
+
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then
     for _, val in ipairs(gmcp.Char.Vitals.charstats) do
       local anathema = val:match("^Anathema: (%w+)$")
-      if anathema then
-        if svo.bals.anathema ~= nil and (svo.bals.anathema == false and anathema == "Yes") then       
-          svo.valid.gotanathemabalance()
-        break
-        elseif svo.bals.anathema ~= nil and (svo.bals.anathema == true and anathema == "No") then
-          svo.valid.usedanathemabalance()
-        break
+      if anathema and anathema == "Yes" then
+          if svo.bals.anathema == false then
+            svo.got_class_balance('anathema')
+          end
+        elseif anathema and anathema == "No" then
+          if svo.bals.anathema == true then
+            svo.lost_class_balance('anathema')
+          end
+          break
         end
       end
     end
-  end
+    if svo.bals.anathema == nil then
+      svo.bals.anathema = true
+    end
 end, 'update anathema balance')
 end
 
-if svo.haveskillset('excision') then
-signals.gmcpcharvitals:connect(function()
-  if gmcp.Char.Vitals.charstats then
-    
-    for _, val in ipairs(gmcp.Char.Vitals.charstats) do
-      
-      local wrathbal = val:match('^wrathbal: (%w+)$')
-      if wrathbal then
-        if svo.bals.wrathbal ~= nil and (svo.bals.wrathbal == false and wrathbal == 'Yes') then       
-          svo.valid.gotwrathbalbalance()
-        break
-        elseif svo.bals.wrathbal ~= nil and (svo.bals.wrathbal == true and wrathbal == 'No') then
-          svo.valid.usedwrathbalbalance()
-        break
+--Knight Specific (Runewarden, Paladin, Infernal etc)
+if svo.haveskillset('weaponmastery') then -- many classes uses this, so gonna use haveskillset instead of svo.me.class
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local spec = val:match("^Spec: (.*)$")
+        if spec then
+          svo.me.spec = spec
         end
       end
     end
-  end
-end, 'update wrathbal balance')
+    if not svo.me.spec then
+       svo.me.spec = "None"
+    end
+  end, 'update knightspec')
+  
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local ferocity = val:match("^Ferocity: (%d+)$")
+        local momentum = val:match("^Momentum: (%d+)$")
+        if momentum then
+          svo.stats.momentum = tonumber(momentum)
+          svo.stats.ferocity = nil
+        elseif ferocity then
+          svo.stats.ferocity = tonumber(ferocity)
+          svo.stats.momentum = nil
+        elseif not momentum and not ferocity then
+          svo.stats.ferocity = nil
+          svo.stats.momentum = nil
+        end
+      end
+    end
+  end, 'update spec stats')
 end
+
+-- Elemental Lords specific
+--Earth
+if svo.me.class:find("earth Elemental") then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local shaping = val:match("^Shaping: (%w+)$")
+        if shaping then
+          svo.stats.shaping = tonumber(shaping)
+          break
+        end
+      end
+    end
+    if not svo.stats.shaping then
+      svo.stats.shaping = 0
+    end
+  end, 'update shaping')
+end
+
+--Air (Nothing to track)
+
+--Fire
+if svo.me.class:find("fire Elemental") then
+  signals.gmcpcharvitals:connect(function()
+    if gmcp.Char.Vitals.charstats then
+      for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+        local spark = val:match("^Spark: (%d+)$")
+        if spark then
+          svo.stats.spark = tonumber(spark)
+          break
+        end
+      end
+    end
+    if not svo.stats.spark then
+      svo.stats.spark = 0
+    end
+  end, 'update spark')
+end
+
+--Water (Nothing to track)
+
 
 -- End of class resources
 
