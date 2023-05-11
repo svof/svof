@@ -600,14 +600,14 @@ if svo.me.class == "Magi" or svo.me.class == "Sylvan" then
       local channels = string.match(gmcp.Char.Vitals.charstats[3], "Channels: (.*)")
       if channels == "None" then
         for _, v in pairs(element) do
-          defences.lost(v)
+          defences.lost("bound"..v)
         end
       else
         for k,v in pairs(element) do
           if channels:find(k) then
-            defences.got(v)
+            defences.got("bound"..v)
           else
-            defences.lost(v)
+            defences.lost("bound"..v)
           end
         end
       end
@@ -647,6 +647,7 @@ if svo.me.class == 'Monk' then
       svo.me.path = 'tekura'
     end
   end, 'update path and form')
+  
   signals.gmcpcharvitals:connect(function()
     if gmcp.Char.Vitals.charstats then
       for _, val in ipairs(gmcp.Char.Vitals.charstats) do
@@ -687,14 +688,20 @@ if svo.me.class == "Occultist" then
       if gmcp.Char.Vitals.charstats then
         for _, val in ipairs(gmcp.Char.Vitals.charstats) do
           local entity = val:match("^Entity: (%w+)$")
-          if entity then
-            svo.me.entity = entity
+          if entity and entity == "Yes" then
+            if svo.bals.entity == false then
+              svo.got_class_balance('entity')
+            end
+          elseif entity and entity == "No" then
+            if svo.bals.entity == true then
+              svo.lost_class_balance('entity')
+            end
             break
           end
         end
       end
-      if not svo.me.entity then
-        svo.me.entity = "No"
+      if svo.bals.entity == nil then
+        svo.bals.entity = true
       end
     end, 'update entity')
 end

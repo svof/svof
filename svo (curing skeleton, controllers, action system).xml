@@ -2297,6 +2297,7 @@ function sk.dosendprios()
 end
 
 function svo.sendcuringprio(prio, kind, slow)
+  if prio == "" or prio == nil then cecho("\n&lt;red&gt;NO PRIO!") return end
   local sys = svo.sys
   prio = " "..prio
   local what, tab, cmd

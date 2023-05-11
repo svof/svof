@@ -7481,6 +7481,7 @@ if not next(svo.dict) then
       onremoved = function() svo.donext() end
     },
     swellskin = { -- eating any herb cures it
+    gamename = 'homunculusmercury',
       waitingfor = {
         customwait = 999,
   
@@ -7510,7 +7511,7 @@ if not next(svo.dict) then
     },
     pinshot = {
       waitingfor = {
-        customwait = 20, -- lasts 18s
+        customwait = 21,
   
         isadvisable = function()
           return false
@@ -7576,7 +7577,7 @@ if not next(svo.dict) then
     },
     timeflux = {
       waitingfor = {
-        customwait = 50, -- lasts 50s
+        customwait = 60,
   
         isadvisable = function()
           return false
@@ -7609,7 +7610,7 @@ if not next(svo.dict) then
     },
     inquisition = {
       waitingfor = {
-        customwait = 30, -- ??
+        customwait = 20,
   
         isadvisable = function()
           return false
@@ -7782,7 +7783,7 @@ if not next(svo.dict) then
   
     icing = {
       waitingfor = {
-        customwait = 30, -- ??
+        customwait = 15,
   
         isadvisable = function()
           return false
@@ -7866,8 +7867,9 @@ if not next(svo.dict) then
       }
     },
     voided = {
+      gamename = "voidfisted",
       waitingfor = {
-        customwait = 20, -- lasts 20s tops, 15s in some stances. out-times multiple pommelstrikes
+        customwait = 15, -- lasts 20s tops, 15s in some stances. out-times multiple pommelstrikes
   
         isadvisable = function()
           return false
@@ -7941,8 +7943,9 @@ if not next(svo.dict) then
       }
     },
     galed = {
+      gamename = 'airfisted',
       waitingfor = {
-        customwait = 10,
+        customwait = 15,
   
         isadvisable = function()
           return false
@@ -8002,7 +8005,7 @@ if not next(svo.dict) then
     },
     hecate = {
       waitingfor = {
-        customwait = 22, -- seems to last at least 18s per log
+        customwait = 16,
   
         isadvisable = function()
           return false
@@ -8035,6 +8038,7 @@ if not next(svo.dict) then
       }
     },
     palpatar = {
+      gamename = 'palpatarfeed',
       waitingfor = {
         customwait = 999,
   
@@ -8467,8 +8471,6 @@ if not next(svo.dict) then
       name = 'unweavingbody',
       gamename = 'unweavingbody',
       herb = {
-        aspriority = 0,
-        spriority = 0,
   
         isadvisable = function ()
           return affs.unweavingbody or false
@@ -8523,9 +8525,6 @@ if not next(svo.dict) then
       name = 'unweavingmind',
       gamename = 'unweavingmind',
       herb = {
-        aspriority = 0,
-        spriority = 0,
-  
         isadvisable = function ()
           return svo.affs.unweavingmind or false
         end,
@@ -9043,9 +9042,9 @@ if not next(svo.dict) then
       }
     },
     frost = {
+      gamename = "temperance",
       purgative = {
         def = true,
-        undeffable = true,
   
         isadvisable = function()
           return ((sys.deffing and defdefup[defs.mode].frost and not defc.frost) or (conf.keepup and defkeepup[defs.mode].frost and not defc.frost)) or false
@@ -9058,7 +9057,7 @@ if not next(svo.dict) then
           end
         end,
   
-        sipcure = {'frost', 'endothermia'},
+        sipcure = {'frost'},
   
         onstart = function()
           svo.sip(svo.dict.frost.purgative)
@@ -9424,7 +9423,6 @@ if not next(svo.dict) then
       }
     },
     myrrh = {
-      gamename = 'scholasticism',
       herb = {
         def = true,
         undeffable = true,
@@ -9498,6 +9496,7 @@ if not next(svo.dict) then
       },
     },
     caloric = {
+      gamename = "insulation",
       salve = {
         def = true,
   
@@ -10231,7 +10230,7 @@ if not next(svo.dict) then
       hecatecurse = 'hecate',
       hellsight = 'hellsight',
       hindered = false,
-      homunculusmercury = false,
+      homunculusmercury = 'swellskin',
       horror = 'horror',
       hypersomnia = 'hypersomnia',
       hypochondria = 'hypochondria',
@@ -10428,7 +10427,7 @@ if not next(svo.dict) then
       insomnia = 'insomnia',
       inspiration = 'inspiration',
       insuflate = false,
-      insulation = false,
+      insulation = "caloric",
       ironform = false,
       ironwill = 'qamad',
       joints = 'joints',
@@ -13386,7 +13385,7 @@ if not next(svo.dict) then
         balanceful_act = true, def = true, undeffable = true,
   
         isadvisable = function()
-          return (not defc.arctar and ((sys.deffing and defdefup[defs.mode].arctar) or (conf.keepup and defkeepup[defs.mode].arctar)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and bals.entities) or false
+          return (not defc.arctar and ((sys.deffing and defdefup[defs.mode].arctar) or (conf.keepup and defkeepup[defs.mode].arctar)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and bals.entity) or false
         end,
   
         oncompleted = function() defences.got('arctar') end,

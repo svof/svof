@@ -254,7 +254,7 @@ end
 -- add me to default prompt
 if svo.haveskillset('domination') then
 cpp.compute_entitiesbal = function()
-  return (bals.entities and 'e' or "")
+  return (bals.entity and 'e' or "")
 end
 end
 
@@ -425,7 +425,7 @@ cpp.compute_promptstring = function()
         (defc.blackwind and "@" or "")..
         (defc.breath and "&lt;blue&gt;|&lt;LightSlateGrey&gt;b" or "")
   local composition = {text}
-if bals.entities then
+if bals.entity then
   composition[#composition+1] = 'e'
 end
 if bals.prayer then
