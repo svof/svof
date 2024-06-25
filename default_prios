@@ -3,7 +3,7 @@
 
 -- Note: The lower the priority in the list without a number, or the lower number - the more important the thing is. ie, things at the bottom of the list will get done before those on the top!
 
--- Sipping balance: 
+-- Sipping balance:
 sip = {
   "wristfractures",
   "crackedribs",
@@ -13,7 +13,7 @@ sip = {
   "healhealth"
 }
 
--- Balance or equilibrium actions: 
+-- Balance or equilibrium actions:
 physical = {
   "lifevision",
   "slipperiness",
@@ -66,13 +66,13 @@ physical = {
   [61] = "lyre"
 }
 
--- Moss balances (these don't really make sense to order): 
+-- Moss balances (these don't really make sense to order):
 moss = {
   "healmana",
   "healhealth"
 }
 
--- Smoke cures: 
+-- Smoke cures:
 smoke = {
   "rebounding",
   "deadening",
@@ -85,7 +85,7 @@ smoke = {
   "aeon"
 }
 
--- Slow curing mode priorities: 
+-- Slow curing mode priorities:
 slowcuring = {
   "lifevision_physical",
   "slipperiness_physical",
@@ -206,44 +206,45 @@ slowcuring = {
   [144] = "parasite_herb",
   [145] = "retribution_herb",
   [146] = "depression_herb",
-  [147] = "shadowmadness_herb",
-  [148] = "timeloop_herb",
-  [149] = "impatience_herb",
-  [150] = "healthleech_herb",
-  [151] = "rebounding_smoke",
-  [152] = "darkshade_herb",
-  [153] = "vertigo_herb",
-  [154] = "healmana_sip",
-  [155] = "healhealth_sip",
-  [156] = "mass_salve",
-  [157] = "unknowncrippledarm_salve",
-  [158] = "frozen_salve",
-  [159] = "heartseed_salve",
-  [160] = "shivering_salve",
-  [161] = "ablaze_salve",
-  [162] = "itching_salve",
-  [163] = "caloric_salve",
-  [164] = "loneliness_focus",
-  [165] = "selarnia_salve",
-  [166] = "block_physical",
-  [167] = "riding_physical",
-  [168] = "unknowncrippledleg_salve",
-  [169] = "deafaff_salve",
-  [170] = "blindaff_salve",
-  [171] = "stuttering_salve",
-  [172] = "confusion_focus",
-  [173] = "generosity_focus",
-  [174] = "claustrophobia_focus",
-  [175] = "vertigo_focus",
-  [176] = "dragonflex_misc",
-  [177] = "fillvalerian_physical",
-  [178] = "unknownmental_focus",
-  [179] = "masochism_focus",
-  [180] = "agoraphobia_focus",
-  [181] = "dizziness_focus",
-  [182] = "pacifism_focus",
-  [183] = "epilepsy_focus",
-  [184] = "shyness_focus",
+  [147] = "pyre_herb",
+  [148] = "shadowmadness_herb",
+  [149] = "timeloop_herb",
+  [150] = "impatience_herb",
+  [151] = "healthleech_herb",
+  [152] = "rebounding_smoke",
+  [153] = "darkshade_herb",
+  [154] = "vertigo_herb",
+  [155] = "healmana_sip",
+  [156] = "healhealth_sip",
+  [157] = "mass_salve",
+  [158] = "unknowncrippledarm_salve",
+  [159] = "frozen_salve",
+  [160] = "heartseed_salve",
+  [161] = "shivering_salve",
+  [162] = "ablaze_salve",
+  [163] = "itching_salve",
+  [164] = "caloric_salve",
+  [165] = "loneliness_focus",
+  [166] = "selarnia_salve",
+  [167] = "block_physical",
+  [168] = "riding_physical",
+  [169] = "unknowncrippledleg_salve",
+  [170] = "deafaff_salve",
+  [171] = "blindaff_salve",
+  [172] = "stuttering_salve",
+  [173] = "confusion_focus",
+  [174] = "generosity_focus",
+  [175] = "claustrophobia_focus",
+  [176] = "vertigo_focus",
+  [177] = "dragonflex_misc",
+  [178] = "fillvalerian_physical",
+  [179] = "unknownmental_focus",
+  [180] = "masochism_focus",
+  [181] = "agoraphobia_focus",
+  [182] = "dizziness_focus",
+  [183] = "pacifism_focus",
+  [184] = "epilepsy_focus",
+  [185] = "shyness_focus",
   [186] = "madness_smoke",
   [187] = "serioustrauma_salve",
   [188] = "mangledleftarm_salve",
@@ -299,7 +300,7 @@ slowcuring = {
   [240] = "sleep_misc"
 }
 
--- Purgative cures: 
+-- Purgative cures:
 purgative = {
   "levitation",
   "venom",
@@ -308,7 +309,7 @@ purgative = {
   "voyria"
 }
 
--- Salve cures: 
+-- Salve cures:
 salve = {
   "mass",
   "parestoarms",
@@ -353,7 +354,7 @@ salve = {
   "anorexia"
 }
 
--- Focus cures: 
+-- Focus cures:
 focus = {
   "hallucinations",
   "dementia",
@@ -376,7 +377,7 @@ focus = {
   [23] = "stupidity"
 }
 
--- Miscallaneous actions: 
+-- Miscallaneous actions:
 misc = {
   "checkimpatience",
   "amnesia",
@@ -406,7 +407,7 @@ misc = {
   [27] = "touchtree"
 }
 
--- Herb cures: 
+-- Herb cures:
 herb = {
   "waterbubble",
   "sanguinehumour",
@@ -418,6 +419,7 @@ herb = {
   "thirdeye",
   "vertigo",
   "justice",
+  "pyre",
   "healthleech",
   "dissonance",
   "illness",

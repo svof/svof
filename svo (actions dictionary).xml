@@ -1772,6 +1772,31 @@ if not next(svo.dict) then
         oncompleted = function() svo.rmaff('justice') end,
       }
     },
+    pyre = {
+      herb = {
+        isadvisable = function()
+          return (affs.pyre and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
+        end,
+
+        oncompleted = function()
+          svo.rmaff('pyre')
+          svo.lostbal_herb()
+        end,
+
+        eatcure = {'bellwort', 'cuprum'},
+        onstart = function() svo.eat(svo.dict.pyre.herb) end,
+
+        empty = function() empty.eat_bellwort() end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.pyre)
+        end,
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('pyre') end,
+      }
+    },
     generosity = {
       herb = {
         isadvisable = function()
@@ -10279,6 +10304,7 @@ if not next(svo.dict) then
       prone = 'prone',
       pressure = 'pressure',
       pyramides = 'pyramides',
+      pyre = 'pyre',
       rebbies = 'rebbies',
       recklessness = 'recklessness',
       retribution = 'retribution',
@@ -13910,7 +13936,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          if not (conf.rage and bals.rage and (affs.inlove or affs.justice or affs.generosity or affs.pacifism or affs.peace) and not defc.dragonform and svo.can_usemana()) then return false end
+          if not (conf.rage and bals.rage and (affs.inlove or affs.justice or affs.generosity or affs.pacifism or affs.peace or affs.pyre) and not defc.dragonform and svo.can_usemana()) then return false end
   
           for name, func in pairs(svo.rage) do
             if not me.disabledragefunc[name] then

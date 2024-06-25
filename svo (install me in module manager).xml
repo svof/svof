@@ -6002,6 +6002,7 @@ local aff_abbrev = {
   pressure            = "pre",
   prone               = "pr",
   pyramides           = "pyr",
+  pyre                = "pyre",
   rebbies             = "rebb",
   recklessness        = "reck",
   relapsing           = "scy",
