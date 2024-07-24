@@ -1089,7 +1089,6 @@ if not next(svo.dict) then
         end,
   
         noeffect = function()
-  			  --svo.rmaff('horror')
   			  svo.lostbal_herb()
   		  end,
   
