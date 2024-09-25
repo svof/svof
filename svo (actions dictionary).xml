@@ -1089,7 +1089,6 @@ if not next(svo.dict) then
         end,
   
         noeffect = function()
-  			  svo.rmaff('horror')
   			  svo.lostbal_herb()
   		  end,
   
@@ -1773,28 +1772,57 @@ if not next(svo.dict) then
       }
     },
     pyre = {
+      count = 0,
       herb = {
         isadvisable = function()
-          return (affs.pyre and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
+          return (affs.pyre and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or 
+          svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
         end,
-
+  
         oncompleted = function()
-          svo.rmaff('pyre')
+          svo.lostbal_herb()
+          svo.updateaffcount(svo.dict.pyre)
+        end,
+  
+        empty = function()
+          empty.eat_bellwort()
           svo.lostbal_herb()
         end,
-
+  
+        cured = function()
+          svo.lostbal_herb()
+          svo.rmaff('pyre')
+          svo.dict.pyre.count = 0
+        end,
+  
+        noeffect = function()
+  			  svo.lostbal_herb()
+  		  end,
+  
         eatcure = {'bellwort', 'cuprum'},
-        onstart = function() svo.eat(svo.dict.pyre.herb) end,
-
-        empty = function() empty.eat_bellwort() end
+  
+        onstart = function() svo.eat(svo.dict.pyre.herb) end
       },
       aff = {
-        oncompleted = function()
+        oncompleted = function (number)
           svo.addaffdict(svo.dict.pyre)
-        end,
+          svo.updateaffcount(svo.dict.pyre)
+        end
       },
       gone = {
-        oncompleted = function() svo.rmaff('pyre') end,
+        oncompleted = function()
+          svo.rmaff('pyre')
+          svo.dict.pyre.count = 0
+        end,
+        
+        general_cure = function(amount, dontkeep)
+          svo.updateaffcount(svo.dict.pyre)
+        end,
+  
+        general_cured = function()
+          svo.rmaff('pyre')
+          svo.dict.pyre.count = 0
+        end,
       }
     },
     generosity = {
@@ -4558,7 +4586,7 @@ if not next(svo.dict) then
       end,
       salve = {
         isadvisable = function()
-          return (affs.ablaze and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and 
+          return (affs.ablaze and (not affs.pyre and affs.pyre.count &gt;= 2) and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and 
           (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))) or false
         end,
   
@@ -4634,7 +4662,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.severeburn) or false
+          return (affs.severeburn and (not affs.pyre and affs.pyre.count &gt;= 3)) or false
         end,
   
         oncompleted = function()
@@ -4658,8 +4686,8 @@ if not next(svo.dict) then
           empty.apply_mending()
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending to body", "apply mending", "apply renewal to body", "apply renewal"},
+        applycure = {'mending'},
+        actions = {"apply mending to body", "apply mending"},
         onstart = function()
           svo.apply(svo.dict.severeburn.salve, " to body")
         end
@@ -4679,7 +4707,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.extremeburn) or false
+          return (affs.extremeburn and (not affs.pyre and affs.pyre.count &gt;= 4)) or false
         end,
   
         oncompleted = function()
@@ -4703,8 +4731,8 @@ if not next(svo.dict) then
           empty.apply_mending()
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending to body", "apply mending", "apply renewal to body", "apply renewal"},
+        applycure = {'mending'},
+        actions = {"apply mending to body", "apply mending"},
         onstart = function()
           svo.apply(svo.dict.extremeburn.salve, " to body")
         end
@@ -4724,7 +4752,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.charredburn) or false
+          return (affs.charredburn and (not affs.pyre and affs.pyre.count &gt;= 5)) or false
         end,
   
         oncompleted = function()
@@ -4748,8 +4776,8 @@ if not next(svo.dict) then
           empty.apply_mending()
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending to body", "apply mending", "apply renewal to body", "apply renewal"},
+        applycure = {'mending'},
+        actions = {"apply mending to body", "apply mending"},
         onstart = function()
           svo.apply(svo.dict.charredburn.salve, " to body")
         end
@@ -4769,7 +4797,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.meltingburn) or false
+          return (affs.meltingburn and (not affs.pyre and affs.pyre.count &gt;= 6)) or false
         end,
   
         oncompleted = function()
@@ -4793,8 +4821,8 @@ if not next(svo.dict) then
           empty.apply_mending()
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending to body", "apply mending", "apply renewal to body", "apply renewal"},
+        applycure = {'mending'},
+        actions = {"apply mending to body", "apply mending"},
         onstart = function()
           svo.apply(svo.dict.meltingburn.salve, " to body")
         end
@@ -7838,7 +7866,7 @@ if not next(svo.dict) then
         customwait = 30, -- ??
   
         isadvisable = function()
-          return false
+          return (affs.burning and (not affs.pyre and affs.pyre.count &gt;= 2)) or false
         end,
   
         onstart = function() end,
