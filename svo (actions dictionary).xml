@@ -4586,7 +4586,7 @@ if not next(svo.dict) then
       end,
       salve = {
         isadvisable = function()
-          return (affs.ablaze and (not affs.pyre and affs.pyre.count &gt;= 2) and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and 
+          return (affs.ablaze and not (affs.pyre and affs.pyre.count &gt;= 2) and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and 
           (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))) or false
         end,
   
@@ -4662,7 +4662,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.severeburn and (not affs.pyre and affs.pyre.count &gt;= 3)) or false
+          return (affs.severeburn and not (affs.pyre and affs.pyre.count &gt;= 3)) or false
         end,
   
         oncompleted = function()
@@ -4707,7 +4707,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.extremeburn and (not affs.pyre and affs.pyre.count &gt;= 4)) or false
+          return (affs.extremeburn and not (affs.pyre and affs.pyre.count &gt;= 4)) or false
         end,
   
         oncompleted = function()
@@ -4752,7 +4752,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.charredburn and (not affs.pyre and affs.pyre.count &gt;= 5)) or false
+          return (affs.charredburn and not (affs.pyre and affs.pyre.count &gt;= 5)) or false
         end,
   
         oncompleted = function()
@@ -4797,7 +4797,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.meltingburn and (not affs.pyre and affs.pyre.count &gt;= 6)) or false
+          return (affs.meltingburn and not (affs.pyre and affs.pyre.count &gt;= 6)) or false
         end,
   
         oncompleted = function()
@@ -7866,7 +7866,7 @@ if not next(svo.dict) then
         customwait = 30, -- ??
   
         isadvisable = function()
-          return (affs.burning and (not affs.pyre and affs.pyre.count &gt;= 2)) or false
+          return (affs.burning and not (affs.pyre and affs.pyre.count &gt;= 2)) or false
         end,
   
         onstart = function() end,
