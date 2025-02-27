@@ -1497,12 +1497,17 @@ raiseEvent("NameDB got new data")</script>
 
 local pronoun = line:match("^(%w+)")
 
+local function getGender()
+  if pronoun == "He" or pronoun == "His" then return "male"
+  elseif pronoun == "She" or pronoun == "Her" then return "female"
+  elseif pronoun == "Fae" or pronoun == "Faes" then return "non-binary"
+  end
+end
 ndb.getinfo(ndb.honorsname)
 
 temp_name_list = {}
 temp_name_list[1] = {name = ndb.honorsname, city = "", city_rank = 0, dragon = 0,
-  guild = "", gender = (pronoun == "He" or pronoun == "His") and 'male' or 'female',
-  mark = "",
+  guild = "", gender = getGender(), mark = "",
 }
 
 moveCursorEnd() -- make sure the cursor is at the current line
@@ -1514,7 +1519,8 @@ for i = 1, 10 do -- word wrapping can mess it up, go so back a fair bit in case 
   -- work backwards until the line with the name is located
   if string.find(getCurrentLine(), "%f[%a]"..ndb.honorsname.."%f[%A]") then
     -- pick up the race as it is listed
-    local race = getCurrentLine():match("%(male (.-)%)") or getCurrentLine():match("%(female (.-)%)") or ""
+    local race = getCurrentLine():match("%(male (.-)%)") or getCurrentLine():match("%(female (.-)%)") or 
+    getCurrentLine():match("%(non-binary (.-)%)") or ""
 
     local occultist = race:match("Chaos .- resembling a (%a+)")
     if occultist then

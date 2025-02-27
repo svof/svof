@@ -2272,7 +2272,7 @@ function sk.dosendprios()
     if #sk.affqueue &gt; 0 then
         local what = "curing priority"..table.concat(sk.affqueue)
         if sk.queuecount &gt; 4 then
-          tempTimer(1,function()
+          tempTimer(1+getNetworkLatency(),function()
             sendstuff(what,"normal")
             sk.affqueue = {}
             sk.queuecount = 0
@@ -2286,7 +2286,7 @@ function sk.dosendprios()
     if #sk.defqueue &gt; 0 then
         local what = "curing priority defence"..table.concat(sk.defqueue)
         if sk.queuecount &gt; 4 then
-          tempTimer(1,function()
+          tempTimer(1+getNetworkLatency(),function()
           sendstuff(what,"normal")
           sk.defqueue = {}
           sk.queuecount = 0
@@ -2300,7 +2300,7 @@ function sk.dosendprios()
     if #sk.affqueueslow &gt; 0 then
         local what = "curing priority"..table.concat(sk.affqueueslow)
         if sk.queuecount &gt; 4 then
-          tempTimer(1,function()
+          tempTimer(1+getNetworkLatency(),function()
           sendstuff(what,"slow")
           sk.affqueueslow = {}
           sk.queuecount = 0
@@ -2314,7 +2314,7 @@ function sk.dosendprios()
     if #sk.defqueueslow &gt; 0 then
         local what = "curing priority defence"..table.concat(sk.defqueueslow)
         if sk.queuecount &gt; 4 then
-          tempTimer(1,function()
+          tempTimer(1+getNetworkLatency(),function()
           sendstuff(what,"slow")
           sk.defqueueslow = {}
           sk.queuecount = 0
