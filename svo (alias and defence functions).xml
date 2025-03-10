@@ -975,7 +975,7 @@ if svo.me.class == 'Druid' then
   svo.bals.hydra = true
 end
 if svo.haveskillset('domination') then
-  svo.bals.entities = true
+  svo.bals.entity = true
 end
 if svo.haveskillset('zeal') then
   svo.bals.prayer = true
@@ -1391,6 +1391,9 @@ end
     defr = [[^You are aiming your attacks to the (.+)\.$]]
   })
   defs_data:set('breath', { type = 'general',
+    def = "You are holding your breath.",
+    on = {"You inhale deeply and begin holding your breath.", "You are already holding your breath."},
+    off = "You cease holding your breath and exhale loudly.",
     onenable = function (mode, newdef, whereto, echoback)
       if svo['def'..whereto][mode].meditate then
         svo['def'..whereto][mode].meditate = false
@@ -3829,8 +3832,6 @@ do
         balance = 'physical',
         action_name = 'lifevision',
         balanceful_act = true,
-        aspriority = 0,
-        spriority = 0,
         def = true,
 
         isadvisable = function ()
@@ -3943,8 +3944,6 @@ do
         balance = 'physical',
         action_name = 'shroud',
         balanceful_act = true,
-        aspriority = 0,
-        spriority = 0,
         def = true,
 
         isadvisable = function ()
