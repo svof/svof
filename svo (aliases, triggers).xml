@@ -6667,26 +6667,6 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Finished</name>
-						<script>svo.valid.diagnose_end()</script>
-						<triggerType>0</triggerType>
-						<conditonLineDelta>0</conditonLineDelta>
-						<mStayOpen>0</mStayOpen>
-						<mCommand></mCommand>
-						<packageName></packageName>
-						<mFgColor>#ff0000</mFgColor>
-						<mBgColor>#ffff00</mBgColor>
-						<mSoundFile></mSoundFile>
-						<colorTriggerFgColor>#000000</colorTriggerFgColor>
-						<colorTriggerBgColor>#000000</colorTriggerBgColor>
-						<regexCodeList>
-							<string></string>
-						</regexCodeList>
-						<regexCodePropertyList>
-							<integer>7</integer>
-						</regexCodePropertyList>
-					</Trigger>
-					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 						<name>revealed</name>
 						<script>svo.valid.diag_revealed()</script>
 						<triggerType>0</triggerType>
@@ -6704,6 +6684,126 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodeList>
 						<regexCodePropertyList>
 							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>crescendo</name>
+						<script>svo.valid.diag_crescendo()</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>moving inevitably towards a grand finale.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>horror</name>
+						<script>svo.valid.diag_horror()</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>horrified.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>earworm</name>
+						<script>svo.valid.diag_earworm()</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>plagued by endless song.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>fulminated</name>
+						<script>svo.valid.diag_fulminated()</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>electrified by fulminous energy.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>blistered</name>
+						<script></script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string>suffering from horribly blistered skin.</string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>3</integer>
+						</regexCodePropertyList>
+					</Trigger>
+					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+						<name>Finished</name>
+						<script>svo.valid.diagnose_end()</script>
+						<triggerType>0</triggerType>
+						<conditonLineDelta>0</conditonLineDelta>
+						<mStayOpen>0</mStayOpen>
+						<mCommand></mCommand>
+						<packageName></packageName>
+						<mFgColor>#ff0000</mFgColor>
+						<mBgColor>#ffff00</mBgColor>
+						<mSoundFile></mSoundFile>
+						<colorTriggerFgColor>#000000</colorTriggerFgColor>
+						<colorTriggerBgColor>#000000</colorTriggerBgColor>
+						<regexCodeList>
+							<string></string>
+						</regexCodeList>
+						<regexCodePropertyList>
+							<integer>7</integer>
 						</regexCodePropertyList>
 					</Trigger>
 				</Trigger>
@@ -17703,7 +17803,7 @@ svo.valid.passive_cure()</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Hydra balance</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -18604,7 +18704,7 @@ raiseEvent("svo got balance", "homunculus")</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Rage balance</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -19547,7 +19647,7 @@ echo'\n' svo.config.set("shipmode", "on", true)</script>
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Two-hander recover footing</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -24010,7 +24110,7 @@ end
 						</regexCodePropertyList>
 					</Trigger>
 				</TriggerGroup>
-				<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 					<name>Groves defences</name>
 					<script></script>
 					<triggerType>0</triggerType>
@@ -55488,7 +55588,6 @@ end</script>
 			<sizeY>470220885</sizeY>
 			<buttonColumn>1</buttonColumn>
 			<buttonRotation>-1</buttonRotation>
-			<buttonColor>#ffffff</buttonColor>
 			<Action isActive="yes" isFolder="no" isPushButton="no" isFlatButton="yes" useCustomLayout="no">
 				<name>Show affs</name>
 				<packageName></packageName>
@@ -55508,7 +55607,6 @@ svo.showaffs()</script>
 				<sizeY>0</sizeY>
 				<buttonColumn>1</buttonColumn>
 				<buttonRotation>-1</buttonRotation>
-				<buttonColor>#ffffff</buttonColor>
 			</Action>
 			<ActionGroup isActive="yes" isFolder="yes" isPushButton="no" isFlatButton="yes" useCustomLayout="yes">
 				<name>Show prios</name>
@@ -55527,7 +55625,6 @@ svo.showaffs()</script>
 				<sizeY>0</sizeY>
 				<buttonColumn>1</buttonColumn>
 				<buttonRotation>0</buttonRotation>
-				<buttonColor>#ffffff</buttonColor>
 				<Action isActive="yes" isFolder="no" isPushButton="no" isFlatButton="no" useCustomLayout="no">
 					<name>Herb</name>
 					<packageName></packageName>
@@ -55545,7 +55642,6 @@ svo.showaffs()</script>
 					<sizeY>0</sizeY>
 					<buttonColumn>1</buttonColumn>
 					<buttonRotation>0</buttonRotation>
-					<buttonColor>#ffffff</buttonColor>
 				</Action>
 				<Action isActive="yes" isFolder="no" isPushButton="no" isFlatButton="no" useCustomLayout="no">
 					<name>Focus</name>
@@ -55564,7 +55660,6 @@ svo.showaffs()</script>
 					<sizeY>-1878694544</sizeY>
 					<buttonColumn>1</buttonColumn>
 					<buttonRotation>-1</buttonRotation>
-					<buttonColor>#ffffff</buttonColor>
 				</Action>
 				<Action isActive="yes" isFolder="no" isPushButton="no" isFlatButton="yes" useCustomLayout="no">
 					<name>Salve</name>
@@ -55583,7 +55678,6 @@ svo.showaffs()</script>
 					<sizeY>470220885</sizeY>
 					<buttonColumn>1</buttonColumn>
 					<buttonRotation>-1</buttonRotation>
-					<buttonColor>#ffffff</buttonColor>
 				</Action>
 				<Action isActive="yes" isFolder="no" isPushButton="no" isFlatButton="yes" useCustomLayout="no">
 					<name>Purgative</name>
@@ -55602,7 +55696,6 @@ svo.showaffs()</script>
 					<sizeY>470220885</sizeY>
 					<buttonColumn>1</buttonColumn>
 					<buttonRotation>-1</buttonRotation>
-					<buttonColor>#ffffff</buttonColor>
 				</Action>
 				<Action isActive="yes" isFolder="no" isPushButton="no" isFlatButton="yes" useCustomLayout="no">
 					<name>Sip</name>
@@ -55621,7 +55714,6 @@ svo.showaffs()</script>
 					<sizeY>28</sizeY>
 					<buttonColumn>1</buttonColumn>
 					<buttonRotation>-1</buttonRotation>
-					<buttonColor>#ffffff</buttonColor>
 				</Action>
 				<Action isActive="yes" isFolder="no" isPushButton="no" isFlatButton="yes" useCustomLayout="no">
 					<name>Balance</name>
@@ -55640,7 +55732,6 @@ svo.showaffs()</script>
 					<sizeY>470220885</sizeY>
 					<buttonColumn>1</buttonColumn>
 					<buttonRotation>-1</buttonRotation>
-					<buttonColor>#ffffff</buttonColor>
 				</Action>
 				<Action isActive="yes" isFolder="no" isPushButton="no" isFlatButton="yes" useCustomLayout="no">
 					<name>Slow curing mode</name>
@@ -55659,7 +55750,6 @@ svo.showaffs()</script>
 					<sizeY>0</sizeY>
 					<buttonColumn>1</buttonColumn>
 					<buttonRotation>-1</buttonRotation>
-					<buttonColor>#ffffff</buttonColor>
 				</Action>
 			</ActionGroup>
 		</ActionGroup>
