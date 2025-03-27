@@ -10650,7 +10650,7 @@ if not next(svo.dict) then
       insomnia = 'insomnia',
       inspiration = 'inspiration',
       insuflate = false,
-      insulation = 'frost',
+      insulation = 'caloric',
       ironform = false,
       ironwill = 'qamad',
       joints = 'joints',
