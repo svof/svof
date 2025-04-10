@@ -8948,7 +8948,172 @@ if not next(svo.dict) then
         oncompleted = function() svo.rmaff('indifference') end,
       }
     },
+    
+    crescendo = {
+      count = 0,
+      gamename = 'crescendo',
+      herb = {
+        isadvisable = function ()
+          return affs.crescendo or false
+        end,
   
+        oncompleted = function ()
+          svo.rmaff("crescendo")
+          svo.dict.crescendo.count = 0
+          svo.lostbal_herb()
+        end,
+  
+        cured = function()
+          svo.lostbal_herb()
+          svo.rmaff("crescendo")
+          svo.dict.crescendo.count = 0
+        end,
+  
+        eatcure = {"ash", "stannum"},
+        onstart = function ()
+          svo.eat(svo.dict.crescendo.herb)
+        end,
+  
+        empty = function()
+          svo.empty.eat_ash()
+        end
+      },
+      aff = {
+        oncompleted = function (number)
+          svo.addaffdict(dict.crescendo)
+          svo.updateaffcount(svo.dict.crescendo)
+        end
+      },
+      gone = {
+        oncompleted = function ()
+          svo.rmaff("crescendo")
+          svo.dict.crescendo.count = 0
+        end,
+  
+        general_cure = function(amount, dontkeep)
+          svo.rmaff("crescendo")
+          svo.dict.crescendo.count = 0
+        end,
+  
+        general_cured = function(amount)
+          svo.rmaff("crescendo")
+          svo.dict.crescendo.count = 0
+        end
+      }
+    },
+    earworm = {
+      smoke = {
+        isadvisable = function()
+          return (affs.earworm and codepaste.smoke_elm_pipe()) or false
+        end,
+  
+        oncompleted = function()
+          svo.rmaff('earworm')
+          svo.lostbal_smoke()
+          sk.elm_smokepuff()
+        end,
+  
+        smokecure = {'elm', 'cinnabar'},
+        onstart = function()
+          send("smoke " .. pipes.elm.id, conf.commandecho)
+        end,
+  
+        empty = function()
+          empty.smoke_elm()
+          svo.lostbal_smoke()
+          sk.elm_smokepuff()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.earworm)
+        end,
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('earworm') end,
+      }
+    },
+    
+    fulminated = {
+      herb = {
+        isadvisable = function()
+          return (affs.fulminated and
+            not svo.doingaction('fulminated') and not svo.usingbal('focus')) or false
+        end,
+  
+        oncompleted = function()
+          svo.rmaff('fulminated')
+          svo.lostbal_herb()
+        end,
+  
+        eatcure = {'goldenseal', 'plumbum'},
+        onstart = function() svo.eat(svo.dict.fulminated.herb) end,
+  
+        empty = function() empty.eat_goldenseal() end
+      },
+      focus = {
+        isadvisable = function()
+          return (affs.fulminated and
+            not svo.doingaction('fulminated') and not affs.madness) or false
+        end,
+  
+        oncompleted = function()
+          svo.rmaff('fulminated')
+          svo.lostbal_focus()
+        end,
+  
+        action = 'focus',
+        onstart = function() send('focus', conf.commandecho) end,
+  
+        empty = function()
+          svo.lostbal_focus()
+          empty.focus()
+        end
+      },
+      
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.fulminated)
+          codepaste.badaeon()
+        end,
+      },
+      gone = {
+        oncompleted = function()
+          svo.rmaff('fulminated')
+          codepaste.remove_focusable()
+        end,
+      }
+    },
+    
+    blistered = {
+      waitingfor = {
+        customwait = 20, -- Austere said it is 20!
+  
+        isadvisable = function()
+          return false
+        end,
+  
+        onstart = function() end,
+  
+        oncompleted = function()
+          svo.rmaff('blistered')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.blistered)
+          if not svo.actions.blistered_waitingfor then svo.doaction(svo.dict.blistered.waitingfor) end
+        end
+      },
+      gone = {
+        oncompleted = function()
+          svo.rmaff('blistered')
+          svo.killaction(svo.dict.blistered.waitingfor)
+        end,
+      }
+    },
+    
     -- random actions that should be protected by AI
     givewarning = {
       happened = {
@@ -9098,7 +9263,7 @@ if not next(svo.dict) then
     frost = {
       purgative = {
         def = true,
-        undeffable = true,
+        --undeffable = true,
   
         isadvisable = function()
           return ((sys.deffing and defdefup[defs.mode].frost and not defc.frost) or (conf.keepup and defkeepup[defs.mode].frost and not defc.frost)) or false
@@ -10223,6 +10388,7 @@ if not next(svo.dict) then
       asthma = 'asthma',
       blackout = 'blackout',
       blindness = false,
+      blistered = 'blistered',
       bound = 'bound',
       brokenleftarm = 'crippledleftarm',
       brokenleftleg = 'crippledleftleg',
@@ -10240,6 +10406,7 @@ if not next(svo.dict) then
       confusion = 'confusion',
       corruption = 'corrupted',
       crackedribs = 'crackedribs',
+      crescendo = 'crescendo',
       crushedthroat = 'crushedthroat',
       daeggerimpale = false,
       damagedhead = 'mildconcussion',
@@ -10273,6 +10440,7 @@ if not next(svo.dict) then
       flamefisted = 'burning',
       flushings = 'flushings',
       frozen = 'frozen',
+      fulminated = 'fulminated',
       generosity = 'generosity',
       guilt = 'guilt',
       haemophilia = 'haemophilia',
@@ -10482,7 +10650,7 @@ if not next(svo.dict) then
       insomnia = 'insomnia',
       inspiration = 'inspiration',
       insuflate = false,
-      insulation = false,
+      insulation = 'caloric',
       ironform = false,
       ironwill = 'qamad',
       joints = 'joints',
