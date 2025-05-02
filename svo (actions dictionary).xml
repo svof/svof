@@ -9497,7 +9497,7 @@ if not next(svo.dict) then
     },
     waitingforsileris = {
       waitingfor = {
-        customwait = 8,
+        customwait = 10,
   
         oncompleted = function() defences.got('sileris') end,
   
