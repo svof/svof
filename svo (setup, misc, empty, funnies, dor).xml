@@ -687,9 +687,12 @@ signals.gmcpcharafflictionslist:connect(function()
   local preaffl = {}
   for _, val in ipairs(svo.affl) do preaffl[val] = true end
 
-  for _, val in ipairs(gmcp.Char.Afflictions.List) do
+  for k, val in ipairs(gmcp.Char.Afflictions.List) do
+    local affcount = tonumber(string.match(gmcp.Char.Afflictions.List[k].name, "%d"))
     local thisaff = val.name
-    if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
+    if thisaff:sub(-4) == " (%d)" then thisaff = thisaff:sub(1, -5) end
+    display(thisaff)
+    display(thisaff)
     gaffl[thisaff] = true
     local svoAffliction = svo.dict.sstosvoa[thisaff]
     if svoAffliction then
@@ -697,6 +700,9 @@ signals.gmcpcharafflictionslist:connect(function()
         preaffl[svoAffliction] = false
       else
         svo.addaff(svoAffliction)
+      end
+      if affcount ~= nil and svo.dict[svoAffliction].count ~= nil then
+        svo.dict[svoAffliction].count = affcount
       end
     end
   sk.checkaeony()
