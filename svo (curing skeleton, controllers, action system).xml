@@ -2373,6 +2373,15 @@ function sk.dosendqueue()
   if svo.logging_in then return end
   if sk.sendcuringtimer then killTimer(sk.sendcuringtimer) end
 
+  -- nothing queued: don't flush. Since Mudlet 4.20, send('') transmits a bare
+  -- newline (Mudlet/Mudlet#7874) instead of nothing, and Achaea answers every
+  -- newline with a prompt - so flushing an empty queue from onprompt() loops
+  -- prompt -&gt; send('') -&gt; prompt forever.
+  if #sk.sendqueue == 0 then
+    sk.sendcuringtimer = nil
+    return
+  end
+
   if #sk.sendqueue &lt;= 1 then
     send(sk.sendqueue[1] or '', false)
   elseif conf.commandseparator and conf.commandseparator ~= '' and #sk.sendqueue &lt;= 10 then
