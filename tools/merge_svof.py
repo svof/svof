@@ -65,7 +65,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=REPO)
     ap.add_argument("--package", default="svof")
-    ap.add_argument("--version", default="1.0.0")
+    ap.add_argument("--version", default="64")  # svof's existing numbering
     a = ap.parse_args()
 
     missing = [m for m in MERGE_ORDER

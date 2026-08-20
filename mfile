@@ -1,7 +1,7 @@
 {
   "package": "svof",
   "title": "svof",
-  "version": "1.0.0",
+  "version": "64",
   "author": "Svof contributors",
   "outputFile": true
 }
