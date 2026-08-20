@@ -12,8 +12,8 @@ svo.loader.setup = function()
 -- The package's own version is the single source of truth, so a release only
 -- has to bump it in one place (mfile). Falls back to the last module-era
 -- version if the package metadata is unavailable for any reason.
-svo.version = (getPackageInfo and getPackageInfo("svof", "version")) or "64"
-if svo.version == "" then svo.version = "64" end
+svo.version = (getPackageInfo and getPackageInfo("svof", "version")) or "65"
+if svo.version == "" then svo.version = "65" end
 
 if Logger and not svo.systemloaded then
   Logger:LogSection('svof', {'timestamp', split = 5000, 'keepOpen'})

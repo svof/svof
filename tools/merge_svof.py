@@ -65,7 +65,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=REPO)
     ap.add_argument("--package", default="svof")
-    ap.add_argument("--version", default="64")  # svof's existing numbering
+    ap.add_argument("--version", default="65")  # svof's existing numbering
     ap.add_argument("--force", action="store_true",
                     help="regenerate over an existing src/, discarding hand-written changes")
     a = ap.parse_args()

@@ -2360,6 +2360,11 @@ function sk.dosendqueue()
   if svo.logging_in then return end
   if sk.sendcuringtimer then killTimer(sk.sendcuringtimer) end
 
+  if #sk.sendqueue == 0 then
+    sk.sendcuringtimer = nil
+    return
+  end
+
   if #sk.sendqueue <= 1 then
     send(sk.sendqueue[1] or '', false)
   elseif conf.commandseparator and conf.commandseparator ~= '' and #sk.sendqueue <= 10 then
