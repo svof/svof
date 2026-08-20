@@ -6,15 +6,23 @@ Covers both places code lives: the .lua files under src/, and the scripts
 inlined into the json (items whose name cannot become a filename, or which
 share one with a sibling).
 
-Uses `luac -p`, which parses without executing. Mudlet runs Lua 5.1, so this
-checks the grammar of a newer interpreter - close enough to catch real syntax
-errors, but a 5.1-only construct would not be flagged. Pass --luac to point at
-a 5.1 luac if one is available.
+Uses `luac -p`, which parses without executing.
+
+**Mudlet runs Lua 5.1, so only a 5.1 luac gives a trustworthy answer.** A
+newer one reports constructs that are perfectly legal here (see below), and
+the danger is not the noise - it is that someone believes it and "fixes"
+working code to satisfy a parser Mudlet never runs. So this reports the
+version it used, says loudly when that is not 5.1, and takes --strict-version
+to refuse outright, which is what CI does.
+
+luac is found in this order: --luac, then $LUAC, then PATH, preferring a 5.1
+binary over any other.
 
     python tools/check_lua_syntax.py
     python tools/check_lua_syntax.py --luac "C:/lua51/luac.exe"
+    python tools/check_lua_syntax.py --strict-version     # CI
 """
-import argparse, glob, json, os, shutil, subprocess, sys, tempfile
+import argparse, glob, json, os, re, shutil, subprocess, sys, tempfile
 
 # Mudlet runs Lua 5.1, so that is the version to validate against. Checking with
 # a newer luac reports these, none of which are errors under 5.1:
@@ -27,15 +35,35 @@ import argparse, glob, json, os, shutil, subprocess, sys, tempfile
 #
 # All of these exist in code that ships and works, so a newer luac is useful for
 # catching genuine mistakes but will always report the four above.
+WANTED = "5.1"
+
+# In preference order: an explicitly-5.1 binary, then a plain one, then the
+# newer versions. No absolute paths - whatever is on PATH is what this machine
+# has, and a path baked in here would only ever be right on one machine.
+LUAC_NAMES = ("luac5.1", "luac51", "luac",
+              "luac5.4", "luac54", "luac5.3", "luac53",
+              "luac5.2", "luac52", "luac5.5", "luac55")
+
+
 def find_luac():
-    for name in ("luac5.1", "luac51", "luac"):
+    env = os.environ.get("LUAC")
+    if env and (os.path.exists(env) or shutil.which(env)):
+        return env
+    for name in LUAC_NAMES:
         p = shutil.which(name)
         if p:
             return p
-    for p in (r"C:\lua\luac55.exe", r"C:\lua\luac.exe"):
-        if os.path.exists(p):
-            return p
     return None
+
+
+def luac_version(luac):
+    """The x.y this luac speaks, or None if it will not say."""
+    try:
+        r = subprocess.run([luac, "-v"], capture_output=True, text=True)
+    except OSError:
+        return None
+    m = re.search(r"Lua\s+(\d+\.\d+)", (r.stdout or "") + (r.stderr or ""))
+    return m.group(1) if m else None
 
 
 def parse_check(luac, path):
@@ -49,14 +77,36 @@ def parse_check(luac, path):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--luac", default=None)
+    ap.add_argument("--strict-version", action="store_true",
+                    help="refuse to run unless luac is %s, as Mudlet is" % WANTED)
     a = ap.parse_args()
 
     luac = a.luac or find_luac()
     if not luac or not (os.path.exists(luac) or shutil.which(luac)):
-        sys.exit("no luac found; pass --luac /path/to/luac")
+        sys.exit("no luac found. Put one on PATH, set $LUAC, or pass "
+                 "--luac /path/to/luac")
     a.luac = luac
-    ver = subprocess.run([luac, "-v"], capture_output=True, text=True)
-    print("using:", luac, "|", (ver.stdout or ver.stderr).strip().splitlines()[0] if (ver.stdout or ver.stderr) else "?")
+
+    version = luac_version(luac)
+    print("using: %s  (Lua %s)" % (luac, version or "version unknown"))
+
+    if version != WANTED:
+        told = version or "an unknown version"
+        if a.strict_version:
+            sys.exit("\nrefusing to run: this is Lua %s, and Mudlet runs %s.\n"
+                     "Checking svof against the wrong grammar is worse than not "
+                     "checking it." % (told, WANTED))
+        print()
+        print("!" * 72)
+        print("  This luac is Lua %s. Mudlet runs %s." % (told, WANTED))
+        print("  Anything reported below may be legal 5.1 that this parser")
+        print("  rejects, not a real error. Known cases:")
+        print("    goto as an identifier     - a keyword only from 5.2")
+        print("    invalid escape sequence   - 5.1 allows \\w, \\/ and friends")
+        print("    assign to const variable  - 5.4 semantics, vendored Penlight")
+        print("  Do NOT change working code to satisfy this. Get a 5.1 luac.")
+        print("!" * 72)
+    print()
 
     failures = []
 
@@ -98,6 +148,10 @@ def main():
         for where, err in failures:
             print(f"  {where}")
             print(f"      {err}")
+        if version != WANTED:
+            print()
+            print(f"  Reported by Lua {version or '?'}, not {WANTED}. "
+                  f"Check each against 5.1 before believing it.")
         return 1
     print("all chunks parse cleanly")
     return 0

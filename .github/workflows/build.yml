@@ -81,8 +81,13 @@ jobs:
 
       # Gate 1. Every .lua in src/, plus the scripts inlined into the json
       # because their name cannot be a filename or is shared with a sibling.
+      #
+      # --strict-version makes this fail rather than run if the luac on PATH is
+      # not 5.1. If the lua action ever changes what it installs, the check
+      # would otherwise keep passing while silently validating svof against a
+      # grammar Mudlet does not use.
       - name: check lua syntax
-        run: python3 tools/check_lua_syntax.py --luac "$(which luac)"
+        run: python3 tools/check_lua_syntax.py --luac "$(which luac)" --strict-version
 
       # Gate 2. The built package against all 25 original module xmls, object
       # by object: structure, names, scripts, patterns and pattern types, alias
