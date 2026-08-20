@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Refill something",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(compound|brew) (.+)$"
+  },
+  {
+    "name": "Refill next potion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^refill next potion$"
+  },
+  {
+    "name": "(putvials) Put vials away",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^putvials$"
+  },
+  {
+    "name": "(getvials) Retrieve vials",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^getvials$"
+  },
+  {
+    "name": "(givevials) Hand over vials",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^givevials (\\w+)$"
+  }
+]

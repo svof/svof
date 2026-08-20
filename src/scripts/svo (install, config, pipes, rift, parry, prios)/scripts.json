@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Install system",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Config system",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Pipes",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Rift",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Parry",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Priorities",
+    "isActive": "yes",
+    "isFolder": "no"
+  }
+]

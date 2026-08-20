@@ -1,0 +1,80 @@
+[
+  {
+    "name": "svo Capture elist-elist2-venomlist",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "999",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Vial",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Months",
+        "type": "substring"
+      }
+    ],
+    "children": [
+      {
+        "name": "svo Capture elist stop",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#aaff00",
+        "highlightBG": "#00aa00",
+        "patterns": [
+          {
+            "pattern": "------------------------------------------",
+            "type": "startOfLine"
+          }
+        ]
+      },
+      {
+        "name": "elist-elist2 vial",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "3",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "[Vv]ial(\\d+)\\s+(.+?)\\s+(\\d+)\\s+(\\d+|(?:---))$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Auto-more (elist)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "[Type MORE if you wish to continue reading",
+            "type": "startOfLine"
+          }
+        ]
+      }
+    ]
+  }
+]

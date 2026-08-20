@@ -1,0 +1,14 @@
+[
+  {
+    "name": "(startlog) Start logging",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^startlog$"
+  },
+  {
+    "name": "(stoplog) Stop logging",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^stoplog$"
+  }
+]

@@ -66,6 +66,8 @@ def main():
     ap.add_argument("--out", default=REPO)
     ap.add_argument("--package", default="svof")
     ap.add_argument("--version", default="64")  # svof's existing numbering
+    ap.add_argument("--force", action="store_true",
+                    help="regenerate over an existing src/, discarding hand-written changes")
     a = ap.parse_args()
 
     missing = [m for m in MERGE_ORDER
@@ -79,6 +81,17 @@ def main():
                  + ", ".join(sorted(unlisted)))
 
     src = os.path.join(a.out, "src")
+    if os.path.isdir(src) and not a.force:
+        sys.exit(
+            "src/ already exists.\n\n"
+            "This was a one-time conversion: src/ is the source of truth now, and\n"
+            "the module xmls are kept only as the reference it is verified against.\n"
+            "Rerunning rebuilds src/ from those xmls and would discard everything\n"
+            "written since - the module machinery removal, the updater, the\n"
+            "migration guard.\n\n"
+            "Pass --force if you really mean to regenerate, and expect to restore\n"
+            "hand-written changes afterwards."
+        )
     if os.path.isdir(src):
         shutil.rmtree(src)
 
@@ -94,8 +107,23 @@ def main():
             if node is None:
                 continue
             kids = [c for c in node if c.tag in (leaf, group)]
-            if kids:
-                combined.extend(kids)
+            if not kids:
+                continue
+            # Each module used to be its own tree in Mudlet's editor, and that
+            # boundary was what grouped its items. Without a folder to stand in
+            # for it, everything a module kept at its own top level lands in one
+            # flat list of siblings and reads as scattered.
+            if len(kids) == 1 and kids[0].tag == group and (kids[0].findtext("name") or "") == name:
+                # already a single folder named after the module - don't nest it
+                # inside another folder with the same name
+                combined.append(kids[0])
+                continue
+            wrapper = ET.Element(group, {"isActive": "yes", "isFolder": "yes"})
+            ET.SubElement(wrapper, "name").text = name
+            ET.SubElement(wrapper, "script").text = ""
+            for k in kids:
+                wrapper.append(k)
+            combined.append(wrapper)
         if not combined:
             continue
         em = x2m.Emitter(a.out, kind)

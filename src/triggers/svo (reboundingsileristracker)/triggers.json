@@ -1,0 +1,328 @@
+[
+  {
+    "name": "Self-removed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "^(\\w+)'s aura of weapons rebounding disappears\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Razed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You raze ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You raze (\\w+)'s aura of rebounding with .+\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Magi raze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You call upon Whiirh to empower your staff and strike",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You call upon Whiirh to empower your staff and strike (\\w+), the power of air dispersing \\w+ aura of rebounding\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Serpent flay",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You flay away",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You flay away (\\w+)'s aura of rebounding defence\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Knight fracture",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You deliver a single, powerful blow against the aura of rebounding surrounding",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You deliver a single, powerful blow against the aura of rebounding surrounding (\\w+), fracturing it\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Knight two-handed cutting carve",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Lunging forward, you bring",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Lunging forward, you bring .+? down in a savage diagonal blow, carving through (\\w+)'s aura of rebounding\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Knight two-handed blunt carve",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Planting your feet, you whirl ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Planting your feet, you whirl .+? over your head before bringing it down with terrible force upon (\\w+), shattering \\w+ aura of rebounding\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Smoked",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ takes a long drag off (?:\\w+)? ?.*pipe\\.$|^A great gurgling sound is heard as \\w+ takes a long drag from an enamel bubble pipe\\. A series of shining bubbles erupt from the bowl of \\w+ pipe\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "return (svo.rt_razed and line:find(svo.rt_name, 1, true)) and true or false",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Got rebounding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You suddenly perceive the vague outline of an aura of rebounding around",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You suddenly perceive the vague outline of an aura of rebounding around (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Flayed sileris",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You flay the purple, waxy coating from",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You flay the purple, waxy coating from (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Flayed quicksilver",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You flay the metallic coating from",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You flay the metallic coating from (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Got sileris",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A supple purple shell of sileris berry juice has formed around",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A supple purple shell of sileris berry juice has formed around (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Got quicksilver",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A supple metallic shell of quicksilver has formed around",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A supple metallic shell of quicksilver has formed around (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Applied sileris",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) applies a sileris berry to \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "return (svo.rt_flayed and line:find(svo.rt_sname, 1, true)) and true or false",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Applied quicksilver",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) applies a quicksilver droplet to \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "return (svo.rt_flayed and line:find(svo.rt_sname, 1, true)) and true or false",
+        "type": "lua"
+      }
+    ]
+  }
+]

@@ -1,9 +1,9 @@
 [
   {
-    "name": "svo (aliases, triggers)",
+    "name": "svo",
     "isActive": "yes",
     "isFolder": "yes",
-    "keyCode": "0",
+    "keyCode": "-1",
     "keyModifier": "0"
   }
 ]

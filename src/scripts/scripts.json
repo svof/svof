@@ -1,213 +1,93 @@
 [
   {
-    "name": "Create Svof namespace",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "3rdparty",
+    "name": "svo (install me in module manager)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "Event handlers",
+    "name": "svo (actions dictionary)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "svo Utilities",
+    "name": "svo (alias and defence functions)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "Check for system updates",
+    "name": "svo (curing skeleton, controllers, action system)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "Examples",
+    "name": "svo (custom prompt, serverside)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "svo Time Tracking",
+    "name": "svo (install, config, pipes, rift, parry, prios)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "svo Class Management",
+    "name": "svo (setup, misc, empty, funnies, dor)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "svo UI Experiments",
+    "name": "svo (trigger functions)",
     "isActive": "yes",
     "isFolder": "yes"
-  },
-  {
-    "name": "Load & init",
-    "isActive": "yes",
-    "isFolder": "yes"
-  },
-  {
-    "name": "Dictionary of actions (affs-defs-misc)",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Alias functions",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Defences",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Curing skeleton",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Controllers",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Action system",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Custom prompt",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Serverside",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Install system",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Config system",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Pipes",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Rift",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Parry",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Priorities",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Setup",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Miscellaneous functions",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Empty cure handling",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Funnies",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Dor",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Diag trigger functions",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Simple aff trigger functions",
-    "isActive": "yes",
-    "isFolder": "no"
-  },
-  {
-    "name": "Main trigger functions",
-    "isActive": "yes",
-    "isFolder": "no"
   },
   {
     "name": "svo (aliases, triggers)",
     "isActive": "yes",
-    "isFolder": "no"
+    "isFolder": "yes"
   },
   {
-    "name": "svo Elixer Sorter",
+    "name": "svo (elistsorter)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "svo Fishing Distance by Trilliana",
+    "name": "svo (fishdist)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "svo Inker",
+    "name": "svo (inker)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "svo Mindnet Report",
+    "name": "svo (mindnet)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "svo People Tracker",
+    "name": "svo (peopletracker)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
     "name": "svo (reboundingsileristracker)",
     "isActive": "yes",
-    "isFolder": "no"
+    "isFolder": "yes"
   },
   {
-    "name": "svo Refiller",
+    "name": "svo (refiller)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
     "name": "svo (runeidentifier)",
     "isActive": "yes",
-    "isFolder": "no"
+    "isFolder": "yes"
   },
   {
     "name": "svo (stormhammertarget)",
     "isActive": "yes",
-    "isFolder": "no"
+    "isFolder": "yes"
   },
   {
     "name": "svo (limbcounter)",
@@ -215,32 +95,32 @@
     "isFolder": "yes"
   },
   {
-    "name": "svo Magi burncounter",
+    "name": "svo (burncounter)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "svo Priest Report",
+    "name": "svo (priestreport)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "svo Enchanter",
+    "name": "svo (enchanter)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "NameDB",
+    "name": "svo (namedb)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "svo Logger",
+    "name": "svo (logger)",
     "isActive": "yes",
     "isFolder": "yes"
   },
   {
-    "name": "svo Offering Module",
+    "name": "svo (offering)",
     "isActive": "yes",
     "isFolder": "yes"
   }

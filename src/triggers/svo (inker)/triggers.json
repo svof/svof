@@ -1,0 +1,170 @@
+[
+  {
+    "name": "Interrupted inking",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As the inking process is ruined, the ink dissipates into the surrounding air.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Lacking inks",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You do not possess the ink that is required to create a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You do not possess the ink that is required to create a \\w+ tattoo\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Lacking skills",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You do not know how to ink",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You do not know how to ink an? \\w+ tattoo\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Lacking spot",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "That person has no space for a new tattoo.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Finished inking the tattoo",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As the ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^As the \\w+ tattoo's shape is codified on the .+ of \\w+, the last of the ink leaves the air and you pause for a moment to admire your handiwork\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Maya Card - Finished inking you",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You impulsively scribe a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "tattoo onto your .+ with surprising dexterity\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Maya Card - Finished other inking",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You expertly scribe a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "tattoo onto an impulsive \\w+'s .+ with surprising dexterity\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Inked on stencil",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You gather up the necessary inks and crush the pellets over the stencil. The inks hang in the air for a moment as you concentrate, forming them into the shape of a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "tattoo that adheres to the waxy surface\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

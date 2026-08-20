@@ -1,96 +1,36 @@
 [
   {
-    "name": "svo",
+    "name": "svo (aliases, triggers)",
     "isActive": "yes",
     "isFolder": "yes",
     "regex": ""
   },
   {
-    "name": "Dispose of decays",
+    "name": "svo (elistsorter)",
     "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^dispose of decays by: (.+)$"
+    "isFolder": "yes",
+    "regex": ""
   },
   {
-    "name": "Get obfuscated vials out of pack",
+    "name": "svo (inker)",
     "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^vialsout$"
+    "isFolder": "yes",
+    "regex": ""
   },
   {
-    "name": "elist-vlist",
+    "name": "svo (peopletracker)",
     "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^(?:e|v)list$"
+    "isFolder": "yes",
+    "regex": ""
   },
   {
-    "name": "Ink",
+    "name": "svo (refiller)",
     "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^ink (.+) on (\\w+(?: arm| leg)?)(?: of (\\w+))?"
+    "isFolder": "yes",
+    "regex": ""
   },
   {
-    "name": "(qwho, qwhom, qwhog, qwhoarea) Check wholist",
-    "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^qwho(m|g|w)?(?: (.+))?$"
-  },
-  {
-    "name": "(gotop) Go to person",
-    "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^gotop(?: (\\w+))?$"
-  },
-  {
-    "name": "(ppwith) Report people with person",
-    "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^ppwith (\\w+)$"
-  },
-  {
-    "name": "(ppin) Report people in area",
-    "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^ppin (.+)$"
-  },
-  {
-    "name": "(vshow watchfor) See people on watchfor",
-    "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^vshow watchfor$"
-  },
-  {
-    "name": "Refill something",
-    "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^(compound|brew) (.+)$"
-  },
-  {
-    "name": "Refill next potion",
-    "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^refill next potion$"
-  },
-  {
-    "name": "(putvials) Put vials away",
-    "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^putvials$"
-  },
-  {
-    "name": "(getvials) Retrieve vials",
-    "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^getvials$"
-  },
-  {
-    "name": "(givevials) Hand over vials",
-    "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^givevials (\\w+)$"
-  },
-  {
-    "name": "svo Stormhammer Targetting",
+    "name": "svo (stormhammertarget)",
     "isActive": "yes",
     "isFolder": "yes",
     "regex": ""
@@ -102,51 +42,39 @@
     "regex": ""
   },
   {
-    "name": "svo Magi burncounter",
+    "name": "svo (burncounter)",
     "isActive": "yes",
     "isFolder": "yes",
     "regex": ""
   },
   {
-    "name": "svo Priest Report",
+    "name": "svo (priestreport)",
     "isActive": "yes",
     "isFolder": "yes",
     "regex": ""
   },
   {
-    "name": "enchant",
-    "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^enchant (.+)$"
-  },
-  {
-    "name": "repeat the last order",
-    "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^reenchant$"
-  },
-  {
-    "name": "NameDB",
+    "name": "svo (enchanter)",
     "isActive": "yes",
     "isFolder": "yes",
     "regex": ""
   },
   {
-    "name": "(startlog) Start logging",
+    "name": "svo (namedb)",
     "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^startlog$"
+    "isFolder": "yes",
+    "regex": ""
   },
   {
-    "name": "(stoplog) Stop logging",
+    "name": "svo (logger)",
     "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^stoplog$"
+    "isFolder": "yes",
+    "regex": ""
   },
   {
-    "name": "Offering aliases",
+    "name": "svo (offering)",
     "isActive": "yes",
-    "isFolder": "no",
-    "regex": "^v(offer|drop|get|defile|sanctify|give|put)(?: (?!herb)(\\w+))?$"
+    "isFolder": "yes",
+    "regex": ""
   }
 ]

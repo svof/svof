@@ -63,10 +63,36 @@ def main():
     order_report = {}
 
     for kind in LEAF_OF:
-        merged_top = top_level(merged, kind)
+        group = LEAF_OF[kind]
+        # Each module's items sit inside a folder named after the module.
+        # Whether a wrapper exists is decided by the merger from the module
+        # itself, so decide it the same way here rather than guessing from the
+        # merged side: a module that already was a single folder of its own
+        # name is used as-is and has no extra wrapper around it.
+        merged_roots = {nm: el for nm, el in top_level(merged, kind)}
+
         merged_by_name = {}
-        for nm, el in merged_top:
-            merged_by_name.setdefault(nm, []).append(el)
+        self_named = set()
+        for module in MERGE_ORDER:
+            mod_root = ET.parse(os.path.join(REPO, module + ".xml")).getroot()
+            mod_top = top_level(mod_root, kind)
+            if not mod_top:
+                continue
+            holder = merged_roots.get(module)
+            if holder is None:
+                print(f"[FAIL] {kind:8s} {module}: no top-level entry in the merged package")
+                total_diffs += 1
+                continue
+            is_self_named = (len(mod_top) == 1 and mod_top[0][0] == module
+                             and mod_top[0][1].tag == group)
+            if is_self_named:
+                self_named.add(module)
+            if is_self_named:
+                merged_by_name.setdefault(module, []).append(holder)
+            else:
+                for c in holder:
+                    if c.tag in (kind, group):
+                        merged_by_name.setdefault(c.findtext("name") or "", []).append(c)
 
         expected_order = []
         for module in MERGE_ORDER:
@@ -104,7 +130,15 @@ def main():
             print(f"[FAIL] {kind:8s} merged package has unexpected top-level {n!r}")
             total_diffs += 1
 
-        actual_order = [nm for nm, _ in merged_top]
+        # flatten the merged tree the same way: a module wrapper contributes
+        # the names inside it, anything else contributes its own name
+        actual_order = []
+        for nm, el in top_level(merged, kind):
+            if nm in set(MERGE_ORDER) and nm not in self_named and el.tag == group:
+                actual_order.extend((c.findtext("name") or "") for c in el
+                                    if c.tag in (kind, group))
+            else:
+                actual_order.append(nm)
         order_report[kind] = (expected_order, actual_order)
 
     print()

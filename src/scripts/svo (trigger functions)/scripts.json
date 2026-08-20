@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Diag trigger functions",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Simple aff trigger functions",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Main trigger functions",
+    "isActive": "yes",
+    "isFolder": "no"
+  }
+]
