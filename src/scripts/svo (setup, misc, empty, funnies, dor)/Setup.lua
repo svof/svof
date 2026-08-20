@@ -731,7 +731,11 @@ end, 'track lost gmcp aff')
 signals.gmcpcharafflictionslist:connect(function()
   svo.gaffl = {}
   local preaffl = {}
-  for _, val in ipairs(svo.affl) do preaffl[val] = true end
+  -- svo.affl is keyed by name (values are {sw=..., count=...} tables), so
+  -- this must key preaffl on the name via pairs, not ipairs over a
+  -- string-keyed map (which iterates nothing) or on the value table (which
+  -- would key on a table, not the name svo.svoatoss below is keyed by).
+  for name in pairs(svo.affl) do preaffl[name] = true end
 
   for _, val in ipairs(gmcp.Char.Afflictions.List) do
     local thisaff = val.name
@@ -752,9 +756,7 @@ signals.gmcpcharafflictionslist:connect(function()
   -- svo.svoatoss[key] gates removal on the affliction being one GMCP can
   -- actually confirm or deny - anything absent from it (not reachable
   -- through sstosvoa, or deliberately mapped to false there) is never
-  -- touched here, whatever this loop above computed for it. Still inert:
-  -- preaffl above is built with ipairs over a string-keyed map and stays
-  -- empty until that is fixed.
+  -- touched here, whatever this loop above computed for it.
   for key, val in pairs(preaffl) do
     if val and svo.svoatoss[key] then
       svo.debugf("gmcp list: removing %s, not in the game's list", key)
