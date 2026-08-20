@@ -653,11 +653,13 @@ signals.gmcpcharafflictionsadd:connect(function()
     if afflevel ~= nil and svoaff.count ~= nil then
       svoaff.count = afflevel
     end
-    -- table.contains(svo.affl, ...) searches a string-keyed map's values for
-    -- a name and never matches - left as-is on purpose. Fixing it belongs to
-    -- its own commit, since it starts count propagation that never happened
-    -- before.
-    if afflevel ~= nil and table.contains(svo.affl, svoaff.name) then
+    -- svo.affl is keyed by name; its values are { sw = ..., count = ... }
+    -- tables. table.contains(svo.affl, svoaff.name) searched those values
+    -- for a name string, which never matched, so a GMCP-reported level never
+    -- reached svo.affl[name].count. The guard exists because updateaffcount
+    -- does svo.affl[which.name].count = which.count and raises if the entry
+    -- is absent - a plain key lookup is the correct guard for that.
+    if afflevel ~= nil and svo.affl[svoaff.name] then
       svo.updateaffcount(svoaff)
     end
   end
