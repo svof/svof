@@ -792,7 +792,7 @@ end
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>NameDB qw</name>
+					<name>NameDB qw 2</name>
 					<script>local function commit()
   db:merge_unique(ndb.db.people, temp_name_list)
 
@@ -806,6 +806,7 @@ end
 -- ignore yourself gemmed offplane
 if multimatches[1][1] == "None." then
   disableTrigger("NameDB qw")
+  disableTrigger("NameDB qw 2")
   ndb.checkingqwi = nil
   commit()
   return
@@ -943,7 +944,8 @@ elseif ndb.qwtype == "show infamous" then
 end
 
 commit()
-disableTrigger("NameDB qw")</script>
+disableTrigger("NameDB qw")
+disableTrigger("NameDB qw 2")</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -4387,7 +4389,8 @@ function ndb.checkqw(suffix, how)
   if ndb.qwtimer then killTimer(ndb.qwtimer) end
 
   enableTrigger("NameDB qw")
-  ndb.qwtimer = tempTimer(3, function() disableTrigger("NameDB qw"); ndb.qwtimer = nil end)
+  enableTrigger("NameDB qw 2")
+  ndb.qwtimer = tempTimer(3, function() disableTrigger("NameDB qw"); disableTrigger("NameDB qw 2"); ndb.qwtimer = nil end)
   ndb.qwtype = how
 
   send("qwc", false)
