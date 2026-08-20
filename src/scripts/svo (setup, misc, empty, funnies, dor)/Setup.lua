@@ -670,13 +670,8 @@ end, 'track gained gmcp aff')
 
 signals.gmcpcharafflictionsremove:connect(function()
   local rawaff = gmcp.Char.Afflictions.Remove[1]
-
-  -- Still the pre-existing lookup: "" whenever there is no level suffix,
-  -- which is most removals. A separate commit replaces this guard with the
-  -- affliction's resolved svof name - that is a behaviour change (it stops
-  -- unknownany being decremented on unrelated cures) and is called out there.
-  local pre_affname = ""
-  if string.match(rawaff, "%d") then pre_affname = rawaff:sub(1, -5) end
+  local affname, afflevel = parseaffname(rawaff)
+  local svoaffkey = svo.dict.sstosvoa[affname]
 
   local thisaff = rawaff
   --If level 1 of an affliction is removed, then the aff is completely gone
@@ -684,12 +679,18 @@ signals.gmcpcharafflictionsremove:connect(function()
   gaffl[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
 
-  if svo.dict.unknownany.count >= 1 and not svo.affl[pre_affname] then
-    svo.valid.remove_unknownany(pre_affname)
+  -- "A real affliction was cured that svof wasn't tracking" means one of the
+  -- unknowns is accounted for. That is only true when the GMCP name
+  -- resolves to a real svof affliction and svof was not already tracking it
+  -- under that name - checked here, before rmaff below would remove it and
+  -- make this always true. The old guard used affname computed the previous
+  -- way, which was "" for any removal without a level suffix - most of
+  -- them - so svo.affl[""] was always nil and nearly every unrelated GMCP
+  -- cure decremented unknownany while one was pending.
+  if svo.dict.unknownany.count >= 1 and svoaffkey and not svo.affl[svoaffkey] then
+    svo.valid.remove_unknownany(svoaffkey)
   end
 
-  local affname, afflevel = parseaffname(rawaff)
-  local svoaffkey = svo.dict.sstosvoa[affname]
   if svoaffkey then
     -- svo.rmaff accepts the name string directly; passing the whole dict
     -- entry only worked because dict_setup() guarantees an entry's own
