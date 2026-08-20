@@ -749,9 +749,12 @@ signals.gmcpcharafflictionslist:connect(function()
         svo.addaff(svoAffliction)
       end
     end
+  end
+
+  -- Was inside the loop above, firing once per affliction in the list
+  -- instead of once per List event.
   sk.checkaeony()
   signals.changecuring:emit()
-  end
 
   -- svo.svoatoss[key] gates removal on the affliction being one GMCP can
   -- actually confirm or deny - anything absent from it (not reachable
