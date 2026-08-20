@@ -274,7 +274,7 @@ raiseEvent("mmapper updated pdb")</script>
 	<TimerPackage />
 	<AliasPackage>
 		<Alias isActive="yes" isFolder="no">
-			<name>(qwho, qwhom, qwhog, qwho&lt;area&gt;) Check wholist</name>
+			<name>(qwho, qwhom, qwhog, qwhoarea) Check wholist</name>
 			<script>mmp.pdb, mmp.pdb_lastupdate = {}, {}
 enableTrigger("qwho (svo people tracker)")
 

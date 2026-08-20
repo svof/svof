@@ -114,7 +114,7 @@
     ]
   },
   {
-    "name": "Stuttering/clumsiness",
+    "name": "Stuttering-clumsiness",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -133,11 +133,10 @@
         "pattern": "You lash out clumsily.",
         "type": "exactMatch"
       }
-    ],
-    "script": "if svo.conf.aillusion then svo.ignore_illusion() end"
+    ]
   },
   {
-    "name": "Focus/impatience",
+    "name": "Focus-impatience",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -156,11 +155,10 @@
         "pattern": "You're unable to focus your mind.",
         "type": "exactMatch"
       }
-    ],
-    "script": "if svo.conf.aillusion then svo.ignore_illusion() end"
+    ]
   },
   {
-    "name": "Pacifism/stuttering",
+    "name": "Pacifism-stuttering",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -179,11 +177,10 @@
         "pattern": "The thought of speech seems difficult all of a sudden.",
         "type": "exactMatch"
       }
-    ],
-    "script": "if svo.conf.aillusion then svo.ignore_illusion() end"
+    ]
   },
   {
-    "name": "Asthma/stuttering",
+    "name": "Asthma-stuttering",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -202,11 +199,10 @@
         "pattern": "The thought of speech seems difficult all of a sudden.",
         "type": "exactMatch"
       }
-    ],
-    "script": "if svo.conf.aillusion then svo.ignore_illusion() end"
+    ]
   },
   {
-    "name": "Paralysis/stuttering",
+    "name": "Paralysis-stuttering",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -225,11 +221,10 @@
         "pattern": "The thought of speech seems difficult all of a sudden.",
         "type": "exactMatch"
       }
-    ],
-    "script": "if svo.conf.aillusion then svo.ignore_illusion() end"
+    ]
   },
   {
-    "name": "Darkshade/impatience",
+    "name": "Darkshade-impatience",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -248,11 +243,10 @@
         "pattern": "You shuffle your feet noisily, suddenly bored.",
         "type": "exactMatch"
       }
-    ],
-    "script": "if svo.conf.aillusion then svo.ignore_illusion() end"
+    ]
   },
   {
-    "name": "Flay/applied",
+    "name": "Flay-applied",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -271,11 +265,10 @@
         "pattern": "You apply a sileris berry to yourself.",
         "type": "exactMatch"
       }
-    ],
-    "script": "if svo.conf.aillusion then svo.ignore_illusion() end"
+    ]
   },
   {
-    "name": "Sleep/sluggish",
+    "name": "Sleep-sluggish",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -294,11 +287,10 @@
         "pattern": "You move sluggishly into action.",
         "type": "exactMatch"
       }
-    ],
-    "script": "if svo.conf.aillusion then svo.ignore_illusion() end"
+    ]
   },
   {
-    "name": "Impatience/kalmia",
+    "name": "Impatience-kalmia",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -317,11 +309,10 @@
         "pattern": "You feel a tightening sensation grow in your lungs.",
         "type": "exactMatch"
       }
-    ],
-    "script": "if svo.conf.aillusion then svo.ignore_illusion() end"
+    ]
   },
   {
-    "name": "Herb bal/mind paralysis",
+    "name": "Herb bal-mind paralysis",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -340,11 +331,10 @@
         "pattern": "You feel your limbs stiffen and lock up in response to an unseen power.",
         "type": "exactMatch"
       }
-    ],
-    "script": "if svo.conf.aillusion then svo.ignore_illusion() end"
+    ]
   },
   {
-    "name": "Hallucinations/epilepsy",
+    "name": "Hallucinations-epilepsy",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -363,11 +353,10 @@
         "pattern": "Your nerves feel suddenly jangled.",
         "type": "exactMatch"
       }
-    ],
-    "script": "if svo.conf.aillusion then svo.ignore_illusion() end"
+    ]
   },
   {
-    "name": "Empty pipe/asthma",
+    "name": "Empty pipe-asthma",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -386,8 +375,7 @@
         "pattern": "Your lungs are much too constricted to smoke.",
         "type": "exactMatch"
       }
-    ],
-    "script": "if svo.conf.aillusion then svo.ignore_illusion() end"
+    ]
   },
   {
     "name": "Snake bite, single aff",
@@ -468,7 +456,7 @@
     ]
   },
   {
-    "name": "Arms crippled vibe/asthma",
+    "name": "Arms crippled vibe-asthma",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -487,8 +475,7 @@
         "pattern": "You feel a tightening sensation grow in your lungs.",
         "type": "exactMatch"
       }
-    ],
-    "script": "if svo.conf.aillusion then svo.ignore_illusion() end"
+    ]
   },
   {
     "name": "Asthma+sleep",
@@ -579,7 +566,7 @@
     ]
   },
   {
-    "name": "Stuttering/sensitivityralysis",
+    "name": "Stuttering-sensitivityralysis",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -598,8 +585,7 @@
         "pattern": "A prickly, stinging sensation spreads through your body.",
         "type": "exactMatch"
       }
-    ],
-    "script": "if svo.conf.aillusion then svo.ignore_illusion() end"
+    ]
   },
   {
     "name": "Peace illusion",

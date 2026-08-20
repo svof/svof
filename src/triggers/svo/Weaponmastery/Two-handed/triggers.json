@@ -120,7 +120,7 @@
     ]
   },
   {
-    "name": "Hew/pulverise arms",
+    "name": "Hew-pulverise arms",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -147,11 +147,10 @@
         "pattern": "You feel something snap in your right arm as the hammer smashes home.",
         "type": "exactMatch"
       }
-    ],
-    "script": "svo.valid.simplewristfractures()"
+    ]
   },
   {
-    "name": "Hew/pulverise legs",
+    "name": "Hew-pulverise legs",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -174,8 +173,7 @@
         "pattern": "Your leg almost gives out as the hammer crunches brutally into your ankle.",
         "type": "exactMatch"
       }
-    ],
-    "script": "svo.valid.simpletorntendons()"
+    ]
   },
   {
     "name": "Devastate arms cripple",

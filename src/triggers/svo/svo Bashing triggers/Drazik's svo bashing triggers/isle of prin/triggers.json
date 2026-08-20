@@ -154,7 +154,7 @@
     ]
   },
   {
-    "name": "xorani priestess webs/stun",
+    "name": "xorani priestess webs-stun",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -169,11 +169,10 @@
         "pattern": "A xorani priestess removes a tarot card from a deck hidden within her garments. Rubbing the card quickly, she activates its hidden energies and flings the card in your direction. The card explodes in a violent flash, stunning you momentarily. When you regain control you realise you are entangled in a mass of invisible rope.",
         "type": "exactMatch"
       }
-    ],
-    "script": "svo.valid.proper_stun()\nsvo.valid.proper_webbed()"
+    ]
   },
   {
-    "name": "xorani temple guard prone/ablaze",
+    "name": "xorani temple guard prone-ablaze",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -188,11 +187,10 @@
         "pattern": "The charcoal eye upon the chest plate of a xorani temple guard begins to glow bright orange. The guard turns toward you and lets out a resounding warcry. The flaming eye rushes toward you, knocking you back and setting you ablaze.",
         "type": "exactMatch"
       }
-    ],
-    "script": "svo.valid.proper_ablaze()\nsvo.valid.simpleprone()"
+    ]
   },
   {
-    "name": "xorani temple guard prone/stun",
+    "name": "xorani temple guard prone-stun",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -207,8 +205,7 @@
         "pattern": "A xorani temple guard slashes across your torso with his voulge, causing searing pain to ripple through your body to the point of fainting. As you regain consciousness, you remember you are mid-combat, yet your body is unresponsive.",
         "type": "exactMatch"
       }
-    ],
-    "script": "svo.valid.proper_stun()\nsvo.valid.simpleprone()"
+    ]
   },
   {
     "name": "prin on fire",

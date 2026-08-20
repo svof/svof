@@ -330,7 +330,7 @@
         ]
       },
       {
-        "name": "Motto/Warcry",
+        "name": "Motto-Warcry",
         "isActive": "yes",
         "isFolder": "no",
         "multiline": "no",
@@ -345,8 +345,7 @@
             "pattern": "^\\w+ (motto|warcry): '(.+)'$",
             "type": "regex"
           }
-        ],
-        "script": "if not temp_name_list then return end\n\ntemp_name_list[1][matches[2]] = matches[3]:trim()"
+        ]
       },
       {
         "name": "Not Infamous",

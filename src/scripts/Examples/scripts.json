@@ -1,22 +1,8 @@
 [
   {
-    "name": "Use of got/lost aff/def events",
+    "name": "Use of got-lost aff-def events",
     "isActive": "yes",
-    "isFolder": "yes",
-    "script": "-------------------------------------------------\n--         Put your Lua functions here.        --\n--                                             --\n-- Note that you can also use external Scripts --\n-------------------------------------------------\n",
-    "children": [
-      {
-        "name": "svo_example_affs",
-        "isActive": "no",
-        "isFolder": "no",
-        "eventHandlerList": [
-          "svo got aff",
-          "svo lost aff",
-          "svo got def",
-          "svo lost def"
-        ]
-      }
-    ]
+    "isFolder": "yes"
   },
   {
     "name": "affs display window",
@@ -37,20 +23,8 @@
     "isFolder": "yes"
   },
   {
-    "name": "Show which affs you got/lost w/ times and count (by Lynara)",
+    "name": "Show which affs you got-lost w- times and count (by Lynara)",
     "isActive": "yes",
-    "isFolder": "yes",
-    "script": "-------------------------------------------------\n--         Put your Lua functions here.        --\n--                                             --\n-- Note that you can also use external Scripts --\n-------------------------------------------------\n",
-    "children": [
-      {
-        "name": "MyAffs",
-        "isActive": "no",
-        "isFolder": "no",
-        "eventHandlerList": [
-          "svo got aff",
-          "svo lost aff"
-        ]
-      }
-    ]
+    "isFolder": "yes"
   }
 ]

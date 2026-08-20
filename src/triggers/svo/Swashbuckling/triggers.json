@@ -214,7 +214,7 @@
     ],
     "children": [
       {
-        "name": "Epteth/epseth",
+        "name": "Epteth-epseth",
         "isActive": "yes",
         "isFolder": "no",
         "multiline": "no",
@@ -241,8 +241,7 @@
             "pattern": "You watch, in horror, as your left arm shrivels up and becomes useless.",
             "type": "exactMatch"
           }
-        ],
-        "script": "svo.valid.swashbuckling_poison()"
+        ]
       },
       {
         "name": "Tunesmithings",

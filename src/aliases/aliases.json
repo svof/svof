@@ -18,11 +18,10 @@
     "regex": "^vialsout$"
   },
   {
-    "name": "elist/vlist",
+    "name": "elist-vlist",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^(?:e|v)list$",
-    "script": "svo.gag_list = true\nsend(\"config pagelength 250\", false)\nsend(command, false)"
+    "regex": "^(?:e|v)list$"
   },
   {
     "name": "Ink",
@@ -31,11 +30,10 @@
     "regex": "^ink (.+) on (\\w+(?: arm| leg)?)(?: of (\\w+))?"
   },
   {
-    "name": "(qwho, qwhom, qwhog, qwho<area>) Check wholist",
+    "name": "(qwho, qwhom, qwhog, qwhoarea) Check wholist",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^qwho(m|g|w)?(?: (.+))?$",
-    "script": "mmp.pdb, mmp.pdb_lastupdate = {}, {}\nenableTrigger(\"qwho (svo people tracker)\")\n\nif not svo.defc.thirdeye then\n  if svo.conf.thirdeye then svo.doaction(\"thirdeye\", \"misc\")\n  else svo.doaction(\"thirdeye\", \"herb\") end\nend\n\nsendSocket(\"who b\\n\", false)\n\nif svo.qwhoopen then killTimer(svo.qwhoopen) end\nsvo.qwhoopen = tempTimer(10, [[\n  if not svo.qwhoopen then return end\n\n  disableTrigger(\"qwho (svo people tracker)\")\n  svo.echof(\"qwho didn't finish - manually closed it.\")\n  tempTimer(0, function() svo.buildwhosummary() svo.showprompt() wrapLine(getLineCount()) end)\n  raiseEvent(\"mmapper updated pdb\")\n  svo.qwhoopen = nil\n]])\n\nsvo.showqwho = matches[2]\nsvo.qwhofilter = matches[3]\n\nsvo.echof(\"Checking all of wholist%s%s...\", ((svo.showqwho and svo.showqwho ~= \"\") and (\" for \"..svo.showqwho) or ''), (svo.qwhofilter and \" in \"..svo.qwhofilter or ''))"
+    "regex": "^qwho(m|g|w)?(?: (.+))?$"
   },
   {
     "name": "(gotop) Go to person",

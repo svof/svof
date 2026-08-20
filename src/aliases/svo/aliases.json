@@ -24,11 +24,10 @@
     "regex": "^vshow ?(p|precache)$"
   },
   {
-    "name": "Show curelist/prefercustom curemethod",
+    "name": "Show curelist-prefercustom curemethod",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^vshow (?:cl|curelist)$",
-    "script": "svo.showcurelist()"
+    "regex": "^vshow (?:cl|curelist)$"
   },
   {
     "name": "Show basic system info",
@@ -67,18 +66,16 @@
     "regex": "^def(?:ences)?$"
   },
   {
-    "name": "(tn *) Turn things or classes on",
+    "name": "(tn) Turn things or classes on",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^(?:tn|turnon) (.+)",
-    "script": "-- check keepup, AI\nif svo.tntf_set(matches[2], \"on\", \"noerrors\") then return end\n\nlocal aliases = {\n  all = \"alchemist apostate bard blademaster dragon druid infernal jester magi monk occultist paladin priest runewarden sentinel serpent shaman sylvan\",\n  allclasses = \"alchemist apostate bard blademaster dragon druid infernal jester magi monk occultist paladin priest runewarden sentinel serpent shaman sylvan\",\n  serp = \"serpent\",\n  necro = \"apostate infernal\",\n  necromancer = \"apostate infernal\",\n}\n\nmatches[2] = matches[2]:lower()\n\nlocal only\nif matches[2]:find(\"^%w+only\") then\n  svo.disableallclasses()\n  matches[2] = matches[2]:match(\"^(%w+)only\")\n  only = true\nend\n\n-- check aliases\nfor shortcut, full in pairs(aliases) do\n  matches[2] = string.gsub(matches[2], \"%f[%a]\"..shortcut..\"%f[%A]\", full)\nend\n\n-- check classes\nlocal classes, alreadyon = {}, {}\nfor w in string.gmatch(matches[2], \"%a+\") do\n  if svo.classes[w] and not svo.enabledclasses[w] then classes[#classes+1] = w -- weed out invalid names\n  elseif svo.classes[w] and svo.enabledclasses[w] then alreadyon[#alreadyon+1] = w end\nend\n\nfor i = 1, #classes do\n  svo.enableclass(classes[i])\nend\n\nlocal setsomething = false\nif classes[1] then\n  svo.echof(\"Enabled %s %sclass%s.\", svo.concatand(classes), (not only and '' or \"only the \"), (#classes == 1 and '' or 'es'))\n  setsomething = true\nend\nif alreadyon[1] then\n  svo.echof(\"%s %s already on.\", svo.concatand(alreadyon):title(), (#alreadyon == 1 and 'is' or 'are'))\n  setsomething = true\nend\n\nif not setsomething then\n  svo.echof(\"'%s' isn't something you can change.\", matches[2])\nend\n\nsvo.showprompt()"
+    "regex": "^(?:tn|turnon) (.+)"
   },
   {
-    "name": "(tf *) Turn things or classes off",
+    "name": "(tf) Turn things or classes off",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^(?:tf|turnoff) (.+)",
-    "script": "-- check keepup, AI\nif svo.tntf_set(matches[2], \"off\", \"noerrors\") then return end\n\nlocal aliases = {\n  all = \"alchemist apostate bard blademaster dragon druid infernal jester magi monk occultist paladin priest runewarden sentinel serpent shaman sylvan\",\n  allclasses = \"alchemist apostate bard blademaster dragon druid infernal jester magi monk occultist paladin priest runewarden sentinel serpent shaman sylvan\",\n  serp = \"serpent\",\n  necro = \"apostate infernal\",\n  necromancer = \"apostate infernal\",\n}\n\nmatches[2] = matches[2]:lower()\n\n-- check aliases\nfor shortcut, full in pairs(aliases) do\n  matches[2] = string.gsub(matches[2], \"%f[%a]\"..shortcut..\"%f[%A]\", full)\nend\n\n-- check classes\nlocal classes, alreadyoff = {}, {}\nfor w in string.gmatch(matches[2], \"%a+\") do\n  if svo.classes[w] and svo.enabledclasses[w] then classes[#classes+1] = w -- weed out invalid names\n  elseif svo.classes[w] and not svo.enabledclasses[w] then alreadyoff[#alreadyoff+1] = w end\nend\n\nfor i = 1, #classes do\n  svo.disableclass(classes[i])\nend\n\nlocal setsomething = false\nif classes[1] then\n  svo.echof(\"Disabled %s class%s.\", svo.concatand(classes), (#classes == 1 and '' or 'es'))\n  setsomething = true\nend\nif alreadyoff[1] then\n  svo.echof(\"%s %s already off.\", svo.concatand(alreadyoff):title(), (#alreadyoff == 1 and 'is' or 'are'))\n  setsomething = true\nend\n\nif not setsomething then\n  svo.echof(\"'%s' isn't something you can change.\", matches[2])\nend\n\nsvo.showprompt()"
+    "regex": "^(?:tf|turnoff) (.+)"
   },
   {
     "name": "Toggle health as main priority in slow curing",
@@ -153,11 +150,10 @@
     "regex": "^mss(?: (\\w+))?$"
   },
   {
-    "name": "Toggle health/mana changes display",
+    "name": "Toggle health-mana changes display",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^trk(?: (\\w+))?$",
-    "script": "svo.config.set(\"showchanges\", matches[2], true)"
+    "regex": "^trk(?: (\\w+))?$"
   },
   {
     "name": "Toggle rebounding use",
@@ -406,18 +402,16 @@
     "regex": "^vupdate(?: (force|checking))?$"
   },
   {
-    "name": "Remember vault/mount",
+    "name": "Remember vault-mount",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^(vault|mount|board) ((\\/|\\w)+)$",
-    "script": "if matches[3] == \"ship\" then\n  send(command, false)\n  return\nend\n\nif string.starts(matches[3]:lower(), \"figurehead\") then\n  send(command, false)\n  return\nend\n\nif svo.conf.ridingskill ~= matches[2] then\n  svo.echof(\"Remembered your riding skill at '%s'\", matches[2])\nend\n\nif svo.conf.ridingsteed ~= matches[3] then\n  svo.echof(\"Remembered your steed at '%s'\", matches[3])\nend\n\n\nsvo.conf.ridingskill = matches[2]\nsvo.conf.ridingsteed = matches[3]\n\nsend(command, false)"
+    "regex": "^(vault|mount|board) ((\\/|\\w)+)$"
   },
   {
-    "name": "(b *) Block a dir",
+    "name": "(b) Block a dir",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^(?:b|block) (n|e|s|w|ne|se|sw|nw|in|out|u|d)$",
-    "script": "if not svo.ignore.block then\n  svo.conf.blockingdir = matches[2]\n  svo.defs.keepup(\"block\", true, nil, true)\nelse\n  send(command, false)\nend"
+    "regex": "^(?:b|block) (n|e|s|w|ne|se|sw|nw|in|out|u|d)$"
   },
   {
     "name": "(ub) Unblock",
@@ -462,11 +456,10 @@
     "regex": "^(s)?fl(?: (.+))?$"
   },
   {
-    "name": "(p*) Set parry manually",
+    "name": "(p) Set parry manually",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^p(n|h|tt|rl|ll|ra|la)$",
-    "script": "svo.sp_setparry(matches[2])"
+    "regex": "^p(n|h|tt|rl|ll|ra|la)$"
   },
   {
     "name": "(lp) Light all pipes",
@@ -505,11 +498,10 @@
     "regex": ""
   },
   {
-    "name": "(vshow herbstat) Show inv/rift herb stats",
+    "name": "(vshow herbstat) Show inv-rift herb stats",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^vshow herbstat$",
-    "script": "svo.toggle_riftlabel()"
+    "regex": "^vshow herbstat$"
   },
   {
     "name": "Spirituality aliases",
@@ -554,11 +546,10 @@
     "regex": "^vecho (.+)"
   },
   {
-    "name": "(cc) Relay info to party/clan/order/tell or just echo",
+    "name": "(cc) Relay info to party-clan-order-tell or just echo",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^cc (.+)$",
-    "script": "svo.cc(matches[2])"
+    "regex": "^cc (.+)$"
   },
   {
     "name": "Check rift",
@@ -585,11 +576,10 @@
     "regex": "^sleep$"
   },
   {
-    "name": "(vshow serverside) Toggle Svo/serverside cures",
+    "name": "(vshow serverside) Toggle Svo-serverside cures",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^vshow server(?:side)?$",
-    "script": "svo.showserverside()"
+    "regex": "^vshow server(?:side)?$"
   },
   {
     "name": "toggle dilation",

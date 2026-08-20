@@ -24,11 +24,10 @@
     "regex": "^iff (\\w+) (\\w+)$"
   },
   {
-    "name": "qw/qw2",
+    "name": "qw-qw2",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^qw(2)?$",
-    "script": "ndb.checkqw() -- qw and qw2 are the same now"
+    "regex": "^qw(2)?$"
   },
   {
     "name": "(qw update) Re-check people on qw list",

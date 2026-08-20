@@ -154,7 +154,7 @@
     ]
   },
   {
-    "name": "Devastate arms/legs 6-7 fractures",
+    "name": "Devastate arms-legs 6-7 fractures",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -173,8 +173,7 @@
         "pattern": "^Adjusting your footing, you unleash a horrific slash at the (?:arms|legs) of \\w+, cleaving flesh and shattering bone in a savage display of your supremecy\\.$",
         "type": "regex"
       }
-    ],
-    "script": "svo.valid.recoverable_attack()"
+    ]
   },
   {
     "name": "Devastate arms 1-3 fractures",

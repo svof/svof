@@ -18,7 +18,7 @@
     ]
   },
   {
-    "name": "tsetse fly stun/transfix",
+    "name": "tsetse fly stun-transfix",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -33,8 +33,7 @@
         "pattern": "A tsetse fly hovers before you while showing his beautiful wings, dazzling you with the swirling, iridescent patterns appearing within them.",
         "type": "exactMatch"
       }
-    ],
-    "script": "svo.valid.proper_stun()\nsvo.valid.proper_transfix()"
+    ]
   },
   {
     "name": "tsetse fly nap time",

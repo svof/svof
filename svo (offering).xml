@@ -3,7 +3,7 @@
 <MudletPackage version="1.001">
 	<TriggerPackage>
 		<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-			<name>Shrine full/gone</name>
+			<name>Shrine full-gone</name>
 			<script>local haveselfish = svo.me.doqueue[#svo.me.doqueue-1]:find("^vkeep selfishness on$")
 if svo.me.doqueue[1] and
    svo.me.doqueue[1]:find("^offer") then 
@@ -43,7 +43,7 @@ if svo.off_preaction ~= "get" then
   if svo.off_preaction ~= "give" and 
      svo.off_preaction ~= "put" and 
      svo.off_preaction ~= "drop" then
-       enableTrigger("Shrine full/gone")
+       enableTrigger("Shrine full-gone")
   end
   sendGMCP("Char.Items.Inv")
 else
@@ -134,7 +134,7 @@ svo.modules_version["svo (offering)"] = 1</script>
       svo.doadd("vkeep selfishness on")
     end
   end
-  svo.doadd(function() disableTrigger("Shrine full/gone") end)
+  svo.doadd(function() disableTrigger("Shrine full-gone") end)
   svo.off_preaction = nil
 end</script>
 				<eventHandlerList>

@@ -62,7 +62,7 @@
     ]
   },
   {
-    "name": "Erato confusion/dementia",
+    "name": "Erato confusion-dementia",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -77,8 +77,7 @@
         "pattern": "Erato, spirit of the Eastern Ithmia raises her voice in an ethereal chant to the forest that settles a fog of utter confusion upon you.",
         "type": "exactMatch"
       }
-    ],
-    "script": "svo.valid.simpleconfusion()\nsvo.valid.simpledementia()"
+    ]
   },
   {
     "name": "Grukai swamp aeon",
@@ -147,7 +146,7 @@
     ]
   },
   {
-    "name": "Azdun slug slashed throat/illness",
+    "name": "Azdun slug slashed throat-illness",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -166,7 +165,6 @@
         "pattern": "A flesh-eating slug lets out a high-pitched shriek and begins to boil madly. She releases noxious fumes, causing you to gag and vomit uncontrollably.",
         "type": "exactMatch"
       }
-    ],
-    "script": "svo.valid.simpleillness()\nsvo.valid.simpleslashedthroat()\n"
+    ]
   }
 ]

@@ -312,7 +312,7 @@
     ]
   },
   {
-    "name": "svo sileris/quicksilver start",
+    "name": "svo sileris-quicksilver start",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -331,11 +331,10 @@
         "pattern": "You apply a quicksilver droplet to yourself.",
         "type": "exactMatch"
       }
-    ],
-    "script": "svo.defs.sileris_start()"
+    ]
   },
   {
-    "name": "svo sileris/quicksilver finished",
+    "name": "svo sileris-quicksilver finished",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -354,11 +353,10 @@
         "pattern": "The quicksilver hardens into a supple metallic shell.",
         "type": "exactMatch"
       }
-    ],
-    "script": "svo.defs.sileris_finished()"
+    ]
   },
   {
-    "name": "svo sileris/quicksilver slickness",
+    "name": "svo sileris-quicksilver slickness",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -377,8 +375,7 @@
         "pattern": "You are too slick for the berry juice to take hold, and it is wasted.",
         "type": "exactMatch"
       }
-    ],
-    "script": "svo.defs.sileris_slickness()"
+    ]
   },
   {
     "name": "svo block",
@@ -501,7 +498,7 @@
     ],
     "children": [
       {
-        "name": "you lose :(",
+        "name": "you lose",
         "isActive": "yes",
         "isFolder": "no",
         "multiline": "no",
@@ -516,11 +513,10 @@
             "pattern": "You are sent tumbling off your \\w+ and your weapon goes flying in the air\\.$",
             "type": "regex"
           }
-        ],
-        "script": "svo.valid.simpleprone()\nsvo.defs.lost_riding()"
+        ]
       },
       {
-        "name": "it's a tie :|",
+        "name": "it's a tie",
         "isActive": "yes",
         "isFolder": "no",
         "multiline": "no",
@@ -535,8 +531,7 @@
             "pattern": "Your mounts collide with great force and your weapons viciously skewer each other, causing you both to fall off your mounts as your weapons fly into the air.",
             "type": "substring"
           }
-        ],
-        "script": "svo.valid.simpleprone()\nsvo.defs.lost_riding()"
+        ]
       }
     ]
   },

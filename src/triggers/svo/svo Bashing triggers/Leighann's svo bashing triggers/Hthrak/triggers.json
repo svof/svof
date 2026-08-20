@@ -34,7 +34,7 @@
     ]
   },
   {
-    "name": "prone/stun",
+    "name": "prone-stun",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -53,7 +53,6 @@
         "pattern": "A lean dirangi leaps up into the air with blinding speed, bouncing nimbly off a wall before landing directly on top of you, knocking you to the floor.",
         "type": "exactMatch"
       }
-    ],
-    "script": "svo.valid.simplestun()\nsvo.valid.simpleprone()"
+    ]
   }
 ]

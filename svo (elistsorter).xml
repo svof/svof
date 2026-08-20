@@ -3,7 +3,7 @@
 <MudletPackage version="1.001">
 	<TriggerPackage>
 		<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-			<name>svo Capture elist/elist2/venomlist</name>
+			<name>svo Capture elist-elist2-venomlist</name>
 			<script>svo.parsing_vlist = line:find("Venom") and true or false
 
 svo.es_capture()
@@ -55,7 +55,7 @@ end</script>
 				</regexCodePropertyList>
 			</Trigger>
 			<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-				<name>elist/elist2 vial</name>
+				<name>elist-elist2 vial</name>
 				<script>if svo.gag_list then deleteLine() end
 
 local vialid = tonumber(matches[2])
@@ -152,7 +152,7 @@ end</script>
 			<regex>^vialsout$</regex>
 		</Alias>
 		<Alias isActive="yes" isFolder="no">
-			<name>elist/vlist</name>
+			<name>elist-vlist</name>
 			<script>svo.gag_list = true
 send("config pagelength 250", false)
 send(command, false)</script>

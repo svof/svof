@@ -1,0 +1,160 @@
+[
+  {
+    "name": "News",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "2",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": ">>>>> Welcome to the Achaean News System <<<<<",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "         HELP for instructions",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "         QUIT to leave the news system",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Out",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You leave the news room and reside in Achaea proper once more.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You do not make any changes.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Successfully written page",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You change the info for Project #",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You finish composing the help document.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "As you finish writing the letter, it contracts to fit your text, ensuring that no more may be written on it in the future.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You return from composing an ad.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Do you want to save? <yes/no/cancel> ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Reality bends to your will as the room's appearance is reformed.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your soul returns on the land of the living after finishing the narration of your clan's summary.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The sign flickers and changes.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You return from decorating a poster.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^You change builder bounty #\\d+'s content\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Out (NPC request)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "That looks good. I'll be in touch",
+        "type": "substring"
+      },
+      {
+        "pattern": "^(?:[A-Za-z]+\\b,? *){2,} tells you, \"That looks good\\. I'll be in touch\\.\"",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Writing",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": " -*-  Composer  -*-                  (*help for help, *exit to exit)",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^\\-=\\-=\\- ",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Returned to editor",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Do you want to save? <yes/no/cancel> ",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Returning to the editor...",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

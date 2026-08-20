@@ -86,7 +86,7 @@
     ]
   },
   {
-    "name": "paralysis/chill",
+    "name": "paralysis-chill",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -105,11 +105,10 @@
         "pattern": "A tumbaga malagma points at you and utters a guttural, arcane word. Though your body's appearance does not change, you feel as cold and stiff as metal.",
         "type": "exactMatch"
       }
-    ],
-    "script": "svo.valid.simpleparalysis()\nsvo.valid.proper_chill()"
+    ]
   },
   {
-    "name": "quadbreak/knockdown",
+    "name": "quadbreak-knockdown",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -124,7 +123,6 @@
         "pattern": "^\\w+ mouth moving rapidly, a hepatizon malagma gestures at you and you drop to the ground, all of your limbs suddenly heavy beyond belief\\.$",
         "type": "regex"
       }
-    ],
-    "script": "svo.valid.simplecrippledleftleg()\nsvo.valid.simplecrippledrightleg()\nsvo.valid.simplecrippledleftarm()\nsvo.valid.simplecrippledrightarm()\nsvo.valid.simpleprone()"
+    ]
   }
 ]

@@ -1,0 +1,13 @@
+[
+  {
+    "name": "svo_example_affs",
+    "isActive": "no",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "svo got aff",
+      "svo lost aff",
+      "svo got def",
+      "svo lost def"
+    ]
+  }
+]

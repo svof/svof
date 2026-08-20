@@ -1,0 +1,57 @@
+file,type,old_name,new_name
+svo (actions dictionary).xml,Script,Dictionary of actions (affs/defs/misc),Dictionary of actions (affs-defs-misc)
+"svo (aliases, triggers).xml",Trigger,Stuttering/clumsiness,Stuttering-clumsiness
+"svo (aliases, triggers).xml",Trigger,Focus/impatience,Focus-impatience
+"svo (aliases, triggers).xml",Trigger,Pacifism/stuttering,Pacifism-stuttering
+"svo (aliases, triggers).xml",Trigger,Asthma/stuttering,Asthma-stuttering
+"svo (aliases, triggers).xml",Trigger,Paralysis/stuttering,Paralysis-stuttering
+"svo (aliases, triggers).xml",Trigger,Darkshade/impatience,Darkshade-impatience
+"svo (aliases, triggers).xml",Trigger,Flay/applied,Flay-applied
+"svo (aliases, triggers).xml",Trigger,Sleep/sluggish,Sleep-sluggish
+"svo (aliases, triggers).xml",Trigger,Impatience/kalmia,Impatience-kalmia
+"svo (aliases, triggers).xml",Trigger,Herb bal/mind paralysis,Herb bal-mind paralysis
+"svo (aliases, triggers).xml",Trigger,Hallucinations/epilepsy,Hallucinations-epilepsy
+"svo (aliases, triggers).xml",Trigger,Empty pipe/asthma,Empty pipe-asthma
+"svo (aliases, triggers).xml",Trigger,Arms crippled vibe/asthma,Arms crippled vibe-asthma
+"svo (aliases, triggers).xml",Trigger,Stuttering/sensitivityralysis,Stuttering-sensitivityralysis
+"svo (aliases, triggers).xml",Trigger,Kai/Shin blackout,Kai-Shin blackout
+"svo (aliases, triggers).xml",TriggerGroup,Passive/active heals,Passive-active heals
+"svo (aliases, triggers).xml",TriggerGroup,Newsroom/Editor,Newsroom-Editor
+"svo (aliases, triggers).xml",Trigger,Devastate arms/legs 6-7 fractures,Devastate arms-legs 6-7 fractures
+"svo (aliases, triggers).xml",Trigger,svo sileris/quicksilver start,svo sileris-quicksilver start
+"svo (aliases, triggers).xml",Trigger,svo sileris/quicksilver finished,svo sileris-quicksilver finished
+"svo (aliases, triggers).xml",Trigger,svo sileris/quicksilver slickness,svo sileris-quicksilver slickness
+"svo (aliases, triggers).xml",Trigger,you lose :(,you lose
+"svo (aliases, triggers).xml",Trigger,it's a tie :|,it's a tie
+"svo (aliases, triggers).xml",Trigger,xorani priestess webs/stun,xorani priestess webs-stun
+"svo (aliases, triggers).xml",Trigger,xorani temple guard prone/ablaze,xorani temple guard prone-ablaze
+"svo (aliases, triggers).xml",Trigger,xorani temple guard prone/stun,xorani temple guard prone-stun
+"svo (aliases, triggers).xml",Trigger,tsetse fly stun/transfix,tsetse fly stun-transfix
+"svo (aliases, triggers).xml",Trigger,Erato confusion/dementia,Erato confusion-dementia
+"svo (aliases, triggers).xml",Trigger,Azdun slug slashed throat/illness,Azdun slug slashed throat-illness
+"svo (aliases, triggers).xml",Trigger,paralysis/chill,paralysis-chill
+"svo (aliases, triggers).xml",Trigger,quadbreak/knockdown,quadbreak-knockdown
+"svo (aliases, triggers).xml",Trigger,prone/stun,prone-stun
+"svo (aliases, triggers).xml",Trigger,Epteth/epseth,Epteth-epseth
+"svo (aliases, triggers).xml",Trigger,Hew/pulverise arms,Hew-pulverise arms
+"svo (aliases, triggers).xml",Trigger,Hew/pulverise legs,Hew-pulverise legs
+"svo (aliases, triggers).xml",Alias,Show curelist/prefercustom curemethod,Show curelist-prefercustom curemethod
+"svo (aliases, triggers).xml",Alias,(tn *) Turn things or classes on,(tn) Turn things or classes on
+"svo (aliases, triggers).xml",Alias,(tf *) Turn things or classes off,(tf) Turn things or classes off
+"svo (aliases, triggers).xml",Alias,Toggle health/mana changes display,Toggle health-mana changes display
+"svo (aliases, triggers).xml",Alias,Remember vault/mount,Remember vault-mount
+"svo (aliases, triggers).xml",Alias,(b *) Block a dir,(b) Block a dir
+"svo (aliases, triggers).xml",Alias,(p*) Set parry manually,(p) Set parry manually
+"svo (aliases, triggers).xml",Alias,(vshow herbstat) Show inv/rift herb stats,(vshow herbstat) Show inv-rift herb stats
+"svo (aliases, triggers).xml",Alias,(cc) Relay info to party/clan/order/tell or just echo,(cc) Relay info to party-clan-order-tell or just echo
+"svo (aliases, triggers).xml",Alias,(vshow serverside) Toggle Svo/serverside cures,(vshow serverside) Toggle Svo-serverside cures
+svo (elistsorter).xml,Trigger,svo Capture elist/elist2/venomlist,svo Capture elist-elist2-venomlist
+svo (elistsorter).xml,Trigger,elist/elist2 vial,elist-elist2 vial
+svo (elistsorter).xml,Alias,elist/vlist,elist-vlist
+svo (install me in module manager).xml,ScriptGroup,Use of got/lost aff/def events,Use of got-lost aff-def events
+svo (install me in module manager).xml,ScriptGroup,Show which affs you got/lost w/ times and count (by Lynara),Show which affs you got-lost w- times and count (by Lynara)
+svo (namedb).xml,Trigger,City/House/Order enemies,City-House-Order enemies
+svo (namedb).xml,Trigger,Motto/Warcry,Motto-Warcry
+svo (namedb).xml,Alias,qw/qw2,qw-qw2
+svo (offering).xml,Trigger,Shrine full/gone,Shrine full-gone
+svo (runeidentifier).xml,Trigger,On a person/ground,On a person-ground

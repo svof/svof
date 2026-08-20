@@ -58,6 +58,6 @@ function svo.corpse_stuff()
       svo.doadd("vkeep selfishness on")
     end
   end
-  svo.doadd(function() disableTrigger("Shrine full/gone") end)
+  svo.doadd(function() disableTrigger("Shrine full-gone") end)
   svo.off_preaction = nil
 end

@@ -13,7 +13,7 @@
     "patterns": []
   },
   {
-    "name": "svo Capture elist/elist2/venomlist",
+    "name": "svo Capture elist-elist2-venomlist",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -33,7 +33,6 @@
         "type": "substring"
       }
     ],
-    "script": "svo.parsing_vlist = line:find(\"Venom\") and true or false\n\nsvo.es_capture()\n\nsvo.storedvials = {}",
     "children": [
       {
         "name": "svo Capture elist stop",
@@ -54,7 +53,7 @@
         ]
       },
       {
-        "name": "elist/elist2 vial",
+        "name": "elist-elist2 vial",
         "isActive": "yes",
         "isFolder": "no",
         "multiline": "no",
@@ -69,8 +68,7 @@
             "pattern": "[Vv]ial(\\d+)\\s+(.+?)\\s+(\\d+)\\s+(\\d+|(?:---))$",
             "type": "regex"
           }
-        ],
-        "script": "if svo.gag_list then deleteLine() end\n\nlocal vialid = tonumber(matches[2])\nlocal potion = matches[3]\nlocal sips = tonumber(matches[4])\nlocal months = tonumber(matches[5]) or \"arty\"\nlocal category = svo.es_categories[potion] or \"unknown\"\n\nsvo.es_vials = svo.es_vials or {}\nsvo.es_vials[vialid] = {months = months, potion = potion, sips = sips}\nsvo.es_potions[category] = svo.es_potions[category] or {}\nsvo.es_potions[category][potion] = svo.es_potions[category][potion] or {sips = 0, vials = 0, decays = 0}\nsvo.es_potions[category][potion].sips = svo.es_potions[category][potion].sips + sips\nsvo.es_potions[category][potion].vials = svo.es_potions[category][potion].vials + 1\n\nsvo.es_vialids = svo.es_vialids or {}\nif svo.es_shortnamesr[potion] then\n  svo.es_vialids[svo.es_shortnamesr[potion]] = svo.es_vialids[svo.es_shortnamesr[potion]] or {}\n  svo.es_vialids[svo.es_shortnamesr[potion]][#svo.es_vialids[svo.es_shortnamesr[potion]]+1] = vialid\nend\n\nif type(months) == \"number\" and months <= svo.conf.decaytime then\n  svo.es_potions[category][potion].decays = svo.es_potions[category][potion].decays + 1\nend\n\nsvo.es_knownstuff[potion] = svo.es_knownstuff[potion] or 2\n\n-- deal with obfuscated vials now\nif not line:find(\"Obfuscated\") then return end\n\nif sips <= svo.conf.obfsips then\n  svo.doaddfree(string.format(\"put %s in %s\", vialid, svo.conf.obfcontainer))\n  svo.storedvials = svo.storedvials or {}\n  svo.storedvials[vialid] = true\nend"
+        ]
       },
       {
         "name": "Auto-more (elist)",
@@ -964,7 +962,7 @@
     ]
   },
   {
-    "name": "On a person/ground",
+    "name": "On a person-ground",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -1084,7 +1082,7 @@
     "patterns": []
   },
   {
-    "name": "Shrine full/gone",
+    "name": "Shrine full-gone",
     "isActive": "no",
     "isFolder": "no",
     "multiline": "no",
@@ -1103,7 +1101,6 @@
         "pattern": "You may only offer at shrines.",
         "type": "exactMatch"
       }
-    ],
-    "script": "local haveselfish = svo.me.doqueue[#svo.me.doqueue-1]:find(\"^vkeep selfishness on$\")\nif svo.me.doqueue[1] and\n   svo.me.doqueue[1]:find(\"^offer\") then \n     svo.undoall()\n    if haveselfish then\n      svo.doadd(\"vkeep selfishness on\")\n    end\nend\ndisableTriger(\"Shrine full/gone\")"
+    ]
   }
 ]
