@@ -6,8 +6,11 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
--- load after Svof has loaded to have svo.pl
-tempTimer(0, function()
+-- Needs the core loaded first, for svo.pl and the rest of it. As a separate
+-- module that was implied by load order, and a zero-delay timer was enough to
+-- get behind it. In a single package this script can run before
+-- svo_init_system does, so wait for the system explicitly instead.
+local function ndb_load()
 
 local me = svo.me
 local firstload = not ndb.ismhaldorian
@@ -920,4 +923,10 @@ svo.signals["namedb finished honors"]:connect(ndb.honors_next, 'run honors_next 
 if firstload then ndb.configs() end
 ndb.loadhighlights()
 
-end)
+end
+
+if svo and svo.systemloaded then
+  ndb_load()
+else
+  registerAnonymousEventHandler("svo system loaded", ndb_load, true)
+end

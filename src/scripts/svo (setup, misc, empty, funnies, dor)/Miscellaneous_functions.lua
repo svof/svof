@@ -801,7 +801,7 @@ end
 -- where the system's own files live. Previously this was derived from the
 -- bootstrap module's xml path, which no longer exists.
 function svo.installationfolder()
-  return getMudletHomeDir() .. "/svof/"
+  return getMudletHomeDir() .. "/svof"
 end
 
 end -- end of svo misc loader

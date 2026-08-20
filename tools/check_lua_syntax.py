@@ -61,7 +61,10 @@ def main():
     failures = []
 
     # 1. every .lua file
-    lua_files = sorted(glob.glob("src/**/*.lua", recursive=True))
+    # src/resources holds data files shipped with the package, not scripts:
+    # ndb-help.lua is a bare table read back with loadstring("return "..s)
+    lua_files = [f for f in sorted(glob.glob("src/**/*.lua", recursive=True))
+                 if not f.replace("\\", "/").startswith("src/resources/")]
     for f in lua_files:
         err = parse_check(a.luac, f)
         if err:

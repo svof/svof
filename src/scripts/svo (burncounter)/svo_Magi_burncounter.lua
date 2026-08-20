@@ -9,9 +9,9 @@ svo = svo or {}; svo.loader = svo.loader or {}
 -- Also remember modules are always loaded last, so you need to put it in a module 
 -- in order to have it overwrite this prompttag, and to have it only fire after svo loads.
 
-tempTimer(
-  0,
-  function()
+-- svo.adddefinition only exists once the core has loaded, so register on the
+-- system-loaded event rather than racing it with a zero-delay timer.
+local function bl_setup()
     function svo.bl_prompttag()
       if
         svo.defc.dragonform or not svo.lasthit or not svo.bl_list or not svo.bl_list[svo.lasthit]
@@ -26,5 +26,10 @@ tempTimer(
     end
 
     svo.adddefinition("@bl", "svo.bl_prompttag()")
-  end
-)
+end
+
+if svo.systemloaded then
+  bl_setup()
+else
+  registerAnonymousEventHandler("svo system loaded", bl_setup)
+end
