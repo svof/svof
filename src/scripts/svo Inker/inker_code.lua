@@ -237,7 +237,7 @@ svo.loader.inker = function()
   
   svo.inkerLoaded = true 
   if firstload then
-    svo.echof("Loaded svo Tattoo Inker, version %s.", tostring(svo.modules_version["svo (inker)"]))
+    svo.echof("Loaded svo Tattoo Inker, version %s.", tostring(svo.version))
   end
 end -- end loader
 

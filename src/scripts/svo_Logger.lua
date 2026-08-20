@@ -1,9 +1,3 @@
-function loggerPrio(_, module)
-  if module ~= "svo (logger)" then return true end
-  tempTimer(0, [[setModulePriority("]]..module..[[", 1)]])
-end
-
-registerAnonymousEventHandler("sysInstall", "loggerPrio", true)
-svo = svo or {}
-svo.modules_version = svo.modules_version or {}
-svo.modules_version["svo (logger)"] = 1
+-- This group used to set its module priority on install and record a per-module
+-- version. Neither exists in a single package: load order now comes from where
+-- these items sit in the tree, and the version is the package's own.

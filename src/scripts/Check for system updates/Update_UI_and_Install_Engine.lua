@@ -1,5 +1,8 @@
 function svo.showupdatereminder(newversion)
-  --svo.announceupdates = nil
+  -- Remember which version the reminder is offering. The click handler used to
+  -- read a bare `newversion` global that nothing ever assigned - only this
+  -- function's parameter has that name - so it passed nil to the installer.
+  svo.pending_update_version = newversion
   svo.updatelabel = svo.updatelabel or Geyser.Label:new({
     name = "svo.updatelabel",
     x = "-340px", y = "-115px",
@@ -79,53 +82,39 @@ function svo_doupdate_click()
   svo.updatelabel:echo([[<p align="center" style="font-size:10pt; color:white">Updating Svo...<p>]])
   svo.doupdatelabel:hide()
   svo.dontupdatelabel:hide()
-  svo.downloadnewsystem(newversion)
+  svo.install_update(svo.pending_update_version)
 end
 
-function svo.installsystem(filename)
-    local moduleName = filename:match("(svo \(.+\))\.xml$")
-    downloadingModules = downloadingModules - 1
-    svo.downloadedsystem[moduleName] = true
-    if downloadingModules and downloadingModules ~= 0 then return end
-    local dlDir = getMudletHomeDir() .. "/svo/downloads/"
-    local installDir = getModulePath("svo (install me in module manager)") 
-    installDir= installDir:sub(1, #installDir-38)
-    for k in lfs.dir(installDir) do
-      if k:ends(".xml") then
-        os.remove(installDir .. k)
-      end
-    end
-    for k,v in pairs(svo.downloadedsystem) do 
-      if v then
-        os.rename(dlDir .. k .. ".xml", installDir .. k .. ".xml")
-        reloadModule(k)
-        svo.downloadedsystem[k] = nil
-      end
-    end
-    svo.echof("New version installed and ready to go! Please restart mudlet to finalize cleanup.")
-    
-    if svo.updatelabel and svo.announceupdates == "checking" then 
+-- Mudlet installs a package straight from a URL, so updating is uninstall
+-- followed by install. The old engine downloaded 24 module xmls, deleted the
+-- installed ones, renamed the downloads into place and reloaded each module;
+-- none of that applies to a package.
+function svo.install_update(version)
+  local url = svo.update_package_url(version)
+
+  svo.echof("Installing Svof %s...", tostring(version))
+
+  -- config is saved first: uninstalling drops the running system, and anything
+  -- unsaved would go with it
+  if svo.signals and svo.signals.saveconfig then
+    pcall(function() svo.signals.saveconfig:emit() end)
+  end
+
+  -- the install has to happen after this handler returns, since uninstalling
+  -- removes the very script that is running
+  tempTimer(0, function()
+    pcall(uninstallPackage, "svof")
+    -- installPackage's return value is unreliable across Mudlet versions
+    -- (4.15-4.19 report nothing on success), so it is not branched on
+    installPackage(url)
+    cecho("
+<green_yellow>Svof: installed " .. tostring(version) ..
+          ". Please restart Mudlet to finish.
+")
+  end)
+
+  if svo.updatelabel then
     svo.updatelabel:echo([[<p align="center" style="font-size:10pt; color:white">Svof updated! Please restart Mudlet.<p>]])
-    svo.updatelabel:setStyleSheet([[
-        margin: 0px;
-        padding: 2px;
-
-        /* Vertical gradient */
-        background: qlineargradient(
-            x1: 0, y1: 0, x2: 0, y2: 1,
-            stop: 0 #3c3c3c, stop: 1 #232323
-        );
-
-        border: none;
-        border-radius: 4px;
-
-        color: #ffffff;
-
-      qproperty-alignment: 'AlignVCenter | AlignHCenter';
-      qproperty-wordWrap: true;
-      font-family: 'Ubuntu','Calibri',serif;
-    ]])
-		
-		tempTimer(10, function() svo.updatelabel:hide() end)
+    tempTimer(10, function() if svo.updatelabel then svo.updatelabel:hide() end end)
   end
 end

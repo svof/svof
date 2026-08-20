@@ -4,8 +4,6 @@
 -- You should have received a copy of the license along with this
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
-svo.modules_version = svo.modules_version or {}
-svo.modules_version["svo (limbcounter)"] = 1
 svo.loader.limbcounter = function()
 local sk = svo.sk
 
@@ -57,15 +55,15 @@ if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == t
   if svo.me.class == "Paladin" or svo.me.class == "Runewarden" or svo.me.class == "Infernal" or svo.me.class == "Unnamable" then
     enableTrigger("svo Knight limbcounter")
 		svo.lc_myclass = svo.me.class
-    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.modules_version["svo (limbcounter)"]))
+    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.version))
   elseif svo.me.class == "Druid" or svo.me.class == "Sentinel" then
     enableTrigger("svo Meta limbcounter")
 		svo.lc_myclass = svo.me.class
-    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.modules_version["svo (limbcounter)"]))
+    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.version))
   elseif svo.defc["dragonform"] == true then
 		enableTrigger("svo Dragon limbcounter")
 		svo.lc_myclass = svo.me.class
-    svo.echof("Loaded svo limbcounter, %s %s.", "Dragon", tostring(svo.modules_version["svo (limbcounter)"]))
+    svo.echof("Loaded svo limbcounter, %s %s.", "Dragon", tostring(svo.version))
   elseif svo.me.class == "Monk" then
     if svo.me.path == "tekura" then
       enableTrigger("svo Monk limbcounter")
@@ -105,17 +103,17 @@ if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == t
           svo.echof("Changing Arm damage for Tekura hits to %d.", svo.conf.armdamage)
         end,
       })
-      svo.echof("Loaded svo limbcounter, %s %s.", "Monk Tekura", tostring(svo.modules_version["svo (limbcounter)"]))
+      svo.echof("Loaded svo limbcounter, %s %s.", "Monk Tekura", tostring(svo.version))
     elseif svo.me.path == "Shikudo" then
       enableTrigger("svo Monk limbcounter")
       enableTrigger("Shikudo")
       disablTrigger("Tekura")
-      svo.echof("Loaded svo limbcounter, %s %s.", "Monk Shikudo", tostring(svo.modules_version["svo (limbcounter)"]))
+      svo.echof("Loaded svo limbcounter, %s %s.", "Monk Shikudo", tostring(svo.version))
     end    
 	elseif table.contains(svo.lc_classlist, svo.me.class) then
 		svo.lc_myclass = svo.me.class
     enableTrigger("svo " .. svo.me.class .. " limbcounter")
-    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.modules_version["svo (limbcounter)"]))
+    svo.echof("Loaded svo limbcounter, %s %s.", svo.me.class, tostring(svo.version))
   end
 elseif not table.contains(svo.lc_classlist, svo.me.class) then
     disableTrigger("svo Meta limbcounter")

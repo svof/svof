@@ -10,8 +10,6 @@
 -- Available to players many years before the serverside one.
 
 svo = svo or {}; svo.loader = svo.loader or {}
-svo.modules_version = svo.modules_version or {}
-svo.modules_version["svo (custom prompt, serverside)"] = 1
 
 svo.loader.customprompt = function()
 

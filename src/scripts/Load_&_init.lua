@@ -1,27 +1,4 @@
--- Controls the loading of the addon modules
-svo.modules_list = {
-    'svo (actions dictionary)',
-    'svo (alias and defence functions)',
-    'svo (curing skeleton, controllers, action system)',
-    'svo (custom prompt, serverside)',
-    'svo (install, config, pipes, rift, parry, prios)',
-    'svo (setup, misc, empty, funnies, dor)',
-    'svo (trigger functions)',
-    'svo (aliases, triggers)',
-    'svo (namedb)',
-    'svo (elistsorter)',
-    'svo (fishdist)',
-    'svo (inker)',
-    'svo (logger)',
-    'svo (mindnet)',
-    'svo (offering)',
-    'svo (peopletracker)',
-    'svo (reboundingsileristracker)',
-    'svo (refiller)',
-    'svo (runeidentifier)',
-    'svo (stormhammertarget)',
-    'svo (limbcounter)',
-    'svo (burncounter)',
-    'svo (priestreport)',
-    'svo (enchanter)'
-  }
+-- Svof loads as a single package, so there is no module list to install from
+-- and no load order to arrange here. Order comes from the order items appear
+-- in the tree, and initialisation order from the explicit sequence in
+-- svo_init_system, which calls each svo.loader.* function in dependency order.

@@ -22,8 +22,6 @@
 
 
 svo = svo or {}; svo.loader = svo.loader or {}
-svo.modules_version = svo.modules_version or {}
-svo.modules_version["svo (actions dictionary)"] = 1
 svo.loader.dict = function()
 
 --[[

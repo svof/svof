@@ -4,8 +4,6 @@ svo.autopause_on_def = svo.autopause_on_def or function() end
 svo.balanceless = svo.balanceless or {}
 svo.disable_seek = svo.disable_seek or function() end
 svo.loader = svo.loader or {}
-svo.modules_version = svo.modules_version or {}
-svo.modules_version["svo (install me in module manager)"] = 1
 
 ndb = ndb or {}
 

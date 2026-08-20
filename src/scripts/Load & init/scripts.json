@@ -1,5 +1,14 @@
 [
   {
+    "name": "svo.remove_legacy_modules",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysInstall",
+      "sysLoadEvent"
+    ]
+  },
+  {
     "name": "svo_init_system",
     "isActive": "yes",
     "isFolder": "no",
@@ -17,34 +26,12 @@
     ]
   },
   {
-    "name": "svo.install_other_modules",
-    "isActive": "yes",
-    "isFolder": "no",
-    "eventHandlerList": [
-      "sysInstallModule",
-      "sysLuaInstallModule"
-    ]
-  },
-  {
-    "name": "svo.installed_as_package",
-    "isActive": "yes",
-    "isFolder": "no",
-    "eventHandlerList": [
-      "sysInstallPackage"
-    ]
-  },
-  {
     "name": "svo.uninstall_all_modules",
     "isActive": "yes",
     "isFolder": "no",
     "eventHandlerList": [
-      "sysUninstallModule",
-      "sysLuaUninstallModule"
+      "sysUninstallPackage",
+      "sysLuaUninstallPackage"
     ]
-  },
-  {
-    "name": "svo.install_from_zip",
-    "isActive": "yes",
-    "isFolder": "no"
   }
 ]

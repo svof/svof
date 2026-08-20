@@ -1,10 +1,18 @@
 [
   {
-    "name": "svo_downloaded_file",
+    "name": "svo.update_http_done",
     "isActive": "yes",
     "isFolder": "no",
     "eventHandlerList": [
-      "sysDownloadDone"
+      "sysGetHttpDone"
+    ]
+  },
+  {
+    "name": "svo.update_http_error",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysGetHttpError"
     ]
   },
   {

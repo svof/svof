@@ -347,7 +347,7 @@ svo.signals.saveconfig:connect(function ()
 end, 'save vial configuration')
 
 if firstload then
-  svo.echof("Loaded svo Elist Sorter, version %s.", tostring(svo.modules_version["svo (elistsorter)"]))
+  svo.echof("Loaded svo Elist Sorter, version %s.", tostring(svo.version))
 end
 end
 if svo.systemloaded then svo.loader.elistsorter() end

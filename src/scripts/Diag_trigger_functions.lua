@@ -7,8 +7,6 @@
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 svo = svo or {}; svo.loader = svo.loader or {}
-svo.modules_version = svo.modules_version or {}
-svo.modules_version["svo (trigger functions)"] = 1
 svo.loader.diag = function()
 
 function svo.valid.diagnose_start()

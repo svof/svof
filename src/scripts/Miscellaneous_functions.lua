@@ -797,12 +797,11 @@ function svo.unsetserverignore(k)
 end
 
 -- returns the folder Svof is installed in
+-- As a package, Mudlet unpacks resources into <profile home>/svof/, which is
+-- where the system's own files live. Previously this was derived from the
+-- bootstrap module's xml path, which no longer exists.
 function svo.installationfolder()
-  local mainmodule = "svo (install me in module manager)"
-  local xmlpath = getModulePath(mainmodule)
-	
-	local systempath = svo.pl.path.splitpath(xmlpath)
-	return systempath
+  return getMudletHomeDir() .. "/svof/"
 end
 
 end -- end of svo misc loader

@@ -1,66 +1,56 @@
-local downloadfolder = getMudletHomeDir().."/svo/downloads/"
+-- Update checking against the GitHub releases API.
+--
+-- The system used to fetch a version file, then download 24 module xmls, drop
+-- the old ones and reload each module. As a package none of that is needed:
+-- Mudlet can install a package straight from a URL, so checking is one HTTP
+-- request and updating is uninstall + install.
 
--- this should get called at start and every hour after that
-function svo.checkforupdates(type)
-  local baseUrl = string.format("http://svof.github.io/svof/%s/", svo.conf.releasechannel)
- 
-	if svo.checkingupdates then return end
-  svo.versionfile = downloadfolder.."svo_version"
+svo.update_repo = svo.update_repo or "svof/svof"
 
-  if not lfs.attributes(downloadfolder) then
-     local t,s = lfs.mkdir(downloadfolder)
-     if not t and s ~= "File exists" then svo.echof("Couldn't make the '"..downloadfolder.."' folder; "..s) return end
+-- Where a release channel maps to a different repo or tag, adjust here. The
+-- default channel uses the newest published release.
+function svo.update_api_url()
+  return string.format("https://api.github.com/repos/%s/releases/latest", svo.update_repo)
+end
+
+function svo.update_package_url(tag)
+  return string.format("https://github.com/%s/releases/download/%s/svof.mpackage",
+    svo.update_repo, tag)
+end
+
+-- Versions are plain integers ("64"), but compare component-wise anyway so a
+-- later move to 1.2.3 style does not silently stop offering updates - comparing
+-- those as strings would make "1.10" look older than "1.9".
+function svo.version_newer(candidate, current)
+  local function parts(v)
+    local t = {}
+    for n in tostring(v or ""):gmatch("%d+") do t[#t + 1] = tonumber(n) end
+    return t
+  end
+  local a, b = parts(candidate), parts(current)
+  for i = 1, math.max(#a, #b) do
+    local x, y = a[i] or 0, b[i] or 0
+    if x ~= y then return x > y end
+  end
+  return false
+end
+
+-- called at startup, hourly, and by the vupdate alias
+function svo.checkforupdates(kind)
+  if svo.checkingupdates then return end
+  if not getHTTP then
+    svo.echof("Your Mudlet is too old to check for updates - please update to 4.11 or newer.")
+    return
   end
 
   svo.checkingupdates = true
-  downloadFile(svo.versionfile, baseUrl .. "current_version.txt")
+  svo.announceupdates = (kind == "checking" or kind == "force") and kind or nil
 
-  if type == "checking" then
+  if kind == "checking" then
     svo.echof("Checking for updates...")
-    svo.announceupdates = "checking"
-  elseif type == "force" then
-    svo.echof("(re)downloading latest system...")
-    svo.announceupdates = "force"
-    svo.version = 0
-
-
-    local location = getMudletHomeDir().."/svo/downloads/available_version"
-    if io.exists(location) then
-      local s,m = os.remove(location)
-      if not s then svo.echof("Couldn't remove the %s file (error was: %s) - this might be a problem.", location, m) end
-    end
-    for k,v in pairs(svo.modules_list) do
-      location = downloadfolder .. v .. ".xml"
-      if io.exists(location) then
-        local s,m = os.remove(location)
-        if not s then svo.echof("Couldn't delete the old xml (located at %s), because of: %s. This might be a problem.", location, m) end
-      end
-    end
-  else
-    svo.announceupdates = nil
+  elseif kind == "force" then
+    svo.echof("Reinstalling the latest release...")
   end
-end
 
--- downloads the system & updates the system version saved
-function svo.downloadnewsystem(newversion)
---  local baseUrl = string.format("http://svof.github.io/svof/%s/", svo.conf.releasechannel)
-  local baseUrl = "https://github.com/svof/svof/raw/in-client-svof/"
-	svo.downloadedsystem = svo.downloadedsystem or {}
-  downloadingModules = 0
-  if downloadTimer then killTimer(downloadTimer) end
-  downloadTimer = tempTimer(10, "downloadingModules = nil killTimer(downloadTimer) downloadTimer = nil")
-  -- also include base install file 
-  local downloadUrl = baseUrl .. string.gsub("svo (install me in module manager)"," ", "%%20") .. ".xml"
-  downloadFile(downloadfolder .. "svo (install me in module manager).xml", downloadUrl)
-  svo.downloadedsystem["svo (install me in module manager)"] = false
-  downloadingModules = downloadingModules + 1
-  --download all the modules in the modules_list
-  for k,v in pairs(svo.modules_list) do
-    local downloadUrl = baseUrl .. v:gsub(" ", "%%20") .. ".xml"
-    downloadFile(downloadfolder .. v .. ".xml", downloadUrl)
-    svo.downloadedsystem[v] = false
-    downloadingModules = downloadingModules + 1
-  end
-  
-  svo.newdownloadedversion = newversion
+  getHTTP(svo.update_api_url())
 end

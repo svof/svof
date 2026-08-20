@@ -1,18 +1,15 @@
--------------------------------------------------
---         Put your Lua functions here.        --
---                                             --
--- Note that you can also use external Scripts --
--------------------------------------------------
-function svo.uninstall_all_modules(event,modulename)
-  if event and (modulename ~= "svo (install me in module manager)") then return true end
+-- Svof ships as a single package now, so uninstalling is Mudlet's job and
+-- there is nothing to tear down module by module. This only has to notice that
+-- the system has gone and stop the loader from thinking it is still up, so a
+-- later reinstall in the same session starts from a clean state.
 
-  for ourmodule,_ in pairs(svo.modules_version) do
-    if not event or (ourmodule ~= "svo (install me in module manager)") then
-      disableModuleSync(ourmodule) -- need to disable module before uninstalling first due to a bug in Mudlet module sync
-      tempTimer(0, function()
-  	  uninstallModule(ourmodule)
-      end)
-    end
+function svo.uninstall_all_modules(_, name)
+  if name and name ~= "svof" then return end
+
+  svo.systemloaded = nil
+
+  -- stop anything still scheduled from acting on a system that is going away
+  if svo.signals and svo.signals.saveconfig then
+    pcall(function() svo.signals.saveconfig:emit() end)
   end
-	svo.systemloaded = nil
 end

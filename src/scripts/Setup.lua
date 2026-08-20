@@ -7,11 +7,13 @@
 -- work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 svo = svo or {}; svo.loader = svo.loader or {}
-svo.modules_version = svo.modules_version or {}
-svo.modules_version["svo (setup, misc, empty, funnies, dor)"] = 1
 svo.loader.setup = function()
 
-svo.version = "64"
+-- The package's own version is the single source of truth, so a release only
+-- has to bump it in one place (mfile). Falls back to the last module-era
+-- version if the package metadata is unavailable for any reason.
+svo.version = (getPackageInfo and getPackageInfo("svof", "version")) or "64"
+if svo.version == "" then svo.version = "64" end
 
 if Logger and not svo.systemloaded then
   Logger:LogSection('svof', {'timestamp', split = 5000, 'keepOpen'})
