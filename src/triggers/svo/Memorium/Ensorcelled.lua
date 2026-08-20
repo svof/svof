@@ -1,0 +1,1 @@
+svo.startedfighting("pariah", matches[2])

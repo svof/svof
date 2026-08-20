@@ -1,0 +1,2 @@
+local l = (next(svo.me.locatelist) and svo.oneconcat(svo.me.locatelist) or "(none - use vconfig locatelist <friend> to add, and that'll allow them to ask you via tells for locations of people)")
+svo.echof("People on the locatelist list: %s", l)

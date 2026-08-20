@@ -1,0 +1,12 @@
+[
+  {
+    "name": "double_queue",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "signal",
+    "isActive": "yes",
+    "isFolder": "no"
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "name": "svo.corpse_stuff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "gmcp.Char.Items.List"
+    ]
+  }
+]

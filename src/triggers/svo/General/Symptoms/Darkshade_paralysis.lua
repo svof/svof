@@ -1,0 +1,1 @@
+svo.valid.darkshade_paralysis()

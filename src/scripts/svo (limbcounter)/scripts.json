@@ -1,0 +1,12 @@
+[
+  {
+    "name": "svo limbcounter",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "svo count show",
+    "isActive": "yes",
+    "isFolder": "no"
+  }
+]

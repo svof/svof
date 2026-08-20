@@ -1,0 +1,104 @@
+[
+  {
+    "name": "Tentacle enemies down",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) flits into view directly overhead\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You recognise the form of (\\w+) high above\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) begins to flap \\w+ wings powerfully, and rises quickly up into the firmament\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) is quickly carried up into the skies\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) grabs hold of a nearby branch and swings up and out of sight into the treetops\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) crouches down upon \\w+ haunches, then with a powerful thrust of \\w+ legs, launches \\w+ straight up into the air\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) swoops down from above, tries to hoist \\w+, and fails\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) sucks in \\w+ breath, and with a mighty blast of air exhales while uttering a word of magic\\. Suddenly, \\w+ is lifted into the skies by an unseen force\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Falcon observe",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "100",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your falcon reports seeing the following people in its area:",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "Each line",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "99",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^(\\w+)\\s+(\\d+) health out of (\\d+)\\.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Close gate (falcon observe)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "",
+            "type": "prompt"
+          }
+        ]
+      }
+    ]
+  }
+]

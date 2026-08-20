@@ -1,0 +1,118 @@
+[
+  {
+    "name": "Vines",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A pair of vines suddenly lashes out from the undergrowth to entangle you!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The powerful current ripples through your body, and your muscles stiffen.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Bee paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The bees sting you into paralysis.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Bee cripple hit",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The swarm of bees angrily stings you in multiple places.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^The stings paralyse your (right|left) (arm|leg)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Staff swing",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "50",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ swings \\w+ quarterstaff with all \\w+ might, generating a great wind\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "The wave of force knocks you to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Staff swing, targetted",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) viciously smashes \\w+ quarterstaff into your legs, sending you sprawling\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

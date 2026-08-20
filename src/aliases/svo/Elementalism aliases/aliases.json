@@ -1,0 +1,8 @@
+[
+  {
+    "name": "(rfl) Reflect mode",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^rfl(?: (\\w+))?$"
+  }
+]

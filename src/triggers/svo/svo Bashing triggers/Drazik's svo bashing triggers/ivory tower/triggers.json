@@ -1,0 +1,168 @@
+[
+  {
+    "name": "ivory tower arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Raising one eyebrow at you with effortless disdain, Methats, the Divine Wind swings the barbed end of his silver mace to bear upon your shoulder, as the sound of bone splintering fills the air.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Throwing her weight to the side, the Flowing Robes Champion brings her twin blades crashing down upon your arm in a single devastating blow.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ivory tower stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Unsteady on his makeshift wooden leg, Methats, the Divine Wind bludgeons you over the head with his silver mace, restoring his balance.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ivory tower leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Balancing unsteadily on his wooden peg, Methats, the Divine Wind swings his huge sword in a low arc that slices deep into your legs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ivory tower nausea",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Snarling furiously, Kuralil, the Light-Footed whips a venom-coated dagger from its place at his belt and stabs it into your side.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ivory tower fear stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Moving toward you with breathtaking speed, the Flowing Robes Champion's body increases in size, reaching monstrous proportions as her robes engulf your vision and leave you in darkness.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ivory tower prone dizzy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Her eyes unnervingly calm, the Flowing Robes Champion suddenly sweeps your legs out from under you and brings the hilt of her blade slamming down against your exposed temple in a fierce blow.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ivory tower prone stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Atlantia's left hook comes out of nowhere, laying you flat on your back.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ivory tower blackout",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a swift movement of her knee, Atlantia strikes at the most sensitive part of your anatomy.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ivory tower webbed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Stepping back, Atlantia nocks an arrow. With one swift, smooth movement, she draws the bow and /nlooses, the shaft pinning you securely.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

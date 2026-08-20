@@ -1,0 +1,1 @@
+setTriggerStayOpen("Bugs list", 0)

@@ -1,0 +1,1 @@
+if svo.conf.gagotherbreath then svo.deleteLineP() end

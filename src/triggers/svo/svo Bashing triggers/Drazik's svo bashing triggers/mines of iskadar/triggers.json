@@ -1,0 +1,112 @@
+[
+  {
+    "name": "miner dizzy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sweeping his pickaxe in a wild arc, a bloodstained miner catches your head a glancing blow with the thick, wooden shaft.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An alert dwarven guard brings the butt of his axe down heavily upon your head, the room momentarily spinning.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "miner blackout prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Cackling hellishly, a dirt-encrusted miner swings his pickaxe vertically, smashing his weapon into your groin.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Cackling hellishly, a young dwarven miner swings his pickaxe vertically, smashing his weapon into your groin.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Cackling hellishly, a dishevelled dwarven miner swings his pickaxe vertically, smashing his weapon into your groin.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Cackling hellishly, a bloodstained miner swings his pickaxe vertically, smashing his weapon into your groin.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Cackling hellishly, a blood-soaked dwarven miner swings his pickaxe vertically, smashing his weapon into your groin.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "iskadar fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A wild, frenzied look flickering across his face, a delirious miner sinks his teeth into you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "iskadar loki voyria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Lunging at you ferociously, Brok, the Blackfire shaman wrenches open your mouth and forces a small amount of vile liquid down your throat.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "iskadar prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The ground beneath you heaves and rocks violently, slamming you onto the floor.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

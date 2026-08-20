@@ -1,0 +1,350 @@
+[
+  {
+    "name": "Transfix cured blind",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^.+ attempts to transfix you, but succeeds only in curing your blindness\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Transfixed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With blinding speed, ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With blinding speed, .+ transfixes you with a swirling pattern of fire and air\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Efreeti",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A fiery efreeti spins into you, causing you to burst into flame.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Freeze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your body slows as it freezes in the extreme cold.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Def strip (erode)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ casts a spell of erosion at you\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your (.+) defence erodes away\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Freeze blast",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ raises a hand towards you and blasts you with cold, frigid air\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Def strip (lightning bolt)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ shapes a jagged bolt of lightning and hurls it into you\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You feel your (.+) defence stripped by the powerful lightning bolt\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Caloric strip",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Waves of elemental water surge over your body, stripping your Caloric defence.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Waves of elemental water surge over your body, stripping your caloric defence.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Waves of elemental water surge over your body, stripping your insulating unguent.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Chilled",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Waves of elemental water surge over your body, chilling you to the bone.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Primal tongues of fire flicker across your skin, setting you ablaze.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Broken limb",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The element of earth shakes you to the core, breaking your",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^The element of earth shakes you to the core, breaking your (left|right) (arm|leg)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Stripped rebounding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ calls upon Whiirh and strikes you with \\w+ staff, the power of air dispersing your aura of rebounding\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Proned",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ calls upon Whiirh and strikes you with \\w+ staff, throwing you down with a gust of wind\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Targetted prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A gust of wind strikes you, throwing you to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Holocaust created",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) fashions a holocaust globe out of pure elemental fire and arms it\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fulmination created",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) fashions a sphere of crackling electricity and arms it\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Holocaust fell down",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A holocaust globe comes falling down from above to land with a 'THUMP.'",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Deepfreeze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ gestures grandly, and causes a deepfreeze to settle over \\w+ enemies\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

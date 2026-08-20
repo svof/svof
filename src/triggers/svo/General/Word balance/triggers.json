@@ -1,0 +1,92 @@
+[
+  {
+    "name": "svo lost word",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^Imbuing your voice with power, you intone, \"\\S+\"\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "Injecting your voice with scorn, you proclaim: \"Hailad\".",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^Fixing your gaze upon .+, you intone, \"Laiad\"\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Turning to face \\S+ you utter, \"Uraiad\"\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Locking the image of \\S+ in your minds eye, you utter, \"[Hh]iemeth\"\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You speak words of power over .+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "Taking a steadying breath, you turn your focus inward and proclaim, \"Mainaas\".",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Drawing on ancestral memory, you let the lament of deSangre pour forth:",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^Directing your voice so only \\S+ may hear, you command \\w+ to serve\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "Your mouth falls open as the all-consuming litany pours forth, and you know that in moments all that hear shall serve your will.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo missing word",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have not recovered enough to intone another word of power.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo got word",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You may intone another word of power.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

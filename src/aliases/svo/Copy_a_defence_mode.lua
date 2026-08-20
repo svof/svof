@@ -1,0 +1,1 @@
+svo.copy_defmode(matches[2], matches[3], true)

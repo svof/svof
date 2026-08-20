@@ -1,0 +1,448 @@
+[
+  {
+    "name": "Windwhip",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) gestures sharply in your direction with one hand, and invisible whips viciously lash at you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Shear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) summons a blade of condensed air and shears cleanly through the magical shield surrounding you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Static",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your body locks in paralysis as a burst of arcane power floods your system, directed by",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your body locks in paralysis as a burst of arcane power floods your system, directed by (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Thunderclap (lost deaf)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your ears are abruptly filled with the shockingly loud clap of nearby thunder, summoned forth by",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your ears are abruptly filled with the shockingly loud clap of nearby thunder, summoned forth by (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Thunderclap (sensitivity)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "More a physical blow than a simple sound, the shocking thunderclap summoned forth by",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^More a physical blow than a simple sound, the shocking thunderclap summoned forth by (\\w+) leaves you reeling\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Feedback",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a slight tingle across your skin as",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You feel a slight tingle across your skin as (\\w+) glances at you, but it soon fades\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Flash (lost blind)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) clicks \\w+ fingers and a brilliant flash of light bursts forth, restoring your vision\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Flash (transfixed)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) clicks \\w+ fingers at you and a brilliant flash of light bursts forth, transfixing you with its brilliance\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Bolt",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) raises \\w+ hands above \\w+ head, gaze focused intently upon you\\. Moments later, a single lightning bolt streaks down from above, slamming into you with an explosion of brilliant power\\.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Blackout",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The power of the lightning makes your vision black out.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Electrify",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sweat breaking out on the forehead of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Sweat breaking out on the forehead of (\\w+) is your only warning before a bolt of lightning leaps down from on high, slamming into you and electrifying every nerve in a synchronised wave of agony\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Overcharge (lightning)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Electricity courses through you, making your muscles violently contract.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Overcharge (wind)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel something invading your lungs, making it difficult to breathe.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Overcharge (water)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel as if your very blood is cooling as a terrible weariness comes over you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Razorwind",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) thrusts one hand in your direction and a vicious wind is summoned forth, viciously lacerating you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Cyclone (dizzy)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With casual indifference,",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With casual indifference, (\\w+) summons forth a terrible cyclone of wind, which picks you up like a leaf and whips you uncontrollably into a spin\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Cyclone (impatience)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) summons forth a terrible cyclone of wind, picking you up and whipping you violently against all available surfaces until your head spins and your body aches\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hailstone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) negligently waves \\w+ hand in your direction, conjuring forth a hailstone which strikes you sharply in the side of the head\\.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "clumsiness",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Your reflexes desert you in a haze of confusion.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "epilepsy",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You begin to shake uncontrollably.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "impatience",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The ability to focus on complex tasks has deserted you.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Shockwave",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Drawing",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Drawing \\w+ up to \\w+ full height, (\\w+) throws \\w+ arms wide\\. The clouds above roil, then bolt after bolt of incandescent lightning falls upon you\\. The world becomes nothing but light and pain\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Watersprout",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The water flooding the location surges up in a spout to envelop your head, blocking out sight and sound and disorientating you.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

@@ -1,0 +1,196 @@
+[
+  {
+    "name": "svo target cured limbs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) takes some salve from a vial and rubs it on \\w+ (.+?)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svolc Don't register",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ dodges nimbly out of the way\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ twists \\w+ body out of harm's way\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ parries the attack with a deft manoeuvre\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ steps into the attack, grabs your arm, and throws you violently to the ground\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ quickly jumps back, avoiding the attack\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^A chaos orb intercepts the attack against \\w+ and renders it harmless\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "The attack rebounds onto you!",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^A reflection of \\w+ blinks out of existence\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "The attack rebounds back onto you!",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^\\w+ moves into your attack, knocking your blow aside before viciously countering with a strike to your head\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svolc Don't register 2",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "It breaks with a satisfying 'CRACK'.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo Knight limbcounter",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "svo Sylvan limbcounter",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "svo Magi limbcounter",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "svo Meta limbcounter",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "svo Monk limbcounter",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "svo Priest limbcounter",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "svo earth Elemental Lord limbcounter",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "svo Dragon limbcounter",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  }
+]

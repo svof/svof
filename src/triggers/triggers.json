@@ -1,0 +1,1109 @@
+[
+  {
+    "name": "svo",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "svo Capture elist/elist2/venomlist",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "999",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Vial",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Months",
+        "type": "substring"
+      }
+    ],
+    "script": "svo.parsing_vlist = line:find(\"Venom\") and true or false\n\nsvo.es_capture()\n\nsvo.storedvials = {}",
+    "children": [
+      {
+        "name": "svo Capture elist stop",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#aaff00",
+        "highlightBG": "#00aa00",
+        "patterns": [
+          {
+            "pattern": "------------------------------------------",
+            "type": "startOfLine"
+          }
+        ]
+      },
+      {
+        "name": "elist/elist2 vial",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "3",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "[Vv]ial(\\d+)\\s+(.+?)\\s+(\\d+)\\s+(\\d+|(?:---))$",
+            "type": "regex"
+          }
+        ],
+        "script": "if svo.gag_list then deleteLine() end\n\nlocal vialid = tonumber(matches[2])\nlocal potion = matches[3]\nlocal sips = tonumber(matches[4])\nlocal months = tonumber(matches[5]) or \"arty\"\nlocal category = svo.es_categories[potion] or \"unknown\"\n\nsvo.es_vials = svo.es_vials or {}\nsvo.es_vials[vialid] = {months = months, potion = potion, sips = sips}\nsvo.es_potions[category] = svo.es_potions[category] or {}\nsvo.es_potions[category][potion] = svo.es_potions[category][potion] or {sips = 0, vials = 0, decays = 0}\nsvo.es_potions[category][potion].sips = svo.es_potions[category][potion].sips + sips\nsvo.es_potions[category][potion].vials = svo.es_potions[category][potion].vials + 1\n\nsvo.es_vialids = svo.es_vialids or {}\nif svo.es_shortnamesr[potion] then\n  svo.es_vialids[svo.es_shortnamesr[potion]] = svo.es_vialids[svo.es_shortnamesr[potion]] or {}\n  svo.es_vialids[svo.es_shortnamesr[potion]][#svo.es_vialids[svo.es_shortnamesr[potion]]+1] = vialid\nend\n\nif type(months) == \"number\" and months <= svo.conf.decaytime then\n  svo.es_potions[category][potion].decays = svo.es_potions[category][potion].decays + 1\nend\n\nsvo.es_knownstuff[potion] = svo.es_knownstuff[potion] or 2\n\n-- deal with obfuscated vials now\nif not line:find(\"Obfuscated\") then return end\n\nif sips <= svo.conf.obfsips then\n  svo.doaddfree(string.format(\"put %s in %s\", vialid, svo.conf.obfcontainer))\n  svo.storedvials = svo.storedvials or {}\n  svo.storedvials[vialid] = true\nend"
+      },
+      {
+        "name": "Auto-more (elist)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "[Type MORE if you wish to continue reading",
+            "type": "startOfLine"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "svo Fishing Distance by Trilliana",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Interrupted inking",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As the inking process is ruined, the ink dissipates into the surrounding air.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Lacking inks",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You do not possess the ink that is required to create a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You do not possess the ink that is required to create a \\w+ tattoo\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Lacking skills",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You do not know how to ink",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You do not know how to ink an? \\w+ tattoo\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Lacking spot",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "That person has no space for a new tattoo.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Finished inking the tattoo",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As the ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^As the \\w+ tattoo's shape is codified on the .+ of \\w+, the last of the ink leaves the air and you pause for a moment to admire your handiwork\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Maya Card - Finished inking you",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You impulsively scribe a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "tattoo onto your .+ with surprising dexterity\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Maya Card - Finished other inking",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You expertly scribe a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "tattoo onto an impulsive \\w+'s .+ with surprising dexterity\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Inked on stencil",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You gather up the necessary inks and crush the pellets over the stencil. The inks hang in the air for a moment as you concentrate, forming them into the shape of a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "tattoo that adheres to the waxy surface\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svo Mindnet Report",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "qwho (svo people tracker)",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "KoTH start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^The HILL is at: (.+)!$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^The HILL has moved! It is now at: (.+)!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "KoTH",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "2",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Current event: King of the Hill",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "Hill",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^The HILL for this game is: (.+)",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Flag",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^Flag Location: (.+?)\\.",
+            "type": "regex"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Self-removed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "^(\\w+)'s aura of weapons rebounding disappears\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Razed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You raze ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You raze (\\w+)'s aura of rebounding with .+\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Magi raze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You call upon Whiirh to empower your staff and strike",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You call upon Whiirh to empower your staff and strike (\\w+), the power of air dispersing \\w+ aura of rebounding\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Serpent flay",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You flay away",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You flay away (\\w+)'s aura of rebounding defence\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Knight fracture",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You deliver a single, powerful blow against the aura of rebounding surrounding",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You deliver a single, powerful blow against the aura of rebounding surrounding (\\w+), fracturing it\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Knight two-handed cutting carve",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Lunging forward, you bring",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Lunging forward, you bring .+? down in a savage diagonal blow, carving through (\\w+)'s aura of rebounding\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Knight two-handed blunt carve",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Planting your feet, you whirl ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Planting your feet, you whirl .+? over your head before bringing it down with terrible force upon (\\w+), shattering \\w+ aura of rebounding\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Smoked",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ takes a long drag off (?:\\w+)? ?.*pipe\\.$|^A great gurgling sound is heard as \\w+ takes a long drag from an enamel bubble pipe\\. A series of shining bubbles erupt from the bowl of \\w+ pipe\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "return (svo.rt_razed and line:find(svo.rt_name, 1, true)) and true or false",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Got rebounding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You suddenly perceive the vague outline of an aura of rebounding around",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You suddenly perceive the vague outline of an aura of rebounding around (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Flayed sileris",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You flay the purple, waxy coating from",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You flay the purple, waxy coating from (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Flayed quicksilver",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You flay the metallic coating from",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You flay the metallic coating from (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Got sileris",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A supple purple shell of sileris berry juice has formed around",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A supple purple shell of sileris berry juice has formed around (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Got quicksilver",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A supple metallic shell of quicksilver has formed around",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A supple metallic shell of quicksilver has formed around (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Applied sileris",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) applies a sileris berry to \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "return (svo.rt_flayed and line:find(svo.rt_sname, 1, true)) and true or false",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Applied quicksilver",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) applies a quicksilver droplet to \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "return (svo.rt_flayed and line:find(svo.rt_sname, 1, true)) and true or false",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Stuff has boiled",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You place your ingredients into",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You place your reactants into the large container of ",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "Filled a container",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You slowly pour the liquid from",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You carefully pour",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "Stop refilling",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You do not possess an empty.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^You cannot .+ (?:pot|alembic) with that\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Missing ingredients",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You lack the required ingredients to (brew|compound) that\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Putting vials away",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You put",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "",
+        "type": "prompt"
+      }
+    ]
+  },
+  {
+    "name": "Done with putvials",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You hold no more of that item.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Getting vials back",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You take",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "",
+        "type": "prompt"
+      }
+    ]
+  },
+  {
+    "name": "Done with getvials",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "There are no more ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "doesn't contain that",
+        "type": "substring"
+      }
+    ]
+  },
+  {
+    "name": "Giving vials away",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You give",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "return isPrompt() and svo.givevials",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Done with givevials",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You hold no more of that item.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "There's something wrong there",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "That pot already contains a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "That alembic already contains a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "That is not an alembic.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "That is not a pot.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Totem",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A rune",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A rune (.+) is sketched in slot \\d+\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "On a person/ground",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A rune",
+        "type": "substring"
+      }
+    ],
+    "children": [
+      {
+        "name": "Regex",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "A rune (.+?) has been sketched onto \\w+\\.",
+            "type": "regex"
+          },
+          {
+            "pattern": "A rune (.+?) has been sketched into the ground here\\.",
+            "type": "regex"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "svo Stormhammer Targetting",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "svo (limbcounter)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "svo Magi burncounter",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "svo Priest Report",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Data Capture",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Scripting Examples",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Shrine full/gone",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "That shrine is already as powerful as it is possible to get it. Further sanctifications are a waste.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You may only offer at shrines.",
+        "type": "exactMatch"
+      }
+    ],
+    "script": "local haveselfish = svo.me.doqueue[#svo.me.doqueue-1]:find(\"^vkeep selfishness on$\")\nif svo.me.doqueue[1] and\n   svo.me.doqueue[1]:find(\"^offer\") then \n     svo.undoall()\n    if haveselfish then\n      svo.doadd(\"vkeep selfishness on\")\n    end\nend\ndisableTriger(\"Shrine full/gone\")"
+  }
+]

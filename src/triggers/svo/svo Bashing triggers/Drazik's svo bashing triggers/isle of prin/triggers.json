@@ -1,0 +1,249 @@
+[
+  {
+    "name": "loki at prin",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A xorani guardian quickly envenoms the tip of his spear and stabs you with a quick flick of his scaley wrist.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Locking its tail stiffly behind its back, an imposing cockatrice turns to the side and rapidly stabs you with its feathers.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A dark, lithe puma pounces onto you and bites down on your neck, its poisonous saliva dripping into your blood.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Casting a shifty glance at you, a mischievous grin creeps across Prui's face as he runs up to you and bites you in the side.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "prone on prin",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Taking his blood-stained spear, a xorani guardian sweeps your legs out from under you and sends you tumbling to the ground. In the same swift motion, he stabs his spear into your stomach.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Chak takes up a large piece of wood and smacks you upside the head with it, making you reel and fall to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An imposing cockatrice opens its maw and lets out a loud, deafening squawk that causes the surroundings to tremble, knocking all around it to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "prin causes fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A dark, baleful spectre suddenly explodes into a widespread mist. A ghastly wail echoes from within it as it re-forms, plunging you into a panic.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "prin blackouts",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A dark shroud lets out a high-pitched laugh as its dark form suddenly expands and covers the surroundings in a black mist.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "stunned on prin",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A dark, lithe puma takes a running start and pounces on you, knocking you to the ground and tearing at you with its claws.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "juravi net on prin",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Master Hunter Juravi takes a huge net and throws it towards you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You watch as the net unfurls itself and traps you within its bindings.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "xorani hunter net on prin",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A xorani hunter takes a huge net and throws it towards you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You watch as the net unfurls itself and traps you within its bindings.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "xorani priestess webs/stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A xorani priestess removes a tarot card from a deck hidden within her garments. Rubbing the card quickly, she activates its hidden energies and flings the card in your direction. The card explodes in a violent flash, stunning you momentarily. When you regain control you realise you are entangled in a mass of invisible rope.",
+        "type": "exactMatch"
+      }
+    ],
+    "script": "svo.valid.proper_stun()\nsvo.valid.proper_webbed()"
+  },
+  {
+    "name": "xorani temple guard prone/ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The charcoal eye upon the chest plate of a xorani temple guard begins to glow bright orange. The guard turns toward you and lets out a resounding warcry. The flaming eye rushes toward you, knocking you back and setting you ablaze.",
+        "type": "exactMatch"
+      }
+    ],
+    "script": "svo.valid.proper_ablaze()\nsvo.valid.simpleprone()"
+  },
+  {
+    "name": "xorani temple guard prone/stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A xorani temple guard slashes across your torso with his voulge, causing searing pain to ripple through your body to the point of fainting. As you regain consciousness, you remember you are mid-combat, yet your body is unresponsive.",
+        "type": "exactMatch"
+      }
+    ],
+    "script": "svo.valid.proper_stun()\nsvo.valid.simpleprone()"
+  },
+  {
+    "name": "prin on fire",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Rearing back his head, Commander Xu unleashes a fiery blast, sweeping back and forth to engulf all in a blazing inferno.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "prin ocean prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The current from the pulling of the waves suddenly catches your footing and knocks you off your feet.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

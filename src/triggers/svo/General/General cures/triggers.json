@@ -1,0 +1,1764 @@
+[
+  {
+    "name": "svo cure clumsiness generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Thank Maya, the Great Mother! Your clumsiness has been cured.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure paranoia generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Aaaahhh. No one is out to get you after all.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure vertigo generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your fear of heights subsides.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure agoraphobia generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You can handle the idea of open spaces again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure claustrophobia generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Small spaces no longer frighten you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure recklessness generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Prudence rules your psyche once again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure epilepsy generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your nerves suddenly calm down.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure peace generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The unnatural feeling of peace leaves you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure addiction generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your terrible addiction seems to wane.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure stupidity generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You aren't such a complete idiot anymore.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure healthleech generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your aching, pain-wracked body is soothed and calmed.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure sensitivity generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The stinging feeling fades.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure relapsing generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel your blood thickening.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure slickness generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your glands cease their oily secretion.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure generosity generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Ahhhh. The freedom to be stingy again!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure weakness generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your limbs strengthen and you feel stronger.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure hallucinations generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your hallucinations cease to plague you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure pacifism generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are capable of offensive acts once more.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure confusion generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The confusion lifts from your mind and it is clear once again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure bleeding generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your bleeding slows as your blood clots.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure voyria generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The elixir burns through your veins, destroying the deadly poisons that are killing you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Mercifully, the voyria venom has been cleansed from your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure vomiting generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your stomach becalms itself.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure haemophilia generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your blood regains its ability to clot.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure weakness generic 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your limbs strengthen and you feel stronger.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure ablaze generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The raging fire about your skin goes out.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure disloyalty generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You no longer will inspire disloyalty among friends.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure shivering generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A feeling of comfortable warmth spreads over you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure frozen generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Though still shivering, you are no longer frozen solid.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure lethargy generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The lethargy evaporates, leaving you full of energy.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure generosity generic 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Ahhhh. The freedom to be stingy again!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure shyness generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your shyness has been cured. You can now face the world boldly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure sensitivity generic 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The stinging feeling fades.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure dizziness generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are no longer dizzy.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure asthma generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your bronchial tubes open up and your asthma is cured.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure crippledrightarm generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The bones in your right arm mend.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure crippledleftarm generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The bones in your left arm mend.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure crippledrightleg generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The bones in your right leg mend.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure crippledleftleg generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The bones in your left leg mend.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure darkshade generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "No longer will the sunlight harm you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure masochism generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You no longer enjoy pain.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure impatience generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are patient once again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure anorexia generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Food is no longer repulsive to you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure loneliness generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The awful loneliness leaves you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure shyness generic 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your shyness has been cured. You can now face the world boldly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure loneliness generic 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The awful loneliness leaves you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure pacifism generic 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are capable of offensive acts once more.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure paranoia generic 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Aaaahhh. No one is out to get you after all.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure recklessness generic 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Prudence rules your psyche once again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure shyness generic 3",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your shyness has been cured. You can now face the world boldly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure vertigo generic 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your fear of heights subsides.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure latched generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Warmth floods back into your limbs, and you feel suddenly vital.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure voided generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The empty grasp of the void retreats, and you breathe more easily.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure weakness generic 3",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your limbs strengthen and you feel stronger.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure anorexia generic 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Food is no longer repulsive to you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure claustrophobia generic 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Small spaces no longer frighten you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure epilepsy generic 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your nerves suddenly calm down.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure slickness generic 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Warm water showers down upon yourself, and you scrub all over until the oil on your skin is gone.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure healhealth generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The elixir heals and soothes you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure healmana generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your mind feels stronger and more alert.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo sour sparkle",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The aftertaste of the berry turns sour.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo got insomnia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You suddenly feel incapable of falling asleep.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo got kola generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An instant feeling of excitement and edginess overcomes you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured blind generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Blessed sight returns to you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure shivering generic 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your body warms up and you stop shivering.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure fear generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your fear has been cured.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo sip no effect",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The potion flows down your throat without effect.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured deaf",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The sounds of the world gradually return to you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo moss noeffect",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The moss slides down without effect.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The potash slides down without effect.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo salve slickness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The salve slides off your oily skin.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured hypochondria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "My, you feel healthier than you have in years.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure paralysis generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your muscles unlock; you are no longer paralysed.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure hypersomnia generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a bit more alert and awake.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure aeon generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The curse of the Aeon wears off and you return to the normal timestream.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo ate moss generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel your health and mana replenished.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo sip no effect generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The elixir flows down your throat without effect.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure justice generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The curse of Miramar, the Just leaves you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure dementia tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sanity returns to you and you are no longer demented.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo salve fizzled generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The salve fizzles away without effect.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The topical remedy fizzles away without effect.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo salve upgrade break generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your (right|left) (leg|arm) is too damaged to cure in that manner\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svo cure stuttering generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your tongue will finally obey your commands properly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure selarnia generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel the barrier that separated you from your animal consciousness has dissipated.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure inlove generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You shake your head, wondering what you ever saw in",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "svo no effect generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You messily spread the salve over your body, to no effect.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure deadning generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are no longer deadened.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure tension generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You suddenly find the air much easier to breathe.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo swellskin woreoff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Eating is suddenly less difficult again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure burn",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The fires consuming you diminish somewhat.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo salve offbalance",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The salve dissolves and quickly disappears after you apply it.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure skullfractures generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The pain in your head lessens somewhat.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured skullfractures generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The pounding in your head disappears.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure crackedribs generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "It becomes somewhat easier to draw breath.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured crackedribs generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You can breathe easily once again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure wristfractures generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The dull ache in your arms subsides somewhat.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured wristfractures generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel bones snapping back into place in your arms.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure torntendons generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The agonising pain in your lower legs recedes somewhat.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured torntendons generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The burning in your lower legs fades away.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure itching generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Thankfully, the itching subsides.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

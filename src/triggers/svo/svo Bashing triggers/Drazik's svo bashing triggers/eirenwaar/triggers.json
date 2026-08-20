@@ -1,0 +1,96 @@
+[
+  {
+    "name": "eirenwaar stuns",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With surprising agility, Rathen, the lonely lover launches a well-aimed kick to your face, momentarily stunning you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "eirenwaar prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The Faringian historian shrieks wildly and launches a flying kick at your chest, knocking you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You clear your mind and begin to run, preparing to jump across the deep, icy waters that pass before you. The ice itself becomes your enemy, making you slip on the ice and fall flat on your face before coming close to the edge.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "eirenwaar blackout",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An arctic wolf leaps at your throat and fastens his teeth around it, biting savagely for a few seconds before releasing you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "fercil prone break",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With an evil grin on his face, Fircil, the Beduri elder kicks your knee with incredible force, shattering the joint and sending you sprawling.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "eirenwaar arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With amazing strength, Carla, a Faringian pleasure slave takes your arm and locks your elbow before smashing her hand through the joint, rendering the limb useless.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

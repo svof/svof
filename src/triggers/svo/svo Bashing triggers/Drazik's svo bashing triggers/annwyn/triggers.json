@@ -1,0 +1,224 @@
+[
+  {
+    "name": "fairy mistress transfix",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A fairy mistress transfixes you with her stormy grey eyes.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "fairy lady roped",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A fairy Lady of Sidhe crafts a globe of flame within her palm and throws it at you. As it explodes on you, serpentine ropes of fire snake from it, wrapping around you tightly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "lion roar fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Gazing at you with his deep golden eyes, a majestic lion blasts you with a ferocious roar.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "moon bear arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a staggering roar, a moon bear clamps his massive snout around your arm with a painful crunch.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "cunning wolf prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A cunning black wolf springs at you with his claws spread, his body slams into you and sends you crashing to the ground in a flurry of fur and flashing fangs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "annwyn paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A slender selkie touches his amulet as a wave of magic pours over you, freezing your muscles painfully.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An Unsidhe Banshee floats towards you and touches your forehead. A jolt of revulsion seeps into you as hellish images fill your mind, paralysing you with horror.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "selkie blackout",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A slender selkie gazes at you with his kind eyes.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your mind swirls as you feel disinclined to hurt a slender selkie.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "annywn stuns",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a fearsome neigh, a crazed kelpie rears up and stomps two hooves into your head and torso.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A Fomori of Unsidhe balls a meaty fist up and slams it into your jaw, making your head spin.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Pain and rage wells up in an Unsidhe Banshee's eyes as she opens her mouth wide and emits a deafening and painful wail.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "annwyn blackout",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A swamp dweller grabs your head with surprising strength, forcing horrifying images of his life into your mind.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "annwyn loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An annoyed look flashes over Rhoswen, a fairy merchant's face as she throws a cloud of iridescent powder over you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A Fomori of Unsidhe sinks his rotting teeth into your arm, poisoning you as blood drips from his mouth.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "fairy lady limb break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Magic dances within a fairy Lady of Sidhe's eyes as she stares at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A charging Cyclops lopes towards you, ramming into you with enough force to shatter bones.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

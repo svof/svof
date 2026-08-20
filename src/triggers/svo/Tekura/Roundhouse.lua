@@ -1,0 +1,1 @@
+svo.startedfighting("monk", multimatches[1][2])

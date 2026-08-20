@@ -1,0 +1,168 @@
+[
+  {
+    "name": "Seek request",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\((.+)\\): \\w+ says, \"(?:Locate|Companions) (\\w+).\"$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Seek",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "2",
+    "filter": "no",
+    "fireLength": "100",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You bid your guardian angel to seek out the",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your guardian angel senses .+? at (.+?), on a health of (\\d+) and a mana of (\\d+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "return (svo.locating and line:lower():find(svo.locating.name:lower(), 1, true)) and true or false",
+        "type": "lua"
+      }
+    ],
+    "children": [
+      {
+        "name": "Companion",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ is with (\\w+)\\.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Stop (seek)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "",
+            "type": "prompt"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Failed Seek",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your angel replies sadly that she cannot find any trace of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your angel replies sadly that she cannot find any trace of (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Angel trace",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your guardian angel reports that",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your guardian angel reports that (\\w+) has moved to (.+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Demon Trace",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your Baalzadeen reports that",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your Baalzadeen reports that (\\w+) has moved to (.+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Tell request",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) tells you.*, \"(?:Locate|Sense|Find) (\\w+)\\.\"$",
+        "type": "regex"
+      }
+    ]
+  }
+]

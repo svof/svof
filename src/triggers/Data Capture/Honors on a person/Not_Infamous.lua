@@ -1,0 +1,1 @@
+temp_name_list[1].infamous = 0

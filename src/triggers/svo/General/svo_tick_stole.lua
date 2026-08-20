@@ -1,0 +1,1 @@
+setTriggerStayOpen("Sip", 1)

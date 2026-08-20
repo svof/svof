@@ -1,0 +1,1 @@
+svo.defs.got_block(multimatches[2][2])

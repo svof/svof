@@ -1,0 +1,1 @@
+svo.boxDisplay("FLAG PLANTED", "red:green")

@@ -1,0 +1,1 @@
+svo.valid.rebounding_deathtarot()

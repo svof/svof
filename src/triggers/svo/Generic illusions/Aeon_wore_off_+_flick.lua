@@ -1,0 +1,1 @@
+if svo.conf.aillusion then svo.ignore_illusion() end

@@ -1,0 +1,372 @@
+[
+  {
+    "name": "A new message!",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You just received message",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You just received message #(\\w+) from \\w+\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Unread messages (old)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "100",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": " [Msg#]  [From]       [Date]      [Summary]",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "Stop (unread msgs)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "*******************************************************************************",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "A message",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^p? +(\\d+)",
+            "type": "regex"
+          }
+        ],
+        "script": "selectString(matches[2], 1)\nsetUnderline(true) setLink([[send(\"msg read ]]..matches[2]..[[\", false)]], \"(svo): Read msg #\"..matches[2]) resetFormat()"
+      }
+    ]
+  },
+  {
+    "name": "Messages list (new layout)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "900",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "+-Unread Message Summary-",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "+-Message Summary for all Folders and Inbox",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "+-Message Summary-",
+        "type": "startOfLine"
+      }
+    ],
+    "children": [
+      {
+        "name": "A message",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "\\| +(\\d+)",
+            "type": "regex"
+          }
+        ],
+        "script": "if selectString(matches[2], 1) > -1 then\n  setUnderline(true) setLink([[send(\"msg read ]]..matches[2]..[[\", false)]], \"(svo): Read msg #\"..matches[2]) resetFormat()\nend"
+      },
+      {
+        "name": "Stop (unread messages)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "",
+            "type": "prompt"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Have unread messages",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "*** You have new messages ***",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Clickable URL's",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#5500ff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "\\b(?:(?:(?:[Hh]ttps?|ftp|telnet)://[\\w\\d:#@%/;$()~_?\\+\\-=&]+|www|ftp)(?:\\.[\\w\\d:#@%/;$()~_?\\+\\-=&]+)+|[\\w\\d._%+\\-]+@[\\w\\d.\\-]+\\.[\\w]{2,4})\\b",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Read more messages",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Use MSG LIST",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Use MSG LIST (\\d+) to see more of your message summary\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Read more search messages",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Use MSG SEARCH FROM",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Use (MSG SEARCH FROM \\w+ \\d+)",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Click to read next nsum",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Enter NSUMMARY",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Enter (NSUMMARY .+?) to continue\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Click to read article on nsum",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "2",
+    "filter": "no",
+    "fireLength": "1000",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "***",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "\\[ (.+) NEWS SUMMARY \\]",
+        "type": "regex"
+      },
+      {
+        "pattern": "-----",
+        "type": "startOfLine"
+      }
+    ],
+    "children": [
+      {
+        "name": "Stop (click to read article)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "",
+            "type": "prompt"
+          }
+        ]
+      },
+      {
+        "name": "Each article",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^(\\d+)",
+            "type": "regex"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Bugs list",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "2",
+    "filter": "no",
+    "fireLength": "999",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "ID     Cat Stat Text",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "2",
+        "type": "spacer"
+      }
+    ],
+    "children": [
+      {
+        "name": "Bug",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^(\\d+)",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Stop (bugs list)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "---------------------",
+            "type": "startOfLine"
+          }
+        ]
+      }
+    ]
+  }
+]

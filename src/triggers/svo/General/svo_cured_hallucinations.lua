@@ -1,0 +1,1 @@
+svo.valid.herb_cured_hallucinations()

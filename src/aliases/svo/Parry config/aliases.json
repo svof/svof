@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Set priorities to limbs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vp nextprio (.+)$"
+  },
+  {
+    "name": "Set the parry strategy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vp parrystrat(?: (.+))?$"
+  },
+  {
+    "name": "Show what we've got",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vp show$"
+  }
+]

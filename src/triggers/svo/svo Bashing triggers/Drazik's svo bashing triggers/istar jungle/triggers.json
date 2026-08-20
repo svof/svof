@@ -1,0 +1,128 @@
+[
+  {
+    "name": "istar prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A monstrous gamling spider impales you with one of his many hooked legs, shaking you viciously before flinging you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Propelled by his giant back legs, a giant gwaeron springs towards you with head lowered, butting into your chest and sending you sprawling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A bearded pig gores you through the leg with one of his mighty tusks, sending you to your knees with a cry of anguish.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Head lowered, a bearded pig charges at you from a distance, slamming his head into your gut and sending you sprawling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An agile kamatlan leaps through the air towards you, knocking you to the ground before swiping viciously at your exposed chest.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Balancing on several sets of hind legs, a morpho caterpillar raises itself into the air and brings its head crashing down onto you painfully.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A monstrous gamling spider sticks you with the end of one sharply hooked leg, pinning you to the ground mercilessly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istar stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A monstrous gamling spider sticks you with the end of one sharply hooked leg, pinning you to the ground mercilessly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istar voyria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An agile kamatlan sinks his massive fangs into your leg, holding you still while the snakes extending from his shoulders attack from either side, biting you rapidly and repeatedly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istar para",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You recoil with a sudden jerk as a blue-crowned ifrit careens into you, his contact with your skin sending a deep numbness deep into your musculature.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a quick jerk of his tiny head, a blue-crowned ifrit jabs his thin, wickedly sharp beak deep into your flesh as a hot, tingling sensation begins to spread through your bloodstream.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The air around an armoured boalisk shimmers momentarily as he springs through the air towards you, fangs fully extended, and sinks them deep into your flesh as a slow-burning venom begins to travel through your bloodstream.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istar transfix",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A flying viper's eyes glow and change colour as it weaves through the air in an intricate pattern, transfixing you unawares.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Accompanied by its haunting song, a brightly feathered olbi dances exotically before you, captivating you with its brilliant display of colour.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

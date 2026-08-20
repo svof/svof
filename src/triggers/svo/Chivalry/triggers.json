@@ -1,0 +1,266 @@
+[
+  {
+    "name": "Malignity",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Discipline",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Valour",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Dominion",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Disembowel",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a vicious snarl",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With a vicious snarl (\\w+) carves a merciless swathe through your steaming guts\\. You gurgle and choke as \\w+ withdraws \\w+ dripping blade, glistening with gore\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Withdrew impale",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a snarl of contempt,",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With a snarl of contempt, \\w+ allows you to slide free of \\w+ weapon\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Impale",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ draws \\w+ blade back and plunges it deep into your helpless body impaling it to the hilt\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Battlecry",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ gathers \\w+ breath and hurls a piercing battlecry towards you\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You fall to your knees and clutch your ears as the terrifying shaft of sound shatters your will.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Razed rebounding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ razes your aura of rebounding with",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Razed speed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ razes your speed defence with",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Lunge",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You writhe and scream as",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You writhe and scream as \\w+ drives the cruel blade deep into your side\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Limb damage",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Lightning-quick,",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Lightning-quick, \\w+ (?:stabs|jabs) your (.+) with",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Limb damage 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ viciously jabs .+ into your (.+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ slashes into your (.+) with",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ swings .+ at your (.+) with all \\w+ might\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Tumbled from disembowel",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Searing pain tears through your midsection as you wrench away from",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Searing pain tears through your midsection as you wrench away from \\w+, \\w+ weapon ripping unceremoniously through your innards\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

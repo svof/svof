@@ -1,0 +1,1 @@
+svo.valid.stripped_caloric()

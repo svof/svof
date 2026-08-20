@@ -1,0 +1,297 @@
+[
+  {
+    "name": "Lunge",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You writhe and scream as",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You writhe and scream as \\w+ drives the cruel blade deep into your side\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Acciaccatura",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A bell-like tone rings out from ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A bell-like tone rings out from (\\w+)'s rapier, echoed by the sound of cracking bone as your (right|left) (leg|arm) snaps painfully\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "DeathFromAbove",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You're knocked to the ground by the impact of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You're knocked to the ground by the impact of (\\w+)'s feet\\. Your surprise is quickly supplanted by pain as \\w+ skewers you like a wild boar\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Pesante (undeaf)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The songblessing unleashes a stunning percussive blast.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Martellato",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The songblessing upon the rapier swells with a rich, vibrant hum.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Razed rebounding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ razes your aura of rebounding with",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Razed speed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ razes your speed defence with",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Handspring",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ does a back handspring to the \\w+, striking you with \\w+ feet on the way out\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Aurabless",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) lightly strikes the side of your head with \\w+ rapier, restoring your hearing\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ slams into you, knocking you to the ground as \\w+ feet slam into your chest\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Jab",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "2",
+    "filter": "no",
+    "fireLength": "3",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) viciously jabs .+ into you",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Lightning-quick, (\\w+) jabs you",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Epteth/epseth",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You stumble as your right leg shrivels into a useless appendage.",
+            "type": "exactMatch"
+          },
+          {
+            "pattern": "You stumble as your left leg shrivels into a useless appendage.",
+            "type": "exactMatch"
+          },
+          {
+            "pattern": "You watch, in horror, as your right leg shrivels up and becomes useless.",
+            "type": "exactMatch"
+          },
+          {
+            "pattern": "You watch, in horror, as your left arm shrivels up and becomes useless.",
+            "type": "exactMatch"
+          }
+        ],
+        "script": "svo.valid.swashbuckling_poison()"
+      },
+      {
+        "name": "Tunesmithings",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The songblessing upon the rapier swells with a rich, vibrant hum.",
+            "type": "exactMatch"
+          },
+          {
+            "pattern": "The songblessing upon the rapier sings out with a piercing high note.",
+            "type": "exactMatch"
+          },
+          {
+            "pattern": "^A bell-like tone rings out from \\w+'s rapier, echoed by the sound of cracking bone as your (?:left|right) (?:arm|leg) snaps painfully\\.$",
+            "type": "regex"
+          },
+          {
+            "pattern": "The songblessing unleashes a stunning percussive blast.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+'s flashing blade dances before your eyes in a series of complicated feints\\. Time to run!$",
+        "type": "regex"
+      }
+    ]
+  }
+]

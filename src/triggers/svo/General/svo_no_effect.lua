@@ -1,0 +1,1 @@
+svo.valid.salve_had_no_effect()

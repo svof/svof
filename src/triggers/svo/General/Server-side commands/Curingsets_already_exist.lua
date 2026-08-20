@@ -1,0 +1,1 @@
+if svo.serversidesetup then svo.deleteLineP() end

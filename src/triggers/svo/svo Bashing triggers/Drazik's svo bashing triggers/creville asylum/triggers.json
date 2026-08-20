@@ -1,0 +1,96 @@
+[
+  {
+    "name": "hogsweed web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Several thorny vines lash out from a hulking bush of hogsweed, tightly ensnaring your limbs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "creville leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Booming with maniacal laughter, a burly troll dweller stomps upon your foot, breaking the bones within.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A grotesque xorani inmate crushes your leg with a hammer-like blow from his heavy, spiked tail.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "creville sleep",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A young shaman inmate begins to sing softly to her doll, as a hypnotic lullaby sung in deep, resonating tones fills your head and your eyes flutter drowsily.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "creville paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Puncturing your skin with the end of a filthy needle, Darien, the shock therapist unleashes a noxious poison into your blood, watching fiendishly as your limbs stiffen.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "creville stuns",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Lowering his head, a sneering psychopathic inmate runs towards you, knocking you back with the impact of his skull.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

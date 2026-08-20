@@ -1,0 +1,1 @@
+setTriggerStayOpen("Steed Trample", 0)

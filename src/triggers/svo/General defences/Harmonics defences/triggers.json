@@ -1,0 +1,356 @@
+[
+  {
+    "name": "Harmonics list",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "15",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Harmonic                 # Owner               Duration",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "------------------------------------------------------------------------------",
+        "type": "startOfLine"
+      }
+    ],
+    "children": [
+      {
+        "name": "Lament",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Lament",
+            "type": "startOfLine"
+          },
+          {
+            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Anthem",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Anthem",
+            "type": "startOfLine"
+          },
+          {
+            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Harmonius",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Harmonius",
+            "type": "startOfLine"
+          },
+          {
+            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Contradanse",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Contradanse",
+            "type": "startOfLine"
+          },
+          {
+            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Paxmusicalis",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Paxmusicalis",
+            "type": "startOfLine"
+          },
+          {
+            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Gigue",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Gigue",
+            "type": "startOfLine"
+          },
+          {
+            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Bagatelle",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Bagatelle",
+            "type": "startOfLine"
+          },
+          {
+            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Partita",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Partita",
+            "type": "startOfLine"
+          },
+          {
+            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Berceuse",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Berceuse",
+            "type": "startOfLine"
+          },
+          {
+            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Continuo",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Continuo",
+            "type": "startOfLine"
+          },
+          {
+            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Wassail",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Wassail",
+            "type": "startOfLine"
+          },
+          {
+            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Canticle",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Canticle",
+            "type": "startOfLine"
+          },
+          {
+            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Reel",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Reel",
+            "type": "startOfLine"
+          },
+          {
+            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Hallelujah",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Hallelujah",
+            "type": "startOfLine"
+          },
+          {
+            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+            "type": "lua"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "No harmonics",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have no harmonics to call, Bard.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You fail to find any harmonics.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

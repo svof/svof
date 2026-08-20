@@ -1,0 +1,84 @@
+[
+  {
+    "name": "Calcify",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ reaches out and presses a single stone digit to your (\\w+), and a sudden tingling overtakes the limb\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Calcified Skull Concussion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Lances of pain radiate through your skull, the bones shifting and twisting in a nauseating series of crunches.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Earth Lord Detection",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^The magma\\-wreathed form of ([\\w'\\-]+) smashes into you\\, crushing you beneath [\\w'\\-]+ massive bulk and searing you to the bone\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^With a terrible roar ([\\w'\\-]+) whips a colossal fist at your .*\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You feel bones grinding against one another as the fist of ([\\w'\\-]+) smashes into your .* with pulverising force\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Magma erupts from the cracks between the plates covering ([\\w'\\-]+)\\, cloaking [\\w'\\-]+ in a churning shroud of molten stone\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^The stone fist of ([\\w'\\-]+) crunches into your .*\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^The rock plates covering the form of ([\\w'\\-]+) rapidly thicken\\, sharp spires of stone rapidly sprouting from them\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Cloaked in a shifting mantle of molten stone\\, ([\\w'\\-]+) charges in from the .* with a deafening roar\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Magma ceases to bubble up from beneath the outer strata of ([\\w'\\-]+)\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

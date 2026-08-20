@@ -1,0 +1,96 @@
+[
+  {
+    "name": "scorpion loki 1",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A giant scorpion viciously drives its tail into your skin several times in rapid succession.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You are confused as to the effects of the venom.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "scorpion prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A giant scorpion skitters forward and barrels into your kneecaps, sending you to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "scorpion leg break",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A giant scorpion reaches out with its claw and clamps it around your leg, snapping it in two.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "banana spider web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Turning its back to you, a banana spider spews strong webbing from its rear end to entangle you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "katox loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "40",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Katox, the Village Captain drops to his hands and knees. A massive scorpion's tail rises from behind him and strikes your torso several times in rapid succession.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "grotto webbed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Her colossal form towering above you, a gargantuan orbweaver attempts to crush you with massive disjointed legs. Inadvertently, she covers you in thick, sticky webbing that hinders your escape.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "grotto prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Tendrils of silk lash out toward you from a gargantuan orbweaver, binding you in a tight embrace. You are flung across the room with violent force, slamming into a wall with a sickening crunch and cracking your spine.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

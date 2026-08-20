@@ -1,0 +1,130 @@
+[
+  {
+    "name": "wegava arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Wrapping his arms around you in a crushing bear hug, Oeru, a burly young gnoll attempts to squeeze the life out of you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A fierce gnoll sentinel latches his jaws around your arm and grins with glee at the sound of your bones snapping within his maw.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "wegava blackout",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Summoning all her strength, Chena, the healer grabs a large empty cauldron from its hook upon the wall and swings it toward your head in a wide arc.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Chena, the healer murmurs a vicious hex under her breath and tosses a green cloud of mixed herbs over you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a savage cry, a fierce gnoll sentinel brings his mace crashing down upon your skull.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a savage growl, Chisulo, the razahr smith swings his forging hammer around in a wide arc before slamming it into your skull with a sickening crunch.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "wegava random break",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A fluffy arneck snorts and paws at the ground before fearlessly trampling you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "wegava paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A fluffy arneck raises his head and lets out a horrific squeal that reverberates through all of Wegava.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The Mahk's tail curls in a dizzying pattern accompanied with a flurry of dazzling lights, leaving you utterly dazed.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "wegava prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With the grace of a dancer, Fela, Patriarch of the razahr spins in a circle and sweeps his tail at your feet, knocking you to the floor.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "wegava para voyria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Toxic saliva dripping from her maw, a hulking female razahr wraps her jaws around your throat.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

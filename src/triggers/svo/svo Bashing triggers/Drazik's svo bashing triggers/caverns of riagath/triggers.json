@@ -1,0 +1,90 @@
+[
+  {
+    "name": "riagath stuns",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A sturdy troll woman lowers her head and charges at you, slamming powerfully into your abdomen.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A burly troll guard lowers his head and charges at you, slamming powerfully into your abdomen.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A gigantic angler fish hurls itself at you in a vicious frontal attack, connecting painfully with your chest.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Farshen screams with rage and clobbers you viciously around the head with his fists.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "leiga dizzy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Leiga, the Gyrog matriarch balls her hands into fists and batters your head with a series of powerful hook punches.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "riagath blackout",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Leiga, the Gyrog matriarch removes a large beaded necklace, hooks it deftly around your neck, and begins to throttle you with it.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A gigantic angler fish throws itself at you, clamping its sickening jaw tight around your throat.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "riagath prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Leiga, the Gyrog matriarch lowers her head and charges at you, slamming forcefully into your stomach and knocking you to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

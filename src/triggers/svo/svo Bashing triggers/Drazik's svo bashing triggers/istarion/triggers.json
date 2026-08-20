@@ -1,0 +1,452 @@
+[
+  {
+    "name": "Istarion arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Brandishing his fists boldly, a studious Tsol'dasi man swings viciously at your arm, breaking the bone with a sickening 'CRACK'.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Brandishing his fists boldly, a joyful Tsol'dasi villager swings viciously at your arm, breaking the bone with a sickening 'CRACK'.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Brandishing his fists boldly, a Tsol'dasi villager swings viciously at your arm, breaking the bone with a sickening 'CRACK'.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Manipulating and compressing the air around her, a priestess of Life sends it whistling towards you. The gust of wind makes contact with your arm, nearly tearing it completely from the joint.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With an aggravated growl, Shantuir, Watch Ascendant swings his staff violently at your arm which shatters upon contact with a sickening crunch.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Brandishing his fists boldly, a grey-haired Tsol'dasi swings viciously at your arm, breaking the bone with a sickening 'CRACK'.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A whisper spider outrider moves close to you with speed, grabbing an arm while slamming into your body. The force of the impact causes you to somersault onto the ground, dislocating your arm in the process.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Istarion burns you",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Pointing the spherical tip of the staff towards you, a watch spider outrider smiles before tapping it gently. A torrent of fire erupts from its surface, setting you aflame with its incandescence.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a quick, arcane utterance beneath his breath, an intense flame billows from atop his staff towards you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Grasping his blade of fire in both hands, an haruspex of Life brings it up over his head to bear upon you, the force of the blade's fiery impact causing it to disperse into thousands of motes of light.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Grasping the blade of fire by the hilt, an haruspex of Life slashes into you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Celepharn, High Priest of Life calls forth a seething black ray shot through with veins of coruscating green fire, sending it flying towards you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Glowing missiles with fiery, flaming tails hurtle through the firmament towards you, exploding on impact in a shower of heat and sparks.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Slowly generating them between his hands, Santhrar, a young prince summons five fist-sized globes of blue fire and sends them hurtling towards you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A mighty flame-wreathed phoenix materialises before Sariontari, Queen of Istarion, giving a clear, ringing call.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Istarion leg breaks",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A watch spider outrider sends the sphere end of her staff into one of your kneecaps, causing your bones to crack and pop unpleasantly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Seizing your leg within a grasp of blade-like limbs, a watch spiderling draws forth a pool of blood as it rakes through tendons.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istarion prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Roaring defiance, a Tsol'dasi boy charges into you with a shoulder tackle.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a single, smooth motion, a priestess of Life extends both arms in your direction as a wave of sheer, invisible force impacts your solar plexus, sending you flying.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Arafaile, priestess of Life draws back and extends both arms as if to push you, never making contact. A moment later, you are thrown off your feet by a blast of nearly invisible, heat-like energy emerging from her fists.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Tossing his head back and chanting an incantation to the heavens, an acolyte of Life summons down a pillar of holy fire from above, striking you to your knees.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Moving quickly, a Tsol'dasi merchant plants one foot solidly in the side of your kneecap, causing your legs to buckle underneath you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Its eight red eyes gleaming, a sword spiderling utters a high-pitched shriek and skitters towards you, knocking you to the ground before retreating.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A watch spiderling dances forward and hurls itself bodily at your chest.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An ear-splitting shriek is emitted by a sword spider as it rushes towards you with furious speed, pinning you with the end of one hooked leg while using three others to stab into you repeatedly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A watch spider hurtles towards you with its eight legs fully outstretched, wrapping them tightly around your body and forcing you to tumble to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With ocelei vibrating agitatedly, Saldesari Elisanil, Warren Ascendant's whisper spider lurches forward and brings its front legs crashing onto your shoulders, sending you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Hissing out a single word, Rheddrian Zorinar, Revered Counsellor conjures a mighty geyser of water that blasts you clean off your feet and sends you sprawling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A watch spider drops its entire body close to the ground and begins to spin in a clockwise direction, suddenly extending a single spindly leg to knock you off your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An opaque beam of blinding white light descends from the heavens, blasting you clear off your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Moving quickly, a Tsol'dasi merchant plants one foot solidly in the side of your kneecap, causing your legs to buckle underneath you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Sindrastar Nerrinth, the High Counsellor drops to the floor and sweeps her legs around at you, sending you sprawling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A whisper spider outrider moves close to you with speed, grabbing an arm while slamming into your body. The force of the impact causes you to somersault onto the ground, dislocating your arm in the process.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istarion chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Staring at you with icy blue eyes, an astrologer chants a brief incantation as you feel a sickly chill overcome your entire body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istarion webbed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "In a sing-song voice, a priestess of Life completes an elaborate Tsol'dasi chant as ancient, gnarled roots emerge from the earth around your feet, ensnaring you on the spot.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a negligent wave of her hand, Rheddrian Zorinar, Revered Counsellor invokes a glittering mithril net into existence and sends it flying towards you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A whisper spider rears up on its back legs, delivering a fine stream of sticky silk that swiftly binds your limbs into motionlessness.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The spinnerets of Saldesari Elisanil, Warren Ascendant's whisper spider twitch curiously before sending a thick strand of webbing at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Tsui'zhir, Whisper Ascendant releases a series of three staccato whistles and his mount fires a burst of silk in your direction. As the sticky substance entangles you, you scream out in pain as you feel the threads begin to eat away at your skin.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istarion kurthia",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Khurthia, Sword Ascendant offers a sharp cry, to which her spider mount thunders forward, slamming its forehead into your chest forcefully as it tramples over you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istarion unknown",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Saldesari Elisanil, Warren Ascendant cries a quick command to her whisper spider. The beast darts forward quickly in response, fangs gleaming as they sink into your flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istarion king",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Avathar'an, the King of Istarion gives a mighty shout, fiery eyes turning furiously towards you as he hurtles one after another fireball slamming into your chest.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istarion para",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A whisper spider descends upon you with its massive fur-covered body, stabbing you deeply in the chest with a pair of wicked fangs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Eyes flashing with wrath, Vargalast Megurun, Revered Counsellor snaps his fingers sharply and you immediately find yourself unable to move any of your joints.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Slowly and surely, Celepharn, High Priest of Life conjures the presence of three misty rings around your form, holding you in perfect stillness and preventing even your ability to breathe.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "celepharn para fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Celepharn, High Priest of Life's face momentarily bloats and rots.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "His putrid visage wreaks of rotting flesh, and the sound of maggots squirming out of the various orifices of his skull can be discerned.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istarion stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Slowly and surely, Celepharn, High Priest of Life conjures the presence of three misty rings around your form, holding you in perfect stillness and preventing even your ability to breathe.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Grasping his blade of fire in both hands, an haruspex of Life brings it up over his head to bear upon you, the force of the blade's fiery impact causing it to disperse into thousands of motes of light.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Glowing missiles with fiery, flaming tails hurtle through the firmament towards you, exploding on impact in a shower of heat and sparks.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Hissing out a single word, Rheddrian Zorinar, Revered Counsellor conjures a mighty geyser of water that blasts you clean off your feet and sends you sprawling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A shroud of crimson electricity descends upon you, shocking your body relentlessly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A mighty flame-wreathed phoenix materialises before Sariontari, Queen of Istarion, giving a clear, ringing call.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You are suddenly arrested by the breathtaking vision of two unicorns moving soundlessly through the still, quiet jungle before you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A pinprick of light materialises between Arafaile, priestess of Life's hands, rapidly growing into a blindingly bright ball that disappears with a sudden flash, rendering you unable to see.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Grasping his blade of fire in both hands, an haruspex of Life brings it up over his head to bear upon you, the force of the blade's fiery impact causing it to disperse into thousands of motes of light.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An ear-splitting shriek is emitted by a sword spider as it rushes towards you with furious speed, pinning you with the end of one hooked leg while using three others to stab into you repeatedly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istarion blindaff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A pinprick of light materialises between Arafaile, priestess of Life's hands, rapidly growing into a blindingly bright ball that disappears with a sudden flash, rendering you unable to see.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istarion transfix",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Music lilts with a magical quality in the air around an acolyte of Life as he smiles, invitingly, at you, mesmerising you with his wild, ancient beauty.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "istarion nausea",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Eriador, the Tsol'dasi merchant master pulls out a small silver dagger, previously concealed beneath his flowing garb, and plunges it into your stomach. As the blade is removed, blood begins to leak from the wound and you start to feel sick.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

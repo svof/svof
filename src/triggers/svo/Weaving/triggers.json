@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Deathblow",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^A sharp pain across your throat and a sudden lack of breath comes moments before you register theretreat of (\\w+)\\, bloody dagger in hand\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Backhand",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^Stars explode in front of your eyes as (\\w+) smashes a translucent mace into the side of your head\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hamstring",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) ducks low\\, \\w+ blade slicing into your .+\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

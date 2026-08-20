@@ -1,0 +1,42 @@
+[
+  {
+    "name": "shastaan stuns",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With an agitated sneer, Shanugis reaches for a nearby weapon and flings it carelessly at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Galeria, the housewife batters you over the head with a large frying pan, knocking you senseless.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "andir prone roped",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Andir slings a coil of rope from his shoulder and skilfully flings it at your legs, knocking you over and entangling your legs in the knots.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

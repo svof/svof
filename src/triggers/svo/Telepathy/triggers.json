@@ -1,0 +1,256 @@
+[
+  {
+    "name": "Deadening",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a deadening pall overcome your mind, put there by",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You feel a deadening pall overcome your mind, put there by (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A wave of utter panic washes over you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel your limbs stiffen and lock up in response to an unseen power.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Disrupt",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You feel (\\w+)'s mind attacking yours from all sides, and you lose your mental equilibrium\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Stupidity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ casts a net of stupidity over your mind\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Def strip",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You suddenly feel that it would be a fine idea to relax your",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You suddenly feel that it would be a fine idea to relax your (.+) defence\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Radiance one",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A shiver runs down your spine, and you feel an instinctive urge to run as far and fast as you can.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Radiance two",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A shimmering image of the face of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A shimmering image of the face of (\\w+) appears fleetingly before you, frowning in concentration\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Radiance three",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sparks of multicoloured light begin to dance in your mind.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Radiance four",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An odd sensation of warmth begins to fill your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Radiance five",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Arcs of white light begin to flash across your vision, radiant and bright.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Radiance six",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your heart thumps as you realise that you have but seconds left to escape whatever fate awaits you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Mind batter",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You reel as your mind is viciously battered by a mental assault from",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You reel as your mind is viciously battered by a mental assault from (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

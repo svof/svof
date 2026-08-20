@@ -1,0 +1,1 @@
+svo.efreeti = tonumber(matches[2])

@@ -1,0 +1,1 @@
+svo.weird = tonumber(matches[2])

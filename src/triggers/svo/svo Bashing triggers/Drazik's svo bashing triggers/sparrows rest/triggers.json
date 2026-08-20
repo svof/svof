@@ -1,0 +1,208 @@
+[
+  {
+    "name": "ethereal wolf mental",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Tendrils of unnatural blue flame lash forward from the pale form of an ethereal spirit wolf, wrapping around your body and infecting your mind.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ethereal wolf ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An ethereal spirit wolf leaps forward at you, teeth bared. As he makes contact, his pale blue flames flicker into orange brilliance and wrap around you in a terrible blaze.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "drusalor stun prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Drusalor, a solemn old forestal swings his rough staff through the air in a graceful arc that knocks you off your feet.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "cacalos ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Cacalos, the mad inhales deeply, his chest swelling with air.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Opening his mouth wide, Cacalos, the mad exhales a sudden burst of white fire that swells out to scorch your flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "cacalos para",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Cacalos, the mad gazes into your eyes with frenzied intensity. As the haunting whiteness of his pupils fills your consciousness, you feel your body stiffen into paralysis.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "jahalen ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Jahalen, Master of Sparrow's Rest inhales deeply, his chest swelling, while his steely grey eyes remain fixed upon you with unnerving intensity.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A swirling cloud of fire and ash billows out from Jahalen, Master of Sparrow's Rest's flared nostrils, briefly engulfing you in searing heat.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "theralan leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Theralan, a jovial druid seizes your arm with incredibly strong jaws, applying pressure until the bones snap with a sickening crunch.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "theralan stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Theralan, a jovial druid throws back his head and roars fiercely at you, the sound rumbling out to echo menacingly through the area.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "lurac dizziness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Stepping forward, Lurac, a refined and elegant druid brushes long, white fingers across your forehead. Before you can react, a freezing cold lances through your head and your vision clouds with pain.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "lurac chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Lurac, a refined and elegant druid's eyes narrow into gleaming blue slits. Opening his mouth, he exhales a freezing cloud of icy breath that swirls around you and chills you to the bone.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "haslac mental",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Moving to face you, Haslac, a scruffy-looking druid throws back his head and releases a long, mournful howl that sends chills down your spine and flusters your wits.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

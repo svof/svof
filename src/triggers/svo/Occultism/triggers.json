@@ -1,0 +1,344 @@
+[
+  {
+    "name": "Chaosrays hit",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are hit by a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "ray.",
+        "type": "substring"
+      }
+    ],
+    "children": [
+      {
+        "name": "orange",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "yes",
+        "highlightFG": "#000000",
+        "highlightBG": "#ff5500",
+        "patterns": [
+          {
+            "pattern": "orange",
+            "type": "substring"
+          }
+        ]
+      },
+      {
+        "name": "indigo",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "yes",
+        "highlightFG": "#000000",
+        "highlightBG": "#4b0082",
+        "patterns": [
+          {
+            "pattern": "indigo",
+            "type": "substring"
+          }
+        ]
+      },
+      {
+        "name": "violet",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "yes",
+        "highlightFG": "#000000",
+        "highlightBG": "#ee82ee",
+        "patterns": [
+          {
+            "pattern": "violet",
+            "type": "substring"
+          }
+        ]
+      },
+      {
+        "name": "green",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "yes",
+        "highlightFG": "#000000",
+        "highlightBG": "#00aa00",
+        "patterns": [
+          {
+            "pattern": "green",
+            "type": "substring"
+          }
+        ]
+      },
+      {
+        "name": "blue",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "yes",
+        "highlightFG": "#000000",
+        "highlightBG": "#0055ff",
+        "patterns": [
+          {
+            "pattern": "blue",
+            "type": "substring"
+          }
+        ]
+      },
+      {
+        "name": "yellow",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "yes",
+        "highlightFG": "#000000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "yellow",
+            "type": "substring"
+          }
+        ]
+      },
+      {
+        "name": "red",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "yes",
+        "highlightFG": "#000000",
+        "highlightBG": "#ff0000",
+        "patterns": [
+          {
+            "pattern": "red",
+            "type": "substring"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Unnamable",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You realise with horror that the eldritch utterence has caused (\\d+) insanities to descend upon you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Shrivel an arm",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You stumble slightly as",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You stumble slightly as \\w+ touches your (left|right) leg, and it shrivels away\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Shrivel a leg",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You watch in horror as ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You watch in horror as \\w+ touches your (right|left) arm, and it shrivels away to uselessness\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Disloyalty",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ utters a terrible curse and points a finger at you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ sends an icy blue tendril of light that lashes out at you and wraps around you, sending a strange chill deep into your bones\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Pinchaura",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) makes a sudden, quick gesture in front of you, almost hitting your nose\\. \\w+ hand glows with a vibrant violet light before snapping back to \\w+ side\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Madness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) passes \\w+ hand in front of you\\. You feel an invisible claw brush the back of your skull\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Truename",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) draws back with a knowing smirk and utters some alien word that vibrates deep within your bones\\. Your mind swirls and body convulses in excruciating pain as your very spirit cries out in agony\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Chaosrays done",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Seven rays of different coloured light spring out from",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Seven rays of different coloured light spring out from (\\w+)'s outstretched hands, irradiating the location with blinding strobes\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Instill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) makes a quick, sharp gesture toward you\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

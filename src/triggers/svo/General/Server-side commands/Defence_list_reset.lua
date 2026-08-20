@@ -1,0 +1,1 @@
+if svo.conf.serverside and svo.conf.gagserverside then svo.deleteLineP() end

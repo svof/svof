@@ -1,0 +1,186 @@
+[
+  {
+    "name": "Only ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You call upon Kkractle and unleash a forceful blow towards (\\w+)'s .+? with your trusty staff\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) bursts into flame as a fiery efreeti spins into \\w+\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Add burn level",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^A dim red glow emanates from the heart of a crystalline golem moments before flames spontaneously ignite upon (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Add burn level to all",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The firestorm roars all about you, searing your flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Subtract burn",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^The fires consuming (\\w+) diminish somewhat\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svobl Don't register",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ dodges nimbly out of the way\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ twists \\w+ body out of harm's way\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ parries the attack with a deft manoeuvre\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ steps into the attack, grabs your arm, and throws you violently to the ground\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ quickly jumps back, avoiding the attack\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^A chaos orb intercepts the attack against \\w+ and renders it harmless\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "The attack rebounds back onto you!",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^A reflection of \\w+ blinks out of existence\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "The attack rebounds onto you!",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^\\w+ moves into your attack, knocking your blow aside before viciously countering with a strike to your head\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Dehydrate",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) winces in evident discomfort as a crystalline golem points a single appendage at \\w+\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Dehydrate expired",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^The skin of (\\w+) appears far less dry\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Cured ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) takes some salve from a vial and rubs it on \\w+ (?:body|torso)\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

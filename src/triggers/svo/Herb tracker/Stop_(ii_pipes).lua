@@ -1,0 +1,1 @@
+setTriggerStayOpen("Capture ii pipes list", 0)

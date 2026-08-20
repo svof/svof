@@ -1,0 +1,130 @@
+[
+  {
+    "name": "gaderian ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Wielding his weapon above his head, Gaderian, the mage of Narcisse chants and aims his staff at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A scorching bolt of pure fire shoots from the staff, hitting you in the chest.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "zerina ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Zerina, elder of the Angai lowers her head slightly, her eyes glowing a deep shade of red.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Suddenly, a bolt of blood-red light shoots out of Zerina, elder of the Angai's eyes, igniting your skin.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "olanri prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Chanting in an obscure language, Olanri, sage of Narcisse stares intensely at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Suddenly, a strong, fluid current appears, knocking you painfully to the floor.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "nuxila leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Shrieking horrifically, Nuxila, Chieftess of the Angai smacks you on the shin, shattering your leg in two.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "nuxila ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Nuxila, Chieftess of the Angai chants quietly at you, waving her staff as she does so. As the chant progresses, a small ball of light begins to form at the tip of the staff.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Finally, Nuxila, Chieftess of the Angai nods her head at you, and the ball of light slams into your skin, melting your flesh slightly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "laposi leg break prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Moving his tail swiftly, Laposi, leader of the Hanai creates a powerful current in the water and directs it towards you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Crashing loudly into you, the current knocks you off your feet, leaving you unable to stand.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

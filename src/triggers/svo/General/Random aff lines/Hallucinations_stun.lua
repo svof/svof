@@ -1,0 +1,1 @@
+svo.valid.proper_stun(1)

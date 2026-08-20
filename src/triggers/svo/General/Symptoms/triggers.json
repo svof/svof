@@ -1,0 +1,1622 @@
+[
+  {
+    "name": "Illness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You cannot contain the convulsions in your stomach any longer and double over, retching violently.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Epilepsy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your limbs begin to jerk and shake uncontrollably, and you begin to foam at the mouth.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dizziness dismounted",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The ground seems to tilt and you sway upon your mount.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dizziness fell",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The ground seems to tilt and you fall with a thump.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Shivering",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel the strength ebb from your body as the cold takes its toll.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Disrupting shiver",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have a particularly intense shiver.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Confusion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are too confused to concentrate properly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You rush about in a state of utter panic.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Agoraphobia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Terror descends upon you and your head swims - you must find shelter!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Clumsiness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You lash out clumsily.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hallucinating",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Ooh look! A lovely lake. Perhaps you'll dive in!",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You leap up and attempt a graceful swan dive...right into the solid ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hallucinating 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Spiders are erupting from your mouth and nose!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Impale",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are impaled and must writhe off before you may do that.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dizziness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A wave of dizziness suddenly overwhelms you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Darkshade",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sunlight shines down upon you mercilessly, rippling across your skin like fire.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Flames lick around you - you are on fire!",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You are scorched by the firewall as you pass through.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The firestorm roars all about you, searing your flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Peace",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your heart is filled with divine love, violence is abhorrent to you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Anorexia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The idea of putting something in your stomach sickens you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Failed focus (impatience)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You're unable to focus your mind.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Asleep",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are asleep and can do nothing. WAKE will attempt to wake you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your state of paralysis prevents you from doing that.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You are paralysed and cannot do that.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Frustratingly, your body won't respond to your call to action.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You are paralysed and unable to do that.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Paralysed as you are, your body is not able to pick up anything.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Being paralysed, you can't do that.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You are paralysed and are unable to drop anything.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo Relapsing",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You swoon as you suffer a toxic relapse.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      }
+    ],
+    "children": [
+      {
+        "name": "Camus",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "1",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You scream out in agony as a vicious venom tears through your body.",
+            "type": "exactMatch"
+          }
+        ],
+        "children": [
+          {
+            "name": "Hit vitality",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "A surge of rejuvenating energy floods your system, healing your wounds.",
+                "type": "exactMatch"
+              }
+            ],
+            "script": "svo.valid.relapsing_vitality()"
+          }
+        ]
+      },
+      {
+        "name": "Sumac",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "1",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You gasp as a terrible aching strikes all your limbs.",
+            "type": "exactMatch"
+          }
+        ],
+        "children": [
+          {
+            "name": "Hit vitality",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "A surge of rejuvenating energy floods your system, healing your wounds.",
+                "type": "exactMatch"
+              }
+            ],
+            "script": "svo.valid.relapsing_vitality()"
+          }
+        ]
+      },
+      {
+        "name": "Oleander",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "1",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You blink for a moment, then instantly, all about you is darkness.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Colocasia",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Numbness seizes you as your vision and hearing fade.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Oculus",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Your eyelids are forced open by the powerful venom.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Prefarar",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "99",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Your hearing is suddenly restored.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Asthma",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You feel a tightening sensation grow in your lungs.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Claustrophobia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You realise that you have been left alone - you must find companionship!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Masochism",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You smile with pleasure as you ram your fist into your jaw.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You drive a clenched fist into your gut.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Loneliness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You realise that you have been left alone - you must find companionship!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dementia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You concentrate hard on breaking through your delusions.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Bad legs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You must have two good legs to do that.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Blind",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are blind and see nothing but darkness.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You are blind and can see nothing but darkness.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Pacifism",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are feeling far too tranquil to attempt such a violent act.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Claustrophobia 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The walls close in to suffocate you - you must escape!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Shyness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A blush begins to creep up your neck and into your face as you come to the realisation that there are other people here!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Both arms crippled",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With both arms crippled, you find yourself unable to touch your target.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Both legs crippled",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Both of your legs are shriveled and thus you cannot carry out that action.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are too stunned to be able to do anything.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hamstring riding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You can not do that with your legs in their current state.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Darkshade paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The sun has rendered you too weak to move a muscle.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Haemophilia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Something interferes with your ability to clot.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Transfixed two line",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are transfixed and cannot do that. You must writhe to escape.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You cannot do that because both of your arms must be whole and unbound.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Webbed two line",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sticky strands of webbing cling to you, making that impossible.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You cannot do that because both of your arms must be whole and unbound.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Impaled two line",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are impaled and must writhe off before you may do that.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You cannot do that because both of your arms must be whole and unbound.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "No symptom",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Usage:",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Syntax: OUTD [num|ALL] <card>",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Syntax: OUTRIFT [num|ALL] <ITEM>",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Transfixed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are transfixed and cannot do that.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You must writhe to escape.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stupidity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As horrible thoughts fill your mind, you begin to sob uncontrollably.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You give up a round of applause.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You pull down your pants and moon the world.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You fondle yourself absently.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You hug yourself compassionately.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You flip the bird.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You give up a round of applause.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You are far too selfish to throw anything away like that.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You make a strangled meowing noise and quickly shut up in embarrassment.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You let out a loud, long \"MOOOOOOOOOOO!\"",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You sweep your trained eye across your surroundings, searching for hidden exits.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You drop to one knee, demonstrating your humility and respect.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "\"The voices! The voices! Get them out of my head!!\" you moan, holding your head in pain.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You pick your nose absently.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You flap your arms madly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You sweep across the floor, leaping and twirling like a true master.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Tears fill your eyes and begin to slowly run down your face.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Broken legs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Both of your legs must be free and unhindered to do that.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Shyness 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Heart thumping, you cannot bear the company of others and attempt to flee in terror.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Damaged arms",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Both your arms must be free and functioning to do that.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your arms are in no condition to be doing that.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Limping",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You slowly hobble",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You slowly hobble \\w+\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Crippled leg",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "4",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Try as you might, you are unable to hobble past the heaps of rubble that block your way.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Confusion 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You raise your weapons to strike, but the purpose for it eludes you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You prepare for a punch, but the purpose of doing so eludes you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^You point (.+) at something, but the purpose of doing so eludes you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Mucous",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your lungs are too clogged with mucous for you to attempt smoking.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Weakness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You beat your wings in vain. Alas! You are too weary to fly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Generosity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Why, you ask yourself, are you so privileged when others are so needy.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your boundless generosity shines through once more!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "PhoenixCodes' StupidCheck",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "12",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You blink.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You twitch spasmodically.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You waggle your eyebrows comically.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "As horrible thoughts fill your mind, you begin to sob uncontrollably.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You hug yourself compassionately.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You grunt a bit and then let out a loud \"OINK!\"",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "My friend, clearly you know little of the sultry tango, if you think that you can perform it without a partner.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "\"The voices! The voices! Get them out of my head!!\" you moan, holding your head in pain.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You make a strangled meowing noise and quickly shut up in embarrassment.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You get down on one knee and serenade the world.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You burp obscenely.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You flap your arms madly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You wouldn't want to drink a salve. It would not be tasty at all.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Tears fill your eyes and begin to slowly run down your face.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You drop to one knee, demonstrating your humility and respect.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You pick your nose absently.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You wail like an old woman.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your mind is whirling with thoughts - you cannot settle down to sleep.",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "StupidityValid",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "99",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "",
+            "type": "prompt"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Shivering 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You begin moving your frozen body slowly",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You begin moving your frozen body slowly \\w+\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Damaged arm",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You",
+        "type": "startOfLine"
+      }
+    ],
+    "children": [
+      {
+        "name": "regexes (damaged arm)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^Your (\\w+) arm is too severely damaged to permit that\\.$",
+            "type": "regex"
+          },
+          {
+            "pattern": "^You cannot wield that on the (\\w+) due to injuries\\.$",
+            "type": "regex"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Peace 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are feeling far too passive to do that.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Webbed move",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sticky strands of webbing prevent you from moving.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stuttering",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "say",
+        "type": "substring"
+      },
+      {
+        "pattern": "\"[A-Z][a-z]\\.\\.\\.[a-z]\\.\\.\\.\\.[a-z]{3}\\.\\.\\.[a-z]{2}\\.\\.\\.\\.\\.\"$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Both legs crippled 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You cannot move as both your legs are crippled.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Full, injured, or restrained arms",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You can't wield anything else because your hands are full, injured, or restrained.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Working arm off balance",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your only working arm is off-balance.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Impatience (from meditation)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You cannot be bothered to do that, it is too boring.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Disloyalty",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your minions will not obey you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Illness (constitution)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your enhanced constitution allows you to shrug off the nausea.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Disloyalty 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You stand in such dishonour that not even your loyal friends will help you.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

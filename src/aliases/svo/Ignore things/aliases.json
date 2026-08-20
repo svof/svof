@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Show what we're ignoring",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow ignore$"
+  },
+  {
+    "name": "Toggle ignore things",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vignore (\\w+)$"
+  },
+  {
+    "name": "Show what can we ignore",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow ignorelist$"
+  }
+]

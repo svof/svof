@@ -1,0 +1,1 @@
+setTriggerStayOpen("Unread messages", 0)

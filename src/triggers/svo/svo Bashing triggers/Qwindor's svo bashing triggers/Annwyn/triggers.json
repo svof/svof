@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Annwyn Web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Fafnir, Lord of the Dark Court utters a quick word as the marble beneath you wavers, turning to a sticky liquid which quickly entraps your feet.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Annwyn Aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Faylinn, Lady of Unsidhe Court showers you with sparkling fairy dust.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Oberion paralyse",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A deep voice whispers through your mind as Oberion, King of the Fairies stares intently at you, his magnetic eyes making your body stiffen and mind go blank.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "oberion aeon and blackout",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Oberion, King of the Fairies pinches a handful of iridescent powder from his satchel and blows it at you, causing your senses to whirl from a kaleidoscope of colour.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

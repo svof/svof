@@ -1,0 +1,1630 @@
+[
+  {
+    "name": "svo tree1",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "return true",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "svo tree ninkharsag",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The coating of slime makes it impossible to discern any change.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure clumsiness tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Thank Maya, the Great Mother! Your clumsiness has been cured.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure paranoia tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Aaaahhh. No one is out to get you after all.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure vertigo tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your fear of heights subsides.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure agoraphobia tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You can handle the idea of open spaces again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure dizziness tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are no longer dizzy.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure claustrophobia tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Small spaces no longer frighten you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure recklessness tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Prudence rules your psyche once again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure epilepsy tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your nerves suddenly calm down.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure peace tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The unnatural feeling of peace leaves you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure addiction tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your terrible addiction seems to wane.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure stupidity tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You aren't such a complete idiot anymore.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure healthleech tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your aching, pain-wracked body is soothed and calmed.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure sensitivity tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The stinging feeling fades.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure relapsing tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel your blood thickening.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure slickness tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your glands cease their oily secretion.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure generosity tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Ahhhh. The freedom to be stingy again!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure weakness tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your limbs strengthen and you feel stronger.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure hallucinations tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your hallucinations cease to plague you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure pacifism tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are capable of offensive acts once more.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure confusion tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The confusion lifts from your mind and it is clear once again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure bleeding tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your bleeding slows as your blood clots.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure voyria tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The elixir burns through your veins, destroying the deadly poisons that are killing you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Mercifully, the voyria venom has been cleansed from your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure illness tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your stomach becalms itself.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure haemophilia tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your blood regains its ability to clot.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure weakness tree 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your limbs strengthen and you feel stronger.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure ablaze tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Steam rises from your skin as the fires that plague you are extinguished.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The raging fire about your skin goes out.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure disloyalty tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You no longer will inspire disloyalty among friends.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure shivering tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A feeling of comfortable warmth spreads over you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure frozen tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Though still shivering, you are no longer frozen solid.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure lethargy tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The lethargy evaporates, leaving you full of energy.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure generosity tree 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Ahhhh. The freedom to be stingy again!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure shyness tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your shyness has been cured. You can now face the world boldly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure sensitivity tree 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The stinging feeling fades.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure asthma tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your bronchial tubes open up and your asthma is cured.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure crippledrightarm tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The bones in your right arm mend.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure crippledleftarm tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The bones in your left arm mend.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure crippledrightleg tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The bones in your right leg mend.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure crippledleftleg tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The bones in your left leg mend.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure darkshade tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "No longer will the sunlight harm you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure masochism tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You no longer enjoy pain.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure impatience tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are patient once again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure anorexia tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Food is no longer repulsive to you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure loneliness tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The awful loneliness leaves you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure shyness tree 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your shyness has been cured. You can now face the world boldly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure loneliness tree 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The awful loneliness leaves you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure pacifism tree 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are capable of offensive acts once more.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure paranoia tree 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Aaaahhh. No one is out to get you after all.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure recklessness tree 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Prudence rules your psyche once again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure shyness tree 3",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your shyness has been cured. You can now face the world boldly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure vertigo tree 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your fear of heights subsides.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure voided tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The empty grasp of the void retreats, and you breathe more easily.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure latched tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Warmth floods back into your limbs, and you feel suddenly vital.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure weakness tree 3",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your limbs strengthen and you feel stronger.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure anorexia tree 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Food is no longer repulsive to you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure claustrophobia tree 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Small spaces no longer frighten you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure epilepsy tree 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your nerves suddenly calm down.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure slickness tree 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Warm water showers down upon yourself, and you scrub all over until the oil on your skin is gone.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured blind tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Blessed sight returns to you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure shivering tree 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your body warms up and you stop shivering.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure fear tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your fear has been cured.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure hypochondria tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "My, you feel healthier than you have in years.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure dementia tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sanity returns to you and you are no longer demented.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure paralysis tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your muscles unlock; you are no longer paralysed.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure hypersomnia tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a bit more alert and awake.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure aeon tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The curse of the Aeon wears off and you return to the normal timestream.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure justice tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The curse of Miramar, the Just leaves you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure stuttering tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your tongue will finally obey your commands properly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure selarnia tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel the barrier that separated you from your animal consciousness has dissipated.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured inlove tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You shake your head, wondering what you ever saw in",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "svo cure deadening tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are no longer deadened.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure tension  tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You suddenly find the air much easier to breathe.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure hellsight tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Thankfully, the visions of Hell have left you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure burn tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The fires consuming you diminish somewhat.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure burns tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The raging fire about your skin goes out.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure skullfractures tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The pain in your head lessens somewhat.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured skullfractures tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The pounding in your head disappears.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure crackedribs tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "It becomes somewhat easier to draw breath.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured crackedribs tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You can breathe easily once again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure wristfractures tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The dull ache in your arms subsides somewhat.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured wristfractures tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel bones snapping back into place in your arms.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure torntendons tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The agonising pain in your lower legs recedes somewhat.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured torntendons tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The burning in your lower legs fades away.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo tree2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "return true",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "svo cured guilt tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your terrible guilt lifts.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured spiritburn tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The uncomfortable heat suffusing you fades",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured tenderskin tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your skin is no longer so tender.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cured crushedthroat",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your crushed throat mends and you can draw breath easily once again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo humour blocked tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your elevated choleric humour blocks your body's attempts to purge its afflictions.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

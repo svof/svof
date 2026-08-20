@@ -1,0 +1,1 @@
+svo.valid.noose_trap()

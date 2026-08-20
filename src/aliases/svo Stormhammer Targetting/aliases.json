@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Stormhammer targets",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^stm$"
+  },
+  {
+    "name": "Get targets",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ih$"
+  }
+]

@@ -1,0 +1,1 @@
+svo.lc_hit(multimatches[2][3], multimatches[2][4], (multimatches[2][2] == "Whiirh" and .5 or 1))

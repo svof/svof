@@ -1,0 +1,1 @@
+svo.valid.devastate_legs_mutilate()

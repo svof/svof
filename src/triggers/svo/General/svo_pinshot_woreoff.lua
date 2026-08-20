@@ -1,0 +1,1 @@
+svo.valid.pinshot_woreoff()

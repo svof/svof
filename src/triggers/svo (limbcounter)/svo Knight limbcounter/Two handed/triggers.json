@@ -1,0 +1,141 @@
+[
+  {
+    "name": "Devastate",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You whip .+? in a vicious arc, hewing savagely into the (\\w+) of (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Winding up a devastating stroke of your warhammer, you unleash a crushing blow aimed at the (\\w+) of (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Bracing your feet, you launch a devastating slash at the (\\w+) of (\\w+), delivering a glancing blow.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You direct a devastating two-handed blow with .+? at the already injured (\\w+) of (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Adjusting your footing, you unleash a horrific slash at the (\\w+) of (\\w+), cleaving flesh and shattering bone in a savage display of your supremacy.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Drawing back .+?, you deliver a single, crippling blow to the (\\w+) of (\\w+), mangling bone and meat in a bloody spray.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Overhand",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Raising",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Raising .+? above your head, you bring it down upon (\\w+)'s head with terrible force\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Pulverize",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Throwing your full weight",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Throwing your full weight into the motion, you bring .+? across in a terrible blow toward (\\w+)'s (.+).$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hew",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Taking hold of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Taking hold of .+? with a firm two-handed grip, you hew savagely at (\\w+)'s (.+?)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Underhand",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Bracing your feet, you lunge upward at",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Bracing your feet, you lunge upward at (\\w+) with",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Battlefury Focus",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  }
+]

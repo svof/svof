@@ -1,0 +1,2240 @@
+[
+  {
+    "name": "A'dene",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A'dene, Priestess of the Holy Three utters a prayer and smites your arm.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "It breaks with a loud 'CRACK'.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Ulgase, the lich crone conjures a large flame within her bony palm. Shaping it into a fiery fireball, she sends it flying into the room, scorching your flesh and setting you on fire.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Toogar, the ursu shaman reaches into his small satchel and produces a vial of bubbling liquid which he throws at you, the vial shattering and covering you with burning liquid.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Eyes searching wildly, an ogre cook spies his recipe book on the floor. Scooping it up in one filthy hand, he sets it aflame and tosses it directly at your face.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Reaching into a burlap sack, an orc cook retrieves a fistful of decomposing kitten corpses. Quickly lighting them on fire with the cooking spit, he grunts and throws them at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Enuru, the Bane of Karbaz raises his hands into the air and invokes a blast of fire that lands upon your chest, sending you down to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Tiamenjiara, the court conjuror rubs her hands briskly together, spreading them to reveal a growing ball of flame. With a forceful gesture she hurls the fire toward you, scorching your flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A colossal water strider suddenly turns his backside towards you and sprays an acidic liquid across your torso.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Holding her golden candelabra in front of her, Ilucara Pelendur, Advisor to the Shah suddenly spits out a foul, noxious liquid into the flames with great force. As the fire comes into contact with the now-airborne fluid, a raging lash of flame begins to consume your skin, setting you aflame.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A bloodied acolyte gives a maniacal cackle and summons a wave of fiery magic, blasting it at you and setting you on fire!",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A sect ritualist gives a maniacal cackle and summons a wave of fiery magic, blasting it at you and setting you on fire!",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Yurasta Tarcalion, the Thaumaturge reaches into his robes and grabs a random vial. He throws the vessel to the ground in front of you, and you watch in stunned surprise as it explodes with a green fire.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Caurnn, the blacksmith howls as he brings his red-hot hammer crashing down on your head, singeing your skin.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A Qurnok woman hurls the orb at you and it explodes upon contact.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Twirling his staff above his head, Zen'fi Haar'chen sends a spinning pillar of fire across the chamber, burning everything in its path.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Muttering a few arcane phrases under her breath, Sindrastar Nerrinth, the High Counsellor rapidly generates a ball of searing fire between the palms of her hands. Moments later, she sends it hurtling through the air towards you, bursting on impact and engulfing you in flames. ",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "She opens her small mouth and lets loose a lash of fire to scorch your flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "He opens his small mouth and lets loose a lash of fire to scorch your flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Waving his staff erratically, Zen'fi Haar'chen conjures a swirling fireball at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Pulling the cap off her flask, Captain Kelley, Mayor of Mysia douses you in alcohol with one hand before flicking her cigar onto you with the other.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Nhamdi, the elder closes his eyes and begins to chant rhythmically beneath his breath as drowsiness pricks at your mind, and you drift into sleep.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A crimson pyrapede scuttles rapidly about your feet, setting your clothing on fire.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Chanting a quick, forceful incantation, Balam Agab, the ogre archmage summons a ring of raging fire around you. The flames painfully sear your skin as you inhale the thick, black smoke.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A pillar of living fire's fiery gaze lingers on you, and your skin and hair smoulder and then ignite.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a great sweep of his mighty staff, Maal'ryn Asgarai, Outrider Ascendant summons a great geyser of brightly burning liquid fire behind him that arcs upwards into the air and rains down furiously upon you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Anger blossoms in Faylinn, Lady of Unsidhe Court's eyes as she summons forth a barrage of fiery motes to torment you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "While the tip is still hot, he quickly jabs you with the spear.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A flame leaps upward from the surface of the molten lava as it flows over your foot, scalding you with its searing heat.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Hethern Silwenil, Revered Counsellor's hands glow with a soft red light, before discharging two sheets of scorching flame that engulf you mercilessly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You suddenly feel your skin begin to burn and eventually ignite.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Pointing his fingers in your direction, Begath, the Migri mage sends a massive fireball directly into your body.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A House Feranki mage pulls out a small box the size of a human fist, shakes it, and throws it at you. On contact it explodes, burning you horribly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The light strikes you in the chest, suffusing your body in flames.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Oberion, King of the Fairies pinches a handful of iridescent powder from his satchel and blows it at you, causing your senses to whirl from a kaleidoscope of colour.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Turga, the ursu midwife takes a syringe out of her satchel and stabs you with it, the contents rushing into your system and making you feel woozy and slow.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A vicious swarm of acacidic ants climb upon each other, forming a thin tower before you. Suddenly, the ant at the top of the column begins to stare intensely into your eyes, leaving your world moving slower than usual.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "As the liquid enters your system, everything suddenly becomes so much slower.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Screw-eye, the inmate superior sneers wickedly as he stabs into one of your veins with a foul needle. All movement slows as your body begins to swagger and sway sluggishly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A xorani priestess utters something under her breath. Slowly she raises her hand into the air, then makes a wide sweep across the room.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Kamille, the Theran healer lifts her hands in a dramatic arc, bringing them together with a tremendous burst of bright light that slams into your chest.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Chanting rhythmically under his breath, Derillin Yu'tar unleashes a blast of energy throughout the area.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A weretigress mutters some arcane words sweeping her hands through the air, a bright flash emanates from her finger tips striking you solidly in the chest.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A mad cackle from a cloaked assassin precedes the flicking of two Aeon tarots at you in quick succession, followed closely by a throwing dagger sinking into your chest.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Ayod'nai, Whisperer of the All utters a string of words, and the world around you seems to slow down.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Asthma",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Chanting a quick, forceful incantation, Balam Agab, the ogre archmage summons a ring of raging fire around you. The flames painfully sear your skin as you inhale the thick, black smoke.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "In a lightning quick motion, a humble monk grabs your throat and begins to crush your windpipe, leaving you gasping for air.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "In a lightning quick motion, a young monk grabs your throat and begins to crush your windpipe, leaving you gasping for air.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A mad cackle from a cloaked assassin precedes the flicking of two Aeon tarots at you in quick succession, followed closely by a throwing dagger sinking into your chest.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Amnesia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A transparent cahno stares intensely into your eyes, leaving you unsure as to who or where you are.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Bleeding (large)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The Ur'Vampire Zigana flicks her fingers in a rapid circular gesture. A swarm of screeching bats appears from nowhere, swerving and diving and sinking their tiny claws and fangs into any exposed areas, creating agonisingly painful wounds.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The Ur'Vampire Tizane's eyes gleam as you are butchered with a wicked blow.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Bleeding (little)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A fairy Knight of Sidhe whirls his weapon expertly, almost slicing you in half before impaling you upon its razor-sharp edge.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A fairy Knight of Sidhe flies close to you and hacks into you with his halberd thrice, causing blood to gush from the wounds.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A steel-encased Death Knight rises to his full height with a glare of unmitigated evil that pulls at your insides. The accompanying slash comes fast and low.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Bringing his broadsword around in a slow arc, Commander Malrian Kyra carves a deep gash in your torso.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A tundra wolf leaps onto you and knocks you over, repeatedly savaging your face with wicked claws.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Bleeding (tiny)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A fairy Lady of Sidhe pulls a sharp crystal shard from her hair and punctures you with it.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Issuing a cry to Moghedu, an elite mhun keeper jabs you violently with his rapier.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Raising his spear above his head, a Qurnok guard quickly slashes open your torso.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Using his spear as if it were an extension of his body, an ursu man thrusts the head of his weapon through your abdomen, causing a huge gash.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An ursu man jumps at you and sinks his teeth into you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Both arms crippled",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A young buckawn witchdoctor reaches forward with both hands and grabs your arms, shrivelling them within his grasp.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A ghostly monk passes his ectoplasmic form through your body, causing you to shiver at the ghostly touch.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A ghostly monk shimmers, then blows a chill breath at you, covering you with a graveyard frost.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A tumbaga malagma points at you and utters a guttural, arcane word. Though your body's appearance does not change, you feel as cold and stiff as metal.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The aching, bitter cold of the grave settles into your bones as Belladona, Queen of Vampires catches your arm in a vice-like grip. A wild power flashes in her eyes as she withdraws and you struggle with faltering consciousness.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Summoning mystical energies, Ganorg, the Qurnok shaman blasts you with a gust of freezing cold air, shards of ice cutting into your flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "As an oozing ferzel reaches out and envelops you in its frigid ooze, you feel the life being drained right out of you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Bringing her hands quickly together, two icicles appear in Kosuira, the child sorceress's clenched fists. With a swift motion she hurls the weapons at you, piercing your flesh with a shivering cold.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lowering her chin to her chest, Kosuira, the child sorceress murmurs a string of quiet words. Suddenly the wind picks up around you, icy cold and chilling you to the bone.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With grim determination, Balai the Scorned blasts you with a thin stream of freezing water.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A statue of an ice golem batters you with its elemental arms.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The sound of grating ice fills the air as an ice wyrm opens its maw, spitting large ice chunks and freezing mist at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An unnatural grating noise enters the air as a rush of freezing wind erupts outward from an ice golem, chilling you to the bone.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A tundra mercenary whips a swirl of cold snow into your face before sweeping your legs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Crippled one unknown limb",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Engorged and thoroughly fed, a rock leech wraps its massive girth about you, squeezing until your joints creak.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Utterly heedless, the Leviathan catches you in the midst of its writhing and thrashing, crushing you with no visible effort.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A goblin smith swings a hard throw to your limbs, and you feel numb.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A single massive hand grasps you and flings you away as a colossal, hulking ghoul turns and stomps after you for the kill.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A goblin slave swings a hard throw to your limbs, and you feel numb.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Slicing his broadsword through the air, Knight Commander Lord Ethran Rani smashes it against one of your limbs, the force tearing through muscle and shattering bone.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Slicing his broadsword through the air, Commander Malrian Kyra smashes it against one of your limbs, the force tearing through muscle and shattering bone.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Slicing his broadsword through the air, Commander Farista Errikale smashes it against one of your limbs, the force tearing through muscle and shattering bone.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Crippled two unknown limbs",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With eyes closed, Malvoc, the unholy chants dark prayers as he gestures through the air, and with a sudden motion he flings his eyes open.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You feel your bones snapping and crunching within your body.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With three powerful strikes to your ribs, shoulder and sternum with his mace, an ogre captain knocks you to the floor, leaving you broken, bloody and bruised.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Knocking your legs out from under you with his mace, an ogre captain moves in and stomps down on your body with all his weight.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a scream of sheer wrath, Mrughor, a spectral warlock lets loose a flying kick, striking you hard as the sound of breaking bone resounds.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With surprising strength, Turga, the ursu midwife grabs you with powerful arms and squeezes, splintering bones.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Confusion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Xulu, an orc witchdoctor whispers quietly to the air. The words begin to echo in your ears, growing louder until they reach a painful climax. As they subside, feelings of peace and confusion washes over your body.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An orb of shimmering light emits a blinding flash of light and an explosive thunderclap that leaves you disoriented and confused.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Clumsiness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The staff in Jerak, Captain of the Guard's hands becomes a blur as he slams it into your head three times in rapid succession, then finishes with a vicious thrust to your chest.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A shriek of rage emits from Karinda Talkar, and the waters around you begin swirling. After a short moment, you are dragged into and whirlpool and whipped about in multiple circles, leaving you light-headed and dizzy.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Disrupt",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An orb of shimmering light emits a blinding flash of light and an explosive thunderclap that leaves you disoriented and confused.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dizziness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As Tybatha, the Oracle of Saiha'balan bows her head slightly toward you, your mind is battered by a strange telepathic force. The room blurs into a spinning mess.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Calling upon her intimate link with the forests, Erato, spirit of the Eastern Ithmia summons a whirlwind of leaves to swirl about you, leaving your head spinning.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Swinging his longsword at your head, a proud knight errant deals you a glancing blow across the temple.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Swinging his longsword at your head, a sturdy knight deals you a glancing blow across the temple.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A young monk balls up her small fist and pummels it into your stomach, causing you to feel nauseated while dizziness begins to overwhelm you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A young monk balls up his small fist and pummels it into your stomach, causing you to feel nauseated while dizziness begins to overwhelm you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Swinging suddenly with a spiteful backhand, Brendel, the fishmonger smacks you hard, sending your head ringing with dizziness.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a thunderous roar, a knight of the Siroccian Order slams his gauntleted fist hard into your face. ",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "All of a sudden, the past becomes little more than a fuzzy haze.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A shriek of rage emits from Karinda Talkar, and the waters around you begin swirling. After a short moment, you are dragged into and whirlpool and whipped about in multiple circles, leaving you light-headed and dizzy.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A burly troll guard hums a gutteral chant under his breath and shoves you to the ground in a dizzy heap.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dementia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A lesser Penumbran fiend glances at you with a penetrating stare, its eyes burning with a madness that sets your mind aflame with insanity.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Double arm break",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Circling like a predator, Eschtar, the Swift steps in and slices you across both shoulders and you lose all feeling and control of your arms.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Double leg break",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Moving with astounding speed, a gargantuan ishkynd worm slings his body around your legs and squeezes them as hard as he can. You hear your bones snap as the pressure becomes higher and higher. ",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Flemming, the Ka'ah Botanist leaps at you and wrestles you to the ground, twisting your legs into an unnatural position as you hear the sound of snapping bones.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Leaning even more heavily on her staff, Pirin, an elderly woman kicks you in the shins with all the strength she can muster.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Drazik's svo bashing triggers",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Elvellien's svo bashing triggers",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Epilepsy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A burly Theran guard wraps his massive hands around your head and squeezes.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A bone golem opens its maw wide and lets forth an inhuman screech that fills you with utter dread as it rolls over you like a wave of death.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The impenetrable, other-worldly form of the Leviathan inspires sheer, stark terror. Surely no mortal could stand against it.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Smirnick, the Serpentlord quickly sinks his fangs into you, and fear spreads through you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A wild, frenzied look flickering across his face, a convulsing miner sinks his teeth into you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Bennett, a forlorn paladin looks directly into your eyes, and a deep fear fills your heart.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "As Cleric Lorlek intones a low prayer to the God, your blood begins to pound in your ears and an inexplicable fear encompasses you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Deftly a mhun conjuror summons a terrifying illusion, striking fear deep within your heart.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A shiver of panic runs down your spine as the horror of a goblin zombie's existence strikes you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Illness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Entirely useless, a great grey slug oozes upon the ground furiously, and you feel sick to your stomach from the sight.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A young monk balls up her small fist and pummels it into your stomach, causing you to feel nauseated while dizziness begins to overwhelm you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A young monk balls up his small fist and pummels it into your stomach, causing you to feel nauseated while dizziness begins to overwhelm you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The ghost of a drowned sailor exhales, and you gag from the horrible stench as its breath forms a noxious cloud around you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Eriador, the Tsol'dasi merchant master pulls out a small silver dagger, previously concealed beneath his flowing garb, and plunges it into your stomach. As the blade is removed, blood begins to leak from the wound and you start to feel sick.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Kard's and Searnla's svo bashing triggers",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Lang's svo bashing triggers",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "One arm crippled",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A taryen man lifts himself up onto two limbs and uses his front limbs to squeeze your body, splintering bones.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Jarak'lo, the Keeper lunges toward you, grabbing hold of your arm and easily snapping the bone. ",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You hear bones crack as Derik, the butcher brings the butt of his cleaver crashing down across your forearm.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With practiced footwork, an orc sergeant quickly steps aside and slashes his axe deeply into your arm, shattering bones like glass.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "King Iasius locks your arms behind you in a crushing grip, and strains. He gives a cry of triumph at the 'crack' of your bones giving way.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Desperately swinging at you with a hefty ledger, an audible crack accompanies sharp pain as Seril, a Shastaan merchant smacks your upper arm.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With fluid grace, a large phocine flyer scythes through the air, striking your arm with a brutal blow from his tail.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A reedy green buom wraps his branches around your arm, crushing it as he does so.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A goblin zombie smashes his rotting fist into your arm and you hear bones crunch.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You watch, in horror, as your arm shrivels up and becomes useless.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "In a lightning quick move, Ciglo, the historian grabs your wrist with one hand and presses up on your triceps with the other, applying pressure quickly which forces your arm to break.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Grandmaster Kevadrin grabs your forearm and begins to twist, forcing your shoulder into a joint lock, sending a piercing pain throughout your body. Pressing harder, he causes your shoulder to separate.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "One leg crippled",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Suddenly reversing his glaive, an elite guardsman skilfully smashes your kneecap with its weighted foot, sending you crashing to the floor in agony.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a savage growl, a young gryphon leaps onto your body, knocking you to the ground and crushing your legs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Rearing back, a queen leech lets out a piercing scream before slamming you against the wall with her corpulent body.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A burly Theran guard smashes his mace into your leg with a satisfying 'CRACK'.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Parmenides, the Arcadian philosopher lunges at you with a painful kick, and you hear the snapping of bone as his foot connects.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A ghoul smith slams his hammer into your chest, stunning you. Quickly he recovers and smashes his hammer in an arc down on your leg, smashing it heavily.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Frothing at the mouth and snarling with wild savagery, a feral dog clamps his powerful jaws onto your ankle, whipping his head back and forth until you hear a sickening snap.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": " Flinging his body into yours, a crocodile connects painfully with your leg, breaking it in numerous places.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A ghoul smith roars his fetid breath in your face, and raises his hammer in a two-handed blow. He slams it down on your chest, knocking you down onto your ass. As both of you attempt to regain your balance, the ghoul takes the opportunity to slam his boot into your knee, snapping it in half.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You stumble as your leg shrivels into a useless appendage.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A coruscating beam of blue energy leaps from the outstretched palm of Toogar, the ursu shaman, smashing into your body, picking you up, and knocking you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A vicious swarm of acacidic ants climb up your leg, crippling it with their bites as they do so.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a savage growl, a golden gryphon leaps onto your body, knocking you to the ground and crushing your legs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a savage growl, a mother gryphon leaps onto your body, knocking you to the ground and crushing your legs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A brown-haired trainee rams the end of his wooden pole into your kneecap, the bone splintering as the stick is pushed forward.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A diligent monk stands firm and attacks you with her staff, breaking your leg and causing you to fall to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A dirty blond-haired trainee rams the end of his wooden pole into your kneecap, the bone splintering as the stick is pushed forward.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A vicious dulosi majorus snaps quickly shut, breaking your leg in the process.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A school of vicious piranha viciously attack your leg, ripping it to shreds.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A humble monk stands firm and attacks you with his staff, breaking your leg and causing you to fall to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With perfect balance, a humble monk executes a perfect roundhouse kick, delivering a powerful blow to your leg and causing it to shatter.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Peace",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You suddenly lose the ability to harm another.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your muscles stiffen and lock as the Ur'Vampire Zigana gazes at you hypnotically.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Encircling your limbs with dangerous barbs, you feel pinpricks of pain from a massive jellyfish before your body goes numb.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your body fails to respond as her venom courses through your veins.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A massive xabat stiffens his neck and head before spewing out a thin stream of yellowish-red poison upon you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Belladona, Queen of Vampires gazes at you hypnotically, and your muscles stiffen in response. A jewelled wrist flashes across your vision just before a slender fist makes contact with your throat.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Bringing the handle of a nearby mop down at you in a forceful motion, she strikes your neck, jolting your entire body, and you find yourself unable to move.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "All of a sudden you feel your muscles seize up, leaving you unable to move.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "As the liquid enters your system, your limbs suddenly freeze, leaving you unable to move.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A mummified troll guardian claps his hands together and breathes out a cloud of white dust that enters your lungs. Your body shudders.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a snarl, Torturer Abd punches you in the gut with a venomous barb attached to his stump of a wrist. A numbing sensation of paralysis spreads through your body rapidly as the cruel point pierces your skin and gouges internal organs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a splintering crack a domesticated water buffalo bashes his head into your spine. A tingling sensation fills your body, followed by a complete loss of feeling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a splintering crack a domesticated water buffalo bashes her head into your spine. A tingling sensation fills your body, followed by a complete loss of feeling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A chorus of whispers begins to emanate from all around you, paralysing you with fear.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A cloaked assassin gazes pointedly at you, a blast of energy paralysing your body.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Bennett, a forlorn paladin's hand passes through you, and he releases a pained sigh. Your body stiffens as a deep chill overtakes you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your muscles stiffen and lock as a vicious ghast brushes you with a finger.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Peace 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Xulu, an orc witchdoctor whispers quietly to the air. The words begin to echo in your ears, growing louder until they reach a painful climax. As they subside, feelings of peace and confusion washes over your body.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Bennett, a forlorn paladin gazes fondly at you, eyes shining with compassion and love; all anger fades from your heart.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Per-NPC",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Growling aggressively, a feral grey lynx pounces onto you, knocking you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "At lightning speed, a huge, ferocious crocodile whips its tail around and smacks you in the back, sending you rolling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Deftly pushing you to the ground, Grothgar, the ogre sergeant mercilessly stomps a massive foot upon you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Naggamantex, the torturer aims a swift kick at your torso, sending you backwards and onto the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A steel-encased Death Knight pauses momentarily and emits a pulse of blinding, red light, taking away your balance.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Using his mass to his advantage, a giant toad rushes at you, taking you tumbling to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Stamping its boulder-like foot, a hulking stone giant sends shockwaves through the ground, knocking you off your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Hefting a coil of rope from the ground, a burly dockhand whips one end out at you, catching your feet and tripping you up.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Loosing an animal grunt, an orc soldier steps in close and trips you with the haft of his axe, smashing the flat of the blade against your skull as you fall.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a savage growl, a young gryphon leaps onto your body, knocking you to the ground and crushing your legs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Ducking behind his shield, a dwarf sentry charges you, knocking you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Commander Kalesh roars,enraged, and charges headlong at you, his considerable bulk giving himenough momentum to send you sprawling to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Bellowing in rage, CommanderKalesh sweeps his axe in a wide arc, knocking down all who are in itsway.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lowering his head, a hobgoblin warrior charges toward you and knocks you back with his shoulder.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Gliding in a swift spiral, a large phocine flyer slams into you, knocking you painfully to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An incorporeal ghost tiger leaps into the air and pounces on you, sending you sprawling as his great claws dig into your body like daggers.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a roar of rage, a fell werewolf leaps at you, knocking you to the ground, raking his claws over your skin and ripping chunks of flesh from you with his sharp teeth.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With three powerful strikes to your ribs, shoulder and sternum with his mace, an ogre captain knocks you to the floor, leaving you broken, bloody and bruised.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Knocking your legs out from under you with his mace, an ogre captain moves in and stomps down on your body with all his weight.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The ground begins to tremble and shake in answer to the rhythmic chanting of Mrughor, a spectral warlock, causing you to fall flat on your face.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Enuru, the Bane of Karbaz raises his hands into the air and invokes a blast of fire that lands upon your chest, sending you down to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Akarat, the Lorekeeper slaps you across the face, sending you tumbling to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Ortha, the one-eyed vindicator smashes her staff across your head, knocking you backwards onto the ground. ",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a feral snarl, a grey wolf leaps directly at you, burying his claws beneath your skin as he knocks you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lunging towards you with six powerful legs extended, a powerful bara'hir knocks you to the ground and lacerates your flesh viciously with its numerous claws.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Before the vast bulk of the Leviathan rushes a shockwave of air, that knocks you to the ground and stuns you, leaving your ears ringing.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The earth shudders beneath the might of the Leviathan, knocking your feet out from under you and leaving you battered and bruised.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Commander Kalesh roars, enraged, and charges headlong at you, his considerable bulk giving him enough momentum to send you sprawling to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Gliding into the air and towards you, an Arcadian sentry kicks out, smashing his foot into your chin effortlessly and knocking you backwards.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Scurrying across the ground swiftly and quietly, an armoured nahar quickly flattens itself, crawling beneath your legs and knocking you to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Scurrying across the ground swiftly and quietly, an armoured nahar quickly flattens itself, crawling beneath your legs and knocking you to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A noxious fume squirts out of a goblin zombie, making your jaw tighten and knocking you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A vicious, three-headed cerberus slams his massive body into you, sending you flying to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Grithaxodon, the Beast smashes his huge meaty fists down against the ground, causing it to tremble enough to knock you over.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The shadowy form of a whiptail stingray passes quickly overhead when suddenly, he veers and knocks you right off your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Dropping lightly to the floor, Alsimhinda, Queen of Zanzibaar swings a toned leg out from her many layers of silk, sweeping behind your feet to trip you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lashing out at your arms, Kimitia, a Quisalis apprentice wraps her whip around your wrists and pulls you hard to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A coruscating beam of blue energy leaps from the outstretched palm of Toogar, the ursu shaman, smashing into your body, picking you up, and knocking you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Using one of her massive paws to pin you to the ground, Leesha, the ursu packmother jabs your chest and stomach with her other paw, her sharp claws sinking deep into your flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Dropping lightly to the floor, Princess Qitala thrusts a leg from beneath her silken garments to trip you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "-Commander Xu pulls back his massive arm and leaps forward onto you, knocking you to the ground and swiping his large claws into your flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A xorani hunter expertly dances around you while slipping his net around your neck. As you fall to the ground, he begins choking you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "At a gesture from Erato, spirit of the Eastern Ithmia, a thick tree root protrudes from the ground and trips you off your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A single massive hand grasps you and flings you away as a colossal, hulking ghoul turns and stomps after you for the kill.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The King Stag tramples over you with his enormous body.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Telward slings a coil of rope from his shoulder and skilfully flings it at your legs, knocking you over and entangling your legs in the knots.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Almost hurling her body to the ground, a young monk supports herself with her hands while spinning her leg around to strike you behind your knee, causing you to fall to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A stern monk plants his staff perpendicular to the ground, using it as leverage to kick you in the chest with both feet, knocking you down.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A diligent monk plants her staff perpendicular to the ground, using it as leverage to kick you in the chest with both feet, knocking you down.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A humble monk plants his staff perpendicular to the ground, using it as leverage to kick you in the chest with both feet, knocking you down.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Prone 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Turning on his mount, Knight Commander Lord Ethran Rani lowers his lance and charges, the force of the impact knocking you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With relative ease, a wild caribou sends you tumbling to the floor as he punts his massive hooves into you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An azure koparfish slams his body violently into yours, causing you to fall to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Forming a large row, a school of vicious piranha slam into your body, and send you flying to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Stepping forward abruptly, a knight of the Siroccian Order slams his tower shield violently into you, knocking you to the ground and stunning you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A humble monk stands firm and attacks you with his staff, breaking your leg and causing you to fall to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Forming a large row, a school of vicious piranha slam into your body, and send you flying to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Springing forward, a wildcat soldier launches forward into you, sending you sprawling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Davkas grabs your arm and leg closest to him before picking you up and slamming your body ungracefully onto the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The dragon Yudhishthira unfurls his wings and beats them at the air. The gust sends you sprawling to the floor in a heap.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A small horse knocks you down with his large head and tramples his hard hooves over your body.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Crouching low, a bedraggled fisherman whirls his staff around, knocking your legs out from beneath you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Hissing out a single word, Balai the Scorned conjures a mighty geyser of water that blasts you clean off your feet and sends you sprawling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a powerful shove, Sniglet, chief valet sends you sprawling to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Swinging his cane in a low arc, Grationo Aurick catches your ankle with the crook and sends you sprawling to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a wild yell, Kallion, the adolescent rushes toward you, shoving you backwards.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Wreathing his hand in kai energy, a Tanjinn monk strikes the ground with a closed fist and a loud, piercing shout. A shockwave of pale blue ripples outwards from the point of impact, nearly throwing you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A young worshipper's bare foot strikes the side of your knee, causing it to buckle and forcing you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Vaschel, the High Cleric flaps his large wings violently, blasting the room with a fierce gust of wind that knocks you off your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A wild centaur thrusts his spear deep into your belly, thrusting the tip and twisting with his strong arms. Quickly he pulls the spear out and you fall to the ground blood dripping from the massive trauma.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a roar of rage, a weretigress leaps at you, knocking you to the ground, raking her claws over your skin and ripping chunks of flesh from you with her sharp teeth.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Commander Malrian Kyra brings the hilt of his broadsword down hard upon your head.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a joyful laugh, an energetic young boy runs around you and sweeps his leg underneath yours. Moments later, you find yourself lying on the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Clamping its powerful jaw of razor-sharp teeth onto your leg, an ageing mountain lion gives an almighty tug, sending you sprawling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A domesticated water buffalo charges at you, sending you sprawling to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "At a gesture from Clio, spirit of the Western Ithmia, a thick tree root protrudes from the ground and trips you off your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A Nuskuwen woman backs a few steps away and lifts her shoulder, charging to you in a few steps she rams the shoulder into you, leaving you sprawled across the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Without warning, Themus, a young cyclops shepherd charges toward you, crook held aloft as he rams the blunt end into your chest, sending you sprawling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A dirangi cub leaps up into the air with blinding speed, bouncing nimbly off a wall before landing directly on top of you, knocking you to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A burly troll guard hums a gutteral chant under his breath and shoves you to the ground in a dizzy heap.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Vingar, the Mercenary Captain smacks your forehead with the flat of his sword and shoves you onto the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Crouching low, Sonterro Rhodestrian, Mercenary Leader slaps his longsword across the back of your knees and knocks you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An off-duty guard drunkenly stumbles into you and knocks you off your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Qiland pivots his body to put all of his energy behind a powerful palmstrike to your sternum, forcing you to fall backwards onto the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Loosing an animal grunt, an orc soldier steps in close and trips you with the haft of his axe, smashing the flat of the blade against your skull as you fall.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A Quisalis sentry dashes forward, slamming the haft of his halberd into the side of your knees, causing your legs to buckle.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lashing out at your arms, Kimitia, a Quisalis Assassin wraps her whip around your wrists and pulls you hard to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The large frame of a large hound slams into you at full speed, knocking you off your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An elderly mage whirls in a circle, sending a massive blast of wind through the room that knocks you down.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A female mage whirls in a circle, sending a massive blast of wind through the room that knocks you down.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lifting up her massive boot, Ilucara Pelendur, Advisor to the Shah thrusts her foot into your gut, knocking you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An ice wyrm coils its long tail around you, crushing your body within before tossing you aside.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A tundra wolf leaps onto you and knocks you over, repeatedly savaging your face with wicked claws.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An arctic wolf leaps onto you and knocks you over, repeatedly savaging your face with wicked claws.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A tundra mercenary whips a swirl of cold snow into your face before sweeping your legs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Snarling in anger, a massive wendigo rushes toward you, bowling you over and smashing his club repeatedly into your exposed limbs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Tossing his club aside, a massive wendigo grabs you with a vice-like grip and easily lifts you up, then brutally slams you into the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The tentacles of a monstrous septacean flail wildly in all directions, slapping against you and sending you reeling backwards.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You find yourself grasped ungently, thrust down through the whirlpool, and spat out again upon dry land.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The staff in Jerak, Captain of the Guard's hands becomes a blur as he slams it into your head three times in rapid succession, then finishes with a vicious thrust to your chest.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Prone 3",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The ground beneath you begins to shake and it sends all around it tumbling to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A flesh-eating slug rushes forward and bodily slams his bulk into you, knocking you to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Quadbreak",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "His mouth moving rapidly, Avel, a hepatizon malagma gestures at you and you drop to the ground, all of your limbs suddenly heavy beyond belief.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Black mists leap and writhe in response to a short, shrill chant from Belladona's lips. Inclining her head effortlessly, she sends the tendrils to sear your flesh, and your limbs shatter like glass under the fell caress.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Haemophilia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Growling loudly, an enormous hound leaps at you and sinks his fangs into your arm, the saliva dripping from his mouth burning the wound.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Qwindor's svo bashing triggers",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Recklessness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A Dralhuan guard removes three needles from a small container previously concealed within his clothes and pushes them deep into your flesh. As the needles rest beneath your skin, you begin feeling at ease.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Roped",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Ryland slings a coil of rope from his shoulder and skilfully flings it at your legs, knocking you over and entangling your legs in the knots.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Kurgo, the Ursu chief swings a net over his head and throws it over you, entangling you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Pulling a nearby lever, Nevon Talkar drops a thin sheet of netting across the chamber.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Tiamenjiara, the court conjuror gestures sharply at your feet and vines seem to grow from the ground, winding around your body and entangling you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Telward slings a coil of rope from his shoulder and skilfully flings it at your legs, knocking you over and entangling your legs in the knots.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Chanting with a harsh whisper, an ominous lich lashes you with a series of spectral ropes before sending them to entangle your limbs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A House Feranki mage throws a piece of rope at you. In mid-air, it expands into a mesh of netting that contracts around you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Damek, Feranki Magelord kneels and lays his huge hands flat on the ground, making circular motions in the dirt. A mass of thick, earthen tentacles rises from the ground to coil around you. You are ensnared!",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Matteo, a marooned sailor spins around and throws his arms wide, casting a battered fishing net at you and entangling your limbs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Slickness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Flailing pathetically, a great grey slug attempts to cause you harm. Inadvertently, parts of your flesh become slick with slime.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A squat scrag flails at you meekly, leaving a trail of putrid algae clinging to your flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stun (0.5s)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Swinging his longsword at your head, a proud knight errant deals you a glancing blow across the temple.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Swinging his longsword at your head, a sturdy knight deals you a glancing blow across the temple.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An ursu man opens his mouth and lets out a mighty roar, making your ears ring and leaving you frazzled.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Sinking into a horse stance, a diligent monk punches you directly in the gut, forcing the air from your lungs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Knight Commander Lord Ethran Rani brings the hilt of his broadsword down hard upon your head.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An Ulsyndar guard pivots quickly and smashes the haft of his spear into the side of your head, making your ears ring.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Stepping forward abruptly, a knight of the Siroccian Order slams his tower shield violently into you, knocking you to the ground and stunning you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Expertly throwing you off balance with a kick to the chest, a proud ducal guard brings the butt of his sword slamming down on your skull in a fierce blow.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A bedraggled Ashtani foot soldier swings his shortsword above his head and brings the flat of the blade crashing down on your skull.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Commander Malrian Kyra brings the hilt of his broadsword down hard upon your head.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Commander Farista Errikale brings the hilt of his broadsword down hard upon your head.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Gripping the handle with both hands, Duke Semiro brings his mace crashing down on your head.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Sweeping his pickaxe in a wild arc, a blood-soaked dwarven miner catches your head a glancing blow with the thick, wooden shaft.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Powering his tail, a redfin tuna speeds towards your head, his body connecting with a force that leaves your ears ringing.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The Ur'Vampire Asztrik flicks his fingers in a rapid circular gesture. A swarm of screeching bats appears from nowhere, swerving and diving and sinking their tiny claws and fangs into any exposed areas, creating agonisingly painful wounds.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Feinting a jab, a sword spider outrider brings the hilt of his other sword towards you, stunning you with its forceful impact into your skull.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Raising herself up to her full height and glaring at you, an Arcadian noblewoman backhands you sharply in the mouth, stunning you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A lost spirit begins to chant in a long-forgotten language, and you stumble backwards as pain tears through your skull.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Wreathing his hand in kai energy, a Tanjinn monk strikes the ground with a closed fist and a loud, piercing shout. A shockwave of pale blue ripples outwards from the point of impact, nearly throwing you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a fearsome neigh, a wild kelpie rears up and stomps two hooves into your head and torso.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A Brighthold watchman swings his arm around in a sweeping circle, slamming his lantern into your head. The lantern connects with a ferocious blow, stunning you momentarily and choking you with noxious fumes from the flame within.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a fearful gasp, Kavan, the first mate grasps his ledger firmly and swings it wildly at your head, connecting with a thud.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Hard ice forms around the fist of a tundra mercenary as he punches you viciously in the temple.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stun (1s)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Raising himself up to his full height and glaring at you, an Arcadian nobleman backhands you sharply in the mouth, stunning you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Shouting a bone-chilling battlecry, a runic knight quickly rubs a dark, foul-smelling venom on his blade and swings it into your side with incredible force.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Grabbing two shovels from the ground, a golden malagma brings them crashing into your head from both sides.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A spinorthos gets a running start, slamming its head into your chest so hard you hear ribs crack.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Turning around abruptly, a rock beetle rears its hind legs and lashes out at you with its wickedly sharp, serrated claws.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Screaming an enraged battlecry, a Qurnok guard quickly slams his head against yours.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Sinking into a horse stance, a humble monk punches you directly in the gut, forcing the air from.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Sinking into a horse stance, a humble monk punches you directly in the gut, forcing the air from your lungs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "In a lighting quick move, Grandmaster Kevadrin comes behind you, grabs your head and quickly forces it towards your chest. You hear the bones in your neck crack and tendons pop as you lose consciousness.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Raising his metal-encased arm high into the air, Jeramun, the Flame of the World slams a gigantic fist down, knocking you solidly to the ground. ",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The dragon Yudhishthira unfurls his wings and beats them at the air. The gust sends you sprawling to the floor in a heap.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Hissing out a single word, Balai the Scorned conjures a mighty geyser of water that blasts you clean off your feet and sends you sprawling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A domesticated water buffalo charges at you, sending you sprawling to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The staff in Jerak, Captain of the Guard's hands becomes a blur as he slams it into your head three times in rapid succession, then finishes with a vicious thrust to your chest.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The ground beneath you begins to shake and it sends all around it tumbling to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stun (2s)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Hefting an impressive block of debris, a young worshipper brings it crashing down on your head.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stupidity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Raising her hands to the sky, an Eleusian elementalist summons a mighty hailstorm upon you. The falling stones strike your head, leaving your mind scrambled.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Swinging his off-hand, an Ashtani corsair catches you on the temple with a tactless blow that leaves you struggling to think clearly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Moving with precision, a runic knight quickly swings his broadsword at your head. Turning at the last instant, he brings the flat of his blade in contact with your skull, knocking you senseless.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An infernal wraith pulls back harshly on the reins of his steed, which rears back and kicks you powerfully in the forehead. Your mind swims as you reel from the blow.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "As the liquid enters your system, you begin to feel your intelligence slowly drop.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "His muscles heaving, a dwarf smith bashes you in the head with his hammer.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A humble monk step towards you, striking you directly under your chin with his staff. The blow causes your vision to swim and things become hazy.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lord Adryn balls his fat hand into a fist and pounds it against the side of your head.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You fall back on your heels, feeling disoriented and strange.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A diligent monk step towards you, striking you directly under your chin with her staff. The blow causes your vision to swim and things become hazy.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Stepping smartly forward, a court constable twirls his baton before swinging it at your head. The sturdy wood connects solidly, and you reel dizzily from the blow.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A mad cackle echoes throughout the cavern as you are pounded repeatedly with a blunt object from an unseen assailant.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A stern monk step towards you, striking you directly under your chin with his staff. The blow causes your vision to swim and things become hazy.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Tossing his club aside, a massive wendigo grabs you with a vice-like grip and easily lifts you up, then brutally slams you into the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The staff in Jerak, Captain of the Guard's hands becomes a blur as he slams it into your head three times in rapid succession, then finishes with a vicious thrust to your chest.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Slashed throat",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Xerafel lumbers toward you with surprising speed, and slits your throat viciously with a long, thin blade.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Shyness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Vingar, the Mercenary Captain yells a roaring battle cry and advances towards you, an evil grin on his face. Panicked, you dive for cover.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Transfix",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Xulu, an orc witchdoctor bows his head and closes his eyes. After a moment, you feel your mind becoming entangled and twisted by his mental puissance.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Waving his appendages before your face, a tentacled polyp leaves a number of deep lacerations and manages to leave you transfixed.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A cloud of gnats flies about in stunning patterns, transfixing your attention.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A proud ducal guard whirls his blades in a shining nexus of glittering steel that seizes your attention and transfixes you utterly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Encircling you with his large body, a large, albino centipede rapidly spins around you in a mesmerising display.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Voyria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A giant sea serpent's teeth puncture through skin as he clamps down tightly, sending his venom coursing into you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You watch in horror as a hooded man clamps his ebon teeth into your skin. You begin to sweat profusely as a sickly venom ebbs into your blood.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A Rhaan of Enuru draws a pair of blackened longswords, each dripping with a translucent liquid, and plunges them deep into your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Webbed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Stretching her fingers outward, Erato, spirit of the Eastern Ithmia coaxes a tangle of vines and branches from the surrounding forest to hinder you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An elite guardsman touches a web tattoo, and you are covered with sticky webs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Issuing a garbled chant, a dwarf initiate points her warhammer at you and covers you with a sticky black film.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A large pulsating spider sprays you with a sticky webbing, which quickly entangles your limbs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Long, translucent tentacles encircle your limbs as a monstrous skolef crushes the life from you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Shadows suddenly coalesce and pull at you at Gloom, the Occultist's invocation.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lashing out at your arms, Kimitia, a Quisalis apprentice wraps her whip around your wrists and pulls you hard to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Inish, the head cultist chants solemnly, weaving his hands and sending an entangling web of crimson magic over you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A mass of sticky tendrils streak out from an enormous marsh ooze, wrapping you in a cocoon of slime.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Malvoc, the unholy reaches into the dark ether and pulls out a powerful soulspear, which he quickly sends flying into your torso.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An ugly tentacle lashes out from a hideous claw fiend and wraps around your torso, pulling you closer to its hideous form.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A battered Ashtani lieutenant makes a lunging stab at you with his longsword, impaling you to the hilt.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Frogtima the Prophetess spits at you with a corrosive glob of green goo.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Tightly grasping a lengthy cloth, Tickler, the tavernkeeper flicks it at you, whipping your chest and entangling you in the rag.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The Termite Queen opens her maw, unleashing a netting of saliva across the chamber.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Aiming her bow downwards, an apprentice assassin fires an arrow into your foot, pinning you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lashing out at your arms, Kimitia, a Quisalis Assassin wraps her whip around your wrists and pulls you hard to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An unkempt horse thief flings his whip in your direction and traps you in a painful mass of rope.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Leighann's svo bashing triggers",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "return (gmcp.Room and gmcp.Room.Info) and true or false",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Sleep",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Abruptly, you feel a stabbing pain in your chest before you feel yourself drift into sleep as a disembodied voice whispers, \"Sleep, sleep...\"",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A sense of exhaustion suddenly overcomes you, causing you to take a nap.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

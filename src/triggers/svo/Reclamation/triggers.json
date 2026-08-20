@@ -1,0 +1,46 @@
+[
+  {
+    "name": "Spores",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As you inhale the spores, you feel suddenly exhausted.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "As you inhale the spores, you feel light-headed and dizzy.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "As you inhale the pollen, it clogs your lungs and you hack and cough.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Constrict",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The vines surrounding you suddenly lash out, whipping about you and entangling you.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

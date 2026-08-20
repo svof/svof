@@ -1,0 +1,1 @@
+svo.valid.retardation_gone()

@@ -1,0 +1,1 @@
+svo.valid.restoration_noeffect()

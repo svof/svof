@@ -1,0 +1,1 @@
+svo.startedfighting("shaman", matches[2])

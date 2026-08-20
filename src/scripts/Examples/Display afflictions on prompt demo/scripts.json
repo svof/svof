@@ -1,0 +1,10 @@
+[
+  {
+    "name": "mm_display_affs",
+    "isActive": "no",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "svo done with prompt"
+    ]
+  }
+]

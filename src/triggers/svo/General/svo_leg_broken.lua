@@ -1,0 +1,1 @@
+setTriggerStayOpen("Applied salve", 1)

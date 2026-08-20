@@ -1,0 +1,59 @@
+[
+  {
+    "name": "stunned",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An ozhera chick concentrates his attention on you briefly before throwing two large rocks, which strike you hard in the chest.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An ozhera minorus concentrates his attention on you briefly before throwing two large rocks, which strike you hard in the chest.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An ozhera chick picks a large rock off the ground, throwing it straight at your head.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The ozhera matriarch picks a large rock off the ground, throwing it straight at your head.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An ozhera majorus picks a large rock off the ground, throwing it straight at your head.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "prone/stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A sleek dirangi leaps up into the air with blinding speed, bouncing nimbly off a wall before landing directly on top of you, knocking you to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A lean dirangi leaps up into the air with blinding speed, bouncing nimbly off a wall before landing directly on top of you, knocking you to the floor.",
+        "type": "exactMatch"
+      }
+    ],
+    "script": "svo.valid.simplestun()\nsvo.valid.simpleprone()"
+  }
+]

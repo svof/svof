@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Def strip",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your (.+) defence corrodes beneath its profane proximity\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hound dismount",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A hound lunges at your mount, startling it to buck and jump, and you are thrown to the side like a rag doll.",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "You deftly land upright!",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "99",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You deftly land upright!",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Thrown",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You are thrown to the ground!",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Hound stripped rebounding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a baying howl the chaos hound lunges for you, your aura of rebounding dissolving under vicinity to its malign nature.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

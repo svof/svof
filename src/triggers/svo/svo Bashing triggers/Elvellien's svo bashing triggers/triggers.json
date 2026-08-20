@@ -1,0 +1,118 @@
+[
+  {
+    "name": "Zombie kicked leg",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A small zombie kicks his rotting foot into your leg and you hear bones crunch.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Zombie punched arm",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A small zombie smashes his rotting fist into your arm and you hear bones crunch.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Zombie bit me!",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A \\w+ zombie lunges forward and bites into your shoulder with his rotten teeth\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Zombie paralyzed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A noxious fume squirts out of a small zombie, making your jaw tighten and knocking you to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Log'obi",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Log'obi, an ogre shaman conjures a ball of fire and hurls it at you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Azdun goblins",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A goblin foreman swings a hard throw to your limbs, and you feel numb.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A goblin miner swings a hard throw to your limbs, and you feel numb.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

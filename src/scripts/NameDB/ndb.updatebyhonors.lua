@@ -1,0 +1,1 @@
+-- this just registers the handler, the script is supposed to be blank

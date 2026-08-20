@@ -1,0 +1,190 @@
+[
+  {
+    "name": "Concussion bomb",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Its concussion wave slams into you, stunning you momentarily.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The explosion's concussion wave slams into you, stunning you momentarily.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Itching",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A sudden itch drives you half-mad, and you scratch it furiously.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Webbed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "It throws strands of sticky webbing over you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You slip and fall on a banana peel!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Handspring",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ does a back handspring to the \\w+, striking you with \\w+ feet on the way out\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Jack-in-the-Box start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) sets a jack\\-in\\-the\\-box on the ground and quickly winds it while whispering, '(\\w+)\\.' The cheerful music of a lute begins to emanate from it\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Jack-in-the-Box two",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The music of the jack-in-the-box becomes faster and more frantic and a loud voice from within yells, ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^The music of the jack\\-in\\-the\\-box becomes faster and more frantic and a loud voice from within yells, \"(\\w+), I'm a-cooomiiiiing!\"$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Prone 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ slams into you, knocking you to the ground as \\w+ feet slam into your chest\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Mickey",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You pop it into your mouth, only to realise that someone slipped you a mickey!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Bop",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) reaches out and bops you on the nose with \\w+ blackjack\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

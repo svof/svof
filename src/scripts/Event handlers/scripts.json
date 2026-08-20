@@ -1,0 +1,47 @@
+[
+  {
+    "name": "svo_events",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "CharVitals",
+      "CharName",
+      "RoomNum",
+      "RoomBrief",
+      "sysDataSendRequest",
+      "sysExitEvent",
+      "mmapper updated pdb",
+      "svo lost balance",
+      "svo got balance",
+      "svo prio changed",
+      "svo system loaded",
+      "svo config changed",
+      "svo serverignore changed",
+      "svo ignore changed",
+      "svo defup changed",
+      "svo keepup changed",
+      "svo switched defence mode",
+      "svo done defup",
+      "NameDB finished honors"
+    ]
+  },
+  {
+    "name": "svo_gevents",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "gmcp.Char",
+      "gmcp.Room",
+      "gmcp.Char.Status",
+      "gmcp.IRE.Time"
+    ]
+  },
+  {
+    "name": "svo.savesettings",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysExitEvent"
+    ]
+  }
+]

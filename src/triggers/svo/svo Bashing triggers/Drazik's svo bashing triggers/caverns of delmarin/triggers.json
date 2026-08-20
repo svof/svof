@@ -1,0 +1,38 @@
+[
+  {
+    "name": "dyissan double loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Dark green fletching buzzes as a Dyissan warrior fires a pair of arrows, their ooze-laden heads thudding into your chest.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "sanass loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Swiftly drawing his dirk, Sanass, the Chosen slides around behind you and plunges the blade deeply into your side, causing a strange burning sensation to shoot through your body.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

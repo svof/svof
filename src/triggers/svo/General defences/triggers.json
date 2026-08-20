@@ -1,0 +1,969 @@
+[
+  {
+    "name": "svo def start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have the following defences:",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "svo def none",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "   None.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Def line",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are protected by",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "svo started dragonform (lesser)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a grimness born of determination, you begin to unleash the Dragon that is now so much a part of the fabric of your soul.",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With a grimness born of determination, you begin to unleash the Dragon that is now so much a part of the fabric of your soul\\. A (\\w+) light begins to shine through from within you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svo started dragonform (elder)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Invoking the power that the line of Sycaerunax grants you, you will forth the Dragon within",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Invoking the power that the line of Sycaerunax grants you, you will forth the Dragon within, and a \\w+ light begins to emanate from your very soul\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svo mid-dragonforming",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^As the (\\w+) light shining from you grows to an intensity that threatens to blind lesser beings, the mighty Dragon quickly subsumes your physical form, and raw power floods your mind\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svo already have dragonform",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You already maintain the form of the Dragon.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cancelled dragonform",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You cease your transformation into Dragonform.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo obtained dragonform",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With an ear-splitting roar, you rear back your draconic head and scream out your triumph.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Reveling in your total mastery of the form, you beat your mighty wings, throw your massive head back, and roar your challenge to the world. You are Dragon!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo started dragonbreath",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel your eyes begin to blaze as you summon lightning to your belly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With an almost inaudible growl, you begin summoning a fiery inferno into your belly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a great effort, you begin to summon caustic hell to your innards.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Flaring your wings and head back, you begin summoning forth the icy cold of the pure, endless void into your belly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a great shudder, you begin to summon forth the defiling, deadly wyrmvenom of legend.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Calling upon the vast well of mental power at your disposal, you begin to summon a mind-rending blast of psi energy.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo obtained dragonbreath",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your (\\w+) summoning is complete\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svo qsc check dragon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are level",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "svo dragon can't mount",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You cannot ride anything while in Dragon form.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo alreadyhave dragonbreath",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You already have your breath summoned, Wyrm.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo fitness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are already feeling fairly fit.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You inhale deeply, allowing the air to fill your mighty lungs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo sileris/quicksilver start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You apply a sileris berry to yourself.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You apply a quicksilver droplet to yourself.",
+        "type": "exactMatch"
+      }
+    ],
+    "script": "svo.defs.sileris_start()"
+  },
+  {
+    "name": "svo sileris/quicksilver finished",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The sileris berry juice hardens into a supple purple shell.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The quicksilver hardens into a supple metallic shell.",
+        "type": "exactMatch"
+      }
+    ],
+    "script": "svo.defs.sileris_finished()"
+  },
+  {
+    "name": "svo sileris/quicksilver slickness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are too slick for the quicksilver to take hold, and it is wasted.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You are too slick for the berry juice to take hold, and it is wasted.",
+        "type": "exactMatch"
+      }
+    ],
+    "script": "svo.defs.sileris_slickness()"
+  },
+  {
+    "name": "svo block",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You move over to block the",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You move over to block the (.+) exit\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svo block failed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "There is no exit to block that way.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo got breath",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You inhale deeply and begin holding your breath.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You are already holding your breath.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo lost breath",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You cease holding your breath and exhale loudly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo breath command",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "[Curing]: HOLD BREATH",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo jousting",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You lower",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^\\w+ lowers",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "you lose :(",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You are sent tumbling off your \\w+ and your weapon goes flying in the air\\.$",
+            "type": "regex"
+          }
+        ],
+        "script": "svo.valid.simpleprone()\nsvo.defs.lost_riding()"
+      },
+      {
+        "name": "it's a tie :|",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "1",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Your mounts collide with great force and your weapons viciously skewer each other, causing you both to fall off your mounts as your weapons fly into the air.",
+            "type": "substring"
+          }
+        ],
+        "script": "svo.valid.simpleprone()\nsvo.defs.lost_riding()"
+      }
+    ]
+  },
+  {
+    "name": "svo resistances",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You turn",
+        "type": "startOfLine"
+      }
+    ],
+    "children": [
+      {
+        "name": "fire",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "A coruscating stream of sanguine light emanates from its band, surrounding you with a scintillating aura.",
+            "type": "substring"
+          }
+        ]
+      },
+      {
+        "name": "cold",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "A frigid stream of cerulean light emanates from its band, surrounding you with a frosty aura.",
+            "type": "substring"
+          }
+        ]
+      },
+      {
+        "name": "magic",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "99",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "A swirling stream of heliotrope light emanates from its band, surrounding you with a shimmering aura.",
+            "type": "substring"
+          }
+        ]
+      },
+      {
+        "name": "electric",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "3",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "A crackling stream of argentine light emanates from its band, surrounding you with a flickering aura.",
+            "type": "substring"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Shindo defences",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Kaido defences",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Healing + Elementalism channels",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Propagation defences",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Harmonics defences",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Spirituality defences",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "svo got rebounding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel an aura of rebounding surround you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo rebounding death tarot",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your skullcap aura is prevented from coming up by your attunement on Death Himself.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your skullcap aura is prevented from coming up by your furious winding.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo got insomnia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You clench your fists, grit your teeth, and banish all possibility of sleep.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You are already an insomniac.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo lost insomnia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your insomnia has cleared up.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo got thirdeye",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You now possess the gift of the third eye.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You already possess the third eye.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo got deathsight",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your mind is already touched by the Deathgod.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You shut your eyes and concentrate on Thoth, the God of Death. A moment later, you feel inextricably linked with Death itself.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Occultism defences",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Groves defences",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Necromancy defences",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Alchemy defences",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "svo lost bloodsworn",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The power of the bloodsworn leaves you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo medidate done",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You cease your meditation having achieved full will and mana.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo riding already on",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You must dismount before you can mount anything else.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You cannot do that while mounted.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You must dismount from what you are currently riding before you can mount anything else.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo morph completed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are surrounded by a shining corona of blinding light as your soul is transformed by metamorphosis.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

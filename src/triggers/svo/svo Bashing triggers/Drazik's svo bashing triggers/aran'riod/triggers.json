@@ -1,0 +1,60 @@
+[
+  {
+    "name": "shaman aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "O'ising, Yriluawe shaman utters a string of words, and the world around you seems to slow down.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "priestess blackout prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A'dene, Priestess of the Holy Three directs a dazzling ray of divine light at you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "oracle loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A'leess, Oracle of the Yriluawe gives you a vengeful stare, and dark images begin to whisper to you from the edges of your mind.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An unspeakable, horrific image rises from the bowels of hell to plague you.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Enable Comm",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "svo_captureChats",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "gmcp.Comm.Channel.Start"
+    ]
+  },
+  {
+    "name": "Rift label dimensions",
+    "isActive": "yes",
+    "isFolder": "no"
+  }
+]

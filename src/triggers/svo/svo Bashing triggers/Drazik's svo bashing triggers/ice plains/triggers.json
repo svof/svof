@@ -1,0 +1,126 @@
+[
+  {
+    "name": "ice plains prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Ne'bula, the headman hooks your leg with his spear and trips you, sending you sprawling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Stepping forward quickly, a massive wendigo delivers a vicious headbutt to you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Stepping forward quickly, Kromlech, the bridgekeeper delivers a vicious headbutt to you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Stepping forward quickly, Shmeeg, an old wendigo delivers a vicious headbutt to you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "scarab loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Some of the sharp spines shoot out of an ice scarab's legs, hissing through the air and embedding themselves deeply into your neck.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "scarab paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An ice scarab quickly flits inside of your guard and jabs the slender needle-like spines on its legs into your neck. As the venom seeps into your bloodstream, you feel your entire muscular system shut down.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ice spider web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Rearing back, a crystal spider shoots a strong, icy web at you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ice golem chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An ice golem batters you with its elemental arms.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An ice golem wraps its limbs about you and begins to crush the life from you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "maklak chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Maklak, the ice wizard points his finger at you, and you are overcome with a deep, invasive cold.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

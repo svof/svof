@@ -1,0 +1,1 @@
+svo.regain_both_arms = true

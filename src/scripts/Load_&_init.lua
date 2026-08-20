@@ -1,0 +1,27 @@
+-- Controls the loading of the addon modules
+svo.modules_list = {
+    'svo (actions dictionary)',
+    'svo (alias and defence functions)',
+    'svo (curing skeleton, controllers, action system)',
+    'svo (custom prompt, serverside)',
+    'svo (install, config, pipes, rift, parry, prios)',
+    'svo (setup, misc, empty, funnies, dor)',
+    'svo (trigger functions)',
+    'svo (aliases, triggers)',
+    'svo (namedb)',
+    'svo (elistsorter)',
+    'svo (fishdist)',
+    'svo (inker)',
+    'svo (logger)',
+    'svo (mindnet)',
+    'svo (offering)',
+    'svo (peopletracker)',
+    'svo (reboundingsileristracker)',
+    'svo (refiller)',
+    'svo (runeidentifier)',
+    'svo (stormhammertarget)',
+    'svo (limbcounter)',
+    'svo (burncounter)',
+    'svo (priestreport)',
+    'svo (enchanter)'
+  }

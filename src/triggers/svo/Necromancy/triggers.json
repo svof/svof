@@ -1,0 +1,196 @@
+[
+  {
+    "name": "Shrivel arms",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Before you can avoid it,",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Before you can avoid it, \\w+'s hand brushes against your arm and it withers away\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Shrivel legs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ reaches out and grabs your leg, which almost gives way underneath you as it shrivels feebly away\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Shrivel an arm",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You stumble slightly as",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You stumble slightly as \\w+ touches your (left|right) leg, and it shrivels away\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Shrivel a leg",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You watch in horror as ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You watch in horror as \\w+ touches your (right|left) arm, and it shrivels away to uselessness\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Disloyalty",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ curses you with the visage of a rotting corpse\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ sends the cold of the grave to freeze you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Leprosy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "18",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ begins to chant darkly and crusty green sores coat \\w+ hands\\. \\w+ begins to flail \\w+ arms wildly and one of \\w+ hands brushes your skin\\. Immediately, your (left|right) (arm|leg) and (left|right) (arm|leg) shrivel up in response\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Infestation",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You recoil in horror as countless maggots squirm over your flesh, burrowing into your pores.",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "Hypersomnia",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "An urge to visit the Goddess of Dreams overcomes you.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Lethargy",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You feel your energy robbed from you as lethargy overtakes you.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  }
+]

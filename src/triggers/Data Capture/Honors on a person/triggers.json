@@ -1,0 +1,441 @@
+[
+  {
+    "name": "Honors",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "100",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ is \\d+ years old,",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ date of birth is hidden by the sand of Aeon.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ was born before the fall of the Seleucarian Empire.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Stop getting (honors)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "",
+            "type": "prompt"
+          }
+        ]
+      },
+      {
+        "name": "Age",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ is (\\d+) years old, having been born on the (\\d+)(?:st|nd|rd|th) of (Sarapin|Daedalan|Aeguary|Miraman|Scarlatan|Ero|Valnuary|Lupar|Phaestian|Chronos|Glacian|Mayan), (\\d+) years after the fall of the Seleucarian Empire\\.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Age hidden",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "His date of birth is hidden by the sand of Aeon.",
+            "type": "exactMatch"
+          },
+          {
+            "pattern": "Her date of birth is hidden by the sand of Aeon.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "XP rank",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ is ranked (\\d+)\\w+ in Achaea\\.",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Unranked",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ is unranked in Achaea.$",
+            "type": "regex"
+          },
+          {
+            "pattern": "^\\w+ has given up the adventuring life.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Combat rank",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ is the (\\d+)(?:st|nd|rd|th) ranked combatant with a rating of (\\d+)\\.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "City & rank",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ is an? (\\w+) in (\\w+)\\.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "City soldier",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ is .+ in the army of (?:Ashtan|Cyrene|Eleusis|Hashan|Mhaldor|Targossas)\\.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Housemate",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ is .* in the (\\w+)\\.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Might",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "87",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ is considered to be approximately (\\d+)% of your might\\.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Equal might",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ is considered to be approximately equal to your might.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Any line",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "99",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "return true",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "ivory mark",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ is a member of the Ivory Mark.$",
+            "type": "regex"
+          },
+          {
+            "pattern": "^\\w+ is the .+? in the Ivory Mark\\.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "quisalis mark",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ is the Silent Executioner in the Quisalis Mark.$",
+            "type": "regex"
+          },
+          {
+            "pattern": "^\\w+ is a member of the Quisalis Mark.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Divorced",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ has been divorced (?:(\\d+) times|once)\\.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Arms",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ bears the arms: (.+)\\.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Motto/Warcry",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ (motto|warcry): '(.+)'$",
+            "type": "regex"
+          }
+        ],
+        "script": "if not temp_name_list then return end\n\ntemp_name_list[1][matches[2]] = matches[3]:trim()"
+      },
+      {
+        "name": "Not Infamous",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ is not known for acts of infamy.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Infamous",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Infamous",
+            "type": "substring"
+          },
+          {
+            "pattern": "^(\\w+) (.+)\\.$",
+            "type": "regex"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "No Honours",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "There is no such person, I'm afraid.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Immortal",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ was born before time was counted.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "His birth was foretold in legend.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "He was born from the Spiral Ribbons of Creation.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "He is the last of the line of Nicator.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

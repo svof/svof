@@ -1,0 +1,1 @@
+svo.valid.cured_burn_health()

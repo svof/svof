@@ -1,0 +1,1 @@
+setTriggerStayOpen("Messages list (new layout)", 0)

@@ -1,0 +1,1 @@
+svo.valid.nomana_clot()

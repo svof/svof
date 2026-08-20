@@ -1,0 +1,598 @@
+[
+  {
+    "name": "Voyria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A Qui'sas assassin jams a few darts into his weapon, firing the deadly arsenal deep into your chest.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stupidity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel slightly sick to your stomach and sway on your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Raising a blow dart to his mouth, a Qurnok warrior exhales a blast of air which quickly sends two darts into your chest.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Slipping behind you, Dakrol, the Swiftblade smashes the flat side of his blades into the side of your head.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Pain erupts throughout your skull as Yuroc, the Black Wing slams his club into the side of your head.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Geltar, Patriarch of the Dirangi leaps quickly at you, his front paws striking you across the face shortly before his back paws strike you upon the shoulders.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "*",
+        "type": "startOfLine"
+      }
+    ],
+    "children": [
+      {
+        "name": "regex",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^([A\\*][ \\*][p\\*][r\\*][i\\*][c\\*][k\\*][l\\*][y\\*][ \\*][s\\*][t\\*][i\\*][n\\*][g\\*][i\\*][n\\*][g\\*][ \\*][o\\*][v\\*][e\\*][r\\*][c\\*][o\\*][m\\*][e\\*][s*][ \\*][y\\*][o\\*][u\\*][r\\*][ \\*][b\\*][o\\*][d\\*][y\\*][,\\*][ \\*][f\\*][a\\*][d\\*][i\\*][n\\*][g\\*][ \\*][a\\*][w\\*][a\\*][y\\*][ \\*][i\\*][n\\*][t\\*][o\\*][ \\*][n\\*][u\\*][m\\*][b\\*][n\\*][e\\*][s\\*][s\\*][.\\*])$",
+            "type": "regex"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Unknown",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Nocking an arrow, a master assassin slips to the side and fires the missile into your side.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Twirling the weapon in his hand, a Quisalis assassin jabs his venomed dirk into your side.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A Qui'sas assassin inhales with a quick gasp and presses his lips to the end of his blowgun. A gust of air launches a rain of poisoned darts across the chamber into your flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Drawing a green-tipped arrow from his quiver, a Qui'sas hunter launches it into you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Master Jotbla smashes his warhammer downward into your head with a maniacal cackle.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Selarnia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You shudder and grimace, straining to maintain your metamorphosis.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Illness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A Qui'sas assassin jams a few darts into his weapon, firing the deadly arsenal deep into your chest.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Complex Aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel drawn, thinned, and the world around you speeds up noticeably.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Sleep",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Kimitia, a Quisalis apprentice whispers, \"Sleep, you,\" snaps her fingers in front of your face, and you immediately fall asleep.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Drawing a blue-tipped arrow from his quiver, a Qui'sas hunter shoots it at you deftly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Unknown Mental",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Master Jotbla smashes his warhammer downward into your head with a maniacal cackle.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stunned",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Slipping behind you with ease, Mistress Livastra wraps her whip around your neck and pulls back with her full weight, momentarily stunning you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Unknown Crippled Limb",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A crystal georith wraps itself around you, tightening his grip until you feel your bones crack beneath the pressure.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A rockhide basilisk turns his sightless gaze upon you as you feel your muscles tighten and freeze painfully.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Drawing a red-tipped arrow from his quiver, a Qui'sas hunter fires it at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The basilisk turns its infamous gaze to you and suddenly your body refuses to respond to your commands.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Loading a dart into his blowgun, a Qui'sas assassin breathes deeply before rocketing the poison needle in your direction.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your state of paralysis prevents you from doing that.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A Quisalis overseer throws a set of poisoned stars across your flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Xulu, an orc witchdoctor claps his hands together softly. At the same moment, your body is wracked by pain as your muscles alternately seize and lock.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis&Fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Screams and cries rise all around you and you are drawn into their suffering as you feel the life being sucked from within you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Webbed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Holding you still with two of its eight legs, a massive jade spider sends a spray of shimmering webbing out to cover you, binding you tightly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Aiming her bow downwards, a master assassin fires an arrow into your foot, pinning you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lashing out at your arms, Kimitia, a Quisalis apprentice wraps her whip around your wrists and pulls you hard to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Sweeping you off your feet with one swift kick, a Quisalis guard drives his longsword through you, impaling you on the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A dream horror strains heavily, a thick noxious fog pouring from its pores and covering your skin in a burning, sticky liquid.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A massive jade spider leaps through the air and descends upon you, crushing you beneath the weight of its body.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lowering his head, a hulking hobgoblin charges toward you and knocks you back with his shoulder.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Taking a firm grip of your wrist, Master Jotbla wrenches your arm across his back, throwing you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Twisting his body, Zen'fi Haar'chen smacks his tail into your knee with a sickening pop, sending you sprawling to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Sweeping you off your feet with one swift kick, a Quisalis guard drives his longsword through you, impaling you on the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a magisterial wave of his hand, Xylthus the Outcast projects a wave of force, knocking you down.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Dragging the shaft of his halberd across the floor, a Quisalis sentry spins in a wide circle, knocking everyone to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Dropping into a crouch, a Quisalis assassin sweeps your legs from beneath you, knocking you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Stretching his tattered wings a trained war vulture lunges toward you, lowering his head to slam into your legs and knock you backwards.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A dream horror swipes at you with one of its tentacles, sending you sprawling to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A carnivorous lycopod swipes a long corded vine at your feet, sending you sprawling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lunging forward, an enormous anaconda slams its large head against your body, causing you to fall to the ground in agony.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A colossal, hulking ghoul draws his massive hands together in a thunderclap with you at its centre.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You feel drawn, thinned, and the world around you speeds up noticeably",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Aeon&Webbed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "40",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^The Ur'Vampire Prioska bows her head, slumping forward as if in deep thought. You feel drawn, thinned, and the world around you speeds up noticeably\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^A shiver of panic runs down your spine as the horror of a decaying zombie's existence strikes you.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "With a bellowing howl, a dream horror fills your mind with the images of horrific nightmares.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Unknown Crippled Leg",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^In one quick motion, Westriv Talkar leans down and severs your hamstring\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "Twisting his body, Zen'fi Haar'chen smacks his tail into your knee with a sickening pop, sending you sprawling to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Jaaran, Tsol'aa guard brings his thick quarterstaff down upon your leg with a powerful blow, and you hear the bone crack.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Sleep 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Kimitia, a Quisalis apprentice whispers, \"Sleep, you,\" snaps her fingers in front of your face, and you immediately fall asleep.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Unknown Crippled Arm",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Grabbing the warhammer with both hands, Master Jotbla aims his swing carefully, crashing the blunt weapon into your hand.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Hefting his battleaxe above his head, Vukub Ysin'zhu, the Ogre Baron hacks downward into your body, nearly severing your arm.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Pointing a clawed hand at you, Zen'fi Haar'chen whips a lash of fire into your flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dizziness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With great force, Yuroc, the Black Wing swings a bone mace into the side of your head.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis and icing",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^An ice hellion raises her staff and points it at you, sending a bolt of ice to freeze you in place\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

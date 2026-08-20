@@ -1,0 +1,1 @@
+svo.lc_checkdamage = true

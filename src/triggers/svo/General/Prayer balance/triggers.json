@@ -1,0 +1,200 @@
+[
+  {
+    "name": "svo lost prayer",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\"Return to ash,\" you decree, focussing your holy might upon (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"And you shall be naught but cinders,\" you decree, focussing your holy might upon (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"Attend me,\" you intone to (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"So listen well,\" you intone to (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"Burn!\" you command (\\w+), fire leaping forth to sear \\w+.",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"Your crimes shall not go unpunished,\" you recite to (\\w+), voice hard with condemnation.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"Your sins condemn you to this fate,\" you recite to (\\w+), voice hard with condemnation.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"We will endure until our work is done,\" you murmur, laying a hand upon the brow of (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "\"We will endure until our work is done,\" you murmur.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^\"Sheltered by His duty,\" you murmur, laying a hand upon the brow of (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"And sheltered by His duty,\" you murmur, laying a hand upon the brow of (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "\"Sheltered by His duty,\" you murmur.\"",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^\"May your body reflect your faith,\" you intone, readying yourself for a crushing blow against (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"As you fall before the weapons of Their faithful,\" you intone, readying yourself for a crushing blow against (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "\"Onward for the Bloodsworn. Onward for Creation!\" you cry, raising your arms in a beckoning gesture.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^\"Know the pain which you have caused,\" you proselytise to (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"And your guilt will be made plain,\" you proselytise to (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "\"May the Light lead, and we never fail to follow!\" you cry out.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^\"Repent for your crimes!\" you denounce (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"And face your penance!\" you denounce (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"Their blades shall break upon our shields,\" you murmur, laying a hand upon the brow of (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "\"Their blades shall break upon our shields,\" you murmur.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^\"I deem you unfit for Creation!\" you proclaim, pointing imperiously at (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"And thus I deem you unfit for Creation!\" you proclaim, pointing imperiously at (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"May you yet feel the pain you so inflict.\" you recite to (\\w+), your holy protections surging around you.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"And see that which Evil reaps!\" you recite to (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "\"A bulwark to stave off the darkness!\" you thunder, spreading your arms wide in supplication.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^\"The light shall not be denied,\" you declare, as you prepare for your clash with (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"For justice shall not be averted,\" you declare, as you prepare for your clash with (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"Protected from the ravages of the Outer Cold,\" you murmur, laying a hand upon the brow of (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "\"Protected from the ravages of the Outer Cold,\" you murmur.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^\"We shall not falter,\" you murmur, laying a hand upon the brow of (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"For we shall not falter,\" you murmur, laying a hand upon the brow of (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "\"We shall not falter,\" you murmur.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "\"For we shall not falter,\" you murmur.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^\"Burn, blight upon Creation!\" you dictate to (\\w+), holy flame wreathing \\w+ in cleansing fury.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\"And may the cleansing fires consume you!\" you dictate to (w\\+), holy flame wreathing \\w+ incleansing fury.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svo missing prayer",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "It is not yet time to recite the next verse of your prayer.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo got prayer",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You may speak another holy verse.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

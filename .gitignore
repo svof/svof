@@ -67,3 +67,9 @@ bin/svo.namedb.lua
 /.bzr/
 output/*.zip
 /NUL:
+
+# muddler build output
+build/
+.output
+__pycache__/
+*.pyc

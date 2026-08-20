@@ -1,0 +1,2 @@
+svo.pipeout()
+if svo.conf.gagrelight and not svo.inslowcuringmode() then svo.deleteLineP() end

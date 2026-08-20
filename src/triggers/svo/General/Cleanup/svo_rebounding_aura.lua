@@ -1,0 +1,1 @@
+svo.paragraph_length = svo.paragraph_length - 1

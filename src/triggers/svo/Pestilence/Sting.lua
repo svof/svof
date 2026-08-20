@@ -1,0 +1,1 @@
+svo.startedfighting("pariah", multimatches[1][2])

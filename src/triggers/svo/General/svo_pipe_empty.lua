@@ -1,0 +1,1 @@
+svo.valid.empty_light()

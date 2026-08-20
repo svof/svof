@@ -1,0 +1,1 @@
+svo.config.set("lyre", "off", true)

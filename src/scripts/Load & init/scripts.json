@@ -1,0 +1,50 @@
+[
+  {
+    "name": "svo_init_system",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysLoadEvent",
+      "sysInstall"
+    ]
+  },
+  {
+    "name": "svo.classchange",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "gmcp.Char.Status"
+    ]
+  },
+  {
+    "name": "svo.install_other_modules",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysInstallModule",
+      "sysLuaInstallModule"
+    ]
+  },
+  {
+    "name": "svo.installed_as_package",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysInstallPackage"
+    ]
+  },
+  {
+    "name": "svo.uninstall_all_modules",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysUninstallModule",
+      "sysLuaUninstallModule"
+    ]
+  },
+  {
+    "name": "svo.install_from_zip",
+    "isActive": "yes",
+    "isFolder": "no"
+  }
+]

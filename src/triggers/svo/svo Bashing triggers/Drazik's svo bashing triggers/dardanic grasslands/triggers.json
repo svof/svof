@@ -1,0 +1,219 @@
+[
+  {
+    "name": "dardanic stupid",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A savannah grizzly rears up on his hind legs, lets loose a great roar, and slams both his broad paws against your head.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "tsetse fly stun/transfix",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A tsetse fly hovers before you while showing his beautiful wings, dazzling you with the swirling, iridescent patterns appearing within them.",
+        "type": "exactMatch"
+      }
+    ],
+    "script": "svo.valid.proper_stun()\nsvo.valid.proper_transfix()"
+  },
+  {
+    "name": "tsetse fly nap time",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A tsetse fly dives toward you, stinging you sharply as you feel an increasing numbness in your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "nasty lamb",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "2",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Bleating with fear, a woolly barmotez runs around you, strangling you in his umbilical cord.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "dardanic roped",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A green-banded amphisbaena launches himself upward and wraps himself around your neck, squeezing tightly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "dardanic voyria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With blazing red eyes, the right head of the a green-banded amphisbaena lunges forward and bites you in the leg.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "dardanic loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a hiss, the left head of a green-banded amphisbaena darts forward and bites you in the leg.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "bear prone leg",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A savannah grizzly swings his sharp claws at you in a massive swipe and knocks you on the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "savannah lion pwn attack - I want this!",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a powerful push from his hind legs, a savannah lion soars through the air and lands on you with a bone-breaking crash.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "lioness limb breaks",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A savannah lioness lunges forward and bites you painfully with her large teeth.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "lioness stun prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A savannah lioness pounces on you, knocking the wind from your lungs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "don't mess with this lioness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A savannah lioness grabs your leg between her teeth and shakes you around like a rag doll.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

@@ -1,0 +1,130 @@
+[
+  {
+    "name": "mhun knight arm breaks",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Aiming his swing towards your upper body, a mhun knight shatters your arm with a skilled shot.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "moghedu leg breaks",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Aiming his swing towards your upper body, a mhun knight shatters your leg with a skilled shot.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Moving swiftly, a mhun labourer crushes the side of your leg with the side of his pick.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A mhun knight swings low with his mace, crushing your leg with the sweeping attack.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "mhun prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Moving with catlike agility, the mhun Captain of the Guard sweeps out your legs with the side of his axe.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Gripping his spear in both hands, a mhun warrior rears back and swings down, knocking your legs out from under you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a sweeping kick of his leg, a mhun bodyguard trips you up and sends you tumbling to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Grabbing you with his massive hands, the Great Mhunna picks you up and slams you into the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "mhunna webs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Turning his amulet quickly, the Great Mhunna covers you in a sticky webbing from within the item.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "demolitionist ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A mhun demolitionist tosses a lit canister at you, turning his face as it explodes into a pillar of fire.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "keeper voyria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Wiping a strange liquid on each blade, an elite mhun keeper hacks into you delivering the venoms.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

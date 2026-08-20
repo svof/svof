@@ -1,0 +1,1 @@
+svo.valid.fitness_cured_asthma()

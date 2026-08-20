@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Do-Repeat forever",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^dor(?: (.+))?$"
+  },
+  {
+    "name": "Do",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^do (.+)$"
+  },
+  {
+    "name": "Do first",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^dofirst (.+)$"
+  },
+  {
+    "name": "Do free",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^dofree (.+)$"
+  },
+  {
+    "name": "Do first free",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(?:dofreefirst|dff) (.+)$"
+  },
+  {
+    "name": "Undo",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^undo(?: (\\w+))?$"
+  },
+  {
+    "name": "Undo all",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^undoall$"
+  },
+  {
+    "name": "Undofree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^undofree$"
+  },
+  {
+    "name": "Undo all free",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^undoallfree$"
+  },
+  {
+    "name": "Show do",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow do$"
+  },
+  {
+    "name": "Do #",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^do(\\d+) (.+)$"
+  },
+  {
+    "name": "Dofree #",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^dofree(\\d+) (.+)$"
+  }
+]

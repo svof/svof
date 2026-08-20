@@ -1,0 +1,154 @@
+[
+  {
+    "name": "svo",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "Dispose of decays",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^dispose of decays by: (.+)$"
+  },
+  {
+    "name": "Get obfuscated vials out of pack",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vialsout$"
+  },
+  {
+    "name": "elist/vlist",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(?:e|v)list$",
+    "script": "svo.gag_list = true\nsend(\"config pagelength 250\", false)\nsend(command, false)"
+  },
+  {
+    "name": "Ink",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ink (.+) on (\\w+(?: arm| leg)?)(?: of (\\w+))?"
+  },
+  {
+    "name": "(qwho, qwhom, qwhog, qwho<area>) Check wholist",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^qwho(m|g|w)?(?: (.+))?$",
+    "script": "mmp.pdb, mmp.pdb_lastupdate = {}, {}\nenableTrigger(\"qwho (svo people tracker)\")\n\nif not svo.defc.thirdeye then\n  if svo.conf.thirdeye then svo.doaction(\"thirdeye\", \"misc\")\n  else svo.doaction(\"thirdeye\", \"herb\") end\nend\n\nsendSocket(\"who b\\n\", false)\n\nif svo.qwhoopen then killTimer(svo.qwhoopen) end\nsvo.qwhoopen = tempTimer(10, [[\n  if not svo.qwhoopen then return end\n\n  disableTrigger(\"qwho (svo people tracker)\")\n  svo.echof(\"qwho didn't finish - manually closed it.\")\n  tempTimer(0, function() svo.buildwhosummary() svo.showprompt() wrapLine(getLineCount()) end)\n  raiseEvent(\"mmapper updated pdb\")\n  svo.qwhoopen = nil\n]])\n\nsvo.showqwho = matches[2]\nsvo.qwhofilter = matches[3]\n\nsvo.echof(\"Checking all of wholist%s%s...\", ((svo.showqwho and svo.showqwho ~= \"\") and (\" for \"..svo.showqwho) or ''), (svo.qwhofilter and \" in \"..svo.qwhofilter or ''))"
+  },
+  {
+    "name": "(gotop) Go to person",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^gotop(?: (\\w+))?$"
+  },
+  {
+    "name": "(ppwith) Report people with person",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ppwith (\\w+)$"
+  },
+  {
+    "name": "(ppin) Report people in area",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ppin (.+)$"
+  },
+  {
+    "name": "(vshow watchfor) See people on watchfor",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow watchfor$"
+  },
+  {
+    "name": "Refill something",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(compound|brew) (.+)$"
+  },
+  {
+    "name": "Refill next potion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^refill next potion$"
+  },
+  {
+    "name": "(putvials) Put vials away",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^putvials$"
+  },
+  {
+    "name": "(getvials) Retrieve vials",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^getvials$"
+  },
+  {
+    "name": "(givevials) Hand over vials",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^givevials (\\w+)$"
+  },
+  {
+    "name": "svo Stormhammer Targetting",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo (limbcounter)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo Magi burncounter",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo Priest Report",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "enchant",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^enchant (.+)$"
+  },
+  {
+    "name": "repeat the last order",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^reenchant$"
+  },
+  {
+    "name": "NameDB",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "(startlog) Start logging",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^startlog$"
+  },
+  {
+    "name": "(stoplog) Stop logging",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^stoplog$"
+  },
+  {
+    "name": "Offering aliases",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^v(offer|drop|get|defile|sanctify|give|put)(?: (?!herb)(\\w+))?$"
+  }
+]

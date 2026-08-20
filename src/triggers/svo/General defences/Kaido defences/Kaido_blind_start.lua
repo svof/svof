@@ -1,0 +1,1 @@
+svo.defs.kaido_blind_start()

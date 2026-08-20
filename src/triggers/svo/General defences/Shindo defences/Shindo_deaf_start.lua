@@ -1,0 +1,1 @@
+svo.defs.shindo_deaf_start()

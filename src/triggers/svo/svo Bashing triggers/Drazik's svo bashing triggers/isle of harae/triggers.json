@@ -1,0 +1,184 @@
+[
+  {
+    "name": "harae stun prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Launching itself onto you, a poharaehe knocks you breathless to the ground and smothers you with its immense weight.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Tunai, a spear-wielding hunter drops his shoulder low and barges into you, knocking you to the ground and stunning you momentarily.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "harae stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With both fists swinging together, a poharaehe lands a deadening blow to both sides of your head, stunning you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a brisk sidekick to the chest, a male villager knocks the wind out of you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Reversing his spear, Piriana, Keeper of the Gate drives the shaft of the spear into your chest, leaving you breathless.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "wasp stupidity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a slight tingling sensation as a wasp drone stabs you with its stinger and the venom takes its hold on you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "wasp para",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A wasp soldier stabs you in the arm, its stinger piercing deep into the flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your muscles lock up as the venom takes its toll.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "wasp voyria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As a wasp queen stabs you with her barbed stinger, the searing venom courses through your veins and the blood drains from your face.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "paehe blind",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Paehe, a small boy grabs a fist full of dirt and throws it into your eyes, blinding you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "harae prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Hanen, a worried villager leaps at you and tackles you painfully to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "harae arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Maihiri, Chieftain of the Haraekanewa raises his staff high before whipping it down onto your arm with surprising speed.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "harae leg break prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Holding out his staff, Maihiri, Chieftain of the Haraekanewa spins low, bringing the staff crashing against your legs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You hear a bone crack as you fall to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

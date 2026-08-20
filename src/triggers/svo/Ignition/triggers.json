@@ -1,0 +1,28 @@
+[
+  {
+    "name": "Fire Lord Detection",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^The fiery outer layers of ([\\w'\\-]+) fall away\\, turning to dust as they drift to the ground\\. Though ([\\w'\\-]+) seems diminished for an instant\\, [\\w'\\-]+ fires soon rage with fury once more\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^The implacable gaze of (\\w+) falls upon you, the burning flames that are \\w+ eyes flaring brilliantly\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) reaches out and clasps your face between searing hands, \\w+ touch alone searing you to the bone and setting every muscle to spasming\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

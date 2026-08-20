@@ -1,0 +1,1 @@
+svo.config.set("blockcommands", matches[2], true)

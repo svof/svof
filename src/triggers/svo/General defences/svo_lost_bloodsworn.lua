@@ -1,0 +1,1 @@
+svo.valid.bloodsworn_gone()

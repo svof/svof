@@ -1,0 +1,232 @@
+[
+  {
+    "name": "svo lost voice",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You begin an unearthly dirge, but find no hands reaching from the grave to be banished.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You recite an obscure",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You sing a pastorale of the fields and streams to",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You sing an irritating, mind-numbing ditty at ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You sing a graceful maqam of el'Jazira at ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You sense futility as you recite an obscure Kamleikan haiku to ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You recite an obscure Kamleikan haiku to ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "In droning song you subject ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "With an unearthly dirge, you banish the hands that reach from the grave.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Weaving a complex counterpoint between instrument and voice, you fail to instill anything like fear in ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Weaving a complex counterpoint between instrument and voice, you fill ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You invoke chaotic powers in a dark solo but fail to drain the essential magic of ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You invoke chaotic powers in a dark solo, draining away some of the essential magic of ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You direct a poem of gluttony and decay at ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Your poem of gluttony and decay makes ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Belting out an echoing yodel, you halt in confusion, finding no crystal forest to shatter.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Belting out an echoing yodel, you shatter the the crystal forest that lies at your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You sing a pastorale of the fields and streams to ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You belt out a meaningless screech of varying pitch at (\\w+) who appears unaware of your artistry\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You chant 'GIMMEGIMME' at (\\w+), who does not react\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^With a mournful cry you begin the requiem for Seleucar to (\\w+), who appears unmoved\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^With a frustratingly irrelevant vibrato you aim at (\\w+)'s (?:left|right) arm\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your recitation of an epic tale of the heroism of Nicator has no effect on (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your voice rises to the heavens with your instrument, but without your audience, as you sing an Aria of healing to (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^With a wink, you recite \"Ode to Elixirs\" to (\\w+), who looks on, unimpressed\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Starting with the characteristic Jaziran trill, you sing a qasida of asceticism to (\\w+), who seems undaunted\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^With a gravity born of respect, you sing of the saintly Imithia, if only for yourself\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Composing a few clever lines in your head, you quickly sing a jaunty limerick at (\\w+), who seems to pay no notice\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You sing a sonorous chant which fails to strip the defences of (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Using a heavy tremolo you crush (\\w+)'s (?:left|right) leg\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Using a heavy tremolo you brutally punish (\\w+)'s already shattered (?:left|right) leg\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^With a trilling vibrato you shatter the (?:left|right) arm of (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^With a trilling vibrato you attack (\\w+)'s broken (?:left|right) arm. \\w+ screams in pain\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You begin reciting an epic tale of the heroism of Nicator to (\\w+), holding \\w+ spellbound\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your voice rises to the heavens with your instrument as you sing an Aria of healing to (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^With a wink, you recite \"Ode to Elixirs\" to (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your cantata shatters the defences surrounding (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Starting with the characteristic Jaziran trill, you sing a qasida of asceticism to (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^With a gravity born of respect, you sing of the saintly Imithia of legend, bringing a certain dull look to (\\w+)'s face\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Composing a few clever lines in your head, you quickly sing a jaunty limerick at (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You strike up a march, inserting strong discordant undertones aimed at the mounts nearby.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You play a prelude, summoning a fantastically believable illusion.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You sing a sonorous chant, stripping the ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You let the grace of your voice shine forth with a Scarlattan cantata at (.+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your cantata shatters the magical shield surrounding (.+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svo missing voice",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have not yet regained voice balance.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo got voice",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have recovered voice balance.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

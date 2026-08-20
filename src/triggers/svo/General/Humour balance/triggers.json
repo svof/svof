@@ -1,0 +1,118 @@
+[
+  {
+    "name": "svo lost humour balance",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You glower at \\w+, preparing to assault \\w+ humours\\. You make a gesture toward \\w+, grabbing at the ether strand binding you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svo got humour balance",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You may manipulate another's humours once more.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo lost homunculus balance",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^A diminutive homunculus resembling \\w+ obediently falls into line behind you\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You look through the mind of a diminutive homunculus resembling \\w+:$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You command a diminutive homunculus resembling \\w+ to move to the \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You begin listening through the ears of your homunculus.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You cease listening through the ears of your homunculus.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^You order your homunculus to say, \".*\"\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "Your homunculus is holding:",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^You command a diminutive homunculus resembling \\w+ to give .+ to \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You order a diminutive homunculus resembling \\w+ to get .+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You order your homunculus to drop .+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Focusing your mind on a diminutive homunculus resembling \\w+, you command it to disrupt \\w+'s focus\\. The homunculus turns towards \\w+ before letting out an ear-piercing shriek\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Channeling your focus through your link to your homunculus, you reach out to find the ethereal hook for \\w+'s humours\\. Finding it, you use the alien connection with a diminutive homunculus resembling \\w+ to corrupt \\w+ humours\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svo got homunculus balance",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You may order your homunculus once more.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

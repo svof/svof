@@ -1,0 +1,1 @@
+svo.lc_shikudohit(multimatches[1][3], ""..multimatches[1][2].."arm", "highest")

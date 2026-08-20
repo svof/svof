@@ -1,0 +1,1 @@
+if svo.conf.gageqbal then svo.deleteLineP() end

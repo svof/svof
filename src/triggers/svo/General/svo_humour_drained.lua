@@ -1,0 +1,1 @@
+svo.valid["herb_cured_"..matches[2].."humour"]()

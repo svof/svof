@@ -1,0 +1,1 @@
+svo.valid.health_noeffect()

@@ -1,0 +1,30 @@
+[
+  {
+    "name": "svo_downloaded_file",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysDownloadDone"
+    ]
+  },
+  {
+    "name": "Check for updates",
+    "isActive": "yes",
+    "isFolder": "no",
+    "children": [
+      {
+        "name": "svo_checkupdatestart",
+        "isActive": "yes",
+        "isFolder": "no",
+        "eventHandlerList": [
+          "svo system loaded"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Update UI and Install Engine",
+    "isActive": "yes",
+    "isFolder": "no"
+  }
+]

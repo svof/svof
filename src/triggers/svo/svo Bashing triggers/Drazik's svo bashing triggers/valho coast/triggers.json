@@ -1,0 +1,128 @@
+[
+  {
+    "name": "mascon prone stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With astounding speed, Master Mascon plunges a hand straight into your unresisting chest with ease. Your heart spasms in agony as its shadowy fingers clench the very life from it before releasing its grip. You fall to the ground, stunned.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "fiend dementia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A Penumbran fiend glances at you with a penetrating stare, its eyes burning with a madness that sets your mind aflame with insanity.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "fiend ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A Penumbran fiend spouts boiling shadow from its torso, igniting your skin with dark fire.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "murkworm slickness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A murkworm sprays a tarry substance over your skin. It turns slick instantly, covering your body in an oily sheen.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "crab leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A frost-mottled crab grabs your leg with a pincer, closing it slowly to snap the bone in two with immense strength.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "crab unknown",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A frost-mottled crab raises a pincer and pierces your flesh, sending a burning sensation up your leg.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "murkworm stupidity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A murkworm shakes his body, sending a fog of black fumes towards you that clouds your mind and scalds your skin.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

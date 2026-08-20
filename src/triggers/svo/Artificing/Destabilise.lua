@@ -1,0 +1,1 @@
+if matches[2] then svo.startedfighting("magi", matches[2]) end

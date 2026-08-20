@@ -1,0 +1,512 @@
+[
+  {
+    "name": "Prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You tumble to the ground as your leg abruptly gives out.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Weakness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A feeling of great weariness overcomes you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Clumsiness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "80",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The ringing blow drives all sense of coordination from you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Disloyalty",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Blood spurts and cartilage crunches as your face is rendered unrecognisable.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your muscles lock up as the swift blows meet pressure points.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Pacifism",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "All thought of retaliation evaporates as pain blossoms from the withering blow.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hallucinations",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You begin to doubt your vision as it swims and distorts.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stupidity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your thoughts scatter as clarity of mind deserts you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Recklessness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "64",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Blocking out the agonising pain, you feel curiously detached from your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hypochondria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With rapid precision, ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With rapid precision, \\w+ aims first a punch then a spearhand blow at two points on your chest\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Asthma",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The blow to your larynx leaves you coughing and gasping for breath.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Anorexia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "All appetite leaves you as you resist the urge to be sick.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Slickness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "8",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Profuse sweat slicks your skin in response to the underarm strike.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Icing",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Icy vapour escapes from ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Icy vapour escapes from (\\w+)'s clenched fist as \\w+ aims a blow towards you\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "A thin rime of ice encases your body, numbing your extremities.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Burning",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sweltering heat hazes the air as ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Sweltering heat hazes the air as (\\w+) lashes at you with a blazing fist\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "Crackling flames erupt and surge across your skin in a frenzy.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Voided",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ eyes dark and expression blank, (\\w+) strikes you a hollow blow\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "The emptiness of the void clutches at your soul.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hamstring",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Ducking behind you, ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Ducking behind you, (\\w+) strikes at your hamstring with a rigid grip\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "The crippling blow renders your leg insensate.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Galed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Moving with unpredictable grace, ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Moving with unpredictable grace, (\\w+) sends a dancing blow towards you\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "A sudden phantom wind seizes your mind, blurring the world into a shifting sea.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Pommelstrike",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^As (\\w+) draws \\w+ \\w+ from its scabbard, \\w+ drives the pommel into your chin\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Limb damage",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Whispering a prayer to the",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Whispering a prayer to the \\w+ winds, (\\w+) draws \\w+ \\w+ and unleashes a slash towards your (.+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Limb damage 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "In a single motion,",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^In a single motion, (\\w+) draws \\w+ \\w+ from its scabbard and looses a vicious rising slash at your (.+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Strike feet",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) darts to your mount's flank in a rapid dash\\. Grabbing your ankle and executing a graceful twist, \\w+ sends you tumbling from the saddle\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Stripped caloric",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The ice-covered blade strips away your protective covering.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Deathstrike",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Fists clenched,",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Fists clenched, (\\w+) focuses on you with a deadly look in \\w+ eyes\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Deathstrike continued",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Leaping forwards with lightning speed, ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Leaping forwards with lightning speed, (\\w+) strikes you in the chest with a single, powerful blow\\. Its rhythm interrupted by \\w+ precise attack, your heartbeat begins to fluctuate erratically, a painful pressure building in your arteries\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

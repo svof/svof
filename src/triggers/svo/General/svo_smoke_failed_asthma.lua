@@ -1,0 +1,1 @@
+svo.valid.smoke_failed_asthma()

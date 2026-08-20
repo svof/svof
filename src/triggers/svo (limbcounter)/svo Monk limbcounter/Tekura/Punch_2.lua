@@ -1,0 +1,1 @@
+svo.lc_hit(multimatches[2][2], multimatches[3][2], svo.conf.larmdamage)
