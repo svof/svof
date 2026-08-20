@@ -47,25 +47,42 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+      # Resolve the branch to a commit before caching. Keying the cache on the
+      # branch name alone would keep serving the jar built from whatever that
+      # branch pointed at the first time, so moving the muddler fix forward
+      # would silently have no effect here.
+      - name: resolve the muddler revision
+        id: muddler
+        run: |
+          sha=$(git ls-remote "https://github.com/$MUDDLER_REPO.git" \
+                  "refs/heads/$MUDDLER_REF" | cut -f1)
+          test -n "$sha" || { echo "no such branch: $MUDDLER_REF"; exit 1; }
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "muddler $MUDDLER_REF is $sha"
+
       - name: cache the muddler build
         id: muddler-cache
         uses: actions/cache@v4
         with:
           path: muddler-jar
-          key: muddler-${{ env.MUDDLER_REPO }}-${{ env.MUDDLER_REF }}-${{ hashFiles('.github/workflows/build.yml') }}
+          key: muddler-${{ env.MUDDLER_REPO }}-${{ steps.muddler.outputs.sha }}
 
       - name: build muddler from the fork
         if: steps.muddler-cache.outputs.cache-hit != 'true'
         run: |
-          git clone --depth 1 --branch "$MUDDLER_REF" \
+          git clone --branch "$MUDDLER_REF" \
             "https://github.com/$MUDDLER_REPO.git" muddler-src
           cd muddler-src
-          echo "muddler at $(git rev-parse --short HEAD) on $MUDDLER_REF"
+          git checkout --detach "${{ steps.muddler.outputs.sha }}"
+          echo "building muddler at $(git rev-parse HEAD)"
           chmod +x gradlew
           ./gradlew --no-daemon shadowJar
           cd ..
           mkdir -p muddler-jar
           cp muddler-src/build/libs/*-all.jar muddler-jar/muddle-all.jar
+
+      - name: report which muddler built the package
+        run: echo "package built with muddler ${{ steps.muddler.outputs.sha }}"
 
       - name: build the package
         run: |
