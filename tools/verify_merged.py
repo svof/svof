@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-verify_merged.py -- check the merged single package against every original module.
+"""verify_merged.py -- check the merged single package against every original module.
 
 Each module contributes a set of uniquely-named top-level items, so the merged
 package can be checked module by module: pull that module's items out of the
@@ -8,11 +7,22 @@ merged XML and compare them against the module's own XML, object by object.
 
 Compares structure, names, scripts, patterns and pattern types, alias regexes,
 event handlers and the behavioural flags. Also checks that the top-level items
-appear in the intended load order. Exits non-zero on any difference.
+appear in the intended load order.
+
+Two kinds of problem are reported.
+
+  Structural  - something is missing, duplicated, in the wrong place or out of
+                order. Never acceptable, always fatal.
+  Content     - an item's script or flags differ from the original. Most of
+                these are deliberate: the module machinery is gone, the updater
+                and migration guard are new, and a few load-order assumptions
+                had to change. Those live in a baseline file.
 
     python tools/verify_merged.py <merged.xml>
+    python tools/verify_merged.py <merged.xml> --baseline tools/verify_baseline.json
+    python tools/verify_merged.py <merged.xml> --write-baseline tools/verify_baseline.json
 """
-import sys, os
+import argparse, hashlib, json, os, sys
 import xml.etree.ElementTree as ET
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -20,6 +30,14 @@ import verify as V
 from merge_svof import MERGE_ORDER, REPO
 
 LEAF_OF = V.LEAF_OF
+
+
+def digest(*parts):
+    h = hashlib.sha256()
+    for p in parts:
+        h.update(repr(p).encode("utf-8"))
+        h.update(b"\0")
+    return h.hexdigest()[:16]
 
 
 def top_level(root, kind):
@@ -45,8 +63,8 @@ def describe_tree(elem, kind):
                 continue
             nm = c.findtext("name") or ""
             seen[nm] = seen.get(nm, 0) + 1
-            suffix = "" if seen[nm] == 1 else f"#{seen[nm]}"
-            p = f"{prefix}/{nm}{suffix}"
+            suffix = "" if seen[nm] == 1 else "#%d" % seen[nm]
+            p = prefix + "/" + nm + suffix
             out.append((p, V.describe(c, kind)))
             walk(c, p)
 
@@ -55,11 +73,9 @@ def describe_tree(elem, kind):
     return out
 
 
-def main():
-    merged_path = sys.argv[1]
-    merged = ET.parse(merged_path).getroot()
-
-    total_diffs = 0
+def compare(merged):
+    """Returns (structural, content, order_report)."""
+    structural, content = [], []
     order_report = {}
 
     for kind in LEAF_OF:
@@ -80,14 +96,13 @@ def main():
                 continue
             holder = merged_roots.get(module)
             if holder is None:
-                print(f"[FAIL] {kind:8s} {module}: no top-level entry in the merged package")
-                total_diffs += 1
+                structural.append("%-8s %s: no top-level entry in the merged package"
+                                  % (kind, module))
                 continue
             is_self_named = (len(mod_top) == 1 and mod_top[0][0] == module
                              and mod_top[0][1].tag == group)
             if is_self_named:
                 self_named.add(module)
-            if is_self_named:
                 merged_by_name.setdefault(module, []).append(holder)
             else:
                 for c in holder:
@@ -103,32 +118,40 @@ def main():
             for nm, el in mod_top:
                 expected_order.append(nm)
                 if nm not in merged_by_name or not merged_by_name[nm]:
-                    print(f"[FAIL] {kind:8s} {module}: top-level {nm!r} MISSING from merged package")
-                    total_diffs += 1
+                    structural.append("%-8s %s: top-level %r MISSING from merged package"
+                                      % (kind, module, nm))
                     continue
                 melem = merged_by_name[nm].pop(0)
                 a = describe_tree(el, kind)
                 b = describe_tree(melem, kind)
                 if len(a) != len(b):
-                    print(f"[FAIL] {kind:8s} {module} / {nm!r}: {len(a)} items originally, {len(b)} in merged")
-                    total_diffs += 1
+                    # an item was added or removed inside this tree - deliberate
+                    # for the bootstrap folders, so treat it as a content
+                    # difference the baseline can accept
+                    content.append({
+                        "id": "count|%s|%s|%s" % (kind, module, nm),
+                        "digest": digest(len(a), len(b)),
+                        "text": "%-8s %s / %r: %d items originally, %d in merged"
+                                % (kind, module, nm, len(a), len(b)),
+                    })
                     continue
                 for (pa, da), (pb, db) in zip(a, b):
                     if pa != pb:
-                        print(f"[FAIL] {kind:8s} {module}: path {pa!r} != {pb!r}")
-                        total_diffs += 1
+                        structural.append("%-8s %s: path %r != %r" % (kind, module, pa, pb))
                         break
                     for k in sorted(set(da) | set(db)):
                         if da.get(k) != db.get(k):
-                            print(f"[FAIL] {kind:8s} {module} {nm}{pa} [{k}]")
-                            print(f"           original: {da.get(k)!r}")
-                            print(f"           merged  : {db.get(k)!r}")
-                            total_diffs += 1
+                            content.append({
+                                "id": "item|%s|%s|%s%s|%s" % (kind, module, nm, pa, k),
+                                "digest": digest(da.get(k), db.get(k)),
+                                "text": "%-8s %s %s%s [%s]" % (kind, module, nm, pa, k),
+                                "original": da.get(k),
+                                "merged": db.get(k),
+                            })
 
-        leftovers = [n for n, v in merged_by_name.items() if v]
-        for n in leftovers:
-            print(f"[FAIL] {kind:8s} merged package has unexpected top-level {n!r}")
-            total_diffs += 1
+        for n, v in merged_by_name.items():
+            if v:
+                structural.append("%-8s merged package has unexpected top-level %r" % (kind, n))
 
         # flatten the merged tree the same way: a module wrapper contributes
         # the names inside it, anything else contributes its own name
@@ -141,25 +164,101 @@ def main():
                 actual_order.append(nm)
         order_report[kind] = (expected_order, actual_order)
 
-    print()
     for kind, (exp, act) in order_report.items():
-        if not exp:
-            continue
-        ok = exp == act
-        print(f"[{'OK ' if ok else 'FAIL'}] {kind:8s} load order preserved "
-              f"({len(exp)} top-level items)")
-        if not ok:
-            for i, (e, x) in enumerate(zip(exp, act)):
-                if e != x:
-                    print(f"    first difference at position {i}: expected {e!r}, got {x!r}")
-                    break
-            total_diffs += 1
+        if exp and exp != act:
+            where = next((i for i, (e, x) in enumerate(zip(exp, act)) if e != x), len(exp))
+            structural.append(
+                "%-8s LOAD ORDER changed at position %d: expected %r, got %r"
+                % (kind, where,
+                   exp[where] if where < len(exp) else "<end>",
+                   act[where] if where < len(act) else "<end>"))
+    return structural, content, order_report
 
+
+def short(v):
+    s = str(v)
+    return s if len(s) <= 200 else s[:200] + " ..."
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("merged")
+    ap.add_argument("--baseline", help="fail only on differences not listed here")
+    ap.add_argument("--write-baseline", help="record the current content differences")
+    a = ap.parse_args()
+
+    merged = ET.parse(a.merged).getroot()
+    structural, content, order_report = compare(merged)
+
+    for kind, (exp, act) in order_report.items():
+        if exp:
+            print("[%s] %-8s load order preserved (%d top-level items)"
+                  % ("OK " if exp == act else "FAIL", kind, len(exp)))
     print()
-    if total_diffs == 0:
-        print("MERGED PACKAGE VERIFIED - every module's items present, unchanged, in order")
+
+    if a.write_baseline:
+        payload = {
+            "note": "Content differences from the original module xmls that are "
+                    "deliberate. verify_merged.py --baseline fails on anything not "
+                    "listed here, and on any of these whose content has changed. "
+                    "Regenerate only when you meant to change one.",
+            "source": os.path.basename(a.merged),
+            "accepted": sorted(({"id": c["id"], "digest": c["digest"], "text": c["text"]}
+                                for c in content), key=lambda c: c["id"]),
+        }
+        with open(a.write_baseline, "w", encoding="utf-8", newline="\n") as f:
+            json.dump(payload, f, indent=2)
+            f.write("\n")
+        print("wrote %s: %d accepted differences" % (a.write_baseline, len(content)))
+        if structural:
+            print("\nrefusing to bless a structural problem:")
+            for s in structural:
+                print("  [FAIL] " + s)
+            return 1
         return 0
-    print(f"MERGE VERIFICATION FAILED - {total_diffs} problem(s)")
+
+    for s in structural:
+        print("[FAIL] " + s)
+
+    if not a.baseline:
+        for c in content:
+            print("[DIFF] " + c["text"])
+        print("\n%d structural problem(s), %d content difference(s)"
+              % (len(structural), len(content)))
+        print("run with --baseline to fail only on differences that are not expected")
+        return 1 if structural or content else 0
+
+    base = json.load(open(a.baseline, encoding="utf-8"))
+    accepted = {e["id"]: e["digest"] for e in base["accepted"]}
+    seen, new, changed = set(), [], []
+    for c in content:
+        seen.add(c["id"])
+        if c["id"] not in accepted:
+            new.append(c)
+        elif accepted[c["id"]] != c["digest"]:
+            changed.append(c)
+    gone = sorted(set(accepted) - seen)
+
+    for c in new:
+        print("[FAIL] unexpected difference: " + c["text"])
+        print("           original: %r" % short(c.get("original")))
+        print("           merged  : %r" % short(c.get("merged")))
+    for c in changed:
+        print("[FAIL] a known difference changed: " + c["text"])
+        print("           original: %r" % short(c.get("original")))
+        print("           merged  : %r" % short(c.get("merged")))
+    for g in gone:
+        print("[FAIL] baselined difference no longer present: " + g)
+        print("           the merged package now matches the original here. If that "
+              "was intended, regenerate the baseline.")
+
+    bad = len(structural) + len(new) + len(changed) + len(gone)
+    print()
+    if bad == 0:
+        print("MERGED PACKAGE VERIFIED - every module's items present, unchanged, in order")
+        print("  %d expected differences, all matching the baseline" % len(accepted))
+        return 0
+    print("MERGE VERIFICATION FAILED - %d problem(s)" % bad)
     return 1
 
 

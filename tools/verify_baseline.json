@@ -1,0 +1,171 @@
+{
+  "note": "Content differences from the original module xmls that are deliberate. verify_merged.py --baseline fails on anything not listed here, and on any of these whose content has changed. Regenerate only when you meant to change one.",
+  "source": "svof.xml",
+  "accepted": [
+    {
+      "id": "count|Script|svo (install me in module manager)|Check for system updates",
+      "digest": "8c26e3efb0f76972",
+      "text": "Script   svo (install me in module manager) / 'Check for system updates': 5 items originally, 6 in merged"
+    },
+    {
+      "id": "count|Script|svo (install me in module manager)|Load & init",
+      "digest": "070cb7b67d4da481",
+      "text": "Script   svo (install me in module manager) / 'Load & init': 7 items originally, 5 in merged"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/(vversion) Show system version|script",
+      "digest": "7b8e8fa2b7a3b73d",
+      "text": "Alias    svo (aliases, triggers) svo/(vversion) Show system version [script]"
+    },
+    {
+      "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
+      "digest": "48cbc2f92ba47efe",
+      "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
+    },
+    {
+      "id": "item|Script|svo (alias and defence functions)|Alias functions|script",
+      "digest": "a670beb40255e4aa",
+      "text": "Script   svo (alias and defence functions) Alias functions [script]"
+    },
+    {
+      "id": "item|Script|svo (aliases, triggers)|svo (aliases, triggers)|script",
+      "digest": "a06ceb25174fd22a",
+      "text": "Script   svo (aliases, triggers) svo (aliases, triggers) [script]"
+    },
+    {
+      "id": "item|Script|svo (burncounter)|svo Magi burncounter|script",
+      "digest": "d8e910cc468ff436",
+      "text": "Script   svo (burncounter) svo Magi burncounter [script]"
+    },
+    {
+      "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
+      "digest": "0d260875647fc2ac",
+      "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
+    },
+    {
+      "id": "item|Script|svo (custom prompt, serverside)|Custom prompt|script",
+      "digest": "168eba2e62c02b9a",
+      "text": "Script   svo (custom prompt, serverside) Custom prompt [script]"
+    },
+    {
+      "id": "item|Script|svo (elistsorter)|svo Elixer Sorter/elistsorter code|script",
+      "digest": "c3ade4c2c22f5305",
+      "text": "Script   svo (elistsorter) svo Elixer Sorter/elistsorter code [script]"
+    },
+    {
+      "id": "item|Script|svo (elistsorter)|svo Elixer Sorter|script",
+      "digest": "23d1f5dc1f9ddaf2",
+      "text": "Script   svo (elistsorter) svo Elixer Sorter [script]"
+    },
+    {
+      "id": "item|Script|svo (enchanter)|svo Enchanter|script",
+      "digest": "5a7a838e80d93ad1",
+      "text": "Script   svo (enchanter) svo Enchanter [script]"
+    },
+    {
+      "id": "item|Script|svo (fishdist)|svo Fishing Distance by Trilliana|script",
+      "digest": "b194369d54795d7d",
+      "text": "Script   svo (fishdist) svo Fishing Distance by Trilliana [script]"
+    },
+    {
+      "id": "item|Script|svo (inker)|svo Inker/inker code|script",
+      "digest": "4c7c35d5cde2c2bc",
+      "text": "Script   svo (inker) svo Inker/inker code [script]"
+    },
+    {
+      "id": "item|Script|svo (inker)|svo Inker|script",
+      "digest": "ecf64f75457c8129",
+      "text": "Script   svo (inker) svo Inker [script]"
+    },
+    {
+      "id": "item|Script|svo (install me in module manager)|Create Svof namespace|script",
+      "digest": "64629833bfe0560e",
+      "text": "Script   svo (install me in module manager) Create Svof namespace [script]"
+    },
+    {
+      "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Install system|script",
+      "digest": "209a385a5e8a58af",
+      "text": "Script   svo (install, config, pipes, rift, parry, prios) Install system [script]"
+    },
+    {
+      "id": "item|Script|svo (limbcounter)|svo (limbcounter)/svo limbcounter|script",
+      "digest": "61d50f9fe357ffa6",
+      "text": "Script   svo (limbcounter) svo (limbcounter)/svo limbcounter [script]"
+    },
+    {
+      "id": "item|Script|svo (limbcounter)|svo (limbcounter)|script",
+      "digest": "e6e9d3bfcba772c4",
+      "text": "Script   svo (limbcounter) svo (limbcounter) [script]"
+    },
+    {
+      "id": "item|Script|svo (logger)|svo Logger|script",
+      "digest": "84908dc203df98a6",
+      "text": "Script   svo (logger) svo Logger [script]"
+    },
+    {
+      "id": "item|Script|svo (mindnet)|svo Mindnet Report|script",
+      "digest": "a45ad9b828744178",
+      "text": "Script   svo (mindnet) svo Mindnet Report [script]"
+    },
+    {
+      "id": "item|Script|svo (namedb)|NameDB/ndb main code|script",
+      "digest": "d5e14e7d7bd7e477",
+      "text": "Script   svo (namedb) NameDB/ndb main code [script]"
+    },
+    {
+      "id": "item|Script|svo (namedb)|NameDB|script",
+      "digest": "7644f8341b086220",
+      "text": "Script   svo (namedb) NameDB [script]"
+    },
+    {
+      "id": "item|Script|svo (offering)|svo Offering Module|script",
+      "digest": "8fe23bf86695b974",
+      "text": "Script   svo (offering) svo Offering Module [script]"
+    },
+    {
+      "id": "item|Script|svo (peopletracker)|svo People Tracker|script",
+      "digest": "13fceda6d749cc31",
+      "text": "Script   svo (peopletracker) svo People Tracker [script]"
+    },
+    {
+      "id": "item|Script|svo (priestreport)|svo Priest Report|script",
+      "digest": "821e9ef59cf2c19a",
+      "text": "Script   svo (priestreport) svo Priest Report [script]"
+    },
+    {
+      "id": "item|Script|svo (reboundingsileristracker)|svo (reboundingsileristracker)|script",
+      "digest": "0bbf8b560e48fa47",
+      "text": "Script   svo (reboundingsileristracker) svo (reboundingsileristracker) [script]"
+    },
+    {
+      "id": "item|Script|svo (refiller)|svo Refiller|script",
+      "digest": "487da8046ec85aab",
+      "text": "Script   svo (refiller) svo Refiller [script]"
+    },
+    {
+      "id": "item|Script|svo (runeidentifier)|svo (runeidentifier)|script",
+      "digest": "cb0d9b29da5a0354",
+      "text": "Script   svo (runeidentifier) svo (runeidentifier) [script]"
+    },
+    {
+      "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",
+      "digest": "5c5278698d3f7046",
+      "text": "Script   svo (setup, misc, empty, funnies, dor) Miscellaneous functions [script]"
+    },
+    {
+      "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
+      "digest": "35ffd70226fdb7fc",
+      "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
+    },
+    {
+      "id": "item|Script|svo (stormhammertarget)|svo (stormhammertarget)|script",
+      "digest": "67c07e9ad3267ea3",
+      "text": "Script   svo (stormhammertarget) svo (stormhammertarget) [script]"
+    },
+    {
+      "id": "item|Script|svo (trigger functions)|Diag trigger functions|script",
+      "digest": "43f1b63c401b3ef5",
+      "text": "Script   svo (trigger functions) Diag trigger functions [script]"
+    }
+  ]
+}

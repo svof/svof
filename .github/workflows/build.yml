@@ -1,0 +1,159 @@
+name: build
+
+# Fork-only for now. The conversion from 24 modules to a single package has not
+# been through extended play testing yet, so this deliberately does not run on
+# svof/svof. To enable it there, drop the `if:` on both jobs.
+env:
+  # svof cannot be built with upstream muddler. Upstream drops nested group
+  # attributes, zeroes multilineDelta, cannot represent a raw keyCode, crashes
+  # on colour patterns and mis-orders groups by directory read order - the
+  # package it produces looks fine and is silently wrong. Four of those five
+  # fixes are in muddler PR #57; the fifth is not upstream yet.
+  MUDDLER_REPO: TheLastDarkthorne/muddler
+  MUDDLER_REF: svof-fixes
+
+on:
+  push:
+    branches: [svof-muddler]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "Publish a GitHub release with the built package"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: github.repository == 'TheLastDarkthorne/svof'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: read the package version
+        id: version
+        run: |
+          version=$(python3 -c "import json;print(json.load(open('mfile'))['version'])")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "building svof $version"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: cache the muddler build
+        id: muddler-cache
+        uses: actions/cache@v4
+        with:
+          path: muddler-jar
+          key: muddler-${{ env.MUDDLER_REPO }}-${{ env.MUDDLER_REF }}-${{ hashFiles('.github/workflows/build.yml') }}
+
+      - name: build muddler from the fork
+        if: steps.muddler-cache.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 --branch "$MUDDLER_REF" \
+            "https://github.com/$MUDDLER_REPO.git" muddler-src
+          cd muddler-src
+          echo "muddler at $(git rev-parse --short HEAD) on $MUDDLER_REF"
+          chmod +x gradlew
+          ./gradlew --no-daemon shadowJar
+          cd ..
+          mkdir -p muddler-jar
+          cp muddler-src/build/libs/*-all.jar muddler-jar/muddle-all.jar
+
+      - name: build the package
+        run: |
+          java -jar muddler-jar/muddle-all.jar
+          ls -la build/
+
+      # Mudlet runs Lua 5.1, so the syntax check has to use 5.1. A newer luac
+      # rejects things that are valid here: goto as an identifier, unknown
+      # escape sequences such as \w, and assignment rules Penlight relies on.
+      - uses: leafo/gh-actions-lua@v10
+        with:
+          luaVersion: "5.1.5"
+
+      # Gate 1. Every .lua in src/, plus the scripts inlined into the json
+      # because their name cannot be a filename or is shared with a sibling.
+      - name: check lua syntax
+        run: python3 tools/check_lua_syntax.py --luac "$(which luac)"
+
+      # Gate 2. The built package against all 25 original module xmls, object
+      # by object: structure, names, scripts, patterns and pattern types, alias
+      # regexes, event handlers, behavioural flags and top-level load order.
+      #
+      # The conversion has 33 deliberate differences - the module machinery is
+      # gone, the updater and migration guard are new, and a few load-order
+      # assumptions had to change. Those are recorded in the baseline, with a
+      # digest each, so this fails on anything unexpected AND on any change to
+      # a difference that was already accepted. Structural problems and load
+      # order changes are always fatal, baseline or not.
+      #
+      # If a difference here is intended, regenerate the baseline in the same
+      # commit that causes it:
+      #   python tools/verify_merged.py build/svof.xml \
+      #     --write-baseline tools/verify_baseline.json
+      - name: verify against the original modules
+        run: |
+          python3 tools/verify_merged.py build/svof.xml \
+            --baseline tools/verify_baseline.json
+
+      # The module xmls are the reference the conversion is verified against,
+      # so they are still worth checking while they are present.
+      - uses: leafo/gh-actions-luarocks@v4
+      - name: install luarocks dependencies
+        run: |
+          sudo apt-get -y install expat
+          luarocks install luafilesystem
+          luarocks install luaexpat
+      - name: check reference xml syntax
+        run: lua validate-syntax.lua .
+
+      - name: upload the package
+        uses: actions/upload-artifact@v4
+        with:
+          name: svof-${{ steps.version.outputs.version }}
+          path: |
+            build/svof.mpackage
+            build/svof.xml
+          if-no-files-found: error
+
+  # Only ever runs when a human asks for it from the Actions tab with the
+  # release box ticked. Nothing about a push can publish.
+  release:
+    needs: build
+    if: >-
+      github.repository == 'TheLastDarkthorne/svof' &&
+      github.event_name == 'workflow_dispatch' &&
+      inputs.release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: svof-${{ needs.build.outputs.version }}
+          path: build
+
+      - name: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          if gh release view "v$VERSION" >/dev/null 2>&1; then
+            echo "release v$VERSION already exists - bump the version in mfile first"
+            exit 1
+          fi
+          gh release create "v$VERSION" build/svof.mpackage \
+            --title "svof $VERSION" \
+            --notes "Install by downloading svof.mpackage and opening it with Mudlet's package manager.
+
+          Built from \`${{ github.sha }}\`."
