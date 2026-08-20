@@ -107,10 +107,8 @@ function svo.install_update(version)
     -- installPackage's return value is unreliable across Mudlet versions
     -- (4.15-4.19 report nothing on success), so it is not branched on
     installPackage(url)
-    cecho("
-<green_yellow>Svof: installed " .. tostring(version) ..
-          ". Please restart Mudlet to finish.
-")
+    cecho("\n<green_yellow>Svof: installed " .. tostring(version) ..
+          ". Please restart Mudlet to finish.\n")
   end)
 
   if svo.updatelabel then
