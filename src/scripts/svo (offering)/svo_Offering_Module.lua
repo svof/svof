@@ -1,3 +1,4 @@
--- This group used to set its module priority on install and record a per-module
--- version. Neither exists in a single package: load order now comes from where
--- these items sit in the tree, and the version is the package's own.
+-- The module priority this group used to set on install has no meaning in a
+-- single package: load order comes from where these items sit in the tree.
+
+svo = svo or {}
