@@ -15,7 +15,8 @@
         "pattern": "\\[ *(\\d+) *\\] ([^\\[$]+)",
         "type": "regex"
       }
-    ]
+    ],
+    "matchall": "yes"
   },
   {
     "name": "MORE",

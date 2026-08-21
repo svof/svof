@@ -175,7 +175,8 @@
         "pattern": "^Leaping from the water in a frenzy to escape, a (whiskerknot skrei|stripefish|two-headed fish|giant hatchetfish|coelacanth|spotted fangtooth|duskfin tuna|redfin tuna) runs out (\\d+) feet of your line\\.$",
         "type": "regex"
       }
-    ]
+    ],
+    "matchall": "yes"
   },
   {
     "name": "Snapline",

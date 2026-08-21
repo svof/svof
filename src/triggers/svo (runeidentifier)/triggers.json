@@ -59,7 +59,8 @@
             "pattern": "A rune (.+?) has been sketched into the ground here\\.",
             "type": "regex"
           }
-        ]
+        ],
+        "matchall": "yes"
       }
     ]
   }

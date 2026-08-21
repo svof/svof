@@ -155,7 +155,8 @@
         "pattern": "An icewall is here, blocking passage to the (\\w+)\\.",
         "type": "regex"
       }
-    ]
+    ],
+    "matchall": "yes"
   },
   {
     "name": "Highlight firewalls in the room",
@@ -173,7 +174,8 @@
         "pattern": "A scorching wall of fire stands here, blocking passage to the (\\w+)\\.",
         "type": "regex"
       }
-    ]
+    ],
+    "matchall": "yes"
   },
   {
     "name": "Highlight stonewalls in the room",
@@ -191,7 +193,8 @@
         "pattern": "A large wall of stone stands here, blocking passage to the (\\w+)\\.",
         "type": "regex"
       }
-    ]
+    ],
+    "matchall": "yes"
   },
   {
     "name": "Gravehands in room",

@@ -82,6 +82,11 @@ def build_trigger(n):
         "multiline": yn(n, "isMultiline"),
         "multilineDelta": text(n, "conditonLineDelta", "0"),
         "filter": yn(n, "isFilterTrigger"),
+        # perl /g. Dropping this silently changes what the trigger captures:
+        # without it Mudlet stops at the first match on the line, so a rift
+        # line holding several "[ N ] herb" entries yields one match set
+        # instead of one per entry, and svo.riftline() records only the first.
+        "matchall": yn(n, "isPerlSlashGOption"),
         "fireLength": text(n, "mStayOpen", "0"),
         "highlight": yn(n, "isColorizerTrigger"),
     }
@@ -371,6 +376,22 @@ def main():
     help_url = root.findtext("HelpPackage/helpURL")
     if help_url:
         warn(f"HelpPackage/helpURL is not representable in muddler: {help_url!r}")
+
+    # Any other *Package the module carries is silently dropped otherwise. That
+    # is how the 8-button ActionPackage went missing without a word: the loop
+    # above only visits tags in PACKAGES, and anything else falls off the end.
+    # muddler ships a Button class but nothing constructs it, so buttons cannot
+    # be emitted today - the point here is that the loss is stated, not that it
+    # is fixed.
+    for child in root:
+        if not child.tag.endswith("Package") or child.tag in PACKAGES:
+            continue
+        if child.tag == "HelpPackage":
+            continue
+        n = sum(1 for _ in child.iter() if _ is not child)
+        if n:
+            warn(f"{child.tag} is not handled and was dropped "
+                 f"({n} element(s) below it) - nothing in muddler emits these")
 
     print(f"package: {pkg}")
     for k, s in totals.items():

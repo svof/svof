@@ -226,41 +226,6 @@
       "id": "item|Script|svo (trigger functions)|Diag trigger functions|script",
       "digest": "43f1b63c401b3ef5",
       "text": "Script   svo (trigger functions) Diag trigger functions [script]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/Herb tracker/svo Rift/Ze work|matchall",
-      "digest": "13c33f87153efd9e",
-      "text": "Trigger  svo (aliases, triggers) svo/Herb tracker/svo Rift/Ze work [matchall]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/Miscellaneous/Highlights/Highlight firewalls in the room|matchall",
-      "digest": "13c33f87153efd9e",
-      "text": "Trigger  svo (aliases, triggers) svo/Miscellaneous/Highlights/Highlight firewalls in the room [matchall]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/Miscellaneous/Highlights/Highlight icewalls in room|matchall",
-      "digest": "13c33f87153efd9e",
-      "text": "Trigger  svo (aliases, triggers) svo/Miscellaneous/Highlights/Highlight icewalls in room [matchall]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/Miscellaneous/Highlights/Highlight stonewalls in the room|matchall",
-      "digest": "13c33f87153efd9e",
-      "text": "Trigger  svo (aliases, triggers) svo/Miscellaneous/Highlights/Highlight stonewalls in the room [matchall]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/Miscellaneous/Links To Click/Clickable URL's|matchall",
-      "digest": "13c33f87153efd9e",
-      "text": "Trigger  svo (aliases, triggers) svo/Miscellaneous/Links To Click/Clickable URL's [matchall]"
-    },
-    {
-      "id": "item|Trigger|svo (fishdist)|svo Fishing Distance by Trilliana/fishinghightlight 3|matchall",
-      "digest": "13c33f87153efd9e",
-      "text": "Trigger  svo (fishdist) svo Fishing Distance by Trilliana/fishinghightlight 3 [matchall]"
-    },
-    {
-      "id": "item|Trigger|svo (runeidentifier)|On a person-ground/Regex|matchall",
-      "digest": "13c33f87153efd9e",
-      "text": "Trigger  svo (runeidentifier) On a person-ground/Regex [matchall]"
     }
   ]
 }

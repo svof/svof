@@ -177,7 +177,8 @@
         "pattern": "\\b(?:(?:(?:[Hh]ttps?|ftp|telnet)://[\\w\\d:#@%/;$()~_?\\+\\-=&]+|www|ftp)(?:\\.[\\w\\d:#@%/;$()~_?\\+\\-=&]+)+|[\\w\\d._%+\\-]+@[\\w\\d.\\-]+\\.[\\w]{2,4})\\b",
         "type": "regex"
       }
-    ]
+    ],
+    "matchall": "yes"
   },
   {
     "name": "Read more messages",
