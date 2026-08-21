@@ -1,0 +1,36 @@
+[
+  {
+    "name": "Show affs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "isPushButton": "no",
+    "isFlatButton": "yes",
+    "useCustomLayout": "no",
+    "orientation": "1",
+    "location": "0",
+    "posX": "0",
+    "posY": "0",
+    "mButtonState": "1",
+    "sizeX": "33",
+    "sizeY": "0",
+    "buttonColumn": "1",
+    "buttonRotation": "-1"
+  },
+  {
+    "name": "Show prios",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "isPushButton": "no",
+    "isFlatButton": "yes",
+    "useCustomLayout": "yes",
+    "orientation": "1",
+    "location": "0",
+    "posX": "0",
+    "posY": "0",
+    "mButtonState": "2",
+    "sizeX": "0",
+    "sizeY": "0",
+    "buttonColumn": "1",
+    "buttonRotation": "0"
+  }
+]

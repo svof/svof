@@ -15,7 +15,7 @@ import xml.etree.ElementTree as ET
 
 LEAF_OF = {
     "Trigger": "TriggerGroup", "Alias": "AliasGroup", "Script": "ScriptGroup",
-    "Timer": "TimerGroup", "Key": "KeyGroup",
+    "Timer": "TimerGroup", "Key": "KeyGroup", "Action": "ActionGroup",
 }
 KINDS = list(LEAF_OF.keys())
 
@@ -81,6 +81,19 @@ def describe(n, kind):
     elif kind == "Key":
         d.update({"keyCode": txt(n, "keyCode"), "keyModifier": txt(n, "keyModifier"),
                   "command": txt(n, "command")})
+    elif kind == "Action":
+        # Buttons. Every attribute and layout number, because Mudlet reads them
+        # all back and the conversion dropped the whole package once already.
+        d.update({"isPushButton": n.get("isPushButton", "no"),
+                  "isFlatButton": n.get("isFlatButton", "no"),
+                  "useCustomLayout": n.get("useCustomLayout", "no"),
+                  "css": txt(n, "css"),
+                  "commandButtonUp": txt(n, "commandButtonUp"),
+                  "commandButtonDown": txt(n, "commandButtonDown"),
+                  "icon": txt(n, "icon")})
+        for tag in ("orientation", "location", "posX", "posY", "mButtonState",
+                    "sizeX", "sizeY", "buttonColumn", "buttonRotation"):
+            d[tag] = txt(n, tag)
     return d
 
 def collect(path, kind):

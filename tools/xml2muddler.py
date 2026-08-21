@@ -34,6 +34,7 @@ PACKAGES = {
     "ScriptPackage":  ("scripts",  "Script",  "ScriptGroup"),
     "TimerPackage":   ("timers",   "Timer",   "TimerGroup"),
     "KeyPackage":     ("keys",     "Key",     "KeyGroup"),
+    "ActionPackage":  ("buttons",  "Action",  "ActionGroup"),
 }
 
 warnings = []
@@ -175,9 +176,38 @@ def build_key(n):
     return d
 
 
+def build_button(n):
+    # Mudlet calls these Action/ActionGroup in the xml and buttons everywhere
+    # else; muddler's item type is "buttons". The layout numbers are bare
+    # integers Mudlet is unforgiving about, so they are always carried rather
+    # than emitted only when non-default.
+    d = {
+        "name": text(n, "name"),
+        "isActive": yn(n, "isActive", "yes"),
+        "isFolder": yn(n, "isFolder"),
+        "isPushButton": yn(n, "isPushButton"),
+        "isFlatButton": yn(n, "isFlatButton"),
+        "useCustomLayout": yn(n, "useCustomLayout"),
+        "orientation": text(n, "orientation", "0"),
+        "location": text(n, "location", "0"),
+        "posX": text(n, "posX", "0"),
+        "posY": text(n, "posY", "0"),
+        "mButtonState": text(n, "mButtonState", "1"),
+        "sizeX": text(n, "sizeX", "0"),
+        "sizeY": text(n, "sizeY", "0"),
+        "buttonColumn": text(n, "buttonColumn", "1"),
+        "buttonRotation": text(n, "buttonRotation", "0"),
+    }
+    for tag in ("css", "commandButtonUp", "commandButtonDown", "icon", "buttonColor"):
+        v = text(n, tag)
+        if v:
+            d[tag] = v
+    return d
+
+
 BUILDERS = {
     "Trigger": build_trigger, "Alias": build_alias, "Script": build_script,
-    "Timer": build_timer, "Key": build_key,
+    "Timer": build_timer, "Key": build_key, "Action": build_button,
 }
 
 
