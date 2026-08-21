@@ -85,34 +85,45 @@ function svo_doupdate_click()
   svo.install_update(svo.pending_update_version)
 end
 
--- Mudlet installs a package straight from a URL, so updating is uninstall
--- followed by install. The old engine downloaded 24 module xmls, deleted the
--- installed ones, renamed the downloads into place and reloaded each module;
--- none of that applies to a package.
-function svo.install_update(version)
-  local url = svo.update_package_url(version)
+-- Downloads the package, then installs it from the local file. Announcing the
+-- result is svo.update_download_done / svo.update_download_error's job.
+--
+-- This used to be uninstallPackage("svof") followed by installPackage(url) and
+-- an immediate "installed, please restart". Both halves were wrong. The
+-- download is asynchronous - installPackage(url) returns before it resolves -
+-- so the success line printed on a 404 as readily as on a success, and the
+-- uninstall had already removed the running system by then. A failed update
+-- left the profile with no svof at all and a green message saying it had
+-- worked.
+--
+-- Nothing is uninstalled now: Mudlet installs a package over an existing one.
+function svo.install_update(version, url)
+  version = version or svo.pending_update_version
+  url = url or svo.pending_update_url or svo.update_package_url(svo.pending_update_tag or version)
+
+  if svo.update_target then
+    svo.echof("Already downloading Svof %s - hold on.", tostring(svo.update_version))
+    return
+  end
 
   svo.echof("Installing Svof %s...", tostring(version))
 
-  -- config is saved first: uninstalling drops the running system, and anything
-  -- unsaved would go with it
+  -- config is saved first: anything unsaved would be lost across the restart
   if svo.signals and svo.signals.saveconfig then
     pcall(function() svo.signals.saveconfig:emit() end)
   end
 
-  -- the install has to happen after this handler returns, since uninstalling
-  -- removes the very script that is running
-  tempTimer(0, function()
-    pcall(uninstallPackage, "svof")
-    -- installPackage's return value is unreliable across Mudlet versions
-    -- (4.15-4.19 report nothing on success), so it is not branched on
-    installPackage(url)
-    cecho("\n<green_yellow>Svof: installed " .. tostring(version) ..
-          ". Please restart Mudlet to finish.\n")
-  end)
+  svo.update_version = version
+  svo.update_target = getMudletHomeDir() .. "/svof-update.mpackage"
+
+  local ok, err = pcall(downloadFile, svo.update_target, url)
+  if not ok then
+    svo.update_target, svo.update_version = nil, nil
+    svo.echof("Couldn't start the download for Svof %s: %s", tostring(version), tostring(err))
+    return
+  end
 
   if svo.updatelabel then
-    svo.updatelabel:echo([[<p align="center" style="font-size:10pt; color:white">Svof updated! Please restart Mudlet.<p>]])
-    tempTimer(10, function() if svo.updatelabel then svo.updatelabel:hide() end end)
+    svo.updatelabel:echo([[<p align="center" style="font-size:10pt; color:white">Downloading Svof...<p>]])
   end
 end

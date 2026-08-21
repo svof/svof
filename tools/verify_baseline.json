@@ -3,8 +3,18 @@
   "source": "svof.xml",
   "accepted": [
     {
+      "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_download_done",
+      "digest": "8c1b8f838cdab04a",
+      "text": "Script   svo (install me in module manager) Check for system updates/svo.update_download_done [only in the package]"
+    },
+    {
+      "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_download_error",
+      "digest": "e9835d882d0904dc",
+      "text": "Script   svo (install me in module manager) Check for system updates/svo.update_download_error [only in the package]"
+    },
+    {
       "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_http_done",
-      "digest": "748bec7e6eb6f508",
+      "digest": "4281c21c6c341e65",
       "text": "Script   svo (install me in module manager) Check for system updates/svo.update_http_done [only in the package]"
     },
     {
@@ -19,8 +29,8 @@
     },
     {
       "id": "count|Script|svo (install me in module manager)|Check for system updates",
-      "digest": "8c26e3efb0f76972",
-      "text": "Script   svo (install me in module manager) / 'Check for system updates': 5 items originally, 6 in merged"
+      "digest": "c0dcf72fc2cc0600",
+      "text": "Script   svo (install me in module manager) / 'Check for system updates': 5 items originally, 8 in merged"
     },
     {
       "id": "count|Script|svo (install me in module manager)|Load & init",
@@ -119,12 +129,12 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|Check for system updates/Check for updates|script",
-      "digest": "d425c0e70eb8d489",
+      "digest": "0ab4df0770898c89",
       "text": "Script   svo (install me in module manager) Check for system updates/Check for updates [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|Check for system updates/Update UI and Install Engine|script",
-      "digest": "1aa1d630444a72ec",
+      "digest": "9acb321d5017ad63",
       "text": "Script   svo (install me in module manager) Check for system updates/Update UI and Install Engine [script]"
     },
     {

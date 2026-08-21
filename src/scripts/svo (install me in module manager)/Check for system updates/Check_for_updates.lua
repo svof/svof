@@ -13,6 +13,10 @@ function svo.update_api_url()
   return string.format("https://api.github.com/repos/%s/releases/latest", svo.update_repo)
 end
 
+-- Fallback only - svo.update_http_done prefers the asset url the release
+-- itself carries. `tag` must be the raw tag_name: GitHub asset urls are
+-- tag-exact, so passing a "v" stripped version here 404s against a release
+-- published as "v65".
 function svo.update_package_url(tag)
   return string.format("https://github.com/%s/releases/download/%s/svof.mpackage",
     svo.update_repo, tag)

@@ -16,6 +16,22 @@
     ]
   },
   {
+    "name": "svo.update_download_done",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysDownloadDone"
+    ]
+  },
+  {
+    "name": "svo.update_download_error",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysDownloadError"
+    ]
+  },
+  {
     "name": "Check for updates",
     "isActive": "yes",
     "isFolder": "no",
