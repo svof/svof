@@ -20,15 +20,13 @@ Installing
 
 To install the system, make sure that you're connected to server **achaea.com** and port **23** (or 2003), and logged are in.
 
-1) Download the zip.
+1) Download ``svof.mpackage`` from the `latest release <https://github.com/svof/svof/releases/latest>`_.
 
-2) Unzip it somewhere permanent. Don't delete the unzipped files.
+2) Open it with Mudlet's ``Package Manager``.
 
-3) Install ``svo (install me in module manager).xml`` in the ``Module Manager``:
+3) Done. Nothing has to stay unzipped on disk - the package carries everything, and Mudlet keeps its own copy.
 
-.. image:: images/install-in-module-manager.png
-
-4) Done. Don't delete the unzipped files - that's where the system is always loaded from now.
+If you are upgrading from the older module-based install, Svof notices the 24 leftover modules on first run and removes them for you, because leaving them alongside the package would run the whole system twice. Your xml files are left on disk untouched; only the modules are removed from the profile.
 
 Now, use the **vinstall** command. This'll have the system run auto-configuration first - where it'll detect and enable skills that you have. After that, it'll ask you preference questions about the basic and essential options. Feel free to take your time to ask someone else as to what should you set an option to (like for sipping health). The installation otherwise is fairly painless - and you can always change any option you'd like later with the same command.
 

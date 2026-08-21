@@ -2,10 +2,12 @@
 Svof is an AI system for Achaea, an online MUD. It has advanced and adaptable curing capabilities, defence raising, name highlighting, limbcounter tracking and other features. It is the free and open-source version of what used to be Svo.
 
 # Downloading
-Download the system for free from [here](https://github.com/svof/svof/archive/in-client-svof.zip) :)
+Download `svof.mpackage` for free from the [latest release](https://github.com/svof/svof/releases/latest) :)
 
 # Installing
-Install instructions can be found [here](https://github.com/svof/svof/blob/in-client-svof/doc/index.rst#installing)!
+Open `svof.mpackage` with Mudlet's Package Manager - that is the whole install. Svof used to ship as 24 modules that had to be added in the Module Manager and kept synced from an unzipped folder; it is one package now, and none of that is needed. If you are coming from a module install, Svof removes the old modules for you on first run and leaves your xml files on disk untouched.
+
+Full instructions are [here](https://github.com/svof/svof/blob/in-client-svof/doc/index.rst#installing).
 
 # Documentation
 See [documentation](https://svof.github.io/svof/) on how to install, use, and take advantage of the powerful system in your scripts.
@@ -15,12 +17,12 @@ See [documentation](https://svof.github.io/svof/) on how to install, use, and ta
 1. Create or login to your github account.
 2. Create a fork of the [svof repository](https://github.com/svof/svof) (It's in the top right corner)
 3. Switch to the in-client-svof branch, it's in the drop down menu below Commits.
-4. Click the clone or download button.
-5. Extract the zip.
-6. Use that extract folder for your modules and make sure they are syncing.
-7. Make the changes in mudlet and save them.
-8. Select Upload files it on the right next to the green Clone or Download button on your fork.
-9. Drag the changed .xmls onto the box, or choose them from the file explorer.
+4. Clone your fork.
+5. Make your changes under `src/` - that is the source of truth. Each trigger, alias and script is its own `.lua` file, with its settings in the `.json` beside it.
+6. Build the package with [muddler](https://github.com/demonnic/muddler) and install the resulting `build/svof.mpackage` to test it in Mudlet.
+7. Commit the changed files.
+8. Push the branch to your fork.
+9. Open a pull request from it.
 10. Add a title/description.
 11. Check off "Create a new branch for this commit and start a pull request".
 12. Name your branch.
