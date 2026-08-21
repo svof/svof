@@ -1,8 +1,10 @@
 name: build
 
-# Fork-only for now. The conversion from 24 modules to a single package has not
-# been through extended play testing yet, so this deliberately does not run on
-# svof/svof. To enable it there, drop the `if:` on both jobs.
+# The build job runs everywhere, so the conversion can be verified on the pull
+# request that proposes it - that verification is the whole point of reviewing
+# it. Publishing is a different matter: the release job stays fork-only until
+# the converted system has had extended play testing, so nothing here can cut
+# an svof release. Drop the `if:` on the release job when that changes.
 env:
   # svof cannot be built with upstream muddler. Upstream drops nested group
   # attributes, zeroes multilineDelta, cannot represent a raw keyCode, crashes
@@ -28,7 +30,6 @@ permissions:
 
 jobs:
   build:
-    if: github.repository == 'TheLastDarkthorne/svof'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.version }}
@@ -150,6 +151,9 @@ jobs:
   # release box ticked. Nothing about a push can publish.
   release:
     needs: build
+    # Deliberately still fork-only: verifying the conversion is safe to do
+    # anywhere, publishing it as an svof release is not, and will not be until
+    # play testing says so.
     if: >-
       github.repository == 'TheLastDarkthorne/svof' &&
       github.event_name == 'workflow_dispatch' &&
