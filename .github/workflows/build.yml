@@ -140,6 +140,13 @@ jobs:
       - name: test gmcp reconciler logic
         run: lua tools/test_gmcp_reconciler.lua
 
+
+      # Gate 1.6. svo.lifevision.validate() - that discarding a paragraph as
+      # an illusion still records the balance a consumable cure spent. Same
+      # extract-the-real-function approach as the gmcp test above.
+      - name: test lifevision validate
+        run: lua tools/test_lifevision_validate.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
