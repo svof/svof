@@ -24,7 +24,7 @@
     },
     {
       "id": "added|Script|svo (install me in module manager)|Load & init/svo.remove_legacy_modules",
-      "digest": "158bcac454c80f91",
+      "digest": "da09a326adb990c1",
       "text": "Script   svo (install me in module manager) Load & init/svo.remove_legacy_modules [only in the package]"
     },
     {
@@ -144,7 +144,7 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|Load & init/svo.uninstall_all_modules|events",
-      "digest": "73fab2ea2f51b9e3",
+      "digest": "11a3fdf6c54d3446",
       "text": "Script   svo (install me in module manager) Load & init/svo.uninstall_all_modules [events]"
     },
     {

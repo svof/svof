@@ -38,15 +38,89 @@ local legacy_modules = {
   "svo (enchanter)",
 }
 
+-- The bootstrap module goes last on purpose. It carries its own
+-- svo.uninstall_all_modules registered on sysUninstallModule, which mass
+-- uninstalls the rest and ends with svo.systemloaded = nil, so removing it
+-- first turns the remaining work into a race against a handler we do not
+-- control.
+local BOOTSTRAP = "svo (install me in module manager)"
+
+local function installed(list)
+  local left = {}
+  for _, module in ipairs(list) do
+    if getModulePath(module) then left[#left + 1] = module end
+  end
+  return left
+end
+
+-- uninstallModule RETURNS false when Mudlet refuses - Host::uninstallPackage
+-- declines while a profile save is in flight - it does not raise. pcall's `ok`
+-- was therefore true for every refusal, the "couldn't remove" branch was dead,
+-- and the guard reported "old modules removed" having removed nothing.
+local function try_remove(list)
+  for _, module in ipairs(list) do
+    pcall(uninstallModule, module)
+  end
+end
+
+-- The refusal is transient - the same call a few seconds later succeeds - so
+-- retry a bounded number of times before telling the user to do it by hand.
+local MAX_ATTEMPTS = 4
+
+local function finish(found)
+  local left = installed(found)
+
+  if #left == 0 then
+    cecho("<green_yellow>Svof: old modules removed.\n")
+  else
+    cecho("\n<indian_red>Svof: couldn't remove " .. #left .. " of " .. #found ..
+          " module(s): " .. table.concat(left, ", ") .. "\n")
+    cecho("<indian_red>Please remove them in the Module Manager, or everything will run twice.\n")
+  end
+
+  svo.removing_legacy_modules = nil
+
+  -- Removing the bootstrap module fires its sysUninstallModule handler, which
+  -- ends in svo.systemloaded = nil - after svo_init_system had already set it.
+  -- Left alone, this session has the right items and an uninitialised system,
+  -- so there is no curing at all until a second restart. Re-init the way
+  -- svo.classchange does rather than asking for two restarts.
+  if not svo.systemloaded and svo_init_system then
+    cecho("<indian_red>Svof: reloading the system after the cleanup.\n")
+    svo.systemloaded = false
+    local ok, err = pcall(svo_init_system)
+    if not ok then
+      cecho("<indian_red>Svof: reload failed (" .. tostring(err) ..
+            ") - please restart Mudlet.\n")
+    end
+  end
+end
+
+local function sweep(found, attempt)
+  local left = installed(found)
+  if #left == 0 then return finish(found) end
+
+  -- bootstrap last, see BOOTSTRAP above
+  table.sort(left, function(a, b)
+    if (a == BOOTSTRAP) ~= (b == BOOTSTRAP) then return b == BOOTSTRAP end
+    return a < b
+  end)
+
+  try_remove(left)
+
+  if #installed(found) > 0 and attempt < MAX_ATTEMPTS then
+    tempTimer(2, function() sweep(found, attempt + 1) end)
+  else
+    finish(found)
+  end
+end
+
 function svo.remove_legacy_modules(event, name)
   -- sysInstall fires for every package; only react to our own
   if event == "sysInstall" and name and name ~= "svof" then return end
   if svo.removing_legacy_modules then return end
 
-  local found = {}
-  for _, module in ipairs(legacy_modules) do
-    if getModulePath(module) then found[#found + 1] = module end
-  end
+  local found = installed(legacy_modules)
   if #found == 0 then return end
 
   svo.removing_legacy_modules = true
@@ -61,14 +135,5 @@ function svo.remove_legacy_modules(event, name)
   end
 
   -- give Mudlet a moment to settle the sync change before uninstalling
-  tempTimer(0, function()
-    for _, module in ipairs(found) do
-      local ok, err = pcall(uninstallModule, module)
-      if not ok then
-        cecho("<indian_red>Svof: couldn't remove " .. module .. " (" .. tostring(err) .. ") - please remove it in the Module Manager.\n")
-      end
-    end
-    svo.removing_legacy_modules = nil
-    cecho("<green_yellow>Svof: old modules removed. Please restart Mudlet to finish cleaning up.\n")
-  end)
+  tempTimer(0, function() sweep(found, 1) end)
 end

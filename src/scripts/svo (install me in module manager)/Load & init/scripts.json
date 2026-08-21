@@ -30,8 +30,7 @@
     "isActive": "yes",
     "isFolder": "no",
     "eventHandlerList": [
-      "sysUninstallPackage",
-      "sysLuaUninstallPackage"
+      "sysUninstallPackage"
     ]
   }
 ]
