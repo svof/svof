@@ -53,8 +53,13 @@
       "text": "Alias    svo (aliases, triggers) svo/(vversion) Show system version [script]"
     },
     {
+      "id": "item|Alias|svo (namedb)|NameDB/Enemies lists|script",
+      "digest": "47331a71696caa53",
+      "text": "Alias    svo (namedb) NameDB/Enemies lists [script]"
+    },
+    {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "48cbc2f92ba47efe",
+      "digest": "4d1b24447f5857ab",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -226,6 +231,16 @@
       "id": "item|Script|svo (trigger functions)|Diag trigger functions|script",
       "digest": "43f1b63c401b3ef5",
       "text": "Script   svo (trigger functions) Diag trigger functions [script]"
+    },
+    {
+      "id": "item|Trigger|svo (elistsorter)|svo Capture elist-elist2-venomlist/svo Capture elist stop|script",
+      "digest": "986c688b347c93ed",
+      "text": "Trigger  svo (elistsorter) svo Capture elist-elist2-venomlist/svo Capture elist stop [script]"
+    },
+    {
+      "id": "item|Trigger|svo (offering)|Shrine full-gone|script",
+      "digest": "11100580842989ba",
+      "text": "Trigger  svo (offering) Shrine full-gone [script]"
     }
   ]
 }

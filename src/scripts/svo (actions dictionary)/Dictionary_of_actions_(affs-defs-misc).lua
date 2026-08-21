@@ -10,7 +10,7 @@
 -- When to use something, how to use something.
 -- For the record, oncompleted is a mandatory dictionary entry. (The Action system gets cranky without it)
 
--- * add it in 'Dictionary of actions (affs/defs/misc)' in the dict table, with the appropriate functions and curing logic
+-- * add it in 'Dictionary of actions (affs-defs-misc)' in the dict table, with the appropriate functions and curing logic
 -- * add it in 'Empty cure handling'
 -- * add it in 'Diag trigger functions' and add a new diagnose trigger for it
 -- * add gaining affliction 'Simple aff trigger functions', and if there's any complicated logic around it,

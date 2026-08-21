@@ -107,6 +107,14 @@ jobs:
       - name: check lua syntax
         run: python3 tools/check_lua_syntax.py --luac "$(which luac)" --strict-version
 
+      # Gate 1.2. Item names that could not become filenames were renamed, and
+      # rename_unfilenameable.py only rewrote the <name> elements - call sites
+      # had to be found by hand, and two were missed. Mudlet does not raise on
+      # an unknown item name, so both failed silently in play: the enemy list
+      # stopped being captured and the elist capture stopped closing early.
+      - name: check renamed call sites
+        run: python3 tools/check_renamed_callsites.py
+
       # Gate 2. The built package against all 25 original module xmls, object
       # by object: structure, names, scripts, patterns and pattern types, alias
       # regexes, event handlers, behavioural flags and top-level load order.

@@ -6,4 +6,4 @@ if svo.me.doqueue[1] and
       svo.doadd("vkeep selfishness on")
     end
 end
-disableTriger("Shrine full/gone")
+disableTriger("Shrine full-gone")
