@@ -3,6 +3,21 @@
   "source": "svof.xml",
   "accepted": [
     {
+      "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_http_done",
+      "digest": "748bec7e6eb6f508",
+      "text": "Script   svo (install me in module manager) Check for system updates/svo.update_http_done [only in the package]"
+    },
+    {
+      "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_http_error",
+      "digest": "897065884e75d690",
+      "text": "Script   svo (install me in module manager) Check for system updates/svo.update_http_error [only in the package]"
+    },
+    {
+      "id": "added|Script|svo (install me in module manager)|Load & init/svo.remove_legacy_modules",
+      "digest": "158bcac454c80f91",
+      "text": "Script   svo (install me in module manager) Load & init/svo.remove_legacy_modules [only in the package]"
+    },
+    {
       "id": "count|Script|svo (install me in module manager)|Check for system updates",
       "digest": "8c26e3efb0f76972",
       "text": "Script   svo (install me in module manager) / 'Check for system updates': 5 items originally, 6 in merged"
@@ -11,6 +26,26 @@
       "id": "count|Script|svo (install me in module manager)|Load & init",
       "digest": "070cb7b67d4da481",
       "text": "Script   svo (install me in module manager) / 'Load & init': 7 items originally, 5 in merged"
+    },
+    {
+      "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
+      "digest": "0ed590ca0c24d0df",
+      "text": "Script   svo (install me in module manager) Check for system updates/svo_downloaded_file [only in the originals]"
+    },
+    {
+      "id": "gone|Script|svo (install me in module manager)|Load & init/svo.install_from_zip",
+      "digest": "faee263003865b1b",
+      "text": "Script   svo (install me in module manager) Load & init/svo.install_from_zip [only in the originals]"
+    },
+    {
+      "id": "gone|Script|svo (install me in module manager)|Load & init/svo.install_other_modules",
+      "digest": "93238a534c215b73",
+      "text": "Script   svo (install me in module manager) Load & init/svo.install_other_modules [only in the originals]"
+    },
+    {
+      "id": "gone|Script|svo (install me in module manager)|Load & init/svo.installed_as_package",
+      "digest": "f76b4c01815ab275",
+      "text": "Script   svo (install me in module manager) Load & init/svo.installed_as_package [only in the originals]"
     },
     {
       "id": "item|Alias|svo (aliases, triggers)|svo/(vversion) Show system version|script",
@@ -78,9 +113,34 @@
       "text": "Script   svo (inker) svo Inker [script]"
     },
     {
+      "id": "item|Script|svo (install me in module manager)|Check for system updates/Check for updates|script",
+      "digest": "d425c0e70eb8d489",
+      "text": "Script   svo (install me in module manager) Check for system updates/Check for updates [script]"
+    },
+    {
+      "id": "item|Script|svo (install me in module manager)|Check for system updates/Update UI and Install Engine|script",
+      "digest": "1aa1d630444a72ec",
+      "text": "Script   svo (install me in module manager) Check for system updates/Update UI and Install Engine [script]"
+    },
+    {
       "id": "item|Script|svo (install me in module manager)|Create Svof namespace|script",
       "digest": "64629833bfe0560e",
       "text": "Script   svo (install me in module manager) Create Svof namespace [script]"
+    },
+    {
+      "id": "item|Script|svo (install me in module manager)|Load & init/svo.uninstall_all_modules|events",
+      "digest": "73fab2ea2f51b9e3",
+      "text": "Script   svo (install me in module manager) Load & init/svo.uninstall_all_modules [events]"
+    },
+    {
+      "id": "item|Script|svo (install me in module manager)|Load & init/svo.uninstall_all_modules|script",
+      "digest": "6aadedba0aeab4e9",
+      "text": "Script   svo (install me in module manager) Load & init/svo.uninstall_all_modules [script]"
+    },
+    {
+      "id": "item|Script|svo (install me in module manager)|Load & init|script",
+      "digest": "68331464e9801bc3",
+      "text": "Script   svo (install me in module manager) Load & init [script]"
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Install system|script",
@@ -166,6 +226,41 @@
       "id": "item|Script|svo (trigger functions)|Diag trigger functions|script",
       "digest": "43f1b63c401b3ef5",
       "text": "Script   svo (trigger functions) Diag trigger functions [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Herb tracker/svo Rift/Ze work|matchall",
+      "digest": "13c33f87153efd9e",
+      "text": "Trigger  svo (aliases, triggers) svo/Herb tracker/svo Rift/Ze work [matchall]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Miscellaneous/Highlights/Highlight firewalls in the room|matchall",
+      "digest": "13c33f87153efd9e",
+      "text": "Trigger  svo (aliases, triggers) svo/Miscellaneous/Highlights/Highlight firewalls in the room [matchall]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Miscellaneous/Highlights/Highlight icewalls in room|matchall",
+      "digest": "13c33f87153efd9e",
+      "text": "Trigger  svo (aliases, triggers) svo/Miscellaneous/Highlights/Highlight icewalls in room [matchall]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Miscellaneous/Highlights/Highlight stonewalls in the room|matchall",
+      "digest": "13c33f87153efd9e",
+      "text": "Trigger  svo (aliases, triggers) svo/Miscellaneous/Highlights/Highlight stonewalls in the room [matchall]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Miscellaneous/Links To Click/Clickable URL's|matchall",
+      "digest": "13c33f87153efd9e",
+      "text": "Trigger  svo (aliases, triggers) svo/Miscellaneous/Links To Click/Clickable URL's [matchall]"
+    },
+    {
+      "id": "item|Trigger|svo (fishdist)|svo Fishing Distance by Trilliana/fishinghightlight 3|matchall",
+      "digest": "13c33f87153efd9e",
+      "text": "Trigger  svo (fishdist) svo Fishing Distance by Trilliana/fishinghightlight 3 [matchall]"
+    },
+    {
+      "id": "item|Trigger|svo (runeidentifier)|On a person-ground/Regex|matchall",
+      "digest": "13c33f87153efd9e",
+      "text": "Trigger  svo (runeidentifier) On a person-ground/Regex [matchall]"
     }
   ]
 }

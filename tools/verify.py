@@ -64,6 +64,13 @@ def describe(n, kind):
             "fireLength": txt(n, "mStayOpen") or "0",
             "filter": n.get("isFilterTrigger", "no"),
             "command": txt(n, "mCommand"),
+            # perl /g. Absent here, the conversion dropped it on all 7 triggers
+            # that had it and this gate still said the package verified - which
+            # is how under-counted rift parsing shipped green.
+            "matchall": n.get("isPerlSlashGOption", "no"),
+            "highlight": n.get("isColorizerTrigger", "no"),
+            "soundTrigger": n.get("isSoundTrigger", "no"),
+            "soundFile": txt(n, "mSoundFile"),
         })
     elif kind == "Alias":
         d.update({"regex": txt(n, "regex"), "command": txt(n, "command")})

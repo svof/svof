@@ -124,30 +124,66 @@ def compare(merged):
                 melem = merged_by_name[nm].pop(0)
                 a = describe_tree(el, kind)
                 b = describe_tree(melem, kind)
+                def diff_one(path, da, db):
+                    for k in sorted(set(da) | set(db)):
+                        if da.get(k) != db.get(k):
+                            content.append({
+                                "id": "item|%s|%s|%s%s|%s" % (kind, module, nm, path, k),
+                                "digest": digest(da.get(k), db.get(k)),
+                                "text": "%-8s %s %s%s [%s]" % (kind, module, nm, path, k),
+                                "original": da.get(k),
+                                "merged": db.get(k),
+                            })
+
                 if len(a) != len(b):
-                    # an item was added or removed inside this tree - deliberate
-                    # for the bootstrap folders, so treat it as a content
-                    # difference the baseline can accept
+                    # An item was added or removed inside this tree - deliberate
+                    # for the bootstrap folders. Record the count, then keep
+                    # going: this used to `continue`, which skipped the whole
+                    # subtree and made the gate blind to exactly the trees it
+                    # most needed to watch. The only two count-differing trees
+                    # hold the updater, the migration guard and svo_init_system,
+                    # so replacing a body with error("sabotage") still verified
+                    # clean. Compare whatever both sides do have, keyed by path.
                     content.append({
                         "id": "count|%s|%s|%s" % (kind, module, nm),
                         "digest": digest(len(a), len(b)),
                         "text": "%-8s %s / %r: %d items originally, %d in merged"
                                 % (kind, module, nm, len(a), len(b)),
                     })
+                    amap, bmap = dict(a), dict(b)
+                    for path in sorted(set(amap) - set(bmap)):
+                        content.append({
+                            "id": "gone|%s|%s|%s%s" % (kind, module, nm, path),
+                            "digest": digest(path, None),
+                            "text": "%-8s %s %s%s [only in the originals]"
+                                    % (kind, module, nm, path),
+                        })
+                    for path in sorted(set(bmap) - set(amap)):
+                        # Digest the descriptor, not just the path. An item that
+                        # exists only in the package has nothing to compare
+                        # against, so a path-only digest never moves and the
+                        # body is unreviewed forever - which is the whole
+                        # problem here, since the updater and the migration
+                        # guard are exactly such items. Including the descriptor
+                        # means editing one of them fails the gate until the
+                        # baseline is regenerated deliberately.
+                        d = bmap[path]
+                        content.append({
+                            "id": "added|%s|%s|%s%s" % (kind, module, nm, path),
+                            "digest": digest(None, path,
+                                             *[(k, d[k]) for k in sorted(d)]),
+                            "text": "%-8s %s %s%s [only in the package]"
+                                    % (kind, module, nm, path),
+                        })
+                    for path in sorted(set(amap) & set(bmap)):
+                        diff_one(path, amap[path], bmap[path])
                     continue
+
                 for (pa, da), (pb, db) in zip(a, b):
                     if pa != pb:
                         structural.append("%-8s %s: path %r != %r" % (kind, module, pa, pb))
                         break
-                    for k in sorted(set(da) | set(db)):
-                        if da.get(k) != db.get(k):
-                            content.append({
-                                "id": "item|%s|%s|%s%s|%s" % (kind, module, nm, pa, k),
-                                "digest": digest(da.get(k), db.get(k)),
-                                "text": "%-8s %s %s%s [%s]" % (kind, module, nm, pa, k),
-                                "original": da.get(k),
-                                "merged": db.get(k),
-                            })
+                    diff_one(pa, da, db)
 
         for n, v in merged_by_name.items():
             if v:
