@@ -136,6 +136,9 @@ svo.me               = svo.me or {}
 local me             = svo.me
 svo.sk               = svo.sk or {}
 local sk             = svo.sk
+-- svof affliction names GMCP reported cured during the current paragraph.
+-- Reset on every prompt - see the Char.Afflictions.Remove handler below.
+sk.gmcp_cured        = sk.gmcp_cured or {}
 svo.vm               = svo.vm or {}
 svo.cn               = svo.cn or {}
 svo.cnrl             = svo.cnrl or {}
@@ -695,6 +698,18 @@ signals.gmcpcharafflictionsremove:connect(function()
   end
 
   if svoaffkey then
+    -- GMCP is processed before the game text it accompanies, so by the time
+    -- the cure's own line reaches a trigger, svo.rmaff below has already
+    -- taken the affliction out of svo.affs. A trigger asking "do we have
+    -- this affliction?" to decide whether a cure is genuine therefore always
+    -- reads no, and calls a real cure an illusion. Record it so those checks
+    -- can tell "GMCP just cured this" apart from "we never had it". Cleared
+    -- on the next prompt, the same way sk.removed_something is.
+    sk.gmcp_cured[svoaffkey] = true
+    sk.onprompt_beforeaction_add('gmcpcharafflictionsremove', function()
+      sk.gmcp_cured = {}
+    end)
+
     -- svo.rmaff accepts the name string directly; passing the whole dict
     -- entry only worked because dict_setup() guarantees an entry's own
     -- name field matches, and it made rmaff walk every sub-table to find it.

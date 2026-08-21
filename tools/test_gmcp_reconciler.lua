@@ -120,7 +120,7 @@ local function new_environment()
   local calls = {
     addaff = {}, rmaff = {}, addaffdict = {}, updateaffcount = {},
     remove_unknownany = {}, debugf = {}, got = {}, lost = {},
-    checkaeony = 0, changecuring = 0,
+    onprompt = {}, checkaeony = 0, changecuring = 0,
   }
 
   local handlers = {}
@@ -160,6 +160,7 @@ local function new_environment()
   svo.me = {}
   svo.conf = { gmcpaffechoes = false, gmcpdefechoes = false }
   svo.sk = {}
+  svo.sk.gmcp_cured = {}
   svo.valid = {}
 
   function svo.deepcopy(t)
@@ -177,6 +178,9 @@ local function new_environment()
   function svo.debugf(fmt, ...) calls.debugf[#calls.debugf + 1] = string.format(fmt, ...) end
   function svo.valid.remove_unknownany(name) calls.remove_unknownany[#calls.remove_unknownany + 1] = name end
   function svo.sk.checkaeony() calls.checkaeony = calls.checkaeony + 1 end
+  -- Records the prompt callback the way sk.onprompt_beforeaction_do would
+  -- later run it, so the test can fire it and check the reset.
+  function svo.sk.onprompt_beforeaction_add(name, fn) calls.onprompt[name] = fn end
 
   -- svo.defs['got_x'] / ['lost_x'] are looked up dynamically; record any call.
   setmetatable(svo.defs, {
@@ -384,6 +388,48 @@ do
   eq(#calls.rmaff, 1, "G7: rmaff called exactly once")
   eq(type(calls.rmaff[1]), 'string', "G7: rmaff receives a string")
   eq(calls.rmaff[1], 'sensitivity', "G7: rmaff receives the resolved svof name")
+end
+
+-- ===== scenario 5b: GMCP-cured record for the trigger-side illusion checks =====
+-- GMCP is processed before the game text it accompanies, so by the time a
+-- cure's own line reaches a trigger, rmaff has already cleared affs[aff].
+-- Without this record the trigger reads "we never had it" and calls a real
+-- cure an illusion.
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = { illness = 'illness' }
+  svo.dict.illness = { name = 'illness' }
+  env.gmcp.Char.Afflictions.Remove = { [1] = 'illness' }
+
+  h.affremove()
+
+  eq(svo.sk.gmcp_cured.illness, true, "gmcp_cured: a resolved GMCP cure is recorded under its svof name")
+  truthy(calls.onprompt['gmcpcharafflictionsremove'], "gmcp_cured: a prompt reset was registered")
+
+  -- fire the prompt callback the way sk.onprompt_beforeaction_do does.
+  -- Guarded so a missing callback reports as a failure rather than killing
+  -- the run and hiding every check after this one.
+  if calls.onprompt['gmcpcharafflictionsremove'] then
+    calls.onprompt['gmcpcharafflictionsremove']()
+    eq(svo.sk.gmcp_cured.illness, nil, "gmcp_cured: the record does not survive the prompt")
+  else
+    eq('no prompt reset registered', 'a callable prompt reset', "gmcp_cured: the record does not survive the prompt")
+  end
+end
+
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = {} -- nothing resolves
+  env.gmcp.Char.Afflictions.Remove = { [1] = 'somethingunknown' }
+
+  h.affremove()
+
+  eq(next(svo.sk.gmcp_cured), nil, "gmcp_cured: an unresolvable GMCP name records nothing")
+  eq(calls.onprompt['gmcpcharafflictionsremove'], nil, "gmcp_cured: no prompt reset registered when nothing was recorded")
 end
 
 -- ===== scenario 6: G1/G2 - the List reconciler =====
