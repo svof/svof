@@ -8,7 +8,8 @@ function svo.uninstall_all_modules(_, name)
 
   svo.systemloaded = nil
 
-  -- stop anything still scheduled from acting on a system that is going away
+  -- Write the user's settings out while the system that owns them is still
+  -- here. saveconfig persists config to disk; it does not cancel anything.
   if svo.signals and svo.signals.saveconfig then
     pcall(function() svo.signals.saveconfig:emit() end)
   end

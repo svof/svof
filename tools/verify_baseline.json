@@ -68,6 +68,11 @@
       "text": "Alias    svo (namedb) NameDB/Enemies lists [script]"
     },
     {
+      "id": "item|Alias|svo (namedb)|NameDB/ndb alias cheatsheet|script",
+      "digest": "153cc07a71f5cedc",
+      "text": "Alias    svo (namedb) NameDB/ndb alias cheatsheet [script]"
+    },
+    {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
       "digest": "4d1b24447f5857ab",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
@@ -149,7 +154,7 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|Load & init/svo.uninstall_all_modules|script",
-      "digest": "6aadedba0aeab4e9",
+      "digest": "46a5212a5163d950",
       "text": "Script   svo (install me in module manager) Load & init/svo.uninstall_all_modules [script]"
     },
     {
@@ -161,6 +166,11 @@
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Install system|script",
       "digest": "209a385a5e8a58af",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Install system [script]"
+    },
+    {
+      "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Priorities|script",
+      "digest": "0c405186c297e957",
+      "text": "Script   svo (install, config, pipes, rift, parry, prios) Priorities [script]"
     },
     {
       "id": "item|Script|svo (limbcounter)|svo (limbcounter)/svo limbcounter|script",

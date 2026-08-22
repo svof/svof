@@ -3,7 +3,7 @@
 xml2muddler.py -- convert a Mudlet package XML into a muddler project.
 
 Written for svof. Deliberately avoids the three data-loss bugs found in
-DeMuddler (see bugtest/):
+DeMuddler, all reported upstream:
   * duplicate sibling folder names -> disambiguated directories, nothing overwritten
   * leaf items alongside subfolders -> always emitted
   * same-named items in one directory -> script inlined rather than silently sharing a file
@@ -459,9 +459,9 @@ def main():
     # Any other *Package the module carries is silently dropped otherwise. That
     # is how the 8-button ActionPackage went missing without a word: the loop
     # above only visits tags in PACKAGES, and anything else falls off the end.
-    # muddler ships a Button class but nothing constructs it, so buttons cannot
-    # be emitted today - the point here is that the loss is stated, not that it
-    # is fixed.
+    # Buttons no longer fall off that end - ActionPackage is in PACKAGES and
+    # build_button emits them - but the warning stays, because the next item
+    # type Mudlet adds would go the same way.
     for child in root:
         if not child.tag.endswith("Package") or child.tag in PACKAGES:
             continue

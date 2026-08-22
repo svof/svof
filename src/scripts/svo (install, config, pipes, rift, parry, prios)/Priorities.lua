@@ -414,12 +414,24 @@ function prio.import(name, echoback, report_errors, use_default)
   }
 
   local s
+  -- Both arms used svo.assert(cond, msg, sendf), which calls sendf and then
+  -- CARRIES ON - so io.input still ran on the missing path and raised the raw
+  -- traceback the message was meant to replace. The file's own convention for
+  -- a recoverable failure is one line further down: say what went wrong and
+  -- return, so the caller's `if prio.import(...) then` sees the failure.
   if name == 'current' and (use_default or not lfs.attributes(path)) then
-    io.input(svo.installationfolder() .. "/default_prios")
+    local defaults = svo.installationfolder() .. "/default_prios"
+    if not lfs.attributes(defaults) then
+      sendf("The default priorities are missing from the installation (%s).", defaults)
+      return
+    end
+    io.input(defaults)
     s = io.read("*a")
   else
-    svo.assert(lfs.attributes(path), name .. " prio doesn't exist.", sendf)
-
+    if not lfs.attributes(path) then
+      sendf("%s prio doesn't exist.", tostring(name))
+      return
+    end
     io.input(path)
     s = io.read("*all")
   end

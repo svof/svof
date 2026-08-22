@@ -4,11 +4,18 @@ local class = svo.me.class:title()
 if not ndb.help then
   local path = svo.installationfolder() .."/ndb-help.lua"
   
+  -- A missing file used to reach f:read on a nil f and raise a raw traceback,
+  -- with the perfectly good message below going unused.
   local f, m = io.open(path)
+  if not f then
+    svo.echof("Couldn't open the ndb-help.lua file (%s) :/ is it where svof was installed?", tostring(m))
+    return
+  end
   local s = f:read("*a")
+  f:close()
 
-  local data = loadstring("return "..s)()
-  if not data then
+  local ok, data = pcall(loadstring("return "..s))
+  if not ok or not data then
     svo.echof("Couldn't load data from the ndb-help.lua file :/ maybe it is messed up.")
     return
   end
