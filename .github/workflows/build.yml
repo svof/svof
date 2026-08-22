@@ -89,10 +89,17 @@ jobs:
       # a fix applied to one cannot silently miss the one that ships.
       - name: check the duplicated resource files still match
         run: |
+          # Compare content, not raw bytes. default_prios is stored CRLF at
+          # the repo root and LF under src/resources/ - a leftover from
+          # whenever each copy was last saved, not a real content
+          # difference. cmp treated that as a failure the moment this ran
+          # anywhere but a Windows checkout, where core.autocrlf silently
+          # normalises both copies to CRLF, hiding the exact thing this gate
+          # exists to catch.
           for f in default_prios ndb-help.lua; do
-            cmp "$f" "src/resources/$f" || {
-              echo "$f differs between the repo root and src/resources/ - the"
-              echo "src/resources/ copy is the one that ships."
+            diff <(tr -d '\r' < "$f") <(tr -d '\r' < "src/resources/$f") || {
+              echo "$f differs in content between the repo root and src/resources/ -"
+              echo "the src/resources/ copy is the one that ships."
               exit 1
             }
           done
