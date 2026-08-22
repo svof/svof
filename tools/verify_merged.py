@@ -18,9 +18,18 @@ Two kinds of problem are reported.
                 and migration guard are new, and a few load-order assumptions
                 had to change. Those live in a baseline file.
 
+The reference side is pinned. The 25 module xmls at the repo root are what the
+package is compared against, and they are ordinary files in the same working
+tree - so a change applied to BOTH sides was invisible by construction.
+Appending send('quit') to a script in the reference xml and in src/ verified
+clean, exit 0. Their hashes are now recorded in tools/reference_xmls.json and
+checked before anything else, so editing a reference is a deliberate,
+reviewable act instead of a silent one.
+
     python tools/verify_merged.py <merged.xml>
     python tools/verify_merged.py <merged.xml> --baseline tools/verify_baseline.json
     python tools/verify_merged.py <merged.xml> --write-baseline tools/verify_baseline.json
+    python tools/verify_merged.py --write-reference    # re-record the xml hashes
 """
 import argparse, hashlib, json, os, sys
 import xml.etree.ElementTree as ET
@@ -30,6 +39,50 @@ import verify as V
 from merge_svof import MERGE_ORDER, NO_WRAPPER_KINDS, REPO
 
 LEAF_OF = V.LEAF_OF
+
+REFERENCE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                         "reference_xmls.json")
+
+
+def reference_hashes():
+    """sha256 of each module xml as it sits in the working tree."""
+    out = {}
+    for module in MERGE_ORDER:
+        path = os.path.join(REPO, module + ".xml")
+        h = hashlib.sha256()
+        with open(path, "rb") as fh:
+            for chunk in iter(lambda: fh.read(65536), b""):
+                h.update(chunk)
+        out[module + ".xml"] = h.hexdigest()
+    return out
+
+
+def check_reference():
+    """Refuse to compare against a reference that has moved.
+
+    Everything this gate reports is relative to these 25 files. Editing one is
+    sometimes right - the conversion renamed items that could not become
+    filenames, and had to rename their call sites here too - but it changes
+    what "verified" means, so it has to be recorded on purpose.
+    """
+    if not os.path.exists(REFERENCE):
+        return ["reference record %s is missing - regenerate it with "
+                "--write-reference" % os.path.basename(REFERENCE)]
+    with open(REFERENCE, encoding="utf-8") as fh:
+        recorded = json.load(fh)["sha256"]
+    now = reference_hashes()
+
+    problems = []
+    for name in sorted(set(recorded) | set(now)):
+        if name not in recorded:
+            problems.append("reference xml %r is not recorded" % name)
+        elif name not in now:
+            problems.append("reference xml %r has gone missing" % name)
+        elif recorded[name] != now[name]:
+            problems.append(
+                "reference xml %r has changed since it was recorded - the "
+                "comparison below would be against a moved reference" % name)
+    return problems
 
 
 def digest(*parts):
@@ -227,10 +280,38 @@ def short(v):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("merged")
+    ap.add_argument("merged", nargs="?")
     ap.add_argument("--baseline", help="fail only on differences not listed here")
     ap.add_argument("--write-baseline", help="record the current content differences")
+    ap.add_argument("--write-reference", action="store_true",
+                    help="record the reference xml hashes and exit")
     a = ap.parse_args()
+
+    if a.write_reference:
+        payload = {
+            "note": "sha256 of each module xml the package is verified against. "
+                    "These are the reference, so a change to one changes what "
+                    "'verified' means - verify_merged.py refuses to run until it "
+                    "is re-recorded here, deliberately, in the same commit.",
+            "sha256": reference_hashes(),
+        }
+        with open(REFERENCE, "w", encoding="utf-8", newline="\n") as fh:
+            json.dump(payload, fh, indent=2)
+            fh.write("\n")
+        print("wrote %s: %d reference xmls" % (REFERENCE, len(payload["sha256"])))
+        return 0
+
+    if not a.merged:
+        ap.error("the merged package xml is required")
+
+    moved = check_reference()
+    if moved:
+        for m in moved:
+            print("[FAIL] " + m)
+        print("\nThe reference xmls are what this gate measures against. If the "
+              "change was intended,\nre-record them in the same commit:\n"
+              "    python tools/verify_merged.py --write-reference")
+        return 1
 
     merged = ET.parse(a.merged).getroot()
     structural, content, order_report = compare(merged)
