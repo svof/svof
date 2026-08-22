@@ -7,8 +7,9 @@
 -- same prompt. That is worse than the system not loading at all, so the
 -- leftovers are removed rather than merely warned about.
 --
--- Only Svof's own modules are touched. Nothing is deleted from disk; the
--- modules are removed from the profile, so the xml files stay where they are.
+-- Only Svof's own modules are touched, and only in this profile - nothing here
+-- deletes a file. Mudlet's own profile save does, though, which is why the
+-- sweep is delayed and every module xml is copied first. See SAVE_DELAY.
 
 local legacy_modules = {
   "svo (install me in module manager)",
@@ -67,7 +68,54 @@ end
 -- retry a bounded number of times before telling the user to do it by hand.
 local MAX_ATTEMPTS = 4
 
+-- How long to wait before touching anything, and why it is not zero.
+--
+-- Host::installPackage calls saveProfile() BEFORE it raises sysInstall.
+-- saveProfile snapshots modulesToWrite from the still-synced modules and hands
+-- saveModules() to QtConcurrent::run, where writeModuleXML reads the LIVE
+-- trigger/alias/script lists on a pool thread. The main thread then raises
+-- sysInstall, this guard runs, and the sweep empties those lists a few
+-- milliseconds later. The background writer then serialises what is left,
+-- which is nothing - so every module xml on disk is overwritten with a ~304
+-- byte empty <MudletPackage>. Measured on Mudlet 4.16: 23 to 25 of 25 files
+-- truncated, the count varying because it is a race. Not reproduced on 4.18 or
+-- 4.22, but svo_init_system accepts anything newer than 3.20, the old install
+-- instructions told people to tick sync on all 25, and for most of them those
+-- files are the only copy of the pre-conversion system.
+--
+-- Delaying past that save is the fix; two seconds measured clean where zero
+-- did not. currentlySavingProfile is not exposed to Lua on 4.16, so a fixed
+-- delay is the only option. Three, for margin on a slower machine - the cost
+-- of the extra second is one more second of everything running twice.
+local SAVE_DELAY = 3
+
+-- Belt and braces for the above: if the delay is still not enough on some
+-- Mudlet or some machine, the user has a copy. Written once - a second run
+-- must not overwrite a good backup with an already-truncated file.
+local function backup(module)
+  local path = getModulePath(module)
+  if not path then return nil end
+  local to = path .. ".svof-backup"
+  if io.open(to, "rb") then return nil end
+  local from = io.open(path, "rb")
+  if not from then return nil end
+  local data = from:read("*a")
+  from:close()
+  if not data or #data == 0 then return nil end
+  local out = io.open(to, "wb")
+  if not out then return nil end
+  out:write(data)
+  out:close()
+  return to
+end
+
 local function finish(found)
+  -- Cleared first, not last. Clearing it after the printing meant a throw
+  -- anywhere below latched svo.removing_legacy_modules for the whole session,
+  -- so a re-raised sysInstall found the guard disabled: on the failure branch
+  -- that strands leftover modules with no message and no way to retry.
+  svo.removing_legacy_modules = nil
+
   local left = installed(found)
 
   if #left == 0 then
@@ -78,19 +126,30 @@ local function finish(found)
     cecho("<indian_red>Please remove them in the Module Manager, or everything will run twice.\n")
   end
 
-  svo.removing_legacy_modules = nil
-
   -- Removing the bootstrap module fires its sysUninstallModule handler, which
   -- ends in svo.systemloaded = nil - after svo_init_system had already set it.
-  -- Left alone, this session has the right items and an uninitialised system,
+  -- Left alone, that session has the right items and an uninitialised system,
   -- so there is no curing at all until a second restart. Re-init the way
   -- svo.classchange does rather than asking for two restarts.
+  --
+  -- In practice this branch has never been entered: at sweep time
+  -- svo.uninstall_all_modules resolves to the package's body, which returns
+  -- early for any name but "svof", so the flag is never cleared. It stays
+  -- because which of the two bodies wins depends on load order that this code
+  -- does not control, and being wrong in the other direction costs a session
+  -- with no curing.
   if not svo.systemloaded and svo_init_system then
     cecho("<indian_red>Svof: reloading the system after the cleanup.\n")
     svo.systemloaded = false
+    -- svo_init_system signals failure by NOT setting svo.systemloaded - it
+    -- returns quietly when a subsystem is missing or Penlight is not loaded
+    -- yet. Branching on pcall's ok alone reported success for exactly the case
+    -- worth reporting: measured ok=true, err=nil, systemloaded=false with one
+    -- loader absent.
     local ok, err = pcall(svo_init_system)
-    if not ok then
-      cecho("<indian_red>Svof: reload failed (" .. tostring(err) ..
+    if not ok or not svo.systemloaded then
+      cecho("<indian_red>Svof: reload failed (" ..
+            tostring(ok and "the system did not finish loading" or err) ..
             ") - please restart Mudlet.\n")
     end
   end
@@ -127,13 +186,27 @@ function svo.remove_legacy_modules(event, name)
 
   cecho("\n<indian_red>Svof: found " .. #found .. " module(s) from the older module-based install.\n")
   cecho("<indian_red>Leaving them alongside the package would run everything twice, so they are being removed.\n")
-  cecho("<indian_red>Your xml files are left on disk untouched - only the modules are removed from this profile.\n")
 
-  for _, module in ipairs(found) do
-    -- sync has to go first: uninstalling a synced module can write it back out
-    if disableModuleSync then disableModuleSync(module) end
-  end
+  -- This used to promise "your xml files are left on disk untouched", and on
+  -- Mudlet 4.16 that promise was false - see SAVE_DELAY. Say what actually
+  -- happens, and make the files recoverable either way.
+  cecho("<indian_red>A copy of each module xml is kept beside it as <file>.svof-backup,\n")
+  cecho("<indian_red>because Mudlet rewrites synced module files while it saves the profile.\n")
 
-  -- give Mudlet a moment to settle the sync change before uninstalling
-  tempTimer(0, function() sweep(found, 1) end)
+  -- The disableModuleSync loop that used to sit here is gone. It could not
+  -- help - modulesToWrite was snapshotted before sysInstall was raised, so the
+  -- write is already scheduled by the time any of this runs - and in an
+  -- isolated three-module test it made things worse: uninstallModule with sync
+  -- left on truncated nothing on any Mudlet, while disableModuleSync followed
+  -- by uninstallModule truncated the file on 4.16.
+  --
+  -- Wait for Mudlet's own profile save to finish before touching anything.
+  -- This was tempTimer(0, ...), which put the sweep inside that save's window.
+  -- The backups are taken here rather than above for the same reason: at
+  -- sysInstall time the background writer may be part-way through the file,
+  -- and a copy of a half-written xml is not a backup.
+  tempTimer(SAVE_DELAY, function()
+    for _, module in ipairs(found) do backup(module) end
+    sweep(found, 1)
+  end)
 end

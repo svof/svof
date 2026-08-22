@@ -1557,17 +1557,22 @@ color_table.blaze_orange  = {255, 102, 0}
 
 -- check if the person imported the xml many times by accident
 signals.systemstart:connect(function ()
-  local toomany, types = {}, {'alias', 'trigger'} -- add scripts when exists() function supports it
-
-  for _, type in ipairs(types) do
-    if exists('svo', type) > 1 then
-      toomany[#toomany+1] = type
-    end
-  end
-
-  if #toomany == 0 then return end
-
+  -- The count is taken inside the timer, not out here. Taken at systemstart it
+  -- was true during a module-to-package migration - init runs while the old
+  -- modules are still installed - and by the time the timer fired ten seconds
+  -- later the migration had removed them, so a user who had just been migrated
+  -- correctly was told to go and delete their only svo folders.
   tempTimer(10, function ()
+    local toomany, types = {}, {'alias', 'trigger'} -- add scripts when exists() function supports it
+
+    for _, type in ipairs(types) do
+      if exists('svo', type) > 1 then
+        toomany[#toomany+1] = type
+      end
+    end
+
+    if #toomany == 0 then return end
+
     svo.echof("Warning! You have multiple %s svo folders while you only should have one per aliases, triggers, etc."
       .." Delete the extra ones.", table.concat(toomany, ", ")) end)
 end, 'check for multiple svos')
