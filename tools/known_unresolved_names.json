@@ -2,50 +2,62 @@
   "known": [
     {
       "file": "src/aliases/svo (logger)/(startlog)_Start_logging.lua",
+      "kind": "trigger",
       "name": "Capture each line"
     },
     {
       "file": "src/aliases/svo (logger)/(startlog)_Start_logging.lua",
+      "kind": "trigger",
       "name": "Record on the prompt"
     },
     {
       "file": "src/scripts/svo (install, config, pipes, rift, parry, prios)/Config_system.lua",
+      "kind": "trigger",
       "name": "Pre-parse anti-illusion"
     },
     {
       "file": "src/scripts/svo (limbcounter)/svo_limbcounter.lua",
+      "kind": "trigger",
       "name": "svo Burn limbcounter"
     },
     {
       "file": "src/scripts/svo (limbcounter)/svo_limbcounter.lua",
+      "kind": "trigger",
       "name": "svolc Don't Register"
     },
     {
       "file": "src/scripts/svo (logger)/svo Logger/HTML5_logger.lua",
+      "kind": "trigger",
       "name": "Capture each line"
     },
     {
       "file": "src/scripts/svo (logger)/svo Logger/HTML5_logger.lua",
+      "kind": "trigger",
       "name": "Record on the prompt"
     },
     {
       "file": "src/scripts/svo (setup, misc, empty, funnies, dor)/Setup.lua",
+      "kind": "trigger",
       "name": "Elementalism channels"
     },
     {
       "file": "src/scripts/svo (trigger functions)/Main_trigger_functions.lua",
+      "kind": "trigger",
       "name": "Applied"
     },
     {
       "file": "src/scripts/svo (trigger functions)/Main_trigger_functions.lua",
+      "kind": "trigger",
       "name": "Focus mind"
     },
     {
       "file": "src/scripts/svo (trigger functions)/Main_trigger_functions.lua",
+      "kind": "trigger",
       "name": "Pre-parse anti-illusion"
     },
     {
       "file": "src/triggers/svo (aliases, triggers)/svo/Miscellaneous/Links To Click/Stop_(unread_msgs).lua",
+      "kind": "trigger",
       "name": "Unread messages"
     }
   ]

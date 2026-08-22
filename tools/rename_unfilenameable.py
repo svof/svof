@@ -19,8 +19,9 @@ Renames are chosen to read naturally rather than by blind substitution:
     python tools/rename_unfilenameable.py            # dry run
     python tools/rename_unfilenameable.py --apply
 """
-import argparse, csv, glob, os, re
+import argparse, csv, glob, os, re, shutil, sys
 import xml.etree.ElementTree as ET
+from xml.sax.saxutils import escape
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ILLEGAL = set('<>:"/\\|?*')
@@ -86,29 +87,57 @@ def main():
                          "old_name": old, "new_name": new})
 
         for start, end, old, new, tag in sorted(edits, key=lambda e: -e[0]):
-            text = text[:start] + new + text[end:]
+            # Re-escape. The name compared and rewritten here is the DECODED
+            # one - it has to be, since '<' arrives as &lt; and checking the
+            # raw text would miss it - but what goes back is raw XML. Splicing
+            # a decoded name in unescaped means an '&' in a name produces a
+            # reference xml that no longer parses. Latent today, since no name
+            # has both an illegal character and an '&', but ten names carry
+            # &amp; and it is one '/' away from being live.
+            text = text[:start] + escape(new) + text[end:]
 
         if edits and a.apply:
+            # The reference xmls are the only copy of the pre-conversion
+            # system, and this rewrites them in place. Keep the original beside
+            # it rather than trusting that whoever runs this has a clean tree.
+            backup = path + ".pre-rename"
+            if not os.path.exists(backup):
+                shutil.copyfile(path, backup)
             with open(path, "w", encoding="utf-8", newline="") as f:
                 f.write(text)
         if edits:
             print(f"  {os.path.basename(path):48s} {len(edits)} renamed")
 
-    # Only a real run may touch the record. Once the renames are applied a dry
-    # run finds nothing, so writing unconditionally rewrote the CSV as a bare
-    # header - and check_renamed_callsites.py is driven entirely by that CSV,
-    # so the gate then went green having checked nothing at all.
-    if a.apply:
+    # Only a real run may touch the record, and only when it has something to
+    # record. Writing it on a dry run rewrote the CSV as a bare header, and
+    # check_renamed_callsites.py is driven entirely by that CSV, so the gate
+    # then went green having checked nothing at all. Guarding only the dry run
+    # left the same hole one step away: the renames are applied now, so a
+    # second --apply finds nothing and truncates the record just as thoroughly.
+    if a.apply and rows:
+        existing = 0
+        if os.path.exists(a.csv):
+            with open(a.csv, encoding="utf-8") as fh:
+                existing = sum(1 for _ in csv.DictReader(fh))
+        if len(rows) < existing:
+            print(f"\nREFUSED: this run found {len(rows)} renames but {a.csv} "
+                  f"already records {existing}. Writing would lose the "
+                  f"difference; the record is what the CI gate checks against.")
+            return 1
         with open(a.csv, "w", encoding="utf-8", newline="") as fh:
             w = csv.DictWriter(fh, fieldnames=["file", "type", "old_name", "new_name"])
             w.writeheader()
             w.writerows(rows)
 
     if a.apply:
-        print(f"\nAPPLIED: {len(rows)} renames -> {a.csv}")
+        if rows:
+            print(f"\nAPPLIED: {len(rows)} renames -> {a.csv}")
+        else:
+            print(f"\nAPPLIED: nothing to rename; {a.csv} left alone")
     else:
         print(f"\nDRY RUN: {len(rows)} renames found; {a.csv} left alone")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

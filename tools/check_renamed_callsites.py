@@ -51,6 +51,15 @@ KIND_DIR = {
     "keys": "key", "timers": "timer", "buttons": "button",
 }
 
+# Floors. Every check here reports what it found, and "found nothing" read
+# exactly like "found nothing wrong": deleting src/ gave "0 literal item names
+# ... every literal item name resolves", exit 0. These are set well below the
+# real figures (2890 items, 194 references, 56 recorded renames) so ordinary
+# growth or pruning does not trip them, but an empty or half-read tree does.
+MIN_ITEMS = 2000
+MIN_REFERENCES = 100
+MIN_RENAMES = 40
+
 # Mudlet calls whose first string argument is an item name. Every one of these
 # is a silent no-op when the name does not resolve.
 NAME_FUNCS = {
@@ -87,15 +96,55 @@ def _rel(path):
     return os.path.relpath(path, REPO).replace(os.sep, "/")
 
 
-def _sources(src):
+def _files(src):
     for root, _, files in os.walk(src):
-        for fn in files:
+        for fn in sorted(files):
             if fn.endswith((".lua", ".json")):
                 yield os.path.join(root, fn)
 
 
+def _chunks(src):
+    """(label, lua source) for everything in src/ that is Lua.
+
+    A .json is not Lua, and reading one as raw text found nothing at all: the
+    scan reported {'.json': 0, '.lua': 194}, so the 64 scripts inlined into
+    the json - the ones whose item name cannot be a filename or collides with
+    a non-sibling - were never examined by either check. Those are exactly the
+    items whose names had to be rewritten, which makes them the likeliest
+    place for a stale call site to survive. Parse the json and yield each
+    inlined body as the Lua it is.
+    """
+    for path in _files(src):
+        rel = _rel(path)
+        if path.endswith(".lua"):
+            yield rel, io.open(path, encoding="utf-8", errors="replace").read()
+            continue
+        with io.open(path, encoding="utf-8") as fh:
+            data = json.load(fh)
+
+        def walk(items, trail):
+            for it in items if isinstance(items, list) else [items]:
+                if not isinstance(it, dict):
+                    continue
+                here = trail + [it.get("name") or "?"]
+                if it.get("script"):
+                    yield rel + "#" + "/".join(here), it["script"]
+                for chunk in walk(it.get("children") or [], here):
+                    yield chunk
+
+        for chunk in walk(data, []):
+            yield chunk
+
+
 def collect_names(src):
-    """Every item name that exists, keyed by kind."""
+    """Every item name that exists, keyed by kind.
+
+    A kind whose directory is absent gets an empty set rather than no entry at
+    all. Skipping it meant every reference of that kind was skipped too - and
+    src/timers/ does not exist, so enableTimer("anything") was unchecked by
+    construction. An absent directory means no items of that kind exist, which
+    is the answer this check is asking for, not a reason to stop asking.
+    """
     names = collections.defaultdict(set)
 
     def walk(items, kind):
@@ -107,6 +156,7 @@ def collect_names(src):
             walk(it.get("children", []) or [], kind)
 
     for top, kind in KIND_DIR.items():
+        names[kind]  # defaultdict: the kind exists even with no directory
         base = os.path.join(src, top)
         if not os.path.isdir(base):
             continue
@@ -126,11 +176,9 @@ def find_unresolved(src, names):
     Returns (findings, number of literal references examined)."""
     out = []
     seen = [0]
-    for path in _sources(src):
-        rel = _rel(path)
-        text = io.open(path, encoding="utf-8", errors="replace").read()
+    for rel, text in _chunks(src):
 
-        def record(match, func, kind, name):
+        def record(match, func, kind, name, rel=rel, text=text):
             if name is None or kind not in names:
                 return
             if CONCAT_RE.match(text[match.end():]):
@@ -157,9 +205,7 @@ def find_prerename(src):
                    if r["old_name"] != r["new_name"]]
 
     out = []
-    for path in _sources(src):
-        rel = _rel(path)
-        text = io.open(path, encoding="utf-8", errors="replace").read()
+    for rel, text in _chunks(src):
         for old, new in renames:
             if (rel, old) in ALLOW:
                 continue
@@ -180,7 +226,12 @@ def load_known():
     if not os.path.exists(KNOWN):
         return set()
     with io.open(KNOWN, encoding="utf-8") as fh:
-        return {(e["file"], e["name"]) for e in json.load(fh)["known"]}
+        # Keyed by kind too. Keying on (file, name) alone meant a NEW dead
+        # reference of a different kind - enableAlias("Applied") beside the
+        # recorded enableTrigger("Applied") - was absorbed by the existing
+        # entry and never reported.
+        return {(e["file"], e.get("kind"), e["name"])
+                for e in json.load(fh)["known"]}
 
 
 def main():
@@ -196,21 +247,38 @@ def main():
     unresolved, examined = find_unresolved(SRC, names)
 
     if a.write_known:
-        entries = sorted({(f.file, f.name) for f in unresolved})
+        entries = sorted({(f.file, f.kind, f.name) for f in unresolved})
         with io.open(KNOWN, "w", encoding="utf-8", newline="\n") as fh:
-            json.dump({"known": [{"file": f, "name": n} for f, n in entries]},
+            json.dump({"known": [{"file": f, "kind": k, "name": n}
+                                 for f, k, n in entries]},
                       fh, indent=2, ensure_ascii=False)
             fh.write("\n")
         print("wrote %s: %d pre-existing dead references" % (KNOWN, len(entries)))
         return 0
 
     known = load_known()
-    new = [f for f in unresolved if (f.file, f.name) not in known]
+    new = [f for f in unresolved if (f.file, f.kind, f.name) not in known]
 
     print("checked %d recorded renames, and %d literal item names against the "
           "%d items in src/" % (len(renames), examined, total))
 
     rc = 0
+
+    # Floors before findings. Everything below reports what it found, and
+    # nothing distinguished "found nothing wrong" from "found nothing": with
+    # src/ absent this printed "0 literal item names ... every literal item
+    # name resolves" and exited 0, where the sibling syntax gate refuses.
+    if not os.path.isdir(SRC):
+        print("\n%s does not exist - there is nothing to check" % _rel(SRC))
+        return 1
+    for label, got, floor in (("items in src/", total, MIN_ITEMS),
+                              ("literal references", examined, MIN_REFERENCES),
+                              ("recorded renames", len(renames), MIN_RENAMES)):
+        if got < floor:
+            print("\nonly %d %s, expected at least %d - this check is reading "
+                  "less than it should, so its silence means nothing"
+                  % (got, label, floor))
+            rc = 1
     if stale:
         print("\n%d stale reference(s) to names that no longer exist:" % len(stale))
         for rel, line, old, new_name in stale:
