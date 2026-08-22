@@ -85,6 +85,22 @@ function svo_doupdate_click()
   svo.install_update(svo.pending_update_version)
 end
 
+-- Is the file we just downloaded actually a Mudlet package? An .mpackage is a
+-- zip, so it starts with "PK". This exists so a 404 page or an error page from
+-- a proxy cannot get as far as uninstalling the working system.
+function svo.update_looks_like_package(path)
+  local f = io.open(path, "rb")
+  if not f then return false, "the downloaded file isn't there" end
+  local head = f:read(2)
+  local size = f:seek("end")
+  f:close()
+  if head ~= "PK" then
+    return false, string.format("it isn't a package (%d bytes, starting %q)",
+                                size or 0, tostring(head))
+  end
+  return true
+end
+
 -- Downloads the package, then installs it from the local file. Announcing the
 -- result is svo.update_download_done / svo.update_download_error's job.
 --
@@ -96,7 +112,10 @@ end
 -- left the profile with no svof at all and a green message saying it had
 -- worked.
 --
--- Nothing is uninstalled now: Mudlet installs a package over an existing one.
+-- The uninstall still has to happen - Mudlet refuses to install over an
+-- existing package - but it belongs in svo.update_download_done, once the
+-- replacement is on disk and has been checked, not out here in front of an
+-- asynchronous download that may never arrive.
 function svo.install_update(version, url)
   version = version or svo.pending_update_version
   url = url or svo.pending_update_url or svo.update_package_url(svo.pending_update_tag or version)
@@ -116,10 +135,15 @@ function svo.install_update(version, url)
   svo.update_version = version
   svo.update_target = getMudletHomeDir() .. "/svof-update.mpackage"
 
-  local ok, err = pcall(downloadFile, svo.update_target, url)
-  if not ok then
+  -- downloadFile returns nil, reason if it will not even start, and raises no
+  -- event in that case. pcall's `ok` is true either way, so branching on it
+  -- alone left svo.update_target set forever: every later attempt, including a
+  -- hand-typed vupdate, answered "Already downloading" until Mudlet restarted.
+  local ok, started, why = pcall(downloadFile, svo.update_target, url)
+  if not ok then why = started end
+  if not ok or not started then
     svo.update_target, svo.update_version = nil, nil
-    svo.echof("Couldn't start the download for Svof %s: %s", tostring(version), tostring(err))
+    svo.echof("Couldn't start the download for Svof %s: %s", tostring(version), tostring(why))
     return
   end
 

@@ -4,7 +4,7 @@
   "accepted": [
     {
       "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_download_done",
-      "digest": "8c1b8f838cdab04a",
+      "digest": "6debe9ae61a8a1af",
       "text": "Script   svo (install me in module manager) Check for system updates/svo.update_download_done [only in the package]"
     },
     {
@@ -129,12 +129,12 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|Check for system updates/Check for updates|script",
-      "digest": "0ab4df0770898c89",
+      "digest": "52a43809ef49f5b1",
       "text": "Script   svo (install me in module manager) Check for system updates/Check for updates [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|Check for system updates/Update UI and Install Engine|script",
-      "digest": "9acb321d5017ad63",
+      "digest": "58091716fa64673a",
       "text": "Script   svo (install me in module manager) Check for system updates/Update UI and Install Engine [script]"
     },
     {

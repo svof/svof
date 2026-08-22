@@ -39,7 +39,7 @@ function svo.version_newer(candidate, current)
   return false
 end
 
--- called at startup, hourly, and by the vupdate alias
+-- called on "svo system loaded" and by the vupdate alias
 function svo.checkforupdates(kind)
   if svo.checkingupdates then return end
   if not getHTTP then
@@ -56,5 +56,16 @@ function svo.checkforupdates(kind)
     svo.echof("Reinstalling the latest release...")
   end
 
-  getHTTP(svo.update_api_url())
+  -- Same shape as downloadFile: getHTTP returns nil, reason on a refused start
+  -- and raises no event, so dropping the return left svo.checkingupdates true
+  -- forever and every later check returned in silence.
+  local ok, started, why = pcall(getHTTP, svo.update_api_url())
+  if not ok then why = started end
+  if not ok or not started then
+    svo.checkingupdates = false
+    if svo.announceupdates then
+      svo.echof("Couldn't check for updates: %s", tostring(why))
+    end
+    svo.announceupdates = nil
+  end
 end
