@@ -94,12 +94,20 @@ def main():
         if edits:
             print(f"  {os.path.basename(path):48s} {len(edits)} renamed")
 
-    with open(a.csv, "w", encoding="utf-8", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=["file", "type", "old_name", "new_name"])
-        w.writeheader()
-        w.writerows(rows)
+    # Only a real run may touch the record. Once the renames are applied a dry
+    # run finds nothing, so writing unconditionally rewrote the CSV as a bare
+    # header - and check_renamed_callsites.py is driven entirely by that CSV,
+    # so the gate then went green having checked nothing at all.
+    if a.apply:
+        with open(a.csv, "w", encoding="utf-8", newline="") as fh:
+            w = csv.DictWriter(fh, fieldnames=["file", "type", "old_name", "new_name"])
+            w.writeheader()
+            w.writerows(rows)
 
-    print(f"\n{'APPLIED' if a.apply else 'DRY RUN'}: {len(rows)} renames -> {a.csv}")
+    if a.apply:
+        print(f"\nAPPLIED: {len(rows)} renames -> {a.csv}")
+    else:
+        print(f"\nDRY RUN: {len(rows)} renames found; {a.csv} left alone")
 
 
 if __name__ == "__main__":
