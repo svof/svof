@@ -45,15 +45,22 @@ REFERENCE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 
 
 def reference_hashes():
-    """sha256 of each module xml as it sits in the working tree."""
+    """sha256 of each module xml's content, independent of checkout line
+    endings.
+
+    These 25 files are stored in git as LF; core.autocrlf=true rewrites them
+    to CRLF on a Windows checkout. Hashing the raw bytes made the first
+    version of this pin Windows-specific - every hash recorded on Windows
+    failed on Linux CI, all 25 at once, not because anything had changed but
+    because the reference was never platform-independent. Stripping CR before
+    hashing means the same content hashes the same on both.
+    """
     out = {}
     for module in MERGE_ORDER:
         path = os.path.join(REPO, module + ".xml")
-        h = hashlib.sha256()
         with open(path, "rb") as fh:
-            for chunk in iter(lambda: fh.read(65536), b""):
-                h.update(chunk)
-        out[module + ".xml"] = h.hexdigest()
+            data = fh.read()
+        out[module + ".xml"] = hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest()
     return out
 
 
