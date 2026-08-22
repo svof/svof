@@ -20,7 +20,11 @@ Installing
 
 To install the system, make sure that you're connected to server **achaea.com** and port **23** (or 2003), and logged are in.
 
-1) Download ``svof.mpackage`` from the `latest release <https://github.com/svof/svof/releases/latest>`_.
+1) Download ``svof.mpackage`` from the `latest release <https://github.com/TheLastDarkthorne/svof/releases/latest>`_.
+
+   While the converted system is being play tested, releases come from the
+   testing fork rather than from ``svof/svof``. This link moves back once that
+   testing says it is ready.
 
 2) Open it with Mudlet's ``Package Manager``.
 
@@ -756,12 +760,16 @@ If your custom prompt disappeared, or inra stopped working - upgrade your `Mudle
 Updating the system
 ~~~~~~~~~~~~~~~~~~~
 
-a) uninstall the Svof package
-b) download the new package from the original link you got
-c) install new package
-d) restart mudlet. You can delete the zip now too, it's not needed anymore. Do not vinstall again either - your vconfig settings stayed.
+Svof checks for a new release when it loads, and tells you when one is
+available. Click the notice, or type **vupdate**, and it downloads and installs
+the new package for you. Restart Mudlet afterwards to finish - Svof will say so
+when it is done.
 
-Don't worry, your personal settings won't be lost.
+**vupdate force** reinstalls the latest release even if you are already on it,
+which is the thing to try if an install went wrong.
+
+Don't worry, your personal settings won't be lost: they are saved before the
+update and read back afterwards, and you should not run vinstall again.
 
 Getting help
 ~~~~~~~~~~~~
@@ -2065,7 +2073,9 @@ General aliases
     shows the systems version.
 
   vupdate
-    shows the link(s) at which to download an update for your system.
+    checks for a new release and, if there is one, downloads and installs it.
+    Restart Mudlet afterwards. **vupdate force** reinstalls the latest release
+    even when you already have it.
 
   vupdate prios
     resets all priorities to the default ones.
