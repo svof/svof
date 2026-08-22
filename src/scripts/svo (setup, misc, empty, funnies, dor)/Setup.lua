@@ -738,15 +738,35 @@ signals.gmcpcharafflictionslist:connect(function()
   for name in pairs(svo.affl) do preaffl[name] = true end
 
   for _, val in ipairs(gmcp.Char.Afflictions.List) do
-    local thisaff = val.name
-    if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
-    gaffl[thisaff] = true
-    local svoAffliction = svo.dict.sstosvoa[thisaff]
+    local rawaff = val.name
+    -- parseaffname, not the original " (1)"-only strip. That strip resolved
+    -- the name only at level 1, so "torntendons (2)" found nothing in
+    -- sstosvoa, never cleared its preaffl entry, and the removal loop below
+    -- then dropped an affliction the game had just reported. Harmless while
+    -- the loop was dead; a false removal the moment it was not.
+    local affname, afflevel = parseaffname(rawaff)
+
+    -- gaffl keeps its pre-existing keying: bare at level 1, suffixed above.
+    -- Same inconsistency the add handler preserves, and not this fix's to
+    -- change.
+    local gafflkey = (rawaff:sub(-4) == " (1)") and affname or rawaff
+    gaffl[gafflkey] = true
+
+    local svoAffliction = svo.dict.sstosvoa[affname]
     if svoAffliction then
       if preaffl[svoAffliction] then
         preaffl[svoAffliction] = false
       else
         svo.addaff(svoAffliction)
+      end
+
+      -- Levels reach svo.dict/svo.affl from a List the same way the add
+      -- handler delivers them, so a resync corrects a level that drifted
+      -- rather than only confirming the affliction is present.
+      local svoaff = svo.dict[svoAffliction]
+      if afflevel ~= nil and svoaff then
+        if svoaff.count ~= nil then svoaff.count = afflevel end
+        if svo.affl[svoaff.name] then svo.updateaffcount(svoaff) end
       end
     end
   end

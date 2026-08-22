@@ -372,6 +372,60 @@ do
   eq(#calls.rmaff, 0, "G1: nothing to remove when svo.affl started empty")
 end
 
+-- ===== scenario 6b: a levelled affliction in the List =====
+-- The original handler stripped the level suffix only when it was exactly
+-- " (1)", so "torntendons (2)" resolved to nothing in sstosvoa, its preaffl
+-- entry was never cleared, and the removal loop dropped an affliction the
+-- game had just reported as present. Inert while the loop was dead code;
+-- a false removal once G1 made it live.
+--
+-- Found by replaying a real fight (torntendons escalating 1->6) rather than
+-- by this file, because every List case here used a bare name.
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = { torntendons = 'torntendons', slickness = 'slickness' }
+  svo.dict.torntendons = { name = 'torntendons', count = 1 }
+  svo.dict.slickness = { name = 'slickness' }
+  env.signals.systemstart:emit()
+
+  svo.affl = { torntendons = { count = 1 }, slickness = { count = 1 } }
+  env.gmcp.Char.Afflictions.List = {
+    { name = 'torntendons (2)' },
+    { name = 'slickness' },
+  }
+
+  h.afflist()
+
+  not_contains(calls.rmaff, 'torntendons',
+    "List: an affliction reported at a level above 1 is NOT removed")
+  eq(#calls.addaff, 0,
+    "List: a levelled affliction already tracked is not re-added either")
+  eq(svo.dict.torntendons.count, 2,
+    "List: the level from a List reaches svo.dict, like it does from an Add")
+  contains(calls.updateaffcount, 'torntendons',
+    "List: svo.affl's count is updated when the entry exists")
+end
+
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  -- and the removal half still works for a levelled name that really is gone
+  svo.dict.sstosvoa = { torntendons = 'torntendons', slickness = 'slickness' }
+  svo.dict.slickness = { name = 'slickness' }
+  env.signals.systemstart:emit()
+
+  svo.affl = { torntendons = { count = 3 }, slickness = { count = 1 } }
+  env.gmcp.Char.Afflictions.List = { { name = 'slickness' } }
+
+  h.afflist()
+
+  contains(calls.rmaff, 'torntendons',
+    "List: a levelled affliction genuinely absent from the list is still removed")
+end
+
 -- ===== scenario 7: G8 - defence List reconciler uses the svof key space =====
 do
   local env, h, calls, svo = new_environment()
