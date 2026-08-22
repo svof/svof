@@ -60,6 +60,21 @@ PRIORITY_LAST = [
 
 MERGE_ORDER = BOOTSTRAP + CORE_AND_ADDONS + PRIORITY_LAST
 
+# For every item type except buttons the per-module wrapper folder below is
+# purely organisational: it reproduces the module boundary in Mudlet's editor
+# and changes nothing at runtime. Buttons are the exception, because for them
+# the nesting depth *is* the UI. Mudlet builds one toolbar per child of the
+# package node (ActionUnit::regenerateEasyButtonBars) and renders anything
+# deeper as a menu, so an extra level turns the toolbar into a dropdown:
+#
+#   with a wrapper     svof -> svo (aliases, triggers) -> svo -> 8 buttons
+#                      renders as a single [svo v] dropdown
+#   without            svof -> svo -> 8 buttons
+#                      renders as [Show affs] [Show prios v], as the module did
+#
+# Only one module ships buttons, so there is nothing to disambiguate by wrapping.
+NO_WRAPPER_KINDS = {"Action"}
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -108,6 +123,10 @@ def main():
                 continue
             kids = [c for c in node if c.tag in (leaf, group)]
             if not kids:
+                continue
+            if leaf in NO_WRAPPER_KINDS:
+                # nesting depth is load-bearing here - see NO_WRAPPER_KINDS
+                combined.extend(kids)
                 continue
             # Each module used to be its own tree in Mudlet's editor, and that
             # boundary was what grouped its items. Without a folder to stand in

@@ -1,19 +1,19 @@
 [
   {
-    "name": "svo (aliases, triggers)",
-    "isActive": "yes",
+    "name": "svo",
+    "isActive": "no",
     "isFolder": "yes",
     "isPushButton": "no",
-    "isFlatButton": "no",
+    "isFlatButton": "yes",
     "useCustomLayout": "no",
     "orientation": "0",
     "location": "0",
     "posX": "0",
     "posY": "0",
     "mButtonState": "1",
-    "sizeX": "0",
-    "sizeY": "0",
+    "sizeX": "121309952",
+    "sizeY": "470220885",
     "buttonColumn": "1",
-    "buttonRotation": "0"
+    "buttonRotation": "-1"
   }
 ]

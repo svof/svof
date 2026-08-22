@@ -27,7 +27,7 @@ import xml.etree.ElementTree as ET
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import verify as V
-from merge_svof import MERGE_ORDER, REPO
+from merge_svof import MERGE_ORDER, NO_WRAPPER_KINDS, REPO
 
 LEAF_OF = V.LEAF_OF
 
@@ -94,6 +94,15 @@ def compare(merged):
             mod_top = top_level(mod_root, kind)
             if not mod_top:
                 continue
+            if kind in NO_WRAPPER_KINDS:
+                # This kind ships without a per-module wrapper, so the module's
+                # own top-level items sit directly at the package top level.
+                # Anything missing is reported by the load-order pass below.
+                for nm, _el in mod_top:
+                    if nm in merged_roots:
+                        merged_by_name.setdefault(nm, []).append(merged_roots[nm])
+                continue
+
             holder = merged_roots.get(module)
             if holder is None:
                 structural.append("%-8s %s: no top-level entry in the merged package"
