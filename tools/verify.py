@@ -30,21 +30,55 @@ def norm_script(s):
 
 import re as _re
 
-def _norm_colour(p):
-    """Mudlet has two spellings for colour-trigger patterns: the legacy
-    'FG6BG2' and the modern 'ANSI_COLORS_F{6}_B{2}'. muddler emits the modern
-    one. Treat them as equivalent so the check does not flag a pure
-    representation change."""
-    m = _re.match(r"^ANSI_COLORS_F\{(-?\d+)\}_B\{(-?\d+)\}$", p)
+# The legacy->ANSI table lives with the converter that applies it, so the gate
+# and the conversion can never disagree about what a legacy number means.
+from xml2muddler import LEGACY_TO_ANSI
+
+_MODERN = _re.compile(r"^ANSI_COLORS_F\{(-?\d+|DEFAULT|IGNORE)\}_B\{(-?\d+|DEFAULT|IGNORE)\}$")
+_LEGACY = _re.compile(r"^FG(-?\d+)BG(-?\d+)$")
+
+
+def _decode_colour(p):
+    """Canonicalise a colour-trigger pattern to the colour pair Mudlet will
+    actually match on, whichever of its two spellings the pattern is in.
+
+    This used to re-spell the modern form as the legacy one and call the two
+    equal. They are not equal: the legacy numbers are palette indices that
+    XMLimport::remapColorsToAnsiNumber rewrites on load, so 'FG16BG2' and
+    'ANSI_COLORS_F{16}_B{2}' name different colours. Normalising that away is
+    exactly what let all 6 colour triggers ship converted to colours the game
+    never sends, with this gate green.
+    """
+    m = _MODERN.match(p)
     if m:
-        return f"FG{m.group(1)}BG{m.group(2)}"
-    return p
+        fg, bg = m.group(1), m.group(2)
+    else:
+        m = _LEGACY.match(p.strip())
+        if not m:
+            return p
+        fg = LEGACY_TO_ANSI.get(int(m.group(1)), m.group(1))
+        bg = LEGACY_TO_ANSI.get(int(m.group(2)), m.group(2))
+
+    def canon(v):
+        # Mudlet zero-pads to three digits on write; muddler does not.
+        try:
+            return str(int(v))
+        except ValueError:
+            return v
+
+    return "ANSI(%s,%s)" % (canon(fg), canon(bg))
+
+COLOUR_CODE = "6"
+
 
 def patterns(n):
     pl, cl = n.find("regexCodeList"), n.find("regexCodePropertyList")
-    pats = [_norm_colour(p.text or "") for p in pl] if pl is not None else []
+    pats = [p.text or "" for p in pl] if pl is not None else []
     codes = [c.text or "" for c in cl] if cl is not None else []
-    return list(zip(pats, codes))
+    # Decode only actual colour patterns, so a regex that merely looks like
+    # "FG1BG2" is left exactly as written.
+    return [(_decode_colour(p) if c == COLOUR_CODE else p, c)
+            for p, c in zip(pats, codes)]
 
 def events(n):
     eh = n.find("eventHandlerList")

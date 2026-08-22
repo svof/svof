@@ -500,7 +500,7 @@
         "type": "startOfLine"
       },
       {
-        "pattern": "6,2",
+        "pattern": "2,0",
         "type": "color"
       },
       {
@@ -642,7 +642,7 @@
         "highlightBG": "#ffff00",
         "patterns": [
           {
-            "pattern": "9,2",
+            "pattern": "12,0",
             "type": "color"
           },
           {
@@ -664,7 +664,7 @@
             "highlightBG": "#ffff00",
             "patterns": [
               {
-                "pattern": "16,2",
+                "pattern": "7,0",
                 "type": "color"
               },
               {

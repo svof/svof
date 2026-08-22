@@ -28,6 +28,51 @@ PATTERN_TYPES = {
 
 ILLEGAL = set('<>:"/\\|?*')
 
+# Mudlet's on-disk spelling for a colour pattern, "FG<n>BG<m>", holds a legacy
+# palette index -- NOT an ANSI number. XMLimport::remapColorsToAnsiNumber
+# rewrites every one of them on load and re-spells the result as
+# ANSI_COLORS_F{fg}_B{bg}. Its remap regex only matches the legacy spelling, so
+# a package that already ships the modern spelling is never remapped again.
+#
+# That is the trap: copying the numbers across verbatim and letting muddler
+# re-spell them as ANSI_COLORS_F{n}_B{m} hands Mudlet a legacy index in a field
+# it now reads as ANSI. The trigger then waits on a colour the game never
+# sends, and for a multiline trigger that kills the whole trigger, because the
+# colour line is an AND-condition. Remap here so the project holds true ANSI.
+#
+# Transcribed from Mudlet src/XMLimport.cpp (its fg and bg switches are
+# identical); the sentinels are from src/TTrigger.cpp -- scmDefault -2 and
+# scmIgnored -1, spelled DEFAULT and IGNORE by createColorPatternText.
+LEGACY_TO_ANSI = {
+    -2: "IGNORE",      # "ignored" under the old numbering
+    0:  "DEFAULT",     # default colour
+    1:  "8",           # light black (dark gray)
+    2:  "0",           # black
+    3:  "9",           # light red
+    4:  "1",           # red
+    5:  "10",          # light green
+    6:  "2",           # green
+    7:  "11",          # light yellow
+    8:  "3",           # yellow
+    9:  "12",          # light blue
+    10: "4",           # blue
+    11: "13",          # light magenta
+    12: "5",           # magenta
+    13: "14",          # light cyan
+    14: "6",           # cyan
+    15: "15",          # light white
+    16: "7",           # white (light gray)
+}
+
+
+def legacy_colour_to_ansi(n):
+    """One half of a legacy FG<n>BG<m> pair -> the spelling Mudlet now uses.
+
+    Anything outside the remapped range passes through unchanged, matching the
+    `default:` arm of Mudlet's switch."""
+    return LEGACY_TO_ANSI.get(n, str(n))
+
+
 PACKAGES = {
     "TriggerPackage": ("triggers", "Trigger", "TriggerGroup"),
     "AliasPackage":   ("aliases",  "Alias",   "AliasGroup"),
@@ -115,9 +160,13 @@ def build_trigger(n):
             if typ == "color":
                 # Mudlet stores colour patterns as "FG<n>BG<m>"; muddler wants
                 # "<fg>,<bg>" and splits on the comma (it crashes without one).
+                # The numbers are legacy palette indices and must be remapped,
+                # not copied across -- see LEGACY_TO_ANSI.
                 m = re.match(r"^FG(-?\d+)BG(-?\d+)$", p.strip())
                 if m:
-                    p = f"{m.group(1)},{m.group(2)}"
+                    fg = legacy_colour_to_ansi(int(m.group(1)))
+                    bg = legacy_colour_to_ansi(int(m.group(2)))
+                    p = f"{fg},{bg}"
                 else:
                     warn(f"trigger {d['name']!r}: unrecognised colour pattern {p!r} "
                          f"-- left as-is, muddler may reject it")
