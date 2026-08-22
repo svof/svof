@@ -4,7 +4,7 @@
   "accepted": [
     {
       "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_download_done",
-      "digest": "6debe9ae61a8a1af",
+      "digest": "238f77f1fa9d8ec5",
       "text": "Script   svo (install me in module manager) Check for system updates/svo.update_download_done [only in the package]"
     },
     {
@@ -14,12 +14,12 @@
     },
     {
       "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_http_done",
-      "digest": "4281c21c6c341e65",
+      "digest": "fe57fbaf247207d1",
       "text": "Script   svo (install me in module manager) Check for system updates/svo.update_http_done [only in the package]"
     },
     {
       "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_http_error",
-      "digest": "897065884e75d690",
+      "digest": "416b01d1aaa93fca",
       "text": "Script   svo (install me in module manager) Check for system updates/svo.update_http_error [only in the package]"
     },
     {
@@ -133,13 +133,18 @@
       "text": "Script   svo (inker) svo Inker [script]"
     },
     {
+      "id": "item|Script|svo (install me in module manager)|Check for system updates/Check for updates/svo_checkupdatestart|script",
+      "digest": "a5e88b9570316078",
+      "text": "Script   svo (install me in module manager) Check for system updates/Check for updates/svo_checkupdatestart [script]"
+    },
+    {
       "id": "item|Script|svo (install me in module manager)|Check for system updates/Check for updates|script",
-      "digest": "52a43809ef49f5b1",
+      "digest": "75ce312fc663a6ad",
       "text": "Script   svo (install me in module manager) Check for system updates/Check for updates [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|Check for system updates/Update UI and Install Engine|script",
-      "digest": "58091716fa64673a",
+      "digest": "b84b4563d6df89a8",
       "text": "Script   svo (install me in module manager) Check for system updates/Update UI and Install Engine [script]"
     },
     {

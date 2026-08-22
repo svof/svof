@@ -1,3 +1,3 @@
 function svo_checkupdatestart()
-  svo.checkforupdates("checking")
+  svo.checkforupdates("checking", true)
 end

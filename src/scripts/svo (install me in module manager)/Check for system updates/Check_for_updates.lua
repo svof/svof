@@ -5,10 +5,21 @@
 -- Mudlet can install a package straight from a URL, so checking is one HTTP
 -- request and updating is uninstall + install.
 
-svo.update_repo = svo.update_repo or "svof/svof"
+-- Where the in-client update comes from. This has to be the same place the
+-- README and doc/index.rst send people to download from, and while the
+-- converted system is being play tested that is the testing fork: build.yml's
+-- release job is deliberately gated to it, so nothing published from svof/svof
+-- can carry a svof.mpackage yet. Both move back together when that gate does.
+--
+-- Until the first package release exists anywhere, the check is honest but
+-- inert - svo.update_http_done says so rather than offering a download url
+-- that would 404.
+svo.update_repo = svo.update_repo or "TheLastDarkthorne/svof"
 
--- Where a release channel maps to a different repo or tag, adjust here. The
--- default channel uses the newest published release.
+-- The newest published release of that repository. There is no release-channel
+-- mapping any more - svo.conf.releasechannel selected between GitHub Pages
+-- directories, which is not how any of this works now - so the comment that
+-- described one has gone with it.
 function svo.update_api_url()
   return string.format("https://api.github.com/repos/%s/releases/latest", svo.update_repo)
 end
@@ -21,6 +32,34 @@ function svo.update_package_url(tag)
   return string.format("https://github.com/%s/releases/download/%s/svof.mpackage",
     svo.update_repo, tag)
 end
+
+-- Does this sysGetHttpDone/sysGetHttpError belong to our check?
+--
+-- Comparing url == svo.update_api_url() alone wedged the check permanently.
+-- Mudlet follows redirects and reports the FINAL url, and GitHub 301s the
+-- releases API whenever a repository is renamed or transferred - so both
+-- handlers returned early, svo.checkingupdates stayed true, and every later
+-- vupdate printed nothing at all until Mudlet was restarted. Requiring a check
+-- to be in flight keeps this from claiming somebody else's response.
+function svo.update_response_is_ours(url)
+  if not svo.checkingupdates then return false end
+  if url == svo.update_api_url() then return true end
+  return type(url) == "string" and url:match("/releases/latest$") ~= nil
+end
+
+-- How long an automatic check counts for. svo.classchange sets systemloaded
+-- false and re-runs svo_init_system, which re-raises "svo system loaded",
+-- which runs the check again - one api.github.com request per class change,
+-- including every trip in and out of dragonform, against an unauthenticated
+-- limit of 60 an hour. The old channel was a static GitHub Pages file and
+-- unmetered, so nothing needed throttling before. A hand-typed vupdate is
+-- never throttled.
+local AUTO_CHECK_INTERVAL = 3600
+
+-- A check that neither completes nor errors would otherwise leave
+-- svo.checkingupdates true for the session, which is the same permanent
+-- lockout by another route.
+local CHECK_TIMEOUT = 60
 
 -- Versions are plain integers ("64"), but compare component-wise anyway so a
 -- later move to 1.2.3 style does not silently stop offering updates - comparing
@@ -39,16 +78,37 @@ function svo.version_newer(candidate, current)
   return false
 end
 
--- called on "svo system loaded" and by the vupdate alias
-function svo.checkforupdates(kind)
+-- called on "svo system loaded" and by the vupdate alias.
+--
+-- `automatic` marks the event-driven call, which fires again on every class
+-- change - see AUTO_CHECK_INTERVAL.
+function svo.checkforupdates(kind, automatic)
   if svo.checkingupdates then return end
   if not getHTTP then
-    svo.echof("Your Mudlet is too old to check for updates - please update to 4.11 or newer.")
+    -- getHTTP arrived in Mudlet 4.10.0, but getPackageInfo, which the version
+    -- comparison below leans on, is 4.12 - so 4.12 is the real floor.
+    svo.echof("Your Mudlet is too old to check for updates - please update to 4.12 or newer.")
     return
+  end
+
+  if automatic then
+    local now = os.time()
+    if svo.lastupdatecheck and (now - svo.lastupdatecheck) < AUTO_CHECK_INTERVAL then
+      return
+    end
+    -- stamped before the request, so a failing check throttles too
+    svo.lastupdatecheck = now
   end
 
   svo.checkingupdates = true
   svo.announceupdates = (kind == "checking" or kind == "force") and kind or nil
+
+  tempTimer(CHECK_TIMEOUT, function()
+    if svo.checkingupdates then
+      svo.checkingupdates = false
+      svo.announceupdates = nil
+    end
+  end)
 
   if kind == "checking" then
     svo.echof("Checking for updates...")
