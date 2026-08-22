@@ -8,9 +8,10 @@ name: build
 env:
   # svof cannot be built with upstream muddler. Upstream drops nested group
   # attributes, zeroes multilineDelta, cannot represent a raw keyCode, crashes
-  # on colour patterns and mis-orders groups by directory read order - the
-  # package it produces looks fine and is silently wrong. Four of those five
-  # fixes are in muddler PR #57; the fifth is not upstream yet.
+  # on colour patterns, mis-orders groups by directory read order, and cannot
+  # emit buttons at all - the package it produces looks fine and is silently
+  # wrong. All of it is reported: four fixes in muddler PR #57, directory read
+  # order in #59, buttons in #60. The fork is needed until those merge.
   MUDDLER_REPO: TheLastDarkthorne/muddler
   # Pinned to a commit rather than to the branch. The artifact users install is
   # built by this tool, so a mutable ref on a personal fork means the thing
@@ -71,7 +72,13 @@ jobs:
       # would otherwise keep passing while silently validating svof against a
       # grammar Mudlet does not use.
       - name: check lua syntax
-        run: python3 tools/check_lua_syntax.py --luac "$(which luac)" --strict-version
+        run: |
+          # Assigned on its own line so a missing luac fails the step. As
+          # "$(which luac)" inline, the command substitution's exit status was
+          # discarded, the tool got an empty --luac and silently fell back to a
+          # PATH scan - which is the one thing --strict-version exists to stop.
+          luac_path="$(which luac)"
+          python3 tools/check_lua_syntax.py --luac "$luac_path" --strict-version
 
       # Gate 1.2. Item names that could not become filenames were renamed, and
       # rename_unfilenameable.py only rewrote the <name> elements - call sites
@@ -80,6 +87,15 @@ jobs:
       # stopped being captured and the elist capture stopped closing early.
       - name: check renamed call sites
         run: python3 tools/check_renamed_callsites.py
+
+      # Gate 1.25. muddler builds from the json and looks for one file per item
+      # named after it, so a .lua with no entry there is read by nothing and
+      # reported by nothing - and adding an item by creating the file is the
+      # obvious move given what the readme says. The same lookup collapses
+      # spaces to underscores and is not injective, so two names can silently
+      # share one script.
+      - name: check the src tree is reachable
+        run: python3 tools/check_src_tree.py
 
       # Gate 1.3. default_prios and ndb-help.lua exist twice: at the repo root,
       # left over from the module era when svo.installationfolder() pointed at
@@ -97,6 +113,12 @@ jobs:
           # normalises both copies to CRLF, hiding the exact thing this gate
           # exists to catch.
           for f in default_prios ndb-help.lua; do
+            # Both present first. diff of two absent files is a clean pass, so
+            # deleting the pair - which loses the copy that actually ships -
+            # satisfied a check whose whole subject is those two files.
+            for p in "$f" "src/resources/$f"; do
+              test -s "$p" || { echo "$p is missing or empty"; exit 1; }
+            done
             diff <(tr -d '\r' < "$f") <(tr -d '\r' < "src/resources/$f") || {
               echo "$f differs in content between the repo root and src/resources/ -"
               echo "the src/resources/ copy is the one that ships."
@@ -154,12 +176,15 @@ jobs:
         run: |
           java -jar muddler-jar/muddle-all.jar
           ls -la build/
+          # ls exits 0 on an empty directory, so it never stood in for a check.
+          test -s build/svof.mpackage
+          test -s build/svof.xml
 
       # Gate 2. The built package against all 25 original module xmls, object
       # by object: structure, names, scripts, patterns and pattern types, alias
       # regexes, event handlers, behavioural flags and top-level load order.
       #
-      # The conversion has 79 deliberate differences - the module machinery is
+      # The conversion has 80 deliberate differences - the module machinery is
       # gone, the updater and migration guard are new, and a few load-order
       # assumptions had to change. Those are recorded in the baseline, with a
       # digest each, so this fails on anything unexpected AND on any change to
@@ -174,6 +199,18 @@ jobs:
         run: |
           python3 tools/verify_merged.py build/svof.xml \
             --baseline tools/verify_baseline.json
+
+      # Gate 2.1. Everything above verifies build/svof.xml, which is a sibling
+      # of the archive users install rather than the thing itself. This opens
+      # the .mpackage: valid zip, every file present and non-empty, its svof.xml
+      # byte-identical to the one just verified, and its config.lua parsing as
+      # Lua. That last one is not theoretical - muddler writes the README into
+      # `description = [[...]]` unescaped, so one `]]` in an example blanks
+      # every package field with no error printed anywhere.
+      - name: check the package that ships
+        run: |
+          luac_path="$(which luac)"
+          python3 tools/check_package.py --luac "$luac_path"
 
       # The module xmls are the reference the conversion is verified against,
       # so they are still worth checking while they are present.

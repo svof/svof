@@ -21,6 +21,23 @@ groups appear in the tree; `tools/merge_svof.py` records it in `MERGE_ORDER`.
 Files Svof reads at runtime live in `src/resources/`, which muddler copies to
 the package root - that is what `svo.installationfolder()` returns.
 
+## Adding an item
+
+Add it to the `.json` first, then create the `.lua` beside it. muddler builds
+from the json and looks for a file named after the item, spaces replaced with
+underscores - so a `.lua` with no entry in the json is read by nothing, ships
+as nothing, and produces no warning. `tools/check_src_tree.py` fails on that,
+on two items whose names resolve to one filename, and on a filename that
+differs from the item name only in case, which resolves on Windows and not on
+the Linux runner that builds the release.
+
+Add it **inside an existing group**, not at the top level. The 126 top-level
+slots are frozen: `tools/verify_merged.py` checks them against the 25 reference
+xmls, so a new one is reported as an unexpected top-level item and a load-order
+change, and both are structural - `--write-baseline` refuses to bless either.
+Anything nested is an ordinary content difference and can be baselined in the
+same commit that causes it.
+
     doc/                                                  = documentation in Sphinx.
     src/                                                  = the source: one file per item, grouped as below
     tools/                                                = conversion, verification and CI gates

@@ -30,7 +30,7 @@ To install the system, make sure that you're connected to server **achaea.com** 
 
 3) Done. Nothing has to stay unzipped on disk - the package carries everything, and Mudlet keeps its own copy.
 
-If you are upgrading from the older module-based install, Svof notices the 24 leftover modules on first run and removes them for you, because leaving them alongside the package would run the whole system twice. Your xml files are left on disk untouched; only the modules are removed from the profile.
+If you are upgrading from the older module-based install, Svof notices the 24 leftover modules on first run and removes them for you, because leaving them alongside the package would run the whole system twice. Only the modules are removed from the profile - nothing here deletes a file - but Mudlet itself rewrites synced module files while it saves the profile, so Svof keeps a copy of each module xml beside it as ``<file>.svof-backup`` before it starts.
 
 Now, use the **vinstall** command. This'll have the system run auto-configuration first - where it'll detect and enable skills that you have. After that, it'll ask you preference questions about the basic and essential options. Feel free to take your time to ask someone else as to what should you set an option to (like for sipping health). The installation otherwise is fairly painless - and you can always change any option you'd like later with the same command.
 
