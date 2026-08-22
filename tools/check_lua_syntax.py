@@ -24,6 +24,12 @@ binary over any other.
 """
 import argparse, glob, json, os, re, shutil, subprocess, sys, tempfile
 
+# Derive the tree from this file, the way the sibling tools do. These globs
+# used to be CWD-relative, so running the check from anywhere but the repo root
+# matched zero files and still printed "all chunks parse cleanly", exit 0.
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SRC = os.path.join(REPO, "src")
+
 # Mudlet runs Lua 5.1, so that is the version to validate against. Checking with
 # a newer luac reports these, none of which are errors under 5.1:
 #
@@ -113,8 +119,10 @@ def main():
     # 1. every .lua file
     # src/resources holds data files shipped with the package, not scripts:
     # ndb-help.lua is a bare table read back with loadstring("return "..s)
-    lua_files = [f for f in sorted(glob.glob("src/**/*.lua", recursive=True))
-                 if not f.replace("\\", "/").startswith("src/resources/")]
+    lua_files = [f for f in sorted(glob.glob(os.path.join(SRC, "**", "*.lua"),
+                                             recursive=True))
+                 if not os.path.relpath(f, SRC).replace("\\", "/")
+                          .startswith("resources/")]
     for f in lua_files:
         err = parse_check(a.luac, f)
         if err:
@@ -123,7 +131,7 @@ def main():
     # 2. every script inlined into json
     inlined = 0
     tmpdir = tempfile.mkdtemp()
-    for jf in sorted(glob.glob("src/**/*.json", recursive=True)):
+    for jf in sorted(glob.glob(os.path.join(SRC, "**", "*.json"), recursive=True)):
         stack = list(json.load(open(jf, encoding="utf-8")))
         while stack:
             it = stack.pop()
@@ -138,6 +146,16 @@ def main():
             err = parse_check(a.luac, tmp)
             if err:
                 failures.append((f"{jf} :: {it.get('name')}", err.replace(tmp, "<inline>")))
+
+    # A floor, because "checked nothing" and "checked everything and it was
+    # fine" printed the same line and both exited 0.
+    MIN_LUA, MIN_INLINE = 1000, 20
+    if len(lua_files) < MIN_LUA or inlined < MIN_INLINE:
+        print(f"REFUSING: found {len(lua_files)} lua files and {inlined} inlined "
+              f"scripts under {SRC}")
+        print(f"          expected at least {MIN_LUA} and {MIN_INLINE} - the tree "
+              f"is missing, or the globs stopped matching it")
+        return 1
 
     print(f"lua files checked   : {len(lua_files)}")
     print(f"inlined scripts     : {inlined}")

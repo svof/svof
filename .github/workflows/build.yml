@@ -12,11 +12,19 @@ env:
   # package it produces looks fine and is silently wrong. Four of those five
   # fixes are in muddler PR #57; the fifth is not upstream yet.
   MUDDLER_REPO: TheLastDarkthorne/muddler
-  MUDDLER_REF: svof-fixes
+  # Pinned to a commit rather than to the branch. The artifact users install is
+  # built by this tool, so a mutable ref on a personal fork means the thing
+  # that built yesterday's package is not necessarily the thing that builds
+  # today's. Move it deliberately, in its own commit, and say why.
+  # 45616f1 = svof-fixes as of 2026-08-21 (buttons + ActionPackage).
+  MUDDLER_REF: 45616f192a938dad0d180b5f8bc406a415efffb7
 
 on:
   push:
-    branches: [svof-muddler]
+    # The syntax and call-site gates used to run on every push, from
+    # check-syntax.yml. Folding them in here narrowed that to one branch, which
+    # left master and in-client-svof with no check at all.
+    branches: [svof-muddler, in-client-svof, master]
   pull_request:
   workflow_dispatch:
     inputs:
@@ -55,9 +63,13 @@ jobs:
       - name: resolve the muddler revision
         id: muddler
         run: |
-          sha=$(git ls-remote "https://github.com/$MUDDLER_REPO.git" \
-                  "refs/heads/$MUDDLER_REF" | cut -f1)
-          test -n "$sha" || { echo "no such branch: $MUDDLER_REF"; exit 1; }
+          if [[ "$MUDDLER_REF" =~ ^[0-9a-f]{40}$ ]]; then
+            sha="$MUDDLER_REF"
+          else
+            sha=$(git ls-remote "https://github.com/$MUDDLER_REPO.git" \
+                    "refs/heads/$MUDDLER_REF" | cut -f1)
+            test -n "$sha" || { echo "no such branch: $MUDDLER_REF"; exit 1; }
+          fi
           echo "sha=$sha" >> "$GITHUB_OUTPUT"
           echo "muddler $MUDDLER_REF is $sha"
 
@@ -71,9 +83,9 @@ jobs:
       - name: build muddler from the fork
         if: steps.muddler-cache.outputs.cache-hit != 'true'
         run: |
-          git clone --branch "$MUDDLER_REF" \
-            "https://github.com/$MUDDLER_REPO.git" muddler-src
+          git clone "https://github.com/$MUDDLER_REPO.git" muddler-src
           cd muddler-src
+          git fetch --depth 1 origin "${{ steps.muddler.outputs.sha }}"
           git checkout --detach "${{ steps.muddler.outputs.sha }}"
           echo "building muddler at $(git rev-parse HEAD)"
           chmod +x gradlew
@@ -115,11 +127,27 @@ jobs:
       - name: check renamed call sites
         run: python3 tools/check_renamed_callsites.py
 
+      # Gate 1.3. default_prios and ndb-help.lua exist twice: at the repo root,
+      # left over from the module era when svo.installationfolder() pointed at
+      # the checkout, and in src/resources/, which is what muddler copies into
+      # the package and what the system actually reads today. Nothing kept the
+      # two in sync. Until the root copies are retired, fail if they drift, so
+      # a fix applied to one cannot silently miss the one that ships.
+      - name: check the duplicated resource files still match
+        run: |
+          for f in default_prios ndb-help.lua; do
+            cmp "$f" "src/resources/$f" || {
+              echo "$f differs between the repo root and src/resources/ - the"
+              echo "src/resources/ copy is the one that ships."
+              exit 1
+            }
+          done
+
       # Gate 2. The built package against all 25 original module xmls, object
       # by object: structure, names, scripts, patterns and pattern types, alias
       # regexes, event handlers, behavioural flags and top-level load order.
       #
-      # The conversion has 33 deliberate differences - the module machinery is
+      # The conversion has 50 deliberate differences - the module machinery is
       # gone, the updater and migration guard are new, and a few load-order
       # assumptions had to change. Those are recorded in the baseline, with a
       # digest each, so this fails on anything unexpected AND on any change to
