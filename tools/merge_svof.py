@@ -76,6 +76,23 @@ MERGE_ORDER = BOOTSTRAP + CORE_AND_ADDONS + PRIORITY_LAST
 NO_WRAPPER_KINDS = {"Action"}
 
 
+def wrapper_element(group, name):
+    """The per-module folder the merge puts a module's items inside.
+
+    Built here rather than inline so verify_merged.py can check the wrappers in
+    the built package against the same definition. 51 of the 54 wrappers were
+    never compared to anything at all, and a wrapper is a plausible place for
+    damage to land: it is an ordinary group node, so it can carry a script body
+    and an isActive of its own, and isActive="no" on one silently deactivates
+    everything below it. src/scripts/svo_(limbcounter).lua already ships as
+    exactly this kind of wrapper body, so it is reachable from an ordinary
+    change to src/."""
+    wrapper = ET.Element(group, {"isActive": "yes", "isFolder": "yes"})
+    ET.SubElement(wrapper, "name").text = name
+    ET.SubElement(wrapper, "script").text = ""
+    return wrapper
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=REPO)
@@ -137,9 +154,7 @@ def main():
                 # inside another folder with the same name
                 combined.append(kids[0])
                 continue
-            wrapper = ET.Element(group, {"isActive": "yes", "isFolder": "yes"})
-            ET.SubElement(wrapper, "name").text = name
-            ET.SubElement(wrapper, "script").text = ""
+            wrapper = wrapper_element(group, name)
             for k in kids:
                 wrapper.append(k)
             combined.append(wrapper)

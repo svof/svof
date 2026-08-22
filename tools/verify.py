@@ -97,7 +97,14 @@ def events(n):
 
 def describe(n, kind):
     d = {
-        "isActive": n.get("isActive", "yes"),
+        # flag(), not n.get(..., "yes"). An absent isActive read as "yes" here
+        # and as *inactive* in Mudlet (XMLimport tests == "yes"), and
+        # Tree<T>::ancestorsActive() then deactivates the whole subtree - so
+        # dropping the attribute from every group node disabled the system and
+        # this gate said the package verified. Every other boolean was moved to
+        # flag() when the missing trigger fields were added; this one was
+        # skipped.
+        "isActive": flag(n, "isActive"),
         "isFolder": flag(n, "isFolder"),
         "script": norm_script(txt(n, "script")),
     }
@@ -158,8 +165,15 @@ def describe(n, kind):
     return d
 
 def collect(path, kind):
-    """Return {logical_path: [descriptor,...]} keyed by name-path."""
+    """Return {logical_path: [descriptor,...]} keyed by name-path.
+
+    Only the matching <XxxPackage> wrapper is searched. Mudlet dispatches on
+    that tag and hands anything else to readUnknownElement, a qDebug line - so
+    a trigger tree sitting in <ScriptPackage> never fires. Scanning every
+    wrapper for the item tag made that invisible: the items were all present,
+    all identical, and all dead."""
     group = LEAF_OF[kind]
+    wrapper = kind + "Package"
     out = {}
     def walk(node, prefix):
         # index siblings so identical names stay distinguishable
@@ -174,6 +188,8 @@ def collect(path, kind):
             out.setdefault(p, []).append(describe(c, kind))
             walk(c, p)
     for pkg in list(ET.parse(path).getroot()):
+        if pkg.tag != wrapper:
+            continue
         walk(pkg, "")
     return out
 

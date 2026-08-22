@@ -36,7 +36,7 @@ import xml.etree.ElementTree as ET
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import verify as V
-from merge_svof import MERGE_ORDER, NO_WRAPPER_KINDS, REPO
+from merge_svof import MERGE_ORDER, NO_WRAPPER_KINDS, REPO, wrapper_element
 
 LEAF_OF = V.LEAF_OF
 
@@ -100,15 +100,45 @@ def digest(*parts):
     return h.hexdigest()[:16]
 
 
+# Root children Mudlet knows about. HelpPackage and VariablePackage carry no
+# items, so nothing here compares them, but a root child outside this set is a
+# wrapper Mudlet will not recognise and is worth failing on rather than
+# silently ignoring.
+KNOWN_PACKAGES = {k + "Package" for k in LEAF_OF} | {"HelpPackage", "VariablePackage"}
+
+
 def top_level(root, kind):
-    """(name, element) for each top-level item of this kind."""
+    """(name, element) for each top-level item of this kind.
+
+    Only <XxxPackage> is searched. Mudlet dispatches on the wrapper tag and
+    sends anything else to readUnknownElement - a qDebug line - so a trigger
+    tree that ends up under <ScriptPackage> imports as nothing at all. Taking
+    any wrapper's children made that invisible: moving svo (aliases, triggers)
+    with its 2317 triggers into ScriptPackage left the package installable,
+    listed in the package manager, with not one trigger able to fire, and this
+    gate reported it verified. A one-character typo in the wrapper tag read the
+    same way."""
     group = LEAF_OF[kind]
+    wrapper = kind + "Package"
     out = []
     for pkg in list(root):
+        if pkg.tag != wrapper:
+            continue
         for c in list(pkg):
             if c.tag in (kind, group):
                 out.append((c.findtext("name") or "", c))
     return out
+
+
+# muddler writes a type default into these on every node it emits, folder or
+# not. A folder has no colours, no key and no trigger type, so they carry no
+# meaning on a wrapper and the merge does not set them - comparing them would
+# report five differences per wrapper that say nothing. Everything that does
+# mean something on a folder - isActive, isFolder, the script body, patterns,
+# event handlers, commands - is compared.
+WRAPPER_DEFAULTED = {"triggerType", "highlightFg", "highlightBg",
+                     "colorTriggerFgColor", "colorTriggerBgColor",
+                     "keyCode", "keyModifier"}
 
 
 def describe_tree(elem, kind):
@@ -174,6 +204,23 @@ def compare(merged):
                 self_named.add(module)
                 merged_by_name.setdefault(module, []).append(holder)
             else:
+                # The wrapper itself, not just what it holds. A wrapper is an
+                # ordinary group node: it can carry a script body, and
+                # isActive="no" on it deactivates every item below it. Nothing
+                # compared these - 51 of the 54 - so injecting
+                # error("SABOTAGE") plus isActive="no" into one verified clean.
+                # There is no original to compare against, since the merge
+                # invents them, so compare against what the merge is defined to
+                # produce.
+                want = V.describe(wrapper_element(group, module), kind)
+                got = V.describe(holder, kind)
+                for k in sorted(set(want) | set(got)):
+                    if k in WRAPPER_DEFAULTED:
+                        continue
+                    if want.get(k) != got.get(k):
+                        structural.append(
+                            "%-8s %s: module wrapper [%s] is %r, expected %r"
+                            % (kind, module, k, got.get(k), want.get(k)))
                 for c in holder:
                     if c.tag in (kind, group):
                         merged_by_name.setdefault(c.findtext("name") or "", []).append(c)
@@ -270,7 +317,12 @@ def compare(merged):
         order_report[kind] = (expected_order, actual_order)
 
     for kind, (exp, act) in order_report.items():
-        if exp and exp != act:
+        # `if exp and ...` meant a kind the 25 references contribute nothing to
+        # was never checked for anything: no expectation, no load-order line,
+        # no leftover check. The built package already emits an empty
+        # <TimerPackage>, so src/timers/ was an unguarded way in - a Timer
+        # running send("quit") added there passed the gate.
+        if exp != act:
             where = next((i for i, (e, x) in enumerate(zip(exp, act)) if e != x), len(exp))
             structural.append(
                 "%-8s LOAD ORDER changed at position %d: expected %r, got %r"
@@ -323,13 +375,35 @@ def main():
     merged = ET.parse(a.merged).getroot()
     structural, content, order_report = compare(merged)
 
+    # Mudlet dispatches strictly on the root child's tag, so a wrapper it does
+    # not know is read by readUnknownElement and everything inside it is
+    # dropped. Nothing below would notice: each kind only ever looks inside its
+    # own wrapper.
+    for pkg in list(merged):
+        if pkg.tag not in KNOWN_PACKAGES:
+            structural.insert(0, "root child %r is not a package wrapper Mudlet "
+                                 "reads - everything inside it is dropped on "
+                                 "import" % pkg.tag)
+
     for kind, (exp, act) in order_report.items():
-        if exp:
+        if exp or act:
             print("[%s] %-8s load order preserved (%d top-level items)"
                   % ("OK " if exp == act else "FAIL", kind, len(exp)))
     print()
 
     if a.write_baseline:
+        # Refuse BEFORE writing. This block used to write the file and then
+        # announce it was "refusing", which is the worst of both readings: the
+        # message said nothing had happened while the baseline on disk had
+        # already been replaced. 79 accepted entries silently became 62 in the
+        # working tree, on a run that reported a structural failure and exited
+        # 1.
+        if structural:
+            print("refusing to bless a structural problem - %s NOT written:"
+                  % a.write_baseline)
+            for problem in structural:
+                print("  [FAIL] " + problem)
+            return 1
         payload = {
             "note": "Content differences from the original module xmls that are "
                     "deliberate. verify_merged.py --baseline fails on anything not "
@@ -343,11 +417,6 @@ def main():
             json.dump(payload, f, indent=2)
             f.write("\n")
         print("wrote %s: %d accepted differences" % (a.write_baseline, len(content)))
-        if structural:
-            print("\nrefusing to bless a structural problem:")
-            for s in structural:
-                print("  [FAIL] " + s)
-            return 1
         return 0
 
     for s in structural:
