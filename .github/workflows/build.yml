@@ -51,6 +51,52 @@ jobs:
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "building svof $version"
 
+      # Gates 1 through 1.3 need only python and lua, so they run BEFORE
+      # anything touches gradle, the JDK or the network - folded in after the
+      # muddler build, a flaky toolchain took the whole safety net down with it
+      # and the run said nothing about whether the source was sound.
+      #
+      # Mudlet runs Lua 5.1, so the syntax check has to use 5.1. A newer luac
+      # rejects things that are valid here: goto as an identifier, unknown
+      # escape sequences such as \w, and assignment rules Penlight relies on.
+      - uses: leafo/gh-actions-lua@v10
+        with:
+          luaVersion: "5.1.5"
+
+      # Gate 1. Every .lua in src/, plus the scripts inlined into the json
+      # because their name cannot be a filename or is shared with a sibling.
+      #
+      # --strict-version makes this fail rather than run if the luac on PATH is
+      # not 5.1. If the lua action ever changes what it installs, the check
+      # would otherwise keep passing while silently validating svof against a
+      # grammar Mudlet does not use.
+      - name: check lua syntax
+        run: python3 tools/check_lua_syntax.py --luac "$(which luac)" --strict-version
+
+      # Gate 1.2. Item names that could not become filenames were renamed, and
+      # rename_unfilenameable.py only rewrote the <name> elements - call sites
+      # had to be found by hand, and two were missed. Mudlet does not raise on
+      # an unknown item name, so both failed silently in play: the enemy list
+      # stopped being captured and the elist capture stopped closing early.
+      - name: check renamed call sites
+        run: python3 tools/check_renamed_callsites.py
+
+      # Gate 1.3. default_prios and ndb-help.lua exist twice: at the repo root,
+      # left over from the module era when svo.installationfolder() pointed at
+      # the checkout, and in src/resources/, which is what muddler copies into
+      # the package and what the system actually reads today. Nothing kept the
+      # two in sync. Until the root copies are retired, fail if they drift, so
+      # a fix applied to one cannot silently miss the one that ships.
+      - name: check the duplicated resource files still match
+        run: |
+          for f in default_prios ndb-help.lua; do
+            cmp "$f" "src/resources/$f" || {
+              echo "$f differs between the repo root and src/resources/ - the"
+              echo "src/resources/ copy is the one that ships."
+              exit 1
+            }
+          done
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -102,52 +148,11 @@ jobs:
           java -jar muddler-jar/muddle-all.jar
           ls -la build/
 
-      # Mudlet runs Lua 5.1, so the syntax check has to use 5.1. A newer luac
-      # rejects things that are valid here: goto as an identifier, unknown
-      # escape sequences such as \w, and assignment rules Penlight relies on.
-      - uses: leafo/gh-actions-lua@v10
-        with:
-          luaVersion: "5.1.5"
-
-      # Gate 1. Every .lua in src/, plus the scripts inlined into the json
-      # because their name cannot be a filename or is shared with a sibling.
-      #
-      # --strict-version makes this fail rather than run if the luac on PATH is
-      # not 5.1. If the lua action ever changes what it installs, the check
-      # would otherwise keep passing while silently validating svof against a
-      # grammar Mudlet does not use.
-      - name: check lua syntax
-        run: python3 tools/check_lua_syntax.py --luac "$(which luac)" --strict-version
-
-      # Gate 1.2. Item names that could not become filenames were renamed, and
-      # rename_unfilenameable.py only rewrote the <name> elements - call sites
-      # had to be found by hand, and two were missed. Mudlet does not raise on
-      # an unknown item name, so both failed silently in play: the enemy list
-      # stopped being captured and the elist capture stopped closing early.
-      - name: check renamed call sites
-        run: python3 tools/check_renamed_callsites.py
-
-      # Gate 1.3. default_prios and ndb-help.lua exist twice: at the repo root,
-      # left over from the module era when svo.installationfolder() pointed at
-      # the checkout, and in src/resources/, which is what muddler copies into
-      # the package and what the system actually reads today. Nothing kept the
-      # two in sync. Until the root copies are retired, fail if they drift, so
-      # a fix applied to one cannot silently miss the one that ships.
-      - name: check the duplicated resource files still match
-        run: |
-          for f in default_prios ndb-help.lua; do
-            cmp "$f" "src/resources/$f" || {
-              echo "$f differs between the repo root and src/resources/ - the"
-              echo "src/resources/ copy is the one that ships."
-              exit 1
-            }
-          done
-
       # Gate 2. The built package against all 25 original module xmls, object
       # by object: structure, names, scripts, patterns and pattern types, alias
       # regexes, event handlers, behavioural flags and top-level load order.
       #
-      # The conversion has 50 deliberate differences - the module machinery is
+      # The conversion has 79 deliberate differences - the module machinery is
       # gone, the updater and migration guard are new, and a few load-order
       # assumptions had to change. Those are recorded in the baseline, with a
       # digest each, so this fails on anything unexpected AND on any change to
