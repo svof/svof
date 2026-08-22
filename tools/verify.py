@@ -24,6 +24,17 @@ def txt(n, tag):
     v = n.findtext(tag)
     return "" if v is None else v
 
+
+def flag(n, attr):
+    """A yes/no attribute, with absent and empty read as "no".
+
+    Mudlet writes these out in full; muddler leaves them empty when false.
+    Mudlet's reader tests `== "yes"`, so empty and absent both mean no - this
+    is a spelling difference, not a behavioural one, and normalising it here is
+    what keeps 2779 non-differences out of the baseline."""
+    v = n.get(attr)
+    return "no" if not v else v
+
 def norm_script(s):
     # trailing-whitespace / newline normalisation only
     return "\n".join(line.rstrip() for line in (s or "").replace("\r\n", "\n").split("\n")).strip()
@@ -87,7 +98,7 @@ def events(n):
 def describe(n, kind):
     d = {
         "isActive": n.get("isActive", "yes"),
-        "isFolder": n.get("isFolder", "no"),
+        "isFolder": flag(n, "isFolder"),
         "script": norm_script(txt(n, "script")),
     }
     if kind == "Trigger":
@@ -96,15 +107,31 @@ def describe(n, kind):
             "multiline": n.get("isMultiline", "no"),
             "multilineDelta": txt(n, "conditonLineDelta") or "0",
             "fireLength": txt(n, "mStayOpen") or "0",
-            "filter": n.get("isFilterTrigger", "no"),
+            "filter": flag(n, "isFilterTrigger"),
             "command": txt(n, "mCommand"),
             # perl /g. Absent here, the conversion dropped it on all 7 triggers
             # that had it and this gate still said the package verified - which
             # is how under-counted rift parsing shipped green.
-            "matchall": n.get("isPerlSlashGOption", "no"),
-            "highlight": n.get("isColorizerTrigger", "no"),
-            "soundTrigger": n.get("isSoundTrigger", "no"),
+            "matchall": flag(n, "isPerlSlashGOption"),
+            "highlight": flag(n, "isColorizerTrigger"),
+            "soundTrigger": flag(n, "isSoundTrigger"),
             "soundFile": txt(n, "mSoundFile"),
+            # Below here was outside the gate's view. None of it changes
+            # behaviour by itself, but it is all state Mudlet reads back, and
+            # "the gate does not look at this" is how the perl /g loss and the
+            # colour remap both got as far as they did.
+            #
+            # isColorTriggerFg and isColorTriggerBg are deliberately NOT here.
+            # XMLexport writes them from mColorTriggerFgAnsi != scmIgnored and
+            # XMLimport never reads them back, so they are export-only derived
+            # state: comparing them adds 5570 differences that mean nothing.
+            "temp": flag(n, "isTempTrigger"),
+            "colorTrigger": flag(n, "isColorTrigger"),
+            "triggerType": txt(n, "triggerType"),
+            "highlightFg": txt(n, "mFgColor"),
+            "highlightBg": txt(n, "mBgColor"),
+            "colorTriggerFgColor": txt(n, "colorTriggerFgColor"),
+            "colorTriggerBgColor": txt(n, "colorTriggerBgColor"),
         })
     elif kind == "Alias":
         d.update({"regex": txt(n, "regex"), "command": txt(n, "command")})

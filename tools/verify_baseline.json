@@ -253,14 +253,149 @@
       "text": "Script   svo (trigger functions) Diag trigger functions [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",
+      "digest": "61baa56f5354675b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Registration/Started [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/roped|highlightBg",
+      "digest": "5d73afdab6d4a760",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/roped [highlightBg]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/roped|highlightFg",
+      "digest": "5b45185c80dd51b8",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/roped [highlightFg]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo got balance|highlightBg",
+      "digest": "71b4cb5ddd3c8de5",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo got balance [highlightBg]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo got balance|highlightFg",
+      "digest": "5cbdcae40398b7a1",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo got balance [highlightFg]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo got eq|highlightBg",
+      "digest": "71b4cb5ddd3c8de5",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo got eq [highlightBg]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo got eq|highlightFg",
+      "digest": "5cbdcae40398b7a1",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo got eq [highlightFg]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Herb tracker/Capture inv|colorTrigger",
+      "digest": "13c33f87153efd9e",
+      "text": "Trigger  svo (aliases, triggers) svo/Herb tracker/Capture inv [colorTrigger]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Herb tracker/Capture inv|colorTriggerFgColor",
+      "digest": "ae8471e78ca5a992",
+      "text": "Trigger  svo (aliases, triggers) svo/Herb tracker/Capture inv [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Herb tracker/svo Rift|colorTrigger",
+      "digest": "13c33f87153efd9e",
+      "text": "Trigger  svo (aliases, triggers) svo/Herb tracker/svo Rift [colorTrigger]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Herb tracker/svo Rift|colorTriggerFgColor",
+      "digest": "3a3edc289ffa4e8a",
+      "text": "Trigger  svo (aliases, triggers) svo/Herb tracker/svo Rift [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Miscellaneous/Highlights/Mono in room|highlightBg",
+      "digest": "71b4cb5ddd3c8de5",
+      "text": "Trigger  svo (aliases, triggers) svo/Miscellaneous/Highlights/Mono in room [highlightBg]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Miscellaneous/Highlights/Mono in room|highlightFg",
+      "digest": "10f62e94f11f658f",
+      "text": "Trigger  svo (aliases, triggers) svo/Miscellaneous/Highlights/Mono in room [highlightFg]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Miscellaneous/Highlights/You shall not pass!|highlightBg",
+      "digest": "71b4cb5ddd3c8de5",
+      "text": "Trigger  svo (aliases, triggers) svo/Miscellaneous/Highlights/You shall not pass! [highlightBg]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Miscellaneous/Links To Click/Clickable URL's|highlightBg",
+      "digest": "71b4cb5ddd3c8de5",
+      "text": "Trigger  svo (aliases, triggers) svo/Miscellaneous/Links To Click/Clickable URL's [highlightBg]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Miscellaneous/Links To Click/Clickable URL's|highlightFg",
+      "digest": "b92c2e8477eefc42",
+      "text": "Trigger  svo (aliases, triggers) svo/Miscellaneous/Links To Click/Clickable URL's [highlightFg]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Pipelist/Pipelist start|colorTriggerFgColor",
+      "digest": "91644142b74ffd77",
+      "text": "Trigger  svo (aliases, triggers) svo/Pipelist/Pipelist start [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (elistsorter)|svo Capture elist-elist2-venomlist/svo Capture elist stop|highlightBg",
+      "digest": "0ba574769ef1421f",
+      "text": "Trigger  svo (elistsorter) svo Capture elist-elist2-venomlist/svo Capture elist stop [highlightBg]"
+    },
+    {
+      "id": "item|Trigger|svo (elistsorter)|svo Capture elist-elist2-venomlist/svo Capture elist stop|highlightFg",
+      "digest": "49c6692b14e513a8",
+      "text": "Trigger  svo (elistsorter) svo Capture elist-elist2-venomlist/svo Capture elist stop [highlightFg]"
+    },
+    {
       "id": "item|Trigger|svo (elistsorter)|svo Capture elist-elist2-venomlist/svo Capture elist stop|script",
       "digest": "986c688b347c93ed",
       "text": "Trigger  svo (elistsorter) svo Capture elist-elist2-venomlist/svo Capture elist stop [script]"
     },
     {
+      "id": "item|Trigger|svo (fishdist)|svo Fishing Distance by Trilliana/fish!|highlightBg",
+      "digest": "13da416954ed4eb2",
+      "text": "Trigger  svo (fishdist) svo Fishing Distance by Trilliana/fish! [highlightBg]"
+    },
+    {
+      "id": "item|Trigger|svo (fishdist)|svo Fishing Distance by Trilliana/fish!|highlightFg",
+      "digest": "456e385a95f1e9e4",
+      "text": "Trigger  svo (fishdist) svo Fishing Distance by Trilliana/fish! [highlightFg]"
+    },
+    {
+      "id": "item|Trigger|svo (namedb)|Data Capture/Lists/City-House-Order enemies|colorTriggerFgColor",
+      "digest": "ae8471e78ca5a992",
+      "text": "Trigger  svo (namedb) Data Capture/Lists/City-House-Order enemies [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (namedb)|Data Capture/Lists/Clan Position Start/Clan Position Name/People In Position|colorTriggerFgColor",
+      "digest": "7c1816bbf46e00fb",
+      "text": "Trigger  svo (namedb) Data Capture/Lists/Clan Position Start/Clan Position Name/People In Position [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (namedb)|Data Capture/Lists/Clan Position Start/Clan Position Name|colorTriggerFgColor",
+      "digest": "f307bfb78592b271",
+      "text": "Trigger  svo (namedb) Data Capture/Lists/Clan Position Start/Clan Position Name [colorTriggerFgColor]"
+    },
+    {
       "id": "item|Trigger|svo (offering)|Shrine full-gone|script",
       "digest": "11100580842989ba",
       "text": "Trigger  svo (offering) Shrine full-gone [script]"
+    },
+    {
+      "id": "item|Trigger|svo (peopletracker)|qwho (svo people tracker)/Gag no-location (gods)|colorTriggerFgColor",
+      "digest": "ae8471e78ca5a992",
+      "text": "Trigger  svo (peopletracker) qwho (svo people tracker)/Gag no-location (gods) [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (reboundingsileristracker)|Self-removed|highlightBg",
+      "digest": "71b4cb5ddd3c8de5",
+      "text": "Trigger  svo (reboundingsileristracker) Self-removed [highlightBg]"
+    },
+    {
+      "id": "item|Trigger|svo (reboundingsileristracker)|Self-removed|highlightFg",
+      "digest": "6f31875f570e9adc",
+      "text": "Trigger  svo (reboundingsileristracker) Self-removed [highlightFg]"
     }
   ]
 }
