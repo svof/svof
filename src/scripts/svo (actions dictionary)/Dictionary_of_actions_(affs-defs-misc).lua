@@ -8504,7 +8504,7 @@ if not next(svo.dict) then
       },
       gone = {
         oncompleted = function ()
-          svo.rmaff("burning")
+          svo.rmaff("mindravaged")
           svo.killaction(svo.dict.mindravaged.waitingfor)
         end,
       }
