@@ -7860,7 +7860,7 @@ if not next(svo.dict) then
         customwait = 30, -- ??
   
         isadvisable = function()
-          return (affs.flamefisted and not (affs.pyre and affs.pyre.count >= 2)) or false
+          return false
         end,
   
         onstart = function() end,
