@@ -389,6 +389,19 @@ end
 function prio.import(name, echoback, report_errors, use_default)
   local sendf; if echoback then sendf = svo.echof else sendf = function() end end
 
+  -- Failures always speak, whatever echoback says.
+  --
+  -- The startup load is `prio.import('current')` with no echoback, so sendf is
+  -- function() end there. Before the returns below were added, a missing
+  -- default_prios at least reached io.input and raised a traceback - ugly, but
+  -- visible. Returning quietly through a silent sendf turned the whole
+  -- auto-load path mute: no priorities loaded, nothing said. That is the state
+  -- a failed update leaves the profile in, so it is not a hypothetical.
+  --
+  -- Informational output stays gated - this is only for the paths that end in
+  -- "and so nothing was loaded".
+  local failf = svo.echof
+
   local filename
   if not name then
     filename = invokeFileDialog(true, "Select the priority list you'd like to import")
@@ -422,14 +435,14 @@ function prio.import(name, echoback, report_errors, use_default)
   if name == 'current' and (use_default or not lfs.attributes(path)) then
     local defaults = svo.installationfolder() .. "/default_prios"
     if not lfs.attributes(defaults) then
-      sendf("The default priorities are missing from the installation (%s).", defaults)
+      failf("The default priorities are missing from the installation (%s).", defaults)
       return
     end
     io.input(defaults)
     s = io.read("*a")
   else
     if not lfs.attributes(path) then
-      sendf("%s prio doesn't exist.", tostring(name))
+      failf("%s prio doesn't exist.", tostring(name))
       return
     end
     io.input(path)
@@ -447,7 +460,7 @@ function prio.import(name, echoback, report_errors, use_default)
   end
 
   local ok, m = run(s)
-  if not ok then sendf("There's a syntax problem in the prios file, we couldn't load it:\n  %s", m) return end
+  if not ok then failf("There's a syntax problem in the prios file, we couldn't load it:\n  %s", m) return end
 
   local function set(num, action, balance, priority)
     if not (svo.dict[action] and svo.dict[action][balance]) then

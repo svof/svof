@@ -29,9 +29,11 @@ def flag(n, attr):
     """A yes/no attribute, with absent and empty read as "no".
 
     Mudlet writes these out in full; muddler leaves them empty when false.
-    Mudlet's reader tests `== "yes"`, so empty and absent both mean no - this
-    is a spelling difference, not a behavioural one, and normalising it here is
-    what keeps 2779 non-differences out of the baseline."""
+    Mudlet's reader tests `== "yes"`, so empty, absent and "no" all mean no -
+    a spelling difference, not a behavioural one. Without this normalisation
+    the baseline would fill with tens of thousands of entries that say nothing;
+    the exact count depends on how you count, which is why one is not quoted
+    here any more."""
     v = n.get(attr)
     return "no" if not v else v
 
@@ -131,7 +133,9 @@ def describe(n, kind):
             # isColorTriggerFg and isColorTriggerBg are deliberately NOT here.
             # XMLexport writes them from mColorTriggerFgAnsi != scmIgnored and
             # XMLimport never reads them back, so they are export-only derived
-            # state: comparing them adds 5570 differences that mean nothing.
+            # state. Measured over the same pairing verify_merged uses: 5082
+            # comparisons, 12 differences once flag() has normalised the
+            # spelling - all of them derived, none of them behaviour.
             "temp": flag(n, "isTempTrigger"),
             "colorTrigger": flag(n, "isColorTrigger"),
             "triggerType": txt(n, "triggerType"),

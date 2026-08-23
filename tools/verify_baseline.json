@@ -174,8 +174,13 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Priorities|script",
-      "digest": "0c405186c297e957",
+      "digest": "17a4695e2b53060c",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Priorities [script]"
+    },
+    {
+      "id": "item|Script|svo (limbcounter)|svo (limbcounter)/svo count show|script",
+      "digest": "4db603064cd308e2",
+      "text": "Script   svo (limbcounter) svo (limbcounter)/svo count show [script]"
     },
     {
       "id": "item|Script|svo (limbcounter)|svo (limbcounter)/svo limbcounter|script",

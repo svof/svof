@@ -2,9 +2,13 @@
 """
 check_lua_syntax.py -- parse every piece of Lua in the project.
 
-Covers both places code lives: the .lua files under src/, and the scripts
-inlined into the json (items whose name cannot become a filename, or which
-share one with a sibling).
+Covers both places code lives: the .lua files under src/, and the 64 scripts
+inlined into the json. An item's script is inlined when its name resolves to a
+filename that another item in the same emitted directory also resolves to - 61
+share the name outright and 3 differ only in case - because muddler loads
+"<name>.lua" implicitly for any item with an empty script, so none of a
+colliding set may own the file. Names that could not become filenames at all
+were renamed, not inlined.
 
 Uses `luac -p`, which parses without executing.
 

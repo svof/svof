@@ -58,6 +58,12 @@ def reference_hashes():
     out = {}
     for module in MERGE_ORDER:
         path = os.path.join(REPO, module + ".xml")
+        # A missing reference used to be a raw traceback out of this open(),
+        # which also made check_reference's "has gone missing" branch below
+        # unreachable - it can only fire if this function can return without a
+        # file. Skip it here and let that branch say so properly.
+        if not os.path.exists(path):
+            continue
         with open(path, "rb") as fh:
             data = fh.read()
         out[module + ".xml"] = hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest()

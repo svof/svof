@@ -169,17 +169,31 @@ function svo.lc_deletecount()
 	svo.lc_countshow()
 end
 
-svo.config.setoption(
-  "changelimbcount",
-  {
-    type = "number",
-    onset =
-      function()
-        svo.echof(
-          "Setting the old value %s to the new value %s",
-          svo.lc_changeold, svo.conf.changelimbcount
-        )
-				svo.lc_changeend(svo.conf.changelimbcount)
-      end,
-  }
-)
+-- Registered on "svo system loaded", not at body time.
+--
+-- svo.config does not exist when this body runs. On the modules that was
+-- survivable by accident: on a fresh install the script happened to run after
+-- the config subsystem, so the option registered once and was lost from the
+-- first restart onward. In one package svo.config is guaranteed absent here,
+-- so this raised at load and `changelimbcount` never registered at all - the
+-- conversion turned an intermittent loss into a permanent one.
+--
+-- "svo system loaded" is the convention the rest of the system already uses
+-- for exactly this; tempTimer(0, ...) is not enough, since a script can run
+-- before svo_init_system does.
+registerAnonymousEventHandler("svo system loaded", function()
+  svo.config.setoption(
+    "changelimbcount",
+    {
+      type = "number",
+      onset =
+        function()
+          svo.echof(
+            "Setting the old value %s to the new value %s",
+            svo.lc_changeold, svo.conf.changelimbcount
+          )
+          svo.lc_changeend(svo.conf.changelimbcount)
+        end,
+    }
+  )
+end)

@@ -113,6 +113,7 @@ def main():
                  + ", ".join(sorted(unlisted)))
 
     src = os.path.join(a.out, "src")
+    resources = os.path.join(src, "resources")
     if os.path.isdir(src) and not a.force:
         sys.exit(
             "src/ already exists.\n\n"
@@ -120,16 +121,51 @@ def main():
             "the module xmls are kept only as the reference it is verified against.\n"
             "Rerunning rebuilds src/ from those xmls and would discard everything\n"
             "written since - the module machinery removal, the updater, the\n"
-            "migration guard.\n\n"
+            "migration guard, and every hand-written .lua.\n\n"
+            "src/resources/ is preserved across a --force run - nothing here can\n"
+            "regenerate it, since it holds the runtime data files muddler copies\n"
+            "into the package - but nothing else is.\n\n"
             "Pass --force if you really mean to regenerate, and expect to restore\n"
             "hand-written changes afterwards."
         )
     if os.path.isdir(src):
+        # src/resources/ is not generated from anything: it holds default_prios
+        # and ndb-help.lua, which muddler copies to the package root and which
+        # svo.installationfolder() then reads at runtime. rmtree took it with
+        # everything else and nothing recreated it, so a --force run left the
+        # built package without its data files and the guard text above did not
+        # mention it. Carry it across.
+        keep = None
+        if os.path.isdir(resources):
+            keep = os.path.join(a.out, ".svof-resources-tmp")
+            if os.path.isdir(keep):
+                shutil.rmtree(keep)
+            shutil.move(resources, keep)
         shutil.rmtree(src)
+        if keep:
+            os.makedirs(src, exist_ok=True)
+            shutil.move(keep, resources)
+            print("kept src/resources/ (%d file(s)) - it is not generated"
+                  % len(os.listdir(resources)))
 
     # gather each package type's top-level nodes across every module, in order
     roots = {name: ET.parse(os.path.join(REPO, name + ".xml")).getroot()
              for name in MERGE_ORDER}
+
+    # The same warning xml2muddler.py carries, for the same reason. This is the
+    # tool that actually produced src/, and it had no such check: ActionPackage
+    # was absent from PACKAGES and 170 elements of button went with it, in
+    # silence, and stayed missing until someone counted items in a real Mudlet.
+    # The next item type Mudlet adds would go the same way.
+    for name in MERGE_ORDER:
+        for child in roots[name]:
+            if (not child.tag.endswith("Package") or child.tag in x2m.PACKAGES
+                    or child.tag == "HelpPackage"):
+                continue
+            n = sum(1 for _ in child.iter() if _ is not child)
+            if n:
+                x2m.warn("%s in %s is not handled and was dropped (%d element(s) "
+                         "below it)" % (child.tag, name, n))
 
     totals = {}
     for pkgtag, (kind, leaf, group) in x2m.PACKAGES.items():

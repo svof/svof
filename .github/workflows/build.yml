@@ -64,8 +64,12 @@ jobs:
         with:
           luaVersion: "5.1.5"
 
-      # Gate 1. Every .lua in src/, plus the scripts inlined into the json
-      # because their name cannot be a filename or is shared with a sibling.
+      # Gate 1. Every .lua in src/, plus the 64 scripts inlined into the json.
+      # Those are inlined because their name resolves to a filename another
+      # item in the same directory also resolves to - 61 share the name
+      # outright, 3 differ only in case - so none of them may own the file.
+      # Not, as this used to say, because the name cannot be a filename: the
+      # names that could not be were renamed instead.
       #
       # --strict-version makes this fail rather than run if the luac on PATH is
       # not 5.1. If the lua action ever changes what it installs, the check

@@ -128,14 +128,23 @@ def build_trigger(n):
         "multiline": yn(n, "isMultiline"),
         "multilineDelta": text(n, "conditonLineDelta", "0"),
         "filter": yn(n, "isFilterTrigger"),
-        # perl /g. Dropping this silently changes what the trigger captures:
-        # without it Mudlet stops at the first match on the line, so a rift
-        # line holding several "[ N ] herb" entries yields one match set
-        # instead of one per entry, and svo.riftline() records only the first.
-        "matchall": yn(n, "isPerlSlashGOption"),
         "fireLength": text(n, "mStayOpen", "0"),
         "highlight": yn(n, "isColorizerTrigger"),
     }
+    # perl /g. Dropping this silently changes what the trigger captures:
+    # without it Mudlet stops at the first match on the line, so a rift line
+    # holding several "[ N ] herb" entries yields one match set instead of one
+    # per entry, and svo.riftline() records only the first.
+    #
+    # Written only when set. Emitting it unconditionally, as the fields above
+    # are, would be tidier but it is not how src/ was produced: when this was
+    # added the 7 "yes" cases were patched in by hand, so a regeneration
+    # differed from the tree in 291 files and the converter stopped being able
+    # to cross-check its own output. Absent and "no" mean the same thing to
+    # muddler - confirmed by rebuilding with "matchall": "no" everywhere and
+    # getting a byte-identical XML - so matching the tree costs nothing.
+    if yn(n, "isPerlSlashGOption") == "yes":
+        d["matchall"] = "yes"
     fg, bg = text(n, "mFgColor"), text(n, "mBgColor")
     if fg: d["highlightFG"] = fg
     if bg: d["highlightBG"] = bg
