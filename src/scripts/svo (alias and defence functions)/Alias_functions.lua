@@ -912,7 +912,15 @@ function svo.reset.general()
   end
 
   svo.actions_performed = {}
+  -- Emptying the prompt queue here discards its callbacks without running
+  -- them - sk.onprompt_beforeaction_do empties it *after* it has run them,
+  -- this does not - so anything that queued its own reset there never gets
+  -- reset and the flag survives every later prompt. Both flags below work
+  -- that way, and both are read as "this just happened" by the illusion
+  -- checks, so clear them by hand alongside the queue that would have.
   sk.onpromptfuncs = {}
+  sk.gmcp_cured = {}
+  sk.removed_something = nil
   sk.checkaeony()
   signals.changecuring:emit()
   signals.canoutr:emit()

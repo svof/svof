@@ -220,6 +220,11 @@ do
 end
 
 -- ===== scenario 4: mixed paragraph records each consumable balance once =====
+-- All six consumable_balances entries, not three: salve, smoke and purgative
+-- had no scenario at all, so any of them could be dropped from the literal
+-- in Curing_skeleton.lua with the suite still green - and the dictionary
+-- defines far more of them (45 salve, 13 smoke, 5 purgative sub-entries)
+-- than of the ones that were covered.
 do
   local env, calls, svo, sys = new_environment()
   load_block(block, env)
@@ -229,16 +234,22 @@ do
   queue(svo, 'relapsing_herb', 'herb')
   queue(svo, 'torntendons_sip', 'sip')
   queue(svo, 'healhealth_moss', 'moss')
+  queue(svo, 'crippledleftarm_salve', 'salve')
+  queue(svo, 'asthma_smoke', 'smoke')
+  queue(svo, 'vomiting_purgative', 'purgative')
   sys.flawedillusion = true
 
   svo.lifevision.validate()
 
-  eq(#calls.cleared, 4, "illusion: every action cleared")
+  eq(#calls.cleared, 7, "illusion: every action cleared")
   contains(calls.lostbal, 'herb', "illusion: herb recorded")
   contains(calls.lostbal, 'sip', "illusion: sip recorded")
   contains(calls.lostbal, 'moss', "illusion: moss recorded")
+  contains(calls.lostbal, 'salve', "illusion: salve recorded")
+  contains(calls.lostbal, 'smoke', "illusion: smoke recorded")
+  contains(calls.lostbal, 'purgative', "illusion: purgative recorded")
   not_contains(calls.lostbal, 'aff', "illusion: 'aff' is not a balance to spend")
-  eq(#calls.lostbal, 3, "illusion: exactly the three consumable balances")
+  eq(#calls.lostbal, 6, "illusion: exactly the six consumable balances")
 end
 
 -- ===== scenario 5: the normal path is untouched =====
