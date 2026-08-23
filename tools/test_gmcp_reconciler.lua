@@ -11,7 +11,7 @@ actually ships - if the anchors move, the test fails loudly instead of
 silently testing stale logic.
 
 It proves the reconciler's *logic* is correct in isolation: name parsing,
-the pairs-vs-ipairs key space, the svoatoss/svodtoss removal gate, the
+the pairs-vs-ipairs key space, the svotossa/svotossd removal gate, the
 unknownany guard, and call counts (once per event, not once per item). It
 proves nothing about Mudlet integration, GMCP wire format, or actual play -
 that still needs the in-game testing in the safety-patch spec.
@@ -24,6 +24,15 @@ local SRC = "src/scripts/svo (setup, misc, empty, funnies, dor)/Setup.lua"
 
 local START_ANCHOR = "signals.gmcpcharafflictionslist = signals.gmcpcharafflictionslist or luanotify.signal.new()"
 local END_ANCHOR = "end, 'update list of defs from gmcp')"
+
+-- The removal gates read svo.dict.svotossa / svo.dict.svotossd, which the
+-- dictionary builds from sstosvoa / sstosvod as it loads. Extract those two
+-- loops from the real dictionary too, rather than reimplementing them here:
+-- a fixture that built the reverse index its own way could agree with a
+-- reconciler that the shipped dictionary disagrees with.
+local DICT_SRC = "src/scripts/svo (actions dictionary)/Dictionary_of_actions_(affs-defs-misc).lua"
+local DICT_START_ANCHOR = "for ssa, svoa in pairs(svo.dict.sstosvoa) do"
+local DICT_END_ANCHOR = "if type(svod) == 'string' then svo.dict.svotossd[svod] = ssd end"
 
 local function read_file(path)
   local f, err = io.open(path, "r")
@@ -44,6 +53,23 @@ local function extract_block(source)
   end
   e = e + #END_ANCHOR
   return source:sub(s, e)
+end
+
+-- Both loops, plus the `end` closing the second one.
+local function extract_dict_block(source)
+  local s = source:find(DICT_START_ANCHOR, 1, true)
+  if not s then
+    error("start anchor not found in " .. DICT_SRC .. " - the reverse-index loops moved; update this test's anchors")
+  end
+  local e = source:find(DICT_END_ANCHOR, s, true)
+  if not e then
+    error("end anchor not found in " .. DICT_SRC .. " after the start anchor - update this test's anchors")
+  end
+  e = source:find("\nend", e + #DICT_END_ANCHOR, true)
+  if not e then
+    error("no closing end after the svotossd loop in " .. DICT_SRC .. " - update this test's anchors")
+  end
+  return source:sub(s, e + 4)
 end
 
 -- ===== assertion plumbing =====
@@ -119,14 +145,18 @@ local function new_environment()
   local luanotify = { signal = { new = function() return new_signal(nil) end } }
 
   local svo = {}
-  svo.dict = { unknownany = { count = 0 }, sstosvoa = {}, sstosvod = {} }
+  svo.dict = {
+    unknownany = { count = 0 },
+    sstosvoa = {}, sstosvod = {},
+    -- declared empty by the dictionary at load; populated by the extracted
+    -- reverse-index loops, via build_reverse_indexes below.
+    svotossa = {}, svotossd = {},
+  }
   svo.affl = {}
   svo.gaffl = {}
   svo.gdefc = {}
   svo.defc = {}
   svo.defs = {}
-  svo.svoatoss = {}
-  svo.svodtoss = {}
   svo.me = {}
   svo.conf = { gmcpaffechoes = false, gmcpdefechoes = false }
   svo.sk = {}
@@ -164,7 +194,6 @@ local function new_environment()
   local signals = {}
   signals.changecuring = new_signal(nil)
   signals.changecuring.emit = function(self, ...) calls.changecuring = calls.changecuring + 1 end
-  signals.systemstart = new_signal("systemstart")
   signals.gmcpcharafflictionslist = new_signal("afflist")
   signals.gmcpcharafflictionsremove = new_signal("affremove")
   signals.gmcpcharafflictionsadd = new_signal("affadd")
@@ -208,6 +237,15 @@ end
 local source = read_file(SRC)
 local block = extract_block(source)
 print("extracted " .. #block .. " bytes of Setup.lua between the GMCP handler anchors")
+
+local dict_block = extract_dict_block(read_file(DICT_SRC))
+print("extracted " .. #dict_block .. " bytes of the dictionary's reverse-index loops")
+
+-- Run the dictionary's own reverse-index build over whatever sstosvoa /
+-- sstosvod a scenario has just set, exactly as it runs at dict-load time.
+local function build_reverse_indexes(env)
+  load_block(dict_block, env)
+end
 
 -- ===== scenario 1: parseaffname, via the Add handler's observable effects =====
 do
@@ -269,6 +307,25 @@ do
   h.affadd()
 
   eq(#calls.updateaffcount, 0, "G5: updateaffcount does not run when svo.affl lacks the entry (no raise, no call)")
+end
+
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  -- 130 of the 145 mapped GMCP names have no count field in their dict
+  -- entry. updateaffcount assigns svo.affl[name].count unconditionally and
+  -- raises the documented "svo updated aff" event with that amount, so
+  -- calling it here stored nil and announced a count of nothing.
+  svo.dict.sstosvoa = { nausea = 'illness' }
+  svo.dict.illness = { name = 'illness' } -- no count field
+  svo.affl.illness = {}
+  env.gmcp.Char.Afflictions.Add = { name = 'nausea (3)' }
+
+  h.affadd()
+
+  eq(#calls.updateaffcount, 0, "G5: a level reported for an aff whose dict entry has no count never reaches updateaffcount")
+  eq(svo.dict.illness.count, nil, "G5: and no count is invented on the dict entry either")
 end
 
 -- ===== scenario 4: G6 - unknownany only decrements for a real, previously-untracked affliction =====
@@ -334,16 +391,21 @@ do
   local env, h, calls, svo = new_environment()
   load_block(block, env)
 
-  -- sstosvoa: 'kept'/'kept2' and 'stale' are all GMCP-reachable;
-  -- 'unreachable' is one of the 27 names GMCP can never confirm or deny (no
+  -- Three real mappings, none of them an identity, and deliberately the
+  -- nastiest shape in the dictionary: GMCP 'burning' is svof 'ablaze', while
+  -- 'burning' is *also* a svof name in its own right (GMCP 'flamefisted').
+  -- An identity fixture makes the two key spaces indistinguishable, so every
+  -- assertion below would hold even if the gate and the loop keyed on the
+  -- wrong one. 46 of the 145 string-valued sstosvoa entries differ like this.
+  -- 'unreachable' is one of the names GMCP can never confirm or deny (no
   -- sstosvoa entry). Two items in the reported list so the checkaeony/
   -- changecuring frequency assertions below actually distinguish "once per
   -- list" from "once per item" (a list of one can't tell the two apart).
-  svo.dict.sstosvoa = { kept = 'kept', kept2 = 'kept2', stale = 'stale' }
-  env.signals.systemstart:emit()
+  svo.dict.sstosvoa = { burning = 'ablaze', flamefisted = 'burning', nausea = 'illness' }
+  build_reverse_indexes(env)
 
-  svo.affl = { kept = { count = 1 }, kept2 = { count = 1 }, stale = { count = 1 }, unreachable = { count = 1 } }
-  env.gmcp.Char.Afflictions.List = { { name = 'kept' }, { name = 'kept2' } }
+  svo.affl = { ablaze = { count = 1 }, burning = { count = 1 }, illness = { count = 1 }, unreachable = { count = 1 } }
+  env.gmcp.Char.Afflictions.List = { { name = 'burning' }, { name = 'flamefisted' } }
 
   h.afflist()
 
@@ -351,24 +413,30 @@ do
   eq(calls.changecuring, 1, "G1/G7-followup: changecuring fires exactly once per List event, not once per item (list had 2 items)")
 
   eq(#calls.addaff, 0, "G1: an affliction already tracked and still in the list is not re-added")
-  contains(calls.rmaff, 'stale', "G1/G2: a GMCP-reachable affliction absent from the list IS removed")
+  contains(calls.rmaff, 'illness', "G1/G2: a GMCP-reachable affliction absent from the list IS removed, under its svof name")
   not_contains(calls.rmaff, 'unreachable', "G2: an affliction GMCP cannot report is NEVER removed, even when absent from the list")
-  not_contains(calls.rmaff, 'kept', "G1: an affliction present in the list is not removed")
+  not_contains(calls.rmaff, 'ablaze', "G1: an affliction the list confirms under a different GMCP name is not removed")
+  not_contains(calls.rmaff, 'burning', "G1: the svof name that collides with another affliction's GMCP name is not removed either")
+
+  -- The removal loop is the destructive half of the reconciler; debugf is
+  -- its only record. Deleting that line left the suite green before this.
+  contains(calls.debugf, "gmcp list: removing illness, not in the game's list",
+    "G1: a removal is recorded through debugf")
 end
 
 do
   local env, h, calls, svo = new_environment()
   load_block(block, env)
 
-  svo.dict.sstosvoa = { brandnew = 'brandnew' }
-  env.signals.systemstart:emit()
+  svo.dict.sstosvoa = { nausea = 'illness' }
+  build_reverse_indexes(env)
 
   svo.affl = {} -- nothing tracked yet
-  env.gmcp.Char.Afflictions.List = { { name = 'brandnew' } }
+  env.gmcp.Char.Afflictions.List = { { name = 'nausea' } }
 
   h.afflist()
 
-  contains(calls.addaff, 'brandnew', "G1: an affliction reported by GMCP but not yet tracked is added")
+  contains(calls.addaff, 'illness', "G1: an affliction reported by GMCP but not yet tracked is added, under its svof name")
   eq(#calls.rmaff, 0, "G1: nothing to remove when svo.affl started empty")
 end
 
@@ -385,26 +453,31 @@ do
   local env, h, calls, svo = new_environment()
   load_block(block, env)
 
-  svo.dict.sstosvoa = { torntendons = 'torntendons', slickness = 'slickness' }
-  svo.dict.torntendons = { name = 'torntendons', count = 1 }
+  -- The real fight that found this had torntendons, whose GMCP name happens
+  -- to match svof's. The fixture uses one of the four tempered humours
+  -- instead - GMCP 'temperedcholeric' is svof 'cholerichumour', and it is
+  -- levelled - so the level strip and the name translation both have to be
+  -- right for this to pass, not just the strip.
+  svo.dict.sstosvoa = { temperedcholeric = 'cholerichumour', slickness = 'slickness' }
+  svo.dict.cholerichumour = { name = 'cholerichumour', count = 1 }
   svo.dict.slickness = { name = 'slickness' }
-  env.signals.systemstart:emit()
+  build_reverse_indexes(env)
 
-  svo.affl = { torntendons = { count = 1 }, slickness = { count = 1 } }
+  svo.affl = { cholerichumour = { count = 1 }, slickness = { count = 1 } }
   env.gmcp.Char.Afflictions.List = {
-    { name = 'torntendons (2)' },
+    { name = 'temperedcholeric (2)' },
     { name = 'slickness' },
   }
 
   h.afflist()
 
-  not_contains(calls.rmaff, 'torntendons',
+  not_contains(calls.rmaff, 'cholerichumour',
     "List: an affliction reported at a level above 1 is NOT removed")
   eq(#calls.addaff, 0,
     "List: a levelled affliction already tracked is not re-added either")
-  eq(svo.dict.torntendons.count, 2,
+  eq(svo.dict.cholerichumour.count, 2,
     "List: the level from a List reaches svo.dict, like it does from an Add")
-  contains(calls.updateaffcount, 'torntendons',
+  contains(calls.updateaffcount, 'cholerichumour',
     "List: svo.affl's count is updated when the entry exists")
 end
 
@@ -413,16 +486,16 @@ do
   load_block(block, env)
 
   -- and the removal half still works for a levelled name that really is gone
-  svo.dict.sstosvoa = { torntendons = 'torntendons', slickness = 'slickness' }
+  svo.dict.sstosvoa = { temperedcholeric = 'cholerichumour', slickness = 'slickness' }
   svo.dict.slickness = { name = 'slickness' }
-  env.signals.systemstart:emit()
+  build_reverse_indexes(env)
 
-  svo.affl = { torntendons = { count = 3 }, slickness = { count = 1 } }
+  svo.affl = { cholerichumour = { count = 3 }, slickness = { count = 1 } }
   env.gmcp.Char.Afflictions.List = { { name = 'slickness' } }
 
   h.afflist()
 
-  contains(calls.rmaff, 'torntendons',
+  contains(calls.rmaff, 'cholerichumour',
     "List: a levelled affliction genuinely absent from the list is still removed")
 end
 
@@ -439,7 +512,7 @@ do
   svo.dict.sstosvod = {
     armour = 'armour', rebounding = 'rebounding', ['discern shield'] = 'ds',
   }
-  env.signals.systemstart:emit()
+  build_reverse_indexes(env)
 
   -- mutate in place: the extracted block captured `defc` as a local alias
   -- of svo.defc at load time (`local defc = svo.defc`, outside this

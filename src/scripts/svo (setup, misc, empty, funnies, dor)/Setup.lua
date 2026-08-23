@@ -180,13 +180,6 @@ svo.serverignore = svo.serverignore or {}
 svo.ignore = svo.ignore or {}
 svo.dict = svo.dict or {}
 
--- svof affliction/defence name -> the serverside name GMCP would report it
--- under. A name absent from these maps cannot be confirmed or denied by
--- GMCP, so a List reconciler must never remove it on that name's account.
--- Populated once svo.dict exists - see the systemstart hook near the GMCP
--- handlers below.
-svo.svoatoss = svo.svoatoss or {}
-svo.svodtoss = svo.svodtoss or {}
 
 local oldecho = svo.conf.commandecho
 signals.changecuring = signals.changecuring or luanotify.signal.new()
@@ -640,19 +633,6 @@ local function parseaffname(raw)
   return raw, nil
 end
 
--- svo.dict does not exist yet while this loader (setup) runs - dict loads
--- later in svo_init_system's required_subsystems order - so the reverse
--- indexes are built once everything is up, the same way the rest of the
--- codebase hooks one-time post-boot work.
-signals.systemstart:connect(function()
-  for ssname, svoname in pairs(svo.dict.sstosvoa) do
-    if svoname then svo.svoatoss[svoname] = ssname end
-  end
-  for ssname, svoname in pairs(svo.dict.sstosvod) do
-    if svoname then svo.svodtoss[svoname] = ssname end
-  end
-end, 'build gmcp reverse name indexes')
-
 signals.gmcpcharafflictionsadd:connect(function()
   local rawaff = gmcp.Char.Afflictions.Add.name
   local affname, afflevel = parseaffname(rawaff)
@@ -734,7 +714,7 @@ signals.gmcpcharafflictionslist:connect(function()
   -- svo.affl is keyed by name (values are {sw=..., count=...} tables), so
   -- this must key preaffl on the name via pairs, not ipairs over a
   -- string-keyed map (which iterates nothing) or on the value table (which
-  -- would key on a table, not the name svo.svoatoss below is keyed by).
+  -- would key on a table, not the name svo.dict.svotossa below is keyed by).
   for name in pairs(svo.affl) do preaffl[name] = true end
 
   for _, val in ipairs(gmcp.Char.Afflictions.List) do
@@ -776,12 +756,13 @@ signals.gmcpcharafflictionslist:connect(function()
   sk.checkaeony()
   signals.changecuring:emit()
 
-  -- svo.svoatoss[key] gates removal on the affliction being one GMCP can
+  -- svo.dict.svotossa is sstosvoa reversed, built by the dictionary itself
+  -- as it loads. It gates removal on the affliction being one GMCP can
   -- actually confirm or deny - anything absent from it (not reachable
   -- through sstosvoa, or deliberately mapped to false there) is never
   -- touched here, whatever this loop above computed for it.
   for key, val in pairs(preaffl) do
-    if val and svo.svoatoss[key] then
+    if val and svo.dict.svotossa[key] then
       svo.debugf("gmcp list: removing %s, not in the game's list", key)
       svo.rmaff(key)
     end
@@ -830,11 +811,12 @@ signals.gmcpchardefenceslist:connect(function()
   -- because thisdef there is a serverside name; here defname already is the
   -- svof name, so re-translating it through sstosvod (itself serverside-
   -- keyed) only ever worked where the two names happened to be identical.
-  -- svo.svodtoss[defname] is the correct gate - it exists exactly when
-  -- defname is reachable from GMCP at all - and defname is already the
-  -- right key for svo.defs.
+  -- svo.dict.svotossd (sstosvod reversed, built by the dictionary as it
+  -- loads) is the correct gate - it exists exactly when defname is
+  -- reachable from GMCP at all - and defname is already the right key for
+  -- svo.defs.
   for defname, val in pairs(predefs) do
-    if val == true and svo.svodtoss[defname] then
+    if val == true and svo.dict.svotossd[defname] then
       if type(svo.defs['lost_'..defname]) == 'function' then
         svo.defs['lost_'..defname]()
       end
