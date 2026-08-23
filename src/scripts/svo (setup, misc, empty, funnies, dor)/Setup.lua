@@ -650,17 +650,19 @@ signals.gmcpcharafflictionsadd:connect(function()
     -- once here (instead of the old two separate, overlapping lookups) does
     -- not change anything observable.
     svo.addaffdict(svoaff)
-    if afflevel ~= nil and svoaff.count ~= nil then
-      svoaff.count = afflevel
-    end
     -- svo.affl is keyed by name; its values are { sw = ..., count = ... }
     -- tables. table.contains(svo.affl, svoaff.name) searched those values
     -- for a name string, which never matched, so a GMCP-reported level never
-    -- reached svo.affl[name].count. The guard exists because updateaffcount
-    -- does svo.affl[which.name].count = which.count and raises if the entry
-    -- is absent - a plain key lookup is the correct guard for that.
-    if afflevel ~= nil and svo.affl[svoaff.name] then
-      svo.updateaffcount(svoaff)
+    -- reached svo.affl[name].count. Both terms of the guard are needed:
+    -- updateaffcount does svo.affl[which.name].count = which.count
+    -- unconditionally and raises the documented 'svo updated aff' event with
+    -- that amount, so an affliction whose dict entry has no count (130 of the
+    -- 145 mapped ones) would store nil and announce a count of nothing.
+    if afflevel ~= nil and svoaff.count ~= nil then
+      svoaff.count = afflevel
+      if svo.affl[svoaff.name] then
+        svo.updateaffcount(svoaff)
+      end
     end
   end
 
