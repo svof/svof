@@ -188,12 +188,18 @@ jobs:
       # by object: structure, names, scripts, patterns and pattern types, alias
       # regexes, event handlers, behavioural flags and top-level load order.
       #
-      # The conversion has 80 deliberate differences - the module machinery is
-      # gone, the updater and migration guard are new, and a few load-order
-      # assumptions had to change. Those are recorded in the baseline, with a
-      # digest each, so this fails on anything unexpected AND on any change to
-      # a difference that was already accepted. Structural problems and load
+      # The deliberate differences - the module machinery is gone, the updater
+      # and migration guard are new, a few load-order assumptions had to
+      # change, and on the branches stacked above this one the GMCP tracking
+      # fixes diverge on top - are recorded in the baseline with a digest each,
+      # so this fails on anything unexpected AND on any change to one that was
+      # already accepted. Structural problems and load
       # order changes are always fatal, baseline or not.
+      #
+      # The count is deliberately not repeated here. It differs per branch in
+      # the stack and rises whenever a file diverges from its 2018 original for
+      # the first time, so a number in this comment goes stale by design - it
+      # already had, twice. The baseline file holds it and the gate prints it.
       #
       # If a difference here is intended, regenerate the baseline in the same
       # commit that causes it:
