@@ -1,1 +1,0 @@
-svo.valid.diag_burning()

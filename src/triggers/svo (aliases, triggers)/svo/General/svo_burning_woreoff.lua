@@ -1,1 +1,0 @@
-svo.valid.burning_woreoff()

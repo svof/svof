@@ -74,7 +74,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "102743fd053ceff1",
+      "digest": "592fc5c88cac755b",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -168,6 +168,11 @@
       "text": "Script   svo (install me in module manager) Load & init [script]"
     },
     {
+      "id": "item|Script|svo (install me in module manager)|svo Utilities/Custom prompt tags/@affs|script",
+      "digest": "cf6e57ca187eb12f",
+      "text": "Script   svo (install me in module manager) svo Utilities/Custom prompt tags/@affs [script]"
+    },
+    {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Install system|script",
       "digest": "209a385a5e8a58af",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Install system [script]"
@@ -259,18 +264,28 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Diag trigger functions|script",
-      "digest": "43f1b63c401b3ef5",
+      "digest": "b3c411d3c3b8feff",
       "text": "Script   svo (trigger functions) Diag trigger functions [script]"
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "b923a10871505828",
+      "digest": "72bb1c6240c8019f",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
+    },
+    {
+      "id": "item|Script|svo (trigger functions)|Simple aff trigger functions|script",
+      "digest": "d414f00c9ab4d340",
+      "text": "Script   svo (trigger functions) Simple aff trigger functions [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",
       "digest": "61baa56f5354675b",
       "text": "Trigger  svo (aliases, triggers) svo/General/Registration/Started [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/flamefisted|script",
+      "digest": "e0f23083f8698459",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/flamefisted [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/roped|highlightBg",
@@ -281,6 +296,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/roped|highlightFg",
       "digest": "5b45185c80dd51b8",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/roped [highlightFg]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo flamefisted woreoff|script",
+      "digest": "a0d68d0950472aa0",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo flamefisted woreoff [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo got balance|highlightBg",
@@ -351,6 +371,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/Pipelist/Pipelist start|colorTriggerFgColor",
       "digest": "91644142b74ffd77",
       "text": "Trigger  svo (aliases, triggers) svo/Pipelist/Pipelist start [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Striking/Flamefisted|script",
+      "digest": "0d36ac310a873be1",
+      "text": "Trigger  svo (aliases, triggers) svo/Striking/Flamefisted [script]"
     },
     {
       "id": "item|Trigger|svo (elistsorter)|svo Capture elist-elist2-venomlist/svo Capture elist stop|highlightBg",

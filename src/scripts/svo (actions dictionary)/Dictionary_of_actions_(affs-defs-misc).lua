@@ -7848,31 +7848,38 @@ if not next(svo.dict) then
         end,
       }
     },
-    burning = {
+    -- The Striking blazing-fist affliction. svof called this 'burning' for
+    -- years, which is the game's own GMCP name for what svof calls 'ablaze'
+    -- - so the one word meant two unrelated afflictions depending on which
+    -- side of sstosvoa you were standing on. Renamed to match the game's
+    -- name for it, the way icefisted/airfisted/voidfisted already do under
+    -- icing/galed/voided. Nothing here belongs to the ablaze burn
+    -- escalation (severeburn -> meltingburn), which is untouched.
+    flamefisted = {
       waitingfor = {
         customwait = 30, -- ??
   
         isadvisable = function()
-          return (affs.burning and not (affs.pyre and affs.pyre.count >= 2)) or false
+          return (affs.flamefisted and not (affs.pyre and affs.pyre.count >= 2)) or false
         end,
   
         onstart = function() end,
   
         oncompleted = function()
-          svo.rmaff('burning')
+          svo.rmaff('flamefisted')
           svo.make_gnomes_work()
         end
       },
       aff = {
         oncompleted = function()
-          svo.addaffdict(svo.dict.burning)
-          if not svo.actions.burning_waitingfor then svo.doaction(svo.dict.burning.waitingfor) end
+          svo.addaffdict(svo.dict.flamefisted)
+          if not svo.actions.flamefisted_waitingfor then svo.doaction(svo.dict.flamefisted.waitingfor) end
         end
       },
       gone = {
         oncompleted = function()
-          svo.rmaff('burning')
-          svo.killaction(svo.dict.burning.waitingfor)
+          svo.rmaff('flamefisted')
+          svo.killaction(svo.dict.flamefisted.waitingfor)
         end,
       }
     },
@@ -10425,7 +10432,7 @@ if not next(svo.dict) then
       entropy = false,
       epilepsy = 'epilepsy',
       fear = 'fear',
-      flamefisted = 'burning',
+      flamefisted = 'flamefisted',
       flushings = 'flushings',
       frozen = 'frozen',
       fulminated = 'fulminated',
