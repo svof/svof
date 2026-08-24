@@ -541,9 +541,10 @@ do
   -- the two key spaces here does not resolve to nothing, it resolves to a
   -- real neighbouring affliction. An identity fixture makes the two spaces
   -- indistinguishable, so every assertion below would hold even if the gate
-  -- and the loop keyed on the wrong one. 46 of the 145 string-valued
-  -- sstosvoa entries differ across the spaces, and all four mangled limbs
-  -- collide this way.
+  -- and the loop keyed on the wrong one. Many string-valued sstosvoa
+  -- entries differ across the two spaces - no figure here on purpose, it
+  -- moves every time one of them is renamed and has gone stale once
+  -- already. All four mangled limbs collide this way.
   -- 'unreachable' is one of the names GMCP can never confirm or deny (no
   -- sstosvoa entry). Two items in the reported list so the checkaeony/
   -- changecuring frequency assertions below actually distinguish "once per

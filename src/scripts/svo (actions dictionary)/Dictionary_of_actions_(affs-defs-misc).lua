@@ -7851,10 +7851,14 @@ if not next(svo.dict) then
     -- The Striking blazing-fist affliction. svof called this 'burning' for
     -- years, which is the game's own GMCP name for what svof calls 'ablaze'
     -- - so the one word meant two unrelated afflictions depending on which
-    -- side of sstosvoa you were standing on. Renamed to match the game's
-    -- name for it, the way icefisted/airfisted/voidfisted already do under
-    -- icing/galed/voided. Nothing here belongs to the ablaze burn
-    -- escalation (severeburn -> meltingburn), which is untouched.
+    -- side of sstosvoa you were standing on. Renamed to the game's name to
+    -- end that collision, which is the whole reason: the three sibling fists
+    -- are NOT precedent for it. The game calls all four *fisted and svof
+    -- declines that name for the other three (airfisted is galed, icefisted
+    -- is icing, voidfisted is voided), so this is now the only one of the
+    -- four whose svof name matches the game's. Nothing here belongs to the
+    -- ablaze burn escalation (severeburn -> meltingburn), which is
+    -- untouched.
     flamefisted = {
       waitingfor = {
         customwait = 30, -- ??

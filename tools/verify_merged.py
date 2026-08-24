@@ -45,14 +45,21 @@ REFERENCE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 
 # Leaf items renamed in src/ since the pinned reference xmls were taken, keyed
 # by kind and by the item's path in the ORIGINAL tree; the value is its new
-# leaf name. A path mismatch is otherwise structural and fatal - correctly so,
-# since the same signal means a reordered, missing or duplicated item - and
-# structural problems cannot be baselined. A deliberate rename therefore has
-# to be recorded here, or the gate cannot tell it apart from damage.
+# leaf name. Without an entry a rename reads as a path mismatch, which is
+# structural and therefore fatal even under --baseline, and --write-baseline
+# refuses to bless it. That is correct: a path mismatch is only reachable
+# inside the equal-length zip below, so what it really signals is a REORDER
+# (or a size-preserving swap). A missing or duplicated item changes the
+# length and routes to the count|/gone|/added| entries instead, which are
+# content and baseline-able. So a deliberate rename has to be recorded here,
+# or the gate cannot tell it apart from a reorder.
 #
-# Renaming a Mudlet item is not free: enableTrigger("gone name") is a silent
-# no-op, which is what check_renamed_callsites.py exists for. Record the
-# rename here and let that gate confirm nothing still calls the old name.
+# Renaming a Mudlet item is not free at runtime either: enableTrigger("gone
+# name") is a silent no-op. check_renamed_callsites.py covers that, but it
+# does not read this map - it asks whether a name resolves to any item of its
+# kind, deliberately, so that it catches every rename whether recorded here
+# or not. The two gates are independent; this entry is not what makes that
+# one pass.
 ITEM_RENAME = {
     "Trigger": {
         # svof called the Striking blazing-fist affliction 'burning', which is
