@@ -8896,6 +8896,7 @@ if not next(svo.dict) then
         end
       },
       aff = {
+        notagameaff = true,
         oncompleted = function()
           svo.addaffdict(svo.dict.latency)
           if not svo.actions.latency_waitingfor then svo.doaction(svo.dict.latency.waitingfor) end

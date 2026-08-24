@@ -621,54 +621,88 @@ signals.gmcpchardefencesremove = signals.gmcpchardefencesremove or luanotify.sig
 signals.gmcpchardefencesadd = signals.gmcpchardefencesadd or luanotify.signal.new()
 
 
+-- GMCP reports levelled afflictions as "name (n)". Returns the bare name and
+-- the level, or the name unchanged and nil when there is no level suffix.
+-- string.match(raw, "%d") (the old parse) returned the first digit anywhere
+-- in the string and assumed the suffix was always exactly " (N)" - 4 chars -
+-- which misparses at level 10 and on any name that merely contains a digit.
+local function parseaffname(raw)
+  local base, level = raw:match("^(.-) %((%d+)%)$")
+  if base then return base, tonumber(level) end
+  return raw, nil
+end
+
 signals.gmcpcharafflictionsadd:connect(function()
-  local thisaff = gmcp.Char.Afflictions.Add.name
-  local affcount = tonumber(string.match(gmcp.Char.Afflictions.Add.name, "%d"))
-  local affname = ""
-  if string.match(gmcp.Char.Afflictions.Add.name, "%d") then affname = thisaff:sub(1, -5) end
-  if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
-  gaffl[thisaff] = true
-  if conf.gmcpaffechoes then svo.echof("Gained aff %s", thisaff) end
-  if svo.dict.sstosvoa[thisaff] then
-    svo.addaffdict(svo.dict[svo.dict.sstosvoa[thisaff]])
-  end
-  if affname ~= "" then
-    if svo.dict.sstosvoa[affname] then
-      svo.addaffdict(svo.dict[svo.dict.sstosvoa[affname]])
+  local rawaff = gmcp.Char.Afflictions.Add.name
+  local affname, afflevel = parseaffname(rawaff)
+
+  -- gaffl's keying (bare at level 1, suffixed above it) is a separate,
+  -- pre-existing inconsistency and not part of this fix - kept exactly as it
+  -- was so this stays a parsing/crash fix and nothing else.
+  local gafflkey = (rawaff:sub(-4) == " (1)") and affname or rawaff
+  gaffl[gafflkey] = true
+  if conf.gmcpaffechoes then svo.echof("Gained aff %s", gafflkey) end
+
+  local svoaffkey = svo.dict.sstosvoa[affname]
+  local svoaff = svoaffkey and svo.dict[svoaffkey]
+  if svoaff then
+    -- addaffdict no-ops if the affliction is already tracked, so resolving
+    -- once here (instead of the old two separate, overlapping lookups) does
+    -- not change anything observable.
+    svo.addaffdict(svoaff)
+    -- svo.affl is keyed by name; its values are { sw = ..., count = ... }
+    -- tables. table.contains(svo.affl, svoaff.name) searched those values
+    -- for a name string, which never matched, so a GMCP-reported level never
+    -- reached svo.affl[name].count. Both terms of the guard are needed:
+    -- updateaffcount does svo.affl[which.name].count = which.count
+    -- unconditionally and raises the documented 'svo updated aff' event with
+    -- that amount, so an affliction whose dict entry has no count (130 of the
+    -- 145 mapped ones) would store nil and announce a count of nothing.
+    if afflevel ~= nil and svoaff.count ~= nil then
+      svoaff.count = afflevel
+      if svo.affl[svoaff.name] then
+        svo.updateaffcount(svoaff)
+      end
     end
   end
-  if affcount ~= nil and svo.dict[svo.dict.sstosvoa[affname]].count ~= nil then
-    svo.dict[svo.dict.sstosvoa[affname]].count = affcount
-  end
-  if affcount ~= nil and table.contains(svo.affl, svo.dict[svo.dict.sstosvoa[affname]].name) then
-    svo.updateaffcount(svo.dict[svo.dict.sstosvoa[affname]])
-  end
+
   sk.checkaeony()
   signals.changecuring:emit()
 end, 'track gained gmcp aff')
 
 signals.gmcpcharafflictionsremove:connect(function()
-  local thisaff = gmcp.Char.Afflictions.Remove[1]
-  local affcount = tonumber(string.match(gmcp.Char.Afflictions.Remove[1], "%d"))
-  local affname = ""
-  if string.match(gmcp.Char.Afflictions.Remove[1], "%d") then affname = thisaff:sub(1, -5) end
+  local rawaff = gmcp.Char.Afflictions.Remove[1]
+  local affname, afflevel = parseaffname(rawaff)
+  local svoaffkey = svo.dict.sstosvoa[affname]
+
+  local thisaff = rawaff
   --If level 1 of an affliction is removed, then the aff is completely gone
   if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
   gaffl[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
-  if svo.dict.unknownany.count >= 1 and not svo.affl[affname] then
-    svo.valid.remove_unknownany(affname)
+
+  -- "A real affliction was cured that svof wasn't tracking" means one of the
+  -- unknowns is accounted for. That is only true when the GMCP name
+  -- resolves to a real svof affliction and svof was not already tracking it
+  -- under that name - checked here, before rmaff below would remove it and
+  -- make this always true. The old guard used affname computed the previous
+  -- way, which was "" for any removal without a level suffix - most of
+  -- them - so svo.affl[""] was always nil and nearly every unrelated GMCP
+  -- cure decremented unknownany while one was pending.
+  if svo.dict.unknownany.count >= 1 and svoaffkey and not svo.affl[svoaffkey] then
+    svo.valid.remove_unknownany(svoaffkey)
   end
-  if svo.dict.sstosvoa[thisaff] then
-    svo.rmaff(svo.dict[svo.dict.sstosvoa[thisaff]])
-  elseif affname ~= "" then
-    if svo.dict.sstosvoa[affname] then
-      svo.rmaff(svo.dict[svo.dict.sstosvoa[affname]])
+
+  if svoaffkey then
+    -- svo.rmaff accepts the name string directly; passing the whole dict
+    -- entry only worked because dict_setup() guarantees an entry's own
+    -- name field matches, and it made rmaff walk every sub-table to find it.
+    svo.rmaff(svoaffkey)
+    if afflevel ~= nil and svo.dict[svoaffkey] and svo.dict[svoaffkey].count ~= nil then
+      svo.dict[svoaffkey].count = 0
     end
   end
-  if affcount ~= nil and svo.dict[svo.dict.sstosvoa[affname]].count ~= nil then
-    svo.dict[svo.dict.sstosvoa[affname]].count = 0
-  end
+
   sk.checkaeony()
   signals.changecuring:emit()
 end, 'track lost gmcp aff')
