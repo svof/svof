@@ -1,0 +1,127 @@
+[
+  {
+    "name": "svo (install me in module manager)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (actions dictionary)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (alias and defence functions)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (curing skeleton, controllers, action system)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (custom prompt, serverside)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (install, config, pipes, rift, parry, prios)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (setup, misc, empty, funnies, dor)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (trigger functions)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (aliases, triggers)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (elistsorter)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (fishdist)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (inker)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (mindnet)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (peopletracker)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (reboundingsileristracker)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (refiller)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (runeidentifier)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (stormhammertarget)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (limbcounter)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (burncounter)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (priestreport)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (enchanter)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (namedb)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (logger)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo (offering)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  }
+]

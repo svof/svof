@@ -1,0 +1,50 @@
+[
+  {
+    "name": "No additional age",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are no longer artificially aged due to having manipulated time.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Having fully regressed to your normal age, you cease dilating time.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "aged",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You are now unnaturally aged by (\\d+) years\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^The effects of your time manipulation fade somewhat, leaving you only aged by (\\d+) years\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You have now aged yourself by (\\d+) years\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

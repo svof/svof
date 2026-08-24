@@ -1,0 +1,590 @@
+[
+  {
+    "name": "meropis web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Wrapping his tentacles around your legs, a tentacled polyp causes you to come crashing to the floor, your legs entangled with his bizarre appendages.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Sticky strands of webbing spray out from a winged worker sylphid beetle's abdomen, entangling you in the strong threads.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A putrid green crab jumps onto your back and bites at your flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis sleep",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A sense of exhaustion suddenly overcomes you, causing you to take a nap.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis double leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A reedy green buom wraps his branches around your legs, crushing them as he does so.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis Prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A reedy green buom whips his branches around your legs, throwing you to the floor with a loud bang.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Slamming his body into yours, an energetic red turtle knocks you painfully to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You suddenly feel yourself go weak at the knees, falling painfully to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A putrid green crab snaps violently at your feet, causing you to fall to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An azure koparfish slams his body violently into yours, causing you to fall to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A disgruntled salt miner kicks out at you, the hefty shackle around his ankle smashing into the back of your knee.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Anwell, commander of the prison guard sends you sprawling as he drives a vicious punch into your gut, followed by a brutal kick to the back of your knee.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis Dementia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As it leaps onto a patch of exposed flesh, a small fireback frog's poisons seep into your body, and the world blurs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis dizziness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As it leaps onto a patch of exposed flesh, a small fireback frog's poisons seep into your body, and the world blurs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Expertly throwing you off balance with a kick to the chest, a proud ducal guard brings the butt of his sword slamming down on your skull in a fierce blow.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A winged worker sylphid beetle flares his wings, sending gusts of warm air at your face.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Snatching your leg with a crushing, jagged grip, a one-eyed freshwater alligator drags you down into the depths.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "White-hot pain accompanies a loud 'CRACK!' as a grey-scaled roopimaya collides with your leg, breaking it.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An energetic red turtle slams his body into your leg, shattering it in the process.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A sinister glubber claws viciously at your leg, severing the joints.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Wrapping his form around your leg, an enormous anaconda squeezes tightly, causing it to break in a number of places.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Having wrapped his form around your leg, a multicoloured boa constrictor squeezes tightly, causing it to break.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Bending and swinging in one smooth motion, Duke Semiro sweeps his iron mace into your leg with a fierce blow.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis Epilepsy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A white-striped frog's powerful jump propels it onto your arm, and an electric tingling sensation races throughout your body from the point of contact.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis Paralyse",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As a white-striped frog hops onto an area of bare flesh, your body is seized by numbing, paralytic pain.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You suddenly feel your muscles freeze up, stopping you in your steps.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You suddenly feel your muscles sieze up, leaving you unable to move.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You suddenly begin to feel your limbs seizing up, leaving you unable to move.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A multicoloured boa constrictor bites you firmly in the shin, causing your muscles to seize up.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A bunyip slams himself into your leg, managing to simultaneously shatter the bone and leave numerous deep cuts, each infected with poison.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis Confusion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Opening its mouth and expanding its bulbous throat, a white-striped frog gives a loud, resonant croak.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Opening its mouth and expanding its bulbous throat, a long-legged monkey frog gives a loud, resonant croak.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Opening its mouth and expanding its bulbous throat, a small fireback frog gives a loud, resonant croak.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis Arm Break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Snapping her large bill, a blue heron assaults you, crushing your arm in the process.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A sinister glubber claws viciously at your arm, severing the joints.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A proud ducal guard whirls, seizing your arm and twisting it backward until the bone snaps with a sickening crunch.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The Captain of the Guard swings his sword into your arm with terrifying force, cleaving flesh and bone in a single blow.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Effortlessly swinging his massive broadsword in a wide arc, Anwell, commander of the prison guard slashes deeply into your arm.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A horned viper's head darts forward suddenly, sinking huge, sharp fangs deep into your side.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An energetic red turtle scrapes his nails across your skin, leaving venom dripping from the lacerations.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You suddenly feel venom running through your veins.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Leaping nimbly towards you, a thornback frog scrapes a large chunk of skin from your torso, leaving venom dripping from the wounds.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Staring intensely, a bunyip slams himself into you, leaving numerous scratches on your skin dripping with some sort of venom.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A putrid green crab bites at your feet, leaving a number of visible marks.Suddenly, you feel a strong venom running through your veins.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis Pacify",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You suddenly feel unable to harm anyone or anything.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis Voyria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You suddenly feel a very powerful venom run through your veins.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Suddenly, you begin to feel a burning sensation run through your veins.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis Blind",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A sinister glubber scrapes his nails across your eyes, leaving you unable to see.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis Stupidity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You suddenly feel your mental capacity lower.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Why must everything be so hard to understand?",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Suddenly, you begin to feel your grip on reality fading.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis Fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A sense of panic suddenly overcomes you, leaving you unaware of what to do next.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Samial, a sleek Rajamala throws back his head and releases a fierce, rumbling roar that fills you with an ancient, primal urge to flee in terror.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis Ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Staring intensely at you, a multicoloured boa constrictor causes your skin to spontaneously combust.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "In one swift motion, a bearded cook splashes a bottle of cooking oil over your body and ignites you with a lit match.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Quickly yanking his tongs from the forge, Emmith, a sullen blacksmith showers you with burning hot cinders.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis BO and illness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Jadorno, a cloaked nobleman plunges a hand into a pouch at his belt, swiftly pulling it out and extending his arm to hurl a handful of noxious green powder into your face.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis fear and stupidity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You shriek with horror as Daerlain, an elderly noblewoman lays her shrivelled hands upon your temples and visions of chaos and madness swirl unchecked through your helpless mind.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The fortress steward begins to rapidly read off the contents of his inventory list, his tongue moving impossibly quickly and leaving your head swirling in a daze of confusion.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis stun and prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Duchess Alorina brings her fist hurtling forward to slam into your jaw with a decidedly unladylike degree of force.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis dizzy & prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Swimming quickly around your body, a transparent cahno knocks you to the floor, leaving you rather dizzy and prone.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis Illness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An Ulsyndar guard draws back his arm and impales your leg on his wickedly sharp spear. As he withdraws his dripping blade, the sickening scrape of metal on bone causes your stomach to turn.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An off-duty prison guard draws back his arm and impales your leg on his wickedly sharp spear. As he withdraws his dripping blade, the sickening scrape of metal on bone causes your stomach to turn.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

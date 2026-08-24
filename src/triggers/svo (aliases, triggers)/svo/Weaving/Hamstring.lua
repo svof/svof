@@ -1,0 +1,1 @@
+svo.startedfighting("psion", matches[2])

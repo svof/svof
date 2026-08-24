@@ -1,0 +1,160 @@
+[
+  {
+    "name": "Got ship prompt",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ has transferred command of the ship \".+?\" to you\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "Ship configured for normal prompt.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Ship configured for cryptic prompt.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Ship configured for battle prompt.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Congratulations! You have been made captain of the ship known as",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^\\w+ permits your assumption of command of the ship \".+?\"\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Lost ship prompt",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You solemnly transfer the command of the ship",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Ship configured for no prompt.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^You allow \\d+ to assume command of the ship \".+?\"\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You disembark the ship via the lowered gangplank.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A burly man lowers you to the ground below on a thick rope which he swiftly pulls up after you've let go.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Ship prompt detect",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^= ",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Battle",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Sl",
+            "type": "substring"
+          },
+          {
+            "pattern": "Hl",
+            "type": "substring"
+          }
+        ]
+      },
+      {
+        "name": "Cryptic",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "S",
+            "type": "substring"
+          },
+          {
+            "pattern": "H",
+            "type": "substring"
+          }
+        ]
+      },
+      {
+        "name": "Normal",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Sail",
+            "type": "substring"
+          },
+          {
+            "pattern": "Hull",
+            "type": "substring"
+          }
+        ]
+      }
+    ]
+  }
+]

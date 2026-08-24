@@ -1,0 +1,20 @@
+[
+  {
+    "name": "(tr person) Trace",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^tr (\\w+)(?: (\\w+))?$"
+  },
+  {
+    "name": "(vshow locatelist) See the people on the locate list",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow locatelist$"
+  },
+  {
+    "name": "(seek person) Manually seek & report a person",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^seek (\\w+)$"
+  }
+]

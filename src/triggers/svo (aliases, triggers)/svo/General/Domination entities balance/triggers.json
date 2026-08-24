@@ -1,0 +1,106 @@
+[
+  {
+    "name": "svo lost entities",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You command your dervish to drag \\w+ from the skies\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You command your sycophant to weaken the mind of \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You command your bloodleech to poison the blood of \\w+ with \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You command your worm to infest \\w+ with maggots\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You command your slime to envelop \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You command your humbug to bring down the curse of \\w+ upon \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You command your chimera to annihilate the defences surrounding \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You command your bubonis to bring down a minor curse of Cadmus against \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You command your chaos storm to bring down the curse of \\w+ upon \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You command your hound to rend the flesh of \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You command your crone to unhinge the mind of \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ does not yet labour under enough afflictions to be cursed with the power of Cadmus\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ is not yet afflicted enough to be weakened in such a way\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You command your firelord to bring down a portion of the power of Pyradius against \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ labours under no afflictions of the body\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "A chaos storm disregards your order.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A humbug disregards your orders.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A bloodleech disregards your orders.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo got entities",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You may command another entity to do your bidding.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

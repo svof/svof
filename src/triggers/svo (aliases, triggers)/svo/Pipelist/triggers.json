@@ -1,0 +1,80 @@
+[
+  {
+    "name": "Pipelist start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1000",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Status  Pipe         Contents                       Puffs Months",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "3,0",
+        "type": "color"
+      }
+    ],
+    "children": [
+      {
+        "name": "End (pipelist)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "",
+            "type": "prompt"
+          }
+        ]
+      },
+      {
+        "name": "Empty",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": " *(artf|out|lit) +pipe(\\d+) +empty +(?:n/a|\\d+)",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Non empty",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": " *(artf|out|lit) +pipe(\\d+) +(slippery elm|a skullcap flower|a valerian leaf|a pinch of realgar crystals|a pinch of ground cinnabar|a pinch of ground malachite) +(\\d+) +(n/a|\\d+)",
+            "type": "regex"
+          }
+        ]
+      }
+    ]
+  }
+]

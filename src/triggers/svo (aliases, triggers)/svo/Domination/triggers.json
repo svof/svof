@@ -1,0 +1,198 @@
+[
+  {
+    "name": "Rixil",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The muttering emanating from the sycophant increases to a sudden crescendo, and your head begins to spin.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Scrag",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A bloodleech leaps at you, clamping with teeth onto exposed flesh and secreting some foul toxin into your bloodstream.",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A bloodleech leaps at you, clamping with teeth onto exposed flesh and secreting some foul toxin into your bloodstream. You stumble as you are afflicted with (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Pyradius",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As a firelord glares at you, sudden agonising heat ignites in your veins. It is gone as swiftly as it came, but you feel suddenly lightheaded.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Palpatar",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A worm spews a stream of maggots at you, and they begin burrowing into your flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Buul",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A chimera lets out a concussive roar, all three of the creatures heads thrown forward toward you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^The roar washes over you, ripping apart your (.+) defence\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Cadmus",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A bubonis scampers forward and clamps its fangs down upon your ankle, pumping some vile substance into your bloodstream.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Danaeus",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A lash of energy whips out of the chaos storm to strike you, afflicting you with",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A lash of energy whips out of the chaos storm to strike you, afflicting you with (\\w+).$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hecate",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A withered crone totters toward you before brushing a single finger against your brow. Your mind explodes into a frenzy of maddened whispering at the contact.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Nemesis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A humbug scuttles forward and springs for your throat, attaching itself there for a brief instant.",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A humbug scuttles forward and springs for your throat, attaching itself there for a brief instant. Your head violently swims as you feel it bring the curse of (\\w+) down upon you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Nin'kharsag (slime)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) gestures sharply in your direction, and a mass of green slime flows up and over you, coating your skin\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

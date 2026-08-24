@@ -1,0 +1,104 @@
+[
+  {
+    "name": "sailor roped",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "2",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A bare-chested sailor tosses a large, loosely woven net into the air with swift precision. A moment later you find yourself entangled in the ropes.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "zanzibaar prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A sleek mongoose weaves his way back and forth around your feet. Unable to keep up with the creature you stumble over backwards, falling to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Hefting a coil of rope from the ground, a burly dockhand whips one end out atyou, catching your feet and tripping you up.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Ducking and thrusting his shoulder upward into your gut, Makran, an island trader sends you reeling backwards onto the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "zanzibaar stupid",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a ground-shaking roar, a Baarian tiger leaps at you, viciously mauling your head with his powerful limbs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a ground-shaking roar, a Baarian tiger leaps at you, viciously mauling your head with his powerful limbs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "zanzibaar para",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A red-banded cobra darts forward to strike you, fangs dripping with venom as they sink into your skin. As the snake pulls back you find yourself immobile, paralysed by the venom.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "zanzibaar web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Startled into action, the longest tentacles of a sea nettle wrap tightly around your legs to hinder your movement.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

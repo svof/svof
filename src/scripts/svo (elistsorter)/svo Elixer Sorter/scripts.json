@@ -1,0 +1,15 @@
+[
+  {
+    "name": "elistsorter code",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "svo.put_vials_away",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "svo quit"
+    ]
+  }
+]

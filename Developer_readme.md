@@ -1,20 +1,59 @@
 
 # Source code layout
 
+Svof is one Mudlet package, built by muddler from `src/`. **`src/` is the
+source** - every trigger, alias, script, key and button is its own `.lua` file
+with its settings in the `.json` beside it, and that is what you edit.
+
+The 25 `svo (*.xml)` files at the repo root are **not** the source any more.
+They are the pre-conversion modules, kept only as the reference the built
+package is verified against object-by-object, and their hashes are pinned in
+`tools/reference_xmls.json`. Do not edit them, and do not regenerate `src/`
+from them.
+
+The names below used to be one module each. They are now the top-level groups
+inside the single package, and each one lives at `src/<kind>/<name>/` - so the
+aliases and triggers of `svo (aliases, triggers)` are under
+`src/aliases/svo (aliases, triggers)/` and `src/triggers/svo (aliases, triggers)/`,
+its scripts under `src/scripts/...`, and so on. Load order is the order the
+groups appear in the tree; `tools/merge_svof.py` records it in `MERGE_ORDER`.
+
+Files Svof reads at runtime live in `src/resources/`, which muddler copies to
+the package root - that is what `svo.installationfolder()` returns.
+
+## Adding an item
+
+Add it to the `.json` first, then create the `.lua` beside it. muddler builds
+from the json and looks for a file named after the item, spaces replaced with
+underscores - so a `.lua` with no entry in the json is read by nothing, ships
+as nothing, and produces no warning. `tools/check_src_tree.py` fails on that,
+on two items whose names resolve to one filename, and on a filename that
+differs from the item name only in case, which resolves on Windows and not on
+the Linux runner that builds the release.
+
+Add it **inside an existing group**, not at the top level. The 126 top-level
+slots are frozen: `tools/verify_merged.py` checks them against the 25 reference
+xmls, so a new one is reported as an unexpected top-level item and a load-order
+change, and both are structural - `--write-baseline` refuses to bless either.
+Anything nested is an ordinary content difference and can be baselined in the
+same commit that causes it.
+
     doc/                                                  = documentation in Sphinx.
+    src/                                                  = the source: one file per item, grouped as below
+    tools/                                                = conversion, verification and CI gates
     default_prios                                         = default priorities for Svof
-    svo (actions dictionary).xml                          = brains of Svof, where it knows every action (affliction, defence, 
+    svo (actions dictionary)                              = brains of Svof, where it knows every action (affliction, defence, 
                                                             balance, etc) - when to use it, how to use it. 
                                                             For the core functions that validates these actions, see 'Action
                                                             system' below.
-    svo (alias and defence functions).xml                 = functions for Svof's aliases, that should call other core 
+    svo (alias and defence functions)                     = functions for Svof's aliases, that should call other core 
                                                             functions as necessary to do their work as well as 
                                                             everything to do about Svof's defences - database, tracking, 
                                                             switching, etc.
-    svo (aliases, triggers).xml                           = the actual Mudlet aliases and triggers that uses the functions
+    svo (aliases, triggers)                               = the actual Mudlet aliases and triggers that uses the functions
                                                             from the script mentioned above.
-    svo (burncounter).xml                                 = Magi burn counter addon
-    svo (curing skeleton, controllers, action system).xml
+    svo (burncounter)                                     = Magi burn counter addon
+    svo (curing skeleton, controllers, action system)
         curing skeleton                                   = essential core files, including balance checks that decide what 
                                                             should be done
         controllers                                       = core system functions that can be behind aliases/triggers - 
@@ -24,19 +63,19 @@
                                                             an affliction, put up a defence, regain a balance, 
                                                             is an action - defined in the actions dictionary. These functions 
                                                             manages and validates those actions.
-    svo (custom prompt, serverside).xml 
+    svo (custom prompt, serverside) 
         custom prompt                                     = Svof's custom prompt feature
         serverside                                        = Integration with serverside curing - mirroring of Svof's priorities 
                                                             to serverside in most efficient manner
-    svo (elistsorter).xml                                 = Elist sorter addon
-    svo (enchanter).xml                                   = Jenny's enchanter addon
-    svo (fishdist).xml                                    = Trilliana's fishing distance addon
-    svo (inker).xml                                       = Inker addon
-    svo (install me in module manager).xml                = The core system functions to install/uninstall modules, 
+    svo (elistsorter)                                     = Elist sorter addon
+    svo (enchanter)                                       = Jenny's enchanter addon
+    svo (fishdist)                                        = Trilliana's fishing distance addon
+    svo (inker)                                           = Inker addon
+    svo (install me in module manager)                    = The core system functions to install/uninstall modules, 
                                                             initialization, updates, classchange for multiclass, event handlers, 
                                                             utilities and other things necessary for the system to function. 
                                                             Also contains a few scripting examples.
-    svo (install, config, pipes, rift, parry, prios).xml
+    svo (install, config, pipes, rift, parry, prios)
         install                                           = Installation procedure (vinstall) - autodetects skills and asks 
                                                             questions for things it couldn't
         config                                            = Svof's configuration (vconfig) and tn/tf system
@@ -46,17 +85,17 @@
                                                             herb/mineral use
         parry                                             = parry system (sp)
         prios                                             = Svof's priority handling functions
-    svo (limbcounter).xml                                 = Limbcounter addon for the classes that uses it
-    svo (logger).xml                                      = Svof's logger (startlog / stoplog aliases)
-    svo (mindnet).xml                                     = Mindnet addon
-    svo (namedb).xml                                      = NameDB addon
-    svo (offering).xml                                    = Offering addon
-    svo (peopletracker).xml                               = Peopletracker addon, integrates with Mudlet's mapper
-    svo (priestreport).xml                                = Priest reporting addon
-    svo (reboundingsileristracker).xml                    = Rebounding & sileris tracker addon
-    svo (refiller).xml                                    = Refiller addon
-    svo (runeidentifier).xml                              = Rune identifier addon
-    svo (setup, misc, empty, funnies, dor).xml
+    svo (limbcounter)                                     = Limbcounter addon for the classes that uses it
+    svo (logger)                                          = Svof's logger (startlog / stoplog aliases)
+    svo (mindnet)                                         = Mindnet addon
+    svo (namedb)                                          = NameDB addon
+    svo (offering)                                        = Offering addon
+    svo (peopletracker)                                   = Peopletracker addon, integrates with Mudlet's mapper
+    svo (priestreport)                                    = Priest reporting addon
+    svo (reboundingsileristracker)                        = Rebounding & sileris tracker addon
+    svo (refiller)                                        = Refiller addon
+    svo (runeidentifier)                                  = Rune identifier addon
+    svo (setup, misc, empty, funnies, dor)
         setup                                             = Svof loading files
         misc                                              = Miscallaneous functions that don't have a place elsewhere plus a 
                                                             few Lua helpers
@@ -64,8 +103,8 @@
         funnies                                           = Svof's humour - welcome message, protips and dying messages
         dor                                               = Svof's DOR system, implemented as a balanceless and a 
                                                             balancefun action
-    svo (stormhammertarget).xml                           = Stormhammer target addon
-    svo (trigger functions).xml                           = Diagnose tracking; definitions of all trigger functions - recording
+    svo (stormhammertarget)                               = Stormhammer target addon
+    svo (trigger functions)                               = Diagnose tracking; definitions of all trigger functions - recording
                                                             in-game data in most accurate way, while not getting tricked by 
                                                             illusions; functions for adding afflictions directly from triggers
 

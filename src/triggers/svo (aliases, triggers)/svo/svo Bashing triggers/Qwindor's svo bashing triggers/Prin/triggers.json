@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Yuthka paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Yuthka's eyes light up like burning coals as she lowers her head to your level, staring at you directly. You feel your muscles tighten right before you lose all feeling in your body.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Turning quickly, Yuthka, the daemonic serpent shakes herself off and lets fly the acidic mucous that seeps from her body. The mucous attaches to your skin and causes it to bubble and boil.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Yuthka limb break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Yuthka, the daemonic serpent races toward you with unbelievable speed. She encircles your body, coiling around you until your bones begin to shatter from the pressure. Suddenly she releases you, though your body cannot tell the difference.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

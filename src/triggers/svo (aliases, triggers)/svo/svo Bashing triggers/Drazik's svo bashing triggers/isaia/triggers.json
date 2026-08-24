@@ -1,0 +1,138 @@
+[
+  {
+    "name": "isaia prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Rushing at you with lightning speed, an amorak smashes into your legs and knocks you over.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A giant zelahia flies straight into your torso, knocking you over.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Shrieking shrilly, Trisal, an Isaian woman gives you a fierce shove, knocking you over.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "isaia chills",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As a snow-white ennelin sinks her teeth into your skin, you feel a chill run through your body.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a piercing scream, an Isaian boy shoots you with a thin stream of freezing water.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a piercing scream, an Isaian girl shoots you with a thin stream of freezing water.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With painful accuracy, an Isaian woman throws a ball of freezing water at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Forming a ball of freezing water in the air, Meste, an Isaian youth throws it at you with surprising force.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With an intense scowl, Trisal, an Isaian woman forms a ball of freezing water and hurls it at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a high-pitched scream, Peyna, the acolyte blasts you with a ball of freezing water.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A thin layer of ice forms around you as a moenai touches its vibrating mass to your torso.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Screaming shrilly, Hesta, the Elder blasts you with a thin stream of freezing water.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Chiale, the Alchemist throws a bottle of blue potion at your feet, which explodes upon impact and freezes the water around you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With grim determination, Chaen Naelye blasts you with a thin stream of freezing water.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Chanting just under his breath, Yiastel Tenye blasts you with a thin stream of icy water.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Dliste Seye blasts you with a thin stream of freezing water.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a slight grimace, Heche, Keeper of the Gates hurls a ball of freezing water at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Her commanding voice echoing throughout the chamber, Xeyana, the Priestess freezes you with a stream of bright blue light.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "isaia leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Wielding a chair menacingly, Hesta, the Elder smashes it into your leg, causing it to snap with a sharp crack.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "isaia arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Chiale, the Alchemist forms a ball of ice and throws it at you, smashing your arm.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

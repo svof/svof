@@ -1,0 +1,1 @@
+svo.defs.keepup("shield", matches[2], nil, true)

@@ -6608,7 +6608,7 @@ end</script>
 </script>
 			<eventHandlerList />
 			<ScriptGroup isActive="yes" isFolder="yes">
-				<name>Use of got/lost aff/def events</name>
+				<name>Use of got-lost aff-def events</name>
 				<packageName></packageName>
 				<script>-------------------------------------------------
 --         Put your Lua functions here.        --
@@ -6765,7 +6765,7 @@ end</script>
 				</Script>
 			</ScriptGroup>
 			<ScriptGroup isActive="yes" isFolder="yes">
-				<name>Show which affs you got/lost w/ times and count (by Lynara)</name>
+				<name>Show which affs you got-lost w- times and count (by Lynara)</name>
 				<packageName></packageName>
 				<script>-------------------------------------------------
 --         Put your Lua functions here.        --

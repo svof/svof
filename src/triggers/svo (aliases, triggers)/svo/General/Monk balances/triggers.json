@@ -1,0 +1,134 @@
+[
+  {
+    "name": "Lost arm balance",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You ball up one fist and hammerfist",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You launch a powerful uppercut at ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You form a spear hand and stab out towards ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You unleash a powerful hook towards ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Lunging forward, you drive the end of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "With pinpoint precision, you drive",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Reversing your grip on",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You whip .+? at the side .*.",
+        "type": "regex"
+      },
+      {
+        "pattern": "You spin a full rotation, bringing",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You whip .+? at .*.",
+        "type": "regex"
+      },
+      {
+        "pattern": "Dropping into a lower stance, you sweep",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Falling back into a low crouch, you lash out",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Bracing your back foot, you lunge forward",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Stepping forward, you drive",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Continuing your kata, you spin",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Sharply extending out your arms in front of yo",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "Got left arm",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have recovered balance on your left arm.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Got right arm",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have recovered balance on your right arm.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Regain both",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your only working arm is off-balance.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

@@ -1,0 +1,236 @@
+[
+  {
+    "name": "JPK",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) slams into you, knocking you off your feet and stunning you!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) dodges nimbly to the side and trips you to the floor\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) knocks your legs out from under you and sends you sprawling to the floor\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) moves in and delivers a precision strike to your neck as you attack\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) violently grabs your already damaged \\w+ \\w+, wrenches you off balance, then throws you violently to the ground\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your only warning of the impending danger is a great shout from (\\w+) as \\w+ comes launching up from below\\. Then \\w+ heel drives into your chest with shocking power, driving you back to the earth below with bone jarring force\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Limb damage",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) connects to the (.+)!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Roundhouse",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "2",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) twists \\w+ torso and sends a roundhouse towards you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Guarding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) moves into your attack, knocking your blow aside before viciously countering with a strike to your head\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Deaf strip",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The blow rattles your skull - your hearing is restored.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Guarding 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) steps into the attack, grabs your arm, and throws you violently to the ground\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Snapkick",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) lets fly at you with a snap kick\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hammerfist",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(|w+) balls up one fist and hammerfists you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Palmstrike",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) throws \\w+ palm towards your face\\.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Palmstrike impatience",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The palmstrike catches you in the temple and your head swims.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Palmstrike stupidity",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The blow smashes into the bridge of your nose and your thoughts become sluggish.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  }
+]

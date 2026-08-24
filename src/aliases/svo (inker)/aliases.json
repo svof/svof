@@ -1,0 +1,8 @@
+[
+  {
+    "name": "Ink",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ink (.+) on (\\w+(?: arm| leg)?)(?: of (\\w+))?"
+  }
+]

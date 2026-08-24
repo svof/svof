@@ -1,0 +1,36 @@
+[
+  {
+    "name": "svo.remove_legacy_modules",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysInstall",
+      "sysLoadEvent"
+    ]
+  },
+  {
+    "name": "svo_init_system",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysLoadEvent",
+      "sysInstall"
+    ]
+  },
+  {
+    "name": "svo.classchange",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "gmcp.Char.Status"
+    ]
+  },
+  {
+    "name": "svo.uninstall_all_modules",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysUninstallPackage"
+    ]
+  }
+]

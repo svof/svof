@@ -1,0 +1,1 @@
+svo.ti_cantink("skill")

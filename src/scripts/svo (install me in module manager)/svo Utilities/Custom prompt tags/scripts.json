@@ -1,0 +1,12 @@
+[
+  {
+    "name": "@affs",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "@exits",
+    "isActive": "yes",
+    "isFolder": "no"
+  }
+]

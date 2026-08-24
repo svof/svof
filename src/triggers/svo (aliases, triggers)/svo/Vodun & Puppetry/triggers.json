@@ -1,0 +1,616 @@
+[
+  {
+    "name": "All limbs crippled",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As all four of your limbs break, pain overwhelms you and you wonder what you've done to deserve such a fate.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Manaleech",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your mana begins to drain away.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Recklessness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ whispers comforting words to a (?:puppet|doll) of \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Puncture",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A horrible crushing sensation tears through your gut and you grab desperately at your stomach, hunching over and screaming in pain.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Break",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Wrenching pain shoots through your",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Wrenching pain shoots through your (arm|leg)s as they are twisted and broken by an unknown force\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Paralyse",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "20",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a sharp pain in the back of your neck and your limbs lock up in paralysis.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Burn",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel an evil eye glaring down at you, and suddenly you explode into searing flame!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel your passage through time slow.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Def strip",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel your",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You feel your (.+) defence get picked off you somehow\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Def strip 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your (.+) defence is destroyed by an unseen force\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Roped",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have been bound by invisible ropes!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Mangle",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your (right|left) (arm|leg) is suddenly mangled nearly beyond repair, and pain erupts up and down the length of it\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Concussion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ flicks the temple of a (?:doll|puppet) of (\\w+), hard\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Dizziness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ spins a (?:doll|puppet) of (\\w+) rapidly in a circle\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Confusion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ waves \\w+ hands quickly in front of the eyes of a (?:Vodun doll|puppet) of (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Summon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You mindlessly obey the summoning of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You mindlessly obey the summoning of (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fashioning of you (1) jester",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With an appraising glance at you",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With an appraising glance at you, (\\w+) shapes the arms and legs of a rough puppet\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fashioning of you (2) jester",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) glances at you while adding some facial detail to a puppet\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fashioning of you (3) jester",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) looks closely at your hands and alters a puppet\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fashioning of you (4) jester",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) looks at your eyes and makes some alterations to \\w+ puppet\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fashioning of you (5) jester",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With one hand ominously pointed towards you",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With one hand ominously pointed towards you, (\\w+) rubs a finger over the heart of a puppet\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Bleeding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You scream briefly as your abdomen is cut and blood begins to pour out.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Fashioning of you (1) shaman",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With an appraising glance at you, ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With an appraising glance at you, (\\w+) shapes the arms and legs of a rough doll\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fashioning of you (2) shaman",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) glances at you while adding some facial detail to a doll\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fashioning of you (3) shaman",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) looks closely at your hands and alters a Vodun doll\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fashioning of you (4) shaman",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) looks at your eyes and makes some alterations to \\w+ doll\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fashioning of you (5) shaman",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With one hand ominously pointed towards you, ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With one hand ominously pointed towards you, (\\w+) rubs a finger over the heart of a Vodun doll\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Vodun sleep",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ whispers \"Sleep...sleep\" to a doll of (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Vodun throttle",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An invisible hand grips your throat and clenches down tightly, blocking any air from passing through. You stumble and cough, but you are unable to loosen the crushing hold around your neck.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "tonguetied",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ twists and contorts the wooden tongue of a puppet of (\\w+)\\.$",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Tickle",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The bottoms of your feet feel as if they're being tickled! You burst out in uncontrolled laughter.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

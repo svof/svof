@@ -1,0 +1,250 @@
+[
+  {
+    "name": "Heartseed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Lunging forward with one palm outstretched,",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Lunging forward with one palm outstretched, (\\w+) aims a blow at your heart\\. A warm pulse accompanies \\w+ attack, leaving a dull ache in your chest\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Heartseed 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The sickening sensation of something writhing and growing within your chest overwhelms you, radiating throughout your body from your palpitating heart.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Eclipse",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A flare of sunlight streaks forward to overwhelm your senses.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Lacerate",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a swipe of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With a swipe of \\w+ arm, \\w+ sends two barbed vines slicing through the air toward your throat\\.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Slashed throat",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Blood sprays forth as the thorn-laden vine rips a deep wound in your throat.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Lacerated throat",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "A torrent of blood erupts from your throat as the thorn-laden vines tear at the already wounded flesh.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Limb damage",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The thorny vines of the Viridian ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^The thorny vines of the Viridian \\w+ lash out and rip into your (.+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Thornrend (kelp)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The thorns on the vines puncture your skin, secreting sap into the wounds.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Thornrend (bellwort)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The vines cut into your skin, secreting a poison which makes you feel extremely weary all of a sudden.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Thornrend (valerian)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The thorns inject a strange substance into you, and you begin to secrete an oily, sap-like substance.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Thornrend (lobelia)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The thorns cut into you, and an inexplicable terror comes over you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Thornrend (elm)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The thorns pierce your skin and you feel dizzy all of a sudden.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Thornrend (goldenseal)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As the vines cut into you, you feel a sudden lack of control where your motor functions are concerned.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

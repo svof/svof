@@ -1,0 +1,104 @@
+[
+  {
+    "name": "slc prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Simmons, captain of the lighthouse sweeps his leg beneath you, knocking you off your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Turning away from you, a sea lion bull knocks you over with a swipe of his powerful tail.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Turning away from you, a female sea lion knocks you over with a swipe of her powerful tail.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Turning away from you, an ancient sea lion knocks you over with a swipe of his powerful tail.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Turning away from you, a scarred sea lion knocks you over with a swipe of his powerful tail.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A giant vampire spider scurries quickly up a strand of web before dropping down atop you, knocking you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An albino vampire spider scurries quickly up a strand of web before dropping down atop you, knocking you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A vampire spider scurries quickly up a strand of web before dropping down atop you, knocking you to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "vamp spider web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A giant vampire spider circles you as she sprays sticky strands of spider silk to entangle you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An albino vampire spider circles you as he sprays sticky strands of spider silk to entangle you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A vampire spider circles you as he sprays sticky strands of spider silk to entangle you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "vamp spider loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A giant vampire spider launches at you, sinking her fangs into your flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An albino vampire spider launches at you, sinking his fangs into your flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A vampire spider hatchling darts up to you, sinking his fangs into your exposed flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A vampire spider launches at you, sinking his fangs into your flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

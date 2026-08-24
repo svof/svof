@@ -1,0 +1,128 @@
+[
+  {
+    "name": "paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Though Avel, a golden malagma's mouth moves in rapid animation, no sound escapes the metallic being.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Though a golden malagma's mouth moves in rapid animation, no sound escapes the metallic being.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "stunned",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Grabbing two shovels from the ground, Avel, a golden malagma brings them crashing into your head from both sides.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Grabbing two shovels from the ground, a golden malagma brings them crashing into your head from both sides.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A hepatizon malagma quickly draws an arcane symbol on the wall of the mine. Large chunks of rock break loose from the tunnel and fly through the cramped space, battering you from all directions.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "broken arm",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^Grabbing your arm in \\w+ vice-like hands, an iron malagma snaps the bone in two\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "Grabbing a pick from the floor of the mine, an iron malagma swings sharply and embeds the rusted head into your arm.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Grabbing a pick from the floor of the mine, Ferran, an iron malagma swings sharply and embeds the rusted head into your arm.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Grabbing your arm in his vice-like hands, Ferran, an iron malagma snaps the bone in two.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a pick in either hand, a leukaurum malagma rushes at you. One rusted point penetrates your shoulder, mangling the complex joint, while the other rips through your face.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a pick in either hand, a tumbaga malagma rushes at you. One rusted point penetrates your shoulder, mangling the complex joint, while the other rips through your face.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "paralysis-chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A leukaurum malagma points at you and utters a guttural, arcane word. Though your body's appearance does not change, you feel as cold and stiff as metal.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A tumbaga malagma points at you and utters a guttural, arcane word. Though your body's appearance does not change, you feel as cold and stiff as metal.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "quadbreak-knockdown",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ mouth moving rapidly, a hepatizon malagma gestures at you and you drop to the ground, all of your limbs suddenly heavy beyond belief\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "name": "arachnoi web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A dark arachnoi man shoots out a mass of sticky webbing at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A dark arachnoi woman shoots out a mass of sticky webbing at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Istishia, the Arachnoi Queen shoots out a mass of sticky webbing at you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "darkenwood prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A midnight stag lowers his regal head and charges you, his antlers knocking you to the ground as they gore your flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Pointing his staff at you with a cruel smile, Ilundien, sylvan of the shadowed forest gestures emphatically. The power of the staff lifts you off your feet, holding you helpless in the air.With a contemptuous flick of his wrist, Ilundien, sylvan of the shadowed forest gestures once more and you are flung to the ground, colliding painfully with the earth.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "stag prone roped",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A midnight stag gallops around you in a circle three times, nickering softly. In response, the earth of the Darkenwood churns and tree roots burst from the earth, entangling you and dragging you to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "stag leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Catching you on his mighty antlers, a midnight stag tosses you high into the air. An unpleasant 'crack' is heard as you fall awkwardly on one leg.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ilundien transfix",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Planting the Staff of the Shadowed Forest deep in the earth before him, Ilundien, sylvan of the shadowed forest shouts an imprecation to the skies.In response, a shaft of amaranthine brilliance streams from the implanted staff to strike you, the magic transfixing you in pain and wonder.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ilundien mental",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Ilundien, sylvan of the shadowed forest whispers a single word and emanations of shadow spiral from the staff he wields to surround you.As the tendrils of darkness envelop your body, your mind is cast into confusion and despair.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

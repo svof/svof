@@ -1,0 +1,114 @@
+[
+  {
+    "name": "Prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A menacing gargoyle slams his massive tail into you hard, sending you sprawling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a powerful lunge, a feral gangrel slams into you and sends you reeling to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis + Voyria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A feral gangrel sinks his fangs into your flesh, delivering saliva that begins to sear its way through your skin and render you immobile.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis + Prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The sick, dull yellow eyes of Lavarin Pelendur, the Shah stare maliciously at you as her hands fluidly push through the air before you. Suddenly, your limbs lock up and you are knocked to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Prone 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A warthog runs straight at you, knocking you down before going into a frenzy and trampling you beneath its hooves.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Summoning power from the very essence of Nature, a swamp dryad directs a beam of burning green energy at you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A fluffy arneck raises his head and lets out a horrific squeal that reverberates through all of Wegava.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

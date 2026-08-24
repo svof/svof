@@ -1,0 +1,162 @@
+[
+  {
+    "name": "Lines for class tracking",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) deftly thrusts .+? into you",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) thrusts .+? towards you\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) takes a step forward, bringing .+? in for a second quick jab\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) flourishes .+? in front of your eyes, mesmerising you\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) expertly flourishes .+? in front of your face\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your world becomes nothing but stars as the haft of .+? slams into the side of your head, courtesy of (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) quickly trusses you up\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Agony radiates out from the point of impact as (\\w+) brings the haft of .+? down upon your head with crushing force\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) savagely gouges into you with .+?\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) locks \\w+ unnatural gaze to yours, and a terrible pressure begins to build behind your eyes\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) lays open your flesh with an expert lateral slice with .+?\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Terrible pain radiates from the weapon impaling you as (\\w+) gives it a violent twist\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) viciously lacerates you with .+?\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Targetted lacerate",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) viciously lacerates your (.+?) with .+?\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Scythe",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) whips .+? in a swift motion toward you, scything through your (.+?) defence\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Gouge",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "2",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) viciously gouges your (.+?) with .+?\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Drag",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You scrabble futilely at the ground as",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You scrabble futilely at the ground as (\\w+) drags your impaled body off to the \\w+\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Doublestrike",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "3",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) draws .+? in an expert lateral slice across your (.+?)\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

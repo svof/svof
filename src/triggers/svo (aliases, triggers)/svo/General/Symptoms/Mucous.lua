@@ -1,0 +1,1 @@
+svo.valid.have_mucous()

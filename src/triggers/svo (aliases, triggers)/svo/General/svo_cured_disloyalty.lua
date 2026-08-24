@@ -1,0 +1,1 @@
+svo.valid.smoke_cured_disloyalty()

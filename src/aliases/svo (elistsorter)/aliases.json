@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Dispose of decays",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^dispose of decays by: (.+)$"
+  },
+  {
+    "name": "Get obfuscated vials out of pack",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vialsout$"
+  },
+  {
+    "name": "elist-vlist",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(?:e|v)list$"
+  }
+]

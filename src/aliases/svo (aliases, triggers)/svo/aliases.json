@@ -1,0 +1,590 @@
+[
+  {
+    "name": "Toggle sip priority",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^hh(?:\\s(\\w+))?$"
+  },
+  {
+    "name": "Show current affs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow ?(a|affs)$"
+  },
+  {
+    "name": "Show current bals",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow ?(b|bals)$"
+  },
+  {
+    "name": "Show precache list",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow ?(p|precache)$"
+  },
+  {
+    "name": "Show curelist-prefercustom curemethod",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow (?:cl|curelist)$"
+  },
+  {
+    "name": "Show basic system info",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow$"
+  },
+  {
+    "name": "Pausing",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^pp(?: ?(on|off))?$"
+  },
+  {
+    "name": "Diagnose asap",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^dv$"
+  },
+  {
+    "name": "Check defences asap",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^df$"
+  },
+  {
+    "name": "Diagnose now",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^diag(:?nose)?$"
+  },
+  {
+    "name": "Check 'def' now",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^def(?:ences)?$"
+  },
+  {
+    "name": "(tn) Turn things or classes on",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(?:tn|turnon) (.+)"
+  },
+  {
+    "name": "(tf) Turn things or classes off",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(?:tf|turnoff) (.+)"
+  },
+  {
+    "name": "Toggle health as main priority in slow curing",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^shh$"
+  },
+  {
+    "name": "Set config",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vconfig[_ ]([^ ]+)(?: (.+))?$"
+  },
+  {
+    "name": "Switch a defence mode",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vdefs(?: (\\w+))?$"
+  },
+  {
+    "name": "Cancel defup",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vdefs cancel$"
+  },
+  {
+    "name": "Edit defup",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vdefup (\\w+)(?: (\\w+))?$"
+  },
+  {
+    "name": "Edit keepup",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vkeep(?:up)? (\\w+)(?: (\\w+))?$"
+  },
+  {
+    "name": "Show current defs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow(d| defs)$"
+  },
+  {
+    "name": "Show defup defs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow ?defup$"
+  },
+  {
+    "name": "Show keepup defs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow(k| keepup| keep)$"
+  },
+  {
+    "name": "Show hidelist",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow ?(h|hidelist)$"
+  },
+  {
+    "name": "Toggle clot use",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^cll(?: (\\w+))?$"
+  },
+  {
+    "name": "Toggle moss use",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^mss(?: (\\w+))?$"
+  },
+  {
+    "name": "Toggle health-mana changes display",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^trk(?: (\\w+))?$"
+  },
+  {
+    "name": "Toggle rebounding use",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ss(?: (\\w+))?$"
+  },
+  {
+    "name": "Toggle selfishness use",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^sl(?: (\\w+))?$"
+  },
+  {
+    "name": "Toggle breath use",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^br(?: (\\w+))?$"
+  },
+  {
+    "name": "Toggle deaf",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^th(?: (\\w+))?$"
+  },
+  {
+    "name": "Toggle riding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^va(?: (\\w+))?$"
+  },
+  {
+    "name": "Toggle mediation",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^med(?: (\\w+))?$"
+  },
+  {
+    "name": "Toggle shielding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ts(?: (\\w+))?$"
+  },
+  {
+    "name": "Toggle command override in slow curing mode",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^tsc(?: (\\w+))?$"
+  },
+  {
+    "name": "Toggle single bites",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^sbites(?: (\\w+))?$"
+  },
+  {
+    "name": "Toggle single stabs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^stabs(?: (\\w+))?$"
+  },
+  {
+    "name": "Create a defence mode",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vcreate defmode (\\w+)$"
+  },
+  {
+    "name": "Rename a defence mode",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vrename defmode (\\w+) (\\w+)$"
+  },
+  {
+    "name": "Delete a defence mode",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vdelete defmode (\\w+)$"
+  },
+  {
+    "name": "Copy a defence mode",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vcopy defmode (.+) TO (.+)$"
+  },
+  {
+    "name": "Show system config",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vconfig$"
+  },
+  {
+    "name": "Show more advanced system config",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vconfig2$"
+  },
+  {
+    "name": "Swap affliction priorities",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vswap (\\w+) (\\w+) (\\w+)(?: (\\w+))?$"
+  },
+  {
+    "name": "Set an affliction priority",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vset (\\w+) (\\w+) (\\d+)$"
+  },
+  {
+    "name": "Swap slow mode affliction priorities",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vswapslow (\\w+) (\\w+)$"
+  },
+  {
+    "name": "Clear all gaps in a prio mode",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vcleargaps (\\w+)$"
+  },
+  {
+    "name": "For unexpected aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vaeon$"
+  },
+  {
+    "name": "Start installation",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vinstall( fresh)?$"
+  },
+  {
+    "name": "Parry config",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "Reset afflictions",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vreset(?:a| affs)?$"
+  },
+  {
+    "name": "Reset balances",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vreset(?:b| bals| balances)$"
+  },
+  {
+    "name": "Show priority lists",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(?:vshowprios|vp) (\\w+)$"
+  },
+  {
+    "name": "Show affliction names",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow afflist$"
+  },
+  {
+    "name": "Export prios",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vexportprio (\\w+)(.*)$"
+  },
+  {
+    "name": "Import prios",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vimportprio(?: (\\w+))?$"
+  },
+  {
+    "name": "(vlistprios) List all prios",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vlistprios$"
+  },
+  {
+    "name": "(vshow sp) Setup parry",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(?:vsetup|vshow) sp$"
+  },
+  {
+    "name": "(vshow pc) Setup precache",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(?:vsetup|vshow) pc$"
+  },
+  {
+    "name": "(vshow colors) Setup echo colours",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(?:vsetup|vshow) colou?rs?$"
+  },
+  {
+    "name": "(vversion) Show system version",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vversion$"
+  },
+  {
+    "name": "(vshow lustlist) Show who's on the lustlist",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow lustlist$"
+  },
+  {
+    "name": "(vshow hoistlist) Show who's on the hoistlist",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow hoistlist$"
+  },
+  {
+    "name": "(vsave) Save system settings manually",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vsave$"
+  },
+  {
+    "name": "Do!",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "Ignore things",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "(vupdate prios) Update to default priorities",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vupdate prios$"
+  },
+  {
+    "name": "(vupdate) update your system",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vupdate(?: (force|checking))?$"
+  },
+  {
+    "name": "Remember vault-mount",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(vault|mount|board) ((\\/|\\w)+)$"
+  },
+  {
+    "name": "(b) Block a dir",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(?:b|block) (n|e|s|w|ne|se|sw|nw|in|out|u|d)$"
+  },
+  {
+    "name": "(ub) Unblock",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(?:ub|unblock)$"
+  },
+  {
+    "name": "(vaff) Add an affliction",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vaff (\\w+)$"
+  },
+  {
+    "name": "(vrmaff) Remove an affliction",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vrmaff (\\w+)$"
+  },
+  {
+    "name": "(inra) inr all riftables",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^inra$"
+  },
+  {
+    "name": "(vhelp) Open docs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vhelp$"
+  },
+  {
+    "name": "(dop) Toggle do pause",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^dop(?:\\s?(on|off))?$"
+  },
+  {
+    "name": "(fl) Toggle fullstats",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(s)?fl(?: (.+))?$"
+  },
+  {
+    "name": "(p) Set parry manually",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^p(n|h|tt|rl|ll|ra|la)$"
+  },
+  {
+    "name": "(lp) Light all pipes",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^lp$"
+  },
+  {
+    "name": "(pva) Toggle paralysis & asthma priority",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^pva$"
+  },
+  {
+    "name": "(avs) Toggle slickness and impatience",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^avs$"
+  },
+  {
+    "name": "(pvd) Toggle paralysis and darkshade",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^pvd$"
+  },
+  {
+    "name": "(vget herbs) Pick up herbs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vget(?:h| herbs?)$"
+  },
+  {
+    "name": "svo UI Experiments",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "(vshow herbstat) Show inv-rift herb stats",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow herbstat$"
+  },
+  {
+    "name": "Spirituality aliases",
+    "isActive": "no",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "Elementalism aliases",
+    "isActive": "no",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "(lyr) Lyre mode on",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^lyr$"
+  },
+  {
+    "name": "(lyf) Lyre mode off",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^lyf$"
+  },
+  {
+    "name": "(lyc) Cure & re-lyre",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^lyc$"
+  },
+  {
+    "name": "(vlua) Run lua code",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vlua (.*)$"
+  },
+  {
+    "name": "(vecho) Echo stuff for testing (triggers run off this)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vecho (.+)"
+  },
+  {
+    "name": "(cc) Relay info to party-clan-order-tell or just echo",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^cc (.+)$"
+  },
+  {
+    "name": "Check rift",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ir ?(herb|mineral)?$"
+  },
+  {
+    "name": "(vconfigs) Configure serverside curing system",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vconfigs$"
+  },
+  {
+    "name": "Sit",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(?:sit|sit .+|sit:.+|lie|lie .+|lie:.+)$"
+  },
+  {
+    "name": "Sleep",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^sleep$"
+  },
+  {
+    "name": "(vshow serverside) Toggle Svo-serverside cures",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow server(?:side)?$"
+  },
+  {
+    "name": "toggle dilation",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^dil(?: (\\w+))?$"
+  }
+]

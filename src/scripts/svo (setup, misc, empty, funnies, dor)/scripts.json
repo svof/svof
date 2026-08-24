@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Setup",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Miscellaneous functions",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Empty cure handling",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Funnies",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Dor",
+    "isActive": "yes",
+    "isFolder": "no"
+  }
+]

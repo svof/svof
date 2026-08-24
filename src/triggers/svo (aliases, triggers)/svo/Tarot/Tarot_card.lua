@@ -1,0 +1,1 @@
+svo.valid.lust_card()

@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Rend",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You carve into",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You carve into (\\w+)'s (.+?) with a vicious strike, opening a bleeding wound\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Slice",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You slice into the (.+?) of (\\w+) with",
+        "type": "regex"
+      }
+    ]
+  }
+]

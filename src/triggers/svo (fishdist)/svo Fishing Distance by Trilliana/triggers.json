@@ -1,0 +1,283 @@
+[
+  {
+    "name": "casting",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You cock back your arm and smoothly cast a line into the nearby water. You judge the cast at about (\\d+) feet\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You cock back your arm and smoothly cast your line over the railing into the nearby water. You judge the cast at about (\\d+) feet\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You cock back your arm and smoothly cast a line into the nearby water. You judge the cast at about (\\d+) feet\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "fishing highlight 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^The fish tries to swim with the hook, drawing (\\d+) feet of line\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your rod bends slightly as your fish tries to escape its barbed tether, running out (\\d+) foot of line\\$.",
+        "type": "regex"
+      },
+      {
+        "pattern": "^The fish you've hooked struggles against the line and runs it out (\\d+) feet\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You feel the fish tugging on your line, drawing it out about (\\d+) foot\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your rod bends slightly as your fish tries to escape its barbed tether, running out (\\d+) feet of line\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You feel the fish tugging on your line, drawing it out about (\\d+) feet\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your rod bends slightly as your fish tries to escape its barbed tether, running out (\\d+) feet of line\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "Your fish struggles and swims firmly away from you, drawing out (\\d+) feet of fishing line.",
+        "type": "regex"
+      },
+      {
+        "pattern": "The fish tries to swim with the hook, drawing (\\d+) foot of line.",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your rod bends slightly as your fish tries to escape its barbed tether, running out (\\d+) foot of line\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^The fish on your line shows its power by running out (\\d+) feet of line\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Tugging powerfully, your fish draws out (\\d+) feet of line\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Dodging back and forth furiously, your fish draws out (\\d+) feet of line\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^With a pull that threatens to rip the pole from your hand, the fish you've hooked runs out (\\d+) feet of line\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^With an arm-wrenching burst of power, the fish you've hooked runs out (\\d+) feet of fishing line\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "fishing highlight",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have (\\d+) feet of line left to bring in\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You have (\\d+) foot of line left to bring in\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "fish!",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff00ff",
+    "highlightBG": "#55007f",
+    "patterns": [
+      {
+        "pattern": "With a final tug, you finish reeling in the line and land a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You reel in the last bit of line and your struggle is over. You've landed a ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You reel in the last bit of line and your struggle is over. ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "With a style born of skill, you reel in a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You quickly reel in a ",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "fishinghightlight 3",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffffff",
+    "patterns": [
+      {
+        "pattern": "^With a power born of the Seagod, a (whiskerknot skrei|stripefish|two-headed fish|giant hatchetfish|coelacanth|spotted fangtooth|duskfin tuna|redfin tuna) leaps from the water explosively, running the line out (\\d+) feet\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Leaping from the water in a frenzy to escape, a (whiskerknot skrei|stripefish|two-headed fish|giant hatchetfish|coelacanth|spotted fangtooth|duskfin tuna|redfin tuna) runs out (\\d+) feet of your line\\.$",
+        "type": "regex"
+      }
+    ],
+    "matchall": "yes"
+  },
+  {
+    "name": "Snapline",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As the fish strains your line beyond its breaking point, it snaps suddenly, costing you your fish and bait.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "baited",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Throwing away your existing bait, you carefully thread a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You carefully thread a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You reel your line in completely.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Removing bait",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You take (a worm|a minnow|a sand flea|a shrimp|a shelled clam|a crab|a mudsucker|a hunk of octopus|a rock bass|a marble carp) from (a|an) (.*) fishing pole.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "Your line snaps or fouls and you lose your bait.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "decay on pole",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A (.*) has decayed to dust inside of pole#(\\d+)$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "moved",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your line fouls and you lose your bait.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

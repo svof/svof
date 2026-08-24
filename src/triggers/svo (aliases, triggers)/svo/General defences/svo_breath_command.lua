@@ -1,0 +1,1 @@
+if (svo.conf.gagbreath or svo.conf.gagservercuring) and not svo.inslowcuringmode() then deleteLine() end

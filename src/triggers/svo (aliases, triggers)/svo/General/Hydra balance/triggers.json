@@ -1,0 +1,76 @@
+[
+  {
+    "name": "Lost hydra balance",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You direct your searing gaze towards",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You command your many heads to clamp ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You command your many heads to bind",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You command your heads to lash out at ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You command your many heads to lash out at ",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "Got hydra balance",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your many serpentine heads may act again.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hydra sting",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You strike out at",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You strike out at \\w+ with your deadly tail, and sting \\w+\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

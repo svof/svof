@@ -1,0 +1,150 @@
+[
+  {
+    "name": "ndb.init",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "ndb.valid",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "ndb.support",
+    "isActive": "yes",
+    "isFolder": "no",
+    "children": [
+      {
+        "name": "ndb.finished_honors",
+        "isActive": "yes",
+        "isFolder": "no",
+        "eventHandlerList": [
+          "NameDB finished honors"
+        ]
+      },
+      {
+        "name": "ndb.updatebyhonors",
+        "isActive": "yes",
+        "isFolder": "no",
+        "eventHandlerList": [
+          "NameDB got new data"
+        ]
+      },
+      {
+        "name": "ndb.datamining",
+        "isActive": "yes",
+        "isFolder": "no",
+        "children": [
+          {
+            "name": "ndb.setfromclass",
+            "isActive": "yes",
+            "isFolder": "no",
+            "eventHandlerList": [
+              "svo got hit by"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ndb.downloaded_file",
+        "isActive": "yes",
+        "isFolder": "no",
+        "eventHandlerList": [
+          "sysDownloadDone"
+        ]
+      },
+      {
+        "name": "ndb.ui",
+        "isActive": "yes",
+        "isFolder": "no"
+      },
+      {
+        "name": "ndb.configs",
+        "isActive": "yes",
+        "isFolder": "no",
+        "eventHandlerList": [
+          "svo system loaded"
+        ],
+        "children": [
+          {
+            "name": "ndb.onshow",
+            "isActive": "yes",
+            "isFolder": "no",
+            "eventHandlerList": [
+              "svo onshow"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ndb.loadsettings",
+        "isActive": "yes",
+        "isFolder": "no",
+        "eventHandlerList": [
+          "svo system loaded"
+        ]
+      },
+      {
+        "name": "ndb.fixes",
+        "isActive": "yes",
+        "isFolder": "no"
+      },
+      {
+        "name": "ndb.close",
+        "isActive": "yes",
+        "isFolder": "no",
+        "eventHandlerList": [
+          "sysExitEvent"
+        ]
+      },
+      {
+        "name": "ndb.showqwi",
+        "isActive": "yes",
+        "isFolder": "no",
+        "eventHandlerList": [
+          "NameDB finished all honors"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "ndb.highlighter",
+    "isActive": "yes",
+    "isFolder": "no",
+    "children": [
+      {
+        "name": "ndb.addhighlightname",
+        "isActive": "yes",
+        "isFolder": "no",
+        "eventHandlerList": [
+          "NameDB finished honors",
+          "svo watchfor name changed",
+          "NameDB highlightignore name changed",
+          "NameDB set name changed",
+          "NameDB saw list name",
+          "NameDB name deleted"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "ndb.aliases",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Data Input",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "Third-party",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "ndb main code",
+    "isActive": "yes",
+    "isFolder": "no"
+  }
+]

@@ -1,0 +1,1 @@
+svo.toggle_riftlabel()

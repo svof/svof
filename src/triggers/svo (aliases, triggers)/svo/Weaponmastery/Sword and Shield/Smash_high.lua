@@ -1,0 +1,1 @@
+svo.valid.smash_high()

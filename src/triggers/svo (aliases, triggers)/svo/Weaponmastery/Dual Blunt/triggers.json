@@ -1,0 +1,202 @@
+[
+  {
+    "name": "Expend right arm",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your right arm goes abruptly numb as",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your right arm goes abruptly numb as .+? crunches home\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Expend left arm",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your left arm goes abruptly numb as",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your left arm goes abruptly numb as .+? crunches home\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Expend head",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "whips",
+        "type": "substring"
+      },
+      {
+        "pattern": "toward your head\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "crunches into the side of your head, stunning you!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Expend legs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The power of the blow sweeps your feet out from under you, and you tumble to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Expend torso",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel the beginnings of the aura of rebounding surrounding you shatter under the blow.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Assault",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "yes",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) falls upon you with both of \\w+ weapons whirling, viciously assaulting your (.+?)\\.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "torso",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "torso",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Assault head",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "2",
+    "filter": "no",
+    "fireLength": "3",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ falls upon you with both of \\w+ weapons whirling, viciously assaulting your head\\.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Mild head trauma",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Your head is greatly damaged from the beating.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Serious head trauma",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Your skull splits and caves in as your head takes serious damage.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  }
+]

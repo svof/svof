@@ -1,0 +1,8 @@
+[
+  {
+    "name": "^makechat$",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^makechat$"
+  }
+]

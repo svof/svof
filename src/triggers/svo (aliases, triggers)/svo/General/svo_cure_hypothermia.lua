@@ -1,0 +1,1 @@
+svo.valid.hypothermia_cured()

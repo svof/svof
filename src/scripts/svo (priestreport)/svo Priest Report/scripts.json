@@ -1,0 +1,25 @@
+[
+  {
+    "name": "svo_load_maincode_priestreport",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "svo_onshow_priestreport",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "svo onshow"
+    ]
+  },
+  {
+    "name": "svo.disable_seek",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "svo got dragonform",
+      "svo lost dragonform",
+      "svo system loaded"
+    ]
+  }
+]

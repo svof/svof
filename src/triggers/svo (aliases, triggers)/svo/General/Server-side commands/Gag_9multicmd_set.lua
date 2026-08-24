@@ -1,0 +1,1 @@
+if not svo.reenabled9multi then svo.deleteLineP() end

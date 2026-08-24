@@ -1,0 +1,368 @@
+[
+  {
+    "name": "Hallucinations",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An unseen being takes you to one side and whispers conspiratorially to you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The Baalzadeen's terrible gaze turns to you, and utter terror floods your soul.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dagger killed rebounding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "82",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The daegger cuts through your skullcap-formed aura.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dagger impaled",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The daegger has looped around and dives toward your shadow, impaling it and you!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Bloodworms disrupted",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The unearthly screeching of the bloodworms disrupt your concentration.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your flesh is set alight by the Baalzadeen.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stupidity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your mind feels somewhat slower and more plodding.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Def strip",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your (.+) defence has been stripped by \\w+'s Baalzadeen\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Eliminate start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A look of concentration followed by a look of disgust passes across",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A look of concentration followed by a look of disgust passes across (\\w+)'s face\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Eliminate two",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a daegger in hand,",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With a daegger in hand, (\\w+) begins to close in on you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Eliminate three",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The blade on the daegger splits into a semblance of teeth as",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^The blade on the daegger splits into a semblance of teeth as (\\w+) prepares for the final strike\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hellsight",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your mind is filled with horrifying visions of Hell.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An unspeakable, horrific image rises from the bowels of hell to plague you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Daegger start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\"Hunt!\" (\\w+) orders \\w+ daegger\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Daegger hit",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The whirling daegger plunges into your flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Sap",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+)'s Baalzadeen casts a piercing glance at you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Daemonite",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The daemonite flies at you, poking and jabbing at you with its stubby fingers.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stain",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a snarl,",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With a snarl, (\\w+)'s Baalzadeen opens its mouth and spews a foul black liquid all over you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fiend",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The fiend's razor-sharp claws plunge into your flesh, sending fire through your veins.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Corrupt",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Crippling pain overcomes you as a Baalzadeen makes a hooking motion in your direction.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

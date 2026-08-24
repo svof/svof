@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Create Svof namespace",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "3rdparty",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "Event handlers",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo Utilities",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "Check for system updates",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "Examples",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo Time Tracking",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo Class Management",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo UI Experiments",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "Load & init",
+    "isActive": "yes",
+    "isFolder": "yes"
+  }
+]

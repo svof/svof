@@ -1,0 +1,169 @@
+[
+  {
+    "name": "svo (aliases, triggers)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "patterns": []
+  },
+  {
+    "name": "svo (elistsorter)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "patterns": []
+  },
+  {
+    "name": "svo (fishdist)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "patterns": []
+  },
+  {
+    "name": "svo (inker)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "patterns": []
+  },
+  {
+    "name": "svo (mindnet)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "patterns": []
+  },
+  {
+    "name": "svo (peopletracker)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "patterns": []
+  },
+  {
+    "name": "svo (reboundingsileristracker)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "patterns": []
+  },
+  {
+    "name": "svo (refiller)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "patterns": []
+  },
+  {
+    "name": "svo (runeidentifier)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "patterns": []
+  },
+  {
+    "name": "svo (stormhammertarget)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "patterns": []
+  },
+  {
+    "name": "svo (limbcounter)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "svo (burncounter)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "patterns": []
+  },
+  {
+    "name": "svo (priestreport)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "patterns": []
+  },
+  {
+    "name": "svo (namedb)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "patterns": []
+  },
+  {
+    "name": "svo (offering)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "patterns": []
+  }
+]

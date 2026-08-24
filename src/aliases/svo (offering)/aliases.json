@@ -1,0 +1,8 @@
+[
+  {
+    "name": "Offering aliases",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^v(offer|drop|get|defile|sanctify|give|put)(?: (?!herb)(\\w+))?$"
+  }
+]

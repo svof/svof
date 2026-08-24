@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Curing skeleton",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Controllers",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Action system",
+    "isActive": "yes",
+    "isFolder": "no"
+  }
+]

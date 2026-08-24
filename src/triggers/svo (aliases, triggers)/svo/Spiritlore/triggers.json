@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Arius",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The eyes of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^The eyes of (\\w+) go out of focus for a moment as \\w+ mouth falls wide, a terrible, unearthly sound rippling forth\\.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Disrupted",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The terrible sound strikes you as if a physical blow, throwing your equilibrium into disarray.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Snare",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) grows very still for a moment, before \\w+ eyes snap wide open and you feel something icy wrap about your limbs, binding you in place\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Bind totem",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As your eyes come to rest on the ritual circle drawn about a tribal totem's base, you feel yourself abruptly locked in place.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Haemophilia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^As (\\w+) gestures toward you, lines of sharp pain slash across your skin\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

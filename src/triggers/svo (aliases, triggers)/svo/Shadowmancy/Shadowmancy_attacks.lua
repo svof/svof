@@ -1,0 +1,1 @@
+svo.startedfighting("depthswalker", matches[2])

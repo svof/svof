@@ -1,0 +1,384 @@
+[
+  {
+    "name": "Added to rift",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You store",
+        "type": "startOfLine"
+      }
+    ],
+    "children": [
+      {
+        "name": "regex",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^You store (\\d+) (.+), bringing the total to (\\d+)\\.$",
+            "type": "regex"
+          },
+          {
+            "pattern": "^You store (\\d+) (.+), bringing the total in the rift to (\\d+), which is the maximum for that type of object\\.$",
+            "type": "regex"
+          },
+          {
+            "pattern": "^You store (\\d+) (.+?), bringing the total in the rift to (\\d+)\\.$",
+            "type": "regex"
+          }
+        ],
+        "script": "svo.riftadded()"
+      }
+    ]
+  },
+  {
+    "name": "Removed from rift",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You remove",
+        "type": "startOfLine"
+      }
+    ],
+    "children": [
+      {
+        "name": "regex",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^You remove (\\d+) (.+), bringing the total in the (?:R|r)ift to (\\d+)\\.$",
+            "type": "regex"
+          }
+        ],
+        "script": "svo.riftremoved()"
+      }
+    ]
+  },
+  {
+    "name": "Capture inv",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Riftables:",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Capture ii pipes list",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "200",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are holding:",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "20 fill pipe",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "pipe(\\d+) +a black diamond pipe",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Stop (ii pipes)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "",
+            "type": "prompt"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "svo Rift",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "100",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Glancing into your rift, you see:",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "----------------------------------",
+        "type": "substring"
+      }
+    ]
+  },
+  {
+    "name": "Got nada",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You see no ",
+        "type": "startOfLine"
+      }
+    ],
+    "children": [
+      {
+        "name": "regex",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^You see no (\\w+) in your inventory\\.$",
+            "type": "regex"
+          }
+        ],
+        "script": "svo.riftnada()"
+      }
+    ]
+  },
+  {
+    "name": "Ate something",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You eat",
+        "type": "startOfLine"
+      }
+    ],
+    "children": [
+      {
+        "name": "regex",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^You eat ([^\\.]+)\\.$",
+            "type": "regex"
+          }
+        ],
+        "script": "svo.riftate()"
+      }
+    ]
+  },
+  {
+    "name": "svo no refill herb",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You hold no",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You hold no \"(\\w+)\"\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Added to pocketbelt",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You put",
+        "type": "startOfLine"
+      }
+    ],
+    "children": [
+      {
+        "name": "regex",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^You put (\\d+) (.+?) in your pocketbelt\\.$",
+            "type": "regex"
+          }
+        ],
+        "script": "svo.pocketbelt_added()"
+      }
+    ]
+  },
+  {
+    "name": "Removed from pocketbelt",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You get",
+        "type": "startOfLine"
+      }
+    ],
+    "children": [
+      {
+        "name": "regex",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^You get (\\d+) (\\w+) from your pocketbelt\\.$",
+            "type": "regex"
+          }
+        ],
+        "script": "svo.pocketbelt_removed()"
+      }
+    ]
+  },
+  {
+    "name": "svo no outr herb",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have no",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You have no (.+) stored in the Rift\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

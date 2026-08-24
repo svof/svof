@@ -1,0 +1,1 @@
+svo.defs.lost_mass()

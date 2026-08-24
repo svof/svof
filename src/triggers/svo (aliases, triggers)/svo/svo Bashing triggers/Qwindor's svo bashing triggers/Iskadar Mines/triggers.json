@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Meropis dwarf prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A vomiting miner catches you off balance as he feebly thrusts his pickaxe at you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis dwarf blackout",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Flipping his pickaxe over in his hands, Glath Ironhammer, Leader of the Bloodstone clan smashes the butt hard against your temple.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Swinging her pickaxe wildly, Grelda Stonefist smashes the tip into your groin, incapacitating you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Flipping his pickaxe over in his hands, Bartok Stonefist, Leader of the Blackfire clan smashes the butt hard against your temple.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Swinging her pickaxe wildly, Breana Ironhammer smashes the tip into your groin, incapacitating you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Meropis dwarf legbreak",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Grasping his weapon tightly in both hands, Bartok Stonefist, Leader of the Blackfire clan swings the pickaxe at your knees, sweeping you off your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Grasping his weapon tightly in both hands, Glath Ironhammer, Leader of the Bloodstone clan swings the pickaxe at your knees, sweeping you off your feet.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dwarf curse",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With her dying breath Grelda Stonefist utters a vile curse at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lunging at you ferociously, Brok, the Blackfire shaman wrenches open your mouth and forces a small amount of vile liquid down your throat.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lunging at you ferociously, Thraken, the Bloodstone shaman wrenches open your mouth and forces a small amount of vile liquid down your throat.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

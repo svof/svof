@@ -1,0 +1,80 @@
+[
+  {
+    "name": "svo (aliases, triggers)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo (elistsorter)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo (inker)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo (peopletracker)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo (refiller)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo (stormhammertarget)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo (limbcounter)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo (burncounter)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo (priestreport)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo (enchanter)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo (namedb)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo (logger)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  },
+  {
+    "name": "svo (offering)",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "regex": ""
+  }
+]

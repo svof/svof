@@ -1,0 +1,1 @@
+svo.valid.sacrificed_angel()

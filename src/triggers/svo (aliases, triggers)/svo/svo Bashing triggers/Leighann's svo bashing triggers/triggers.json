@@ -1,0 +1,182 @@
+[
+  {
+    "name": "Aalen",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "return gmcp.Room.Info.area == \"the Aalen Forest\"",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Ageiro",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "return gmcp.Room.Info.area == \"the Isle of Ageiro\"",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Azdun",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "return gmcp.Room.Info.area == \"the Azdun Dungeon\"",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Belladona's Keep",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "return gmcp.Room.Info.area == \"the Keep of Belladona\"",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Dun Fortress",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "return gmcp.Room.Info.area == \"the Barony of Dun Valley\"",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Harae",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "return gmcp.Room.Info.area == \"the Isle of Harae\"",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Hthrak",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "return gmcp.Room.Info.area == \"the Vents of Hthrak\"",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Moghedu",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "return gmcp.Room.Info.area == \"Moghedu\"",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Tapoa",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "return gmcp.Room.Info.area == \"Tapoa Island\"",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Tir Murann",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "return gmcp.Room.Info.area == \"Tir Murann\"",
+        "type": "lua"
+      }
+    ]
+  }
+]

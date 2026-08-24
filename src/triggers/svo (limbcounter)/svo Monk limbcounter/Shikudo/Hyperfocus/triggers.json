@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Hyperfocus on",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You will now focus on bypassing attempts to deflect blows when striking the (\\w+).$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hyperfocus off",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You cease to focus on exploiting flaws in defensive technique.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You are not currently focussing on exploiting flaws in defensive technique.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

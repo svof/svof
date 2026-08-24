@@ -1,0 +1,1 @@
+svo.valid.limb_hit(matches[2], "weapon")

@@ -1,0 +1,1 @@
+if svo.conf.breath and svo.conf.keepup and not svo.defkeepup[svo.defs.mode].breath then svo.defs.keepup("breath", true) end

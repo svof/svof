@@ -1,0 +1,369 @@
+[
+  {
+    "name": "Portals, portals!",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#0055ff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "The beginnings of a fiery portal appear before you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A fiery portal opens in the air before you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^\\w+ draws a circle in the air with \\w+ wand, and a fiery outline appears\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "A gateway of light blazes into existence before your eyes.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Gray feathers begin to swirl into the shape of an arched portal before you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a final burst, the feathers swirl into the shape of an archway and a portal opens within.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Holocaust on ground",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A holocaust globe is here.",
+        "type": "substring"
+      },
+      {
+        "pattern": "There are \\d+ holocaust globes here\\.",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fulmination on ground",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A sphere of crackling electricity has coalesced.",
+        "type": "substring"
+      },
+      {
+        "pattern": "There are \\d+ fulminations sphere here\\.",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Tank",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Great waves of heat radiate from a metal tank, a torrent of flames raging within.",
+        "type": "substring"
+      }
+    ]
+  },
+  {
+    "name": "Parried",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aa00",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "You parry the attack with a deft manoeuvre.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Show icewalls",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An icewall suddenly forms to the",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "(\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Highlight icewalls in room",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An icewall is here, blocking passage to the (\\w+)\\.",
+        "type": "regex"
+      }
+    ],
+    "matchall": "yes"
+  },
+  {
+    "name": "Highlight firewalls in the room",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A scorching wall of fire stands here, blocking passage to the (\\w+)\\.",
+        "type": "regex"
+      }
+    ],
+    "matchall": "yes"
+  },
+  {
+    "name": "Highlight stonewalls in the room",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A large wall of stone stands here, blocking passage to the (\\w+)\\.",
+        "type": "regex"
+      }
+    ],
+    "matchall": "yes"
+  },
+  {
+    "name": "Gravehands in room",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Hands of rotting flesh and white bone push up from the ground.",
+        "type": "substring"
+      }
+    ]
+  },
+  {
+    "name": "CTF flag planted",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#aa0000",
+    "highlightBG": "#00ffff",
+    "patterns": [
+      {
+        "pattern": "A flag emblazoned with the Owl stands here, waving in the breeze.",
+        "type": "substring"
+      }
+    ]
+  },
+  {
+    "name": "Mono in room",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#2b2b2b",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "A sigil in the shape of a small, rectangular monolith is on the ground.",
+        "type": "substring"
+      },
+      {
+        "pattern": "There are \\d+ monolith sigils in \\d+ groups here\\.",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "You shall not pass!",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) stops you from moving that way\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^With astonishing quickness, a diminutive homunculus resembling (\\w+) moves to block your egress\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Wielding totem",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "\\w+ wields a runic totem in both hands",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Gag smiley",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "17",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "                              ..o@@@@@@@@@@@@@o..",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Highlight tattoo fading",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#101010",
+    "patterns": [
+      {
+        "pattern": "^An? \\w+ tattoo fades from view and disappears\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Failed to follow, highlight (this can kill!)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You try and fail to follow ",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "distortion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The surroundings are distorted, as if viewed through water.",
+        "type": "substring"
+      }
+    ]
+  }
+]

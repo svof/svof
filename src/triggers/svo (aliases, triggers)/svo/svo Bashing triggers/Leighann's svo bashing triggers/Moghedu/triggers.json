@@ -1,0 +1,42 @@
+[
+  {
+    "name": "knockdown",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Commander Kalesh roars, enraged, and charges headlong at you, his considerable bulk giving him enough momentum to send you sprawling to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Bellowing in rage, Commander Kalesh sweeps his axe in a wide arc, knocking down all who are in its way.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sweeping his shovel through the furnace, a mhun smelter throws a shower of flaming coals at you.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

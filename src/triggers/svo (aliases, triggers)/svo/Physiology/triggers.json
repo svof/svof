@@ -1,0 +1,272 @@
+[
+  {
+    "name": "Humor wrack",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A short convulsion sweeps through your body as ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A short convulsion sweeps through your body as (\\w+) wracks your \\w+ humour\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Humor truewrack",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A short convulsion sweeps through your body as ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A short convulsion sweeps through your body as (\\w+) wracks your \\w+ and \\w+ humours\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Humor tempered",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a sudden wave of malaise as your ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You feel a sudden wave of malaise as your (choleric|melancholic|phlegmatic|sanguine) humour is tempered\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Humor double tempered",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a sudden wave of malaise as your ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You feel a sudden wave of malaise as your (choleric|melancholic|phlegmatic|sanguine) humour is tempered\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "A wave of nausea washes over you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Homunculus bleeding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A low growl echoes from a diminutive homunculus resembling",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A low growl echoes from a diminutive homunculus resembling \\w+'s throat, and blood begins flowing from your nose\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Throat",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A diminutive homunculus resembling",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A diminutive homunculus resembling (\\w+) turns its head towards you, its jaws opening wider than what seems possible\\. The homunculus stares intently at you and lets out an ear-piercing shriek that disrupts your thoughts\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Homunculus corruption",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A diminutive homunculus resembling",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A diminutive homunculus resembling (\\w+) stares intendedly at you, its eyes flashing a deep blue\\. A strange feeling spreads through your body as your melancholic and sanguine humours become corrupted\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Reave started",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^A sudden nausea and lightheadedness takes hold of your body, and you struggle to hold on to consciousness under (\\w+)'s assault\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Homunculus mercury (swellskin) bite",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A diminutive homunculus resembling ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A diminutive homunculus resembling (\\w+) claws into your flesh with dirty nails. The surrounding flesh begins to swell with fluid\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Sanguine inundate",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Horrifyingly, blood begins to seep from your eyes, ears, and nose.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Choleric inundate",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sudden pain radiates throughout your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Melancholic inundate",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel your mind wander as a sense of mental weakness settles in.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Phlegmatic inundate",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your surroundings swim as you feel slowed in mind and body.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

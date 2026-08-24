@@ -1,0 +1,262 @@
+[
+  {
+    "name": "AXK",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You kick your leg high and scythe downwards at",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You kick your leg high and scythe downwards at (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You connect to the (.+)!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Roundhouse kick",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You twist your torso and send a roundhouse towards",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You twist your torso and send a roundhouse towards (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your kick drives savagely into \\w+'s chest\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Kick",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You spin into the air and throw a whirlwind kick towards",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You spin into the air and throw a whirlwind kick towards (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You connect to the (.+)!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Kick 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You pump out at",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You pump out at (\\w+) with a powerful side kick\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You connect to the (.+)!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Kick 3",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You let fly at",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You let fly at (\\w+) with a snap kick\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You connect to the (.+)!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Kick 4",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You hurl yourself towards",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You hurl yourself towards (\\w+) with a lightning\\-fast moon kick\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You connect to the (.+)!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Punch",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You unleash a powerful hook towards",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You unleash a powerful hook towards (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You connect to the (.+)!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Punch 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You launch a powerful uppercut at",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You launch a powerful uppercut at (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You connect to the (.+)!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Punch 3",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You ball up one fist and hammerfist",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You ball up one fist and hammerfist (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You connect to the (.+)!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Punch 4",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You form a spear hand and stab out towards",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You form a spear hand and stab out towards (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You connect to the (.+)!$",
+        "type": "regex"
+      }
+    ]
+  }
+]

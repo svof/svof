@@ -1,0 +1,90 @@
+[
+  {
+    "name": "deep sea stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Powering his tail, a duskfin tuna speeds towards your head, his body connecting with a force that leaves your ears ringing.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A herd of hippocampi stretch out their long necks, opening their mouths to send out a collective sonic wave that shatters the eardrums and stuns the other senses.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "duskfin tuna - arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Rocketing through the water, a duskfin tuna rams into your arm, splintering the bone with agonising force.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "nautilus -  roped",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A hideaway nautilus speeds through the water towards you, shell forward, its pointed tip narrowly missing you as you are caught in the whirling strands of kelp following its speeding form.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "deep sea prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Adopting an aggressive demeanor, a herd of hippocampi charges you in a great headlong rush, bowling you over and sending you somersaulting helplessly through the sea currents.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A hulking geryas slams her body into you, sending you flailing helplessly through the water several feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Rolling into a tight ball in mid-stream, a malevolent sea dragon barrels into you, lacerating your skin with the multiple, razor-sharp spines jutting out from his back and tail.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Generating great speed as it moves through the water, a millstone fish launches itself at you, ramming into you with bone-breaking force.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

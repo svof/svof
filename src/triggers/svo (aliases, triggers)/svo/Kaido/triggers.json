@@ -1,0 +1,160 @@
+[
+  {
+    "name": "Kai cripple",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Blue light crackles forth from",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Blue light crackles forth from (\\w+)'s palms, striking you down and snapping your puny limbs\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Choke",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You gasp and clutch at your throat as an unseen force crushes the breath of life out of you.",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "Choke name",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^As the force subsides, you struggle to shake the smirking visage of (\\w+) from your mind\\.$",
+            "type": "regex"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Enfeeble",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel your body and mind ripped apart as you are enfeebled by",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You feel your body and mind ripped apart as you are enfeebled by (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Deliverance start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) bows \\w+ head in silent prayer\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Deliverance",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) slowly raises \\w+ head and you see \\w+ eyes glowing bright white\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Deliverance kill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) turns to face \\w+, eyes glowing ominously\\. Two radiant arcs of white lightning dart forth from them, enveloping \\w+ who screams and slowly dies as \\w+ is burned alive\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Deliverance ql",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "glowing white nimbus",
+        "type": "substring"
+      },
+      {
+        "pattern": "([^\\.]+) is here(?:\\.|, sleeping soundly\\.|, shrouded\\.) \\w+ is surrounded by a glowing white nimbus\\.",
+        "type": "regex"
+      }
+    ]
+  }
+]

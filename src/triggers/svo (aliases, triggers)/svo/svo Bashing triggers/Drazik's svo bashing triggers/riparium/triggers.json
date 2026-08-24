@@ -1,0 +1,38 @@
+[
+  {
+    "name": "kraken roped",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The kraken flails its tentacles wildly about itself, gathering everything in its reach into its deadly, crushing embrace.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "kraken blackout",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A fearsome kraken releases a cloud of ink into the water, numbing your senses.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

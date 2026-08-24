@@ -1,0 +1,2 @@
+svo.doshow()
+svo.showprompt()

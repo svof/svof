@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Accelerate",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ fixes \\w+ gaze to yours, raising \\w+ right hand, before sharply snapping \\w+ fingers\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You feel a sudden flush of heat as your heart begins to pound eratically.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Ensorcelled",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) sweeps .+ in a circle above \\w+ head, the point of the blade coming to rest aimed at you\\. You feel a sharp pain, gone as swiftly as it came, and a fine crimson spray falls about you and \\w+\\.",
+        "type": "regex"
+      }
+    ]
+  }
+]

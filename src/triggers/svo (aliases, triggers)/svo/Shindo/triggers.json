@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Flames erupt over all over your body and begin to consume your flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your body stiffens rapidly with paralysis.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are thrown from the room by the sheer force of the fiery blast.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

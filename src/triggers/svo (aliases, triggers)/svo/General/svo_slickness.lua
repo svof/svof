@@ -1,0 +1,1 @@
+svo.valid.salve_slickness()

@@ -1,0 +1,100 @@
+[
+  {
+    "name": "terane freeze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Terane, the Sylvan raises a hand towards you and blasts you with cold, frigid air.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "bagwar prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sweeping his long tail around your legs, Urthug Vilmore pulls you down with his tail onto the ground. The same appendage slams down into your face an instant after.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Robusto stamps a cloven hoof on the ground then charges at you, head lowered, skewering you upon his short horns and knocking you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Moving with unexpected swiftness, Lisse Schmidt tumbles to the ground and into your legs, tripping you down before rolling up gracefully onto her feet.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "urthug ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Urthug Vilmore sucks in a huge lungful of air and blasts his fiery breath at you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "hermann leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Spinning around deftly, Hermann Schmidt snaps out with a sharp kick to your knee, and you hear bones crunch.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "melodramus stupid",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Melodramus, the bard sings an irritating, mind-numbing ditty at you.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

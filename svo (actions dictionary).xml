@@ -7,7 +7,7 @@
 	<ActionPackage />
 	<ScriptPackage>
 		<Script isActive="yes" isFolder="no">
-			<name>Dictionary of actions (affs/defs/misc)</name>
+			<name>Dictionary of actions (affs-defs-misc)</name>
 			<packageName></packageName>
 			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
 

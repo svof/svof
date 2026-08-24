@@ -1,0 +1,1 @@
+svo.defs.kaido_deaf_start()

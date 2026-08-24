@@ -1,0 +1,206 @@
+[
+  {
+    "name": "Isaz",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A series of shockwaves jolts through you, knocking you flat to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A series of shockwaves jolts through you, knocking you further off balance.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Isaz off mount",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A series of shockwaves jolts through you, toppling you off your mount onto your feet.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Sleizak",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A viper-like sleizak rune suddenly extends from",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A viper\\-like sleizak rune suddenly extends from (?:the ground|a totem) to bite you painfully\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Nairat",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Cold blue flames wreathe",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Cold blue flames wreathe (\\w+)'s runeblade, emanating an icy chill that penetrates you to the bone\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Kena",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You begin to panic as you see a kena rune on",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^You begin to panic as you see a kena rune on (?:the ground|a totem)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Loshre",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You lose all desire to eat upon gazing at a loshre rune.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Nairat 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your attention is grabbed and held by a fascinating butterfly-like rune.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Wunjo",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your blindness is cured by a wunjo rune on",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your blindness is cured by a wunjo rune on (?:a totem|the ground)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Inguz",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your limbs lock up in paralysis as you see an inguz rune on",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your limbs lock up in paralysis as you see an inguz rune on (?:the ground|a totem)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Tzantza",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+)'s eyes flutter and close as \\w+ begins to rock back and forth, chanting ominously under \\w+ breath\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

@@ -1,0 +1,208 @@
+[
+  {
+    "name": "Fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Suddenly dizzy, you clutch your head and wonder what it was you were thinking about.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dizziness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your head spins as a sudden fit of dizziness overwhelms you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stupidity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your mind feels slow and stupid suddenly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Spiritwrack",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your spirit writhes in torment under the glare of the angel.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Def strip",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your (.+) defence has been stripped by (\\w+)'s guardian angel\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+)'s guardian angel's eyes glow like embers as searing heat pours over you, causing you to burst into flames\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Smash",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) utters a prayer and smites your (left|right) (arm|leg) with",
+        "type": "regex"
+      },
+      {
+        "pattern": "It breaks with a loud 'CRACK'.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Judgement one",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) raises .+ (m|M)ace over you to pass judgement on your sins, and it begins to crackle with righteous fire\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Judgement two",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) swings the crackling mace about \\w+ head, gathering momentum as \\w+ bears down on you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Judgement three",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+)'s mace begins to make a high-pitched keening sound as it rapidly spins over \\w+ head\\. You have only moments left to escape before you are judged!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Push",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A guardian angel extends a hand in your direction, and a sudden impact knocks you from your feet.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

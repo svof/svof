@@ -1,0 +1,1 @@
+svo.defs.viridian_cancelled()

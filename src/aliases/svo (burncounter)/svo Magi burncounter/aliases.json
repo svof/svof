@@ -1,0 +1,8 @@
+[
+  {
+    "name": "Check status",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vsl$"
+  }
+]

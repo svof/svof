@@ -1,0 +1,1 @@
+svo.defs.cant_empower()

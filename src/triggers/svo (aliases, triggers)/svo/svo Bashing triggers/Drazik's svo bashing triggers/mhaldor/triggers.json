@@ -1,0 +1,38 @@
+[
+  {
+    "name": "lich web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sticky strands of webbing spray out from an ominous lich to cover you. ",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "frost daemon chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An unholy frost daemon effortlessly spins both huge blades above his head, then drives forward to plunge them into your stomach with a guttural snarl. Your body grows cold as the enchanted weapons suck hungrily at your lifeforce.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

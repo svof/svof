@@ -1,0 +1,1 @@
+svo.config.set("ignoresinglestabs", matches[2], true)

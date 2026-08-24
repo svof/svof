@@ -1,0 +1,328 @@
+[
+  {
+    "name": "Overhand",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) brings .+? down upon you with a brutal overhand blow\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Overhand aff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As the blade slams into the side of your head, you feel the unmistakable sensation of bones cracking.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You feel bones grating together as the hammer catches you a savage blow to the head.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Underhand",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) explodes upward from a low crouch, driving .+? toward your torso\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Underhand aff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Lances of pain radiate from your chest as the blade smashes into your ribs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The breath is savagely driven from your lungs as the hammer crunches into your side.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Upset",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ drops into a low crouch, sweeping .+? beneath your guard and tangling it with your legs\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hew",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) comes around with a terrible swing of .+? toward your",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) unleashes a terrible blow at your (?:left|right) (?:arm|leg) with",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hew-pulverise arms",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A sharp spike of pain lances down your left arm as the blade impacts your wrist.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A sharp spike of pain lances down your right arm as the blade impacts your wrist.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You feel something snap in your left arm as the hammer smashes home.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You feel something snap in your right arm as the hammer smashes home.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hew-pulverise legs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As the blade bites into your lower left leg, it traces a line of agonising pain.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "As the blade bites into your lower right leg, it traces a line of agonising pain.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your leg almost gives out as the hammer crunches brutally into your ankle.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Devastate arms cripple",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ draws back \\w+ warhammer, then unleashes a precise blow that smashes into your arms with bone cracking force\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ launches a devastating slash at your already injured arms, \\w+ blade cleaving to the bone\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Devastate arms mangle",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ whirls .+ in a terrible two-handed blow, aimed at your already injured arms\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ brings .+ whirling about to cleave deeply into your already damaged arms\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Devastate arms mutilate",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ unleashes a bone crushing blow with .+ at your arms, pulverising meat and bone in a single strike\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^With calculated precision, \\w+ unleashes a mighty blow at your arms, shattering bone and pulping flesh\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Devastate legs cripple",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ launches a devastating slash at your already injured legs, \\w+ blade cleaving to the bone\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ draws back \\w+ warhammer, then unleashes a precise blow that smashes into your legs with bone cracking force\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Devastate legs mangle",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ whips .+? in a savage arc, cleaving at your legs\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ aims a devastating blow with .+ at your already injured legs\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Devastate legs mutilate",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ unleashes a bone crushing blow with .+ at your legs, pulverising meat and bone in a single strike\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^With calculated precision, \\w+ unleashes a mighty blow at your legs, shattering bone and pulping flesh\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Focus",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) shifts into a more aggressive stance\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

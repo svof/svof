@@ -1,0 +1,1 @@
+selectString(matches[1], 1) setItalics(true) fg("blaze_orange") resetFormat() deselect()

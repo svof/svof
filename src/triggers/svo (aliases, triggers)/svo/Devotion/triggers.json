@@ -1,0 +1,170 @@
+[
+  {
+    "name": "Fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Strange terrifying voices begin to whisper through your mind.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Inquisition",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ draws you into \\w+ gaze, lowering \\w+ brow and glaring at you with righteous fury\\. Pointing at you with a single raised finger, \\w+ recites a list of your transgressions, condemning your actions and words\\. A blaze of holy fire surges about \\w+ as \\w+ dictates your sentence\\.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "level 2",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The words echo quietly in your mind, interrupting your concentration.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "level 3",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The words echo loudly in your mind, throwing your thoughts into disarray.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "level 4",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The words echo though your mind in a cacophony of noise, nearly throwing you to the ground with their intensity.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Beam",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You reel as the beam strikes, dazzled and confused.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hellsight",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ gives you a vengeful stare, and dark images begin to whisper to you from the edges of your mind\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Confusion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your head spins as your mind is drowned in chaos and confusion.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hallucinations",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Horrifying visions overcome you as",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Horrifying visions overcome you as \\w+ turns \\w+ righteous gaze upon you\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

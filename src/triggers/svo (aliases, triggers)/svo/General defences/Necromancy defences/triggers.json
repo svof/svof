@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Soulcaged",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "40",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As you feel the last remnants of strength ebb from your tormented body, you close your eyes and let darkness embrace you. Suddenly, you feel your consciousness wrenched from its pitiful mortal frame and your soul is free. You feel your form shifting, warping and changing as you whirl and spiral outward, ever outward. A jolt of sensation awakens you, and you open your eyes tentatively to find yourself trapped within a physical body once more.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "",
+        "type": "prompt"
+      }
+    ]
+  }
+]

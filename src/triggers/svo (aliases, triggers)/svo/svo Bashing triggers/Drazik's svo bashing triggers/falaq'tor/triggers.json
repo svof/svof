@@ -1,0 +1,274 @@
+[
+  {
+    "name": "guardian prone para",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With an expert combat manoeuvre, a Tsol'dasi guardian dodges around you, leaving your back exposed. She strikes with surgical precision, her frozen blade almost severing your spine and sending you sprawling to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With an expert combat manoeuvre, a Tsol'dasi guardian dodges around you, leaving your back exposed. He strikes with surgical precision, his frozen blade almost severing your spine and sending you sprawling to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With an expert combat manoeuvre, a Tsol'dasi guardian dodges around you, leaving your back exposed. She strikes with surgical precision, her frozen blade almost severing your spine and sending you sprawling to the floor.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "mystic athsma",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A Tsol'dasi mystic takes a deep breath and blows a frigid puff of air into your face, searing your lungs painfully as you inhale.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "mystic cold aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An eerie light shines within a Tsol'dasi mystic's eyes as he places his hands on your head, willing the polar cold into every fibre of your being.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An eerie light shines within a Tsol'dasi mystic's eyes as she places her hands on your head, willing the polar cold into every fibre of your being.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "guardian prone breaks",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Shouting a battle cry in archaic Tsol, a Tsol'dasi guardian launches herself at you with sword drawn. Polar flame wreathes her sword as she sunders your limbs with merciless efficiency.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Shouting a battle cry in archaic Tsol, a Tsol'dasi guardian launches himself at you with sword drawn. Polar flame wreathes his sword as he sunders your limbs with merciless efficiency.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "mystic blackout",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Wreathing his hand in pale blue energy, a Tsol'dasi mystic hurls a crackling wave of glacial power at you, slamming you against the wall and leaving you dazed.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Wreathing her hand in pale blue energy, a Tsol'dasi mystic hurls a crackling wave of glacial power at you, slamming you against the wall and leaving you dazed.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "pryla ari chilled",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Rising to her full height, Pryla'ari, Priestess of Life invokes the terrible power of the ritual circle inscribed overhead. Arcane might pulses violently for a moment before pouring into your body, wracking it with horrible, jarring pain.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "pryla ari sleep prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Pryla'ari, Priestess of Life throws her head back and incants a dreadful malediction. Overhead, the ritual circle flares with power and the world around you begins to slow before consciousness leaves you entirely.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "prya ari sleep aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Pryla'ari, Priestess of Life throws her head back and incants a dreadful malediction. Overhead, the ritual circle flares with power and the world around you begins to slow before consciousness leaves you entirely.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "pryla ari unknown",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Delicate strands of energy trail behind Pryla'ari, Priestess of Life's hands as she passes them through the air. The ribbons of energy coalesce into glittering serpents whose gleaming fangs pierce deep into your body, pumping wave after wave of polar ice into your veins.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "rylan arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Raising his swords high, Rylan Asgarai brings them crashing down on your arm, nearly severing the limb entirely.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "rylan haem",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Drawing himself up to his full height, Rylan Asgarai crosses his blades before himself and begins to incant. With a flash of power, the swords are transformed into a massive spear of ice that flies of its own volition and buries itself in your innards.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "lamqar triple",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You cry out in horror as your very marrow freezes and snaps beneath the weight of the Tsol'dasi's magic.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "lamqar 3",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Frigid light coalesces into rapier-thin lances that streak through the air to pierce your head, heart, and stomach, spreading a terrible chill through your broken body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "lamqar deepfreeze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Raising his hands heavily, Lamqar, the Doyen calls down a blizzard to fill the chamber with winter's wrath.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

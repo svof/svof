@@ -1,0 +1,158 @@
+[
+  {
+    "name": "Who is",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^whois (\\w+)$"
+  },
+  {
+    "name": "Honors a person",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^honou?rs? (\\w+)$"
+  },
+  {
+    "name": "(ndb set person category value) Adjust person data",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ndb set (\\w+) ([a-z_]+) (.+)$"
+  },
+  {
+    "name": "(iff person status)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^iff (\\w+) (\\w+)$"
+  },
+  {
+    "name": "qw-qw2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^qw(2)?$"
+  },
+  {
+    "name": "(qw update) Re-check people on qw list",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^qw update$"
+  },
+  {
+    "name": "(qwc) Organize by city members",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^qwc$"
+  },
+  {
+    "name": "(ppof) Report visible citizens of a city",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ppof (\\w+)"
+  },
+  {
+    "name": "(npp) Toggle name highlighting",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^npp(?: (\\w+))?$"
+  },
+  {
+    "name": "(ndb stats) See DB stats",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ndb stats$"
+  },
+  {
+    "name": "(ndb cancel) Cancel honors'ing people",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ndb cancel$"
+  },
+  {
+    "name": "(ndb honorsnew) Honors backlog of new people",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ndb honorsnew$"
+  },
+  {
+    "name": "(ndb export) export DB",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ndb export$"
+  },
+  {
+    "name": "(ndb import) import DB",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ndb import$"
+  },
+  {
+    "name": "(ndb delete all) Wipe the database clean",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ndb delete all$"
+  },
+  {
+    "name": "(ndb delete unranked) Wipe all unranked (newbies and dormant) players",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ndb delete unranked$"
+  },
+  {
+    "name": "(ndb update all) Re-check every person in the database",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ndb update all$"
+  },
+  {
+    "name": "(ndb update unranked) Re-check all unranked players",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ndb update unranked$"
+  },
+  {
+    "name": "(ndb delete person) Delete one individual entry",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ndb delete (\\w+)$"
+  },
+  {
+    "name": "(vshow highlightignore) See people on highlightignore",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow highlightignore$"
+  },
+  {
+    "name": "Enemies lists",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^(city|house|order) enemies( add)?$"
+  },
+  {
+    "name": "ndb alias cheatsheet",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ndb( long)?$"
+  },
+  {
+    "name": "(qwm) Show marks",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^qwm$"
+  },
+  {
+    "name": "(qwic) Show Infamous (quick)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^qwic$"
+  },
+  {
+    "name": "(qwi) Show Infamous (update first)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^qwi$"
+  },
+  {
+    "name": "(ndb infamous) Shows known infamous people in the database",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ndb infamous$"
+  }
+]

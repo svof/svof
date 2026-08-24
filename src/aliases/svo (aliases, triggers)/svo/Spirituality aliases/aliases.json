@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Fix angel (quick)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^fx$"
+  },
+  {
+    "name": "Fix angel (slow)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^fxx$"
+  }
+]

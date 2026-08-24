@@ -1,0 +1,30 @@
+{
+  "note": "sha256 of each module xml the package is verified against. These are the reference, so a change to one changes what 'verified' means - verify_merged.py refuses to run until it is re-recorded here, deliberately, in the same commit.",
+  "sha256": {
+    "svo (install me in module manager).xml": "da372ef4b904d222215e9e95ac2a30a3cc7fc1fdc72d9b1ae8affbe5451bca10",
+    "svo (actions dictionary).xml": "be6b2911a21276f8fb7f6f5c7c068c1ac3d6369f4b4a43db404261e7e020b09a",
+    "svo (alias and defence functions).xml": "6cd011150db1de22f02670c7b86f7e7d21a0c104334f7e74d4f46db5f0dad48f",
+    "svo (curing skeleton, controllers, action system).xml": "e71f438842ce3172f6d763b3f7ee44972c4242107399fd15d33a6688e50deac9",
+    "svo (custom prompt, serverside).xml": "bb184983eb484f7eb3d84535498b39f0bb50ec7a2dc4458e7e5dc3f99b95d351",
+    "svo (install, config, pipes, rift, parry, prios).xml": "46f824fbd82cf3318f531b1e167907831489ba638128754aa7cf9245df76bf41",
+    "svo (setup, misc, empty, funnies, dor).xml": "e06528ab16638788aedac3e1b8fcd06a90cd1b30d5dd25fd9ca42328753b8f20",
+    "svo (trigger functions).xml": "8c40000c198bccb1174def238e4a31cf146e9305ad05b796018eb9fb7dfcb66d",
+    "svo (aliases, triggers).xml": "cd986aa6b91aa3ef9c604eca9bd5327549717189dae113fecaea0f11efb07a8d",
+    "svo (elistsorter).xml": "7f3609872dee165963a5d78e665c3b78a93030f07041ad51f7017311f4dfe3e7",
+    "svo (fishdist).xml": "e6926cf81e3edb13ec999028eae010a74bea3e237c66b7f3892d10471f1dc276",
+    "svo (inker).xml": "7823bae19a3a7d8c99e7c096f91650a6880f1b31895d89a8b7f42338696a05f0",
+    "svo (mindnet).xml": "a3345681ab13707d1cc74b8115bbf6ebb6baed117afef54d75f8fd5f20a18ecb",
+    "svo (peopletracker).xml": "b73c2e1c2585395f6545c72667d20614f80b0d001e2d5df89336629d10e87258",
+    "svo (reboundingsileristracker).xml": "e93240c1e03052d80f49ef7df26edad1c69165734aacb79b052a5660411ba8af",
+    "svo (refiller).xml": "cf4900e07e74bd1ab189d66892ed55d2abe7c46171a2545e492bf4d0bed8469e",
+    "svo (runeidentifier).xml": "157670eac0ce1ca1ed87a7f78a631c437ce5a5a880dc0e08c9952ed17358dc3a",
+    "svo (stormhammertarget).xml": "99aa0e35b955434d45fd03a2aadc66fdfaed962740d4d9f681be8362927ab528",
+    "svo (limbcounter).xml": "657cfb8a69a6631b0cb3e6ce645c538446a0a030fc34609d851d01dbf96970d6",
+    "svo (burncounter).xml": "4b61add1aa9e3993239b8f508713e172aa0d12bc88e496ae92da3b241ec60d03",
+    "svo (priestreport).xml": "5e2cc66b5f05c37475a68e3dd435f8234806387ab0241c99881dc8558c2524c2",
+    "svo (enchanter).xml": "90ef67ab1f9c1decfa252f71a47bfcb28253985321e7818cc7fe2049e77ad48f",
+    "svo (namedb).xml": "d4c51070f74d1e1dae05526466968c728dda1c30b2ed8aa6f8ce2b565f193b6d",
+    "svo (logger).xml": "2da5674d444f68c4f0fb44daa4245358f1e80eb2b245f2c419ebca6a0f5a02f0",
+    "svo (offering).xml": "e89d903e0f6a6993d1ec9183b9d567a53f06410101119f0aaba843940811583c"
+  }
+}

@@ -1,0 +1,80 @@
+[
+  {
+    "name": "manusha para",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Vishengo growls an incantation and makes a quick gesture to you, palms open. A sudden force knocks into you, then through you, to leave you shuddering.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Sidi, the Elder growls an incantation and makes a quick gesture to you, palms open. A sudden force knocks into you, then through you, to leave you shuddering.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Nadja, the Elder growls an incantation and makes a quick gesture to you, palms open. A sudden force knocks into you, then through you, to leave you shuddering.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "manusha prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Oaste reacts with a quick, powerful side kick that causes you to fall to one knee.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Vedel, a woodworker reacts with a quick, powerful side kick that causes you to fall to one knee.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Elena, a gypsy woman reacts with a quick, powerful side kick that causes you to fall to one knee.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "manusha leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Oaste strikes you with a vicious kick to your knee, then lands a heavy punch in your abdomen.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Elena, a gypsy woman strikes you with a vicious kick to your knee, then lands a heavy punch in your abdomen.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Vedel, a woodworker strikes you with a vicious kick to your knee, then lands a heavy punch in your abdomen.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

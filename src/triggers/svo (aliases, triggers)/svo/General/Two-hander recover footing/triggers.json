@@ -1,0 +1,248 @@
+[
+  {
+    "name": "Slaughter",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Drawing back",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Drawing back .+?, you unleash a flesh-mincing blow at",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Limb attack",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Taking hold of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Taking hold of .+? with a firm two-handed grip, you hew savagely at",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Overhand",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Raising",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Raising .+? above your head, you bring it down upon",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Underhand",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Bracing your feet, you lunge upward at",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Bracing your feet, you lunge upward at \\w+ with",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Devastate legs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You lunge forward at",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You lunge forward at \\w+ with .+?, but stumble hopelessly off balance\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Devastate legs 1-3 fractures",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Bracing your feet, you launch a devastating slash at the legs of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Bracing your feet, you launch a devastating slash at the legs of \\w+, delivering a glancing blow\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Devastate legs 4-5 fractures",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You whip",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You whip .+? in a vicious arc, hewing savagely into the legs of \\w+\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Devastate arms-legs 6-7 fractures",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Adjusting your footing, you unleash a horrific slash at the",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Adjusting your footing, you unleash a horrific slash at the (?:arms|legs) of \\w+, cleaving flesh and shattering bone in a savage display of your supremecy\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Devastate arms 1-3 fractures",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Bracing your feet, you launch a devastating slash at the arms of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Bracing your feet, you launch a devastating slash at the arms of \\w+, delivering a glancing blow\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Devastate arms 4-5 fractures",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a single, terrible blow, you bring",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With a single, terrible blow, you bring .+? whirling about to cleave into the already injured arms of \\w+\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Recovered footing",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Rolling with the momentum of your last attack, you come smoothly back to your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You have no need to recover your footing - you are already standing.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Bracing your feet beneath you, you boost yourself back to a standing position.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

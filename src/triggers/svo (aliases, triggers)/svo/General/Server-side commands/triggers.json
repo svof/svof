@@ -1,0 +1,358 @@
+[
+  {
+    "name": "Running a curing command",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "[Curing]:",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^\\[Curing\\]: ([A-Z ]+)$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Running a queue command",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "[System]: Running queued",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^\\[System\\]: Running queued (?:balance|equilibrium|eqbal|class) command: (.+)$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "vconfig gagserverside",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have set the",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Automatic affliction curing activated.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Command reporting activated.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic affliction curing disabled.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Curing activated.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Curing will now prioritise health over mana.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Curing will now prioritise mana over health.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Will cure health based afflictions above ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Health curing threshold set to",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Mana curing threshold set to",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Moss health curing threshold set to",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Moss mana curing threshold set to",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Will clot above",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Curing disabled.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now cure using the normal set.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic sipping of healing elixirs activated.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic defence handling activated.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic usage of focusing activated.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now attempt to cure multiple things at once.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now attempt to clot your wounds.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "All your curing affliction priorities have been reset to defaults.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Automatic usage of focusing disabled.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will no longer attempt to clot your wounds.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Created the new curing set: 'NORMAL'.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Created the new curing set: 'SLOWCURING'.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You are already viewing advanced curing options.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now not use the insomnia ability.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now use the insomnia ability.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now use concoction-based cures.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will now use transmutation cures.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^You have added the \\w+ affliction to your predicted afflictions list\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You will now use mana if above (\\d+)% of your maximum mana reserves\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You will now use alternative curing methods if your selected curing type is not available.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You will no longer use alternative curing methods if your selected curing type is not available.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "slowcuring set switch",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You will now cure using the slowcuring set.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "vconfig gagclot",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "[Curing]: CLOT",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Curingset limit",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You already have as many priority curing sets as you are permitted.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Gag system alias set",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Alias \"multicmd\" will now execute:",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "Gag 9multicmd set",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Alias \"9multicmd\" will now execute:",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "Gag 0-9 alias shortcut use",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Wildcard out of range in command",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "Curingsets already exist",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You already have a set with that name. Either pick a new name or rename the old set.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hit alias limit",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have reached your limit of 100 aliases.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Defence list reset",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "All your defence priorities have been reset to defaults.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

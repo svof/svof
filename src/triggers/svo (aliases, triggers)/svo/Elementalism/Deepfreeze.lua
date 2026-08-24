@@ -1,0 +1,1 @@
+tempLineTrigger(1,1,[[if not isPrompt() then svo.valid.magi_deepfreeze() end]])

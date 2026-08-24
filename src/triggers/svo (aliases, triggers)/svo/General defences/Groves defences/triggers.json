@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Started",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Standing amid the blackened plantlife, you cup your hands around a cube of elemental ice, focusing as it warms at your touch and rapidly begins to melt. Ethereal wisps of steam waft from the ice, numbing your fingers with cold.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Finished",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Whispering a private prayer to the earth, you let the newly melted waters drip upon the ground. Lush green growth sparks into life around every rejuvenating drop, rapidly spreading as Nature's vibrance is restored.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Cancelled",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your concentration is disturbed and your lose your focus on restoring the surrounding environment.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

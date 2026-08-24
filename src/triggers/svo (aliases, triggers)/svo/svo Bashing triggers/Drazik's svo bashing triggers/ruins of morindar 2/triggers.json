@@ -1,0 +1,226 @@
+[
+  {
+    "name": "morindar stupidity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A whirlwind of lethal iridescence, a shimmering gloomwing moth slams into you, sending you sprawling.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "morindar blackout",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Writhing, sinuous tentacle-like appendages wrap around your neck, crushing your windpipe as a hunchbacked feyr attempts to squeeze the life out of you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "All sensation fades to blackness as a jagged quorin transfixes you with its mesmerising gaze.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "morindar webbed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A corpulent rilma worm sends you crashing to the floor as it grabs your legs in its mandibles and pulls them out from under you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A jagged quorin reaches out with its tentacle-like arms and grabs hold of each of your limbs, pinning you to the ground before pummelling you with its free arms.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "morindar loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A corpulent rilma worm lashes out at you and sinks its slavering mandibles into your flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The disgusting saliva seeps into your pores and causes your skin to burn furiously.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A cursed revenant jerks his decaying body over to you, tosses his head onto your neck, and sinks his rotten teeth into your skin.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "morindar stuns",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Covering you with its massive bulk, a greyish-green culuma crushes the life out of you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "morindar paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your limbs lock up as a greyish-green culuma drops on you from the ceiling, knocking you to the ground as its appendages form a leech-like grip on you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A feral gangrel sinks his fangs into your flesh, delivering saliva that begins to sear its way through your skin and render you immobile.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "morindar prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A whirlwind of lethal iridescence, a shimmering gloomwing moth slams into you, sending you sprawling.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A corpulent rilma worm sends you crashing to the floor as it grabs your legs in its mandibles and pulls them out from under you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Covering you with its massive bulk, a greyish-green culuma crushes the life out of you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your limbs lock up as a greyish-green culuma drops on you from the ceiling, knocking you to the ground as its appendages form a leech-like grip on you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Whipping its arms about in a frenzy, a jagged quorin batters you to the ground with a flurry of blows.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "morindar bleeding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a guttural grunt, a hunchbacked feyr punches a pointed tentacle into your chest with a violent thrust.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You gag at the stench as a hideous nel'dorath clamps her rotten teeth down on your arm and fetid saliva starts to run over your flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "morindar voyria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Pain lances through your body as a corpulent rilma worm dashes past you and scratches you with its poisonous bristles.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A feral gangrel sinks his fangs into your flesh, delivering saliva that begins to sear its way through your skin and render you immobile.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "morindar epilepsy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You fall to the ground and thrash uncontrollably as a hideous nel'dorath's eyes flare with an intensity that bores deep into your brain.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

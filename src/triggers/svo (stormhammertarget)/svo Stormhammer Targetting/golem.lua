@@ -1,0 +1,1 @@
+svo.golem = tonumber(matches[2])

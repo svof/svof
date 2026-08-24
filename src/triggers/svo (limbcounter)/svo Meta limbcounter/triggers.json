@@ -1,0 +1,138 @@
+[
+  {
+    "name": "Axe throw",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You cock back your arm and throw",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You cock back your arm and throw a(?: \\w+)? throwing axe(?: marred with char marks)? at (\\w+)'s (.+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Gaian fury axe throw",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You cock back your arm and throw an Axe of Gaian Fury",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You cock back your arm and throw an Axe of Gaian Fury at (\\w+)'s (.+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Maul",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You spring forwards and maul",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You spring forwards and maul (\\w+)'s (.+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hydra",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You command your many heads to clamp",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You command your many heads to clamp (\\w+)'s (.+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "They seize ",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "Normal trip",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You swiftly sweep ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You swiftly sweep (\\w+)'s feet out from beneath \\w+ with .+? before driving the point of the weapon into \\w+ (.+?)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Mounted trip",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You deftly hook ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You deftly hook .+? behind (\\w+)'s foot and send \\w+ tumbling off .+? before driving the point of the weapon into \\w+ (.+?)\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

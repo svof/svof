@@ -1,0 +1,1 @@
+send(string.format("cast stormhammer at %d and %d and %d", target1, target2, target3))

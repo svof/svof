@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Started",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Achaea Registration",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "11,0",
+        "type": "color"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "-----------------------------",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Welcome to the Achaea Character Registration system. A common registration is shared with all your characters, identified by your unique email address. This will allow you to easily update registration details for all your characters at once and request password resets from the website should you forget it.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Registration aborted",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Registration Aborted.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Confirmation",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "[Info]: A confirmation email has been sent to",
+        "type": "startOfLine"
+      }
+    ]
+  }
+]

@@ -1,0 +1,206 @@
+[
+  {
+    "name": "svo writhe impale",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You begin to writhe furiously to escape the",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You begin to writhe furiously to escape the \\w+ that has impaled you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "svo writhed impale",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#000000",
+    "highlightBG": "#00aa00",
+    "patterns": [
+      {
+        "pattern": "With an heroic effort you manage to writhe yourself free from the weapon that impaled you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo writhe transfixed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You begin trying to wrest your mind free of that which has transfixed it.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo started writhe",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You begin to struggle free of your entanglement.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo writhed free",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have writhed free of your",
+        "type": "startOfLine"
+      }
+    ],
+    "children": [
+      {
+        "name": "svo writhed roped",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "yes",
+        "highlightFG": "#000000",
+        "highlightBG": "#00aa00",
+        "patterns": [
+          {
+            "pattern": "You have writhed free of your entanglement by ropes.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo writhed bound",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "yes",
+        "highlightFG": "#000000",
+        "highlightBG": "#00aa00",
+        "patterns": [
+          {
+            "pattern": "You have writhed free of your entanglement by tied ropes.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo writhed webbed",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "yes",
+        "highlightFG": "#000000",
+        "highlightBG": "#00aa00",
+        "patterns": [
+          {
+            "pattern": "You have writhed free of your entanglement by webs.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo writhed transfixed",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "yes",
+        "highlightFG": "#000000",
+        "highlightBG": "#00aa00",
+        "patterns": [
+          {
+            "pattern": "You have writhed free of your state of transfixation.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "svo writhe helpless",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You begin to writhe helplessly, throwing your body off balance.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo writhe hoisted",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) suddenly releases \\w+ vice-like grip on you\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

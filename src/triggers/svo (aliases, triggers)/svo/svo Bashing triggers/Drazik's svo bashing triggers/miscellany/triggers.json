@@ -1,0 +1,114 @@
+[
+  {
+    "name": "dream horrors loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Focusing its eyes upon you, a dream horror paws at you with its diseased claws.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "dream horrors web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A dream horror strains heavily, a thick noxious fog pouring from its pores and covering your skin in a burning, sticky liquid.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "dream horrors prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A dream horror swipes at you with one of its tentacles, sending you sprawling to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "lycopod prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A wild lycopod swipes a long corded vine at your feet, sending you sprawling.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "lycopod webs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A wild lycopod quickly grabs and entangles you with a long corded vine.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A carnivorous lycopod quickly grabs and entangles you with a long corded vine.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Sensitivity (bypasses deaf)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^Raising a shining metallic hand, (.+) points at you and mouths something. Every nerve in your body springs to life and begins to smoulder under your skin\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

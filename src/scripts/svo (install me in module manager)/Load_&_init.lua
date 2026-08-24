@@ -1,0 +1,4 @@
+-- Svof loads as a single package, so there is no module list to install from
+-- and no load order to arrange here. Order comes from the order items appear
+-- in the tree, and initialisation order from the explicit sequence in
+-- svo_init_system, which calls each svo.loader.* function in dependency order.

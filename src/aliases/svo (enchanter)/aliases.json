@@ -1,0 +1,14 @@
+[
+  {
+    "name": "enchant",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^enchant (.+)$"
+  },
+  {
+    "name": "repeat the last order",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^reenchant$"
+  }
+]

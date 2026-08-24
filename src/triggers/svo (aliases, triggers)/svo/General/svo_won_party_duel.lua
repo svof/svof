@@ -1,0 +1,1 @@
+svo.echof("Your party won! Congrats!")

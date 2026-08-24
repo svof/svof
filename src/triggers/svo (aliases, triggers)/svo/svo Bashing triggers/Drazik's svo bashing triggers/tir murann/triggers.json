@@ -1,0 +1,170 @@
+[
+  {
+    "name": "air mage transfix",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A House Tsez air mage weaves her fingers in front of your face, leaving a fascinating trail of colour that you can't help admiring.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "iayh epilepsy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Iayh, a mage of House Feranki quickly flings a tiny phial at you that shatters on impact. You scream out in pain as the liquid previously held within the phial burns through your skin.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ver'osy iayh ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Ver'osy, the Vertani priestess points a lone finger at you, causing you to erupt in flames.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Iayh, a mage of House Feranki splashes the contents from a large bowl filled with a dark, sticky substance on you. With a sly smile she snaps her fingers as it ignites into flames.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "vertani dakhota prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A massive gour knocks you to the ground as he charges into you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Rohase, Captain of the Guard sideswipes your ankle with the blunt end of her weapon, the force of the blow causing you to tumble to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A Vertani guard sideswipes your ankle with the blunt end of his weapon, the force of the blow causing you to tumble to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A massive gour knocks you to the ground as she charges into you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "vewig rope",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Vewig, the Magelord of House Tsez pulls at the loose threads from his sleeve, which form long strands that loop around you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Vewig, the Magelord of House Tsez yanks his arm quickly as if tugging the strands, and you feel the rope-like strands constricting around you tightly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "daqsool arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Taking a quick step back, Daqsool, the Qoul of Tir Murann circles around gaining momentum, coming around opening a deep gash in your arm as his weapons connect, almost severing your limb.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ver'osy scary!",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Ver'osy, the Vertani priestess's form grows to a tremendous size, and her eyes flash momentarily with a fiery gleam that leaves you shrinking away in fear",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "gour trample",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Whipping himself into a fury, a massive gour stampedes tumultuously, trampling over you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Whipping herself into a fury, a massive gour stampedes tumultuously, trampling over you.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

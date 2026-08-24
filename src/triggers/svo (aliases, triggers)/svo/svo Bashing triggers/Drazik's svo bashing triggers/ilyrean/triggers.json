@@ -1,0 +1,178 @@
+[
+  {
+    "name": "ilyrea chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The ice shards whirling around a sakuwat ice warrior's form quickly meld, forming a sharpened spear. Grabbing the spear out of mid-air, he impales your body, freezing you before the spear melts away.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "An icy blue luminescence shoots out from a sakuwat ice warrior's extended arm and envelops you, leaving your body extremely cold.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a swift motion of her arm, a female sakuwat sends a gust of freezing wind across your body, sending a chill down your back.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ilyrea prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Solkuwan, an apprentice sakuwat hunter brings his massive arm back and thrusts it forward rapidly, punching you square in the face and sending you rolling backwards.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Corpse in hand, Merkuwan, the skinner swings his arms around menacingly, slams it into you and knocks you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A sakuwat youngling lets out a piercing scream and the unstable stalactites above fall toward the ground and shatter upon hitting your body, sending you crumbling to the floor.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Swinging the corpse of a dead fish, Derin, the sakuwat fisher smashes you on theside of the head, sending you sprawling to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Ankuwan, the Watcher brings his arm back and quickly thrusts it toward your chest, sending you flying backwards.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A giant pink salmon whips its tail and smacks you across the face, sending you backwards.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A massive swordfish whips its tail and smacks you across the face, sending you backwards.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ilyrea molkuwan",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Molkuwan, the egg protector grabs both of your arms within his grasp and coats them in thick ice, sending chills down your back. Tightening his grasp, Molkuwan, the egg protector shatters your ice-coated arms.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "icefall",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As you walk onto the slick ice, you slip and fall on your back.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ilyrea molkuwan stupid prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Molkuwan, the egg protector concentrates briefly, coating his fists in ice. Raising his head, he punches you square in the face, causing you to roll backwards.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ilyrea narntoth chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Narntoth, the Elder Mage raises his ice staff and it shatters in his hand. The icicles hover momentarily, then quickly surround and cut you before instantly reforming in his grasp.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ilyrea ankuwan total freeze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Taking a deep breath, Ankuwan, the Watcher summons a frigid wind that surrounds you, slowly freezing your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ilyrea ankuwan burns",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "on fire",
+        "type": "substring"
+      }
+    ]
+  }
+]

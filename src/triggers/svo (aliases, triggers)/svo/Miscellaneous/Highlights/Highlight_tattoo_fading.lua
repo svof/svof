@@ -1,0 +1,1 @@
+selectCurrentLine() setBold(true) setUnderline(true) deselect() resetFormat()

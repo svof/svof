@@ -1,0 +1,702 @@
+[
+  {
+    "name": "NameDB cwho",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "100",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^Citizen\\s+Rank\\s+CT\\s+Class$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Get name (cwho)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^([A-Za-z].+)\\s+(1|2|3|4|5|6)\\s+(?:On|Off)\\s+(.*)$",
+            "type": "regex"
+          },
+          {
+            "pattern": "return not isPrompt()",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Stop getting (cwho)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\d+",
+            "type": "regex"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "NameDB hwho",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "100",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Member              Rank      HTell  HNTell  Probation      Class",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "Get name (hwho)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^(\\w+)\\s+(?:\\* )?\\d+\\s+\\w+\\s+\\w+\\s+\\w+\\s+(\\w+)$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Stop getting (hwho)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\d+",
+            "type": "regex"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Citizens",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "93",
+    "filter": "no",
+    "fireLength": "999",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^The following are (?:IN)?ACTIVE citizens of (\\w+)\\:$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Stop getting (citizens)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Total:",
+            "type": "startOfLine"
+          }
+        ]
+      },
+      {
+        "name": "Save line",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "return true",
+            "type": "lua"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "House members",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "999",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": " HR Stat Class      Name + Title",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "Get name (house members)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^ *\\d+(?: prob)? +(\\w+)\\s+.*$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Stop getting (house members)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\d+",
+            "type": "regex"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Clan who",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "100",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The following members of the clan of ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "are in the realms:",
+        "type": "substring"
+      }
+    ],
+    "children": [
+      {
+        "name": "Get name (clan who)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^",
+            "type": "regex"
+          },
+          {
+            "pattern": "return not isPrompt()",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Stop (clan who)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "",
+            "type": "prompt"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Party who",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "100",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The following members of your party are in the realms:",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "Get name (party who)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^",
+            "type": "regex"
+          },
+          {
+            "pattern": "return not isPrompt()",
+            "type": "lua"
+          }
+        ]
+      },
+      {
+        "name": "Stop (party who)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "",
+            "type": "prompt"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Order members",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "999",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The order has no mortal order head.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Mortal order head:",
+        "type": "startOfLine"
+      }
+    ],
+    "children": [
+      {
+        "name": "Skip (order members)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "3",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^",
+            "type": "regex"
+          },
+          {
+            "pattern": "3",
+            "type": "spacer"
+          }
+        ],
+        "children": [
+          {
+            "name": "Member",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "^([A-Za-z]+)\\*?",
+                "type": "regex"
+              }
+            ]
+          },
+          {
+            "name": "Stop (order members)",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "",
+                "type": "prompt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "NameDB qw",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+),",
+        "type": "regex"
+      },
+      {
+        "pattern": "return not isPrompt()",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "NameDB qw 2",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": ".*",
+        "type": "regex"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "^(?:Plus another \\d+ whose presence you cannot fully sense )?\\(\\d+ total\\)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "City-House-Order enemies",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Enemies of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "2,0",
+        "type": "color"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": ".+",
+        "type": "regex"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "Total:",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "Birthdays list",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) is \\d+ years old today!$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^The soul of (\\w+) is \\d+ years old today!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Friend Checking",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "100",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have acknowledged the following adventurers as mutual friends:",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You have requested formal acknowledgement as friend from the following:",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You have no outstanding requests for formal acknowledgement of friendship.",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "Get name (Friend)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Stop (friend who)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "",
+            "type": "prompt"
+          },
+          {
+            "pattern": "See FRIENDS R[EQUESTS] to see outstanding requests to or from you.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Clan Position Start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "99",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The leadership positions are:",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "Clan Position Name",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "yes",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "99",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "12,0",
+            "type": "color"
+          },
+          {
+            "pattern": ".+",
+            "type": "regex"
+          }
+        ],
+        "children": [
+          {
+            "name": "People In Position",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "yes",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "7,0",
+                "type": "color"
+              },
+              {
+                "pattern": "^   (.+)$",
+                "type": "regex"
+              }
+            ]
+          },
+          {
+            "name": "Close Clan Positions",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "There are ",
+                "type": "startOfLine"
+              },
+              {
+                "pattern": "^There are \\d+ active members in this clan.",
+                "type": "regex"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,114 @@
+[
+  {
+    "name": "UW Scorpion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A deadly obsidian scorpion shoots both pincers forward in a double attack, plunging their razor-sharp points deep into you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "UW Scorpion break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A deadly obsidian scorpion reaches out, grabs you in one of his huge pincers, and squeezes brutally.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "UW zombie break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A rotting zombie falls upon you heavily, snapping bones.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "UW DK prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A steel-encased Death Knight pauses momentarily and emits a pulse of blinding, red light, taking away your balance.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Ur Vamp aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The Ur'Vampire Gerzson bows his head, slumping forward as if in deep thought. You feel drawn, thinned, and the world around you speeds up noticeably.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The Ur'Vampire Prioska bows her head, slumping forward as if in deep thought. You feel drawn, thinned, and the world around you speeds up noticeably.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Ur' Vamp web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The Ur'Vampire Gerzson twirls quickly as a black mist rises from the ground in response. The mist moves quickly to envelope you with its ghastly choking fumes.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

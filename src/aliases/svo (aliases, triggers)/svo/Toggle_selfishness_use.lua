@@ -1,0 +1,1 @@
+svo.defs.keepup("selfishness", matches[2], nil, true)

@@ -1,0 +1,96 @@
+[
+  {
+    "name": "kemnast prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Death Knight Lord Kemnast becomes a blur of motion, feinting and whirling and dodging at inhuman speeds, slashing at you repeatedly from multiple angles in a display of consummate swordsmanship that knocks you flat.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "prioska aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The Ur'Vampire Prioska bows her head, slumping forward as if in deep thought. You feel drawn, thinned, and the world around you speeds up noticeably.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "vamp para",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A pale-skinned, humanoid vampire crosses her arms and makes a throwing gesture with her hands towards your body, holding you in place with an invisible influence.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "underworld fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A shiver of panic runs down your spine as the horror of a rotting zombie's existence strikes you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A horrible wail from a luminescent ghost surrounds you, sucking at your will to live.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "zombie leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A decaying zombie kicks his rotting foot into your leg and you hear bones crunch.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

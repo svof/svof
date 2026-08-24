@@ -1,0 +1,511 @@
+[
+  {
+    "name": "Ulgase aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a wicked gleam in her eyes, Ulgase, the lich crone snaps her bony finger in front of you and the world suddenly seems to slow down.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "LHG Spider loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A silver spider sinks its fangs into your body, you scream out in agony as a vicious venom tears through your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "LHG spider web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A silver spider spins around rearing up to spray you with a sticky webbing, which quickly entangles your limbs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Tsol'aa web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Deftly working her nimble fingers, Tsalinas, the weaver binds you in a complex weave of colourful thread.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Kassan, the healer raises his arms with an angry glare, and thorny vines rise from the forest floor to entangle you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Tsol'aa arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Ta'lissu, the tattoo artist snarls and snatches your wrist, twisting it behind your back with a powerful jerk and snapping the bone.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Jade serpent limb break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a thunderous roar, a formidable jade sea serpent slithers around you and attempts to snap you in half with his powerful muscles.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Tenwat legbreak",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A pair of grasping hands grabs one of your calves and twists your leg as hard as possible. You feel an agonising pain and the bone snaps, tearing out of the flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "belladona's keep arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Wrapping steel fingers around your arm, Grollum, the Sentinel crushes it effortlessly.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A two-headed ogre brings his mace crashing down upon you, his other head whispering a chant that paralyzes you moments before it crunches into your arm.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Bella paralyse",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your muscles stiffen and lock as Belladona, Queen of Vampires gazes at you hypnotically.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Clockwork web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A wire-frame man whips a flexible length of wire around you, binding it tightly around you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Clockwork paralyse",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel your muscles tightening as a wire-frame man scratches his claws into you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Atavian Legbreak",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An atavian farmer fires a well-aimed kick at your leg, and you hear a sickening crunch.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Lupine Hunting grounds paralyse and prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a deft manoeuvre a massive varkha whips his spear through the air slicing a deep gash in your chest then quickly thrusts the spear forward penetrating your gut with ease as the barbed head tears the wound open, as blood gushes from the wounds.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "LHG recklessnes",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Opening its giant mouth a massive gohlbrorn clamps its sharp bony teeth into you ripping out a large chunk of flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Morindar legbreak",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You fall to the floor, face distorted in agony as a statue of a haggard beggar crushes both your legs under his enormous foot.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Morindar arm break",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You hear the snapping of bone as a statue of a haggard beggar grabs you with both arms and crushes you in a tight embrace.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Zaphar prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A giant scorpion skitters forward and barrels into your kneecaps, sending you to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Tapoa limb break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With an enraged howl, the king ape grabs your legs and lifts you above his head, whirling you about before effortlessly tossing you into the underbrush.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Charging toward you with a shriek, the Vultubus tramples over your body, pounding you into the ground with his massive weight.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Gulf arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Rocketing through the water, a redfin tuna rams into your arm, splintering the bone with agonising force.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "gulf leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Slipping a long tentacle around your lower body, a monstrous septacean slowly begins to squeeze, and you feel the bones of your legs crack under the intense pressure.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Gulf prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A school of hungry fish nibbles on the remains of Qwindor, who has succumbed to the teeth and tentacles of a monstrous septacean.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Quisalis arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With an invigorated shout, a Quisalis sentry hacks into your arm with a vicious swing of his halberd.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Azdun zombie paralyse and prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A noxious fume squirts out of a decaying zombie, making your jaw tighten and knocking you to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Prin",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Underworld",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Annwyn",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Iskadar Mines",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Meropis",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Squid arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A long tentacle reaches out to grab you, but you escape it at the last moment. As the tentacle passes by you it slams into your arm with a mighty force.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

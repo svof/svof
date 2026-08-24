@@ -1,0 +1,1 @@
+svo.startedfighting("sentinel", matches[2])

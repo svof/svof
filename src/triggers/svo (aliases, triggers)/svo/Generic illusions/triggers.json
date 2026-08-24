@@ -1,0 +1,634 @@
+[
+  {
+    "name": "Aeon+sleep",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The curse of the Aeon wears off and you return to the normal timestream.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You feel incredibly tired, and fall asleep immediately.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Poor strip+chaosrays",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your speed defence erodes away.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You are hit by a indigo, orange, and violet ray.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Aeon tarot+asthma",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ stands a tarot on \\w+ open palm, and blows it lightly at you\\. Suddenly your movement through the time stream is slowed\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You feel a tightening sensation grow in your lungs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Aeon wore off + flick",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The curse of the Aeon wears off and you return to the normal timestream.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^\\w+ flicks the temple of a puppet of \\w+, hard\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "return line:find(svo.me.name, 1, true) and true or false",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Asthma + aeon wore off",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a tightening sensation grow in your lungs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The curse of the Aeon wears off and you return to the normal timestream.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stuttering-clumsiness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The thought of speech seems difficult all of a sudden.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You lash out clumsily.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Focus-impatience",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You focus your mind intently on curing your mental maladies.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You're unable to focus your mind.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Pacifism-stuttering",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are feeling far too passive to do that.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The thought of speech seems difficult all of a sudden.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Asthma-stuttering",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a tightening sensation grow in your lungs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The thought of speech seems difficult all of a sudden.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis-stuttering",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A prickly stinging overcomes your body, fading away into numbness.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The thought of speech seems difficult all of a sudden.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Darkshade-impatience",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The sun has rendered you too weak to move a muscle.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You shuffle your feet noisily, suddenly bored.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Flay-applied",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ flays the sileris coating from you\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You apply a sileris berry to yourself.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Sleep-sluggish",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel incredibly tired, and fall asleep immediately.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You move sluggishly into action.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Impatience-kalmia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You shuffle your feet noisily, suddenly bored.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You feel a tightening sensation grow in your lungs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Herb bal-mind paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You may eat another plant or mineral.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You feel your limbs stiffen and lock up in response to an unseen power.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hallucinations-epilepsy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your vision blurs for a moment.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your nerves feel suddenly jangled.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Empty pipe-asthma",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The pipe has nothing smokeable in it.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your lungs are much too constricted to smoke.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Snake bite, single aff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "2",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ sinks \\w+ fangs into your body and you wince in pain\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "2",
+        "type": "spacer"
+      },
+      {
+        "pattern": "",
+        "type": "prompt"
+      }
+    ]
+  },
+  {
+    "name": "Doublestab, single aff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "2",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ pricks you twice in rapid succession with \\w+ dirk\\.?$",
+        "type": "regex"
+      },
+      {
+        "pattern": "2",
+        "type": "spacer"
+      },
+      {
+        "pattern": "",
+        "type": "prompt"
+      }
+    ]
+  },
+  {
+    "name": "Jab, single aff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "2",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ viciously jabs a needle-pointed dirk into you\\.$ ",
+        "type": "regex"
+      },
+      {
+        "pattern": "2",
+        "type": "spacer"
+      },
+      {
+        "pattern": "",
+        "type": "prompt"
+      }
+    ]
+  },
+  {
+    "name": "Arms crippled vibe-asthma",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A sudden pain shoots through both your arms and you feel their bones crumble.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You feel a tightening sensation grow in your lungs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Asthma+sleep",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a tightening sensation grow in your lungs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You feel incredibly tired, and fall asleep immediately.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Serious concussion + SoA",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The massive trauma to your head has damaged your skull and brain considerably.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your shield completely absorbs the damage.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Bomb+limb",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "It scatters a fine sparkling dust into the air and your eyes.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your right leg is greatly damaged from the beating.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Mild concussion + SoA",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your mind feels suddenly dulled and slow.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your shield completely absorbs the damage.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stuttering-sensitivityralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The thought of speech seems difficult all of a sudden.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A prickly, stinging sensation spreads through your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Peace illusion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your heart is filled with love, compassion, and peace.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A strange feeling overtakes you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Example - ignore anorexia bite with sbites on",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ sinks \\w+ fangs into your body and you wince in pain\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "The idea of eating or drinking is repulsive to you.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

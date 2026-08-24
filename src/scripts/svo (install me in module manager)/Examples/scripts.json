@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Use of got-lost aff-def events",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "affs display window",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "Customize_systems_echos",
+    "isActive": "no",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "svo system loaded"
+    ]
+  },
+  {
+    "name": "Display afflictions on prompt demo",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "Show which affs you got-lost w- times and count (by Lynara)",
+    "isActive": "yes",
+    "isFolder": "yes"
+  }
+]

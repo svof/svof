@@ -1,0 +1,158 @@
+[
+  {
+    "name": "fisherman roped",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A weathered fisherman scowls and throws a net at you, entangling your limbs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "serpent chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A giant sea serpent coils his body around yours and sinks into the icy depths of the ocean.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "murre transfix",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A great grey murre digs her claws deep into your flesh, raking and tearing.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "colchis stuns",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A Colchian warrior flicks his wrist and slams the butt of his sword into the bridge of your nose.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "assassin loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A cloaked assassin leaps from the shadows and buries a dagger to the hilt in your back.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Vendril, Master Assassin leaps from the shadows and buries a dagger to the hilt in your back.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "colchis blackout",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Thorlis, the Warrior Chieftain pulls a glass vial from his robes and throws it at the ground. On impact, the vial shatters and sends shards of glass in all directions as thick blue smoke fills the room.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Vray, a fortress servant pulls a glass vial from his robes and throws it at the ground. On impact, the vial shatters and sends shards of glass in all directions as thick blue smoke fills the room.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "colchis prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Vray, a fortress servant lunges for your throat but trips on his long robes and tumbles to the floor, colliding with your legs and knocking you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Frewynne, the Warrior Chieftess slips behind you and knocks you onto your stomach with the butt of her spear.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "colchis aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Siathana, the Healer pulls a pinch of ground leaves from her pouch and blows them in your face. Your body begins to feel strange as you inhale the dust.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

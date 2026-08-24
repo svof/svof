@@ -1,0 +1,19 @@
+[
+  {
+    "name": "svo",
+    "isActive": "no",
+    "isFolder": "yes",
+    "isPushButton": "no",
+    "isFlatButton": "yes",
+    "useCustomLayout": "no",
+    "orientation": "0",
+    "location": "0",
+    "posX": "0",
+    "posY": "0",
+    "mButtonState": "1",
+    "sizeX": "121309952",
+    "sizeY": "470220885",
+    "buttonColumn": "1",
+    "buttonRotation": "-1"
+  }
+]

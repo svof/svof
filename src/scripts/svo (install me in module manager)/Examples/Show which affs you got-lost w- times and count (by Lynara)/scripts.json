@@ -1,0 +1,11 @@
+[
+  {
+    "name": "MyAffs",
+    "isActive": "no",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "svo got aff",
+      "svo lost aff"
+    ]
+  }
+]

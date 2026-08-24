@@ -1,0 +1,505 @@
+[
+  {
+    "name": "BoxDisplay",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Highlights",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Inline ASCII bars",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Links To Click",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Nice meteor stuff",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Common do next's",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "That ammunition has already been dipped in dragon's tears.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "As you set about butchering the corpse, you realise you have made a mistake and mutilated it beyond redemption.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "I see no \"corpse\" to take.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^The corpse of .+ is too small to butcher .+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You have no .+ suitable for butchering\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Forest defs (vines)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) howls in pain as thorny vines lash out at \\w+ from all sides\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You howl in pain as thorny vines lash out at you from all sides.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Forest defs (wolf) others",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With almost magical swiftness, a snarling wolf leaps out at",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With almost magical swiftness, a snarling wolf leaps out at (\\w+), rakes its claws across \\w+ face, and disappears into the surrounding forest\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Forest defs (wolf) you",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With almost magical swiftness, a snarling wolf leaps at you from out of nowhere, rakes its claws across your face, and disappears into the surrounding forest.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Gag others breath",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ suddenly inhales deeply\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ exhales loudly\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ exhales softly\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ inhales and begins holding \\w+ breath\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Long-eq actions",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Folding the Veil of reality, you bend your mighty will to seek out",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Energy wreathes itself about your body to heal your limbs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You bow your head, and concentrate on preparing a channel for your mental power.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "As you focus upon your visual field, the shadows grow faint, details become pronounced, and the world seems somehow more real.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You pour blessings of bliss over yourself, granting visions of the majesty of the divine.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You cry aloud your renunciation of Divine Grace, and leave the protection of the Divinities.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You pour blessings of bliss over",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "The sky above grows dark as you call upon powerful magics. Raising your hands balefully, you cause lightning bolts, the hammer of the storm, to shoot from your hands and slam into",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Standing amid the blackened plantlife, you cup your hands around a cube of elemental ice, focusing as it warms at your touch and rapidly begins to melt. Ethereal wisps of steam waft from the ice, numbing your fingers with cold.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You stride to the tipmost of the ship's bow and reach out to place your hands upon the ship's figurehead. Throwing back your head and closing your eyes, you focus and send your energy flowing into",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "As you touch the crystal tattoo, you feel your wounds melt away.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your surroundings shatter into a cloud of glowing stars which dissipate to leave you back where you began.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^You extend your palms towards \\w+ and in an instant, a stream of radiant light pours forth to engulf \\w+\\. Within seconds the shining aura fades and \\w+ stands alive again before you\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You raise your hands, palm outward, and focus. A patch of air before you begins to shimmer with a pale light while swirling inward, channeled through the ether towards",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You call upon the power of the elements to extend the life of your vibrations.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your draconic form melts away, leaving you suddenly weaker and more vulnerable.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^Thrusting at \\w+'s chest with a blade hand outstretched, you release an unmitigated torrent of Shin energy upon \\w+, and \\w+ crumples helplessly\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You are in perfect health.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a thought you project your power into the heart of your angel guardian.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You weave a layer of protective magic about your open elemental channels.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a steady, sweeping motion, you paint a broad stroke with your quarterstaff, leaving a wall of transparent, prismatic light hanging in mid-air.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You concentrate for a moment, colouring your finger magically, and scrawl out your message on a nearby wall.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You focus your concentration on your robes, which begin to shimmer with an ethereal flare.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lunging forward with one palm outstretched and a singular purpose in mind, you strike a blow to",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Drawing upon considerable reserves of karma, you bow your head in deep concentration suddenly transmogrifying your aura into pure chaotic energy and  preparing your body for the ultimate transformation.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You fashion a holocaust globe out of pure elemental fire, and set the magical timer on it for",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You send a lash of fire to strike the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You begin to spin a web of necromantic power about your soul, drawing on your vast reserves of life essence. Moment by moment the bonds grow stronger, until your labours are complete. Your soul is entirely safe from harm, fortified in a cage of immortal power.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You become very still as you stretch out your arms, feeling out the living essence hidden in the nearby plant life.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Finally being in tune with the life essence of the surrounding area, you let loose your dark power in a rush. It quickly consumes the plant life and returns the energy to you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Whispering a private prayer to the earth, you let the newly melted waters drip upon the ground. Lush green growth sparks into life around every rejuvenating drop, rapidly spreading as Nature's vibrance is restored.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your body positively glows with health and vitality.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You carefully raise a barrier between your spirit and the soulcage.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Drawing upon considerable reserves of karma, you bow your head in deep concentration, suddenly transmogrifying your aura into pure chaotic energy and preparing your body for the ultimate transformation.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your attempt to reach through the ether is deflected by a monolith sigil. ",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You raise your hands, palm outward, and focus. A patch of air before you begins to shimmer with a pale light while swirling inward, channeled through the ether towards",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You take the hand of \\w+ and clasp your own hands around it. You stare deep into \\w+ eyes, summoning forth the karmic knowledge deep within you and willing it towards \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You begin to undulate and hiss, attempting to attract a snake.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a powerful bellow, your Baalzadeen inspires those around you into a fury.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "tab remover",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "\\t",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "backspace remover",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "\\b",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "9multicmd cleared",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have cleared alias \"9multicmd\".",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "In-game command separator set",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your command separator is now:",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "Your command separator is now: (.+)$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "In-game command separator set 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your current separator is:",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your current separator is: (.+)$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "In-game command separator cleared",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Cleared your command separator.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Config view command separator",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "|",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "CommandSeparator",
+        "type": "substring"
+      },
+      {
+        "pattern": "^\\| +CommandSeparator +(.+)? +ShowSelfClasswho",
+        "type": "regex"
+      }
+    ]
+  }
+]

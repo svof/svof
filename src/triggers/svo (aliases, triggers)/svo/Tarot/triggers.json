@@ -1,0 +1,256 @@
+[
+  {
+    "name": "Moon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ flings a tarot card at you which turns an ominous, sickly red before striking you in the head\\.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "specified affliction - ignore",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "An odd sensation descends upon you.",
+            "type": "exactMatch"
+          },
+          {
+            "pattern": "Hmmmm. Why must everything be so difficult to figure out?",
+            "type": "exactMatch"
+          },
+          {
+            "pattern": "An unseen being takes you to one side and whispers conspiratorially to you.",
+            "type": "exactMatch"
+          },
+          {
+            "pattern": "An urge to visit the Goddess of Dreams overcomes you.",
+            "type": "exactMatch"
+          },
+          {
+            "pattern": "Your head spins as your mind is drowned in chaos and confusion.",
+            "type": "exactMatch"
+          },
+          {
+            "pattern": "Your nerves feel suddenly jangled.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^[A-Z].+ stands a tarot on \\w+ open palm, and blows it lightly at you\\. Suddenly your movement through the time stream is slowed\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Aeon stripped speed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ blows an Aeon tarot at you, destroying your speed defence\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hanged Man",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ hurls a tarot card with the image of the Hanged Man on it at you\\. As it reaches you, a huge mass of rope bursts out of it, entrapping and hindering you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Justice",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Justice is dealt out and your attack rebounds onto you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^\\w+ bows \\w+ head and mutters something, then flings a tarot card at you\\. A set of scales appears above your head and one side of the scale quickly descends\\. You have a bad feeling about this\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Lovers",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) throws a Lovers tarot at you and as it strikes true, you fall hopelessly in love with \\w+\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Death rub",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) rubs a tarot card on your arm\\. You feel slightly nauseated and drained\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Death start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) flings a tarot card at you and upon impact, it disappears\\. An ominous silence overtakes your surroundings\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Lust",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) quickly flings a tarot card at you, and you feel unreasonable lust for \\w+\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You feel an unusually strong lust for (\\w+)(\\.| \\(M\\)\\.)$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^As your gaze falls upon the depiction, an insatiable lust for the glorious (\\w+) comes over you.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Aeon card",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ shuffles some cards with the image of the Aeon out of \\w+ deck\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ rubs \\w+ fingers briskly on a Tarot card\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Tarot card",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ shuffles some cards with the image of Lust out of \\w+ deck\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

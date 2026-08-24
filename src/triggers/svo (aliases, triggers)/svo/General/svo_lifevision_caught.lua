@@ -1,0 +1,1 @@
+svo.valid.caught_illusion()

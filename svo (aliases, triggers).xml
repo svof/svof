@@ -152,7 +152,7 @@ if svo.conf.aillusion then svo.ignore_illusion() end
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Stuttering/clumsiness</name>
+					<name>Stuttering-clumsiness</name>
 					<script>if svo.conf.aillusion then svo.ignore_illusion() end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
@@ -174,7 +174,7 @@ if svo.conf.aillusion then svo.ignore_illusion() end
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Focus/impatience</name>
+					<name>Focus-impatience</name>
 					<script>if svo.conf.aillusion then svo.ignore_illusion() end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
@@ -196,7 +196,7 @@ if svo.conf.aillusion then svo.ignore_illusion() end
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Pacifism/stuttering</name>
+					<name>Pacifism-stuttering</name>
 					<script>if svo.conf.aillusion then svo.ignore_illusion() end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
@@ -218,7 +218,7 @@ if svo.conf.aillusion then svo.ignore_illusion() end
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Asthma/stuttering</name>
+					<name>Asthma-stuttering</name>
 					<script>if svo.conf.aillusion then svo.ignore_illusion() end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
@@ -240,7 +240,7 @@ if svo.conf.aillusion then svo.ignore_illusion() end
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Paralysis/stuttering</name>
+					<name>Paralysis-stuttering</name>
 					<script>if svo.conf.aillusion then svo.ignore_illusion() end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
@@ -262,7 +262,7 @@ if svo.conf.aillusion then svo.ignore_illusion() end
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Darkshade/impatience</name>
+					<name>Darkshade-impatience</name>
 					<script>if svo.conf.aillusion then svo.ignore_illusion() end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
@@ -284,7 +284,7 @@ if svo.conf.aillusion then svo.ignore_illusion() end
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Flay/applied</name>
+					<name>Flay-applied</name>
 					<script>if svo.conf.aillusion then svo.ignore_illusion() end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
@@ -306,7 +306,7 @@ if svo.conf.aillusion then svo.ignore_illusion() end
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Sleep/sluggish</name>
+					<name>Sleep-sluggish</name>
 					<script>if svo.conf.aillusion then svo.ignore_illusion() end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
@@ -328,7 +328,7 @@ if svo.conf.aillusion then svo.ignore_illusion() end
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Impatience/kalmia</name>
+					<name>Impatience-kalmia</name>
 					<script>if svo.conf.aillusion then svo.ignore_illusion() end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
@@ -350,7 +350,7 @@ if svo.conf.aillusion then svo.ignore_illusion() end
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Herb bal/mind paralysis</name>
+					<name>Herb bal-mind paralysis</name>
 					<script>if svo.conf.aillusion then svo.ignore_illusion() end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
@@ -372,7 +372,7 @@ if svo.conf.aillusion then svo.ignore_illusion() end
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Hallucinations/epilepsy</name>
+					<name>Hallucinations-epilepsy</name>
 					<script>if svo.conf.aillusion then svo.ignore_illusion() end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
@@ -394,7 +394,7 @@ if svo.conf.aillusion then svo.ignore_illusion() end
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Empty pipe/asthma</name>
+					<name>Empty pipe-asthma</name>
 					<script>if svo.conf.aillusion then svo.ignore_illusion() end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
@@ -494,7 +494,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Arms crippled vibe/asthma</name>
+					<name>Arms crippled vibe-asthma</name>
 					<script>if svo.conf.aillusion then svo.ignore_illusion() end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
@@ -604,7 +604,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Stuttering/sensitivityralysis</name>
+					<name>Stuttering-sensitivityralysis</name>
 					<script>if svo.conf.aillusion then svo.ignore_illusion() end</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
@@ -1536,7 +1536,7 @@ tempTimer(0, function() svo.addaff("anorexia") end)</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cured pacifism</name>
+						<name>svo cured pacifism 2</name>
 						<script>svo.valid.herb_cured_pacifism()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7351,7 +7351,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure weakness tree</name>
+						<name>svo cure weakness tree 2</name>
 						<script>svo.valid.tree_cured_weakness()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7473,7 +7473,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure generosity tree</name>
+						<name>svo cure generosity tree 2</name>
 						<script>svo.valid.tree_cured_generosity()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7513,7 +7513,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure sensitivity tree</name>
+						<name>svo cure sensitivity tree 2</name>
 						<script>svo.valid.tree_cured_sensitivity()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7733,7 +7733,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure shyness tree</name>
+						<name>svo cure shyness tree 2</name>
 						<script>svo.valid.tree_cured_shyness()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7753,7 +7753,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure loneliness tree</name>
+						<name>svo cure loneliness tree 2</name>
 						<script>svo.valid.tree_cured_loneliness()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7773,7 +7773,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure pacifism tree</name>
+						<name>svo cure pacifism tree 2</name>
 						<script>svo.valid.tree_cured_pacifism()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7793,7 +7793,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure paranoia tree</name>
+						<name>svo cure paranoia tree 2</name>
 						<script>svo.valid.tree_cured_paranoia()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7813,7 +7813,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure recklessness tree</name>
+						<name>svo cure recklessness tree 2</name>
 						<script>svo.valid.tree_cured_recklessness()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7833,7 +7833,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure shyness tree</name>
+						<name>svo cure shyness tree 3</name>
 						<script>svo.valid.tree_cured_shyness()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7853,7 +7853,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure vertigo tree</name>
+						<name>svo cure vertigo tree 2</name>
 						<script>svo.valid.tree_cured_vertigo()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7913,7 +7913,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure weakness tree</name>
+						<name>svo cure weakness tree 3</name>
 						<script>svo.valid.tree_cured_weakness()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7933,7 +7933,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure anorexia tree</name>
+						<name>svo cure anorexia tree 2</name>
 						<script>svo.valid.tree_cured_anorexia()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7953,7 +7953,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure claustrophobia tree</name>
+						<name>svo cure claustrophobia tree 2</name>
 						<script>svo.valid.tree_cured_claustrophobia()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7973,7 +7973,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure epilepsy tree</name>
+						<name>svo cure epilepsy tree 2</name>
 						<script>svo.valid.tree_cured_epilepsy()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -7993,7 +7993,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure slickness tree</name>
+						<name>svo cure slickness tree 2</name>
 						<script>svo.valid.tree_cured_slickness()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -8033,7 +8033,7 @@ svo.valid.diag_pressure(t[matches[2]])</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure shivering tree</name>
+						<name>svo cure shivering tree 2</name>
 						<script>svo.valid.tree_cured_shivering()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -8928,7 +8928,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Kai/Shin blackout</name>
+						<name>Kai-Shin blackout</name>
 						<script>svo.blackout()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -9550,7 +9550,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure weakness generic</name>
+						<name>svo cure weakness generic 2</name>
 						<script>svo.valid.generic_weakness()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -9670,7 +9670,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure generosity generic</name>
+						<name>svo cure generosity generic 2</name>
 						<script>svo.valid.generic_generosity()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -9710,7 +9710,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure sensitivity generic</name>
+						<name>svo cure sensitivity generic 2</name>
 						<script>svo.valid.generic_sensitivity()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -9950,7 +9950,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure shyness generic</name>
+						<name>svo cure shyness generic 2</name>
 						<script>svo.valid.generic_shyness()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -9970,7 +9970,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure loneliness generic</name>
+						<name>svo cure loneliness generic 2</name>
 						<script>svo.valid.generic_loneliness()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -9990,7 +9990,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure pacifism generic</name>
+						<name>svo cure pacifism generic 2</name>
 						<script>svo.valid.generic_pacifism()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -10010,7 +10010,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure paranoia generic</name>
+						<name>svo cure paranoia generic 2</name>
 						<script>svo.valid.generic_paranoia()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -10030,7 +10030,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure recklessness generic</name>
+						<name>svo cure recklessness generic 2</name>
 						<script>svo.valid.generic_recklessness()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -10050,7 +10050,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure shyness generic</name>
+						<name>svo cure shyness generic 3</name>
 						<script>svo.valid.generic_shyness()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -10070,7 +10070,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure vertigo generic</name>
+						<name>svo cure vertigo generic 2</name>
 						<script>svo.valid.generic_vertigo()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -10130,7 +10130,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure weakness generic</name>
+						<name>svo cure weakness generic 3</name>
 						<script>svo.valid.generic_weakness()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -10150,7 +10150,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure anorexia generic</name>
+						<name>svo cure anorexia generic 2</name>
 						<script>svo.valid.generic_anorexia()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -10170,7 +10170,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure claustrophobia generic</name>
+						<name>svo cure claustrophobia generic 2</name>
 						<script>svo.valid.generic_claustrophobia()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -10190,7 +10190,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure epilepsy generic</name>
+						<name>svo cure epilepsy generic 2</name>
 						<script>svo.valid.generic_epilepsy()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -10210,7 +10210,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure slickness generic</name>
+						<name>svo cure slickness generic 2</name>
 						<script>svo.valid.generic_slickness()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -10350,7 +10350,7 @@ svo.onprompt()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>svo cure shivering generic</name>
+						<name>svo cure shivering generic 2</name>
 						<script>svo.valid.generic_shivering()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -11583,7 +11583,7 @@ svo.onprompt()</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>svo got purgative balance</name>
+					<name>svo got purgative balance 2</name>
 					<script>svo.valid.gotpurgative()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -11890,7 +11890,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>svo cure mutilatedleftarm</name>
+					<name>svo cure mutilatedleftarm 2</name>
 					<script>svo.valid.curingmutilatedrightarm()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -14098,7 +14098,7 @@ svo.valid.emptyheal()</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>svo fitness cured asthma</name>
+					<name>svo fitness cured asthma 2</name>
 					<script>svo.valid.fitness_cured_asthma()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -15814,7 +15814,7 @@ svo.valid.remove_unknownany("clumsiness")</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Hallucinating</name>
+						<name>Hallucinating 2</name>
 						<script>svo.valid.spiders_all_overme()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>99</conditonLineDelta>
@@ -16376,7 +16376,7 @@ svo.valid.remove_unknownany("clumsiness")</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Claustrophobia</name>
+						<name>Claustrophobia 2</name>
 						<script>svo.valid.simpleclaustrophobia()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>99</conditonLineDelta>
@@ -16723,7 +16723,7 @@ svo.valid.simplecrippledrightleg()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Shyness</name>
+						<name>Shyness 2</name>
 						<script>svo.valid.simpleshyness()
 svo.valid.remove_unknownany("shyness")</script>
 						<triggerType>0</triggerType>
@@ -16828,7 +16828,7 @@ end</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Confusion</name>
+						<name>Confusion 2</name>
 						<script>svo.valid.simpleconfusion()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -16994,7 +16994,7 @@ end</script>
 						</Trigger>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Shivering</name>
+						<name>Shivering 2</name>
 						<script>svo.defs.lost_caloric()
 svo.valid.proper_chill()</script>
 						<triggerType>0</triggerType>
@@ -17059,7 +17059,7 @@ svo.valid.proper_chill()</script>
 						</Trigger>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Peace</name>
+						<name>Peace 2</name>
 						<script>svo.valid.simplepeace()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -17123,7 +17123,7 @@ svo.valid.proper_chill()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Both legs crippled</name>
+						<name>Both legs crippled 2</name>
 						<script>svo.valid.simplecrippledrightleg()
 svo.valid.simplecrippledleftleg()</script>
 						<triggerType>0</triggerType>
@@ -17255,7 +17255,7 @@ end</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Disloyalty</name>
+						<name>Disloyalty 2</name>
 						<script>svo.valid.simpledisloyalty()
 svo.valid.remove_unknownany("disloyalty")</script>
 						<triggerType>0</triggerType>
@@ -17277,7 +17277,7 @@ svo.valid.remove_unknownany("disloyalty")</script>
 					</Trigger>
 				</TriggerGroup>
 				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Passive/active heals</name>
+					<name>Passive-active heals</name>
 					<script></script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -18899,7 +18899,7 @@ end</script>
 					</Trigger>
 				</TriggerGroup>
 				<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Newsroom/Editor</name>
+					<name>Newsroom-Editor</name>
 					<script></script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>99</conditonLineDelta>
@@ -19817,7 +19817,7 @@ echo'\n' svo.config.set("shipmode", "on", true)</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Devastate arms/legs 6-7 fractures</name>
+						<name>Devastate arms-legs 6-7 fractures</name>
 						<script>svo.valid.recoverable_attack()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -20153,7 +20153,7 @@ svo.valid.simpleagoraphobia()</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Darkshade</name>
+					<name>Darkshade 2</name>
 					<script>svo.valid.simpledarkshade()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -20273,7 +20273,7 @@ svo.valid.simpleagoraphobia()</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Haemophilia</name>
+					<name>Haemophilia 2</name>
 					<script>svo.valid.proper_haemophilia()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -20878,7 +20878,7 @@ svo.valid.proper_mildconcussion()</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Recklessness</name>
+					<name>Recklessness 2</name>
 					<script>svo.valid.proper_recklessness2()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -21058,7 +21058,7 @@ svo.valid.proper_mildconcussion()</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Vertigo</name>
+					<name>Vertigo 2</name>
 					<script>svo.valid.simplevertigo()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>99</conditonLineDelta>
@@ -21098,7 +21098,7 @@ svo.valid.proper_mildconcussion()</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Hypochondria</name>
+					<name>Hypochondria 2</name>
 					<script>svo.valid.simplehypochondria()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -22172,7 +22172,7 @@ raiseEvent("svo config changed", "dragonbreath")</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>svo sileris/quicksilver start</name>
+					<name>svo sileris-quicksilver start</name>
 					<script>svo.defs.sileris_start()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -22194,7 +22194,7 @@ raiseEvent("svo config changed", "dragonbreath")</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>svo sileris/quicksilver finished</name>
+					<name>svo sileris-quicksilver finished</name>
 					<script>svo.defs.sileris_finished()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -22216,7 +22216,7 @@ raiseEvent("svo config changed", "dragonbreath")</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>svo sileris/quicksilver slickness</name>
+					<name>svo sileris-quicksilver slickness</name>
 					<script>svo.defs.sileris_slickness()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -22365,7 +22365,7 @@ if svo.conf.gagbreath and not svo.inslowcuringmode() then deleteLine() end</scri
 						<integer>1</integer>
 					</regexCodePropertyList>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>you lose :(</name>
+						<name>you lose</name>
 						<script>svo.valid.simpleprone()
 svo.defs.lost_riding()</script>
 						<triggerType>0</triggerType>
@@ -22386,7 +22386,7 @@ svo.defs.lost_riding()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>it's a tie :|</name>
+						<name>it's a tie</name>
 						<script>svo.valid.simpleprone()
 svo.defs.lost_riding()</script>
 						<triggerType>0</triggerType>
@@ -25336,7 +25336,7 @@ svo.valid.simplecrippledleftleg()</script>
 							</regexCodePropertyList>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-							<name>xorani priestess webs/stun</name>
+							<name>xorani priestess webs-stun</name>
 							<script>svo.valid.proper_stun()
 svo.valid.proper_webbed()</script>
 							<triggerType>0</triggerType>
@@ -25357,7 +25357,7 @@ svo.valid.proper_webbed()</script>
 							</regexCodePropertyList>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-							<name>xorani temple guard prone/ablaze</name>
+							<name>xorani temple guard prone-ablaze</name>
 							<script>svo.valid.proper_ablaze()
 svo.valid.simpleprone()</script>
 							<triggerType>0</triggerType>
@@ -25378,7 +25378,7 @@ svo.valid.simpleprone()</script>
 							</regexCodePropertyList>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-							<name>xorani temple guard prone/stun</name>
+							<name>xorani temple guard prone-stun</name>
 							<script>svo.valid.proper_stun()
 svo.valid.simpleprone()</script>
 							<triggerType>0</triggerType>
@@ -29706,7 +29706,7 @@ svo.valid.simpleprone()</script>
 							</regexCodePropertyList>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-							<name>tsetse fly stun/transfix</name>
+							<name>tsetse fly stun-transfix</name>
 							<script>svo.valid.proper_stun()
 svo.valid.proper_transfix()</script>
 							<triggerType>0</triggerType>
@@ -33932,7 +33932,7 @@ svo.valid.simplevoyria()</script>
 						</Trigger>
 					</TriggerGroup>
 					<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>ruins of morindar</name>
+						<name>ruins of morindar 2</name>
 						<script></script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>3</conditonLineDelta>
@@ -34671,7 +34671,7 @@ svo.valid.simpleprone()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Paralysis</name>
+						<name>Paralysis 2</name>
 						<script>svo.valid.proper_paralysis()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>99</conditonLineDelta>
@@ -34884,7 +34884,7 @@ svo.valid.proper_webbed()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Sleep</name>
+						<name>Sleep 2</name>
 						<script>svo.valid.proper_sleep()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>3</conditonLineDelta>
@@ -35067,7 +35067,7 @@ svo.valid.simpleprone()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Prone</name>
+						<name>Prone 2</name>
 						<script>svo.valid.simpleprone()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>99</conditonLineDelta>
@@ -35302,7 +35302,7 @@ svo.valid.simpleunknowncrippledleg()</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Peace</name>
+					<name>Peace 2</name>
 					<script>svo.valid.simplepeace()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -35404,7 +35404,7 @@ svo.valid.simplevoyria()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Erato confusion/dementia</name>
+						<name>Erato confusion-dementia</name>
 						<script>svo.valid.simpleconfusion()
 svo.valid.simpledementia()</script>
 						<triggerType>0</triggerType>
@@ -35491,7 +35491,7 @@ svo.valid.simpledementia()</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Azdun slug slashed throat/illness</name>
+						<name>Azdun slug slashed throat-illness</name>
 						<script>svo.valid.simpleillness()
 svo.valid.simpleslashedthroat()
 </script>
@@ -37869,7 +37869,7 @@ svo.valid.simpledizziness()</script>
 							</regexCodePropertyList>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-							<name>paralysis/chill</name>
+							<name>paralysis-chill</name>
 							<script>svo.valid.simpleparalysis()
 svo.valid.proper_chill()</script>
 							<triggerType>0</triggerType>
@@ -37892,7 +37892,7 @@ svo.valid.proper_chill()</script>
 							</regexCodePropertyList>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-							<name>quadbreak/knockdown</name>
+							<name>quadbreak-knockdown</name>
 							<script>svo.valid.simplecrippledleftleg()
 svo.valid.simplecrippledrightleg()
 svo.valid.simplecrippledleftarm()
@@ -38126,7 +38126,7 @@ svo.valid.simpleprone()</script>
 							</regexCodePropertyList>
 						</Trigger>
 						<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-							<name>prone/stun</name>
+							<name>prone-stun</name>
 							<script>svo.valid.simplestun()
 svo.valid.simpleprone()</script>
 							<triggerType>0</triggerType>
@@ -39517,7 +39517,7 @@ svo.valid.simpleprone()
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Def strip</name>
+						<name>Def strip 2</name>
 						<script>svo.valid.defstrip(multimatches[2][2])</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -39977,7 +39977,7 @@ svo.valid.simpleprone()</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Limb damage</name>
+					<name>Limb damage 2</name>
 					<script>svo.valid.limb_hit(matches[2], "weapon")</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -40222,7 +40222,7 @@ svo.valid.simpleprone()</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Dissonance</name>
+					<name>Dissonance 2</name>
 					<script>svo.valid.simpledissonance()
 svo.valid.defstrip(matches[2])</script>
 					<triggerType>0</triggerType>
@@ -43332,7 +43332,7 @@ if svo.affl.prone then svo.valid.proper_stun() end</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Limb damage</name>
+					<name>Limb damage 2</name>
 					<script>svo.valid.limb_hit(matches[2], "maul")</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -43352,7 +43352,7 @@ if svo.affl.prone then svo.valid.proper_stun() end</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Ablaze</name>
+					<name>Ablaze 2</name>
 					<script>svo.valid.proper_ablaze()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>99</conditonLineDelta>
@@ -44326,7 +44326,7 @@ svo.givewarning({
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Prone</name>
+					<name>Prone 2</name>
 					<script>svo.valid.simpleprone()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -44860,7 +44860,7 @@ svo.startedfighting("runewarden", multimatches[2][2])</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Nairat</name>
+					<name>Nairat 2</name>
 					<script>svo.valid.proper_transfix()</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -46105,7 +46105,7 @@ svo.startedfighting("blademaster", multimatches[2][2])</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Limb damage</name>
+					<name>Limb damage 2</name>
 					<script>svo.valid.limb_hit(multimatches[2][3], "drawslash")
 
 svo.startedfighting("blademaster", multimatches[2][2])</script>
@@ -46944,7 +46944,7 @@ svo.startedfighting("bard", matches[2])</script>
 						<integer>1</integer>
 					</regexCodePropertyList>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Epteth/epseth</name>
+						<name>Epteth-epseth</name>
 						<script>svo.valid.swashbuckling_poison()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -47457,7 +47457,7 @@ svo.startedfighting("monk", matches[2])</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Guarding</name>
+					<name>Guarding 2</name>
 					<script>svo.startedfighting("monk", matches[2])</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -47968,7 +47968,7 @@ svo.startedfighting("monk", multimatches[2][2])</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Chill</name>
+					<name>Chill 2</name>
 					<script>svo.valid.proper_chill()
 
 svo.startedfighting("blademaster", multimatches[2][2])</script>
@@ -48164,7 +48164,7 @@ svo.startedfighting("blademaster", matches[2])</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Limb damage</name>
+					<name>Limb damage 2</name>
 					<script>svo.valid.limb_hit(multimatches[2][2].." leg", "legslash")
 
 svo.startedfighting("blademaster", multimatches[2][3])</script>
@@ -48188,7 +48188,7 @@ svo.startedfighting("blademaster", multimatches[2][3])</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Limb damage</name>
+					<name>Limb damage 3</name>
 					<script>svo.valid.limb_hit(multimatches[2][2].." arm", "armslash")
 
 svo.startedfighting("blademaster", multimatches[2][3])</script>
@@ -48212,7 +48212,7 @@ svo.startedfighting("blademaster", multimatches[2][3])</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Limb damage</name>
+					<name>Limb damage 4</name>
 					<script>svo.valid.limb_hit(multimatches[2][3], "centreslash")
 
 svo.startedfighting("blademaster", multimatches[2][2])</script>
@@ -48467,7 +48467,7 @@ svo.valid["simplecrippledright"..multimatches[2][2]]()</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Def strip</name>
+					<name>Def strip 2</name>
 					<script>svo.valid.defstrip(multimatches[2][2])</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -49800,7 +49800,7 @@ svo.startedfighting("sentinel", matches[2])</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>Limb damage</name>
+					<name>Limb damage 2</name>
 					<script>svo.valid.limb_hit(matches[2], "throwingaxe")
 
 svo.startedfighting("sentinel", matches[2])</script>
@@ -50255,7 +50255,7 @@ end</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Hew/pulverise arms</name>
+						<name>Hew-pulverise arms</name>
 						<script>svo.valid.simplewristfractures()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -50281,7 +50281,7 @@ end</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Hew/pulverise legs</name>
+						<name>Hew-pulverise legs</name>
 						<script>svo.valid.simpletorntendons()</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -53880,7 +53880,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>In-game command separator set</name>
+					<name>In-game command separator set 2</name>
 					<script>svo.config.set("commandseparator", multimatches[2][2])</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>0</conditonLineDelta>
@@ -54477,7 +54477,7 @@ svo.showprompt()</script>
 				<regex>^vshow ?(p|precache)$</regex>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
-				<name>Show curelist/prefercustom curemethod</name>
+				<name>Show curelist-prefercustom curemethod</name>
 				<script>svo.showcurelist()</script>
 				<command></command>
 				<packageName></packageName>
@@ -54526,7 +54526,7 @@ svo.showprompt()</script>
 				<regex>^def(?:ences)?$</regex>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
-				<name>(tn *) Turn things or classes on</name>
+				<name>(tn) Turn things or classes on</name>
 				<script>-- check keepup, AI
 if svo.tntf_set(matches[2], "on", "noerrors") then return end
 
@@ -54583,7 +54583,7 @@ svo.showprompt()</script>
 				<regex>^(?:tn|turnon) (.+)</regex>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
-				<name>(tf *) Turn things or classes off</name>
+				<name>(tf) Turn things or classes off</name>
 				<script>-- check keepup, AI
 if svo.tntf_set(matches[2], "off", "noerrors") then return end
 
@@ -54735,7 +54735,7 @@ svo.showprompt()</script>
 				<regex>^mss(?: (\w+))?$</regex>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
-				<name>Toggle health/mana changes display</name>
+				<name>Toggle health-mana changes display</name>
 				<script>svo.config.set("showchanges", matches[2], true)</script>
 				<command></command>
 				<packageName></packageName>
@@ -55203,7 +55203,7 @@ svo.toggle_ignore(matches[2])</script>
 				<regex>^vupdate(?: (force|checking))?$</regex>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
-				<name>Remember vault/mount</name>
+				<name>Remember vault-mount</name>
 				<script>if matches[3] == "ship" then
   send(command, false)
   return
@@ -55232,7 +55232,7 @@ send(command, false)</script>
 				<regex>^(vault|mount|board) ((\/|\w)+)$</regex>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
-				<name>(b *) Block a dir</name>
+				<name>(b) Block a dir</name>
 				<script>if not svo.ignore.block then
   svo.conf.blockingdir = matches[2]
   svo.defs.keepup("block", true, nil, true)
@@ -55301,7 +55301,7 @@ svo.fullstats((matches[2] == "" and true or false), (matches[3] and [[expandAlia
 				<regex>^(s)?fl(?: (.+))?$</regex>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
-				<name>(p*) Set parry manually</name>
+				<name>(p) Set parry manually</name>
 				<script>svo.sp_setparry(matches[2])</script>
 				<command></command>
 				<packageName></packageName>
@@ -55399,7 +55399,7 @@ svo.echof("BIG GIANT NOTE: This is not the final thing! The final might or might
 				</Alias>
 			</AliasGroup>
 			<Alias isActive="yes" isFolder="no">
-				<name>(vshow herbstat) Show inv/rift herb stats</name>
+				<name>(vshow herbstat) Show inv-rift herb stats</name>
 				<script>svo.toggle_riftlabel()</script>
 				<command></command>
 				<packageName></packageName>
@@ -55499,7 +55499,7 @@ echo("")</script>
 				<regex>^vecho (.+)</regex>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
-				<name>(cc) Relay info to party/clan/order/tell or just echo</name>
+				<name>(cc) Relay info to party-clan-order-tell or just echo</name>
 				<script>svo.cc(matches[2])</script>
 				<command></command>
 				<packageName></packageName>
@@ -55551,7 +55551,7 @@ send("sleep")</script>
 				<regex>^sleep$</regex>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
-				<name>(vshow serverside) Toggle Svo/serverside cures</name>
+				<name>(vshow serverside) Toggle Svo-serverside cures</name>
 				<script>svo.showserverside()</script>
 				<command></command>
 				<packageName></packageName>

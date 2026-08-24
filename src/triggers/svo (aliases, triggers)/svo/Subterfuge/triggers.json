@@ -1,0 +1,398 @@
+[
+  {
+    "name": "Snake",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A death adder opens its mouth wide and strikes you in the leg.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A small black cobra opens its mouth wide and strikes you in the leg.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hallucinations",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your vision blurs for a moment.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a deep chill entering your bloodstream and spreading throughout your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Disrupt",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your mental equilibrium scatters suddenly, upset by some unknown source.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Confusion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your mind feels suddenly confused and jumbled.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Flayed rebounding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) flays away your aura of rebounding defence\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Flayed speed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) flays away your speed defence\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Bite",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) sinks \\w+ fangs into your body and you wince in pain\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Doublestab",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) pricks you twice in rapid succession with \\w+ dirk\\.?$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) quickly pricks you with \\w+ dirk\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Striking like a snake, (\\w+) follows the first attack with another\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Camus bite",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ sinks \\w+ fangs into your body and you wince in pain\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You scream out in agony as a vicious venom tears through your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Sumac bite",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ sinks \\w+ fangs into your body and you wince in pain\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You gasp as a terrible aching strikes all your limbs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Backstab",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) leaps from the shadows and plunges a dagger into your unsuspecting back!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Bound",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) quickly binds up your hands and feet, leaving you helpless\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Flay",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) flays the sileris coating from you\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^(\\w+) flays the quicksilver coating from you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Slit throat",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a sharp pain on your throat, and start to choke as blood begins to pour down your throat from the wound in your neck.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Execute",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a pop of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With a pop of \\w+ knuckles, (\\w+) buries \\w+ foot under your back and flips you overonto your stomach\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Execute two",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Holding your head up",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Holding your head up, (\\w+) snaps \\w+ wrist, sending \\w+ whip to wrap around your neck\\. \\w+ casually places \\w+ foot upon the small of your back and jerks the whip viciously backwards so that it bites deeply into your throat\\. Blood streams down from your shattered windpipe as you gasp uselessly for air\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Shot",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An arrow flies",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "It strikes you, gouging a deep and bloody wound.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dispel",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) points a finger at you and you feel anti-magic sweep over you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Pinshot",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your left foot explodes in white hot pain as an arrow slams into it.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

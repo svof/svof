@@ -1,0 +1,1 @@
+svo.valid.enmesh_hit()

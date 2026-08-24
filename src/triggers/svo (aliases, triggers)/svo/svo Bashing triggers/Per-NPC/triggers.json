@@ -1,0 +1,170 @@
+[
+  {
+    "name": "Scorpion double cripple",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A giant, double-tailed, obsidian scorpion reaches out, grabs you in one of his huge pincers, and squeezes brutally.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Tssalo ablaze+voyria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Leaping nimbly towards you, a serpentine tssalo sinks his teeth into your skin.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A sudden burning sensation begins to burn through your veins, leaving you both poisoned and alight.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Tssalo aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Leaping nimbly towards you, a serpentine tssalo sinks his teeth into your skin.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The world starts to slow down before you, leaving all your actions rather sluggish.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Erato confusion-dementia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Erato, spirit of the Eastern Ithmia raises her voice in an ethereal chant to the forest that settles a fog of utter confusion upon you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Grukai swamp aeon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A putrid green crab jumps onto your back and bites at your flesh.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Suddenly, the world begins to move slightly slower.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Great rock ophidian",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The talons scrape away your protective sileris coating.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The talons scrape away your protective quicksilver coating.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Ayod'nai",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Ayod'nai, Whisperer of the All points an imperious finger at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The knowledge that you've been cursed floods your mind.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Azdun slug slashed throat-illness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A flesh-eating slug lets out a high-pitched shriek and begins to boil madly. He releases noxious fumes, causing you to gag and vomit uncontrollably.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A flesh-eating slug lets out a high-pitched shriek and begins to boil madly. She releases noxious fumes, causing you to gag and vomit uncontrollably.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

@@ -1,0 +1,1 @@
+svo.prio_swap("paralysis", "herb", "asthma", "herb", true)

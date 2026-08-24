@@ -1,0 +1,32 @@
+[
+  {
+    "name": "(qwho, qwhom, qwhog, qwhoarea) Check wholist",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^qwho(m|g|w)?(?: (.+))?$"
+  },
+  {
+    "name": "(gotop) Go to person",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^gotop(?: (\\w+))?$"
+  },
+  {
+    "name": "(ppwith) Report people with person",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ppwith (\\w+)$"
+  },
+  {
+    "name": "(ppin) Report people in area",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^ppin (.+)$"
+  },
+  {
+    "name": "(vshow watchfor) See people on watchfor",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vshow watchfor$"
+  }
+]

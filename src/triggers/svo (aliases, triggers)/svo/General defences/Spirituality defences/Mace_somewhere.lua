@@ -1,0 +1,1 @@
+svo.defs.have_mace()

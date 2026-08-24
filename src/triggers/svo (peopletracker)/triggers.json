@@ -1,0 +1,93 @@
+[
+  {
+    "name": "qwho (svo people tracker)",
+    "isActive": "no",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "KoTH start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^The HILL is at: (.+)!$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^The HILL has moved! It is now at: (.+)!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "KoTH",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "2",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Current event: King of the Hill",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "Hill",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^The HILL for this game is: (.+)",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Flag",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^Flag Location: (.+?)\\.",
+            "type": "regex"
+          }
+        ]
+      }
+    ]
+  }
+]

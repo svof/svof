@@ -1,0 +1,20 @@
+[
+  {
+    "name": "ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Reaching into a burlap sack, an orc cook retrieves a fistful of decomposing kitten corpses. Quickly lighting them on fire with the cooking spit, he grunts and throws them at you.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

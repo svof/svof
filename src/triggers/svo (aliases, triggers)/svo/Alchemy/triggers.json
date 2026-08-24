@@ -1,0 +1,154 @@
+[
+  {
+    "name": "Displace start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a sudden jerk, and the air immediately surrounding you comes alight with pale, etheric fire as a strange hissing noise fills the air.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Displace fail",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The etheric light around you abruptly fades, and you feel a sudden release of tension as the hissing noise ceases entirely.",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^The etheric light around you abruptly fades, and you feel a sudden release of tension as the hissing noise ceases entirely\\. Through a rapidly closing fold in the ether, you catch a glimpse of the face of (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Displace finish",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a strong tug in the pit of your stomach.",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You feel a strong tug in the pit of your stomach\\. Your surroundings dissolve into the featureless swirl of the ether, resolving once more into a recognisable landscape as you land before (\\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Silver",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) illuminates you with a radiant light\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Phlogistication",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) waves a hand in your direction and you feel energy wreathing about you\\. A strong burning sensation rushes through your body\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Phlogistication hit",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your action causes a wave of heat to ripple through you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Vitrification",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) waves a hand in your direction and you feel energy wreathing about you\\. Small patches of your skin waver before turning into shards of sharp glass\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Vitrification hit",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your action causes the sharp glass in your skin to cut into you.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

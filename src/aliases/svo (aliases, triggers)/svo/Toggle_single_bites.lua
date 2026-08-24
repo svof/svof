@@ -1,0 +1,1 @@
+svo.config.set("ignoresinglebites", matches[2], true)

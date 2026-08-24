@@ -1,0 +1,352 @@
+[
+  {
+    "name": "Channels",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "5",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have harnessed the power of:",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "Air",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Air",
+            "type": "startOfLine"
+          }
+        ],
+        "children": [
+          {
+            "name": "Bound",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "Bound",
+                "type": "substring"
+              }
+            ],
+            "script": "svo.defs.got_boundair()"
+          },
+          {
+            "name": "Fortified",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "Fortified",
+                "type": "substring"
+              }
+            ],
+            "script": "svo.defs.got_fortifiedair()"
+          }
+        ]
+      },
+      {
+        "name": "Fire",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Fire",
+            "type": "startOfLine"
+          }
+        ],
+        "children": [
+          {
+            "name": "Bound",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "Bound",
+                "type": "substring"
+              }
+            ],
+            "script": "svo.defs.got_boundfire()"
+          },
+          {
+            "name": "Fortified",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "Fortified",
+                "type": "substring"
+              }
+            ],
+            "script": "svo.defs.got_fortifiedfire()"
+          }
+        ]
+      },
+      {
+        "name": "Earth",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Earth",
+            "type": "startOfLine"
+          }
+        ],
+        "children": [
+          {
+            "name": "Bound",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "Bound",
+                "type": "substring"
+              }
+            ],
+            "script": "svo.defs.got_boundearth()"
+          },
+          {
+            "name": "Fortified",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "Fortified",
+                "type": "substring"
+              }
+            ],
+            "script": "svo.defs.got_fortifiedearth()"
+          }
+        ]
+      },
+      {
+        "name": "Water",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Water",
+            "type": "startOfLine"
+          }
+        ],
+        "children": [
+          {
+            "name": "Bound",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "Bound",
+                "type": "substring"
+              }
+            ],
+            "script": "svo.defs.got_boundwater()"
+          },
+          {
+            "name": "Fortified",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "Fortified",
+                "type": "substring"
+              }
+            ],
+            "script": "svo.defs.got_fortifiedwater()"
+          }
+        ]
+      },
+      {
+        "name": "Spirit",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Spirit",
+            "type": "startOfLine"
+          }
+        ],
+        "children": [
+          {
+            "name": "Bound",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "Bound",
+                "type": "substring"
+              }
+            ],
+            "script": "svo.defs.got_boundspirit()"
+          },
+          {
+            "name": "Fortified",
+            "isActive": "yes",
+            "isFolder": "no",
+            "multiline": "no",
+            "multilineDelta": "0",
+            "filter": "no",
+            "fireLength": "0",
+            "highlight": "no",
+            "highlightFG": "#ff0000",
+            "highlightBG": "#ffff00",
+            "patterns": [
+              {
+                "pattern": "Fortified",
+                "type": "substring"
+              }
+            ],
+            "script": "svo.defs.got_fortifiedspirit()"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Not all channels open",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You do not have the proper elemental channels open.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Knife sigil",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your magics around the",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Your magics around the (\\w+) channel have been destroyed by the knife sigil\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

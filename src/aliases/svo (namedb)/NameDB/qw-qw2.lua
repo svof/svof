@@ -1,0 +1,1 @@
+ndb.checkqw() -- qw and qw2 are the same now

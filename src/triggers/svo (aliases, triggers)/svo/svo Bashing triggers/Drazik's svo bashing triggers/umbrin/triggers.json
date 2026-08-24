@@ -1,0 +1,314 @@
+[
+  {
+    "name": "umbrin prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An Umbrinite trainee sweeps his spear at your feet, knocking you to the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Master Healer Rivtan grabs the lower end of his staff and spins around in a circle with the staff pointed outwards, sweeping you off your feet.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Master Healer Rivtan takes his staff and deftly smacks you in the front of your knee. You stumble to the ground in pain, clutching at your throbbing knee.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "umbrin rope",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Major Poatril twirls his net above his head before casting it over your head.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "High General Boracin points his blade at you, sending a mass of magical netting spiralling towards you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "umbrin ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An Umbrinite crossbowman lights a glistening bolt before firing it into your chest.",
+        "type": "substring"
+      }
+    ]
+  },
+  {
+    "name": "umbrin fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Rising from the depths of his throat, an Umbrinite raider focuses his warlike cries at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Rising from the depths of her throat, an Umbrinite raider focuses her warlike cries at you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "umbrin stupidity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Feinting low with his blade, Major Avanguird smashes his mace into the side of your head.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "umbrin stuns",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Master Healer Rivtan takes an old vial of restoration and cracks it over your head, causing your vision to blur and stunning you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "umbrin epilepsy voyria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Wiping some poisons on his blades, an Umbrinite raider slashes you once with each one.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "umbrin blind",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Uncorking a vial, an Umbrinite combat medic tosses it into your eyes, blinding you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "umbrin unknown",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Nocking a green bolt in his weapon, an Umbrinite crossbowman fires it into you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Instead of nocking the arrow to his bow, he quickly stabs you with the envenomed tip.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "umbrin arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Colonel Meliane plunges her blade deep into your arm.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "umbrinite double unknown",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Lieutenant Mavlait pricks you twice in rapid succession with his dirk.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "umbrin leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "40",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Major Klione balls up one fist and hammerfists you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "umbrin blackout",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Whirling about quickly, Major Klione delivers a massive roundhouse kick to your head.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Shouting a war cry, Major Poatril rams his trident deep into you, impaling you with the weapon.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "umbrin stun prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Colonel Survane lowers his shoulder and charges, knocking you to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "umbrin blackout stupid",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Spinning his blade in his hand, High General Boracin smashes the flat of the hilt into the side of your head.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "umbrin stupid para",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Blades flashing, Freyil Marteila punctures you with her daggers.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

@@ -792,7 +792,7 @@ end
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>NameDB qw</name>
+					<name>NameDB qw 2</name>
 					<script>local function commit()
   db:merge_unique(ndb.db.people, temp_name_list)
 
@@ -806,6 +806,7 @@ end
 -- ignore yourself gemmed offplane
 if multimatches[1][1] == "None." then
   disableTrigger("NameDB qw")
+  disableTrigger("NameDB qw 2")
   ndb.checkingqwi = nil
   commit()
   return
@@ -943,7 +944,8 @@ elseif ndb.qwtype == "show infamous" then
 end
 
 commit()
-disableTrigger("NameDB qw")</script>
+disableTrigger("NameDB qw")
+disableTrigger("NameDB qw 2")</script>
 					<triggerType>0</triggerType>
 					<conditonLineDelta>1</conditonLineDelta>
 					<mStayOpen>0</mStayOpen>
@@ -966,7 +968,7 @@ disableTrigger("NameDB qw")</script>
 					</regexCodePropertyList>
 				</Trigger>
 				<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="yes" isColorTriggerFg="no" isColorTriggerBg="no">
-					<name>City/House/Order enemies</name>
+					<name>City-House-Order enemies</name>
 					<script>local field
 
 if not ndb.checkingfor then return end
@@ -1010,7 +1012,7 @@ else
   svo.echof(field:title().." enemies list updated.")
 end
 
-disableTrigger("City/House/Order enemies")
+disableTrigger("City-House-Order enemies")
 if ndb.checkingenemies then killTimer(ndb.checkingenemies[1]) end
 ndb.checkingenemies = nil
 ndb.checkingfor = nil</script>
@@ -1977,7 +1979,7 @@ temp_name_list[1].arms = matches[2]</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Motto/Warcry</name>
+						<name>Motto-Warcry</name>
 						<script>if not temp_name_list then return end
 
 temp_name_list[1][matches[2]] = matches[3]:trim()</script>
@@ -2352,7 +2354,7 @@ ndb.showwhois(matches[2])</script>
 				<regex>^iff (\w+) (\w+)$</regex>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
-				<name>qw/qw2</name>
+				<name>qw-qw2</name>
 				<script>ndb.checkqw() -- qw and qw2 are the same now</script>
 				<command></command>
 				<packageName></packageName>
@@ -4387,7 +4389,8 @@ function ndb.checkqw(suffix, how)
   if ndb.qwtimer then killTimer(ndb.qwtimer) end
 
   enableTrigger("NameDB qw")
-  ndb.qwtimer = tempTimer(3, function() disableTrigger("NameDB qw"); ndb.qwtimer = nil end)
+  enableTrigger("NameDB qw 2")
+  ndb.qwtimer = tempTimer(3, function() disableTrigger("NameDB qw"); disableTrigger("NameDB qw 2"); ndb.qwtimer = nil end)
   ndb.qwtype = how
 
   send("qwc", false)

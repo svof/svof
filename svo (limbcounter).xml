@@ -81,7 +81,7 @@ svo.lc_ignore()</script>
 				</regexCodePropertyList>
 			</Trigger>
 			<Trigger isActive="no" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-				<name>svolc Don't register</name>
+				<name>svolc Don't register 2</name>
 				<script>-- it's OK, the trigger is supposed to be off by default - and share the name with another
 svo.lc_smash()</script>
 				<triggerType>0</triggerType>
@@ -355,7 +355,7 @@ echo"\n" svo.echof("My guess would be %d hits.", hits)</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Whirl (snap)</name>
+						<name>Whirl (snap) 2</name>
 						<script>svo.lc_hit(multimatches[2][2], multimatches[2][3])</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>0</conditonLineDelta>
@@ -1606,7 +1606,7 @@ svo.lc_hit(multimatches[2][2], "head", 4)</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Kick</name>
+						<name>Kick 2</name>
 						<script>svo.lc_hit(multimatches[2][2], multimatches[3][2], svo.conf.legdamage)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>1</conditonLineDelta>
@@ -1630,7 +1630,7 @@ svo.lc_hit(multimatches[2][2], "head", 4)</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Kick</name>
+						<name>Kick 3</name>
 						<script>svo.lc_hit(multimatches[2][2], multimatches[3][2], svo.conf.legdamage)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>1</conditonLineDelta>
@@ -1654,7 +1654,7 @@ svo.lc_hit(multimatches[2][2], "head", 4)</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Kick</name>
+						<name>Kick 4</name>
 						<script>svo.lc_hit(multimatches[2][2], multimatches[3][2], svo.conf.legdamage)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>1</conditonLineDelta>
@@ -1702,7 +1702,7 @@ svo.lc_hit(multimatches[2][2], "head", 4)</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Punch</name>
+						<name>Punch 2</name>
 						<script>svo.lc_hit(multimatches[2][2], multimatches[3][2], svo.conf.larmdamage)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>1</conditonLineDelta>
@@ -1726,7 +1726,7 @@ svo.lc_hit(multimatches[2][2], "head", 4)</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Punch</name>
+						<name>Punch 3</name>
 						<script>svo.lc_hit(multimatches[2][2], multimatches[3][2], svo.conf.larmdamage)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>1</conditonLineDelta>
@@ -1750,7 +1750,7 @@ svo.lc_hit(multimatches[2][2], "head", 4)</script>
 						</regexCodePropertyList>
 					</Trigger>
 					<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="yes" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
-						<name>Punch</name>
+						<name>Punch 4</name>
 						<script>svo.lc_hit(multimatches[2][2], multimatches[3][2], svo.conf.larmdamage)</script>
 						<triggerType>0</triggerType>
 						<conditonLineDelta>1</conditonLineDelta>
@@ -2214,6 +2214,7 @@ end
 function svo.lc_smash()
   hittable = {}
   disableTrigger("svolc Don't register")
+  disableTrigger("svolc Don't register 2")
   signals.before_prompt_processing:disconnect(sk.svo.lc_checklimbcounter)
 end
 
@@ -2342,6 +2343,7 @@ function svo.lc_checklimbcounter()
   end
   hittable = {}
   disableTrigger("svolc Don't register")
+  disableTrigger("svolc Don't register 2")
 end
 
 function svo.lc_hit(who, where, howmuch)
@@ -2353,6 +2355,7 @@ function svo.lc_hit(who, where, howmuch)
   hittable[who] = hittable[who] or {}
   hittable[who][#hittable[who] + 1] = {[where] = (damage and damage or 1)}
   enableTrigger("svolc Don't register")
+  enableTrigger("svolc Don't register 2")
 	svo.signals.before_prompt_processing:connect(svo.lc_checklimbcounter)
 end
 

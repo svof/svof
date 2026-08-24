@@ -1,0 +1,5 @@
+svo.valid.simplecrippledleftarm()
+svo.valid.simplecrippledrightarm()
+svo.valid.simplecrippledrightleg()
+svo.valid.simplecrippledleftleg()
+svo.valid.simpleprone()

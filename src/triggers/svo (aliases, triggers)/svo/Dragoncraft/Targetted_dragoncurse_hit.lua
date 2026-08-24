@@ -1,0 +1,1 @@
+svo.valid.dcurse_hit(multimatches[2][2])

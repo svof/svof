@@ -1,0 +1,222 @@
+[
+  {
+    "name": "undead paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your muscles stiffen and lock as a ghast brushes you with a finger.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A cursed phantasm reaches out with his ghostly hand and brushes it across your chest, your limbs locking up immediately.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a ferocious hiss, a pale vampiress sends a fine mist of blood swirling at you and suddenly, your limbs become stiff and unresponsive.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a ferocious hiss, a vampire sends a fine mist of blood swirling at you and suddenly, your limbs become stiff and unresponsive.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "zsarachnor fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Panic fills your mind as Zsarachnor, the Vampire Lord looms over you, deadly intent upon his grim visage.",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "zsarachnor para",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a ferocious hiss, Zsarachnor, the Vampire Lord sends a fine mist of blood swirling at you and suddenly, your limbs become stiff and unresponsive.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "azdun webs",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A medium pulsating spider sprays you with a sticky webbing, which quickly entangles your limbs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A small pulsating spider sprays you with a sticky webbing, which quickly entangles your limbs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A huge pulsating spider sprays you with a sticky webbing, which quickly entangles your limbs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A guardian spider sprays you with a sticky webbing, which quickly entangles your limbs.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Lachesis, the Spider Queen shoots out a mass of sticky webbing at you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A choke creeper lashes out with a vine and wraps it tightly around you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "candelmas chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Candlemas, last of the Lorewardens shimmers, then blows a chill breath at you, covering you with a graveyard frost.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "zombie random limb break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A massive outstretched arm comes crashing towards you as a shambling zombie slams it into you, snapping your bones with a crunching sound.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A decaying zombie smashes his rotting fist into your arm and you hear bones crunch.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "azdun prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A decaying lich grips tightly around an ebony staff and swings it towards your legs, knocking your feet off the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A shambling zombie leaps towards you and latches himself unto you, sending you tumbling to the ground and your head slamming into the floor.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "azdun loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A decaying lich reaches out to touch you with a bony finger, a wicked gleam in his eyes.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ghoul blackout prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A revolting ghoul draws his massive hands together in a thunderclap with you at its centre.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "azdun leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A goblin zombie kicks his rotting foot into your leg and you hear bones crunch.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Latched",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel suddenly weak, your limbs trembling and bile rising.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Water Lord Detection",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^The amorphous form of (\\w+) trembles\\, some of the liquid composing it falling away from the greater whole\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^A sudden deluge of shockingly cold water drenches you, robbing you of strength by the will of (\\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^As a particularly noticeable ripple crosses the surface of (\\w+)'s form, you feel sweat break out across your entire body, coating your skin in a slick substance\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^The amorphous form of (\\w+) trembles for a moment, then water bursts up from the ground, rapidly flooding the location\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

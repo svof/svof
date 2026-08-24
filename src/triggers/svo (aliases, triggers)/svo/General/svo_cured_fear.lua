@@ -1,0 +1,1 @@
+svo.valid.focus_cured_fear()

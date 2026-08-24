@@ -1,0 +1,1 @@
+ndb.honors(matches[2], "manual")

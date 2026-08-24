@@ -1,0 +1,6 @@
+selectCurrentLine()
+setBold(true)
+bg("a_darkred")
+fg("light_cyan")
+deselect()
+resetFormat()

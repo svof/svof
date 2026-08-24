@@ -1,0 +1,20 @@
+[
+  {
+    "name": "lothos stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Extending his two front claws, a massive spider crab uses his enormous reach and pummels you brutally with double blows.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

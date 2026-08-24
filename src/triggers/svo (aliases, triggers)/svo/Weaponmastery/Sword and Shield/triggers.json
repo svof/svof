@@ -1,0 +1,186 @@
+[
+  {
+    "name": "Smash high",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The blow sets your head to spinning - you cannot concentrate on anything.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Smash mid",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your muscles lock in painful contractions in reaction to the blow.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Smash low",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You stumble clumsily off balance as the shield slams into your legs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Drive",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ drives the edge of \\w+ shield into your throat, cutting off your air supply\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Trip",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ ducks low and smashes \\w+ shield into your knees, causing them to buckle underneath you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Club",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ brings \\w+ shield crashing down onto your sternum, stunning you!",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Shieldstrike high",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ spins in a quick circle, using the momentum to savagely strike your chin with the edge of .+?\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Shieldstrike mid",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ draws .+?, then lunges forward with a savage strike to your ribs\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Shieldstrike low",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ lunges downward, slamming the edge of .+? into your shins\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Slice",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The blade of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^The blade of (\\w+) is a blur as he moves forward, slicing into your (.+?)\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

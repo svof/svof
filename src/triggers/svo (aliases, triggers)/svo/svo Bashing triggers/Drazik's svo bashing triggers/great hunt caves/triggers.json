@@ -1,0 +1,182 @@
+[
+  {
+    "name": "desert mummy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As it lunges at you with a clumsy swipe, a shambling mummy's blackened nails send feelings of sluggishness and lethargy through your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "desert hyena legs",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Seizing your leg with her decaying jaw, a baleful hyena jerks her head back and forth, agonisingly ripping away flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "desert hyena fear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Her burning eyes locking with your own, a baleful hyena lets loose a direful howl that fills your mind with dread.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "desert hyena prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Springing from the ground, a baleful hyena collides heavily with your chest and knocks you sprawling.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "siro spider prone break",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A huge crystalline spider smashes into your legs, the sound of shattering bone audible as you are tossed bodily to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "siro spider prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A huge crystalline spider hurls itself through the air at you, pinning you beneath its heavy body and piercing your flesh in multiple locations.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "siro rockbeast prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Catching you momentarily off-balance, A colossal rockbeast charges into you, trampling you easily beneath its massive feet.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "shastaan pirate dizzy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Moving at near lightning speed, a bare-chested pirate slams his head into yours, making you slightly dizzy.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "shastaan pirate prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A bare-chested pirate knocks your legs out from under you and sends you sprawling to the floor.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "annoying room aeon at green lake cave",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Eerie blue light bathes the cave, and your movements slow.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

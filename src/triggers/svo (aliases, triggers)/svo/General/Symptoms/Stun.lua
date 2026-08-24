@@ -1,0 +1,1 @@
+svo.valid.symp_stun()

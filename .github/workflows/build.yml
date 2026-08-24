@@ -1,0 +1,280 @@
+name: build
+
+# The build job runs everywhere, so the conversion can be verified on the pull
+# request that proposes it - that verification is the whole point of reviewing
+# it. Publishing is a different matter: the release job stays fork-only until
+# the converted system has had extended play testing, so nothing here can cut
+# an svof release. Drop the `if:` on the release job when that changes.
+env:
+  # svof cannot be built with upstream muddler. Upstream drops nested group
+  # attributes, zeroes multilineDelta, cannot represent a raw keyCode, crashes
+  # on colour patterns, mis-orders groups by directory read order, and cannot
+  # emit buttons at all - the package it produces looks fine and is silently
+  # wrong. All of it is reported: four fixes in muddler PR #57, directory read
+  # order in #59, buttons in #60. The fork is needed until those merge.
+  MUDDLER_REPO: TheLastDarkthorne/muddler
+  # Pinned to a commit rather than to the branch. The artifact users install is
+  # built by this tool, so a mutable ref on a personal fork means the thing
+  # that built yesterday's package is not necessarily the thing that builds
+  # today's. Move it deliberately, in its own commit, and say why.
+  # 45616f1 = svof-fixes as of 2026-08-21 (buttons + ActionPackage).
+  MUDDLER_REF: 45616f192a938dad0d180b5f8bc406a415efffb7
+
+on:
+  push:
+    # The syntax and call-site gates used to run on every push, from
+    # check-syntax.yml. Folding them in here narrowed that to one branch, which
+    # left master and in-client-svof with no check at all.
+    branches: [svof-muddler, in-client-svof, master]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "Publish a GitHub release with the built package"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: read the package version
+        id: version
+        run: |
+          version=$(python3 -c "import json;print(json.load(open('mfile'))['version'])")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "building svof $version"
+
+      # Gates 1 through 1.3 need only python and lua, so they run BEFORE
+      # anything touches gradle, the JDK or the network - folded in after the
+      # muddler build, a flaky toolchain took the whole safety net down with it
+      # and the run said nothing about whether the source was sound.
+      #
+      # Mudlet runs Lua 5.1, so the syntax check has to use 5.1. A newer luac
+      # rejects things that are valid here: goto as an identifier, unknown
+      # escape sequences such as \w, and assignment rules Penlight relies on.
+      - uses: leafo/gh-actions-lua@v10
+        with:
+          luaVersion: "5.1.5"
+
+      # Gate 1. Every .lua in src/, plus the 64 scripts inlined into the json.
+      # Those are inlined because their name resolves to a filename another
+      # item in the same directory also resolves to - 61 share the name
+      # outright, 3 differ only in case - so none of them may own the file.
+      # Not, as this used to say, because the name cannot be a filename: the
+      # names that could not be were renamed instead.
+      #
+      # --strict-version makes this fail rather than run if the luac on PATH is
+      # not 5.1. If the lua action ever changes what it installs, the check
+      # would otherwise keep passing while silently validating svof against a
+      # grammar Mudlet does not use.
+      - name: check lua syntax
+        run: |
+          # Assigned on its own line so a missing luac fails the step. As
+          # "$(which luac)" inline, the command substitution's exit status was
+          # discarded, the tool got an empty --luac and silently fell back to a
+          # PATH scan - which is the one thing --strict-version exists to stop.
+          luac_path="$(which luac)"
+          python3 tools/check_lua_syntax.py --luac "$luac_path" --strict-version
+
+      # Gate 1.2. Item names that could not become filenames were renamed, and
+      # rename_unfilenameable.py only rewrote the <name> elements - call sites
+      # had to be found by hand, and two were missed. Mudlet does not raise on
+      # an unknown item name, so both failed silently in play: the enemy list
+      # stopped being captured and the elist capture stopped closing early.
+      - name: check renamed call sites
+        run: python3 tools/check_renamed_callsites.py
+
+      # Gate 1.25. muddler builds from the json and looks for one file per item
+      # named after it, so a .lua with no entry there is read by nothing and
+      # reported by nothing - and adding an item by creating the file is the
+      # obvious move given what the readme says. The same lookup collapses
+      # spaces to underscores and is not injective, so two names can silently
+      # share one script.
+      - name: check the src tree is reachable
+        run: python3 tools/check_src_tree.py
+
+      # Gate 1.3. default_prios and ndb-help.lua exist twice: at the repo root,
+      # left over from the module era when svo.installationfolder() pointed at
+      # the checkout, and in src/resources/, which is what muddler copies into
+      # the package and what the system actually reads today. Nothing kept the
+      # two in sync. Until the root copies are retired, fail if they drift, so
+      # a fix applied to one cannot silently miss the one that ships.
+      - name: check the duplicated resource files still match
+        run: |
+          # Compare content, not raw bytes. default_prios is stored CRLF at
+          # the repo root and LF under src/resources/ - a leftover from
+          # whenever each copy was last saved, not a real content
+          # difference. cmp treated that as a failure the moment this ran
+          # anywhere but a Windows checkout, where core.autocrlf silently
+          # normalises both copies to CRLF, hiding the exact thing this gate
+          # exists to catch.
+          for f in default_prios ndb-help.lua; do
+            # Both present first. diff of two absent files is a clean pass, so
+            # deleting the pair - which loses the copy that actually ships -
+            # satisfied a check whose whole subject is those two files.
+            for p in "$f" "src/resources/$f"; do
+              test -s "$p" || { echo "$p is missing or empty"; exit 1; }
+            done
+            diff <(tr -d '\r' < "$f") <(tr -d '\r' < "src/resources/$f") || {
+              echo "$f differs in content between the repo root and src/resources/ -"
+              echo "the src/resources/ copy is the one that ships."
+              exit 1
+            }
+          done
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      # Resolve the branch to a commit before caching. Keying the cache on the
+      # branch name alone would keep serving the jar built from whatever that
+      # branch pointed at the first time, so moving the muddler fix forward
+      # would silently have no effect here.
+      - name: resolve the muddler revision
+        id: muddler
+        run: |
+          if [[ "$MUDDLER_REF" =~ ^[0-9a-f]{40}$ ]]; then
+            sha="$MUDDLER_REF"
+          else
+            sha=$(git ls-remote "https://github.com/$MUDDLER_REPO.git" \
+                    "refs/heads/$MUDDLER_REF" | cut -f1)
+            test -n "$sha" || { echo "no such branch: $MUDDLER_REF"; exit 1; }
+          fi
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "muddler $MUDDLER_REF is $sha"
+
+      - name: cache the muddler build
+        id: muddler-cache
+        uses: actions/cache@v4
+        with:
+          path: muddler-jar
+          key: muddler-${{ env.MUDDLER_REPO }}-${{ steps.muddler.outputs.sha }}
+
+      - name: build muddler from the fork
+        if: steps.muddler-cache.outputs.cache-hit != 'true'
+        run: |
+          git clone "https://github.com/$MUDDLER_REPO.git" muddler-src
+          cd muddler-src
+          git fetch --depth 1 origin "${{ steps.muddler.outputs.sha }}"
+          git checkout --detach "${{ steps.muddler.outputs.sha }}"
+          echo "building muddler at $(git rev-parse HEAD)"
+          chmod +x gradlew
+          ./gradlew --no-daemon shadowJar
+          cd ..
+          mkdir -p muddler-jar
+          cp muddler-src/build/libs/*-all.jar muddler-jar/muddle-all.jar
+
+      - name: report which muddler built the package
+        run: echo "package built with muddler ${{ steps.muddler.outputs.sha }}"
+
+      - name: build the package
+        run: |
+          java -jar muddler-jar/muddle-all.jar
+          ls -la build/
+          # ls exits 0 on an empty directory, so it never stood in for a check.
+          test -s build/svof.mpackage
+          test -s build/svof.xml
+
+      # Gate 2. The built package against all 25 original module xmls, object
+      # by object: structure, names, scripts, patterns and pattern types, alias
+      # regexes, event handlers, behavioural flags and top-level load order.
+      #
+      # The deliberate differences - the module machinery is gone, the updater
+      # and migration guard are new, a few load-order assumptions had to
+      # change, and on the branches stacked above this one the GMCP tracking
+      # fixes diverge on top - are recorded in the baseline with a digest each,
+      # so this fails on anything unexpected AND on any change to one that was
+      # already accepted. Structural problems and load
+      # order changes are always fatal, baseline or not.
+      #
+      # The count is deliberately not repeated here. It differs per branch in
+      # the stack and rises whenever a file diverges from its 2018 original for
+      # the first time, so a number in this comment goes stale by design - it
+      # already had, twice. The baseline file holds it and the gate prints it.
+      #
+      # If a difference here is intended, regenerate the baseline in the same
+      # commit that causes it:
+      #   python tools/verify_merged.py build/svof.xml \
+      #     --write-baseline tools/verify_baseline.json
+      - name: verify against the original modules
+        run: |
+          python3 tools/verify_merged.py build/svof.xml \
+            --baseline tools/verify_baseline.json
+
+      # Gate 2.1. Everything above verifies build/svof.xml, which is a sibling
+      # of the archive users install rather than the thing itself. This opens
+      # the .mpackage: valid zip, every file present and non-empty, its svof.xml
+      # byte-identical to the one just verified, and its config.lua parsing as
+      # Lua. That last one is not theoretical - muddler writes the README into
+      # `description = [[...]]` unescaped, so one `]]` in an example blanks
+      # every package field with no error printed anywhere.
+      - name: check the package that ships
+        run: |
+          luac_path="$(which luac)"
+          python3 tools/check_package.py --luac "$luac_path"
+
+      # The module xmls are the reference the conversion is verified against,
+      # so they are still worth checking while they are present.
+      - uses: leafo/gh-actions-luarocks@v4
+      - name: install luarocks dependencies
+        run: |
+          sudo apt-get -y install expat
+          luarocks install luafilesystem
+          luarocks install luaexpat
+      - name: check reference xml syntax
+        run: lua validate-syntax.lua .
+
+      - name: upload the package
+        uses: actions/upload-artifact@v4
+        with:
+          name: svof-${{ steps.version.outputs.version }}
+          path: |
+            build/svof.mpackage
+            build/svof.xml
+          if-no-files-found: error
+
+  # Only ever runs when a human asks for it from the Actions tab with the
+  # release box ticked. Nothing about a push can publish.
+  release:
+    needs: build
+    # Deliberately still fork-only: verifying the conversion is safe to do
+    # anywhere, publishing it as an svof release is not, and will not be until
+    # play testing says so.
+    if: >-
+      github.repository == 'TheLastDarkthorne/svof' &&
+      github.event_name == 'workflow_dispatch' &&
+      inputs.release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: svof-${{ needs.build.outputs.version }}
+          path: build
+
+      - name: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          if gh release view "v$VERSION" >/dev/null 2>&1; then
+            echo "release v$VERSION already exists - bump the version in mfile first"
+            exit 1
+          fi
+          gh release create "v$VERSION" build/svof.mpackage \
+            --title "svof $VERSION" \
+            --notes "Install by downloading svof.mpackage and opening it with Mudlet's package manager.
+
+          Built from \`${{ github.sha }}\`."

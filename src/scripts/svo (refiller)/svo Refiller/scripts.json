@@ -1,0 +1,15 @@
+[
+  {
+    "name": "refiller code",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "svo.rf_check_trans",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "gmcp.Char.Skills"
+    ]
+  }
+]

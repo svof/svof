@@ -1,0 +1,128 @@
+[
+  {
+    "name": "Uproot warning",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) begins uprooting a flag\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Plant warning",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) begins planting a flag!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Flag uprooted",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^A flag emblazoned with the Owl falls from (\\w+)'s person\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Someone got flag",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^The flag has been UPROOTED by (\\w+)!",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Stopped uprooting",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) stops uprooting the flag\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Flag planted",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have planted the flag!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "KoTH flag",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#55557f",
+    "highlightBG": "#00ffff",
+    "patterns": [
+      {
+        "pattern": "A magnificent flag, emblazoned with a shining crown, is lying here.",
+        "type": "substring"
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "name": "Totem",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A rune",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A rune (.+) is sketched in slot \\d+\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "On a person-ground",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A rune",
+        "type": "substring"
+      }
+    ],
+    "children": [
+      {
+        "name": "Regex",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "A rune (.+?) has been sketched onto \\w+\\.",
+            "type": "regex"
+          },
+          {
+            "pattern": "A rune (.+?) has been sketched into the ground here\\.",
+            "type": "regex"
+          }
+        ],
+        "matchall": "yes"
+      }
+    ]
+  }
+]

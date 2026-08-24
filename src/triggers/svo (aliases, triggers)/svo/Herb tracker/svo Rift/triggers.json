@@ -1,0 +1,39 @@
+[
+  {
+    "name": "Ze work",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "\\[ *(\\d+) *\\] ([^\\[$]+)",
+        "type": "regex"
+      }
+    ],
+    "matchall": "yes"
+  },
+  {
+    "name": "MORE",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "[Type MORE if you wish to continue reading.",
+        "type": "startOfLine"
+      }
+    ]
+  }
+]

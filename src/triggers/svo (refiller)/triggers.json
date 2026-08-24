@@ -1,0 +1,240 @@
+[
+  {
+    "name": "Stuff has boiled",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You place your ingredients into",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You place your reactants into the large container of ",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "Filled a container",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You slowly pour the liquid from",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "You carefully pour",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "Stop refilling",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You do not possess an empty.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^You cannot .+ (?:pot|alembic) with that\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Missing ingredients",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You lack the required ingredients to (brew|compound) that\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Putting vials away",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You put",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "",
+        "type": "prompt"
+      }
+    ]
+  },
+  {
+    "name": "Done with putvials",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You hold no more of that item.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Getting vials back",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You take",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "",
+        "type": "prompt"
+      }
+    ]
+  },
+  {
+    "name": "Done with getvials",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "There are no more ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "doesn't contain that",
+        "type": "substring"
+      }
+    ]
+  },
+  {
+    "name": "Giving vials away",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You give",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "return isPrompt() and svo.givevials",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Done with givevials",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You hold no more of that item.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "There's something wrong there",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "That pot already contains a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "That alembic already contains a",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "That is not an alembic.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "That is not a pot.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

@@ -1,0 +1,1 @@
+svo.valid.bind_totem()

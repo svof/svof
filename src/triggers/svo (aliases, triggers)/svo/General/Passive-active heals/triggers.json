@@ -1,0 +1,446 @@
+[
+  {
+    "name": "Dagaz rune",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "A rune like a rising sun upon the ground flares, bathing you with healing magic.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Healing rite",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "You feel your soul cleansed by the power of the Divine.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Panacea",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "Cool mist brings the vibrant touch of Nature to refresh you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Angel care",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "Your guardian angel soothes your afflictions.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Fool tarot",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "2",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "You press the Fool tarot to your forehead.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Salt",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "Directing the energy of salt, you surround yourself with a primal aura, purging yourself of ailments.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dragonheal",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "You let out a great keening, and cast the impurities from your form.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Kaido immunity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "Your blood boils as it throws off the effects of the venom rushing through your veins.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Demon syphon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "Your baalzadeen syphons your afflictions.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Bedevil",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a grand gesture of righteous fury, you draw upon the elemental forces at your command and bedevil",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With a grand gesture of righteous fury, you draw upon the elemental forces at your command and bedevil \\w+ with your afflictions\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Priest healed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "^You feel the spiritual presence of \\w+ touch you momentarily\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^\\w+ invokes the powers of .+ and lays \\w+ hands on you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hallelujah",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "The exaltation of the Hallelujah lifts yet another burden from you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Angel sacrifice",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You turn to your eternal companion and plead for the ultimate sacrifice.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "There is an explosion of light at your side - you emerge reborn in body and mind.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Fool",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "^\\w+ presses a tarot to your forehead and a sensation of warmth ripples through your body\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Priest 'heal'",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You call upon the powers of the elements to heal yourself.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Angel drain",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "Fresh blood flows into your veins.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Bloodboil",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "You summon spirits of fire to burn off that which afflicts you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Might",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "Your blood boils and you let out a mighty roar of defiance.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Alleviate",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Applying your knowledge of anatomy, you massage pressure points with your fingers, and a flood of relief courses through your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Shrugging",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Focusing inward, you purge your body of afflictions.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Sun Tarot",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The light of the sun tarot soothes your afflictions.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Shin phoenix",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Focusing upon your internal heat, you will it to increase in intensity. Warmth suffuses your senses, growing ever hotter until the sensation nears agony. Screaming in defiance, you throw your head back as you are consumed by flames, the mystical fire burning away all but the pure elements of your physical form.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Daina Purification",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a soothing warmth filling your extremities.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Harmony vibration",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "yes",
+    "highlightFG": "#00aaff",
+    "highlightBG": "#000000",
+    "patterns": [
+      {
+        "pattern": "The harmony vibration soothes your afflictions.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

@@ -1,0 +1,1 @@
+ndb.checkqw(nil, "organize cities")

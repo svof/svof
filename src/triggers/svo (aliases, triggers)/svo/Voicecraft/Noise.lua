@@ -1,0 +1,1 @@
+svo.startedfighting("bard", matches[2])

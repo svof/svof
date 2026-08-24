@@ -1,0 +1,11 @@
+[
+  {
+    "name": "svo_update_window",
+    "isActive": "no",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "svo got aff",
+      "svo lost aff"
+    ]
+  }
+]

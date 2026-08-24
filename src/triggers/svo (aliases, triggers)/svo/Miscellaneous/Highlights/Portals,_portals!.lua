@@ -1,0 +1,1 @@
+selectCurrentLine() setItalics(true) deselect() resetFormat()

@@ -1,0 +1,1039 @@
+[
+  {
+    "name": "Addiction",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a terrible hunger grow within you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Agoraphobia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Terror descends upon you and your head swims - you must find shelter!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Anorexia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The idea of eating or drinking is repulsive to you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Asthma",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a tightening sensation grow in your lungs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Asthma from smoking",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel a tightening sensation growing in your lungs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Clumsines",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You gasp as your fine-tuned reflexes disappear into a haze of confusion.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Crippled left arm",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You watch, in horror, as your left arm shrivels up and becomes useless.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your left arm breaks with a loud crack.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Crippled left leg",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You stumble as your left leg shrivels into a useless appendage.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your left leg breaks with a loud crack.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Crippled right arm",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You watch, in horror, as your right arm shrivels up and becomes useless.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your right arm breaks with a loud crack.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Crippled right leg",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You stumble as your right leg shrivels into a useless appendage.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your right leg breaks with a loud crack.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Darkshade",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your vision is flooded with light, and your face suddenly reddens.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Darkshade 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel your allergy to the sun going into temporary remission.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dementia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You look about yourself, frenzied and wild-eyed.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Disloyalty",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel ugliness radiating from you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dizziness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your mind swims as dizziness overtakes you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Epilepsy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your nerves feel suddenly jangled.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Haemophilia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You suddenly feel lightheaded.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Haemophilia 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You sense a subtle change deep within.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hypochondria",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Unreasoning rage turns the world blood-red.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hypochondria Tracking",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Illness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A sense of extreme nausea washes over you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Impatience",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You shuffle your feet noisily, suddenly bored.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Loki",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are confused as to the effects of the venom.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Manaleech",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel the mana begin to drain from your mind.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Mangled left arm",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your left arm is greatly damaged from the beating.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Mangled left leg",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your left leg is greatly damaged from the beating.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Mangled right arm",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your right arm is greatly damaged from the beating.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Mangled right leg",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your right leg is greatly damaged from the beating.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Masochism",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An odd sensation descends upon you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Mild concussion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your mind feels suddenly dulled and slow.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Mutilated left arm",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "To your horror, your left arm has been mutilated beyond repair by ordinary means.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Mutilated left leg",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "To your horror, your left leg has been mutilated beyond repair by ordinary means.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Mutilated right arm",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "To your horror, your right arm has been mutilated beyond repair by ordinary means.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Mutilated right leg",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "To your horror, your right leg has been mutilated beyond repair by ordinary means.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Nechamandra",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A coldness seeps deep into the marrow of your bones.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paralysis",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A prickly stinging overcomes your body, fading away into numbness.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Paranoia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Unthinking paranoia overcomes you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Peace",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "72",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your will to harm anything leaves you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Recklessness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You realise that your heroic actions can no longer continue unnoticed, and you take it upon yourself to rectify the situation.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Recklessness 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "None may stand in your way! You are invincible!",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Relapsing",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel light headed and dizzy.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Sensitivity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A prickly, stinging sensation spreads through your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Serious concussion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The massive trauma to your head has damaged your skull and brain considerably.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Shyness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You look about yourself nervously.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Sleep",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel incredibly tired, and fall asleep immediately.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Slickness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You notice that your sweat glands have begun to rapidly secrete a foul, oily substance.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stupidity",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Hmmmm. Why must everything be so difficult to figure out?",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Vertigo",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The idea of heights makes you queasy suddenly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Vertigo 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are gripped with fear - you cannot leave the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Weakness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your limbs grow heavy and you groan feebly.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hypochondria 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A terrible sense of unease comes over you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Stuttering",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The thought of speech seems difficult all of a sudden.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Severe burn",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The fires consuming your flesh begin to crackle with greater intensity.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Extreme burn",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your vision begins to fade with the all-consuming agony of the fires that are consuming you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Charred burn",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your skin begins to char from the bones as the fires feast upon you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Melting burn",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your skin runs like wax as it melts from your bones.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "psion fire slickness",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The salve turns to steam, burned away by the unnatural fires that plague you.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

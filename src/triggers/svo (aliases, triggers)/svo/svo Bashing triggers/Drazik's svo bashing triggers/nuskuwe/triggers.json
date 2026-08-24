@@ -1,0 +1,86 @@
+[
+  {
+    "name": "wyrm - prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A wyrm whelp pivots suddenly, whipping his long, sinuous tail around and slamming it into the back of your knees to knock you flat onto your back.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The jaws of an ancient wyrm unhinge, revealing scythe-like crescent fangs. Rather than darting forward as one might have expected, an ancient wyrm emits a shrill, high-pitched keening that assaults your senses, causing you to drop to your knees in pain.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A ferocious gleam lights the Wyrm Lord's eyes as he wheels to stare directly at you. An instant later, the Wyrm Lord charges straight at you, flames rippling around his form. He smashes brutally into you, knocking you to the ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "ablaze in nuskuwe",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The Wyrm Lord bellows a terrible, ground-shaking roar, stamping his clawed feet upon the rocks vigorously. From his maw erupts a slender crimson stream that covers you in burning lava, setting you aflame!",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A fire wyrm rears his head back and exhales as fire races from his mouth to engulf you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "wyrm whelp leg break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Pitching his bloated, serpentine body headlong towards your leg, a wyrm whelp clamps down upon the appendage and grinds his sharply serrated teeth into your flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "pyrapede prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A crimson pyrapede scurries around your feet, intertwining its body around them tightly and sweeping you off your feet.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

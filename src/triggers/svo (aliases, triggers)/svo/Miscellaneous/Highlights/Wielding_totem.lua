@@ -1,0 +1,1 @@
+selectString(matches[1], 1) setItalics(true) resetFormat() deselect()

@@ -1,0 +1,600 @@
+[
+  {
+    "name": "Enmeshment start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) turns to fix \\w+ gaze upon you, and you feel your heart increase its palpitations as a low keening echoes from \\w+ throat\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Enmeshment completed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "87",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As the keening ceases, you are jolted by a burst of vaporous rope-like tendrils that flow from your chest and encircle your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dragoncurse",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A heavy burden descends upon your soul ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A heavy burden descends upon your soul as (\\w+) lays the ancient Dragoncurse upon you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Targetted dragoncurse start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "An ominous feeling descends upon you as",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^An ominous feeling descends upon you as (\\w+) turns \\w+ gaze upon you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Targetted dragoncurse hit",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A sudden sense of panic overtakes you as the draconic curse manifests, afflicting you with",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A sudden sense of panic overtakes you as the draconic curse manifests, afflicting you with (impatience|paralysis|sensitivity|asthma)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Disrupt",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+'s nostrils flare wildly with a great rush of air as \\w+ sinuous body contracts and (\\w+) mouth opens wide to emit a rippling, unbroken roar that reverberates through your body\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Dragoncraft Trample",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "999",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) rises back on \\w+ hind legs, more than doubling in height as \\w+ towers above you\\. The ground shakes violently as \\w+ slams \\w+ feet back down, recklessly crushing everyone in \\w+ path\\.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "left leg",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Sickening pain shoots up your left leg as it is crushed.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "left arm",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Sickening pain shoots up your left arm as it is crushed.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "right leg",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Sickening pain shoots up your right leg as it is crushed.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "right arm",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Sickening pain shoots up your right arm as it is crushed.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "End (dragon trample)",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "",
+            "type": "prompt"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Blue breathrain",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "High above, ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^High above, (\\w+) opens \\w+ glistening, tooth-lined maw wide and rains a great tempest of ice down upon you, from which there is no escape or reprieve\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Breathrain incoming",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A massive shadow begins to circle in the skies above.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Gust",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Drawing an enormous breath,",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Drawing an enormous breath, (\\w+) exhales, expelling a gale of wind with such force that you are knocked over\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Def strip (dragon)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+)'s eyes narrow as \\w+ massive jaws yawn open and \\w+ expels a sluggish cloud of \\w+\\. The nebulous haze clings to you for a moment, and you feel your (.+) defence vanish\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Def strip (dragon two at once)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+)'s eyes narrow as \\w+ massive jaws yawn open and \\w+ expels a sluggish cloud of \\w+\\. The nebulous haze clings to you for a moment, and you feel your (.+) and (.+) defences vanish\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Lightning breathstream",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A snaking stream of lightning from ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A snaking stream of lightning from (\\w+)'s maw forks into the room, blasting into you mercilessly\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Ice breathstream",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A snaking stream of ice from ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A snaking stream of ice from (\\w+)'s maw forks into the room, blasting into you mercilessly\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Ice breathrain",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Savage and brutal, a storm of ice-infused droplets rain down upon you, assailing your body with its ferocious onslaught.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Epilepsy breathrain",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "High above, ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^High above, (\\w+) opens \\w+ glistening, tooth-lined maw wide and rains a great tempest of lightning down upon you, from which there is no escape or reprieve\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Ice blast",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Opening ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Opening \\w+ massive maw, (\\w+) throws \\w+ head forward and blasts wave after wave of deadly, all-consuming cold at you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Devour start on someone else",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "In a single, sinuous motion, ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^In a single, sinuous motion, (\\w+) manoeuvres \\w+ imposing form to encircle (\\w+)'s feet, fixing \\w+ with a penetrating gaze as \\w+ tremendous jaws open wide\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Limb damage",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) lunges forward with long, flashing claws extended, tearing down to the bones of your (\\w+ \\w+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Devour start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A deathly calm descends upon your surroundings as",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A deathly calm descends upon your surroundings as (\\w+) draws \\w+ up regally, eyes gleaming with murderous intent\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Devour two",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "In a single, sinuous motion,",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^In a single, sinuous motion, (\\w+) manoeuvres \\w+ imposing form to encircle your feet, fixing you with a penetrating gaze as \\w+ tremendous jaws open wide\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Tailsweep",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are knocked forcefully off your feet by the impact of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You are knocked forcefully off your feet by the impact of (\\w+)'s huge tail\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Bite",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) snaps \\w+ massive jaws close around you, flinging you effortlessly into the air before catching you with a second powerful bite\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Rend + restore illusion",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ lunges forward with long, flashing claws extended, tearing down to the bones of your (\\w+ \\w+)\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your \\w+ \\w+ is greatly damaged from the beating\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hoist",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) swoops down from the skies towards you, and before you can resist has lifted you off your feet and carries you, kicking uselessly, in firm talons into the sky above\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

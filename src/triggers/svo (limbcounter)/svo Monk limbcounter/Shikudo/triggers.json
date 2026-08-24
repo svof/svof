@@ -1,0 +1,582 @@
+[
+  {
+    "name": "Guesstimates",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You glance over",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You glance over (\\w+) and see that \\w+ health is at \\d+/(\\d+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hyperfocus",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": []
+  },
+  {
+    "name": "Risingkick",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "2",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You drive your foot up in a rising kick",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      }
+    ],
+    "children": [
+      {
+        "name": "Torso",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^Your foot drives into the solar plexus of (\\w+).$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "Head",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^Your foot catches (\\w+) under the chin, snapping \\w+ head back.$",
+            "type": "regex"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Spinkick",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^Whirling around, you bring the ball of your foot smashing into the (\\w+) of (\\w+).$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Frontkick",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You lash out with a straight kick at",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "^The instep of your foot smashes into the (\\w+) underarm of (\\w+), throwing \\w+ from \\w+ feet and sending \\w+ spinning to the ground.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Flashheel",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^Snapping your leg out to its full extent, you drive a heel into the (.*) knee of (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "You feel the satisfying crunch of bone under the impact of your heel.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Livestrike",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Lunging forward, you drive the end of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "^The breath of (\\w+) leaves \\w+ in an explosive gasp as the end of the staff smashes home.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Needle",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With pinpoint precision, you drive",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Reversing your grip on .+?\\, you drive the top of the weapon into the throat of (.*).$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Connect",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^The end of the staff smashes into the exposed throat of (\\w+), crushing cartilage.$",
+            "type": "regex"
+          }
+        ],
+        "script": "svo.lc_shikudohit(matches[2], \"head\", \"middle\")"
+      }
+    ]
+  },
+  {
+    "name": "Nervestrike",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You whip (.+?) at the side of (\\w+)\\'s neck.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "Horror overcomes the face of",
+        "type": "startOfLine"
+      }
+    ]
+  },
+  {
+    "name": "Ruku Arms 1",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You spin a full rotation, bringing .+? around in a blur of motion to smash into the (\\w+) arm of (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "^The staff connects to the .+? with a resounding crack, the limb flopping uselessly.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Ruku Arms 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You whip .+? at (\\w+) in a controlled arc, bringing its length to crack against \\w+ (.+?) arm.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "^The staff connects to the (\\w+) arm with a resounding crack, the limb flopping uselessly.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Ruku Torso 1",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You spin a full rotation, bringing .+? around in a blur of motion to smash into the (.+?) of (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "^(\\w+) staggers as the staff cracks across \\w+ ribs, sweat breaking out upon \\w+ forehead.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Ruku Torso 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You whip .+? at (\\w+) in a controlled arc, bringing its length to crack against \\w+ (.+?).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "^(\\w+) staggers as the staff cracks across \\w+ ribs, sweat breaking out upon \\w+ forehead.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Kuro 1",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Dropping into a lower stance, you sweep",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "^The staff cracks across the (\\w+) thigh of (\\w+).$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Kuro 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Falling back into a low crouch, you lash out",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "^The staff cracks across the (\\w+) thigh of (\\w+).$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hiru 1",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Snapping back into a ready stance, you whirl",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "^The staff connects to the side of (\\w+)'s head with a resounding crack.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hiru 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^Whirling .+? in a tight arc, you bring the weapon around to crash into the side of the head of (.*).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": "^The staff connects to the side of (\\w+)'s head with a resounding crack.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hiraku",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^Bracing your back foot, you lunge forward with (.+?) at the face of (.*).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Stepping forward, you drive (.+?) at the face of (.*).$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Connect",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^The staff smashes into the face of (\\w+) with a sickening crunch.$",
+            "type": "regex"
+          }
+        ],
+        "script": "svo.lc_shikudohit(matches[2], \"head\", \"highest\")"
+      }
+    ]
+  },
+  {
+    "name": "Thrust",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^Continuing your kata, you spin .+? in your hands and drive it in a sharp thrust towards the (.+?) of (\\w+).$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Stepping forward, you drive the end of .+? into the (.+?) of (\\w+).$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Connect",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^The staff drives into the (.+?) of (\\w+).$",
+            "type": "regex"
+          }
+        ],
+        "script": "local limb = string.gsub(matches[2], \" \", \"\") \nsvo.lc_shikudohit(matches[3], limb, \"middle\")"
+      }
+    ]
+  },
+  {
+    "name": "Dart",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^Sharply extending out your arms in front of you, you deliver a lightning-fast thrust to the (.+?) of (\\w+) with .+?.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "1",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^The staff drives into the (.+?) of (\\w+).",
+        "type": "substring"
+      }
+    ]
+  }
+]

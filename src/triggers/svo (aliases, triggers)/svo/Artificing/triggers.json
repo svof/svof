@@ -1,0 +1,318 @@
+[
+  {
+    "name": "Smash",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With efficient, precise motions a crystalline golem latches onto your",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With efficient, precise motions a crystalline golem latches onto your (left|right) (arm|leg), before giving a vicious twist\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hypothermia",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As a crystalline golem blasts your already frozen form with icy water, you feel the scant remnants of stored body heat stolen away.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Scorch (ablaze)",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A dim red glow emanates from the heart of a crystalline golem moments before flames spontaneously ignite all across your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Scald",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Horrifying pain overcomes you as a crystalline golem sprays a stream of super-heated steam directly into your face, scalding your throat and searing your skin.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Pummel",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With brutal efficiency, a crystalline golem rains savage blows down upon your frozen body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dehydrate",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel your skin crack and dry as a crystalline golem points a single appendage at you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Timeflux",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As a crystalline golem begins to pulse with a strange inner glow, you feel suddenly sluggish and unsteady.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Destabilise",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) turns to a crystalline golem, a silent exchange taking place\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Turning to a crystalline golem you direct him to project a disruptive tone at a \\w+ vibration\\.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Heat",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You are suffused with terrible pain as your skin catches aflame.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Creeps",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "A primal terror comes over you.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Oscillate",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "A keening note sends a spike of pain through your skull, throwing your mind into utter disarray.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Disorientation",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Your head swims and you stumble to the ground.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Stridulation",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The high pitched whining disrupts your mental equilibrium.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Agony",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Agony shoots up your legs and right arm as they all break similtaneously.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Lullaby",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "A bone-deep weariness comes over you.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Retardation",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The world seems to speed up around you - you feel ever so slow.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Disfigure",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A crystalline golem sprays boiling water directly into your face, causing the skin to blister and burn.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

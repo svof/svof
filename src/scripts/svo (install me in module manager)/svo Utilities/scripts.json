@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Tree curing strats",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Restore curing strats",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Dragonheal curing strats",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Shrugging curing strats",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Rage curing strats",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Fitness curing strats",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "svo.isenemy",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Custom prompt tags",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "svo_autoslickprio",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "svo got balance",
+      "svo lost aff",
+      "svo got aff"
+    ]
+  },
+  {
+    "name": "svo_onimportant_aff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "svo got aff"
+    ]
+  },
+  {
+    "name": "svo.autopause_on_def",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "svo got def",
+      "svo lost def"
+    ]
+  },
+  {
+    "name": "svo.sitting",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "svo lost aff"
+    ]
+  },
+  {
+    "name": "svo.sleeping",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "svo lost aff"
+    ]
+  },
+  {
+    "name": "svo Meteor Compress",
+    "isActive": "yes",
+    "isFolder": "yes"
+  },
+  {
+    "name": "commandTracker",
+    "isActive": "yes",
+    "isFolder": "yes",
+    "eventHandlerList": [
+      "sysDataSendRequest"
+    ]
+  }
+]

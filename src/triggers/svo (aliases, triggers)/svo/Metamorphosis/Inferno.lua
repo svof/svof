@@ -1,0 +1,1 @@
+svo.startedfighting("druid", matches[2])

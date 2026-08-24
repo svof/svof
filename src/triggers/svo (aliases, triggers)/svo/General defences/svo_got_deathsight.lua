@@ -1,0 +1,1 @@
+svo.defs.gotskill_deathsight()

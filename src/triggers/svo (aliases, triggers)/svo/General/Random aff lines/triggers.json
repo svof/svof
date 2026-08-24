@@ -1,0 +1,824 @@
+[
+  {
+    "name": "Fell asleep",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You close your eyes, curl up in a ball, and fall asleep.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Your exhausted mind can stay awake no longer, and you fall into a deep sleep.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Dive",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "79",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You leap up and attempt a graceful swan dive...right into the solid ground.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Fell from trees",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "10",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You lose your footing and tumble crashing down to the forest floor.",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "Broke left leg",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "99",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You cry out in pain as your left leg twists and snaps beneath you.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "Broke right leg",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You cry out in pain as your right leg twists and snaps beneath you.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Fell from air",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "10",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A large gust of wind suddenly rocks your body. As you lose control, you plummet into the ground.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A sudden gust of wind catches you and blows you out of the tree.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A violent tremor rocks the trees.",
+        "type": "exactMatch"
+      }
+    ],
+    "children": [
+      {
+        "name": "Both legs broke",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You scream as you feel the force of the landing break both your legs.",
+            "type": "exactMatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Way hungry",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You double over in pain as your stomach virtually collapses.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Backflipped",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ tumbles into a backflip to the up, kicking you in the back of the knee, which gives out and trips you to the ground in the process\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sticky strands of webbing spray out from ",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Sticky strands of webbing spray out from \\w+ to cover you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Shatter start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) pulls back a.+, readying \\w+ for a deadly strike\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Shatter",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ strikes your (\\w+ \\w+) a mighty blow\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Behead start",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) raises \\w+ .+ over \\w+ head and begins to swing it in a wide circle, gaining speed as \\w+ goes\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Behead two",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) begins to bear down on you with \\w+ whirling .+\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Amnesia pet",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^Your mind feels suddenly vacant as (.+) levels its gaze at you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Mountkick",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ gives a yell and slaps ,+, who powerfully kicks you with its hind legs and sends you sailing \\w+ with arms flailing\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Underweater with no pear",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You choke as you inhale water.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Siren beguile",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ throws a sultry glance at you, and bursts into song with her angelic voice. In an instant, your heart is hers\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Frost bracers",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) points \\w+ fists at you and blasts you with frigidly cold air\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Fell in Rheodad",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You smash hard into the sharp rocks at the base of the cliff with a sickening crunch.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Passed out",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your legs collapse from under you and consciousness leaves you as you pass out from extreme hunger.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Air bubble went out",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The bubble of air around you dissipates.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Set on fire from room fire",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The roaring inferno engulfs you as you fight to find a way out.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Detect lifevision",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You pay 750 credits and purchase a mask of lifevision.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Doppleganger blackout lust",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "arrives from the ether.",
+        "type": "substring"
+      },
+      {
+        "pattern": "return svo.affl.blackout and true or false",
+        "type": "lua"
+      }
+    ]
+  },
+  {
+    "name": "Checked ent - demon",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The following beings are in your entourage:",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "1",
+        "type": "spacer"
+      },
+      {
+        "pattern": ".+",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Peace from whip",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your heart is filled with love, compassion, and peace.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Failed to sit",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You attempt to sit on",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You attempt to sit on \\w+, but you miss and land with a bump\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Thrown from trees",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You scream as you fall from the trees and feel the force of the landing break both your legs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Butterfly bomb",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A butterfly bomb blows up in your hands!",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "It knocks you off your feet.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "War net web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Unfurling gracefully as it flies through the air, a weighted metal war net strikes and entangles you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Lightwall",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your skin prickles and burns.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Ice skates",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You stumble and tumble to the ground, finding no ice to glide on.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You carefully wipe excess ice from a pair of rustic ice skating boots's blades.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Gleam - prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You shiver with desperation for gleam.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Alcohol - prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You stumble and fall in your alcoholic haze.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Pestilence ring",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ points a ring of pestilence at you\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Slickness stripping sileris",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The protective covering coating your skin sloughs off.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Earthshaker",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ raises Earthshaker above \\w+ head and smashes its face into the ground with a mighty roar\\. The earth around you shakes violently\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You are stunned by the violent impact.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Mayaween",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Sticky strands of webbing entangle you, trapping you firmly as you find yourself in the heart of an intricate spiderweb.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Ship return prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You find yourself grasped ungently, thrust down through the whirlpool, and spat out again upon dry land.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Prone in Minos",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As you try to move through the sand, it shifts faster, making you slide further down.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Hallucinations stun",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are stunned by a vision of the Logos.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "misc shivering",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You begin to shiver violently.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

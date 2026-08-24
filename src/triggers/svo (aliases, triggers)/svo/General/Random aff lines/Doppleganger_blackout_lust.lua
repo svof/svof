@@ -1,0 +1,1 @@
+tempTimer(getNetworkLatency(), [[send'allies']])

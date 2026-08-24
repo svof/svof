@@ -1,0 +1,54 @@
+[
+  {
+    "name": "svo.update_http_done",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysGetHttpDone"
+    ]
+  },
+  {
+    "name": "svo.update_http_error",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysGetHttpError"
+    ]
+  },
+  {
+    "name": "svo.update_download_done",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysDownloadDone"
+    ]
+  },
+  {
+    "name": "svo.update_download_error",
+    "isActive": "yes",
+    "isFolder": "no",
+    "eventHandlerList": [
+      "sysDownloadError"
+    ]
+  },
+  {
+    "name": "Check for updates",
+    "isActive": "yes",
+    "isFolder": "no",
+    "children": [
+      {
+        "name": "svo_checkupdatestart",
+        "isActive": "yes",
+        "isFolder": "no",
+        "eventHandlerList": [
+          "svo system loaded"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Update UI and Install Engine",
+    "isActive": "yes",
+    "isFolder": "no"
+  }
+]

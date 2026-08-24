@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Viridian inside",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You must be outdoors in order to call upon the might of the Viridian.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Already have viridian",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You have already adopted the mighty form of the Viridian.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Not on ground viridian",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You must be in contact with the earth in order to call upon the might of the Viridian.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Cancelled viridian",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your transformation is disturbed and the vines quickly retreat from your body.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Obtained viridian",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel the vines enter your body through the pores in your skin and as they infuse you with the very essence of natural life, you swell in size, growing larger and stronger. With the return of your vision, your transformation into a Viridian is complete.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Viridian started",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You throw your arms wide and call upon the elements of water and earth to transform you into a Viridian.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

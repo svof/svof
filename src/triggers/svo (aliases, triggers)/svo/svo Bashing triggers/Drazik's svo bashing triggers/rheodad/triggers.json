@@ -1,0 +1,20 @@
+[
+  {
+    "name": "random angry tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The wind howls a strong gust, and you hear a harsh splitting sound reverberate throughout the air. A tree crashes toward you, hitting you and sending you sprawling.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]

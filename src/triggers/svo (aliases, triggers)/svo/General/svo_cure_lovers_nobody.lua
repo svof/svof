@@ -1,0 +1,1 @@
+svo.valid.cured_lovers_nobody()

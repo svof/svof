@@ -1,0 +1,312 @@
+[
+  {
+    "name": "Ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The flame-wreathed blade engulfs your skin in flames as it slashes your flesh.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The ice-covered blade sends a wave of cold over your skin, chilling you to the bone.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The ice-covered blade sends a wave of cold over your skin, freezing you to the bone.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Chill 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Vapourous mist coalesces about",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Vapourous mist coalesces about \\w+'s form as the surroundings cool\\. Moisture in the air crystallises into tiny shards of ice, which hang, unmoving, until a gesture from (\\w+) sends them whirling upon a bitter white wind to cut into your flesh\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Epilepsy",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Minute bolts of lightning arc from the blade into your flesh, jangling your nerves.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Def strip",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The emptiness of the void overtakes you, stripping your",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^The emptiness of the void overtakes you, stripping your (.+) defence\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Preclot",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You groan in pain as (\\w+) twists the blade within your gut\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "You feel weak and lightheaded.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "^As (\\w+) shifts the blade transfixing your gut, the loathsome kiss of metal ravages your insides\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Impale",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ draws \\w+ blade back and plunges it deep into your helpless body impaling it to the hilt\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Withdrew impale",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a snarl of contempt,",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With a snarl of contempt, \\w+ allows you to slide free of \\w+ weapon\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Razed rebounding",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ razes your aura of rebounding with",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Razed speed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ razes your speed defence with",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Limb damage",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The blade bites deeply into your",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^The blade bites deeply into your (.+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Limb damage 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a smooth lunge to the",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With a smooth lunge to the (left|right), (\\w+) draws \\w+ \\w+ from its scabbard and delivers a powerful slash across your legs\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Limb damage 3",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Spinning to the",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Spinning to the (left|right) as \\w+ draws \\w+ \\w+ from its sheath, (\\w+) delivers a precise slash across your arms\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Limb damage 4",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "In a single motion,",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^In a single motion, (\\w+) draws \\w+ \\w+ from its scabbard and looses a vicious (?:rising|falling) slash at your (torso|head)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Slash",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) unleashes a vicious slash towards you before resheathing \\w+ blade, \\w+ \\w+\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

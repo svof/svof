@@ -1,0 +1,326 @@
+[
+  {
+    "name": "Ablaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ inhales deeply, then lets out an earth\\-shaking roar as a jet of white\\-hot fire shoots from \\w+ nostrils directly at you\\.$",
+        "type": "regex"
+      }
+    ],
+    "script": "svo.valid.proper_ablaze()"
+  },
+  {
+    "name": "Hydra web",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a synchronous, guttural rasp,",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^With a synchronous, guttural rasp, \\w+'s many serpentine heads breathe forth wisps of rapidly condensing smoke that entangle you in a tangible web\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Opening",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^Opening \\w+ great maw, \\w+ envelopes you with a glacial plume of freezing air\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Def strip",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ directs \\w+ searing gaze towards you\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^Your (.+) defence is stripped away\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Trample",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "1",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ tramples over you with \\w+ enormous body\\.$",
+        "type": "regex"
+      },
+      {
+        "pattern": "^You feel your (right|left) (arm|leg) snap\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Trumpet",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ raises \\w+ trunk into the air and trumpets mightily, knocking you to the ground\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Limb damage",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "They seize your",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^They seize your (\\w+ \\w+) with a bonecrunching grip!$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Limb damage 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ springs forwards and mauls your (.+)\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Ablaze 2",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^\\w+ sucks in a huge lungful of air and blasts \\w+ fiery breath at you\\. You scream in agony as the horrific flames crackle over your melting flesh\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Inferno",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "3",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) unleashes a reckless burst of white-hot flames, creating a roaring inferno about \\w+ person\\.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Ablaze",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Pain rips through your body as the fire sears your skin.",
+            "type": "exactMatch"
+          }
+        ],
+        "script": "svo.valid.proper_ablaze()"
+      }
+    ]
+  },
+  {
+    "name": "Inferno re-ignite",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Without warning, your skin suddenly reignites in a searing rush of heat.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "Wreathe",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The fire on the hands of",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^The fire on the hands of (\\w+) jumps to you, setting you ablaze\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Blaze",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^As (\\w+) strikes you, you stumble back from the searing heat, tripping to the ground\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Hydra roar",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A mighty, bestial roar from",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^A mighty, bestial roar from (\\w+) sends you from your feet with its sheer force\\.$",
+        "type": "regex"
+      }
+    ]
+  },
+  {
+    "name": "Ambush",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) pounces on you from an unseen hiding place, knocking you to the ground and tearing at you with teeth and claws\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Custom prompt",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
+    "name": "Serverside",
+    "isActive": "yes",
+    "isFolder": "no"
+  }
+]

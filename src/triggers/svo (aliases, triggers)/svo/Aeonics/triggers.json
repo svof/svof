@@ -1,0 +1,118 @@
+[
+  {
+    "name": "Paradox",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^You suddenly get the feeling that eating (kelp|goldenseal|lobelia|ash|bellwort) would be a very bad idea indeed\\.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "Paradox boosted",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^\\w+ grows older before your eyes\\.$",
+            "type": "regex"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Doom started",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "1",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "^(\\w+) grows very still, \\w+ unblinking gaze locking to your own\\.$",
+        "type": "regex"
+      }
+    ],
+    "children": [
+      {
+        "name": "boosted",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "^(\\w+) grows older before your eyes\\.$",
+            "type": "regex"
+          }
+        ]
+      },
+      {
+        "name": "unboosted",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "",
+            "type": "prompt"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "doom continued",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "yes",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You know on an instinctive level that if",
+        "type": "startOfLine"
+      },
+      {
+        "pattern": "^You know on an instinctive level that if (\\w+) is allowed to continue, it shall be your end\\.$",
+        "type": "regex"
+      }
+    ]
+  }
+]

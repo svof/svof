@@ -1,0 +1,1 @@
+svo.delete_defmode(matches[2], true)

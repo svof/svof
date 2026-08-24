@@ -1,0 +1,8 @@
+{
+  "package": "svof",
+  "title": "svof",
+  "version": "65",
+  "author": "Svof contributors",
+  "outputFile": true,
+  "description": "Svof is a curing system for Achaea. It tracks afflictions and defences, cures them by priority, raises defences, and carries addons for limb counting, name highlighting, offering, logging and more.\n\nInstall: open this package with Mudlet's Package Manager. That is the whole install - nothing has to stay unzipped on disk.\n\nThen type vinstall to configure it, and vhelp for the command list.\n\nDocumentation: https://svof.github.io/svof/"
+}

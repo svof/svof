@@ -1,0 +1,148 @@
+[
+  {
+    "name": "demon breaks",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "With a triumphant roar, a crystalline ice demon lifts you up and throws you to the ground with bone-breaking force.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "With a triumphant roar, Kolyartus, the Blizzard lifts you up and throws you to the ground with bone-breaking force.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "demon chill",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "39",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your skin becomes clammy and blue as a crystalline ice demon touches you with an icy claw, chilling you to the core.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Kolyartus, the Blizzard exhales a blast of ice cold mist over you, and your body becomes frigid and still.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "hriddan prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Roaring in defiance, a Hriddan warrior knocks you down, trampling you with a rain of hoof blows.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A female minotaur lowers her head and rams straight into you, knocking you flat on your back.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Rak Gorlan, the hunter throws an uppercut punch and connects firmly with your jaw, knocking you down.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "hirddan arm break",
+    "isActive": "no",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A Hriddan warrior rains down a series of blows onto your arm as pain lances up your shoulder and the bones shatter under the assault.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "Grabbing you in a bear hug, Rak Gorlan, the hunter crushes you as the sickening crunch of snapping bones becomes suddenly audible.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "osta blackout",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Osta Murtai swings a cast iron pot into your temple, causing your ears to ring from the force of the blow.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "grutan sleep prone",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Grutan Sustrae chants in a soporific voice and you slump into unconsciousness, unable to stay awake.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "grut para",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "3",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Grut Vlugar, the Bone Dancer whispers a curse under his breath, and your limbs suddenly lock up.",
+        "type": "exactMatch"
+      }
+    ]
+  }
+]
