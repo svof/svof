@@ -54,6 +54,22 @@ GROUP_RENAME = {
 MERGED_NAME = {m: GROUP_RENAME.get(m, m) for m in MERGE_ORDER}
 ORIGINAL_NAME = {v: k for k, v in MERGED_NAME.items()}
 
+# ORIGINAL_NAME inverts MERGED_NAME, and inverting a dict silently drops a
+# key whenever two modules share a value - which is exactly what a rename
+# target colliding with another module's name produces. The run still fails,
+# but it fails somewhere unrelated: the collided module stops being flattened
+# into actual_order, so the load-order report points at the wrong place
+# instead of at the bad map. Fail here, naming the collision, rather than
+# there. Measured with a second entry targeting "svo (core)":
+# len(MERGED_NAME)=25 against len(ORIGINAL_NAME)=24.
+if len(ORIGINAL_NAME) != len(MERGED_NAME):
+    _dupes = sorted({v for v in MERGED_NAME.values()
+                     if list(MERGED_NAME.values()).count(v) > 1})
+    raise SystemExit("GROUP_RENAME is not one-to-one: %s is the merged name of "
+                     "more than one module. Every rename target must be unique "
+                     "and must not collide with an unrenamed module's name."
+                     % ", ".join(repr(d) for d in _dupes))
+
 # Leaf items renamed in src/ since the pinned reference xmls were taken, keyed
 # by kind and by the item's path in the ORIGINAL tree; the value is its new
 # leaf name. Without an entry a rename reads as a path mismatch, which is
@@ -71,6 +87,15 @@ ORIGINAL_NAME = {v: k for k, v in MERGED_NAME.items()}
 # kind, deliberately, so that it catches every rename whether recorded here
 # or not. The two gates are independent; this entry is not what makes that
 # one pass.
+# Every (kind, path) in ITEM_RENAME that matched a real path during a run.
+# A key that matches nothing is otherwise completely silent - renames.get()
+# falls through and the map goes on claiming a rename that is not there. That
+# happens two ways: a typo when the entry is added, and - guaranteed, later -
+# every entry going inert the day the reference xmls are re-pinned to an
+# already-renamed tree. Both leave permanent dead config that reads as
+# meaningful. check_unused_renames() below turns either into a clear message.
+ITEM_RENAME_USED = set()
+
 ITEM_RENAME = {
     "Trigger": {
         # svof called the Striking blazing-fist affliction 'burning', which is
@@ -208,6 +233,8 @@ def describe_tree(elem, kind, renames=None):
             seen[nm] = seen.get(nm, 0) + 1
             suffix = "" if seen[nm] == 1 else "#%d" % seen[nm]
             orig_p = orig_prefix + "/" + nm + suffix
+            if orig_p in renames:
+                ITEM_RENAME_USED.add((kind, orig_p))
             p = prefix + "/" + renames.get(orig_p, nm) + suffix
             out.append((p, V.describe(c, kind)))
             walk(c, p, orig_p)
@@ -249,8 +276,14 @@ def compare(merged):
 
             holder = merged_roots.get(MERGED_NAME[module])
             if holder is None:
-                structural.append("%-8s %s: no top-level entry in the merged package"
-                                  % (kind, module))
+                # Name what was actually looked for, not just the module it
+                # came from. Under GROUP_RENAME those differ, and reporting
+                # only the original sends the reader after a name that is
+                # correctly absent by design.
+                structural.append("%-8s %s: no top-level entry in the merged package%s"
+                                  % (kind, module,
+                                     "" if MERGED_NAME[module] == module
+                                     else " (looked for %r)" % MERGED_NAME[module]))
                 continue
             is_self_named = (len(mod_top) == 1 and mod_top[0][0] == module
                              and mod_top[0][1].tag == group)
@@ -367,7 +400,13 @@ def compare(merged):
                 actual_order.extend((c.findtext("name") or "") for c in el
                                     if c.tag in (kind, group))
             else:
-                actual_order.append(nm)
+                # expected_order is built from the pinned reference xmls, so it
+                # carries ORIGINAL names. Appending the merged name here made a
+                # renamed self-named module report a spurious load-order
+                # failure - it always takes this branch, since the flatten
+                # branch above is only for wrappers. Children are never
+                # renamed, so only this side needs mapping back.
+                actual_order.append(ORIGINAL_NAME.get(nm, nm))
         order_report[kind] = (expected_order, actual_order)
 
     for kind, (exp, act) in order_report.items():
@@ -383,12 +422,45 @@ def compare(merged):
                 % (kind, where,
                    exp[where] if where < len(exp) else "<end>",
                    act[where] if where < len(act) else "<end>"))
+
+    # Structural, not content: a rename entry that matched nothing means the
+    # map no longer describes the tree, which is the same class of problem as
+    # an item being where it should not be - and it must not be baseline-able,
+    # or the dead entry gets blessed and stays forever.
+    for kind, paths in ITEM_RENAME.items():
+        for path in sorted(paths):
+            if (kind, path) not in ITEM_RENAME_USED:
+                structural.append(
+                    "%-8s ITEM_RENAME entry %r matched no item in the reference "
+                    "xmls - it is either a typo, or the reference has been "
+                    "re-pinned to a tree where the rename already happened. "
+                    "Remove it or fix the path." % (kind, path))
+
     return structural, content, order_report
 
 
 def short(v):
     s = str(v)
     return s if len(s) <= 200 else s[:200] + " ..."
+
+
+def explain(c):
+    """The detail lines under a failed difference.
+
+    Only item| records carry original/merged. added|, gone| and count|
+    records have nothing to compare against - printing the pair for them
+    said "original: 'None' / merged: 'None'", which reads as "no difference"
+    on exactly the records where the difference cannot be shown any other
+    way. The package-only items are the ones that matter here: the updater
+    and the migration guard live there, so a sabotaged legacy_modules entry
+    reported a diff of None to None. Show the digest instead, which is what
+    actually moved.
+    """
+    if "original" in c or "merged" in c:
+        return ["           original: %r" % short(c.get("original")),
+                "           merged  : %r" % short(c.get("merged"))]
+    return ["           no side-by-side for this record type; digest is now %s"
+            % c.get("digest")]
 
 
 def main():
@@ -497,12 +569,12 @@ def main():
 
     for c in new:
         print("[FAIL] unexpected difference: " + c["text"])
-        print("           original: %r" % short(c.get("original")))
-        print("           merged  : %r" % short(c.get("merged")))
+        for line in explain(c):
+            print(line)
     for c in changed:
         print("[FAIL] a known difference changed: " + c["text"])
-        print("           original: %r" % short(c.get("original")))
-        print("           merged  : %r" % short(c.get("merged")))
+        for line in explain(c):
+            print(line)
     for g in gone:
         print("[FAIL] baselined difference no longer present: " + g)
         print("           the merged package now matches the original here. If that "
