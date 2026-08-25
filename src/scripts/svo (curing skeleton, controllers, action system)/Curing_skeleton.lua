@@ -406,6 +406,16 @@ local function run_through_actions()
   end
 end
 
+-- Balances whose cure consumes a physical item. Eating, applying, sipping or
+-- smoking spends these the moment the command goes out, and the rift or
+-- inventory line that follows is evidence independent of anything the rest of
+-- the paragraph claims. An illusion can lie about what a cure did; it cannot
+-- un-eat the herb.
+local consumable_balances = {
+  herb = true, salve = true, sip = true,
+  smoke = true, moss = true, purgative = true,
+}
+
 function svo.lifevision.validate()
   -- take a line off the paragraph_length if the game's curing went off, as it is a 'meta' message and shouldn't be counted
   local paragraph_length = svo.paragraph_length
@@ -424,8 +434,29 @@ function svo.lifevision.validate()
     else
       svo.debugf("got an illusion")
 
+      -- Discarding the paragraph used to discard the balance bookkeeping with
+      -- it: actionclear() frees bals_in_use, so svo.usingbal() goes false,
+      -- while bals.<balance> was never set false because that happens in the
+      -- action's completed handler which is being skipped here. svof then
+      -- believed it still had the balance and re-sent the cure on the very
+      -- next prompt instead of waiting out the recovery - fast enough to
+      -- outrun GMCP item tracking, which failed the same illusion check
+      -- again. It fed itself and did not recover.
+      local spent = {}
       for _,j in svo.lifevision.l:iter() do
+        if consumable_balances[j.p.balance] then spent[j.p.balance] = true end
         svo.actionclear(j.p)
+      end
+
+      -- After the loop: these raise events and can re-enter curing.
+      for balance in pairs(spent) do
+        local lostbal = svo['lostbal_'..balance]
+        if lostbal then
+          svo.debugf("illusion: %s balance was spent anyway, recording it", balance)
+          lostbal()
+        else
+          svo.debugf("illusion: no lostbal_%s to record with", balance)
+        end
       end
 
       if sys.lineguard and not sys.flawedillusion then

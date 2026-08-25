@@ -34,6 +34,19 @@ local DICT_SRC = "src/scripts/svo (actions dictionary)/Dictionary_of_actions_(af
 local DICT_START_ANCHOR = "for ssa, svoa in pairs(svo.dict.sstosvoa) do"
 local DICT_END_ANCHOR = "if type(svod) == 'string' then svo.dict.svotossd[svod] = ssd end"
 
+-- sk.gmcp_cured schedules its own clear on the prompt queue, so whether the
+-- record really is short-lived depends on two things this file does not own:
+-- how the queue runs its callbacks, and who else empties it. Both are pulled
+-- in from their real sources for the scenario that tests it - a stub queue
+-- can only ever confirm the test's own idea of what a prompt does.
+local PROMPT_SRC = "src/scripts/svo (curing skeleton, controllers, action system)/Curing_skeleton.lua"
+local PROMPT_START_ANCHOR = "function sk.onprompt_beforeaction_add(name, what)"
+local PROMPT_END_ANCHOR = "signals.after_lifevision_processing:connect(sk.onprompt_beforeaction_do"
+
+local RESET_SRC = "src/scripts/svo (alias and defence functions)/Alias_functions.lua"
+local RESET_START_ANCHOR = "function svo.reset.general()"
+local RESET_END_ANCHOR = "  svo.check_generics()"
+
 local function read_file(path)
   local f, err = io.open(path, "r")
   if not f then error("cannot open " .. path .. ": " .. tostring(err)) end
@@ -53,6 +66,25 @@ local function extract_block(source)
   end
   e = e + #END_ANCHOR
   return source:sub(s, e)
+end
+
+-- Generic: everything from a start anchor up to (but not including) a
+-- terminator, or through a final line plus its closing `end`.
+local function extract_between(source, path, start_anchor, end_anchor, through)
+  local s = source:find(start_anchor, 1, true)
+  if not s then
+    error("start anchor not found in " .. path .. " - it moved or was reworded; update this test's anchors")
+  end
+  local e = source:find(end_anchor, s, true)
+  if not e then
+    error("end anchor not found in " .. path .. " after the start anchor - update this test's anchors")
+  end
+  if not through then return source:sub(s, e - 1) end
+  e = source:find("\nend", e + #end_anchor, true)
+  if not e then
+    error("no closing end after the end anchor in " .. path .. " - update this test's anchors")
+  end
+  return source:sub(s, e + 4)
 end
 
 -- Both loops, plus the `end` closing the second one.
@@ -120,7 +152,7 @@ local function new_environment()
   local calls = {
     addaff = {}, rmaff = {}, addaffdict = {}, updateaffcount = {},
     remove_unknownany = {}, debugf = {}, got = {}, lost = {},
-    checkaeony = 0, changecuring = 0,
+    onprompt = {}, checkaeony = 0, changecuring = 0,
   }
 
   local handlers = {}
@@ -160,7 +192,16 @@ local function new_environment()
   svo.me = {}
   svo.conf = { gmcpaffechoes = false, gmcpdefechoes = false }
   svo.sk = {}
+  svo.sk.gmcp_cured = {}
+  svo.sk.onpromptfuncs = {}
   svo.valid = {}
+  svo.reset = {}
+  -- what the real svo.reset.general walks; empty is enough, the flags it
+  -- clears are the point here, not the action teardown.
+  svo.actions = { iter = function() return function() return nil end end }
+  svo.bals_in_use = {}
+  function svo.killaction() end
+  function svo.check_generics() end
 
   function svo.deepcopy(t)
     if type(t) ~= 'table' then return t end
@@ -177,6 +218,9 @@ local function new_environment()
   function svo.debugf(fmt, ...) calls.debugf[#calls.debugf + 1] = string.format(fmt, ...) end
   function svo.valid.remove_unknownany(name) calls.remove_unknownany[#calls.remove_unknownany + 1] = name end
   function svo.sk.checkaeony() calls.checkaeony = calls.checkaeony + 1 end
+  -- Records the prompt callback the way sk.onprompt_beforeaction_do would
+  -- later run it, so the test can fire it and check the reset.
+  function svo.sk.onprompt_beforeaction_add(name, fn) calls.onprompt[name] = fn end
 
   -- svo.defs['got_x'] / ['lost_x'] are looked up dynamically; record any call.
   setmetatable(svo.defs, {
@@ -194,6 +238,7 @@ local function new_environment()
   local signals = {}
   signals.changecuring = new_signal(nil)
   signals.changecuring.emit = function(self, ...) calls.changecuring = calls.changecuring + 1 end
+  signals.canoutr = new_signal(nil)
   signals.gmcpcharafflictionslist = new_signal("afflist")
   signals.gmcpcharafflictionsremove = new_signal("affremove")
   signals.gmcpcharafflictionsadd = new_signal("affadd")
@@ -210,6 +255,9 @@ local function new_environment()
     -- stdlib the block needs
     string = string, table = table, tonumber = tonumber, pairs = pairs, ipairs = ipairs,
     type = type, tostring = tostring, error = error, setmetatable = setmetatable,
+    pcall = pcall, next = next,
+    -- Mudlet's; only reached when a queued prompt callback raises.
+    echoLink = function() end,
   }
   env._G = env
 
@@ -240,6 +288,13 @@ print("extracted " .. #block .. " bytes of Setup.lua between the GMCP handler an
 
 local dict_block = extract_dict_block(read_file(DICT_SRC))
 print("extracted " .. #dict_block .. " bytes of the dictionary's reverse-index loops")
+
+local prompt_block = extract_between(read_file(PROMPT_SRC), PROMPT_SRC,
+  PROMPT_START_ANCHOR, PROMPT_END_ANCHOR, false)
+local reset_block = extract_between(read_file(RESET_SRC), RESET_SRC,
+  RESET_START_ANCHOR, RESET_END_ANCHOR, true)
+print("extracted " .. #prompt_block .. " bytes of the real prompt queue and "
+  .. #reset_block .. " bytes of the real svo.reset.general")
 
 -- Run the dictionary's own reverse-index build over whatever sstosvoa /
 -- sstosvod a scenario has just set, exactly as it runs at dict-load time.
@@ -384,6 +439,94 @@ do
   eq(#calls.rmaff, 1, "G7: rmaff called exactly once")
   eq(type(calls.rmaff[1]), 'string', "G7: rmaff receives a string")
   eq(calls.rmaff[1], 'sensitivity', "G7: rmaff receives the resolved svof name")
+end
+
+-- ===== scenario 5b: GMCP-cured record for the trigger-side illusion checks =====
+-- GMCP is processed before the game text it accompanies, so by the time a
+-- cure's own line reaches a trigger, rmaff has already cleared affs[aff].
+-- Without this record the trigger reads "we never had it" and calls a real
+-- cure an illusion.
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+  -- the real queue, not the recording stub: what clears the record is the
+  -- point of this scenario, so the mechanism that clears it has to be real.
+  load_block(prompt_block, env)
+  load_block(reset_block, env)
+
+  -- The real mapping is nausea -> illness. Keying the fixture illness ->
+  -- illness made rawaff, affname and svoaffkey the same string, so
+  -- "recorded under its svof name" could not fail: recording under either
+  -- of the other two left the suite green.
+  svo.dict.sstosvoa = { nausea = 'illness' }
+  svo.dict.illness = { name = 'illness' }
+  env.gmcp.Char.Afflictions.Remove = { [1] = 'nausea' }
+
+  h.affremove()
+
+  eq(svo.sk.gmcp_cured.illness, true, "gmcp_cured: a resolved GMCP cure is recorded under its svof name")
+  eq(svo.sk.gmcp_cured.nausea, nil, "gmcp_cured: and not under the GMCP name the cure arrived as")
+  eq(type(svo.sk.onpromptfuncs['gmcpcharafflictionsremove']), 'function', "gmcp_cured: a prompt reset was queued")
+
+  svo.sk.onprompt_beforeaction_do()
+  eq(svo.sk.gmcp_cured.illness, nil, "gmcp_cured: the record does not survive the prompt")
+end
+
+-- Nine herb-cured afflictions reach GMCP under a different name, and the
+-- four tempered humours are levelled as well, so a real cure can need the
+-- level strip and the name translation at once.
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = { temperedcholeric = 'cholerichumour' }
+  svo.dict.cholerichumour = { name = 'cholerichumour', count = 2 }
+  env.gmcp.Char.Afflictions.Remove = { [1] = 'temperedcholeric (2)' }
+
+  h.affremove()
+
+  eq(svo.sk.gmcp_cured.cholerichumour, true, "gmcp_cured: a levelled cure under a differing GMCP name is recorded under the bare svof name")
+end
+
+-- svo.reset.general empties the prompt queue without running it, so the
+-- clear this record queued for itself is thrown away and the record - read
+-- by the two illusion checks as "GMCP just cured this" - survives every
+-- later prompt. Every direct caller runs svo.reset.affs first, so nothing
+-- else can arrive to flush it: you are unafflicted and it stays true.
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+  load_block(prompt_block, env)
+  load_block(reset_block, env)
+
+  svo.dict.sstosvoa = { nausea = 'illness' }
+  svo.dict.illness = { name = 'illness' }
+  env.gmcp.Char.Afflictions.Remove = { [1] = 'nausea' }
+  h.affremove()
+  svo.sk.removed_something = true
+
+  svo.reset.general()
+
+  eq(svo.sk.gmcp_cured.illness, nil, "reset.general: the GMCP-cured record does not survive a general reset")
+  eq(svo.sk.removed_something, nil, "reset.general: nor does sk.removed_something, which leaks through the same discarded queue")
+
+  -- and it is really gone, not merely pending: the next prompt has nothing
+  -- queued to clear it with.
+  svo.sk.onprompt_beforeaction_do()
+  eq(next(svo.sk.gmcp_cured), nil, "reset.general: still clear after the next prompt")
+end
+
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = {} -- nothing resolves
+  env.gmcp.Char.Afflictions.Remove = { [1] = 'somethingunknown' }
+
+  h.affremove()
+
+  eq(next(svo.sk.gmcp_cured), nil, "gmcp_cured: an unresolvable GMCP name records nothing")
+  eq(calls.onprompt['gmcpcharafflictionsremove'], nil, "gmcp_cured: no prompt reset registered when nothing was recorded")
 end
 
 -- ===== scenario 6: G1/G2 - the List reconciler =====

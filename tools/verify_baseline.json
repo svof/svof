@@ -79,7 +79,7 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Alias functions|script",
-      "digest": "a670beb40255e4aa",
+      "digest": "36a2b1c3a9c27ad1",
       "text": "Script   svo (alias and defence functions) Alias functions [script]"
     },
     {
@@ -94,7 +94,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "0d260875647fc2ac",
+      "digest": "30c3f27a92a786c0",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -249,7 +249,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "055adae2099ada77",
+      "digest": "0ca0b6d1c6525c09",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -261,6 +261,11 @@
       "id": "item|Script|svo (trigger functions)|Diag trigger functions|script",
       "digest": "43f1b63c401b3ef5",
       "text": "Script   svo (trigger functions) Diag trigger functions [script]"
+    },
+    {
+      "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
+      "digest": "b923a10871505828",
+      "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",

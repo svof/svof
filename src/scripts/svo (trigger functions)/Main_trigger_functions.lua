@@ -2866,8 +2866,12 @@ for _, herb in pairs({
         end
 
         lifevision.add(actions[aff..'_herb'].p)
-      -- with AI on, don't accept cures for affs that we don't have (although do consider check*s)
-      elseif (not conf.aillusion or (conf.aillusion and (affs[aff] or affs.unknownany or affs.unknownmental or svo.affsp[aff]))) then
+      -- with AI on, don't accept cures for affs that we don't have (although do consider check*s).
+      -- sk.gmcp_cured[aff] covers the case where GMCP already removed this
+      -- affliction earlier in the same paragraph - GMCP is processed before
+      -- the text it accompanies, so affs[aff] is necessarily nil by now and
+      -- would otherwise make every such genuine cure look like an illusion.
+      elseif (not conf.aillusion or (conf.aillusion and (affs[aff] or sk.gmcp_cured[aff] or affs.unknownany or affs.unknownmental or svo.affsp[aff]))) then
         svo.killaction(svo.dict[result.action_name].herb)
         svo.checkaction(svo.dict[aff].herb, true)
         lifevision.add(svo.dict[aff].herb)
@@ -2925,7 +2929,9 @@ for _, herb in pairs({
         end
 
         lifevision.add(actions[aff..'_herb'].p, 'cured')
-      elseif (not conf.aillusion or (conf.aillusion and (affs[aff] or (affs.unknownany or affs.unknownmental)))) then -- with AI on, don't accept cures for affs that we don't have
+      -- sk.gmcp_cured[aff]: see the matching branch above - GMCP runs ahead of
+      -- the text, so it has already cleared affs[aff] for a real cure.
+      elseif (not conf.aillusion or (conf.aillusion and (affs[aff] or sk.gmcp_cured[aff] or (affs.unknownany or affs.unknownmental)))) then -- with AI on, don't accept cures for affs that we don't have
         svo.killaction(svo.dict[result.action_name].herb)
         svo.checkaction(svo.dict[aff].herb, true)
         lifevision.add(svo.dict[aff].herb, 'cured')
