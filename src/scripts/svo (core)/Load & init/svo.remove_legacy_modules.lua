@@ -11,6 +11,12 @@
 -- deletes a file. Mudlet's own profile save does, though, which is why the
 -- sweep is delayed and every module xml is copied first. See SAVE_DELAY.
 
+-- These are the OLD per-module Mudlet names from the pre-conversion install,
+-- matched via getModulePath/uninstallModule against whatever a user's Module
+-- Manager still has registered. Renaming the corresponding src/ group (as
+-- happened for "svo (install me in module manager)" -> "svo (core)") must
+-- NOT be reflected here - this list has to keep matching what a pre-existing
+-- install actually calls itself, regardless of what the new package calls it.
 local legacy_modules = {
   "svo (install me in module manager)",
   "svo (actions dictionary)",
