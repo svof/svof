@@ -71,7 +71,7 @@ same commit that causes it.
     svo (enchanter)                                       = Jenny's enchanter addon
     svo (fishdist)                                        = Trilliana's fishing distance addon
     svo (inker)                                           = Inker addon
-    svo (install me in module manager)                    = The core system functions to install/uninstall modules, 
+    svo (core)                                            = The core system functions to install/uninstall modules, 
                                                             initialization, updates, classchange for multiclass, event handlers, 
                                                             utilities and other things necessary for the system to function. 
                                                             Also contains a few scripting examples.
@@ -145,7 +145,7 @@ This the order that things happen on the prompt function:
 5. add to herb cures/restoration/smoke/focus/humour/etc tables (whatever that is applicable) on **svo (trigger functions) > Main trigger functions** (the comment lines `-- normal herbs`, `-- normal smokes`. `-- focus`, etc can help you find your way).
 7. add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in **Main trigger functions** on **svo (trigger functions)**)
 8. add its definition on svof-serverside integration (sstosvoa on dict).
-9. add its prompt tag to **svo (install me in module manager) > svo Utilities > Custom prompt tags > @affs**
+9. add its prompt tag to **svo (core) > svo Utilities > Custom prompt tags > @affs**
 10. add it to the for loop in **svo (trigger functions) > Diag trigger functions ** 
 11. add it to afflist in **svo (trigger functions) > Simple aff trigger functions**
 12. (Optional) add triggers receiving and losing affliction. Note: This should only be necessary for afflictions that are not shown on GMCP for some reason (best example I can think of is Pariah's latency), the system already handles gaining/removing aff through GMCP so no need to add triggers for that on normal circumstances.
@@ -288,7 +288,7 @@ Important notes:
 ## How to add a new class
 1. Add any new afflictions given by the new class as explained above.
 2. Add the class and its skills in **svo.knownskills** table located in **svo (setup, misc, empty, funnies, dor) > Setup** so that svof can recognize them.
-3. Add the class to the **svo.classes** table on **svo (install me in module manager) > svo Class Management** and if possible, add their main attack triggers, putting `svo.startedfighting("classname", matches[2])` on the script so that svo can recognize you are fighting said class. See the `Evileye` trigger for example.
+3. Add the class to the **svo.classes** table on **svo (core) > svo Class Management** and if possible, add their main attack triggers, putting `svo.startedfighting("classname", matches[2])` on the script so that svo can recognize you are fighting said class. See the `Evileye` trigger for example.
 4. Add all of the class defences as explained above.
 5. Add all of the class resources as well as new balances if applicable to the resources in **svo (setup, misc, empty, funnies, dor) > Setup**. Find the `-- Class resources` commentary if you are lost.
     - In case of new balances or any useable resource that should be tracked whether they are on/off, create a svo.valid function for it in **svo (trigger functions) > Main trigger functions**. 

@@ -43,6 +43,17 @@ LEAF_OF = V.LEAF_OF
 REFERENCE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                          "reference_xmls.json")
 
+# The reference xmls are pinned and never renamed (see check_reference below),
+# but a module's top-level group in src/ can still be renamed on the built
+# side - "svo (install me in module manager)" -> "svo (core)" is the first
+# case of this. Entries here are what keeps the object-diff finding the right
+# group under its new name instead of reporting it missing.
+GROUP_RENAME = {
+    "svo (install me in module manager)": "svo (core)",
+}
+MERGED_NAME = {m: GROUP_RENAME.get(m, m) for m in MERGE_ORDER}
+ORIGINAL_NAME = {v: k for k, v in MERGED_NAME.items()}
+
 # Leaf items renamed in src/ since the pinned reference xmls were taken, keyed
 # by kind and by the item's path in the ORIGINAL tree; the value is its new
 # leaf name. Without an entry a rename reads as a path mismatch, which is
@@ -236,7 +247,7 @@ def compare(merged):
                         merged_by_name.setdefault(nm, []).append(merged_roots[nm])
                 continue
 
-            holder = merged_roots.get(module)
+            holder = merged_roots.get(MERGED_NAME[module])
             if holder is None:
                 structural.append("%-8s %s: no top-level entry in the merged package"
                                   % (kind, module))
@@ -255,7 +266,7 @@ def compare(merged):
                 # There is no original to compare against, since the merge
                 # invents them, so compare against what the merge is defined to
                 # produce.
-                want = V.describe(wrapper_element(group, module), kind)
+                want = V.describe(wrapper_element(group, MERGED_NAME[module]), kind)
                 got = V.describe(holder, kind)
                 for k in sorted(set(want) | set(got)):
                     if k in WRAPPER_DEFAULTED:
@@ -352,7 +363,7 @@ def compare(merged):
         # the names inside it, anything else contributes its own name
         actual_order = []
         for nm, el in top_level(merged, kind):
-            if nm in set(MERGE_ORDER) and nm not in self_named and el.tag == group:
+            if nm in ORIGINAL_NAME and ORIGINAL_NAME[nm] not in self_named and el.tag == group:
                 actual_order.extend((c.findtext("name") or "") for c in el
                                     if c.tag in (kind, group))
             else:
