@@ -130,6 +130,16 @@ jobs:
             }
           done
 
+      # Gate 1.5. Logic-level regression test for the six GMCP affliction/
+      # defence handlers (Setup.lua) - name parsing, the svoatoss/svodtoss
+      # removal gate, the unknownany guard, and once-per-event call counts.
+      # Runs the real handler block, extracted from Setup.lua by anchor text,
+      # under real Lua 5.1 with a stub svo/sk/conf/gmcp/signals environment.
+      # Proves the reconciler logic in isolation; proves nothing about actual
+      # play, which still needs the in-game testing in the safety-patch spec.
+      - name: test gmcp reconciler logic
+        run: lua tools/test_gmcp_reconciler.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

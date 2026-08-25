@@ -180,6 +180,7 @@ svo.serverignore = svo.serverignore or {}
 svo.ignore = svo.ignore or {}
 svo.dict = svo.dict or {}
 
+
 local oldecho = svo.conf.commandecho
 signals.changecuring = signals.changecuring or luanotify.signal.new()
 signals.sync = signals.sync or luanotify.signal.new()
@@ -710,26 +711,61 @@ end, 'track lost gmcp aff')
 signals.gmcpcharafflictionslist:connect(function()
   svo.gaffl = {}
   local preaffl = {}
-  for _, val in ipairs(svo.affl) do preaffl[val] = true end
+  -- svo.affl is keyed by name (values are {sw=..., count=...} tables), so
+  -- this must key preaffl on the name via pairs, not ipairs over a
+  -- string-keyed map (which iterates nothing) or on the value table (which
+  -- would key on a table, not the name svo.dict.svotossa below is keyed by).
+  for name in pairs(svo.affl) do preaffl[name] = true end
 
   for _, val in ipairs(gmcp.Char.Afflictions.List) do
-    local thisaff = val.name
-    if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
-    gaffl[thisaff] = true
-    local svoAffliction = svo.dict.sstosvoa[thisaff]
+    local rawaff = val.name
+    -- parseaffname, not the original " (1)"-only strip. That strip resolved
+    -- the name only at level 1, so "torntendons (2)" found nothing in
+    -- sstosvoa, never cleared its preaffl entry, and the removal loop below
+    -- then dropped an affliction the game had just reported. Harmless while
+    -- the loop was dead; a false removal the moment it was not.
+    local affname, afflevel = parseaffname(rawaff)
+
+    -- gaffl keeps its pre-existing keying: bare at level 1, suffixed above.
+    -- Same inconsistency the add handler preserves, and not this fix's to
+    -- change.
+    local gafflkey = (rawaff:sub(-4) == " (1)") and affname or rawaff
+    gaffl[gafflkey] = true
+
+    local svoAffliction = svo.dict.sstosvoa[affname]
     if svoAffliction then
       if preaffl[svoAffliction] then
         preaffl[svoAffliction] = false
       else
         svo.addaff(svoAffliction)
       end
+
+      -- Levels reach svo.dict/svo.affl from a List the same way the add
+      -- handler delivers them, so a resync corrects a level that drifted
+      -- rather than only confirming the affliction is present.
+      local svoaff = svo.dict[svoAffliction]
+      if afflevel ~= nil and svoaff then
+        if svoaff.count ~= nil then svoaff.count = afflevel end
+        if svo.affl[svoaff.name] then svo.updateaffcount(svoaff) end
+      end
     end
-  sk.checkaeony()
-  signals.changecuring:emit()
   end
 
+  -- Was inside the loop above, firing once per affliction in the list
+  -- instead of once per List event.
+  sk.checkaeony()
+  signals.changecuring:emit()
+
+  -- svo.dict.svotossa is sstosvoa reversed, built by the dictionary itself
+  -- as it loads. It gates removal on the affliction being one GMCP can
+  -- actually confirm or deny - anything absent from it (not reachable
+  -- through sstosvoa, or deliberately mapped to false there) is never
+  -- touched here, whatever this loop above computed for it.
   for key, val in pairs(preaffl) do
-    if val then svo.rmaff(key) end
+    if val and svo.dict.svotossa[key] then
+      svo.debugf("gmcp list: removing %s, not in the game's list", key)
+      svo.rmaff(key)
+    end
   end
 end, 'update list of gmcp affs')
 
@@ -770,10 +806,19 @@ signals.gmcpchardefenceslist:connect(function()
       end
     end
   end
+  -- predefs is keyed by svof defence name (it's a deepcopy of defc). The
+  -- "got" loop above correctly goes serverside -> svof through sstosvod
+  -- because thisdef there is a serverside name; here defname already is the
+  -- svof name, so re-translating it through sstosvod (itself serverside-
+  -- keyed) only ever worked where the two names happened to be identical.
+  -- svo.dict.svotossd (sstosvod reversed, built by the dictionary as it
+  -- loads) is the correct gate - it exists exactly when defname is
+  -- reachable from GMCP at all - and defname is already the right key for
+  -- svo.defs.
   for defname, val in pairs(predefs) do
-    if val == true and svo.dict.sstosvod[defname] then
-      if type(svo.defs['lost_'..svo.dict.sstosvod[defname]]) == 'function' then
-        svo.defs['lost_'..svo.dict.sstosvod[defname]]()
+    if val == true and svo.dict.svotossd[defname] then
+      if type(svo.defs['lost_'..defname]) == 'function' then
+        svo.defs['lost_'..defname]()
       end
     end
   end
