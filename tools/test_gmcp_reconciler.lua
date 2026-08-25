@@ -535,20 +535,32 @@ do
   load_block(block, env)
 
   -- Three real mappings, none of them an identity, and deliberately the
-  -- nastiest shape in the dictionary: GMCP 'burning' is svof 'ablaze', while
-  -- 'burning' is *also* a svof name in its own right (GMCP 'flamefisted').
-  -- An identity fixture makes the two key spaces indistinguishable, so every
-  -- assertion below would hold even if the gate and the loop keyed on the
-  -- wrong one. 46 of the 145 string-valued sstosvoa entries differ like this.
+  -- nastiest shape in the dictionary: GMCP 'mangledleftarm' is svof
+  -- 'mutilatedleftarm', while 'mangledleftarm' is *also* a svof name in its
+  -- own right (GMCP 'damagedleftarm') - one severity step milder. Confusing
+  -- the two key spaces here does not resolve to nothing, it resolves to a
+  -- real neighbouring affliction. An identity fixture makes the two spaces
+  -- indistinguishable, so every assertion below would hold even if the gate
+  -- and the loop keyed on the wrong one. Many string-valued sstosvoa
+  -- entries differ across the two spaces - no figure here on purpose, it
+  -- moves every time one of them is renamed and has gone stale once
+  -- already. All four mangled limbs collide this way.
   -- 'unreachable' is one of the names GMCP can never confirm or deny (no
   -- sstosvoa entry). Two items in the reported list so the checkaeony/
   -- changecuring frequency assertions below actually distinguish "once per
   -- list" from "once per item" (a list of one can't tell the two apart).
-  svo.dict.sstosvoa = { burning = 'ablaze', flamefisted = 'burning', nausea = 'illness' }
+  svo.dict.sstosvoa = {
+    mangledleftarm = 'mutilatedleftarm',
+    damagedleftarm = 'mangledleftarm',
+    nausea = 'illness',
+  }
   build_reverse_indexes(env)
 
-  svo.affl = { ablaze = { count = 1 }, burning = { count = 1 }, illness = { count = 1 }, unreachable = { count = 1 } }
-  env.gmcp.Char.Afflictions.List = { { name = 'burning' }, { name = 'flamefisted' } }
+  svo.affl = {
+    mutilatedleftarm = { count = 1 }, mangledleftarm = { count = 1 },
+    illness = { count = 1 }, unreachable = { count = 1 },
+  }
+  env.gmcp.Char.Afflictions.List = { { name = 'mangledleftarm' }, { name = 'damagedleftarm' } }
 
   h.afflist()
 
@@ -558,8 +570,8 @@ do
   eq(#calls.addaff, 0, "G1: an affliction already tracked and still in the list is not re-added")
   contains(calls.rmaff, 'illness', "G1/G2: a GMCP-reachable affliction absent from the list IS removed, under its svof name")
   not_contains(calls.rmaff, 'unreachable', "G2: an affliction GMCP cannot report is NEVER removed, even when absent from the list")
-  not_contains(calls.rmaff, 'ablaze', "G1: an affliction the list confirms under a different GMCP name is not removed")
-  not_contains(calls.rmaff, 'burning', "G1: the svof name that collides with another affliction's GMCP name is not removed either")
+  not_contains(calls.rmaff, 'mutilatedleftarm', "G1: an affliction the list confirms under a different GMCP name is not removed")
+  not_contains(calls.rmaff, 'mangledleftarm', "G1: the svof name that collides with another affliction's GMCP name is not removed either")
 
   -- The removal loop is the destructive half of the reconciler; debugf is
   -- its only record. Deleting that line left the suite green before this.

@@ -43,6 +43,33 @@ LEAF_OF = V.LEAF_OF
 REFERENCE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                          "reference_xmls.json")
 
+# Leaf items renamed in src/ since the pinned reference xmls were taken, keyed
+# by kind and by the item's path in the ORIGINAL tree; the value is its new
+# leaf name. Without an entry a rename reads as a path mismatch, which is
+# structural and therefore fatal even under --baseline, and --write-baseline
+# refuses to bless it. That is correct: a path mismatch is only reachable
+# inside the equal-length zip below, so what it really signals is a REORDER
+# (or a size-preserving swap). A missing or duplicated item changes the
+# length and routes to the count|/gone|/added| entries instead, which are
+# content and baseline-able. So a deliberate rename has to be recorded here,
+# or the gate cannot tell it apart from a reorder.
+#
+# Renaming a Mudlet item is not free at runtime either: enableTrigger("gone
+# name") is a silent no-op. check_renamed_callsites.py covers that, but it
+# does not read this map - it asks whether a name resolves to any item of its
+# kind, deliberately, so that it catches every rename whether recorded here
+# or not. The two gates are independent; this entry is not what makes that
+# one pass.
+ITEM_RENAME = {
+    "Trigger": {
+        # svof called the Striking blazing-fist affliction 'burning', which is
+        # the game's own GMCP name for what svof calls 'ablaze'.
+        "/Striking/Burning": "Flamefisted",
+        "/General/svo diag/burning": "flamefisted",
+        "/General/svo burning woreoff": "svo flamefisted woreoff",
+    },
+}
+
 
 def reference_hashes():
     """sha256 of each module xml's content, independent of checkout line
@@ -147,12 +174,21 @@ WRAPPER_DEFAULTED = {"triggerType", "highlightFg", "highlightBg",
                      "keyCode", "keyModifier"}
 
 
-def describe_tree(elem, kind):
-    """Flatten one item and its descendants into comparable descriptors."""
+def describe_tree(elem, kind, renames=None):
+    """Flatten one item and its descendants into comparable descriptors.
+
+    `renames` maps a path in the original tree to that item's new leaf name,
+    and is passed only for the reference side, so a recorded rename lines the
+    two trees up instead of reading as a structural path mismatch. Both
+    spellings are carried down the walk at once: the original one keeps
+    looking the map up as it descends, the renamed one is what the comparison
+    sees.
+    """
     group = LEAF_OF[kind]
+    renames = renames or {}
     out = []
 
-    def walk(node, prefix):
+    def walk(node, prefix, orig_prefix):
         seen = {}
         for c in list(node):
             if c.tag not in (kind, group):
@@ -160,12 +196,13 @@ def describe_tree(elem, kind):
             nm = c.findtext("name") or ""
             seen[nm] = seen.get(nm, 0) + 1
             suffix = "" if seen[nm] == 1 else "#%d" % seen[nm]
-            p = prefix + "/" + nm + suffix
+            orig_p = orig_prefix + "/" + nm + suffix
+            p = prefix + "/" + renames.get(orig_p, nm) + suffix
             out.append((p, V.describe(c, kind)))
-            walk(c, p)
+            walk(c, p, orig_p)
 
     out.append(("", V.describe(elem, kind)))
-    walk(elem, "")
+    walk(elem, "", "")
     return out
 
 
@@ -244,7 +281,7 @@ def compare(merged):
                                       % (kind, module, nm))
                     continue
                 melem = merged_by_name[nm].pop(0)
-                a = describe_tree(el, kind)
+                a = describe_tree(el, kind, ITEM_RENAME.get(kind))
                 b = describe_tree(melem, kind)
                 def diff_one(path, da, db):
                     for k in sorted(set(da) | set(db)):

@@ -3043,7 +3043,7 @@
         ]
       },
       {
-        "name": "burning",
+        "name": "flamefisted",
         "isActive": "yes",
         "isFolder": "no",
         "multiline": "no",
@@ -7343,7 +7343,7 @@
     ]
   },
   {
-    "name": "svo burning woreoff",
+    "name": "svo flamefisted woreoff",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
