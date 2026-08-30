@@ -147,6 +147,17 @@ jobs:
       - name: test lifevision validate
         run: lua tools/test_lifevision_validate.lua
 
+
+      # Gate 1.7. codepaste.pyre_holds() - the pyre/burn ladder gating the five
+      # burn salves. Same extract-the-real-function approach again. Pins the
+      # rung thresholds (they were one too permissive at every level, so svof
+      # salved burns pyre restored immediately), the field the level is read
+      # from (affs.pyre.count is nil - the entries are {p=, sw=} - and the
+      # comparison raised out of an unprotected isadvisable, aborting the whole
+      # prompt), and the presence floor for players without GMCP levels.
+      - name: test pyre ladder
+        run: lua tools/test_pyre_ladder.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
