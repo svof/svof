@@ -358,6 +358,33 @@ codepaste.remove_burns = function(skipaff)
   svo.rmaff(burns)
 end
 
+-- -> boolean
+-- Pyre builds pyre and ablaze, and a burn cannot tick down below the pyre
+-- level. Salving a burn that sits at or under that level is wasted - it comes
+-- straight back - so this returns true when pyre is holding the given burn in
+-- place and the salve should be skipped.
+--
+-- Applying takes the burn down exactly one rung, and the rung it lands on has
+-- to be at or above the pyre level to survive, so the burn's own index in
+-- sk.burns is the threshold: ablaze is held from pyre 1, severeburn from 2,
+-- extremeburn from 3. Pyre caps at 3 in game, so charredburn and meltingburn
+-- are never held today; they are written the same way rather than dropped, so
+-- the rule stays right if that cap ever moves.
+--
+-- Two traps live here. The level is on .p - svo.affs entries are
+-- { p = <the dict entry>, sw = <stopwatch> } with no __index on svo.affs - so
+-- reading affs.pyre.count gave nil and raised on the comparison. And having
+-- pyre at all is level 1 or more, which is why presence floors the answer at
+-- 1: only the GMCP path ever raises svo.dict.pyre.count, since
+-- svo.valid.simplepyre passes no argument and pyre sits in the plain diag list
+-- rather than the counted one, so without GMCP the stored level stays 0 while
+-- the affliction is genuinely there.
+codepaste.pyre_holds = function(burn)
+  if not affs.pyre then return false end
+
+  return math.max(affs.pyre.p.count or 0, 1) >= table.index_of(sk.burns, burn)
+end
+
 sk.next_burn = function()
   for i,v in ipairs(sk.burns) do
     if affs[v] then return sk.burns[i+1] or sk.burns[#sk.burns] end
@@ -4572,19 +4599,8 @@ if not next(svo.dict) then
         (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))
       end,
       salve = {
-        -- pyre sustains the burn escalation, so past a level there is no point
-        -- salving the burn off. The count for that lives at affs.pyre.p.count:
-        -- svo.affs entries are { p = <the dict entry>, sw = <stopwatch> } and
-        -- svo.affs carries no __index, so affs.pyre.count was nil, and nil >= 2
-        -- raises rather than reading as false. isadvisable() is called
-        -- unprotected from svo.check_salve, and svo.send_in_the_gnomes() is
-        -- called unprotected from svo.onprompt, so having pyre alongside any
-        -- burn aborted the rest of the prompt - send queue, custom prompt and
-        -- the svo.paragraph_length reset included - on every prompt. The same
-        -- read appears in severeburn, extremeburn, charredburn and meltingburn
-        -- below; all five are fixed together.
         isadvisable = function()
-          return (affs.ablaze and not (affs.pyre and affs.pyre.p.count >= 2) and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and
+          return (affs.ablaze and not codepaste.pyre_holds('ablaze') and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and
           (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))) or false
         end,
   
@@ -4660,7 +4676,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.severeburn and not (affs.pyre and affs.pyre.p.count >= 3)) or false
+          return (affs.severeburn and not codepaste.pyre_holds('severeburn')) or false
         end,
   
         oncompleted = function()
@@ -4705,7 +4721,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.extremeburn and not (affs.pyre and affs.pyre.p.count >= 4)) or false
+          return (affs.extremeburn and not codepaste.pyre_holds('extremeburn')) or false
         end,
   
         oncompleted = function()
@@ -4750,7 +4766,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.charredburn and not (affs.pyre and affs.pyre.p.count >= 5)) or false
+          return (affs.charredburn and not codepaste.pyre_holds('charredburn')) or false
         end,
   
         oncompleted = function()
@@ -4795,7 +4811,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.meltingburn and not (affs.pyre and affs.pyre.p.count >= 6)) or false
+          return (affs.meltingburn and not codepaste.pyre_holds('meltingburn')) or false
         end,
   
         oncompleted = function()
