@@ -196,8 +196,18 @@ function svo.remove_legacy_modules(event, name)
   -- This used to promise "your xml files are left on disk untouched", and on
   -- Mudlet 4.16 that promise was false - see SAVE_DELAY. Say what actually
   -- happens, and make the files recoverable either way.
-  cecho("<indian_red>A copy of each module xml is kept beside it as <file>.svof-backup,\n")
-  cecho("<indian_red>because Mudlet rewrites synced module files while it saves the profile.\n")
+  --
+  -- Saying the backup exists is not the same as saying what it is for: the
+  -- risk is Mudlet's own profile save truncating the module xml, and the
+  -- backup is the copy to restore from when it does. Tell them that, since
+  -- this message is the only place they will hear it.
+  --
+  -- The literal <file> is safe in cecho: an unresolvable colour token comes
+  -- back out as text - see _Echos.Process, which appends the raw token when
+  -- neither a foreground nor a background name matches.
+  cecho("<indian_red>A copy of each module xml is kept beside it as <file>.svof-backup.\n")
+  cecho("<indian_red>Mudlet writes to synced module files itself when it saves the profile,\n")
+  cecho("<indian_red>so if you want an original back, restore from the backup rather than the file.\n")
 
   -- The disableModuleSync loop that used to sit here is gone. It could not
   -- help - modulesToWrite was snapshotted before sysInstall was raised, so the

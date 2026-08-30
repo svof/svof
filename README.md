@@ -10,7 +10,7 @@ deliberately held back until that testing says it is ready. Once it is, this
 link moves back to `svof/svof/releases/latest`.
 
 # Installing
-Open `svof.mpackage` with Mudlet's Package Manager - that is the whole install. Svof used to ship as 24 modules that had to be added in the Module Manager and kept synced from an unzipped folder; it is one package now, and none of that is needed. If you are coming from a module install, Svof removes the old modules for you on first run, and keeps a copy of each module xml beside it as `<file>.svof-backup` - Mudlet rewrites synced module files while it saves the profile, so the originals cannot be promised untouched.
+Open `svof.mpackage` with Mudlet's Package Manager - that is the whole install. Svof used to ship as 24 modules that had to be added in the Module Manager and kept synced from an unzipped folder; it is one package now, and none of that is needed. If you are coming from a module install, Svof removes the old modules for you on first run. It copies each module xml beside the original as `<file>.svof-backup` before it does, because Mudlet writes to synced module files itself whenever it saves the profile, and on some versions that can leave one truncated - so if you ever want an original back, restore from the backup rather than the file.
 
 Full instructions are [here](https://github.com/svof/svof/blob/in-client-svof/doc/index.rst#installing).
 
