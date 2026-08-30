@@ -4572,8 +4572,19 @@ if not next(svo.dict) then
         (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))
       end,
       salve = {
+        -- pyre sustains the burn escalation, so past a level there is no point
+        -- salving the burn off. The count for that lives at affs.pyre.p.count:
+        -- svo.affs entries are { p = <the dict entry>, sw = <stopwatch> } and
+        -- svo.affs carries no __index, so affs.pyre.count was nil, and nil >= 2
+        -- raises rather than reading as false. isadvisable() is called
+        -- unprotected from svo.check_salve, and svo.send_in_the_gnomes() is
+        -- called unprotected from svo.onprompt, so having pyre alongside any
+        -- burn aborted the rest of the prompt - send queue, custom prompt and
+        -- the svo.paragraph_length reset included - on every prompt. The same
+        -- read appears in severeburn, extremeburn, charredburn and meltingburn
+        -- below; all five are fixed together.
         isadvisable = function()
-          return (affs.ablaze and not (affs.pyre and affs.pyre.count >= 2) and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and 
+          return (affs.ablaze and not (affs.pyre and affs.pyre.p.count >= 2) and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and
           (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))) or false
         end,
   
@@ -4649,7 +4660,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.severeburn and not (affs.pyre and affs.pyre.count >= 3)) or false
+          return (affs.severeburn and not (affs.pyre and affs.pyre.p.count >= 3)) or false
         end,
   
         oncompleted = function()
@@ -4694,7 +4705,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.extremeburn and not (affs.pyre and affs.pyre.count >= 4)) or false
+          return (affs.extremeburn and not (affs.pyre and affs.pyre.p.count >= 4)) or false
         end,
   
         oncompleted = function()
@@ -4739,7 +4750,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.charredburn and not (affs.pyre and affs.pyre.count >= 5)) or false
+          return (affs.charredburn and not (affs.pyre and affs.pyre.p.count >= 5)) or false
         end,
   
         oncompleted = function()
@@ -4784,7 +4795,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.meltingburn and not (affs.pyre and affs.pyre.count >= 6)) or false
+          return (affs.meltingburn and not (affs.pyre and affs.pyre.p.count >= 6)) or false
         end,
   
         oncompleted = function()
