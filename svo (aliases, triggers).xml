@@ -55013,10 +55013,14 @@ svo.showprompt()</script>
 			</Alias>
 			<Alias isActive="yes" isFolder="no">
 				<name>(vversion) Show system version</name>
-				<script>svo.echof("You are on the %s release stream!\nYour Svof version is " .. svo.version .. "\n\nYou have the following modules installed:", svo.conf.releasechannel)
+				<script>
+svo.echof("You are on the %s release stream!\nYour Svof version is " .. svo.version .. "\n\nYou have the following modules installed:", svo.conf.releasechannel)
 for k,v in pairs(svo.modules_version) do
   decho(string.format("%sv%s: %s\n", svo.getDefaultColor(), v, k))
 end
+dechoLink(svo.getDefaultColor() .. "\n&lt;u&gt;Click to view the latest releases&lt;/u&gt;", function() openUrl("https://github.com/svof/svof/releases") end, "View releases in Github", true)
+dechoLink(svo.getDefaultColor() .. "\n&lt;u&gt;Click to view the changelog&lt;/u&gt;", 'svo.createLogWindow()', "View changelog", true)
+  
 svo.showprompt()</script>
 				<command></command>
 				<packageName></packageName>

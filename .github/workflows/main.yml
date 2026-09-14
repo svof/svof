@@ -1,0 +1,50 @@
+name: 'Versioning and Tagging'
+on:
+  push:
+    branches: [ gh-pages ]
+    paths:
+    - 'stable/current_version.txt'
+
+jobs:
+  checkversion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          token: ${{ secrets.SVOF_PAT }}
+          ref: gh-pages
+      - name: Get version
+        id: getversion
+        uses: michmich112/extract-version@main
+        with:
+          # specify here the path to your version file (e.g. package.json, pom.xml...)
+          version-file: stable/current_version.txt
+          schema: major
+        
+    outputs:
+      version: ${{ steps.getversion.outputs.version }}
+
+  createtag:
+    needs: [checkversion]
+    runs-on: ubuntu-latest
+    env:
+      Version: ${{ needs.checkversion.outputs.version }}
+    steps:
+    - name: checkout
+      uses: actions/checkout@master
+      with:
+        token: ${{ secrets.SVOF_PAT }}
+        ref: master
+        fetch-depth: 0
+    
+    - name: Push tag
+      id: maketag
+      env:
+        GITHUB_TOKEN: ${{ secrets.SVOF_PAT }}
+      run: |
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git tag -a $Version -m "$Version"
+        git push origin $Version
+        

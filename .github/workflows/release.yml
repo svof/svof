@@ -1,0 +1,76 @@
+name: 'CI'
+on:
+  push:
+    tags:
+    - '*'
+jobs:
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@master
+      with:
+        ref: master
+        fetch-depth: 0
+    
+    - name: Build Changelog
+      id: generatechangelog
+      uses: mikepenz/release-changelog-builder-action@v3.4.0
+      with:
+        configuration: "release-changelog-configuration.json"
+        ignorePreReleases: "true"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Make Mudlet-ready changelog
+      id: mudletlog
+      run: >
+        git log master --pretty=format:'%C(magenta)(%h)%C(reset) - %C(yellow)[%s]%C(reset) %b %C(bold blue)<%an>%Creset' --abbrev-commit --color=always --since="1 month" > ANSICHANGELOG.txt
+    
+    - name: Create zipped package
+      id: makezip
+      run: >
+        zip in-client-svof -MM -j
+        "svo (actions dictionary).xml"
+        "svo (alias and defence functions).xml"
+        "svo (aliases, triggers).xml"
+        "svo (burncounter).xml"
+        "svo (curing skeleton, controllers, action system).xml"
+        "svo (custom prompt, serverside).xml"
+        "svo (elistsorter).xml"
+        "svo (enchanter).xml"
+        "svo (fishdist).xml"
+        "svo (inker).xml"
+        "svo (install me in module manager).xml"
+        "svo (install, config, pipes, rift, parry, prios).xml"
+        "svo (limbcounter).xml"
+        "svo (logger).xml"
+        "svo (mindnet).xml"
+        "svo (namedb).xml"
+        "svo (offering).xml"
+        "svo (peopletracker).xml"
+        "svo (priestreport).xml"
+        "svo (reboundingsileristracker).xml"
+        "svo (refiller).xml"
+        "svo (runeidentifier).xml"
+        "svo (setup, misc, empty, funnies, dor).xml"
+        "svo (stormhammertarget).xml"
+        "svo (trigger functions).xml"
+        "config.lua"
+        "default_prios"
+        "ndb-help.lua"
+        "LICENSES.txt"
+        "LICENSE.txt"
+        "${{ github.workspace }}/ANSICHANGELOG.txt"
+
+    - name: Make release
+      id: release
+      uses: softprops/action-gh-release@master
+      with:
+        #tag_name: ${{ format('v{0}', needs.checkversion.outputs.version) }}
+        tag_name: ${{ github.ref_name }}
+        name: ${{ format('v{0}', github.ref_name )}}
+        body: ${{ steps.generatechangelog.outputs.changelog }}
+        files: ${{ github.workspace }}/in-client-svof.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
