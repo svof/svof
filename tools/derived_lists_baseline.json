@@ -147,11 +147,6 @@
       "text": "tree: fulminated is in treecurables and has no tree-cure handler"
     },
     {
-      "id": "tree|only_treecurables|paralysis",
-      "digest": "a30b896f18a8bd3a",
-      "text": "tree: paralysis is in treecurables and has no tree-cure handler"
-    },
-    {
       "id": "tree|only_treecurables|skullfractures",
       "digest": "b935c63ee110c699",
       "text": "tree: skullfractures is in treecurables and has no tree-cure handler"

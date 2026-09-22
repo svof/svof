@@ -269,7 +269,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "72bb1c6240c8019f",
+      "digest": "7c9f73d3fa52aa48",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -376,6 +376,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/Striking/Flamefisted|script",
       "digest": "0d36ac310a873be1",
       "text": "Trigger  svo (aliases, triggers) svo/Striking/Flamefisted [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Zeal/Tenderskin|script",
+      "digest": "08bcd0d658666373",
+      "text": "Trigger  svo (aliases, triggers) svo/Zeal/Tenderskin [script]"
     },
     {
       "id": "item|Trigger|svo (elistsorter)|svo Capture elist-elist2-venomlist/svo Capture elist stop|highlightBg",
