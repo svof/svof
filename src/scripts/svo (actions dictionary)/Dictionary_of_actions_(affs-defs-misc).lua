@@ -7914,32 +7914,50 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- latched holds your elixir balance: you cannot sip anything until it is
+    -- cleared, and SIP HEALTH is what clears it. It used to be modelled as a
+    -- timed affliction on 'waitingfor' with the comment "not sure how this is
+    -- cured yet exactly", which meant svof never cured it and dropped it from
+    -- affs after 20s whether or not it was still on you.
     latched = {
-      waitingfor = {
-        customwait = 20, -- not sure how this is cured yet exactly
-  
+      sip = {
         isadvisable = function()
-          return false
+          return (affs.latched and not svo.doingaction('latched')) or false
         end,
   
-        onstart = function() end,
-  
         oncompleted = function()
+          svo.lostbal_sip()
           svo.rmaff('latched')
-          svo.make_gnomes_work()
+        end,
+  
+        sipcure = {'health'},
+        onstart = function()
+          svo.sip(svo.dict.latched.sip)
+        end,
+  
+        -- the sip did not happen: we were still off sip balance, so record
+        -- that rather than keep believing we had it
+        noeffect = function()
+          svo.lostbal_sip()
+        end,
+  
+        -- the sip happened and cured nothing, so we did not have latched.
+        -- This cure treats exactly one affliction, so clearing it and
+        -- completing it are the same operation.
+        empty = function()
+          svo.lostbal_sip()
+          svo.rmaff('latched')
         end
       },
       aff = {
         oncompleted = function()
           svo.addaffdict(svo.dict.latched)
           codepaste.badaeon()
-          if not svo.actions.latched_waitingfor then svo.doaction(svo.dict.latched.waitingfor) end
         end
       },
       gone = {
         oncompleted = function()
           svo.rmaff('latched')
-          svo.killaction(svo.dict.latched.waitingfor)
         end,
       }
     },

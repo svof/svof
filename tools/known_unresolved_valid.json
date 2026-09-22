@@ -30,10 +30,6 @@
       "name": "emptyheal"
     },
     {
-      "file": "src/triggers/svo (aliases, triggers)/svo/General/General cures/svo_cure_latched_generic.lua",
-      "name": "generic_latched"
-    },
-    {
       "file": "src/triggers/svo (aliases, triggers)/svo/General/svo_healer_selfcure.lua",
       "name": "healercure"
     },
@@ -44,10 +40,6 @@
     {
       "file": "src/triggers/svo (aliases, triggers)/svo/General/svo_healing_cured_insomnia.lua",
       "name": "healing_cured_insomnia"
-    },
-    {
-      "file": "src/triggers/svo (aliases, triggers)/svo/General/svo_latched_wore_off.lua",
-      "name": "latched_woreoff"
     },
     {
       "file": "src/triggers/svo (aliases, triggers)/svo/General/svo_no_healing_balance.lua",
@@ -64,10 +56,6 @@
     {
       "file": "src/triggers/svo (aliases, triggers)/svo/Sculpting/Calcified_Skull_Concussion.lua",
       "name": "simpleconcussion"
-    },
-    {
-      "file": "src/triggers/svo (aliases, triggers)/svo/Pervasion/Latched.lua",
-      "name": "simplelatched"
     },
     {
       "file": "src/triggers/svo (aliases, triggers)/svo/General/General cures/svo_sour_sparkle.lua",

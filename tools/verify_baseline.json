@@ -38,6 +38,11 @@
       "text": "Script   svo (install me in module manager) / 'Load & init': 7 items originally, 5 in merged"
     },
     {
+      "id": "count|Trigger|svo (aliases, triggers)|svo",
+      "digest": "2467e97b605ecdf0",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2532 in merged"
+    },
+    {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
       "digest": "0ed590ca0c24d0df",
       "text": "Script   svo (install me in module manager) Check for system updates/svo_downloaded_file [only in the originals]"
@@ -58,6 +63,11 @@
       "text": "Script   svo (install me in module manager) Load & init/svo.installed_as_package [only in the originals]"
     },
     {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo latched wore off",
+      "digest": "e06ca57c35b33635",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo latched wore off [only in the originals]"
+    },
+    {
       "id": "item|Alias|svo (aliases, triggers)|svo/(vversion) Show system version|script",
       "digest": "7b8e8fa2b7a3b73d",
       "text": "Alias    svo (aliases, triggers) svo/(vversion) Show system version [script]"
@@ -74,7 +84,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "da3c70dfbcf93680",
+      "digest": "893dff9c165d89af",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -269,12 +279,12 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "7c9f73d3fa52aa48",
+      "digest": "c0caded4ae933694",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
       "id": "item|Script|svo (trigger functions)|Simple aff trigger functions|script",
-      "digest": "d414f00c9ab4d340",
+      "digest": "69bebbb38dafcc3d",
       "text": "Script   svo (trigger functions) Simple aff trigger functions [script]"
     },
     {
