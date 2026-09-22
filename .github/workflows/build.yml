@@ -170,6 +170,19 @@ jobs:
       - name: check dictionary entry fields
         run: python3 tools/check_dict_fields.py
 
+      # Gate 1.9. The same affliction fact is written in about ten places, none
+      # of them enforced, and four of the nine herb lists in Empty cure
+      # handling already disagree with the dictionary's own cure fields. This
+      # derives each list from svo.dict and diffs it against the literal
+      # holding the same information. Differences that are deliberate live in
+      # the baseline with a digest each, so it fails on anything new AND on any
+      # change to one already accepted - regenerate with --write-baseline in
+      # the same commit that causes it.
+      - name: check the derived affliction lists
+        run: |
+          python3 tools/check_derived_lists.py \
+            --baseline tools/derived_lists_baseline.json
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
