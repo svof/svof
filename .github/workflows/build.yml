@@ -158,6 +158,18 @@ jobs:
       - name: test pyre ladder
         run: lua tools/test_pyre_ladder.lua
 
+      # Gate 1.8. dict_setup decides what a top-level key on an entry means by
+      # its TYPE: a table is a balance and gets a name and a priority, a scalar
+      # falls through. Both ways of getting that wrong are silent. A scalar
+      # named like a balance makes Curing_skeleton.lua:332 index a non-table in
+      # the focus pass; a table named like anything else becomes a balance the
+      # curing loop can be asked to prioritise. Runs before the single-source
+      # work adds any field, because that work adds flat fields to every entry
+      # and this is the one way it can break something while nothing yet reads
+      # what it added.
+      - name: check dictionary entry fields
+        run: python3 tools/check_dict_fields.py
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
