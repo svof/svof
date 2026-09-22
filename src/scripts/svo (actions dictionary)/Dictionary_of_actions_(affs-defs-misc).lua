@@ -7914,12 +7914,24 @@ if not next(svo.dict) then
         end,
       }
     },
-    -- latched holds your elixir balance: you cannot sip anything until it is
-    -- cleared, and SIP HEALTH is what clears it. It used to be modelled as a
-    -- timed affliction on 'waitingfor' with the comment "not sure how this is
-    -- cured yet exactly", which meant svof never cured it and dropped it from
-    -- affs after 20s whether or not it was still on you.
+    -- Gaining latched knocks you off elixir balance once, and the affliction
+    -- itself is cured only by sipping health - the sip clears the latch
+    -- instead of healing you, the way applying health to a limb mends the
+    -- fracture instead. It does NOT block the other sip cures.
+    --
+    -- It used to be modelled as a timed affliction on 'waitingfor' with the
+    -- comment "not sure how this is cured yet exactly", which meant svof
+    -- never cured it and dropped it from affs after 20s whether or not it was
+    -- still on you.
     latched = {
+      -- onadded rather than aff.oncompleted: the GMCP path calls addaffdict
+      -- directly (Setup.lua:656) and never runs the aff action, and latched
+      -- is in sstosvoa, so GMCP is how it usually arrives. addaffdict runs
+      -- onadded exactly once per gain whichever path added it.
+      onadded = function()
+        svo.lostbal_sip()
+      end,
+  
       sip = {
         isadvisable = function()
           return (affs.latched and not svo.doingaction('latched')) or false
