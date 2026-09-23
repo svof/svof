@@ -10,18 +10,6 @@
       "name": "curedconcussion"
     },
     {
-      "file": "src/triggers/svo (aliases, triggers)/svo/General/calicifedskull.lua",
-      "name": "diag_calcifiedskull"
-    },
-    {
-      "file": "src/triggers/svo (aliases, triggers)/svo/General/calcifiedtorso.lua",
-      "name": "diag_calcifiedtorso"
-    },
-    {
-      "file": "src/triggers/svo (aliases, triggers)/svo/General/latched.lua",
-      "name": "diag_latched"
-    },
-    {
       "file": "src/triggers/svo (aliases, triggers)/svo/General/Nothing_cured.lua",
       "name": "emptyheal"
     },
