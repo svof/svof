@@ -171,6 +171,20 @@ jobs:
       - name: test pyre ladder
         run: lua tools/test_pyre_ladder.lua
 
+
+      # Gate 1.23. presume_cured() - the GMCP gate on the empty-cure sweeps.
+      # Every handler in Empty cure handling acts on the inference that a cure
+      # which cured nothing means we did not have what it would have cured, and
+      # acting on that unconditionally made a wrong name in one of those lists
+      # drop an affliction still held. The gate checks Char.Afflictions first.
+      # Same extract-the-real-function approach as the three above. Pins that
+      # GMCP overrules the inference, that a name GMCP cannot report (the four
+      # unknowns, earworm) keeps the old behaviour, that levelled names match
+      # through the " (2)" suffix, and that blackout - which stops
+      # Char.Afflictions entirely - presumes nothing at all.
+      - name: test empty cure gmcp gate
+        run: lua tools/test_empty_cure_gate.lua
+
       # Gate 1.8. dict_setup decides what a top-level key on an entry means by
       # its TYPE: a table is a balance and gets a name and a priority, a scalar
       # falls through. Both ways of getting that wrong are silent. A scalar
