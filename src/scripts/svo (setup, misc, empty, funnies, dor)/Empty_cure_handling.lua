@@ -76,10 +76,20 @@ end
 -- makes svof drop an affliction you still have. empty.dragonheal and
 -- empty.shrugging are the same function, so this list speaks for all three.
 --
--- The last eleven were added on 2026-09-23, on the repo owner's answer that tree
--- cures all of them. bleeding, tension and latched also have a tree-cure trigger,
--- so svof recognises those three being cured as well; the other eight have no
--- known game line and are here for the empty case only.
+-- Nine names were added on 2026-09-23, on the repo owner confirming tree cures
+-- them. Only owner or in-game confirmation gets a name in here. Two weaker kinds
+-- of evidence were tried first and both turned out to be worthless:
+--
+--   * The 86-name tree list that used to live in Main trigger functions. It
+--     claimed bound, prone, flamefisted, galed, icing, voided, bleeding and
+--     tension, none of which tree cures, so it says nothing about the rest.
+--   * The existence of a trigger in the Tree cures folder. Every one of those
+--     lines has a twin in General cures on the identical pattern - the tree
+--     copy is a no-op unless a touchtree action happens to be in flight - so it
+--     only proves somebody once wired the line to both paths.
+--
+-- bleeding is the clearest case: its line, "Your bleeding slows as your blood
+-- clots", is the clotting line, and clotting is what cures bleeding.
 empty.treecurables = {'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'claustrophobia',
 'clumsiness', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade',
 'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'generosity',
@@ -90,7 +100,7 @@ empty.treecurables = {'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 
 'shivering', 'frozen', 'skullfractures', 'crackedribs', 'wristfractures', 'torntendons', 'depression', 'parasite',
 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'guilt', 'spiritburn', 'tenderskin', 'crushedthroat',
 'horror', 'earworm', 'crescendo', 'fulminated',
-'bleeding', 'tension', 'latched', 'flushings', 'mycalium', 'pyramides', 'rebbies', 'sandfever',
+'latched', 'flushings', 'mycalium', 'pyramides', 'rebbies', 'sandfever',
 'laceratedthroat', 'mildconcussion', 'slashedthroat'}
 empty.treeblocks = {
   madness = {'madness', 'dementia', 'stupidity', 'confusion', 'hypersomnia', 'paranoia', 'hallucinations', 'impatience',
