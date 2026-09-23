@@ -39,8 +39,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "522b2fb5771c5645",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2525 in merged"
+      "digest": "22a3e95ac6a43f86",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2523 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -61,6 +61,16 @@
       "id": "gone|Script|svo (install me in module manager)|Load & init/svo.installed_as_package",
       "digest": "f76b4c01815ab275",
       "text": "Script   svo (install me in module manager) Load & init/svo.installed_as_package [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure bleeding tree",
+      "digest": "2fa57919bafab427",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure bleeding tree [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure voided tree",
+      "digest": "bb7b42be8d5a0e02",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure voided tree [only in the originals]"
     },
     {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healer nothing cured",
@@ -778,11 +788,6 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure asthma tree [script]"
     },
     {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure bleeding tree|script",
-      "digest": "c9ae11ac9d91cd82",
-      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure bleeding tree [script]"
-    },
-    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure burn tree|script",
       "digest": "c9bb1344e3f2a8a4",
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure burn tree [script]"
@@ -1091,11 +1096,6 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure vertigo tree|script",
       "digest": "5e27e75df195037a",
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure vertigo tree [script]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure voided tree|script",
-      "digest": "c5a9d21895f8c3b2",
-      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure voided tree [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure voyria tree|script",
