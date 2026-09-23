@@ -3,17 +3,20 @@
 check_derived_lists.py -- the same affliction fact, written in several places,
 compared.
 
-Adding one affliction to svof means typing its name into about ten lists spread
+Adding one affliction to svof means typing its name into several lists spread
 over five files. None of them is enforced, so missing one means the affliction
 quietly does not work in that one way, and nothing complains. They have already
-drifted: four of the nine herb lists in *Empty cure handling* disagree with the
-dictionary's own cure fields, and the two tree lists disagree in 27 names.
+drifted: herb lists in *Empty cure handling* disagree with the dictionary's own
+cure fields, and the tree triggers disagree with empty.treecurables.
 
-This derives each list from `svo.dict` and diffs it against the literal holding
-the same information. Two of the lists can be derived from entry shape today, so
-those are real comparisons now. The rest wait on a declared field, so their
-derived side reads 0 until the fields exist, and the left-hand count climbing to
-meet the right-hand one is what adding the fields looks like from here.
+This derives what it can from `svo.dict` and diffs it against whatever else
+holds the same information - a literal, or, since the handler families were
+inverted, the triggers. Counts are printed rather than written down here,
+because a count in a comment near this gate has gone stale three times.
+
+Some comparisons are real today because they derive from entry shape. Others
+wait on a declared field and read 0 until it exists, and the left-hand count
+climbing to meet the right-hand one is what adding that field looks like.
 
 Differences that are deliberate live in a baseline file with a digest each, the
 way verify_merged.py does it, so this fails on anything new AND on any change to
@@ -253,7 +256,6 @@ def collect():
 
     DICT = read("svo (actions dictionary)",
                 "Dictionary_of_actions_(affs-defs-misc).lua")
-    MAIN = read("svo (trigger functions)", "Main_trigger_functions.lua")
     SIMPLE = read("svo (trigger functions)", "Simple_aff_trigger_functions.lua")
     EMPTY = read("svo (setup, misc, empty, funnies, dor)",
                  "Empty_cure_handling.lua")
