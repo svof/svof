@@ -89,7 +89,16 @@ end
 --     only proves somebody once wired the line to both paths.
 --
 -- bleeding is the clearest case: its line, "Your bleeding slows as your blood
--- clots", is the clotting line, and clotting is what cures bleeding.
+-- clots", is the clotting line, and clotting is what cures bleeding. It is not
+-- tree-curable and must not go back in.
+--
+-- UNCONFIRMED, kept rather than removed on suspicion, pending the owner
+-- checking in game: paralysis, skullfractures, crackedribs, wristfractures and
+-- torntendons, all of which have been here since 2018 and rest on nothing
+-- better than the trigger pairing above; and latched, added 2026-09-23, whose
+-- only tree evidence is a Tree cures trigger and whose confirmed cure is
+-- SIP HEALTH. If tree does not cure latched, an empty tree makes svof forget a
+-- latch still held and the next health sip heals instead of clearing it.
 empty.treecurables = {'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'claustrophobia',
 'clumsiness', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade',
 'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'generosity',
