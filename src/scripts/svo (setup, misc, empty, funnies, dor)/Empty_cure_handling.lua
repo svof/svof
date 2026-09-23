@@ -15,6 +15,65 @@ local empty = svo.empty
 
 local affs = svo.affs
 
+-- Every handler in this file acts on the same inference: a cure that cured
+-- nothing is evidence we did not have the afflictions it would have cured. That
+-- is usually right and occasionally very wrong, and when it is wrong svof
+-- forgets an affliction you still have and stops curing it.
+--
+-- So ask the game first. svo.gaffl mirrors Char.Afflictions, and
+-- svo.dict.svotossa says whether GMCP can speak to a given svof name at all -
+-- the same gate the Char.Afflictions.List reconciler uses in Setup.lua before
+-- it will drop anything. Where GMCP can speak and still reports the affliction,
+-- the inference is simply wrong, so the affliction stays.
+--
+-- Where GMCP cannot speak, the inference is the only information there is and
+-- it stands. That is the four unknowns, which are meant to be resolved exactly
+-- this way - working out that an unknown affliction was one of these is the
+-- whole point of tracking one - and earworm, which is the only real affliction
+-- in that position. bleeding is not in any list here and must not be: the game
+-- reports it through Char.Vitals.charstats as "Bleed: N" rather than as an
+-- affliction, and Setup.lua already clears it when that reads 0.
+--
+-- Blackout stops Char.Afflictions entirely, so svo.gaffl goes stale rather than
+-- empty and every name would read as still held. Presume nothing at all there.
+-- The cure messages still arrive as text, which is what the generic and tree
+-- triggers are for.
+local function presume_cured(which)
+  if type(which) == 'string' then which = {which} end
+
+  if affs.blackout then
+    svo.debugf("empty cure: presuming nothing, blackout has stopped Char.Afflictions")
+    return
+  end
+
+  -- GMCP keys a levelled affliction "name (2)" and up, bare at level 1, so
+  -- compare on the bare name the way Setup.lua's parseaffname does.
+  local reported = {}
+  for key in pairs(svo.gaffl) do
+    reported[key:match("^(.-) %(%d+%)$") or key] = true
+  end
+
+  local gone, kept = {}, nil
+  for _, aff in ipairs(which) do
+    local gmcpname = svo.dict.svotossa[aff]
+    if gmcpname and reported[gmcpname] then
+      kept = (kept and kept .. ", " or "") .. aff
+    else
+      gone[#gone+1] = aff
+    end
+  end
+
+  if kept then
+    svo.debugf("empty cure: keeping %s, the game still reports it", kept)
+  end
+
+  svo.rmaff(gone)
+end
+-- expose publicly, so an addon or a user's own empty handler can use the same
+-- rule instead of calling svo.rmaff on a list and hoping
+empty.presume_cured = presume_cured
+svo.presume_cured = presume_cured
+
 local madness_affs = {'addiction', 'confusion', 'dementia', 'hallucinations', 'hypersomnia', 'illness', 'impatience',
 'lethargy', 'loneliness', 'madness', 'masochism', 'paranoia', 'recklessness', 'stupidity', 'vertigo'}
 
@@ -34,9 +93,9 @@ for herbname, herbaffs in pairs({
     svo.lostbal_herb()
 
     if not affs.madness then
-      svo.rmaff(herbaffs)
+      presume_cured(herbaffs)
     else
-      svo.rmaff(table.n_complement(herbaffs, madness_affs))
+      presume_cured(table.n_complement(herbaffs, madness_affs))
     end
 
   end
@@ -46,7 +105,7 @@ end
 
 empty.eat_bloodroot = function()
   svo.lostbal_herb()
-  svo.rmaff({'paralysis', 'slickness'})
+  presume_cured({'paralysis', 'slickness'})
 end
 
 empty.degenerateaffs = {'weakness', 'clumsiness', 'lethargy', 'illness', 'asthma', 'paralysis'}
@@ -67,7 +126,7 @@ svo.focuscurables = empty.focuscurables
 empty.focus = function()
   if affs.madness then return end
 
-  svo.rmaff(empty.focuscurables)
+  presume_cured(empty.focuscurables)
 end
 
 
@@ -143,8 +202,12 @@ end
 
 empty.tree = function ()
   local a = svo.gettreeableaffs()
-  svo.debugf("Tree cured nothing, removing: "..table.concat(a, ", "))
-  svo.rmaff(a)
+  svo.debugf("Tree cured nothing, considering: "..table.concat(a, ", "))
+  presume_cured(a)
+  -- Left unconditional. Neither unknown is in svotossa, so GMCP can never
+  -- report one and presume_cured always removes them - resolving an unknown on
+  -- an empty cure is the whole reason for tracking one - which keeps these two
+  -- lines consistent with what was actually removed.
   svo.dict.unknownmental.count = 0
   svo.dict.unknownany.count = 0
 end
@@ -155,35 +218,40 @@ empty.dragonheal = empty.tree
 empty.shrugging  = empty.tree
 
 empty.smoke_elm = function()
-  svo.rmaff({'deadening', 'madness', 'aeon'})
+  presume_cured({'deadening', 'madness', 'aeon'})
 end
 
 empty.smoke_valerian = function()
-  svo.rmaff({'disloyalty', 'manaleech', 'slickness', 'hellsight'})
+  presume_cured({'disloyalty', 'manaleech', 'slickness', 'hellsight'})
 end
 
 empty.smoke_pear = function()
-	svo.rmaff('pressure')
+	presume_cured('pressure')
 end
 
 empty.writhe = function()
-  svo.rmaff({'impale', 'bound', 'webbed', 'roped', 'transfixed', 'hoisted'})
+  presume_cured({'impale', 'bound', 'webbed', 'roped', 'transfixed', 'hoisted'})
 end
 
 empty.apply_epidermal_head = function ()
-  svo.rmaff({'anorexia', 'itching', 'stuttering', 'slashedthroat', 'blindaff', 'deafaff', 'scalded'})
+  presume_cured({'anorexia', 'itching', 'stuttering', 'slashedthroat', 'blindaff', 'deafaff', 'scalded'})
   svo.defences.lost('blind')
   svo.defences.lost('deaf')
 end
 
 empty.apply_epidermal_body = function ()
-  svo.rmaff({'anorexia', 'itching'})
+  presume_cured({'anorexia', 'itching'})
 end
 
 empty.apply_mending_head = function()
-  svo.rmaff({'crushedthroat'})
+  presume_cured({'crushedthroat'})
 end
 
+-- The handlers below are NOT gated, deliberately. Each pairs its removal with
+-- an explicit count reset, and keeping an affliction while zeroing its count
+-- would leave svof in a state neither half agrees with. Deciding what the count
+-- should do when GMCP overrules the removal is its own question, so these keep
+-- today's behaviour until it is answered.
 empty.apply_mending = function()
   svo.dict.unknowncrippledlimb.count = 0
   svo.dict.unknowncrippledarm.count = 0
@@ -224,7 +292,7 @@ empty.apply_health_legs = function()
 end
 
 empty.sip_immunity = function ()
-  svo.rmaff('voyria')
+  presume_cured('voyria')
 end
 
 empty.eat_ginger = function ()
