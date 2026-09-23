@@ -39,8 +39,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "2467e97b605ecdf0",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2532 in merged"
+      "digest": "522b2fb5771c5645",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2525 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -63,9 +63,44 @@
       "text": "Script   svo (install me in module manager) Load & init/svo.installed_as_package [only in the originals]"
     },
     {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healer nothing cured",
+      "digest": "a3f9f51f5420ac7a",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo healer nothing cured [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healer selfcure",
+      "digest": "fee5017bda15e637",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo healer selfcure [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healer selfcure/Nothing cured",
+      "digest": "5b70f5becb85d095",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo healer selfcure/Nothing cured [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healer selfcure2",
+      "digest": "ca1d923d5a17721b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo healer selfcure2 [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healing bedevil",
+      "digest": "3e1b8cf96a1ccf8e",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo healing bedevil [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healing cured insomnia",
+      "digest": "03479ee8d6652fa2",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo healing cured insomnia [only in the originals]"
+    },
+    {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo latched wore off",
       "digest": "e06ca57c35b33635",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo latched wore off [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo no healing balance",
+      "digest": "ba5b16a4917e29d8",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo no healing balance [only in the originals]"
     },
     {
       "id": "item|Alias|svo (aliases, triggers)|svo/(vversion) Show system version|script",

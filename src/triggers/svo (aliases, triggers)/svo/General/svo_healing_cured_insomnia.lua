@@ -1,1 +1,0 @@
-svo.valid.healing_cured_insomnia()

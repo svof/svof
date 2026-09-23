@@ -356,9 +356,11 @@ def main():
         print("[FAIL] svo.valid.%s() has no definition anywhere" % e["name"])
         print("           called from %s" % e["file"])
     for f, n in sorted(fixed):
-        print("[FAIL] svo.valid.%s() now resolves, and %s still records it as "
-              "unresolved" % (n, os.path.basename(KNOWN)))
-        print("           remove that entry in the same commit that fixed it")
+        print("[FAIL] svo.valid.%s() is no longer an unresolved call, and %s "
+              "still records it" % (n, os.path.basename(KNOWN)))
+        print("           either a handler was written for it or its caller was "
+              "removed - %s" % f)
+        print("           drop that entry in the same commit that did it")
     for p in problems:
         print("[FAIL] " + p)
 
