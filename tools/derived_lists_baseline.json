@@ -37,16 +37,6 @@
       "text": "empty.eat_bloodroot is generated and then redefined; live set is paralysis, slickness"
     },
     {
-      "id": "tree|only_tree_list|bleeding",
-      "digest": "04800755d3b72574",
-      "text": "tree: bleeding has a tree-cure trigger and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|voided",
-      "digest": "2e752b845bb3342e",
-      "text": "tree: voided has a tree-cure trigger and is not in treecurables"
-    },
-    {
       "id": "tree|only_treecurables|blackout",
       "digest": "04e62a81a41e6368",
       "text": "tree: blackout is in treecurables and has no tree-cure trigger"
