@@ -37,21 +37,6 @@
       "text": "empty.eat_bloodroot is generated and then redefined; live set is paralysis, slickness"
     },
     {
-      "id": "tree|only_tree_list|bleeding",
-      "digest": "04800755d3b72574",
-      "text": "tree: bleeding has a tree-cure trigger and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|latched",
-      "digest": "66c8a5cc27b103df",
-      "text": "tree: latched has a tree-cure trigger and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|tension",
-      "digest": "9b3d688a2ed732d9",
-      "text": "tree: tension has a tree-cure trigger and is not in treecurables"
-    },
-    {
       "id": "tree|only_tree_list|voided",
       "digest": "2e752b845bb3342e",
       "text": "tree: voided has a tree-cure trigger and is not in treecurables"
@@ -97,6 +82,11 @@
       "text": "tree: earworm is in treecurables and has no tree-cure trigger"
     },
     {
+      "id": "tree|only_treecurables|flushings",
+      "digest": "edc262bb3086d987",
+      "text": "tree: flushings is in treecurables and has no tree-cure trigger"
+    },
+    {
       "id": "tree|only_treecurables|fulminated",
       "digest": "68c306f6153d4918",
       "text": "tree: fulminated is in treecurables and has no tree-cure trigger"
@@ -112,9 +102,24 @@
       "text": "tree: itching is in treecurables and has no tree-cure trigger"
     },
     {
+      "id": "tree|only_treecurables|laceratedthroat",
+      "digest": "67fbb97d2cff345c",
+      "text": "tree: laceratedthroat is in treecurables and has no tree-cure trigger"
+    },
+    {
       "id": "tree|only_treecurables|madness",
       "digest": "28337478e6119f29",
       "text": "tree: madness is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|mildconcussion",
+      "digest": "e8c84ef9b5cd8615",
+      "text": "tree: mildconcussion is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|mycalium",
+      "digest": "88119a6cd8a6d968",
+      "text": "tree: mycalium is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|parasite",
@@ -122,9 +127,19 @@
       "text": "tree: parasite is in treecurables and has no tree-cure trigger"
     },
     {
+      "id": "tree|only_treecurables|pyramides",
+      "digest": "8c7ee3ba815e88e6",
+      "text": "tree: pyramides is in treecurables and has no tree-cure trigger"
+    },
+    {
       "id": "tree|only_treecurables|pyre",
       "digest": "d44439ae398c4360",
       "text": "tree: pyre is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|rebbies",
+      "digest": "30f474cf973d15cd",
+      "text": "tree: rebbies is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|retribution",
@@ -132,9 +147,19 @@
       "text": "tree: retribution is in treecurables and has no tree-cure trigger"
     },
     {
+      "id": "tree|only_treecurables|sandfever",
+      "digest": "cfc781d66171cfd6",
+      "text": "tree: sandfever is in treecurables and has no tree-cure trigger"
+    },
+    {
       "id": "tree|only_treecurables|shadowmadness",
       "digest": "8eab52ceb9af81c9",
       "text": "tree: shadowmadness is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|slashedthroat",
+      "digest": "f3de2472953d68bf",
+      "text": "tree: slashedthroat is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|timeloop",

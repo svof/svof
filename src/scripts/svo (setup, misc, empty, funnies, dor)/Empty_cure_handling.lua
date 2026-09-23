@@ -71,6 +71,15 @@ empty.focus = function()
 end
 
 
+-- Everything a tree touch could have cured. When one cures nothing, empty.tree()
+-- removes every name here that we currently have, so a name that does not belong
+-- makes svof drop an affliction you still have. empty.dragonheal and
+-- empty.shrugging are the same function, so this list speaks for all three.
+--
+-- The last eleven were added on 2026-09-23, on the repo owner's answer that tree
+-- cures all of them. bleeding, tension and latched also have a tree-cure trigger,
+-- so svof recognises those three being cured as well; the other eight have no
+-- known game line and are here for the empty case only.
 empty.treecurables = {'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'claustrophobia',
 'clumsiness', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade',
 'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'generosity',
@@ -80,7 +89,9 @@ empty.treecurables = {'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 
 'unknownany', 'unknowncrippledarm', 'unknowncrippledleg', 'unknownmental', 'vertigo', 'voyria', 'weakness',
 'shivering', 'frozen', 'skullfractures', 'crackedribs', 'wristfractures', 'torntendons', 'depression', 'parasite',
 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'guilt', 'spiritburn', 'tenderskin', 'crushedthroat',
-'horror', 'earworm', 'crescendo', 'fulminated'}
+'horror', 'earworm', 'crescendo', 'fulminated',
+'bleeding', 'tension', 'latched', 'flushings', 'mycalium', 'pyramides', 'rebbies', 'sandfever',
+'laceratedthroat', 'mildconcussion', 'slashedthroat'}
 empty.treeblocks = {
   madness = {'madness', 'dementia', 'stupidity', 'confusion', 'hypersomnia', 'paranoia', 'hallucinations', 'impatience',
   'addiction', 'agoraphobia', 'inlove', 'loneliness', 'recklessness', 'masochism'},

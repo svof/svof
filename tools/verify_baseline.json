@@ -258,6 +258,11 @@
       "text": "Script   svo (runeidentifier) svo (runeidentifier) [script]"
     },
     {
+      "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
+      "digest": "8ab5f5f8464f83e2",
+      "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
+    },
+    {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",
       "digest": "5c5278698d3f7046",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Miscellaneous functions [script]"
