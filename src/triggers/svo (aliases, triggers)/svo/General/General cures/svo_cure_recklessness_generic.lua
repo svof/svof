@@ -1,1 +1,1 @@
-svo.valid.generic_recklessness()
+svo.valid.generic('recklessness')

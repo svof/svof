@@ -22,11 +22,6 @@
       "text": "cures: the dictionary says pear cures waterbubble, empty.eat_pear does not clear it"
     },
     {
-      "id": "dupe|generic_cures_data|hallucinations",
-      "digest": "1c611293ec8877d8",
-      "text": "generic_cures_data lists hallucinations 2 times"
-    },
-    {
       "id": "focus|block_only|fear",
       "digest": "8a9d3fae6c853402",
       "text": "focus: fear has a focus block and is not in focuscurables (disabled)"
@@ -44,132 +39,127 @@
     {
       "id": "tree|only_tree_list|bleeding",
       "digest": "04800755d3b72574",
-      "text": "tree: bleeding has a tree-cure handler and is not in treecurables"
+      "text": "tree: bleeding has a tree-cure trigger and is not in treecurables"
     },
     {
-      "id": "tree|only_tree_list|bound",
-      "digest": "70581162bd342f59",
-      "text": "tree: bound has a tree-cure handler and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|flamefisted",
-      "digest": "8ef53534ebbbc917",
-      "text": "tree: flamefisted has a tree-cure handler and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|flushings",
-      "digest": "6f2a5774763ccc89",
-      "text": "tree: flushings has a tree-cure handler and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|galed",
-      "digest": "2174e5d5ee931649",
-      "text": "tree: galed has a tree-cure handler and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|icing",
-      "digest": "b6ad29f751024b96",
-      "text": "tree: icing has a tree-cure handler and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|laceratedthroat",
-      "digest": "e0568358485f5715",
-      "text": "tree: laceratedthroat has a tree-cure handler and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|mildconcussion",
-      "digest": "fb4b15b065009e1b",
-      "text": "tree: mildconcussion has a tree-cure handler and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|mycalium",
-      "digest": "06e0da963de43f1e",
-      "text": "tree: mycalium has a tree-cure handler and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|prone",
-      "digest": "d1692e7f9534a7bc",
-      "text": "tree: prone has a tree-cure handler and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|pyramides",
-      "digest": "2beca1e5b1f76c17",
-      "text": "tree: pyramides has a tree-cure handler and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|rebbies",
-      "digest": "8fddc9c488b6f594",
-      "text": "tree: rebbies has a tree-cure handler and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|sandfever",
-      "digest": "3f5e60949e93437d",
-      "text": "tree: sandfever has a tree-cure handler and is not in treecurables"
-    },
-    {
-      "id": "tree|only_tree_list|slashedthroat",
-      "digest": "d84d08512a020aba",
-      "text": "tree: slashedthroat has a tree-cure handler and is not in treecurables"
+      "id": "tree|only_tree_list|latched",
+      "digest": "66c8a5cc27b103df",
+      "text": "tree: latched has a tree-cure trigger and is not in treecurables"
     },
     {
       "id": "tree|only_tree_list|tension",
       "digest": "9b3d688a2ed732d9",
-      "text": "tree: tension has a tree-cure handler and is not in treecurables"
+      "text": "tree: tension has a tree-cure trigger and is not in treecurables"
     },
     {
       "id": "tree|only_tree_list|voided",
       "digest": "2e752b845bb3342e",
-      "text": "tree: voided has a tree-cure handler and is not in treecurables"
+      "text": "tree: voided has a tree-cure trigger and is not in treecurables"
     },
     {
-      "id": "tree|only_treecurables|crackedribs",
-      "digest": "ba39225cdf906b7c",
-      "text": "tree: crackedribs is in treecurables and has no tree-cure handler"
+      "id": "tree|only_treecurables|blackout",
+      "digest": "04e62a81a41e6368",
+      "text": "tree: blackout is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|crescendo",
+      "digest": "2338f89eb6724c6b",
+      "text": "tree: crescendo is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|degenerate",
+      "digest": "8b23f881f7d0c02b",
+      "text": "tree: degenerate is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|depression",
+      "digest": "412ff76258900a46",
+      "text": "tree: depression is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|deteriorate",
+      "digest": "bb38eaa50fa2d21a",
+      "text": "tree: deteriorate is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|disrupt",
       "digest": "70b5c4bcb19afa7b",
-      "text": "tree: disrupt is in treecurables and has no tree-cure handler"
+      "text": "tree: disrupt is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|dissonance",
+      "digest": "bd39db2a134b8839",
+      "text": "tree: dissonance is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|earworm",
+      "digest": "9e54106876facd62",
+      "text": "tree: earworm is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|fulminated",
       "digest": "68c306f6153d4918",
-      "text": "tree: fulminated is in treecurables and has no tree-cure handler"
+      "text": "tree: fulminated is in treecurables and has no tree-cure trigger"
     },
     {
-      "id": "tree|only_treecurables|skullfractures",
-      "digest": "b935c63ee110c699",
-      "text": "tree: skullfractures is in treecurables and has no tree-cure handler"
+      "id": "tree|only_treecurables|horror",
+      "digest": "b1e09a32a07e70f6",
+      "text": "tree: horror is in treecurables and has no tree-cure trigger"
     },
     {
-      "id": "tree|only_treecurables|torntendons",
-      "digest": "6c5ad3d443348f39",
-      "text": "tree: torntendons is in treecurables and has no tree-cure handler"
+      "id": "tree|only_treecurables|itching",
+      "digest": "5e53d1a91268e848",
+      "text": "tree: itching is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|madness",
+      "digest": "28337478e6119f29",
+      "text": "tree: madness is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|parasite",
+      "digest": "e5b46bdf377b0f44",
+      "text": "tree: parasite is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|pyre",
+      "digest": "d44439ae398c4360",
+      "text": "tree: pyre is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|retribution",
+      "digest": "9b9a6ba4a555e988",
+      "text": "tree: retribution is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|shadowmadness",
+      "digest": "8eab52ceb9af81c9",
+      "text": "tree: shadowmadness is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|timeloop",
+      "digest": "8aea344a879f5dc4",
+      "text": "tree: timeloop is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|unknownany",
       "digest": "dabcb41b2d7c4e3f",
-      "text": "tree: unknownany is in treecurables and has no tree-cure handler"
+      "text": "tree: unknownany is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|unknowncrippledarm",
       "digest": "d709f505a450b4ba",
-      "text": "tree: unknowncrippledarm is in treecurables and has no tree-cure handler"
+      "text": "tree: unknowncrippledarm is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|unknowncrippledleg",
       "digest": "d824709dabc021ec",
-      "text": "tree: unknowncrippledleg is in treecurables and has no tree-cure handler"
+      "text": "tree: unknowncrippledleg is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|unknownmental",
       "digest": "f8dfee0c3e6264af",
-      "text": "tree: unknownmental is in treecurables and has no tree-cure handler"
-    },
-    {
-      "id": "tree|only_treecurables|wristfractures",
-      "digest": "91dddc114d627452",
-      "text": "tree: wristfractures is in treecurables and has no tree-cure handler"
+      "text": "tree: unknownmental is in treecurables and has no tree-cure trigger"
     }
   ]
 }

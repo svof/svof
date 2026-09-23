@@ -1,1 +1,1 @@
-svo.valid.generic_insomnia()
+svo.valid.generic('insomnia')

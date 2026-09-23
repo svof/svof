@@ -279,7 +279,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "c0caded4ae933694",
+      "digest": "9e9413d1ea50f50c",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -288,9 +288,844 @@
       "text": "Script   svo (trigger functions) Simple aff trigger functions [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure ablaze generic|script",
+      "digest": "1e8712e25391df9c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure ablaze generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure addiction generic|script",
+      "digest": "695162af29f99711",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure addiction generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure aeon generic|script",
+      "digest": "9f6f6bf25ca928bd",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure aeon generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure agoraphobia generic|script",
+      "digest": "7f1ad2996ced2fad",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure agoraphobia generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure anorexia generic 2|script",
+      "digest": "002b130b139db07d",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure anorexia generic 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure anorexia generic|script",
+      "digest": "002b130b139db07d",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure anorexia generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure asthma generic|script",
+      "digest": "7fc8015701a31966",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure asthma generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure bleeding generic|script",
+      "digest": "d25046f11440a237",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure bleeding generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure burn|script",
+      "digest": "c2a7d739cf4d6d5d",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure burn [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure claustrophobia generic 2|script",
+      "digest": "8b07a09b8bd13e18",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure claustrophobia generic 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure claustrophobia generic|script",
+      "digest": "8b07a09b8bd13e18",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure claustrophobia generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure clumsiness generic|script",
+      "digest": "8e4d9a446611cb0e",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure clumsiness generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure confusion generic|script",
+      "digest": "2dd17990a7fecd36",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure confusion generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure crackedribs generic|script",
+      "digest": "197911c15c41f0d7",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure crackedribs generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure crippledleftarm generic|script",
+      "digest": "f4a9968127f8d036",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure crippledleftarm generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure crippledleftleg generic|script",
+      "digest": "53fc260a66b8bc19",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure crippledleftleg generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure crippledrightarm generic|script",
+      "digest": "342b041f3572329f",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure crippledrightarm generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure crippledrightleg generic|script",
+      "digest": "21a319ee9a52bb1c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure crippledrightleg generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure darkshade generic|script",
+      "digest": "ad8113ba4ff4609d",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure darkshade generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure deadning generic|script",
+      "digest": "666cbb29d6017002",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure deadning generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure dementia tree|script",
+      "digest": "bf07a178fad317a4",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure dementia tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure disloyalty generic|script",
+      "digest": "ab0e216557bc51b8",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure disloyalty generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure dizziness generic|script",
+      "digest": "75a0256d9b05dec9",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure dizziness generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure epilepsy generic 2|script",
+      "digest": "be68cf5276292a6c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure epilepsy generic 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure epilepsy generic|script",
+      "digest": "be68cf5276292a6c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure epilepsy generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure fear generic|script",
+      "digest": "ffa4fceecca95251",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure fear generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure frozen generic|script",
+      "digest": "f5ae1d14119509bc",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure frozen generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure generosity generic 2|script",
+      "digest": "4bb5f9a26e156365",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure generosity generic 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure generosity generic|script",
+      "digest": "4bb5f9a26e156365",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure generosity generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure haemophilia generic|script",
+      "digest": "5b29a454f9ecdb47",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure haemophilia generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure hallucinations generic|script",
+      "digest": "48f22dffb8e9f698",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure hallucinations generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure healmana generic|script",
+      "digest": "f0516e099afdaa10",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure healmana generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure healthleech generic|script",
+      "digest": "e99df118ebf3a832",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure healthleech generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure hypersomnia generic|script",
+      "digest": "83422cd41d984ae3",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure hypersomnia generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure impatience generic|script",
+      "digest": "b877600f7932a2b4",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure impatience generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure inlove generic|script",
+      "digest": "ffc92c538cafa072",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure inlove generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure itching generic|script",
+      "digest": "e006f474a07cb8cd",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure itching generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure justice generic|script",
+      "digest": "0bb7f1f25cc2d731",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure justice generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure latched generic|script",
+      "digest": "68cefa02a987a4d2",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure latched generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure lethargy generic|script",
+      "digest": "04a22038c73269c0",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure lethargy generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure loneliness generic 2|script",
+      "digest": "70111be1ee90a944",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure loneliness generic 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure loneliness generic|script",
+      "digest": "70111be1ee90a944",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure loneliness generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure masochism generic|script",
+      "digest": "f62987354944d964",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure masochism generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure pacifism generic 2|script",
+      "digest": "219c898559e37dae",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure pacifism generic 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure pacifism generic|script",
+      "digest": "219c898559e37dae",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure pacifism generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure paralysis generic|script",
+      "digest": "b5ec253ba7b73860",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure paralysis generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure paranoia generic 2|script",
+      "digest": "ea6a98b6bb79b68c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure paranoia generic 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure paranoia generic|script",
+      "digest": "ea6a98b6bb79b68c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure paranoia generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure peace generic|script",
+      "digest": "54e85cfd762c09fd",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure peace generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure recklessness generic 2|script",
+      "digest": "6018fc45f399548b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure recklessness generic 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure recklessness generic|script",
+      "digest": "6018fc45f399548b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure recklessness generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure relapsing generic|script",
+      "digest": "9e483898e4272acf",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure relapsing generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure selarnia generic|script",
+      "digest": "7ab9d9c81dc13fd9",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure selarnia generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure sensitivity generic 2|script",
+      "digest": "9e32001146e1729f",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure sensitivity generic 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure sensitivity generic|script",
+      "digest": "9e32001146e1729f",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure sensitivity generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure shivering generic 2|script",
+      "digest": "fdad5a0d5ccb1f6c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure shivering generic 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure shivering generic|script",
+      "digest": "fdad5a0d5ccb1f6c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure shivering generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure shyness generic 2|script",
+      "digest": "914ec0d6cda008ba",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure shyness generic 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure shyness generic 3|script",
+      "digest": "914ec0d6cda008ba",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure shyness generic 3 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure shyness generic|script",
+      "digest": "914ec0d6cda008ba",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure shyness generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure skullfractures generic|script",
+      "digest": "28a5417a27104390",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure skullfractures generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure slickness generic 2|script",
+      "digest": "80501fa32e916948",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure slickness generic 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure slickness generic|script",
+      "digest": "80501fa32e916948",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure slickness generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure stupidity generic|script",
+      "digest": "6c4a206e19e9b45b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure stupidity generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure stuttering generic|script",
+      "digest": "1d3243059219ca70",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure stuttering generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure tension generic|script",
+      "digest": "7a0bce2082c66b70",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure tension generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure torntendons generic|script",
+      "digest": "ccc9e30c6d2045e6",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure torntendons generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure vertigo generic 2|script",
+      "digest": "5b127b3871e42f66",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure vertigo generic 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure vertigo generic|script",
+      "digest": "5b127b3871e42f66",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure vertigo generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure voided generic|script",
+      "digest": "5a5aff29a0a837a8",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure voided generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure vomiting generic|script",
+      "digest": "12e2106f32b22aa2",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure vomiting generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure voyria generic|script",
+      "digest": "e1fa6e1ee828d0b2",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure voyria generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure weakness generic 2|script",
+      "digest": "32c4fcc12cf82204",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure weakness generic 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure weakness generic 3|script",
+      "digest": "32c4fcc12cf82204",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure weakness generic 3 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure weakness generic|script",
+      "digest": "32c4fcc12cf82204",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure weakness generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure wristfractures generic|script",
+      "digest": "cb3be552f3ebf854",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure wristfractures generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cured crackedribs generic|script",
+      "digest": "2c3bf6bfc93b66b5",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cured crackedribs generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cured hypochondria|script",
+      "digest": "ba4e55457a9ca606",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cured hypochondria [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cured skullfractures generic|script",
+      "digest": "3aee19858772d89e",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cured skullfractures generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cured torntendons generic|script",
+      "digest": "2d046fae56e703be",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cured torntendons generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cured wristfractures generic|script",
+      "digest": "f0b315961405a5c1",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cured wristfractures generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo got insomnia|script",
+      "digest": "a5c8455307c6ff40",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got insomnia [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",
       "digest": "61baa56f5354675b",
       "text": "Trigger  svo (aliases, triggers) svo/General/Registration/Started [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure ablaze tree|script",
+      "digest": "bf1caba5422bf0f8",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure ablaze tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure addiction tree|script",
+      "digest": "f115c556f82065e3",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure addiction tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure aeon tree|script",
+      "digest": "560b3ad2a6572807",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure aeon tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure agoraphobia tree|script",
+      "digest": "d01893e9f7cdad22",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure agoraphobia tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure anorexia tree 2|script",
+      "digest": "9483dfe4c8ff5dba",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure anorexia tree 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure anorexia tree|script",
+      "digest": "9483dfe4c8ff5dba",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure anorexia tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure asthma tree|script",
+      "digest": "a8c53b5c152621b1",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure asthma tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure bleeding tree|script",
+      "digest": "c9ae11ac9d91cd82",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure bleeding tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure burn tree|script",
+      "digest": "c9bb1344e3f2a8a4",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure burn tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure burns tree|script",
+      "digest": "30e1494b158eb8df",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure burns tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure claustrophobia tree 2|script",
+      "digest": "b815b209ec29c80c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure claustrophobia tree 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure claustrophobia tree|script",
+      "digest": "b815b209ec29c80c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure claustrophobia tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure clumsiness tree|script",
+      "digest": "e44210c779b66e06",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure clumsiness tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure confusion tree|script",
+      "digest": "f3a60e5082587458",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure confusion tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure crackedribs tree|script",
+      "digest": "735ccef8e310a706",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure crackedribs tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure crippledleftarm tree|script",
+      "digest": "6b45a397d8eb49b7",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure crippledleftarm tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure crippledleftleg tree|script",
+      "digest": "a97dfb6af639f550",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure crippledleftleg tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure crippledrightarm tree|script",
+      "digest": "716f883182dafde8",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure crippledrightarm tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure crippledrightleg tree|script",
+      "digest": "9a71b66a19ac7860",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure crippledrightleg tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure darkshade tree|script",
+      "digest": "e6ebe2331ac38dbb",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure darkshade tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure deadening tree|script",
+      "digest": "00a667c8d4b74ebf",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure deadening tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure dementia tree|script",
+      "digest": "7b885551c5e01eab",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure dementia tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure disloyalty tree|script",
+      "digest": "c5578980e3e1233a",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure disloyalty tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure dizziness tree|script",
+      "digest": "a5dee9bef9eb2075",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure dizziness tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure epilepsy tree 2|script",
+      "digest": "5ace26639a1e145a",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure epilepsy tree 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure epilepsy tree|script",
+      "digest": "5ace26639a1e145a",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure epilepsy tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure fear tree|script",
+      "digest": "45f3f4c6351f029c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure fear tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure frozen tree|script",
+      "digest": "dbc8033a0bd3820f",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure frozen tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure generosity tree 2|script",
+      "digest": "97c0123deabde3f0",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure generosity tree 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure generosity tree|script",
+      "digest": "97c0123deabde3f0",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure generosity tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure haemophilia tree|script",
+      "digest": "ce9c49d3cda19046",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure haemophilia tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure hallucinations tree|script",
+      "digest": "af771567324002a4",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure hallucinations tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure healthleech tree|script",
+      "digest": "f70781ebfc5b5f01",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure healthleech tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure hellsight tree|script",
+      "digest": "af9478e86bcf8331",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure hellsight tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure hypersomnia tree|script",
+      "digest": "972917131768207b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure hypersomnia tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure hypochondria tree|script",
+      "digest": "59ca4b58a3695889",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure hypochondria tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure illness tree|script",
+      "digest": "1602133e512fd732",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure illness tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure impatience tree|script",
+      "digest": "12425c57624e1683",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure impatience tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure justice tree|script",
+      "digest": "957b0beddc461349",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure justice tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure latched tree|script",
+      "digest": "58a814a53af64887",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure latched tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure lethargy tree|script",
+      "digest": "38f21819fd946aec",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure lethargy tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure loneliness tree 2|script",
+      "digest": "556ae41b4ee0f481",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure loneliness tree 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure loneliness tree|script",
+      "digest": "556ae41b4ee0f481",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure loneliness tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure masochism tree|script",
+      "digest": "c708e3ae7a4fbeb3",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure masochism tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure pacifism tree 2|script",
+      "digest": "9925531e68e01653",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure pacifism tree 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure pacifism tree|script",
+      "digest": "9925531e68e01653",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure pacifism tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure paralysis tree|script",
+      "digest": "147c22b732beaea9",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure paralysis tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure paranoia tree 2|script",
+      "digest": "c955a6087fba8df1",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure paranoia tree 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure paranoia tree|script",
+      "digest": "c955a6087fba8df1",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure paranoia tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure peace tree|script",
+      "digest": "9f73b3ffb4c9b252",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure peace tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure recklessness tree 2|script",
+      "digest": "7abd37b1c435cd21",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure recklessness tree 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure recklessness tree|script",
+      "digest": "7abd37b1c435cd21",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure recklessness tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure relapsing tree|script",
+      "digest": "77f16b8675f5f4a7",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure relapsing tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure selarnia tree|script",
+      "digest": "70a9caca59cbbcb9",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure selarnia tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure sensitivity tree 2|script",
+      "digest": "5f037e0b2aae7ef1",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure sensitivity tree 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure sensitivity tree|script",
+      "digest": "5f037e0b2aae7ef1",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure sensitivity tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure shivering tree 2|script",
+      "digest": "7585f5f48fc33675",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure shivering tree 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure shivering tree|script",
+      "digest": "7585f5f48fc33675",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure shivering tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure shyness tree 2|script",
+      "digest": "36a3e27bf9ef1145",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure shyness tree 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure shyness tree 3|script",
+      "digest": "36a3e27bf9ef1145",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure shyness tree 3 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure shyness tree|script",
+      "digest": "36a3e27bf9ef1145",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure shyness tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure skullfractures tree|script",
+      "digest": "1672536dc1349217",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure skullfractures tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure slickness tree 2|script",
+      "digest": "1cd3eff376d471c1",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure slickness tree 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure slickness tree|script",
+      "digest": "1cd3eff376d471c1",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure slickness tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure stupidity tree|script",
+      "digest": "f9580ed1d423b14e",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure stupidity tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure stuttering tree|script",
+      "digest": "ac96604fa58b7a8e",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure stuttering tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure tension  tree|script",
+      "digest": "d309ce0998f55fb5",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure tension  tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure torntendons tree|script",
+      "digest": "56e81a8ecd297283",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure torntendons tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure vertigo tree 2|script",
+      "digest": "5e27e75df195037a",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure vertigo tree 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure vertigo tree|script",
+      "digest": "5e27e75df195037a",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure vertigo tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure voided tree|script",
+      "digest": "c5a9d21895f8c3b2",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure voided tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure voyria tree|script",
+      "digest": "e08fa1e71967c7b7",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure voyria tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure weakness tree 2|script",
+      "digest": "d3c32956dbc46655",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure weakness tree 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure weakness tree 3|script",
+      "digest": "d3c32956dbc46655",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure weakness tree 3 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure weakness tree|script",
+      "digest": "d3c32956dbc46655",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure weakness tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure wristfractures tree|script",
+      "digest": "3c3fa5e26390c2a1",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure wristfractures tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cured crackedribs tree|script",
+      "digest": "4c69834f43092a7d",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cured crackedribs tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cured crushedthroat|script",
+      "digest": "578393635fb4e5f5",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cured crushedthroat [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cured guilt tree|script",
+      "digest": "e79118971c1ea738",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cured guilt tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cured inlove tree|script",
+      "digest": "b1bf041fb9ba9184",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cured inlove tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cured skullfractures tree|script",
+      "digest": "91514ce97e81e9cd",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cured skullfractures tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cured spiritburn tree|script",
+      "digest": "c23881d4ef4922ad",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cured spiritburn tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cured tenderskin tree|script",
+      "digest": "9fe6e0f506156c75",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cured tenderskin tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cured torntendons tree|script",
+      "digest": "5f079e17098a1ca8",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cured torntendons tree [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cured wristfractures tree|script",
+      "digest": "037232c2161a60a7",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cured wristfractures tree [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/ablaze|script",

@@ -1,1 +1,1 @@
-svo.valid.generic_crippledrightleg()
+svo.valid.generic('crippledrightleg')

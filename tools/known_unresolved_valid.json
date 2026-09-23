@@ -48,10 +48,6 @@
     {
       "file": "src/triggers/svo (aliases, triggers)/svo/General/General cures/svo_sour_sparkle.lua",
       "name": "sour_sparkle"
-    },
-    {
-      "file": "src/triggers/svo (aliases, triggers)/svo/General/Tree cures/svo_cure_latched_tree.lua",
-      "name": "tree_cured_latched"
     }
   ]
 }

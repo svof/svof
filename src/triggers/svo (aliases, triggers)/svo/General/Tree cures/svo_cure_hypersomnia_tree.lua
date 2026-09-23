@@ -1,1 +1,1 @@
-svo.valid.tree_cured_hypersomnia()
+svo.valid.tree_cured('hypersomnia')

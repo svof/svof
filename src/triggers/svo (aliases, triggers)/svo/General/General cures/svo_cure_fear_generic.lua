@@ -1,1 +1,1 @@
-svo.valid.generic_fear()
+svo.valid.generic('fear')

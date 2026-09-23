@@ -1,1 +1,1 @@
-svo.valid.tree_cured_guilt()
+svo.valid.tree_cured('guilt')

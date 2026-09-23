@@ -1,1 +1,1 @@
-svo.valid.tree_cured_frozen()
+svo.valid.tree_cured('frozen')

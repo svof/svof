@@ -1,1 +1,1 @@
-svo.valid.tree_cured_wristfractures()
+svo.valid.tree_cured('wristfractures cured')

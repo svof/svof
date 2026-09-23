@@ -200,6 +200,32 @@ def names_in(src, pattern):
     return re.findall(r"'(\w+)'", brace_body(src, src.index("{", m.start())))
 
 
+TRIGGERS = os.path.join(REPO, "src", "triggers")
+
+
+def tree_trigger_names():
+    """Affliction names the tree-cure triggers pass to svo.valid.tree_cured.
+
+    Since the handlers were inverted this is where "svof recognises tree curing
+    it" is written, so it is what empty.treecurables has to agree with. The
+    other strings the handler accepts - 'burn', 'all burns' and
+    '<fracture> cured' - are instructions to touchtree.misc.oncompleted rather
+    than affliction names, so they are left out.
+    """
+    names = set()
+    for d, _, fs in os.walk(TRIGGERS):
+        for f in fs:
+            if not f.endswith(".lua"):
+                continue
+            with io.open(os.path.join(d, f), "rb") as fh:
+                body = fh.read().replace(b"\r\n", b"\n").decode("utf-8", "replace")
+            for m in re.finditer(r"svo\.valid\.tree_cured\('([^']+)'\)", body):
+                what = m.group(1)
+                if what not in ("burn", "all burns") and not what.endswith(" cured"):
+                    names.add(what)
+    return sorted(names)
+
+
 # --------------------------------------------------------------------------
 # the literals, and the floor under each
 # --------------------------------------------------------------------------
@@ -210,9 +236,8 @@ def names_in(src, pattern):
 # edit passes and a broken read does not.
 FLOORS = {
     "afflist": 100,
-    "generic_cures_data": 80,
-    "tree list": 60,
     "treecurables": 60,
+    "tree triggers": 60,
     "focuscurables": 12,
 }
 FOCUS_BLOCK_FLOOR = 12
@@ -241,10 +266,13 @@ def collect():
     # there is no literal left here to compare a derived list against.
     literals = {
         "afflist": names_in(SIMPLE, r"local afflist = \{"),
-        "generic_cures_data": names_in(MAIN, r"local generic_cures_data = \{"),
-        "tree list": names_in(MAIN, r"\n  tree = \{"),
         "treecurables": names_in(EMPTY, r"empty\.treecurables = \{"),
         "focuscurables": names_in(EMPTY, r"empty\.focuscurables = \{"),
+        # Not a literal any more. The tree-cure handlers were inverted into
+        # svo.valid.tree_cured(what), so "svof recognises tree curing this" is
+        # written in the triggers now - which is where the game's wording lives
+        # - and the triggers are what empty.treecurables has to agree with.
+        "tree triggers": tree_trigger_names(),
     }
 
     fails = []
@@ -267,15 +295,17 @@ def collect():
 
 # derived name -> (the field an entry would declare, the literals to compare to)
 #
-# aff_diag is gone. The two diag loops were inverted into a single
-# svo.valid.diag(name, ...) that the trigger passes its own name to, so there
-# is no diag literal left to compare a derived list against - and no need for a
-# `diag` field on the entry either, since the trigger is now the only place the
-# fact is written. That supersedes the diag half of the guide's Step 1.
+# Only aff_simple is left. The diag, generic and tree-cure handler families
+# were each inverted into a single name-taking function, so none of them has a
+# literal to compare a derived list against any more - and none wants a field
+# on the entry either, since the trigger became the only place the fact is
+# written. That supersedes those three parts of the guide's Step 1.
+#
+# What survives from the tree half is the disagreement between the tree
+# triggers and empty.treecurables, which is a different fact and is compared
+# further down.
 DECLARED = [
     ("aff_simple", "simpletrigger", ["afflist"]),
-    ("aff_generic", "generic", ["generic_cures_data"]),
-    ("aff_tree", "tree", ["tree list"]),
 ]
 
 CURE_BALANCES = ("herb", "salve", "smoke", "sip", "purgative")
@@ -333,23 +363,29 @@ def compare(data):
                      "%s: %s is in %s and does not declare %s = true"
                      % (derived, n, label, field))
 
-    # --- the one target with two literals that already disagree --------------
-    t, tc = set(literals["tree list"]), set(literals["treecurables"])
+    # --- two places that hold the same fact about tree, and disagree ---------
+    # "tree can cure this" is written twice: in the triggers, which carry the
+    # game's wording for each cure, and in empty.treecurables, which is what
+    # gets cleared when a tree touch cures nothing. The second cannot be
+    # derived from the first - a tree that cured nothing tells you about
+    # afflictions you did NOT have - so both are real, and their disagreement
+    # is a list of open questions rather than a bug to fix mechanically.
+    t, tc = set(literals["tree triggers"]), set(literals["treecurables"])
     out.append("")
     out.append("  %-13s vs %-33s %3d and %3d, disagreeing in %d names"
-               % ("aff_tree", "treecurables", len(t), len(tc), len(t ^ tc)))
+               % ("tree triggers", "treecurables", len(t), len(tc), len(t ^ tc)))
     if t - tc:
-        out.append("                   only in tree list:    %s"
+        out.append("                   only a trigger:       %s"
                    % ", ".join(sorted(t - tc)))
     if tc - t:
         out.append("                   only in treecurables: %s"
                    % ", ".join(sorted(tc - t)))
     for n in sorted(t - tc):
         diff("tree|only_tree_list|%s" % n,
-             "tree: %s has a tree-cure handler and is not in treecurables" % n)
+             "tree: %s has a tree-cure trigger and is not in treecurables" % n)
     for n in sorted(tc - t):
         diff("tree|only_treecurables|%s" % n,
-             "tree: %s is in treecurables and has no tree-cure handler" % n)
+             "tree: %s is in treecurables and has no tree-cure trigger" % n)
 
     # --- focus IS derivable from shape today ---------------------------------
     focus_blocks = {n for n, b in bals.items() if "focus" in b}

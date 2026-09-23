@@ -1,1 +1,1 @@
-svo.valid.generic_agoraphobia()
+svo.valid.generic('agoraphobia')

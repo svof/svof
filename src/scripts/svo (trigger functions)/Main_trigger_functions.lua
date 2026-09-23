@@ -2886,19 +2886,36 @@ for _, herb in pairs({
   end
 end
 
--- tree touches
-for _, tree in pairs({
-  tree = {'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'bleeding', 'bound', 'flamefisted', 'claustrophobia', 'clumsiness', 'mildconcussion', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade', 'deadening', 'dementia', 'disloyalty', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'galed', 'generosity', 'haemophilia', 'hallucinations', 'healthleech', 'hellsight', 'hypersomnia', 'hypochondria', 'icing', 'illness', 'impatience', 'inlove', 'itching', 'justice', 'laceratedthroat', 'lethargy', 'loneliness', 'madness', 'masochism','pacifism', 'paralysis', 'paranoia', 'peace', 'prone', 'pyre', 'recklessness', 'relapsing', 'selarnia', 'sensitivity', 'shyness', 'slashedthroat', 'slickness', 'stupidity', 'stuttering',  'vertigo', 'voided', 'voyria', 'weakness', 'shivering', 'frozen', 'depression', 'parasite', 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'guilt', 'spiritburn', 'tenderskin', 'crushedthroat', 'tension', 'mycalium', 'flushings', 'rebbies', 'sandfever', 'pyramides', 'horror', 'crescendo', 'earworm'
-	}}) do
+-- One handler for every tree cure, in place of a list of 86 names that
+-- generated a function each, two more written out by hand for the burns, and
+-- a fourth family for the counted fractures. Every one had the same body and
+-- differed only in the string handed to lifevision, which
+-- touchtree.misc.oncompleted then branches on - so the trigger passes that
+-- string and there is nothing left to keep in step.
+--
+-- A valid argument is an affliction name or one of the six special cases
+-- below. tree_cure_<fracture> and tree_cured_<fracture> were two families
+-- differing only in a " cured" suffix; that is visible at the call site now
+-- rather than encoded in a function name.
+local TREE_SPECIAL = {
+  ['burn'] = true,                 ['all burns'] = true,
+  ['skullfractures cured'] = true, ['crackedribs cured'] = true,
+  ['wristfractures cured'] = true, ['torntendons cured'] = true,
+}
 
-  for _, aff in pairs(tree) do
-    valid['tree_cured_'..aff] = function()
-      svo.checkaction(svo.dict.touchtree.misc)
-      if actions.touchtree_misc then
-        lifevision.add(actions.touchtree_misc.p, nil, aff)
-        tree_cure = true
-      end
-    end
+function svo.valid.tree_cured(what)
+  -- touchtree.misc.oncompleted falls through to svo.rmaff(what) for anything
+  -- it does not name, and rmaff returns quietly on a name it does not know, so
+  -- a typo would do nothing and say nothing. Report it here instead.
+  if not (TREE_SPECIAL[what] or svo.dict[what]) then
+    svo.errorf("a tree-cure trigger names %q, which is neither an affliction nor one of the special cases.", what)
+    return
+  end
+
+  svo.checkaction(svo.dict.touchtree.misc)
+  if actions.touchtree_misc then
+    lifevision.add(actions.touchtree_misc.p, nil, what)
+    tree_cure = true
   end
 end
 
@@ -3311,59 +3328,68 @@ function svo.defs.salve_got_mass()
 end
 
 
-local generic_cures_data = {
-  'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'bleeding', 'bound', 'flamefisted', 'claustrophobia', 'clumsiness', 'mildconcussion', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade', 'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'galed', 'generosity', 'haemophilia', 'hallucinations', 'healthleech', 'heartseed', 'hellsight', 'hypersomnia', 'hypochondria', 'icing', 'illness', 'impale', 'impatience', 'inlove', 'inquisition', 'itching', 'justice', 'laceratedthroat', 'latched', 'lethargy', 'loneliness', 'lovers', 'madness', 'mangledleftarm', 'mangledleftleg', 'mangledrightarm', 'mangledrightleg', 'masochism', 'mildtrauma', 'mutilatedleftarm', 'mutilatedleftleg', 'mutilatedrightarm', 'mutilatedrightleg', 'pacifism', 'paralysis', 'paranoia', 'peace', 'prone', 'pyre', 'recklessness', 'relapsing', 'roped', 'selarnia', 'sensitivity', 'seriousconcussion', 'serioustrauma', 'shyness', 'slashedthroat', 'slickness', 'stun', 'stupidity', 'stuttering', 'transfixed', 'unknownany', 'unknowncrippledarm', 'unknowncrippledleg', 'unknownmental', 'vertigo', 'voided', 'voyria', 'weakness', 'webbed', 'healhealth', 'healmana', 'hamstring', 'shivering', 'frozen', 'hallucinations', 'stain', 'rixil', 'palpatar', 'cadmus', 'hecate', 'depression', 'parasite', 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'hatred', 'guilt', 'tenderskin', 'spiritburn', 'crushedthroat', 'tension'
-}
+-- One handler for every cure line not attributable to a specific action, in
+-- place of a list of 112 names that generated a function each. The body was
+-- already a pure function of the name, and 46 of the listed names no trigger
+-- ever called.
+--
+-- The dictionary's own header and Developer_readme.md:146 describe this family
+-- as covering "passive cures or cures that happen in blackout". That is why it
+-- exists and why GMCP cannot replace it: blackout stops Char.Afflictions.
+--
+-- The parameter keeps the name `aff`, so the body below is reused unchanged.
+-- Renaming it mechanically also hit the string literal in
+-- `k.p.balance ~= 'aff'`, which means something else entirely.
+function svo.valid.generic(aff)
+  if not svo.dict[aff] then
+    svo.errorf("a generic-cure trigger names %q, which svof has no entry for.", aff)
+    return
+  end
 
-for i = 1, #generic_cures_data do
-  local aff = generic_cures_data[i]
 
-  valid['generic_'..aff] = function ()
+  -- passive curing...
+  if svo.passive_cure_paragraph and svo.dict[aff].gone then
+    svo.checkaction(svo.dict[aff].gone, true)
+    if actions[aff .. '_gone'] then
+      lifevision.add(actions[aff .. '_gone'].p)
+    end
+    return
+  end
 
-    -- passive curing...
-    if svo.passive_cure_paragraph and svo.dict[aff].gone then
-      svo.checkaction(svo.dict[aff].gone, true)
-      if actions[aff .. '_gone'] then
-        lifevision.add(actions[aff .. '_gone'].p)
+  -- ... or something we caused.
+  if svo.actions_performed[aff] then
+    lifevision.add(actions[svo.actions_performed[aff].name].p)
+
+  -- if it's not something we were directly doing, try to link by balances
+  else
+    local result
+
+    for j,k in actions:iter() do
+      if not k then
+        svo.debugf("[svo error]: no k here, j is %s. Actions list:", tostring(j))
+        for m,n in actions:iter() do
+          svo.debugf("%s - %s", tostring(m), tostring(n))
+        end
+      end
+      if k and k.p.balance ~= 'waitingfor' and k.p.balance ~= 'aff' and svo.dict[aff][k.p.balance] then result = k.p break end
+    end
+
+    if not result then -- maybe tree?
+      if actions.touchtree_misc then
+        lifevision.add(actions.touchtree_misc.p, nil, aff)
+        tree_cure = true
+      elseif actions.restore_physical then
+        lifevision.add(actions.restore_physical.p)
+        valid.passive_cure()
       end
       return
     end
 
-    -- ... or something we caused.
-    if svo.actions_performed[aff] then
-      lifevision.add(actions[svo.actions_performed[aff].name].p)
+    svo.debugf("Result is %s", tostring(result.action_name))
+    svo.killaction(svo.dict[result.action_name][result.balance])
 
-    -- if it's not something we were directly doing, try to link by balances
-    else
-      local result
-
-      for j,k in actions:iter() do
-        if not k then
-          svo.debugf("[svo error]: no k here, j is %s. Actions list:", tostring(j))
-          for m,n in actions:iter() do
-            svo.debugf("%s - %s", tostring(m), tostring(n))
-          end
-        end
-        if k and k.p.balance ~= 'waitingfor' and k.p.balance ~= 'aff' and svo.dict[aff][k.p.balance] then result = k.p break end
-      end
-
-      if not result then -- maybe tree?
-        if actions.touchtree_misc then
-          lifevision.add(actions.touchtree_misc.p, nil, aff)
-          tree_cure = true
-        elseif actions.restore_physical then
-          lifevision.add(actions.restore_physical.p)
-          valid.passive_cure()
-        end
-        return
-      end
-
-      svo.debugf("Result is %s", tostring(result.action_name))
-      svo.killaction(svo.dict[result.action_name][result.balance])
-
-      svo.checkaction(svo.dict[aff][result.balance], true)
-      lifevision.add(svo.dict[aff][result.balance])
-    end
+    svo.checkaction(svo.dict[aff][result.balance], true)
+    lifevision.add(svo.dict[aff][result.balance])
   end
 end
 
@@ -4455,52 +4481,21 @@ function svo.valid.cured_burns_health()
   end
 end
 
-function svo.valid.tree_cured_burn()
-  svo.checkaction(svo.dict.touchtree.misc)
-  if actions.touchtree_misc then
-    lifevision.add(actions.touchtree_misc.p, nil, 'burn')
-    tree_cure = true
+-- The counted fractures generated four families between them. The two tree
+-- ones fold into svo.valid.tree_cured above; these are the other two, both
+-- plain functions of the name.
+function svo.valid.generic_cure(aff)
+  svo.checkaction(svo.dict[aff].gone, true)
+  if lifevision.l[aff..'_gone'] then
+    lifevision.add(actions[aff..'_gone'].p, 'general_cure', 1 + (lifevision.l[aff..'_gone'].arg or 1))
+  else
+    lifevision.add(actions[aff..'_gone'].p, 'general_cure', 1)
   end
 end
 
-function svo.valid.tree_cured_burns()
-  svo.checkaction(svo.dict.touchtree.misc)
-  if actions.touchtree_misc then
-    lifevision.add(actions.touchtree_misc.p, nil, "all burns")
-    tree_cure = true
-  end
-end
-
-for _, aff in ipairs({'skullfractures', 'crackedribs', 'wristfractures', 'torntendons'}) do
-  valid['tree_cure_'..aff] = function()
-    svo.checkaction(svo.dict.touchtree.misc)
-    if actions.touchtree_misc then
-      tree_cure = true
-      lifevision.add(actions.touchtree_misc.p, nil, aff)
-    end
-  end
-
-  valid['tree_cured_'..aff] = function()
-    svo.checkaction(svo.dict.touchtree.misc)
-    if actions.touchtree_misc then
-      lifevision.add(actions.touchtree_misc.p, nil, aff.." cured")
-      tree_cure = true
-    end
-  end
-
-  valid['generic_cure_'..aff] = function()
-    svo.checkaction(svo.dict[aff].gone, true)
-    if lifevision.l[aff..'_gone'] then
-      lifevision.add(actions[aff..'_gone'].p, 'general_cure', 1 + (lifevision.l[aff..'_gone'].arg or 1))
-    else
-      lifevision.add(actions[aff..'_gone'].p, 'general_cure', 1)
-    end
-  end
-
-  valid['generic_cured_'..aff] = function()
-    svo.checkaction(svo.dict[aff].gone, true)
-    lifevision.add(actions[aff..'_gone'].p, 'general_cured')
-  end
+function svo.valid.generic_cured(aff)
+  svo.checkaction(svo.dict[aff].gone, true)
+  lifevision.add(actions[aff..'_gone'].p, 'general_cured')
 end
 
 function svo.valid.expend_torso()

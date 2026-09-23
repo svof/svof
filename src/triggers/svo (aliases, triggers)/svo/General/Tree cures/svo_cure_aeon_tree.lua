@@ -1,2 +1,2 @@
-svo.valid.tree_cured_aeon()
+svo.valid.tree_cured('aeon')
 

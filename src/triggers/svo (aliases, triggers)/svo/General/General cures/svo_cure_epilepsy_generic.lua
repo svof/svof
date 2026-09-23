@@ -1,1 +1,1 @@
-svo.valid.generic_epilepsy()
+svo.valid.generic('epilepsy')

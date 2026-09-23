@@ -67,7 +67,7 @@ GENERATORS = [
 ]
 
 # Written out by hand rather than generated, so no loop produces them.
-HANDWRITTEN_DYNAMIC = {"tree_cured_": {"burn", "burns"}}
+HANDWRITTEN_DYNAMIC = {}
 
 # Below these, the reading is broken rather than the source clean.
 CALL_FLOOR = 500
@@ -82,10 +82,13 @@ CALL_FLOOR = 500
 # diag_ is deliberately absent: the diagnose handlers were inverted, so there is
 # one svo.valid.diag(name, ...) and no generated per-name family to put a floor
 # under. The trigger call sites are what the resolver checks now.
+# diag_, generic_ and tree_cured_ are deliberately absent: those families were
+# inverted into svo.valid.diag / .generic / .tree_cured, which take the name as
+# an argument, so there is no generated per-name family left to floor. What
+# guards them now is the resolver finding the literal function, and the
+# handlers' own guards reporting a name svof has no entry for.
 GENERATOR_FLOORS = {
     "simple": 100,
-    "generic_": 80,
-    "tree_cured_": 60,
     "herb_cured_": 40,
     "salve_cured_": 10,
     "focus_cured_": 12,

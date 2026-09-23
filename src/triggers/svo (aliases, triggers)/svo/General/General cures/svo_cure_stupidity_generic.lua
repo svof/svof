@@ -1,1 +1,1 @@
-svo.valid.generic_stupidity()
+svo.valid.generic('stupidity')

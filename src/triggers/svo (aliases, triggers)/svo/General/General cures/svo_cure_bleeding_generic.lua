@@ -1,1 +1,1 @@
-svo.valid.generic_bleeding()
+svo.valid.generic('bleeding')

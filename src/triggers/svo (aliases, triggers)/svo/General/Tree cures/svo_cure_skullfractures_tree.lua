@@ -1,1 +1,1 @@
-svo.valid.tree_cure_skullfractures()
+svo.valid.tree_cured('skullfractures')

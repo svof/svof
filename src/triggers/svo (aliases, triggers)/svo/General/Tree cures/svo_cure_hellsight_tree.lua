@@ -1,1 +1,1 @@
-svo.valid.tree_cured_hellsight()
+svo.valid.tree_cured('hellsight')

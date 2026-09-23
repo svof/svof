@@ -1,1 +1,1 @@
-svo.valid.generic_claustrophobia()
+svo.valid.generic('claustrophobia')

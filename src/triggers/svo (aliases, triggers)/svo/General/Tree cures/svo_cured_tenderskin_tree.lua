@@ -1,1 +1,1 @@
-svo.valid.tree_cured_tenderskin()
+svo.valid.tree_cured('tenderskin')

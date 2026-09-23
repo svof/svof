@@ -1,1 +1,1 @@
-svo.valid.tree_cured_stupidity()
+svo.valid.tree_cured('stupidity')

@@ -1,1 +1,1 @@
-svo.valid.generic_masochism()
+svo.valid.generic('masochism')

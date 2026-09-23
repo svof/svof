@@ -1,1 +1,1 @@
-svo.valid.generic_peace()
+svo.valid.generic('peace')

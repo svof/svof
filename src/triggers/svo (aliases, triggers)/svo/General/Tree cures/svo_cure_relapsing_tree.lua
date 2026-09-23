@@ -1,1 +1,1 @@
-svo.valid.tree_cured_relapsing()
+svo.valid.tree_cured('relapsing')
