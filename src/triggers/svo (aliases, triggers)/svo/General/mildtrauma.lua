@@ -1,1 +1,1 @@
-svo.valid.diag_mildtrauma()
+svo.valid.diag('mildtrauma')

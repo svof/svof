@@ -1,1 +1,1 @@
-svo.valid.diag_unweavingbody()
+svo.valid.diag('unweavingbody')

@@ -1,1 +1,1 @@
-svo.valid.diag_phlegmatichumour(matches[2])
+svo.valid.diag('phlegmatichumour', matches[2])

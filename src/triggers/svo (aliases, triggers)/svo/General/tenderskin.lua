@@ -1,1 +1,1 @@
-svo.valid.diag_tenderskin()
+svo.valid.diag('tenderskin')

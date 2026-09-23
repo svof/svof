@@ -79,9 +79,11 @@ CALL_FLOOR = 500
 #
 # Well below today's counts, so a real edit passes and a loop that has stopped
 # being readable does not.
+# diag_ is deliberately absent: the diagnose handlers were inverted, so there is
+# one svo.valid.diag(name, ...) and no generated per-name family to put a floor
+# under. The trigger call sites are what the resolver checks now.
 GENERATOR_FLOORS = {
     "simple": 100,
-    "diag_": 100,
     "generic_": 80,
     "tree_cured_": 60,
     "herb_cured_": 40,

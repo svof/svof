@@ -1,1 +1,1 @@
-svo.valid.diag_dementia()
+svo.valid.diag('dementia')

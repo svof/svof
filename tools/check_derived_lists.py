@@ -210,8 +210,6 @@ def names_in(src, pattern):
 # edit passes and a broken read does not.
 FLOORS = {
     "afflist": 100,
-    "diag loop": 100,
-    "diag counted loop": 5,
     "generic_cures_data": 80,
     "tree list": 60,
     "treecurables": 60,
@@ -232,21 +230,17 @@ def collect():
                 "Dictionary_of_actions_(affs-defs-misc).lua")
     MAIN = read("svo (trigger functions)", "Main_trigger_functions.lua")
     SIMPLE = read("svo (trigger functions)", "Simple_aff_trigger_functions.lua")
-    DIAG = read("svo (trigger functions)", "Diag_trigger_functions.lua")
     EMPTY = read("svo (setup, misc, empty, funnies, dor)",
                  "Empty_cure_handling.lua")
 
     bals, whole = entries(DICT)
 
+    # No diag entries. Diag_trigger_functions.lua used to hold two lists of
+    # names that generated one handler each; they are now a single
+    # svo.valid.diag(name, ...) that the trigger passes its own name to, so
+    # there is no literal left here to compare a derived list against.
     literals = {
         "afflist": names_in(SIMPLE, r"local afflist = \{"),
-        "diag loop": names_in(DIAG, r"for _,affname in ipairs\(\{"),
-        # The diag list is TWO loops. The second covers the afflictions that
-        # carry a count, and its generated handler takes a `howmuch` argument
-        # rather than storing `true`. Reading only the first leaves 10 names
-        # unchecked, and a derivation built from that reading would drop them.
-        "diag counted loop": names_in(
-            DIAG, r"-- afflictions with a count\s*\nfor _, aff in ipairs\(\{"),
         "generic_cures_data": names_in(MAIN, r"local generic_cures_data = \{"),
         "tree list": names_in(MAIN, r"\n  tree = \{"),
         "treecurables": names_in(EMPTY, r"empty\.treecurables = \{"),
@@ -273,13 +267,13 @@ def collect():
 
 # derived name -> (the field an entry would declare, the literals to compare to)
 #
-# aff_diag takes both diag loops. They write into one namespace,
-# `svo.valid['diag_'..name]`, and differ only in what the generated handler
-# does: the second stores a number from a `howmuch` argument rather than
-# `true`. A derivation built from the first loop alone would drop ten names.
+# aff_diag is gone. The two diag loops were inverted into a single
+# svo.valid.diag(name, ...) that the trigger passes its own name to, so there
+# is no diag literal left to compare a derived list against - and no need for a
+# `diag` field on the entry either, since the trigger is now the only place the
+# fact is written. That supersedes the diag half of the guide's Step 1.
 DECLARED = [
     ("aff_simple", "simpletrigger", ["afflist"]),
-    ("aff_diag", "diag", ["diag loop", "diag counted loop"]),
     ("aff_generic", "generic", ["generic_cures_data"]),
     ("aff_tree", "tree", ["tree list"]),
 ]

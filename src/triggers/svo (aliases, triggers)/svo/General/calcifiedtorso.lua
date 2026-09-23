@@ -1,1 +1,1 @@
-svo.valid.diag_calcifiedtorso()
+svo.valid.diag('calcifiedtorso')

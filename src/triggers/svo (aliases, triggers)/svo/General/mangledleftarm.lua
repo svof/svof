@@ -1,1 +1,1 @@
-svo.valid.diag_mangledleftarm()
+svo.valid.diag('mangledleftarm')

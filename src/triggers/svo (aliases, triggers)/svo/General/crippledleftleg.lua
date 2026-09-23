@@ -1,1 +1,1 @@
-svo.valid.diag_crippledleftleg()
+svo.valid.diag('crippledleftleg')

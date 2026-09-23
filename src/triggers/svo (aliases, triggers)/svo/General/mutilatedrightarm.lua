@@ -1,1 +1,1 @@
-svo.valid.diag_mutilatedrightarm()
+svo.valid.diag('mutilatedrightarm')

@@ -1,1 +1,1 @@
-svo.valid.diag_disloyalty()
+svo.valid.diag('disloyalty')

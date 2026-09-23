@@ -1,1 +1,1 @@
-svo.valid.diag_epilepsy()
+svo.valid.diag('epilepsy')

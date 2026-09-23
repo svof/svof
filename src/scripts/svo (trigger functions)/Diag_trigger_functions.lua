@@ -88,30 +88,54 @@ function svo.valid.diagnose_end()
   svo.sk.diag_list = {}
 end
 
-for _,affname in ipairs({'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'bleeding', 'bound', 'flamefisted', 'claustrophobia', 'clumsiness', 'mildconcussion', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade', 'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'galed', 'generosity', 'haemophilia', 'hallucinations', 'healthleech', 'heartseed', 'hellsight', 'hypersomnia', 'hypochondria', 'icing', 'illness', 'impale', 'impatience', 'inlove', 'inquisition', 'itching', 'justice', 'laceratedthroat', 'latched', 'lethargy', 'loneliness', 'lovers', 'madness', 'mangledleftarm', 'mangledleftleg', 'mangledrightarm', 'mangledrightleg', 'masochism', 'mildtrauma', 'mutilatedleftarm', 'mutilatedleftleg', 'mutilatedrightarm', 'mutilatedrightleg', 'pacifism', 'paralysis', 'paranoia', 'peace', 'prone', 'pyre', 'recklessness', 'relapsing', 'roped', 'selarnia', 'sensitivity', 'seriousconcussion', 'serioustrauma', 'shyness', 'slashedthroat', 'slickness', 'stun', 'stupidity', 'stuttering', 'transfixed', 'unknownany', 'unknowncrippledarm', 'unknowncrippledleg', 'unknownmental', 'vertigo', 'voided', 'voyria', 'weakness', 'webbed', 'hamstring', 'shivering', 'frozen', 'manaleech', 'voyria', 'slightfluid', 'elevatedfluid', 'highfluid', 'seriousfluid', 'criticalfluid', 'godfeelings', 'phlogistication', 'vitrification', 'corrupted', 'stain', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'hoisted', 'swellskin', 'pinshot', 'hypothermia', 'scalded', 'dehydrated', 'timeflux', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'depression', 'parasite', 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'hatred', 'guilt', 'tenderskin', 'spiritburn', 'crushedthroat', 'calcifiedskull', 'calcifiedtorso', 'tension', 'unweavingmind','unweavingbody', 'unweavingspirit', 'tonguetied', 'mycalium', 'flushings', 'rebbies', 'pyramides', 'sandfever', 'ensorcelled', 'indifference', 'horror', 'revealed', 'crescendo', 'earworm', 'fulminated', 'blistered'}) do
-  svo.valid['diag_'..affname] = function()
-    svo.sk.diag_list[affname] = true
+-- One handler for every diagnose line, in place of two lists that generated
+-- one function per name. The trigger names the affliction, because the trigger
+-- is the only thing that knows the game's wording for it - the lists were a
+-- second copy of that fact and had drifted both ways: 16 names nothing ever
+-- called, and 3 names called that were missing, which made DIAGNOSE clear
+-- three afflictions it had just reported.
+--
+-- The count comes from the trigger's own capture, so the two loops collapse
+-- into one branch. 'bleeding' was in both lists and the later one silently
+-- won; that is not expressible now.
+function svo.valid.diag(name, ...)
+  -- select('#', ...) rather than a nil test on the value. A counted trigger
+  -- whose capture does not resolve - pressure's lookup table, given a level it
+  -- does not know - passed nil, and tonumber(nil) left the key unset so
+  -- diagnose_end cleared the affliction. Testing the value instead would set
+  -- the key to true and keep it, which is a behaviour change and not this
+  -- commit's business.
+  local counted, howmuch = select('#', ...) > 0, ...
 
-    if not svo.affs[affname] then
-      decho(svo.getDefaultColor().."(new)")
-    else
-      decho(svo.getDefaultColor().." ("..getStopWatchTime(svo.affs[affname].sw).."s)")
-    end
-
-    if svo.ignore[affname] then
-      decho(svo.getDefaultColor().." (currently ignored)")
-    end
+  -- diagnose_end special-cases godfeelings and returns before its leftover
+  -- loop. Every other name reaches svo.dict[name].aff in that loop, so a name
+  -- with no entry would nil-index deep inside the reconciliation instead of
+  -- being reported here.
+  if name ~= 'godfeelings' and not (svo.dict[name] and svo.dict[name].aff) then
+    svo.errorf("a diagnose trigger names %q, which svof has no affliction for.", name)
+    return
   end
-end
 
--- afflictions with a count
-for _, aff in ipairs({'cholerichumour', 'melancholichumour', 'phlegmatichumour', 'sanguinehumour', 'bleeding', 'skullfractures', 'crackedribs', 'wristfractures', 'torntendons', 'pressure'}) do
-  svo.valid['diag_'..aff] = function(howmuch)
-    svo.sk.diag_list[aff] = tonumber(howmuch)
+  if counted then
+    svo.sk.diag_list[name] = tonumber(howmuch)
 
-    if svo.ignore[aff] then
+    if svo.ignore[name] then
       echo(" (currently ignored)")
     end
+
+    return
+  end
+
+  svo.sk.diag_list[name] = true
+
+  if not svo.affs[name] then
+    decho(svo.getDefaultColor().."(new)")
+  else
+    decho(svo.getDefaultColor().." ("..getStopWatchTime(svo.affs[name].sw).."s)")
+  end
+
+  if svo.ignore[name] then
+    decho(svo.getDefaultColor().." (currently ignored)")
   end
 end
 

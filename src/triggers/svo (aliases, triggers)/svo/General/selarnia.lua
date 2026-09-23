@@ -1,1 +1,1 @@
-svo.valid.diag_selarnia()
+svo.valid.diag('selarnia')

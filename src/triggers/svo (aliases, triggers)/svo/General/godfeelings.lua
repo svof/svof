@@ -1,1 +1,1 @@
-svo.valid.diag_godfeelings()
+svo.valid.diag('godfeelings')

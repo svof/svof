@@ -1,1 +1,1 @@
-svo.valid.diag_slashedthroat()
+svo.valid.diag('slashedthroat')

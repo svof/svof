@@ -3669,7 +3669,7 @@
             "type": "exactMatch"
           }
         ],
-        "script": "svo.valid.diag_blackout()"
+        "script": "svo.valid.diag('blackout')"
       },
       {
         "name": "webbed",

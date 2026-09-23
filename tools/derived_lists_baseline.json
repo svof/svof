@@ -22,11 +22,6 @@
       "text": "cures: the dictionary says pear cures waterbubble, empty.eat_pear does not clear it"
     },
     {
-      "id": "dupe|diag loop + diag counted loop|voyria",
-      "digest": "5ecc93f5826e548c",
-      "text": "diag loop + diag counted loop lists voyria 2 times"
-    },
-    {
       "id": "dupe|generic_cures_data|hallucinations",
       "digest": "1c611293ec8877d8",
       "text": "generic_cures_data lists hallucinations 2 times"
@@ -40,11 +35,6 @@
       "id": "focus|block_only|fulminated",
       "digest": "f4b8b4de8b03e5c3",
       "text": "focus: fulminated has a focus block and is not in focuscurables (LIVE)"
-    },
-    {
-      "id": "shadowed|aff_diag|bleeding",
-      "digest": "a1268cb9f100f080",
-      "text": "aff_diag: bleeding is in both diag loop and diag counted loop, so the first handler is overwritten"
     },
     {
       "id": "shadow|bloodroot",

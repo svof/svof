@@ -1,1 +1,1 @@
-svo.valid.diag_healthleech()
+svo.valid.diag('healthleech')

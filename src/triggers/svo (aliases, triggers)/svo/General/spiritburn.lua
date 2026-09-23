@@ -1,1 +1,1 @@
-svo.valid.diag_spiritburn()
+svo.valid.diag('spiritburn')

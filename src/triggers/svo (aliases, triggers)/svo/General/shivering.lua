@@ -1,1 +1,1 @@
-svo.valid.diag_shivering()
+svo.valid.diag('shivering')

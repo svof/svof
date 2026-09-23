@@ -1,1 +1,1 @@
-svo.valid.diag_anorexia()
+svo.valid.diag('anorexia')

@@ -1,1 +1,1 @@
-svo.valid.diag_frozen()
+svo.valid.diag('frozen')

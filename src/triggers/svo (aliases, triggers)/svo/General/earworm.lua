@@ -1,1 +1,1 @@
-svo.valid.diag_earworm()
+svo.valid.diag('earworm')

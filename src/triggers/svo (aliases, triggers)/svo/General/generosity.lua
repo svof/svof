@@ -1,1 +1,1 @@
-svo.valid.diag_generosity()
+svo.valid.diag('generosity')
