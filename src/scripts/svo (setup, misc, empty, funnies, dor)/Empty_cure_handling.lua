@@ -135,13 +135,14 @@ end
 -- makes svof drop an affliction you still have. empty.dragonheal and
 -- empty.shrugging are the same function, so this list speaks for all three.
 --
--- Nine names were added on 2026-09-23, on the repo owner confirming tree cures
--- them. Only owner or in-game confirmation gets a name in here. Two weaker kinds
--- of evidence were tried first and both turned out to be worthless:
+-- Ten names were added on 2026-09-23, nine on the repo owner confirming tree
+-- cures them and tension on his judgement that an ordinary affliction most
+-- likely is tree-curable. Two weaker kinds of evidence were tried first and
+-- both turned out to be worthless:
 --
 --   * The 86-name tree list that used to live in Main trigger functions. It
---     claimed bound, prone, flamefisted, galed, icing, voided, bleeding and
---     tension, none of which tree cures, so it says nothing about the rest.
+--     claimed bound, prone, flamefisted, galed, icing, voided and bleeding,
+--     none of which tree cures, so it says nothing about the rest.
 --   * The existence of a trigger in the Tree cures folder. Every one of those
 --     lines has a twin in General cures on the identical pattern - the tree
 --     copy is a no-op unless a touchtree action happens to be in flight - so it
@@ -149,7 +150,15 @@ end
 --
 -- bleeding is the clearest case: its line, "Your bleeding slows as your blood
 -- clots", is the clotting line, and clotting is what cures bleeding. It is not
--- tree-curable and must not go back in.
+-- tree-curable and must not go back in. The game does not even model it as an
+-- affliction - it arrives in Char.Vitals.charstats as "Bleed: N", which
+-- Setup.lua's Vitals handler already acts on - so a sweep here could only ever
+-- second-guess a live feed.
+--
+-- What makes a "most likely" like tension's acceptable at all is presume_cured
+-- above. GMCP reports tension, so if tree turns out not to cure it the sweep
+-- will not remove it anyway, and the entry costs nothing. Before that gate
+-- existed, every name in here was a chance to drop an affliction still held.
 --
 -- UNCONFIRMED, kept rather than removed on suspicion, pending the owner
 -- checking in game: paralysis, skullfractures, crackedribs, wristfractures and
@@ -169,7 +178,7 @@ empty.treecurables = {'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 
 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'guilt', 'spiritburn', 'tenderskin', 'crushedthroat',
 'horror', 'earworm', 'crescendo', 'fulminated',
 'latched', 'flushings', 'mycalium', 'pyramides', 'rebbies', 'sandfever',
-'laceratedthroat', 'mildconcussion', 'slashedthroat'}
+'laceratedthroat', 'mildconcussion', 'slashedthroat', 'tension'}
 empty.treeblocks = {
   madness = {'madness', 'dementia', 'stupidity', 'confusion', 'hypersomnia', 'paranoia', 'hallucinations', 'impatience',
   'addiction', 'agoraphobia', 'inlove', 'loneliness', 'recklessness', 'masochism'},
