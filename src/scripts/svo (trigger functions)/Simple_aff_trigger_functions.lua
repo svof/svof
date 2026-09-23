@@ -15,15 +15,39 @@ local valid, actions = svo.valid, svo.actions
 local lifevision = svo.lifevision
 
 do
-  local afflist = {'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'bleeding', 'bound', 'flamefisted', 'claustrophobia', 'clumsiness', 'mildconcussion', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade', 'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'galed', 'generosity', 'haemophilia', 'hallucinations', 'healthleech', 'heartseed', 'hellsight', 'hypersomnia', 'hypochondria', 'icing', 'illness', 'impale', 'impatience', 'inlove', 'inquisition', 'itching', 'justice', 'laceratedthroat', 'latched', 'lethargy', 'loneliness', 'lovers', 'madness', 'mangledleftarm', 'mangledleftleg', 'mangledrightarm', 'mangledrightleg', 'masochism', 'mildtrauma', 'mutilatedleftarm', 'mutilatedleftleg', 'mutilatedrightarm', 'mutilatedrightleg', 'pacifism', 'paralysis', 'paranoia', 'peace', 'prone', 'pyre', 'recklessness', 'relapsing', 'roped', 'selarnia', 'sensitivity', 'seriousconcussion', 'serioustrauma', 'shyness', 'slashedthroat', 'slickness', 'stun', 'stupidity', 'stuttering', 'transfixed', 'unknownany', 'unknowncrippledarm', 'unknowncrippledleg', 'unknownmental', 'vertigo', 'voided', 'voyria', 'weakness', 'webbed', 'hamstring', 'shivering', 'frozen', 'blindaff', 'deafaff', 'retardation', 'manaleech', 'sleep', 'amnesia', 'unknowncrippledlimb', 'cholerichumour', 'melancholichumour', 'phlegmatichumour', 'sanguinehumour', 'phlogistication', 'vitrification', 'corrupted', 'stain', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'hypothermia', 'scalded', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'depression', 'parasite', 'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'hatred', 'guilt', 'spiritburn', 'tenderskin', 'crushedthroat', 'calcifiedtorso', 'calcifiedskull', 'tonguetied', 'mycalium', 'flushings', 'rebbies', 'pyramides', 'sandfever', 'ensorcelled', 'latency', 'indifference', 'horror', 'revealed', 'crescendo', 'earworm', 'fulminated', 'blistered'}
-  if svo.haveskillset('metamorphosis') then
-    afflist[#afflist+1] = 'cantmorph'
-  end
+  -- Derived from the dictionary instead of listed here. An entry with an `aff`
+  -- block is already what svo.vaff accepts as an affliction to add
+  -- (Alias_functions.lua), and it is all this handler needs: checkaction
+  -- force-adds actions[<name>_aff] out of that block, so the two lines below
+  -- work for every entry that has one and for no entry that does not.
+  --
+  -- cantmorph no longer needs a haveskillset test of its own, because
+  -- svo.dict.cantmorph is created under the same one - so the handler now
+  -- exists exactly when the entry it indexes does. The list re-ran on a class
+  -- change and could define simplecantmorph while the dictionary, which is not
+  -- rebuilt then, still had no entry for it to find.
+  --
+  -- The anti-illusion probes are the exception. Their aff block does not mean
+  -- "you just got this", it means "you saw a symptom that is either this or an
+  -- illusion", and oncompleted takes the real affliction's name - checkslows
+  -- and checkwrithes index svo.affsp with it, so a bare call raises. They are
+  -- driven by name from Main_trigger_functions instead. A closed set: it is
+  -- svof's own illusion machinery, not a category Achaea adds to.
+  local no_simple_handler = {
+    checkanorexia   = true, checkasthma    = true, checkhypersomnia = true,
+    checkimpatience = true, checkparalysis = true, checkslows       = true,
+    checkstun       = true, checkwrithes   = true,
+  }
 
-  for _,j in ipairs(afflist) do
-    valid['simple' .. j] = function ()
-      svo.checkaction(svo.dict[j].aff, true)
-      lifevision.add(actions[j .. '_aff'].p)
+  -- Anything that needs more than these two lines is written out below and
+  -- overwrites what this generates, so the loop has to stay above them.
+  for name, entry in pairs(svo.dict) do
+    if type(entry) == 'table' and type(entry.aff) == 'table'
+      and not no_simple_handler[name] then
+      valid['simple' .. name] = function ()
+        svo.checkaction(svo.dict[name].aff, true)
+        lifevision.add(actions[name .. '_aff'].p)
+      end
     end
   end
 end

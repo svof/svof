@@ -3,11 +3,16 @@
 check_derived_lists.py -- the same affliction fact, written in several places,
 compared.
 
-Adding one affliction to svof means typing its name into several lists spread
-over five files. None of them is enforced, so missing one means the affliction
-quietly does not work in that one way, and nothing complains. They have already
-drifted: herb lists in *Empty cure handling* disagree with the dictionary's own
-cure fields, and the tree triggers disagree with empty.treecurables.
+Adding one affliction to svof used to mean typing its name into several lists
+spread over five files. None of them is enforced, so missing one means the
+affliction quietly does not work in that one way, and nothing complains. They
+have already drifted: herb lists in *Empty cure handling* disagree with the
+dictionary's own cure fields, and the tree triggers disagree with
+empty.treecurables.
+
+The four handler families are derived now and no longer among them - what is
+left is *Empty cure handling*, which records what a cure that cured nothing
+rules out, and which cannot be derived from anything else.
 
 This derives what it can from `svo.dict` and diffs it against whatever else
 holds the same information - a literal, or, since the handler families were
@@ -58,7 +63,6 @@ import json
 import os
 import re
 import sys
-from collections import Counter
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCRIPTS = os.path.join(REPO, "src", "scripts")
@@ -238,7 +242,6 @@ def tree_trigger_names():
 # These are floors, not expected values: well below today's counts, so a real
 # edit passes and a broken read does not.
 FLOORS = {
-    "afflist": 100,
     "treecurables": 60,
     "tree triggers": 60,
     "focuscurables": 12,
@@ -256,18 +259,18 @@ def collect():
 
     DICT = read("svo (actions dictionary)",
                 "Dictionary_of_actions_(affs-defs-misc).lua")
-    SIMPLE = read("svo (trigger functions)", "Simple_aff_trigger_functions.lua")
     EMPTY = read("svo (setup, misc, empty, funnies, dor)",
                  "Empty_cure_handling.lua")
 
     bals, whole = entries(DICT)
 
-    # No diag entries. Diag_trigger_functions.lua used to hold two lists of
-    # names that generated one handler each; they are now a single
-    # svo.valid.diag(name, ...) that the trigger passes its own name to, so
-    # there is no literal left here to compare a derived list against.
+    # No diag and no afflist entries. Diag_trigger_functions.lua used to hold
+    # two lists of names that generated one handler each; they are now a single
+    # svo.valid.diag(name, ...) that the trigger passes its own name to. And
+    # Simple_aff_trigger_functions.lua's afflist is gone too: the simple family
+    # is generated from the dictionary now, one handler per entry with an `aff`
+    # block, so there is nothing left for a derived list to disagree with.
     literals = {
-        "afflist": names_in(SIMPLE, r"local afflist = \{"),
         "treecurables": names_in(EMPTY, r"empty\.treecurables = \{"),
         "focuscurables": names_in(EMPTY, r"empty\.focuscurables = \{"),
         # Not a literal any more. The tree-cure handlers were inverted into
@@ -295,20 +298,22 @@ def collect():
 # the comparisons
 # --------------------------------------------------------------------------
 
-# derived name -> (the field an entry would declare, the literals to compare to)
+# There is nothing left to compare a declared field against, so the machinery
+# that did it is gone with the last list it read.
 #
-# Only aff_simple is left. The diag, generic and tree-cure handler families
-# were each inverted into a single name-taking function, so none of them has a
-# literal to compare a derived list against any more - and none wants a field
-# on the entry either, since the trigger became the only place the fact is
-# written. That supersedes those three parts of the guide's Step 1.
+# All four handler families are derived now. diag, generic and tree_cured were
+# each inverted into one name-taking function, so the trigger became the only
+# place the fact is written. simple kept its per-name functions - doc/index.rst
+# documents them and svo.vaff probes them by name - but generates them from
+# svo.dict, one per entry with an `aff` block, so there is no list to drift
+# from either. Between them that supersedes the guide's Step 1: the `diag`,
+# `generic`, `tree` and `simpletrigger` fields it proposed adding to every
+# entry would each record something now read off the entry's own shape or off
+# the trigger that names it.
 #
 # What survives from the tree half is the disagreement between the tree
 # triggers and empty.treecurables, which is a different fact and is compared
-# further down.
-DECLARED = [
-    ("aff_simple", "simpletrigger", ["afflist"]),
-]
+# below.
 
 CURE_BALANCES = ("herb", "salve", "smoke", "sip", "purgative")
 
@@ -316,54 +321,14 @@ CURE_BALANCES = ("herb", "salve", "smoke", "sip", "purgative")
 def compare(data):
     """Returns (differences, lines). Differences are baselineable; lines are
     what a human reads."""
-    bals, whole, literals, EMPTY = data
+    # whole (the full body of each entry) is read for the entry floor in
+    # collect() and nothing here needs it any more - the comparison that did
+    # went with afflist.
+    bals, _, literals, EMPTY = data
     diffs, out = [], []
 
     def diff(id_, text, *extra):
         diffs.append({"id": id_, "digest": digest(id_, *extra), "text": text})
-
-    # --- lists that wait on a declared field ---------------------------------
-    for derived, field, targets in DECLARED:
-        have = sorted(n for n, b in whole.items()
-                      if re.search(r"^\s+%s = true" % field, b, re.M))
-        label = " + ".join(targets)
-        lit = [n for t in targets for n in literals[t]]
-        out.append("  %-13s vs %-33s %3d declared, %3d in the list"
-                   % (derived, label, len(have), len(set(lit))))
-
-        # A name in two of these loops is defined twice in one namespace and
-        # the later definition wins, so the earlier one is dead code. Surface
-        # it rather than quietly deduplicating.
-        if len(targets) > 1:
-            for i, a in enumerate(targets):
-                for b_ in targets[i + 1:]:
-                    for n in sorted(set(literals[a]) & set(literals[b_])):
-                        out.append("  %-13s    (%s is in both %r and %r; the "
-                                   "later handler wins)" % ("", n, a, b_))
-                        diff("shadowed|%s|%s" % (derived, n),
-                             "%s: %s is in both %s and %s, so the first "
-                             "handler is overwritten" % (derived, n, a, b_))
-
-        for name, count in sorted(Counter(lit).items()):
-            if count > 1 and not (len(targets) > 1 and
-                                  sum(1 for t in targets
-                                      if name in literals[t]) > 1):
-                out.append("  %-13s    (%d tokens: %s listed %d times)"
-                           % ("", len(lit), name, count))
-                diff("dupe|%s|%s" % (label, name),
-                     "%s lists %s %d times" % (label, name, count), count)
-
-        if have:
-            for n in sorted(set(have) - set(lit)):
-                out.append("                   only declared: %s" % n)
-                diff("declared|%s|only_declared|%s" % (derived, n),
-                     "%s: %s declares %s = true and is not in %s"
-                     % (derived, n, field, label))
-            for n in sorted(set(lit) - set(have)):
-                out.append("                   only in list:  %s" % n)
-                diff("declared|%s|only_in_list|%s" % (derived, n),
-                     "%s: %s is in %s and does not declare %s = true"
-                     % (derived, n, label, field))
 
     # --- two places that hold the same fact about tree, and disagree ---------
     # "tree can cure this" is written twice: in the triggers, which carry the

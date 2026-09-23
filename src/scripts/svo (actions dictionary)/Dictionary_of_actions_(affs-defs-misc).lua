@@ -10,14 +10,20 @@
 -- When to use something, how to use something.
 -- For the record, oncompleted is a mandatory dictionary entry. (The Action system gets cranky without it)
 
+-- To add an affliction:
 -- * add it in 'Dictionary of actions (affs-defs-misc)' in the dict table, with the appropriate functions and curing logic
--- * add it in 'Empty cure handling'
--- * add it in 'Diag trigger functions' and add a new diagnose trigger for it
--- * add gaining affliction 'Simple aff trigger functions', and if there's any complicated logic around it,
--- * 'Main trigger functions'. Add triggers receiving the affliction (triggers section of the code editor)
--- * add losing/curing affliction in 'Main trigger functions and the appropriate triggers
--- * add to tree curing system (touchtree action in this file and and 'Main trigger functions')
--- * add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in 'Main trigger functions')
+-- * add the triggers for it (triggers section of the code editor). Each one names
+--   the affliction itself, so none of these needs a list edited anywhere:
+--     gaining it          svo.valid.simple<name>()      generated from the entry above
+--     DIAGNOSE reports it svo.valid.diag('<name>')
+--     a passive cure, or one that lands during blackout
+--                         svo.valid.generic('<name>')
+--     touching a tree cures it
+--                         svo.valid.tree_cured('<name>')
+-- * add it in 'Empty cure handling' - what a cure that cured nothing rules out
+-- * add losing/curing it in 'Main trigger functions' and the appropriate triggers
+-- * if gaining it needs more than "record the affliction", write that handler in
+--   'Simple aff trigger functions' BELOW the generated loop, which overwrites it
 -- * check failure conditions and add them, ie salves fizzling off balance
 
 
