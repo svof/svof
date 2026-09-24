@@ -27,10 +27,11 @@ local affs = svo.affs
 -- the inference is simply wrong, so the affliction stays.
 --
 -- Where GMCP cannot speak, the inference is the only information there is and
--- it stands. That is the four unknowns, which are meant to be resolved exactly
--- this way - working out that an unknown affliction was one of these is the
--- whole point of tracking one - and earworm, which is the only real affliction
--- in that position. bleeding is not in any list here and must not be: the game
+-- it stands. That is now only the four unknowns, which are meant to be resolved
+-- exactly this way - working out that an unknown affliction was one of these is
+-- the whole point of tracking one. earworm used to sit there too, as the one
+-- real affliction outside the gate, until it was added to sstosvoa.
+-- bleeding is not in any list here and must not be: the game
 -- reports it through Char.Vitals.charstats as "Bleed: N" rather than as an
 -- affliction, and Setup.lua already clears it when that reads 0.
 --
@@ -227,7 +228,11 @@ empty.dragonheal = empty.tree
 empty.shrugging  = empty.tree
 
 empty.smoke_elm = function()
-  presume_cured({'deadening', 'madness', 'aeon'})
+  -- earworm was missing. Its entry says smokecure = {'elm', 'cinnabar'}, so elm
+  -- curing nothing rules it out the same way it rules out the other three.
+  -- tension and unweavingspirit say the same and are still absent, left for
+  -- their own check rather than added on the back of this one.
+  presume_cured({'deadening', 'madness', 'aeon', 'earworm'})
 end
 
 empty.smoke_valerian = function()

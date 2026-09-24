@@ -10510,6 +10510,7 @@ if not next(svo.dict) then
       disrupted = 'disrupt',
       dissonance = 'dissonance',
       dizziness = 'dizziness',
+      earworm = 'earworm',
       enlightenment = false,
       enmesh = false,
       ensorcelled = 'ensorcelled',
