@@ -293,6 +293,12 @@ jobs:
       - uses: leafo/gh-actions-luarocks@v4
       - name: install luarocks dependencies
         run: |
+          # apt-get update first. The runner image ships a package index that is
+          # days to weeks stale, so `install expat` resolves to whatever version
+          # that index names and 404s once the mirror has superseded it - which
+          # is what happened on 2026-09-24, three weeks after the last green
+          # run, on a step no branch had touched.
+          sudo apt-get update
           sudo apt-get -y install expat
           luarocks install luafilesystem
           luarocks install luaexpat
