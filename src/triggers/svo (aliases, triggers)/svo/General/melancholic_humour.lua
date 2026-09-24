@@ -1,1 +1,1 @@
-svo.valid.diag_melancholichumour(matches[2])
+svo.valid.diag('melancholichumour', matches[2])

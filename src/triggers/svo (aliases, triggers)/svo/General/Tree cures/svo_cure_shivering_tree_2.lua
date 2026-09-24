@@ -1,1 +1,1 @@
-svo.valid.tree_cured_shivering()
+svo.valid.tree_cured('shivering')

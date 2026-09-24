@@ -1,1 +1,1 @@
-svo.valid.diag_roped()
+svo.valid.diag('roped')

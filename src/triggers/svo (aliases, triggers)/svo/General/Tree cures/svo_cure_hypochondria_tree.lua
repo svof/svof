@@ -1,1 +1,1 @@
-svo.valid.tree_cured_hypochondria()
+svo.valid.tree_cured('hypochondria')

@@ -1,1 +1,1 @@
-svo.valid.diag_mildconcussion()
+svo.valid.diag('mildconcussion')

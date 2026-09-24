@@ -1,1 +1,1 @@
-svo.valid.generic_voyria()
+svo.valid.generic('voyria')

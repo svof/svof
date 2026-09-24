@@ -1,1 +1,1 @@
-svo.valid.simpletinderskin()
+svo.valid.simpletenderskin()

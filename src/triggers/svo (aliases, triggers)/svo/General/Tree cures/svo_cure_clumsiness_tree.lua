@@ -1,1 +1,1 @@
-svo.valid.tree_cured_clumsiness()
+svo.valid.tree_cured('clumsiness')

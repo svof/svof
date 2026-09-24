@@ -1,1 +1,1 @@
-svo.valid.diag_calcifiedskull()
+svo.valid.diag('calcifiedskull')

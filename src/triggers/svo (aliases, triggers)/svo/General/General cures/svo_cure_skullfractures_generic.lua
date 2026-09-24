@@ -1,1 +1,1 @@
-svo.valid.generic_cure_skullfractures()
+svo.valid.generic_cure('skullfractures')

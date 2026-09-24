@@ -1,1 +1,1 @@
-svo.valid.generic_stuttering()
+svo.valid.generic('stuttering')

@@ -1,1 +1,1 @@
-svo.valid.tree_cured_healthleech()
+svo.valid.tree_cured('healthleech')

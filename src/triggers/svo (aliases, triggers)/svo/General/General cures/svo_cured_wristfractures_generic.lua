@@ -1,1 +1,1 @@
-svo.valid.generic_cured_wristfractures()
+svo.valid.generic_cured('wristfractures')

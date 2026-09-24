@@ -1,1 +1,1 @@
-svo.valid.generic_pacifism()
+svo.valid.generic('pacifism')

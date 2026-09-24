@@ -1,1 +1,1 @@
-svo.valid.diag_illness()
+svo.valid.diag('illness')

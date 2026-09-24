@@ -1,1 +1,1 @@
-svo.valid.generic_latched()
+svo.valid.generic('latched')

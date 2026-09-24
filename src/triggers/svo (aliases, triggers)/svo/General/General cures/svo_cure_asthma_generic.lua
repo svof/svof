@@ -1,1 +1,1 @@
-svo.valid.generic_asthma()
+svo.valid.generic('asthma')

@@ -1,1 +1,1 @@
-svo.valid.tree_cured_justice()
+svo.valid.tree_cured('justice')

@@ -1,1 +1,1 @@
-svo.valid.diag_crescendo()
+svo.valid.diag('crescendo')

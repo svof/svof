@@ -1,1 +1,1 @@
-svo.valid.tree_cured_anorexia()
+svo.valid.tree_cured('anorexia')

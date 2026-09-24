@@ -1,1 +1,1 @@
-svo.valid.tree_cured_epilepsy()
+svo.valid.tree_cured('epilepsy')

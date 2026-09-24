@@ -1,1 +1,1 @@
-svo.valid.diag_relapsing()
+svo.valid.diag('relapsing')

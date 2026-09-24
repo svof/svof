@@ -1,1 +1,1 @@
-svo.valid.diag_prone()
+svo.valid.diag('prone')

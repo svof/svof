@@ -1,1 +1,1 @@
-svo.valid.generic_ablaze()
+svo.valid.generic('ablaze')

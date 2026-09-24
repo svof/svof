@@ -1,1 +1,1 @@
-svo.valid.diag_manaleech()
+svo.valid.diag('manaleech')

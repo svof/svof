@@ -1,1 +1,1 @@
-svo.valid.generic_confusion()
+svo.valid.generic('confusion')

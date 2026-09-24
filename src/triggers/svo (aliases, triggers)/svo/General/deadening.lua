@@ -1,1 +1,1 @@
-svo.valid.diag_deadening()
+svo.valid.diag('deadening')

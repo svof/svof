@@ -1,1 +1,1 @@
-svo.valid.diag_recklessness()
+svo.valid.diag('recklessness')

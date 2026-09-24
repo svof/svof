@@ -1,1 +1,1 @@
-svo.valid.diag_depression()
+svo.valid.diag('depression')

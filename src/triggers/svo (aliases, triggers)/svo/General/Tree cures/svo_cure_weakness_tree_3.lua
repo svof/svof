@@ -1,1 +1,1 @@
-svo.valid.tree_cured_weakness()
+svo.valid.tree_cured('weakness')

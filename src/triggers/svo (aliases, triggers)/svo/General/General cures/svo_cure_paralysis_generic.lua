@@ -1,1 +1,1 @@
-svo.valid.generic_paralysis()
+svo.valid.generic('paralysis')

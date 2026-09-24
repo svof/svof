@@ -1,1 +1,1 @@
-svo.valid.diag_tonguetied()
+svo.valid.diag('tonguetied')
