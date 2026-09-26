@@ -305,7 +305,8 @@ def compare(merged):
                                 "merged": db.get(k),
                             })
 
-                if len(a) != len(b):
+                apaths, bpaths = [p for p, _ in a], [p for p, _ in b]
+                if set(apaths) != set(bpaths):
                     # An item was added or removed inside this tree - deliberate
                     # for the bootstrap folders. Record the count, then keep
                     # going: this used to `continue`, which skipped the whole
@@ -314,12 +315,33 @@ def compare(merged):
                     # hold the updater, the migration guard and svo_init_system,
                     # so replacing a body with error("sabotage") still verified
                     # clean. Compare whatever both sides do have, keyed by path.
-                    content.append({
-                        "id": "count|%s|%s|%s" % (kind, module, nm),
-                        "digest": digest(len(a), len(b)),
-                        "text": "%-8s %s / %r: %d items originally, %d in merged"
-                                % (kind, module, nm, len(a), len(b)),
-                    })
+                    #
+                    # Decided on the paths, not on len(a) != len(b). Removing
+                    # ten triggers and adding ten leaves the count equal, and
+                    # the positional pairing below then misaligns at the first
+                    # removed item and reports a structural failure for a tree
+                    # that is fine.
+                    if len(a) != len(b):
+                        content.append({
+                            "id": "count|%s|%s|%s" % (kind, module, nm),
+                            "digest": digest(len(a), len(b)),
+                            "text": "%-8s %s / %r: %d items originally, %d in merged"
+                                    % (kind, module, nm, len(a), len(b)),
+                        })
+                    # Pairing by path loses the order that the positional
+                    # pairing checks for free, and item order inside a tree is
+                    # the order Mudlet fires in. The items both sides hold must
+                    # still come in the same relative order.
+                    shared = set(apaths) & set(bpaths)
+                    ashared = [p for p in apaths if p in shared]
+                    bshared = [p for p in bpaths if p in shared]
+                    if ashared != bshared:
+                        at = next(i for i, (x, y) in enumerate(zip(ashared, bshared))
+                                  if x != y)
+                        structural.append(
+                            "%-8s %s: order changed inside %r: %r where the "
+                            "original has %r" % (kind, module, nm, bshared[at],
+                                                 ashared[at]))
                     amap, bmap = dict(a), dict(b)
                     for path in sorted(set(amap) - set(bmap)):
                         content.append({
