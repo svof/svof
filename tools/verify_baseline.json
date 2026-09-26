@@ -28,6 +28,31 @@
       "text": "Script   svo (install me in module manager) Load & init/svo.remove_legacy_modules [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo already blind generic",
+      "digest": "89a0eb3febdf23ce",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo already blind generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo got blind generic",
+      "digest": "75a1ea852e6f9ba6",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got blind generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo got bubble generic",
+      "digest": "30ce2ff18e1df3c4",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got bubble generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo got deathsight generic",
+      "digest": "8861d138a3ffceae",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got deathsight generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo got myrrh generic",
+      "digest": "f5995d9446d4f0d9",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got myrrh generic [only in the package]"
+    },
+    {
       "id": "count|Script|svo (install me in module manager)|Check for system updates",
       "digest": "c0dcf72fc2cc0600",
       "text": "Script   svo (install me in module manager) / 'Check for system updates': 5 items originally, 8 in merged"
@@ -39,8 +64,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "22a3e95ac6a43f86",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2523 in merged"
+      "digest": "39705214264f0919",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2528 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
