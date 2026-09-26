@@ -27,11 +27,6 @@
       "text": "focus: fear has a focus block and is not in focuscurables (disabled)"
     },
     {
-      "id": "focus|block_only|fulminated",
-      "digest": "f4b8b4de8b03e5c3",
-      "text": "focus: fulminated has a focus block and is not in focuscurables (LIVE)"
-    },
-    {
       "id": "shadow|bloodroot",
       "digest": "5f22bc5110376b0f",
       "text": "empty.eat_bloodroot is generated and then redefined; live set is paralysis, slickness"

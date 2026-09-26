@@ -207,6 +207,13 @@ svo.config_dict = svo.pl.OrderedMap {
       echo'\n'
     end
   }},
+  {focuswithfulminated = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Use Focus while you have fulminated",
+    onenabled = function () svo.echof("<0,250,0>Will%s focus for mental afflictions when you've got fulminated (this'll paralyse you when you do).", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("<250,0,0>Won't%s focus when you've got fulminated.", svo.getDefaultColor()) end,
+  }},
   {lyre = {
     type = 'boolean',
     vconfig2 = true,
