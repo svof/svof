@@ -28,9 +28,19 @@
       "text": "Script   svo (install me in module manager) Load & init/svo.remove_legacy_modules [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured fulminated",
+      "digest": "2718a0aabb772743",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured fulminated [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo already blind generic",
       "digest": "89a0eb3febdf23ce",
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo already blind generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure fulminated generic",
+      "digest": "71494b641df0adc8",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure fulminated generic [only in the package]"
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo got blind generic",
@@ -91,6 +101,11 @@
       "id": "count|Script|svo (install me in module manager)|Load & init",
       "digest": "070cb7b67d4da481",
       "text": "Script   svo (install me in module manager) / 'Load & init': 7 items originally, 5 in merged"
+    },
+    {
+      "id": "count|Trigger|svo (aliases, triggers)|svo",
+      "digest": "d045e1e3f9e9a2f4",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2535 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
