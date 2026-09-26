@@ -214,6 +214,13 @@ svo.config_dict = svo.pl.OrderedMap {
     onenabled = function () svo.echof("<0,250,0>Will%s focus for mental afflictions when you've got fulminated (this'll paralyse you when you do).", svo.getDefaultColor()) end,
     ondisabled = function () svo.echof("<250,0,0>Won't%s focus when you've got fulminated.", svo.getDefaultColor()) end,
   }},
+  {focuswithguilt = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Use Focus while you have guilt",
+    onenabled = function () svo.echof("<0,250,0>Will%s focus for mental afflictions when you've got guilt (this'll give you a mental affliction when you do).", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("<250,0,0>Won't%s focus when you've got guilt.", svo.getDefaultColor()) end,
+  }},
   {lyre = {
     type = 'boolean',
     vconfig2 = true,
