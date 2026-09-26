@@ -965,6 +965,9 @@ vconfig options
   focuswithcadmus
     enables use of focus whenever you've got the Cadmus affliction (which will give you a physical aff if you do focus).
 
+  focuswithfulminated
+    enables use of focus while you have the fulminated affliction. Focusing for any mental affliction while you have fulminated paralyses you, so this option is off by default. Focus never cures fulminated itself. With serverside curing on, the system sets the game's own ``CURING FOCUS WITHFULMINATED`` or ``WITHOUTFULMINATED`` option to match.
+
   gagbreath
     toggles whenever the system should gag (hide) breathing or not. It will completely gag it - commands to put it up will not be shown, and you holding breath and exhaling will be completely gagged as well - so you will see no extra spam, at all.
 

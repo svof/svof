@@ -527,6 +527,12 @@ signals["svo config changed"]:connect(function(config)
     sk.toggleclotserver()
     sk.toggleinsomniaserver()
 
+    if conf.focuswithfulminated then
+      svo.sendcuring("focus withfulminated")
+    else
+      svo.sendcuring("focus withoutfulminated")
+    end
+
     if sk.canclot() and conf.clot then svo.sendcuring("clot on") else svo.sendcuring("clot off") end
     svo.sendcuring("clotat "..conf.bleedamount)
 
@@ -721,6 +727,18 @@ signals["svo config changed"]:connect(function(config)
     svo.sendcuring("defences off")
   end
 end, 'update serverside keepup')
+
+-- focuswithfulminated. The game has its own switch for this, so hand it the
+-- decision rather than turning focus off and on as fulminated comes and goes.
+signals["svo config changed"]:connect(function(config)
+  if not (conf.serverside and config == 'focuswithfulminated' and not svo.logging_in) then return end
+
+  if conf.focuswithfulminated then
+    svo.sendcuring("focus withfulminated")
+  else
+    svo.sendcuring("focus withoutfulminated")
+  end
+end, 'update serverside focus with fulminated')
 
 signals["svo ignore changed"]:connect(sk.handleserversideswitch, "sk.handleserversideswitch")
 signals["svo ignore changed"]:connect(sk.handleserversideswitch_keepup, "sk.handleserversideswitch_keepup")
