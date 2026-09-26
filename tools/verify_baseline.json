@@ -378,11 +378,6 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure bleeding generic [script]"
     },
     {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure burn|script",
-      "digest": "c2a7d739cf4d6d5d",
-      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure burn [script]"
-    },
-    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure claustrophobia generic 2|script",
       "digest": "8b07a09b8bd13e18",
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure claustrophobia generic 2 [script]"
@@ -741,11 +736,6 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cured wristfractures generic|script",
       "digest": "f0b315961405a5c1",
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cured wristfractures generic [script]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo got insomnia|script",
-      "digest": "a5c8455307c6ff40",
-      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got insomnia [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",
