@@ -28,6 +28,56 @@
       "text": "Script   svo (install me in module manager) Load & init/svo.remove_legacy_modules [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo already blind generic",
+      "digest": "89a0eb3febdf23ce",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo already blind generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo got blind generic",
+      "digest": "75a1ea852e6f9ba6",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got blind generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo got bubble generic",
+      "digest": "30ce2ff18e1df3c4",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got bubble generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo got deathsight generic",
+      "digest": "8861d138a3ffceae",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got deathsight generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo got myrrh generic",
+      "digest": "f5995d9446d4f0d9",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got myrrh generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Swashbuckling/Crescendo hum",
+      "digest": "7b425eed3828859f",
+      "text": "Trigger  svo (aliases, triggers) svo/Swashbuckling/Crescendo hum [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Swashbuckling/Earworm hum",
+      "digest": "656d2a5fa261ffe8",
+      "text": "Trigger  svo (aliases, triggers) svo/Swashbuckling/Earworm hum [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Voicecraft/Crescendo begins",
+      "digest": "4b75414ecea6bba0",
+      "text": "Trigger  svo (aliases, triggers) svo/Voicecraft/Crescendo begins [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Voicecraft/Crescendo draws closer",
+      "digest": "be0a1842bd22c5f4",
+      "text": "Trigger  svo (aliases, triggers) svo/Voicecraft/Crescendo draws closer [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Voicecraft/Crescendo peaks",
+      "digest": "f385578ae71ec397",
+      "text": "Trigger  svo (aliases, triggers) svo/Voicecraft/Crescendo peaks [only in the package]"
+    },
+    {
       "id": "count|Script|svo (install me in module manager)|Check for system updates",
       "digest": "c0dcf72fc2cc0600",
       "text": "Script   svo (install me in module manager) / 'Check for system updates': 5 items originally, 8 in merged"
@@ -36,11 +86,6 @@
       "id": "count|Script|svo (install me in module manager)|Load & init",
       "digest": "070cb7b67d4da481",
       "text": "Script   svo (install me in module manager) / 'Load & init': 7 items originally, 5 in merged"
-    },
-    {
-      "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "2467e97b605ecdf0",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2532 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -63,9 +108,54 @@
       "text": "Script   svo (install me in module manager) Load & init/svo.installed_as_package [only in the originals]"
     },
     {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure bleeding tree",
+      "digest": "2fa57919bafab427",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure bleeding tree [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure voided tree",
+      "digest": "bb7b42be8d5a0e02",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure voided tree [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healer nothing cured",
+      "digest": "a3f9f51f5420ac7a",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo healer nothing cured [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healer selfcure",
+      "digest": "fee5017bda15e637",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo healer selfcure [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healer selfcure/Nothing cured",
+      "digest": "5b70f5becb85d095",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo healer selfcure/Nothing cured [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healer selfcure2",
+      "digest": "ca1d923d5a17721b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo healer selfcure2 [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healing bedevil",
+      "digest": "3e1b8cf96a1ccf8e",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo healing bedevil [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healing cured insomnia",
+      "digest": "03479ee8d6652fa2",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo healing cured insomnia [only in the originals]"
+    },
+    {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo latched wore off",
       "digest": "e06ca57c35b33635",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo latched wore off [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo no healing balance",
+      "digest": "ba5b16a4917e29d8",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo no healing balance [only in the originals]"
     },
     {
       "id": "item|Alias|svo (aliases, triggers)|svo/(vversion) Show system version|script",
@@ -84,7 +174,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "ef0b16748a788449",
+      "digest": "2dff4fc4a7e7f03d",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -258,13 +348,18 @@
       "text": "Script   svo (runeidentifier) svo (runeidentifier) [script]"
     },
     {
+      "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
+      "digest": "315d11ad3aff1b79",
+      "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
+    },
+    {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",
       "digest": "5c5278698d3f7046",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Miscellaneous functions [script]"
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "0ca0b6d1c6525c09",
+      "digest": "faf6b3e40de98cfd",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -326,11 +421,6 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure bleeding generic|script",
       "digest": "d25046f11440a237",
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure bleeding generic [script]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure burn|script",
-      "digest": "c2a7d739cf4d6d5d",
-      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure burn [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure claustrophobia generic 2|script",
@@ -693,11 +783,6 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cured wristfractures generic [script]"
     },
     {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo got insomnia|script",
-      "digest": "a5c8455307c6ff40",
-      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got insomnia [script]"
-    },
-    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",
       "digest": "61baa56f5354675b",
       "text": "Trigger  svo (aliases, triggers) svo/General/Registration/Started [colorTriggerFgColor]"
@@ -736,11 +821,6 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure asthma tree|script",
       "digest": "a8c53b5c152621b1",
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure asthma tree [script]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure bleeding tree|script",
-      "digest": "c9ae11ac9d91cd82",
-      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure bleeding tree [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure burn tree|script",
@@ -1051,11 +1131,6 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure vertigo tree|script",
       "digest": "5e27e75df195037a",
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure vertigo tree [script]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure voided tree|script",
-      "digest": "c5a9d21895f8c3b2",
-      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure voided tree [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure voyria tree|script",

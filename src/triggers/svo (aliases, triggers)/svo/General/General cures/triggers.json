@@ -1120,6 +1120,124 @@
     ]
   },
   {
+    "name": "svo got blind generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your eyes dim as you lose your sight.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo already blind generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The bayberry has no effect. You are already blind.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The arsenic has no effect. You are already blind.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo got myrrh generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "As you swallow the myrrh, you feel your mind begin to race. New avenues of mental exploration open up to you and you can feel your mind processing information as never before.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "The myrrh dissolves in your mouth, leaving an aftertaste of charcoal. It is not pleasant.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You swallow the bisemutum, but it leaves only an unpleasant aftertaste in your mouth.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You swallow the myrrh, but it leaves only an unpleasant aftertaste in your mouth.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "As you swallow the bisemutum, you feel your mind begin to race. New avenues of mental exploration open up to you and you can feel your mind processing information as never before.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo got deathsight generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "99",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You already possess the deathsight.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "A miasma of darkness passes over your eyes and you feel a link to Thoth, the God of Death, form in your mind.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo got bubble generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You eat the plant and immediately your skin begins exuding tiny bubbles that form an air pocket around you.",
+        "type": "exactMatch"
+      },
+      {
+        "pattern": "You eat the mineral and immediately your skin begins exuding tiny bubbles that form an air pocket around you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
     "name": "svo cured blind generic",
     "isActive": "yes",
     "isFolder": "no",
