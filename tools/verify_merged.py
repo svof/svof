@@ -11,8 +11,10 @@ appear in the intended load order.
 
 Two kinds of problem are reported.
 
-  Structural  - something is missing, duplicated, in the wrong place or out of
-                order. Never acceptable, always fatal.
+  Structural  - something is duplicated, in the wrong place or out of order,
+                or a top-level item or module wrapper is missing. Never
+                acceptable, always fatal. An item removed from inside a tree
+                is content (gone|), since removals are deliberate here.
   Content     - an item's script or flags differ from the original. Most of
                 these are deliberate: the module machinery is gone, the updater
                 and migration guard are new, and a few load-order assumptions
@@ -31,7 +33,7 @@ reviewable act instead of a silent one.
     python tools/verify_merged.py <merged.xml> --write-baseline tools/verify_baseline.json
     python tools/verify_merged.py --write-reference    # re-record the xml hashes
 """
-import argparse, hashlib, json, os, sys
+import argparse, hashlib, json, os, re, sys
 import xml.etree.ElementTree as ET
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -56,14 +58,18 @@ ORIGINAL_NAME = {v: k for k, v in MERGED_NAME.items()}
 
 # Leaf items renamed in src/ since the pinned reference xmls were taken, keyed
 # by kind and by the item's path in the ORIGINAL tree; the value is its new
-# leaf name. Without an entry a rename reads as a path mismatch, which is
-# structural and therefore fatal even under --baseline, and --write-baseline
-# refuses to bless it. That is correct: a path mismatch is only reachable
-# inside the equal-length zip below, so what it really signals is a REORDER
-# (or a size-preserving swap). A missing or duplicated item changes the
-# length and routes to the count|/gone|/added| entries instead, which are
-# content and baseline-able. So a deliberate rename has to be recorded here,
-# or the gate cannot tell it apart from a reorder.
+# leaf name. An entry lines the two trees up, so the renamed item is compared
+# body to body like any other.
+#
+# Without one, the old path is gone and the new one is added, and compare()
+# pairs the tree by path. If the item has a body and it did not change, the
+# gone item and the added one are identical, which is what a move looks like,
+# and that is structural: fatal even under --baseline, and --write-baseline
+# refuses to bless it. If the body changed too, nothing ties the two together,
+# and the rename reads as a removal plus an addition - content, which fails
+# until the baseline is regenerated on purpose, but loses the body-to-body
+# comparison.
+# Record a deliberate rename here either way.
 #
 # Renaming a Mudlet item is not free at runtime either: enableTrigger("gone
 # name") is a silent no-op. check_renamed_callsites.py covers that, but it
@@ -80,6 +86,21 @@ ITEM_RENAME = {
         "/General/svo burning woreoff": "svo flamefisted woreoff",
     },
 }
+
+# Items moved on purpose, keyed by kind: "<module>|<gone path>" to
+# "<module>|<added path>", spelled the way the gone| and added| ids spell them
+# after the kind. compare() treats a gone item and an added item with
+# identical behaviour as a move, and a move is structural unless it is listed
+# here. A listed move stays a gone| and an added| entry, which the baseline
+# then records, so the moved item's body is still digested.
+ITEM_MOVE = {}
+
+# describe_tree's suffix for the second and later siblings sharing one name.
+DUP_SUFFIX = re.compile(r"^(.*)#(\d+)$")
+
+# A descriptor with none of these is an empty folder or the like, and two of
+# those are identical without one being the other moved.
+BEHAVIOUR_KEYS = ("script", "patterns", "regex", "command", "events", "keyCode")
 
 
 def reference_hashes():
@@ -233,6 +254,9 @@ def compare(merged):
 
         merged_by_name = {}
         self_named = set()
+        # (id, descriptor) of every item only one side holds, across all of
+        # this kind's trees, so a move between two modules is seen too.
+        gone_items, added_items = [], []
         for module in MERGE_ORDER:
             mod_root = ET.parse(os.path.join(REPO, module + ".xml")).getroot()
             mod_top = top_level(mod_root, kind)
@@ -344,6 +368,7 @@ def compare(merged):
                                                  ashared[at]))
                     amap, bmap = dict(a), dict(b)
                     for path in sorted(set(amap) - set(bmap)):
+                        gone_items.append(("%s|%s%s" % (module, nm, path), amap[path]))
                         content.append({
                             "id": "gone|%s|%s|%s%s" % (kind, module, nm, path),
                             "digest": digest(path, None),
@@ -360,6 +385,16 @@ def compare(merged):
                         # means editing one of them fails the gate until the
                         # baseline is regenerated deliberately.
                         d = bmap[path]
+                        added_items.append(("%s|%s%s" % (module, nm, path), d))
+                        # A second sibling of the same name. Mudlet looks items
+                        # up by name, so enableTrigger and the like can no
+                        # longer tell the two apart, and check_src_tree only
+                        # sees the ones with a .lua of their own.
+                        dup = DUP_SUFFIX.match(path)
+                        if dup and dup.group(1) in bmap:
+                            structural.append(
+                                "%-8s %s: %r duplicates the name of %r"
+                                % (kind, module, nm + path, nm + dup.group(1)))
                         content.append({
                             "id": "added|%s|%s|%s%s" % (kind, module, nm, path),
                             "digest": digest(None, path,
@@ -376,6 +411,22 @@ def compare(merged):
                         structural.append("%-8s %s: path %r != %r" % (kind, module, pa, pb))
                         break
                     diff_one(pa, da, db)
+
+        # An item that left one place and turned up unchanged in another has
+        # moved, or been renamed without an ITEM_RENAME entry. Matched on
+        # behaviour, not on name: leaf names repeat across the package ("svo
+        # cured stupidity" sits in several folders), so a name match would
+        # pair unrelated items.
+        declared = ITEM_MOVE.get(kind, {})
+        for gid, gd in gone_items:
+            if not any(gd.get(k) for k in BEHAVIOUR_KEYS):
+                continue
+            for aid, ad in added_items:
+                if ad == gd and declared.get(gid) != aid:
+                    structural.append(
+                        "%-8s %r is gone and %r is identical to it: a move, or a "
+                        "rename without ITEM_RENAME. Declare it in ITEM_RENAME "
+                        "or ITEM_MOVE." % (kind, gid, aid))
 
         for n, v in merged_by_name.items():
             if v:
