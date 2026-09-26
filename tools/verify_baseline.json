@@ -53,6 +53,26 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got myrrh generic [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Swashbuckling/Crescendo hum",
+      "digest": "7b425eed3828859f",
+      "text": "Trigger  svo (aliases, triggers) svo/Swashbuckling/Crescendo hum [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Swashbuckling/Earworm hum",
+      "digest": "656d2a5fa261ffe8",
+      "text": "Trigger  svo (aliases, triggers) svo/Swashbuckling/Earworm hum [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Voicecraft/Crescendo begins",
+      "digest": "4b75414ecea6bba0",
+      "text": "Trigger  svo (aliases, triggers) svo/Voicecraft/Crescendo begins [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Voicecraft/Crescendo draws closer",
+      "digest": "be0a1842bd22c5f4",
+      "text": "Trigger  svo (aliases, triggers) svo/Voicecraft/Crescendo draws closer [only in the package]"
+    },
+    {
       "id": "count|Script|svo (install me in module manager)|Check for system updates",
       "digest": "c0dcf72fc2cc0600",
       "text": "Script   svo (install me in module manager) / 'Check for system updates': 5 items originally, 8 in merged"
@@ -64,8 +84,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "39705214264f0919",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2528 in merged"
+      "digest": "2467e97b605ecdf0",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2532 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
