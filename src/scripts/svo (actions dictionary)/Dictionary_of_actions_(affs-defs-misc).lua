@@ -4270,6 +4270,7 @@ if not next(svo.dict) then
         end,
   
         noeffect = function()
+          svo.lostbal_salve()
           empty.apply_epidermal_head()
         end,
   
@@ -4907,6 +4908,7 @@ if not next(svo.dict) then
         end,
   
         noeffect = function()
+          svo.lostbal_salve()
           empty.apply_epidermal_body()
         end,
   
@@ -4941,6 +4943,7 @@ if not next(svo.dict) then
         end,
   
         noeffect = function()
+          svo.lostbal_salve()
           empty.apply_epidermal_head()
         end,
   
@@ -5129,6 +5132,7 @@ if not next(svo.dict) then
         end,
   
         noeffect = function()
+          svo.lostbal_salve()
           empty.apply_epidermal_head()
         end,
   
@@ -5177,6 +5181,7 @@ if not next(svo.dict) then
         end,
   
         noeffect = function()
+          svo.lostbal_salve()
           empty.apply_epidermal_head()
         end,
   
