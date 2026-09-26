@@ -4963,29 +4963,27 @@ if not next(svo.dict) then
         oncompleted = function() svo.rmaff('stuttering') end,
       }
     },
+    -- Nothing cures scalded; it wears off after 20 seconds (the repo owner,
+    -- 2026-09-26). It used to be a throat affliction cured by epidermal to the
+    -- head, and with the GMCP empty-cure gate keeping it, svof applied salve
+    -- on every salve balance until it wore off.
     scalded = {
-      salve = {
+      waitingfor = {
+        customwait = 20,
+
         isadvisable = function()
-          return (affs.scalded and not defc.blind and not affs.blindaff) or false
+          return false
         end,
-  
-        oncompleted = function()
-          svo.lostbal_salve()
+
+        onstart = function() end,
+
+        ontimeout = function()
           svo.rmaff('scalded')
         end,
-  
-        noeffect = function()
-          empty.apply_epidermal_head()
-        end,
-  
-        empty = function()
-          empty.apply_epidermal_head()
-        end,
-  
-        applycure = {'epidermal', 'sensory'},
-        actions = {"apply epidermal to head", "apply epidermal", "apply sensory to head", "apply sensory"},
-        onstart = function()
-          svo.apply(svo.dict.scalded.salve, " to head")
+
+        oncompleted = function()
+          svo.rmaff('scalded')
+          svo.make_gnomes_work()
         end
       },
       aff = {
@@ -4995,7 +4993,15 @@ if not next(svo.dict) then
       },
       gone = {
         oncompleted = function() svo.rmaff('scalded') end,
-      }
+      },
+      -- onadded and not aff.oncompleted, because GMCP adds it with addaffdict
+      -- and never runs the aff action.
+      onadded = function()
+        if not svo.actions.scalded_waitingfor then svo.doaction(svo.dict.scalded.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.scalded_waitingfor then svo.killaction(svo.dict.scalded.waitingfor) end
+      end,
     },
     numbedleftarm = {
       waitingfor = {

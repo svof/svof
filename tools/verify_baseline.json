@@ -53,6 +53,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got myrrh generic [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo scalded woreoff",
+      "digest": "b33cec5c384c9431",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo scalded woreoff [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/Swashbuckling/Crescendo hum",
       "digest": "7b425eed3828859f",
       "text": "Trigger  svo (aliases, triggers) svo/Swashbuckling/Crescendo hum [only in the package]"
@@ -106,6 +111,11 @@
       "id": "gone|Script|svo (install me in module manager)|Load & init/svo.installed_as_package",
       "digest": "f76b4c01815ab275",
       "text": "Script   svo (install me in module manager) Load & init/svo.installed_as_package [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Applied salve/svo cure scalded",
+      "digest": "b618797a78de67fc",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Applied salve/svo cure scalded [only in the originals]"
     },
     {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure bleeding tree",
@@ -174,7 +184,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "2dff4fc4a7e7f03d",
+      "digest": "61703d2294039b57",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -349,7 +359,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "315d11ad3aff1b79",
+      "digest": "b3110c5b19ce3ce1",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
@@ -374,7 +384,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "9e9413d1ea50f50c",
+      "digest": "d557094c302e58e9",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

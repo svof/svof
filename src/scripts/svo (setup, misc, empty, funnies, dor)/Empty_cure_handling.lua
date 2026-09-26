@@ -248,7 +248,7 @@ empty.writhe = function()
 end
 
 empty.apply_epidermal_head = function ()
-  presume_cured({'anorexia', 'itching', 'stuttering', 'slashedthroat', 'blindaff', 'deafaff', 'scalded'})
+  presume_cured({'anorexia', 'itching', 'stuttering', 'slashedthroat', 'blindaff', 'deafaff'})
   svo.defences.lost('blind')
   svo.defences.lost('deaf')
 end
