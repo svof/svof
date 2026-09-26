@@ -321,7 +321,7 @@ svo.check_focus = function(sync_mode)
   if not next(affs) or svo.usingbal('focus') or affs.stun or affs.unconsciousness or not bals.focus
     or affs.sleep or not svo.can_usemana() or not conf.focus or stats.currentwillpower <= 75
     or affs.impatience or affs.sandfever or affs.inquisition or (affs.cadmus and not conf.focuswithcadmus)
-    or (affs.fulminated and not conf.focuswithfulminated) then
+    or (affs.fulminated and not conf.focuswithfulminated) or (affs.guilt and not conf.focuswithguilt) then
       return
   end
 

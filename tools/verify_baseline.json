@@ -219,7 +219,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "ae397ef660b3d7c8",
+      "digest": "9d97f7dba843bef8",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -229,7 +229,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "a3e8161d53eeaf67",
+      "digest": "df020426336254fd",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
@@ -304,7 +304,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Config system|script",
-      "digest": "06d1e8d30d428c73",
+      "digest": "aeb9d946f0369a94",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Config system [script]"
     },
     {
