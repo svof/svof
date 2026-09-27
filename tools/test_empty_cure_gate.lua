@@ -11,25 +11,25 @@ move instead of quietly testing stale logic.
 What it covers. Every handler in that file acts on one inference: a cure that
 cured nothing means we did not have the afflictions it would have cured. svof
 used to act on that unconditionally, so a wrong name in one of those lists made
-it forget an affliction still held and stop curing it. presume_cured checks the
-game first.
+it forget an affliction still held and stop curing it. The game is asked
+first, but no longer here: presume_cured hands its whole list to svo.rmaff,
+whose backstop keeps anything GMCP still reports (svo.gmcp_refuse_remove in
+Setup.lua). The GMCP cases this file used to cover - an affliction the game
+still reports is kept, levelled names match, names GMCP cannot report are
+removed, nothing is kept before the first List - are tested against the real
+backstop in tools/test_gmcp_reconciler.lua (scenarios 14 and 17), along with
+the two it used to get wrong: sleep and seriousconcussion under their other
+game name, and the stale entry after a blackout that kept an affliction cured
+during it and re-cured it forever.
 
-Five things it pins:
+Three things it pins here:
 
-  * GMCP overrules the inference. A name Char.Afflictions still reports is kept.
-  * The gate only applies where GMCP can speak. A name absent from
-    svo.dict.svotossa - the four unknowns, and blindaff, deafaff and hoisted,
-    which svof takes no GMCP affliction name for - is removed the way it
-    always was, because there the inference is the only information there is, and
-    resolving an unknown this way is the whole point of tracking one. earworm
-    used to be listed here; it has been in sstosvoa since 6af80b3, so GMCP's
-    word now keeps it like any other.
-  * Levelled names match. GMCP keys an affliction at level 2 and up as
-    "name (2)" and bare at level 1, so a comparison on the raw key would keep
-    a level-1 affliction and drop a level-2 one.
-  * Blackout presumes nothing. Char.Afflictions stops entirely during blackout,
-    so svo.gaffl goes stale rather than empty and every name would read as
-    still held; removing on that would be acting on a frozen snapshot.
+  * Blackout presumes nothing. Char.Afflictions stops entirely during
+    blackout and the cure lines themselves can go unseen, so nothing is
+    removed at all.
+  * Outside blackout every name goes to svo.rmaff, including ones GMCP still
+    reports: keeping those is rmaff's decision, made in one place, and a
+    second copy of it here is what went stale.
   * A string argument behaves like a one-element list, because two call sites
     pass one.
 
@@ -42,7 +42,7 @@ Exits 0 and prints "ALL PASS" on success, exits 1 and prints failures.
 local SRC = "src/scripts/svo (setup, misc, empty, funnies, dor)/Empty_cure_handling.lua"
 
 local START_ANCHOR = "local function presume_cured(which)"
-local END_ANCHOR = "  svo.rmaff(gone)\nend"
+local END_ANCHOR = "  svo.rmaff(which)\nend"
 
 local function read_file(path)
   local f, err = io.open(path, "r")
@@ -69,20 +69,6 @@ end
 local block = extract_block(read_file(SRC))
 print(string.format("extracted %d bytes of the real presume_cured from %s", #block, SRC))
 
--- The svof names this test uses, and the GMCP name each maps to. Mirrors the
--- shape of svo.dict.svotossa, which the dictionary builds by reversing
--- sstosvoa and which omits anything mapped to false there.
-local SVOTOSSA = {
-  asthma      = 'asthma',
-  slickness   = 'slickness',
-  torntendons = 'torntendons',
-  latched     = 'latched',
-  earworm     = 'earworm',
-  -- deliberately absent: unknownany, unknownmental, blindaff. svof takes no
-  -- GMCP affliction name for these, so the gate must leave them to the old
-  -- behaviour.
-}
-
 local checks, failures = 0, {}
 local function check(desc, got, want)
   checks = checks + 1
@@ -92,14 +78,15 @@ local function check(desc, got, want)
   end
 end
 
--- Builds a fresh environment and returns presume_cured plus what it removed.
+-- Builds a fresh environment and returns presume_cured plus what it handed to
+-- svo.rmaff. gafflkeys fills svo.gaffl, so a scenario can show presume_cured
+-- no longer reads it.
 local function harness(gafflkeys, blackout)
   local removed = {}
   local affs = {blackout = blackout or nil}
   local svo = {
     affs = affs,
     gaffl = {},
-    dict = {svotossa = SVOTOSSA},
     debugf = function() end,
     rmaff = function(list)
       if type(list) == 'string' then list = {list} end
@@ -139,56 +126,6 @@ local function has(list, name)
   return false
 end
 
--- ===== GMCP overrules the inference =====
-do
-  local presume_cured, removed = harness({'asthma'})
-  presume_cured({'asthma', 'slickness'})
-  check("an affliction the game still reports is kept", has(removed, 'asthma'), false)
-  check("one the game does not report is removed", has(removed, 'slickness'), true)
-end
-
--- ===== the gate only applies where GMCP can speak =====
-do
-  -- The game does send 'blindness' in Char.Afflictions, in lockstep with the
-  -- defence (seen in both captured fights), but it is one state with nothing
-  -- to tell an unwanted blindness from the bayberry defence, so sstosvoa maps
-  -- it to false and no svotossa entry points at it. Its presence in gaffl
-  -- must not keep blindaff.
-  local presume_cured, removed = harness({'asthma', 'blindness'})
-  presume_cured({'unknownany', 'unknownmental', 'blindaff'})
-  check("unknownany, which GMCP cannot report, is still removed",
-    has(removed, 'unknownany'), true)
-  check("unknownmental, same, is still removed", has(removed, 'unknownmental'), true)
-  check("blindaff, a real affliction svof takes no GMCP name for, is still removed",
-    has(removed, 'blindaff'), true)
-end
-
--- earworm can be reported since 6af80b3 put it in sstosvoa, so GMCP's word
--- keeps it like any other affliction
-do
-  local presume_cured, removed = harness({'earworm'})
-  presume_cured({'deadening', 'earworm'})
-  check("earworm, which GMCP now reports, is kept while reported", has(removed, 'earworm'), false)
-end
-
--- ===== levelled GMCP names =====
-do
-  -- level 2 and up is keyed "name (2)"; a raw comparison would miss this and
-  -- drop an affliction the game had just reported.
-  local presume_cured, removed = harness({'torntendons (2)'})
-  presume_cured({'torntendons', 'slickness'})
-  check("an affliction reported at level 2 is kept", has(removed, 'torntendons'), false)
-  check("the other name in the same call is still removed",
-    has(removed, 'slickness'), true)
-end
-
-do
-  -- level 1 is keyed bare, the way an unlevelled affliction is
-  local presume_cured, removed = harness({'torntendons'})
-  presume_cured({'torntendons'})
-  check("an affliction reported at level 1 is kept", has(removed, 'torntendons'), false)
-end
-
 -- ===== blackout presumes nothing =====
 do
   local presume_cured, removed = harness({}, true)
@@ -197,34 +134,37 @@ do
 end
 
 do
-  -- and without blackout the same call clears everything, so the check above
-  -- is testing the guard rather than an empty list
+  -- and without blackout the same call hands everything on, so the check
+  -- above is testing the guard rather than an empty list
   local presume_cured, removed = harness({})
   presume_cured({'asthma', 'slickness', 'unknownany'})
-  check("outside blackout, an unreported list is cleared", #removed, 3)
+  check("outside blackout, the whole list goes to rmaff", #removed, 3)
+end
+
+-- ===== rmaff decides, not a second copy of its check =====
+do
+  -- asthma is in gaffl, and presume_cured still hands it on: whether to keep
+  -- it is the backstop's call inside rmaff, which knows about blackouts and
+  -- about sleep's two game names.
+  local presume_cured, removed = harness({'asthma', 'torntendons (2)'})
+  presume_cured({'asthma', 'torntendons', 'slickness'})
+  check("an affliction gaffl lists still goes to rmaff", has(removed, 'asthma'), true)
+  check("a levelled one too", has(removed, 'torntendons'), true)
+  check("and one gaffl does not list", has(removed, 'slickness'), true)
 end
 
 -- ===== a string argument =====
 do
-  local presume_cured, removed = harness({'latched'})
-  presume_cured('latched')
-  check("a string the game still reports is kept", #removed, 0)
-end
-
-do
   local presume_cured, removed = harness({})
   presume_cured('voyria')
-  check("a string the game does not report is removed", has(removed, 'voyria'), true)
+  check("a string goes to rmaff", has(removed, 'voyria'), true)
+  check("as exactly one name", #removed, 1)
 end
 
--- ===== today's behaviour is preserved when GMCP has said nothing =====
 do
-  -- An empty svo.gaffl is what a profile looks like before the first
-  -- Char.Afflictions message. Everything falls through to the old behaviour,
-  -- which is the fail-safe direction: no cure is silently skipped.
-  local presume_cured, removed = harness({})
-  presume_cured({'asthma', 'slickness', 'torntendons', 'latched'})
-  check("with no GMCP data at all, every name is removed as before", #removed, 4)
+  local presume_cured, removed = harness({}, true)
+  presume_cured('voyria')
+  check("a string in blackout removes nothing", #removed, 0)
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))

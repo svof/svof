@@ -876,11 +876,17 @@ function svo.manualdiag()
 end
 
 function svo.reset.affs(echoback)
-  for aff in pairs(affs) do
-    if aff ~= 'lovers' then
-      svo.rmaff(aff)
+  -- a reset is an instruction (vreset, a death, a starburst), so it clears
+  -- everything, including what GMCP still reports (svo.gmcp_set_aside in
+  -- Setup.lua). The next diagnose's List brings back anything the game says
+  -- you really have.
+  svo.gmcp_set_aside(function()
+    for aff in pairs(affs) do
+      if aff ~= 'lovers' then
+        svo.rmaff(aff)
+      end
     end
-  end
+  end)
 
   svo.affsp = {}
 
@@ -1125,18 +1131,24 @@ end
 function svo.vaff(aff)
   if not svo.dict[aff] or not svo.dict[aff].aff then svo.echof(aff.." isn't a known affliction to add.") return end
 
+  -- from a trigger, vaff files a claim like any svof trigger line, and GMCP
+  -- has the final word on it the same way
   if debug.traceback():find('Trigger', 1, true) then
     (svo.valid['proper_'..aff] or svo.valid['simple'..aff])()
   else
-    if svo.dict[aff].aff and svo.dict[aff].aff.forced then
-      svo.dict[aff].aff.forced()
-    elseif svo.dict[aff].aff then
-      svo.dict[aff].aff.oncompleted()
-    else
-      svo.addaffdict(svo.dict[aff])
-    end
+    -- typed, it is an instruction, so it adds even where GMCP disagrees
+    -- (svo.gmcp_set_aside in Setup.lua)
+    svo.gmcp_set_aside(function()
+      if svo.dict[aff].aff and svo.dict[aff].aff.forced then
+        svo.dict[aff].aff.forced()
+      elseif svo.dict[aff].aff then
+        svo.dict[aff].aff.oncompleted()
+      else
+        svo.addaffdict(svo.dict[aff])
+      end
 
-    if aff == 'aeon' then svo.rmaff('retardation') end
+      if aff == 'aeon' then svo.rmaff('retardation') end
+    end)
     signals.after_lifevision_processing:unblock(cnrl.checkwarning)
     sk.checkaeony()
     signals.changecuring:emit()
@@ -1151,11 +1163,15 @@ function svo.vrmaff(aff)
     lifevision.l:set(aff..'_aff', nil)
   end
 
-  if svo.dict[aff].gone then
-    svo.dict[aff].gone.oncompleted()
-  else
-    svo.rmaff(aff)
-  end
+  -- an instruction, so it removes even what GMCP still reports
+  -- (svo.gmcp_set_aside in Setup.lua)
+  svo.gmcp_set_aside(function()
+    if svo.dict[aff].gone then
+      svo.dict[aff].gone.oncompleted()
+    else
+      svo.rmaff(aff)
+    end
+  end)
   signals.after_lifevision_processing:unblock(cnrl.checkwarning)
   sk.checkaeony()
   signals.changecuring:emit()

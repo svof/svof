@@ -636,6 +636,146 @@ local function parseaffname(raw)
   return raw, nil
 end
 
+-- GMCP has the final word on every affliction it can report, and a trigger
+-- line only decides where GMCP cannot: in blackout, and for the afflictions
+-- that have no GMCP name. The functions below answer "does GMCP say so?".
+-- Their callers in Curing_skeleton.lua: lifevision's run_through_actions
+-- drops the claims GMCP contradicts, and svo.addaffdict and svo.rmaff refuse
+-- the adds and removals that arrive without a claim.
+
+-- Whether the game currently reports this svof affliction over GMCP. Walks
+-- gaffl, which holds only what you have right now, and translates each game
+-- name forward through sstosvoa. Going forward matters: svotossa keeps only
+-- one game name per svof name, and sleep (deepsleep, sleeping) and
+-- seriousconcussion (concussion, mangledhead) each have two.
+function svo.gmcp_reports(aff)
+  for rawaff in pairs(gaffl) do
+    if svo.dict.sstosvoa[(parseaffname(rawaff))] == aff then return true end
+  end
+  return false
+end
+
+-- Whether GMCP is in a position to have the final word: the game has sent a
+-- full List since login, you are not in blackout, and no blackout has left
+-- gaffl stale since. Blackout stops Char.Afflictions and the game sends no
+-- List when it ends, so gaffl keeps what was cured during it until the next
+-- List, which the game also sends after every diagnose.
+function svo.gmcp_live()
+  return (sk.gmcp_affs_listed and not sk.gmcp_affs_stale and not affs.blackout) and true or false
+end
+
+-- Whether gaining this affliction is contradicted by GMCP: it is one GMCP can
+-- report, GMCP is live, and GMCP does not report it. blackout is never
+-- contradicted, because it is what switches GMCP off, and nothing is while
+-- GMCP stands aside (sk.gmcp_stands_aside, see svo.gmcp_set_aside below).
+function svo.gmcp_refutes(aff)
+  return aff ~= 'blackout' and not sk.gmcp_stands_aside and svo.gmcp_live()
+    and svo.dict.svotossa[aff] ~= nil and not svo.gmcp_reports(aff)
+end
+
+-- Whether losing this affliction is contradicted by GMCP: GMCP is live and
+-- still reports it. The removal-side twin of gmcp_refutes.
+function svo.gmcp_holds(aff)
+  return not sk.gmcp_stands_aside and svo.gmcp_live() and svo.gmcp_reports(aff)
+end
+
+-- Runs f(...) with GMCP's final word set aside and returns what f returns.
+-- For what a person asks for directly, as opposed to what a game line claims:
+-- vaff and vrmaff typed as commands, vreset, and the public svo.addaff,
+-- svo.removeaff and svo.removeafflevel, which are documented to act "right
+-- away". Those are instructions, so they work the way they always have.
+-- Lifevision sets the same flag itself while a diagnose or the paragraph
+-- blackout starts in runs, since the game vouches for those.
+function svo.gmcp_set_aside(f, ...)
+  local was = sk.gmcp_stands_aside
+  sk.gmcp_stands_aside = true
+  local ok, result = pcall(f, ...)
+  sk.gmcp_stands_aside = was
+  if not ok then error(result, 0) end
+  return result
+end
+
+-- The level GMCP reports for a svof affliction, or nil if it reports none.
+-- The game sends level 1 as "name (1)", which gaffl keys bare.
+local function gmcp_level(aff)
+  for rawaff in pairs(gaffl) do
+    local name, level = parseaffname(rawaff)
+    if svo.dict.sstosvoa[name] == aff then return level or 1 end
+  end
+end
+
+-- The backstop in svo.addaffdict, for everything that adds an affliction
+-- without a claim of its own: a cure's step-down (mutilated to mangled), a
+-- cure line naming a different affliction, svof's guesses. True when the add
+-- must be refused.
+function svo.gmcp_refuse_add(aff)
+  if not svo.gmcp_refutes(aff) then return false end
+  if conf.gmcpaffechoes then svo.echof("Didn't add %s: GMCP doesn't report it.", aff) end
+  return true
+end
+
+-- The backstop in svo.rmaff: a cure line, a wear-off timer or an empty cure
+-- cannot remove an affliction GMCP still reports. True when the removal must
+-- be refused. Most callers reset a counted affliction's count themselves right
+-- after rmaff returns, so a kept one gets GMCP's level back at the prompt,
+-- before anything picks a cure.
+function svo.gmcp_refuse_remove(aff)
+  if not svo.gmcp_holds(aff) then return false end
+  if conf.gmcpaffechoes then svo.echof("Kept %s: GMCP still reports it.", aff) end
+
+  if svo.dict[aff] and svo.dict[aff].count ~= nil then
+    sk.onprompt_beforeaction_add('gmcp count ' .. aff, function()
+      local level = gmcp_level(aff)
+      if level and affs[aff] and svo.dict[aff].count ~= level then
+        svo.dict[aff].count = level
+        if svo.affl[aff] then svo.updateaffcount(svo.dict[aff]) end
+      end
+    end)
+  end
+
+  return true
+end
+
+-- The anti-illusion probes file their claim under the probe's own name rather
+-- than the affliction's, so each one says which affliction it is testing.
+-- checkstun is left out: GMCP does not report stun.
+local probe_target = {
+  checkanorexia    = function() return 'anorexia' end,
+  checkasthma      = function() return 'asthma' end,
+  checkhypersomnia = function() return 'hypersomnia' end,
+  checkimpatience  = function() return 'impatience' end,
+  checkparalysis   = function() return 'paralysis' end,
+  -- truename arrives as a named outcome, the other slows as the argument
+  checkslows = function(claim)
+    if claim.other_action == 'truename' or claim.arg == 'truename' then return 'aeon' end
+    return claim.arg
+  end,
+  checkwrithes = function(claim)
+    if claim.other_action == 'impale' then return 'impale' end
+    return claim.arg
+  end,
+}
+
+-- The affliction a lifevision claim says you gained, when GMCP contradicts
+-- it; nil for everything else: cures, balances, defences, afflictions GMCP
+-- cannot report, and afflictions it does report.
+function svo.gmcp_refuted_claim(claim)
+  if claim.p.balance ~= 'aff' then return nil end
+  local probe = probe_target[claim.p.action_name]
+  local aff = probe and probe(claim) or claim.p.action_name
+  if aff and svo.gmcp_refutes(aff) then return aff end
+  return nil
+end
+
+-- The affliction a lifevision claim says is gone (a wore-off line, a passive
+-- cure), when GMCP still reports it; nil for everything else. Defences also
+-- file under 'gone', but gmcp_holds only ever matches affliction names.
+function svo.gmcp_kept_claim(claim)
+  if claim.p.balance ~= 'gone' then return nil end
+  if svo.gmcp_holds(claim.p.action_name) then return claim.p.action_name end
+  return nil
+end
+
 signals.gmcpcharafflictionsadd:connect(function()
   local rawaff = gmcp.Char.Afflictions.Add.name
   local affname, afflevel = parseaffname(rawaff)
@@ -789,6 +929,12 @@ signals.gmcpcharafflictionslist:connect(function()
       svo.rmaff(key)
     end
   end
+
+  -- A List is the game's whole picture, so GMCP has the final word from here
+  -- (svo.gmcp_live), even if a blackout had left gaffl stale. The game sends
+  -- one at login and after every diagnose.
+  sk.gmcp_affs_listed = true
+  sk.gmcp_affs_stale = nil
 end, 'update list of gmcp affs')
 
 
@@ -987,6 +1133,17 @@ end
 signals.loadedconfig = signals.loadedconfig or luanotify.signal.new()
 signals.svogotaff = signals.svogotaff or luanotify.signal.new()
 signals.svolostaff = signals.svolostaff or luanotify.signal.new()
+
+-- When GMCP stops having the final word on afflictions (svo.gmcp_live): a new
+-- connection has no List yet, and blackout stops Char.Afflictions, leaving
+-- gaffl stale until the next List (sent after any diagnose). Connected here
+-- rather than beside the GMCP handlers because svogotaff is only created just
+-- above.
+signals.connected:connect(function() sk.gmcp_affs_listed = false end, 'gmcp affs untrusted until the login List')
+signals.svogotaff:connect(function(aff)
+  if aff == 'blackout' then sk.gmcp_affs_stale = true end
+end, 'gmcp affs stale after blackout')
+
 signals.sysexitevent = signals.sysexitevent or luanotify.signal.new()
 signals["mmapper updated pdb"]       = luanotify.signal.new()
 signals["svo config changed"]        = luanotify.signal.new()

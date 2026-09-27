@@ -398,13 +398,41 @@ function svo.lifevision.clearlineguard()
 end
 
 local function run_through_actions()
+  -- GMCP has the final word on the afflictions it can report (svo.gmcp_live in
+  -- Setup.lua), so a line claiming one that GMCP does not report, or saying
+  -- one is gone that GMCP still reports, is dropped here, before its claim
+  -- runs, and none of the claim's consequences happen. A claim GMCP agrees
+  -- with runs exactly as before. Two paragraphs are left alone: a diagnose,
+  -- which is the game's own list and can name a hidden affliction GMCP never
+  -- sent, and the one blackout starts in, as GMCP has already gone quiet. The
+  -- add and remove backstops in svo.addaffdict and svo.rmaff trust them too,
+  -- through sk.gmcp_stands_aside.
+  local trusted = svo.lifevision.l.diag_physical or svo.lifevision.l.blackout_aff
+  local gate = svo.gmcp_live() and not trusted
+  sk.gmcp_stands_aside = trusted and true or nil
+
   for _,j in svo.lifevision.l:iter() do
-    if not sk.stopprocessing then
-      svo.actionfinished(j.p, j.other_action, j.arg)
-    else
+    if sk.stopprocessing then
       svo.actionclear(j.p)
+    else
+      local refuted = gate and svo.gmcp_refuted_claim(j)
+      local kept = gate and not refuted and svo.gmcp_kept_claim(j)
+      if refuted or kept then
+        if conf.gmcpaffechoes then
+          if refuted then
+            svo.echof("Ignored a line claiming %s: GMCP doesn't report it.", refuted)
+          else
+            svo.echof("Ignored a line saying %s is gone: GMCP still reports it.", kept)
+          end
+        end
+        svo.actionclear(j.p)
+      else
+        svo.actionfinished(j.p, j.other_action, j.arg)
+      end
     end
   end
+
+  sk.gmcp_stands_aside = nil
 end
 
 -- Balances whose cure consumes a physical item. Eating, applying, sipping or
@@ -1289,6 +1317,10 @@ local old_internal_addaff = function (new_aff)
   if not new_aff then svo.debugf("no new, log: %s", debug.traceback()) end
   if affs[new_aff.name] then return end
 
+  -- GMCP has the final word (Setup.lua). Its own handlers write gaffl before
+  -- they get here, so this only ever refuses svof's other adds.
+  if svo.gmcp_refuse_add(new_aff.name) then return end
+
   local name = new_aff.name
 
   svo.affs[name] = {
@@ -1333,11 +1365,13 @@ local old_public_addaff = function (new_aff)
     return true
   end
 end
+-- The public API is an instruction, not a claim, so it adds even where GMCP
+-- disagrees (svo.gmcp_set_aside in Setup.lua).
 svo.addaff = function(aff_string_or_table)
   if type(aff_string_or_table) == 'table' then
-    old_internal_addaff(aff_string_or_table)
+    svo.gmcp_set_aside(old_internal_addaff, aff_string_or_table)
   else
-    old_public_addaff(aff_string_or_table)
+    svo.gmcp_set_aside(old_public_addaff, aff_string_or_table)
   end
 end
 svo.addaffdict = old_internal_addaff
@@ -1352,6 +1386,10 @@ svo.rmaff = function (old)
   end
 
   if not affs[old] then return end
+
+  -- GMCP has the final word (Setup.lua). Its own handlers clear gaffl before
+  -- they get here, so this only ever refuses svof's other removals.
+  if svo.gmcp_refuse_remove(old) then return end
 
   if svo.affl[old] then
     svo.affl[old] = nil
@@ -1375,7 +1413,7 @@ svo.rmaff = function (old)
 end
 
 -- public version of removeaff. The two should be merged.
-svo.removeaff = function (which)
+local function public_removeaff(which)
   svo.assert(type(which) == 'string', "svo.removeaff: what aff would you like to remove? name must be a string")
   svo.assert(svo.dict[which] and svo.dict[which].aff, "svo.removeaff: "..which.." isn't a known aff name")
 
@@ -1402,7 +1440,7 @@ svo.removeaff = function (which)
   return removed
 end
 
-svo.removeafflevel = function (which, amount, keep)
+local function public_removeafflevel(which, amount, keep)
   svo.assert(type(which) == 'string', "svo.removeafflevel: what aff would you like to remove? name must be a string")
   svo.assert(svo.dict[which] and svo.dict[which].aff, "svo.removeafflevel: "..which.." isn't a known aff name")
 
@@ -1427,6 +1465,15 @@ svo.removeafflevel = function (which, amount, keep)
   signals.changecuring:emit()
 
   return removed
+end
+
+-- Like svo.addaff, these are instructions, so they remove even where GMCP
+-- still reports the affliction (svo.gmcp_set_aside in Setup.lua).
+svo.removeaff = function(which)
+  return svo.gmcp_set_aside(public_removeaff, which)
+end
+svo.removeafflevel = function(which, amount, keep)
+  return svo.gmcp_set_aside(public_removeafflevel, which, amount, keep)
 end
 
 -- externally available as svo.prompttrigger

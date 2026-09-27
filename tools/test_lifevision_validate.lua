@@ -15,6 +15,14 @@ herb. Dropping that bookkeeping left bals.<balance> true while actionclear()
 freed bals_in_use, so svof re-sent the cure on the next prompt, outran GMCP
 item tracking, failed the same illusion check, and looped without recovering.
 
+And the GMCP gate in run_through_actions: a claim GMCP contradicts, gained or
+gone, is cleared instead of run, every other claim runs as before, and
+diagnose and blackout-onset paragraphs are left alone and marked trusted for
+the add and remove backstops while their claims run. Whether GMCP contradicts
+a claim is decided by svo.gmcp_refuted_claim and svo.gmcp_kept_claim in
+Setup.lua, which are stubbed here and tested in tools/test_gmcp_reconciler.lua
+against the real code.
+
 It proves nothing about Mudlet integration or real combat.
 
 Run: lua tools/test_lifevision_validate.lua
@@ -76,7 +84,9 @@ end
 -- ===== stub environment =====
 
 -- Minimal stand-in for the Penlight OrderedMap that svo.lifevision.l is.
--- Only needs iter(), which yields key, value in insertion order.
+-- iter() yields key, value in insertion order, and a queued claim can be read
+-- by its key (svo.lifevision.l.diag_physical), because Penlight stores each
+-- value as a plain field of the map.
 local function ordered_map()
   local m = {keys = {}, vals = {}}
   function m:set(k, v)
@@ -92,11 +102,16 @@ local function ordered_map()
       return k, self.vals[k]
     end
   end
-  return m
+  return setmetatable(m, {__index = function(t, k) return rawget(t, 'vals')[k] end})
 end
 
 local function new_environment()
-  local calls = {cleared = {}, finished = {}, lostbal = {}, debugf = {}}
+  local calls = {cleared = {}, finished = {}, lostbal = {}, debugf = {}, echof = {}, asked = {}, trust = {}}
+
+  local sys = {flawedillusion = false, not_illusion = false, lineguard = false}
+  local conf = {batch = false, gmcpaffechoes = false}
+  local sk = {stopprocessing = nil, sawcuring = function() return false end}
+  local me = {haveillusion = false}
 
   local svo = {}
   svo.lifevision = {}
@@ -107,9 +122,32 @@ local function new_environment()
     local ok, msg = pcall(string.format, fmt, ...)
     calls.debugf[#calls.debugf + 1] = ok and msg or fmt
   end
+  function svo.echof(fmt, ...) calls.echof[#calls.echof + 1] = string.format(fmt, ...) end
 
   function svo.actionclear(act) calls.cleared[#calls.cleared + 1] = act.name end
-  function svo.actionfinished(act) calls.finished[#calls.finished + 1] = act.name end
+  -- also records whether the add and remove backstops were told to trust the
+  -- paragraph while this claim ran
+  function svo.actionfinished(act)
+    calls.finished[#calls.finished + 1] = act.name
+    calls.trust[act.name] = sk.gmcp_stands_aside or false
+  end
+
+  -- The GMCP side, stubbed: GMCP is not live unless a scenario says so, which
+  -- leaves every scenario above the gate ones exactly as it was. A scenario
+  -- lists, by claim name, the gains GMCP contradicts in svo.gmcp_refuted and
+  -- the losses it contradicts in svo.gmcp_kept.
+  svo.gmcp_is_live = false
+  svo.gmcp_refuted = {}
+  svo.gmcp_kept = {}
+  function svo.gmcp_live() return svo.gmcp_is_live end
+  function svo.gmcp_refuted_claim(claim)
+    calls.asked[#calls.asked + 1] = claim.p.name
+    return svo.gmcp_refuted[claim.p.name]
+  end
+  function svo.gmcp_kept_claim(claim)
+    calls.asked[#calls.asked + 1] = claim.p.name
+    return svo.gmcp_kept[claim.p.name]
+  end
 
   -- Record every lostbal_* the code under test reaches for.
   for _, balance in ipairs({'herb', 'salve', 'sip', 'smoke', 'moss', 'purgative',
@@ -118,11 +156,6 @@ local function new_environment()
       calls.lostbal[#calls.lostbal + 1] = balance
     end
   end
-
-  local sys = {flawedillusion = false, not_illusion = false, lineguard = false}
-  local conf = {batch = false}
-  local sk = {stopprocessing = nil, sawcuring = function() return false end}
-  local me = {haveillusion = false}
 
   local env = {
     svo = svo, sys = sys, conf = conf, sk = sk, me = me,
@@ -139,7 +172,7 @@ local function new_environment()
   }
   env._G = env
 
-  return env, calls, svo, sys, sk
+  return env, calls, svo, sys, sk, conf
 end
 
 -- Mudlet runs Lua 5.1, where load() takes a reader function and only
@@ -319,6 +352,192 @@ do
   eq(sys.flawedillusion, false, "after validate: flawedillusion cleared")
   eq(sys.lineguard, false, "after validate: lineguard cleared")
   eq(sk.stopprocessing, nil, "after validate: stopprocessing cleared")
+end
+
+-- ===== scenario 9: GMCP gate - a contradicted claim is dropped, the rest run =====
+-- The live case that motivated the gate: a shield strike to the ribs claimed
+-- sensitivity while GMCP reported only "Remove deafness", and the claim that
+-- should have been cancelled ran anyway.
+do
+  local env, calls, svo, sys, sk, conf = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'sensitivity_aff', 'aff')
+  queue(svo, 'prone_aff', 'aff')
+  queue(svo, 'relapsing_herb', 'herb')
+  svo.gmcp_is_live = true
+  svo.gmcp_refuted = {sensitivity_aff = 'sensitivity'}
+  conf.gmcpaffechoes = true
+
+  svo.lifevision.validate()
+
+  contains(calls.cleared, 'sensitivity_aff', "gate: a claim GMCP contradicts is cleared")
+  not_contains(calls.finished, 'sensitivity_aff', "gate: and never runs")
+  contains(calls.finished, 'prone_aff', "gate: a claim GMCP agrees with runs as before")
+  contains(calls.finished, 'relapsing_herb', "gate: a cure in the same paragraph runs as before")
+  eq(#calls.cleared, 1, "gate: nothing else is cleared")
+  eq(calls.echof[1], "Ignored a line claiming sensitivity: GMCP doesn't report it.", "gate: the refusal is echoed with gmcpaffechoes on")
+  eq(#calls.lostbal, 0, "gate: dropping a claim spends no balance")
+end
+
+-- ===== scenario 10: the echo follows gmcpaffechoes =====
+do
+  local env, calls, svo = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'sensitivity_aff', 'aff')
+  svo.gmcp_is_live = true
+  svo.gmcp_refuted = {sensitivity_aff = 'sensitivity'}
+
+  svo.lifevision.validate()
+
+  contains(calls.cleared, 'sensitivity_aff', "gate, echoes off: the claim is still dropped")
+  eq(#calls.echof, 0, "gate, echoes off: nothing is echoed")
+end
+
+-- ===== scenario 11: GMCP not live - nothing is asked, everything runs =====
+-- Before the login List, in blackout, and after a blackout until a diagnose
+-- resyncs, the triggers decide as they always did.
+do
+  local env, calls, svo = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'sensitivity_aff', 'aff')
+  svo.gmcp_is_live = false
+  svo.gmcp_refuted = {sensitivity_aff = 'sensitivity'}
+
+  svo.lifevision.validate()
+
+  contains(calls.finished, 'sensitivity_aff', "not live: the claim runs")
+  eq(#calls.asked, 0, "not live: GMCP is not consulted at all")
+end
+
+-- ===== scenario 12: a diagnose paragraph is left alone =====
+-- A diagnose is the game's own list and can name a hidden affliction GMCP
+-- never sent, so its claims must run even where GMCP disagrees.
+do
+  local env, calls, svo = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'diag_physical', 'physical')
+  queue(svo, 'paralysis_aff', 'aff')
+  svo.gmcp_is_live = true
+  svo.gmcp_refuted = {paralysis_aff = 'paralysis'}
+
+  svo.lifevision.validate()
+
+  contains(calls.finished, 'paralysis_aff', "diagnose: a claim GMCP has not confirmed still runs")
+  contains(calls.finished, 'diag_physical', "diagnose: the diagnose itself completes")
+  eq(#calls.asked, 0, "diagnose: GMCP is not consulted")
+end
+
+-- ===== scenario 13: the paragraph blackout starts in is left alone =====
+-- GMCP has already gone quiet by the time the blackout prompt arrives.
+do
+  local env, calls, svo = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'blackout_aff', 'aff')
+  queue(svo, 'asthma_aff', 'aff')
+  svo.gmcp_is_live = true
+  svo.gmcp_refuted = {asthma_aff = 'asthma'}
+
+  svo.lifevision.validate()
+
+  contains(calls.finished, 'blackout_aff', "blackout onset: blackout is gained")
+  contains(calls.finished, 'asthma_aff', "blackout onset: a claim GMCP never confirmed still runs")
+  eq(#calls.asked, 0, "blackout onset: GMCP is not consulted")
+end
+
+-- ===== scenario 14: stopprocessing still wins over the gate =====
+-- A claim that sets sk.stopprocessing (checkstun freezing a paragraph) clears
+-- everything after it; the gate must not bring a cleared claim back or ask
+-- GMCP about it.
+do
+  local env, calls, svo, sys, sk = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'prone_aff', 'aff')
+  queue(svo, 'asthma_aff', 'aff')
+  svo.gmcp_is_live = true
+  sk.stopprocessing = true
+
+  svo.lifevision.validate()
+
+  eq(#calls.finished, 0, "stopprocessing: nothing runs")
+  eq(#calls.cleared, 2, "stopprocessing: both claims are cleared")
+  eq(#calls.asked, 0, "stopprocessing: GMCP is not consulted about cleared claims")
+end
+
+-- ===== scenario 15: GMCP gate - a "gone" claim GMCP contradicts is dropped =====
+-- A wore-off line or a passive cure for an affliction GMCP still reports.
+do
+  local env, calls, svo, sys, sk, conf = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'asthma_gone', 'gone')
+  queue(svo, 'prone_gone', 'gone')
+  svo.gmcp_is_live = true
+  svo.gmcp_kept = {asthma_gone = 'asthma'}
+  conf.gmcpaffechoes = true
+
+  svo.lifevision.validate()
+
+  contains(calls.cleared, 'asthma_gone', "gone gate: a claim GMCP contradicts is cleared")
+  not_contains(calls.finished, 'asthma_gone', "gone gate: and never runs")
+  contains(calls.finished, 'prone_gone', "gone gate: a claim GMCP agrees with runs as before")
+  eq(calls.echof[1], "Ignored a line saying asthma is gone: GMCP still reports it.", "gone gate: the refusal is echoed")
+end
+
+-- ===== scenario 16: the backstops are told which paragraphs to trust =====
+-- svo.addaffdict and svo.rmaff read sk.gmcp_stands_aside, so it has to be set
+-- while a diagnose's or a blackout onset's claims run, and nowhere else.
+do
+  local env, calls, svo, sys, sk = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'diag_physical', 'physical')
+  queue(svo, 'paralysis_aff', 'aff')
+  svo.gmcp_is_live = true
+
+  svo.lifevision.validate()
+
+  eq(calls.trust.paralysis_aff, true, "trust: set while a diagnose paragraph's claims run")
+  eq(sk.gmcp_stands_aside, nil, "trust: cleared once the paragraph is done")
+end
+
+do
+  local env, calls, svo, sys, sk = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'blackout_aff', 'aff')
+  svo.gmcp_is_live = true
+
+  svo.lifevision.validate()
+
+  eq(calls.trust.blackout_aff, true, "trust: set while a blackout onset's claims run")
+end
+
+do
+  local env, calls, svo, sys, sk = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'paralysis_aff', 'aff')
+  svo.gmcp_is_live = true
+
+  svo.lifevision.validate()
+
+  eq(calls.trust.paralysis_aff, false, "trust: not set for an ordinary paragraph")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))

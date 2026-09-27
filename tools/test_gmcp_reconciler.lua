@@ -47,6 +47,27 @@ local RESET_SRC = "src/scripts/svo (alias and defence functions)/Alias_functions
 local RESET_START_ANCHOR = "function svo.reset.general()"
 local RESET_END_ANCHOR = "  svo.check_generics()"
 
+-- The two connections that take the final word away from GMCP (a new login,
+-- a blackout). They sit further down Setup.lua than the handler block,
+-- because svogotaff is only created there.
+local TRUST_START_ANCHOR = "signals.connected:connect(function() sk.gmcp_affs_listed"
+local TRUST_END_ANCHOR = "end, 'gmcp affs stale after blackout')"
+
+-- svo.addaffdict and svo.rmaff themselves, for the backstop call in each, and
+-- the public svo.addaff, svo.removeaff and svo.removeafflevel after them,
+-- which set GMCP aside: the scenarios above test what the backstops decide,
+-- these prove the functions that store afflictions actually ask them, and
+-- that the public ones do not have to.
+local STORE_START_ANCHOR = "local old_internal_addaff = function (new_aff)"
+local STORE_END_ANCHOR = "-- externally available as svo.prompttrigger"
+
+-- vreset, vaff and vrmaff, which set GMCP aside too.
+local ALIAS_SRC = "src/scripts/svo (alias and defence functions)/Alias_functions.lua"
+local RESETAFFS_START_ANCHOR = "function svo.reset.affs(echoback)"
+local RESETAFFS_END_ANCHOR = "function svo.reset.general()"
+local VAFF_START_ANCHOR = "function svo.vaff(aff)"
+local VAFF_END_ANCHOR = "if svo.haveskillset('kaido') then"
+
 local function read_file(path)
   local f, err = io.open(path, "r")
   if not f then error("cannot open " .. path .. ": " .. tostring(err)) end
@@ -152,7 +173,7 @@ local function new_environment()
   local calls = {
     addaff = {}, rmaff = {}, addaffdict = {}, updateaffcount = {},
     remove_unknownany = {}, debugf = {}, got = {}, lost = {},
-    onprompt = {}, checkaeony = 0, changecuring = 0,
+    onprompt = {}, checkaeony = 0, changecuring = 0, echof = {}, events = {},
   }
 
   local handlers = {}
@@ -185,6 +206,7 @@ local function new_environment()
     svotossa = {}, svotossd = {},
   }
   svo.affl = {}
+  svo.affs = {}
   svo.gaffl = {}
   svo.gdefc = {}
   svo.defc = {}
@@ -202,6 +224,13 @@ local function new_environment()
   svo.bals_in_use = {}
   function svo.killaction() end
   function svo.check_generics() end
+  -- for the public add/remove API and the aliases
+  svo.affsp = {}
+  svo.codepaste = { badaeon = function() end }
+  svo.lifevision = { l = {} }
+  function svo.lifevision.l:set(k, v) self[k] = v end
+  function svo.make_gnomes_work() end
+  function svo.assert(condition, msg) if not condition then error(msg) end end
 
   function svo.deepcopy(t)
     if type(t) ~= 'table' then return t end
@@ -214,7 +243,7 @@ local function new_environment()
   function svo.rmaff(name) calls.rmaff[#calls.rmaff + 1] = name end
   function svo.addaffdict(entry) calls.addaffdict[#calls.addaffdict + 1] = entry and entry.name end
   function svo.updateaffcount(entry) calls.updateaffcount[#calls.updateaffcount + 1] = entry and entry.name end
-  function svo.echof(...) end
+  function svo.echof(fmt, ...) calls.echof[#calls.echof + 1] = string.format(fmt, ...) end
   function svo.debugf(fmt, ...) calls.debugf[#calls.debugf + 1] = string.format(fmt, ...) end
   function svo.valid.remove_unknownany(name) calls.remove_unknownany[#calls.remove_unknownany + 1] = name end
   function svo.sk.checkaeony() calls.checkaeony = calls.checkaeony + 1 end
@@ -245,6 +274,10 @@ local function new_environment()
   signals.gmcpchardefenceslist = new_signal("deflist")
   signals.gmcpchardefencesremove = new_signal("defremove")
   signals.gmcpchardefencesadd = new_signal("defadd")
+  signals.connected = new_signal("connected")
+  signals.svogotaff = new_signal("gotaff")
+  signals.svolostaff = new_signal(nil)
+  signals.after_lifevision_processing = { block = function() end, unblock = function() end }
 
   local gmcp = { Char = { Afflictions = {}, Defences = {} } }
 
@@ -252,12 +285,21 @@ local function new_environment()
     svo = svo, signals = signals, luanotify = luanotify, gmcp = gmcp,
     -- upvalues the real file aliases at the top of Setup.lua before this block
     sk = svo.sk, conf = svo.conf, defc = svo.defc, gaffl = svo.gaffl, me = svo.me,
+    affs = svo.affs,
+    -- and the ones Curing_skeleton.lua and Alias_functions.lua alias
+    cnrl = {}, lifevision = svo.lifevision,
     -- stdlib the block needs
     string = string, table = table, tonumber = tonumber, pairs = pairs, ipairs = ipairs,
     type = type, tostring = tostring, error = error, setmetatable = setmetatable,
     pcall = pcall, next = next,
     -- Mudlet's; only reached when a queued prompt callback raises.
     echoLink = function() end,
+    -- Mudlet's, for the real addaffdict and rmaff
+    createStopWatch = function() return 1 end,
+    startStopWatch = function() end,
+    stopStopWatch = function() return 0 end,
+    raiseEvent = function(name, arg) calls.events[#calls.events + 1] = name .. " " .. tostring(arg) end,
+    debug = debug,
   }
   env._G = env
 
@@ -295,6 +337,32 @@ local reset_block = extract_between(read_file(RESET_SRC), RESET_SRC,
   RESET_START_ANCHOR, RESET_END_ANCHOR, true)
 print("extracted " .. #prompt_block .. " bytes of the real prompt queue and "
   .. #reset_block .. " bytes of the real svo.reset.general")
+
+local trust_block
+do
+  local src = read_file(SRC)
+  local s = src:find(TRUST_START_ANCHOR, 1, true)
+  if not s then
+    error("start anchor not found in " .. SRC .. " - the GMCP trust connections moved; update this test's anchors")
+  end
+  local e = src:find(TRUST_END_ANCHOR, s, true)
+  if not e then
+    error("end anchor not found in " .. SRC .. " after the start anchor - update this test's anchors")
+  end
+  trust_block = src:sub(s, e + #TRUST_END_ANCHOR - 1)
+end
+print("extracted " .. #trust_block .. " bytes of the GMCP trust connections")
+
+local store_block = extract_between(read_file(PROMPT_SRC), PROMPT_SRC,
+  STORE_START_ANCHOR, STORE_END_ANCHOR, false)
+print("extracted " .. #store_block .. " bytes of the real svo.addaffdict, svo.rmaff and the public add/remove API")
+
+local resetaffs_block = extract_between(read_file(ALIAS_SRC), ALIAS_SRC,
+  RESETAFFS_START_ANCHOR, RESETAFFS_END_ANCHOR, false)
+local vaff_block = extract_between(read_file(ALIAS_SRC), ALIAS_SRC,
+  VAFF_START_ANCHOR, VAFF_END_ANCHOR, false)
+print("extracted " .. #resetaffs_block .. " bytes of the real svo.reset.affs and "
+  .. #vaff_block .. " of svo.vaff and svo.vrmaff")
 
 -- Run the dictionary's own reverse-index build over whatever sstosvoa /
 -- sstosvod a scenario has just set, exactly as it runs at dict-load time.
@@ -720,6 +788,468 @@ do
   contains(calls.lost, 'ds', "G8: a differently-keyed defence (the G8 bug) is now removed via svodtoss, not sstosvod")
   not_contains(calls.lost, 'rebounding', "G8: a defence GMCP confirms is present is not removed")
   not_contains(calls.lost, 'untouchable', "G8/whitelist: a defence GMCP cannot report is never removed")
+end
+
+-- ===== scenario 8: GMCP first - does GMCP report an affliction? =====
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = {
+    deepsleep = 'sleep', sleeping = 'sleep',
+    temperedcholeric = 'cholerichumour',
+    deafness = false,
+  }
+  build_reverse_indexes(env)
+
+  -- svotossa keeps one of sleep's two game names, and which one depends on
+  -- pairs order. Report through the other one: that is the case svotossa
+  -- gets wrong and the forward walk has to get right.
+  local kept = svo.dict.svotossa.sleep
+  truthy(kept == 'deepsleep' or kept == 'sleeping', "reports: svotossa keeps one of sleep's game names")
+  local other = (kept == 'deepsleep') and 'sleeping' or 'deepsleep'
+  env.gaffl[other] = true
+  eq(svo.gmcp_reports('sleep'), true, "reports: sleep is found under the game name svotossa did not keep")
+
+  env.gaffl[other] = nil
+  env.gaffl['temperedcholeric (2)'] = true
+  eq(svo.gmcp_reports('cholerichumour'), true, "reports: a levelled entry under a differing game name is found")
+
+  env.gaffl.deafness = true
+  eq(svo.gmcp_reports('deafness'), false, "reports: a game name svof maps to nothing reports nothing")
+  eq(svo.gmcp_reports('sensitivity'), false, "reports: an affliction absent from gaffl is not reported")
+end
+
+-- ===== scenario 9: GMCP first - when GMCP has the final word =====
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+  load_block(trust_block, env)
+
+  svo.dict.sstosvoa = { prone = 'prone' }
+  build_reverse_indexes(env)
+
+  eq(svo.gmcp_live(), false, "live: not before the game has sent a List")
+
+  env.gmcp.Char.Afflictions.List = {}
+  h.afflist()
+  eq(svo.gmcp_live(), true, "live: a List makes GMCP live")
+
+  svo.affs.blackout = {}
+  eq(svo.gmcp_live(), false, "live: not in blackout")
+  svo.affs.blackout = nil
+
+  h.gotaff('prone')
+  eq(svo.gmcp_live(), true, "live: gaining any other affliction changes nothing")
+
+  h.gotaff('blackout')
+  eq(svo.gmcp_live(), false, "live: not after a blackout, even once it has ended")
+
+  h.afflist()
+  eq(svo.gmcp_live(), true, "live: a List resyncs after a blackout")
+
+  h.connected()
+  eq(svo.gmcp_live(), false, "live: not after a new connection, until its List")
+end
+
+-- ===== scenario 10: GMCP first - does GMCP contradict an affliction? =====
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = { sensitivity = 'sensitivity', prone = 'prone', blackout = 'blackout' }
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = { { name = 'prone' } }
+  h.afflist()
+
+  eq(svo.gmcp_refutes('sensitivity'), true, "refutes: an affliction GMCP could report and does not")
+  eq(svo.gmcp_refutes('prone'), false, "refutes: not one GMCP reports")
+  eq(svo.gmcp_refutes('stun'), false, "refutes: never one GMCP cannot report")
+  eq(svo.gmcp_refutes('blackout'), false, "refutes: never blackout, which is what switches GMCP off")
+
+  svo.sk.gmcp_stands_aside = true
+  eq(svo.gmcp_refutes('sensitivity'), false, "refutes: nothing in a paragraph the game vouches for")
+  svo.sk.gmcp_stands_aside = nil
+
+  svo.affs.blackout = {}
+  eq(svo.gmcp_refutes('sensitivity'), false, "refutes: nothing while GMCP is not live")
+end
+
+-- ===== scenario 11: GMCP first - which affliction a claim is about =====
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = {
+    sensitivity = 'sensitivity', asthma = 'asthma', aeon = 'aeon',
+    impaled = 'impale', webbed = 'webbed',
+  }
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = {}
+  h.afflist()
+
+  local function claim(action_name, balance, other_action, arg)
+    return {
+      p = { action_name = action_name, balance = balance, name = action_name .. '_' .. balance },
+      other_action = other_action, arg = arg,
+    }
+  end
+
+  eq(svo.gmcp_refuted_claim(claim('sensitivity', 'aff')), 'sensitivity', "claim: an affliction's own claim")
+  eq(svo.gmcp_refuted_claim(claim('sensitivity', 'herb')), nil, "claim: a cure is never refused")
+  eq(svo.gmcp_refuted_claim(claim('stun', 'aff')), nil, "claim: an affliction GMCP cannot report is never refused")
+  eq(svo.gmcp_refuted_claim(claim('checkasthma', 'aff')), 'asthma', "claim: a probe is about the affliction it tests")
+  eq(svo.gmcp_refuted_claim(claim('checkstun', 'aff')), nil, "claim: checkstun tests stun, which GMCP cannot report")
+  eq(svo.gmcp_refuted_claim(claim('checkslows', 'aff', 'truename')), 'aeon', "claim: checkslows' truename outcome is about aeon")
+  eq(svo.gmcp_refuted_claim(claim('checkslows', 'aff', nil, 'aeon')), 'aeon', "claim: checkslows names aeon in its argument")
+  eq(svo.gmcp_refuted_claim(claim('checkslows', 'aff', nil, 'retardation')), nil, "claim: and retardation, which GMCP cannot report")
+  eq(svo.gmcp_refuted_claim(claim('checkwrithes', 'aff', 'impale', 150)), 'impale', "claim: checkwrithes' impale outcome")
+  eq(svo.gmcp_refuted_claim(claim('checkwrithes', 'aff', nil, 'webbed')), 'webbed', "claim: checkwrithes names the writhe in its argument")
+
+  env.gaffl.asthma = true
+  eq(svo.gmcp_refuted_claim(claim('checkasthma', 'aff')), nil, "claim: a probe for an affliction GMCP reports is not refused")
+end
+
+-- ===== scenario 12: GMCP first - the live log that started this =====
+-- A shield strike to the ribs while deaf: the game stripped deafness instead
+-- of giving sensitivity. GMCP sent "Remove deafness" and "Add prone" and
+-- nothing about sensitivity, while the trigger's deafness check missed the
+-- "Your hearing is suddenly restored." line and claimed sensitivity anyway.
+-- Driven through the real handlers, so gaffl holds what they made of it.
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  -- the real mappings: GMCP's deafness is not a svof affliction
+  svo.dict.sstosvoa = { deafness = false, prone = 'prone', sensitivity = 'sensitivity' }
+  svo.dict.prone = { name = 'prone' }
+  build_reverse_indexes(env)
+
+  env.gmcp.Char.Afflictions.List = { { name = 'deafness' } }
+  h.afflist()
+  env.gmcp.Char.Afflictions.Remove = { [1] = 'deafness' }
+  h.affremove()
+  env.gmcp.Char.Afflictions.Add = { name = 'prone' }
+  h.affadd()
+
+  local function aff_claim(name)
+    return { p = { action_name = name, balance = 'aff', name = name .. '_aff' } }
+  end
+  eq(svo.gmcp_refuted_claim(aff_claim('sensitivity')), 'sensitivity', "live log: the sensitivity claim is refused")
+  eq(svo.gmcp_refuted_claim(aff_claim('prone')), nil, "live log: the prone claim GMCP confirmed is not")
+end
+
+-- ===== scenario 13: GMCP first - after a blackout, the next List resyncs =====
+-- Blackout stops Char.Afflictions and no List comes when it ends, so gaffl
+-- still holds what was cured during it. The game sends a List after every
+-- diagnose that goes through (every one of the 41 Lists in the two captured
+-- fights followed a diagnose), and that List hands GMCP the final word back.
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+  load_block(trust_block, env)
+
+  svo.dict.sstosvoa = { sensitivity = 'sensitivity', prone = 'prone', asthma = 'asthma' }
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = { { name = 'sensitivity' }, { name = 'prone' } }
+  h.afflist()
+  h.gotaff('blackout')
+  -- blackout has ended; sensitivity was cured during it, which GMCP never said
+
+  local function aff_claim(name)
+    return { p = { action_name = name, balance = 'aff', name = name .. '_aff' } }
+  end
+  eq(svo.gmcp_refuted_claim(aff_claim('asthma')), nil, "after blackout: nothing is refused while gaffl is stale")
+
+  -- the List a diagnose brings
+  env.gmcp.Char.Afflictions.List = { { name = 'prone' } }
+  h.afflist()
+
+  eq(env.gaffl.sensitivity, nil, "after blackout: the List drops what was cured during it")
+  eq(env.gaffl.prone, true, "after blackout: and keeps what the game still reports")
+  eq(svo.gmcp_live(), true, "after blackout: GMCP has the final word again")
+  eq(svo.gmcp_refuted_claim(aff_claim('asthma')), 'asthma', "after blackout: claims are checked against GMCP again")
+end
+
+-- ===== scenario 14: GMCP first - does GMCP contradict a loss? =====
+-- Includes the cases the empty-cure gate used to check with its own copy of
+-- this logic, now that presume_cured hands its whole list to svo.rmaff.
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = {
+    asthma = 'asthma', torntendons = 'torntendons', slickness = 'slickness',
+    deepsleep = 'sleep', sleeping = 'sleep',
+  }
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = { { name = 'asthma' }, { name = 'torntendons (2)' } }
+  h.afflist()
+
+  eq(svo.gmcp_holds('asthma'), true, "holds: an affliction GMCP still reports")
+  eq(svo.gmcp_holds('torntendons'), true, "holds: one GMCP reports at level 2")
+  eq(svo.gmcp_holds('slickness'), false, "holds: not one GMCP does not report")
+  eq(svo.gmcp_holds('unknownany'), false, "holds: never one GMCP cannot report")
+
+  local kept = svo.dict.svotossa.sleep
+  local other = (kept == 'deepsleep') and 'sleeping' or 'deepsleep'
+  env.gaffl[other] = true
+  eq(svo.gmcp_holds('sleep'), true, "holds: sleep under the game name svotossa did not keep")
+
+  svo.sk.gmcp_stands_aside = true
+  eq(svo.gmcp_holds('asthma'), false, "holds: nothing in a paragraph the game vouches for")
+  svo.sk.gmcp_stands_aside = nil
+
+  svo.affs.blackout = {}
+  eq(svo.gmcp_holds('asthma'), false, "holds: nothing while GMCP is not live")
+end
+
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  -- no List yet: GMCP disabled, or svof loaded mid-session. Nothing is kept,
+  -- which is how svof behaved before GMCP had any say.
+  svo.dict.sstosvoa = { asthma = 'asthma' }
+  build_reverse_indexes(env)
+  env.gaffl.asthma = true
+  eq(svo.gmcp_holds('asthma'), false, "holds: nothing before the game has sent a List")
+end
+
+-- ===== scenario 15: GMCP first - which affliction a "gone" claim is about =====
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = { asthma = 'asthma', slickness = 'slickness' }
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = { { name = 'asthma' } }
+  h.afflist()
+
+  local function claim(action_name, balance)
+    return { p = { action_name = action_name, balance = balance, name = action_name .. '_' .. balance } }
+  end
+
+  eq(svo.gmcp_kept_claim(claim('asthma', 'gone')), 'asthma', "gone claim: kept when GMCP still reports it")
+  eq(svo.gmcp_kept_claim(claim('slickness', 'gone')), nil, "gone claim: not when GMCP does not")
+  eq(svo.gmcp_kept_claim(claim('rebounding', 'gone')), nil, "gone claim: a defence's is never kept")
+  eq(svo.gmcp_kept_claim(claim('asthma', 'herb')), nil, "gone claim: a cure is not one, its own rmaff decides")
+  eq(svo.gmcp_kept_claim(claim('asthma', 'aff')), nil, "gone claim: a gain is not one")
+end
+
+-- ===== scenario 16: GMCP first - the add backstop =====
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = { sensitivity = 'sensitivity', prone = 'prone' }
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = { { name = 'prone' } }
+  h.afflist()
+  svo.conf.gmcpaffechoes = true
+
+  eq(svo.gmcp_refuse_add('sensitivity'), true, "add backstop: refuses one GMCP does not report")
+  eq(calls.echof[1], "Didn't add sensitivity: GMCP doesn't report it.", "add backstop: and echoes it")
+  eq(svo.gmcp_refuse_add('prone'), false, "add backstop: lets through one GMCP reports")
+  eq(svo.gmcp_refuse_add('stun'), false, "add backstop: lets through one GMCP cannot report")
+  eq(#calls.echof, 1, "add backstop: only a refusal is echoed")
+end
+
+-- ===== scenario 17: GMCP first - the remove backstop =====
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = { torntendons = 'torntendons', asthma = 'asthma', slickness = 'slickness' }
+  svo.dict.torntendons = { name = 'torntendons', count = 0 }
+  svo.dict.asthma = { name = 'asthma' }
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = { { name = 'torntendons (3)' }, { name = 'asthma' } }
+  h.afflist()
+  svo.affs.torntendons = {}
+  svo.affl.torntendons = { count = 3 }
+  svo.conf.gmcpaffechoes = true
+
+  eq(svo.gmcp_refuse_remove('asthma'), true, "remove backstop: keeps one GMCP still reports")
+  eq(calls.echof[#calls.echof], "Kept asthma: GMCP still reports it.", "remove backstop: and echoes it")
+  eq(calls.onprompt['gmcp count asthma'], nil, "remove backstop: no count to put back for an uncounted affliction")
+  eq(svo.gmcp_refuse_remove('slickness'), false, "remove backstop: lets go of one GMCP does not report")
+
+  -- 70 callers reset the count themselves right after rmaff returns
+  eq(svo.gmcp_refuse_remove('torntendons'), true, "remove backstop: keeps a counted one GMCP still reports")
+  svo.dict.torntendons.count = 0
+  local fix = calls.onprompt['gmcp count torntendons']
+  eq(type(fix), 'function', "remove backstop: queues the count fix for the prompt")
+  fix = fix or function() end -- so a missing fix fails the checks below instead of crashing
+  fix()
+  eq(svo.dict.torntendons.count, 3, "remove backstop: the prompt puts GMCP's level back")
+  contains(calls.updateaffcount, 'torntendons', "remove backstop: and announces the count")
+
+  -- and by then GMCP may have removed it after all
+  svo.affs.torntendons = nil
+  svo.dict.torntendons.count = 0
+  fix()
+  eq(svo.dict.torntendons.count, 0, "remove backstop: a count fix leaves a since-removed affliction alone")
+end
+
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+  load_block(trust_block, env)
+
+  -- The loop the empty-cure gate used to fall into: asthma was cured during a
+  -- blackout, no Remove came, and the stale entry kept it and re-cured it
+  -- forever. Until the next List, GMCP keeps nothing.
+  svo.dict.sstosvoa = { asthma = 'asthma' }
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = { { name = 'asthma' } }
+  h.afflist()
+  h.gotaff('blackout')
+
+  eq(svo.gmcp_refuse_remove('asthma'), false, "remove backstop: a stale entry after blackout keeps nothing")
+end
+
+-- ===== scenario 18: GMCP first - the real addaffdict and rmaff ask =====
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = { sensitivity = 'sensitivity', prone = 'prone' }
+  svo.dict.sensitivity = { name = 'sensitivity' }
+  svo.dict.prone = { name = 'prone' }
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = { { name = 'prone' } }
+  h.afflist()
+
+  -- after the List: its handler calls svo.addaff, which this replaces with the
+  -- real one, and the real one needs far more of svof than this harness has
+  load_block(store_block, env)
+
+  svo.addaffdict(svo.dict.sensitivity)
+  eq(svo.affs.sensitivity, nil, "store: an add GMCP contradicts never reaches svo.affs")
+  eq(svo.affl.sensitivity, nil, "store: nor svo.affl")
+  not_contains(calls.events, "svo got aff sensitivity", "store: and raises no event")
+
+  svo.addaffdict(svo.dict.prone)
+  truthy(svo.affs.prone, "store: an add GMCP confirms goes through")
+  contains(calls.events, "svo got aff prone", "store: and raises its event")
+
+  svo.rmaff('prone')
+  truthy(svo.affs.prone, "store: a removal GMCP contradicts is refused")
+  not_contains(calls.events, "svo lost aff prone", "store: and raises no event")
+
+  env.gaffl.prone = nil -- what the Remove handler does before it calls rmaff
+  svo.rmaff('prone')
+  eq(svo.affs.prone, nil, "store: once GMCP drops it, the removal goes through")
+  contains(calls.events, "svo lost aff prone", "store: and raises its event")
+
+  svo.affs.blackout = {}
+  svo.addaffdict(svo.dict.sensitivity)
+  truthy(svo.affs.sensitivity, "store: in blackout the text decides, as before")
+end
+
+-- ===== scenario 19: GMCP first - setting GMCP aside for an instruction =====
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = { sensitivity = 'sensitivity', prone = 'prone' }
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = { { name = 'prone' } }
+  h.afflist()
+
+  local seen = svo.gmcp_set_aside(function(a, b)
+    return { refutes = svo.gmcp_refutes('sensitivity'), holds = svo.gmcp_holds('prone'), args = a .. b }
+  end, 'x', 'y')
+  eq(seen.refutes, false, "set aside: nothing is refused inside")
+  eq(seen.holds, false, "set aside: nothing is kept inside")
+  eq(seen.args, 'xy', "set aside: the arguments reach the function and its result comes back")
+  eq(svo.gmcp_refutes('sensitivity'), true, "set aside: GMCP has the final word again afterwards")
+
+  local ok, err = pcall(svo.gmcp_set_aside, function() error("boom", 0) end)
+  eq(ok, false, "set aside: an error inside still raises")
+  eq(err, "boom", "set aside: with its own message")
+  eq(svo.sk.gmcp_stands_aside, nil, "set aside: and does not leave GMCP standing aside")
+
+  svo.gmcp_set_aside(function()
+    svo.gmcp_set_aside(function() end)
+    eq(svo.sk.gmcp_stands_aside, true, "set aside: a nested call leaves the outer one in place")
+  end)
+end
+
+-- ===== scenario 20: GMCP first - the public API works as documented =====
+-- svo.addaff and svo.removeaff are documented to act "right away", and
+-- people's own scripts depend on that.
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = { sensitivity = 'sensitivity', prone = 'prone', skullfractures = 'skullfractures' }
+  for _, name in ipairs({'sensitivity', 'prone', 'skullfractures'}) do
+    local entry = { name = name }
+    entry.aff = { oncompleted = function() svo.addaffdict(entry) end }
+    entry.gone = {
+      oncompleted = function() svo.rmaff(name) end,
+      general_cure = function() svo.rmaff(name) end,
+    }
+    svo.dict[name] = entry
+  end
+  svo.dict.skullfractures.count = 2
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = { { name = 'prone' }, { name = 'skullfractures (2)' } }
+  h.afflist()
+  load_block(store_block, env)
+  svo.addaffdict(svo.dict.prone)
+  svo.addaffdict(svo.dict.skullfractures)
+
+  svo.addaff('sensitivity')
+  truthy(svo.affs.sensitivity, "public API: svo.addaff adds what GMCP does not report")
+
+  eq(svo.removeaff('prone'), true, "public API: svo.removeaff reports the removal")
+  eq(svo.affs.prone, nil, "public API: and removes what GMCP still reports")
+
+  svo.removeafflevel('skullfractures')
+  eq(svo.affs.skullfractures, nil, "public API: svo.removeafflevel acts even where GMCP disagrees")
+
+  svo.gmcp_set_aside(svo.rmaff, 'sensitivity')
+  svo.addaff(svo.dict.sensitivity)
+  truthy(svo.affs.sensitivity, "public API: so does svo.addaff given a dictionary entry")
+
+  -- and none of it leaves GMCP standing aside for svof's own adds
+  svo.gmcp_set_aside(svo.rmaff, 'sensitivity')
+  svo.addaffdict(svo.dict.sensitivity)
+  eq(svo.affs.sensitivity, nil, "public API: afterwards svof's own adds are checked again")
+end
+
+-- ===== scenario 21: GMCP first - vaff, vrmaff and vreset work as before =====
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = { sensitivity = 'sensitivity', prone = 'prone' }
+  for _, name in ipairs({'sensitivity', 'prone'}) do
+    local entry = { name = name }
+    entry.aff = { oncompleted = function() svo.addaffdict(entry) end }
+    entry.gone = { oncompleted = function() svo.rmaff(name) end }
+    svo.dict[name] = entry
+  end
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = { { name = 'prone' } }
+  h.afflist()
+  load_block(store_block, env)
+  load_block(resetaffs_block, env)
+  load_block(vaff_block, env)
+  svo.addaffdict(svo.dict.prone)
+
+  svo.vrmaff('prone')
+  eq(svo.affs.prone, nil, "vrmaff: removes what GMCP still reports")
+
+  svo.vaff('sensitivity')
+  truthy(svo.affs.sensitivity, "vaff typed: adds what GMCP does not report")
+
+  svo.addaffdict(svo.dict.prone)
+  svo.reset.affs()
+  eq(next(svo.affs), nil, "vreset: clears everything, including what GMCP still reports")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))
