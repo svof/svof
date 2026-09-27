@@ -1,1 +1,1 @@
-svo.valid.diag_peace()
+svo.valid.diag('peace')

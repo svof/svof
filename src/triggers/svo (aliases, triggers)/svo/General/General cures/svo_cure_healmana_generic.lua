@@ -1,1 +1,1 @@
-svo.valid.generic_healmana()
+svo.valid.generic('healmana')

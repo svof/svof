@@ -1,1 +1,1 @@
-svo.valid.diag_crushedthroat()
+svo.valid.diag('crushedthroat')

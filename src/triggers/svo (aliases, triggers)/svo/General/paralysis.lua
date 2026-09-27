@@ -1,1 +1,1 @@
-svo.valid.diag_paralysis()
+svo.valid.diag('paralysis')

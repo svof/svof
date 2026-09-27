@@ -1,1 +1,1 @@
-svo.valid.tree_cured_agoraphobia()
+svo.valid.tree_cured('agoraphobia')

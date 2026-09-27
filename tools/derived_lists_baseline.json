@@ -1,0 +1,165 @@
+{
+  "note": "Differences between what svo.dict can derive and the literals holding the same information, that are deliberate. check_derived_lists.py --baseline fails on anything not listed here, and on any of these whose nature has changed. Regenerate only when you meant to change one, in the same commit that causes it.",
+  "accepted": [
+    {
+      "id": "cures|ash|only_empty_map|crescendo",
+      "digest": "3c060df311dfc79c",
+      "text": "cures: empty.eat_ash clears crescendo, no dictionary entry names ash as its cure"
+    },
+    {
+      "id": "cures|bloodroot|only_dictionary|pyramides",
+      "digest": "3709d875365e019a",
+      "text": "cures: the dictionary says bloodroot cures pyramides, empty.eat_bloodroot does not clear it"
+    },
+    {
+      "id": "cures|kelp|only_dictionary|parasite",
+      "digest": "90c464cdbaeba36d",
+      "text": "cures: the dictionary says kelp cures parasite, empty.eat_kelp does not clear it"
+    },
+    {
+      "id": "cures|pear|only_dictionary|waterbubble",
+      "digest": "04cd0c6331dbd814",
+      "text": "cures: the dictionary says pear cures waterbubble, empty.eat_pear does not clear it"
+    },
+    {
+      "id": "focus|block_only|fear",
+      "digest": "8a9d3fae6c853402",
+      "text": "focus: fear has a focus block and is not in focuscurables (disabled)"
+    },
+    {
+      "id": "focus|block_only|fulminated",
+      "digest": "f4b8b4de8b03e5c3",
+      "text": "focus: fulminated has a focus block and is not in focuscurables (LIVE)"
+    },
+    {
+      "id": "shadow|bloodroot",
+      "digest": "5f22bc5110376b0f",
+      "text": "empty.eat_bloodroot is generated and then redefined; live set is paralysis, slickness"
+    },
+    {
+      "id": "tree|only_tree_list|bleeding",
+      "digest": "04800755d3b72574",
+      "text": "tree: bleeding has a tree-cure trigger and is not in treecurables"
+    },
+    {
+      "id": "tree|only_tree_list|latched",
+      "digest": "66c8a5cc27b103df",
+      "text": "tree: latched has a tree-cure trigger and is not in treecurables"
+    },
+    {
+      "id": "tree|only_tree_list|tension",
+      "digest": "9b3d688a2ed732d9",
+      "text": "tree: tension has a tree-cure trigger and is not in treecurables"
+    },
+    {
+      "id": "tree|only_tree_list|voided",
+      "digest": "2e752b845bb3342e",
+      "text": "tree: voided has a tree-cure trigger and is not in treecurables"
+    },
+    {
+      "id": "tree|only_treecurables|blackout",
+      "digest": "04e62a81a41e6368",
+      "text": "tree: blackout is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|crescendo",
+      "digest": "2338f89eb6724c6b",
+      "text": "tree: crescendo is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|degenerate",
+      "digest": "8b23f881f7d0c02b",
+      "text": "tree: degenerate is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|depression",
+      "digest": "412ff76258900a46",
+      "text": "tree: depression is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|deteriorate",
+      "digest": "bb38eaa50fa2d21a",
+      "text": "tree: deteriorate is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|disrupt",
+      "digest": "70b5c4bcb19afa7b",
+      "text": "tree: disrupt is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|dissonance",
+      "digest": "bd39db2a134b8839",
+      "text": "tree: dissonance is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|earworm",
+      "digest": "9e54106876facd62",
+      "text": "tree: earworm is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|fulminated",
+      "digest": "68c306f6153d4918",
+      "text": "tree: fulminated is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|horror",
+      "digest": "b1e09a32a07e70f6",
+      "text": "tree: horror is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|itching",
+      "digest": "5e53d1a91268e848",
+      "text": "tree: itching is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|madness",
+      "digest": "28337478e6119f29",
+      "text": "tree: madness is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|parasite",
+      "digest": "e5b46bdf377b0f44",
+      "text": "tree: parasite is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|pyre",
+      "digest": "d44439ae398c4360",
+      "text": "tree: pyre is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|retribution",
+      "digest": "9b9a6ba4a555e988",
+      "text": "tree: retribution is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|shadowmadness",
+      "digest": "8eab52ceb9af81c9",
+      "text": "tree: shadowmadness is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|timeloop",
+      "digest": "8aea344a879f5dc4",
+      "text": "tree: timeloop is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|unknownany",
+      "digest": "dabcb41b2d7c4e3f",
+      "text": "tree: unknownany is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|unknowncrippledarm",
+      "digest": "d709f505a450b4ba",
+      "text": "tree: unknowncrippledarm is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|unknowncrippledleg",
+      "digest": "d824709dabc021ec",
+      "text": "tree: unknowncrippledleg is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|unknownmental",
+      "digest": "f8dfee0c3e6264af",
+      "text": "tree: unknownmental is in treecurables and has no tree-cure trigger"
+    }
+  ]
+}

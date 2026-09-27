@@ -1,3 +1,3 @@
 echo(" (bleeding for mana, clotting takes health)")
 
-svo.valid.diag_corrupted()
+svo.valid.diag('corrupted')

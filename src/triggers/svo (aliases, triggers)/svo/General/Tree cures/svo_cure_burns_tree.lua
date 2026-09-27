@@ -1,1 +1,1 @@
-svo.valid.tree_cured_burns()
+svo.valid.tree_cured('all burns')

@@ -1,1 +1,1 @@
-svo.valid.tree_cured_masochism()
+svo.valid.tree_cured('masochism')

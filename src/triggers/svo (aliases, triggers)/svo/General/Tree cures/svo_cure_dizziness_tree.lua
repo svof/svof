@@ -1,1 +1,1 @@
-svo.valid.tree_cured_dizziness()
+svo.valid.tree_cured('dizziness')

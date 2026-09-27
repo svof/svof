@@ -1,1 +1,1 @@
-svo.valid.tree_cured_addiction()
+svo.valid.tree_cured('addiction')

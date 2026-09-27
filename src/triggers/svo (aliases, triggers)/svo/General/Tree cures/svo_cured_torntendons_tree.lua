@@ -1,1 +1,1 @@
-svo.valid.tree_cured_torntendons()
+svo.valid.tree_cured('torntendons cured')

@@ -1,1 +1,1 @@
-svo.valid.diag_hecate()
+svo.valid.diag('hecate')

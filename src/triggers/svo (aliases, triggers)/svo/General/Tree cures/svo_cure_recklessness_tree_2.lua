@@ -1,1 +1,1 @@
-svo.valid.tree_cured_recklessness()
+svo.valid.tree_cured('recklessness')

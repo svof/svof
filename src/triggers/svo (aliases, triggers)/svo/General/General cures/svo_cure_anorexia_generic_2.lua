@@ -1,1 +1,1 @@
-svo.valid.generic_anorexia()
+svo.valid.generic('anorexia')

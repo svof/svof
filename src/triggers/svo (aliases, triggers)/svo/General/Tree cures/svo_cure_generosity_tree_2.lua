@@ -1,1 +1,1 @@
-svo.valid.tree_cured_generosity()
+svo.valid.tree_cured('generosity')

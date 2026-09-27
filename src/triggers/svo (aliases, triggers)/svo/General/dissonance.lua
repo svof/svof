@@ -1,1 +1,1 @@
-svo.valid.diag_dissonance()
+svo.valid.diag('dissonance')

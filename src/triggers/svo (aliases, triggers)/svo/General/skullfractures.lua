@@ -1,1 +1,1 @@
-svo.valid.diag_skullfractures(matches[2])
+svo.valid.diag('skullfractures', matches[2])

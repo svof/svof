@@ -1,1 +1,1 @@
-svo.valid.tree_cured_ablaze()
+svo.valid.tree_cured('ablaze')

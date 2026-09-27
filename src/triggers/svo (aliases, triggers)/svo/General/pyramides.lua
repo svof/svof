@@ -1,1 +1,1 @@
-svo.valid.diag_pyramides()
+svo.valid.diag('pyramides')

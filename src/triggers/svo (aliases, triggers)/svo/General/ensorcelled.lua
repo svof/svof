@@ -1,1 +1,1 @@
-svo.valid.diag_ensorcelled()
+svo.valid.diag('ensorcelled')

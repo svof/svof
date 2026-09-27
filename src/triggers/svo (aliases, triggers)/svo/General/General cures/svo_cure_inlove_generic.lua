@@ -1,1 +1,1 @@
-svo.valid.generic_inlove()
+svo.valid.generic('inlove')

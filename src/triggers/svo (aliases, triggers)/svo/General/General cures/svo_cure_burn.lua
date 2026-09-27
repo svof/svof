@@ -1,1 +1,1 @@
-svo.valid.generic_burn()
+svo.valid.generic('burn')

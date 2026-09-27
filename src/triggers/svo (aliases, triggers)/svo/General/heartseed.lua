@@ -1,1 +1,1 @@
-svo.valid.diag_heartseed()
+svo.valid.diag('heartseed')

@@ -1,1 +1,1 @@
-svo.valid.diag_inlove()
+svo.valid.diag('inlove')

@@ -1,1 +1,1 @@
-svo.valid.generic_voided()
+svo.valid.generic('voided')

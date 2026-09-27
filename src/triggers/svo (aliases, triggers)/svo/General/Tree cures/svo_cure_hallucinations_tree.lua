@@ -1,1 +1,1 @@
-svo.valid.tree_cured_hallucinations()
+svo.valid.tree_cured('hallucinations')

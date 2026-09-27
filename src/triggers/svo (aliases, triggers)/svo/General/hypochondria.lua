@@ -1,1 +1,1 @@
-svo.valid.diag_hypochondria()
+svo.valid.diag('hypochondria')

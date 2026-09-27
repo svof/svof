@@ -1,1 +1,1 @@
-svo.valid.diag_timeflux()
+svo.valid.diag('timeflux')

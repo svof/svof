@@ -1,1 +1,1 @@
-svo.valid.tree_cured_tension()
+svo.valid.tree_cured('tension')

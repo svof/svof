@@ -1,1 +1,1 @@
-svo.valid.generic_addiction()
+svo.valid.generic('addiction')

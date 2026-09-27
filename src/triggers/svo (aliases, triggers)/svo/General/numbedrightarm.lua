@@ -1,1 +1,1 @@
-svo.valid.diag_numbedrightarm()
+svo.valid.diag('numbedrightarm')

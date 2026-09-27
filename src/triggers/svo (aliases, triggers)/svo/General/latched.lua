@@ -1,1 +1,1 @@
-svo.valid.diag_latched()
+svo.valid.diag('latched')

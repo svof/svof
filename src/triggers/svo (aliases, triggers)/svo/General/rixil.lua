@@ -1,1 +1,1 @@
-svo.valid.diag_rixil()
+svo.valid.diag('rixil')

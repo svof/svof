@@ -1,1 +1,1 @@
-svo.valid.diag_charredburn()
+svo.valid.diag('charredburn')

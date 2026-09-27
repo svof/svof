@@ -1,1 +1,1 @@
-svo.valid.generic_cure_crackedribs()
+svo.valid.generic_cure('crackedribs')

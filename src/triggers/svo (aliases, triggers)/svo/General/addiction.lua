@@ -1,1 +1,1 @@
-svo.valid.diag_addiction()
+svo.valid.diag('addiction')

@@ -1,1 +1,1 @@
-svo.valid.diag_hamstring()
+svo.valid.diag('hamstring')

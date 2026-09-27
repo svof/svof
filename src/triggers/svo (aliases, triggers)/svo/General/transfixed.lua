@@ -1,1 +1,1 @@
-svo.valid.diag_transfixed()
+svo.valid.diag('transfixed')

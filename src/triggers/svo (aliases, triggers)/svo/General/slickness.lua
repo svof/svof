@@ -1,1 +1,1 @@
-svo.valid.diag_slickness()
+svo.valid.diag('slickness')

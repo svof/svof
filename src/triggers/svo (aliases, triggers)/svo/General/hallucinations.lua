@@ -1,1 +1,1 @@
-svo.valid.diag_hallucinations()
+svo.valid.diag('hallucinations')

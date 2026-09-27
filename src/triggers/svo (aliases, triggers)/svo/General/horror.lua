@@ -1,1 +1,1 @@
-svo.valid.diag_horror()
+svo.valid.diag('horror')

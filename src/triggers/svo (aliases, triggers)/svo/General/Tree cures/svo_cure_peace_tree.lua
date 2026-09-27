@@ -1,1 +1,1 @@
-svo.valid.tree_cured_peace()
+svo.valid.tree_cured('peace')

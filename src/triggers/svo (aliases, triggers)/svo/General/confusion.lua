@@ -1,1 +1,1 @@
-svo.valid.diag_confusion()
+svo.valid.diag('confusion')

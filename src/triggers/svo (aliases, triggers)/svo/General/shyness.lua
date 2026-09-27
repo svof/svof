@@ -1,1 +1,1 @@
-svo.valid.diag_shyness()
+svo.valid.diag('shyness')

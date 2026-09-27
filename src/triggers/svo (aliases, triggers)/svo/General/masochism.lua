@@ -1,1 +1,1 @@
-svo.valid.diag_masochism()
+svo.valid.diag('masochism')

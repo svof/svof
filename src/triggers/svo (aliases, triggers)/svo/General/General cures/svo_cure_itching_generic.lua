@@ -1,1 +1,1 @@
-svo.valid.generic_itching()
+svo.valid.generic('itching')

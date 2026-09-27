@@ -1,1 +1,1 @@
-svo.valid.diag_indifference()
+svo.valid.diag('indifference')

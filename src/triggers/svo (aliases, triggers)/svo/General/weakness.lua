@@ -1,1 +1,1 @@
-svo.valid.diag_weakness()
+svo.valid.diag('weakness')

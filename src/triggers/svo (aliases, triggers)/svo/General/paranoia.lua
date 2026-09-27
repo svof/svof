@@ -1,1 +1,1 @@
-svo.valid.diag_paranoia()
+svo.valid.diag('paranoia')

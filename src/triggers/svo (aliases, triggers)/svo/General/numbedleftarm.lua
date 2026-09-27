@@ -1,1 +1,1 @@
-svo.valid.diag_numbedleftarm()
+svo.valid.diag('numbedleftarm')

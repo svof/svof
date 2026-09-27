@@ -1,1 +1,1 @@
-svo.valid.generic_slickness()
+svo.valid.generic('slickness')

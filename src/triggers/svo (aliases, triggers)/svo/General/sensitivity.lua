@@ -1,1 +1,1 @@
-svo.valid.diag_sensitivity()
+svo.valid.diag('sensitivity')

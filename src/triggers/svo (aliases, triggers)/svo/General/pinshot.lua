@@ -1,1 +1,1 @@
-svo.valid.diag_pinshot()
+svo.valid.diag('pinshot')

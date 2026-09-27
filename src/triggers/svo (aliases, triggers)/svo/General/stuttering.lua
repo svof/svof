@@ -1,1 +1,1 @@
-svo.valid.diag_stuttering()
+svo.valid.diag('stuttering')

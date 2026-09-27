@@ -1,1 +1,1 @@
-svo.valid.tree_cured_spiritburn()
+svo.valid.tree_cured('spiritburn')

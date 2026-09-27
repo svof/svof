@@ -1,1 +1,1 @@
-svo.valid.tree_cured_paralysis()
+svo.valid.tree_cured('paralysis')

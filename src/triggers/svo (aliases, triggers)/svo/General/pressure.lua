@@ -7,4 +7,4 @@ local t = {
 ["terminally elevated"] = 6
 }
 
-svo.valid.diag_pressure(t[matches[2]])
+svo.valid.diag('pressure', t[matches[2]])

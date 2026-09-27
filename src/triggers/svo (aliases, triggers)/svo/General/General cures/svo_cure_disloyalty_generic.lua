@@ -1,1 +1,1 @@
-svo.valid.generic_disloyalty()
+svo.valid.generic('disloyalty')

@@ -1,1 +1,1 @@
-svo.valid.tree_cured_slickness()
+svo.valid.tree_cured('slickness')

@@ -1,1 +1,1 @@
-svo.valid.generic_darkshade()
+svo.valid.generic('darkshade')

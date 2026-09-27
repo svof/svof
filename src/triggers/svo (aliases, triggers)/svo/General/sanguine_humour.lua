@@ -1,1 +1,1 @@
-svo.valid.diag_sanguinehumour(matches[2])
+svo.valid.diag('sanguinehumour', matches[2])

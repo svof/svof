@@ -1,1 +1,1 @@
-svo.valid.diag_deteriorate()
+svo.valid.diag('deteriorate')

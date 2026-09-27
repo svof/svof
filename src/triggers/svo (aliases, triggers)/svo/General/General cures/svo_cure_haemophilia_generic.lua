@@ -1,1 +1,1 @@
-svo.valid.generic_haemophilia()
+svo.valid.generic('haemophilia')

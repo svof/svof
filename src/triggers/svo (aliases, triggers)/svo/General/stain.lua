@@ -1,1 +1,1 @@
-svo.valid.diag_stain()
+svo.valid.diag('stain')

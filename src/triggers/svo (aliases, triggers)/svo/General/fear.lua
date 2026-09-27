@@ -1,1 +1,1 @@
-svo.valid.diag_fear()
+svo.valid.diag('fear')

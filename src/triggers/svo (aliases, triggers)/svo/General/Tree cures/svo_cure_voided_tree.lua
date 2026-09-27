@@ -1,1 +1,1 @@
-svo.valid.tree_cured_voided()
+svo.valid.tree_cured('voided')

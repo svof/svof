@@ -1,1 +1,1 @@
-svo.valid.diag_rebbies()
+svo.valid.diag('rebbies')

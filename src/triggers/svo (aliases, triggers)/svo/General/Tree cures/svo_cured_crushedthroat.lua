@@ -1,1 +1,1 @@
-svo.valid.tree_cured_crushedthroat()
+svo.valid.tree_cured('crushedthroat')

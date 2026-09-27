@@ -1,1 +1,1 @@
-svo.valid.diag_stupidity()
+svo.valid.diag('stupidity')

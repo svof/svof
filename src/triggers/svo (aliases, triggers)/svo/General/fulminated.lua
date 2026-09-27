@@ -1,1 +1,1 @@
-svo.valid.diag_fulminated()
+svo.valid.diag('fulminated')

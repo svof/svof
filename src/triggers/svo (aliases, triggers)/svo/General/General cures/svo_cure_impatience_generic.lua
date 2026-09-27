@@ -1,1 +1,1 @@
-svo.valid.generic_impatience()
+svo.valid.generic('impatience')

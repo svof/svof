@@ -1,1 +1,1 @@
-svo.valid.diag_ablaze()
+svo.valid.diag('ablaze')

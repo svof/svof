@@ -1,1 +1,1 @@
-svo.valid.generic_paranoia()
+svo.valid.generic('paranoia')

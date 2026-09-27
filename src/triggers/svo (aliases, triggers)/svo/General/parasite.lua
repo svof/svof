@@ -1,1 +1,1 @@
-svo.valid.diag_parasite()
+svo.valid.diag('parasite')

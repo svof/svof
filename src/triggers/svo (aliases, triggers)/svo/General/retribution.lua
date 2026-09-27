@@ -1,1 +1,1 @@
-svo.valid.diag_retribution()
+svo.valid.diag('retribution')

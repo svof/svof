@@ -1,1 +1,1 @@
-svo.valid.generic_tension()
+svo.valid.generic('tension')

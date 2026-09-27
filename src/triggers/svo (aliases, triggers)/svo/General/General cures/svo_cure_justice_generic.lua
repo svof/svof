@@ -1,1 +1,1 @@
-svo.valid.generic_justice()
+svo.valid.generic('justice')

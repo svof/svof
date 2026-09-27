@@ -1,1 +1,1 @@
-svo.valid.tree_cured_selarnia()
+svo.valid.tree_cured('selarnia')

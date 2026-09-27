@@ -1,1 +1,1 @@
-svo.valid.diag_vertigo()
+svo.valid.diag('vertigo')

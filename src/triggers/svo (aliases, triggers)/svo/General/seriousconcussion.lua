@@ -1,1 +1,1 @@
-svo.valid.diag_seriousconcussion()
+svo.valid.diag('seriousconcussion')

@@ -1,1 +1,1 @@
-svo.valid.generic_relapsing()
+svo.valid.generic('relapsing')

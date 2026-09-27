@@ -1,1 +1,1 @@
-svo.valid.generic_hypersomnia()
+svo.valid.generic('hypersomnia')

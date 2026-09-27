@@ -1,1 +1,1 @@
-svo.valid.diag_torntendons(matches[2])
+svo.valid.diag('torntendons', matches[2])

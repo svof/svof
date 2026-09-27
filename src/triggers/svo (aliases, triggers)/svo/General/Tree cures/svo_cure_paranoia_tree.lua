@@ -1,1 +1,1 @@
-svo.valid.tree_cured_paranoia()
+svo.valid.tree_cured('paranoia')

@@ -10,14 +10,20 @@
 -- When to use something, how to use something.
 -- For the record, oncompleted is a mandatory dictionary entry. (The Action system gets cranky without it)
 
+-- To add an affliction:
 -- * add it in 'Dictionary of actions (affs-defs-misc)' in the dict table, with the appropriate functions and curing logic
--- * add it in 'Empty cure handling'
--- * add it in 'Diag trigger functions' and add a new diagnose trigger for it
--- * add gaining affliction 'Simple aff trigger functions', and if there's any complicated logic around it,
--- * 'Main trigger functions'. Add triggers receiving the affliction (triggers section of the code editor)
--- * add losing/curing affliction in 'Main trigger functions and the appropriate triggers
--- * add to tree curing system (touchtree action in this file and and 'Main trigger functions')
--- * add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in 'Main trigger functions')
+-- * add the triggers for it (triggers section of the code editor). Each one names
+--   the affliction itself, so none of these needs a list edited anywhere:
+--     gaining it          svo.valid.simple<name>()      generated from the entry above
+--     DIAGNOSE reports it svo.valid.diag('<name>')
+--     a passive cure, or one that lands during blackout
+--                         svo.valid.generic('<name>')
+--     touching a tree cures it
+--                         svo.valid.tree_cured('<name>')
+-- * add it in 'Empty cure handling' - what a cure that cured nothing rules out
+-- * add losing/curing it in 'Main trigger functions' and the appropriate triggers
+-- * if gaining it needs more than "record the affliction", write that handler in
+--   'Simple aff trigger functions' BELOW the generated loop, which overwrites it
 -- * check failure conditions and add them, ie salves fizzling off balance
 
 
@@ -7914,32 +7920,62 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- Gaining latched knocks you off elixir balance once, and the affliction
+    -- itself is cured only by sipping health - the sip clears the latch
+    -- instead of healing you, the way applying health to a limb mends the
+    -- fracture instead. It does NOT block the other sip cures.
+    --
+    -- It used to be modelled as a timed affliction on 'waitingfor' with the
+    -- comment "not sure how this is cured yet exactly", which meant svof
+    -- never cured it and dropped it from affs after 20s whether or not it was
+    -- still on you.
     latched = {
-      waitingfor = {
-        customwait = 20, -- not sure how this is cured yet exactly
+      -- onadded rather than aff.oncompleted: the GMCP path calls addaffdict
+      -- directly (Setup.lua:656) and never runs the aff action, and latched
+      -- is in sstosvoa, so GMCP is how it usually arrives. addaffdict runs
+      -- onadded exactly once per gain whichever path added it.
+      onadded = function()
+        svo.lostbal_sip()
+      end,
   
+      sip = {
         isadvisable = function()
-          return false
+          return (affs.latched and not svo.doingaction('latched')) or false
         end,
   
-        onstart = function() end,
-  
         oncompleted = function()
+          svo.lostbal_sip()
           svo.rmaff('latched')
-          svo.make_gnomes_work()
+        end,
+  
+        sipcure = {'health'},
+        onstart = function()
+          svo.sip(svo.dict.latched.sip)
+        end,
+  
+        -- the sip did not happen: we were still off sip balance, so record
+        -- that rather than keep believing we had it
+        noeffect = function()
+          svo.lostbal_sip()
+        end,
+  
+        -- the sip happened and cured nothing, so we did not have latched.
+        -- This cure treats exactly one affliction, so clearing it and
+        -- completing it are the same operation.
+        empty = function()
+          svo.lostbal_sip()
+          svo.rmaff('latched')
         end
       },
       aff = {
         oncompleted = function()
           svo.addaffdict(svo.dict.latched)
           codepaste.badaeon()
-          if not svo.actions.latched_waitingfor then svo.doaction(svo.dict.latched.waitingfor) end
         end
       },
       gone = {
         oncompleted = function()
           svo.rmaff('latched')
-          svo.killaction(svo.dict.latched.waitingfor)
         end,
       }
     },

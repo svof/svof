@@ -1,1 +1,1 @@
-svo.valid.tree_cured_deadening()
+svo.valid.tree_cured('deadening')

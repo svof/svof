@@ -1,1 +1,1 @@
-svo.valid.generic_illness()
+svo.valid.generic('illness')

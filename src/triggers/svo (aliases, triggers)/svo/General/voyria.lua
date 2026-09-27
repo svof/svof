@@ -1,1 +1,1 @@
-svo.valid.diag_voyria()
+svo.valid.diag('voyria')

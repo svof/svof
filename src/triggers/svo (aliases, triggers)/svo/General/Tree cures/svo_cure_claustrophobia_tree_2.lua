@@ -1,1 +1,1 @@
-svo.valid.tree_cured_claustrophobia()
+svo.valid.tree_cured('claustrophobia')

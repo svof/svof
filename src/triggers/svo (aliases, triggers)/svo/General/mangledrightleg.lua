@@ -1,1 +1,1 @@
-svo.valid.diag_mangledrightleg()
+svo.valid.diag('mangledrightleg')

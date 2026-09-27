@@ -1,1 +1,1 @@
-svo.valid.diag_dehydrated()
+svo.valid.diag('dehydrated')

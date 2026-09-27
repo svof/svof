@@ -1,1 +1,1 @@
-svo.valid.diag_galed()
+svo.valid.diag('galed')

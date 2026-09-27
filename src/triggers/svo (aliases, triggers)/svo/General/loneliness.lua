@@ -1,1 +1,1 @@
-svo.valid.diag_loneliness()
+svo.valid.diag('loneliness')

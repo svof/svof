@@ -1,3 +1,3 @@
-svo.valid.diag_swellskin()
+svo.valid.diag('swellskin')
 
 echo(" (increases next herb balance)")

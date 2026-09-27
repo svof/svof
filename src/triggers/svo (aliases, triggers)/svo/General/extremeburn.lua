@@ -1,1 +1,1 @@
-svo.valid.diag_extremeburn()
+svo.valid.diag('extremeburn')

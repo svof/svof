@@ -1,1 +1,1 @@
-svo.valid.diag_hatred()
+svo.valid.diag('hatred')

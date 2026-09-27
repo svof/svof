@@ -1,1 +1,1 @@
-svo.valid.generic_weakness()
+svo.valid.generic('weakness')

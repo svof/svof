@@ -1,1 +1,1 @@
-svo.valid.tree_cured_burn()
+svo.valid.tree_cured('burn')

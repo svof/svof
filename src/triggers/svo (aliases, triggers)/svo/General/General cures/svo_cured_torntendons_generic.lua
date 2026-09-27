@@ -1,1 +1,1 @@
-svo.valid.generic_cured_torntendons()
+svo.valid.generic_cured('torntendons')

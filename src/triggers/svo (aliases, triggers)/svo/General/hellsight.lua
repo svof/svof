@@ -1,1 +1,1 @@
-svo.valid.diag_hellsight()
+svo.valid.diag('hellsight')

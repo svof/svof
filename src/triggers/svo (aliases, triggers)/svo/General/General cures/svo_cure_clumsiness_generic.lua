@@ -1,1 +1,1 @@
-svo.valid.generic_clumsiness()
+svo.valid.generic('clumsiness')

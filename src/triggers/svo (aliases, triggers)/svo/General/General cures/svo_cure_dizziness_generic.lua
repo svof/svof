@@ -1,1 +1,1 @@
-svo.valid.generic_dizziness()
+svo.valid.generic('dizziness')

@@ -1,1 +1,1 @@
-svo.valid.diag_meltingburn()
+svo.valid.diag('meltingburn')

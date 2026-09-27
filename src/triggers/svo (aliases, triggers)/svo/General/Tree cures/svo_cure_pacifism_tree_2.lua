@@ -1,1 +1,1 @@
-svo.valid.tree_cured_pacifism()
+svo.valid.tree_cured('pacifism')

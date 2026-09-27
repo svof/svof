@@ -1,1 +1,1 @@
-svo.valid.tree_cured_lethargy()
+svo.valid.tree_cured('lethargy')

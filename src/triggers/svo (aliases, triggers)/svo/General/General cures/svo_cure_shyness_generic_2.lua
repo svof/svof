@@ -1,1 +1,1 @@
-svo.valid.generic_shyness()
+svo.valid.generic('shyness')

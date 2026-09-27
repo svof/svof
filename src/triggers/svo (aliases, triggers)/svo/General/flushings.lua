@@ -1,1 +1,1 @@
-svo.valid.diag_flushings()
+svo.valid.diag('flushings')

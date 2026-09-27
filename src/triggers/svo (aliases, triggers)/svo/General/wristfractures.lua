@@ -1,1 +1,1 @@
-svo.valid.diag_wristfractures(matches[2])
+svo.valid.diag('wristfractures', matches[2])

@@ -1,1 +1,1 @@
-svo.valid.tree_cured_asthma()
+svo.valid.tree_cured('asthma')
