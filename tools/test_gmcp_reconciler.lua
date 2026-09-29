@@ -68,6 +68,14 @@ local RESETAFFS_END_ANCHOR = "function svo.reset.general()"
 local VAFF_START_ANCHOR = "function svo.vaff(aff)"
 local VAFF_END_ANCHOR = "if svo.haveskillset('kaido') then"
 
+-- The dictionary's unknownany and unknownmental entries, whose recklessness
+-- guess is about an affliction the game hid, and the codepaste they count
+-- unknowns with.
+local HIDDEN_START_ANCHOR = "    unknownany = {"
+local HIDDEN_END_ANCHOR = "    unknowncrippledlimb = {"
+local ADDUNKNOWN_START_ANCHOR = "codepaste.addunknownany = function(amount)"
+local ADDUNKNOWN_END_ANCHOR = "sk.burns = {"
+
 local function read_file(path)
   local f, err = io.open(path, "r")
   if not f then error("cannot open " .. path .. ": " .. tostring(err)) end
@@ -363,6 +371,13 @@ local vaff_block = extract_between(read_file(ALIAS_SRC), ALIAS_SRC,
   VAFF_START_ANCHOR, VAFF_END_ANCHOR, false)
 print("extracted " .. #resetaffs_block .. " bytes of the real svo.reset.affs and "
   .. #vaff_block .. " of svo.vaff and svo.vrmaff")
+
+local hidden_block = extract_between(read_file(DICT_SRC), DICT_SRC,
+  HIDDEN_START_ANCHOR, HIDDEN_END_ANCHOR, false)
+local addunknown_block = extract_between(read_file(DICT_SRC), DICT_SRC,
+  ADDUNKNOWN_START_ANCHOR, ADDUNKNOWN_END_ANCHOR, false)
+print("extracted " .. #hidden_block .. " bytes of the dictionary's unknownany and unknownmental and "
+  .. #addunknown_block .. " of codepaste.addunknownany")
 
 -- Run the dictionary's own reverse-index build over whatever sstosvoa /
 -- sstosvod a scenario has just set, exactly as it runs at dict-load time.
@@ -1250,6 +1265,81 @@ do
   svo.addaffdict(svo.dict.prone)
   svo.reset.affs()
   eq(next(svo.affs), nil, "vreset: clears everything, including what GMCP still reports")
+end
+
+-- ===== scenario 22: GMCP first - the recklessness guess about a hidden affliction =====
+-- "You are confused as to the effects of the venom." is the game hiding an
+-- affliction, and the game does not send a hidden affliction over GMCP. When
+-- the prompt reads full straight after one, svof takes the hidden one for
+-- recklessness. The add backstop refused that guess because GMCP did not
+-- report recklessness, which it never would: in a live fight svof then took
+-- 26% health for full and spent the elixir on a limb instead of healing.
+-- Runs the dictionary's own entries through the real addaffdict.
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = { recklessness = 'recklessness', prone = 'prone', sensitivity = 'sensitivity' }
+  svo.dict.recklessness = { name = 'recklessness' }
+  svo.dict.sensitivity = { name = 'sensitivity' }
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = { { name = 'prone' } }
+  h.afflist()
+  load_block(store_block, env)
+  svo.conf.gmcpaffechoes = true
+
+  env.stats = { currenthealth = 7188, maxhealth = 7188, currentmana = 6252, maxmana = 6252 }
+  env.codepaste = {}
+  load_block(addunknown_block, env)
+  load_block("svo.hidden_under_test = {\n" .. hidden_block .. "\n}", env)
+  local hidden = svo.hidden_under_test
+  hidden.unknownany.name, hidden.unknownmental.name = 'unknownany', 'unknownmental'
+  svo.dict.unknownany, svo.dict.unknownmental = hidden.unknownany, hidden.unknownmental
+
+  local function reset()
+    for name in pairs(svo.affs) do svo.affs[name] = nil end
+    for name in pairs(svo.affl) do svo.affl[name] = nil end
+    hidden.unknownany.count, hidden.unknownmental.count = 0, 0
+  end
+
+  -- health was down before the venom line, and the prompt after it reads full
+  hidden.unknownany.reckhp = true
+  hidden.unknownany.aff.oncompleted(1)
+  truthy(svo.affs.recklessness, "hidden: one hidden affliction and full stats are taken as recklessness")
+  eq(svo.affs.unknownany, nil, "hidden: and that affliction is not counted as an unknown too")
+  not_contains(calls.echof, "Didn't add recklessness: GMCP doesn't report it.", "hidden: GMCP does not refuse the guess")
+  eq(hidden.unknownany.reckhp, false, "hidden: the flag is spent")
+
+  reset()
+  hidden.unknownany.reckmana = true
+  hidden.unknownany.aff.oncompleted(2)
+  truthy(svo.affs.recklessness, "hidden: of two hidden afflictions, one is taken as recklessness")
+  eq(hidden.unknownany.count, 1, "hidden: and the other stays an unknown")
+
+  reset()
+  svo.paragraph_length = 1
+  hidden.unknownany.reckhp = true
+  hidden.unknownany.aff.wrack()
+  truthy(svo.affs.recklessness, "hidden: a hidden wrack before full stats is taken as recklessness")
+
+  reset()
+  hidden.unknownmental.reckhp = true
+  hidden.unknownmental.aff.oncompleted(1)
+  truthy(svo.affs.recklessness, "hidden: a hidden mental affliction before full stats is taken as recklessness")
+  eq(svo.affs.unknownmental, nil, "hidden: and is not counted as an unknown mental one too")
+
+  -- no full stats, no guess: the hidden affliction stays an unknown
+  reset()
+  env.stats.currenthealth = 5780
+  hidden.unknownany.reckhp = true
+  hidden.unknownany.aff.oncompleted(1)
+  eq(svo.affs.recklessness, nil, "hidden: without full stats there is no guess")
+  eq(hidden.unknownany.count, 1, "hidden: the affliction is counted as an unknown instead")
+
+  -- and GMCP still has the final word on everything else
+  eq(svo.sk.gmcp_stands_aside, nil, "hidden: the guess does not leave GMCP standing aside")
+  svo.addaffdict(svo.dict.sensitivity)
+  eq(svo.affs.sensitivity, nil, "hidden: svof's other adds are still checked afterwards")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))

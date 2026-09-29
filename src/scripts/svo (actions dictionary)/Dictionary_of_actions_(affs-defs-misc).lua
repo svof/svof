@@ -6350,7 +6350,11 @@ if not next(svo.dict) then
   
           if ((svo.dict.unknownany.reckhp and stats.currenthealth == stats.maxhealth) or
             (svo.dict.unknownany.reckmana and stats.currentmana == stats.maxmana)) then
-              svo.addaffdict(svo.dict.recklessness)
+              -- A hidden affliction is one the game does not send over GMCP, so
+              -- GMCP not reporting recklessness proves nothing here, and full
+              -- stats right after one are the only sign of it short of a
+              -- diagnose (svo.gmcp_set_aside in Setup.lua).
+              svo.gmcp_set_aside(svo.addaffdict, svo.dict.recklessness)
   
               if conf.serverside then
                 svo.sendcuring("predict recklessness")
@@ -6373,7 +6377,8 @@ if not next(svo.dict) then
   
           if ((svo.dict.unknownany.reckhp and stats.currenthealth == stats.maxhealth) or
             (svo.dict.unknownany.reckmana and stats.currentmana == stats.maxmana)) then
-              svo.addaffdict(svo.dict.recklessness)
+              -- a hidden affliction, so GMCP is set aside as in oncompleted
+              svo.gmcp_set_aside(svo.addaffdict, svo.dict.recklessness)
   
               if conf.serverside then
                 svo.sendcuring("predict recklessness")
@@ -6441,7 +6446,8 @@ if not next(svo.dict) then
         oncompleted = function (number)
           if ((svo.dict.unknownmental.reckhp and stats.currenthealth == stats.maxhealth) or
             (svo.dict.unknownmental.reckmana and stats.currentmana == stats.maxmana)) then
-              svo.addaffdict(svo.dict.recklessness)
+              -- a hidden affliction, so GMCP is set aside as in unknownany
+              svo.gmcp_set_aside(svo.addaffdict, svo.dict.recklessness)
   
               if conf.serverside then
                 svo.sendcuring("predict recklessness")
