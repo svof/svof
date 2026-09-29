@@ -643,6 +643,18 @@ end
 -- drops the claims GMCP contradicts, and svo.addaffdict and svo.rmaff refuse
 -- the adds and removals that arrive without a claim.
 
+-- Blackout stops Char.Afflictions and no List comes when it ends, so gaffl
+-- still holds what it held when blackout began: afflictions cured during it
+-- stay listed, and ones gained during it are missing. Those leftover entries
+-- are marked unconfirmed and stop counting as GMCP's word, so what svof
+-- concluded from the text during blackout stands: a stale entry cannot undo a
+-- cure svof saw, or hold on to an affliction svof believes gone. The game
+-- confirms an entry again with an Add, drops it with a Remove, and replaces
+-- the lot with the List a diagnose brings (vconfig diagafterblackout asks for
+-- one as soon as blackout ends). Anything it sends after the blackout counts
+-- in full straight away. Keyed by gaffl key.
+sk.gmcp_unconfirmed = sk.gmcp_unconfirmed or {}
+
 -- Whether the game currently reports this svof affliction over GMCP. Walks
 -- gaffl, which holds only what you have right now, and translates each game
 -- name forward through sstosvoa. Going forward matters: svotossa keeps only
@@ -650,18 +662,15 @@ end
 -- seriousconcussion (concussion, mangledhead) each have two.
 function svo.gmcp_reports(aff)
   for rawaff in pairs(gaffl) do
-    if svo.dict.sstosvoa[(parseaffname(rawaff))] == aff then return true end
+    if not sk.gmcp_unconfirmed[rawaff] and svo.dict.sstosvoa[(parseaffname(rawaff))] == aff then return true end
   end
   return false
 end
 
 -- Whether GMCP is in a position to have the final word: the game has sent a
--- full List since login, you are not in blackout, and no blackout has left
--- gaffl stale since. Blackout stops Char.Afflictions and the game sends no
--- List when it ends, so gaffl keeps what was cured during it until the next
--- List, which the game also sends after every diagnose.
+-- full List since login, and you are not in blackout.
 function svo.gmcp_live()
-  return (sk.gmcp_affs_listed and not sk.gmcp_affs_stale and not affs.blackout) and true or false
+  return (sk.gmcp_affs_listed and not affs.blackout) and true or false
 end
 
 -- Whether gaining this affliction is contradicted by GMCP: it is one GMCP can
@@ -700,7 +709,7 @@ end
 local function gmcp_level(aff)
   for rawaff in pairs(gaffl) do
     local name, level = parseaffname(rawaff)
-    if svo.dict.sstosvoa[name] == aff then return level or 1 end
+    if not sk.gmcp_unconfirmed[rawaff] and svo.dict.sstosvoa[name] == aff then return level or 1 end
   end
 end
 
@@ -785,6 +794,7 @@ signals.gmcpcharafflictionsadd:connect(function()
   -- was so this stays a parsing/crash fix and nothing else.
   local gafflkey = (rawaff:sub(-4) == " (1)") and affname or rawaff
   gaffl[gafflkey] = true
+  sk.gmcp_unconfirmed[gafflkey] = nil -- said again since any blackout
   if conf.gmcpaffechoes then svo.echof("Gained aff %s", gafflkey) end
 
   local svoaffkey = svo.dict.sstosvoa[affname]
@@ -823,6 +833,7 @@ signals.gmcpcharafflictionsremove:connect(function()
   --If level 1 of an affliction is removed, then the aff is completely gone
   if thisaff:sub(-4) == " (1)" then thisaff = thisaff:sub(1, -5) end
   gaffl[thisaff] = nil
+  sk.gmcp_unconfirmed[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
 
   -- "A real affliction was cured that svof wasn't tracking" means one of the
@@ -931,10 +942,10 @@ signals.gmcpcharafflictionslist:connect(function()
   end
 
   -- A List is the game's whole picture, so GMCP has the final word from here
-  -- (svo.gmcp_live), even if a blackout had left gaffl stale. The game sends
-  -- one at login and after every diagnose.
+  -- (svo.gmcp_live), and every entry counts, including any a blackout had left
+  -- unconfirmed. The game sends one at login and after every diagnose.
   sk.gmcp_affs_listed = true
-  sk.gmcp_affs_stale = nil
+  for rawaff in pairs(sk.gmcp_unconfirmed) do sk.gmcp_unconfirmed[rawaff] = nil end
 end, 'update list of gmcp affs')
 
 
@@ -1134,15 +1145,16 @@ signals.loadedconfig = signals.loadedconfig or luanotify.signal.new()
 signals.svogotaff = signals.svogotaff or luanotify.signal.new()
 signals.svolostaff = signals.svolostaff or luanotify.signal.new()
 
--- When GMCP stops having the final word on afflictions (svo.gmcp_live): a new
--- connection has no List yet, and blackout stops Char.Afflictions, leaving
--- gaffl stale until the next List (sent after any diagnose). Connected here
--- rather than beside the GMCP handlers because svogotaff is only created just
--- above.
+-- Where GMCP loses the final word on afflictions: a new connection has no
+-- List yet (svo.gmcp_live), and what gaffl holds when blackout begins stops
+-- counting until the game repeats it (sk.gmcp_unconfirmed, beside the GMCP
+-- handlers). Connected here rather than beside the GMCP handlers because
+-- svogotaff is only created just above.
 signals.connected:connect(function() sk.gmcp_affs_listed = false end, 'gmcp affs untrusted until the login List')
 signals.svogotaff:connect(function(aff)
-  if aff == 'blackout' then sk.gmcp_affs_stale = true end
-end, 'gmcp affs stale after blackout')
+  if aff ~= 'blackout' then return end
+  for rawaff in pairs(gaffl) do sk.gmcp_unconfirmed[rawaff] = true end
+end, 'gmcp affs unconfirmed after blackout')
 
 signals.sysexitevent = signals.sysexitevent or luanotify.signal.new()
 signals["mmapper updated pdb"]       = luanotify.signal.new()
