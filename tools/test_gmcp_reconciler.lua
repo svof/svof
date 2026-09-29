@@ -47,11 +47,11 @@ local RESET_SRC = "src/scripts/svo (alias and defence functions)/Alias_functions
 local RESET_START_ANCHOR = "function svo.reset.general()"
 local RESET_END_ANCHOR = "  svo.check_generics()"
 
--- The two connections that take the final word away from GMCP (a new login,
--- a blackout). They sit further down Setup.lua than the handler block,
--- because svogotaff is only created there.
+-- The two connections where GMCP loses the final word (a new login, and what
+-- gaffl held when a blackout began). They sit further down Setup.lua than the
+-- handler block, because svogotaff is only created there.
 local TRUST_START_ANCHOR = "signals.connected:connect(function() sk.gmcp_affs_listed"
-local TRUST_END_ANCHOR = "end, 'gmcp affs stale after blackout')"
+local TRUST_END_ANCHOR = "end, 'gmcp affs unconfirmed after blackout')"
 
 -- svo.addaffdict and svo.rmaff themselves, for the backstop call in each, and
 -- the public svo.addaff, svo.removeaff and svo.removeafflevel after them,
@@ -75,6 +75,11 @@ local HIDDEN_START_ANCHOR = "    unknownany = {"
 local HIDDEN_END_ANCHOR = "    unknowncrippledlimb = {"
 local ADDUNKNOWN_START_ANCHOR = "codepaste.addunknownany = function(amount)"
 local ADDUNKNOWN_END_ANCHOR = "sk.burns = {"
+
+-- The dictionary's blackout entry, whose end asks for a diagnose and makes
+-- two guesses about the blackout.
+local BLACKOUT_START_ANCHOR = "    blackout = {"
+local BLACKOUT_END_ANCHOR = "    unknownany = {"
 
 local function read_file(path)
   local f, err = io.open(path, "r")
@@ -378,6 +383,10 @@ local addunknown_block = extract_between(read_file(DICT_SRC), DICT_SRC,
   ADDUNKNOWN_START_ANCHOR, ADDUNKNOWN_END_ANCHOR, false)
 print("extracted " .. #hidden_block .. " bytes of the dictionary's unknownany and unknownmental and "
   .. #addunknown_block .. " of codepaste.addunknownany")
+
+local blackout_block = extract_between(read_file(DICT_SRC), DICT_SRC,
+  BLACKOUT_START_ANCHOR, BLACKOUT_END_ANCHOR, false)
+print("extracted " .. #blackout_block .. " bytes of the dictionary's blackout entry")
 
 -- Run the dictionary's own reverse-index build over whatever sstosvoa /
 -- sstosvod a scenario has just set, exactly as it runs at dict-load time.
@@ -857,11 +866,9 @@ do
   h.gotaff('prone')
   eq(svo.gmcp_live(), true, "live: gaining any other affliction changes nothing")
 
+  -- what gaffl held when it began stops counting instead (scenario 13)
   h.gotaff('blackout')
-  eq(svo.gmcp_live(), false, "live: not after a blackout, even once it has ended")
-
-  h.afflist()
-  eq(svo.gmcp_live(), true, "live: a List resyncs after a blackout")
+  eq(svo.gmcp_live(), true, "live: again as soon as a blackout has ended")
 
   h.connected()
   eq(svo.gmcp_live(), false, "live: not after a new connection, until its List")
@@ -954,36 +961,61 @@ do
   eq(svo.gmcp_refuted_claim(aff_claim('prone')), nil, "live log: the prone claim GMCP confirmed is not")
 end
 
--- ===== scenario 13: GMCP first - after a blackout, the next List resyncs =====
+-- ===== scenario 13: GMCP first - after a blackout =====
 -- Blackout stops Char.Afflictions and no List comes when it ends, so gaffl
--- still holds what was cured during it. The game sends a List after every
--- diagnose that goes through (every one of the 41 Lists in the two captured
--- fights followed a diagnose), and that List hands GMCP the final word back.
+-- still holds what it held when blackout began. Those entries stop counting as
+-- GMCP's word, so what svof concluded from the text during blackout stands,
+-- until the game repeats an entry (an Add), drops it (a Remove) or sends the
+-- List a diagnose brings (every one of the 41 Lists in the two captured fights
+-- followed a diagnose). Anything it sends after the blackout counts in full
+-- straight away, and so does its silence: a symptom of something gained
+-- during blackout comes with an Add, as the game unmasks it.
 do
   local env, h, calls, svo = new_environment()
   load_block(block, env)
   load_block(trust_block, env)
 
-  svo.dict.sstosvoa = { sensitivity = 'sensitivity', prone = 'prone', asthma = 'asthma' }
+  svo.dict.sstosvoa = {
+    sensitivity = 'sensitivity', prone = 'prone', asthma = 'asthma',
+    slickness = 'slickness', torntendons = 'torntendons',
+  }
   build_reverse_indexes(env)
-  env.gmcp.Char.Afflictions.List = { { name = 'sensitivity' }, { name = 'prone' } }
+  env.gmcp.Char.Afflictions.List = { { name = 'sensitivity' }, { name = 'prone' }, { name = 'torntendons (2)' } }
   h.afflist()
   h.gotaff('blackout')
+  eq(svo.sk.gmcp_unconfirmed.sensitivity, true, "after blackout: what gaffl held when it began is marked")
+  eq(svo.sk.gmcp_unconfirmed['torntendons (2)'], true, "after blackout: levelled entries included")
   -- blackout has ended; sensitivity was cured during it, which GMCP never said
 
   local function aff_claim(name)
     return { p = { action_name = name, balance = 'aff', name = name .. '_aff' } }
   end
-  eq(svo.gmcp_refuted_claim(aff_claim('asthma')), nil, "after blackout: nothing is refused while gaffl is stale")
+  eq(svo.gmcp_live(), true, "after blackout: GMCP still has its say")
+  eq(svo.gmcp_refuted_claim(aff_claim('asthma')), 'asthma', "after blackout: a line claiming what GMCP never sent is refused straight away")
+  eq(svo.gmcp_holds('sensitivity'), false, "after blackout: an entry from before it cannot keep an affliction svof believes gone")
+  eq(svo.gmcp_refuted_claim(aff_claim('sensitivity')), 'sensitivity', "after blackout: nor vouch for a line claiming it again")
+
+  -- the game repeats one
+  env.gmcp.Char.Afflictions.Add = { name = 'prone' }
+  h.affadd()
+  eq(svo.gmcp_holds('prone'), true, "after blackout: an Add sent afterwards confirms the entry again")
+
+  -- a level change after it arrives as Remove + Add
+  env.gmcp.Char.Afflictions.Remove = { [1] = 'torntendons (2)' }
+  h.affremove()
+  eq(svo.sk.gmcp_unconfirmed['torntendons (2)'], nil, "after blackout: a Remove leaves no mark behind")
+  env.gmcp.Char.Afflictions.Add = { name = 'torntendons (3)' }
+  h.affadd()
+  eq(svo.gmcp_holds('torntendons'), true, "after blackout: a level sent afterwards counts")
 
   -- the List a diagnose brings
-  env.gmcp.Char.Afflictions.List = { { name = 'prone' } }
+  env.gmcp.Char.Afflictions.List = { { name = 'prone' }, { name = 'slickness' } }
   h.afflist()
 
+  eq(next(svo.sk.gmcp_unconfirmed), nil, "after blackout: the List clears every mark")
   eq(env.gaffl.sensitivity, nil, "after blackout: the List drops what was cured during it")
-  eq(env.gaffl.prone, true, "after blackout: and keeps what the game still reports")
-  eq(svo.gmcp_live(), true, "after blackout: GMCP has the final word again")
-  eq(svo.gmcp_refuted_claim(aff_claim('asthma')), 'asthma', "after blackout: claims are checked against GMCP again")
+  eq(svo.gmcp_holds('slickness'), true, "after blackout: and what it reports counts in full")
+  eq(svo.gmcp_refuted_claim(aff_claim('asthma')), 'asthma', "after blackout: claims are still checked against GMCP")
 end
 
 -- ===== scenario 14: GMCP first - does GMCP contradict a loss? =====
@@ -1114,7 +1146,8 @@ do
 
   -- The loop the empty-cure gate used to fall into: asthma was cured during a
   -- blackout, no Remove came, and the stale entry kept it and re-cured it
-  -- forever. Until the next List, GMCP keeps nothing.
+  -- forever. An entry from before a blackout keeps nothing until the game
+  -- repeats it.
   svo.dict.sstosvoa = { asthma = 'asthma' }
   build_reverse_indexes(env)
   env.gmcp.Char.Afflictions.List = { { name = 'asthma' } }
@@ -1340,6 +1373,75 @@ do
   eq(svo.sk.gmcp_stands_aside, nil, "hidden: the guess does not leave GMCP standing aside")
   svo.addaffdict(svo.dict.sensitivity)
   eq(svo.affs.sensitivity, nil, "hidden: svof's other adds are still checked afterwards")
+end
+
+-- ===== scenario 23: GMCP first - when a blackout ends =====
+-- Runs the dictionary's own blackout entry through the real addaffdict and
+-- rmaff. What svof concluded during the blackout stands afterwards, the
+-- diagnose that would give GMCP the whole picture again is the player's call
+-- (vconfig diagafterblackout), and svof's two guesses about the blackout,
+-- recklessness from full stats and disrupt from lost equilibrium, are about a
+-- time GMCP was silent through, so GMCP cannot refuse them.
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+  load_block(trust_block, env)
+
+  svo.dict.sstosvoa = {
+    prone = 'prone', asthma = 'asthma', recklessness = 'recklessness',
+    disrupted = 'disrupt', sensitivity = 'sensitivity',
+  }
+  for _, name in ipairs({'prone', 'asthma', 'recklessness', 'disrupt', 'sensitivity'}) do
+    svo.dict[name] = { name = name }
+  end
+  svo.dict.nomana = { waitingfor = {} }
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = { { name = 'prone' } }
+  h.afflist()
+  load_block(store_block, env)
+  svo.conf.gmcpaffechoes = true
+
+  local timers = {}
+  env.tempTimer = function(_, fn) timers[#timers + 1] = fn end
+  env.os = os
+  env.sys = {}
+  env.bals = { equilibrium = false }
+  env.stats = { currenthealth = 7188, maxhealth = 7188, currentmana = 6252, maxmana = 6252 }
+  svo.conf.assumestats = 15
+  load_block("svo.blackout_under_test = {\n" .. blackout_block .. "\n}", env)
+  svo.dict.blackout = svo.blackout_under_test.blackout
+  svo.dict.blackout.name = 'blackout'
+
+  svo.addaffdict(svo.dict.prone)
+  svo.addaffdict(svo.dict.blackout)
+  svo.dict.blackout.addedon = os.time() - 5 -- it lasted a while
+  eq(svo.sk.gmcp_unconfirmed.prone, true, "blackout end: the real addaffdict marks gaffl as blackout begins")
+
+  -- during it, the text is all svof has
+  svo.rmaff('prone')
+  svo.addaffdict(svo.dict.asthma)
+
+  svo.rmaff('blackout')
+  eq(svo.affs.blackout, nil, "blackout end: blackout is removed")
+  eq(env.sys.manualdiag, nil, "blackout end: no diagnose with diagafterblackout off")
+  eq(svo.affs.prone, nil, "blackout end: a cure svof saw during it stands")
+  truthy(svo.affs.asthma, "blackout end: an affliction svof found during it stands")
+  truthy(svo.affs.recklessness, "blackout end: full stats out of it are taken as recklessness")
+
+  for _, fn in ipairs(timers) do fn() end
+  truthy(svo.affs.disrupt, "blackout end: lost equilibrium out of it is taken as disrupt")
+  not_contains(calls.echof, "Didn't add recklessness: GMCP doesn't report it.", "blackout end: GMCP does not refuse the recklessness guess")
+  not_contains(calls.echof, "Didn't add disrupt: GMCP doesn't report it.", "blackout end: nor the disrupt one")
+
+  -- and afterwards GMCP has its say on everything else
+  svo.addaffdict(svo.dict.sensitivity)
+  eq(svo.affs.sensitivity, nil, "blackout end: svof's other adds are checked again")
+
+  -- for the player who wants the whole picture back straight away
+  svo.conf.diagafterblackout = true
+  svo.addaffdict(svo.dict.blackout)
+  svo.rmaff('blackout')
+  eq(env.sys.manualdiag, true, "blackout end: diagafterblackout asks for a diagnose")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))

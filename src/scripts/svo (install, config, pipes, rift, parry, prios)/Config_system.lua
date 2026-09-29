@@ -1322,6 +1322,13 @@ svo.config_dict = svo.pl.OrderedMap {
     onset = function () svo.echof("Will assume we're at %d%% of health and mana when under blackout or recklessness.", conf.assumestats) end,
     installstart = function () conf.assumestats = 15 end,
   }},
+  {diagafterblackout = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = "Diagnose after blackout",
+    onenabled = function () svo.echof("<0,250,0>Will%s diagnose as soon as we can after a blackout, so GMCP has the whole picture again (costs a balance).", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("<250,0,0>Won't%s diagnose after a blackout, except after a Sylvan eclipse.", svo.getDefaultColor()) end,
+  }},
   {healthaffsabove = {
     type = 'number',
     vconfig2 = true,
