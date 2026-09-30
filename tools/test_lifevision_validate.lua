@@ -23,6 +23,12 @@ a claim is decided by svo.gmcp_refuted_claim and svo.gmcp_kept_claim in
 Setup.lua, which are stubbed here and tested in tools/test_gmcp_reconciler.lua
 against the real code.
 
+And what lifevision tells svo.gmcp_overlooked (Setup.lua, also stubbed here and
+tested against the real code in the reconciler suite): lifevision.add marks a
+claim as the game's answer to a command svof sent, or as confirmed by svof's
+own symptom counters, a refused claim GMCP overlooks runs with GMCP set aside,
+and the add backstop is told which claim is running.
+
 It proves nothing about Mudlet integration or real combat.
 
 Run: lua tools/test_lifevision_validate.lua
@@ -31,8 +37,13 @@ Exits 0 and prints "ALL PASS" on success, exits 1 and prints failures.
 
 local SRC = "src/scripts/svo (curing skeleton, controllers, action system)/Curing_skeleton.lua"
 
-local START_ANCHOR = "local function run_through_actions()"
+local START_ANCHOR = "local function answer_to(act)"
 local END_ANCHOR = "  sys.lineguard = false\nend"
+
+-- svof's own symptom counters, whose confirmations are believed where GMCP is
+-- silent (scenario 21)
+local COUNTERS_START_ANCHOR = "-- The symptom counters below are svof's own check against illusions"
+local COUNTERS_END_ANCHOR = "sk.unparryable_count = 0"
 
 local function read_file(path)
   local f, err = io.open(path, "r")
@@ -45,7 +56,7 @@ end
 local function extract_block(source)
   local s = source:find(START_ANCHOR, 1, true)
   if not s then
-    error("start anchor not found in " .. SRC .. " - run_through_actions moved or was reworded; update this test's anchors")
+    error("start anchor not found in " .. SRC .. " - answer_to, above lifevision.add, moved or was reworded; update this test's anchors")
   end
   local e = source:find(END_ANCHOR, s, true)
   if not e then
@@ -106,7 +117,8 @@ local function ordered_map()
 end
 
 local function new_environment()
-  local calls = {cleared = {}, finished = {}, lostbal = {}, debugf = {}, echof = {}, asked = {}, trust = {}}
+  local calls = {cleared = {}, finished = {}, lostbal = {}, debugf = {}, echof = {}, asked = {}, trust = {},
+    overlooked = {}, claim = {}}
 
   local sys = {flawedillusion = false, not_illusion = false, lineguard = false}
   local conf = {batch = false, gmcpaffechoes = false}
@@ -126,11 +138,15 @@ local function new_environment()
 
   function svo.actionclear(act) calls.cleared[#calls.cleared + 1] = act.name end
   -- also records whether the add and remove backstops were told to trust the
-  -- paragraph while this claim ran
+  -- paragraph while this claim ran, and which claim they were told is running
   function svo.actionfinished(act)
     calls.finished[#calls.finished + 1] = act.name
     calls.trust[act.name] = sk.gmcp_stands_aside or false
+    calls.claim[act.name] = sk.gmcp_claim or false
   end
+
+  -- the commands svof sent, by action name, as svo.actions holds them
+  svo.actions = {}
 
   -- The GMCP side, stubbed: GMCP is not live unless a scenario says so, which
   -- leaves every scenario above the gate ones exactly as it was. A scenario
@@ -147,6 +163,18 @@ local function new_environment()
   function svo.gmcp_kept_claim(claim)
     calls.asked[#calls.asked + 1] = claim.p.name
     return svo.gmcp_kept[claim.p.name]
+  end
+  -- which refused afflictions GMCP overlooks, by affliction
+  svo.gmcp_believed = {}
+  function svo.gmcp_overlooked(aff, claim)
+    calls.overlooked[#calls.overlooked + 1] = aff
+    return svo.gmcp_believed[aff] or false
+  end
+  function svo.gmcp_set_aside(f, ...)
+    local was = sk.gmcp_stands_aside
+    sk.gmcp_stands_aside = true
+    f(...)
+    sk.gmcp_stands_aside = was
   end
 
   -- Record every lostbal_* the code under test reaches for.
@@ -165,6 +193,8 @@ local function new_environment()
     getLineNumber = function() return 10 end,
     getCurrentLine = function() return "" end,
     insertLink = function() end,
+    -- a command's stopwatch reads how long ago it was sent
+    getStopWatchTime = function(watch) return watch end,
     -- stdlib
     string = string, table = table, pairs = pairs, ipairs = ipairs,
     type = type, tostring = tostring, tonumber = tonumber, error = error,
@@ -538,6 +568,216 @@ do
   svo.lifevision.validate()
 
   eq(calls.trust.paralysis_aff, false, "trust: not set for an ordinary paragraph")
+end
+
+-- ===== scenario 17: a refused claim GMCP overlooks runs with GMCP set aside =====
+-- A hidden affliction's symptom: the game hid it, so GMCP's silence proves
+-- nothing (svo.gmcp_overlooked, tested against the real code in the
+-- reconciler suite, decides; here it is stubbed).
+do
+  local env, calls, svo, sys, sk, conf = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'slickness_aff', 'aff')
+  queue(svo, 'sensitivity_aff', 'aff')
+  svo.gmcp_is_live = true
+  svo.gmcp_refuted = {slickness_aff = 'slickness', sensitivity_aff = 'sensitivity'}
+  svo.gmcp_believed = {slickness = true}
+  conf.gmcpaffechoes = true
+
+  svo.lifevision.validate()
+
+  contains(calls.overlooked, 'slickness', "overlooked: GMCP's check is asked about a refused claim")
+  contains(calls.finished, 'slickness_aff', "overlooked: a claim it overlooks runs")
+  eq(calls.trust.slickness_aff, true, "overlooked: with GMCP set aside, so the backstop lets its add through")
+  not_contains(calls.cleared, 'slickness_aff', "overlooked: and is not cleared")
+  not_contains(calls.echof, "Ignored a line claiming slickness: GMCP doesn't report it.", "overlooked: nor echoed as ignored")
+  contains(calls.cleared, 'sensitivity_aff', "overlooked: a refused claim it does not overlook is still cleared")
+  contains(calls.echof, "Ignored a line claiming sensitivity: GMCP doesn't report it.", "overlooked: and echoed as before")
+  eq(sk.gmcp_stands_aside, nil, "overlooked: GMCP is not left standing aside")
+end
+
+-- only refused claims are asked about
+do
+  local env, calls, svo = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'prone_aff', 'aff')
+  queue(svo, 'asthma_gone', 'gone')
+  svo.gmcp_is_live = true
+  svo.gmcp_kept = {asthma_gone = 'asthma'}
+  svo.gmcp_believed = {prone = true, asthma = true}
+
+  svo.lifevision.validate()
+
+  eq(#calls.overlooked, 0, "overlooked: not asked about a claim GMCP agrees with, nor about a kept loss")
+  contains(calls.cleared, 'asthma_gone', "overlooked: a loss GMCP contradicts is still cleared")
+end
+
+-- ===== scenario 18: the add backstop is told which claim is running =====
+-- sileris' "slick" outcome adds slickness from inside the claim, so
+-- svo.gmcp_refuse_add has to know that claim to see it is the game's answer.
+do
+  local env, calls, svo, sys, sk = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'sileris_misc', 'misc')
+  queue(svo, 'prone_aff', 'aff')
+  svo.gmcp_is_live = true
+
+  svo.lifevision.validate()
+
+  eq(type(calls.claim.sileris_misc), 'table', "claim: set while a claim runs")
+  eq(calls.claim.sileris_misc.p.name, 'sileris_misc', "claim: to the claim that is running")
+  eq(calls.claim.prone_aff.p.name, 'prone_aff', "claim: and to the next one for the next")
+  eq(sk.gmcp_claim, nil, "claim: cleared once the claims have run")
+end
+
+-- ===== scenario 19: lifevision.add marks the game's answers to svof's commands =====
+do
+  local env, calls, svo, sys, sk = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  -- svof sent sileris 0.4 seconds ago (the action's stopwatch reads 0.4)
+  local sileris = {name = 'sileris_misc', balance = 'misc', actionwatch = 0.4}
+  svo.actions.sileris_misc = {timerid = 7, p = sileris}
+
+  svo.lifevision.add(sileris, 'slick', nil, 1)
+  local answer = svo.lifevision.l.sileris_misc.answer
+  eq(type(answer), 'table', "answer: an unusual outcome of a command svof sent is its answer")
+  answer = answer or {}
+  eq(answer.act, sileris, "answer: to that command")
+  eq(answer.timerid, 7, "answer: with the timer that command runs on")
+  eq(answer.elapsed, 0.4, "answer: and how long ago it left")
+
+  svo.lifevision.add(sileris)
+  eq(svo.lifevision.l.sileris_misc.answer, nil, "answer: its usual outcome is not a refusal")
+
+  -- an action checkaction filed for a line, not one svof sent
+  local slickness = {name = 'slickness_aff', balance = 'aff'}
+  svo.actions.slickness_aff = {p = slickness}
+  svo.lifevision.add(slickness, 'something')
+  eq(svo.lifevision.l.slickness_aff.answer, nil, "answer: nothing svof did not send is answered")
+  eq(svo.lifevision.l.slickness_aff.confirmed, nil, "answer: nor confirmed")
+end
+
+-- the triggers that work out which command a refusal answers say so
+do
+  local env, calls, svo, sys, sk = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  local salve = {name = 'crippledleftarm_salve', balance = 'salve', actionwatch = 0.3}
+  svo.actions.crippledleftarm_salve = {timerid = 9, p = salve}
+  local slickness = {name = 'slickness_aff', balance = 'aff'}
+
+  svo.lifevision.answering(salve, function() svo.lifevision.add(slickness) end)
+  local answer = svo.lifevision.l.slickness_aff.answer or {}
+  eq(answer.act, salve, "answering: the claim is the answer to the command given")
+  eq(answer.timerid, 9, "answering: with its timer")
+  eq(answer.elapsed, 0.3, "answering: and its age")
+  eq(sk.filing_answer, nil, "answering: nothing is marked afterwards")
+
+  -- the command was already killed (symp_paralysis kills the fill first)
+  svo.actions.crippledleftarm_salve = nil
+  svo.lifevision.answering(salve, function() svo.lifevision.add(slickness) end)
+  answer = svo.lifevision.l.slickness_aff.answer or {}
+  eq(answer.act, salve, "answering: a killed command's answer is still one")
+  eq(answer.timerid, nil, "answering: with no timer left to read")
+
+  -- no command in flight: nothing to answer
+  svo.lifevision.answering(nil, function() svo.lifevision.add(slickness) end)
+  eq(svo.lifevision.l.slickness_aff.answer, nil, "answering: without a command the claim is not marked")
+
+  local ok, err = pcall(svo.lifevision.answering, salve, function() error("boom", 0) end)
+  eq(ok, false, "answering: an error inside still raises")
+  eq(err, "boom", "answering: with its own message")
+  eq(sk.filing_answer, nil, "answering: and leaves nothing marked")
+
+  svo.lifevision.confirming(function() svo.lifevision.add(slickness) end)
+  eq(svo.lifevision.l.slickness_aff.confirmed, true, "confirming: svof's symptom counters mark their claim confirmed")
+  eq(sk.filing_confirmed, nil, "confirming: nothing is marked afterwards")
+  ok, err = pcall(svo.lifevision.confirming, function() error("bang", 0) end)
+  eq(err, "bang", "confirming: an error inside still raises")
+  eq(sk.filing_confirmed, nil, "confirming: and leaves nothing marked")
+end
+
+-- ===== scenario 20: a paragraph's vouches do not outlive it =====
+do
+  local env, calls, svo, sys, sk = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  sk.gmcp_vouched = {clumsiness = true}
+  svo.lifevision.validate()
+  eq(next(sk.gmcp_vouched), nil, "vouched: cleared once the paragraph is settled")
+
+  sk.gmcp_vouched = {clumsiness = true}
+  sys.flawedillusion = true
+  queue(svo, 'clumsiness_aff', 'aff')
+  svo.lifevision.validate()
+  eq(next(sk.gmcp_vouched), nil, "vouched: and after a paragraph discarded as an illusion")
+end
+
+-- ===== scenario 21: what svof's symptom counters confirm is marked confirmed =====
+-- Each counter adds its affliction only after seeing the symptom two to four
+-- times, svof's own check against illusions; the claim it files then is
+-- believed where GMCP is silent, which needs it marked.
+do
+  local s = source:find(COUNTERS_START_ANCHOR, 1, true)
+  local e = s and source:find(COUNTERS_END_ANCHOR, s, true)
+  if not (s and e) then
+    error("symptom counter anchors not found in " .. SRC .. " - update this test's anchors")
+  end
+  local counters_block = source:sub(s, e - 1)
+
+  local cases = {
+    {'retardation_symptom', 'retardation', 4},
+    {'stupidity_symptom', 'stupidity', 3},
+    {'illness_constitution_symptom', 'hypochondria', 2},
+    {'transfixed_symptom', 'transfixed', 2},
+    {'impale_symptom', 'impale', 2},
+    {'aeon_symptom', 'aeon', 2},
+    {'paralysis_symptom', 'paralysis', 2},
+    {'haemophilia_symptom', 'haemophilia', 2},
+    {'webbed_symptom', 'webbed', 2},
+    {'roped_symptom', 'roped', 2},
+    {'impaled_symptom', 'impale', 2},
+    {'hypochondria_symptom', 'hypochondria', 3},
+  }
+
+  for _, case in ipairs(cases) do
+    local counter, aff, times = case[1], case[2], case[3]
+    local env, calls, svo, sys, sk, conf = new_environment()
+    load_block(block, env)
+
+    -- what the counters reach for, inert here
+    env.affs, env.defc, env.defs = {}, {constitution = true}, {lost_speed = function() end}
+    env.tempTimer, env.echo, env.line = function() end, function() end, "a symptom"
+    sys.wait = 0.7
+    conf.aillusion, conf.serverside = false, false
+    svo.affsp = {}
+    svo.sk = sk
+    function svo.syncdelay() return 0 end
+    function svo.find_until_last_paragraph() return false end
+
+    local filed = {}
+    svo.valid = setmetatable({}, {__index = function(_, name)
+      return function() filed[#filed + 1] = {name = name, confirmed = sk.filing_confirmed} end
+    end})
+    load_block(counters_block, env)
+
+    for _ = 1, times do sk[counter]() end
+    eq(#filed, 1, counter .. ": files one claim on the " .. times .. "th sighting")
+    local claim = filed[1] or {}
+    eq(claim.name, 'simple' .. aff, counter .. ": for " .. aff)
+    eq(claim.confirmed, true, counter .. ": marked as confirmed")
+    eq(sk.filing_confirmed, nil, counter .. ": and nothing is marked afterwards")
+  end
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))

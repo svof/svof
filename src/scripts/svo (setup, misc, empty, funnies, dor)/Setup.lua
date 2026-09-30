@@ -716,9 +716,12 @@ end
 -- The backstop in svo.addaffdict, for everything that adds an affliction
 -- without a claim of its own: a cure's step-down (mutilated to mangled), a
 -- cure line naming a different affliction, svof's guesses. True when the add
--- must be refused.
+-- must be refused. An add made while a claim runs (sk.gmcp_claim, set by
+-- lifevision) can be the game refusing one of svof's commands because of an
+-- affliction GMCP cannot see, which svo.gmcp_overlooked below lets through.
 function svo.gmcp_refuse_add(aff)
   if not svo.gmcp_refutes(aff) then return false end
+  if svo.gmcp_overlooked(aff, sk.gmcp_claim) then return false end
   if conf.gmcpaffechoes then svo.echof("Didn't add %s: GMCP doesn't report it.", aff) end
   return true
 end
@@ -785,6 +788,74 @@ function svo.gmcp_kept_claim(claim)
   return nil
 end
 
+-- GMCP's silence proves nothing about an affliction the game has hidden from
+-- it. "You are confused as to the effects of the venom." hides one (svof's
+-- unknownany or unknownmental, the ? on the prompt), and the game does not
+-- always reveal it over GMCP when its effect shows. In a live fight a hidden
+-- slickness wasted every sileris application, the line saying so was refused
+-- each time, and svof applied again on every prompt: 46 berries, until a
+-- diagnose. So a line showing an affliction's effect is believed where GMCP is
+-- silent, when one of svof's existing checks against illusions stands behind
+-- it:
+--  * svof's own symptom counters (sk.stupidity_symptom and the others in
+--    Curing_skeleton.lua) confirmed it by seeing it two to four times;
+--  * a symptom trigger took a ? off for it (svo.valid.remove_unknownany);
+--  * the game refused a command svof sent because of it (lifevision marks
+--    these as answers) while a ? is held, and that ? is used up;
+--  * or the game refused two of svof's commands for it, on different prompts
+--    within 30 seconds, each arriving no sooner than half the ping after its
+--    command left, and anorexia's only while nothing was eaten.
+-- Attack lines stay refused. Returns true when the affliction is believed.
+sk.gmcp_sightings = sk.gmcp_sightings or {} -- the last refused answer for each affliction
+sk.gmcp_vouched = sk.gmcp_vouched or {} -- this paragraph's ? taken off by a symptom, by affliction
+
+local believed_because = {
+  hidden = "Believed %s: it's hidden, so GMCP can't report it.",
+  again = "Believed %s: the game showed it again, though GMCP doesn't report it.",
+}
+
+-- Takes a ? off for aff: an unknown mental one if focus cures aff, else any.
+local function use_up_unknown(aff)
+  if affs.unknownmental and svo.dict[aff] and svo.dict[aff].focus then
+    svo.dict.unknownmental.gone.lost_level()
+  elseif affs.unknownany then
+    svo.dict.unknownany.gone.lost_level()
+  else
+    return false
+  end
+  return true
+end
+
+function svo.gmcp_overlooked(aff, claim)
+  local why
+  if claim and claim.confirmed then
+    why = 'again'
+  elseif sk.gmcp_vouched[aff] then
+    why = 'hidden'
+  elseif claim and claim.answer then
+    local answer = claim.answer
+    if answer.elapsed and answer.elapsed < svo.getping() / 2 then return false end
+    if aff == 'anorexia' and sk.removed_something then return false end
+
+    local seen = sk.gmcp_sightings[aff]
+    if use_up_unknown(aff) then
+      why = 'hidden'
+    elseif seen and seen.prompt ~= svo.promptcount and os.time() - seen.time <= 30
+      and (answer.timerid == nil or seen.timerid ~= answer.timerid) then
+      why = 'again'
+    else
+      sk.gmcp_sightings[aff] = {prompt = svo.promptcount, time = os.time(), timerid = answer.timerid}
+      return false
+    end
+  else
+    return false
+  end
+
+  sk.gmcp_sightings[aff] = nil
+  if conf.gmcpaffechoes then svo.echof(believed_because[why], aff) end
+  return true
+end
+
 signals.gmcpcharafflictionsadd:connect(function()
   local rawaff = gmcp.Char.Afflictions.Add.name
   local affname, afflevel = parseaffname(rawaff)
@@ -799,6 +870,7 @@ signals.gmcpcharafflictionsadd:connect(function()
 
   local svoaffkey = svo.dict.sstosvoa[affname]
   local svoaff = svoaffkey and svo.dict[svoaffkey]
+  if svoaffkey then sk.gmcp_sightings[svoaffkey] = nil end -- GMCP reports it now
   if svoaff then
     -- addaffdict no-ops if the affliction is already tracked, so resolving
     -- once here (instead of the old two separate, overlapping lookups) does
@@ -846,9 +918,12 @@ signals.gmcpcharafflictionsremove:connect(function()
   -- cure decremented unknownany while one was pending.
   if svo.dict.unknownany.count >= 1 and svoaffkey and not svo.affl[svoaffkey] then
     svo.valid.remove_unknownany(svoaffkey)
+    -- a cure is no symptom, so it vouches for nothing (svo.gmcp_overlooked)
+    sk.gmcp_vouched[svoaffkey] = nil
   end
 
   if svoaffkey then
+    sk.gmcp_sightings[svoaffkey] = nil
     -- GMCP is processed before the game text it accompanies, so by the time
     -- the cure's own line reaches a trigger, svo.rmaff below has already
     -- taken the affliction out of svo.affs. A trigger asking "do we have
@@ -946,6 +1021,7 @@ signals.gmcpcharafflictionslist:connect(function()
   -- unconfirmed. The game sends one at login and after every diagnose.
   sk.gmcp_affs_listed = true
   for rawaff in pairs(sk.gmcp_unconfirmed) do sk.gmcp_unconfirmed[rawaff] = nil end
+  for aff in pairs(sk.gmcp_sightings) do sk.gmcp_sightings[aff] = nil end
 end, 'update list of gmcp affs')
 
 

@@ -351,14 +351,51 @@ end
 -- means already - all we need to do now is to check if we had lifevision
 -- catch the line or no.
 
+-- What svof knows about a command it sent, for svo.gmcp_overlooked in
+-- Setup.lua: the action, the timer its timeout runs on (a new one for every
+-- command sent), and how long ago it left.
+local function answer_to(act)
+  local action = svo.actions[act.name]
+  return {
+    act = act,
+    timerid = action and action.timerid,
+    elapsed = act.actionwatch and getStopWatchTime(act.actionwatch),
+  }
+end
+
+-- Files the claims f makes as the game's answer to act, a command svof sent
+-- and was waiting on. For the triggers that find which of svof's commands a
+-- refusal line ("You are too slick...") answers.
+function svo.lifevision.answering(act, f, ...)
+  local was = sk.filing_answer
+  if act then sk.filing_answer = answer_to(act) end
+  local ok, err = pcall(f, ...)
+  sk.filing_answer = was
+  if not ok then error(err, 0) end
+end
+
+-- Files the claims f makes as confirmed by svof's own symptom counters.
+function svo.lifevision.confirming(f, ...)
+  local was = sk.filing_confirmed
+  sk.filing_confirmed = true
+  local ok, err = pcall(f, ...)
+  sk.filing_confirmed = was
+  if not ok then error(err, 0) end
+end
+
 -- other_action means do something else than default when done
 -- arg is the argument to pass either to the default action
 -- lineguard is how many lines this should be across - ineffective with vconfig batch
 function svo.lifevision.add(what, other_action, arg, lineguard)
+  local sent = svo.actions[what.name] and svo.actions[what.name].timerid
   svo.lifevision.l:set(what.name, {
     p = what,
     other_action = other_action,
-    arg = arg
+    arg = arg,
+    -- An outcome other than the usual one, of a command svof sent, is the
+    -- game's answer to it, as sileris' "slick" is.
+    answer = sk.filing_answer or (other_action and sent and answer_to(what)) or nil,
+    confirmed = sk.filing_confirmed,
   })
 
   if lineguard and (not sys.lineguard or sys.lineguard > lineguard) then -- remember the smallest one, because if we have two conflicts, the smallest one is most valid
@@ -417,7 +454,10 @@ local function run_through_actions()
     else
       local refuted = gate and svo.gmcp_refuted_claim(j)
       local kept = gate and not refuted and svo.gmcp_kept_claim(j)
-      if refuted or kept then
+      -- a symptom of an affliction GMCP cannot see (svo.gmcp_overlooked)
+      if refuted and svo.gmcp_overlooked(refuted, j) then
+        svo.gmcp_set_aside(svo.actionfinished, j.p, j.other_action, j.arg)
+      elseif refuted or kept then
         if conf.gmcpaffechoes then
           if refuted then
             svo.echof("Ignored a line claiming %s: GMCP doesn't report it.", refuted)
@@ -427,7 +467,11 @@ local function run_through_actions()
         end
         svo.actionclear(j.p)
       else
+        -- the add backstop asks which claim is running (svo.gmcp_refuse_add)
+        local was = sk.gmcp_claim
+        sk.gmcp_claim = j
         svo.actionfinished(j.p, j.other_action, j.arg)
+        sk.gmcp_claim = was
       end
     end
   end
@@ -502,6 +546,7 @@ function svo.lifevision.validate()
   end
   svo.lifevision.l = svo.pl.OrderedMap()
   sk.stopprocessing = nil
+  sk.gmcp_vouched = {}
   sys.lineguard = false
 end
 
@@ -998,6 +1043,10 @@ svo.sk.warn = function (what)
   echo("\n")
 end
 
+-- The symptom counters below are svof's own check against illusions: they add
+-- an affliction only once its symptom has been seen two to four times. What
+-- they confirm is believed even where GMCP is silent (svo.gmcp_overlooked in
+-- Setup.lua), since the game hides some afflictions from GMCP.
 sk.retardation_count = 0
 function svo.sk.retardation_symptom()
   if (affs.retardation or affs.aeon or svo.affsp.retardation or svo.affsp.aeon or svo.affsp.truename) then return end
@@ -1006,7 +1055,7 @@ function svo.sk.retardation_symptom()
   if sk.retardation_count >= 4 then
     if not affs.blackout then
       if not conf.aillusion then
-        svo.valid.simpleretardation()
+        svo.lifevision.confirming(svo.valid.simpleretardation)
         echo"\n" svo.echof("auto-detected retardation.")
       else
         svo.checkaction(svo.dict.checkslows.aff, true)
@@ -1037,7 +1086,7 @@ function svo.sk.stupidity_symptom()
   sk.stupidity_count = sk.stupidity_count + 1
 
   if sk.stupidity_count >= 3 then
-    svo.valid.simplestupidity()
+    svo.lifevision.confirming(svo.valid.simplestupidity)
     echo"\n" svo.echof("auto-detected stupidity.")
     sk.stupidity_count = 0
     return
@@ -1059,7 +1108,7 @@ function svo.sk.illness_constitution_symptom()
   sk.illness_constitution_count = sk.illness_constitution_count + 1
 
   if sk.illness_constitution_count >= 2 then
-    svo.valid.simplehypochondria()
+    svo.lifevision.confirming(svo.valid.simplehypochondria)
 
     echo"\n" svo.echof("auto-detected hypochondria.")
 
@@ -1083,7 +1132,7 @@ function svo.sk.transfixed_symptom()
   sk.transfixed_count = sk.transfixed_count + 1
 
   if sk.transfixed_count >= 2 then
-    svo.valid.simpletransfixed()
+    svo.lifevision.confirming(svo.valid.simpletransfixed)
 
     -- supress echo when got hit with it before ai went off
     if not svo.affsp.transfixed then
@@ -1127,7 +1176,7 @@ function svo.sk.impale_symptom()
   sk.impale_count = sk.impale_count + 1
 
   if sk.impale_count >= 2 then
-    svo.valid.simpleimpale()
+    svo.lifevision.confirming(svo.valid.simpleimpale)
     echo"\n" svo.echof("auto-detected impale.")
     sk.impale_count = 0
     return
@@ -1146,7 +1195,7 @@ function svo.sk.aeon_symptom()
   sk.aeon_count = sk.aeon_count + 1
 
   if sk.aeon_count >= 2 then
-    svo.valid.simpleaeon()
+    svo.lifevision.confirming(svo.valid.simpleaeon)
     defs.lost_speed()
     echo"\n" svo.echof("auto-detected aeon.")
     sk.aeon_count = 0
@@ -1168,7 +1217,7 @@ function svo.sk.paralysis_symptom()
   sk.paralysis_count = sk.paralysis_count + 1
 
   if sk.paralysis_count >= 2 then
-    svo.valid.simpleparalysis()
+    svo.lifevision.confirming(svo.valid.simpleparalysis)
     echo"\n" svo.echof("auto-detected paralysis.")
     sk.paralysis_count = 0
     return
@@ -1187,7 +1236,7 @@ function svo.sk.haemophilia_symptom()
   sk.haemophilia_count = sk.haemophilia_count + 1
 
   if sk.haemophilia_count >= 2 then
-    svo.valid.simplehaemophilia()
+    svo.lifevision.confirming(svo.valid.simplehaemophilia)
     echo"\n" svo.echof("haemophilia seems to be real.")
     sk.haemophilia_count = 0
     return
@@ -1208,7 +1257,7 @@ function svo.sk.webbed_symptom()
 
   sk.webbed_count = sk.webbed_count + 1
   if sk.webbed_count >= 2 then
-    svo.valid.simplewebbed()
+    svo.lifevision.confirming(svo.valid.simplewebbed)
     echo"\n" svo.echof("auto-detected web.")
     sk.webbed_count = 0
     return
@@ -1229,7 +1278,7 @@ function svo.sk.roped_symptom()
   sk.roped_count = sk.roped_count + 1
 
   if sk.roped_count >= 2 then
-    svo.valid.simpleroped()
+    svo.lifevision.confirming(svo.valid.simpleroped)
     echo"\n" svo.echof("auto-detected roped.")
     sk.roped_count = 0
     return
@@ -1250,7 +1299,7 @@ function svo.sk.impaled_symptom()
   sk.impaled_count = sk.impaled_count + 1
 
   if sk.impaled_count >= 2 then
-    svo.valid.simpleimpale()
+    svo.lifevision.confirming(svo.valid.simpleimpale)
     echo"\n" svo.echof("auto-detected impale.")
     sk.impaled_count = 0
     return
@@ -1273,7 +1322,7 @@ function svo.sk.hypochondria_symptom()
     svo.echof("We might have Hypochondria")
   elseif sk.hypochondria_count >= 3 then
     svo.echof("Enough Afflictions Ticked, Adding Hypochondria")
-    svo.valid.simplehypochondria()
+    svo.lifevision.confirming(svo.valid.simplehypochondria)
     sk.hypochondria_count = 0
   end
 

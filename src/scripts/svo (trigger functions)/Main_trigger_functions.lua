@@ -524,24 +524,26 @@ end
 
 
 function svo.valid.symp_paralysis()
+  -- the fills and the stand below are svof's own commands, so these are the
+  -- game's answers to them (svo.gmcp_overlooked in Setup.lua)
   if actions.fillskullcap_physical then
     svo.killaction(svo.dict.fillskullcap.physical)
     if not affs.paralysis then
-      valid.simpleparalysis()
+      lifevision.answering(svo.dict.fillskullcap.physical, valid.simpleparalysis)
       decho(svo.getDefaultColor().." (paralysis confirmed)")
     end
     return
   elseif actions.fillelm_physical then
     svo.killaction(svo.dict.fillelm.physical)
     if not affs.paralysis then
-      valid.simpleparalysis()
+      lifevision.answering(svo.dict.fillelm.physical, valid.simpleparalysis)
       decho(svo.getDefaultColor().." (paralysis confirmed)")
     end
     return
   elseif actions.fillvalerian_physical then
     svo.killaction(svo.dict.fillvalerian.physical)
     if not affs.paralysis then
-      valid.simpleparalysis()
+      lifevision.answering(svo.dict.fillvalerian.physical, valid.simpleparalysis)
       decho(svo.getDefaultColor().." (paralysis confirmed)")
     end
     return
@@ -560,7 +562,7 @@ function svo.valid.symp_paralysis()
   if actions.prone_misc then
     svo.killaction(svo.dict.prone.misc)
     if not affs.paralysis then
-      valid.simpleparalysis()
+      lifevision.answering(svo.dict.prone.misc, valid.simpleparalysis)
       decho(svo.getDefaultColor().." (paralysis confirmed)")
     end
   end
@@ -1963,17 +1965,21 @@ function svo.valid.missing_herb()
 end
 
 function svo.valid.symp_anorexia()
+  -- which of svof's own commands this answers, if any (svo.gmcp_overlooked in Setup.lua)
+  local eating = svo.findbybal ('herb')
+  local drinking = svo.findbybals({'sip', 'purgative', 'herb', 'moss'})
+  local answered = eating or (drinking and select(2, next(drinking)))
+
   if not conf.aillusion then -- ai is off? go-ahead then
-    valid.simpleanorexia()
+    lifevision.answering(answered, valid.simpleanorexia)
     return
   end
 
-  local eating = svo.findbybal ('herb')
   if eating then
-    valid.simpleanorexia()
+    lifevision.answering(eating, valid.simpleanorexia)
     svo.killaction(svo.dict[eating.action_name].herb)
-  elseif svo.findbybals({'sip', 'purgative', 'herb', 'moss'}) then
-    valid.simpleanorexia()
+  elseif drinking then
+    lifevision.answering(answered, valid.simpleanorexia)
   elseif actions.checkanorexia_misc then
     lifevision.add(actions.checkanorexia_misc.p, 'blehfood')
   end
@@ -2387,7 +2393,8 @@ function svo.valid.salve_slickness()
   if not r then return end
 
   svo.apply_cure = true
-  valid.simpleslickness()
+  -- the game's answer to svof's own command (svo.gmcp_overlooked in Setup.lua)
+  lifevision.answering(r, valid.simpleslickness)
   svo.killaction(svo.dict[r.action_name].salve)
 end
 
@@ -2396,7 +2403,7 @@ function svo.valid.potion_slickness()
   if not r then return end
 
   svo.apply_cure = true
-  valid.simpleslickness()
+  lifevision.answering(r, valid.simpleslickness)
   svo.killaction(svo.dict[r.action_name].salve)
 end
 
@@ -2493,7 +2500,8 @@ function svo.valid.failed_focus_impatience()
     if actions.checkimpatience_misc then
       lifevision.add(actions.checkimpatience_misc.p, 'impatient', nil, 1)
     else
-      valid.simpleimpatience()
+      -- the game's answer to svof's own focus, if it was one (svo.gmcp_overlooked in Setup.lua)
+      lifevision.answering(r, valid.simpleimpatience)
     end
   -- don't show a false (i) when we already know we've got impatience
   elseif conf.aillusion and not affs.impatience and not affs.sandfever then
@@ -2512,8 +2520,11 @@ function svo.valid.smoke_failed_asthma()
   if r or not conf.aillusion then
 
     if not affs.asthma then
-      svo.checkaction(svo.dict.asthma.aff, true)
-      lifevision.add(actions['asthma_aff'].p, nil, nil, 1)
+      -- the game's answer to svof's own smoke, if it was one (svo.gmcp_overlooked in Setup.lua)
+      lifevision.answering(r, function()
+        svo.checkaction(svo.dict.asthma.aff, true)
+        lifevision.add(actions['asthma_aff'].p, nil, nil, 1)
+      end)
       svo.affsp.asthma = nil
     end
   elseif conf.aillusion and not affs.asthma then -- don't show (i) on delays + already have valid asthma
@@ -2532,8 +2543,10 @@ function svo.valid.got_mucous()
   if r or not conf.aillusion then
 
     if not affs.mucous then
-      svo.checkaction(svo.dict.mucous.aff, true)
-      lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
+      lifevision.answering(r, function()
+        svo.checkaction(svo.dict.mucous.aff, true)
+        lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
+      end)
     end
   elseif conf.aillusion then
     svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
@@ -2547,8 +2560,10 @@ function svo.valid.have_mucous()
   if r or not conf.aillusion then
 
     if not affs.mucous then
-      svo.checkaction(svo.dict.mucous.aff, true)
-      lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
+      lifevision.answering(r, function()
+        svo.checkaction(svo.dict.mucous.aff, true)
+        lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
+      end)
     end
   elseif conf.aillusion then
     svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
@@ -4282,15 +4297,20 @@ function svo.valid.broken_legs()
 end
 
 -- remove unknown level if the affliction from a symptom was not present before
+-- The ? it takes off also vouches for the affliction's own claim in this
+-- paragraph, which GMCP may not report because the game hid it
+-- (svo.gmcp_overlooked in Setup.lua).
 valid.remove_unknownmental = function (affliction)
   if affs[affliction] then return end
 
+  if affliction and affs.unknownmental then sk.gmcp_vouched[affliction] = true end
   svo.checkaction(svo.dict.unknownmental.gone, true)
   lifevision.add(actions.unknownmental_gone.p, 'lost_level')
 end
 valid.remove_unknownany = function (affliction)
   if affs[affliction] then return end
 
+  if affliction and affs.unknownany then sk.gmcp_vouched[affliction] = true end
   svo.checkaction(svo.dict.unknownany.gone, true)
   lifevision.add(actions.unknownany_gone.p, 'lost_level')
 end
