@@ -81,6 +81,30 @@ local ADDUNKNOWN_END_ANCHOR = "sk.burns = {"
 local BLACKOUT_START_ANCHOR = "    blackout = {"
 local BLACKOUT_END_ANCHOR = "    unknownany = {"
 
+-- For the live log where a hidden slickness wasted 46 sileris: lifevision
+-- from lifevision.add to validate, the dictionary's sileris entry, and the
+-- symptom triggers' helpers that take a ? off.
+local LIFEVISION_START_ANCHOR = "local function answer_to(act)"
+local LIFEVISION_END_ANCHOR = "svo.checkanyaffs = function"
+local SILERIS_START_ANCHOR = "    sileris = {"
+local SILERIS_END_ANCHOR = "    waitingforsileris = {"
+local TRIGGERS_SRC = "src/scripts/svo (trigger functions)/Main_trigger_functions.lua"
+local SYMPTOM_START_ANCHOR = "valid.remove_unknownmental = function (affliction)"
+local SYMPTOM_END_ANCHOR = "function svo.valid.loki()"
+
+-- The triggers that work out which of svof's commands a refusal line answers,
+-- and the valid.simple<aff> handlers they call, as svof builds them from the
+-- dictionary.
+local REFUSAL_ANCHORS = {
+  {"function svo.valid.symp_paralysis()", "function svo.valid.symp_stun()"},
+  {"function svo.valid.symp_anorexia()", "function svo.valid.salve_fizzled(limb)"},
+  {"function svo.valid.salve_slickness()", "function svo.valid.sip_had_no_effect()"},
+  {"function svo.valid.failed_focus_impatience()", "function svo.valid.unlit_pipe()"},
+}
+local SIMPLE_SRC = "src/scripts/svo (trigger functions)/Simple_aff_trigger_functions.lua"
+local SIMPLE_START_ANCHOR = "  local no_simple_handler = {"
+local SIMPLE_END_ANCHOR = "svo.valid.simplehoisted = function(name)"
+
 local function read_file(path)
   local f, err = io.open(path, "r")
   if not f then error("cannot open " .. path .. ": " .. tostring(err)) end
@@ -304,7 +328,7 @@ local function new_environment()
     -- stdlib the block needs
     string = string, table = table, tonumber = tonumber, pairs = pairs, ipairs = ipairs,
     type = type, tostring = tostring, error = error, setmetatable = setmetatable,
-    pcall = pcall, next = next,
+    pcall = pcall, next = next, select = select,
     -- Mudlet's; only reached when a queued prompt callback raises.
     echoLink = function() end,
     -- Mudlet's, for the real addaffdict and rmaff
@@ -387,6 +411,49 @@ print("extracted " .. #hidden_block .. " bytes of the dictionary's unknownany an
 local blackout_block = extract_between(read_file(DICT_SRC), DICT_SRC,
   BLACKOUT_START_ANCHOR, BLACKOUT_END_ANCHOR, false)
 print("extracted " .. #blackout_block .. " bytes of the dictionary's blackout entry")
+
+local lifevision_block = extract_between(read_file(PROMPT_SRC), PROMPT_SRC,
+  LIFEVISION_START_ANCHOR, LIFEVISION_END_ANCHOR, false)
+local sileris_block = extract_between(read_file(DICT_SRC), DICT_SRC,
+  SILERIS_START_ANCHOR, SILERIS_END_ANCHOR, false)
+local symptom_block = extract_between(read_file(TRIGGERS_SRC), TRIGGERS_SRC,
+  SYMPTOM_START_ANCHOR, SYMPTOM_END_ANCHOR, false)
+print("extracted " .. #lifevision_block .. " bytes of the real lifevision, "
+  .. #sileris_block .. " of the dictionary's sileris entry and "
+  .. #symptom_block .. " of the symptom triggers' helpers")
+
+local refusal_blocks = {}
+do
+  local src = read_file(TRIGGERS_SRC)
+  for _, anchors in ipairs(REFUSAL_ANCHORS) do
+    refusal_blocks[#refusal_blocks + 1] = extract_between(src, TRIGGERS_SRC, anchors[1], anchors[2], false)
+  end
+end
+-- the generator's text ends with the `end` of the `do` it sits in
+local simple_block = "do\n" .. extract_between(read_file(SIMPLE_SRC), SIMPLE_SRC,
+  SIMPLE_START_ANCHOR, SIMPLE_END_ANCHOR, false)
+print("extracted " .. #refusal_blocks .. " refusal trigger handlers and "
+  .. #simple_block .. " bytes of the valid.simple<aff> generator")
+
+-- Minimal stand-in for the Penlight OrderedMap that svo.lifevision.l is:
+-- iter() in insertion order, and a claim readable by its key.
+local function ordered_map()
+  local m = {keys = {}, vals = {}}
+  function m:set(k, v)
+    if self.vals[k] == nil then self.keys[#self.keys + 1] = k end
+    self.vals[k] = v
+  end
+  function m:iter()
+    local i = 0
+    return function()
+      i = i + 1
+      local k = self.keys[i]
+      if k == nil then return nil end
+      return k, self.vals[k]
+    end
+  end
+  return setmetatable(m, {__index = function(t, k) return rawget(t, 'vals')[k] end})
+end
 
 -- Run the dictionary's own reverse-index build over whatever sstosvoa /
 -- sstosvod a scenario has just set, exactly as it runs at dict-load time.
@@ -1442,6 +1509,464 @@ do
   svo.addaffdict(svo.dict.blackout)
   svo.rmaff('blackout')
   eq(env.sys.manualdiag, true, "blackout end: diagafterblackout asks for a diagnose")
+end
+
+-- ===== scenario 24: GMCP first - a symptom of an affliction the game hid =====
+-- In a live fight a rat's venom hid slickness, the game did not reveal it
+-- over GMCP when sileris failed ("You are too slick for the berry juice to
+-- take hold, and it is wasted."), and the add backstop refused the slickness
+-- that line claims every time: svof applied sileris 46 times until a
+-- diagnose. svo.gmcp_overlooked believes such a line when one of svof's own
+-- checks against illusions stands behind it. Runs through the real
+-- addaffdict, and the dictionary's own unknown entries take the ? off.
+local function overlook_env()
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  local names = {'prone', 'slickness', 'sensitivity', 'anorexia', 'impatience', 'clumsiness',
+    'paralysis', 'asthma', 'mucous'}
+  svo.dict.sstosvoa = {}
+  for _, name in ipairs(names) do
+    svo.dict.sstosvoa[name] = name
+    local entry = { name = name }
+    entry.aff = { name = name .. '_aff', action_name = name, balance = 'aff',
+      oncompleted = function() svo.addaffdict(entry) end }
+    svo.dict[name] = entry
+  end
+  svo.dict.impatience.focus = {} -- focus cures it
+  build_reverse_indexes(env)
+  env.gmcp.Char.Afflictions.List = { { name = 'prone' } }
+  h.afflist()
+  load_block(store_block, env)
+  svo.conf.gmcpaffechoes = true
+
+  env.stats = { currenthealth = 1, maxhealth = 2, currentmana = 1, maxmana = 2 }
+  env.codepaste = {}
+  load_block(addunknown_block, env)
+  load_block("svo.hidden_under_test = {\n" .. hidden_block .. "\n}", env)
+  local hidden = svo.hidden_under_test
+  hidden.unknownany.name, hidden.unknownmental.name = 'unknownany', 'unknownmental'
+  -- the names dict_setup gives each entry's balances as the dictionary loads
+  for _, name in ipairs({'unknownany', 'unknownmental'}) do
+    local gone = hidden[name].gone
+    gone.name, gone.action_name, gone.balance = name .. '_gone', name, 'gone'
+  end
+  svo.dict.unknownany, svo.dict.unknownmental = hidden.unknownany, hidden.unknownmental
+
+  -- a clock the scenarios move on, the ping, and the prompt count
+  local clock = { now = 1000 }
+  env.os = { time = function() return clock.now end }
+  function svo.getping() return 0.2 end
+  svo.promptcount = 1
+
+  -- files an action the way svo.checkaction does for a line
+  function svo.checkaction(act)
+    if not svo.actions[act.name] then svo.actions[act.name] = { p = act } end
+  end
+
+  return env, h, calls, svo, clock
+end
+
+-- the game's answer to one of svof's commands: the action, its timer, and
+-- how long ago it left
+local function answer(timerid, elapsed)
+  return { answer = { act = { name = 'sileris_misc' }, timerid = timerid, elapsed = elapsed or 0.4 } }
+end
+
+-- what sileris' "slick" outcome does, inside the claim that answers it
+local function slick(svo, timerid, elapsed)
+  svo.sk.gmcp_claim = answer(timerid, elapsed)
+  svo.addaffdict(svo.dict.slickness)
+  svo.sk.gmcp_claim = nil
+end
+
+-- while a ? is held, the first answer is believed and uses up the ?
+do
+  local env, h, calls, svo = overlook_env()
+  svo.dict.unknownany.aff.oncompleted(1)
+  truthy(svo.affs.unknownany, "hidden: the venom line left a ?")
+
+  slick(svo, 11)
+  truthy(svo.affs.slickness, "hidden: while a ? is held, the game's answer to svof's command is believed at once")
+  eq(svo.affs.unknownany, nil, "hidden: and uses up the ?")
+  contains(calls.echof, "Believed slickness: it's hidden, so GMCP can't report it.", "hidden: and says why")
+  not_contains(calls.echof, "Didn't add slickness: GMCP doesn't report it.", "hidden: without refusing it first")
+end
+
+-- an unknown mental ? is used up for an affliction focus cures
+do
+  local env, h, calls, svo = overlook_env()
+  svo.dict.unknownany.aff.oncompleted(1)
+  svo.dict.unknownmental.aff.oncompleted(1)
+
+  svo.sk.gmcp_claim = answer(11)
+  svo.addaffdict(svo.dict.impatience)
+  truthy(svo.affs.impatience, "hidden: an affliction focus cures is believed")
+  eq(svo.affs.unknownmental, nil, "hidden: using up the unknown mental ?")
+  truthy(svo.affs.unknownany, "hidden: and leaving the unknown one")
+
+  svo.addaffdict(svo.dict.slickness)
+  svo.sk.gmcp_claim = nil
+  truthy(svo.affs.slickness, "hidden: the other ? covers one focus does not cure")
+  eq(svo.affs.unknownany, nil, "hidden: and is used up in turn")
+end
+
+-- without a ?, the game refusing two of svof's commands confirms it
+do
+  local env, h, calls, svo, clock = overlook_env()
+
+  slick(svo, 11)
+  eq(svo.affs.slickness, nil, "again: the first answer is refused")
+  contains(calls.echof, "Didn't add slickness: GMCP doesn't report it.", "again: as before")
+
+  slick(svo, 12)
+  eq(svo.affs.slickness, nil, "again: a second on the same prompt does not count")
+
+  svo.promptcount = 2
+  slick(svo, 12)
+  eq(svo.affs.slickness, nil, "again: nor does the same command answered twice")
+
+  clock.now = clock.now + 2
+  svo.promptcount = 3
+  slick(svo, 13)
+  truthy(svo.affs.slickness, "again: another command refused on a later prompt is believed")
+  contains(calls.echof, "Believed slickness: the game showed it again, though GMCP doesn't report it.", "again: and says why")
+  eq(svo.sk.gmcp_sightings.slickness, nil, "again: and the count starts over")
+end
+
+-- an answer faster than the game could send one, or too long after the last
+do
+  local env, h, calls, svo, clock = overlook_env()
+
+  slick(svo, 11, 0.05)
+  eq(svo.sk.gmcp_sightings.slickness, nil, "too fast: an answer quicker than half the ping is not counted")
+  svo.promptcount = 2
+  slick(svo, 12)
+  eq(svo.affs.slickness, nil, "too fast: so the next real one is only the first")
+
+  clock.now = clock.now + 31
+  svo.promptcount = 3
+  slick(svo, 13)
+  eq(svo.affs.slickness, nil, "too late: one more than 30 seconds after the last does not confirm it")
+
+  clock.now = clock.now + 30
+  svo.promptcount = 4
+  slick(svo, 14)
+  truthy(svo.affs.slickness, "too late: one within 30 seconds of the last does")
+end
+
+-- an attack line is no answer, however often it comes
+do
+  local env, h, calls, svo = overlook_env()
+  svo.dict.unknownany.aff.oncompleted(1)
+
+  for prompt = 1, 3 do
+    svo.promptcount = prompt
+    svo.sk.gmcp_claim = { p = { name = 'sensitivity_aff' } }
+    svo.addaffdict(svo.dict.sensitivity)
+  end
+  svo.sk.gmcp_claim = nil
+  eq(svo.affs.sensitivity, nil, "attack line: never believed")
+  truthy(svo.affs.unknownany, "attack line: never uses up a ?")
+  eq(svo.sk.gmcp_sightings.sensitivity, nil, "attack line: never counted")
+
+  svo.addaffdict(svo.dict.sensitivity)
+  eq(svo.affs.sensitivity, nil, "no claim: an add outside any claim is refused as before")
+  eq(svo.gmcp_overlooked('sensitivity', { p = { name = 'sensitivity_aff' } }), false,
+    "attack line: the claim gate's question gets the same answer")
+end
+
+-- anorexia's refusal is no answer while GMCP shows something was eaten
+do
+  local env, h, calls, svo = overlook_env()
+  svo.dict.unknownany.aff.oncompleted(1)
+
+  svo.sk.removed_something = true
+  eq(svo.gmcp_overlooked('anorexia', answer(11)), false, "anorexia: not believed while an item left the inventory")
+  truthy(svo.affs.unknownany, "anorexia: and the ? is kept")
+  svo.sk.removed_something = nil
+  eq(svo.gmcp_overlooked('anorexia', answer(12)), true, "anorexia: believed when nothing was eaten")
+end
+
+-- svof's own symptom counters have already seen it enough times
+do
+  local env, h, calls, svo = overlook_env()
+  svo.dict.unknownany.aff.oncompleted(1)
+
+  svo.sk.gmcp_claim = { confirmed = true }
+  svo.addaffdict(svo.dict.slickness)
+  svo.sk.gmcp_claim = nil
+  truthy(svo.affs.slickness, "confirmed: what svof's symptom counters confirmed is believed at once")
+  truthy(svo.affs.unknownany, "confirmed: without using up a ?")
+  contains(calls.echof, "Believed slickness: the game showed it again, though GMCP doesn't report it.", "confirmed: and says why")
+end
+
+-- a symptom trigger that takes a ? off vouches for its affliction
+do
+  local env, h, calls, svo = overlook_env()
+  env.valid, env.actions = svo.valid, svo.actions
+  function svo.lifevision.add() end
+  load_block(symptom_block, env)
+
+  svo.valid.remove_unknownany('clumsiness')
+  eq(svo.sk.gmcp_vouched.clumsiness, nil, "vouched: not without a ? to take off")
+
+  svo.dict.unknownany.aff.oncompleted(1)
+  svo.valid.remove_unknownany('clumsiness')
+  eq(svo.sk.gmcp_vouched.clumsiness, true, "vouched: a symptom that takes a ? off vouches for its affliction")
+  svo.addaffdict(svo.dict.clumsiness)
+  truthy(svo.affs.clumsiness, "vouched: which is believed")
+  truthy(svo.affs.unknownany, "vouched: leaving the ? to the symptom's own claim, so it goes once")
+  contains(calls.echof, "Believed clumsiness: it's hidden, so GMCP can't report it.", "vouched: and says why")
+
+  svo.dict.unknownmental.aff.oncompleted(1)
+  svo.valid.remove_unknownmental('impatience')
+  eq(svo.sk.gmcp_vouched.impatience, true, "vouched: an unknown mental ? vouches too")
+
+  -- a cure GMCP reports takes a ? off through the same helper, and is no symptom
+  env.gmcp.Char.Afflictions.Remove = { [1] = 'sensitivity' }
+  h.affremove()
+  eq(svo.sk.gmcp_vouched.sensitivity, nil, "vouched: a cure GMCP reports vouches for nothing")
+end
+
+-- what GMCP says afterwards wipes the count
+do
+  local env, h, calls, svo = overlook_env()
+
+  slick(svo, 11)
+  truthy(svo.sk.gmcp_sightings.slickness, "reset: a refused answer is remembered")
+  env.gmcp.Char.Afflictions.Add = { name = 'slickness' }
+  h.affadd()
+  eq(svo.sk.gmcp_sightings.slickness, nil, "reset: until GMCP reports the affliction")
+
+  svo.sk.gmcp_sightings.slickness = { prompt = 1, time = 1000 }
+  env.gmcp.Char.Afflictions.Remove = { [1] = 'slickness' }
+  h.affremove()
+  eq(svo.sk.gmcp_sightings.slickness, nil, "reset: or removes it")
+
+  svo.sk.gmcp_sightings.anorexia = { prompt = 1, time = 1000 }
+  env.gmcp.Char.Afflictions.List = { { name = 'prone' } }
+  h.afflist()
+  eq(next(svo.sk.gmcp_sightings), nil, "reset: or sends a List")
+end
+
+-- ===== scenario 25: GMCP first - the live log, through the real lifevision =====
+-- svof applies sileris each prompt, the game answers that it is too slick,
+-- svo.defs.sileris_slickness files the answer, and the prompt settles the
+-- paragraph: the dictionary's own sileris entry adds slickness from inside
+-- the claim, through the real addaffdict.
+local function replay_env()
+  local env, h, calls, svo, clock = overlook_env()
+  env.sys = { lineguard = false }
+  env.me = {}
+  env.moveCursor, env.moveCursorEnd, env.insertLink = function() end, function() end, function() end
+  env.getLineNumber = function() return 1 end
+  env.getCurrentLine = function() return "" end
+  env.getStopWatchTime = function(watch) return watch end -- a stopwatch reads its age
+  svo.pl = { OrderedMap = ordered_map }
+  svo.paragraph_length = 1
+  function svo.sk.sawcuring() return false end
+  -- what the real actionfinished runs: the claim's outcome on its action
+  function svo.actionfinished(act, other_action, arg) act[other_action or 'oncompleted'](arg) end
+  function svo.actionclear() end
+  load_block(lifevision_block, env)
+  svo.lifevision.l = ordered_map()
+
+  load_block("svo.sileris_under_test = {\n" .. sileris_block .. "\n}", env)
+  local sileris = svo.sileris_under_test.sileris.misc
+  sileris.name, sileris.action_name, sileris.balance = 'sileris_misc', 'sileris', 'misc'
+  sileris.actionwatch = 0.4
+
+  local timer = 100
+  local function apply_sileris()
+    timer = timer + 1
+    svo.actions.sileris_misc = { timerid = timer, p = sileris }
+    svo.lifevision.add(sileris, 'slick', nil, 1)
+    clock.now = clock.now + 1
+    svo.promptcount = svo.promptcount + 1
+    svo.lifevision.validate()
+    svo.actions.sileris_misc = nil
+  end
+  return env, h, calls, svo, apply_sileris
+end
+
+do
+  local env, h, calls, svo, apply_sileris = replay_env()
+  apply_sileris()
+  eq(svo.affs.slickness, nil, "log replay: the first failed application is refused, as in the log")
+  apply_sileris()
+  truthy(svo.affs.slickness, "log replay: the second is believed, where the log went on for 46")
+  eq(svo.sk.gmcp_claim, nil, "log replay: no claim is left marked as running")
+end
+
+do
+  local env, h, calls, svo, apply_sileris = replay_env()
+  svo.dict.unknownany.aff.oncompleted(1)
+  apply_sileris()
+  truthy(svo.affs.slickness, "log replay: with the venom's ? held, the first is believed")
+  eq(svo.affs.unknownany, nil, "log replay: and the ? is gone")
+end
+
+-- a symptom trigger's two lines, settled by the real lifevision: the
+-- affliction's claim and the ? its helper takes off
+do
+  local env, h, calls, svo = replay_env()
+  env.valid, env.actions = svo.valid, svo.actions
+  load_block(symptom_block, env)
+  svo.dict.unknownany.aff.oncompleted(1)
+
+  svo.checkaction(svo.dict.clumsiness.aff)
+  svo.lifevision.add(svo.actions.clumsiness_aff.p)
+  svo.valid.remove_unknownany('clumsiness')
+  svo.lifevision.validate()
+
+  truthy(svo.affs.clumsiness, "symptom replay: the affliction is believed")
+  eq(svo.affs.unknownany, nil, "symptom replay: and the ? is taken off, once")
+  eq(next(svo.sk.gmcp_vouched), nil, "symptom replay: the vouch ends with the paragraph")
+end
+
+-- ===== scenario 26: GMCP first - the triggers that say which command a refusal answers =====
+-- Each finds the command of svof's that the game refused and files the
+-- affliction's claim as the answer to it, so svo.gmcp_overlooked can believe
+-- it. Runs the real handlers and the real valid.simple<aff> generator.
+local function refusal_env()
+  local env, h, calls, svo, apply_sileris = replay_env()
+  env.valid, env.actions = svo.valid, svo.actions
+  env.decho = function() end
+  svo.conf.aillusion = true
+  svo.affsp = {}
+  function svo.getDefaultColor() return "" end
+  function svo.ignore_illusion() end
+  function svo.usingbal() return false end
+
+  -- svof's commands in flight, by balance
+  local inflight = {}
+  function svo.findbybal(balance) return inflight[balance] end
+  function svo.findbybals(balances)
+    local found = {}
+    for _, balance in ipairs(balances) do
+      if inflight[balance] then found[inflight[balance].name] = inflight[balance] end
+    end
+    if next(found) then return found end
+  end
+  function svo.killaction(act)
+    svo.actions[act.name] = nil
+    for balance, sent in pairs(inflight) do if sent == act then inflight[balance] = nil end end
+  end
+
+  -- sends one: an action in svo.actions with its timer, 0.4 seconds old
+  local timer = 200
+  local function send(action_name, balance)
+    timer = timer + 1
+    local act = { name = action_name .. '_' .. balance, action_name = action_name, balance = balance, actionwatch = 0.4 }
+    svo.dict[action_name] = svo.dict[action_name] or {}
+    svo.dict[action_name][balance] = act
+    svo.actions[act.name] = { timerid = timer, p = act }
+    if balance ~= 'physical' and balance ~= 'misc' then inflight[balance] = act end
+    return act
+  end
+
+  -- the anti-illusion probe symp_paralysis files when it can't tell yet
+  svo.dict.checkparalysis = { aff = { name = 'checkparalysis_aff', action_name = 'checkparalysis', balance = 'aff' } }
+
+  load_block(simple_block, env)
+  for _, refusal_block in ipairs(refusal_blocks) do load_block(refusal_block, env) end
+  svo.paragraph_length = 1
+  return env, h, calls, svo, send
+end
+
+local function answer_of(svo, aff)
+  local claim = svo.lifevision.l[aff .. '_aff']
+  return claim and claim.answer
+end
+
+do
+  local env, h, calls, svo, send = refusal_env()
+
+  local mending = send('crippledleftarm', 'salve')
+  svo.valid.salve_slickness()
+  eq((answer_of(svo, 'slickness') or {}).act, mending, "refusal: a salve too slick to apply answers the salve")
+
+  svo.lifevision.l = ordered_map()
+  local caloric = send('frozen', 'salve')
+  svo.valid.potion_slickness()
+  eq((answer_of(svo, 'slickness') or {}).act, caloric, "refusal: so does a potion")
+
+  svo.lifevision.l = ordered_map()
+  local kelp = send('asthma', 'herb')
+  svo.valid.symp_anorexia()
+  eq((answer_of(svo, 'anorexia') or {}).act, kelp, "refusal: food refused answers the herb svof ate")
+  eq(svo.actions[kelp.name], nil, "refusal: and the herb is not waited on any more")
+
+  svo.lifevision.l = ordered_map()
+  local health = send('healhealth', 'sip')
+  svo.valid.symp_anorexia()
+  eq((answer_of(svo, 'anorexia') or {}).act, health, "refusal: or the elixir svof sipped")
+  svo.killaction(health)
+
+  svo.lifevision.l = ordered_map()
+  local focus = send('stupidity', 'focus')
+  svo.valid.failed_focus_impatience()
+  local answered = answer_of(svo, 'impatience') or {}
+  eq(answered.act, focus, "refusal: a focus refused answers the focus")
+  eq(answered.timerid, nil, "refusal: killed first, so no timer is left to read")
+
+  svo.lifevision.l = ordered_map()
+  local pipe = send('slickness', 'smoke')
+  svo.valid.smoke_failed_asthma()
+  eq((answer_of(svo, 'asthma') or {}).act, pipe, "refusal: a smoke refused answers the smoke")
+  svo.lifevision.l = ordered_map()
+  svo.valid.got_mucous()
+  eq((answer_of(svo, 'mucous') or {}).act, pipe, "refusal: mucous gained on a smoke answers it")
+  svo.lifevision.l = ordered_map()
+  svo.valid.have_mucous()
+  eq((answer_of(svo, 'mucous') or {}).act, pipe, "refusal: and mucous blocking one")
+  svo.killaction(pipe)
+
+  svo.lifevision.l = ordered_map()
+  local fill = send('fillskullcap', 'physical')
+  svo.valid.symp_paralysis()
+  eq((answer_of(svo, 'paralysis') or {}).act, fill, "refusal: paralysed while filling a pipe answers the fill")
+
+  svo.lifevision.l = ordered_map()
+  local stand = send('prone', 'misc')
+  svo.valid.symp_paralysis()
+  eq((answer_of(svo, 'paralysis') or {}).act, stand, "refusal: or while standing up")
+
+  -- anti-illusion off: a refusal still answers what svof sent
+  svo.conf.aillusion = false
+  svo.lifevision.l = ordered_map()
+  local ginseng = send('addiction', 'herb')
+  svo.valid.symp_anorexia()
+  eq((answer_of(svo, 'anorexia') or {}).act, ginseng, "refusal: anti-illusion off, food refused still answers the herb")
+  svo.killaction(ginseng)
+
+  -- with nothing of svof's in flight there is nothing to answer
+  svo.lifevision.l = ordered_map()
+  svo.valid.symp_anorexia()
+  truthy(svo.lifevision.l.anorexia_aff, "refusal: anti-illusion off, the claim is still filed")
+  eq(answer_of(svo, 'anorexia'), nil, "refusal: but not as an answer")
+  svo.lifevision.l = ordered_map()
+  svo.valid.smoke_failed_asthma()
+  eq(answer_of(svo, 'asthma'), nil, "refusal: nor a smoke svof never sent")
+end
+
+-- a salve refused twice for slickness, through the claim gate
+do
+  local env, h, calls, svo, send = refusal_env()
+
+  local function apply_and_prompt()
+    send('crippledleftarm', 'salve')
+    svo.valid.salve_slickness()
+    svo.promptcount = svo.promptcount + 1
+    svo.lifevision.validate()
+  end
+
+  apply_and_prompt()
+  eq(svo.affs.slickness, nil, "refusal replay: the first is refused")
+  contains(calls.echof, "Ignored a line claiming slickness: GMCP doesn't report it.", "refusal replay: at the claim gate")
+  apply_and_prompt()
+  truthy(svo.affs.slickness, "refusal replay: the second is believed")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))
