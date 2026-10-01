@@ -394,7 +394,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "3410934ec8a509bd",
+      "digest": "014e2202a394811d",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -409,7 +409,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "0bf8920b66121267",
+      "digest": "9edf6b89643bfacb",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -826,6 +826,21 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",
       "digest": "61baa56f5354675b",
       "text": "Trigger  svo (aliases, triggers) svo/General/Registration/Started [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Anorexia|script",
+      "digest": "d2533598748e6aa0",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Anorexia [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Paralysis|script",
+      "digest": "3cbfe4147a85e240",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Paralysis [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Weakness|script",
+      "digest": "c4772d14a7c71d18",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Weakness [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure ablaze tree|script",

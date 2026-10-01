@@ -210,6 +210,15 @@ jobs:
           python3 tools/check_derived_lists.py \
             --baseline tools/derived_lists_baseline.json
 
+      # Gate 1.91. The unknown-affliction count (the ? on the prompt): a
+      # defence that absorbs a hidden venom, and the game revealing a hidden
+      # affliction over GMCP, each take its ? back off. Runs the real GMCP
+      # handlers, lifevision queue, dictionary entries, trigger functions and
+      # Penlight's OrderedMap, whose ordering the first of the two hinges on.
+      # Every case runs twice, before GMCP is live and with the GMCP gate on.
+      - name: test phantom unknowns
+        run: lua tools/test_phantom_unknowns.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

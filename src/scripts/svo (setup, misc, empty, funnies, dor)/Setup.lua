@@ -139,6 +139,10 @@ local sk             = svo.sk
 -- svof affliction names GMCP reported cured during the current paragraph.
 -- Reset on every prompt - see the Char.Afflictions.Remove handler below.
 sk.gmcp_cured        = sk.gmcp_cured or {}
+-- svof affliction names GMCP added during the current paragraph while a ? was
+-- held and svof was not tracking them: possibly a hidden one revealed. Reset
+-- on every prompt - see the Char.Afflictions.Add handler below.
+sk.gmcp_revealed     = sk.gmcp_revealed or {}
 svo.vm               = svo.vm or {}
 svo.cn               = svo.cn or {}
 svo.cnrl             = svo.cnrl or {}
@@ -872,6 +876,17 @@ signals.gmcpcharafflictionsadd:connect(function()
   local svoaffkey = svo.dict.sstosvoa[affname]
   local svoaff = svoaffkey and svo.dict[svoaffkey]
   if svoaffkey then sk.gmcp_sightings[svoaffkey] = nil end -- GMCP reports it now
+
+  -- The game sends a hidden affliction when something reveals it, such as its
+  -- symptom. A new affliction arrives the same way, so the Add alone cannot
+  -- say which; the symptom triggers decide (svo.valid.remove_unknownany).
+  if svoaff and not svo.affl[svoaffkey] and (svo.affl.unknownany or svo.affl.unknownmental) then
+    sk.gmcp_revealed[svoaffkey] = true
+    sk.onprompt_beforeaction_add('gmcpcharafflictionsadd', function()
+      sk.gmcp_revealed = {}
+    end)
+  end
+
   if svoaff then
     -- addaffdict no-ops if the affliction is already tracked, so resolving
     -- once here (instead of the old two separate, overlapping lookups) does

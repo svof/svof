@@ -4081,26 +4081,32 @@ function svo.connected()
   signals.connected:emit()
 end
 
+-- A defence that absorbed the hidden venom takes that venom's unknown back off.
+-- GMCP's defence Remove arrives before the text, so defs.lost_<defence> has
+-- usually queued <defence>_gone ahead of the venom's unknown already, and
+-- queueing it again keeps that place: it would take one off a count still at
+-- 0, and the venom's ? would stay. So it goes back in at the end, after the
+-- unknown is counted.
+local function absorbed_unknown(gone)
+  if actions.unknownany_aff then
+    lifevision.l:set(gone.p.name, nil)
+    lifevision.add(gone.p, nil, 'unknownany')
+  elseif actions.unknownmental_aff then
+    lifevision.l:set(gone.p.name, nil)
+    lifevision.add(gone.p, nil, 'unknownmental')
+  else
+    lifevision.add(gone.p)
+  end
+end
+
 function svo.valid.stripped_caloric()
   svo.checkaction(svo.dict.caloric.gone, true)
-  if actions.unknownany_aff then
-    lifevision.add(actions.caloric_gone.p, nil, 'unknownany')
-  elseif actions.unknownmental_aff then
-    lifevision.add(actions.caloric_gone.p, nil, 'unknownmental')
-  else
-    lifevision.add(actions.caloric_gone.p)
-  end
+  absorbed_unknown(actions.caloric_gone)
 end
 
 function svo.valid.stripped_insomnia()
   svo.checkaction(svo.dict.insomnia.gone, true)
-  if actions.unknownany_aff then
-    lifevision.add(actions.insomnia_gone.p, nil, 'unknownany')
-  elseif actions.unknownmental_aff then
-    lifevision.add(actions.insomnia_gone.p, nil, 'unknownmental')
-  else
-    lifevision.add(actions.insomnia_gone.p)
-  end
+  absorbed_unknown(actions.insomnia_gone)
 end
 
 if svo.haveskillset('elementalism') then
@@ -4299,22 +4305,38 @@ function svo.valid.broken_legs()
 end
 
 -- remove unknown level if the affliction from a symptom was not present before
+-- GMCP's Add arrives before the symptom's line, so an affliction the game has
+-- just revealed is already in affs by then; sk.gmcp_revealed (set by the Add
+-- handler in Setup.lua) says it was not there before.
 -- The ? it takes off also vouches for the affliction's own claim in this
 -- paragraph, which GMCP may not report because the game hid it
 -- (svo.gmcp_overlooked in Setup.lua).
 valid.remove_unknownmental = function (affliction)
-  if affs[affliction] then return end
+  if affs[affliction] and not sk.gmcp_revealed[affliction] then return end
 
   if affliction and affs.unknownmental then sk.gmcp_vouched[affliction] = true end
   svo.checkaction(svo.dict.unknownmental.gone, true)
   lifevision.add(actions.unknownmental_gone.p, 'lost_level')
 end
 valid.remove_unknownany = function (affliction)
-  if affs[affliction] then return end
+  if affs[affliction] and not sk.gmcp_revealed[affliction] then return end
 
   if affliction and affs.unknownany then sk.gmcp_vouched[affliction] = true end
   svo.checkaction(svo.dict.unknownany.gone, true)
   lifevision.add(actions.unknownany_gone.p, 'lost_level')
+end
+
+-- For symptom triggers that leave the unknowns alone otherwise: takes a ? off
+-- only when GMCP revealed this affliction in this paragraph, so the ? was it.
+-- An unknown mental one goes first if focus cures the affliction.
+valid.remove_revealed_unknown = function (affliction)
+  if not sk.gmcp_revealed[affliction] then return end
+
+  if affs.unknownmental and svo.dict[affliction] and svo.dict[affliction].focus then
+    valid.remove_unknownmental(affliction)
+  else
+    valid.remove_unknownany(affliction)
+  end
 end
 
 function svo.valid.loki()
