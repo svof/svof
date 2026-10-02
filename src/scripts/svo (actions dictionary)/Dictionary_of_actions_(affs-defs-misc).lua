@@ -293,6 +293,29 @@ codepaste.nonstdcure = function()
   return (svo.doingaction'touchtree' or svo.doingaction'restore')
 end
 
+-- -> boolean
+-- returns true if every tree-curable aff we have already has a cure on its way. Tree is touched after those
+-- cures, so it would find nothing left to cure. Unknown affs, and counted ones above 1, are never covered,
+-- since tree can still take them. With no tree-curable affs at all, says false and leaves the decision to the strategy.
+local tree_cure_balances = {'focus', 'salve', 'sip', 'purgative', 'smoke', 'herb', 'misc'}
+codepaste.treecurablescovered = function()
+  local treeable = svo.gettreeableaffs()
+  if not next(treeable) then return false end
+
+  for _, aff in ipairs(treeable) do
+    if aff == 'unknownany' or aff == 'unknownmental' then return false end
+    if svo.dict[aff] and svo.dict[aff].count and svo.dict[aff].count > 1 then return false end
+
+    local covered
+    for _, balance in ipairs(tree_cure_balances) do
+      if svo.actions[aff..'_'..balance] then covered = true break end
+    end
+    if not covered then return false end
+  end
+
+  return true
+end
+
 if svo.haveskillset('metamorphosis') then
   codepaste.nonmorphdefs = function()
     for _, def in ipairs{'flame', 'lyre', 'nightsight', 'rest', 'resistance', 'stealth', 'temperance', 'elusiveness'} do
@@ -5624,7 +5647,7 @@ if not next(svo.dict) then
           for name, func in pairs(svo.tree) do
             if not me.disabledtreefunc[name] then
               local s,m = pcall(func[1])
-              if s and m then return true end
+              if s and m then return not codepaste.treecurablescovered() end
             end
           end
         end,
