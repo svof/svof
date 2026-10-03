@@ -102,11 +102,75 @@ def digest(*parts):
 # reading the dictionary literal
 # --------------------------------------------------------------------------
 
+LONG_OPEN = re.compile(r"\[(=*)\[")
+
+
+def long_bracket_end(src, k):
+    """Where the Lua long bracket opening at src[k] ends, or None if none opens
+    there. Covers every level: [[...]], [=[...]=], [==[...]==] and so on."""
+    m = LONG_OPEN.match(src, k)
+    if not m:
+        return None
+    close = "]" + m.group(1) + "]"
+    e = src.find(close, m.end())
+    return len(src) if e < 0 else e + len(close)
+
+
+def blank_noncode(src):
+    """src with every comment and string literal blanked to spaces - quoted,
+    long-bracket, all levels - and newlines kept, so offsets and line counts
+    still line up and only code is left to read. For a reader that splits code
+    by braces, as check_dict_fields' top_level_keys does: a brace or a
+    `key = value` inside a string or a comment is not code."""
+    out, k, n = list(src), 0, len(src)
+
+    def wipe(a, b):
+        for i in range(a, b):
+            if out[i] != "\n":
+                out[i] = " "
+
+    while k < n:
+        if src.startswith("--", k):
+            e = long_bracket_end(src, k + 2)
+            if e is None:
+                e = src.find("\n", k)
+                e = n if e < 0 else e
+            wipe(k, e)
+            k = e
+            continue
+        e = long_bracket_end(src, k)
+        if e is not None:
+            wipe(k, e)
+            k = e
+            continue
+        if src[k] in "\"'":
+            # a quoted string cannot cross a raw newline in Lua, so stopping at
+            # one keeps a stray quote from blanking the rest of the source
+            q, j = src[k], k + 1
+            while j < n and src[j] != q and src[j] != "\n":
+                if src[j] == "\\":
+                    j += 1
+                j += 1
+            j = min(j + 1, n)
+            wipe(k, j)
+            k = j
+            continue
+        k += 1
+    return "".join(out)
+
+
 def entries(src):
     """{entry: {balance: body}} and {entry: whole body}, from the main literal.
 
     Hand-walks the source rather than matching it, so a string or a comment
-    holding a brace cannot move the depth count.
+    holding a brace cannot move the depth count. That includes Lua long
+    brackets, as strings ([[...]]) and as comments (--[[...]]), at every level.
+    Before they were skipped, the trigger code givewarning hands
+    tempRegexTrigger as a long string was read as dictionary code, and survived
+    only because it holds no brace and its quotes pair up: a `{` in a long
+    string turned every later entry into a balance of that one, and the
+    apostrophe in "can't" swallowed everything up to the next quote. All three
+    gates that read the dictionary use this one walker.
     """
     i = src.index("svo.dict = {")
     j = src.index("{", i)
@@ -114,13 +178,16 @@ def entries(src):
     cur = bal = bopen = eopen = None
     bals, whole = {}, {}
     while k < n:
-        if src.startswith("--[[", k):
-            e = src.find("]]", k)
-            k = n if e < 0 else e + 2
-            continue
         if src.startswith("--", k):
-            e = src.find("\n", k)
-            k = n if e < 0 else e + 1
+            e = long_bracket_end(src, k + 2)
+            if e is None:
+                e = src.find("\n", k)
+                e = n if e < 0 else e + 1
+            k = e
+            continue
+        e = long_bracket_end(src, k)
+        if e is not None:
+            k = e
             continue
         c = src[k]
         if c in "\"'":
@@ -319,13 +386,22 @@ CURE_BALANCES = ("herb", "salve", "smoke", "sip", "purgative")
 
 
 def compare(data):
-    """Returns (differences, lines). Differences are baselineable; lines are
-    what a human reads."""
+    """Returns (differences, lines, broken). Differences are baselineable;
+    lines are what a human reads; broken lists reads that came back below
+    their floor, which are never baselineable.
+
+    The three floors below used to be filed as ordinary differences. A
+    behaviour-identical reformat of the herb map (`goldenseal = {` written as
+    `["goldenseal"] = {`) read 2 herbs instead of 9, the gate failed on a new
+    `floor|empty_map` difference, and regenerating the baseline - what this
+    file's own docstring says to do - wrote that difference in and turned the
+    gate green with seven herb comparisons gone. collect()'s floors already
+    refused; these do the same now."""
     # whole (the full body of each entry) is read for the entry floor in
     # collect() and nothing here needs it any more - the comparison that did
     # went with afflist.
     bals, _, literals, EMPTY = data
-    diffs, out = [], []
+    diffs, out, broken = [], [], []
 
     def diff(id_, text, *extra):
         diffs.append({"id": id_, "digest": digest(id_, *extra), "text": text})
@@ -361,9 +437,8 @@ def compare(data):
     out.append("  %-13s vs %-33s %3d blocks,   %3d in the list"
                % ("aff_focus", "focuscurables", len(focus_blocks), len(fc)))
     if len(focus_blocks) < FOCUS_BLOCK_FLOOR:
-        diff("floor|focus_blocks",
-             "read only %d focus blocks, expected at least %d"
-             % (len(focus_blocks), FOCUS_BLOCK_FLOOR), len(focus_blocks))
+        broken.append("read only %d focus blocks, expected at least %d"
+                      % (len(focus_blocks), FOCUS_BLOCK_FLOOR))
 
     for n in sorted(focus_blocks - fc):
         # Comments out first: fear's real condition sits commented out beneath
@@ -398,9 +473,8 @@ def compare(data):
                     by_item.setdefault(item, set()).add(n)
 
     if len(by_item) < CURES_BY_ITEM_FLOOR:
-        diff("floor|cures_by_item",
-             "derived cures for only %d items, expected at least %d"
-             % (len(by_item), CURES_BY_ITEM_FLOOR), len(by_item))
+        broken.append("derived cures for only %d items, expected at least %d"
+                      % (len(by_item), CURES_BY_ITEM_FLOOR))
 
     gen = brace_body(EMPTY, EMPTY.index(
         "{", EMPTY.index("for herbname, herbaffs in pairs(")))
@@ -430,9 +504,8 @@ def compare(data):
         empty_map[herb] = affs
 
     if len(empty_map) < HERB_MAP_FLOOR:
-        diff("floor|empty_map",
-             "read only %d herbs from the empty map, expected at least %d"
-             % (len(empty_map), HERB_MAP_FLOOR), len(empty_map))
+        broken.append("read only %d herbs from the empty map, expected at least %d"
+                      % (len(empty_map), HERB_MAP_FLOOR))
 
     out.append("")
     for herb in sorted(empty_map):
@@ -458,7 +531,7 @@ def compare(data):
                  "cures: empty.eat_%s clears %s, no dictionary entry names %s "
                  "as its cure" % (herb, n, herb))
 
-    return diffs, out
+    return diffs, out, broken
 
 
 # --------------------------------------------------------------------------
@@ -483,7 +556,7 @@ def main():
         print("\nDERIVED LISTS FAILED - the source could not be read as expected")
         return 1
 
-    diffs, lines = compare(data)
+    diffs, lines, broken = compare(data)
 
     print("=" * 72)
     print("Derived from svo.dict, against the literals that hold it today")
@@ -492,6 +565,17 @@ def main():
     for line in lines:
         print(line)
     print()
+
+    # Checked before anything is written or compared: a read below its floor
+    # is a broken pattern, not a difference anyone can accept.
+    if broken:
+        for b in broken:
+            print("[FAIL] " + b)
+        if a.write_baseline:
+            print("\nrefusing to record while the reading looks broken - "
+                  "%s NOT written" % a.write_baseline)
+        print("\nDERIVED LISTS FAILED - the source could not be read as expected")
+        return 1
 
     if a.write_baseline:
         payload = {

@@ -21,11 +21,13 @@ do
   -- force-adds actions[<name>_aff] out of that block, so the two lines below
   -- work for every entry that has one and for no entry that does not.
   --
-  -- cantmorph no longer needs a haveskillset test of its own, because
-  -- svo.dict.cantmorph is created under the same one - so the handler now
-  -- exists exactly when the entry it indexes does. The list re-ran on a class
-  -- change and could define simplecantmorph while the dictionary, which is not
-  -- rebuilt then, still had no entry for it to find.
+  -- cantmorph no longer needs a haveskillset test of its own: svo.dict.cantmorph
+  -- is created under that test, so the handler is generated exactly when the
+  -- entry exists, by construction rather than by two tests agreeing. A class
+  -- change empties svo.dict and reruns init, which rebuilds the dictionary
+  -- before this loop runs. svo.valid itself is never cleared, so a handler
+  -- generated under a previous class outlives its entry, as it did with the
+  -- list.
   --
   -- The anti-illusion probes are the exception. Their aff block does not mean
   -- "you just got this", it means "you saw a symptom that is either this or an
@@ -41,12 +43,20 @@ do
 
   -- Anything that needs more than these two lines is written out below and
   -- overwrites what this generates, so the loop has to stay above them.
+  --
+  -- One optional argument is handed on to the entry's aff.oncompleted. stun's
+  -- triggers already pass its duration (simplestun(.5), simplestun(2)), which
+  -- this handler and the list before it threw away, so every stun was tracked
+  -- as the 1 second its block defaults to. paradox takes its blocked herb the
+  -- same way. An oncompleted that takes no parameter ignores it. Two claims
+  -- in one paragraph keep the last argument, not a sum: the counted
+  -- afflictions that add up are written out below.
   for name, entry in pairs(svo.dict) do
     if type(entry) == 'table' and type(entry.aff) == 'table'
       and not no_simple_handler[name] then
-      valid['simple' .. name] = function ()
+      valid['simple' .. name] = function (arg)
         svo.checkaction(svo.dict[name].aff, true)
-        lifevision.add(actions[name .. '_aff'].p)
+        lifevision.add(actions[name .. '_aff'].p, nil, arg)
       end
     end
   end

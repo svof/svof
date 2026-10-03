@@ -1221,6 +1221,24 @@
             "type": "exactMatch"
           }
         ]
+      },
+      {
+        "name": "svo cured fulminated",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You are no longer suffering from the ravages of fulminous energy.",
+            "type": "exactMatch"
+          }
+        ]
       }
     ]
   },
@@ -2322,24 +2340,6 @@
         "patterns": [
           {
             "pattern": "You are far too frozen to relieve your shivers.",
-            "type": "exactMatch"
-          }
-        ]
-      },
-      {
-        "name": "svo cure scalded",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "The terrible burning of your throat fades.",
             "type": "exactMatch"
           }
         ]
@@ -7603,6 +7603,24 @@
     ]
   },
   {
+    "name": "svo scalded woreoff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The terrible burning of your skin fades.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
     "name": "svo unconsciousness woreoff",
     "isActive": "yes",
     "isFolder": "no",
@@ -8330,158 +8348,6 @@
       },
       {
         "pattern": "Blustering past, swirling autumnal leaves carry the retardation vibration away.",
-        "type": "exactMatch"
-      }
-    ]
-  },
-  {
-    "name": "svo healer selfcure",
-    "isActive": "yes",
-    "isFolder": "no",
-    "multiline": "yes",
-    "multilineDelta": "0",
-    "filter": "no",
-    "fireLength": "1",
-    "highlight": "no",
-    "highlightFG": "#ff0000",
-    "highlightBG": "#ffff00",
-    "patterns": [
-      {
-        "pattern": "You call upon the powers of",
-        "type": "startOfLine"
-      },
-      {
-        "pattern": "^You call upon the powers of .+ and project your healing through your Spirit channel\\.$",
-        "type": "regex"
-      }
-    ],
-    "children": [
-      {
-        "name": "Nothing cured",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "yes",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "^\\w+ is not afflicted with that\\.$",
-            "type": "regex"
-          },
-          {
-            "pattern": "return line:find(svo.me.name, 1, true) and true or false",
-            "type": "lua"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "svo healer selfcure2",
-    "isActive": "yes",
-    "isFolder": "no",
-    "multiline": "yes",
-    "multilineDelta": "0",
-    "filter": "no",
-    "fireLength": "0",
-    "highlight": "no",
-    "highlightFG": "#ff0000",
-    "highlightBG": "#ffff00",
-    "patterns": [
-      {
-        "pattern": "You invoke the powers of",
-        "type": "startOfLine"
-      },
-      {
-        "pattern": "^You invoke the powers of .+ and lay your healing hands on yourself\\.$",
-        "type": "regex"
-      }
-    ]
-  },
-  {
-    "name": "svo no healing balance",
-    "isActive": "yes",
-    "isFolder": "no",
-    "multiline": "no",
-    "multilineDelta": "0",
-    "filter": "no",
-    "fireLength": "0",
-    "highlight": "no",
-    "highlightFG": "#ff0000",
-    "highlightBG": "#ffff00",
-    "patterns": [
-      {
-        "pattern": "You may not manipulate elemental energy again so soon.",
-        "type": "exactMatch"
-      }
-    ]
-  },
-  {
-    "name": "svo healing bedevil",
-    "isActive": "yes",
-    "isFolder": "no",
-    "multiline": "no",
-    "multilineDelta": "0",
-    "filter": "no",
-    "fireLength": "0",
-    "highlight": "no",
-    "highlightFG": "#ff0000",
-    "highlightBG": "#ffff00",
-    "patterns": [
-      {
-        "pattern": "You are concentrating on turning afflictions back upon your foes - you may not heal.",
-        "type": "exactMatch"
-      }
-    ]
-  },
-  {
-    "name": "svo healer nothing cured",
-    "isActive": "yes",
-    "isFolder": "no",
-    "multiline": "yes",
-    "multilineDelta": "1",
-    "filter": "no",
-    "fireLength": "0",
-    "highlight": "no",
-    "highlightFG": "#ff0000",
-    "highlightBG": "#ffff00",
-    "patterns": [
-      {
-        "pattern": "You call upon the powers of",
-        "type": "startOfLine"
-      },
-      {
-        "pattern": "^You call upon the powers of .+ and project your healing through your Spirit channel\\.$",
-        "type": "regex"
-      },
-      {
-        "pattern": "",
-        "type": "prompt"
-      }
-    ]
-  },
-  {
-    "name": "svo healing cured insomnia",
-    "isActive": "yes",
-    "isFolder": "no",
-    "multiline": "yes",
-    "multilineDelta": "1",
-    "filter": "no",
-    "fireLength": "0",
-    "highlight": "no",
-    "highlightFG": "#ff0000",
-    "highlightBG": "#ffff00",
-    "patterns": [
-      {
-        "pattern": "You call upon the powers of Air and project your healing through your Spirit channel.",
-        "type": "exactMatch"
-      },
-      {
-        "pattern": "Your mind relaxes and you feel as if you could sleep.",
         "type": "exactMatch"
       }
     ]

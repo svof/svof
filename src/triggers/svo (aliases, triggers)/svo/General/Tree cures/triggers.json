@@ -396,24 +396,6 @@
     ]
   },
   {
-    "name": "svo cure bleeding tree",
-    "isActive": "yes",
-    "isFolder": "no",
-    "multiline": "no",
-    "multilineDelta": "0",
-    "filter": "no",
-    "fireLength": "0",
-    "highlight": "no",
-    "highlightFG": "#ff0000",
-    "highlightBG": "#ffff00",
-    "patterns": [
-      {
-        "pattern": "Your bleeding slows as your blood clots.",
-        "type": "exactMatch"
-      }
-    ]
-  },
-  {
     "name": "svo cure voyria tree",
     "isActive": "yes",
     "isFolder": "no",
@@ -939,24 +921,6 @@
     "patterns": [
       {
         "pattern": "Your fear of heights subsides.",
-        "type": "exactMatch"
-      }
-    ]
-  },
-  {
-    "name": "svo cure voided tree",
-    "isActive": "yes",
-    "isFolder": "no",
-    "multiline": "no",
-    "multilineDelta": "0",
-    "filter": "no",
-    "fireLength": "0",
-    "highlight": "no",
-    "highlightFG": "#ff0000",
-    "highlightBG": "#ffff00",
-    "patterns": [
-      {
-        "pattern": "The empty grasp of the void retreats, and you breathe more easily.",
         "type": "exactMatch"
       }
     ]

@@ -1,1 +1,0 @@
-svo.valid.tree_cured('bleeding')

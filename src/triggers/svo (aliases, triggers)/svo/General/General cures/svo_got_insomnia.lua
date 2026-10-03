@@ -1,1 +1,1 @@
-svo.valid.generic('insomnia')
+svo.defs.gotherborskill_insomnia()

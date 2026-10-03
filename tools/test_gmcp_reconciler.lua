@@ -654,6 +654,39 @@ do
     "List: a levelled affliction genuinely absent from the list is still removed")
 end
 
+-- ===== scenario 6b: Char.Afflictions.List resets svo.gaffl in place =====
+-- Setup.lua aliases the table once at load (`local gaffl = svo.gaffl`), which
+-- the harness reproduces by passing gaffl into the environment. The List
+-- handler used to do `svo.gaffl = {}`, which rebound the public name to a fresh
+-- table while the loop below it went on writing to the aliased one. Two silent
+-- effects, both pinned here: svo.gaffl read empty from the first List onwards,
+-- and the resync never actually cleared anything, so an Add whose Remove was
+-- missed stayed for the rest of the session.
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = { asthma = 'asthma', slickness = 'slickness' }
+  svo.dict.asthma = { name = 'asthma' }
+  svo.dict.slickness = { name = 'slickness' }
+  build_reverse_indexes(env)
+
+  local before = svo.gaffl
+  env.gaffl.leftover = true -- an Add whose Remove never arrived
+
+  env.gmcp.Char.Afflictions.List = { { name = 'asthma' } }
+  h.afflist()
+
+  eq(svo.gaffl, before,
+    "List: svo.gaffl is cleared in place, not rebound to a fresh table")
+  eq(svo.gaffl, env.gaffl,
+    "List: the public svo.gaffl and the aliased local stay the same table")
+  eq(env.gaffl.leftover, nil,
+    "List: a stale name the game no longer reports is cleared by the resync")
+  eq(env.gaffl.asthma, true,
+    "List: what the game does report is present after the resync")
+end
+
 -- ===== scenario 7: G8 - defence List reconciler uses the svof key space =====
 do
   local env, h, calls, svo = new_environment()
