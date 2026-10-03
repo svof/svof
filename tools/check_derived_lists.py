@@ -116,6 +116,49 @@ def long_bracket_end(src, k):
     return len(src) if e < 0 else e + len(close)
 
 
+def blank_noncode(src):
+    """src with every comment and string literal blanked to spaces - quoted,
+    long-bracket, all levels - and newlines kept, so offsets and line counts
+    still line up and only code is left to read. For a reader that splits code
+    by braces, as check_dict_fields' top_level_keys does: a brace or a
+    `key = value` inside a string or a comment is not code."""
+    out, k, n = list(src), 0, len(src)
+
+    def wipe(a, b):
+        for i in range(a, b):
+            if out[i] != "\n":
+                out[i] = " "
+
+    while k < n:
+        if src.startswith("--", k):
+            e = long_bracket_end(src, k + 2)
+            if e is None:
+                e = src.find("\n", k)
+                e = n if e < 0 else e
+            wipe(k, e)
+            k = e
+            continue
+        e = long_bracket_end(src, k)
+        if e is not None:
+            wipe(k, e)
+            k = e
+            continue
+        if src[k] in "\"'":
+            # a quoted string cannot cross a raw newline in Lua, so stopping at
+            # one keeps a stray quote from blanking the rest of the source
+            q, j = src[k], k + 1
+            while j < n and src[j] != q and src[j] != "\n":
+                if src[j] == "\\":
+                    j += 1
+                j += 1
+            j = min(j + 1, n)
+            wipe(k, j)
+            k = j
+            continue
+        k += 1
+    return "".join(out)
+
+
 def entries(src):
     """{entry: {balance: body}} and {entry: whole body}, from the main literal.
 
