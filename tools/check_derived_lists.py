@@ -343,13 +343,22 @@ CURE_BALANCES = ("herb", "salve", "smoke", "sip", "purgative")
 
 
 def compare(data):
-    """Returns (differences, lines). Differences are baselineable; lines are
-    what a human reads."""
+    """Returns (differences, lines, broken). Differences are baselineable;
+    lines are what a human reads; broken lists reads that came back below
+    their floor, which are never baselineable.
+
+    The three floors below used to be filed as ordinary differences. A
+    behaviour-identical reformat of the herb map (`goldenseal = {` written as
+    `["goldenseal"] = {`) read 2 herbs instead of 9, the gate failed on a new
+    `floor|empty_map` difference, and regenerating the baseline - what this
+    file's own docstring says to do - wrote that difference in and turned the
+    gate green with seven herb comparisons gone. collect()'s floors already
+    refused; these do the same now."""
     # whole (the full body of each entry) is read for the entry floor in
     # collect() and nothing here needs it any more - the comparison that did
     # went with afflist.
     bals, _, literals, EMPTY = data
-    diffs, out = [], []
+    diffs, out, broken = [], [], []
 
     def diff(id_, text, *extra):
         diffs.append({"id": id_, "digest": digest(id_, *extra), "text": text})
@@ -385,9 +394,8 @@ def compare(data):
     out.append("  %-13s vs %-33s %3d blocks,   %3d in the list"
                % ("aff_focus", "focuscurables", len(focus_blocks), len(fc)))
     if len(focus_blocks) < FOCUS_BLOCK_FLOOR:
-        diff("floor|focus_blocks",
-             "read only %d focus blocks, expected at least %d"
-             % (len(focus_blocks), FOCUS_BLOCK_FLOOR), len(focus_blocks))
+        broken.append("read only %d focus blocks, expected at least %d"
+                      % (len(focus_blocks), FOCUS_BLOCK_FLOOR))
 
     for n in sorted(focus_blocks - fc):
         # Comments out first: fear's real condition sits commented out beneath
@@ -422,9 +430,8 @@ def compare(data):
                     by_item.setdefault(item, set()).add(n)
 
     if len(by_item) < CURES_BY_ITEM_FLOOR:
-        diff("floor|cures_by_item",
-             "derived cures for only %d items, expected at least %d"
-             % (len(by_item), CURES_BY_ITEM_FLOOR), len(by_item))
+        broken.append("derived cures for only %d items, expected at least %d"
+                      % (len(by_item), CURES_BY_ITEM_FLOOR))
 
     gen = brace_body(EMPTY, EMPTY.index(
         "{", EMPTY.index("for herbname, herbaffs in pairs(")))
@@ -454,9 +461,8 @@ def compare(data):
         empty_map[herb] = affs
 
     if len(empty_map) < HERB_MAP_FLOOR:
-        diff("floor|empty_map",
-             "read only %d herbs from the empty map, expected at least %d"
-             % (len(empty_map), HERB_MAP_FLOOR), len(empty_map))
+        broken.append("read only %d herbs from the empty map, expected at least %d"
+                      % (len(empty_map), HERB_MAP_FLOOR))
 
     out.append("")
     for herb in sorted(empty_map):
@@ -482,7 +488,7 @@ def compare(data):
                  "cures: empty.eat_%s clears %s, no dictionary entry names %s "
                  "as its cure" % (herb, n, herb))
 
-    return diffs, out
+    return diffs, out, broken
 
 
 # --------------------------------------------------------------------------
@@ -507,7 +513,7 @@ def main():
         print("\nDERIVED LISTS FAILED - the source could not be read as expected")
         return 1
 
-    diffs, lines = compare(data)
+    diffs, lines, broken = compare(data)
 
     print("=" * 72)
     print("Derived from svo.dict, against the literals that hold it today")
@@ -516,6 +522,17 @@ def main():
     for line in lines:
         print(line)
     print()
+
+    # Checked before anything is written or compared: a read below its floor
+    # is a broken pattern, not a difference anyone can accept.
+    if broken:
+        for b in broken:
+            print("[FAIL] " + b)
+        if a.write_baseline:
+            print("\nrefusing to record while the reading looks broken - "
+                  "%s NOT written" % a.write_baseline)
+        print("\nDERIVED LISTS FAILED - the source could not be read as expected")
+        return 1
 
     if a.write_baseline:
         payload = {
