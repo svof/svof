@@ -102,11 +102,32 @@ def digest(*parts):
 # reading the dictionary literal
 # --------------------------------------------------------------------------
 
+LONG_OPEN = re.compile(r"\[(=*)\[")
+
+
+def long_bracket_end(src, k):
+    """Where the Lua long bracket opening at src[k] ends, or None if none opens
+    there. Covers every level: [[...]], [=[...]=], [==[...]==] and so on."""
+    m = LONG_OPEN.match(src, k)
+    if not m:
+        return None
+    close = "]" + m.group(1) + "]"
+    e = src.find(close, m.end())
+    return len(src) if e < 0 else e + len(close)
+
+
 def entries(src):
     """{entry: {balance: body}} and {entry: whole body}, from the main literal.
 
     Hand-walks the source rather than matching it, so a string or a comment
-    holding a brace cannot move the depth count.
+    holding a brace cannot move the depth count. That includes Lua long
+    brackets, as strings ([[...]]) and as comments (--[[...]]), at every level.
+    Before they were skipped, the trigger code givewarning hands
+    tempRegexTrigger as a long string was read as dictionary code, and survived
+    only because it holds no brace and its quotes pair up: a `{` in a long
+    string turned every later entry into a balance of that one, and the
+    apostrophe in "can't" swallowed everything up to the next quote. All three
+    gates that read the dictionary use this one walker.
     """
     i = src.index("svo.dict = {")
     j = src.index("{", i)
@@ -114,13 +135,16 @@ def entries(src):
     cur = bal = bopen = eopen = None
     bals, whole = {}, {}
     while k < n:
-        if src.startswith("--[[", k):
-            e = src.find("]]", k)
-            k = n if e < 0 else e + 2
-            continue
         if src.startswith("--", k):
-            e = src.find("\n", k)
-            k = n if e < 0 else e + 1
+            e = long_bracket_end(src, k + 2)
+            if e is None:
+                e = src.find("\n", k)
+                e = n if e < 0 else e + 1
+            k = e
+            continue
+        e = long_bracket_end(src, k)
+        if e is not None:
+            k = e
             continue
         c = src[k]
         if c in "\"'":

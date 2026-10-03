@@ -49,6 +49,13 @@ import sys
 from collections import defaultdict
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# The dictionary walker, imported rather than copied. This file used to carry a
+# line-for-line copy of it, so a fix to one (skipping Lua long brackets, say)
+# could miss the other and leave two gates reading different dictionaries.
+from check_derived_lists import entries  # noqa: E402
+
 DICT_PATH = os.path.join(
     REPO, "src", "scripts", "svo (actions dictionary)",
     "Dictionary_of_actions_(affs-defs-misc).lua")
@@ -114,58 +121,6 @@ def read(path):
     without this and failed on CI."""
     with io.open(path, "rb") as fh:
         return fh.read().replace(b"\r\n", b"\n").decode("utf-8", "replace")
-
-
-def entries(src):
-    """{entry: {key: body}} for table-valued keys, and {entry: whole body}.
-
-    Hand-walks the source so a brace inside a string or a comment cannot move
-    the depth count.
-    """
-    i = src.index("svo.dict = {")
-    j = src.index("{", i)
-    depth, k, n = 0, j, len(src)
-    cur = bal = bopen = eopen = None
-    tables, whole = {}, {}
-    while k < n:
-        if src.startswith("--[[", k):
-            e = src.find("]]", k)
-            k = n if e < 0 else e + 2
-            continue
-        if src.startswith("--", k):
-            e = src.find("\n", k)
-            k = n if e < 0 else e + 1
-            continue
-        c = src[k]
-        if c in "\"'":
-            k += 1
-            while k < n and src[k] != c:
-                if src[k] == "\\":
-                    k += 1
-                k += 1
-            k += 1
-            continue
-        if c == "{":
-            depth += 1
-            if depth == 2:
-                m = re.search(r"([A-Za-z_]\w*)\s*=\s*$", src[max(0, k - 80):k])
-                cur = m.group(1) if m else None
-                eopen = k
-            elif depth == 3 and cur:
-                m = re.search(r"([A-Za-z_]\w*)\s*=\s*$", src[max(0, k - 60):k])
-                bal, bopen = (m.group(1) if m else None), k
-        elif c == "}":
-            if depth == 3 and cur and bal:
-                tables.setdefault(cur, {})[bal] = src[bopen:k + 1]
-                bal = None
-            elif depth == 2 and cur:
-                whole[cur] = src[eopen:k + 1]
-                cur = None
-            depth -= 1
-            if depth == 0:
-                break
-        k += 1
-    return tables, whole
 
 
 def top_level_keys(body):
