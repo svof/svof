@@ -41,12 +41,20 @@ do
 
   -- Anything that needs more than these two lines is written out below and
   -- overwrites what this generates, so the loop has to stay above them.
+  --
+  -- One optional argument is handed on to the entry's aff.oncompleted. stun's
+  -- triggers already pass its duration (simplestun(.5), simplestun(2)), which
+  -- this handler and the list before it threw away, so every stun was tracked
+  -- as the 1 second its block defaults to. paradox takes its blocked herb the
+  -- same way. An oncompleted that takes no parameter ignores it. Two claims
+  -- in one paragraph keep the last argument, not a sum: the counted
+  -- afflictions that add up are written out below.
   for name, entry in pairs(svo.dict) do
     if type(entry) == 'table' and type(entry.aff) == 'table'
       and not no_simple_handler[name] then
-      valid['simple' .. name] = function ()
+      valid['simple' .. name] = function (arg)
         svo.checkaction(svo.dict[name].aff, true)
-        lifevision.add(actions[name .. '_aff'].p)
+        lifevision.add(actions[name .. '_aff'].p, nil, arg)
       end
     end
   end

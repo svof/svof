@@ -8562,6 +8562,10 @@ if not next(svo.dict) then
       },
       aff = {
         oncompleted = function (herb)
+          -- "" when added without a herb (a bare simpleparadox()), the value
+          -- the entry starts with and gone resets it to. nil made
+          -- paradox_weakened call string.find with no pattern and raise.
+          herb = herb or ""
           svo.dict.paradox.count = 5
           svo.dict.paradox.blocked_herb = herb
           svo.addaffdict(svo.dict.paradox)

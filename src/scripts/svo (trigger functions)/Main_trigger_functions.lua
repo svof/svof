@@ -2127,7 +2127,10 @@ function svo.valid.paradox_boosted()
 end
 
 function svo.valid.paradox_weakened()
-  if svo.find_until_last_paragraph(svo.dict.paradox.blocked_herb, 'substring') or svo.find_until_last_paragraph(rift.herb_conversions[svo.dict.paradox.blocked_herb], 'substring') then return end
+  -- With no blocked herb recorded there is no herb line to look for, and
+  -- finding "" would match every line and ignore every weakening.
+  local herb = svo.dict.paradox.blocked_herb
+  if herb ~= "" and (svo.find_until_last_paragraph(herb, 'substring') or svo.find_until_last_paragraph(rift.herb_conversions[herb], 'substring')) then return end
   svo.checkaction(svo.dict.paradox.weakened, true)
   lifevision.add(actions.paradox_weakened.p)
 end

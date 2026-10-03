@@ -199,7 +199,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "ce4bef35ca8db1a1",
+      "digest": "1e906ed223cbef79",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -399,12 +399,12 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "00405f3bbe7689fc",
+      "digest": "b0f8378b44016ff0",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
       "id": "item|Script|svo (trigger functions)|Simple aff trigger functions|script",
-      "digest": "dfb96ad433b75baf",
+      "digest": "d683497fe76225eb",
       "text": "Script   svo (trigger functions) Simple aff trigger functions [script]"
     },
     {
