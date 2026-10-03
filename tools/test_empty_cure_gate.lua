@@ -19,8 +19,8 @@ Five things it pins:
   * GMCP overrules the inference. A name Char.Afflictions still reports is kept.
   * The gate only applies where GMCP can speak. A name absent from
     svo.dict.svotossa - the four unknowns, and blindaff, deafaff and hoisted,
-    which have no GMCP affliction name - is removed the way it always was,
-    because there the inference is the only information there is, and
+    which svof takes no GMCP affliction name for - is removed the way it
+    always was, because there the inference is the only information there is, and
     resolving an unknown this way is the whole point of tracking one. earworm
     used to be listed here; it has been in sstosvoa since 6af80b3, so GMCP's
     word now keeps it like any other.
@@ -78,8 +78,9 @@ local SVOTOSSA = {
   torntendons = 'torntendons',
   latched     = 'latched',
   earworm     = 'earworm',
-  -- deliberately absent: unknownany, unknownmental, blindaff. GMCP cannot
-  -- report these, so the gate must leave them to the old behaviour.
+  -- deliberately absent: unknownany, unknownmental, blindaff. svof takes no
+  -- GMCP affliction name for these, so the gate must leave them to the old
+  -- behaviour.
 }
 
 local checks, failures = 0, {}
@@ -148,15 +149,17 @@ end
 
 -- ===== the gate only applies where GMCP can speak =====
 do
-  -- 'blindaff' in gaffl is a key no svotossa entry points at, so it must not
-  -- keep anything: blindaff has no GMCP affliction name (sstosvoa maps the
-  -- game's blindness to false and reports it as a defence)
-  local presume_cured, removed = harness({'asthma', 'blindaff'})
+  -- The game does send 'blindness' in Char.Afflictions, in lockstep with the
+  -- defence (seen in both captured fights), but it is one state with nothing
+  -- to tell an unwanted blindness from the bayberry defence, so sstosvoa maps
+  -- it to false and no svotossa entry points at it. Its presence in gaffl
+  -- must not keep blindaff.
+  local presume_cured, removed = harness({'asthma', 'blindness'})
   presume_cured({'unknownany', 'unknownmental', 'blindaff'})
   check("unknownany, which GMCP cannot report, is still removed",
     has(removed, 'unknownany'), true)
   check("unknownmental, same, is still removed", has(removed, 'unknownmental'), true)
-  check("blindaff, a real affliction GMCP cannot report, is still removed",
+  check("blindaff, a real affliction svof takes no GMCP name for, is still removed",
     has(removed, 'blindaff'), true)
 end
 

@@ -9692,14 +9692,17 @@ if not next(svo.dict) then
         action = 'insomnia',
         onstart = function() send('insomnia', conf.commandecho) end
       },
-      -- Originally "small cheat for insomnia being on diagnose". DIAGNOSE does
-      -- not list insomnia today and no diag trigger names it (checked in game,
-      -- 2026-10-03), but the game does cure this defence with goldenseal the
-      -- way it cures an affliction (herb_cured_insomnia), so the block is kept
-      -- in case something gives an insomnia affliction that diagnose shows.
-      -- It makes insomnia look like an affliction to anything that tests for
-      -- an `aff` block, which is why svo.valid.generic rejects entries by
-      -- their def flag rather than by that test.
+      -- Originally "small cheat for insomnia being on diagnose". DIAGNOSE's
+      -- text does not list insomnia today and no diag trigger names it
+      -- (checked in game, 2026-10-03). The game does model it as an affliction
+      -- as well as a defence, though: GMCP sends insomnia in Char.Afflictions,
+      -- with the cure EAT GOLDENSEAL, in lockstep with Char.Defences (seen in
+      -- both captured fights), and goldenseal strips it (herb_cured_insomnia).
+      -- sstosvoa maps it to false, so svof reads only the defence feed. The
+      -- block is kept for that affliction side. It makes insomnia look like an
+      -- affliction to anything that tests for an `aff` block, which is why
+      -- svo.valid.generic rejects entries by their def flag rather than by
+      -- that test.
       aff = {
         oncompleted = function() defences.got('insomnia') end
       },
