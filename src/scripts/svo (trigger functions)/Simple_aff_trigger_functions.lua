@@ -21,11 +21,13 @@ do
   -- force-adds actions[<name>_aff] out of that block, so the two lines below
   -- work for every entry that has one and for no entry that does not.
   --
-  -- cantmorph no longer needs a haveskillset test of its own, because
-  -- svo.dict.cantmorph is created under the same one - so the handler now
-  -- exists exactly when the entry it indexes does. The list re-ran on a class
-  -- change and could define simplecantmorph while the dictionary, which is not
-  -- rebuilt then, still had no entry for it to find.
+  -- cantmorph no longer needs a haveskillset test of its own: svo.dict.cantmorph
+  -- is created under that test, so the handler is generated exactly when the
+  -- entry exists, by construction rather than by two tests agreeing. A class
+  -- change empties svo.dict and reruns init, which rebuilds the dictionary
+  -- before this loop runs. svo.valid itself is never cleared, so a handler
+  -- generated under a previous class outlives its entry, as it did with the
+  -- list.
   --
   -- The anti-illusion probes are the exception. Their aff block does not mean
   -- "you just got this", it means "you saw a symptom that is either this or an
