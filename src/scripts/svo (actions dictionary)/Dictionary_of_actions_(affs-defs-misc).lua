@@ -4991,6 +4991,14 @@ if not next(svo.dict) then
       },
       aff = {
         oncompleted = function()
+          -- A fresh scald while already scalded starts the 20 seconds again.
+          -- addaffdict does nothing for an affliction already tracked, so
+          -- onadded would not. Only the fallback moves: the wear-off line
+          -- still clears it whenever the game prints it.
+          if affs.scalded and svo.actions.scalded_waitingfor then
+            svo.killaction(svo.dict.scalded.waitingfor)
+            svo.doaction(svo.dict.scalded.waitingfor)
+          end
           svo.addaffdict(svo.dict.scalded)
         end,
       },
