@@ -1,1 +1,1 @@
-svo.valid.generic_insomnia()
+svo.defs.gotherborskill_insomnia()
