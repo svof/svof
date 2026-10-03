@@ -27,10 +27,14 @@ local affs = svo.affs
 -- the inference is simply wrong, so the affliction stays.
 --
 -- Where GMCP cannot speak, the inference is the only information there is and
--- it stands. That is now only the four unknowns, which are meant to be resolved
--- exactly this way - working out that an unknown affliction was one of these is
--- the whole point of tracking one. earworm used to sit there too, as the one
--- real affliction outside the gate, until it was added to sstosvoa.
+-- it stands. That is the four unknowns, which are meant to be resolved exactly
+-- this way - working out that an unknown affliction was one of these is the
+-- whole point of tracking one - and three real afflictions with no GMCP name:
+-- blindaff and deafaff, because the game reports blindness and deafness as
+-- defences (sstosvoa maps both to false), and hoisted, which no sstosvoa entry
+-- names. For those three an empty epidermal apply or writhe still decides on
+-- its own. earworm used to be outside the gate too, until it was added to
+-- sstosvoa.
 -- bleeding is not in any list here and must not be: the game
 -- reports it through Char.Vitals.charstats as "Bleed: N" rather than as an
 -- affliction, and Setup.lua already clears it when that reads 0.
