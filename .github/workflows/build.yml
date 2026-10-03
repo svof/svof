@@ -178,8 +178,8 @@ jobs:
       # acting on that unconditionally made a wrong name in one of those lists
       # drop an affliction still held. The gate checks Char.Afflictions first.
       # Same extract-the-real-function approach as the three above. Pins that
-      # GMCP overrules the inference, that a name GMCP cannot report (the four
-      # unknowns, earworm) keeps the old behaviour, that levelled names match
+      # GMCP overrules the inference, that a name GMCP cannot report (the
+      # unknowns, blindaff) keeps the old behaviour, that levelled names match
       # through the " (2)" suffix, and that blackout - which stops
       # Char.Afflictions entirely - presumes nothing at all.
       - name: test empty cure gmcp gate

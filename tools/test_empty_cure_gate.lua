@@ -18,9 +18,12 @@ Five things it pins:
 
   * GMCP overrules the inference. A name Char.Afflictions still reports is kept.
   * The gate only applies where GMCP can speak. A name absent from
-    svo.dict.svotossa - the four unknowns, and earworm - is removed the way it
-    always was, because there the inference is the only information there is,
-    and resolving an unknown this way is the whole point of tracking one.
+    svo.dict.svotossa - the four unknowns, and blindaff, deafaff and hoisted,
+    which have no GMCP affliction name - is removed the way it always was,
+    because there the inference is the only information there is, and
+    resolving an unknown this way is the whole point of tracking one. earworm
+    used to be listed here; it has been in sstosvoa since 6af80b3, so GMCP's
+    word now keeps it like any other.
   * Levelled names match. GMCP keys an affliction at level 2 and up as
     "name (2)" and bare at level 1, so a comparison on the raw key would keep
     a level-1 affliction and drop a level-2 one.
@@ -74,7 +77,8 @@ local SVOTOSSA = {
   slickness   = 'slickness',
   torntendons = 'torntendons',
   latched     = 'latched',
-  -- deliberately absent: unknownany, unknownmental, earworm. GMCP cannot
+  earworm     = 'earworm',
+  -- deliberately absent: unknownany, unknownmental, blindaff. GMCP cannot
   -- report these, so the gate must leave them to the old behaviour.
 }
 
@@ -144,13 +148,24 @@ end
 
 -- ===== the gate only applies where GMCP can speak =====
 do
-  local presume_cured, removed = harness({'asthma'})
-  presume_cured({'unknownany', 'unknownmental', 'earworm'})
+  -- 'blindaff' in gaffl is a key no svotossa entry points at, so it must not
+  -- keep anything: blindaff has no GMCP affliction name (sstosvoa maps the
+  -- game's blindness to false and reports it as a defence)
+  local presume_cured, removed = harness({'asthma', 'blindaff'})
+  presume_cured({'unknownany', 'unknownmental', 'blindaff'})
   check("unknownany, which GMCP cannot report, is still removed",
     has(removed, 'unknownany'), true)
   check("unknownmental, same, is still removed", has(removed, 'unknownmental'), true)
-  check("earworm, the one real affliction GMCP cannot report, is still removed",
-    has(removed, 'earworm'), true)
+  check("blindaff, a real affliction GMCP cannot report, is still removed",
+    has(removed, 'blindaff'), true)
+end
+
+-- earworm can be reported since 6af80b3 put it in sstosvoa, so GMCP's word
+-- keeps it like any other affliction
+do
+  local presume_cured, removed = harness({'earworm'})
+  presume_cured({'deadening', 'earworm'})
+  check("earworm, which GMCP now reports, is kept while reported", has(removed, 'earworm'), false)
 end
 
 -- ===== levelled GMCP names =====
