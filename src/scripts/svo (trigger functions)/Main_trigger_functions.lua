@@ -1608,6 +1608,17 @@ function svo.valid.stoodup()
 end
 
 function svo.valid.sippedhealth()
+  -- While latched, SIP HEALTH clears the latch instead of healing, with its
+  -- own line (generic('latched')). So this heal line arriving while latched's
+  -- sip is in flight means we were not latched: the case latched.sip.empty is
+  -- for. Nothing else reaches it - sip2 only looks at the purgative balance -
+  -- and without this a stale latched left its sip unanswered until it timed
+  -- out, then sipped health again.
+  if actions.latched_sip then
+    svo.sip_cure = true
+    lifevision.add(actions.latched_sip.p, 'empty')
+  end
+
   svo.checkaction(svo.dict.healhealth.sip)
   if actions.healhealth_sip then
     svo.sip_cure = true
