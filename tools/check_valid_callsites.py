@@ -101,14 +101,11 @@ CALL_FLOOR = 500
 #
 # Well below today's counts, so a real edit passes and a loop that has stopped
 # being readable does not.
-# diag_ is deliberately absent: the diagnose handlers were inverted, so there is
-# one svo.valid.diag(name, ...) and no generated per-name family to put a floor
-# under. The trigger call sites are what the resolver checks now.
 # diag_, generic_ and tree_cured_ are deliberately absent: those families were
 # inverted into svo.valid.diag / .generic / .tree_cured, which take the name as
 # an argument, so there is no generated per-name family left to floor. What
-# guards them now is the resolver finding the literal function, and the
-# handlers' own guards reporting a name svof has no entry for.
+# guards them now is check_name_arguments() below, which reads the name each
+# call passes, and NAME_CALL_FLOOR under it.
 #
 # simple stays, and its floor now guards the dictionary read rather than a
 # literal: if the brace walk or the no_simple_handler read comes back empty,
@@ -121,6 +118,30 @@ GENERATOR_FLOORS = {
     "focus_cured_": 12,
     "smoke_cured_": 8,
 }
+
+# The handlers that take an affliction name as their first argument, and what
+# each one needs that name to be - the same test the handler itself makes at
+# runtime, so a call that passes here does not errorf there:
+#
+#   diag           an entry with an `aff` block (diagnose_end indexes .aff), or
+#                  godfeelings, which diagnose_end special-cases
+#   generic        an entry that is not a defence. Judged by the def flag, not
+#                  by an `aff` block: healmana has no `aff` block and is a real
+#                  caller, and insomnia is a defence that keeps one.
+#   tree_cured     an entry, or one of TREE_SPECIAL in Main_trigger_functions
+#   generic_cure,  an entry with a `gone` block, which both index
+#   generic_cured
+#
+# Before this, the gate saw only that `generic` was defined and never read
+# its argument, so d2160f6's generic('burn') (no such entry) and
+# generic('insomnia') (a defence) both passed.
+NAME_FAMILIES = ("diag", "generic", "tree_cured", "generic_cure", "generic_cured")
+
+# Created after the dictionary literal, so the literal walk does not see them.
+RUNTIME_ENTRIES = {"cantmorph": {"aff"}}
+
+# Below this, the call-site reading is broken rather than the source clean.
+NAME_CALL_FLOOR = 250
 
 
 def read(path):
@@ -281,6 +302,90 @@ def collect_calls():
     return calls
 
 
+def script_texts():
+    """(where, script) for every trigger and alias script: the .lua files, and
+    the scripts muddler keeps inline in the json, which collect_calls does not
+    read. One name-taking call already lives inline."""
+    for root in ("triggers", "aliases"):
+        base = os.path.join(SRC, root)
+        if not os.path.isdir(base):
+            continue
+        for d, _, fs in os.walk(base):
+            for f in fs:
+                p = os.path.join(d, f)
+                rel = os.path.relpath(p, REPO).replace(os.sep, "/")
+                if f.endswith(".lua"):
+                    yield rel, read(p)
+                elif f.endswith(".json"):
+                    with io.open(p, encoding="utf-8") as fh:
+                        stack = [json.load(fh)]
+                    while stack:
+                        x = stack.pop()
+                        if isinstance(x, dict):
+                            if isinstance(x.get("script"), str) and x["script"]:
+                                yield "%s > %s" % (rel, x.get("name", "?")), x["script"]
+                            stack.extend(x.values())
+                        elif isinstance(x, list):
+                            stack.extend(x)
+
+
+def tree_special():
+    """The strings svo.valid.tree_cured accepts besides an entry name, read
+    from its own TREE_SPECIAL table rather than repeated here."""
+    src = _read_script("svo (trigger functions)", "Main_trigger_functions.lua")
+    m = re.search(r"local TREE_SPECIAL = \{(.*?)\n\}", src, re.S)
+    return set(re.findall(r"\['([^']+)'\]\s*=\s*true", m.group(1))) if m else set()
+
+
+def check_name_arguments():
+    """(calls checked, problems) for the handlers in NAME_FAMILIES."""
+    bals, _ = _dict_entries(_read_script(
+        "svo (actions dictionary)", "Dictionary_of_actions_(affs-defs-misc).lua"))
+    blocks = {n: set(b) for n, b in bals.items()}
+    for n, b in RUNTIME_ENTRIES.items():
+        blocks.setdefault(n, set()).update(b)
+    # the def flag sits at the top of a balance's own body
+    defences = {n for n, b in bals.items()
+                if any(re.search(r"^\s*def\s*=\s*true\b", body, re.M)
+                       for body in b.values())}
+    special = tree_special()
+
+    def why_not(fam, name):
+        if fam == "tree_cured" and name in special:
+            return None
+        if fam == "diag" and name == "godfeelings":
+            return None
+        if name not in blocks:
+            return "svof has no entry named %r" % name
+        if fam == "diag" and "aff" not in blocks[name]:
+            return "%r has no aff block, which diagnose_end indexes" % name
+        if fam == "generic" and name in defences:
+            return ("%r is a defence (a balance has def = true); defence lines "
+                    "go to their own handler in svo.defs" % name)
+        if fam in ("generic_cure", "generic_cured") and "gone" not in blocks[name]:
+            return "%r has no gone block, which %s indexes" % (name, fam)
+        return None
+
+    call = re.compile(r"\bvalid\.(%s)\s*\(\s*([^)]*)\)" % "|".join(NAME_FAMILIES))
+    checked, problems = 0, []
+    for where, text in script_texts():
+        for m in call.finditer(text):
+            fam, args = m.group(1), m.group(2)
+            lit = re.match(r"""\s*(['"])(.*?)\1""", args)
+            if not lit:
+                problems.append("%s calls svo.valid.%s(%s) with a name this check "
+                                "cannot read; pass a literal" % (where, fam, args.strip()))
+                continue
+            checked += 1
+            reason = why_not(fam, lit.group(2))
+            if reason:
+                problems.append("%s: svo.valid.%s(%r) - %s"
+                                % (where, fam, lit.group(2), reason))
+    if not special:
+        problems.append("read no TREE_SPECIAL table from Main_trigger_functions.lua")
+    return checked, problems
+
+
 def load_known():
     if not os.path.exists(KNOWN):
         return set()
@@ -312,6 +417,12 @@ def main():
                             "least %d - it has stopped being readable, and "
                             "every call it should define now looks dead"
                             % (pfx, got, floor))
+
+    named, name_problems = check_name_arguments()
+    if named < NAME_CALL_FLOOR:
+        problems.append("read only %d name arguments to %s, expected at least %d "
+                        "- this check is reading less than it should"
+                        % (named, "/".join(NAME_FAMILIES), NAME_CALL_FLOOR))
 
     unresolved = []
     for name in sorted(calls):
@@ -350,6 +461,8 @@ def main():
           "src/aliases" % len(calls))
     print("  %d defined as literals, %d generated by %d loops"
           % (len(literal), generated, len(prefixed) + len(suffixed) + len(twopart)))
+    print("%d name arguments to %s checked against svo.dict"
+          % (named, "/".join(NAME_FAMILIES)))
     print()
 
     for e in new:
@@ -361,10 +474,12 @@ def main():
         print("           either a handler was written for it or its caller was "
               "removed - %s" % f)
         print("           drop that entry in the same commit that did it")
+    for p in name_problems:
+        print("[FAIL] " + p)
     for p in problems:
         print("[FAIL] " + p)
 
-    bad = len(new) + len(fixed) + len(problems)
+    bad = len(new) + len(fixed) + len(name_problems) + len(problems)
     if bad:
         print("\nsvo.valid is a plain table with no __index, so a name nothing "
               "defines\nraises into the error console and the trigger's line "

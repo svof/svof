@@ -199,7 +199,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "7f0dab96d1d5b964",
+      "digest": "fb5c028bac4ae376",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -399,7 +399,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "d557094c302e58e9",
+      "digest": "b6f9dd78f36c47e4",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -806,6 +806,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cured wristfractures generic|script",
       "digest": "f0b315961405a5c1",
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cured wristfractures generic [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo got insomnia|script",
+      "digest": "100451754e0825a1",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got insomnia [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",

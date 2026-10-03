@@ -9680,7 +9680,14 @@ if not next(svo.dict) then
         action = 'insomnia',
         onstart = function() send('insomnia', conf.commandecho) end
       },
-      -- small cheat for insomnia being on diagnose
+      -- Originally "small cheat for insomnia being on diagnose". DIAGNOSE does
+      -- not list insomnia today and no diag trigger names it (checked in game,
+      -- 2026-10-03), but the game does cure this defence with goldenseal the
+      -- way it cures an affliction (herb_cured_insomnia), so the block is kept
+      -- in case something gives an insomnia affliction that diagnose shows.
+      -- It makes insomnia look like an affliction to anything that tests for
+      -- an `aff` block, which is why svo.valid.generic rejects entries by
+      -- their def flag rather than by that test.
       aff = {
         oncompleted = function() defences.got('insomnia') end
       },

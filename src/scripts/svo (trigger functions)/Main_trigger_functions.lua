@@ -3283,7 +3283,14 @@ function svo.defs.gotskill_insomnia()
   end
 end
 
-function svo.valid.generic_insomnia()
+-- The insomnia gain line in the General cures group, which replaces Ate during
+-- blackout and passive-cure paragraphs. Without Ate's "You eat" parent line
+-- nothing says whether cohosh or the INSOMNIA skill raised it, so this takes
+-- whichever of the two is in flight. A defence gain, not a cure: it used to be
+-- svo.valid.generic_insomnia, and that prefix made it look like a member of
+-- svo.valid.generic's family, which is how d2160f6 rewrote its trigger to
+-- generic('insomnia').
+function svo.defs.gotherborskill_insomnia()
   local r = svo.checkany(svo.dict.insomnia.herb, svo.dict.insomnia.misc)
 
   if not r then return end
@@ -3340,9 +3347,28 @@ end
 -- The parameter keeps the name `aff`, so the body below is reused unchanged.
 -- Renaming it mechanically also hit the string literal in
 -- `k.p.balance ~= 'aff'`, which means something else entirely.
+--
+-- A defence is refused by its def flag, not by a missing `aff` block: insomnia
+-- is a defence that keeps an `aff` block (see its entry), and passing a defence
+-- through here can kill an unrelated in-flight action and credit the defence's
+-- herb instead, or mark the defence lost. Defence lines have their own
+-- handlers in svo.defs. blindaff and deafaff are separate affliction entries
+-- with no def flag, so they are unaffected.
+local function is_defence(entry)
+  for _, balance in pairs(entry) do
+    if type(balance) == 'table' and balance.def then return true end
+  end
+  return false
+end
+
 function svo.valid.generic(aff)
   if not svo.dict[aff] then
     svo.errorf("a generic-cure trigger names %q, which svof has no entry for.", aff)
+    return
+  end
+
+  if is_defence(svo.dict[aff]) then
+    svo.errorf("a generic-cure trigger names %q, which is a defence; defence lines go to their own handler in svo.defs.", aff)
     return
   end
 
