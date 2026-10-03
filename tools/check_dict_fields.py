@@ -54,7 +54,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # The dictionary walker, imported rather than copied. This file used to carry a
 # line-for-line copy of it, so a fix to one (skipping Lua long brackets, say)
 # could miss the other and leave two gates reading different dictionaries.
-from check_derived_lists import entries  # noqa: E402
+from check_derived_lists import entries, blank_noncode  # noqa: E402
 
 DICT_PATH = os.path.join(
     REPO, "src", "scripts", "svo (actions dictionary)",
@@ -136,8 +136,13 @@ def top_level_keys(body):
 
     A `{` inside a function body leaves no sentinel that matters, because the
     sentinel only counts when it follows the `=` directly.
+
+    Comments and strings are blanked first. A brace inside one used to count:
+    `description = "a { brace",` left the rest of the entry one level deep, so
+    its later keys vanished and a `focus = true` placed after it passed this
+    check, while the same `focus = true` alone failed it.
     """
-    inner, out, depth = body[1:-1], [], 0
+    inner, out, depth = blank_noncode(body[1:-1]), [], 0
     for ch in inner:
         if ch == "{":
             depth += 1
