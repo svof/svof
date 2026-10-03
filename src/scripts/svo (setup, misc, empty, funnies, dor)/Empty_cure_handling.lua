@@ -214,12 +214,13 @@ empty.tree = function ()
   local a = svo.gettreeableaffs()
   svo.debugf("Tree cured nothing, considering: "..table.concat(a, ", "))
   presume_cured(a)
-  -- Left unconditional. Neither unknown is in svotossa, so GMCP can never
-  -- report one and presume_cured always removes them - resolving an unknown on
-  -- an empty cure is the whole reason for tracking one - which keeps these two
-  -- lines consistent with what was actually removed.
-  svo.dict.unknownmental.count = 0
-  svo.dict.unknownany.count = 0
+  -- An unknown's count is reset only when the unknown is actually gone.
+  -- Resolving one on an empty cure is the point of tracking it, and GMCP can
+  -- never report one, so outside blackout presume_cured always removes them -
+  -- but in blackout it removes nothing, and resetting the counts regardless
+  -- left unknownany tracked at a count of 0.
+  if not affs.unknownmental then svo.dict.unknownmental.count = 0 end
+  if not affs.unknownany then svo.dict.unknownany.count = 0 end
 end
 
 empty.dragonheal = empty.tree
