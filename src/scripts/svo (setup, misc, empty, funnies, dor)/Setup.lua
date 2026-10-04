@@ -802,9 +802,10 @@ end
 --  * a symptom trigger took a ? off for it (svo.valid.remove_unknownany);
 --  * the game refused a command svof sent because of it (lifevision marks
 --    these as answers) while a ? is held, and that ? is used up;
---  * or the game refused two of svof's commands for it, on different prompts
---    within 30 seconds, each arriving no sooner than half the ping after its
---    command left, and anorexia's only while nothing was eaten.
+--  * or the game refused two of svof's commands for it, two separate sends
+--    told apart by their timers, on different prompts within 30 seconds,
+--    each arriving no sooner than half the ping after its command left, and
+--    anorexia's only while nothing was eaten.
 -- Attack lines stay refused. Returns true when the affliction is believed.
 sk.gmcp_sightings = sk.gmcp_sightings or {} -- the last refused answer for each affliction
 sk.gmcp_vouched = sk.gmcp_vouched or {} -- this paragraph's ? taken off by a symptom, by affliction
@@ -841,7 +842,7 @@ function svo.gmcp_overlooked(aff, claim)
     if use_up_unknown(aff) then
       why = 'hidden'
     elseif seen and seen.prompt ~= svo.promptcount and os.time() - seen.time <= 30
-      and (answer.timerid == nil or seen.timerid ~= answer.timerid) then
+      and seen.timerid ~= answer.timerid then
       why = 'again'
     else
       sk.gmcp_sightings[aff] = {prompt = svo.promptcount, time = os.time(), timerid = answer.timerid}

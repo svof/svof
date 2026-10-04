@@ -364,11 +364,16 @@ local function answer_to(act)
 end
 
 -- Files the claims f makes as the game's answer to act, a command svof sent
--- and was waiting on. For the triggers that find which of svof's commands a
--- refusal line ("You are too slick...") answers.
+-- and is still waiting on. For the triggers that find which of svof's
+-- commands a refusal line ("You are too slick...") answers. Only a command
+-- svo.doaction sent counts, as in svo.lifevision.add below: one that
+-- svo.checkaction filed for a line has no timer, so two refusals of it could
+-- not be told from one refusal shown twice. So a trigger answers before it
+-- kills the command, while its timer is still there to read.
 function svo.lifevision.answering(act, f, ...)
   local was = sk.filing_answer
-  if act then sk.filing_answer = answer_to(act) end
+  local action = act and svo.actions[act.name]
+  if action and action.timerid then sk.filing_answer = answer_to(act) end
   local ok, err = pcall(f, ...)
   sk.filing_answer = was
   if not ok then error(err, 0) end

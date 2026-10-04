@@ -525,27 +525,28 @@ end
 
 function svo.valid.symp_paralysis()
   -- the fills and the stand below are svof's own commands, so these are the
-  -- game's answers to them (svo.gmcp_overlooked in Setup.lua)
+  -- game's answers to them (svo.gmcp_overlooked in Setup.lua), filed before
+  -- each command is killed so its timer can be read
   if actions.fillskullcap_physical then
-    svo.killaction(svo.dict.fillskullcap.physical)
     if not affs.paralysis then
       lifevision.answering(svo.dict.fillskullcap.physical, valid.simpleparalysis)
       decho(svo.getDefaultColor().." (paralysis confirmed)")
     end
+    svo.killaction(svo.dict.fillskullcap.physical)
     return
   elseif actions.fillelm_physical then
-    svo.killaction(svo.dict.fillelm.physical)
     if not affs.paralysis then
       lifevision.answering(svo.dict.fillelm.physical, valid.simpleparalysis)
       decho(svo.getDefaultColor().." (paralysis confirmed)")
     end
+    svo.killaction(svo.dict.fillelm.physical)
     return
   elseif actions.fillvalerian_physical then
-    svo.killaction(svo.dict.fillvalerian.physical)
     if not affs.paralysis then
       lifevision.answering(svo.dict.fillvalerian.physical, valid.simpleparalysis)
       decho(svo.getDefaultColor().." (paralysis confirmed)")
     end
+    svo.killaction(svo.dict.fillvalerian.physical)
     return
   end
 
@@ -560,11 +561,11 @@ function svo.valid.symp_paralysis()
   end
 
   if actions.prone_misc then
-    svo.killaction(svo.dict.prone.misc)
     if not affs.paralysis then
       lifevision.answering(svo.dict.prone.misc, valid.simpleparalysis)
       decho(svo.getDefaultColor().." (paralysis confirmed)")
     end
+    svo.killaction(svo.dict.prone.misc)
   end
 
   -- in slowcuring only (for AI safety for now), count all balanceful actions for paralysis
@@ -2495,14 +2496,15 @@ function svo.valid.failed_focus_impatience()
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
   local r = svo.findbybal('focus')
   if r or not conf.aillusion or actions.checkimpatience_misc then
-    if r then svo.killaction(svo.dict[r.action_name].focus) end
-
     if actions.checkimpatience_misc then
       lifevision.add(actions.checkimpatience_misc.p, 'impatient', nil, 1)
     else
-      -- the game's answer to svof's own focus, if it was one (svo.gmcp_overlooked in Setup.lua)
+      -- the game's answer to svof's own focus, if it was one (svo.gmcp_overlooked
+      -- in Setup.lua), filed before the focus is killed so its timer can be read
       lifevision.answering(r, valid.simpleimpatience)
     end
+
+    if r then svo.killaction(svo.dict[r.action_name].focus) end
   -- don't show a false (i) when we already know we've got impatience
   elseif conf.aillusion and not affs.impatience and not affs.sandfever then
     svo.ignore_illusion("Not actually trying to focus right now (or we were forced).")
