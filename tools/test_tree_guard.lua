@@ -7,12 +7,15 @@ focus, salve, sip, purgative, smoke and herb each prompt. So with two
 afflictions, focus for one and an herb for the other, the any2affs strategy
 used to send touch tree after both, and tree found nothing left to cure.
 That happened 4 times in a captured fight against rats. The strategies keep
-their conditions; the guard only skips that one case.
+their conditions; the guard only skips that one case. Shrugging and
+dragonheal cure the same afflictions, are sent after the same cures and share
+empty.tree, so they carry the same guard and are run here too.
 
 Like the other suites, this does not run svof or Mudlet. It extracts the real
-code by anchor text and runs it under stubs: the touchtree action's
-isadvisable, codepaste.treecurablescovered, gettreeableaffs with the
-tree-curable list and its blocks, every shipped tree strategy, and the action
+code by anchor text and runs it under stubs: the touchtree, shrugging and
+dragonheal actions' isadvisable, codepaste.treecurablescovered,
+gettreeableaffs with the tree-curable list and its blocks, every shipped tree,
+shrugging and dragonheal strategy, and the action
 system's doaction, checkaction, actionclear and doingaction, over Penlight's
 OrderedMap. Cures are put on their way with the real doaction, under the names
 dict_setup gives them.
@@ -49,6 +52,8 @@ local ACTIONS = "src/scripts/svo (curing skeleton, controllers, action system)/A
 local DICT = "src/scripts/svo (actions dictionary)/Dictionary_of_actions_(affs-defs-misc).lua"
 local EMPTY = "src/scripts/svo (setup, misc, empty, funnies, dor)/Empty_cure_handling.lua"
 local STRATS = "src/scripts/svo (core)/svo Utilities/Tree_curing_strats.lua"
+local SHRUG_STRATS = "src/scripts/svo (core)/svo Utilities/Shrugging_curing_strats.lua"
+local DRAGON_STRATS = "src/scripts/svo (core)/svo Utilities/Dragonheal_curing_strats.lua"
 local PENLIGHT = "src/scripts/svo (core)/3rdparty/Penlight/"
 
 local GUARDED = "if s and m then return not codepaste.treecurablescovered() end"
@@ -65,11 +70,26 @@ local blocks = {
       "oncompleted = function (aff)\n          -- small heuristic", false)
     .. "}",
   strats = read_file(STRATS),
+  -- shrugging and dragonheal cure the same affs and share empty.tree
+  shrugging = "return {\n        "
+    .. extract(DICT, "isadvisable = function()\n          if not next(affs) or not bals.shrugging",
+      "oncompleted = function (number)", false)
+    .. "}",
+  dragonheal = "return {\n        "
+    .. extract(DICT, "isadvisable = function()\n          if not next(affs) or not defc.dragonform",
+      "oncompleted = function (number)", false)
+    .. "}",
+  shrug_strats = read_file(SHRUG_STRATS),
+  dragon_strats = read_file(DRAGON_STRATS),
 }
 
--- The isadvisable from before the guard, for the controls.
-local old_touchtree, replaced = blocks.touchtree:gsub((GUARDED:gsub("%p", "%%%0")), "if s and m then return true end")
-assert(replaced == 1, "the guarded return was not found in touchtree's isadvisable")
+-- The isadvisables from before the guard, for the controls.
+local unguarded = {}
+for _, name in ipairs({"touchtree", "shrugging", "dragonheal"}) do
+  local replaced
+  unguarded[name], replaced = blocks[name]:gsub((GUARDED:gsub("%p", "%%%0")), "if s and m then return true end")
+  assert(replaced == 1, "the guarded return was not found in " .. name .. "'s isadvisable")
+end
 
 -- ===== Penlight, loaded the way svof ships it =====
 
@@ -132,10 +152,11 @@ local function new_svof(opts)
   opts = opts or {}
   local affs, dict = {}, {}
   local svo = {
-    affs = affs, affl = affs, dict = dict, tree = {}, ignore = {}, codepaste = {},
-    me = { disabledtreefunc = {}, locks = {} },
-    bals = { tree = true, salve = true, sip = true },
-    conf = { tree = true, aillusion = true },
+    affs = affs, affl = affs, dict = dict, tree = {}, shrugging = {}, dragonheal = {}, ignore = {},
+    codepaste = {}, defc = { dragonform = opts.dragonform },
+    me = { disabledtreefunc = {}, disabledshruggingfunc = {}, disableddragonhealfunc = {}, locks = {} },
+    bals = { tree = true, salve = true, sip = true, shrugging = true, dragonheal = true },
+    conf = { tree = true, shrugging = true, dragonheal = true, aillusion = true },
     sys = { wait = 1 },
     sk = {},
     es_potions = {},
@@ -150,6 +171,7 @@ local function new_svof(opts)
   }
   local env = setmetatable({
     svo = svo, affs = affs, dict = dict, bals = svo.bals, conf = svo.conf, me = svo.me, sk = svo.sk,
+    defc = svo.defc,
     sys = svo.sys, codepaste = svo.codepaste, empty = {}, table = svotable,
     actions = svo.actions, actions_performed = svo.actions_performed, bals_in_use = svo.bals_in_use,
     debugf = svo.debugf, echof = function() end, make_gnomes_work = function() end,
@@ -166,11 +188,19 @@ local function new_svof(opts)
   load_into(env, blocks.codepaste, "codepaste")
   load_into(env, blocks.treeable .. "\nsvo.treecurables = empty.treecurables", "treeable")
   load_into(env, blocks.strats, "strats")
-  local touchtree = load_into(env, opts.old and old_touchtree or blocks.touchtree, "touchtree")
+  load_into(env, blocks.shrug_strats, "shrugging strats")
+  load_into(env, blocks.dragon_strats, "dragonheal strats")
+  function svo.codepaste.balanceful_codepaste() return false end
+  local touchtree = load_into(env, opts.old and unguarded.touchtree or blocks.touchtree, "touchtree")
+  local shrugging = load_into(env, opts.old and unguarded.shrugging or blocks.shrugging, "shrugging")
+  local dragonheal = load_into(env, opts.old and unguarded.dragonheal or blocks.dragonheal, "dragonheal")
 
+  -- the same strategy names are switched on in all three
   local on = {}
   for _, name in ipairs(opts.strategies or {"any2affs"}) do on[name] = true end
   for name in pairs(svo.tree) do svo.me.disabledtreefunc[name] = not on[name] end
+  for name in pairs(svo.shrugging) do svo.me.disabledshruggingfunc[name] = not on[name] end
+  for name in pairs(svo.dragonheal) do svo.me.disableddragonhealfunc[name] = not on[name] end
 
   local s = { env = env, svo = svo }
 
@@ -199,6 +229,8 @@ local function new_svof(opts)
   end
 
   function s.touch() return touchtree.isadvisable() and true or false end
+  function s.shrug() return shrugging.isadvisable() and true or false end
+  function s.dragonheal() return dragonheal.isadvisable() and true or false end
 
   return s
 end
@@ -292,6 +324,58 @@ s = new_svof()
 s.aff("madness"); s.aff("stupidity"); s.aff("confusion")
 s.send("madness", "smoke")
 eq(s.touch(), false, "madness blocks tree for stupidity and confusion, and madness is covered")
+
+-- the unknown crippled limbs are covered like any other aff: a mending
+-- application on its way will cure the arm, whichever it is
+s = new_svof()
+s.aff("stupidity"); s.aff("unknowncrippledarm", 1)
+s.send("stupidity", "focus"); s.send("unknowncrippledarm", "salve")
+eq(s.touch(), false, "an unknown crippled arm with mending on its way is covered")
+
+s = new_svof()
+s.aff("stupidity"); s.aff("unknowncrippledarm", 2)
+s.send("stupidity", "focus"); s.send("unknowncrippledarm", "salve")
+eq(s.touch(), true, "two unknown crippled arms and one mending")
+
+-- ===== shrugging and dragonheal: the same guard =====
+
+for _, old in ipairs({false, true}) do
+  local label = old and "control (before the guard): " or ""
+
+  s = new_svof({ old = old })
+  s.aff("stupidity"); s.aff("asthma")
+  s.send("stupidity", "focus"); s.send("asthma", "herb")
+  eq(s.shrug(), old, label .. "shrugging, two affs, focus and kelp on their way")
+
+  -- dragonheal's strategies are about locks, not counts: aeon with asthma
+  s = new_svof({ old = old, strategies = {"aeon"}, dragonform = true })
+  s.aff("aeon"); s.aff("asthma")
+  s.send("aeon", "smoke"); s.send("asthma", "herb")
+  eq(s.dragonheal(), old, label .. "dragonheal, aeon and asthma, both cures on their way")
+end
+
+s = new_svof()
+s.aff("stupidity"); s.aff("asthma")
+s.send("stupidity", "focus")
+eq(s.shrug(), true, "shrugging, asthma has no cure on its way")
+
+s = new_svof({ strategies = {"aeon"}, dragonform = true })
+s.aff("aeon"); s.aff("asthma")
+s.send("asthma", "herb")
+eq(s.dragonheal(), true, "dragonheal, aeon has no cure on its way")
+
+s = new_svof()
+s.aff("stupidity")
+eq(s.shrug(), false, "shrugging, any2affs with one aff")
+
+-- the checks before the strategies are untouched
+s = new_svof({ dragonform = true })
+s.aff("stupidity"); s.aff("asthma")
+eq(s.shrug(), false, "shrugging, not in dragonform")
+
+s = new_svof({ strategies = {"aeon"} })
+s.aff("aeon"); s.aff("asthma")
+eq(s.dragonheal(), false, "dragonheal, only in dragonform")
 
 -- ===== the strategy still decides =====
 
