@@ -496,7 +496,7 @@ def compare(data):
 
     # A later `empty.eat_<herb> = function()` SHADOWS the generated one, so the
     # generated map is the wrong answer for any herb that is redefined. Today
-    # none is, and ginger exists only as a redefinition.
+    # none is, and ginger and pear exist only as hand-written handlers.
     out.append("")
     shadowed = {}
     for m in re.finditer(r"^empty\.eat_(\w+) = function", EMPTY, re.M):

@@ -815,9 +815,9 @@ if not next(svo.dict) then
           svo.updateaffcount(svo.dict.pressure)
         end,
   
+        -- a pear that cures nothing takes no balance
         empty = function()
           empty.eat_pear()
-          svo.lostbal_smoke()
         end,
   
         cured = function()
@@ -828,7 +828,6 @@ if not next(svo.dict) then
   
         noeffect = function()
   			  svo.rmaff('pressure')
-  			  svo.lostbal_smoke()
   		  end,
   
         eatcure = {'pear', 'calcite'},

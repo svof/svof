@@ -71,7 +71,6 @@ for herbname, herbaffs in pairs({
   lobelia = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'spiritburn', 'tenderskin'},
   ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy', 'flushings', 'unweavingbody'},
   ash = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia', 'crescendo'},
-	pear = {'pressure'},
   bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'pyre', 'retribution', 'timeloop', 'indifference'},
   bloodroot = {'paralysis', 'slickness', 'pyramides'}
   
@@ -218,8 +217,11 @@ empty.smoke_valerian = function()
   presume_cured({'disloyalty', 'manaleech', 'slickness', 'hellsight'})
 end
 
-empty.smoke_pear = function()
-	presume_cured('pressure')
+-- Not in the herb loop above, because a pear takes no herb balance. Eating one
+-- takes no balance at all unless it cures pressure, and then it takes smoke
+-- balance, which pressure's own cure handlers record.
+empty.eat_pear = function()
+  presume_cured('pressure')
 end
 
 empty.writhe = function()
