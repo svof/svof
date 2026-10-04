@@ -294,9 +294,11 @@ codepaste.nonstdcure = function()
 end
 
 -- -> boolean
--- returns true if every tree-curable aff we have already has a cure on its way. Tree is touched after those
--- cures, so it would find nothing left to cure. Unknown affs, and counted ones above 1, are never covered,
--- since tree can still take them. With no tree-curable affs at all, says false and leaves the decision to the strategy.
+-- returns true if every tree-curable aff we have already has a cure on its way. Tree, shrugging and dragonheal
+-- cure the same affs and are sent after those cures, so they would find nothing left to cure. unknownany and
+-- unknownmental are never covered, since either could be any aff tree cures; unknowncrippledarm and
+-- unknowncrippledleg are covered like any other aff, by a mending application on its way. Counted affs above 1 are
+-- never covered, since tree can still take a level. With no tree-curable affs at all, says false and leaves the decision to the strategy.
 local tree_cure_balances = {'focus', 'salve', 'sip', 'purgative', 'smoke', 'herb', 'misc'}
 codepaste.treecurablescovered = function()
   local treeable = svo.gettreeableaffs()
@@ -5762,7 +5764,7 @@ if not next(svo.dict) then
           for name, func in pairs(svo.dragonheal) do
             if not me.disableddragonhealfunc[name] then
               local s,m = pcall(func[1])
-              if s and m then return true end
+              if s and m then return not codepaste.treecurablescovered() end
             end
           end
         end,
@@ -13245,7 +13247,7 @@ if not next(svo.dict) then
           for name, func in pairs(svo.shrugging) do
             if not me.disabledshruggingfunc[name] then
               local s,m = pcall(func[1])
-              if s and m then return true end
+              if s and m then return not codepaste.treecurablescovered() end
             end
           end
         end,
