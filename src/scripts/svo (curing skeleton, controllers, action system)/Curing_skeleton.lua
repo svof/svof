@@ -351,14 +351,56 @@ end
 -- means already - all we need to do now is to check if we had lifevision
 -- catch the line or no.
 
+-- What svof knows about a command it sent, for svo.gmcp_overlooked in
+-- Setup.lua: the action, the timer its timeout runs on (a new one for every
+-- command sent), and how long ago it left.
+local function answer_to(act)
+  local action = svo.actions[act.name]
+  return {
+    act = act,
+    timerid = action and action.timerid,
+    elapsed = act.actionwatch and getStopWatchTime(act.actionwatch),
+  }
+end
+
+-- Files the claims f makes as the game's answer to act, a command svof sent
+-- and is still waiting on. For the triggers that find which of svof's
+-- commands a refusal line ("You are too slick...") answers. Only a command
+-- svo.doaction sent counts, as in svo.lifevision.add below: one that
+-- svo.checkaction filed for a line has no timer, so two refusals of it could
+-- not be told from one refusal shown twice. So a trigger answers before it
+-- kills the command, while its timer is still there to read.
+function svo.lifevision.answering(act, f, ...)
+  local was = sk.filing_answer
+  local action = act and svo.actions[act.name]
+  if action and action.timerid then sk.filing_answer = answer_to(act) end
+  local ok, err = pcall(f, ...)
+  sk.filing_answer = was
+  if not ok then error(err, 0) end
+end
+
+-- Files the claims f makes as confirmed by svof's own symptom counters.
+function svo.lifevision.confirming(f, ...)
+  local was = sk.filing_confirmed
+  sk.filing_confirmed = true
+  local ok, err = pcall(f, ...)
+  sk.filing_confirmed = was
+  if not ok then error(err, 0) end
+end
+
 -- other_action means do something else than default when done
 -- arg is the argument to pass either to the default action
 -- lineguard is how many lines this should be across - ineffective with vconfig batch
 function svo.lifevision.add(what, other_action, arg, lineguard)
+  local sent = svo.actions[what.name] and svo.actions[what.name].timerid
   svo.lifevision.l:set(what.name, {
     p = what,
     other_action = other_action,
-    arg = arg
+    arg = arg,
+    -- An outcome other than the usual one, of a command svof sent, is the
+    -- game's answer to it, as sileris' "slick" is.
+    answer = sk.filing_answer or (other_action and sent and answer_to(what)) or nil,
+    confirmed = sk.filing_confirmed,
   })
 
   if lineguard and (not sys.lineguard or sys.lineguard > lineguard) then -- remember the smallest one, because if we have two conflicts, the smallest one is most valid
@@ -398,13 +440,48 @@ function svo.lifevision.clearlineguard()
 end
 
 local function run_through_actions()
+  -- GMCP has the final word on the afflictions it can report (svo.gmcp_live in
+  -- Setup.lua), so a line claiming one that GMCP does not report, or saying
+  -- one is gone that GMCP still reports, is dropped here, before its claim
+  -- runs, and none of the claim's consequences happen. A claim GMCP agrees
+  -- with runs exactly as before. Two paragraphs are left alone: a diagnose,
+  -- which is the game's own list and can name a hidden affliction GMCP never
+  -- sent, and the one blackout starts in, as GMCP has already gone quiet. The
+  -- add and remove backstops in svo.addaffdict and svo.rmaff trust them too,
+  -- through sk.gmcp_stands_aside.
+  local trusted = svo.lifevision.l.diag_physical or svo.lifevision.l.blackout_aff
+  local gate = svo.gmcp_live() and not trusted
+  sk.gmcp_stands_aside = trusted and true or nil
+
   for _,j in svo.lifevision.l:iter() do
-    if not sk.stopprocessing then
-      svo.actionfinished(j.p, j.other_action, j.arg)
-    else
+    if sk.stopprocessing then
       svo.actionclear(j.p)
+    else
+      local refuted = gate and svo.gmcp_refuted_claim(j)
+      local kept = gate and not refuted and svo.gmcp_kept_claim(j)
+      -- a symptom of an affliction GMCP cannot see (svo.gmcp_overlooked)
+      if refuted and svo.gmcp_overlooked(refuted, j) then
+        svo.gmcp_set_aside(svo.actionfinished, j.p, j.other_action, j.arg)
+      elseif refuted or kept then
+        if conf.gmcpaffechoes then
+          if refuted then
+            svo.echof("Ignored a line claiming %s: GMCP doesn't report it.", refuted)
+          else
+            svo.echof("Ignored a line saying %s is gone: GMCP still reports it.", kept)
+          end
+        end
+        svo.actionclear(j.p)
+      else
+        -- the add backstop asks which claim is running (svo.gmcp_refuse_add)
+        local was = sk.gmcp_claim
+        sk.gmcp_claim = j
+        svo.actionfinished(j.p, j.other_action, j.arg)
+        sk.gmcp_claim = was
+      end
     end
   end
+
+  sk.gmcp_stands_aside = nil
 end
 
 -- Balances whose cure consumes a physical item. Eating, applying, sipping or
@@ -474,6 +551,7 @@ function svo.lifevision.validate()
   end
   svo.lifevision.l = svo.pl.OrderedMap()
   sk.stopprocessing = nil
+  sk.gmcp_vouched = {}
   sys.lineguard = false
 end
 
@@ -970,6 +1048,10 @@ svo.sk.warn = function (what)
   echo("\n")
 end
 
+-- The symptom counters below are svof's own check against illusions: they add
+-- an affliction only once its symptom has been seen two to four times. What
+-- they confirm is believed even where GMCP is silent (svo.gmcp_overlooked in
+-- Setup.lua), since the game hides some afflictions from GMCP.
 sk.retardation_count = 0
 function svo.sk.retardation_symptom()
   if (affs.retardation or affs.aeon or svo.affsp.retardation or svo.affsp.aeon or svo.affsp.truename) then return end
@@ -978,7 +1060,7 @@ function svo.sk.retardation_symptom()
   if sk.retardation_count >= 4 then
     if not affs.blackout then
       if not conf.aillusion then
-        svo.valid.simpleretardation()
+        svo.lifevision.confirming(svo.valid.simpleretardation)
         echo"\n" svo.echof("auto-detected retardation.")
       else
         svo.checkaction(svo.dict.checkslows.aff, true)
@@ -1009,7 +1091,7 @@ function svo.sk.stupidity_symptom()
   sk.stupidity_count = sk.stupidity_count + 1
 
   if sk.stupidity_count >= 3 then
-    svo.valid.simplestupidity()
+    svo.lifevision.confirming(svo.valid.simplestupidity)
     echo"\n" svo.echof("auto-detected stupidity.")
     sk.stupidity_count = 0
     return
@@ -1031,7 +1113,7 @@ function svo.sk.illness_constitution_symptom()
   sk.illness_constitution_count = sk.illness_constitution_count + 1
 
   if sk.illness_constitution_count >= 2 then
-    svo.valid.simplehypochondria()
+    svo.lifevision.confirming(svo.valid.simplehypochondria)
 
     echo"\n" svo.echof("auto-detected hypochondria.")
 
@@ -1055,7 +1137,7 @@ function svo.sk.transfixed_symptom()
   sk.transfixed_count = sk.transfixed_count + 1
 
   if sk.transfixed_count >= 2 then
-    svo.valid.simpletransfixed()
+    svo.lifevision.confirming(svo.valid.simpletransfixed)
 
     -- supress echo when got hit with it before ai went off
     if not svo.affsp.transfixed then
@@ -1099,7 +1181,7 @@ function svo.sk.impale_symptom()
   sk.impale_count = sk.impale_count + 1
 
   if sk.impale_count >= 2 then
-    svo.valid.simpleimpale()
+    svo.lifevision.confirming(svo.valid.simpleimpale)
     echo"\n" svo.echof("auto-detected impale.")
     sk.impale_count = 0
     return
@@ -1118,7 +1200,7 @@ function svo.sk.aeon_symptom()
   sk.aeon_count = sk.aeon_count + 1
 
   if sk.aeon_count >= 2 then
-    svo.valid.simpleaeon()
+    svo.lifevision.confirming(svo.valid.simpleaeon)
     defs.lost_speed()
     echo"\n" svo.echof("auto-detected aeon.")
     sk.aeon_count = 0
@@ -1140,7 +1222,7 @@ function svo.sk.paralysis_symptom()
   sk.paralysis_count = sk.paralysis_count + 1
 
   if sk.paralysis_count >= 2 then
-    svo.valid.simpleparalysis()
+    svo.lifevision.confirming(svo.valid.simpleparalysis)
     echo"\n" svo.echof("auto-detected paralysis.")
     sk.paralysis_count = 0
     return
@@ -1159,7 +1241,7 @@ function svo.sk.haemophilia_symptom()
   sk.haemophilia_count = sk.haemophilia_count + 1
 
   if sk.haemophilia_count >= 2 then
-    svo.valid.simplehaemophilia()
+    svo.lifevision.confirming(svo.valid.simplehaemophilia)
     echo"\n" svo.echof("haemophilia seems to be real.")
     sk.haemophilia_count = 0
     return
@@ -1180,7 +1262,7 @@ function svo.sk.webbed_symptom()
 
   sk.webbed_count = sk.webbed_count + 1
   if sk.webbed_count >= 2 then
-    svo.valid.simplewebbed()
+    svo.lifevision.confirming(svo.valid.simplewebbed)
     echo"\n" svo.echof("auto-detected web.")
     sk.webbed_count = 0
     return
@@ -1201,7 +1283,7 @@ function svo.sk.roped_symptom()
   sk.roped_count = sk.roped_count + 1
 
   if sk.roped_count >= 2 then
-    svo.valid.simpleroped()
+    svo.lifevision.confirming(svo.valid.simpleroped)
     echo"\n" svo.echof("auto-detected roped.")
     sk.roped_count = 0
     return
@@ -1222,7 +1304,7 @@ function svo.sk.impaled_symptom()
   sk.impaled_count = sk.impaled_count + 1
 
   if sk.impaled_count >= 2 then
-    svo.valid.simpleimpale()
+    svo.lifevision.confirming(svo.valid.simpleimpale)
     echo"\n" svo.echof("auto-detected impale.")
     sk.impaled_count = 0
     return
@@ -1245,7 +1327,7 @@ function svo.sk.hypochondria_symptom()
     svo.echof("We might have Hypochondria")
   elseif sk.hypochondria_count >= 3 then
     svo.echof("Enough Afflictions Ticked, Adding Hypochondria")
-    svo.valid.simplehypochondria()
+    svo.lifevision.confirming(svo.valid.simplehypochondria)
     sk.hypochondria_count = 0
   end
 
@@ -1288,6 +1370,10 @@ end
 local old_internal_addaff = function (new_aff)
   if not new_aff then svo.debugf("no new, log: %s", debug.traceback()) end
   if affs[new_aff.name] then return end
+
+  -- GMCP has the final word (Setup.lua). Its own handlers write gaffl before
+  -- they get here, so this only ever refuses svof's other adds.
+  if svo.gmcp_refuse_add(new_aff.name) then return end
 
   local name = new_aff.name
 
@@ -1333,11 +1419,13 @@ local old_public_addaff = function (new_aff)
     return true
   end
 end
+-- The public API is an instruction, not a claim, so it adds even where GMCP
+-- disagrees (svo.gmcp_set_aside in Setup.lua).
 svo.addaff = function(aff_string_or_table)
   if type(aff_string_or_table) == 'table' then
-    old_internal_addaff(aff_string_or_table)
+    svo.gmcp_set_aside(old_internal_addaff, aff_string_or_table)
   else
-    old_public_addaff(aff_string_or_table)
+    svo.gmcp_set_aside(old_public_addaff, aff_string_or_table)
   end
 end
 svo.addaffdict = old_internal_addaff
@@ -1352,6 +1440,10 @@ svo.rmaff = function (old)
   end
 
   if not affs[old] then return end
+
+  -- GMCP has the final word (Setup.lua). Its own handlers clear gaffl before
+  -- they get here, so this only ever refuses svof's other removals.
+  if svo.gmcp_refuse_remove(old) then return end
 
   if svo.affl[old] then
     svo.affl[old] = nil
@@ -1375,7 +1467,7 @@ svo.rmaff = function (old)
 end
 
 -- public version of removeaff. The two should be merged.
-svo.removeaff = function (which)
+local function public_removeaff(which)
   svo.assert(type(which) == 'string', "svo.removeaff: what aff would you like to remove? name must be a string")
   svo.assert(svo.dict[which] and svo.dict[which].aff, "svo.removeaff: "..which.." isn't a known aff name")
 
@@ -1402,7 +1494,7 @@ svo.removeaff = function (which)
   return removed
 end
 
-svo.removeafflevel = function (which, amount, keep)
+local function public_removeafflevel(which, amount, keep)
   svo.assert(type(which) == 'string', "svo.removeafflevel: what aff would you like to remove? name must be a string")
   svo.assert(svo.dict[which] and svo.dict[which].aff, "svo.removeafflevel: "..which.." isn't a known aff name")
 
@@ -1427,6 +1519,15 @@ svo.removeafflevel = function (which, amount, keep)
   signals.changecuring:emit()
 
   return removed
+end
+
+-- Like svo.addaff, these are instructions, so they remove even where GMCP
+-- still reports the affliction (svo.gmcp_set_aside in Setup.lua).
+svo.removeaff = function(which)
+  return svo.gmcp_set_aside(public_removeaff, which)
+end
+svo.removeafflevel = function(which, amount, keep)
+  return svo.gmcp_set_aside(public_removeafflevel, which, amount, keep)
 end
 
 -- externally available as svo.prompttrigger
