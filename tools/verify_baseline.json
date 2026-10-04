@@ -199,12 +199,12 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "fa1791a229817f35",
+      "digest": "d5ff7a77370a3e84",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Alias functions|script",
-      "digest": "36a2b1c3a9c27ad1",
+      "digest": "4c6539d04ecd0b5f",
       "text": "Script   svo (alias and defence functions) Alias functions [script]"
     },
     {
@@ -219,7 +219,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "9d97f7dba843bef8",
+      "digest": "2c17eca99eb95593",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -304,7 +304,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Config system|script",
-      "digest": "aeb9d946f0369a94",
+      "digest": "cacf49b16acb2e3e",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Config system [script]"
     },
     {
@@ -384,7 +384,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "e867592b718cfb98",
+      "digest": "43452814e5a478a2",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
@@ -394,7 +394,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "faf6b3e40de98cfd",
+      "digest": "3410934ec8a509bd",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -409,7 +409,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "b0f8378b44016ff0",
+      "digest": "0bf8920b66121267",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
