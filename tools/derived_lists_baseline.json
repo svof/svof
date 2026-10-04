@@ -2,34 +2,9 @@
   "note": "Differences between what svo.dict can derive and the literals holding the same information, that are deliberate. check_derived_lists.py --baseline fails on anything not listed here, and on any of these whose nature has changed. Regenerate only when you meant to change one, in the same commit that causes it.",
   "accepted": [
     {
-      "id": "cures|ash|only_empty_map|crescendo",
-      "digest": "3c060df311dfc79c",
-      "text": "cures: empty.eat_ash clears crescendo, no dictionary entry names ash as its cure"
-    },
-    {
-      "id": "cures|bloodroot|only_dictionary|pyramides",
-      "digest": "3709d875365e019a",
-      "text": "cures: the dictionary says bloodroot cures pyramides, empty.eat_bloodroot does not clear it"
-    },
-    {
-      "id": "cures|kelp|only_dictionary|parasite",
-      "digest": "90c464cdbaeba36d",
-      "text": "cures: the dictionary says kelp cures parasite, empty.eat_kelp does not clear it"
-    },
-    {
-      "id": "cures|pear|only_dictionary|waterbubble",
-      "digest": "04cd0c6331dbd814",
-      "text": "cures: the dictionary says pear cures waterbubble, empty.eat_pear does not clear it"
-    },
-    {
       "id": "focus|block_only|fear",
       "digest": "8a9d3fae6c853402",
       "text": "focus: fear has a focus block and is not in focuscurables (disabled)"
-    },
-    {
-      "id": "shadow|bloodroot",
-      "digest": "5f22bc5110376b0f",
-      "text": "empty.eat_bloodroot is generated and then redefined; live set is paralysis, slickness"
     },
     {
       "id": "tree|only_treecurables|blackout",

@@ -60,19 +60,20 @@ end
 empty.presume_cured = presume_cured
 svo.presume_cured = presume_cured
 
+-- handle affs with madness separately
 local madness_affs = {'addiction', 'confusion', 'dementia', 'hallucinations', 'hypersomnia', 'illness', 'impatience',
 'lethargy', 'loneliness', 'madness', 'masochism', 'paranoia', 'recklessness', 'stupidity', 'vertigo'}
 
 for herbname, herbaffs in pairs({
   goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression',
-   'shadowmadness', 'mycalium', 'sandfever', 'horror', 'fulminated'},
-  kelp = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'rebbies'},
+   'shadowmadness', 'mycalium', 'sandfever', 'horror', 'fulminated', 'unweavingmind'},
+  kelp = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'parasite', 'rebbies'},
   lobelia = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'spiritburn', 'tenderskin'},
-  ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy', 'flushings'},
+  ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy', 'flushings', 'unweavingbody'},
   ash = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia', 'crescendo'},
 	pear = {'pressure'},
   bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'pyre', 'retribution', 'timeloop', 'indifference'},
-  bloodroot = {'paralysis', 'pyramides'}
+  bloodroot = {'paralysis', 'slickness', 'pyramides'}
   
 }) do
   empty['eat_'..herbname] = function()
@@ -85,13 +86,6 @@ for herbname, herbaffs in pairs({
     end
 
   end
-end
-
--- handle affs with madness separately
-
-empty.eat_bloodroot = function()
-  svo.lostbal_herb()
-  presume_cured({'paralysis', 'slickness'})
 end
 
 empty.degenerateaffs = {'weakness', 'clumsiness', 'lethargy', 'illness', 'asthma', 'paralysis'}
@@ -216,9 +210,10 @@ empty.shrugging  = empty.tree
 empty.smoke_elm = function()
   -- earworm was missing. Its entry says smokecure = {'elm', 'cinnabar'}, so elm
   -- curing nothing rules it out the same way it rules out the other three.
-  -- tension and unweavingspirit say the same and are still absent, left for
-  -- their own check rather than added on the back of this one.
-  presume_cured({'deadening', 'madness', 'aeon', 'earworm'})
+  -- unweavingspirit says the same and is here too. tension says the same and
+  -- is still absent, left for its own check rather than added on the back of
+  -- this one.
+  presume_cured({'deadening', 'madness', 'aeon', 'earworm', 'unweavingspirit'})
 end
 
 empty.smoke_valerian = function()

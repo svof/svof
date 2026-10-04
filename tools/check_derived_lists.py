@@ -41,9 +41,10 @@ Three things this had to get right, each of which had already caught somebody:
   greedy regex, because a regex that runs past the close silently absorbs the
   next table.
 
-  `empty.eat_bloodroot` is generated in a loop and then REDEFINED below it.
-  Reading the generated map alone reports the wrong set for that herb. This
-  reads the live definition and says so.
+  An `empty.eat_<herb>` can be generated in a loop and then REDEFINED below
+  it. Reading the generated map alone reports the wrong set for that herb.
+  This reads the live definition and says so. bloodroot was redefined that way
+  until its three names went into the loop entry.
 
   `fear`'s real focus condition is commented out beneath a bare `return false`,
   so matching raw text reads a deliberately disabled block as live. Comments go
@@ -261,6 +262,13 @@ def brace_body(src, open_idx):
     return src[open_idx:]
 
 
+def quoted(text):
+    """Every quoted name in text, in either quote style. The entries mostly
+    write 'kelp', but crescendo writes "ash", and reading single quotes alone
+    made ash look as if it cured one fewer affliction than it does."""
+    return [m.group(2) for m in re.finditer(r"(['\"])(\w+)\1", text)]
+
+
 def names_in(src, pattern):
     """Names inside the table the pattern opens.
 
@@ -271,7 +279,7 @@ def names_in(src, pattern):
     m = re.search(pattern, src)
     if not m:
         return []
-    return re.findall(r"'(\w+)'", brace_body(src, src.index("{", m.start())))
+    return quoted(brace_body(src, src.index("{", m.start())))
 
 
 TRIGGERS = os.path.join(REPO, "src", "triggers")
@@ -461,15 +469,20 @@ def compare(data):
              "focus: %s is in focuscurables and has no focus block" % n)
 
     # --- cures_by_item IS derivable from shape today -------------------------
+    # A block marked `def = true` puts a defence up rather than curing an
+    # affliction - waterbubble eats pear for airpocket - and an empty handler
+    # only ever clears afflictions, so it has nothing to say about those.
     by_item = {}
     for n, b in bals.items():
         for bal in CURE_BALANCES:
             if bal not in b:
                 continue
+            if re.search(r"\bdef\s*=\s*true\b", strip_comments(b[bal])):
+                continue
             m = re.search(r"(eatcure|applycure|smokecure|sipcure) = \{([^}]*)\}",
                           b[bal])
             if m:
-                for item in re.findall(r"'(\w+)'", m.group(2)):
+                for item in quoted(m.group(2)):
                     by_item.setdefault(item, set()).add(n)
 
     if len(by_item) < CURES_BY_ITEM_FLOOR:
@@ -478,18 +491,18 @@ def compare(data):
 
     gen = brace_body(EMPTY, EMPTY.index(
         "{", EMPTY.index("for herbname, herbaffs in pairs(")))
-    empty_map = {m.group(1): set(re.findall(r"'(\w+)'", m.group(2)))
+    empty_map = {m.group(1): set(quoted(m.group(2)))
                  for m in re.finditer(r"(\w+) = \{([^}]*)\}", gen)}
 
     # A later `empty.eat_<herb> = function()` SHADOWS the generated one, so the
     # generated map is the wrong answer for any herb that is redefined. Today
-    # that is bloodroot, and ginger exists only as a redefinition.
+    # none is, and ginger exists only as a redefinition.
     out.append("")
     shadowed = {}
     for m in re.finditer(r"^empty\.eat_(\w+) = function", EMPTY, re.M):
         herb = m.group(1)
         end = EMPTY.index("\nend", m.start())
-        shadowed[herb] = set(re.findall(r"'(\w+)'", EMPTY[m.start():end]))
+        shadowed[herb] = set(quoted(EMPTY[m.start():end]))
     for herb in sorted(shadowed):
         affs = shadowed[herb]
         if herb in empty_map:
