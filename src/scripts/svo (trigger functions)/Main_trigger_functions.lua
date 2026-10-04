@@ -4088,15 +4088,10 @@ end
 -- 0, and the venom's ? would stay. So it goes back in at the end, after the
 -- unknown is counted.
 local function absorbed_unknown(gone)
-  if actions.unknownany_aff then
-    lifevision.l:set(gone.p.name, nil)
-    lifevision.add(gone.p, nil, 'unknownany')
-  elseif actions.unknownmental_aff then
-    lifevision.l:set(gone.p.name, nil)
-    lifevision.add(gone.p, nil, 'unknownmental')
-  else
-    lifevision.add(gone.p)
-  end
+  local unknown = actions.unknownany_aff and 'unknownany'
+    or actions.unknownmental_aff and 'unknownmental' or nil
+  if unknown then lifevision.l:set(gone.p.name, nil) end
+  lifevision.add(gone.p, nil, unknown)
 end
 
 function svo.valid.stripped_caloric()
