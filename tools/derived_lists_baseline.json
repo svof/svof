@@ -2,16 +2,6 @@
   "note": "Differences between what svo.dict can derive and the literals holding the same information, that are deliberate. check_derived_lists.py --baseline fails on anything not listed here, and on any of these whose nature has changed. Regenerate only when you meant to change one, in the same commit that causes it.",
   "accepted": [
     {
-      "id": "cures|ginseng|only_dictionary|unweavingbody",
-      "digest": "704b1972d91005d3",
-      "text": "cures: the dictionary says ginseng cures unweavingbody, empty.eat_ginseng does not clear it"
-    },
-    {
-      "id": "cures|goldenseal|only_dictionary|unweavingmind",
-      "digest": "8add0ae224ccf37e",
-      "text": "cures: the dictionary says goldenseal cures unweavingmind, empty.eat_goldenseal does not clear it"
-    },
-    {
       "id": "focus|block_only|fear",
       "digest": "8a9d3fae6c853402",
       "text": "focus: fear has a focus block and is not in focuscurables (disabled)"
