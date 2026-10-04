@@ -4329,6 +4329,12 @@ end
 -- For symptom triggers that leave the unknowns alone otherwise: takes a ? off
 -- only when GMCP revealed this affliction in this paragraph, so the ? was it.
 -- An unknown mental one goes first if focus cures the affliction.
+-- Only for a line the game shows in answer to a command you sent, refusing it
+-- ("You are paralysed and cannot do that.") or replacing it (stupidity's
+-- emotes). Those come before any attack in their paragraph, never after one,
+-- so the Add that precedes them is a reveal. A line that can also be the gain
+-- itself, such as impatience's "it is too boring", follows a new affliction's
+-- Add too, and would take off a ? that was something else.
 valid.remove_revealed_unknown = function (affliction)
   if not sk.gmcp_revealed[affliction] then return end
 

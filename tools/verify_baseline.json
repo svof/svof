@@ -409,13 +409,23 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "9edf6b89643bfacb",
+      "digest": "d048607f41b38867",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
       "id": "item|Script|svo (trigger functions)|Simple aff trigger functions|script",
       "digest": "6e069f36e54192f0",
       "text": "Script   svo (trigger functions) Simple aff trigger functions [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General defences/svo sileris-quicksilver slickness|script",
+      "digest": "c5feb7e04358a1ea",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/svo sileris-quicksilver slickness [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Applied salve/svo slickness|script",
+      "digest": "7afb91e05005d930",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Applied salve/svo slickness [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure ablaze generic|script",
@@ -823,6 +833,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got insomnia [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo salve slickness|script",
+      "digest": "7afb91e05005d930",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo salve slickness [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",
       "digest": "61baa56f5354675b",
       "text": "Trigger  svo (aliases, triggers) svo/General/Registration/Started [colorTriggerFgColor]"
@@ -833,14 +848,99 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Anorexia [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Asleep|script",
+      "digest": "8fe5375067c207a3",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Asleep [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Both arms crippled|script",
+      "digest": "8766c303a4e28872",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Both arms crippled [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Both legs crippled 2|script",
+      "digest": "1121f387652a2568",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Both legs crippled 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Both legs crippled|script",
+      "digest": "1dd3573ba804e215",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Both legs crippled [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Confusion 2|script",
+      "digest": "4f3175e9396e3936",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Confusion 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Damaged arm/regexes (damaged arm)|script",
+      "digest": "b50472e402949465",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Damaged arm/regexes (damaged arm) [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Disloyalty|script",
+      "digest": "5b9ef50bf434dd48",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Disloyalty [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Failed focus (impatience)|script",
+      "digest": "10a5637f61b77e68",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Failed focus (impatience) [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Hamstring riding|script",
+      "digest": "3c1a4aa376d31cd3",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Hamstring riding [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Impale|script",
+      "digest": "de881767ef0bf877",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Impale [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Pacifism|script",
+      "digest": "1532eb80d8705862",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Pacifism [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Paralysis|script",
       "digest": "3cbfe4147a85e240",
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Paralysis [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Peace 2|script",
+      "digest": "a00c7ca82c5280a0",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Peace 2 [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Peace|script",
+      "digest": "a00c7ca82c5280a0",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Peace [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Stupidity|script",
+      "digest": "c5f87c036c7b0478",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Stupidity [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Stuttering|script",
+      "digest": "18a609d90a741ff5",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Stuttering [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Transfixed|script",
+      "digest": "e378890cf431ab16",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Transfixed [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Weakness|script",
       "digest": "c4772d14a7c71d18",
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Weakness [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Webbed move|script",
+      "digest": "cddcfb8444b07cef",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Webbed move [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure ablaze tree|script",
@@ -2026,6 +2126,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo got eq|highlightFg",
       "digest": "5cbdcae40398b7a1",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo got eq [highlightFg]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo smoke failed asthma|script",
+      "digest": "34942f236705425b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo smoke failed asthma [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Herb tracker/Capture inv|colorTrigger",

@@ -11,7 +11,9 @@ venom."):
    still at 0. Same for insomnia.
 2. The game revealing a hidden affliction over GMCP, with its symptom. The
    Add handler put it in affs before the symptom's line arrived, so the
-   symptom triggers saw it as already known and left its ? alone.
+   symptom triggers saw it as already known and left its ? alone. Every
+   trigger wired to valid.remove_revealed_unknown is run here, each with its
+   new line taken out as a control.
 
 Like the other suites, this does not run svof or Mudlet. It extracts the real
 code by anchor text and runs it under stubs: the GMCP handlers, lifevision's
@@ -98,6 +100,41 @@ local blocks = {
 
 for _, name in ipairs({"Paralysis", "Anorexia", "Weakness", "Clumsiness"}) do
   blocks["symptom_" .. name] = read_file(SYMPTOMS .. name .. ".lua")
+end
+
+-- The other triggers that call valid.remove_revealed_unknown: lines the game
+-- shows only in answer to a command you sent. Each with the GMCP name the
+-- game reveals and the svof name it maps to.
+local TRIGGERS_ROOT = "src/triggers/svo (aliases, triggers)/svo/"
+local WIRED = {
+  {file = SYMPTOMS .. "Failed_focus_(impatience).lua", gmcp = "impatience", svo = "impatience"},
+  {file = SYMPTOMS .. "Pacifism.lua", gmcp = "pacified", svo = "pacifism"},
+  {file = SYMPTOMS .. "Peace.lua", gmcp = "peace", svo = "peace"},
+  {file = SYMPTOMS .. "Peace_2.lua", gmcp = "peace", svo = "peace"},
+  {file = SYMPTOMS .. "Confusion_2.lua", gmcp = "confusion", svo = "confusion"},
+  {file = SYMPTOMS .. "Disloyalty.lua", gmcp = "disloyalty", svo = "disloyalty"},
+  {file = SYMPTOMS .. "Hamstring_riding.lua", gmcp = "hamstrung", svo = "hamstring"},
+  {file = SYMPTOMS .. "Both_arms_crippled.lua", gmcp = "brokenrightarm", svo = "crippledrightarm"},
+  {file = SYMPTOMS .. "Both_legs_crippled.lua", gmcp = "brokenleftleg", svo = "crippledleftleg"},
+  {file = SYMPTOMS .. "Both_legs_crippled_2.lua", gmcp = "brokenrightleg", svo = "crippledrightleg"},
+  {file = SYMPTOMS .. "regexes_(damaged_arm).lua", gmcp = "brokenleftarm", svo = "crippledleftarm"},
+  {file = SYMPTOMS .. "Stuttering.lua", gmcp = "stuttering", svo = "stuttering"},
+  {file = SYMPTOMS .. "Stupidity.lua", gmcp = "stupidity", svo = "stupidity"},
+  {file = SYMPTOMS .. "Asleep.lua", gmcp = "sleeping", svo = "sleep"},
+  {file = SYMPTOMS .. "Impale.lua", gmcp = "impaled", svo = "impale"},
+  {file = SYMPTOMS .. "Webbed_move.lua", gmcp = "webbed", svo = "webbed"},
+  {file = SYMPTOMS .. "Transfixed.lua", gmcp = "transfixation", svo = "transfixed"},
+  {file = TRIGGERS_ROOT .. "General/svo_slickness.lua", gmcp = "slickness", svo = "slickness"},
+  {file = TRIGGERS_ROOT .. "General/General cures/svo_salve_slickness.lua", gmcp = "slickness", svo = "slickness"},
+  {file = TRIGGERS_ROOT .. "General defences/svo_sileris-quicksilver_slickness.lua", gmcp = "slickness", svo = "slickness"},
+  {file = TRIGGERS_ROOT .. "General/svo_smoke_failed_asthma.lua", gmcp = "asthma", svo = "asthma"},
+}
+for _, w in ipairs(WIRED) do
+  w.script = read_file(w.file)
+  w.label = w.file:match("([^/]+)%.lua$")
+  -- the control: the same script without its call
+  w.unwired = w.script:gsub("\nsvo%.valid%.remove_revealed_unknown%b()", "")
+  assert(w.unwired ~= w.script, w.file .. " does not call valid.remove_revealed_unknown")
 end
 
 -- The code before this fix, for the controls.
@@ -263,13 +300,17 @@ local function new_svof(opts)
       end
     end
   end
-  for _, aff in ipairs({"paralysis", "anorexia", "weakness", "clumsiness", "crippledrightleg"}) do
+  for _, aff in ipairs({"paralysis", "anorexia", "weakness", "clumsiness", "crippledrightleg",
+      "impatience", "pacifism", "peace", "confusion", "disloyalty", "hamstring", "crippledleftarm",
+      "crippledrightarm", "crippledleftleg", "stuttering", "stupidity", "sleep", "impale", "webbed",
+      "transfixed", "slickness", "asthma"}) do
     svo.dict[aff] = { name = aff, aff = { name = aff .. "_aff", balance = "aff", action_name = aff,
       oncompleted = function() svo.addaffdict(svo.dict[aff]) end } }
   end
   svo.dict.anorexia.focus = { name = "anorexia_focus" } -- focus cures anorexia
   svo.dict.sstosvoa = { paralysis = "paralysis", anorexia = "anorexia", weariness = "weakness",
     clumsiness = "clumsiness", brokenrightleg = "crippledrightleg" }
+  for _, w in ipairs(WIRED) do svo.dict.sstosvoa[w.gmcp] = w.svo end
   svo.dict.sstosvod = { insulation = "caloric", insomnia = "insomnia" }
   -- svof name -> GMCP name: how the GMCP gate knows GMCP can report an affliction
   svo.dict.svotossa = {}
@@ -460,6 +501,30 @@ do
   s.prompt()
   eq(s.mental_unknowns(), 0, "anorexia revealed with both kinds held: the mental ? goes")
   eq(s.unknowns(), 1, "anorexia revealed with both kinds held: the other ? stays")
+end
+
+-- The other wired triggers. The handlers they call are stood in for by the
+-- affliction's simple handler; what is tested is each trigger's own call.
+local function wired_case(w, script, reveal)
+  local s = new_svof()
+  s.hold_unknowns(1)
+  if reveal then s.gmcp_add(w.gmcp) end
+  local simple = function() s.svo.valid["simple" .. w.svo]() end
+  for _, handler in ipairs({"symp_stupidity", "symp_asleep", "symp_impale", "symp_webbed",
+      "symp_transfixed", "failed_focus_impatience", "salve_slickness", "smoke_failed_asthma"}) do
+    s.svo.valid[handler] = simple
+  end
+  s.svo.defs.sileris_slickness = simple
+  s.env.matches = {"Your left arm is too severely damaged to permit that.", "left"}
+  load_into(s.env, script, w.label .. " trigger")
+  s.prompt()
+  return s
+end
+
+for _, w in ipairs(WIRED) do
+  eq(wired_case(w, w.script, true).unknowns(), 0, w.label .. ": a reveal of " .. w.svo .. " takes its ? off")
+  eq(wired_case(w, w.script, false).unknowns(), 1, w.label .. ": with no reveal the ? stays")
+  eq(wired_case(w, w.unwired, true).unknowns(), 1, "control: " .. w.label .. " without its call leaves the ?")
 end
 
 -- A new affliction from an attack also arrives as an Add while a ? is held.
