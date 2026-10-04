@@ -208,12 +208,10 @@ empty.dragonheal = empty.tree
 empty.shrugging  = empty.tree
 
 empty.smoke_elm = function()
-  -- earworm was missing. Its entry says smokecure = {'elm', 'cinnabar'}, so elm
-  -- curing nothing rules it out the same way it rules out the other three.
-  -- unweavingspirit says the same and is here too. tension says the same and
-  -- is still absent, left for its own check rather than added on the back of
-  -- this one.
-  presume_cured({'deadening', 'madness', 'aeon', 'earworm', 'unweavingspirit'})
+  -- earworm, unweavingspirit and tension were missing. Each entry says
+  -- smokecure = {'elm', 'cinnabar'} and calls this handler, so elm curing
+  -- nothing rules them out the same way it rules out the other three.
+  presume_cured({'deadening', 'madness', 'aeon', 'earworm', 'unweavingspirit', 'tension'})
 end
 
 empty.smoke_valerian = function()
