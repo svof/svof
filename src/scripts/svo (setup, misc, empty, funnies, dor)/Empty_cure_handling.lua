@@ -60,6 +60,7 @@ end
 empty.presume_cured = presume_cured
 svo.presume_cured = presume_cured
 
+-- handle affs with madness separately
 local madness_affs = {'addiction', 'confusion', 'dementia', 'hallucinations', 'hypersomnia', 'illness', 'impatience',
 'lethargy', 'loneliness', 'madness', 'masochism', 'paranoia', 'recklessness', 'stupidity', 'vertigo'}
 
@@ -72,7 +73,7 @@ for herbname, herbaffs in pairs({
   ash = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia', 'crescendo'},
 	pear = {'pressure'},
   bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'pyre', 'retribution', 'timeloop', 'indifference'},
-  bloodroot = {'paralysis', 'pyramides'}
+  bloodroot = {'paralysis', 'slickness', 'pyramides'}
   
 }) do
   empty['eat_'..herbname] = function()
@@ -85,13 +86,6 @@ for herbname, herbaffs in pairs({
     end
 
   end
-end
-
--- handle affs with madness separately
-
-empty.eat_bloodroot = function()
-  svo.lostbal_herb()
-  presume_cured({'paralysis', 'slickness'})
 end
 
 empty.degenerateaffs = {'weakness', 'clumsiness', 'lethargy', 'illness', 'asthma', 'paralysis'}

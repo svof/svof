@@ -7,11 +7,6 @@
       "text": "cures: empty.eat_ash clears crescendo, no dictionary entry names ash as its cure"
     },
     {
-      "id": "cures|bloodroot|only_dictionary|pyramides",
-      "digest": "3709d875365e019a",
-      "text": "cures: the dictionary says bloodroot cures pyramides, empty.eat_bloodroot does not clear it"
-    },
-    {
       "id": "cures|kelp|only_dictionary|parasite",
       "digest": "90c464cdbaeba36d",
       "text": "cures: the dictionary says kelp cures parasite, empty.eat_kelp does not clear it"
@@ -25,11 +20,6 @@
       "id": "focus|block_only|fear",
       "digest": "8a9d3fae6c853402",
       "text": "focus: fear has a focus block and is not in focuscurables (disabled)"
-    },
-    {
-      "id": "shadow|bloodroot",
-      "digest": "5f22bc5110376b0f",
-      "text": "empty.eat_bloodroot is generated and then redefined; live set is paralysis, slickness"
     },
     {
       "id": "tree|only_treecurables|blackout",
