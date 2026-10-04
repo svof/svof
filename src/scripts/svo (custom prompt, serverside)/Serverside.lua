@@ -526,10 +526,7 @@ signals["svo config changed"]:connect(function(config)
     sk.togglefocusserver()
     sk.toggleclotserver()
     sk.toggleinsomniaserver()
-
-    for _, aff in ipairs({'fulminated', 'guilt'}) do
-      svo.sendcuring("focus "..(conf['focuswith'..aff] and "with" or "without")..aff)
-    end
+    sk.sendfocuswith()
 
     if sk.canclot() and conf.clot then svo.sendcuring("clot on") else svo.sendcuring("clot off") end
     svo.sendcuring("clotat "..conf.bleedamount)
@@ -728,12 +725,22 @@ end, 'update serverside keepup')
 
 -- focuswithfulminated and focuswithguilt. The game has its own switch for
 -- each, so hand it the decision rather than turning focus off and on as the
--- affliction comes and goes.
-for _, aff in ipairs({'fulminated', 'guilt'}) do
+-- affliction comes and goes. sk.sendfocuswith sends one switch, or with no
+-- argument all of them, as the initial sync above does.
+local focuswith_affs = {'fulminated', 'guilt'}
+function sk.sendfocuswith(only)
+  for _, aff in ipairs(focuswith_affs) do
+    if not only or aff == only then
+      svo.sendcuring("focus "..(conf['focuswith'..aff] and "with" or "without")..aff)
+    end
+  end
+end
+
+for _, aff in ipairs(focuswith_affs) do
   signals["svo config changed"]:connect(function(config)
     if not (conf.serverside and config == 'focuswith'..aff and not svo.logging_in) then return end
 
-    svo.sendcuring("focus "..(conf['focuswith'..aff] and "with" or "without")..aff)
+    sk.sendfocuswith(aff)
   end, 'update serverside focus with '..aff)
 end
 
