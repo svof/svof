@@ -7,11 +7,6 @@
       "text": "cures: empty.eat_ash clears crescendo, no dictionary entry names ash as its cure"
     },
     {
-      "id": "cures|kelp|only_dictionary|parasite",
-      "digest": "90c464cdbaeba36d",
-      "text": "cures: the dictionary says kelp cures parasite, empty.eat_kelp does not clear it"
-    },
-    {
       "id": "cures|pear|only_dictionary|waterbubble",
       "digest": "04cd0c6331dbd814",
       "text": "cures: the dictionary says pear cures waterbubble, empty.eat_pear does not clear it"
