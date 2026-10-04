@@ -1634,6 +1634,17 @@ do
   eq(svo.sk.gmcp_sightings.slickness, nil, "again: and the count starts over")
 end
 
+-- answers with no timer cannot be told apart, so they never confirm each other
+-- (lifevision files none for a command svof did not send; this pins the rule)
+do
+  local env, h, calls, svo, clock = overlook_env()
+  slick(svo, nil)
+  clock.now = clock.now + 2
+  svo.promptcount = 2
+  slick(svo, nil)
+  eq(svo.affs.slickness, nil, "again: two answers with no timer to tell them apart are not believed")
+end
+
 -- an answer faster than the game could send one, or too long after the last
 do
   local env, h, calls, svo, clock = overlook_env()
@@ -1906,10 +1917,12 @@ do
 
   svo.lifevision.l = ordered_map()
   local focus = send('stupidity', 'focus')
+  local focus_timer = svo.actions[focus.name].timerid
   svo.valid.failed_focus_impatience()
   local answered = answer_of(svo, 'impatience') or {}
   eq(answered.act, focus, "refusal: a focus refused answers the focus")
-  eq(answered.timerid, nil, "refusal: killed first, so no timer is left to read")
+  eq(answered.timerid, focus_timer, "refusal: answered before the focus is killed, so its timer is read")
+  eq(svo.actions[focus.name], nil, "refusal: and the focus is killed")
 
   svo.lifevision.l = ordered_map()
   local pipe = send('slickness', 'smoke')
@@ -1925,13 +1938,27 @@ do
 
   svo.lifevision.l = ordered_map()
   local fill = send('fillskullcap', 'physical')
+  local fill_timer = svo.actions[fill.name].timerid
   svo.valid.symp_paralysis()
   eq((answer_of(svo, 'paralysis') or {}).act, fill, "refusal: paralysed while filling a pipe answers the fill")
+  eq((answer_of(svo, 'paralysis') or {}).timerid, fill_timer, "refusal: answered before the fill is killed, so its timer is read")
+  eq(svo.actions[fill.name], nil, "refusal: and the fill is killed")
 
   svo.lifevision.l = ordered_map()
   local stand = send('prone', 'misc')
+  local stand_timer = svo.actions[stand.name].timerid
   svo.valid.symp_paralysis()
   eq((answer_of(svo, 'paralysis') or {}).act, stand, "refusal: or while standing up")
+  eq((answer_of(svo, 'paralysis') or {}).timerid, stand_timer, "refusal: the stand's timer read before it is killed")
+
+  -- an action checkaction filed for a line, not a command svof sent
+  svo.lifevision.l = ordered_map()
+  local filed = send('crippledrightarm', 'salve')
+  svo.actions[filed.name].timerid = nil
+  svo.valid.salve_slickness()
+  truthy(svo.lifevision.l.slickness_aff, "refusal: of a command svof did not send, the claim is filed")
+  eq(answer_of(svo, 'slickness'), nil, "refusal: but not as an answer")
+  svo.killaction(filed)
 
   -- anti-illusion off: a refusal still answers what svof sent
   svo.conf.aillusion = false
@@ -1967,6 +1994,25 @@ do
   contains(calls.echof, "Ignored a line claiming slickness: GMCP doesn't report it.", "refusal replay: at the claim gate")
   apply_and_prompt()
   truthy(svo.affs.slickness, "refusal replay: the second is believed")
+end
+
+-- the same, for a salve svof never sent: checkaction filed it for an apply
+-- line on each prompt, with no timer, so "too slick" answers nothing and
+-- GMCP's word stands however often it comes
+do
+  local env, h, calls, svo, send = refusal_env()
+
+  for i = 1, 3 do
+    local filed = send('crippledleftarm', 'salve')
+    svo.actions[filed.name].timerid = nil
+    svo.valid.salve_slickness()
+    truthy(svo.lifevision.l.slickness_aff, "refusal replay: a salve svof never sent files the claim, refusal " .. i)
+    svo.promptcount = svo.promptcount + 1
+    svo.lifevision.validate()
+  end
+  eq(svo.affs.slickness, nil, "refusal replay: a salve svof never sent, refused three times, is not believed")
+  not_contains(calls.echof, "Believed slickness: the game showed it again, though GMCP doesn't report it.",
+    "refusal replay: and nothing says it was")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))

@@ -682,17 +682,23 @@ do
   eq(answer.elapsed, 0.3, "answering: and its age")
   eq(sk.filing_answer, nil, "answering: nothing is marked afterwards")
 
-  -- the command was already killed (symp_paralysis kills the fill first)
+  -- an action checkaction filed for a line has no timer: svof never sent it,
+  -- and two refusals of it could not be told from one shown twice
+  svo.actions.crippledleftarm_salve = {p = salve}
+  svo.lifevision.answering(salve, function() svo.lifevision.add(slickness) end)
+  eq(type(svo.lifevision.l.slickness_aff), 'table', "answering: a command svof did not send still files the claim")
+  eq(svo.lifevision.l.slickness_aff.answer, nil, "answering: but not as an answer")
+
+  -- nor one already killed, whose timer is gone: triggers answer before they kill
   svo.actions.crippledleftarm_salve = nil
   svo.lifevision.answering(salve, function() svo.lifevision.add(slickness) end)
-  answer = svo.lifevision.l.slickness_aff.answer or {}
-  eq(answer.act, salve, "answering: a killed command's answer is still one")
-  eq(answer.timerid, nil, "answering: with no timer left to read")
+  eq(svo.lifevision.l.slickness_aff.answer, nil, "answering: a killed command is not answered")
 
   -- no command in flight: nothing to answer
   svo.lifevision.answering(nil, function() svo.lifevision.add(slickness) end)
   eq(svo.lifevision.l.slickness_aff.answer, nil, "answering: without a command the claim is not marked")
 
+  svo.actions.crippledleftarm_salve = {timerid = 9, p = salve}
   local ok, err = pcall(svo.lifevision.answering, salve, function() error("boom", 0) end)
   eq(ok, false, "answering: an error inside still raises")
   eq(err, "boom", "answering: with its own message")
