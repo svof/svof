@@ -219,6 +219,13 @@ jobs:
       - name: test phantom unknowns
         run: lua tools/test_phantom_unknowns.lua
 
+      # Gate 1.92. The tree guard - tree is not touched when every tree-curable
+      # aff already has a cure on its way, while the strategies keep deciding
+      # everything else. Same extract-the-real-function approach, with cures
+      # put on their way through the real doaction.
+      - name: test tree guard
+        run: lua tools/test_tree_guard.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
