@@ -227,6 +227,14 @@ jobs:
       - name: test tree guard
         run: lua tools/test_tree_guard.lua
 
+      # Gate 1.93. Slow curing (aeon, retardation): Action_system's kicks run
+      # the current gnome, so svof sends one cure at a time and never denies
+      # or pauses for its own commands. Runs the real action system, both
+      # gnomes, the batch queue, fancysend, cnrl.processcommand and
+      # checkaeony, with a control that puts the old copy back.
+      - name: test slow curing
+        run: lua tools/test_slow_curing.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
