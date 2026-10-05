@@ -3052,7 +3052,9 @@ end
 
 function svo.valid.touched_treeoffbal()
   svo.checkaction(svo.dict.touchtree.misc)
-  if actions.touchtree_misc then
+  -- in case of a doubled touch, don't overwrite what the first one found:
+  -- tree records its cure here, so replacing it would lose the cure
+  if actions.touchtree_misc and not lifevision.l.touchtree_misc then
     lifevision.add(actions.touchtree_misc.p, 'offbal')
   end
 end

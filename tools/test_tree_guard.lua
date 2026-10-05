@@ -23,6 +23,14 @@ dict_setup gives them.
 The controls run the same scenarios with the isadvisable from before the
 guard, so the scenarios are shown to reproduce the empty touch.
 
+A second, smaller guard is covered at the end: what svof records when a touch
+is sent twice, as doubledo does under stupidity or serious concussion. The
+first touch's result and the second touch's off-balance line arrive before the
+same prompt, and both go into the one lifevision entry tree has. That part
+runs the real tree line handlers from Main trigger functions (tree1,
+tree_cured, tree2 and touched_treeoffbal) over the real lifevision.add, with a
+control that runs touched_treeoffbal from before its guard.
+
 Run: lua tools/test_tree_guard.lua
 ]]
 
@@ -55,6 +63,8 @@ local STRATS = "src/scripts/svo (core)/svo Utilities/Tree_curing_strats.lua"
 local SHRUG_STRATS = "src/scripts/svo (core)/svo Utilities/Shrugging_curing_strats.lua"
 local DRAGON_STRATS = "src/scripts/svo (core)/svo Utilities/Dragonheal_curing_strats.lua"
 local PENLIGHT = "src/scripts/svo (core)/3rdparty/Penlight/"
+local TRIGGERS = "src/scripts/svo (trigger functions)/Main_trigger_functions.lua"
+local SKELETON = "src/scripts/svo (curing skeleton, controllers, action system)/Curing_skeleton.lua"
 
 local GUARDED = "if s and m then return not codepaste.treecurablescovered() end"
 
@@ -81,7 +91,18 @@ local blocks = {
     .. "}",
   shrug_strats = read_file(SHRUG_STRATS),
   dragon_strats = read_file(DRAGON_STRATS),
+  -- the tree line handlers share the local tree_cure, so they load as one chunk
+  tree_lines = extract(TRIGGERS, "local tree_cure = false", "\nfunction svo.valid.tree2()", true)
+    .. "\n" .. extract(TRIGGERS, "local TREE_SPECIAL = {", "-- humour cures", false)
+    .. "\n" .. extract(TRIGGERS, "function svo.valid.touched_treeoffbal()", "-- special defences", false),
+  lifevision_add = extract(SKELETON, "function svo.lifevision.add(what, other_action, arg, lineguard)",
+    "function svo.lifevision.addcust(", false),
 }
+
+local OFFBAL_GUARDED = "if actions.touchtree_misc and not lifevision.l.touchtree_misc then"
+local offbal_unguarded, offbal_replaced = blocks.tree_lines:gsub(
+  (OFFBAL_GUARDED:gsub("%p", "%%%0")), "if actions.touchtree_misc then")
+assert(offbal_replaced == 1, "the guarded condition was not found in touched_treeoffbal")
 
 -- The isadvisables from before the guard, for the controls.
 local unguarded = {}
@@ -403,6 +424,51 @@ eq(s.touch(), false, "off tree balance")
 s = new_svof()
 s.aff("stupidity"); s.aff("asthma"); s.aff("paralysis")
 eq(s.touch(), false, "paralysed")
+
+-- ===== a doubled touch: the second line must not replace the first =====
+
+-- Loads the tree line handlers into an svof with a touch on its way, and returns
+-- the handlers and the entry lifevision holds for tree.
+local function doubled(old)
+  local s = new_svof()
+  local svo, env = s.svo, s.env
+  svo.valid = {}
+  svo.lifevision = { l = OrderedMap() }
+  svo.errorf = function(...) error(string.format(...)) end
+  svo.getping = function() return 0.1 end
+  env.valid, env.lifevision, env.answer_to = svo.valid, svo.lifevision, function() end
+  env.color_table, env.getStopWatchTime = {}, function() return 1 end
+  load_into(env, blocks.lifevision_add, "lifevision.add")
+  load_into(env, old and offbal_unguarded or blocks.tree_lines, "tree lines")
+  s.send("touchtree", "misc")
+  return svo.valid, function() return svo.lifevision.l.touchtree_misc end, s
+end
+
+for _, old in ipairs({false, true}) do
+  local label = old and "control (before the guard): " or ""
+
+  -- the paragraph from the log: the first touch cures voyria, the second is off balance
+  local valid, entry, s = doubled(old)
+  s.aff("voyria")
+  valid.tree1()
+  valid.tree_cured("voyria")
+  valid.tree2()
+  valid.touched_treeoffbal()
+  eq(entry().other_action, old and "offbal" or nil, label .. "a cure then an off-balance touch: the outcome")
+  eq(entry().arg, (not old) and "voyria" or nil, label .. "a cure then an off-balance touch: what tree cured")
+
+  -- the first touch cures nothing: its empty result is kept too
+  valid, entry = doubled(old)
+  valid.tree1()
+  valid.tree2()
+  valid.touched_treeoffbal()
+  eq(entry().other_action, old and "offbal" or "empty", label .. "an empty touch then an off-balance touch")
+end
+
+-- a lone off-balance touch is recorded as before
+local valid, entry = doubled(false)
+valid.touched_treeoffbal()
+eq(entry() and entry().other_action, "offbal", "an off-balance touch on its own")
 
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
