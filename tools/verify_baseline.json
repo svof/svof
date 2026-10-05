@@ -228,6 +228,11 @@
       "text": "Script   svo (burncounter) svo Magi burncounter [script]"
     },
     {
+      "id": "item|Script|svo (curing skeleton, controllers, action system)|Action system|script",
+      "digest": "7cbde599d7571837",
+      "text": "Script   svo (curing skeleton, controllers, action system) Action system [script]"
+    },
+    {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
       "digest": "bfcbcbc91f9ed11e",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
