@@ -29,7 +29,10 @@ first touch's result and the second touch's off-balance line arrive before the
 same prompt, and both go into the one lifevision entry tree has. That part
 runs the real tree line handlers from Main trigger functions (tree1,
 tree_cured, tree2 and touched_treeoffbal) over the real lifevision.add, with a
-control that runs touched_treeoffbal from before its guard.
+control that runs touched_treeoffbal from before its guard. It then finishes
+the entry at the prompt with the real touchtree action, actionfinished,
+empty.tree and presume_cured, so it checks what the kept entry does, not only
+what was filed.
 
 Run: lua tools/test_tree_guard.lua
 ]]
@@ -97,6 +100,13 @@ local blocks = {
     .. "\n" .. extract(TRIGGERS, "function svo.valid.touched_treeoffbal()", "-- special defences", false),
   lifevision_add = extract(SKELETON, "function svo.lifevision.add(what, other_action, arg, lineguard)",
     "function svo.lifevision.addcust(", false),
+  -- what the prompt then does with tree's entry: the whole touchtree action,
+  -- actionfinished, and empty.tree with the presume_cured it calls
+  touchtree_entry = "return {\n" .. extract(DICT, "    touchtree = {", "    restore = {", false) .. "}",
+  actionfinished = extract(ACTIONS, "svo.actionfinished = function(act, other_action, arg)",
+    "-- cancels an action entirely", false),
+  empty_tree = extract(EMPTY, "local function presume_cured(which)", "-- expose publicly, so an addon", false)
+    .. "\n" .. extract(EMPTY, "empty.tree = function ()", "empty.dragonheal = empty.tree", false),
 }
 
 local OFFBAL_GUARDED = "if actions.touchtree_misc and not lifevision.l.touchtree_misc then"
@@ -428,7 +438,10 @@ eq(s.touch(), false, "paralysed")
 -- ===== a doubled touch: the second line must not replace the first =====
 
 -- Loads the tree line handlers into an svof with a touch on its way, and returns
--- the handlers and the entry lifevision holds for tree.
+-- the handlers, the entry lifevision holds for tree, and the svof. The touch is
+-- the real touchtree action, so s.prompt() can then finish what lifevision
+-- holds the way run_through_actions does, in order through actionfinished.
+-- GMCP never gates a tree claim, which is neither a gain nor a "gone".
 local function doubled(old)
   local s = new_svof()
   local svo, env = s.svo, s.env
@@ -438,9 +451,28 @@ local function doubled(old)
   svo.getping = function() return 0.1 end
   env.valid, env.lifevision, env.answer_to = svo.valid, svo.lifevision, function() end
   env.color_table, env.getStopWatchTime = {}, function() return 1 end
+  env.send, env.echo = function() end, function() end
   load_into(env, blocks.lifevision_add, "lifevision.add")
   load_into(env, old and offbal_unguarded or blocks.tree_lines, "tree lines")
-  s.send("touchtree", "misc")
+  load_into(env, blocks.actionfinished, "actionfinished")
+  load_into(env, blocks.empty_tree, "empty.tree")
+  svo.dict.unknownany, svo.dict.unknownmental = { count = 0 }, { count = 0 }
+  -- svo.rmaff's GMCP backstop is the reconciler suite's business. In blackout,
+  -- the case that matters here, it removes whatever it is given.
+  svo.rmaff = function(which)
+    for _, aff in ipairs(type(which) == "table" and which or { which }) do svo.affs[aff] = nil end
+  end
+  svo.updateaffcount = function() end
+  s.tree_balance_taken = 0
+  svo.lostbal_tree = function() s.tree_balance_taken = s.tree_balance_taken + 1 end
+  svo.dict.touchtree = load_into(env, blocks.touchtree_entry, "touchtree action").touchtree
+  local act = svo.dict.touchtree.misc
+  act.name, act.action_name, act.balance = "touchtree_misc", "touchtree", "misc"
+  svo.doaction(act)
+  function s.prompt()
+    for _, claim in svo.lifevision.l:iter() do svo.actionfinished(claim.p, claim.other_action, claim.arg) end
+    svo.lifevision.l = OrderedMap()
+  end
   return svo.valid, function() return svo.lifevision.l.touchtree_misc end, s
 end
 
@@ -456,19 +488,34 @@ for _, old in ipairs({false, true}) do
   valid.touched_treeoffbal()
   eq(entry().other_action, old and "offbal" or nil, label .. "a cure then an off-balance touch: the outcome")
   eq(entry().arg, (not old) and "voyria" or nil, label .. "a cure then an off-balance touch: what tree cured")
+  -- and at the prompt, in blackout, where only the cure line can remove it
+  s.aff("blackout")
+  s.prompt()
+  eq(s.svo.affs.voyria == nil, not old, label .. "a cure then an off-balance touch, in blackout: voyria is removed")
+  eq(s.tree_balance_taken, 1, label .. "a cure then an off-balance touch: tree balance is taken once")
 
   -- the first touch cures nothing: its empty result is kept too
-  valid, entry = doubled(old)
+  valid, entry, s = doubled(old)
+  s.aff("asthma")
   valid.tree1()
   valid.tree2()
   valid.touched_treeoffbal()
   eq(entry().other_action, old and "offbal" or "empty", label .. "an empty touch then an off-balance touch")
+  -- and at the prompt it rules out what tree cures, asthma among them
+  s.prompt()
+  eq(s.svo.affs.asthma == nil, not old, label .. "an empty touch then an off-balance touch: asthma is ruled out")
+  eq(s.tree_balance_taken, 1, label .. "an empty touch then an off-balance touch: tree balance is taken once")
 end
 
 -- a lone off-balance touch is recorded as before
-local valid, entry = doubled(false)
+local valid, entry
+valid, entry, s = doubled(false)
+s.aff("asthma")
 valid.touched_treeoffbal()
 eq(entry() and entry().other_action, "offbal", "an off-balance touch on its own")
+s.prompt()
+eq(s.svo.affs.asthma ~= nil, true, "an off-balance touch on its own: rules nothing out")
+eq(s.tree_balance_taken, 1, "an off-balance touch on its own: tree balance is taken once")
 
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
