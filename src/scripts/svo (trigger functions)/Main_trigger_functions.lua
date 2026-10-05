@@ -2833,9 +2833,9 @@ end
 
 -- normal smokes
 for _, smoke in pairs({
-  valerian = {'disloyalty', 'slickness', 'manaleech'},
+  valerian = {'disloyalty', 'slickness', 'manaleech', 'hellsight'},
   pear = {'pressure'},
-  elm = {'deadening', 'hellsight', 'madness', 'aeon', 'tension', 'earworm'}}) do
+  elm = {'deadening', 'madness', 'aeon', 'tension', 'earworm'}}) do
   local other_smoke_cures = {}
 
   for _, aff in pairs(smoke) do

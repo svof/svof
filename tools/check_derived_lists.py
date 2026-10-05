@@ -12,7 +12,10 @@ empty.treecurables.
 
 The four handler families are derived now and no longer among them - what is
 left is *Empty cure handling*, which records what a cure that cured nothing
-rules out, and which cannot be derived from anything else.
+rules out, and which cannot be derived from anything else. The two cure-line
+maps in *Main trigger functions* are compared as well: they decide which cure
+in flight a cure line belongs to, and they are one more copy of the
+dictionary's cure fields.
 
 This derives what it can from `svo.dict` and diffs it against whatever else
 holds the same information - a literal, or, since the handler families were
@@ -41,9 +44,10 @@ Three things this had to get right, each of which had already caught somebody:
   greedy regex, because a regex that runs past the close silently absorbs the
   next table.
 
-  `empty.eat_bloodroot` is generated in a loop and then REDEFINED below it.
-  Reading the generated map alone reports the wrong set for that herb. This
-  reads the live definition and says so.
+  An `empty.eat_<herb>` can be generated in a loop and then REDEFINED below
+  it. Reading the generated map alone reports the wrong set for that herb.
+  This reads the live definition and says so. bloodroot was redefined that way
+  until its three names went into the loop entry.
 
   `fear`'s real focus condition is commented out beneath a bare `return false`,
   so matching raw text reads a deliberately disabled block as live. Comments go
@@ -261,6 +265,13 @@ def brace_body(src, open_idx):
     return src[open_idx:]
 
 
+def quoted(text):
+    """Every quoted name in text, in either quote style. The entries mostly
+    write 'kelp', but crescendo writes "ash", and reading single quotes alone
+    made ash look as if it cured one fewer affliction than it does."""
+    return [m.group(2) for m in re.finditer(r"(['\"])(\w+)\1", text)]
+
+
 def names_in(src, pattern):
     """Names inside the table the pattern opens.
 
@@ -271,7 +282,7 @@ def names_in(src, pattern):
     m = re.search(pattern, src)
     if not m:
         return []
-    return re.findall(r"'(\w+)'", brace_body(src, src.index("{", m.start())))
+    return quoted(brace_body(src, src.index("{", m.start())))
 
 
 TRIGGERS = os.path.join(REPO, "src", "triggers")
@@ -315,6 +326,8 @@ FLOORS = {
 }
 FOCUS_BLOCK_FLOOR = 12
 HERB_MAP_FLOOR = 6
+SMOKE_HANDLER_FLOOR = 1
+CURE_MAP_FLOORS = {"smokes": 2, "herbs": 6}
 CURES_BY_ITEM_FLOOR = 15
 DICT_ENTRY_FLOOR = 200
 
@@ -328,6 +341,7 @@ def collect():
                 "Dictionary_of_actions_(affs-defs-misc).lua")
     EMPTY = read("svo (setup, misc, empty, funnies, dor)",
                  "Empty_cure_handling.lua")
+    TRIG = read("svo (trigger functions)", "Main_trigger_functions.lua")
 
     bals, whole = entries(DICT)
 
@@ -358,7 +372,7 @@ def collect():
                          "the pattern for it has stopped matching"
                          % (len(literals[name]), name, floor))
 
-    return (bals, whole, literals, EMPTY), fails
+    return (bals, whole, literals, EMPTY, TRIG), fails
 
 
 # --------------------------------------------------------------------------
@@ -400,11 +414,32 @@ def compare(data):
     # whole (the full body of each entry) is read for the entry floor in
     # collect() and nothing here needs it any more - the comparison that did
     # went with afflist.
-    bals, _, literals, EMPTY = data
+    bals, _, literals, EMPTY, TRIG = data
     diffs, out, broken = [], [], []
 
     def diff(id_, text, *extra):
         diffs.append({"id": id_, "digest": digest(id_, *extra), "text": text})
+
+    # One derived set against one list: a line for a human, and a difference
+    # for each name only one side has.
+    def side_by_side(label, listname, d, l, idbase, listkey, says_dict, says_list):
+        same = d == l
+        out.append("  %-25s vs %-14s %3d %s %3d %s"
+                   % (label, listname, len(d), "==" if same else "!=", len(l),
+                      "OK" if same else ""))
+        if same:
+            return
+        w = max(len("dictionary"), len(listname)) + 1
+        if d - l:
+            out.append("                   only in the %-*s %s"
+                       % (w, "dictionary:", ", ".join(sorted(d - l))))
+        if l - d:
+            out.append("                   only in the %-*s %s"
+                       % (w, listname + ":", ", ".join(sorted(l - d))))
+        for n in sorted(d - l):
+            diff("%s|only_dictionary|%s" % (idbase, n), says_dict(n))
+        for n in sorted(l - d):
+            diff("%s|%s|%s" % (idbase, listkey, n), says_list(n))
 
     # --- two places that hold the same fact about tree, and disagree ---------
     # "tree can cure this" is written twice: in the triggers, which carry the
@@ -461,15 +496,20 @@ def compare(data):
              "focus: %s is in focuscurables and has no focus block" % n)
 
     # --- cures_by_item IS derivable from shape today -------------------------
+    # A block marked `def = true` puts a defence up rather than curing an
+    # affliction - waterbubble eats pear for airpocket - and an empty handler
+    # only ever clears afflictions, so it has nothing to say about those.
     by_item = {}
     for n, b in bals.items():
         for bal in CURE_BALANCES:
             if bal not in b:
                 continue
+            if re.search(r"\bdef\s*=\s*true\b", strip_comments(b[bal])):
+                continue
             m = re.search(r"(eatcure|applycure|smokecure|sipcure) = \{([^}]*)\}",
                           b[bal])
             if m:
-                for item in re.findall(r"'(\w+)'", m.group(2)):
+                for item in quoted(m.group(2)):
                     by_item.setdefault(item, set()).add(n)
 
     if len(by_item) < CURES_BY_ITEM_FLOOR:
@@ -478,18 +518,18 @@ def compare(data):
 
     gen = brace_body(EMPTY, EMPTY.index(
         "{", EMPTY.index("for herbname, herbaffs in pairs(")))
-    empty_map = {m.group(1): set(re.findall(r"'(\w+)'", m.group(2)))
+    empty_map = {m.group(1): set(quoted(m.group(2)))
                  for m in re.finditer(r"(\w+) = \{([^}]*)\}", gen)}
 
     # A later `empty.eat_<herb> = function()` SHADOWS the generated one, so the
     # generated map is the wrong answer for any herb that is redefined. Today
-    # that is bloodroot, and ginger exists only as a redefinition.
+    # none is, and ginger and pear exist only as hand-written handlers.
     out.append("")
     shadowed = {}
     for m in re.finditer(r"^empty\.eat_(\w+) = function", EMPTY, re.M):
         herb = m.group(1)
         end = EMPTY.index("\nend", m.start())
-        shadowed[herb] = set(re.findall(r"'(\w+)'", EMPTY[m.start():end]))
+        shadowed[herb] = set(quoted(EMPTY[m.start():end]))
     for herb in sorted(shadowed):
         affs = shadowed[herb]
         if herb in empty_map:
@@ -509,27 +549,61 @@ def compare(data):
 
     out.append("")
     for herb in sorted(empty_map):
-        d, l = by_item.get(herb, set()), empty_map[herb]
-        same = d == l
-        out.append("  cures_by_item.%-11s vs %-14s %3d %s %3d %s"
-                   % (herb, "empty map", len(d), "==" if same else "!=", len(l),
-                      "OK" if same else ""))
-        if same:
-            continue
-        if d - l:
-            out.append("                   only in the dictionary: %s"
-                       % ", ".join(sorted(d - l)))
-        if l - d:
-            out.append("                   only in the empty map:  %s"
-                       % ", ".join(sorted(l - d)))
-        for n in sorted(d - l):
-            diff("cures|%s|only_dictionary|%s" % (herb, n),
-                 "cures: the dictionary says %s cures %s, empty.eat_%s does not "
-                 "clear it" % (herb, n, herb))
-        for n in sorted(l - d):
-            diff("cures|%s|only_empty_map|%s" % (herb, n),
-                 "cures: empty.eat_%s clears %s, no dictionary entry names %s "
-                 "as its cure" % (herb, n, herb))
+        side_by_side("cures_by_item." + herb, "empty map",
+                     by_item.get(herb, set()), empty_map[herb],
+                     "cures|" + herb, "only_empty_map",
+                     lambda n, h=herb: "cures: the dictionary says %s cures %s, "
+                     "empty.eat_%s does not clear it" % (h, n, h),
+                     lambda n, h=herb: "cures: empty.eat_%s clears %s, no "
+                     "dictionary entry names %s as its cure" % (h, n, h))
+
+    # --- the smoke handlers and the cure-line maps ---------------------------
+    # empty.smoke_<pipe> holds, for a smoke that cured nothing, what
+    # empty.eat_<herb> holds for an herb. The two maps in Main trigger
+    # functions decide which cure in flight a cure line belongs to, so a name
+    # missing from one leaves its cure line crediting another affliction's
+    # action, or none. Both are more copies of the dictionary's cure fields,
+    # and no other gate reads what they say: a name dropped from one only
+    # moves its file's digest in verify_merged, which a regenerated baseline
+    # accepts. Comments go first, because smoke_elm's quotes a smokecure field.
+    smokes = {}
+    for m in re.finditer(r"^empty\.smoke_(\w+) = function", EMPTY, re.M):
+        end = EMPTY.index("\nend", m.start())
+        smokes[m.group(1)] = set(quoted(strip_comments(EMPTY[m.start():end])))
+    if len(smokes) < SMOKE_HANDLER_FLOOR:
+        broken.append("read only %d smoke handlers from the empty handlers, "
+                      "expected at least %d" % (len(smokes), SMOKE_HANDLER_FLOOR))
+
+    out.append("")
+    for pipe in sorted(smokes):
+        side_by_side("cures_by_item." + pipe, "empty map",
+                     by_item.get(pipe, set()), smokes[pipe],
+                     "smokes|" + pipe, "only_empty_map",
+                     lambda n, p=pipe: "smokes: the dictionary says %s cures %s, "
+                     "empty.smoke_%s does not clear it" % (p, n, p),
+                     lambda n, p=pipe: "smokes: empty.smoke_%s clears %s, no "
+                     "dictionary entry names %s as its cure" % (p, n, p))
+
+    for kind in sorted(CURE_MAP_FLOORS):
+        start = TRIG.index("-- normal %s\nfor _, " % kind)
+        body = brace_body(TRIG, TRIG.index("{", start))
+        cure_map = {m.group(1): set(quoted(m.group(2)))
+                    for m in re.finditer(r"(\w+)\s*=\s*\{([^}]*)\}", body)}
+        if len(cure_map) < CURE_MAP_FLOORS[kind]:
+            broken.append("read only %d items from the normal %s cure-line map, "
+                          "expected at least %d"
+                          % (len(cure_map), kind, CURE_MAP_FLOORS[kind]))
+        out.append("")
+        for item in sorted(cure_map):
+            side_by_side("cures_by_item." + item, "cure-line map",
+                         by_item.get(item, set()), cure_map[item],
+                         "curelines|%s|%s" % (kind, item), "only_cure_map",
+                         lambda n, i=item, k=kind: "cure lines: the dictionary says "
+                         "%s cures %s, the normal %s map in Main trigger functions "
+                         "does not list it" % (i, n, k),
+                         lambda n, i=item, k=kind: "cure lines: the normal %s map in "
+                         "Main trigger functions lists %s under %s, and no "
+                         "dictionary entry names %s as its cure" % (k, n, i, i))
 
     return diffs, out, broken
 
