@@ -917,7 +917,10 @@ function svo.reset.general()
     svo.bals_in_use[bal] = {}
   end
 
-  svo.actions_performed = {}
+  -- Emptied in place, not replaced: Action_system keeps this table as a local
+  -- and goes on writing to it, so a new one here left svo.valid.generic
+  -- reading an empty table after every death until svof reloaded.
+  for name in pairs(svo.actions_performed) do svo.actions_performed[name] = nil end
   -- Emptying the prompt queue here discards its callbacks without running
   -- them - sk.onprompt_beforeaction_do empties it *after* it has run them,
   -- this does not - so anything that queued its own reset there never gets

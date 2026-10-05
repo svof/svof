@@ -209,7 +209,7 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Alias functions|script",
-      "digest": "4c6539d04ecd0b5f",
+      "digest": "5ef702de4485c180",
       "text": "Script   svo (alias and defence functions) Alias functions [script]"
     },
     {
@@ -221,6 +221,11 @@
       "id": "item|Script|svo (burncounter)|svo Magi burncounter|script",
       "digest": "d8e910cc468ff436",
       "text": "Script   svo (burncounter) svo Magi burncounter [script]"
+    },
+    {
+      "id": "item|Script|svo (curing skeleton, controllers, action system)|Action system|script",
+      "digest": "16c2f4b8be435701",
+      "text": "Script   svo (curing skeleton, controllers, action system) Action system [script]"
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
