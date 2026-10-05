@@ -2,9 +2,34 @@
   "note": "Differences between what svo.dict can derive and the literals holding the same information, that are deliberate. check_derived_lists.py --baseline fails on anything not listed here, and on any of these whose nature has changed. Regenerate only when you meant to change one, in the same commit that causes it.",
   "accepted": [
     {
+      "id": "curelines|herbs|ginseng|only_dictionary|unweavingbody",
+      "digest": "e2f4a6835fd67b5c",
+      "text": "cure lines: the dictionary says ginseng cures unweavingbody, the normal herbs map in Main trigger functions does not list it"
+    },
+    {
+      "id": "curelines|herbs|goldenseal|only_dictionary|unweavingmind",
+      "digest": "43b6031736375a54",
+      "text": "cure lines: the dictionary says goldenseal cures unweavingmind, the normal herbs map in Main trigger functions does not list it"
+    },
+    {
+      "id": "curelines|smokes|elm|only_dictionary|unweavingspirit",
+      "digest": "b47921be3c637d0f",
+      "text": "cure lines: the dictionary says elm cures unweavingspirit, the normal smokes map in Main trigger functions does not list it"
+    },
+    {
+      "id": "curelines|smokes|valerian|only_dictionary|checkasthma",
+      "digest": "5dfbda79ec04ee3f",
+      "text": "cure lines: the dictionary says valerian cures checkasthma, the normal smokes map in Main trigger functions does not list it"
+    },
+    {
       "id": "focus|block_only|fear",
       "digest": "8a9d3fae6c853402",
       "text": "focus: fear has a focus block and is not in focuscurables (disabled)"
+    },
+    {
+      "id": "smokes|valerian|only_dictionary|checkasthma",
+      "digest": "3c9b290489822371",
+      "text": "smokes: the dictionary says valerian cures checkasthma, empty.smoke_valerian does not clear it"
     },
     {
       "id": "tree|only_treecurables|blackout",
