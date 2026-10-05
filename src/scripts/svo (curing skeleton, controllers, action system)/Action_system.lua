@@ -20,7 +20,7 @@ svo.actions_performed = svo.actions_performed or {}
 svo.bals_in_use       = svo.bals_in_use or {}
 
 local actions, dict, affs, sys, syncdelay = svo.actions, svo.dict, svo.affs, svo.sys, svo.syncdelay
-local debugf, actions_performed, bals_in_use = svo.debugf, svo.actions_performed, svo.bals_in_use
+local actions_performed, bals_in_use = svo.actions_performed, svo.bals_in_use
 local sk, echof, conf, signals = svo.sk, svo.echof, svo.conf, svo.signals
 local lifevision = svo.lifevision
 
@@ -29,6 +29,10 @@ local lifevision = svo.lifevision
 -- after. A copy kept the async gnome from load time, whose commands the
 -- slow-curing deny mode then refused as the player's.
 local function make_gnomes_work() return svo.make_gnomes_work() end
+-- The same for the logger: svo.updateloggingconfig replaces svo.debugf, and
+-- the saved vconfig log is only applied by the config loader, which runs
+-- after this one, so a copy ignored it until svof next reloaded.
+local function debugf(...) return svo.debugf(...) end
 
 -- does an action - call this when you'd like to execute an action. The system will setup
 -- the timeout failsafes (which flow through into stupidity and lag detection), as well as

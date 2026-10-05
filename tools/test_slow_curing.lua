@@ -12,6 +12,10 @@ them, and the refused actions stayed in flight, blocking the sync gnome until
 they timed out and kicked the async gnome again. In retardation, override
 mode let the batch through and paused curing as if the player had typed.
 
+Action_system copied the logger the same way, so its lines ignored the saved
+vconfig log, which the config loader applies after Action_system loads. A
+check at the end covers that.
+
 Like the other suites, this does not run svof or Mudlet. It runs the real
 Action_system loader, both gnomes and the changecuring switch, the batch
 send queue and doingstuff_inslowmode from Curing_skeleton, fancysend from
@@ -62,6 +66,9 @@ local SETUP = read_file(SMEF .. "Setup.lua")
 local LIVE_GNOMES = "local function make_gnomes_work() return svo.make_gnomes_work() end"
 local COPIED_GNOMES = "local make_gnomes_work = svo.make_gnomes_work"
 local ACTIONS_OLD_GNOMES = swap(ACTIONS, LIVE_GNOMES, COPIED_GNOMES)
+-- and with its load-time copy of the logger
+local ACTIONS_OLD_DEBUGF = swap(ACTIONS, "local function debugf(...) return svo.debugf(...) end",
+  "local debugf = svo.debugf")
 
 -- ===== Penlight, loaded the way svof ships it =====
 
@@ -325,6 +332,23 @@ for _, old in ipairs({ false, true }) do
 end
 eq(logs[1], "focus | 9multicmd {focus}{apply epidermal}{eat kelp}", "normal curing: a timeout kicks the async gnome")
 eq(logs[1], logs[2], "normal curing: the same with the old copy")
+
+-- ===== Action_system logs through the current logger =====
+
+-- svo.updateloggingconfig replaces svo.debugf when the config loader applies
+-- the saved vconfig log, which is after Action_system has loaded
+for _, old in ipairs({ false, true }) do
+  local label = old and "control: logging: " or "logging: "
+  s = new_svof({ actions = old and ACTIONS_OLD_DEBUGF or nil })
+  local lines = {}
+  s.svo.debugf = function(fmt, ...) lines[#lines + 1] = string.format(fmt, ...) end
+  s.svo.doaction(s.svo.dict.stupidity.focus)
+  local found = false
+  for _, line in ipairs(lines) do
+    if line == "actions: doing stupidity_focus" then found = true end
+  end
+  eq(found, not old, label .. "a logger set after load gets Action_system's lines")
+end
 
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
