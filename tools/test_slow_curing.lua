@@ -23,10 +23,12 @@ Like the other suites, this does not run svof or Mudlet. It runs the real
 Action_system loader, both gnomes and the changecuring switch, the batch
 send queue and doingstuff_inslowmode from Curing_skeleton, fancysend from
 Miscellaneous_functions, cnrl.processcommand from Controllers and checkaeony
-from Setup, over Penlight's OrderedMap, with svof's default settings. The
-per-balance cure checks are stubs shaped like the real check_herb, and
-Mudlet's send, timers and denyCurrentSend are stubs. The controls run
-Action_system with its old copy put back.
+from Setup, over Penlight's OrderedMap, with svof's default settings, then
+again in every command echo type with batching on and off, since the gnomes
+take a different send path for each. The per-balance cure checks are stubs
+shaped like the real check_herb, and Mudlet's send, timers and
+denyCurrentSend are stubs. The controls run Action_system with its old copy
+put back.
 
 Run: lua tools/test_slow_curing.lua
 ]]
@@ -338,6 +340,71 @@ for _, old in ipairs({ false, true }) do
 end
 eq(logs[1], "focus | 9multicmd {focus}{apply epidermal}{eat kelp}", "normal curing: a timeout kicks the async gnome")
 eq(logs[1], logs[2], "normal curing: the same with the old copy")
+
+-- ===== the same in every command echo and batch setting =====
+
+-- The gnomes branch on conf.commandechotype and conf.batch: the sync gnome
+-- sends through fancysend only for 'fancy', the async one for 'fancy' and
+-- 'fancynewline', and only fancysend batches. The checks above use svof's
+-- defaults. These run the same scenarios in every combination, with the
+-- expectations that hold in all of them.
+for _, echotype in ipairs({ "fancy", "fancynewline", "plain" }) do
+  for _, batch in ipairs({ true, false }) do
+    local setting = string.format("%s echo, batch %s: ", echotype, batch and "on" or "off")
+    local function fresh(old)
+      local svof = new_svof({ actions = old and ACTIONS_OLD_GNOMES or nil })
+      svof.svo.conf.commandechotype, svof.svo.conf.batch = echotype, batch
+      return svof
+    end
+
+    for _, old in ipairs({ false, true }) do
+      local label = (old and "control: " or "") .. setting
+
+      s = fresh(old)
+      s.slow_curing("aeon")
+      s.prompt_with_finished_smoke()
+      s.advance(2.5)
+      if old then
+        eq(s.count("denied") > 0, true, label .. "aeon: the copied async gnome's cures are denied")
+      else
+        eq(s.sent(), "focus | focus", label .. "aeon: one cure, and the same again after it times out")
+        eq(s.count("denied"), 0, label .. "aeon: nothing denied")
+        eq(s.inflight(), "stupidity_focus", label .. "aeon: only that cure is in flight")
+      end
+
+      s = fresh(old)
+      s.svo.doaction(s.svo.dict.anorexia.salve)
+      s.svo.doaction(s.svo.dict.asthma.herb)
+      s.run_timers()
+      s.slow_curing("aeon")
+      s.run_timers()
+      if old then
+        eq(s.count("denied") > 0, true, label .. "entering aeon: the kicks' cures are denied")
+      else
+        eq(s.sent(), "apply epidermal | eat kelp | focus", label .. "entering aeon: one cure sent after aeon starts")
+        eq(s.count("denied"), 0, label .. "entering aeon: nothing denied")
+      end
+
+      s = fresh(old)
+      s.slow_curing("retardation")
+      s.prompt_with_finished_smoke()
+      eq(s.count("echo", "pausing curing for your commands."), old and 1 or 0,
+        label .. "retardation: curing paused as if the player typed")
+      if not old then eq(s.sent(), "focus", label .. "retardation: one cure sent") end
+    end
+
+    -- normal curing: the timeout's kick runs the async gnome either way
+    local sent = {}
+    for _, old in ipairs({ false, true }) do
+      s = fresh(old)
+      s.svo.doaction(s.svo.dict.stupidity.focus)
+      s.run_timers()
+      s.advance(2.5)
+      sent[#sent + 1] = s.sent()
+    end
+    eq(sent[1], sent[2], setting .. "normal curing: the same with the old copy")
+  end
+end
 
 -- ===== Action_system logs through the current logger =====
 
