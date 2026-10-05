@@ -14,7 +14,10 @@ mode let the batch through and paused curing as if the player had typed.
 
 Action_system copied the logger the same way, so its lines ignored the saved
 vconfig log, which the config loader applies after Action_system loads. A
-check at the end covers that.
+check at the end covers that, and another that svo.reset.general (Alias
+functions) empties svo.actions_performed in place: replacing it left
+Action_system writing to the old table and svo.valid.generic reading the new
+one.
 
 Like the other suites, this does not run svof or Mudlet. It runs the real
 Action_system loader, both gnomes and the changecuring switch, the batch
@@ -61,6 +64,7 @@ local ACTIONS = read_file(CS .. "Action_system.lua")
 local CONTROLLERS = read_file(CS .. "Controllers.lua")
 local MISC = read_file(SMEF .. "Miscellaneous_functions.lua")
 local SETUP = read_file(SMEF .. "Setup.lua")
+local ALIASES = read_file(SCRIPTS .. "svo (alias and defence functions)/Alias_functions.lua")
 
 -- Action_system with its load-time copy of the gnome, for the controls.
 local LIVE_GNOMES = "local function make_gnomes_work() return svo.make_gnomes_work() end"
@@ -138,10 +142,12 @@ local function new_svof(opts)
              autotsc = true, repeatcmd = 0, sacdelay = 0.5, paused = false },
     sk = { systemscommands = {}, sendqueue = {}, sendqueuel = 18, achaea_command_max_length = 2048 },
     bals = { focus = true, salve = true, herb = true },
-    signals = { changecuring = changecuring, curedwith_focus = sig(), sync = sig(), sysdatasendrequest = sig() },
+    signals = { changecuring = changecuring, curedwith_focus = sig(), sync = sig(), sysdatasendrequest = sig(),
+                canoutr = sig() },
     lifevision = { l = OrderedMap() },
     cnrl = {}, pl = { tablex = tablex, pretty = { write = tostring } },
-    codepaste = {}, ignore = {}, serverignore = {},
+    codepaste = {}, ignore = {}, serverignore = {}, reset = {},
+    check_generics = function() end,
     assert = assert,
     debugf = function() end,
     echof = function(fmt, ...) log[#log + 1] = { kind = "echo", text = (string.format(fmt, ...):gsub("<[%d,]+>", "")) } end,
@@ -226,7 +232,7 @@ local function new_svof(opts)
   load_into(env, opts.actions or ACTIONS, "Action_system")
   svo.loader.action()
 
-  local s = { svo = svo }
+  local s = { svo = svo, env = env }
 
   function s.run_timers()
     while #timers > 0 do
@@ -348,6 +354,25 @@ for _, old in ipairs({ false, true }) do
     if line == "actions: doing stupidity_focus" then found = true end
   end
   eq(found, not old, label .. "a logger set after load gets Action_system's lines")
+end
+
+-- ===== a reset keeps one actions_performed table =====
+
+-- svo.reset.general runs on every death, arena loss, soulcage and vreset
+local RESET = between(ALIASES, "function svo.reset.general()", "function svo.reset.defs(echoback)")
+local RESET_OLD = swap(RESET,
+  "for name in pairs(svo.actions_performed) do svo.actions_performed[name] = nil end",
+  "svo.actions_performed = {}")
+for _, old in ipairs({ false, true }) do
+  local label = old and "control: after a reset: " or "after a reset: "
+  s = new_svof()
+  load_into(s.env, old and RESET_OLD or RESET, "reset.general")
+  s.svo.doaction(s.svo.dict.stupidity.focus)
+  s.svo.reset.general()
+  eq(s.svo.doingaction("stupidity"), false, label .. "the reset cleared what was in flight")
+  s.svo.doaction(s.svo.dict.asthma.herb)
+  eq(s.svo.doingaction("asthma"), true, label .. "Action_system tracks the next action")
+  eq(s.svo.actions_performed.asthma ~= nil, not old, label .. "svo.actions_performed, which svo.valid.generic reads, sees it")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))
