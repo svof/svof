@@ -63,6 +63,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got myrrh generic [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/pyre",
+      "digest": "fd92c852b629ed42",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/pyre [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo scalded woreoff",
       "digest": "b33cec5c384c9431",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo scalded woreoff [only in the package]"
@@ -104,8 +109,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "d045e1e3f9e9a2f4",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2535 in merged"
+      "digest": "84e78e298fee56b6",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2536 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -1396,6 +1401,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/bleeding|script",
       "digest": "335e7c8395183f6e",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/bleeding [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/blistered|script",
+      "digest": "01c71af19f61e886",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/blistered [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/bound|script",
