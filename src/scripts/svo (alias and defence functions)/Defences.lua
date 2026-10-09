@@ -3412,6 +3412,15 @@ signals.systemstart:connect(function ()
     defkeepup[k] = defkeepup[k] or {}
   end
 
+  -- The handlers this made last time came from the last class's records.
+  -- svo.defs outlives a class change, and below a handler is only made where
+  -- none exists, so they stayed: a lost_ for a defence the new class does
+  -- not have raised, indexing a dictionary entry that was gone. Hand-written
+  -- handlers are not in the list, and are left alone.
+  for name in pairs(defences.generated or {}) do defs[name] = nil end
+  local existing = {}
+  for name in pairs(defs) do existing[name] = true end
+
   for defname, defdata in defs_data:iter() do
     -- sort into def types if applicable
     if defdata.custom_def_type then
@@ -3637,6 +3646,12 @@ signals.systemstart:connect(function ()
         defences.lost(def)
       end
     end
+  end
+
+  -- remember what was made here, for the next systemstart to clear
+  defences.generated = {}
+  for name in pairs(defs) do
+    if not existing[name] then defences.generated[name] = true end
   end
 end, 'setup def triggers on system start')
 

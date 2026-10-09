@@ -28,7 +28,7 @@ behaviour meant to stay. All of these are in the 2018 module xmls:
   13  svo.defs.curedblind and cureddeaf are called and never defined
   14  the Spirit channel's handlers are called and never defined
   15  the relogin handler collects the defc table, not the names in it
-  16  generated handlers survive a class change and go stale
+  16  generated handlers survived a class change and went stale (fixed)
   17  a GMCP gain ran the raising action's oncompleted, written for a
       command svof sent: balances, puffs and waits; six were dropped
       instead (fixed: defences.confirm)
@@ -693,17 +693,31 @@ do -- 25: frost's and temperance's gone each lose themselves, not only the other
   eq(w.svo.defc.frost, false, "Druid: and frost with it")
 end
 
-do -- 16: generated handlers survive a class change
+do -- 16: a class change replaces the generated handlers with the new class's
   local w = world.new({ class = "Monk" })
   local svo = w.svo
-  local old_lost_boosting = svo.defs.lost_boosting
+  eq(type(svo.defs.lost_boosting), "function", "a Monk has lost_boosting")
+  local first_new = #w.triggers + 1
   svo.classchange("Infernal")
+  local dangling = {}
+  for i = first_new, #w.triggers do
+    local h = type(w.triggers[i].code) == "string" and w.triggers[i].code:match("^svo%.defs%.([%w_]+)%(%)$")
+    if h and type(svo.defs[h]) ~= "function" then dangling[#dangling + 1] = h end
+  end
+  eq(#w.triggers >= first_new, true, "the class change made the Infernal's triggers")
+  eq(table.concat(dangling, ", "), "", "each of which calls a handler that exists")
   eq(svo.me.class, "Infernal", "the class change went through")
   eq(svo.dict.boosting, nil, "Infernal has no boosting entry")
-  eq(svo.defs.lost_boosting, old_lost_boosting, "today (defect 16): Monk's lost_boosting survives the change")
-  local ok = pcall(svo.defs.lost_boosting)
-  eq(ok, false, "today (defect 16): and raises, indexing an entry that is gone")
+  eq(svo.defs.lost_boosting, nil, "and no lost_boosting left over from the Monk")
+  eq(svo.defs.got_boosting, nil, "or got_boosting")
+  eq(type(svo.defs.lost_rebounding), "function", "while its own handlers are there")
+  eq(type(svo.defs.got_block), "function", "and the hand-written ones too")
   eq(#w.writes > 0, true, "the class change tried to save the config, and was refused")
+  svo.classchange("Monk")
+  eq(type(svo.defs.lost_boosting), "function", "changing back makes lost_boosting again")
+  svo.defences.got("boosting")
+  local ok = pcall(svo.defs.lost_boosting)
+  eq(ok, true, "and it works")
 end
 
 -- ===== 9. confirm and unconfirm: the game's word, apart from svof's command =====
