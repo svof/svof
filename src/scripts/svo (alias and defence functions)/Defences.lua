@@ -3397,31 +3397,10 @@ function sk.desanitize(self)
   return string.gsub(self, '_', " ")
 end
 
-signals.systemstart:connect(function ()
-  local defdefup_t, defkeepup_t = svo.defload()
-	
-  --Empty the def_type table on startup and class change to prevent duplicate defences.
-  defences.def_types = {}
- 
-  --organise tempTriggers in a table to delete on class change
-  svo.defencetemptriggers = svo.defencetemptriggers or {}
- 
-  -- create blank defup modes
-  for k,_ in pairs(defdefup_t) do
-    defdefup[k] = defdefup[k] or {}
-    defkeepup[k] = defkeepup[k] or {}
-  end
-
-  -- The handlers this made last time came from the last class's records.
-  -- svo.defs outlives a class change, and below a handler is only made where
-  -- none exists, so they stayed: a lost_ for a defence the new class does
-  -- not have raised, indexing a dictionary entry that was gone. Hand-written
-  -- handlers are not in the list, and are left alone.
-  for name in pairs(defences.generated or {}) do defs[name] = nil end
-  local existing = {}
-  for name in pairs(defs) do existing[name] = true end
-
-  for defname, defdata in defs_data:iter() do
+-- Everything svof makes from one defence record: its temp triggers, its
+-- handlers, its place in the defence lists and the defup and keepup slots.
+-- systemstart runs it for every record.
+function defences.wire(defname, defdata)
     -- sort into def types if applicable
     if defdata.custom_def_type then
       defences.custom_types[defdata.custom_def_type] = defences.custom_types[defdata.custom_def_type] or {}
@@ -3626,6 +3605,34 @@ signals.systemstart:connect(function ()
       sk.ignored_defences[defdata.type].t[defname] = sk.ignored_defences[defdata.type].t[defname] or false
       sk.ignored_defences_map[defname] = defdata.type
     end
+end
+
+signals.systemstart:connect(function ()
+  local defdefup_t, defkeepup_t = svo.defload()
+	
+  --Empty the def_type table on startup and class change to prevent duplicate defences.
+  defences.def_types = {}
+ 
+  --organise tempTriggers in a table to delete on class change
+  svo.defencetemptriggers = svo.defencetemptriggers or {}
+ 
+  -- create blank defup modes
+  for k,_ in pairs(defdefup_t) do
+    defdefup[k] = defdefup[k] or {}
+    defkeepup[k] = defkeepup[k] or {}
+  end
+
+  -- The handlers this made last time came from the last class's records.
+  -- svo.defs outlives a class change, and below a handler is only made where
+  -- none exists, so they stayed: a lost_ for a defence the new class does
+  -- not have raised, indexing a dictionary entry that was gone. Hand-written
+  -- handlers are not in the list, and are left alone.
+  for name in pairs(defences.generated or {}) do defs[name] = nil end
+  local existing = {}
+  for name in pairs(defs) do existing[name] = true end
+
+  for defname, defdata in defs_data:iter() do
+    defences.wire(defname, defdata)
   end -- end of the whole defences svo.dict iteration
 
   svo.update(defdefup, defdefup_t)
