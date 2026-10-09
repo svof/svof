@@ -518,13 +518,17 @@ do -- 5: croonmirror's loss regex is anchored, with no stray quote before it
   eq(found and found:sub(1, 1), "^", "croonmirror's offr starts at its anchor")
 end
 
-do -- 6: fortifying air last never grants fortifyall
-  local w = world.new({ class = "Magi" })
-  local svo = w.svo
-  for _, d in ipairs({ "fortifiedearth", "fortifiedwater", "fortifiedfire" }) do svo.defences.got(d) end
-  svo.dict.fortifiedair.physical.oncompleted()
-  eq(svo.defc.fortifiedair, true, "fortify air sets fortifiedair")
-  eq(svo.defc.fortifyall, nil, "today (defect 6): with the other three up it does not grant fortifyall")
+do -- 6: fortifying any of the four last grants fortifyall
+  for _, last in ipairs({ "fortifiedair", "fortifiedearth", "fortifiedwater", "fortifiedfire" }) do
+    local w = world.new({ class = "Magi" })
+    local svo = w.svo
+    for _, d in ipairs({ "fortifiedair", "fortifiedearth", "fortifiedwater", "fortifiedfire" }) do
+      if d ~= last then svo.defences.got(d) end
+    end
+    svo.dict[last].physical.oncompleted()
+    eq(svo.defc[last], true, last .. " last: it is set")
+    eq(svo.defc.fortifyall, true, last .. " last: with the other three up it grants fortifyall")
+  end
 end
 
 do -- 7: bonding's gone sits inside physical

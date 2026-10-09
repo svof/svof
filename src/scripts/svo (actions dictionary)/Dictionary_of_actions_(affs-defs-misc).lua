@@ -12794,7 +12794,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           defences.got('fortifiedair')
-          if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwaterand and not defc.fortifiedspirit and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
+          if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and not defc.fortifiedspirit and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
             defences.got('fortifyall')
           end
         end,
