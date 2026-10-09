@@ -1509,6 +1509,11 @@ svo.config_dict = svo.pl.OrderedMap {
     onenabled = function () svo.echof("<0,250,0>Will%s notify you when GMCP updates your defences.", svo.getDefaultColor()) end,
     ondisabled = function () svo.echof("<250,0,0>Won't%s notify you when GMCP updates your defences.", svo.getDefaultColor()) end,
   }},
+  {customdefinitions = {
+    type = 'boolean',
+    onenabled = function () svo.echof("<0,250,0>Will%s add the defences you defined the next time Svof loads.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("<250,0,0>Won't%s add the defences you defined the next time Svof loads.", svo.getDefaultColor()) end,
+  }},
   {releasechannel = {
     type = 'string',
     vconfig2string = true,
@@ -1939,6 +1944,8 @@ do
   if conf.recovery then conf.efficiency = true; conf.recovery = nil end
 
   if conf.gagserverside == nil then conf.gagserverside = true end
+  -- the defences you define are added unless you switch them off
+  if conf.customdefinitions == nil then conf.customdefinitions = true end
 
   -- purgative used to be set at a default 5 before it was even used, it is now 7 for voyria
   if conf.ai_resetpurgativebal == 5 then conf.ai_resetpurgativebal = 10 end

@@ -1147,6 +1147,69 @@ do -- the item is looked for in your inventory only
   eq(type(svo.dict.mindnet), "table", "one in your inventory does")
 end
 
+-- The defences a player defines (vconfig customdef) are registered on every
+-- systemstart for the class they belong to, or for every class.
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  eq(svo.conf.customdefinitions, true, "custom defences: vconfig customdefinitions is on unless switched off")
+  svo.defences.custom = {
+    shimmer = { class = "Monk", command = "shimmer on", on = { "You begin to shimmer." },
+      off = "You stop shimmering.", def = "You are shimmering.", gmcp = "shimmering" },
+    warded = { class = "all", command = "ward self", balanceless = true, on = "A ward settles about you.",
+      serverside = true },
+    rebounding = { class = "all", command = "rebound" },        -- svof's own name
+    broken = { class = "Monk", on = "Nothing raises this." },   -- no command
+    stoneward = { class = "Infernal", command = "stoneward" },  -- another class's
+  }
+  svo.defdefup.basic.shimmer = true -- a choice saved last session
+  svo.classchange("Infernal")
+  eq(svo.defs_data.warded ~= nil and svo.defs_data.stoneward ~= nil, true,
+    "custom defences: as an Infernal, the all-class one and the Infernal's are registered")
+  eq(svo.defs_data.shimmer, nil, "custom defences: and not the Monk's")
+  eq(svo.dict.rebounding.smoke ~= nil and svo.defs_data.rebounding.type, "general",
+    "custom defences: a name svof uses is refused, and svof's own rebounding stays")
+  eq(echoed(w, "Svof has its own rebounding now, so the one you defined isn't used."), true,
+    "custom defences: and says so")
+
+  svo.classchange("Monk")
+  local rec, entry = svo.defs_data.shimmer, svo.dict.shimmer
+  eq(rec and rec.type, "custom", "custom defences: as a Monk, shimmer is registered, as a custom defence")
+  eq(entry and entry.physical.action, "shimmer on", "custom defences: raised with its command")
+  eq(entry and entry.physical.balanceful_act, true, "custom defences: taking balance unless balanceless")
+  eq(entry and entry.physical.undeffable, true, "custom defences: and raised by svof, not serverside, unless it says so")
+  local warded = svo.dict.warded and svo.dict.warded.physical or {}
+  eq(warded.balanceless_act, true, "custom defences: warded takes no balance")
+  eq(warded.undeffable, nil, "custom defences: and serverside may raise it")
+  eq(svo.dict.sstosvod.shimmering, "shimmer", "custom defences: GMCP's shimmering is shimmer")
+  eq(entry and entry.gamename, "shimmering", "custom defences: and so is the serverside name")
+  eq(svo.defdefup.basic.shimmer, true, "custom defences: the saved defup choice is kept")
+  eq(svo.defs_data.broken, nil, "custom defences: one with no command is not registered")
+  eq(echoed(w, "add the defence broken you defined: it has no command to raise it"), true,
+    "custom defences: and says why")
+
+  if entry then svo.doaction(entry.physical) end
+  eq(w.line("You begin to shimmer."), 1, "custom defences: its gain line is heard")
+  w.prompt()
+  eq(svo.defc.shimmer, true, "custom defences: and sets it")
+  w.line("You stop shimmering.")
+  w.prompt()
+  eq(svo.defc.shimmer, false, "custom defences: its loss line loses it")
+  w.gmcp_defence_add("shimmering")
+  eq(svo.defc.shimmer, true, "custom defences: GMCP's gain sets it")
+
+  local ignored = svo.sk.ignored_defences.custom
+  if ignored then ignored.t.shimmer = true end -- switched off in vshow defup
+  svo.classchange("Infernal")
+  svo.classchange("Monk")
+  ignored = svo.sk.ignored_defences.custom
+  eq(ignored and ignored.t.shimmer, true, "custom defences: switching one off survives a class change")
+
+  svo.conf.customdefinitions = false
+  svo.classchange("Infernal")
+  eq(svo.defs_data.warded, nil, "custom defences: with customdefinitions off, none is registered")
+end
+
 do -- the phylactery is found whether its name has one space after the "a" or two
   local w = world.new()
   w.env.gmcp.Char.Items.List = { location = "inv", items = { { name = "a phylactery of sixth sense" } } }

@@ -3558,9 +3558,10 @@ signals.systemstart:connect(function ()
   svo.update(defdefup, defdefup_t)
   svo.update(defkeepup, defkeepup_t)
 
-  -- remove skillsets from ignorelist that we don't have, for people that change
+  -- remove skillsets from ignorelist that we don't have, for people that change.
+  -- The defences you define are kept, being registered after this
   for skillset, _ in pairs(sk.ignored_defences) do
-    if skillset ~= 'general' and skillset ~= 'enchantment' and skillset ~= 'dragoncraft' and not me.skills[skillset] then
+    if skillset ~= 'general' and skillset ~= 'enchantment' and skillset ~= 'dragoncraft' and skillset ~= 'custom' and not me.skills[skillset] then
       sk.ignored_defences[skillset] = nil
     end
   end
@@ -3581,6 +3582,90 @@ signals.systemstart:connect(function ()
     if not existing[name] then defences.generated[name] = true end
   end
 end, 'setup def triggers on system start')
+
+-- Defences the player defines (vconfig customdef). They are saved under
+-- <profile>/svo/custom/defs, which a package update leaves alone, and
+-- registered again on every systemstart, as defs_data and svo.dict are both
+-- made anew then, before the prio import, so a saved priority for one
+-- applies. A definition is a table:
+--   class        the class it belongs to, as the game names it, or 'all'
+--                for one any class can have, such as an item's
+--   command      what svof sends to raise it
+--   balanceless  true when raising it takes no balance
+--   on, off      the exact lines saying you gained it and lost it
+--   def          the exact line DEF shows for it
+--   gmcp         its name over GMCP, which is its serverside name as well
+--   serverside   true when serverside may raise it; svof does otherwise
+-- A name svof already uses is refused, and a definition that fails to
+-- register is reported and skipped. vconfig customdefinitions off loads
+-- none, for a definition that has broken curing.
+local custom_path = getMudletHomeDir() .. "/svo/custom/defs"
+
+function defences.custom_load()
+  local t = {}
+  if lfs.attributes(custom_path) then
+    local ok, msg = pcall(table.load, custom_path, t)
+    if not ok then
+      svo.echof("<250,0,0>Couldn't%s read the defences you defined, in %s: %s", svo.getDefaultColor(), custom_path, tostring(msg))
+      t = {}
+    end
+  end
+  defences.custom = t
+end
+
+function defences.custom_save()
+  svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/custom")
+  svo.tablesave(custom_path, defences.custom)
+end
+
+-- whether svof already uses the name: a defence this class has, one an
+-- item brings, or anything else in the dictionary, such as an affliction
+local item_defences = { mindnet = true, lifevision = true, shroud = true }
+function defences.custom_taken(name)
+  return (defs_data[name] or svo.dict[name] or item_defences[name]) and true or false
+end
+
+function defences.custom_applies(spec)
+  return spec.class == 'all' or (type(spec.class) == 'string' and spec.class:lower() == tostring(me.class):lower())
+end
+
+function defences.custom_register(name, spec)
+  if type(spec.command) ~= 'string' or spec.command == '' then error("it has no command to raise it", 0) end
+  if spec.gmcp then
+    local mapped = svo.dict.sstosvod[spec.gmcp]
+    if mapped and mapped ~= name then
+      error(string.format("GMCP's %s is already svof's %s", spec.gmcp, mapped), 0)
+    end
+  end
+  svo.basicdef(name, spec.command, spec.balanceless, spec.gmcp, not spec.serverside)
+  if spec.gmcp then
+    svo.dict.sstosvod[spec.gmcp] = name
+    svo.dict.svotossd[name] = spec.gmcp
+  end
+  defences.register(name, { type = spec.class == 'all' and 'general' or 'custom',
+    on = spec.on, off = spec.off, def = spec.def })
+end
+
+signals.systemstart:connect(function ()
+  if not conf.customdefinitions then return end
+  if not defences.custom then defences.custom_load() end
+
+  local names = {}
+  for name, spec in pairs(defences.custom) do
+    if defences.custom_applies(spec) then names[#names + 1] = name end
+  end
+  table.sort(names)
+  for _, name in ipairs(names) do
+    if defences.custom_taken(name) then
+      svo.echof("Svof has its own %s now, so the one you defined isn't used.", name)
+    else
+      local ok, err = pcall(defences.custom_register, name, defences.custom[name])
+      if not ok then
+        svo.echof("<250,0,0>Couldn't%s add the defence %s you defined: %s", svo.getDefaultColor(), name, tostring(err))
+      end
+    end
+  end
+end, 'register the defences the player defined')
 
 -- customize for gag
 defs['lost_shield'] = function ()
