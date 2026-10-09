@@ -159,6 +159,26 @@ If you have the lifevision artefact, then the system will realize that fact and 
 
 The same goes with shrouding - if you've got yours as an artefact, it will automatically detect it. If yours is customized, that's not a problem, you can enable it with *vconfig haveshroud*.
 
+.. _custom-defences:
+
+Define your own defences
+^^^^^^^^^^^^^^^^^^^^^^^^
+If Svof doesn't know a defence you have, you can define it with *vconfig customdef*. Svof then puts it up on defup and keepup like any other.
+
+To define one:
+
+1. Start it with *vconfig customdef <name>*, using lower-case letters and digits. Svof shows what the definition holds so far, with links to change each part.
+2. Set the command that raises it with *vconfig customdef <name> command <command>*. If raising it takes no balance, add *vconfig customdef <name> balanceless yes*. If serverside curing can raise it, add *vconfig customdef <name> serverside yes*; otherwise Svof raises it.
+3. Tell Svof how it knows the defence is up. Raise it once, then use *vconfig customdef <name> line got* and click the line that says you gained it. Do the same with *line lost* for the line that says you lost it, and with *line def* for the line DEF shows. You can also type a line, as in *vconfig customdef <name> got <line>*.
+4. If you know the defence's GMCP name, set it with *vconfig customdef <name> gmcp <name>*. Svof then takes GMCP's word on it, as it does for its own defences. With *vconfig gmcpdefechoes* on, Svof shows the GMCP names as defences come and go.
+5. Check the definition with *vconfig customdef <name> test*, then put it into play with *vconfig customdef <name> install*.
+
+A definition belongs to the class you define it in. To change that, use *vconfig customdef <name> class <class>*, or *class all* for a defence any class can have, such as an artefact's. Svof adds each definition when you're in its class.
+
+Svof refuses a name it already uses. To change a definition, change its parts and install it again; until then, Svof keeps using the installed one. *vconfig customdef <name> delete* takes a definition out, and *vconfig customdef* lists them all.
+
+Your definitions are saved in *svo/custom/defs* in your profile folder, which updates leave alone. *vconfig customdef export <file>* saves them to a file you can share, and *vconfig customdef import <file>* reads one in. If a definition breaks your curing, *vconfig customdefinitions off* starts Svof without any of them.
+
 Anti-illusion
 ~~~~~~~~~~~~~
 Svof's anti-illusion is disabled by default, but is easily enabled with *tn a* or *tn anti-illusion*. You *must* enable anti-illusion when fighting anyone that can illusion - Serpents, Magi, Puppetry users, Dragons or people with the Staff of Illusion. Against serpents, you also ought to enable *sbites* and *stabs* - but read up on the *ignoresinglebites* option to know how that works, because that has it's own pitfalls.
@@ -994,6 +1014,12 @@ vconfig options
 
   gagserverside
     toggles whenever the system should gag (hide) system's of serverside commands when serverside is enabled - this is things like priority switching, option changing and so on. This does not cover serverside's ``[CURING]:`` messages, use the ``gagservercuring`` option for that.
+
+  customdef
+    defines your own defences, for ones Svof doesn't know. See :ref:`custom-defences`.
+
+  customdefinitions
+    (on by default) adds the defences you defined with *customdef* when Svof loads. Turn it off to start Svof without them.
 
   havelifevision
     sets whenever you have the ability to raise the Lifevision defence through a customised artefact. If you have the skill, you don't need to enable this, and the system autodetects the uncustomised artefact for you as well.

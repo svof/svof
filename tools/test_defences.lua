@@ -1210,6 +1210,117 @@ do
   eq(svo.defs_data.warded, nil, "custom defences: with customdefinitions off, none is registered")
 end
 
+-- vconfig customdef: defining one, installing, changing, deleting
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local custom = svo.defences
+  local function cmd(rest) custom.customdef_command(rest) end
+  local function live(def)
+    local n = 0
+    for _, t in ipairs(w.triggers) do
+      if not t.killed and type(t.code) == "string" and t.code:find("_" .. def .. "()", 1, true) then n = n + 1 end
+    end
+    return n
+  end
+
+  -- vconfig hands the rest of the line to the option
+  svo.config.set("customdef", "Shimmer command shimmer on")
+  local d = custom.custom_drafts.shimmer
+  eq(d and d.command, "shimmer on", "customdef: vconfig customdef <name> command <text> starts a draft")
+  eq(d and d.class, "monk", "customdef: for the class you are in")
+  cmd("shimmer got You begin to shimmer.")
+  cmd("shimmer lost You stop shimmering.")
+  cmd("shimmer def You are shimmering.")
+  cmd("shimmer gmcp shimmering")
+  cmd("shimmer test")
+  eq(echoed(w, "It's ready to install."), true, "customdef: test says it is ready")
+  eq(svo.defs_data.shimmer, nil, "customdef: a draft changes nothing in play")
+
+  local writes = #w.writes
+  cmd("shimmer install")
+  eq(svo.defs_data.shimmer and svo.defs_data.shimmer.type, "custom", "customdef: install registers it")
+  eq(svo.dict.sstosvod.shimmering, "shimmer", "customdef: with its GMCP name")
+  eq(#w.writes > writes, true, "customdef: and saves the definitions")
+  eq(custom.custom_drafts.shimmer, nil, "customdef: the draft is done with")
+  if svo.dict.shimmer then svo.doaction(svo.dict.shimmer.physical) end
+  w.line("You begin to shimmer.")
+  w.prompt()
+  eq(svo.defc.shimmer, true, "customdef: its gain line works at once")
+
+  -- changing it: only install puts the change into play, without piling up triggers
+  local triggers = live("shimmer")
+  cmd("shimmer command shimmer up")
+  eq(svo.dict.shimmer and svo.dict.shimmer.physical.action, "shimmer on", "customdef: a change waits for install")
+  custom.custom_unset("shimmer", "on", 1)
+  cmd("shimmer got You shimmer brightly.")
+  cmd("shimmer install")
+  eq(svo.dict.shimmer and svo.dict.shimmer.physical.action, "shimmer up", "customdef: installing again uses the change")
+  eq(live("shimmer"), triggers, "customdef: with the old triggers killed")
+  eq(w.line("You begin to shimmer."), 0, "customdef: the line taken out is no longer heard")
+  eq(w.line("You shimmer brightly."), 1, "customdef: and the new one is")
+
+  -- svof's own names are refused (the user's choice), and an incomplete one can't install
+  cmd("rebounding")
+  eq(echoed(w, "define rebounding: Svof already has a defence or action called rebounding."), true,
+    "customdef: svof's own name is refused")
+  cmd("hush command hush")
+  cmd("hush install")
+  eq(echoed(w, "install hush: it needs a line saying you gained it, or its GMCP name"), true,
+    "customdef: one svof could never see come up can't be installed")
+  eq(svo.defs_data.hush, nil, "customdef: and isn't registered")
+
+  -- picking a line off the screen
+  w.env.getLines = function() return { "You see a rat.", "", "You begin to glow." } end
+  cmd("glow line got")
+  local pick
+  for _, l in ipairs(w.links) do
+    if l:find("You begin to glow.", 1, true) and l:find("custom_set", 1, true) then pick = l:sub(#"You begin to glow." + 2) end
+  end
+  eq(pick ~= nil, true, "customdef: line got offers the lines on screen")
+  if pick then w.run(pick) end
+  eq(custom.custom_drafts.glow and custom.custom_drafts.glow.on[1], "You begin to glow.", "customdef: clicking one adds it")
+
+  -- another class's
+  cmd("stoneskin class Infernal")
+  cmd("stoneskin command stoneskin")
+  cmd("stoneskin got Your skin turns to stone.")
+  cmd("stoneskin install")
+  eq(echoed(w, "Saved stoneskin. It's for infernal, so Svof adds it when you're one."), true,
+    "customdef: one for another class is saved, not added")
+  eq(svo.defs_data.stoneskin, nil, "customdef: as a Monk it isn't registered")
+  svo.classchange("Infernal")
+  eq(svo.defs_data.stoneskin and svo.defs_data.stoneskin.type, "custom", "customdef: as an Infernal it is")
+  eq(svo.defs_data.shimmer, nil, "customdef: and the Monk's isn't")
+  svo.classchange("Monk")
+  eq(svo.dict.shimmer and svo.dict.shimmer.physical.action, "shimmer up", "customdef: back as a Monk, shimmer is")
+
+  -- the list
+  cmd("")
+  eq(echoed(w, "Defences you defined:"), true, "customdef: vconfig customdef lists them")
+
+  -- deleting takes it out of play at once
+  cmd("shimmer delete")
+  eq(svo.defs_data.shimmer, nil, "customdef: delete takes out its record")
+  eq(svo.dict.shimmer, nil, "customdef: its entry")
+  eq(svo.defs.got_shimmer, nil, "customdef: its handlers")
+  eq(live("shimmer"), 0, "customdef: its triggers")
+  eq(svo.dict.sstosvod.shimmering, nil, "customdef: and its GMCP name")
+  eq(custom.custom.shimmer, nil, "customdef: and the definition")
+
+  -- import, from a file another player exported
+  local old_attributes, old_load = w.env.lfs.attributes, w.env.table.load
+  w.env.lfs.attributes = function() return {} end
+  w.env.table.load = function(_, t)
+    t.veil = { class = "all", command = "veil on", balanceless = true, on = { "A veil falls about you." } }
+    t.rebounding = { class = "all", command = "rebound", on = { "x" } }
+  end
+  cmd("import shared-defences")
+  w.env.lfs.attributes, w.env.table.load = old_attributes, old_load
+  eq(svo.defs_data.veil and svo.defs_data.veil.type, "general", "customdef: import installs what it can")
+  eq(custom.custom.rebounding, nil, "customdef: and refuses svof's own names")
+end
+
 do -- the phylactery is found whether its name has one space after the "a" or two
   local w = world.new()
   w.env.gmcp.Char.Items.List = { location = "inv", items = { { name = "a phylactery of sixth sense" } } }

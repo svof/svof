@@ -3513,7 +3513,13 @@ function defences.register(name, record, entry)
   local existing = {}
   for h in pairs(defs) do existing[h] = true end
 
+  -- its triggers, for defences.unregister
+  local first = #svo.defencetemptriggers + 1
   defences.wire(name, defs_data[name])
+  defences.triggers_of[name] = {}
+  for i = first, #svo.defencetemptriggers do
+    defences.triggers_of[name][#defences.triggers_of[name] + 1] = svo.defencetemptriggers[i]
+  end
 
   defences.generated = defences.generated or {}
   for h in pairs(defs) do
@@ -3524,6 +3530,55 @@ function defences.register(name, record, entry)
     if defkeepup[mode] then defkeepup[mode][name] = choice[2] or false end
   end
 
+  signals.dragonform:emit()
+end
+defences.triggers_of = defences.triggers_of or {}
+
+-- Takes out a defence defences.register put in, as deleting a definition
+-- or installing it again does: its triggers, handlers, record, entry, places
+-- in the defence lists and GMCP name. keepchoices leaves its defup and
+-- keepup choices for the next register to keep.
+function defences.unregister(name, keepchoices)
+  local rec = defs_data[name]
+  for _, id in ipairs(defences.triggers_of[name] or {}) do killTrigger(id) end
+  defences.triggers_of[name] = nil
+  for _, h in ipairs({'got_' .. name, 'lost_' .. name, 'def_' .. sk.sanitize(name), 'gotonly_' .. name}) do
+    if defences.generated and defences.generated[h] then
+      defs[h] = nil
+      defences.generated[h] = nil
+    end
+  end
+  if rec and rec.type then
+    local list = defences.def_types[rec.type] or {}
+    for i = #list, 1, -1 do
+      if list[i] == name then table.remove(list, i) end
+    end
+    if sk.ignored_defences[rec.type] then sk.ignored_defences[rec.type].t[name] = nil end
+  end
+  sk.ignored_defences_map[name] = nil
+  if not keepchoices then
+    for mode in pairs(defdefup) do
+      defdefup[mode][name] = nil
+      if defkeepup[mode] then defkeepup[mode][name] = nil end
+    end
+  end
+  local gamename = svo.dict.svotossd[name]
+  if gamename and svo.dict.sstosvod[gamename] == name then svo.dict.sstosvod[gamename] = nil end
+  svo.dict.svotossd[name] = nil
+
+  if type(svo.dict[name]) == 'table' then
+    for _, act in pairs(svo.dict[name]) do
+      if type(act) == 'table' and act.name then svo.killaction(act) end
+    end
+  end
+  local beforestate = sk.getbeforestateprios()
+  svo.dict[name] = nil
+  defs_data:set(name, nil)
+  svo.dict_setup()
+  svo.dict_validate()
+  sk.notifypriodiffs(beforestate, sk.getafterstateprios())
+
+  defc[name] = nil
   signals.dragonform:emit()
 end
 
@@ -3619,9 +3674,12 @@ function defences.custom_save()
 end
 
 -- whether svof already uses the name: a defence this class has, one an
--- item brings, or anything else in the dictionary, such as an affliction
+-- item brings, or anything else in the dictionary, such as an affliction.
+-- One a definition registered (defences.custom_registered) is the player's.
+defences.custom_registered = defences.custom_registered or {}
 local item_defences = { mindnet = true, lifevision = true, shroud = true }
 function defences.custom_taken(name)
+  if defences.custom_registered[name] then return false end
   return (defs_data[name] or svo.dict[name] or item_defences[name]) and true or false
 end
 
@@ -3634,7 +3692,7 @@ function defences.custom_register(name, spec)
   if spec.gmcp then
     local mapped = svo.dict.sstosvod[spec.gmcp]
     if mapped and mapped ~= name then
-      error(string.format("GMCP's %s is already svof's %s", spec.gmcp, mapped), 0)
+      error(string.format("GMCP's %s is already Svof's %s", spec.gmcp, mapped), 0)
     end
   end
   svo.basicdef(name, spec.command, spec.balanceless, spec.gmcp, not spec.serverside)
@@ -3644,9 +3702,11 @@ function defences.custom_register(name, spec)
   end
   defences.register(name, { type = spec.class == 'all' and 'general' or 'custom',
     on = spec.on, off = spec.off, def = spec.def })
+  defences.custom_registered[name] = true
 end
 
 signals.systemstart:connect(function ()
+  defences.custom_registered = {}
   if not conf.customdefinitions then return end
   if not defences.custom then defences.custom_load() end
 
@@ -3666,6 +3726,317 @@ signals.systemstart:connect(function ()
     end
   end
 end, 'register the defences the player defined')
+
+-- vconfig customdef, the commands for defining one (the repo owner's,
+-- 2026-09-22):
+--   vconfig customdef                       list them
+--   vconfig customdef <name>                show one, starting it if new
+--   vconfig customdef <name> <field> <text> set class, command, balanceless,
+--                                           serverside, gmcp or def, or add
+--                                           a got or lost line
+--   vconfig customdef <name> line <got|lost|def>  pick that line off the screen
+--   vconfig customdef <name> test           say what it would do
+--   vconfig customdef <name> install        put it into play, and save it
+--   vconfig customdef <name> delete         take it out
+--   vconfig customdef export [file], import <file>
+-- Changes go to a draft, kept until Svof reloads; only install changes play.
+defences.custom_drafts = defences.custom_drafts or {}
+
+local function custom_copy(spec)
+  local t = {}
+  for k, v in pairs(spec) do t[k] = v end
+  for _, k in ipairs({'on', 'off'}) do
+    if type(spec[k]) == 'table' then
+      t[k] = {}
+      for i, line in ipairs(spec[k]) do t[k][i] = line end
+    elseif type(spec[k]) == 'string' then
+      t[k] = { spec[k] }
+    else
+      t[k] = {}
+    end
+  end
+  return t
+end
+
+-- why a definition can't be installed, or nil
+function defences.custom_problem(name, spec)
+  if not name:find("^%l[%l%d]*$") then return "a name is lower-case letters and digits, starting with a letter" end
+  if name == 'export' or name == 'import' then return name .. " is a command here, not a name" end
+  if defences.custom_taken(name) then return "Svof already has " .. name end
+  if spec.class ~= 'all' and not (type(spec.class) == 'string' and svo.knownskills[spec.class:lower()]) then
+    return "its class isn't one Svof knows"
+  end
+  if type(spec.command) ~= 'string' or spec.command == '' then return "it has no command to raise it" end
+  if not ((type(spec.on) == 'table' and #spec.on > 0) or type(spec.on) == 'string' or spec.gmcp) then
+    return "it needs a line saying you gained it, or its GMCP name, or Svof can't tell when it's up"
+  end
+  local mapped = spec.gmcp and svo.dict.sstosvod[spec.gmcp]
+  if mapped and mapped ~= name then return "GMCP's " .. spec.gmcp .. " is already Svof's " .. mapped end
+end
+
+-- the draft of name, started from the installed one or new; nil and why
+-- not when the name can't be a definition
+local function custom_draft(name)
+  local d = defences.custom_drafts[name]
+  if d then return d end
+  if defences.custom[name] then
+    d = custom_copy(defences.custom[name])
+  else
+    if not name:find("^%l[%l%d]*$") or name == 'export' or name == 'import' then
+      return nil, "a name is lower-case letters and digits, starting with a letter"
+    end
+    if defences.custom_taken(name) then return nil, "Svof already has a defence or action called " .. name end
+    d = { class = tostring(me.class):lower(), on = {}, off = {} }
+  end
+  defences.custom_drafts[name] = d
+  return d
+end
+
+local function custom_link(text, code, hint)
+  setUnderline(true)
+  echoLink(text, code, hint, true)
+  setUnderline(false)
+end
+
+function defences.custom_show(name)
+  local d, why = custom_draft(name)
+  if not d then
+    svo.echof("<250,0,0>Can't%s define %s: %s.", svo.getDefaultColor(), name, why)
+    return
+  end
+  local installed = defences.custom[name]
+  svo.echof("%s, a defence you %s:", name, installed and "defined" or "are defining (not installed)")
+  local cmd = "vconfig customdef " .. name .. " "
+  local function row(label, value, field)
+    echo(string.format("  %-12s %s  ", label, value))
+    custom_link("change", string.format("printCmdLine(%q)", cmd .. field .. " "), "Change " .. label)
+    echo("\n")
+  end
+  row("class:", d.class == 'all' and "every class" or tostring(d.class), "class")
+  row("command:", d.command or "(not set)", "command")
+  row("balance:", d.balanceless and "takes none" or "takes balance", "balanceless")
+  row("serverside:", d.serverside and "may raise it" or "doesn't; Svof does", "serverside")
+  row("GMCP name:", d.gmcp or "(not set)", "gmcp")
+  for _, which in ipairs({ { 'on', 'got', "gained when:" }, { 'off', 'lost', "lost when:" } }) do
+    local lines = d[which[1]]
+    for i, line in ipairs(lines) do
+      echo(string.format("  %-12s %s  ", i == 1 and which[3] or "", line))
+      custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, which[1], i), "Remove this line")
+      echo("\n")
+    end
+    echo(string.format("  %-12s %s", #lines == 0 and which[3] or "", #lines == 0 and "(no line)  " or ""))
+    custom_link("add a line from the screen", string.format("svo.defences.custom_capture(%q, %q)", name, which[2]), "Pick the line from what's on screen")
+    echo("\n")
+  end
+  echo(string.format("  %-12s %s  ", "DEF shows:", d.def or "(no line)"))
+  custom_link("pick from the screen", string.format("svo.defences.custom_capture(%q, 'def')", name), "Pick the line from what's on screen")
+  echo("\n  ")
+  custom_link("test", string.format("svo.defences.custom_test(%q)", name), "Say what it would do")
+  echo("  ")
+  custom_link("install", string.format("svo.defences.custom_install(%q)", name), "Put it into play")
+  echo("  ")
+  custom_link("delete", string.format("svo.defences.custom_delete(%q)", name), "Take it out")
+  echo("\n")
+end
+
+function defences.custom_set(name, field, value)
+  local d, why = custom_draft(name)
+  if not d then
+    svo.echof("<250,0,0>Can't%s define %s: %s.", svo.getDefaultColor(), name, why)
+    return
+  end
+  value = value or ''
+  if field == 'class' then
+    local class = value:lower()
+    if class ~= 'all' and not svo.knownskills[class] then
+      svo.echof("Svof doesn't know a class called %s. Use a class's name, or all.", value)
+      return
+    end
+    d.class = class
+  elseif field == 'command' then
+    if value == '' then svo.echof("What does Svof send to raise %s?", name) return end
+    d.command = value
+  elseif field == 'balanceless' or field == 'serverside' then
+    d[field] = svo.convert_string(value) and true or nil
+  elseif field == 'gmcp' then
+    d.gmcp = (value ~= '' and value:lower() ~= 'none') and value or nil
+  elseif field == 'got' or field == 'lost' then
+    if value == '' then svo.echof("Which line says you %s %s?", field == 'got' and "gained" or "lost", name) return end
+    local lines = d[field == 'got' and 'on' or 'off']
+    if not table.contains(lines, value) then lines[#lines + 1] = value end
+  elseif field == 'def' then
+    d.def = value ~= '' and value or nil
+  else
+    svo.echof("A definition has class, command, balanceless, serverside, gmcp, got, lost and def; %s isn't one.", field)
+    return
+  end
+  defences.custom_show(name)
+end
+
+function defences.custom_unset(name, which, i)
+  local d = custom_draft(name)
+  if d and d[which] then table.remove(d[which], i) end
+  defences.custom_show(name)
+end
+
+-- shows the last lines on the screen, to click the one that says it
+function defences.custom_capture(name, which)
+  if which ~= 'got' and which ~= 'lost' and which ~= 'def' then
+    svo.echof("Pick a line for got, lost or def.")
+    return
+  end
+  local last = getLastLineNumber("main")
+  local lines = getLines(math.max(0, last - 12), last)
+  svo.echof("Click the line that %s:", which == 'got' and ("says you gained " .. name)
+    or which == 'lost' and ("says you lost " .. name) or ("DEF shows for " .. name))
+  for _, line in ipairs(lines) do
+    if line:find("%S") then
+      echo("  ")
+      custom_link(line, string.format("svo.defences.custom_set(%q, %q, %q)", name, which, line), "Use this line")
+      echo("\n")
+    end
+  end
+end
+
+function defences.custom_test(name)
+  local d = defences.custom_drafts[name] or defences.custom[name]
+  if not d then svo.echof("You haven't defined %s.", name) return end
+  local on = type(d.on) == 'string' and { d.on } or d.on or {}
+  local off = type(d.off) == 'string' and { d.off } or d.off or {}
+  svo.echof("%s, for %s:", name, d.class == 'all' and "every class" or tostring(d.class))
+  svo.echof("Svof raises it by sending %q, which %s, and %s.", tostring(d.command),
+    d.balanceless and "takes no balance" or "takes balance",
+    d.serverside and "serverside may do too" or "serverside leaves to Svof")
+  svo.echof("It knows it's up from %s.", #on > 0 and string.format("%d line%s", #on, #on == 1 and "" or "s")
+    .. (d.gmcp and (" and GMCP's " .. d.gmcp) or "") or ("GMCP's " .. tostring(d.gmcp)))
+  svo.echof("It knows it's gone from %s.", #off > 0 and string.format("%d line%s", #off, #off == 1 and "" or "s")
+    .. (d.gmcp and " and GMCP" or "") or (d.gmcp and "GMCP" or "nothing, until DEF"))
+  local problem = defences.custom_problem(name, d)
+  if problem then
+    svo.echof("<250,0,0>It can't%s be installed yet: %s.", svo.getDefaultColor(), problem)
+  else
+    svo.echof("It's ready to install.")
+  end
+end
+
+function defences.custom_install(name)
+  local d = defences.custom_drafts[name] or (defences.custom[name] and custom_copy(defences.custom[name]))
+  if not d then svo.echof("You haven't defined %s.", name) return false end
+  local problem = defences.custom_problem(name, d)
+  if problem then
+    svo.echof("<250,0,0>Can't%s install %s: %s.", svo.getDefaultColor(), name, problem)
+    return false
+  end
+  if defences.custom_registered[name] then
+    defences.unregister(name, true)
+    defences.custom_registered[name] = nil
+  end
+  defences.custom[name] = d
+  defences.custom_drafts[name] = nil
+  defences.custom_save()
+
+  if not conf.customdefinitions then
+    svo.echof("Saved %s. vconfig customdefinitions is off, so Svof doesn't add it.", name)
+  elseif not defences.custom_applies(d) then
+    svo.echof("Saved %s. It's for %s, so Svof adds it when you're one.", name, d.class)
+  else
+    local ok, err = pcall(defences.custom_register, name, d)
+    if not ok then
+      svo.echof("<250,0,0>Couldn't%s add %s: %s.", svo.getDefaultColor(), name, tostring(err))
+      return false
+    end
+    svo.echof("Installed %s. Add it to defup with vdefup %s, or to keepup with vkeep %s.", name, name, name)
+  end
+  return true
+end
+
+function defences.custom_delete(name)
+  if not (defences.custom[name] or defences.custom_drafts[name]) then
+    svo.echof("You haven't defined %s.", name)
+    return
+  end
+  if defences.custom_registered[name] then
+    defences.unregister(name)
+    defences.custom_registered[name] = nil
+  end
+  defences.custom[name] = nil
+  defences.custom_drafts[name] = nil
+  defences.custom_save()
+  svo.echof("Deleted %s.", name)
+end
+
+function defences.custom_export(path)
+  path = (path and path ~= '') and path or (getMudletHomeDir() .. "/svo/custom/defs-export")
+  local n = 0
+  for _ in pairs(defences.custom) do n = n + 1 end
+  svo.tablesave(path, defences.custom)
+  svo.echof("Saved the %d defence%s you defined to %s.", n, n == 1 and "" or "s", path)
+end
+
+function defences.custom_import(path)
+  if not path or path == '' or not lfs.attributes(path) then
+    svo.echof("There's no file at %s.", tostring(path ~= '' and path or nil))
+    return
+  end
+  local t = {}
+  local ok, msg = pcall(table.load, path, t)
+  if not ok then
+    svo.echof("<250,0,0>Couldn't%s read %s: %s", svo.getDefaultColor(), path, tostring(msg))
+    return
+  end
+  local names = {}
+  for name, spec in pairs(t) do
+    if type(name) == 'string' and type(spec) == 'table' then names[#names + 1] = name end
+  end
+  table.sort(names)
+  for _, name in ipairs(names) do
+    if defences.custom[name] then
+      svo.echof("You already have %s, so the one in %s isn't used.", name, path)
+    else
+      defences.custom_drafts[name] = custom_copy(t[name])
+      if not defences.custom_install(name) then defences.custom_drafts[name] = nil end
+    end
+  end
+end
+
+function defences.customdef_menu()
+  local names, seen = {}, {}
+  for name in pairs(defences.custom) do names[#names + 1] = name seen[name] = true end
+  for name in pairs(defences.custom_drafts) do if not seen[name] then names[#names + 1] = name end end
+  table.sort(names)
+  if #names == 0 then
+    svo.echof("You haven't defined any defences. Start one with vconfig customdef <name>.")
+    return
+  end
+  svo.echof("Defences you defined:")
+  for _, name in ipairs(names) do
+    local spec = defences.custom_drafts[name] or defences.custom[name]
+    echo("  ")
+    custom_link(name, string.format("svo.defences.custom_show(%q)", name), "Show " .. name)
+    echo(string.format(", for %s%s  ", spec.class == 'all' and "every class" or tostring(spec.class),
+      not defences.custom[name] and " (not installed)" or defences.custom_drafts[name] and " (changes not installed)" or ""))
+    custom_link("delete", string.format("svo.defences.custom_delete(%q)", name), "Take it out")
+    echo("\n")
+  end
+end
+
+-- what vconfig customdef passes on: everything after the option's name
+function defences.customdef_command(rest)
+  rest = (rest or ''):match("^%s*(.-)%s*$")
+  local name, tail = rest:match("^(%S+)%s*(.-)$")
+  if not name then return defences.customdef_menu() end
+  name = name:lower()
+  if name == 'export' then return defences.custom_export(tail) end
+  if name == 'import' then return defences.custom_import(tail) end
+  local verb, value = tail:match("^(%S*)%s*(.-)$")
+  verb = verb:lower()
+  if verb == '' then return defences.custom_show(name) end
+  if verb == 'test' then return defences.custom_test(name) end
+  if verb == 'install' then return defences.custom_install(name) end
+  if verb == 'delete' then return defences.custom_delete(name) end
+  if verb == 'line' then return defences.custom_capture(name, value:lower()) end
+  return defences.custom_set(name, verb, value)
+end
 
 -- customize for gag
 defs['lost_shield'] = function ()
