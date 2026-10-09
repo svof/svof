@@ -485,11 +485,13 @@ do -- 1: both of rest's loss lines are in off
   eq(w.svo.defc.rest, false, "rest: and ends rest")
 end
 
-do -- 2: enabling boosting adds heartsfury, not regeneration
+do -- 2: enabling boosting adds the regeneration it needs
   local w = world.new({ class = "Monk" })
   w.svo.defs.defup("boosting", true, "basic")
-  eq(w.svo.defdefup.basic.heartsfury, true, "today (defect 2): enabling boosting adds heartsfury")
-  eq(w.svo.defdefup.basic.regeneration, false, "today (defect 2): and not the regeneration it needs")
+  eq(w.svo.defdefup.basic.regeneration, true, "enabling boosting in defup adds regeneration")
+  eq(w.svo.defdefup.basic.heartsfury, nil, "and no heartsfury, which Monks do not have")
+  w.svo.defs.keepup("boosting", true, "basic")
+  eq(w.svo.defkeepup.basic.regeneration, true, "and in keepup")
 end
 
 do -- 3 and 4: a regex in off, an exact-match key, can never match

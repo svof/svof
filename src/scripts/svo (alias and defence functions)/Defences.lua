@@ -1694,7 +1694,7 @@ if svo.haveskillset('kaido') then
   defs_data:set('boosting', { type = 'kaido',
     onenable = function (mode, newdef, whereto, echoback)
       if not svo['def'..whereto][mode].regeneration then
-        svo['def'..whereto][mode].heartsfury = true
+        svo['def'..whereto][mode].regeneration = true
         if echoback then svo.echof("Added regeneration to %s, it's necessary for %s.", whereto, newdef) end
       end
 
