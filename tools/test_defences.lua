@@ -304,16 +304,36 @@ do -- lyre (GMCP prismatic) pauses svof in lyre mode
   eq(w.svo.conf.paused, true, "today (defect 17): and pauses svof, as for a strum svof sent")
 end
 
-do -- mindseye marks you deaf (defect 12, through the GMCP path)
+do -- mindseye reclassifies the blindness and deafness you already have
   local w = world.new()
   w.gmcp_defence_add("mindseye")
   eq(w.svo.defc.mindseye, true, "GMCP mindseye sets it")
-  eq(w.svo.defc.deaf, true, "today (defect 12): and marks you deaf")
-  eq(w.svo.defc.blind, nil, "without blind on keepup it leaves blind alone")
+  eq(w.svo.defc.deaf, nil, "mindseye does not make you deaf")
+  eq(w.svo.defc.blind, nil, "or blind")
   w = world.new()
   w.svo.conf.keepup, w.svo.defkeepup.basic.blind = true, true
   w.gmcp_defence_add("mindseye")
-  eq(w.svo.defc.blind, true, "today (defect 12): with blind on keepup it marks you blind as well")
+  eq(w.svo.defc.blind, nil, "blind on keepup does not make you blind either")
+
+  -- deafness you have counts as the defence once you have mindseye
+  w = world.new()
+  w.svo.addaffdict(w.svo.dict.deafaff)
+  w.gmcp_defence_add("mindseye")
+  eq(w.svo.defc.deaf, true, "with mindseye, the deafness you have is the deaf defence")
+  eq(w.svo.affs.deafaff, nil, "and not the affliction")
+  -- blindness you have counts as the defence when you want it up
+  w = world.new()
+  w.svo.conf.keepup, w.svo.defkeepup.basic.blind = true, true
+  w.svo.addaffdict(w.svo.dict.blindaff)
+  w.gmcp_defence_add("mindseye")
+  eq(w.svo.defc.blind, true, "with blind on keepup, the blindness you have is the blind defence")
+  eq(w.svo.affs.blindaff, nil, "and not the affliction")
+  -- and as the affliction when you do not
+  w = world.new()
+  w.svo.defences.got("blind")
+  w.gmcp_defence_add("mindseye")
+  eq(w.svo.defc.blind, false, "with blind on neither list, blindness is not the defence")
+  eq(w.svo.affs.blindaff ~= nil, true, "but the affliction")
 end
 
 do -- shield turns its own keepup off with oldts
@@ -574,7 +594,7 @@ end
 do -- 12: mindseye's oncompleted, run by svof's own touch
   local w = world.new()
   w.svo.dict.mindseye.physical.oncompleted()
-  eq(w.svo.defc.deaf, true, "today (defect 12): touching mindseye marks you deaf")
+  eq(w.svo.defc.deaf, nil, "touching mindseye does not make you deaf")
 end
 
 do -- 13 and 14: trigger handlers that were never defined, in any class

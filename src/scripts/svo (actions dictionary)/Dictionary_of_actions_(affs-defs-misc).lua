@@ -10472,7 +10472,7 @@ if not next(svo.dict) then
           defences.got('mindseye')
   
           -- check if we need to re-classify deaf
-          if (defc.deaf or affs.deafaff) and (defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye then
+          if (defc.deaf or affs.deafaff) and ((defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye) then
             defences.got('deaf')
             svo.rmaff('deafaff')
           elseif (defc.deaf or affs.deafaff) then
@@ -10481,7 +10481,7 @@ if not next(svo.dict) then
           end
   
           -- check if we need to re-classify blind
-          if (defc.blind or affs.blindaff) and (defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind) and (svo.me.class == 'Apostate' or defc.mindseye) then
+          if (defc.blind or affs.blindaff) and ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)) and (svo.me.class == 'Apostate' or defc.mindseye) then
             defences.got('blind')
             svo.rmaff('blindaff')
           elseif (defc.blind or affs.blindaff) then
