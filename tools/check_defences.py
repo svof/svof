@@ -57,7 +57,6 @@ REGEX_SIGNS = re.compile(r"^\^|(?<!\\)\$$|\\[wdsSWDb.()\[\]!?+*]|\.[+*]|\(\?:")
 # The pre-existing findings, by (record, key, kind). Remove a line in the
 # commit that fixes it.
 KNOWN = {
-    ("rest", "[1]", "positional"),          # defect 1: "You rise from your rest..." outside off
     ("tykonos", "off", "regex in exact"),   # defect 3: the six Shikudo forms
     ("willow", "off", "regex in exact"),
     ("rain", "off", "regex in exact"),

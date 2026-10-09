@@ -1024,7 +1024,7 @@ if svo.haveskillset('metamorphosis') then
     end,
     on = {"You find a quiet corner, curl up and settle down to rest.","You feel the strains of the world falling away from your weary limbs.", "But you're already resting, O sloth!"},
     invisibledef = true,
-    off = "Your rest is interrupted.","You rise from your rest, refreshed and full of energy."})
+    off = {"Your rest is interrupted.", "You rise from your rest, refreshed and full of energy."}})
     --Sloth only
 
   defs_data:set('resistance', { type = 'metamorphosis',

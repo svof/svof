@@ -218,6 +218,11 @@
       "text": "Script   svo (alias and defence functions) Alias functions [script]"
     },
     {
+      "id": "item|Script|svo (alias and defence functions)|Defences|script",
+      "digest": "83c142d0c54ab015",
+      "text": "Script   svo (alias and defence functions) Defences [script]"
+    },
+    {
       "id": "item|Script|svo (aliases, triggers)|svo (aliases, triggers)|script",
       "digest": "a06ceb25174fd22a",
       "text": "Script   svo (aliases, triggers) svo (aliases, triggers) [script]"

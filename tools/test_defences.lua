@@ -476,14 +476,13 @@ end
 
 -- ===== 8. Pre-existing defects, pinned =====
 
-do -- 1: rest's second off line is a positional value, so no trigger has it
-  local w = worlds.Druid
-  local rec = w.svo.defs_data.rest
-  eq(rec.off, "Your rest is interrupted.", "rest: off holds one line")
-  eq(rec[1], "You rise from your rest, refreshed and full of energy.",
-    "today (defect 1): rest's second off line sits at [1], outside off")
-  eq(w.line("You rise from your rest, refreshed and full of energy."), 0,
-    "today (defect 1): so nothing hears it")
+do -- 1: both of rest's loss lines are in off
+  local w = world.new({ class = "Druid" })
+  eq(w.svo.defs_data.rest[1], nil, "rest: no line sits outside its keys")
+  w.svo.defences.got("rest")
+  eq(w.line("You rise from your rest, refreshed and full of energy."), 1, "rest: the line after a full rest is heard")
+  w.prompt()
+  eq(w.svo.defc.rest, false, "rest: and ends rest")
 end
 
 do -- 2: enabling boosting adds heartsfury, not regeneration
