@@ -2659,63 +2659,13 @@ do
   function svo.defences.enablemindnet()
     if svo.dict.mindnet then return end
 
-    defs_data:set('mindnet', { type = 'general',
+    svo.basicdef('mindnet', "mindnet on")
+    defences.register('mindnet', { type = 'general',
     on = {"You cast an invisible mind net out into the distance, allowing it to settle about the surrounding land.", "You already have mindnet active."},
     off = "You cease concentration and your mind net vanishes.",
     mana = 'little',
     def = "You have cast a mindnet over the local area."
     })
-
-    svo.basicdef('mindnet', "mindnet on")
-    
-    for mode, _ in pairs(defdefup) do
-      defdefup[mode].mindnet = defdefup[mode].mindnet or false
-      defkeepup[mode].mindnet = defkeepup[mode].mindnet or false
-    end
-
-    sk.ignored_defences.general.t.mindnet = sk.ignored_defences.general.t.mindnet or false
-    sk.ignored_defences_map['mindnet'] = 'general'
-    
-    defences.def_types['general'][#defences.def_types['general']+1] = 'mindnet'
-
-    local v = svo.defs_data.mindnet;
-    local k = 'mindnet';
-    if v.on and type(v.on) == 'table' then
-      for _,pattern in ipairs(v.on) do
-        (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
-      end
-    elseif v.on then
-      (tempExactMatchTrigger or tempTrigger)(v.on, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
-    end
-
-    (tempExactMatchTrigger or tempTrigger)(v.def, 'svo.defs.def_' .. sk.sanitize(k) .. '()');
-
-    defs['def_'..sk.sanitize(k)] = function ()
-      if not v.ondef then
-        defences.def_def_list[k] = true
-      else
-        defences.def_def_list[k] = v.ondef()
-      end
-      deleteLine()
-    end
-    defs['got_' .. k] = function ()
-      defences.got(k)
-    end
-    defs['lost_' .. k] = function ()
-      defences.lost(k)
-    end
-
-    -- create a snapshot of the before state for all balances, since svo.dict_setup might mess with any
-    local beforestate = sk.getbeforestateprios()
-
-    svo.dict_setup()
-    svo.dict_validate()
-
-    -- notify any prio diffs
-    local afterstate = sk.getafterstateprios()
-    sk.notifypriodiffs(beforestate, afterstate)
-
-    signals.dragonform:emit()
 
     svo.echof("Have Phylactery of Sixth Sense - enabled it for defup/keepup.")
   
@@ -2723,7 +2673,9 @@ end
 
   function defences.checkmindnet()
     local t = _G.gmcp.Char.Items.List
-    if not t.location == 'inv' then return end
+    -- (not t.location == 'inv' compared a boolean with a string, so a room's
+    -- item list was searched as well)
+    if t.location ~= 'inv' then return end
 
     for _, it in pairs(t.items) do
       -- if it.name == "a Veil of the Sphinx" then
@@ -2751,11 +2703,9 @@ do
   function defences.enablelifevision()
     if svo.dict.lifevision then return end
 
-    defs_data:set('lifevision', { type = 'general',
+    defences.register('lifevision', { type = 'general',
       on = {"You narrow your eyes and blink rapidly, enhancing your vision to seek out sources of lifeforce in others.", "You already possess enhanced vision."},
-      def = "You have enhanced your vision to be able to see traces of lifeforce."})
-
-    svo.dict.lifevision = {
+      def = "You have enhanced your vision to be able to see traces of lifeforce."}, {
       physical = {
         name = 'lifevision_physical',
         balance = 'physical',
@@ -2778,63 +2728,14 @@ do
           send('lifevision', conf.commandecho)
         end
       }
-    }
-
-    for mode, _ in pairs(defdefup) do
-      defdefup[mode].lifevision = defdefup[mode].lifevision or false
-      defkeepup[mode].lifevision = defkeepup[mode].lifevision or false
-    end
-
-    sk.ignored_defences.general.t.lifevision = sk.ignored_defences.general.t.lifevision or false
-    sk.ignored_defences_map['lifevision'] = 'general'
-
-    defences.def_types['general'][#defences.def_types['general']+1] = 'lifevision'
-
-    local v = defs_data.lifevision;
-    local k = 'lifevision';
-    if v.on and type(v.on) == 'table' then
-      for _,pattern in ipairs(v.on) do
-        (tempExactMatchTrigger or tempTrigger)(pattern, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
-      end
-    elseif v.on then
-      (tempExactMatchTrigger or tempTrigger)(v.on, 'svo.defs.got_' .. sk.sanitize(k) .. '()')
-    end
-
-    (tempExactMatchTrigger or tempTrigger)(v.def, 'svo.defs.def_' .. sk.sanitize(k) .. '()');
-
-    defs['def_'..sk.sanitize(k)] = function ()
-      if not v.ondef then
-        defences.def_def_list[k] = true
-      else
-        defences.def_def_list[k] = v.ondef()
-      end
-      deleteLine()
-    end
-    defs['got_' .. k] = function ()
-      defences.got(k)
-    end
-    defs['lost_' .. k] = function ()
-      defences.lost(k)
-    end
-
-    -- create a snapshot of the before state for all balances, since svo.dict_setup might mess with any
-    local beforestate = sk.getbeforestateprios()
-
-    svo.dict_setup()
-    svo.dict_validate()
-
-    -- notify any prio diffs
-    local afterstate = sk.getafterstateprios()
-    sk.notifypriodiffs(beforestate, afterstate)
-
-    signals.dragonform:emit()
+    })
 
     svo.echof("Have lifevision mask - enabled it for defup/keepup.")
   end
 
   function defences.checklifevision()
     local t = _G.gmcp.Char.Items.List
-    if not t.location == 'inv' then return end
+    if t.location ~= 'inv' then return end
 
     -- feh! Easier to hardcode it for such a miniscule amount of items.
     -- If list enlarges, fix appopriately.
@@ -2864,12 +2765,10 @@ do
   function defences.enableshroud()
     if svo.dict.shroud then return end
 
-    defs_data:set('shroud', { type = 'general',
+    defences.register('shroud', { type = 'general',
       on = {"You draw your Shadowcloak about you and blend into your surroundings.", "You draw a Shadowcloak about you and blend into your surroundings.", "You draw a cloak of the Blood Maiden about you and blend into your surroundings."},
       def = "Your actions are cloaked in secrecy.",
-      off = {"Your shroud dissipates and you return to the realm of perception.", "The flash of light illuminates you - you have been discovered!"}})
-
-    svo.dict.shroud = {
+      off = {"Your shroud dissipates and you return to the realm of perception.", "The flash of light illuminates you - you have been discovered!"}}, {
       physical = {
         name = 'shroud_physical',
         balance = 'physical',
@@ -2892,53 +2791,7 @@ do
           send('shroud', conf.commandecho)
         end
       }
-    }
-
-    for mode,_ in pairs(defdefup) do
-      defdefup[mode].shroud = defdefup[mode].shroud or false
-      defkeepup[mode].shroud = defkeepup[mode].shroud or false
-    end
-
-    sk.ignored_defences.general.t.shroud = sk.ignored_defences.general.t.shroud or false
-    sk.ignored_defences_map['shroud'] = 'general'
-
-    defences.def_types['general'][#defences.def_types['general']+1] = 'shroud'
-
-    local v = defs_data.shroud;
-    local k = 'shroud';
-    -- FIXME not to be such a hack!
-    (tempExactMatchTrigger or tempTrigger)(v.on[1], 'svo.defs.got_' .. sk.sanitize(k) .. '()');
-    (tempExactMatchTrigger or tempTrigger)(v.on[2], 'svo.defs.got_' .. sk.sanitize(k) .. '()');
-    (tempExactMatchTrigger or tempTrigger)(v.def, 'svo.defs.def_' .. sk.sanitize(k) .. '()');
-    (tempExactMatchTrigger or tempTrigger)(v.off[1], 'svo.defs.lost_' .. sk.sanitize(k) .. '()');
-    (tempExactMatchTrigger or tempTrigger)(v.off[2], 'svo.defs.lost_' .. sk.sanitize(k) .. '()');
-
-    defs['def_'..sk.sanitize(k)] = function ()
-      if not v.ondef then
-        defences.def_def_list[k] = true
-      else
-        defences.def_def_list[k] = v.ondef()
-      end
-      deleteLine()
-    end
-    defs['got_' .. k] = function ()
-      defences.got(k)
-    end
-    defs['lost_' .. k] = function ()
-      defences.lost(k)
-    end
-
-    -- create a snapshot of the before state for all balances, since svo.dict_setup might mess with any
-    local beforestate = sk.getbeforestateprios()
-
-    svo.dict_setup()
-    svo.dict_validate()
-
-    -- notify any prio diffs
-    local afterstate = sk.getafterstateprios()
-    sk.notifypriodiffs(beforestate, afterstate)
-
-    signals.dragonform:emit()
+    })
 
     svo.echofn("Have Shadowcloak - enabled it for defup/keepup (")
     setFgColor(unpack(svo.getDefaultColorNums))
@@ -2950,7 +2803,7 @@ do
 
   function defences.checkshroud()
     local t = _G.gmcp.Char.Items.List
-    if not t.location == 'inv' then return end
+    if t.location ~= 'inv' then return end
 
     for _, it in pairs(t.items) do
       if it.name:find('Shadowcloak', 1, true) then
@@ -3605,6 +3458,48 @@ function defences.wire(defname, defdata)
       sk.ignored_defences[defdata.type].t[defname] = sk.ignored_defences[defdata.type].t[defname] or false
       sk.ignored_defences_map[defname] = defdata.type
     end
+end
+
+-- Registers a defence after systemstart, the way systemstart wires every
+-- other: its record (what the game prints), its dictionary entry (how svof
+-- raises it) when one is given, then defences.wire. For a defence that comes
+-- with an item, such as the phylactery's mindnet. dict_setup gives the entry
+-- its names and priorities, a player's saved defup and keepup choice for it
+-- is kept, and its handlers are remembered with the ones systemstart made,
+-- for the next systemstart to clear.
+function defences.register(name, record, entry)
+  defs_data:set(name, record)
+  if entry then svo.dict[name] = entry end
+
+  -- create a snapshot of the before state for all balances, since svo.dict_setup might mess with any
+  local beforestate = sk.getbeforestateprios()
+  svo.dict_setup()
+  svo.dict_validate()
+  -- notify any prio diffs
+  sk.notifypriodiffs(beforestate, sk.getafterstateprios())
+
+  -- what systemstart restored from the saved settings, which wire resets
+  local saved = {}
+  for mode in pairs(defdefup) do saved[mode] = { defdefup[mode][name], defkeepup[mode] and defkeepup[mode][name] } end
+
+  for _, h in ipairs({'got_' .. name, 'lost_' .. name, 'def_' .. sk.sanitize(name), 'gotonly_' .. name}) do
+    if defences.generated and defences.generated[h] then defs[h] = nil end
+  end
+  local existing = {}
+  for h in pairs(defs) do existing[h] = true end
+
+  defences.wire(name, defs_data[name])
+
+  defences.generated = defences.generated or {}
+  for h in pairs(defs) do
+    if not existing[h] then defences.generated[h] = true end
+  end
+  for mode, choice in pairs(saved) do
+    defdefup[mode][name] = choice[1] or false
+    if defkeepup[mode] then defkeepup[mode][name] = choice[2] or false end
+  end
+
+  signals.dragonform:emit()
 end
 
 signals.systemstart:connect(function ()

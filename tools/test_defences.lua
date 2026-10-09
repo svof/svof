@@ -895,6 +895,55 @@ do -- DEF's paragraph is the game's own list, so it stands
   eq(svo.defc.alertness, false, "DEF not listing alertness loses it, whatever GMCP said")
 end
 
+-- ===== 11. Defences registered after systemstart =====
+
+-- An item's defence (the phylactery's mindnet, a lifevision mask, a
+-- Shadowcloak's shroud) is registered once the inventory shows the item,
+-- through defences.register, which wires it as systemstart wires the rest.
+do
+  local w = world.new()
+  local svo = w.svo
+  -- a choice saved last session, restored at systemstart before the item
+  svo.defdefup.basic.mindnet, svo.defkeepup.basic.mindnet = true, true
+  local tracked = #svo.defencetemptriggers
+  local made = #w.triggers
+  svo.defences.enablemindnet()
+  eq(#w.triggers - made, 4, "mindnet makes a trigger for each of its four lines")
+  eq(#svo.defencetemptriggers - tracked, 4, "and every one is tracked, for a class change to kill")
+  eq(svo.defdefup.basic.mindnet, true, "the saved defup choice for mindnet is kept")
+  eq(svo.defkeepup.basic.mindnet, true, "and the keepup one")
+  svo.defences.got("mindnet")
+  eq(w.line("You cease concentration and your mind net vanishes."), 1, "mindnet's loss line is heard")
+  w.prompt()
+  eq(svo.defc.mindnet, false, "and loses it")
+  svo.doaction(svo.dict.mindnet.physical)
+  w.line("You already have mindnet active.")
+  w.prompt()
+  eq(svo.defc.mindnet, true, "a gain line for svof's mindnet sets it")
+
+  svo.defences.enableshroud()
+  svo.doaction(svo.dict.shroud.physical)
+  eq(w.line("You draw a cloak of the Blood Maiden about you and blend into your surroundings."), 1,
+    "shroud's third gain line is heard")
+  w.prompt()
+  eq(svo.defc.shroud, true, "and sets shroud")
+
+  svo.defences.enablelifevision()
+  eq(type(svo.dict.lifevision.physical.aspriority), "number", "lifevision's entry gets its priorities from dict_setup")
+  eq(type(svo.defs.got_lifevision), "function", "and its handlers")
+end
+
+do -- the item is looked for in your inventory only
+  local w = world.new()
+  local svo = w.svo
+  w.env.gmcp.Char.Items.List = { location = "room", items = { { name = "a  phylactery of sixth sense" } } }
+  svo.defences.checkmindnet()
+  eq(svo.dict.mindnet, nil, "a phylactery in the room does not register mindnet")
+  w.env.gmcp.Char.Items.List = { location = "inv", items = { { name = "a  phylactery of sixth sense" } } }
+  svo.defences.checkmindnet()
+  eq(type(svo.dict.mindnet), "table", "one in your inventory does")
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end
