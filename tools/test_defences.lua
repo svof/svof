@@ -540,12 +540,12 @@ do -- 7: bonding's gone is the entry's own, beside physical
   eq(svo.defc.bonding, false, "bonding: its gone loses it")
 end
 
-do -- 8: the demon armour strip line names a handler that does not exist
+do -- 8: the demon armour strip line loses armour, the record's name
   local w = world.new({ class = "Apostate" })
   w.svo.defences.got("armour")
   w.svo.valid.defstrip("demon armour")
   w.prompt()
-  eq(w.svo.defc.armour, true, "today (defect 8): a demon armour strip is dropped")
+  eq(w.svo.defc.armour, false, "a demon armour strip loses armour")
 end
 
 do -- 9: aria applies a salve route that does not exist
