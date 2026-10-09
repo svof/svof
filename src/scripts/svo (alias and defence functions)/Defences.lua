@@ -278,6 +278,13 @@ end
       svo.dict.block.physical.blockingdir = sk.anytoshort(matches[2])
       return "("..svo.dict.block.physical.blockingdir..")"
     end,
+    -- the game's word on blocking does not say which way: assume the way
+    -- svof blocks, as block's oncompleted does without a direction, so
+    -- keepup does not block again to put it right
+    ongot = function ()
+      local physical = svo.dict.block.physical
+      if not physical.blockingdir or physical.blockingdir == "" then physical.blockingdir = conf.blockingdir end
+    end,
     defr = [[^You are blocking the exit (.+)\.$]],
     off = {"You stop blocking.", "You were not blocking.", "You cease blocking the exit.", "You begin to flap your wings powerfully, and rise quickly up into the firmament."},
     })
@@ -385,6 +392,25 @@ end
     onr = "^A miasma of darkness passes over your eyes and you feel a link to the realm of Death,? form in your mind\\.$",
     off = {"You relax your link with the realm of Death.", "You are not linked with the realm of Death."}})
   defs_data:set('mindseye', { type = 'general',
+    -- with mindseye up, the blindness and deafness you already have may be
+    -- defences rather than afflictions, or the other way round
+    ongot = function ()
+      if (defc.deaf or affs.deafaff) and ((defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye) then
+        defences.got('deaf')
+        svo.rmaff('deafaff')
+      elseif (defc.deaf or affs.deafaff) then
+        defences.lost('deaf')
+        svo.addaffdict(svo.dict.deafaff)
+      end
+
+      if (defc.blind or affs.blindaff) and ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)) and (svo.me.class == 'Apostate' or defc.mindseye) then
+        defences.got('blind')
+        svo.rmaff('blindaff')
+      elseif (defc.blind or affs.blindaff) then
+        defences.lost('blind')
+        svo.addaffdict(svo.dict.blindaff)
+      end
+    end,
     on = {"Touching the mindseye tattoo, your senses are suddenly heightened.", "You already possess the mindseye defence."},
     def = "Your senses are magically heightened."})
   defs_data:set('lyre', { type = 'general',
@@ -412,6 +438,9 @@ end
   defs_data:set('speed', { type = 'general',
     def = "Your sense of time is heightened, and your reactions are speeded."})
   defs_data:set('frost', { type = 'general', def = "You are tempered against fire damage.",
+    -- to a Metamorph, frost is their temperance as well: each comes and goes with the other
+    ongot = function () if svo.haveskillset('metamorphosis') then defences.got('temperance') end end,
+    onlost = function () if svo.haveskillset('metamorphosis') then defences.lost('temperance') end end,
     on = "A chill runs over your icy skin.",
     off = "Forks of flame lick against your skin, melting away your protection against fire."})
   defs_data:set('venom', { type = 'general', def = "Your resistance to damage by poison has been increased.",
@@ -1128,6 +1157,9 @@ if svo.haveskillset('metamorphosis') then
 
   defs_data:set('temperance', { type = 'metamorphosis',
     specialskip = function() return not sk.morphsforskill.temperance end,
+    -- temperance is frost as well: each comes and goes with the other
+    ongot = function () defences.got('frost') end,
+    onlost = function () defences.lost('frost') end,
     on = {"Your skin is already chilled, Metamorph.", "A chill runs over your icy skin."},
     def = "You are tempered against fire damage.",
     })
@@ -1437,7 +1469,9 @@ if svo.haveskillset('occultism') then
     specialskip = function() return defc.devil end,
     def = "The devilmark is upon your breast." })
   defs_data:set('astralform', { type = 'occultism',
-    on = {"You summon all your will to focus your aura. In a flash of blazing light, your aura consumes your body and nothing is left except your disembodied presence.","You have taken the astralform and can not do that."},
+    -- a disembodied presence rides nothing
+    ongot = function () defences.lost('riding') end,
+    on ={"You summon all your will to focus your aura. In a flash of blazing light, your aura consumes your body and nothing is left except your disembodied presence.","You have taken the astralform and can not do that."},
     offr = {[[^You concentrate and are once again \w+\.$]],[[You are already in \w+ form\.$]]},
     def = "As an insubstantial astral light, you are immune from many attacks." })
   defs_data:set('heartstone', { type = 'occultism',
@@ -2097,6 +2131,8 @@ if svo.haveskillset('propagation') then
     on = {"You concentrate for a moment, and your skin becomes rough and thick like tree bark.", "Your skin is already covered in protective bark.", "Your skin is already as tough as bark."},
     def = "Your skin is hard and tough like the bark of an oak tree."})
   defs_data:set('viridian', { type = 'propagation',
+    -- the Viridian's form leaves its steed, and whatever exit it blocked
+    ongot = function () svo.dict.riding.gone.oncompleted() end,
     def = "You have taken the form of the Viridian.",
     off = "You will the vines to retreat, and you shed the form of the Viridian."})
 end

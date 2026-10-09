@@ -9470,9 +9470,6 @@ if not next(svo.dict) then
   
         oncompleted = function()
           defences.got('frost')
-          if svo.haveskillset('metamorphosis') then
-            defences.got('temperance')
-          end
         end,
   
         sipcure = {'frost', 'endothermia'},
@@ -9488,9 +9485,6 @@ if not next(svo.dict) then
       gone = {
         oncompleted = function()
           defences.lost('frost')
-          if svo.haveskillset('metamorphosis') then
-            defences.lost('temperance')
-          end
         end
       }
     },
@@ -10470,25 +10464,8 @@ if not next(svo.dict) then
         end,
   
         oncompleted = function()
+          -- reclassifying blindness and deafness is mindseye's ongot, on its record
           defences.got('mindseye')
-  
-          -- check if we need to re-classify deaf
-          if (defc.deaf or affs.deafaff) and ((defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye) then
-            defences.got('deaf')
-            svo.rmaff('deafaff')
-          elseif (defc.deaf or affs.deafaff) then
-            defences.lost('deaf')
-            svo.addaffdict(svo.dict.deafaff)
-          end
-  
-          -- check if we need to re-classify blind
-          if (defc.blind or affs.blindaff) and ((defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind)) and (svo.me.class == 'Apostate' or defc.mindseye) then
-            defences.got('blind')
-            svo.rmaff('blindaff')
-          elseif (defc.blind or affs.blindaff) then
-            defences.lost('blind')
-            svo.addaffdict(svo.dict.blindaff)
-          end
         end,
   
         action = "touch mindseye",
@@ -11614,7 +11591,6 @@ if not next(svo.dict) then
   
         oncompleted = function()
           defences.got('temperance')
-          defences.got('frost')
         end,
   
         action = 'temperance',
@@ -11636,7 +11612,6 @@ if not next(svo.dict) then
       gone = {
         oncompleted = function()
           defences.lost('temperance')
-          defences.lost('frost')
         end
       }
     }
@@ -12525,7 +12500,6 @@ if not next(svo.dict) then
   
         oncompleted = function()
           defences.got('astralform')
-          defences.lost('riding')
         end,
   
         action = 'astralform',
@@ -13513,8 +13487,8 @@ if not next(svo.dict) then
         customwait = 20,
   
         oncompleted = function()
+          -- leaving the steed is viridian's ongot, on its record
           defences.got('viridian')
-          svo.dict.riding.gone.oncompleted()
   
           if conf.paused and svo.dict.viridian.physical.unpauselater then
             conf.paused = false; raiseEvent("svo config changed", 'paused')
