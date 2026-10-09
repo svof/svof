@@ -39,6 +39,8 @@ behaviour meant to stay. All of these are in the 2018 module xmls:
   23  a serverside command several actions share is adopted by whichever
       one pairs() visits last
   24  the server's NIGHTSIGHT is not a command svof adopts
+  25  frost's gone lost temperance and temperance's lost frost, and neither
+      lost itself (fixed, and checked below)
 
 Nothing here proves anything about Mudlet, the static trigger items in
 src/triggers, the game's real wording or timing, or play.
@@ -614,6 +616,34 @@ do -- 15: the relogin handler collects the table, not the names
   w.svo.defences.got("alertness")
   w.svo.signals.relogin:emit()
   eq(w.svo.defc.alertness, true, "today (defect 15): a relogin leaves defences set")
+end
+
+do -- 25: frost's and temperance's gone each lose themselves, not only the other
+  for _, class in ipairs({ "Infernal", "Druid" }) do
+    local metamorph = class == "Druid"
+    local w = world.new({ class = class })
+    local svo = w.svo
+    svo.defences.got("frost")
+    if metamorph then svo.defences.got("temperance") end
+    eq(w.line("Forks of flame lick against your skin, melting away your protection against fire."), 1,
+      class .. ": frost's loss line is heard")
+    w.prompt()
+    eq(svo.defc.frost, false, class .. ": and loses frost")
+    if metamorph then eq(svo.defc.temperance, false, class .. ": and temperance with it") end
+
+    w = world.new({ class = class })
+    svo = w.svo
+    svo.defences.got("frost")
+    w.gmcp_defence_remove("temperance") -- GMCP's name for frost
+    w.prompt()
+    eq(svo.defc.frost, false, class .. ": GMCP losing temperance loses frost")
+  end
+  local w = world.new({ class = "Druid" })
+  w.svo.defences.got("frost")
+  w.svo.defences.got("temperance")
+  w.svo.dict.temperance.gone.oncompleted()
+  eq(w.svo.defc.temperance, false, "Druid: temperance's gone loses temperance")
+  eq(w.svo.defc.frost, false, "Druid: and frost with it")
 end
 
 do -- 16: generated handlers survive a class change

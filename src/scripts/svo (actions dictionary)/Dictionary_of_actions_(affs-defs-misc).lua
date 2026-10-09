@@ -9487,6 +9487,7 @@ if not next(svo.dict) then
       },
       gone = {
         oncompleted = function()
+          defences.lost('frost')
           if svo.haveskillset('metamorphosis') then
             defences.lost('temperance')
           end
@@ -11633,7 +11634,10 @@ if not next(svo.dict) then
         end
       },
       gone = {
-        oncompleted = function() defences.lost('frost') end
+        oncompleted = function()
+          defences.lost('temperance')
+          defences.lost('frost')
+        end
       }
     }
     svo.dict.bonding = {
