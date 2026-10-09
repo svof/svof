@@ -463,8 +463,10 @@ local function run_through_actions()
   local gate = svo.gmcp_live() and not trusted
   sk.gmcp_stands_aside = trusted and true or nil
   -- The same for the defences GMCP reports: a line saying one is gone is
-  -- dropped while GMCP still reports it. DEF's paragraph is the game's own
-  -- list of your defences, so it stands as a diagnose does.
+  -- dropped while GMCP still reports it, and one saying you gained one is
+  -- dropped while GMCP does not (svo.gmcp_refuted_defence says when it still
+  -- counts). DEF's paragraph is the game's own list of your defences, so it
+  -- stands as a diagnose does.
   local defgate = svo.gmcp_defs_live() and not trusted and not svo.lifevision.l.defcheck_physical
 
   for _,j in svo.lifevision.l:iter() do
@@ -474,6 +476,7 @@ local function run_through_actions()
       local refuted = gate and svo.gmcp_refuted_claim(j)
       local kept = gate and not refuted and svo.gmcp_kept_claim(j)
       local keptdef = defgate and not refuted and not kept and svo.gmcp_kept_defence(j)
+      local gaineddef = defgate and not refuted and not kept and not keptdef and svo.gmcp_refuted_defence(j)
       -- a symptom of an affliction GMCP cannot see (svo.gmcp_overlooked)
       if refuted and svo.gmcp_overlooked(refuted, j) then
         svo.gmcp_set_aside(svo.actionfinished, j.p, j.other_action, j.arg)
@@ -491,6 +494,15 @@ local function run_through_actions()
           svo.echof("Ignored a line saying %s is gone: GMCP still reports it.", keptdef)
         end
         svo.actionclear(j.p)
+      elseif gaineddef then
+        if conf.gmcpdefechoes then
+          svo.echof("Ignored a line saying you have %s: GMCP doesn't report it.", gaineddef)
+        end
+        -- A command svof sent stays in flight for the game's real answer:
+        -- GMCP's Add finishes it through defences.confirm, its balance and
+        -- puff with it, or its own outcome line does, or it times out. One
+        -- the line made up stands for nothing svof sent.
+        if not (svo.actions[j.p.name] and svo.actions[j.p.name].timerid) then svo.actionclear(j.p) end
       else
         -- the add backstop asks which claim is running (svo.gmcp_refuse_add)
         local was = sk.gmcp_claim

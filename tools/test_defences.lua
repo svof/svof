@@ -947,6 +947,136 @@ do -- DEF's paragraph is the game's own list, so it stands
   eq(svo.defc.alertness, false, "DEF not listing alertness loses it, whatever GMCP said")
 end
 
+-- ===== 10c. And on the gains =====
+
+-- A real gain reaches GMCP first, as an Add, and defences.confirm finishes
+-- svof's command for it there, so a gain claim still standing at the prompt
+-- for a defence GMCP does not list is a line GMCP does not back. It is
+-- dropped (svo.gmcp_refuted_defence), and svof's command waits for the game.
+local ALERT = "You prick up your ears."
+
+-- GMCP live, having sent the defence's name and not listing it now
+local function live_without(gmcpname)
+  local w = world.new()
+  w.svo.conf.gmcpdefechoes = true
+  w.gmcp_defence_list({ gmcpname })
+  w.gmcp_defence_remove(gmcpname)
+  return w
+end
+
+do -- svof's own command: the line is dropped and the command waits
+  local w = live_without("alertness")
+  local svo = w.svo
+  svo.doaction(svo.dict.alertness.physical)
+  w.line(ALERT)
+  w.prompt()
+  eq(svo.defc.alertness, false, "gain gate: a line saying you have alertness, GMCP silent, is dropped")
+  eq(echoed(w, "Ignored a line saying you have alertness: GMCP doesn't report it."), true,
+    "gain gate: and says so with gmcpdefechoes")
+  eq(w.inflight(), "alertness_physical", "gain gate: svof's command stays in flight for the game's answer")
+  w.gmcp_defence_add("alertness")
+  eq(svo.defc.alertness, true, "gain gate: GMCP's Add sets it")
+  eq(w.inflight(), "", "gain gate: and finishes the command")
+end
+
+do -- what the attempt spent is booked once, when the game answers
+  local w = live_without("insulation")
+  local svo = w.svo
+  local salves = counter(w, "lostbal_salve")
+  svo.doaction(svo.dict.caloric.salve)
+  svo.defs.salve_got_caloric()
+  w.prompt()
+  eq(svo.defc.caloric, false, "gain gate: a caloric line GMCP does not back is dropped")
+  eq(salves.n, 0, "gain gate: and books no salve balance yet")
+  w.gmcp_defence_add("insulation")
+  eq(svo.defc.caloric, true, "gain gate: GMCP's insulation sets caloric")
+  eq(salves.n, 1, "gain gate: and the application's salve balance is booked once")
+end
+
+do -- the server's own command counts: its [Curing]: line cannot be illusioned
+  local w = live_without("alertness")
+  local svo = w.svo
+  svo.conf.serverside = true
+  svo.curingcommand("ALERTNESS ON")
+  eq(w.inflight(), "alertness_physical", "gain gate: the server's ALERTNESS ON is adopted")
+  w.line(ALERT)
+  w.prompt()
+  eq(svo.defc.alertness, true, "gain gate: its line counts, GMCP silent")
+end
+
+do -- a GMCP name the game has not sent this session is never refused
+  local w = world.new()
+  local svo = w.svo
+  w.gmcp_defence_list({ "shield" })
+  eq(svo.sk.gmcp_defs_seen.alertness, nil, "gain gate: GMCP has not sent alertness")
+  svo.doaction(svo.dict.alertness.physical)
+  w.line(ALERT)
+  w.prompt()
+  eq(svo.defc.alertness, true, "gain gate: so its line sets it, as before")
+end
+
+do -- before the List the line decides, and a gain GMCP lists counts
+  local w = world.new()
+  local svo = w.svo
+  svo.doaction(svo.dict.alertness.physical)
+  w.line(ALERT)
+  w.prompt()
+  eq(svo.defc.alertness, true, "gain gate: before GMCP's List, the line sets it")
+  w.gmcp_defence_list({ "alertness" })
+  svo.defc.alertness = false -- svof lost track of it
+  svo.doaction(svo.dict.alertness.physical)
+  w.line("Alertness is already on!")
+  w.prompt()
+  eq(svo.defc.alertness, true, "gain gate: a line GMCP agrees with sets it")
+end
+
+do -- a delayed defence's raise starts its wait; the wait's own claim is gated
+  local w = live_without("rebounding")
+  local svo = w.svo
+  svo.pipes.skullcap.id, svo.pipes.skullcap.puffs, svo.pipes.skullcap.lit = 12345, 10, true
+  svo.doaction(svo.dict.rebounding.smoke)
+  svo.lifevision.add(svo.actions.rebounding_smoke.p) -- the smoke line
+  w.prompt()
+  eq(w.inflight(), "waitingonrebounding_waitingfor", "gain gate: rebounding's smoke starts its wait, GMCP silent")
+  eq(svo.pipes.skullcap.puffs, 9, "gain gate: and uses its puff")
+  local wait = svo.actions.waitingonrebounding_waitingfor
+  if wait then svo.lifevision.add(wait.p) end -- an aura line, GMCP silent
+  w.prompt()
+  eq(svo.defc.rebounding, false, "gain gate: an aura line GMCP does not back is dropped")
+  eq(w.inflight(), "waitingonrebounding_waitingfor", "gain gate: and the wait goes on")
+  w.gmcp_defence_add("rebounding")
+  eq(svo.defc.rebounding, true, "gain gate: GMCP's Add sets rebounding")
+  eq(w.inflight(), "", "gain gate: and ends the wait")
+end
+
+do -- a line with nothing of svof's behind it leaves nothing behind
+  local w = live_without("alertness")
+  local svo = w.svo
+  svo.conf.aillusion = false -- so the line makes up its own claim
+  w.line(ALERT)
+  w.prompt()
+  eq(svo.defc.alertness, false, "gain gate: a made-up claim GMCP does not back is dropped")
+  eq(w.inflight(), "", "gain gate: and cleared")
+end
+
+do -- a second refusal, of a separate command on a later prompt, is believed
+  local w = live_without("alertness")
+  local svo = w.svo
+  svo.doaction(svo.dict.alertness.physical)
+  w.line(ALERT)
+  w.prompt()
+  eq(svo.defc.alertness, false, "gain gate, twice: the first line is dropped")
+  w.advance(5) -- svof's command times out
+  eq(w.inflight(), "", "gain gate, twice: svof's command timed out")
+  svo.promptcount = svo.promptcount + 1
+  svo.doaction(svo.dict.alertness.physical)
+  w.line(ALERT)
+  w.prompt()
+  eq(svo.defc.alertness, true, "gain gate, twice: the game showing it again is believed, so svof stops raising it")
+  eq(echoed(w, "Believed you have alertness: the game showed it again, though GMCP doesn't report it."), true,
+    "gain gate, twice: and says so")
+end
+
 -- ===== 10b. A gain line claims whichever of svof's commands for it is in flight =====
 
 -- deathsight is raised by eating skullcap or by the skill, and its gain

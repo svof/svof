@@ -1199,6 +1199,11 @@ end, "new balance detection")
 function svo.curingcommand(command)
   sk.sawcuringcommand = true
   cnrl.processusercommand(command:lower(), true)
+  -- the server sent it, and the game does not allow its [Curing]: lines to be
+  -- illusioned, so a line saying it raised a defence counts even where GMCP
+  -- is silent (svo.gmcp_refuted_defence)
+  local adopted = sys.input_to_actions[command:lower():trim()]
+  if adopted and actions[adopted.name] then actions[adopted.name].served = true end
   svo.prompttrigger("clear curing command", function() sk.sawcuringcommand = false end)
 
   if conf.gagservercuring then deleteLine() end
