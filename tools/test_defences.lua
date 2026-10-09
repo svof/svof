@@ -174,8 +174,8 @@ do
   -- table in it, these two included (plan defect 20)
   eq(svo.dict.sstosvod.name, "sstosvod", "today (defect 20): dict_setup stamped a name onto sstosvod")
   eq(type(svo.dict.sstosvod.sw), "number", "today (defect 20): and a stopwatch")
-  -- 172 names plus the stamped name and the shroud line
-  eq(strings, 174, "sstosvod: 172 game names map to svof names, plus the stamped name and shroud")
+  -- 174 names plus the stamped name and the shroud line
+  eq(strings, 176, "sstosvod: 174 game names map to svof names, plus the stamped name and shroud")
   eq(falses, 37, "sstosvod: 37 game names svof leaves alone")
   eq(svo.dict.sstosvod.shroud, "shroud", "shroud is shroud outside Subterfuge")
   eq(worlds.Serpent.svo.dict.sstosvod.shroud, "cloaking", "and Subterfuge's cloaking")
@@ -361,6 +361,16 @@ do -- a defence this class has no record for is left alone
   local w = world.new()
   w.gmcp_defence_add("kaitrance") -- a Monk's
   eq(w.svo.defc.trance, nil, "an Infernal ignores GMCP's kaitrance")
+  w.gmcp_defence_add("tempest")
+  eq(w.svo.defc.tempest, nil, "and an air elemental's tempest")
+end
+
+do -- Duress' tempest and susurration, whose GMCP names the owner's login log showed
+  local w = world.new({ class = "Air Elemental Lord" })
+  w.gmcp_defence_add("tempest")
+  w.gmcp_defence_add("susurrating")
+  eq(w.svo.defc.tempest, true, "GMCP tempest sets tempest")
+  eq(w.svo.defc.susurrating, true, "GMCP susurrating sets susurrating")
 end
 
 do -- a List confirms what it names and unconfirms what it does not
