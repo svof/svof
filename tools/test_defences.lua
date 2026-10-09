@@ -823,6 +823,78 @@ do -- ongot and onlost: consequences, on the record, run once per change
   eq(error_shown(w, "broken"), true, "and it is reported")
 end
 
+-- ===== 10. GMCP has the final word on the defences it reports =====
+
+-- Once Char.Defences has sent its List, a line saying a defence is gone is
+-- dropped while GMCP still reports it. A real loss reaches GMCP first, as a
+-- Remove, which defences.unconfirm takes at once.
+local SHIELD_LOSS = "Your movement causes your magical shield to dissipate."
+
+do -- before the List, the line decides, as it always has
+  local w = world.new()
+  w.svo.defences.got("shield")
+  eq(w.line(SHIELD_LOSS), 1, "shield's loss line is heard")
+  w.prompt()
+  eq(w.svo.defc.shield, false, "before GMCP's List, the line loses shield")
+end
+
+do -- after it, a line GMCP contradicts is dropped
+  local w = world.new()
+  local svo = w.svo
+  svo.conf.gmcpdefechoes = true
+  w.gmcp_defence_list({ "shield" })
+  eq(svo.defc.shield, true, "the List sets shield")
+  w.line(SHIELD_LOSS)
+  w.prompt()
+  eq(svo.defc.shield, true, "a line saying shield is gone, while GMCP reports it, is dropped")
+  eq(echoed(w, "Ignored a line saying shield is gone: GMCP still reports it."), true, "and says so with gmcpdefechoes")
+
+  w.gmcp_defence_remove("shield")
+  eq(svo.defc.shield, false, "GMCP's own Remove loses it")
+  svo.defences.got("shield")
+  w.gmcp_defence_add("shield")
+  w.line(SHIELD_LOSS)
+  w.prompt()
+  eq(svo.defc.shield, true, "an Add puts it back under GMCP's word")
+end
+
+do -- a defence GMCP cannot report is left to the lines
+  local w = world.new()
+  local svo = w.svo
+  w.gmcp_defence_list({ "shield" })
+  eq(svo.dict.svotossd.riding, nil, "GMCP has no name for riding")
+  svo.defences.got("riding")
+  svo.defs.lost_riding() -- a dismount line
+  w.prompt()
+  eq(svo.defc.riding, false, "and its loss line still loses it")
+end
+
+do -- after a blackout, GMCP's old word stops counting until it is repeated
+  local w = world.new()
+  local svo = w.svo
+  w.gmcp_defence_list({ "shield" })
+  svo.affs.blackout = {}
+  svo.signals.svogotaff:emit("blackout")
+  eq(svo.gmcp_defs_live(), false, "in blackout GMCP's defences are not live")
+  svo.affs.blackout = nil
+  eq(svo.gmcp_defs_live(), true, "and are again after it")
+  w.line(SHIELD_LOSS)
+  w.prompt()
+  eq(svo.defc.shield, false, "but shield, from before the blackout, no longer holds against a loss line")
+end
+
+do -- DEF's paragraph is the game's own list, so it stands
+  local w = world.new()
+  local svo = w.svo
+  w.gmcp_defence_list({ "alertness" })
+  eq(svo.defc.alertness, true, "the List sets alertness")
+  svo.doaction(svo.dict.defcheck.physical)
+  svo.defs.defstart()
+  svo.defs.defline() -- a DEF that does not list alertness
+  w.prompt()
+  eq(svo.defc.alertness, false, "DEF not listing alertness loses it, whatever GMCP said")
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end

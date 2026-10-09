@@ -692,6 +692,28 @@ function svo.gmcp_holds(aff)
   return not sk.gmcp_stands_aside and svo.gmcp_live() and svo.gmcp_reports(aff)
 end
 
+-- The same for defences, which Char.Defences reports with a List of its own
+-- at login. Blackout stops it as well, and the defences gdefc held when a
+-- blackout began stay unconfirmed until the game repeats them, as for
+-- afflictions. Keyed by GMCP name.
+sk.gmcp_defs_unconfirmed = sk.gmcp_defs_unconfirmed or {}
+
+function svo.gmcp_defs_live()
+  return (sk.gmcp_defs_listed and not affs.blackout) and true or false
+end
+
+-- Whether the game currently reports this svof defence over GMCP.
+function svo.gmcp_def_reports(def)
+  local gamename = svo.dict.svotossd[def]
+  return (gamename and svo.gdefc[gamename] and not sk.gmcp_defs_unconfirmed[gamename]) and true or false
+end
+
+-- Whether losing this defence is contradicted by GMCP: GMCP is live and
+-- still reports it.
+function svo.gmcp_def_holds(def)
+  return not sk.gmcp_stands_aside and svo.gmcp_defs_live() and svo.gmcp_def_reports(def)
+end
+
 -- Runs f(...) with GMCP's final word set aside and returns what f returns.
 -- For what a person asks for directly, as opposed to what a game line claims:
 -- vaff and vrmaff typed as commands, vreset, and the public svo.addaff,
@@ -797,6 +819,16 @@ end
 function svo.gmcp_kept_claim(claim)
   if claim.p.balance ~= 'gone' or claim.other_action then return nil end
   if svo.gmcp_holds(claim.p.action_name) then return claim.p.action_name end
+  return nil
+end
+
+-- The defence a lifevision claim says is gone, when GMCP still reports it;
+-- nil for everything else. GMCP's Remove arrives before the text of what
+-- stripped the defence, so a real loss line finds GMCP agreeing.
+function svo.gmcp_kept_defence(claim)
+  if claim.p.balance ~= 'gone' then return nil end
+  local def = claim.p.action_name
+  if svo.defs_data[def] and svo.gmcp_def_holds(def) then return def end
   return nil
 end
 
@@ -1064,6 +1096,7 @@ end
 signals.gmcpchardefencesadd:connect(function()
   local thisdef = gmcp.Char.Defences.Add.name
   svo.gdefc[thisdef] = true
+  sk.gmcp_defs_unconfirmed[thisdef] = nil -- said again since any blackout
   if conf.gmcpdefechoes then svo.echof("Gained def "..thisdef) end
   local def = gmcp_defence(thisdef)
   if def then defences.confirm(def) end
@@ -1072,6 +1105,7 @@ end, 'track gained gmcp def')
 signals.gmcpchardefencesremove:connect(function()
   local thisdef = gmcp.Char.Defences.Remove[1]
   svo.gdefc[thisdef] = nil
+  sk.gmcp_defs_unconfirmed[thisdef] = nil
   if conf.gmcpdefechoes then svo.echof("Lost def "..thisdef) end
   local def = gmcp_defence(thisdef)
   if def then defences.unconfirm(def) end
@@ -1106,6 +1140,11 @@ signals.gmcpchardefenceslist:connect(function()
       defences.unconfirm(defname)
     end
   end
+
+  -- the game's whole picture: GMCP has the final word on defences from here
+  -- (svo.gmcp_defs_live), every entry counting, any a blackout left too
+  sk.gmcp_defs_listed = true
+  for name in pairs(sk.gmcp_defs_unconfirmed) do sk.gmcp_defs_unconfirmed[name] = nil end
 end, 'update list of defs from gmcp')
 
 -- make a 'signals bank' that remembers all gmcp events that happend before the prompt.
@@ -1260,6 +1299,12 @@ signals.svogotaff:connect(function(aff)
   if aff ~= 'blackout' then return end
   for rawaff in pairs(gaffl) do sk.gmcp_unconfirmed[rawaff] = true end
 end, 'gmcp affs unconfirmed after blackout')
+-- and the same for defences, which have a List of their own
+signals.connected:connect(function() sk.gmcp_defs_listed = false end, 'gmcp defs untrusted until the login List')
+signals.svogotaff:connect(function(aff)
+  if aff ~= 'blackout' then return end
+  for name in pairs(svo.gdefc) do sk.gmcp_defs_unconfirmed[name] = true end
+end, 'gmcp defs unconfirmed after blackout')
 
 signals.sysexitevent = signals.sysexitevent or luanotify.signal.new()
 signals["mmapper updated pdb"]       = luanotify.signal.new()

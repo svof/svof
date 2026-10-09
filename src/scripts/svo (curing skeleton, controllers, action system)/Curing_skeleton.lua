@@ -462,6 +462,10 @@ local function run_through_actions()
   local trusted = svo.lifevision.l.diag_physical or svo.lifevision.l.blackout_aff
   local gate = svo.gmcp_live() and not trusted
   sk.gmcp_stands_aside = trusted and true or nil
+  -- The same for the defences GMCP reports: a line saying one is gone is
+  -- dropped while GMCP still reports it. DEF's paragraph is the game's own
+  -- list of your defences, so it stands as a diagnose does.
+  local defgate = svo.gmcp_defs_live() and not trusted and not svo.lifevision.l.defcheck_physical
 
   for _,j in svo.lifevision.l:iter() do
     if sk.stopprocessing then
@@ -469,6 +473,7 @@ local function run_through_actions()
     else
       local refuted = gate and svo.gmcp_refuted_claim(j)
       local kept = gate and not refuted and svo.gmcp_kept_claim(j)
+      local keptdef = defgate and not refuted and not kept and svo.gmcp_kept_defence(j)
       -- a symptom of an affliction GMCP cannot see (svo.gmcp_overlooked)
       if refuted and svo.gmcp_overlooked(refuted, j) then
         svo.gmcp_set_aside(svo.actionfinished, j.p, j.other_action, j.arg)
@@ -479,6 +484,11 @@ local function run_through_actions()
           else
             svo.echof("Ignored a line saying %s is gone: GMCP still reports it.", kept)
           end
+        end
+        svo.actionclear(j.p)
+      elseif keptdef then
+        if conf.gmcpdefechoes then
+          svo.echof("Ignored a line saying %s is gone: GMCP still reports it.", keptdef)
         end
         svo.actionclear(j.p)
       else
