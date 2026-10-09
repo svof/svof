@@ -126,7 +126,7 @@ svo.config_dict = svo.pl.OrderedMap {
   }},
   {havemindnet = {
     type = 'boolean',
-    onenabled = function () defences.enablelifevision() svo.echof("<0,250,0>Have%s Phylactery of Sixth Sense - added it to defup/keepup.", svo.getDefaultColor()) end,
+    onenabled = function () defences.enablemindnet() svo.echof("<0,250,0>Have%s Phylactery of Sixth Sense - added it to defup/keepup.", svo.getDefaultColor()) end,
     ondisabled = function () svo.echof("<250,0,0>Don't%s have Phylactery of Sixth Sense - won't be adding it to defup/keepup.", svo.getDefaultColor()) end,
   }},
   {autoarena = {

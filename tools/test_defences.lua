@@ -46,6 +46,7 @@ behaviour meant to stay. All of these are in the 2018 module xmls:
       lost itself (fixed, and checked below)
   26  dict_setup added a defence's gone while pairs() walked the entry, so
       on Lua 5.4 and later a balance could be left without a name (fixed)
+  27  vconfig havemindnet on registered lifevision, not mindnet (fixed)
 
 Nothing here proves anything about Mudlet, the static trigger items in
 src/triggers, the game's real wording or timing, or play.
@@ -995,6 +996,19 @@ do -- the item is looked for in your inventory only
   w.env.gmcp.Char.Items.List = { location = "inv", items = { { name = "a  phylactery of sixth sense" } } }
   svo.defences.checkmindnet()
   eq(type(svo.dict.mindnet), "table", "one in your inventory does")
+end
+
+do -- saying you own an artefact registers its defence straight away
+  for _, item in ipairs({ "mindnet", "lifevision", "shroud" }) do
+    local w = world.new()
+    local svo = w.svo
+    svo.config.set("have" .. item, true)
+    local registered = {}
+    for _, def in ipairs({ "mindnet", "lifevision", "shroud" }) do
+      if svo.defs_data[def] then registered[#registered + 1] = def end
+    end
+    eq(table.concat(registered, ", "), item, "vconfig have" .. item .. " on registers " .. item .. " and nothing else")
+  end
 end
 
 -- Artefacts can be bought by anyone, so each of the three works for every
