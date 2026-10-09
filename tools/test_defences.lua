@@ -1147,6 +1147,13 @@ do -- the item is looked for in your inventory only
   eq(type(svo.dict.mindnet), "table", "one in your inventory does")
 end
 
+do -- the phylactery is found whether its name has one space after the "a" or two
+  local w = world.new()
+  w.env.gmcp.Char.Items.List = { location = "inv", items = { { name = "a phylactery of sixth sense" } } }
+  w.svo.defences.checkmindnet()
+  eq(type(w.svo.dict.mindnet), "table", "a phylactery named with one space registers mindnet")
+end
+
 do -- saying you own an artefact registers its defence straight away
   for _, item in ipairs({ "mindnet", "lifevision", "shroud" }) do
     local w = world.new()

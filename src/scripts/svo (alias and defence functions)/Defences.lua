@@ -2679,7 +2679,9 @@ end
 
     for _, it in pairs(t.items) do
       -- if it.name == "a Veil of the Sphinx" then
-      if it.name == "a  phylactery of sixth sense" then
+      -- svof looked for two spaces after the "a", so runs of spaces count as
+      -- one, whichever the game sends
+      if (it.name:gsub("%s+", " ")) == "a phylactery of sixth sense" then
         defences.enablemindnet()
         conf.havemindnet = true
         raiseEvent("svo config changed", 'havemindnet')
