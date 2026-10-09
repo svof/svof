@@ -509,13 +509,13 @@ do -- 3 and 4: a regex in off, an exact-match key, can never match
   eq(spinning, "regex svo.defs.lost_spinning()", "spinning's loss line is a regex trigger")
 end
 
-do -- 5: croonmirror's loss regex starts with a stray quote
+do -- 5: croonmirror's loss regex is anchored, with no stray quote before it
   local found
   for _, class in ipairs(CLASSES) do
     local rec = worlds[class].svo.defs_data.croonmirror
     if rec then found = rec.offr end
   end
-  eq(found and found:sub(1, 2), '"^', "today (defect 5): croonmirror's offr starts with a stray quote")
+  eq(found and found:sub(1, 1), "^", "croonmirror's offr starts at its anchor")
 end
 
 do -- 6: fortifying air last never grants fortifyall

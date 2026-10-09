@@ -63,7 +63,6 @@ KNOWN = {
     ("oak", "off", "regex in exact"),
     ("gaital", "off", "regex in exact"),
     ("maelstrom", "off", "regex in exact"),
-    ("croonmirror", "offr", "stray quote"), # defect 5
     # defect 21: "Susurrations already surround you. " ends in a space, so
     # unless the game sends one the exact match never fires
     ("susurrating", "on", "edge whitespace"),

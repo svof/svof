@@ -2508,7 +2508,7 @@ if svo.haveskillset('anathema') then
     invisibledef = true,
     onr = [[^You sense the connection snap into place between the reality of (\w+) and your own.$]],
     on = "You sense no change.",
-    offr = [["^You are no longer mirroring the reality of (\w+).$]]})
+    offr = [[^You are no longer mirroring the reality of (\w+).$]]})
 end
 
 if svo.haveskillset('excision') then
