@@ -267,6 +267,16 @@ jobs:
       - name: test bare dict references
         run: lua tools/test_bare_dict.lua
 
+      # Gate 1.94. Defences: the records and dictionary entries in every
+      # class, the handlers systemstart generates, and what a GMCP gain or
+      # loss, a DEF listing and a serverside command do to svof's state.
+      # Unlike the extract-the-block suites, this one runs all 22 real
+      # loaders through svo_init_system (tools/svof_world.lua), once per
+      # class. Several checks pin behaviour that is wrong today, labelled
+      # "today", so the commit that fixes one has to change its expectation.
+      - name: test defences
+        run: lua tools/test_defences.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
