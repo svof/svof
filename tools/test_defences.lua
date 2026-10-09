@@ -44,6 +44,8 @@ behaviour meant to stay. All of these are in the 2018 module xmls:
   24  the server's NIGHTSIGHT is not a command svof adopts
   25  frost's gone lost temperance and temperance's lost frost, and neither
       lost itself (fixed, and checked below)
+  26  dict_setup added a defence's gone while pairs() walked the entry, so
+      on Lua 5.4 and later a balance could be left without a name (fixed)
 
 Nothing here proves anything about Mudlet, the static trigger items in
 src/triggers, the game's real wording or timing, or play.
@@ -179,6 +181,26 @@ do
   eq(falses, 37, "sstosvod: 37 game names svof leaves alone")
   eq(svo.dict.sstosvod.shroud, "shroud", "shroud is shroud outside Subterfuge")
   eq(worlds.Serpent.svo.dict.sstosvod.shroud, "cloaking", "and Subterfuge's cloaking")
+end
+
+-- dict_setup names every action, which doaction keys actions by. It used to
+-- add a defence's gone while pairs() walked the entry, and on Lua 5.4 and
+-- later that walk could skip a balance (deathsight's herb, in about half the
+-- runs), leaving it nameless until the prio import ran dict_setup again.
+-- Lua 5.1 happened not to skip any.
+for _, class in ipairs(CLASSES) do
+  local unnamed = {}
+  for action, entry in pairs(worlds[class].svo.dict) do
+    if type(entry) == "table" then
+      for bal, act in pairs(entry) do
+        if type(act) == "table" and (act.oncompleted or act.isadvisable or act.onstart) and act.name == nil then
+          unnamed[#unnamed + 1] = action .. "." .. bal
+        end
+      end
+    end
+  end
+  table.sort(unnamed)
+  eq(table.concat(unnamed, ", "), "", class .. ": every action in the dictionary has a name")
 end
 
 -- ===== 3. The handlers svof generates =====

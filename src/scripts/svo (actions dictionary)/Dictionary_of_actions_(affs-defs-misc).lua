@@ -15154,6 +15154,7 @@ function svo.dict_setup()
   local unassigned_sync_actions = {}
 
   for action, balance in pairs(svo.dict) do
+    local raises
     for balancename, balancedata in pairs(balance) do
       if type(balancedata) == 'table' then
         if not balancedata.name then balancedata.name = action .. '_' .. balancename end
@@ -15176,19 +15177,24 @@ function svo.dict_setup()
           unassigned_sync_actions[balancename][#unassigned_sync_actions[balancename]+1] = action
         end
 
-        -- if it's a def, create the gone handler as well so lifevision will watch it
-        if not balance.gone and balancedata.def then
-          balance.gone = {
-            name = action .. '_gone',
-            balance = 'gone',
-            action_name = action,
-
-            oncompleted = function()
-              defences.lost(action)
-            end
-          }
-        end
+        if balancedata.def then raises = true end
       end
+    end
+
+    -- if it's a def, create the gone handler as well so lifevision will watch it.
+    -- Made after the loop: adding a key to a table pairs() is walking makes the
+    -- walk undefined, and on Lua 5.4 it could skip a balance, which then had no
+    -- name until the prio import called this again
+    if raises and not balance.gone then
+      balance.gone = {
+        name = action .. '_gone',
+        balance = 'gone',
+        action_name = action,
+
+        oncompleted = function()
+          defences.lost(action)
+        end
+      }
     end
 
     if not balance.name then balance.name = action end
