@@ -101,8 +101,11 @@ jobs:
       # if and only if it appears in the right list, and the two files agree by
       # accident rather than by construction. Both halves have already gone
       # wrong: tree_cured_paralysis had a trigger and no list entry, and
-      # Zeal's tenderskin trigger called simpletinderskin.
-      - name: check svo.valid call sites
+      # Zeal's tenderskin trigger called simpletinderskin. The defence handlers
+      # in svo.defs are checked the same way: most are generated at
+      # systemstart from the records in Defences.lua, and a mistyped one was
+      # visible to no gate.
+      - name: check svo.valid and svo.defs call sites
         run: python3 tools/check_valid_callsites.py
 
       # Gate 1.25. muddler builds from the json and looks for one file per item
