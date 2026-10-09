@@ -3250,6 +3250,32 @@ function sk.desanitize(self)
   return string.gsub(self, '_', " ")
 end
 
+-- The balance of def's entry a gain line claims. With inflight, one whose
+-- action svof has in flight, or nil. Without, one that raises the defence,
+-- the first by name, so the choice does not depend on pairs(): five entries
+-- raise their defence on two balances (blind, deaf, deathsight, thirdeye,
+-- insomnia), and pairs() picked either, or insomnia's aff block. An entry
+-- with no raising balance falls back, as before, to any balance but gone.
+function defences.raising_balance(def, inflight)
+  local entry = svo.dict[def]
+  if type(entry) ~= 'table' then return nil end
+  local raising, other = {}, {}
+  for bal, act in pairs(entry) do
+    if type(act) == 'table' and bal ~= 'gone' then
+      if act.def then raising[#raising + 1] = bal else other[#other + 1] = bal end
+    end
+  end
+  table.sort(raising)
+  if inflight then
+    for _, bal in ipairs(raising) do
+      if actions[entry[bal].name] then return bal end
+    end
+    return nil
+  end
+  table.sort(other)
+  return raising[1] or other[1]
+end
+
 -- Everything svof makes from one defence record: its temp triggers, its
 -- handlers, its place in the defence lists and the defup and keepup slots.
 -- systemstart runs it for every record.
@@ -3331,15 +3357,15 @@ function defences.wire(defname, defdata)
 
     if not defs['got_' .. defname] then
       if svo.dict[defname] then
-        -- rely on the fact that defs only have 1 item in them
-        local bal
-        for kk,vv in pairs(svo.dict[defname]) do if type(vv) == 'table' and kk ~= 'gone' then bal = kk break end end
+        local bal = defences.raising_balance(defname)
         if bal then
           defs['got_' .. defname] = function (force)
 					  -- svo.dict might not know about a defence when you go lesserform
 						-- before it's reloaded for the specific class
 					  if not svo.dict[defname] then return end
-						
+
+            -- whichever of its raising actions svof has in flight claims the line
+            local bal = defences.raising_balance(defname, true) or bal
             if svo.haveskillset('metamorphosis') then
               if defdata.custom_def_type or svo.usingbal(bal) then svo.checkaction(svo.dict[defname][bal], true)
               else svo.checkaction(svo.dict[defname][bal], force) end
@@ -3366,12 +3392,9 @@ function defences.wire(defname, defdata)
 
     if defdata.on_only and not defs['gotonly_' .. defname] then
       if svo.dict[defname] then
-        -- rely on the fact that defs only have 1 item in them
-        local bal
-        for kk,vv in pairs(svo.dict[defname]) do
-          if type(vv) == 'table' and kk ~= 'gone' then bal = kk break end
-        end
+        local bal = defences.raising_balance(defname)
         defs['gotonly_' .. defname] = function ()
+          local bal = defences.raising_balance(defname, true) or bal
           svo.checkaction(svo.dict[defname][bal], false)
           if actions[defname .. '_' .. bal] then
             lifevision.add(actions[defname .. '_' .. bal].p)

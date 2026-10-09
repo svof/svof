@@ -895,6 +895,27 @@ do -- DEF's paragraph is the game's own list, so it stands
   eq(svo.defc.alertness, false, "DEF not listing alertness loses it, whatever GMCP said")
 end
 
+-- ===== 10b. A gain line claims whichever of svof's commands for it is in flight =====
+
+-- deathsight is raised by eating skullcap or by the skill, and its gain
+-- lines go to the generated got_deathsight, which used to claim one balance
+-- pairs() picked, so one of the two was missed.
+for _, bal in ipairs({ "herb", "physical" }) do
+  local w = world.new()
+  local svo = w.svo
+  svo.doaction(svo.dict.deathsight[bal])
+  w.line("Your mind is already attuned to the realm of Death.")
+  eq(svo.lifevision.l["deathsight_" .. bal] ~= nil, true, "deathsight by " .. bal .. ": its gain line claims the " .. bal .. " action")
+  w.prompt()
+  eq(svo.defc.deathsight, true, "deathsight by " .. bal .. ": and sets it at the prompt")
+end
+do -- with nothing in flight, the balance a line would make up is the same every time
+  local w = world.new()
+  eq(w.svo.defences.raising_balance("deathsight"), "herb", "deathsight's default balance is herb, the first by name")
+  eq(w.svo.defences.raising_balance("insomnia"), "herb", "and insomnia's is herb, never its aff block")
+  eq(w.svo.defences.raising_balance("deathsight", true), nil, "with nothing in flight, nothing is in flight")
+end
+
 -- ===== 11. Defences registered after systemstart =====
 
 -- An item's defence (the phylactery's mindnet, a lifevision mask, a
