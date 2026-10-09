@@ -13,6 +13,7 @@ Mudlet itself is stubbed: sends, echoes, temp triggers, timers and raised
 events are recorded, not performed. A temp trigger's pattern is kept, so a
 test can feed svof an exact-match line and run what the trigger would run.
 Regex triggers are recorded but not matched; call their handler directly.
+A killed trigger stays recorded, marked killed, and no longer fires.
 Nothing here proves anything about Mudlet, the game, or the static trigger
 items in src/triggers, which this does not load.
 
@@ -262,7 +263,12 @@ function world.new(opts)
     tempRegexTrigger = record_trigger("regex"),
     tempBeginOfLineTrigger = record_trigger("begin"),
     tempLineTrigger = function() return 0 end,
-    killTrigger = noop,
+    -- a killed trigger stays in w.triggers, marked, and no longer fires
+    killTrigger = function(id)
+      if not w.triggers[id] then return false end
+      w.triggers[id].killed = true
+      return true
+    end,
     registerAnonymousEventHandler = function() return 1 end,
     raiseEvent = function(name, ...) w.events[#w.events + 1] = { name = name, args = {...} } end,
     getMudletHomeDir = function() return "." end,
@@ -370,16 +376,16 @@ function world.new(opts)
   end
   function w.advance(seconds) w.now = w.now + seconds w.run_timers() end
 
-  -- A game line: the temp triggers that match it exactly, as a substring or
-  -- at its start run their code, in the order they were made.
+  -- A game line: the live temp triggers that match it exactly, as a
+  -- substring or at its start run their code, in the order they were made.
   function w.line(text)
     env.line = text
     svo.paragraph_length = svo.paragraph_length + 1
     local ran = 0
     for _, t in ipairs(w.triggers) do
-      local hit = (t.kind == "exact" and t.pattern == text)
+      local hit = not t.killed and ((t.kind == "exact" and t.pattern == text)
         or (t.kind == "substring" and text:find(t.pattern, 1, true))
-        or (t.kind == "begin" and text:sub(1, #t.pattern) == t.pattern)
+        or (t.kind == "begin" and text:sub(1, #t.pattern) == t.pattern))
       if hit then
         ran = ran + 1
         if type(t.code) == "string" then w.run(t.code, "trigger") else t.code() end

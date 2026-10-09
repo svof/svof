@@ -997,6 +997,59 @@ do -- the item is looked for in your inventory only
   eq(type(svo.dict.mindnet), "table", "one in your inventory does")
 end
 
+-- Artefacts can be bought by anyone, so each of the three works for every
+-- class: as a general defence, or as the class's own where its skills have
+-- one (Necromancy's shroud and lifevision, Occultism's shroud, Shindo's and
+-- Telepathy's mindnet). conf.have<item> is saved, and a timer after each
+-- systemstart registers them again, so they also come back after a class
+-- change, with the old class's triggers killed rather than piling up.
+do
+  local ITEMS = { "mindnet", "lifevision", "shroud" }
+  local function live(w, def)
+    local n = 0
+    for _, t in ipairs(w.triggers) do
+      if not t.killed and type(t.code) == "string" and t.code:find("_" .. def .. "()", 1, true) then n = n + 1 end
+    end
+    return n
+  end
+  local function summary(w)
+    local out = {}
+    for _, def in ipairs(ITEMS) do
+      local rec = w.svo.defs_data[def]
+      out[#out + 1] = string.format("%s %s %s %d", def, rec and rec.type or "no record",
+        type(w.svo.dict[def]) == "table" and "entry" or "no entry", live(w, def))
+    end
+    return table.concat(out, ", ")
+  end
+  for _, class in ipairs(CLASSES) do
+    local w = world.new({ class = class })
+    local svo = w.svo
+    svo.conf.havemindnet, svo.conf.havelifevision, svo.conf.haveshroud = true, true, true
+    w.run_timers()
+    local missing, unset = {}, {}
+    for _, def in ipairs(ITEMS) do
+      if not (svo.defs_data[def] and type(svo.dict[def]) == "table" and type(svo.defs["got_" .. def]) == "function"
+        and type(svo.defs["lost_" .. def]) == "function") then
+        missing[#missing + 1] = def
+      end
+      -- today a Serpent's GMCP shroud is its own cloaking (sstosvod.shroud)
+      local set = (class == "Serpent" and def == "shroud") and "cloaking" or def
+      svo.defc[set] = false
+      w.gmcp_defence_add(def)
+      if svo.defc[set] ~= true then unset[#unset + 1] = def end
+    end
+    eq(table.concat(missing, ", "), "", class .. ": owning the three artefacts registers all three defences")
+    eq(table.concat(unset, ", "), "", class .. ": and GMCP sets each of them")
+    local first = summary(w)
+    local other = class == "Monk" and "Infernal" or "Monk"
+    svo.classchange(other)
+    w.run_timers()
+    svo.classchange(class)
+    w.run_timers()
+    eq(summary(w), first, class .. ": changing class and back keeps them, with no extra triggers")
+  end
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end
