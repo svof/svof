@@ -32,7 +32,8 @@ behaviour meant to stay. All of these are in the 2018 module xmls:
   17  a GMCP gain ran the raising action's oncompleted, written for a
       command svof sent: balances, puffs and waits; six were dropped
       instead (fixed: defences.confirm)
-  18  a defence DEF lists that svof did not know about does the same
+  18  a defence DEF lists that svof did not know about did the same
+      (fixed: defences.confirm)
   19  a GMCP loss went through lifevision, so an illusion verdict discarded
       it (fixed: defences.unconfirm)
   20  dict_setup stamps a name and a stopwatch onto sstosvod
@@ -443,16 +444,39 @@ end
 -- ===== 6. DEF =====
 
 -- svo.process_defs reconciles what DEF listed. A defence it lists that svof
--- did not know about runs oncompleted(true) on a balance pairs() picks.
+-- did not know about used to run oncompleted(true) on a balance pairs()
+-- picked (defect 18, fixed); now it goes to defences.confirm.
 do
   local w = world.new()
   local svo = w.svo
   svo.pipes.skullcap.puffs = 10
   svo.defences.def_def_list.rebounding = true
   svo.process_defs()
-  eq(w.inflight(), "waitingonrebounding_waitingfor", "today (defect 18): DEF listing rebounding starts the wait")
-  eq(svo.pipes.skullcap.puffs, 9, "today (defect 18): and uses a puff")
-  eq(svo.bals.smoke, false, "today (defect 18): and spends smoke balance")
+  eq(svo.defc.rebounding, true, "DEF listing rebounding sets it")
+  eq(w.inflight(), "", "and starts no wait")
+  eq(svo.pipes.skullcap.puffs, 10, "uses no puff")
+  eq(svo.bals.smoke, true, "and spends no smoke balance")
+
+  w = world.new()
+  svo = w.svo
+  svo.defences.def_def_list.blind = true
+  svo.process_defs()
+  eq(svo.bals.herb, true, "DEF listing blind spends no herb balance")
+
+  -- the whole way: svof's DEF, its lines, the prompt
+  w = world.new()
+  svo = w.svo
+  svo.pipes.skullcap.puffs = 10
+  svo.defences.got("alertness")
+  svo.doaction(svo.dict.defcheck.physical)
+  svo.defs.defstart()
+  eq(w.line("You are protected from hand-held weapons with an aura of rebounding."), 1, "DEF's rebounding line is heard")
+  svo.defs.defline()
+  w.prompt()
+  eq(svo.defc.rebounding, true, "after DEF, rebounding is set")
+  eq(svo.pipes.skullcap.puffs, 10, "with no puff")
+  eq(svo.defc.alertness, false, "and alertness, which DEF did not list, is lost")
+  eq(echoed(w, "(e!)") or error_shown(w), false, "with no error")
 
   w = world.new()
   svo = w.svo

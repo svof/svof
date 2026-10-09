@@ -3745,15 +3745,11 @@ svo.process_defs = function ()
     end
   end
 
-  -- add left over ones
+  -- add left over ones. DEF is the game's own list, not svof's command for
+  -- any of them finishing, so a balance pairs() happened to pick was
+  -- booked for nothing: rebounding's smoke and a puff, blind's herb
   for defname,_ in pairs(defences.def_def_list) do
-    local bal
-    for kk,vv in pairs(svo.dict[defname] or {}) do if type(vv) == 'table' and kk ~= 'gone' then bal = kk break end end
-    if bal and svo.dict[defname][bal].oncompleted then
-        svo.dict[defname][bal].oncompleted(true)
-    else
-      defences.got(defname)
-    end
+    defences.confirm(defname)
   end
 
   for k,v in pairs(addback) do defences.def_def_list[k] = v end
