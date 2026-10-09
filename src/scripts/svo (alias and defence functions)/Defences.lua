@@ -2132,7 +2132,7 @@ if svo.haveskillset('skirmishing') then
     def = {"You are able to scout passed obstructions.", "You are able to scout past obstructions."}})
 	defs_data:set('spinning', { type = 'skirmishing',
     onr = [[^You begin to rapidly spin .+ in a defensive pattern\.$]],
-    off = [[^You cease spinning .+\.$]]})
+    offr = [[^You cease spinning .+\.$]]})
 end
 
 if svo.haveskillset('shadowmancy') then

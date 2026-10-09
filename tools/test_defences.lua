@@ -502,11 +502,11 @@ do -- 3 and 4: a regex in off, an exact-match key, can never match
   end
   eq(exact_regex, 6, "today (defect 3): six Shikudo forms make an exact-match trigger of a regex")
   w = worlds.Sentinel
-  local spinning = false
+  local spinning
   for _, t in ipairs(w.triggers) do
-    if t.kind == "exact" and t.pattern == [[^You cease spinning .+\.$]] then spinning = true end
+    if t.pattern == [[^You cease spinning .+\.$]] then spinning = t.kind .. " " .. t.code end
   end
-  eq(spinning, true, "today (defect 4): spinning's loss line is an exact-match trigger of a regex")
+  eq(spinning, "regex svo.defs.lost_spinning()", "spinning's loss line is a regex trigger")
 end
 
 do -- 5: croonmirror's loss regex starts with a stray quote
