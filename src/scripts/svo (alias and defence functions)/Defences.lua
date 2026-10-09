@@ -34,13 +34,98 @@ function defences.gettime(defence, max)
   end
 end
 
+-- runs f, and reports an error from it the way a failed action does,
+-- without stopping whatever called it
+local function run_reporting(what, f, ...)
+  local ok, err = pcall(f, ...)
+  if not ok then
+    svo.debugf("%s failed: %s", what, tostring(err))
+    echoLink("(e!)", [[svo.echof([=[The problem was: ]]..what..[[ failed: ]]..tostring(err)..[[]=])]],
+      'Oy - there was a problem. Click on this link and submit a bug report with what it says along with a '..
+        'copy/paste of what you saw.')
+  end
+end
+
+-- A defence's ongot and onlost, on its record, are consequences of having
+-- it or losing it, as opposed to the bookkeeping of svof's own command for
+-- it: they run whenever the defence comes or goes, by any path - svof's
+-- command, a line, GMCP or DEF. They run last, so a broken one cannot leave
+-- the defence half set.
+local function consequence(def, hook)
+  local rec = svo.defs_data and svo.defs_data[def]
+  if rec and rec[hook] then run_reporting(def .. "'s " .. hook, rec[hook]) end
+end
+
 -- functions to handle the defc table events updates
 function defences.got(def)
-  if not defc[def] then defc[def] = true; raiseEvent("svo got def", def) end
+  if not defc[def] then defc[def] = true; raiseEvent("svo got def", def); consequence(def, 'ongot') end
 end
 
 function defences.lost(def)
-  if defc[def] then defc[def] = false; raiseEvent("svo lost def", def) end
+  if defc[def] then defc[def] = false; raiseEvent("svo lost def", def); consequence(def, 'onlost') end
+end
+
+-- The defences svof raises with a command that finishes before the defence
+-- arrives: the command starts a wait, and the wait's completion sets the
+-- defence. Keyed by defence, the wait's dictionary entry.
+defences.waits = {
+  blind = 'waitingonblind',
+  deaf = 'waitingondeaf',
+  dragonbreath = 'waitingfordragonbreath',
+  dragonform = 'waitingfordragonform',
+  mace = 'waitingformace',
+  rebounding = 'waitingonrebounding',
+  sileris = 'waitingforsileris',
+  speed = 'curingspeed',
+  viridian = 'waitingforviridian',
+}
+
+-- Blindness and deafness are a defence when you want them up and an
+-- affliction when you do not, and the prompt flags decide which on every
+-- prompt (check_promptflags). The game reports them the same way either
+-- way, so on its word alone the decision stays with the next prompt.
+defences.prompt_decides = { blind = true, deaf = true }
+
+-- The game says you have def: GMCP gained it, or DEF listed it. That is not
+-- svof's own command finishing, and must not be booked as one. If svof's
+-- command for it is in flight, that command went through: it finishes now,
+-- its bookkeeping (a balance, a pipe puff) is recorded once, and a wait it
+-- starts finishes with it. If nothing is in flight, svof did nothing, so
+-- the defence is simply set. None of it goes through lifevision, since the
+-- game's own word is not a line an illusion can fake.
+function defences.confirm(def)
+  local function finish(act, ...)
+    -- a claim a line already filed for it has nothing left to finish
+    if lifevision.l[act.name] then lifevision.l:set(act.name, nil) end
+    svo.actionfinished(act, nil, ...)
+  end
+
+  local entry = svo.dict[def]
+  if type(entry) == 'table' then
+    for _, act in pairs(entry) do
+      -- (true): the defence is already up, for the oncompleteds that would
+      -- otherwise start a wait for it
+      if type(act) == 'table' and act.def and actions[act.name] then finish(act, true) end
+    end
+  end
+
+  local wait = defences.waits[def] and svo.dict[defences.waits[def]]
+  wait = wait and wait.waitingfor
+  if wait and actions[wait.name] then finish(wait) end
+
+  if not defences.prompt_decides[def] then defences.got(def) end
+end
+
+-- The game says you do not have def: GMCP lost it. The defence's gone runs
+-- now, outside lifevision, so an illusion on the paragraph cannot discard
+-- what the game said.
+function defences.unconfirm(def)
+  local entry = svo.dict[def]
+  if type(entry) == 'table' and entry.gone then
+    run_reporting(def .. "'s gone", entry.gone.oncompleted)
+  else
+    defences.lost(def)
+  end
 end
 
 -- custom def types like channels

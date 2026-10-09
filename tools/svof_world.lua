@@ -234,7 +234,7 @@ local STDLIB = {"assert", "error", "ipairs", "next", "pairs", "pcall", "print", 
 function world.new(opts)
   opts = opts or {}
   local w = {
-    sent = {}, echoes = {}, events = {}, triggers = {}, timers = {},
+    sent = {}, echoes = {}, links = {}, events = {}, triggers = {}, timers = {},
     unknown_globals = {}, now = 0,
   }
   local timerseq = 0
@@ -248,6 +248,7 @@ function world.new(opts)
   end
   local function noop() end
   local function echo(s) w.echoes[#w.echoes + 1] = tostring(s) end
+  local function link(text, code) w.links[#w.links + 1] = tostring(text) .. " " .. tostring(code) end
 
   local mudlet = {
     tempTimer = function(t, f)
@@ -268,7 +269,8 @@ function world.new(opts)
     createStopWatch = function() return 1 end, startStopWatch = noop,
     stopStopWatch = function() return 0 end, getStopWatchTime = function() return 0 end, resetStopWatch = noop,
     echo = echo, cecho = echo, decho = echo, hecho = echo, insertText = echo, cinsertText = echo,
-    echoLink = noop, dechoLink = noop, cechoLink = noop, insertLink = noop,
+    -- a link's text and the code it runs, such as the "(e!)" svof shows for an error
+    echoLink = link, dechoLink = link, cechoLink = link, insertLink = link,
     deleteLine = noop, selectString = function() return -1 end, replace = noop, creplace = noop,
     setFgColor = noop, setBgColor = noop, setUnderline = noop, setBold = noop, setItalics = noop,
     moveCursor = noop, moveCursorEnd = noop, selectCurrentLine = noop, deselect = noop,

@@ -88,6 +88,14 @@ local function echoed(w, text)
   return false
 end
 
+-- an "(e!)" link svof shows when something it ran raised
+local function error_shown(w, text)
+  for _, l in ipairs(w.links) do
+    if l:find("(e!)", 1, true) and (not text or l:find(text, 1, true)) then return true end
+  end
+  return false
+end
+
 -- Every class svof knows, by the name the game gives it
 local CLASSES = {"Alchemist", "Apostate", "Bard", "Blademaster", "Depthswalker", "Druid", "Infernal", "Jester",
   "Magi", "Monk", "None", "Occultist", "Paladin", "Pariah", "Priest", "Runewarden", "Sentinel", "Serpent",
@@ -657,6 +665,109 @@ do -- 16: generated handlers survive a class change
   local ok = pcall(svo.defs.lost_boosting)
   eq(ok, false, "today (defect 16): and raises, indexing an entry that is gone")
   eq(#w.writes > 0, true, "the class change tried to save the config, and was refused")
+end
+
+-- ===== 9. confirm and unconfirm: the game's word, apart from svof's command =====
+
+do -- nothing of svof's in flight: the defence is set, and nothing is booked
+  local w = world.new()
+  local svo = w.svo
+  svo.pipes.skullcap.id, svo.pipes.skullcap.puffs, svo.pipes.skullcap.lit = 12345, 10, true
+  local smokes, salves = counter(w, "lostbal_smoke"), counter(w, "lostbal_salve")
+  for _, def in ipairs({ "rebounding", "sileris", "caloric", "mass", "speed", "alertness" }) do
+    svo.defences.confirm(def)
+    eq(svo.defc[def], true, "confirm " .. def .. " with nothing in flight sets it")
+  end
+  eq(w.inflight(), "", "and starts nothing")
+  eq(svo.pipes.skullcap.puffs, 10, "uses no puff")
+  eq(smokes.n + salves.n, 0, "and spends no balance")
+  w.advance(20)
+  eq(svo.sys.lagcount, 0, "and leaves no timer to count as lag")
+end
+
+do -- svof's smoke in flight: it went through, so its puff and balance count once
+  local w = world.new()
+  local svo = w.svo
+  svo.pipes.skullcap.id, svo.pipes.skullcap.puffs, svo.pipes.skullcap.lit = 12345, 10, true
+  svo.doaction(svo.dict.rebounding.smoke)
+  local smokes = counter(w, "lostbal_smoke")
+  svo.defences.confirm("rebounding")
+  eq(svo.defc.rebounding, true, "confirm rebounding during svof's smoke sets it")
+  eq(svo.pipes.skullcap.puffs, 9, "uses the smoke's one puff")
+  eq(smokes.n, 1, "spends smoke balance once")
+  eq(w.inflight(), "", "and leaves neither the smoke nor its wait in flight")
+  w.advance(20)
+  eq(svo.sys.lagcount, 0, "and no timer counts as lag")
+end
+
+do -- svof's wait in flight: the defence came up
+  local w = world.new()
+  local svo = w.svo
+  svo.doaction(svo.dict.waitingforsileris.waitingfor)
+  svo.defences.confirm("sileris")
+  eq(svo.defc.sileris, true, "confirm sileris during its wait sets it")
+  eq(w.inflight(), "", "and finishes the wait")
+  w.advance(20)
+  eq(svo.sys.lagcount, 0, "whose timer is gone")
+  svo.defs.sileris_finished() -- the hardening line, after GMCP
+  w.prompt()
+  eq(echoed(w, "(e!)") or error_shown(w), false, "the line after it finds nothing to finish, and no error")
+end
+
+do -- a claim a line already filed is finished by confirm, not again at the prompt
+  local w = world.new()
+  local svo = w.svo
+  svo.doaction(svo.dict.caloric.salve)
+  svo.defs.salve_got_caloric() -- the caloric line came first, this time
+  local salves = counter(w, "lostbal_salve")
+  svo.defences.confirm("caloric")
+  w.prompt()
+  eq(svo.defc.caloric, true, "caloric is set")
+  eq(salves.n, 1, "salve balance is spent once")
+  eq(echoed(w, "(e!)") or error_shown(w), false, "and the prompt finds no claim left to finish")
+end
+
+do -- blind and deaf: the prompt flags decide between defence and affliction
+  local w = world.new()
+  local svo = w.svo
+  svo.defences.confirm("blind")
+  eq(svo.defc.blind, nil, "confirm blind with nothing in flight leaves it to the prompt")
+  svo.doaction(svo.dict.blind.herb)
+  local herbs = counter(w, "lostbal_herb")
+  svo.defences.confirm("blind")
+  eq(svo.defc.blind, true, "with svof's bayberry in flight, it went through")
+  eq(herbs.n, 1, "and herb balance is spent once")
+end
+
+do -- unconfirm: the loss is the game's, so no illusion verdict can discard it
+  local w = world.new()
+  local svo = w.svo
+  svo.defences.got("alertness")
+  svo.defences.unconfirm("alertness")
+  eq(svo.defc.alertness, false, "unconfirm alertness loses it at once")
+  svo.defences.got("sileris")
+  svo.sys.flawedillusion = true
+  svo.defences.unconfirm("sileris")
+  w.prompt()
+  eq(svo.defc.sileris, false, "unconfirm sileris loses it through its gone, outside lifevision")
+end
+
+do -- ongot and onlost: consequences, on the record, run once per change
+  local w = world.new()
+  local svo = w.svo
+  local ran = {}
+  svo.defs_data.alertness.ongot = function() ran[#ran + 1] = "got" end
+  svo.defs_data.alertness.onlost = function() ran[#ran + 1] = "lost" end
+  svo.defences.got("alertness")
+  svo.defences.got("alertness")
+  svo.defences.lost("alertness")
+  svo.defences.lost("alertness")
+  eq(table.concat(ran, " "), "got lost", "ongot and onlost run when the defence changes, not when it is said again")
+  svo.defs_data.alertness.ongot = function() error("broken") end
+  local ok = pcall(svo.defences.got, "alertness")
+  eq(ok, true, "a broken ongot does not stop whatever set the defence")
+  eq(svo.defc.alertness, true, "which is set")
+  eq(error_shown(w, "broken"), true, "and it is reported")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))
