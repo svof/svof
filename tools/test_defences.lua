@@ -531,9 +531,13 @@ do -- 6: fortifying any of the four last grants fortifyall
   end
 end
 
-do -- 7: bonding's gone sits inside physical
-  local svo = worlds.Druid.svo
-  eq(type(svo.dict.bonding.physical.gone), "table", "today (defect 7): bonding's gone is nested in physical")
+do -- 7: bonding's gone is the entry's own, beside physical
+  local w = world.new({ class = "Druid" })
+  local svo = w.svo
+  eq(svo.dict.bonding.physical.gone, nil, "bonding: nothing nested in physical")
+  svo.defences.got("bonding")
+  svo.dict.bonding.gone.oncompleted()
+  eq(svo.defc.bonding, false, "bonding: its gone loses it")
 end
 
 do -- 8: the demon armour strip line names a handler that does not exist

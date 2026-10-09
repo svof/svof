@@ -11666,11 +11666,10 @@ if not next(svo.dict) then
             end
           end
   			end,
-  
-     		gone = {
-        	oncompleted = function() defences.lost('bonding') end
-      	}
-  		}
+      },
+      gone = {
+        oncompleted = function() defences.lost('bonding') end
+      }
     }
     svo.dict.stealth = {
       physical = {
