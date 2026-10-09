@@ -9460,6 +9460,7 @@ if not next(svo.dict) then
       }
     },
     frost = {
+      gamename = 'temperance',
       purgative = {
         def = true,
         --undeffable = true,
@@ -9920,6 +9921,7 @@ if not next(svo.dict) then
       },
     },
     caloric = {
+      gamename = 'insulation',
       salve = {
         def = true,
   

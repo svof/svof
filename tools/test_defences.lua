@@ -162,7 +162,7 @@ eq(count(entries), 287, "287 defences have a dictionary entry")
 eq(sorted_keys(without_record), "", "no dictionary defence lacks a record, in any class")
 eq(sorted_keys(unflagged), "bedevil, evasion",
   "today (defect 22): two records have no entry and no recognise-only flag")
-eq(count(gamenames), 60, "60 dictionary defences carry a gamename (the serverside name)")
+eq(count(gamenames), 62, "62 dictionary defences carry a gamename (the serverside name)")
 
 -- GMCP's name for a defence: sstosvod maps game names to svof names, and
 -- false for the ones svof leaves alone. It is not class gated, except the
@@ -574,6 +574,25 @@ do
   w = world.new()
   eq(w.svo.sys.input_to_actions["nightsight"], nil, "today (defect 24): the server's NIGHTSIGHT is not a command svof adopts")
   eq(w.svo.sys.input_to_actions["nightsight on"] ~= nil, true, "svof adopts its own wording")
+end
+
+-- svof sets the server's defence priorities by the server's names, which
+-- are GMCP's (the owner, 2026-10-09: the serverside name for caloric is
+-- insulation). An entry's gamename gives it, as mass's density does. Of
+-- the 13 defences svof names differently from GMCP, only caloric and frost
+-- are ever sent; the other 11 are undeffable, which serverside skips.
+do
+  local w = world.new()
+  local svo = w.svo
+  local sent = {}
+  svo.sendcuringprio = function(prio, kind) sent[#sent + 1] = kind .. " " .. prio end
+  svo.sk.sendpriorityswitch("caloric", "salve", {}, { caloric = 5 }, {}, false)
+  svo.sk.sendpriorityswitch("frost", "purgative", {}, { frost = 7 }, {}, false)
+  svo.sk.sendpriorityswitch("mass", "salve", {}, { mass = 3 }, {}, false)
+  svo.sk.sendpriorityignore("caloric", "salve", {}, {}, {}, false)
+  eq(table.concat(sent, ", "),
+    "defence insulation 5, defence temperance 7, defence density 3, defence insulation reset",
+    "serverside priorities name caloric insulation and frost temperance")
 end
 
 -- ===== 8. Pre-existing defects, pinned =====
