@@ -29,10 +29,12 @@ behaviour meant to stay. All of these are in the 2018 module xmls:
   14  the Spirit channel's handlers are called and never defined
   15  the relogin handler collects the defc table, not the names in it
   16  generated handlers survive a class change and go stale
-  17  a GMCP gain runs the raising action's oncompleted, written for a
-      command svof sent: balances, puffs and waits; six are dropped instead
+  17  a GMCP gain ran the raising action's oncompleted, written for a
+      command svof sent: balances, puffs and waits; six were dropped
+      instead (fixed: defences.confirm)
   18  a defence DEF lists that svof did not know about does the same
-  19  a GMCP loss goes through lifevision, so an illusion verdict discards it
+  19  a GMCP loss went through lifevision, so an illusion verdict discarded
+      it (fixed: defences.unconfirm)
   20  dict_setup stamps a name and a stopwatch onto sstosvod
   21  susurrating's gain line ends in a space (tools/check_defences.py)
   22  bedevil and evasion have records, no entry and no recognise-only flag
@@ -208,28 +210,27 @@ for _, class in ipairs(CLASSES) do
   eq(table.concat(dangling, ", "), "", class .. ": every defence trigger calls a handler that exists")
 end
 
--- ===== 4. A GMCP gain runs svof's own command bookkeeping =====
+-- ===== 4. A GMCP gain is the game's word, not svof's command =====
 
--- Char.Defences.Add calls got_<name>(true). The generated got_ force-adds the
--- defence's raising action and finishes it at once, running oncompleted,
--- which is written for "svof sent the command and the game took it". So a
--- defence the game reports, that svof did not raise, spends balances and
--- puffs and starts waits. Plan defect 17; D3 replaces this path.
+-- Char.Defences.Add hands the defence to defences.confirm. It used to call
+-- got_<name>(true), whose generated version force-added the raising action
+-- and finished it, running oncompleted, written for "svof sent the command
+-- and the game took it": a defence svof did not raise spent balances and
+-- puffs and started waits (defect 17, fixed). Now only a command svof really
+-- sent is booked.
 
 do -- rebounding: a smoke svof never sent
   local w = world.new()
   local svo = w.svo
   svo.pipes.skullcap.id, svo.pipes.skullcap.puffs, svo.pipes.skullcap.lit = 12345, 10, true
   w.gmcp_defence_add("rebounding")
-  eq(w.inflight(), "waitingonrebounding_waitingfor", "today (defect 17): GMCP rebounding starts svof's rebounding wait")
-  eq(svo.pipes.skullcap.puffs, 9, "today (defect 17): and uses a skullcap puff")
-  eq(echoed(w, "(9 skullcap left)"), true, "today (defect 17): and says so")
-  eq(svo.bals.smoke, false, "today (defect 17): and spends smoke balance")
-  eq(svo.defc.rebounding, nil, "today (defect 17): and does not set the defence; only the wait's end would")
-  -- without the aura's text line to finish it, the wait runs out
+  eq(svo.defc.rebounding, true, "GMCP rebounding sets it")
+  eq(w.inflight(), "", "and starts no wait")
+  eq(svo.pipes.skullcap.puffs, 10, "uses no puff")
+  eq(echoed(w, "skullcap left"), false, "and says nothing about one")
+  eq(svo.bals.smoke, true, "and spends no smoke balance")
   w.advance(20)
-  eq(svo.defc.rebounding, nil, "today (defect 17): GMCP alone never sets rebounding")
-  eq(svo.sys.lagcount, 1, "today (defect 17): and the wait's timeout counts as lag")
+  eq(svo.sys.lagcount, 0, "and nothing times out as lag")
 end
 
 do -- rebounding svof raised: the gain comes with the aura, after the smoke
@@ -244,32 +245,33 @@ do -- rebounding svof raised: the gain comes with the aura, after the smoke
   local smokes = counter(w, "lostbal_smoke")
   w.advance(8)
   w.gmcp_defence_add("rebounding")
-  eq(svo.pipes.skullcap.puffs, 8, "today (defect 17): the GMCP gain at the aura uses a second puff")
-  eq(smokes.n, 1, "today (defect 17): and spends smoke balance a second time")
+  eq(svo.pipes.skullcap.puffs, 9, "the GMCP gain at the aura uses no second puff")
+  eq(smokes.n, 0, "and no second smoke balance")
+  eq(svo.defc.rebounding, true, "it finishes the wait: rebounding is up")
   svo.valid.got_rebounding() -- "You feel an aura of rebounding surround you."
   w.prompt()
-  eq(svo.defc.rebounding, true, "the aura's line then finishes the (new) wait")
+  eq(svo.defc.rebounding, true, "the aura's line after it changes nothing")
+  eq(echoed(w, "(e!)") or error_shown(w), false, "and finds nothing to finish, without an error")
   w.advance(20)
-  eq(svo.sys.lagcount, 1, "today (defect 17): the first wait's timer was never killed and counts as lag")
+  eq(svo.sys.lagcount, 0, "and the wait's timer went with the wait")
 end
 
 do -- sileris (GMCP fangbarrier) at login: an application svof never sent
   local w = world.new()
   local svo = w.svo
   w.gmcp_defence_add("fangbarrier")
-  eq(w.inflight(), "waitingforsileris_waitingfor", "today (defect 17): GMCP sileris starts the 10s sileris wait")
-  eq(svo.defc.sileris, nil, "today (defect 17): and does not set the defence")
+  eq(svo.defc.sileris, true, "GMCP sileris sets it")
+  eq(w.inflight(), "", "and starts no wait")
   w.advance(15)
-  eq(svo.defc.sileris, nil, "today (defect 17): with no hardening line the wait just runs out")
-  eq(svo.sys.lagcount, 1, "today (defect 17): and counts as lag")
+  eq(svo.sys.lagcount, 0, "so nothing times out as lag")
 
   w = world.new()
   svo = w.svo
   svo.conf.keepup, svo.defkeepup.basic.sileris = true, true
   w.gmcp_defence_add("fangbarrier")
   w.advance(15)
-  eq(svo.defc.sileris, "unsure", "today (defect 17): on keepup, the timeout marks sileris unsure")
-  eq(echoed(w, "we might've been tricked"), true, "today (defect 17): and warns of a trick")
+  eq(svo.defc.sileris, true, "on keepup too, sileris is up and stays up")
+  eq(echoed(w, "we might've been tricked"), false, "with no warning of a trick")
 end
 
 for gmcpname, def in pairs({ insulation = "caloric", density = "mass" }) do
@@ -277,11 +279,11 @@ for gmcpname, def in pairs({ insulation = "caloric", density = "mass" }) do
   local salves = counter(w, "lostbal_salve")
   w.gmcp_defence_add(gmcpname)
   eq(w.svo.defc[def], true, "GMCP " .. gmcpname .. " sets " .. def)
-  eq(salves.n, 1, "today (defect 17): GMCP " .. gmcpname .. " spends salve balance")
-  eq(w.svo.bals.salve, false, "today (defect 17): " .. def .. " leaves svof off salve balance")
+  eq(salves.n, 0, "GMCP " .. gmcpname .. " spends no salve balance")
+  eq(w.svo.bals.salve, true, def .. " leaves svof on salve balance")
 end
 
-do -- the five Zeal blessings spend prayer balance
+do -- the five Zeal blessings
   for gmcpname, def in pairs({ frostshield = "frostblessing", thermalshield = "thermalblessing",
       earthshield = "earthblessing", enduranceblessing = "enduranceblessing",
       willpowerblessing = "willpowerblessing" }) do
@@ -289,13 +291,13 @@ do -- the five Zeal blessings spend prayer balance
     local prayers = counter(w, "lostbal_prayer")
     w.gmcp_defence_add(gmcpname)
     eq(w.svo.defc[def], true, "GMCP " .. gmcpname .. " sets " .. def)
-    eq(prayers.n, 1, "today (defect 17): GMCP " .. gmcpname .. " spends prayer balance")
+    eq(prayers.n, 0, "GMCP " .. gmcpname .. " spends no prayer balance")
   end
-  -- with benediction on, any one of them grants all five
+  -- benediction grants all five by one recitation; the game says so for each
   local w = world.new({ class = "Priest" })
   w.svo.conf.benediction = true
   w.gmcp_defence_add("frostshield")
-  eq(w.svo.defc.earthblessing, true, "today (defect 17): with benediction, GMCP frostshield also sets earthblessing")
+  eq(w.svo.defc.earthblessing, nil, "with benediction, GMCP frostshield sets only frostblessing")
 end
 
 for _, def in ipairs({ "lay", "tune", "aria" }) do -- Voicecraft
@@ -303,15 +305,15 @@ for _, def in ipairs({ "lay", "tune", "aria" }) do -- Voicecraft
   local voices = counter(w, "lostbal_voice")
   w.gmcp_defence_add(def)
   eq(w.svo.defc[def], true, "GMCP " .. def .. " sets it")
-  eq(voices.n, 1, "today (defect 17): GMCP " .. def .. " spends voice balance")
+  eq(voices.n, 0, "GMCP " .. def .. " spends no voice balance")
 end
 
-do -- lyre (GMCP prismatic) pauses svof in lyre mode
+do -- lyre (GMCP prismatic): svof pauses in lyre mode for its own strum
   local w = world.new({ paused = false })
   w.svo.conf.lyre = true
   w.gmcp_defence_add("prismatic")
   eq(w.svo.defc.lyre, true, "GMCP prismatic sets lyre")
-  eq(w.svo.conf.paused, true, "today (defect 17): and pauses svof, as for a strum svof sent")
+  eq(w.svo.conf.paused, false, "and does not pause svof, which did not strum")
 end
 
 do -- mindseye reclassifies the blindness and deafness you already have
@@ -346,12 +348,33 @@ do -- mindseye reclassifies the blindness and deafness you already have
   eq(w.svo.affs.blindaff ~= nil, true, "but the affliction")
 end
 
-do -- shield turns its own keepup off with oldts
+do -- shield turns its own keepup off with oldts, after svof's touch
   local w = world.new()
   w.svo.conf.oldts, w.svo.defkeepup.basic.shield = true, true
   w.gmcp_defence_add("shield")
   eq(w.svo.defc.shield, true, "GMCP shield sets it")
-  eq(w.svo.defkeepup.basic.shield, false, "today (defect 17): and turns shield keepup off, as after svof's own touch")
+  eq(w.svo.defkeepup.basic.shield, true, "and leaves shield keepup alone: svof touched nothing")
+end
+
+do -- a defence this class has no record for is left alone
+  local w = world.new()
+  w.gmcp_defence_add("kaitrance") -- a Monk's
+  eq(w.svo.defc.trance, nil, "an Infernal ignores GMCP's kaitrance")
+end
+
+do -- a List confirms what it names and unconfirms what it does not
+  local w = world.new()
+  local svo = w.svo
+  svo.pipes.skullcap.puffs = 10
+  svo.defences.got("alertness")
+  svo.defences.got("cloak")
+  local smokes = counter(w, "lostbal_smoke")
+  w.gmcp_defence_list({ "rebounding", "cloak" })
+  eq(svo.defc.rebounding, true, "a List naming rebounding sets it")
+  eq(smokes.n, 0, "with no smoke balance spent")
+  eq(svo.pipes.skullcap.puffs, 10, "and no puff")
+  eq(svo.defc.cloak, true, "keeps cloak, which it names")
+  eq(svo.defc.alertness, false, "and loses alertness, which it does not")
 end
 
 do -- an ordinary basicdef defence: GMCP sets it and nothing else
@@ -363,66 +386,58 @@ do -- an ordinary basicdef defence: GMCP sets it and nothing else
   eq(w.svo.defc.softfocus, true, "GMCP softfocusing sets softfocus, through sstosvod")
 end
 
--- Six GMCP-mapped defences have hand-written got_ handlers that ignore the
--- force argument. With anti-illusion on (svof's default) they claim only an
--- action already in flight, so a GMCP gain is dropped unless svof was
--- raising the defence.
-do
-  local GAINS = { blindness = "blind", deafness = "deaf", speed = "speed", blocking = "block",
-    dragonbreath = "dragonbreath" }
-  for gmcpname, def in pairs(GAINS) do
+-- Six GMCP-mapped defences have hand-written got_ handlers that ignored the
+-- force flag, so with anti-illusion on (svof's default) their GMCP gains
+-- were dropped, and blind's always. Now each goes through confirm, whatever
+-- anti-illusion says: four are set, and blindness and deafness, which may be
+-- the affliction rather than the defence, wait for the prompt flags.
+for _, aillusion in ipairs({ true, false }) do
+  local setting = "anti-illusion " .. (aillusion and "on" or "off") .. ": "
+  for gmcpname, def in pairs({ speed = "speed", blocking = "block", dragonbreath = "dragonbreath" }) do
     local w = world.new()
-    eq(w.svo.conf.aillusion, true, "anti-illusion is on by default")
+    w.svo.conf.aillusion = aillusion
     w.gmcp_defence_add(gmcpname)
     w.prompt()
-    eq(w.svo.defc[def], nil, "today (defect 17): with anti-illusion on, GMCP " .. gmcpname .. " is dropped")
+    eq(w.svo.defc[def], true, setting .. "GMCP " .. gmcpname .. " sets " .. def)
   end
   local w = world.new({ class = "Sylvan" })
+  w.svo.conf.aillusion = aillusion
   w.gmcp_defence_add("viridian")
   w.prompt()
-  eq(w.svo.defc.viridian, nil, "today (defect 17): GMCP viridian is dropped")
-
-  -- with it off, checkaction makes the action up and lifevision claims it,
-  -- except blind's handler, which never makes one up
-  for gmcpname, def in pairs({ deafness = "deaf", speed = "speed", blocking = "block" }) do
+  eq(w.svo.defc.viridian, true, setting .. "GMCP viridian sets it")
+  for gmcpname, def in pairs({ blindness = "blind", deafness = "deaf" }) do
     w = world.new()
-    w.svo.conf.aillusion = false
+    w.svo.conf.aillusion = aillusion
     w.gmcp_defence_add(gmcpname)
     w.prompt()
-    eq(w.svo.defc[def], true, "with anti-illusion off, GMCP " .. gmcpname .. " sets " .. def .. " at the prompt")
+    eq(w.svo.defc[def], nil, setting .. "GMCP " .. gmcpname .. " leaves " .. def .. " to the prompt flags")
   end
-  w = world.new()
-  w.svo.conf.aillusion = false
-  w.gmcp_defence_add("blindness")
-  w.prompt()
-  eq(w.svo.defc.blind, nil, "today (defect 17): GMCP blindness is dropped even with anti-illusion off")
-  w = world.new()
-  w.svo.conf.aillusion = false
+end
+do -- the game does not say which way you block: svof assumes its own way
+  local w = world.new()
+  w.svo.conf.blockingdir = "n"
   w.gmcp_defence_add("blocking")
-  w.prompt()
-  eq(w.svo.dict.block.physical.blockingdir, nil,
-    "today (defect 17): got_block(true) takes the force flag for a direction and loses it")
+  eq(w.svo.dict.block.physical.blockingdir, "n", "GMCP blocking takes svof's own direction")
 end
 
--- ===== 5. A GMCP loss goes through lifevision =====
+-- ===== 5. A GMCP loss is the game's word too =====
 
--- Char.Defences.Remove calls lost_<name>(), which files the gone claim with
--- lifevision like a text line. An illusion verdict on the paragraph then
--- discards a loss the game reported (plan defect 19).
+-- Char.Defences.Remove hands the defence to defences.unconfirm, which runs
+-- its gone at once, outside lifevision. It used to file the gone claim like
+-- a text line, so an illusion verdict on the paragraph discarded a loss the
+-- game reported (defect 19, fixed).
 do
   local w = world.new()
   w.svo.defences.got("alertness")
   w.gmcp_defence_remove("alertness")
-  eq(w.svo.defc.alertness, true, "a GMCP loss waits for the prompt")
-  w.prompt()
-  eq(w.svo.defc.alertness, false, "and clears the defence there")
+  eq(w.svo.defc.alertness, false, "a GMCP loss clears the defence at once")
 
   w = world.new()
   w.svo.defences.got("alertness")
   w.gmcp_defence_remove("alertness")
   w.svo.sys.flawedillusion = true
   w.prompt()
-  eq(w.svo.defc.alertness, true, "today (defect 19): an illusion verdict discards a real GMCP loss")
+  eq(w.svo.defc.alertness, false, "and an illusion verdict on the paragraph cannot bring it back")
 end
 
 -- ===== 6. DEF =====
@@ -479,8 +494,8 @@ do
     "today (defect 23): three actions share the command apply caloric")
   eq(claimants[w.svo.sys.input_to_actions["apply caloric"].name], true, "and the server's APPLY CALORIC adopts one of them")
 
-  -- Whichever it adopts, the caloric line finishes it and caloric's
-  -- bookkeeping runs again, after the GMCP gain already ran it.
+  -- Whichever it adopts, the GMCP gain before it books nothing, and the
+  -- caloric line finishes the adopted action, recording the salve once.
   for adopted in pairs(claimants) do
     w = world.new()
     local svo = w.svo
@@ -493,7 +508,7 @@ do
     eq(w.inflight(), adopted, "adopting " .. adopted .. ": it is in flight")
     svo.defs.salve_got_caloric()               -- the game's caloric line
     w.prompt()
-    eq(salves.n, 2, "today (defect 17): adopting " .. adopted .. ", one server application spends salve balance twice")
+    eq(salves.n, 1, "adopting " .. adopted .. ", one server application spends salve balance once")
     eq(svo.defc.caloric, true, "adopting " .. adopted .. ": caloric is set")
     eq(w.inflight(), "", "adopting " .. adopted .. ": nothing is left in flight")
   end

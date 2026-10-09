@@ -1049,26 +1049,32 @@ signals.gmcpcharafflictionslist:connect(function()
 end, 'update list of gmcp affs')
 
 
+-- What the game says about a defence is not svof's command for it
+-- finishing: defences.confirm and unconfirm (Defences.lua) take the game's
+-- word, recording a balance or a puff only for a command svof really sent.
+-- Calling the line handlers here instead (got_<name>(true)) ran the raising
+-- command's completion for every gain, so svof spent balances and pipe
+-- puffs and started waits for commands it never sent. A defence this class
+-- has no record for is left alone.
+local function gmcp_defence(thisdef)
+  local def = svo.dict.sstosvod[thisdef]
+  return def and svo.defs_data[def] and def or nil
+end
+
 signals.gmcpchardefencesadd:connect(function()
   local thisdef = gmcp.Char.Defences.Add.name
   svo.gdefc[thisdef] = true
   if conf.gmcpdefechoes then svo.echof("Gained def "..thisdef) end
-  if svo.dict.sstosvod[thisdef] then
-    if type(svo.defs['got_'..svo.dict.sstosvod[thisdef]]) == 'function' then
-      svo.defs['got_'..svo.dict.sstosvod[thisdef]](true)
-    end
-  end
+  local def = gmcp_defence(thisdef)
+  if def then defences.confirm(def) end
 end, 'track gained gmcp def')
 
 signals.gmcpchardefencesremove:connect(function()
   local thisdef = gmcp.Char.Defences.Remove[1]
   svo.gdefc[thisdef] = nil
   if conf.gmcpdefechoes then svo.echof("Lost def "..thisdef) end
-  if svo.dict.sstosvod[thisdef] then
-    if type(svo.defs['lost_'..svo.dict.sstosvod[thisdef]]) == 'function' then
-      svo.defs['lost_'..svo.dict.sstosvod[thisdef]]()
-    end
-  end
+  local def = gmcp_defence(thisdef)
+  if def then defences.unconfirm(def) end
 end, 'track lost gmcp def')
 
 signals.gmcpchardefenceslist:connect(function()
@@ -1077,11 +1083,12 @@ signals.gmcpchardefenceslist:connect(function()
   for _, val in ipairs(gmcp.Char.Defences.List) do
     local thisdef = val.name
     svo.gdefc[thisdef] = true
-    if svo.dict.sstosvod[thisdef] then
-      if predefs[svo.dict.sstosvod[thisdef]] then
-        predefs[svo.dict.sstosvod[thisdef]] = false
-      elseif type(svo.defs['got_'..svo.dict.sstosvod[thisdef]]) == 'function' then
-        svo.defs['got_'..svo.dict.sstosvod[thisdef]](true)
+    local def = gmcp_defence(thisdef)
+    if def then
+      if predefs[def] then
+        predefs[def] = false
+      else
+        defences.confirm(def)
       end
     end
   end
@@ -1093,12 +1100,10 @@ signals.gmcpchardefenceslist:connect(function()
   -- svo.dict.svotossd (sstosvod reversed, built by the dictionary as it
   -- loads) is the correct gate - it exists exactly when defname is
   -- reachable from GMCP at all - and defname is already the right key for
-  -- svo.defs.
+  -- defences.unconfirm.
   for defname, val in pairs(predefs) do
-    if val == true and svo.dict.svotossd[defname] then
-      if type(svo.defs['lost_'..defname]) == 'function' then
-        svo.defs['lost_'..defname]()
-      end
+    if val == true and svo.dict.svotossd[defname] and svo.defs_data[defname] then
+      defences.unconfirm(defname)
     end
   end
 end, 'update list of defs from gmcp')

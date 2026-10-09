@@ -8,7 +8,9 @@ venom."):
    "Your insulating unguent dissolves as it ameliorates the extreme cold."
    GMCP's defence Remove arrives before that text, so caloric_gone was
    already queued ahead of the venom's unknown, and took one off a count
-   still at 0. Same for insomnia.
+   still at 0. Same for insomnia. Since GMCP's loss went through
+   defences.unconfirm, which loses the defence at once and queues nothing,
+   the controls also put the old GMCP handler back.
 2. The game revealing a hidden affliction over GMCP, with its symptom. The
    Add handler put it in affs before the symptom's line arrived, so the
    symptom triggers saw it as already known and left its ? alone. Every
@@ -90,6 +92,9 @@ local blocks = {
     .. extract(DEFENCES, "    if not defs['lost_' .. sk.sanitize(defname)] then",
       "    if not defdata.nodef and not defdata.custom_def_type then", false)
     .. "end",
+  -- defences.got and lost, and confirm and unconfirm, which the GMCP
+  -- defence handlers call
+  defences = extract(DEFENCES, "local function run_reporting(what, f, ...)", "-- custom def types like channels", false),
   absorbed = extract(TRIGGERS, "-- A defence that absorbed the hidden venom", "if svo.haveskillset('elementalism') then", false),
   remove_unknown = extract(TRIGGERS, "-- remove unknown level if the affliction from a symptom was not present before",
     "function svo.valid.loki()", false),
@@ -240,7 +245,10 @@ local function new_svof(opts)
   svo.getping = function() return 0.1 end
   svo.promptcount = 1
   local lost_defences = {}
-  svo.defences = { lost = function(name) lost_defences[#lost_defences + 1] = name end, got = function() end }
+  svo.defences = {}
+  -- both defences up, with the records the GMCP handlers look for
+  svo.defc.caloric, svo.defc.insomnia = true, true
+  svo.defs_data = { caloric = {}, insomnia = {} }
   local signals = {
     svogotaff = signal(), svolostaff = signal(), changecuring = signal(),
     after_lifevision_processing = signal(), curedwith_focus = signal(),
@@ -322,8 +330,14 @@ local function new_svof(opts)
   for gname, sname in pairs(svo.dict.sstosvoa) do svo.dict.svotossa[sname] = gname end
 
   for _, name in ipairs({"prompt", "lifevision_add", "validate", "bookkeeping", "actions",
-                         "addunknownany", "lost_defs", "gmcp", "simple_loop", "simple_unknowns"}) do
+                         "addunknownany", "defences", "lost_defs", "gmcp", "simple_loop", "simple_unknowns"}) do
     load_into(env, blocks[name], name)
+  end
+  -- record each defence lost, as the real defences.lost changes it
+  local real_lost = svo.defences.lost
+  svo.defences.lost = function(name)
+    if svo.defc[name] then lost_defences[#lost_defences + 1] = name end
+    return real_lost(name)
   end
   load_into(env, opts.old_absorbed and OLD_ABSORBED or blocks.absorbed, "absorbed")
   load_into(env, opts.old_remove and OLD_REMOVE_UNKNOWN or blocks.remove_unknown, "remove_unknown")
@@ -335,9 +349,17 @@ local function new_svof(opts)
     gmcp.Char.Afflictions.Add = { name = name }
     signals.gmcpcharafflictionsadd:emit()
   end
+  -- opts.old_gmcp: the defence handler before defences.unconfirm, which
+  -- called the generated lost_ handler and so queued the gone claim in
+  -- lifevision ahead of everything else in the paragraph
   function s.gmcp_lost_def(name)
     gmcp.Char.Defences.Remove = { name }
-    signals.gmcpchardefencesremove:emit()
+    if opts.old_gmcp then
+      svo.gdefc[name] = nil
+      svo.defs['lost_' .. svo.dict.sstosvod[name]]()
+    else
+      signals.gmcpchardefencesremove:emit()
+    end
   end
   function s.trigger(name) load_into(env, blocks["symptom_" .. name], name .. " trigger") end
   function s.prompt()
@@ -382,8 +404,12 @@ do
   eq(s.lost_defences[1], "caloric", "insulation, GMCP first: the defence is still lost")
   eq(#s.lost_defences, 1, "insulation, GMCP first: and lost once")
 
-  local old = insulation_case({ old_absorbed = true })
+  -- GMCP's loss no longer queues a claim at all (defences.unconfirm), so the
+  -- control puts the old handler back as well as the old trigger
+  local old = insulation_case({ old_absorbed = true, old_gmcp = true })
   eq(old.unknowns(), 1, "control: before the fix, the absorbed venom's ? stayed")
+  local unconfirmed = insulation_case({ old_absorbed = true })
+  eq(unconfirmed.unknowns(), 0, "with the old trigger, GMCP's loss taken at once leaves no ? either")
 end
 
 -- Two venoms, insulation absorbs one: one ? stays.
