@@ -1321,6 +1321,80 @@ do
   eq(custom.custom.rebounding, nil, "customdef: and refuses svof's own names")
 end
 
+-- For a defence the game knows, DEFENCE SHOW gives its lines and GMCP name
+-- (the reply's layout is the owner's capture, 2026-10-09)
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function game(text) w.env.line = text svo.defences.custom_fetch_line() end
+  local function listening()
+    for _, t in ipairs(w.triggers) do
+      if not t.killed and t.code == "svo.defences.custom_fetch_line()" then return true end
+    end
+    return false
+  end
+
+  cmd("shimmering")
+  eq(w.sent[#w.sent], "defence show shimmering", "DEFENCE SHOW: a new definition asks the game about it")
+  game("You snap your head up as you break your meditation.")
+  game("Defence:            Shimmering (shimmering)")
+  game("Description:        A soft shimmer that hides you from ")
+  game("prying eyes.")
+  game("DefMsg:             You are shimmering softly.")
+  game("EnactMsg:           You begin to shimmer softly, the light bending about ")
+  game("you.")
+  game("FadeMsg:            The shimmer about you fades.")
+  game("Profession:         No")
+  game("Strippable:         Yes")
+  local d = svo.defences.custom_drafts.shimmering or { on = {}, off = {} }
+  eq(d.gmcp, "shimmering", "DEFENCE SHOW: the GMCP name comes from the game")
+  eq(d.on[1], "You begin to shimmer softly, the light bending about you.",
+    "DEFENCE SHOW: EnactMsg, joined where it wrapped, is the gain line")
+  eq(d.off[1], "The shimmer about you fades.", "DEFENCE SHOW: FadeMsg the loss line")
+  eq(d.def, "You are shimmering softly.", "DEFENCE SHOW: DefMsg the DEF line")
+  eq(echoed(w, "isn't a profession defence"), true, "DEFENCE SHOW: and it passes on that it's no profession's")
+  eq(listening(), false, "DEFENCE SHOW: the trigger reading the reply is killed when it ends")
+  eq(svo.defences.custom_problem("shimmering", d), "it has no command to raise it",
+    "DEFENCE SHOW: which leaves only the command to set")
+
+  -- a reply that ends at the prompt
+  cmd("gleam")
+  game("Defence:            Gleam (gleam)")
+  game("EnactMsg:           You begin to gleam.")
+  w.env.isPrompt = function() return true end
+  game("9975h, 6252m cexkdb-")
+  w.env.isPrompt = function() return false end
+  d = svo.defences.custom_drafts.gleam or { on = {} }
+  eq(d.on[1], "You begin to gleam.", "DEFENCE SHOW: a reply cut short by the prompt counts")
+
+  -- a defence the game doesn't show
+  cmd("hush")
+  eq(w.sent[#w.sent], "defence show hush", "DEFENCE SHOW: asks about hush")
+  w.advance(10)
+  eq(echoed(w, "The game didn't show a defence called hush, so add its lines yourself."), true,
+    "DEFENCE SHOW: says when the game shows nothing")
+  eq(listening(), false, "DEFENCE SHOW: and stops reading lines")
+
+  -- a GMCP name that is one of svof's own
+  cmd("attuned gmcp alertness")
+  eq(w.sent[#w.sent], "defence show alertness", "DEFENCE SHOW: setting the GMCP name asks the game")
+  game("Defence:            Alertness (alertness)")
+  game("DefMsg:             Your senses are attuned to nearby movement.")
+  game("EnactMsg:           You prick up your ears.")
+  game("FadeMsg:            You cease your watchful alertness.")
+  game("Profession:         No")
+  game("Strippable:         Yes")
+  eq(echoed(w, "The game's alertness is Svof's own alertness, so there's no need to define it."), true,
+    "DEFENCE SHOW: one of svof's own is pointed out")
+  d = svo.defences.custom_drafts.attuned or { on = {} }
+  eq(#d.on, 0, "DEFENCE SHOW: and nothing is filled in")
+
+  -- asking again by hand
+  cmd("hush fetch hushing")
+  eq(w.sent[#w.sent], "defence show hushing", "DEFENCE SHOW: fetch asks again, by the name given")
+end
+
 do -- the phylactery is found whether its name has one space after the "a" or two
   local w = world.new()
   w.env.gmcp.Char.Items.List = { location = "inv", items = { { name = "a phylactery of sixth sense" } } }

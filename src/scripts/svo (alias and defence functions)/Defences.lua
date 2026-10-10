@@ -3735,6 +3735,10 @@ end, 'register the defences the player defined')
 --                                           serverside, gmcp or def, or add
 --                                           a got or lost line
 --   vconfig customdef <name> line <got|lost|def>  pick that line off the screen
+--   vconfig customdef <name> fetch [game name]  fill its lines from the
+--                                           game's DEFENCE SHOW, which a new
+--                                           definition and a GMCP name do
+--                                           by themselves
 --   vconfig customdef <name> test           say what it would do
 --   vconfig customdef <name> install        put it into play, and save it
 --   vconfig customdef <name> delete         take it out
@@ -3787,6 +3791,10 @@ local function custom_draft(name)
     end
     if defences.custom_taken(name) then return nil, "Svof already has a defence or action called " .. name end
     d = { class = tostring(me.class):lower(), on = {}, off = {} }
+    defences.custom_drafts[name] = d
+    -- if the game knows it by this name, its lines come from the game
+    defences.custom_fetch(name, name)
+    return d
   end
   defences.custom_drafts[name] = d
   return d
@@ -3826,11 +3834,18 @@ function defences.custom_show(name)
     end
     echo(string.format("  %-12s %s", #lines == 0 and which[3] or "", #lines == 0 and "(no line)  " or ""))
     custom_link("add a line from the screen", string.format("svo.defences.custom_capture(%q, %q)", name, which[2]), "Pick the line from what's on screen")
+    echo("  ")
+    custom_link("type one", string.format("printCmdLine(%q)", cmd .. which[2] .. " "), "Type or paste the line")
     echo("\n")
   end
   echo(string.format("  %-12s %s  ", "DEF shows:", d.def or "(no line)"))
   custom_link("pick from the screen", string.format("svo.defences.custom_capture(%q, 'def')", name), "Pick the line from what's on screen")
+  echo("  ")
+  custom_link("type it", string.format("printCmdLine(%q)", cmd .. "def "), "Type or paste the line")
   echo("\n  ")
+  custom_link("get its lines from the game", string.format("svo.defences.custom_fetch(%q, %q)", name, d.gmcp or name),
+    "Ask the game with DEFENCE SHOW")
+  echo("  ")
   custom_link("test", string.format("svo.defences.custom_test(%q)", name), "Say what it would do")
   echo("  ")
   custom_link("install", string.format("svo.defences.custom_install(%q)", name), "Put it into play")
@@ -3860,6 +3875,12 @@ function defences.custom_set(name, field, value)
     d[field] = svo.convert_string(value) and true or nil
   elseif field == 'gmcp' then
     d.gmcp = (value ~= '' and value:lower() ~= 'none') and value or nil
+    -- the game shows the defence it reports by that name
+    if d.gmcp then
+      defences.custom_show(name)
+      defences.custom_fetch(name, d.gmcp)
+      return
+    end
   elseif field == 'got' or field == 'lost' then
     if value == '' then svo.echof("Which line says you %s %s?", field == 'got' and "gained" or "lost", name) return end
     local lines = d[field == 'got' and 'on' or 'off']
@@ -3895,6 +3916,96 @@ function defences.custom_capture(name, which)
       custom_link(line, string.format("svo.defences.custom_set(%q, %q, %q)", name, which, line), "Use this line")
       echo("\n")
     end
+  end
+end
+
+-- The game's own record of a defence it knows, the ones GMCP reports.
+-- DEFENCE SHOW <name> prints this (the owner's capture, 2026-10-09):
+--   Defence:            Alertness (alertness)
+--   Description:        Alertness allows you to see when people move into rooms
+--   around you.
+--   DefMsg:             Your senses are attuned to nearby movement.
+--   EnactMsg:           You prick up your ears.
+--   FadeMsg:            You cease your watchful alertness.
+--   Profession:         No
+--   Strippable:         Yes
+-- with a long value carried onto the next line. custom_fetch sends it and
+-- fills the draft's empty parts from the reply: the name in brackets as its
+-- GMCP name, EnactMsg as a gain line, FadeMsg as a loss line, and DefMsg as
+-- its DEF line. A defence the game doesn't show keeps the player's lines.
+local fetching = {}
+local fetch_labels = { Description = true, DefMsg = true, EnactMsg = true, FadeMsg = true,
+  Profession = true, Strippable = true }
+local fetch_wraps = { Description = true, DefMsg = true, EnactMsg = true, FadeMsg = true }
+
+local function fetch_stop()
+  if fetching.trigger then killTrigger(fetching.trigger) end
+  if fetching.timer then killTimer(fetching.timer) end
+  fetching = {}
+end
+
+local function fetch_done()
+  local name, asked, f = fetching.name, fetching.keyword, fetching.fields
+  fetch_stop()
+  local d = name and defences.custom_drafts[name]
+  if not (f and d) then return end
+  local function value(label) return f[label] and f[label]:match("^%s*(.-)%s*$") or "" end
+  local gmcpname = f.keyword or asked
+  local mapped = svo.dict.sstosvod[gmcpname]
+  if mapped and mapped ~= name then
+    svo.echof("The game's %s is Svof's own %s, so there's no need to define it.", gmcpname, mapped)
+    return
+  end
+  if not d.gmcp then d.gmcp = gmcpname end
+  local on, off, def = value('EnactMsg'), value('FadeMsg'), value('DefMsg')
+  if on ~= '' and not table.contains(d.on, on) then d.on[#d.on + 1] = on end
+  if off ~= '' and not table.contains(d.off, off) then d.off[#d.off + 1] = off end
+  if def ~= '' and not d.def then d.def = def end
+  svo.echof("Filled in %s from the game's DEFENCE SHOW %s.", name, gmcpname)
+  if value('Profession'):lower() == 'no' and d.class ~= 'all' then
+    svo.echof("The game says it isn't a profession defence. If every class can have it, use vconfig customdef %s class all.", name)
+  end
+  defences.custom_show(name)
+end
+
+function defences.custom_fetch(name, keyword)
+  if type(keyword) ~= 'string' or not keyword:find("%S") then return end
+  fetch_stop()
+  fetching = { name = name, keyword = keyword:lower() }
+  fetching.trigger = tempRegexTrigger("^", "svo.defences.custom_fetch_line()")
+  fetching.timer = tempTimer(5 + svo.getping(), function()
+    fetching.timer = nil
+    if fetching.fields then fetch_done() return end
+    svo.echof("The game didn't show a defence called %s, so add its lines yourself.", tostring(fetching.keyword))
+    fetch_stop()
+  end)
+  send("defence show " .. fetching.keyword, conf.commandecho)
+end
+
+-- every line while a fetch waits: the reply starts at its Defence: line
+-- and ends at Strippable: or the prompt
+function defences.custom_fetch_line()
+  if not fetching.name then return end
+  if isPrompt and isPrompt() then
+    if fetching.fields then fetch_done() end
+    return
+  end
+  local text = line
+  local label, rest = text:match("^(%a+):%s+(.*)$")
+  if not fetching.fields then
+    if label == 'Defence' then
+      local keyword = rest:match("%((%S+)%)%s*$")
+      fetching.fields = { keyword = keyword and keyword:lower() }
+    end
+    return
+  end
+  if label and fetch_labels[label] then
+    fetching.fields[label] = rest
+    fetching.last = label
+    if label == 'Strippable' then fetch_done() end
+  elseif fetching.last and fetch_wraps[fetching.last] then
+    local prev = fetching.fields[fetching.last]
+    fetching.fields[fetching.last] = prev .. (prev:find("%s$") and "" or " ") .. text
   end
 end
 
@@ -4035,6 +4146,14 @@ function defences.customdef_command(rest)
   if verb == 'install' then return defences.custom_install(name) end
   if verb == 'delete' then return defences.custom_delete(name) end
   if verb == 'line' then return defences.custom_capture(name, value:lower()) end
+  if verb == 'fetch' then
+    local d, why = custom_draft(name)
+    if not d then
+      svo.echof("<250,0,0>Can't%s define %s: %s.", svo.getDefaultColor(), name, why)
+      return
+    end
+    return defences.custom_fetch(name, value ~= '' and value or d.gmcp or name)
+  end
   return defences.custom_set(name, verb, value)
 end
 
