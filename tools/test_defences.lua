@@ -1662,6 +1662,30 @@ do -- a defence two classes have is hidden in the group this class has it in
     true, "hide list: it's listed under Necromancy")
 end
 
+do -- the groups come in the class's order: Lua 5.1's pairs() gave a Monk
+  -- Kaido, Shikudo, Telepathy, Tekura
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local text = {}
+  w.env.decho = function(s) text[#text + 1] = tostring(s) end
+  local echof = svo.echof
+  svo.echof = function(fmt, ...) text[#text + 1] = string.format(fmt, ...) .. "\n" end
+  svo.showprompt = function() end
+  local function headings(s, pattern)
+    local found = {}
+    for name in s:gmatch(pattern) do found[#found + 1] = name end
+    return table.concat(found, ", ")
+  end
+  svo.show_defup()
+  eq(headings(table.concat(text), "(%a+) defences:"), "Tekura, Kaido, Telepathy, Shikudo",
+    "defence lists: a Monk's skillsets in the order svof lists the class")
+  text = {}
+  svo.showhidelist()
+  eq(headings(table.concat(text), "(%a+) defences:"), "General, Tekura, Kaido, Telepathy, Shikudo, Dragoncraft",
+    "hide list: general first, then the class's skillsets, then the rest")
+  svo.echof = echof
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end

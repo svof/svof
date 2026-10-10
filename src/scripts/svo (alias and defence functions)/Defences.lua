@@ -4444,6 +4444,28 @@ svo.process_defs = function ()
   tempTimer(0, defs.defprompt)
 end
 
+-- the groups of defences this class has, in the order the defence lists
+-- show them: general, then the class's skillsets in the order svof lists
+-- them, then any other by name. pairs() gave an order no one chose
+function defences.group_order()
+  local order, seen = {}, {}
+  local function add(group)
+    if defences.def_types[group] and not seen[group] then
+      order[#order+1] = group
+      seen[group] = true
+    end
+  end
+  add('general')
+  for _, skillset in ipairs(svo.knownskills[me.class:lower()] or {}) do add(skillset) end
+  local rest = {}
+  for group in pairs(defences.def_types) do
+    if not seen[group] then rest[#rest+1] = group end
+  end
+  table.sort(rest)
+  for _, group in ipairs(rest) do add(group) end
+  return order
+end
+
 -- prints out a def table
 local function show_defs(tbl, linkcommand, cmdname)
   local count = 1
@@ -4576,8 +4598,8 @@ local function show_defs(tbl, linkcommand, cmdname)
     show_em('dragoncraft', defences.def_types.dragoncraft)
   else
 
-    for skillset,s in pairs(defences.def_types) do
-      if skillset ~= 'general' and skillset ~= 'dragoncraft' then show_em (skillset, s) end
+    for _, skillset in ipairs(defences.group_order()) do
+      if skillset ~= 'general' and skillset ~= 'dragoncraft' then show_em (skillset, defences.def_types[skillset]) end
     end
   end
 
@@ -4757,9 +4779,9 @@ function svo.showhidelist()
   show_em('general', sk.ignored_defences.general)
 
   local function f()
-    for j,k in pairs(sk.ignored_defences) do
-      -- only the groups this class has
-      if j ~= 'general' and defences.def_types[j] then show_em (j, k) end
+    -- only the groups this class has, in order
+    for _, j in ipairs(defences.group_order()) do
+      if j ~= 'general' and sk.ignored_defences[j] then show_em (j, sk.ignored_defences[j]) end
     end
   end
 
