@@ -3651,8 +3651,10 @@ end, 'setup def triggers on system start')
 --   balanceless  true when raising it takes no balance
 --   on, off      the exact lines saying you gained it and lost it
 --   def          the exact line DEF shows for it
---   gmcp         its name over GMCP, which is its serverside name as well
---   serverside   true when serverside may raise it; svof does otherwise
+--   gmcp         its name over GMCP, which is its serverside name as well.
+--                With one, serverside raises it while serverside is on,
+--                and svof does otherwise, unless vshow server leaves it to
+--                svof; without one, only svof can (the user, 2026-10-10)
 -- A name svof already uses is refused, and a definition that fails to
 -- register is reported and skipped. vconfig customdefinitions off loads
 -- none, for a definition that has broken curing.
@@ -3697,7 +3699,7 @@ function defences.custom_register(name, spec)
       error(string.format("GMCP's %s is already Svof's %s", spec.gmcp, mapped), 0)
     end
   end
-  svo.basicdef(name, spec.command, spec.balanceless, spec.gmcp, not spec.serverside)
+  svo.basicdef(name, spec.command, spec.balanceless, spec.gmcp, not spec.gmcp)
   if spec.gmcp then
     svo.dict.sstosvod[spec.gmcp] = name
     svo.dict.svotossd[name] = spec.gmcp
@@ -3735,8 +3737,8 @@ end, 'register the defences the player defined')
 --   vcustomdef game                  the game's defences Svof doesn't know,
 --                                    from DEFENCE LIST
 --   vcustomdef <name>                show one, starting it if new
---   vcustomdef <name> <field> <text> set class, command, balanceless,
---                                    serverside, gmcp or def, or add a got
+--   vcustomdef <name> <field> <text> set class, skillset, command,
+--                                    balanceless, gmcp or def, or add a got
 --                                    or lost line
 --   vcustomdef <name> line <got|lost|def>  pick that line off the screen
 --   vcustomdef <name> fetch [game name]  fill its lines from the game's
@@ -3826,6 +3828,29 @@ local function custom_link(text, code, hint)
   setUnderline(false)
 end
 
+-- what serverside does about a definition: it knows a defence by its GMCP
+-- name, so raises one with a GMCP name while serverside is on, unless
+-- vshow server leaves it to Svof
+local function custom_serverside(name, d)
+  if not d.gmcp then return "can't raise it without a GMCP name, so Svof does" end
+  local installed = defences.custom[name]
+  if installed and installed.gmcp and not svo.serverignore[name] then return "leaves it to Svof" end
+  return "raises it while serverside is on, and Svof otherwise"
+end
+
+-- tells serverside to stop raising a definition, by the name it knows it
+-- by, in both curing sets: once the definition is gone or renamed, svof's
+-- next sync of priorities can't name it
+local function custom_server_forget(name)
+  if not (conf.serverside and svo.serverignore[name] and svo.dict[name] and svo.dict[name].physical) then return end
+  sk.priochangecache = sk.priochangecache or {}
+  sk.priochangecache.physical = sk.priochangecache.physical or {}
+  sk.priochangecache.slowcuring = sk.priochangecache.slowcuring or {}
+  sk.priochangecache.slowcuring.physical = sk.priochangecache.slowcuring.physical or {}
+  sk.sendpriorityignore(name, 'physical', {}, {}, sk.priochangecache.physical, false)
+  sk.sendpriorityignore(name, 'physical', {}, {}, sk.priochangecache.slowcuring.physical, true)
+end
+
 function defences.custom_show(name)
   local d, why = custom_draft(name)
   if not d then
@@ -3856,8 +3881,13 @@ function defences.custom_show(name)
   end
   row("command:", d.command or "(not set)", "command")
   row("balance:", d.balanceless and "takes none" or "takes balance", "balanceless")
-  row("serverside:", d.serverside and "may raise it" or "doesn't; Svof does", "serverside")
   row("GMCP name:", d.gmcp or "(not set)", "gmcp")
+  echo(string.format("  %-12s %s", "serverside:", custom_serverside(name, d)))
+  if d.gmcp and defences.custom_registered[name] then
+    echo("  ")
+    custom_link("vshow server", "svo.showserverside()", "Choose whether serverside or Svof raises it")
+  end
+  echo("\n")
   for _, which in ipairs({ { 'on', 'got', "gained when:" }, { 'off', 'lost', "lost when:" } }) do
     local lines = d[which[1]]
     for i, line in ipairs(lines) do
@@ -3914,8 +3944,11 @@ function defences.custom_set(name, field, value)
   elseif field == 'command' then
     if value == '' then svo.echof("What does Svof send to raise %s?", name) return end
     d.command = value
-  elseif field == 'balanceless' or field == 'serverside' then
-    d[field] = svo.convert_string(value) and true or nil
+  elseif field == 'balanceless' then
+    d.balanceless = svo.convert_string(value) and true or nil
+  elseif field == 'serverside' then
+    svo.echof("Serverside raises a defence by its GMCP name, so give %s one and it does while serverside is on. vshow server can leave it to Svof.", name)
+    return
   elseif field == 'gmcp' then
     d.gmcp = (value ~= '' and value:lower() ~= 'none') and value or nil
     -- the game shows the defence it reports by that name
@@ -3931,7 +3964,7 @@ function defences.custom_set(name, field, value)
   elseif field == 'def' then
     d.def = value ~= '' and value or nil
   else
-    svo.echof("A definition has class, skillset, command, balanceless, serverside, gmcp, got, lost and def; %s isn't one.", field)
+    svo.echof("A definition has class, skillset, command, balanceless, gmcp, got, lost and def; %s isn't one.", field)
     return
   end
   defences.custom_show(name)
@@ -4212,9 +4245,8 @@ function defences.custom_test(name)
   svo.echof("%s, for %s, %s:", name, d.class == 'all' and "every class" or tostring(d.class),
     d.class == 'all' and "in the main defence list" or d.skillset and ("under " .. d.skillset:title())
     or "under no skillset yet")
-  svo.echof("Svof raises it by sending %q, which %s, and %s.", tostring(d.command),
-    d.balanceless and "takes no balance" or "takes balance",
-    d.serverside and "serverside may do too" or "serverside leaves to Svof")
+  svo.echof("Svof raises it by sending %q, which %s. Serverside %s.", tostring(d.command),
+    d.balanceless and "takes no balance" or "takes balance", custom_serverside(name, d))
   svo.echof("It knows it's up from %s.", #on > 0 and string.format("%d line%s", #on, #on == 1 and "" or "s")
     .. (d.gmcp and (" and GMCP's " .. d.gmcp) or "") or ("GMCP's " .. tostring(d.gmcp)))
   svo.echof("It knows it's gone from %s.", #off > 0 and string.format("%d line%s", #off, #off == 1 and "" or "s")
@@ -4235,13 +4267,24 @@ function defences.custom_install(name)
     svo.echof("<250,0,0>Can't%s install %s: %s.", svo.getDefaultColor(), name, problem)
     return false
   end
+  local had = defences.custom[name]
   if defences.custom_registered[name] then
+    if had and had.gmcp ~= d.gmcp then custom_server_forget(name) end
     defences.unregister(name, true)
     defences.custom_registered[name] = nil
   end
   defences.custom[name] = d
   defences.custom_drafts[name] = nil
   defences.custom_save()
+
+  -- serverside raises one with a GMCP name, as it does svof's own, from
+  -- when it first has one, until vshow server says otherwise. Without one
+  -- it can't, and left to serverside nothing would raise it
+  if d.gmcp and not (had and had.gmcp) then
+    svo.setserverignore(name)
+  elseif not d.gmcp and svo.serverignore[name] then
+    svo.unsetserverignore(name)
+  end
 
   if not conf.customdefinitions then
     svo.echof("Saved %s. vconfig customdefinitions is off, so Svof doesn't add it.", name)
@@ -4264,12 +4307,14 @@ function defences.custom_delete(name)
     return
   end
   if defences.custom_registered[name] then
+    custom_server_forget(name)
     defences.unregister(name)
     defences.custom_registered[name] = nil
   end
   defences.custom[name] = nil
   defences.custom_drafts[name] = nil
   defences.custom_save()
+  if svo.serverignore[name] then svo.unsetserverignore(name) end
   svo.echof("Deleted %s.", name)
 end
 

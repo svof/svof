@@ -1181,10 +1181,10 @@ do
   eq(rec and rec.type, "custom", "custom defences: as a Monk, shimmer is registered; saved without a skillset, in a group of its own")
   eq(entry and entry.physical.action, "shimmer on", "custom defences: raised with its command")
   eq(entry and entry.physical.balanceful_act, true, "custom defences: taking balance unless balanceless")
-  eq(entry and entry.physical.undeffable, true, "custom defences: and raised by svof, not serverside, unless it says so")
+  eq(entry and entry.physical.undeffable, nil, "custom defences: with a GMCP name, serverside may raise it")
   local warded = svo.dict.warded and svo.dict.warded.physical or {}
   eq(warded.balanceless_act, true, "custom defences: warded takes no balance")
-  eq(warded.undeffable, nil, "custom defences: and serverside may raise it")
+  eq(warded.undeffable, true, "custom defences: and has no GMCP name, so only svof raises it, whatever the file says")
   eq(svo.dict.sstosvod.shimmering, "shimmer", "custom defences: GMCP's shimmering is shimmer")
   eq(entry and entry.gamename, "shimmering", "custom defences: and so is the serverside name")
   eq(svo.defdefup.basic.shimmer, true, "custom defences: the saved defup choice is kept")
@@ -1402,6 +1402,88 @@ do
   w.env.lfs.attributes, w.env.table.load = old_attributes, old_load
   eq(svo.defs_data.veil and svo.defs_data.veil.type, "general", "customdef: import installs what it can")
   eq(custom.custom.rebounding, nil, "customdef: and refuses svof's own names")
+end
+
+-- Serverside knows a defence by its GMCP name, so it raises a defined one
+-- with a GMCP name while serverside is on, and svof does otherwise, unless
+-- vshow server leaves it to svof (the user, 2026-10-10)
+do
+  local w = world.new({ class = "Monk", paused = false })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local told = {}
+  svo.sendcuringprio = function(prio, kind, slow) told[#told + 1] = kind .. " " .. prio .. (slow and " (slow)" or "") end
+
+  cmd("shimmer skillset tekura")
+  cmd("shimmer command shimmer on")
+  cmd("shimmer got You begin to shimmer.")
+  cmd("shimmer gmcp shimmering")
+  cmd("shimmer install")
+  eq(svo.serverignore.shimmer, true, "serverside: with a GMCP name, a definition is serverside's to raise")
+  local listed = false
+  for _, a in ipairs(svo.sk.getallserversideactions()) do if a == "shimmer" then listed = true end end
+  eq(listed, true, "serverside: and vshow server lists it")
+  svo.sk.sendpriorityswitch("shimmer", "physical", {}, { shimmer = 4 }, {}, false)
+  eq(told[#told], "defence shimmering 4", "serverside: its priority goes to the server by its GMCP name")
+
+  -- on keepup: with serverside on svof leaves it, with it off svof raises it
+  svo.conf.keepup = true
+  svo.defkeepup.basic.shimmer = true
+  svo.conf.serverside = true
+  w.prompt()
+  eq(w.inflight(), "", "serverside: while serverside is on, svof doesn't raise it")
+  svo.conf.serverside = false
+  w.prompt()
+  eq(w.inflight(), "shimmer_physical", "serverside: while it's off, svof does")
+  svo.killaction(svo.dict.shimmer.physical)
+  svo.defkeepup.basic.shimmer = false
+
+  -- vshow server leaving it to svof lasts through installing again
+  svo.unsetserverignore("shimmer")
+  cmd("shimmer command shimmer up")
+  cmd("shimmer install")
+  eq(svo.serverignore.shimmer, nil, "serverside: leaving it to svof in vshow server lasts through a reinstall")
+  cmd("shimmer test")
+  eq(echoed(w, "Serverside leaves it to Svof."), true, "serverside: and test says so")
+  svo.setserverignore("shimmer")
+
+  -- deleting it tells the server, in both curing sets, while svof still
+  -- knows the name
+  svo.conf.serverside = true
+  svo.defkeepup.basic.shimmer = true -- so the priority snapshots have it
+  told = {}
+  local events = #w.events
+  cmd("shimmer delete")
+  eq(table.concat(told, ", "), "defence shimmering reset, defence shimmering reset (slow)",
+    "serverside: deleting one tells the server to stop raising it")
+  eq(svo.serverignore.shimmer, nil, "serverside: and forgets it in vshow server")
+  local changed = {}
+  for i = events + 1, #w.events do
+    local e = w.events[i]
+    if e.name == "svo prio changed" and e.args[1] == "shimmer" then changed[#changed + 1] = tostring(e.args[2]) end
+  end
+  eq(table.concat(changed, ", "), "", "serverside: and raises no priority change for an action that's gone")
+
+  -- taking away its GMCP name does the same, and leaves it to svof
+  cmd("murk skillset kaido")
+  cmd("murk command murk")
+  cmd("murk got A murk gathers about you.")
+  cmd("murk gmcp murky")
+  cmd("murk install")
+  told = {}
+  cmd("murk gmcp none")
+  cmd("murk install")
+  eq(table.concat(told, ", "), "defence murky reset, defence murky reset (slow)",
+    "serverside: a definition losing its GMCP name is taken off the server's list")
+  eq(svo.serverignore.murk, nil, "serverside: and is svof's to raise")
+  eq(svo.dict.murk and svo.dict.murk.physical.undeffable, true, "serverside: which serverside can't now")
+  cmd("murk")
+  eq(echoed(w, "can't raise it without a GMCP name, so Svof does"), true,
+    "serverside: as the definition says")
+
+  cmd("murk serverside yes")
+  eq(echoed(w, "Serverside raises a defence by its GMCP name, so give murk one"), true,
+    "serverside: there's no serverside switch; the GMCP name decides")
 end
 
 -- For a defence the game knows, DEFENCE SHOW gives its lines and GMCP name
