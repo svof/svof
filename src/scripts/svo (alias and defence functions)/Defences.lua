@@ -3290,15 +3290,12 @@ function defences.raising_balance(def, inflight)
   return raising[1] or other[1]
 end
 
--- Everything svof makes from one defence record: its temp triggers, its
--- handlers, its place in the defence lists and the defup and keepup slots.
--- systemstart runs it for every record.
-function defences.wire(defname, defdata)
-    -- sort into def types if applicable
-    if defdata.custom_def_type then
-      defences.custom_types[defdata.custom_def_type] = defences.custom_types[defdata.custom_def_type] or {}
-      defences.custom_types[defdata.custom_def_type][defname] = true
-    end
+-- The temp triggers for a defence record's lines, remembered by defence
+-- (defences.triggers_of), so that they can be killed and made again when
+-- the lines change: a definition installed again, or a change to svof's
+-- own defence.
+function defences.wire_triggers(defname, defdata)
+    local first = #svo.defencetemptriggers + 1
 
     if defdata.onr and type(defdata.onr) == 'table' then
       for _, pattern in ipairs(defdata.onr) do
@@ -3368,6 +3365,24 @@ function defences.wire(defname, defdata)
     elseif defdata.defr then
       svo.defencetemptriggers[#svo.defencetemptriggers+1] = tempRegexTrigger(defdata.defr, 'svo.defs.def_' .. sk.sanitize(defname) .. '()')
     end
+
+    defences.triggers_of[defname] = {}
+    for i = first, #svo.defencetemptriggers do
+      defences.triggers_of[defname][#defences.triggers_of[defname] + 1] = svo.defencetemptriggers[i]
+    end
+end
+
+-- Everything svof makes from one defence record: its temp triggers, its
+-- handlers, its place in the defence lists and the defup and keepup slots.
+-- systemstart runs it for every record.
+function defences.wire(defname, defdata)
+    -- sort into def types if applicable
+    if defdata.custom_def_type then
+      defences.custom_types[defdata.custom_def_type] = defences.custom_types[defdata.custom_def_type] or {}
+      defences.custom_types[defdata.custom_def_type][defname] = true
+    end
+
+    defences.wire_triggers(defname, defdata)
 
     if not defs['got_' .. defname] then
       if svo.dict[defname] then
@@ -3515,6 +3530,10 @@ function defences.register(name, record, entry)
   -- notify any prio diffs
   sk.notifypriodiffs(beforestate, sk.getafterstateprios())
 
+  -- an item's defence registers after systemstart put the player's changes
+  -- to svof's own into play, so its change goes in here
+  defences.edit_put(name)
+
   -- what systemstart restored from the saved settings, which wire resets
   local saved = {}
   for mode in pairs(defdefup) do saved[mode] = { defdefup[mode][name], defkeepup[mode] and defkeepup[mode][name] } end
@@ -3525,13 +3544,8 @@ function defences.register(name, record, entry)
   local existing = {}
   for h in pairs(defs) do existing[h] = true end
 
-  -- its triggers, for defences.unregister
-  local first = #svo.defencetemptriggers + 1
+  -- (wire remembers its triggers, for defences.unregister)
   defences.wire(name, defs_data[name])
-  defences.triggers_of[name] = {}
-  for i = first, #svo.defencetemptriggers do
-    defences.triggers_of[name][#defences.triggers_of[name] + 1] = svo.defencetemptriggers[i]
-  end
 
   defences.generated = defences.generated or {}
   for h in pairs(defs) do
@@ -3604,7 +3618,9 @@ signals.systemstart:connect(function ()
  
   --organise tempTriggers in a table to delete on class change
   svo.defencetemptriggers = svo.defencetemptriggers or {}
- 
+  -- and by defence, for the ones made below
+  defences.triggers_of = {}
+
   -- create blank defup modes
   for k,_ in pairs(defdefup_t) do
     defdefup[k] = defdefup[k] or {}
@@ -3619,6 +3635,10 @@ signals.systemstart:connect(function ()
   for name in pairs(defences.generated or {}) do defs[name] = nil end
   local existing = {}
   for name in pairs(defs) do existing[name] = true end
+
+  -- the player's changes to svof's own defences, so the triggers below are
+  -- made from their lines
+  defences.edits_start()
 
   for defname, defdata in defs_data:iter() do
     defences.wire(defname, defdata)
@@ -3667,9 +3687,11 @@ end, 'setup def triggers on system start')
 --                With one, serverside raises it while serverside is on,
 --                and svof does otherwise, unless vshow server leaves it to
 --                svof; without one, only svof can (the user, 2026-10-10)
--- A name svof already uses is refused, and a definition that fails to
--- register is reported and skipped. vconfig customdefinitions off loads
--- none, for a definition that has broken curing.
+-- A name svof already uses is refused (vcustomdef with the name of one of
+-- svof's own defences changes that instead, further down), and a
+-- definition that fails to register is reported and skipped. vconfig
+-- customdefinitions off loads none, for a definition that has broken
+-- curing.
 local custom_path = getMudletHomeDir() .. "/svo/custom/defs"
 
 function defences.custom_load()
@@ -3724,8 +3746,9 @@ end
 
 signals.systemstart:connect(function ()
   defences.custom_registered = {}
-  if not conf.customdefinitions then return end
+  -- read whether or not they're added, for vcustomdef to list and change
   if not defences.custom then defences.custom_load() end
+  if not conf.customdefinitions then return end
 
   local names = {}
   for name, spec in pairs(defences.custom) do
@@ -3759,6 +3782,8 @@ end, 'register the defences the player defined')
 --   vcustomdef <name> test           say what it would do
 --   vcustomdef <name> install        put it into play, and save it
 --   vcustomdef <name> delete         take it out
+--   vcustomdef <svof's name> ...     the same, changing svof's own defence
+--   vcustomdef <svof's name> reset   put svof's own back
 --   vcustomdef export [file], import <file>
 -- Changes go to a draft, kept until Svof reloads; only install changes play.
 defences.custom_drafts = defences.custom_drafts or {}
@@ -3864,6 +3889,8 @@ local function custom_server_forget(name)
 end
 
 function defences.custom_show(name)
+  -- one of svof's own is changed rather than defined
+  if defences.is_own(name) then return defences.edit_show(name) end
   local d, why = custom_draft(name)
   if not d then
     svo.echof("<250,0,0>Can't%s define %s: %s.", svo.getDefaultColor(), name, why)
@@ -3930,6 +3957,7 @@ function defences.custom_show(name)
 end
 
 function defences.custom_set(name, field, value)
+  if defences.is_own(name) then return defences.edit_set(name, field, value) end
   local d, why = custom_draft(name)
   if not d then
     svo.echof("<250,0,0>Can't%s define %s: %s.", svo.getDefaultColor(), name, why)
@@ -3983,6 +4011,7 @@ function defences.custom_set(name, field, value)
 end
 
 function defences.custom_unset(name, which, i)
+  if defences.is_own(name) then return defences.edit_unset(name, which, i) end
   local d = custom_draft(name)
   if d and d[which] then table.remove(d[which], i) end
   defences.custom_show(name)
@@ -4039,7 +4068,8 @@ end
 local function fetch_done()
   local name, asked, f = fetching.name, fetching.keyword, fetching.fields
   fetch_stop()
-  local d = name and defences.custom_drafts[name]
+  -- a definition's draft, or a change being made to svof's own
+  local d = name and (defences.custom_drafts[name] or defences.edit_drafts[name])
   if not (f and d) then return end
   local function value(label) return f[label] and f[label]:match("^%s*(.-)%s*$") or "" end
   local gmcpname = f.keyword or asked
@@ -4052,8 +4082,15 @@ local function fetch_done()
   local on, off, def = value('EnactMsg'), value('FadeMsg'), value('DefMsg')
   if on ~= '' and not table.contains(d.on, on) then d.on[#d.on + 1] = on end
   if off ~= '' and not table.contains(d.off, off) then d.off[#d.off + 1] = off end
-  if def ~= '' and not d.def then d.def = def end
+  -- a change's DEF lines are a list
+  if def ~= '' and type(d.def) == 'table' then
+    if not table.contains(d.def, def) then d.def[#d.def + 1] = def end
+  elseif def ~= '' and not d.def then
+    d.def = def
+  end
   svo.echof("Filled in %s from the game's DEFENCE SHOW %s.", name, gmcpname)
+  -- svof's own keeps its class
+  if d == defences.edit_drafts[name] then return defences.custom_show(name) end
   local profession = value('Profession'):lower()
   local chosen = class_chosen[name] or defences.custom[name]
   if profession == 'no' and not chosen then d.class = 'all' end
@@ -4250,6 +4287,7 @@ function defences.custom_gamelist_line()
 end
 
 function defences.custom_test(name)
+  if defences.is_own(name) then return defences.edit_test(name) end
   local d = defences.custom_drafts[name] or defences.custom[name]
   if not d then svo.echof("You haven't defined %s.", name) return end
   local on = type(d.on) == 'string' and { d.on } or d.on or {}
@@ -4272,6 +4310,7 @@ function defences.custom_test(name)
 end
 
 function defences.custom_install(name)
+  if defences.is_own(name) then return defences.edit_install(name) end
   local d = defences.custom_drafts[name] or (defences.custom[name] and custom_copy(defences.custom[name]))
   if not d then svo.echof("You haven't defined %s.", name) return false end
   local problem = defences.custom_problem(name, d)
@@ -4314,6 +4353,11 @@ function defences.custom_install(name)
 end
 
 function defences.custom_delete(name)
+  -- for one of svof's own, delete is reset, unless it names a definition
+  -- saved for a class that doesn't have svof's
+  if not (defences.custom[name] or defences.custom_drafts[name]) and defences.is_own(name) then
+    return defences.edit_reset(name)
+  end
   if not (defences.custom[name] or defences.custom_drafts[name]) then
     svo.echof("You haven't defined %s.", name)
     return
@@ -4332,10 +4376,16 @@ end
 
 function defences.custom_export(path)
   path = (path and path ~= '') and path or (getMudletHomeDir() .. "/svo/custom/defs-export")
-  local n = 0
-  for _ in pairs(defences.custom) do n = n + 1 end
-  svo.tablesave(path, defences.custom)
-  svo.echof("Saved the %d defence%s you defined to %s.", n, n == 1 and "" or "s", path)
+  local t, n, c = {}, 0, 0
+  for name, spec in pairs(defences.custom) do t[name] = spec n = n + 1 end
+  -- the changes to svof's own go too, under a key no name can be
+  for _, names in pairs(defences.edits or {}) do
+    for _ in pairs(names) do c = c + 1 end
+  end
+  if c > 0 then t._changes = defences.edits end
+  svo.tablesave(path, t)
+  svo.echof("Saved the %d defence%s you defined%s to %s.", n, n == 1 and "" or "s",
+    c > 0 and string.format(" and %d change%s to Svof's own", c, c == 1 and "" or "s") or "", path)
 end
 
 function defences.custom_import(path)
@@ -4351,17 +4401,20 @@ function defences.custom_import(path)
   end
   local names = {}
   for name, spec in pairs(t) do
-    if type(name) == 'string' and type(spec) == 'table' then names[#names + 1] = name end
+    if type(name) == 'string' and name ~= '_changes' and type(spec) == 'table' then names[#names + 1] = name end
   end
   table.sort(names)
   for _, name in ipairs(names) do
     if defences.custom[name] then
       svo.echof("You already have %s, so the one in %s isn't used.", name, path)
+    elseif defences.is_own(name) then
+      svo.echof("Svof has its own %s, so the one in %s isn't used.", name, path)
     else
       defences.custom_drafts[name] = custom_copy(t[name])
       if not defences.custom_install(name) then defences.custom_drafts[name] = nil end
     end
   end
+  if type(t._changes) == 'table' then defences.edits_import(t._changes, path) end
 end
 
 -- vcustomdef or vcustomdef list: every definition, a link to show and change
@@ -4391,8 +4444,9 @@ function defences.customdef_menu()
       echo("\n")
     end
   end
+  defences.edits_menu()
   echo("  ")
-  custom_link("define a new one", "printCmdLine('vcustomdef ')", "Type its name")
+  custom_link("define a new one", "printCmdLine('vcustomdef ')", "Type its name, or one of Svof's to change it")
   echo("  ")
   custom_link("see the game's defences Svof doesn't know", "svo.defences.custom_gamelist()", "Compare with DEFENCE LIST")
   echo("\n")
@@ -4414,8 +4468,14 @@ function defences.customdef_command(rest)
   if verb == 'test' then return defences.custom_test(name) end
   if verb == 'install' then return defences.custom_install(name) end
   if verb == 'delete' then return defences.custom_delete(name) end
+  if verb == 'reset' then
+    if defences.is_own(name) then return defences.edit_reset(name) end
+    svo.echof("reset puts back a defence of Svof's own that you changed, and %s isn't one. delete takes out one you defined.", name)
+    return
+  end
   if verb == 'line' then return defences.custom_capture(name, value:lower()) end
   if verb == 'fetch' then
+    if defences.is_own(name) then return defences.edit_fetch(name, value) end
     local d, why = custom_draft(name)
     if not d then
       svo.echof("<250,0,0>Can't%s define %s: %s.", svo.getDefaultColor(), name, why)
@@ -4424,6 +4484,640 @@ function defences.customdef_command(rest)
     return defences.custom_fetch(name, value ~= '' and value or d.gmcp or name)
   end
   return defences.custom_set(name, verb, value)
+end
+
+-- Svof's own defences, changed by the player: vcustomdef <svof's name>,
+-- for a defence the game changed before svof caught up (the user's ask,
+-- 2026-10-10). A change replaces svof's exact gain, loss and DEF lines and
+-- its GMCP name, which serverside knows it by too, and for a defence
+-- basicdef made, whose action only sends its command, the command. Svof's
+-- patterns, its other ways of raising a defence and the logic around it
+-- stay, and the change's screen says which. Changes are saved under
+-- <profile>/svo/custom/edits, apart from definitions, by whose they are
+-- (the class, or 'all' for a defence every class has the same) and name.
+-- Each holds only what differs from svof's own, and svof's version of that
+-- when it was changed (was), so svof can say when an update has changed it
+-- since. vconfig customdefinitions off leaves them out too.
+local edits_path = getMudletHomeDir() .. "/svo/custom/edits"
+local edit_fields = { 'on', 'off', 'def', 'command', 'gmcp' }
+local edit_labels = { on = "gain lines", off = "loss lines", def = "DEF lines", command = "command",
+  gmcp = "GMCP name" }
+-- svof's own version of each defence a change is in use for, to put back
+defences.own = defences.own or {}
+defences.edit_drafts = defences.edit_drafts or {}
+
+function defences.edits_load()
+  local t = {}
+  if lfs.attributes(edits_path) then
+    local ok, msg = pcall(table.load, edits_path, t)
+    if not ok then
+      svo.echof("<250,0,0>Couldn't%s read your changes to Svof's defences, in %s: %s", svo.getDefaultColor(),
+        edits_path, tostring(msg))
+      t = {}
+    end
+  end
+  defences.edits = t
+end
+
+function defences.edits_save()
+  svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/custom")
+  svo.tablesave(edits_path, defences.edits)
+end
+
+-- a record's line or lines, as a new list
+local function line_list(v)
+  if type(v) == 'string' then return { v } end
+  local t = {}
+  if type(v) == 'table' then
+    for i, l in ipairs(v) do t[i] = l end
+  end
+  return t
+end
+
+-- whether two parts of a defence are the same: lines in any order, and no
+-- GMCP name the same as none
+local function same(a, b)
+  if type(a) ~= 'table' or type(b) ~= 'table' then return (a or nil) == (b or nil) end
+  if #a ~= #b then return false end
+  local x, y = line_list(a), line_list(b)
+  table.sort(x) table.sort(y)
+  for i = 1, #x do
+    if x[i] ~= y[i] then return false end
+  end
+  return true
+end
+
+-- whose a change to svof's own defence is: one from a class's skillsets is
+-- the class's, and one every class has the same, such as a general one,
+-- is every class's
+local function edit_key(rec)
+  local group = rec and rec.type
+  if group == nil or group == 'general' or group == 'dragoncraft' then return 'all' end
+  return tostring(me.class):lower()
+end
+
+-- whether name is svof's own defence in this class, which the player can
+-- change, rather than one they defined
+function defences.is_own(name)
+  return defs_data[name] ~= nil and not defences.custom_registered[name]
+end
+
+-- the change saved for svof's own defence name in this class, and whose
+-- it is
+local function edit_of(name)
+  local key = edit_key(defs_data[name])
+  return defences.edits and defences.edits[key] and defences.edits[key][name], key
+end
+
+local function physical_of(name)
+  local entry = svo.dict[name]
+  return type(entry) == 'table' and type(entry.physical) == 'table' and entry.physical or nil
+end
+
+-- svof's own version of a defence, which a change is made from and reset
+-- puts back
+local function own_version(name)
+  local snap, phys = defences.own[name], physical_of(name)
+  if snap then
+    return { on = line_list(snap.on), off = line_list(snap.off), def = line_list(snap.def),
+      command = snap.command, gmcp = snap.gmcp, sendsaction = phys and phys.sendsaction }
+  end
+  local rec = defs_data[name]
+  return { on = line_list(rec.on), off = line_list(rec.off), def = line_list(rec.def),
+    command = phys and phys.action, gmcp = svo.dict.svotossd[name], sendsaction = phys and phys.sendsaction }
+end
+
+-- the command that raises it, which svof also takes for its own when the
+-- player types it or serverside sends it (sys.input_to_actions)
+local function set_command(phys, command, onstart)
+  local map = sys.input_to_actions
+  if map[phys.action] == phys then map[phys.action] = nil end
+  phys.action = command
+  phys.onstart = onstart or function () send(command, conf.commandecho) end
+  map[command] = phys
+end
+
+-- its GMCP name, which serverside knows it by too
+local function set_gmcp(name, gmcp, gamename)
+  local old = svo.dict.svotossd[name]
+  if old and svo.dict.sstosvod[old] == name then svo.dict.sstosvod[old] = nil end
+  svo.dict.svotossd[name] = gmcp
+  if gmcp then svo.dict.sstosvod[gmcp] = name end
+  if type(svo.dict[name]) == 'table' then svo.dict[name].gamename = gamename end
+end
+
+-- puts a change into play over svof's own version, keeping that to put
+-- back. A GMCP name svof has since given another defence stays that one's
+local function edit_apply(name, edit)
+  local rec, entry, phys = defs_data[name], svo.dict[name], physical_of(name)
+  local snap = { on = rec.on, off = rec.off, def = rec.def, gmcp = svo.dict.svotossd[name],
+    gamename = type(entry) == 'table' and entry.gamename or nil,
+    command = phys and phys.action, onstart = phys and phys.onstart }
+  defences.own[name] = snap
+  if edit.on then rec.on = line_list(edit.on) end
+  if edit.off then rec.off = line_list(edit.off) end
+  if edit.def then rec.def = line_list(edit.def) end
+  if edit.command and phys and phys.sendsaction then set_command(phys, edit.command) end
+  local taken = edit.gmcp and svo.dict.sstosvod[edit.gmcp]
+  if edit.gmcp ~= nil and not (taken and taken ~= name) then
+    -- what the name meant before, such as a defence svof leaves alone
+    if edit.gmcp then snap.held = taken end
+    set_gmcp(name, edit.gmcp or nil, edit.gmcp or nil)
+  end
+end
+
+-- puts svof's own version back
+local function edit_restore(name)
+  local snap = defences.own[name]
+  if not snap then return end
+  defences.own[name] = nil
+  local rec, phys = defs_data[name], physical_of(name)
+  if rec then rec.on, rec.off, rec.def = snap.on, snap.off, snap.def end
+  if phys and phys.action ~= snap.command then set_command(phys, snap.command, snap.onstart) end
+  local mine = svo.dict.svotossd[name]
+  if mine ~= snap.gmcp then
+    set_gmcp(name, snap.gmcp, snap.gamename)
+    if mine then svo.dict.sstosvod[mine] = snap.held end
+  end
+end
+
+-- makes a defence's triggers again from its record's lines
+local function rewire(name)
+  for _, id in ipairs(defences.triggers_of[name] or {}) do killTrigger(id) end
+  defences.wire_triggers(name, defs_data[name])
+end
+
+-- serverside knows a defence by its GMCP name: once that changes, svof's
+-- next sync of priorities gives the server the new one. Before it changes,
+-- custom_server_forget tells the server to stop raising the old one
+local function server_renamed(name)
+  if not (conf.serverside and sk.priosbeforechange) then return end
+  for _, state in pairs(sk.priosbeforechange) do
+    for prio, action in pairs(state.data or {}) do
+      if action == name or action == name .. '_physical' then state.data[prio] = nil end
+    end
+  end
+  sk.handleserversideswitch()
+end
+
+-- puts a change into play now, after svof loaded: over svof's own, or over
+-- the change it replaces, telling serverside of a new GMCP name
+local function edit_live(name, edit)
+  local before = svo.dict.svotossd[name]
+  local after = own_version(name).gmcp
+  if edit and edit.gmcp ~= nil then after = edit.gmcp or nil end
+  local renamed = before ~= after
+  if renamed then custom_server_forget(name) end
+  edit_restore(name)
+  if edit then edit_apply(name, edit) end
+  rewire(name)
+  if renamed then server_renamed(name) end
+end
+
+-- the parts of a change svof has changed its own version of since: the
+-- ones whose was isn't svof's now
+local function edit_moved(name, edit)
+  local own, moved = own_version(name), {}
+  for _, field in ipairs(edit_fields) do
+    if edit[field] ~= nil and not same((edit.was or {})[field], own[field]) then moved[#moved + 1] = field end
+  end
+  return moved
+end
+
+-- Puts this class's change to svof's own name into play, as svof loads or
+-- registers the defence, saying if svof's own has changed since
+function defences.edit_put(name)
+  if not conf.customdefinitions or not defences.edits then return end
+  local edit = edit_of(name)
+  if not edit or defences.own[name] then return end
+  local moved = edit_moved(name, edit)
+  edit_apply(name, edit)
+  if #moved == 0 then return end
+  for i, field in ipairs(moved) do moved[i] = edit_labels[field] end
+  svo.echofn("Svof has updated the %s of its own %s since you changed it. Yours %s still in use: ",
+    svo.concatand(moved), name, #moved == 1 and "is" or "are")
+  setUnderline(true)
+  echoLink("see both", string.format("svo.defences.custom_show(%q)", name), "See your change next to Svof's own", true)
+  echo(", ")
+  echoLink("use Svof's", string.format("svo.defences.edit_reset(%q)", name), "Delete your change and use Svof's", true)
+  echo(", ")
+  echoLink("keep yours", string.format("svo.defences.edit_keep(%q)", name), "Keep your change, and stop saying so", true)
+  setUnderline(false)
+  echo("\n")
+end
+
+-- At systemstart, before anything is made from the records: puts this
+-- class's changes into play
+function defences.edits_start()
+  defences.own, defences.edit_drafts = {}, {}
+  if not defences.edits then defences.edits_load() end
+  if not conf.customdefinitions then return end
+  for name in defs_data:iter() do defences.edit_put(name) end
+
+  -- a change to a defence svof doesn't have any more. An item's defence
+  -- registers later
+  for _, key in ipairs({ 'all', tostring(me.class):lower() }) do
+    local names = {}
+    for name in pairs(defences.edits[key] or {}) do
+      if not defs_data[name] and not item_defences[name] then names[#names + 1] = name end
+    end
+    table.sort(names)
+    for _, name in ipairs(names) do
+      svo.echofn("Svof doesn't have %s any more, so your change to it isn't used. ", name)
+      setUnderline(true)
+      echoLink("(forget it)", string.format("svo.defences.edit_reset(%q, %q)", name, key), "Delete your change to " .. name, true)
+      setUnderline(false)
+      echo("\n")
+    end
+  end
+end
+
+-- the change being made to svof's own name, started from the one saved or
+-- from svof's own
+local function edit_draft(name)
+  local d = defences.edit_drafts[name]
+  if d then return d end
+  local own, edit = own_version(name), edit_of(name)
+  local function from(field)
+    if edit and edit[field] ~= nil then return edit[field] end
+    return own[field]
+  end
+  d = { on = line_list(from('on')), off = line_list(from('off')), def = line_list(from('def')),
+    command = from('command'), gmcp = from('gmcp') or nil }
+  defences.edit_drafts[name] = d
+  return d
+end
+
+-- whether a draft is what's installed: the change saved, or svof's own
+local function draft_installed(name, d)
+  local own, edit = own_version(name), edit_of(name)
+  for _, field in ipairs(edit_fields) do
+    local installed = own[field]
+    if edit and edit[field] ~= nil then installed = edit[field] end
+    if not same(d[field], installed) then return false end
+  end
+  return true
+end
+
+-- why a change can't be installed, or nil
+local function edit_problem(name, d)
+  local own = own_version(name)
+  local mapped = d.gmcp and svo.dict.sstosvod[d.gmcp]
+  if mapped and mapped ~= name then return "GMCP's " .. d.gmcp .. " is Svof's " .. mapped end
+  if #d.on == 0 and #own.on > 0 and not defs_data[name].onr and not d.gmcp then
+    return "it needs a line saying you gained it, or its GMCP name, or Svof can't tell when it's up"
+  end
+end
+
+-- what svof does with a defence that lies elsewhere, outside its record and
+-- entry
+local outside_rules = {
+  torch = "the ablaze affliction counting as torch for a fire Elemental Lord",
+  dragonform = "your race over GMCP saying whether you're a dragon",
+  shadowcloak = "your inventory over GMCP saying whether you wear your cloak",
+  block = "losing it when you leave the room",
+  listen = "losing it when you leave the room",
+  eavesdrop = "losing it when you leave the room",
+  lyre = "losing it when you leave the room",
+}
+
+-- the balances other than physical that svof raises name with, such as
+-- rebounding's smoke
+local function raised_with(name)
+  local entry, others = svo.dict[name], {}
+  if type(entry) ~= 'table' then return others end
+  for balance, act in pairs(entry) do
+    if type(act) == 'table' and act.def and balance ~= 'physical' then others[#others + 1] = balance end
+  end
+  table.sort(others)
+  return others
+end
+
+-- why a change can't reach the command of svof's own name
+local function fixed_command(name)
+  local others = raised_with(name)
+  if physical_of(name) then return "Svof makes it as it raises it, so a change can't reach it" end
+  if #others > 0 then return "Svof raises it with " .. svo.concatand(others) .. ", so it has no command to change" end
+  return "Svof doesn't raise it, it only tracks it"
+end
+
+-- what a change to svof's own defence doesn't reach, as svof does more
+-- with it than the lines, GMCP name and command
+local function edit_notes(name)
+  local rec, phys = defs_data[name], physical_of(name)
+  local notes = {}
+  local function add(note) notes[#notes + 1] = note end
+  local patterns = {}
+  for _, f in ipairs({ { 'onr', "gaining it" }, { 'offr', "losing it" }, { 'defr', "DEF" } }) do
+    local n = #line_list(rec[f[1]])
+    if n > 0 then patterns[#patterns + 1] = string.format("%d for %s", n, f[2]) end
+  end
+  if #patterns > 0 then add("its patterns for lines that vary: " .. svo.concatand(patterns)) end
+  if rec.on_only or rec.on_free or rec.off_free or rec.offs then add("other lines it watches for") end
+  if rec.ongot or rec.onlost then add("what gaining or losing it does to your other defences and afflictions") end
+  if rec.onenable then add("the defences it can't be up with on defup and keepup") end
+  if rec.specialskip then add("when it holds off raising it") end
+  if rec.ondef then add("what it reads from its DEF line") end
+  if rec.custom_def_type then add(string.format("counting it with your other %s defences", rec.custom_def_type)) end
+  -- (without physical, the command row says how svof raises it)
+  local others = raised_with(name)
+  if phys and #others > 0 then add("raising it with " .. svo.concatand(others) .. " as well") end
+  if defences.waits[name] then add("the wait for it after its command") end
+  for _, h in ipairs({ 'got_', 'lost_' }) do
+    if defs[h .. name] and not (defences.generated and defences.generated[h .. name]) then
+      add("its own handling of its lines")
+      break
+    end
+  end
+  if defences.prompt_decides[name] then add("deciding on each prompt whether it's a defence or an affliction") end
+  if outside_rules[name] then add(outside_rules[name]) end
+  return notes
+end
+
+function defences.edit_show(name)
+  local d, own, edit, phys = edit_draft(name), own_version(name), edit_of(name), physical_of(name)
+  svo.echof("%s, Svof's own defence%s%s:", name, edit and ", which you changed" or "",
+    draft_installed(name, d) and "" or " (changes not installed)")
+  svo.echof("A change replaces Svof's version, and Svof's updates to %s don't reach you while it's in use.", name)
+  local cmd = "vcustomdef " .. name .. " "
+  -- Svof's own, under a part the change differs in
+  local function svofs(values)
+    if #values == 0 then values = { "(none)" } end
+    for i, value in ipairs(values) do
+      echo(string.format("  %-12s %s %s\n", "", i == 1 and "Svof's:" or "       ", value))
+    end
+  end
+  if phys and phys.sendsaction then
+    echo(string.format("  %-12s %s  ", "command:", tostring(d.command)))
+    custom_link("change", string.format("printCmdLine(%q)", cmd .. "command "), "Change the command")
+    echo("\n")
+    if d.command ~= own.command then svofs({ tostring(own.command) }) end
+  else
+    echo(string.format("  %-12s %s\n", "command:", fixed_command(name)))
+  end
+  echo(string.format("  %-12s %s  ", "GMCP name:", d.gmcp or "(none)"))
+  custom_link("change", string.format("printCmdLine(%q)", cmd .. "gmcp "), "Change the GMCP name")
+  echo("\n")
+  if not same(d.gmcp, own.gmcp) then svofs({ own.gmcp }) end
+  for _, which in ipairs({ { 'on', 'got', "gained when:" }, { 'off', 'lost', "lost when:" }, { 'def', 'def', "DEF shows:" } }) do
+    local lines = d[which[1]]
+    for i, line in ipairs(lines) do
+      echo(string.format("  %-12s %s  ", i == 1 and which[3] or "", line))
+      custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, which[1], i), "Remove this line")
+      echo("\n")
+    end
+    echo(string.format("  %-12s %s", #lines == 0 and which[3] or "", #lines == 0 and "(no line)  " or ""))
+    custom_link("add a line from the screen", string.format("svo.defences.custom_capture(%q, %q)", name, which[2]),
+      "Pick the line from what's on screen")
+    echo("  ")
+    custom_link("type one", string.format("printCmdLine(%q)", cmd .. which[2] .. " "), "Type or paste the line")
+    echo("\n")
+    if not same(lines, own[which[1]]) then svofs(own[which[1]]) end
+  end
+  for i, note in ipairs(edit_notes(name)) do
+    echo(string.format("  %-12s %s\n", i == 1 and "Svof keeps:" or "", note))
+  end
+  echo("  ")
+  custom_link("get its lines from the game", string.format("svo.defences.edit_fetch(%q)", name), "Ask the game with DEFENCE SHOW")
+  echo("  ")
+  custom_link("test", string.format("svo.defences.custom_test(%q)", name), "Say what it would do")
+  echo("  ")
+  custom_link("install", string.format("svo.defences.custom_install(%q)", name), "Put it into play")
+  echo("  ")
+  custom_link("reset to Svof's", string.format("svo.defences.edit_reset(%q)", name), "Put Svof's own back")
+  echo("\n")
+end
+
+function defences.edit_set(name, field, value)
+  local d, own = edit_draft(name), own_version(name)
+  value = value or ''
+  if field == 'command' then
+    if not own.sendsaction then
+      svo.echof("Can't change %s's command: %s.", name, fixed_command(name))
+      return
+    end
+    if value == '' then svo.echof("What does Svof send to raise %s?", name) return end
+    d.command = value
+  elseif field == 'gmcp' then
+    local gmcp = (value ~= '' and value:lower() ~= 'none') and value:lower() or nil
+    local mapped = gmcp and svo.dict.sstosvod[gmcp]
+    if mapped and mapped ~= name then
+      svo.echof("Can't give %s the GMCP name %s: GMCP's %s is Svof's %s.", name, gmcp, gmcp, mapped)
+      return
+    end
+    d.gmcp = gmcp
+  elseif field == 'got' or field == 'lost' or field == 'def' then
+    if value == '' then
+      svo.echof("Which line %s?", field == 'got' and ("says you gained " .. name)
+        or field == 'lost' and ("says you lost " .. name) or ("does DEF show for " .. name))
+      return
+    end
+    local lines = d[field == 'got' and 'on' or field == 'lost' and 'off' or 'def']
+    if not table.contains(lines, value) then lines[#lines + 1] = value end
+  elseif field == 'class' or field == 'skillset' or field == 'balanceless' or field == 'serverside' then
+    svo.echof("Svof's own %s keeps its class, skillset and balance. A change can replace its lines and GMCP name, and for some defences the command.", name)
+    return
+  else
+    svo.echof("A change to Svof's own defence has command, gmcp, got, lost and def; %s isn't one.", field)
+    return
+  end
+  defences.edit_show(name)
+end
+
+function defences.edit_unset(name, which, i)
+  local d = edit_draft(name)
+  if d[which] then table.remove(d[which], i) end
+  defences.edit_show(name)
+end
+
+-- asks the game for its lines, with DEFENCE SHOW, into the change
+function defences.edit_fetch(name, keyword)
+  local d = edit_draft(name)
+  defences.custom_fetch(name, (keyword and keyword ~= '') and keyword or d.gmcp or name)
+end
+
+function defences.edit_test(name)
+  local d, own, rec = edit_draft(name), own_version(name), defs_data[name]
+  local key = edit_key(rec)
+  svo.echof("%s, Svof's own, for %s:", name, key == 'all' and "every class" or key)
+  local changes = {}
+  for _, field in ipairs(edit_fields) do
+    if not same(d[field], own[field]) then changes[#changes + 1] = edit_labels[field] end
+  end
+  if #changes == 0 then
+    svo.echof("It's the same as Svof's own.")
+  else
+    svo.echof("Your change replaces its %s.", svo.concatand(changes))
+  end
+  local function from(lines, patterns, gmcp)
+    local parts = {}
+    if #lines > 0 then parts[#parts + 1] = string.format("%d line%s", #lines, #lines == 1 and "" or "s") end
+    if patterns > 0 then parts[#parts + 1] = string.format("%d pattern%s", patterns, patterns == 1 and "" or "s") end
+    if gmcp then parts[#parts + 1] = gmcp end
+    return #parts > 0 and svo.concatand(parts) or "nothing, until DEF"
+  end
+  svo.echof("It knows it's up from %s.", from(d.on, #line_list(rec.onr), d.gmcp and ("GMCP's " .. d.gmcp)))
+  svo.echof("It knows it's gone from %s.", from(d.off, #line_list(rec.offr), d.gmcp and "GMCP"))
+  local problem = edit_problem(name, d)
+  if problem then
+    svo.echof("<250,0,0>It can't%s be installed yet: %s.", svo.getDefaultColor(), problem)
+  else
+    svo.echof("It's ready to install.")
+  end
+end
+
+-- Installs the change being made to svof's own name. The first time, it
+-- says what a change does and asks again (sure)
+function defences.edit_install(name, sure)
+  if not defences.edits then defences.edits_load() end
+  local d = defences.edit_drafts[name]
+  if not d then svo.echof("You haven't changed anything in Svof's own %s.", name) return false end
+  local problem = edit_problem(name, d)
+  if problem then
+    svo.echof("<250,0,0>Can't%s change %s: %s.", svo.getDefaultColor(), name, problem)
+    return false
+  end
+  local own, edit, key = own_version(name), edit_of(name)
+  -- only what differs from svof's own, and svof's own of that
+  local new, was = {}, {}
+  for _, field in ipairs(edit_fields) do
+    if not (field == 'command' and not own.sendsaction) and not same(d[field], own[field]) then
+      if type(d[field]) == 'table' then new[field] = line_list(d[field]) else new[field] = d[field] or false end
+      if type(own[field]) == 'table' then was[field] = line_list(own[field]) else was[field] = own[field] end
+    end
+  end
+  if not next(new) then
+    defences.edit_drafts[name] = nil
+    if edit then return defences.edit_reset(name) end
+    svo.echof("That's the same as Svof's own %s, so there's nothing to change.", name)
+    return true
+  end
+  if not edit and not sure then
+    svo.echofn("Changing Svof's own %s replaces Svof's version of it, and Svof's updates to %s won't reach you until you reset it. ",
+      name, name)
+    setUnderline(true)
+    echoLink("(change it)", string.format("svo.defences.edit_install(%q, true)", name), "Put your change into play", true)
+    setUnderline(false)
+    echo("\n")
+    return false
+  end
+  new.was = was
+  defences.edits[key] = defences.edits[key] or {}
+  defences.edits[key][name] = new
+  defences.edit_drafts[name] = nil
+  defences.edits_save()
+  if not conf.customdefinitions then
+    svo.echof("Saved your change to %s. vconfig customdefinitions is off, so Svof doesn't use it.", name)
+    return true
+  end
+  edit_live(name, new)
+  svo.echof("Changed Svof's own %s. vcustomdef %s reset puts Svof's back.", name, name)
+  return true
+end
+
+-- Puts svof's own version of name back, deleting the change. key, from
+-- the list, names another class's change, which is only deleted
+function defences.edit_reset(name, key)
+  if not defences.edits then defences.edits_load() end
+  local here = defs_data[name] and edit_key(defs_data[name])
+  key = key or here
+  -- a change being made, and not installed, is thrown away
+  local draft = key == here and defences.edit_drafts[name]
+  local drafted = draft and not draft_installed(name, draft)
+  if key == here then defences.edit_drafts[name] = nil end
+  local edit = key and defences.edits[key] and defences.edits[key][name]
+  if not edit then
+    svo.echof(drafted and "Threw away your change to %s." or "You haven't changed Svof's own %s.", name)
+    return
+  end
+  defences.edits[key][name] = nil
+  if not next(defences.edits[key]) then defences.edits[key] = nil end
+  defences.edits_save()
+  if key ~= here then
+    svo.echof("Deleted your change to %s for %s.", name, key == 'all' and "every class" or key)
+    return
+  end
+  if defences.own[name] then edit_live(name, nil) end
+  svo.echof("Put Svof's own %s back.", name)
+end
+
+-- keeps the change to name after svof updated its own, and stops saying so
+function defences.edit_keep(name)
+  local edit = edit_of(name)
+  if not edit then return end
+  local own = own_version(name)
+  edit.was = edit.was or {}
+  for _, field in ipairs(edit_fields) do
+    if edit[field] ~= nil then
+      if type(own[field]) == 'table' then edit.was[field] = line_list(own[field]) else edit.was[field] = own[field] end
+    end
+  end
+  defences.edits_save()
+  svo.echof("Kept your change to %s.", name)
+end
+
+-- vcustomdef's list of the changes to svof's own, every class's, and the
+-- ones being made
+function defences.edits_menu()
+  local changes = {}
+  for key, names in pairs(defences.edits or {}) do
+    for name in pairs(names) do changes[#changes + 1] = { name = name, key = key } end
+  end
+  for name, d in pairs(defences.edit_drafts) do
+    local edit, key = edit_of(name)
+    if not edit and not draft_installed(name, d) then changes[#changes + 1] = { name = name, key = key, draft = true } end
+  end
+  if #changes == 0 then return end
+  table.sort(changes, function (a, b) return a.name < b.name or (a.name == b.name and a.key < b.key) end)
+  svo.echof("Svof's own defences you changed:")
+  for _, c in ipairs(changes) do
+    local here = defs_data[c.name] ~= nil and edit_key(defs_data[c.name]) == c.key
+    local state = c.draft and "not installed"
+      or not here and "not for this class"
+      or defences.edit_drafts[c.name] and not draft_installed(c.name, defences.edit_drafts[c.name]) and "changes not installed"
+      or defences.own[c.name] and "in use"
+      or "not in use, as vconfig customdefinitions is off"
+    echo("  ")
+    if here then
+      custom_link(c.name, string.format("svo.defences.custom_show(%q)", c.name), "See or change " .. c.name)
+    else
+      echo(c.name)
+    end
+    echo(string.format(": %s, %s  ", c.key == 'all' and "every class" or c.key, state))
+    custom_link(c.draft and "discard" or "reset", string.format("svo.defences.edit_reset(%q, %q)", c.name, c.key),
+      c.draft and "Throw the change away" or "Delete the change, for Svof's own")
+    echo("\n")
+  end
+end
+
+-- the changes to svof's own in a file vcustomdef export wrote
+function defences.edits_import(changes, path)
+  if not defences.edits then defences.edits_load() end
+  local keys = {}
+  for key, names in pairs(changes) do
+    if type(key) == 'string' and type(names) == 'table' then keys[#keys + 1] = key end
+  end
+  table.sort(keys)
+  for _, key in ipairs(keys) do
+    local names = {}
+    for name, edit in pairs(changes[key]) do
+      if type(name) == 'string' and type(edit) == 'table' then names[#names + 1] = name end
+    end
+    table.sort(names)
+    for _, name in ipairs(names) do
+      if defences.edits[key] and defences.edits[key][name] then
+        svo.echof("You already changed Svof's own %s, so the change in %s isn't used.", name, path)
+      else
+        defences.edits[key] = defences.edits[key] or {}
+        defences.edits[key][name] = changes[key][name]
+        if conf.customdefinitions and defs_data[name] and edit_key(defs_data[name]) == key then
+          edit_live(name, changes[key][name])
+        end
+        svo.echof("Added the change to Svof's own %s from %s.", name, path)
+      end
+    end
+  end
+  defences.edits_save()
 end
 
 -- customize for gag

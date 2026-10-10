@@ -1513,18 +1513,22 @@ svo.config_dict = svo.pl.OrderedMap {
     type = 'boolean',
     vconfig2 = true,
     onshow = function (defaultcolour)
-      local n = 0
+      local n, c = 0, 0
       for _ in pairs(defences.custom or {}) do n = n + 1 end
+      -- and the changes to svof's own, every class's
+      for _, names in pairs(defences.edits or {}) do
+        for _ in pairs(names) do c = c + 1 end
+      end
       fg(defaultcolour)
-      echo(string.format("%s the %d defence%s you defined (", conf.customdefinitions and "Adds" or "Doesn't add",
-        n, n == 1 and "" or "s"))
+      echo(string.format("%s the %d defence%s you defined and your %d change%s to Svof's own (",
+        conf.customdefinitions and "Uses" or "Doesn't use", n, n == 1 and "" or "s", c, c == 1 and "" or "s"))
       fg('a_cyan')
-      echoLink("see them", "svo.defences.customdef_menu()", "List the defences you defined, to see or change them", true)
+      echoLink("see them", "svo.defences.customdef_menu()", "List the defences you defined and changed, to see or change them", true)
       fg(defaultcolour)
       echo(").\n")
     end,
-    onenabled = function () svo.echof("<0,250,0>Will%s add the defences you defined the next time Svof loads.", svo.getDefaultColor()) end,
-    ondisabled = function () svo.echof("<250,0,0>Won't%s add the defences you defined the next time Svof loads.", svo.getDefaultColor()) end,
+    onenabled = function () svo.echof("<0,250,0>Will%s use the defences you defined and your changes to Svof's own the next time Svof loads.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("<250,0,0>Won't%s use the defences you defined or your changes to Svof's own the next time Svof loads.", svo.getDefaultColor()) end,
   }},
   -- hidden defences (vshow hidelist) aren't raised; this lists them anyway
   {showhiddendefs = {

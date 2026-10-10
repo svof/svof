@@ -1303,10 +1303,15 @@ do
   eq(w.line("You begin to shimmer."), 0, "customdef: the line taken out is no longer heard")
   eq(w.line("You shimmer brightly."), 1, "customdef: and the new one is")
 
-  -- svof's own names are refused (the user's choice), and an incomplete one can't install
+  -- a name svof uses isn't a definition (the user's choice): one of svof's
+  -- own defences opens a change to it instead (section 13), and an
+  -- incomplete one can't install
   cmd("rebounding")
-  eq(echoed(w, "define rebounding: Svof already has a defence or action called rebounding."), true,
-    "customdef: svof's own name is refused")
+  eq(echoed(w, "rebounding, Svof's own defence:"), true, "customdef: svof's own defence's name changes svof's own")
+  eq(custom.custom_drafts.rebounding, nil, "customdef: and starts no definition")
+  cmd("paralysis")
+  eq(echoed(w, "define paralysis: Svof already has a defence or action called paralysis."), true,
+    "customdef: a name svof uses for something else is refused")
   cmd("hush command hush")
   cmd("hush install")
   eq(echoed(w, "install hush: it needs a line saying you gained it, or its GMCP name"), true,
@@ -1890,6 +1895,269 @@ do -- the groups come in the class's order: Lua 5.1's pairs() gave a Monk
   eq(headings(table.concat(text), "(%a+) defences:"), "General, Tekura, Kaido, Telepathy, Shikudo, Dragoncraft",
     "hide list: general first, then the class's skillsets, then the rest")
   svo.echof = echof
+end
+
+-- ===== 13. Changes to svof's own defences (vcustomdef <svof's name>) =====
+
+-- For a defence the game changed before svof caught up, a player can
+-- change svof's own (the user's ask, 2026-10-10): its exact lines and GMCP
+-- name, and the command of one basicdef made. A change replaces svof's
+-- version, is saved apart from definitions, and is put back by reset.
+do
+  local w = world.new({ class = "Occultist" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function live(def)
+    local n = 0
+    for _, t in ipairs(w.triggers) do
+      if not t.killed and type(t.code) == "string" and t.code:find("_" .. def .. "()", 1, true) then n = n + 1 end
+    end
+    return n
+  end
+  local function link(text)
+    for i = #w.links, 1, -1 do
+      if w.links[i]:sub(1, #text + 1) == text .. " " then return w.links[i]:sub(#text + 2) end
+    end
+  end
+  local phys = svo.dict.alertness.physical
+  local svofs_triggers = live("alertness")
+
+  cmd("alertness")
+  eq(echoed(w, "alertness, Svof's own defence:"), true, "changes: vcustomdef with svof's own name shows svof's own")
+  eq(echoed(w, "A change replaces Svof's version, and Svof's updates to alertness don't reach you while it's in use."),
+    true, "changes: and what a change does")
+  local d = svo.defences.edit_drafts.alertness or { on = {} }
+  eq(#d.on, 3, "changes: the change starts from svof's own lines")
+
+  cmd("alertness command alertness up")
+  cmd("alertness got You perk up your ears.")
+  cmd("alertness gmcp alert")
+  cmd("alertness install")
+  eq(echoed(w, "Changing Svof's own alertness replaces Svof's version of it, and Svof's updates to alertness won't reach you until you reset it."),
+    true, "changes: the first install warns what it does")
+  eq(phys.action, "alertness on", "changes: and changes nothing until it's confirmed")
+  local writes = #w.writes
+  if link("(change it)") then w.run(link("(change it)")) end
+  eq(phys.action, "alertness up", "changes: confirmed, svof raises it with the new command")
+  eq(svo.sys.input_to_actions["alertness up"], phys, "changes: and takes that command for its own when it's typed")
+  eq(svo.sys.input_to_actions["alertness on"], nil, "changes: and not the old one")
+  eq(svo.dict.sstosvod.alert, "alertness", "changes: GMCP's alert is alertness")
+  eq(svo.dict.sstosvod.alertness, nil, "changes: and GMCP's alertness no longer is")
+  eq(svo.dict.alertness.gamename, "alert", "changes: serverside knows it by the new GMCP name too")
+  eq(#w.writes > writes, true, "changes: the change is saved")
+  local saved = svo.defences.edits.all and svo.defences.edits.all.alertness or {}
+  eq(saved.command, "alertness up", "changes: saved as every class's, as alertness is general")
+  eq(saved.was and saved.was.command, "alertness on", "changes: with svof's own command when it was changed")
+  eq(saved.off, nil, "changes: and only what differs from svof's own")
+
+  svo.doaction(phys)
+  eq(w.line("You perk up your ears."), 1, "changes: the new gain line is heard")
+  w.prompt()
+  eq(svo.defc.alertness, true, "changes: and sets it")
+  svo.defc.alertness = false
+  w.gmcp_defence_add("alert")
+  eq(svo.defc.alertness, true, "changes: GMCP's new name sets it")
+  eq(live("alertness"), svofs_triggers + 1, "changes: svof's triggers made again, not piled up")
+
+  -- a line taken out goes, and the change replaces svof's lines
+  svo.defences.custom_unset("alertness", "on", 1)
+  cmd("alertness install")
+  eq(w.line("You prick up your ears."), 0, "changes: svof's line taken out of the change is no longer heard")
+  eq(w.line("Alertness is already on!"), 1, "changes: the ones kept still are")
+  eq(echoed(w, "Changed Svof's own alertness."), true, "changes: installing again doesn't ask again")
+
+  -- svof's own logic stays, and the screen says what
+  cmd("rebounding command rebound")
+  eq(echoed(w, "Can't change rebounding's command: Svof raises it with smoke, so it has no command to change."), true,
+    "changes: a defence svof raises another way keeps its command")
+  cmd("rebounding")
+  eq(echoed(w, "its patterns for lines that vary: 5 for losing it"), true, "changes: the screen says svof keeps its patterns")
+  eq(echoed(w, "the wait for it after its command"), true, "changes: and its wait")
+  cmd("riding")
+  eq(echoed(w, "Svof makes it as it raises it, so a change can't reach it"), true,
+    "changes: riding's command is made as svof raises it")
+  eq(echoed(w, "its own handling of its lines"), true, "changes: and its loss lines have a handler of their own")
+  cmd("alertness class all")
+  eq(echoed(w, "Svof's own alertness keeps its class, skillset and balance."), true, "changes: the class stays svof's")
+  cmd("alertness gmcp rebounding")
+  eq(echoed(w, "Can't give alertness the GMCP name rebounding: GMCP's rebounding is Svof's rebounding."), true,
+    "changes: a GMCP name another of svof's defences has is refused")
+  cmd("treewatch")
+  cmd("treewatch install")
+  eq(echoed(w, "That's the same as Svof's own treewatch, so there's nothing to change."), true,
+    "changes: one the same as svof's own changes nothing")
+
+  -- a class's defence is the class's change
+  cmd("astralform got You become a being of light.")
+  cmd("astralform install")
+  if link("(change it)") then w.run(link("(change it)")) end
+  eq(svo.defences.edits.occultist and svo.defences.edits.occultist.astralform ~= nil, true,
+    "changes: astralform, an Occultism defence, is the Occultist's change")
+
+  -- the list
+  cmd("")
+  eq(echoed(w, "Svof's own defences you changed:"), true, "changes: vcustomdef lists the changes")
+  eq(echoed(w, ": every class, in use"), true, "changes: each with whose it is and that it's in use")
+  cmd("skywatch got You look to the skies.")
+  cmd("")
+  eq(echoed(w, ": every class, not installed"), true, "changes: and one not installed yet")
+  if link("discard") then w.run(link("discard")) end
+  eq(echoed(w, "Threw away your change to skywatch."), true, "changes: which can be thrown away")
+  eq(svo.defences.edit_drafts.skywatch, nil, "changes: and is")
+
+  -- the game's own lines for one of svof's, with DEFENCE SHOW
+  cmd("kola fetch")
+  eq(w.sent[#w.sent], "defence show kola", "changes: fetch asks the game about svof's own")
+  local function game(text) w.env.line = text svo.defences.custom_fetch_line() end
+  game("Defence:            Kola (kola)")
+  game("DefMsg:             You are feeling extremely energetic.")
+  game("EnactMsg:           You feel energy course through you.")
+  game("Profession:         No")
+  game("Strippable:         Yes")
+  local kola = svo.defences.edit_drafts.kola or { on = {} }
+  eq(kola.on[1], "You feel energy course through you.", "changes: and adds the game's gain line to the change")
+  eq(echoed(w, "isn't a profession defence"), false, "changes: leaving svof's own class alone")
+end
+
+do -- a change is put into play as svof loads, and says when svof's own changed since
+  local w = world.new({ class = "Occultist" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function link(text)
+    for i = #w.links, 1, -1 do
+      if w.links[i]:sub(1, #text + 1) == text .. " " then return w.links[i]:sub(#text + 2) end
+    end
+  end
+  cmd("alertness command alertness up")
+  w.run('svo.defences.edit_install("alertness", true)')
+  cmd("astralform got You become a being of light.")
+  w.run('svo.defences.edit_install("astralform", true)')
+
+  svo.classchange("Monk")
+  eq(svo.dict.alertness.physical.action, "alertness up", "changes: every class's change is in use in another class")
+  eq(echoed(w, "Svof doesn't have astralform any more"), false, "changes: the Occultist's isn't missed as a Monk")
+  svo.classchange("Occultist")
+  eq(svo.dict.alertness.physical.action, "alertness up", "changes: back as an Occultist, svof loads with the change")
+  eq(svo.sys.input_to_actions["alertness up"], svo.dict.alertness.physical, "changes: its command taken for svof's own")
+  eq(w.line("You become a being of light."), 1, "changes: and the Occultist's own change too")
+
+  -- svof updated its own since: as if its command was different when changed
+  svo.defences.edits.all.alertness.was.command = "alertness please"
+  local echoes = #w.echoes
+  svo.classchange("Monk")
+  eq(echoed(w, "Svof has updated the command of its own alertness since you changed it. Yours is still in use:"),
+    true, "changes: svof says when it changed what a change replaces")
+  eq(svo.dict.alertness.physical.action, "alertness up", "changes: and keeps using the change")
+  if link("keep yours") then w.run(link("keep yours")) end
+  eq(svo.defences.edits.all.alertness.was.command, "alertness on", "changes: keep yours notes svof's own as it is now")
+  echoes = #w.echoes
+  svo.classchange("Occultist")
+  local again = false
+  for i = echoes + 1, #w.echoes do
+    if w.echoes[i]:find("Svof has updated", 1, true) then again = true end
+  end
+  eq(again, false, "changes: and stops saying so")
+
+  -- a change to one svof doesn't have any more
+  svo.defences.edits.all.oldward = { command = "oldward", was = { command = "ward" } }
+  svo.classchange("Monk")
+  eq(echoed(w, "Svof doesn't have oldward any more, so your change to it isn't used."), true,
+    "changes: a change to a defence svof dropped is said")
+  if link("(forget it)") then w.run(link("(forget it)")) end
+  eq(svo.defences.edits.all.oldward, nil, "changes: and can be deleted")
+
+  -- reset
+  svo.classchange("Occultist")
+  local triggers = 0
+  cmd("alertness reset")
+  local phys = svo.dict.alertness.physical
+  eq(phys.action, "alertness on", "changes: reset puts svof's own command back")
+  eq(svo.sys.input_to_actions["alertness on"], phys, "changes: and takes it for svof's own again")
+  eq(svo.sys.input_to_actions["alertness up"], nil, "changes: and not the change's")
+  eq(svo.defences.edits.all, nil, "changes: and deletes the change")
+  eq(echoed(w, "Put Svof's own alertness back."), true, "changes: and says so")
+  cmd("astralform reset")
+  eq(w.line("You become a being of light."), 0, "changes: reset makes svof's own triggers again")
+  for _, t in ipairs(w.triggers) do
+    if not t.killed and type(t.code) == "string" and t.code:find("_astralform()", 1, true) then triggers = triggers + 1 end
+  end
+  local fresh = world.new({ class = "Occultist" })
+  local svofs = 0
+  for _, t in ipairs(fresh.triggers) do
+    if not t.killed and type(t.code) == "string" and t.code:find("_astralform()", 1, true) then svofs = svofs + 1 end
+  end
+  eq(triggers, svofs, "changes: as many as svof's own makes")
+
+  -- with customdefinitions off, the change is kept and not used
+  cmd("alertness command alertness up")
+  w.run('svo.defences.edit_install("alertness", true)')
+  svo.conf.customdefinitions = false
+  svo.classchange("Monk")
+  eq(svo.dict.alertness.physical.action, "alertness on", "changes: with customdefinitions off, a change isn't used")
+  cmd("")
+  eq(echoed(w, "not in use, as vconfig customdefinitions is off"), true, "changes: and the list says why")
+  svo.conf.customdefinitions = true
+end
+
+do -- vcustomdef works with customdefinitions off as svof loads, when the
+  -- definitions file wasn't read before
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  svo.defences.custom, svo.defences.edits = nil, nil
+  svo.conf.customdefinitions = false
+  svo.classchange("Occultist")
+  local ok = pcall(svo.defences.customdef_command, "")
+  eq(ok, true, "customdef: vcustomdef lists definitions with customdefinitions off from the start")
+  ok = pcall(svo.defences.customdef_command, "shimmer command shimmer")
+  eq(ok, true, "customdef: and starts one")
+end
+
+do -- an item's defence registers after systemstart, and its change goes in then
+  local w = world.new({ class = "Occultist" })
+  local svo = w.svo
+  svo.defences.enablemindnet()
+  svo.defences.customdef_command("mindnet command mindnet up")
+  w.run('svo.defences.edit_install("mindnet", true)')
+  eq(svo.dict.mindnet.physical.action, "mindnet up", "changes: mindnet, the phylactery's, can be changed")
+  svo.conf.havemindnet = true
+  -- an Infernal, as a Monk's mindnet is Telepathy's own
+  svo.classchange("Infernal")
+  w.run_timers()
+  eq(echoed(w, "Svof doesn't have mindnet any more"), false, "changes: an item's isn't missed as svof loads")
+  eq(svo.dict.mindnet and svo.dict.mindnet.physical.action, "mindnet up", "changes: and is in use once the item registers")
+end
+
+do -- serverside: a new GMCP name is a new name to the server
+  local w = world.new({ class = "Occultist", paused = false })
+  local svo = w.svo
+  local told = {}
+  svo.sendcuringprio = function(prio, kind, slow) told[#told + 1] = kind .. " " .. prio .. (slow and " (slow)" or "") end
+  svo.conf.serverside = true
+  svo.setserverignore("alertness")
+  svo.defences.customdef_command("alertness gmcp alert")
+  w.run('svo.defences.edit_install("alertness", true)')
+  eq(table.concat(told, ", "), "defence alertness reset, defence alertness reset (slow)",
+    "changes: a new GMCP name tells the server to stop raising it by the old one")
+  told = {}
+  svo.sk.sendpriorityswitch("alertness", "physical", {}, { alertness = 4 }, {}, false)
+  eq(told[#told], "defence alert 4", "changes: and its priority goes to the server by the new one")
+end
+
+do -- import: the changes a file holds, with its definitions
+  local w = world.new({ class = "Occultist" })
+  local svo = w.svo
+  local old_attributes, old_load = w.env.lfs.attributes, w.env.table.load
+  w.env.lfs.attributes = function() return {} end
+  w.env.table.load = function(_, t)
+    t.treewatch = { class = "all", command = "treewatch", on = { "x" } }
+    t._changes = { all = { treewatch = { command = "treewatch up", was = { command = "treewatch on" } } } }
+  end
+  svo.defences.customdef_command("import shared-defences")
+  w.env.lfs.attributes, w.env.table.load = old_attributes, old_load
+  eq(echoed(w, "Svof has its own treewatch, so the one in shared-defences isn't used."), true,
+    "changes: import refuses a definition with svof's own name")
+  eq(svo.dict.treewatch.physical.action, "treewatch up", "changes: and puts the file's change to svof's own in")
+  eq(echoed(w, "Added the change to Svof's own treewatch from shared-defences."), true, "changes: saying so")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))

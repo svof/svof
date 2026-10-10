@@ -219,7 +219,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "3f5729ebaba51adb",
+      "digest": "846866addd3bad33",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -229,7 +229,7 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "4244e207acc17454",
+      "digest": "12bfe284b8319911",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -354,7 +354,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Config system|script",
-      "digest": "d9dede126789ab17",
+      "digest": "7e27a1bca41a93ff",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Config system [script]"
     },
     {

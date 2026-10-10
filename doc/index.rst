@@ -181,11 +181,29 @@ A definition belongs to the class you define it in. To change that, use *vcustom
 
 A defence for one class is shown under one of its skillsets in *vshow defup*, *vshow keepup* and *vshow hidelist*, next to Svof's own. Click the skillset in the definition. If the game has renamed a skillset, or Svof's list of the class's skillsets is out of date, type it with *vcustomdef <name> skillset <skillset>*, and Svof shows it under that name after the class's other skillsets. A defence for every class is shown with the general ones.
 
-Svof refuses a name it already uses. To change a definition, change its parts and install it again; until then, Svof keeps using the installed one. *vcustomdef <name> delete* takes a definition out.
+Svof refuses a name it already uses for something else. With the name of one of Svof's own defences, *vcustomdef* changes that defence instead; see :ref:`change-svof-defences`. To change a definition, change its parts and install it again; until then, Svof keeps using the installed one. *vcustomdef <name> delete* takes a definition out.
 
-*vcustomdef* lists every defence you defined, each a link to see or change it. *vconfig2* links to the same list.
+*vcustomdef* lists every defence you defined, each a link to see or change it, and then your changes to Svof's own. *vconfig2* links to the same list.
 
-Your definitions are saved in *svo/custom/defs* in your profile folder, which updates leave alone. *vcustomdef export <file>* saves them to a file you can share, and *vcustomdef import <file>* reads one in. If a definition breaks your curing, *vconfig customdefinitions off* starts Svof without any of them.
+Your definitions are saved in *svo/custom/defs* in your profile folder, which updates leave alone. *vcustomdef export <file>* saves them, and your changes to Svof's own, to a file you can share, and *vcustomdef import <file>* reads one in. If a definition breaks your curing, *vconfig customdefinitions off* starts Svof without any of them.
+
+.. _change-svof-defences:
+
+Change Svof's own defences
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+When the game changes one of Svof's defences before Svof catches up, you can change Svof's own with *vcustomdef <name>*, using the name Svof shows in *vshow defup*. Svof shows its version of the defence, with links to change each part:
+
+- the lines that say you gained or lost it, and the lines DEF shows. Your change replaces Svof's lines, so take out the ones the game no longer sends. *vcustomdef <name> fetch* asks the game with *DEFENCE SHOW* and adds the lines it shows now.
+- its GMCP name, which serverside curing knows it by too.
+- the command that raises it, for a defence whose action only sends its command. Where Svof makes the command as it raises the defence, such as riding's, or raises it another way, such as smoking for rebounding, the command stays Svof's.
+
+Under those, Svof lists what it keeps doing as before, such as its patterns for lines that vary, or what gaining the defence does to your other defences. A change can't reach those.
+
+Check the change with *vcustomdef <name> test*, then put it into play with *vcustomdef <name> install*. The first time, Svof asks you to confirm, because your change replaces Svof's own version, and Svof's updates to that defence don't reach you while your change is in use. Svof remembers what its own version was when you changed it. If an update changes what you changed, Svof says so as it loads, with links to see both, to use Svof's, or to keep yours. *vcustomdef <name> reset* puts Svof's own back.
+
+A change to a defence every class has, such as a general one, is for every class. A change to a defence from a class's skillsets is for that class. Your changes are saved in *svo/custom/edits* in your profile folder, and *vconfig customdefinitions off* starts Svof without them as well.
+
+Reporting a defence that's out of date gets the fix into Svof for everyone, and your change can go once the fix is in.
 
 Anti-illusion
 ~~~~~~~~~~~~~
@@ -1024,7 +1042,7 @@ vconfig options
     toggles whenever the system should gag (hide) system's of serverside commands when serverside is enabled - this is things like priority switching, option changing and so on. This does not cover serverside's ``[CURING]:`` messages, use the ``gagservercuring`` option for that.
 
   customdefinitions
-    (on by default) adds the defences you defined with *vcustomdef* when Svof loads. Turn it off to start Svof without them.
+    (on by default) adds the defences you defined with *vcustomdef*, and uses your changes to Svof's own, when Svof loads. Turn it off to start Svof without them.
 
   showhiddendefs
     lists the defences you hid with *vshow hidelist* in the defence lists too, so you can see whether any is on defup or keepup.
@@ -2061,7 +2079,7 @@ General aliases
     adds/remove a defence to the keepup list. Note that keepup can also be enabled/disabled as a feature, and it won't put defences up when it's disabled.
 
   vcustomdef [*<defence>*]
-    lists the defences you defined, or shows one to define or change. See :ref:`custom-defences`.
+    lists the defences you defined and your changes to Svof's own, or shows one to define or change. See :ref:`custom-defences` and :ref:`change-svof-defences`.
 
   vcreate defmode *<name>*
     creates a new fences mode with the given name. You may wish to have more than the default basic/combat ones in order to specialize for situations (ie when you're out bashing, raiding orgA, raiding orgB, etc.)

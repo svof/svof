@@ -14825,6 +14825,9 @@ function svo.basicdef(which, command, balanceless, gamename, undeffable)
   svo.dict[which] = {
     physical = {
       def = true,
+      -- onstart sends action and nothing else, so a player's change to the
+      -- command (vcustomdef) can replace the two together
+      sendsaction = true,
 
       isadvisable = function()
         return (not defc[which] and ((sys.deffing and defdefup[defs.mode][which]) or (conf.keepup and defkeepup[defs.mode][which])) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone and (balanceless or not svo.doingaction(which))) or false
