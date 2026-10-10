@@ -131,6 +131,8 @@ Adjusting defence menus
 ^^^^^^^^^^^^^^^^^^^^^^^
 If you'd like to hide certain defences or groups from showing in the (huge) list, use the *vshow hidelist* alias and click on - or + beside defences, or even entire skillsets, to hide or show them. *vshow hidelist* shows the groups your class has, and keeps what you hid in another class for when you change back.
 
+Hiding a defence, or a whole group, takes it off defup and keepup in every defence mode, so Svof doesn't raise what it hides. Svof says what it took off, with an **(undo)** link that shows it again and puts it all back. Showing it again later doesn't put it back. Hiding the general group hides the main list. To see hidden defences in the lists anyway, turn on *vconfig showhiddendefs*.
+
 Blocking
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Svof has a very useful feature of 'block keepup' - using this, you can ask it to block a direction for you and it will reliably keep blocking: even if you move, or you get knocked off your horse (if you're blocking via Riding), or anything else. To use this, do **block <direction>** or **b <direction>**. To stop blocking, use **unblock** or **ub**.
@@ -1023,6 +1025,9 @@ vconfig options
 
   customdefinitions
     (on by default) adds the defences you defined with *vcustomdef* when Svof loads. Turn it off to start Svof without them.
+
+  showhiddendefs
+    lists the defences you hid with *vshow hidelist* in the defence lists too, so you can see whether any is on defup or keepup.
 
   havelifevision
     sets whenever you have the ability to raise the Lifevision defence through a customised artefact. If you have the skill, you don't need to enable this, and the system autodetects the uncustomised artefact for you as well.

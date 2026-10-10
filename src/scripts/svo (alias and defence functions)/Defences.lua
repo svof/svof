@@ -3008,6 +3008,12 @@ svo.defupcancel = function(echoback)
   stopStopWatch(defences.defup_timer)
 end
 
+-- whether vshow hidelist hides a defence, itself or with its group
+function defences.hidden(which)
+  local group = defs_data[which] and sk.ignored_defences[defs_data[which].type]
+  return group and (group.status or group.t[which]) and true or false
+end
+
 function defs.keepup(which, status, mode, echoback, reshow)
   local sendf; if echoback then sendf = svo.echof else sendf = svo.errorf end
 
@@ -3053,6 +3059,9 @@ function defs.keepup(which, status, mode, echoback, reshow)
       svo.echof("You're still in defup however, and keepup is after defup. Still waiting on: %s to be put up.", sk.showwaitingdefup())
     elseif not conf.keepup and status == true then
       svo.echof("Keepup needs to be on, though.")
+    end
+    if status == true and not conf.showhiddendefs and defences.hidden(which) then
+      svo.echof("%s is hidden in your defence lists, so vshow keepup won't show it; vshow hidelist shows it again.", which)
     end
   end
 
@@ -3101,6 +3110,9 @@ function defs.defup(which, status, mode, echoback, reshow)
       svo.echof("Will put %s up in %s mode.", which, mode)
     else
       svo.echof("Won't put %s up anymore in %s mode.", which, mode)
+    end
+    if status == true and not conf.showhiddendefs and defences.hidden(which) then
+      svo.echof("%s is hidden in your defence lists, so vshow defup won't show it; vshow hidelist shows it again.", which)
     end
   end
 
@@ -4564,9 +4576,16 @@ local function show_defs(tbl, linkcommand, cmdname)
   end
 
   local function show_em(skillset, what)
-    if skillset and not sk.ignored_defences[skillset].status then svo.echof("%s defences:", skillset:title()) end
+    -- the main list is general's, which vshow hidelist hides as a group too
+    local group = sk.ignored_defences[skillset or 'general']
+    local hiddengroup = group and group.status
+    if skillset and (conf.showhiddendefs or not hiddengroup) then
+      svo.echof("%s defences%s:", skillset:title(), hiddengroup and " (hidden)" or "")
+    end
     for _,def in ipairs(what) do
-      local disabled = ((sk.ignored_defences[skillset] and sk.ignored_defences[skillset].status) and true or (sk.ignored_defences[sk.ignored_defences_map[def]].t[def]))
+      local disabled = (hiddengroup and true or (sk.ignored_defences[sk.ignored_defences_map[def]].t[def]))
+      -- vconfig showhiddendefs lists them anyway
+      if conf.showhiddendefs then disabled = false end
 
       if not disabled and not tbl[def] and not defences.nodef_list[def] then
         if (count % 3) ~= 0 then
@@ -4775,13 +4794,44 @@ function sk.have_defup_defs()
   else return true end
 end;
 
+-- Hiding a defence takes it off defup and keepup in every mode, so svof
+-- doesn't raise what the lists don't show (the user's choice, 2026-10-10).
+-- Says what it took off, with a link to show it and put it all back.
+local function takeoff_hidden(skill, names)
+  local off, undo = {}, { string.format("svo.ignoreskill(%q, false)", skill) }
+  for _, def in ipairs(names) do
+    local where = {}
+    for _, list in ipairs({ { defdefup, 'defup' }, { defkeepup, 'keepup' } }) do
+      for mode, t in pairs(list[1]) do
+        if t[def] then
+          defs[list[2]](def, false, mode)
+          where[#where+1] = mode .. " " .. list[2]
+          undo[#undo+1] = string.format("svo.defs.%s(%q, true, %q)", list[2], def, mode)
+        end
+      end
+    end
+    if #where > 0 then
+      table.sort(where)
+      off[#off+1] = string.format("%s (%s)", def, table.concat(where, ", "))
+    end
+  end
+  if #off == 0 then return end
+  svo.echofn("Took %s off, so Svof doesn't raise what it hides. ", svo.concatand(off))
+  setUnderline(true)
+  echoLink("(undo)", table.concat(undo, " "), "Show it again and put it all back", true)
+  setUnderline(false)
+  echo("\n")
+end
+
 function svo.ignoreskill(skill, newstatus)
   skill = skill:lower()
 
   -- first, check if this is a group we're disabling as a whole
   if sk.ignored_defences[skill] then
     sk.ignored_defences[skill].status = newstatus
-    svo.showhidelist() return
+    svo.showhidelist()
+    if newstatus then takeoff_hidden(skill, defences.def_types[skill] or {}) end
+    return
   end
 
   -- otherwise, the group this class has it in: another class's group with
@@ -4789,7 +4839,9 @@ function svo.ignoreskill(skill, newstatus)
   local group = defs_data[skill] and sk.ignored_defences[defs_data[skill].type]
   if group and group.t[skill] ~= nil then
     group.t[skill] = newstatus
-    svo.showhidelist() return
+    svo.showhidelist()
+    if newstatus then takeoff_hidden(skill, { skill }) end
+    return
   end
 
   -- otherwise, loop through all skillsets, looking for the skill
@@ -4875,6 +4927,16 @@ function svo.showhidelist()
 
   local s,_ = pcall(f)
   if not s then svo.echof("Your Mudlet version doesn't seem to be new enough to display this; please update to latest (http://forums.mudlet.org/viewtopic.php?f=5&t=1874)") end
+
+  -- hiding one takes it off defup and keepup; vconfig showhiddendefs
+  -- lists hidden ones anyway, to see what's there
+  svo.echofn("Hiding a defence takes it off defup and keepup. ")
+  setUnderline(true)
+  echoLink(conf.showhiddendefs and "Leave them out of the defence lists" or "Show them in the defence lists anyway",
+    string.format("svo.config.set('showhiddendefs', %s, true)", conf.showhiddendefs and "false" or "true"),
+    "vconfig showhiddendefs", true)
+  setUnderline(false)
+  echo("\n")
 end
 
 end -- end of svo defences loader

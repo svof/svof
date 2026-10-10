@@ -1526,6 +1526,12 @@ svo.config_dict = svo.pl.OrderedMap {
     onenabled = function () svo.echof("<0,250,0>Will%s add the defences you defined the next time Svof loads.", svo.getDefaultColor()) end,
     ondisabled = function () svo.echof("<250,0,0>Won't%s add the defences you defined the next time Svof loads.", svo.getDefaultColor()) end,
   }},
+  -- hidden defences (vshow hidelist) aren't raised; this lists them anyway
+  {showhiddendefs = {
+    type = 'boolean',
+    onenabled = function () svo.echof("<0,250,0>Will%s list the defences you hid in vshow hidelist too.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("<250,0,0>Won't%s list the defences you hid in vshow hidelist.", svo.getDefaultColor()) end,
+  }},
   {releasechannel = {
     type = 'string',
     vconfig2string = true,

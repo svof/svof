@@ -1794,6 +1794,80 @@ do -- a defence two classes have is hidden in the group this class has it in
     true, "hide list: it's listed under Necromancy")
 end
 
+-- Hiding a defence takes it off defup and keepup in every mode, as svof
+-- doesn't raise what the lists don't show, and vconfig showhiddendefs
+-- lists hidden ones anyway (the user's choices, 2026-10-10)
+do
+  local w = world.new({ class = "Occultist" })
+  local svo = w.svo
+  svo.showprompt = function() end
+  if not svo.defdefup.combat then svo.create_defmode("combat") end
+  local function listed(f, def)
+    local from = #w.links
+    f()
+    for i = from + 1, #w.links do
+      if w.links[i]:find("] " .. def .. " ", 1, true) or w.links[i]:find("] " .. def .. "$") then return true end
+    end
+    return false
+  end
+
+  svo.defs.defup("astralform", true, "basic")
+  svo.defs.keepup("astralform", true, "basic")
+  svo.defs.keepup("astralform", true, "combat")
+  svo.ignoreskill("astralform", true)
+  eq(svo.defdefup.basic.astralform or svo.defkeepup.basic.astralform or svo.defkeepup.combat.astralform, false,
+    "hiding: takes a defence off defup and keepup in every mode")
+  eq(echoed(w, "Took astralform (basic defup, basic keepup, combat keepup) off, so Svof doesn't raise what it hides."),
+    true, "hiding: and says where from")
+  local undo
+  for _, l in ipairs(w.links) do
+    if l:sub(1, 7) == "(undo) " then undo = l:sub(8) end
+  end
+  eq(undo ~= nil, true, "hiding: with a link to undo it")
+  if undo then w.run(undo) end
+  eq(svo.sk.ignored_defences.occultism.t.astralform, false, "hiding: undo shows it again")
+  eq(svo.defdefup.basic.astralform and svo.defkeepup.basic.astralform and svo.defkeepup.combat.astralform, true,
+    "hiding: and puts it back where it was")
+
+  svo.defs.keepup("devil", true, "basic")
+  svo.ignoreskill("tarot", true)
+  eq(svo.defkeepup.basic.devil, false, "hiding: a group takes its defences off")
+  svo.ignoreskill("tarot", false)
+  eq(svo.defkeepup.basic.devil, false, "hiding: showing it again doesn't put them back")
+
+  -- the lists
+  svo.ignoreskill("astralform", true)
+  eq(listed(svo.show_defup, "astralform"), false, "hiding: vshow defup leaves it out")
+  svo.defs.defup("astralform", true, nil, true)
+  eq(echoed(w, "astralform is hidden in your defence lists, so vshow defup won't show it"), true,
+    "hiding: putting a hidden one on defup says it's hidden")
+  svo.defs.keepup("astralform", true, nil, true)
+  eq(echoed(w, "astralform is hidden in your defence lists, so vshow keepup won't show it"), true,
+    "hiding: and on keepup")
+  svo.config.set("showhiddendefs", true)
+  eq(listed(svo.show_defup, "astralform"), true, "showhiddendefs: lists a hidden defence anyway")
+  svo.ignoreskill("tarot", true)
+  svo.show_defup()
+  eq(echoed(w, "Tarot defences (hidden):"), true, "showhiddendefs: and a hidden group, saying so")
+  svo.config.set("showhiddendefs", false)
+  svo.ignoreskill("tarot", false)
+  svo.ignoreskill("astralform", false)
+
+  -- the general group hides the main list
+  eq(listed(svo.show_defup, "rebounding"), true, "hiding: the main list has rebounding")
+  svo.ignoreskill("general", true)
+  eq(listed(svo.show_defup, "rebounding"), false, "hiding: hiding the general group hides the main list")
+  svo.ignoreskill("general", false)
+
+  local from = #w.links
+  svo.showhidelist()
+  local link = false
+  for i = from + 1, #w.links do
+    if w.links[i]:find("svo.config.set('showhiddendefs', true, true)", 1, true) then link = true end
+  end
+  eq(link, true, "hide list: links to vconfig showhiddendefs")
+end
+
 do -- the groups come in the class's order: Lua 5.1's pairs() gave a Monk
   -- Kaido, Shikudo, Telepathy, Tekura
   local w = world.new({ class = "Monk" })
