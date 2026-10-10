@@ -1295,9 +1295,20 @@ do
   svo.classchange("Monk")
   eq(svo.dict.shimmer and svo.dict.shimmer.physical.action, "shimmer up", "customdef: back as a Monk, shimmer is")
 
-  -- the list
+  -- the list, each a link to see and change it
+  local links = #w.links
   cmd("")
-  eq(echoed(w, "Defences you defined:"), true, "customdef: vconfig customdef lists them")
+  eq(echoed(w, "Defences you defined (click one to see or change it):"), true, "customdef: vconfig customdef lists them")
+  local shows, game = false, false
+  for i = links + 1, #w.links do
+    if w.links[i]:find('svo.defences.custom_show("shimmer")', 1, true) then shows = true end
+    if w.links[i]:find("svo.defences.custom_gamelist()", 1, true) then game = true end
+  end
+  eq(shows, true, "customdef: each a link to see and change it")
+  eq(game, true, "customdef: and a link to the game's defences Svof doesn't know")
+  links = #w.links
+  cmd("list")
+  eq(#w.links > links, true, "customdef: vconfig customdef list does the same")
 
   -- deleting takes it out of play at once
   cmd("shimmer delete")
@@ -1353,7 +1364,8 @@ do
     "DEFENCE SHOW: EnactMsg, joined where it wrapped, is the gain line")
   eq(d.off[1], "The shimmer about you fades.", "DEFENCE SHOW: FadeMsg the loss line")
   eq(d.def, "You are shimmering softly.", "DEFENCE SHOW: DefMsg the DEF line")
-  eq(echoed(w, "isn't a profession defence"), true, "DEFENCE SHOW: and it passes on that it's no profession's")
+  eq(d.class, "all", "DEFENCE SHOW: Profession No makes it every class's")
+  eq(echoed(w, "isn't a profession defence, so any class can have it"), true, "DEFENCE SHOW: and says so")
   eq(listening(), false, "DEFENCE SHOW: the trigger reading the reply is killed when it ends")
   eq(svo.defences.custom_problem("shimmering", d), "it has no command to raise it",
     "DEFENCE SHOW: which leaves only the command to set")
@@ -1368,12 +1380,46 @@ do
   d = svo.defences.custom_drafts.gleam or { on = {} }
   eq(d.on[1], "You begin to gleam.", "DEFENCE SHOW: a reply cut short by the prompt counts")
 
-  -- a defence the game doesn't show
+  -- a profession defence: the player is asked whose
+  cmd("steelstance")
+  game("Defence:            Steelstance (steelstance)")
+  game("EnactMsg:           You take up your stance.")
+  game("Profession:         Yes")
+  game("Strippable:         No")
+  d = svo.defences.custom_drafts.steelstance or {}
+  eq(d.class, "monk", "DEFENCE SHOW: a profession defence stays the class you're in")
+  eq(echoed(w, "The game says steelstance is a profession defence. Which class has it?"), true,
+    "DEFENCE SHOW: and asks which class has it")
+  local pick
+  for _, l in ipairs(w.links) do
+    if l:find("custom_set(\"steelstance\", 'class', \"serpent\")", 1, true) then pick = l:match("^%S+ (.*)$") end
+  end
+  eq(pick ~= nil, true, "DEFENCE SHOW: with a link for each class")
+  if pick then w.run(pick) end
+  eq(d.class, "serpent", "DEFENCE SHOW: clicking one sets it")
+
+  -- a class you chose stays, whatever the game says
+  cmd("glimmer class sentinel")
+  game("Defence:            Glimmer (glimmer)")
+  game("Profession:         No")
+  game("Strippable:         Yes")
+  d = svo.defences.custom_drafts.glimmer or {}
+  eq(d.class, "sentinel", "DEFENCE SHOW: a class the player set is kept")
+
+  -- a defence the game doesn't have
   cmd("hush")
   eq(w.sent[#w.sent], "defence show hush", "DEFENCE SHOW: asks about hush")
+  game("You snap your head up as you break your meditation.")
+  game("There is no such defence.")
+  eq(echoed(w, "The game has no defence called hush, so add its lines yourself."), true,
+    "DEFENCE SHOW: says when the game has no such defence")
+  eq(listening(), false, "DEFENCE SHOW: and stops reading lines at once")
+
+  -- and one it doesn't answer about
+  cmd("murmur")
   w.advance(10)
-  eq(echoed(w, "The game didn't show a defence called hush, so add its lines yourself."), true,
-    "DEFENCE SHOW: says when the game shows nothing")
+  eq(echoed(w, "The game didn't answer about a defence called murmur, so add its lines yourself."), true,
+    "DEFENCE SHOW: says when the game doesn't answer")
   eq(listening(), false, "DEFENCE SHOW: and stops reading lines")
 
   -- a GMCP name that is one of svof's own
@@ -1393,6 +1439,66 @@ do
   -- asking again by hand
   cmd("hush fetch hushing")
   eq(w.sent[#w.sent], "defence show hushing", "DEFENCE SHOW: fetch asks again, by the name given")
+end
+
+-- DEFENCE LIST names every defence the game reports, a page at a time, and
+-- vconfig customdef game shows the ones Svof doesn't track
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function game(text) w.env.line = text svo.defences.custom_gamelist_line() end
+  local function prompt()
+    w.env.isPrompt = function() return true end
+    game("9975h, 6252m, 21982e, 9637w cexkdb[disl]-")
+    w.env.isPrompt = function() return false end
+  end
+  svo.defences.custom.avoid = { class = "all", command = "avoid", gmcp = "avoid", on = { "x" } }
+
+  cmd("game")
+  eq(w.sent[#w.sent], "defence list", "DEFENCE LIST: vconfig customdef game asks for it")
+  game("You snap your head up as you break your meditation.")
+  game("All defences")
+  game("------------------------------------------------")
+  game("Accursedresolve")
+  game("Aiming")
+  game("Agithtailegend")
+  game("Alertness")
+  game("[Type MORE if you wish to continue reading. (8% shown)]")
+  eq(w.sent[#w.sent], "more", "DEFENCE LIST: each page asks for the next")
+  prompt() -- the page's own prompt
+  game("Arcaneshield")
+  game("Avoid")
+  prompt()
+  eq(echoed(w, "Of the 6 defences the game lists, Svof doesn't know these 2. Click one to define it:"), true,
+    "DEFENCE LIST: the defences Svof doesn't know are listed, all pages read")
+  local unknown = {}
+  for _, l in ipairs(w.links) do
+    local name = l:match('^(%a+) svo%.defences%.custom_show%("%a+"%)$')
+    if name then unknown[#unknown + 1] = name end
+  end
+  eq(table.concat(unknown, ", "), "agithtailegend, arcaneshield, aiming",
+    "DEFENCE LIST: each a link, the one you defined left out, and aiming apart as one Svof leaves alone")
+  eq(echoed(w, "Svof knows these, but leaves them alone:"), true, "DEFENCE LIST: which is said")
+
+  -- clicking one starts a definition, which asks the game about it
+  w.run('svo.defences.custom_show("agithtailegend")')
+  eq(w.sent[#w.sent], "defence show agithtailegend", "DEFENCE LIST: clicking one starts it, asking DEFENCE SHOW")
+
+  -- no list at all
+  cmd("game")
+  w.advance(20)
+  eq(echoed(w, "The game didn't send its list of defences."), true, "DEFENCE LIST: says when nothing came")
+end
+
+do -- vconfig2 links to the list
+  local w = world.new()
+  w.svo.config_dict.customdefinitions.onshow('a_grey')
+  local found = false
+  for _, l in ipairs(w.links) do
+    if l:find("svo.defences.customdef_menu()", 1, true) then found = true end
+  end
+  eq(found, true, "customdef: vconfig2's customdefinitions line links to the list")
 end
 
 do -- the phylactery is found whether its name has one space after the "a" or two

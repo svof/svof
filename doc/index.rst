@@ -165,6 +165,8 @@ Define your own defences
 ^^^^^^^^^^^^^^^^^^^^^^^^
 If Svof doesn't know a defence you have, you can define it with *vconfig customdef*. Svof then puts it up on defup and keepup like any other.
 
+To see which of the game's defences Svof doesn't know, use *vconfig customdef game*. Svof reads the game's *DEFENCE LIST*, all its pages, and lists the defences it doesn't track; click one to start defining it.
+
 To define one:
 
 1. Start it with *vconfig customdef <name>*, using lower-case letters and digits. Svof shows what the definition holds so far, with links to change each part.
@@ -173,9 +175,11 @@ To define one:
 4. If Svof didn't get the GMCP name from the game and you know it, set it with *vconfig customdef <name> gmcp <name>*, which also asks the game for its lines. Svof then takes GMCP's word on the defence, as it does for its own. With *vconfig gmcpdefechoes* on, Svof shows the GMCP names as defences come and go.
 5. Check the definition with *vconfig customdef <name> test*, then put it into play with *vconfig customdef <name> install*.
 
-A definition belongs to the class you define it in. To change that, use *vconfig customdef <name> class <class>*, or *class all* for a defence any class can have, such as an artefact's. Svof adds each definition when you're in its class.
+A definition belongs to the class you define it in. To change that, use *vconfig customdef <name> class <class>*, or *class all* for a defence any class can have, such as an artefact's. Svof adds each definition when you're in its class. When the game says a defence isn't a profession defence, Svof sets it to every class; when it is one, Svof asks which class has it, with a link for each.
 
-Svof refuses a name it already uses. To change a definition, change its parts and install it again; until then, Svof keeps using the installed one. *vconfig customdef <name> delete* takes a definition out, and *vconfig customdef* lists them all.
+Svof refuses a name it already uses. To change a definition, change its parts and install it again; until then, Svof keeps using the installed one. *vconfig customdef <name> delete* takes a definition out.
+
+*vconfig customdef* lists every defence you defined, each a link to see or change it. *vconfig2* links to the same list.
 
 Your definitions are saved in *svo/custom/defs* in your profile folder, which updates leave alone. *vconfig customdef export <file>* saves them to a file you can share, and *vconfig customdef import <file>* reads one in. If a definition breaks your curing, *vconfig customdefinitions off* starts Svof without any of them.
 

@@ -1511,6 +1511,18 @@ svo.config_dict = svo.pl.OrderedMap {
   }},
   {customdefinitions = {
     type = 'boolean',
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      local n = 0
+      for _ in pairs(defences.custom or {}) do n = n + 1 end
+      fg(defaultcolour)
+      echo(string.format("%s the %d defence%s you defined (", conf.customdefinitions and "Adds" or "Doesn't add",
+        n, n == 1 and "" or "s"))
+      fg('a_cyan')
+      echoLink("see them", "svo.defences.customdef_menu()", "List the defences you defined, to see or change them", true)
+      fg(defaultcolour)
+      echo(").\n")
+    end,
     onenabled = function () svo.echof("<0,250,0>Will%s add the defences you defined the next time Svof loads.", svo.getDefaultColor()) end,
     ondisabled = function () svo.echof("<250,0,0>Won't%s add the defences you defined the next time Svof loads.", svo.getDefaultColor()) end,
   }},

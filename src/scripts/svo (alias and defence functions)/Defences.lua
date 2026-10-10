@@ -3729,7 +3729,9 @@ end, 'register the defences the player defined')
 
 -- vconfig customdef, the commands for defining one (the repo owner's,
 -- 2026-09-22):
---   vconfig customdef                       list them
+--   vconfig customdef [list]                list them, each a link to change it
+--   vconfig customdef game                  the game's defences Svof doesn't
+--                                           know, from DEFENCE LIST
 --   vconfig customdef <name>                show one, starting it if new
 --   vconfig customdef <name> <field> <text> set class, command, balanceless,
 --                                           serverside, gmcp or def, or add
@@ -3745,6 +3747,11 @@ end, 'register the defences the player defined')
 --   vconfig customdef export [file], import <file>
 -- Changes go to a draft, kept until Svof reloads; only install changes play.
 defences.custom_drafts = defences.custom_drafts or {}
+-- words vconfig customdef takes in place of a name
+local custom_reserved = { export = true, import = true, list = true, game = true }
+-- the definitions whose class the player chose, which the game's word on
+-- a defence doesn't change
+local class_chosen = {}
 
 local function custom_copy(spec)
   local t = {}
@@ -3765,7 +3772,7 @@ end
 -- why a definition can't be installed, or nil
 function defences.custom_problem(name, spec)
   if not name:find("^%l[%l%d]*$") then return "a name is lower-case letters and digits, starting with a letter" end
-  if name == 'export' or name == 'import' then return name .. " is a command here, not a name" end
+  if custom_reserved[name] then return name .. " is a command here, not a name" end
   if defences.custom_taken(name) then return "Svof already has " .. name end
   if spec.class ~= 'all' and not (type(spec.class) == 'string' and svo.knownskills[spec.class:lower()]) then
     return "its class isn't one Svof knows"
@@ -3786,9 +3793,10 @@ local function custom_draft(name)
   if defences.custom[name] then
     d = custom_copy(defences.custom[name])
   else
-    if not name:find("^%l[%l%d]*$") or name == 'export' or name == 'import' then
+    if not name:find("^%l[%l%d]*$") then
       return nil, "a name is lower-case letters and digits, starting with a letter"
     end
+    if custom_reserved[name] then return nil, name .. " is a command here, not a name" end
     if defences.custom_taken(name) then return nil, "Svof already has a defence or action called " .. name end
     d = { class = tostring(me.class):lower(), on = {}, off = {} }
     defences.custom_drafts[name] = d
@@ -3868,6 +3876,7 @@ function defences.custom_set(name, field, value)
       return
     end
     d.class = class
+    class_chosen[name] = true
   elseif field == 'command' then
     if value == '' then svo.echof("What does Svof send to raise %s?", name) return end
     d.command = value
@@ -3929,10 +3938,14 @@ end
 --   FadeMsg:            You cease your watchful alertness.
 --   Profession:         No
 --   Strippable:         Yes
--- with a long value carried onto the next line. custom_fetch sends it and
--- fills the draft's empty parts from the reply: the name in brackets as its
--- GMCP name, EnactMsg as a gain line, FadeMsg as a loss line, and DefMsg as
--- its DEF line. A defence the game doesn't show keeps the player's lines.
+-- with a long value carried onto the next line, or "There is no such
+-- defence." for one it doesn't have. custom_fetch sends it and fills the
+-- draft's empty parts from the reply: the name in brackets as its GMCP
+-- name, EnactMsg as a gain line, FadeMsg as a loss line, and DefMsg as its
+-- DEF line. Profession says whether it's a class's defence (the owner,
+-- 2026-10-09): one that isn't is for every class, and for one that is the
+-- player is asked which class, as the game doesn't say. A defence the game
+-- doesn't have keeps the player's lines.
 local fetching = {}
 local fetch_labels = { Description = true, DefMsg = true, EnactMsg = true, FadeMsg = true,
   Profession = true, Strippable = true }
@@ -3962,10 +3975,34 @@ local function fetch_done()
   if off ~= '' and not table.contains(d.off, off) then d.off[#d.off + 1] = off end
   if def ~= '' and not d.def then d.def = def end
   svo.echof("Filled in %s from the game's DEFENCE SHOW %s.", name, gmcpname)
-  if value('Profession'):lower() == 'no' and d.class ~= 'all' then
-    svo.echof("The game says it isn't a profession defence. If every class can have it, use vconfig customdef %s class all.", name)
-  end
+  local profession = value('Profession'):lower()
+  local chosen = class_chosen[name] or defences.custom[name]
+  if profession == 'no' and not chosen then d.class = 'all' end
   defences.custom_show(name)
+  if profession == 'no' and not chosen then
+    svo.echof("The game says it isn't a profession defence, so any class can have it.")
+  elseif profession == 'yes' and not chosen then
+    defences.custom_ask_class(name)
+  end
+end
+
+-- asks which class a profession defence belongs to, a link for each
+function defences.custom_ask_class(name)
+  local d = defences.custom_drafts[name]
+  if not d then return end
+  svo.echof("The game says %s is a profession defence. Which class has it? It's set to %s now:", name,
+    d.class == 'all' and "every class" or tostring(d.class):title())
+  local classes = {}
+  for class in pairs(svo.knownskills) do
+    if class ~= 'none' then classes[#classes + 1] = class end
+  end
+  table.sort(classes)
+  echo("  ")
+  for i, class in ipairs(classes) do
+    custom_link(class:title(), string.format("svo.defences.custom_set(%q, 'class', %q)", name, class), "It's " .. class:title() .. "'s")
+    echo(i < #classes and ", " or "\n")
+    if i % 6 == 0 and i < #classes then echo("\n  ") end
+  end
 end
 
 function defences.custom_fetch(name, keyword)
@@ -3976,7 +4013,7 @@ function defences.custom_fetch(name, keyword)
   fetching.timer = tempTimer(5 + svo.getping(), function()
     fetching.timer = nil
     if fetching.fields then fetch_done() return end
-    svo.echof("The game didn't show a defence called %s, so add its lines yourself.", tostring(fetching.keyword))
+    svo.echof("The game didn't answer about a defence called %s, so add its lines yourself.", tostring(fetching.keyword))
     fetch_stop()
   end)
   send("defence show " .. fetching.keyword, conf.commandecho)
@@ -3996,6 +4033,10 @@ function defences.custom_fetch_line()
     if label == 'Defence' then
       local keyword = rest:match("%((%S+)%)%s*$")
       fetching.fields = { keyword = keyword and keyword:lower() }
+    elseif text == "There is no such defence." then
+      local asked = fetching.keyword
+      fetch_stop()
+      svo.echof("The game has no defence called %s, so add its lines yourself.", tostring(asked))
     end
     return
   end
@@ -4006,6 +4047,126 @@ function defences.custom_fetch_line()
   elseif fetching.last and fetch_wraps[fetching.last] then
     local prev = fetching.fields[fetching.last]
     fetching.fields[fetching.last] = prev .. (prev:find("%s$") and "" or " ") .. text
+  end
+end
+
+-- DEFENCE LIST shows every defence the game reports over GMCP, a name to a
+-- line and a page at a time (the owner's capture, 2026-10-09):
+--   All defences
+--   ------------------------------------------------
+--   Accursedresolve
+--   Acrobatics
+--   [Type MORE if you wish to continue reading. (8% shown)]
+-- custom_gamelist sends it, and MORE after each page, hiding the list as it
+-- reads it, then shows the defences Svof doesn't track, each a link to
+-- define it.
+local listing = {}
+
+local function list_stop()
+  if listing.trigger then killTrigger(listing.trigger) end
+  if listing.timer then killTimer(listing.timer) end
+  listing = {}
+end
+
+local function list_show(names)
+  local custom_gmcp = {}
+  for _, spec in pairs(defences.custom) do
+    if type(spec.gmcp) == 'string' then custom_gmcp[spec.gmcp:lower()] = true end
+  end
+  local unknown, ignored = {}, {}
+  for _, name in ipairs(names) do
+    local mapped = svo.dict.sstosvod[name]
+    if not custom_gmcp[name] then
+      if mapped == nil then unknown[#unknown + 1] = name
+      elseif mapped == false then ignored[#ignored + 1] = name end
+    end
+  end
+  local function links(list)
+    echo("  ")
+    for i, name in ipairs(list) do
+      custom_link(name, string.format("svo.defences.custom_show(%q)", name), "Define " .. name)
+      if i < #list then echo(i % 6 == 0 and "\n  " or ", ") end
+    end
+    echo("\n")
+  end
+  if #unknown == 0 and #ignored == 0 then
+    svo.echof("Svof tracks all %d defences the game lists, or you've defined them.", #names)
+    return
+  end
+  if #unknown > 0 then
+    svo.echof("Of the %d defences the game lists, Svof doesn't know these %d. Click one to define it:", #names, #unknown)
+    links(unknown)
+  end
+  if #ignored > 0 then
+    svo.echof("Svof knows these, but leaves them alone:")
+    links(ignored)
+  end
+end
+
+local function list_wait()
+  if listing.timer then killTimer(listing.timer) end
+  listing.timer = tempTimer(8 + svo.getping(), function()
+    listing.timer = nil
+    local names = listing.names
+    list_stop()
+    if names and #names > 0 then
+      list_show(names)
+    else
+      svo.echof("The game didn't send its list of defences.")
+    end
+  end)
+end
+
+function defences.custom_gamelist()
+  list_stop()
+  listing = { pages = 0 }
+  listing.trigger = tempRegexTrigger("^", "svo.defences.custom_gamelist_line()")
+  list_wait()
+  svo.echof("Asking the game for its list of defences.")
+  send("defence list", conf.commandecho)
+end
+
+-- every line while the list is read: it starts at "All defences", a MORE
+-- line asks for the next page, and a prompt with no MORE before it ends it
+function defences.custom_gamelist_line()
+  if not listing.pages then return end
+  if isPrompt and isPrompt() then
+    if listing.names and not listing.more then
+      local names = listing.names
+      list_stop()
+      list_show(names)
+    end
+    return
+  end
+  local text = line
+  if not listing.names then
+    if text == "All defences" then
+      listing.names = {}
+      deleteLine()
+    end
+    return
+  end
+  if text:find("^%[Type MORE if you wish to continue reading") then
+    deleteLine()
+    listing.pages = listing.pages + 1
+    if listing.pages > 50 then
+      local names = listing.names
+      list_stop()
+      list_show(names)
+      return
+    end
+    listing.more = true
+    list_wait()
+    send("more", false)
+    return
+  end
+  local name = text:match("^(%a+)%s*$")
+  if name then
+    listing.names[#listing.names + 1] = name:lower()
+    listing.more = false
+    deleteLine()
+  elseif text:find("^%-+%s*$") then
+    deleteLine()
   end
 end
 
@@ -4110,25 +4271,37 @@ function defences.custom_import(path)
   end
 end
 
+-- vconfig customdef or customdef list: every definition, a link to show and
+-- change each
 function defences.customdef_menu()
   local names, seen = {}, {}
   for name in pairs(defences.custom) do names[#names + 1] = name seen[name] = true end
   for name in pairs(defences.custom_drafts) do if not seen[name] then names[#names + 1] = name end end
   table.sort(names)
   if #names == 0 then
-    svo.echof("You haven't defined any defences. Start one with vconfig customdef <name>.")
-    return
+    svo.echof("You haven't defined any defences.")
+  else
+    svo.echof("Defences you defined (click one to see or change it):")
+    for _, name in ipairs(names) do
+      local spec = defences.custom_drafts[name] or defences.custom[name]
+      local state = not defences.custom[name] and "not installed"
+        or defences.custom_drafts[name] and "changes not installed"
+        or defences.custom_registered[name] and "in use"
+        or "installed, for another class"
+      echo("  ")
+      custom_link(name, string.format("svo.defences.custom_show(%q)", name), "See or change " .. name)
+      echo(string.format(": %s, %s  ", spec.class == 'all' and "every class" or tostring(spec.class), state))
+      custom_link("test", string.format("svo.defences.custom_test(%q)", name), "Say what it would do")
+      echo("  ")
+      custom_link("delete", string.format("svo.defences.custom_delete(%q)", name), "Take it out")
+      echo("\n")
+    end
   end
-  svo.echof("Defences you defined:")
-  for _, name in ipairs(names) do
-    local spec = defences.custom_drafts[name] or defences.custom[name]
-    echo("  ")
-    custom_link(name, string.format("svo.defences.custom_show(%q)", name), "Show " .. name)
-    echo(string.format(", for %s%s  ", spec.class == 'all' and "every class" or tostring(spec.class),
-      not defences.custom[name] and " (not installed)" or defences.custom_drafts[name] and " (changes not installed)" or ""))
-    custom_link("delete", string.format("svo.defences.custom_delete(%q)", name), "Take it out")
-    echo("\n")
-  end
+  echo("  ")
+  custom_link("define a new one", "printCmdLine('vconfig customdef ')", "Type its name")
+  echo("  ")
+  custom_link("see the game's defences Svof doesn't know", "svo.defences.custom_gamelist()", "Compare with DEFENCE LIST")
+  echo("\n")
 end
 
 -- what vconfig customdef passes on: everything after the option's name
@@ -4137,6 +4310,8 @@ function defences.customdef_command(rest)
   local name, tail = rest:match("^(%S+)%s*(.-)$")
   if not name then return defences.customdef_menu() end
   name = name:lower()
+  if name == 'list' then return defences.customdef_menu() end
+  if name == 'game' then return defences.custom_gamelist() end
   if name == 'export' then return defences.custom_export(tail) end
   if name == 'import' then return defences.custom_import(tail) end
   local verb, value = tail:match("^(%S*)%s*(.-)$")
