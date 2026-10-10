@@ -47,6 +47,9 @@ behaviour meant to stay. All of these are in the 2018 module xmls:
   26  dict_setup added a defence's gone while pairs() walked the entry, so
       on Lua 5.4 and later a balance could be left without a name (fixed)
   27  vconfig havemindnet on registered lifevision, not mindnet (fixed)
+  28  what a player hid in a class's skillsets was forgotten on changing
+      class and back, and vshow hidelist listed a defence under a group
+      another class had it in (fixed)
 
 Nothing here proves anything about Mudlet, the static trigger items in
 src/triggers, the game's real wording or timing, or play.
@@ -1596,6 +1599,67 @@ do
     w.run_timers()
     eq(summary(w), first, class .. ": changing class and back keeps them, with no extra triggers")
   end
+end
+
+-- ===== 12. The hide list (vshow hidelist) =====
+
+-- What a player hides is kept through a class change and back. systemstart
+-- used to take the skillsets a class doesn't have out of the list, which
+-- forgot them (defect 28); the list keeps them, and shows only this class's.
+do
+  local w = world.new({ class = "Occultist" })
+  local svo = w.svo
+  local shown = {}
+  w.env.decho = function(s) shown[#shown + 1] = tostring(s) end
+  svo.ignoreskill("astralform", true)
+  svo.ignoreskill("tarot", true)
+  svo.classchange("Monk")
+  w.run_timers()
+  shown = {}
+  svo.showhidelist()
+  local text = table.concat(shown)
+  eq(text:find("Tekura defences", 1, true) ~= nil, true, "hide list: as a Monk, it shows the Monk's groups")
+  eq(text:find("Occultism defences", 1, true), nil, "hide list: and not the Occultist's")
+  eq(text:find("astralform", 1, true), nil, "hide list: nor the Occultist's defences")
+  svo.classchange("Occultist")
+  w.run_timers()
+  eq(svo.sk.ignored_defences.occultism.t.astralform, true,
+    "hide list: a hidden defence is still hidden after changing class and back")
+  eq(svo.sk.ignored_defences.tarot.status, true, "hide list: and so is a hidden group")
+end
+
+do -- a defence two classes have is hidden in the group this class has it in
+  local w = world.new({ class = "Apostate" })
+  local svo = w.svo
+  local showhidelist = svo.showhidelist
+  svo.showhidelist = function() end
+  svo.classchange("Infernal")
+  w.run_timers()
+  svo.classchange("Apostate")
+  w.run_timers()
+  -- more groups from before holding it, so which one a search of the list
+  -- reaches first can't decide this
+  for i = 1, 20 do svo.sk.ignored_defences["before" .. i] = { status = false, t = { deathaura = false } } end
+  svo.ignoreskill("deathaura", true)
+  eq(svo.sk.ignored_defences.necromancy.t.deathaura, true, "hide list: an Apostate hides Necromancy's deathaura")
+  local others = 0
+  for i = 1, 20 do
+    if svo.sk.ignored_defences["before" .. i].t.deathaura then others = others + 1 end
+    svo.sk.ignored_defences["before" .. i] = nil
+  end
+  eq(svo.sk.ignored_defences.oppression and svo.sk.ignored_defences.oppression.t.deathaura or others > 0, false,
+    "hide list: not the Infernal's, or any other group's still in the list from before")
+
+  -- deathsight is general for an Infernal and Necromancy's for an Apostate,
+  -- and the general group keeps the name from before
+  local shown = {}
+  w.env.decho = function(s) shown[#shown + 1] = tostring(s) end
+  showhidelist()
+  local text = table.concat(shown)
+  local general = text:match("General defences:(.-) defences:") or ""
+  eq(general:find("deathsight", 1, true), nil, "hide list: an Apostate's deathsight isn't listed as general")
+  eq((text:match("Necromancy defences:(.-) defences:") or text:match("Necromancy defences:(.*)") or ""):find("deathsight", 1, true) ~= nil,
+    true, "hide list: it's listed under Necromancy")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))

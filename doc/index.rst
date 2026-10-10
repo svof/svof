@@ -129,7 +129,7 @@ When you QQ, the system will automatically go into the *empty* defences mode - s
 
 Adjusting defence menus
 ^^^^^^^^^^^^^^^^^^^^^^^
-If you'd like to hide certain defences or groups from showing in the (huge) list, use the *vshow hidelist* alias and click on - or + beside defences, or even entire skillsets, to hide or show them.
+If you'd like to hide certain defences or groups from showing in the (huge) list, use the *vshow hidelist* alias and click on - or + beside defences, or even entire skillsets, to hide or show them. *vshow hidelist* shows the groups your class has, and keeps what you hid in another class for when you change back.
 
 Blocking
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

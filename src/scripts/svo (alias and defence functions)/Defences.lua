@@ -3613,13 +3613,9 @@ signals.systemstart:connect(function ()
   svo.update(defdefup, defdefup_t)
   svo.update(defkeepup, defkeepup_t)
 
-  -- remove skillsets from ignorelist that we don't have, for people that change.
-  -- The defences you define are kept, being registered after this
-  for skillset, _ in pairs(sk.ignored_defences) do
-    if skillset ~= 'general' and skillset ~= 'enchantment' and skillset ~= 'dragoncraft' and skillset ~= 'custom' and not me.skills[skillset] then
-      sk.ignored_defences[skillset] = nil
-    end
-  end
+  -- The skillsets this class doesn't have stay in the hide list, which
+  -- shows only this class's: removing them here forgot what a player hid
+  -- in one class on changing to another and back
 
 
   -- simple way of removing all and adding per line
@@ -4678,6 +4674,14 @@ function svo.ignoreskill(skill, newstatus)
     svo.showhidelist() return
   end
 
+  -- otherwise, the group this class has it in: another class's group with
+  -- the same defence stays in the list, kept for when you change back
+  local group = defs_data[skill] and sk.ignored_defences[defs_data[skill].type]
+  if group and group.t[skill] ~= nil then
+    group.t[skill] = newstatus
+    svo.showhidelist() return
+  end
+
   -- otherwise, loop through all skillsets, looking for the skill
   for _, group in pairs(sk.ignored_defences) do
     for skills, _ in pairs(group.t) do
@@ -4715,8 +4719,15 @@ function svo.showhidelist()
       makelink(name, (what.status and "+" or "-")),
       name:title()))
 
+    -- the defences this class has in the group; the list keeps other
+    -- classes' too, for when you change back
+    local shown = {}
+    for def, disabled in pairs(what.t) do
+      if defs_data[def] and defs_data[def].type == name then shown[def] = disabled end
+    end
+
     -- loops through all defences within the group
-    for def,disabled in pairs(what.t) do
+    for def,disabled in pairs(shown) do
       -- if the whole group is disabled, then all things inside it should be as well
       local skill_color = (what.status and true or disabled)
 
@@ -4747,7 +4758,8 @@ function svo.showhidelist()
 
   local function f()
     for j,k in pairs(sk.ignored_defences) do
-      if j ~= 'general' then show_em (j, k) end
+      -- only the groups this class has
+      if j ~= 'general' and defences.def_types[j] then show_em (j, k) end
     end
   end
 
