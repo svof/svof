@@ -3,6 +3,11 @@
   "source": "svof.xml",
   "accepted": [
     {
+      "id": "added|Alias|svo (aliases, triggers)|svo/(vcustomdef) Define your own defences",
+      "digest": "788b05cdbb2f41c8",
+      "text": "Alias    svo (aliases, triggers) svo/(vcustomdef) Define your own defences [only in the package]"
+    },
+    {
       "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_download_done",
       "digest": "238f77f1fa9d8ec5",
       "text": "Script   svo (install me in module manager) Check for system updates/svo.update_download_done [only in the package]"
@@ -101,6 +106,11 @@
       "id": "added|Trigger|svo (aliases, triggers)|svo/Voicecraft/Crescendo peaks",
       "digest": "f385578ae71ec397",
       "text": "Trigger  svo (aliases, triggers) svo/Voicecraft/Crescendo peaks [only in the package]"
+    },
+    {
+      "id": "count|Alias|svo (aliases, triggers)|svo",
+      "digest": "8c4b3201feabbd64",
+      "text": "Alias    svo (aliases, triggers) / 'svo': 121 items originally, 122 in merged"
     },
     {
       "id": "count|Script|svo (install me in module manager)|Check for system updates",
@@ -219,7 +229,7 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "248d5788d27bd38c",
+      "digest": "62cb60eccef63d73",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -344,7 +354,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Config system|script",
-      "digest": "e7c3d813055fc189",
+      "digest": "5a018cbc1d31a8b3",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Config system [script]"
     },
     {

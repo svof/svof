@@ -1526,12 +1526,6 @@ svo.config_dict = svo.pl.OrderedMap {
     onenabled = function () svo.echof("<0,250,0>Will%s add the defences you defined the next time Svof loads.", svo.getDefaultColor()) end,
     ondisabled = function () svo.echof("<250,0,0>Won't%s add the defences you defined the next time Svof loads.", svo.getDefaultColor()) end,
   }},
-  -- define your own defences (Defences.lua)
-  {customdef = {
-    type = 'custom',
-    onmenu = function () defences.customdef_menu() end,
-    onset = function (rest) defences.customdef_command(rest) end,
-  }},
   {releasechannel = {
     type = 'string',
     vconfig2string = true,
@@ -2290,10 +2284,8 @@ function svo.config.set(what, option, echoback)
       end
 
     else
-      -- what follows the option's name, for vconfig customdef; no other
-      -- custom option has an onset
       if svo.config_dict[what].onset then
-        svo.config_dict[what].onset(option)
+        svo.config_dict[what].onset()
         raiseevent(what)
       end
     end

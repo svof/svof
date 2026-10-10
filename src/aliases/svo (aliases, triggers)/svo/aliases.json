@@ -586,5 +586,11 @@
     "isActive": "yes",
     "isFolder": "no",
     "regex": "^dil(?: (\\w+))?$"
+  },
+  {
+    "name": "(vcustomdef) Define your own defences",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vcustomdef(?: (.+))?$"
   }
 ]

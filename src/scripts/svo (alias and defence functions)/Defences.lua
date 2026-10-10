@@ -3638,7 +3638,7 @@ signals.systemstart:connect(function ()
   end
 end, 'setup def triggers on system start')
 
--- Defences the player defines (vconfig customdef). They are saved under
+-- Defences the player defines (vcustomdef). They are saved under
 -- <profile>/svo/custom/defs, which a package update leaves alone, and
 -- registered again on every systemstart, as defs_data and svo.dict are both
 -- made anew then, before the prio import, so a saved priority for one
@@ -3727,27 +3727,25 @@ signals.systemstart:connect(function ()
   end
 end, 'register the defences the player defined')
 
--- vconfig customdef, the commands for defining one (the repo owner's,
--- 2026-09-22):
---   vconfig customdef [list]                list them, each a link to change it
---   vconfig customdef game                  the game's defences Svof doesn't
---                                           know, from DEFENCE LIST
---   vconfig customdef <name>                show one, starting it if new
---   vconfig customdef <name> <field> <text> set class, command, balanceless,
---                                           serverside, gmcp or def, or add
---                                           a got or lost line
---   vconfig customdef <name> line <got|lost|def>  pick that line off the screen
---   vconfig customdef <name> fetch [game name]  fill its lines from the
---                                           game's DEFENCE SHOW, which a new
---                                           definition and a GMCP name do
---                                           by themselves
---   vconfig customdef <name> test           say what it would do
---   vconfig customdef <name> install        put it into play, and save it
---   vconfig customdef <name> delete         take it out
---   vconfig customdef export [file], import <file>
+-- vcustomdef, the commands for defining one (the repo owner's, 2026-09-22):
+--   vcustomdef [list]                list them, each a link to change it
+--   vcustomdef game                  the game's defences Svof doesn't know,
+--                                    from DEFENCE LIST
+--   vcustomdef <name>                show one, starting it if new
+--   vcustomdef <name> <field> <text> set class, command, balanceless,
+--                                    serverside, gmcp or def, or add a got
+--                                    or lost line
+--   vcustomdef <name> line <got|lost|def>  pick that line off the screen
+--   vcustomdef <name> fetch [game name]  fill its lines from the game's
+--                                    DEFENCE SHOW, which a new definition
+--                                    and a GMCP name do by themselves
+--   vcustomdef <name> test           say what it would do
+--   vcustomdef <name> install        put it into play, and save it
+--   vcustomdef <name> delete         take it out
+--   vcustomdef export [file], import <file>
 -- Changes go to a draft, kept until Svof reloads; only install changes play.
 defences.custom_drafts = defences.custom_drafts or {}
--- words vconfig customdef takes in place of a name
+-- words vcustomdef takes in place of a name
 local custom_reserved = { export = true, import = true, list = true, game = true }
 -- the definitions whose class the player chose, which the game's word on
 -- a defence doesn't change
@@ -3822,7 +3820,7 @@ function defences.custom_show(name)
   end
   local installed = defences.custom[name]
   svo.echof("%s, a defence you %s:", name, installed and "defined" or "are defining (not installed)")
-  local cmd = "vconfig customdef " .. name .. " "
+  local cmd = "vcustomdef " .. name .. " "
   local function row(label, value, field)
     echo(string.format("  %-12s %s  ", label, value))
     custom_link("change", string.format("printCmdLine(%q)", cmd .. field .. " "), "Change " .. label)
@@ -4271,8 +4269,8 @@ function defences.custom_import(path)
   end
 end
 
--- vconfig customdef or customdef list: every definition, a link to show and
--- change each
+-- vcustomdef or vcustomdef list: every definition, a link to show and change
+-- each
 function defences.customdef_menu()
   local names, seen = {}, {}
   for name in pairs(defences.custom) do names[#names + 1] = name seen[name] = true end
@@ -4298,13 +4296,13 @@ function defences.customdef_menu()
     end
   end
   echo("  ")
-  custom_link("define a new one", "printCmdLine('vconfig customdef ')", "Type its name")
+  custom_link("define a new one", "printCmdLine('vcustomdef ')", "Type its name")
   echo("  ")
   custom_link("see the game's defences Svof doesn't know", "svo.defences.custom_gamelist()", "Compare with DEFENCE LIST")
   echo("\n")
 end
 
--- what vconfig customdef passes on: everything after the option's name
+-- what the vcustomdef alias passes on: everything after its name
 function defences.customdef_command(rest)
   rest = (rest or ''):match("^%s*(.-)%s*$")
   local name, tail = rest:match("^(%S+)%s*(.-)$")

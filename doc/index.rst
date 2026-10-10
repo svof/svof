@@ -163,25 +163,25 @@ The same goes with shrouding - if you've got yours as an artefact, it will autom
 
 Define your own defences
 ^^^^^^^^^^^^^^^^^^^^^^^^
-If Svof doesn't know a defence you have, you can define it with *vconfig customdef*. Svof then puts it up on defup and keepup like any other.
+If Svof doesn't know a defence you have, you can define it with *vcustomdef*. Svof then puts it up on defup and keepup like any other.
 
-To see which of the game's defences Svof doesn't know, use *vconfig customdef game*. Svof reads the game's *DEFENCE LIST*, all its pages, and lists the defences it doesn't track; click one to start defining it.
+To see which of the game's defences Svof doesn't know, use *vcustomdef game*. Svof reads the game's *DEFENCE LIST*, all its pages, and lists the defences it doesn't track; click one to start defining it.
 
 To define one:
 
-1. Start it with *vconfig customdef <name>*, using lower-case letters and digits. Svof shows what the definition holds so far, with links to change each part.
-2. Set the command that raises it with *vconfig customdef <name> command <command>*. If raising it takes no balance, add *vconfig customdef <name> balanceless yes*. If serverside curing can raise it, add *vconfig customdef <name> serverside yes*; otherwise Svof raises it.
-3. Tell Svof how it knows the defence is up. If the game knows the defence by the name you gave it, Svof asks with *DEFENCE SHOW* when you start the definition, and fills in its lines and GMCP name from the game's reply. *vconfig customdef <name> fetch <game name>* asks about a different name. For a defence the game doesn't show, raise it once, then use *vconfig customdef <name> line got* and click the line that says you gained it, or click **type one** and paste it in. Do the same with *line lost* for the line that says you lost it, and with *line def* for the line DEF shows.
-4. If Svof didn't get the GMCP name from the game and you know it, set it with *vconfig customdef <name> gmcp <name>*, which also asks the game for its lines. Svof then takes GMCP's word on the defence, as it does for its own. With *vconfig gmcpdefechoes* on, Svof shows the GMCP names as defences come and go.
-5. Check the definition with *vconfig customdef <name> test*, then put it into play with *vconfig customdef <name> install*.
+1. Start it with *vcustomdef <name>*, using lower-case letters and digits. Svof shows what the definition holds so far, with links to change each part.
+2. Set the command that raises it with *vcustomdef <name> command <command>*. If raising it takes no balance, add *vcustomdef <name> balanceless yes*. If serverside curing can raise it, add *vcustomdef <name> serverside yes*; otherwise Svof raises it.
+3. Tell Svof how it knows the defence is up. If the game knows the defence by the name you gave it, Svof asks with *DEFENCE SHOW* when you start the definition, and fills in its lines and GMCP name from the game's reply. *vcustomdef <name> fetch <game name>* asks about a different name. For a defence the game doesn't show, raise it once, then use *vcustomdef <name> line got* and click the line that says you gained it, or click **type one** and paste it in. Do the same with *line lost* for the line that says you lost it, and with *line def* for the line DEF shows.
+4. If Svof didn't get the GMCP name from the game and you know it, set it with *vcustomdef <name> gmcp <name>*, which also asks the game for its lines. Svof then takes GMCP's word on the defence, as it does for its own. With *vconfig gmcpdefechoes* on, Svof shows the GMCP names as defences come and go.
+5. Check the definition with *vcustomdef <name> test*, then put it into play with *vcustomdef <name> install*.
 
-A definition belongs to the class you define it in. To change that, use *vconfig customdef <name> class <class>*, or *class all* for a defence any class can have, such as an artefact's. Svof adds each definition when you're in its class. When the game says a defence isn't a profession defence, Svof sets it to every class; when it is one, Svof asks which class has it, with a link for each.
+A definition belongs to the class you define it in. To change that, use *vcustomdef <name> class <class>*, or *class all* for a defence any class can have, such as an artefact's. Svof adds each definition when you're in its class. When the game says a defence isn't a profession defence, Svof sets it to every class; when it is one, Svof asks which class has it, with a link for each.
 
-Svof refuses a name it already uses. To change a definition, change its parts and install it again; until then, Svof keeps using the installed one. *vconfig customdef <name> delete* takes a definition out.
+Svof refuses a name it already uses. To change a definition, change its parts and install it again; until then, Svof keeps using the installed one. *vcustomdef <name> delete* takes a definition out.
 
-*vconfig customdef* lists every defence you defined, each a link to see or change it. *vconfig2* links to the same list.
+*vcustomdef* lists every defence you defined, each a link to see or change it. *vconfig2* links to the same list.
 
-Your definitions are saved in *svo/custom/defs* in your profile folder, which updates leave alone. *vconfig customdef export <file>* saves them to a file you can share, and *vconfig customdef import <file>* reads one in. If a definition breaks your curing, *vconfig customdefinitions off* starts Svof without any of them.
+Your definitions are saved in *svo/custom/defs* in your profile folder, which updates leave alone. *vcustomdef export <file>* saves them to a file you can share, and *vcustomdef import <file>* reads one in. If a definition breaks your curing, *vconfig customdefinitions off* starts Svof without any of them.
 
 Anti-illusion
 ~~~~~~~~~~~~~
@@ -1019,11 +1019,8 @@ vconfig options
   gagserverside
     toggles whenever the system should gag (hide) system's of serverside commands when serverside is enabled - this is things like priority switching, option changing and so on. This does not cover serverside's ``[CURING]:`` messages, use the ``gagservercuring`` option for that.
 
-  customdef
-    defines your own defences, for ones Svof doesn't know. See :ref:`custom-defences`.
-
   customdefinitions
-    (on by default) adds the defences you defined with *customdef* when Svof loads. Turn it off to start Svof without them.
+    (on by default) adds the defences you defined with *vcustomdef* when Svof loads. Turn it off to start Svof without them.
 
   havelifevision
     sets whenever you have the ability to raise the Lifevision defence through a customised artefact. If you have the skill, you don't need to enable this, and the system autodetects the uncustomised artefact for you as well.
@@ -2055,6 +2052,9 @@ General aliases
 
   vkeep *<defence>* [on/off]
     adds/remove a defence to the keepup list. Note that keepup can also be enabled/disabled as a feature, and it won't put defences up when it's disabled.
+
+  vcustomdef [*<defence>*]
+    lists the defences you defined, or shows one to define or change. See :ref:`custom-defences`.
 
   vcreate defmode *<name>*
     creates a new fences mode with the given name. You may wish to have more than the default basic/combat ones in order to specialize for situations (ie when you're out bashing, raiding orgA, raiding orgB, etc.)

@@ -1147,7 +1147,7 @@ do -- the item is looked for in your inventory only
   eq(type(svo.dict.mindnet), "table", "one in your inventory does")
 end
 
--- The defences a player defines (vconfig customdef) are registered on every
+-- The defences a player defines (vcustomdef) are registered on every
 -- systemstart for the class they belong to, or for every class.
 do
   local w = world.new({ class = "Monk" })
@@ -1210,7 +1210,7 @@ do
   eq(svo.defs_data.warded, nil, "custom defences: with customdefinitions off, none is registered")
 end
 
--- vconfig customdef: defining one, installing, changing, deleting
+-- vcustomdef: defining one, installing, changing, deleting
 do
   local w = world.new({ class = "Monk" })
   local svo = w.svo
@@ -1224,10 +1224,30 @@ do
     return n
   end
 
-  -- vconfig hands the rest of the line to the option
-  svo.config.set("customdef", "Shimmer command shimmer on")
+  -- the alias hands the rest of the line on. The harness runs no aliases,
+  -- so this reads the item: its pattern, and its script run as Mudlet
+  -- would, with what the pattern captured
+  local dir = "src/aliases/svo (aliases, triggers)/svo/"
+  local fh = io.open(dir .. "aliases.json", "r")
+  local items = fh and fh:read("*a") or ""
+  if fh then fh:close() end
+  local at = items:find('"name": "(vcustomdef) Define your own defences"', 1, true)
+  local item = at and items:sub(at, (items:find("}", at, true) or #items))
+  eq(item and item:find('"isActive": "yes"', 1, true) ~= nil, true, "customdef: the vcustomdef alias is active")
+  eq(item and item:match('"regex": "([^"]*)"'), "^vcustomdef(?: (.+))?$",
+    "customdef: the vcustomdef alias takes an optional rest of the line")
+  fh = io.open(dir .. "(vcustomdef)_Define_your_own_defences.lua", "r")
+  local script = fh and fh:read("*a") or ""
+  if fh then fh:close() end
+  w.env.matches = { "vcustomdef Shimmer command shimmer on", "Shimmer command shimmer on" }
+  w.run(script, "vcustomdef")
   local d = custom.custom_drafts.shimmer
-  eq(d and d.command, "shimmer on", "customdef: vconfig customdef <name> command <text> starts a draft")
+  eq(d and d.command, "shimmer on", "customdef: vcustomdef <name> command <text> starts a draft")
+  local typed = false
+  for _, l in ipairs(w.links) do
+    if l:find('printCmdLine("vcustomdef shimmer command ")', 1, true) then typed = true end
+  end
+  eq(typed, true, "customdef: its change links type a vcustomdef command")
   eq(d and d.class, "monk", "customdef: for the class you are in")
   cmd("shimmer got You begin to shimmer.")
   cmd("shimmer lost You stop shimmering.")
@@ -1295,20 +1315,24 @@ do
   svo.classchange("Monk")
   eq(svo.dict.shimmer and svo.dict.shimmer.physical.action, "shimmer up", "customdef: back as a Monk, shimmer is")
 
-  -- the list, each a link to see and change it
+  -- the list, each a link to see and change it: vcustomdef alone, which
+  -- captures nothing
   local links = #w.links
-  cmd("")
-  eq(echoed(w, "Defences you defined (click one to see or change it):"), true, "customdef: vconfig customdef lists them")
-  local shows, game = false, false
+  w.env.matches = { "vcustomdef" }
+  w.run(script, "vcustomdef")
+  eq(echoed(w, "Defences you defined (click one to see or change it):"), true, "customdef: vcustomdef lists them")
+  local shows, game, new = false, false, false
   for i = links + 1, #w.links do
     if w.links[i]:find('svo.defences.custom_show("shimmer")', 1, true) then shows = true end
     if w.links[i]:find("svo.defences.custom_gamelist()", 1, true) then game = true end
+    if w.links[i]:find("printCmdLine('vcustomdef ')", 1, true) then new = true end
   end
   eq(shows, true, "customdef: each a link to see and change it")
   eq(game, true, "customdef: and a link to the game's defences Svof doesn't know")
+  eq(new, true, "customdef: and one that types vcustomdef, to define a new one")
   links = #w.links
   cmd("list")
-  eq(#w.links > links, true, "customdef: vconfig customdef list does the same")
+  eq(#w.links > links, true, "customdef: vcustomdef list does the same")
 
   -- deleting takes it out of play at once
   cmd("shimmer delete")
@@ -1442,7 +1466,7 @@ do
 end
 
 -- DEFENCE LIST names every defence the game reports, a page at a time, and
--- vconfig customdef game shows the ones Svof doesn't track
+-- vcustomdef game shows the ones Svof doesn't track
 do
   local w = world.new({ class = "Monk" })
   local svo = w.svo
@@ -1456,7 +1480,7 @@ do
   svo.defences.custom.avoid = { class = "all", command = "avoid", gmcp = "avoid", on = { "x" } }
 
   cmd("game")
-  eq(w.sent[#w.sent], "defence list", "DEFENCE LIST: vconfig customdef game asks for it")
+  eq(w.sent[#w.sent], "defence list", "DEFENCE LIST: vcustomdef game asks for it")
   game("You snap your head up as you break your meditation.")
   game("All defences")
   game("------------------------------------------------")
