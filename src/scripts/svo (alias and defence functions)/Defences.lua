@@ -5165,12 +5165,15 @@ function defs.defprompt()
   if check_additionals() then
     svo.echof("Additional defences:")
     local count = 1
+    local marked = {}
     for def, value in defences.nodef_list:pairs() do
       if defs_data[def] and (defs_data[def].nodef or (defc.dragonform and defs_data[def].type ~= 'dragoncraft' and defs_data[def].type ~= 'general')) then
         if value == true then
-          decho(string.format("<153,204,204>[<0,204,0>X<153,204,204>] %-23s", sk.desanitize(def)))
+          decho(defences.withmark(string.format("<153,204,204>[<0,204,0>X<153,204,204>] %-23s", sk.desanitize(def)),
+            sk.desanitize(def), "<153,204,204>", marked))
         else
-          decho(string.format("<153,204,204>[<0,204,0>X<153,204,204>] %-23s", sk.desanitize(def) .. " " .. tostring(value)))
+          decho(defences.withmark(string.format("<153,204,204>[<0,204,0>X<153,204,204>] %-23s", sk.desanitize(def) .. " " .. tostring(value)),
+            sk.desanitize(def), "<153,204,204>", marked))
         end
 
         if count % 3 == 0 then echo("\n") end
@@ -5178,6 +5181,8 @@ function defs.defprompt()
       end
     end
     echo("\n")
+    local key = defences.mark_key(marked, "<153,204,204>")
+    if key then decho(key) end
 
   end
   defences.nodef_list = svo.phpTable()
@@ -5260,13 +5265,61 @@ function defences.group_order()
   return order
 end
 
+-- The mark the defence and priority lists put after a defence's name, in
+-- a colour of its own: * for one the player defined, + for one of svof's
+-- own they changed (the user's choice, 2026-10-10)
+defences.mark_colour = "<255,170,0>"
+function defences.mark(name)
+  if defences.custom_registered[name] then return '*' end
+  if defences.own[name] then return '+' end
+  return ''
+end
+
+-- text with def's mark after def's name, which prefix comes before, then
+-- colour again. The mark takes one of the spaces padding a column, so the
+-- columns stay. marked notes the marks put, for the key under the list
+function defences.withmark(text, def, colour, marked, prefix)
+  local mark = defences.mark(def)
+  prefix = prefix or "] "
+  local at = mark ~= '' and text:find(prefix .. def, 1, true)
+  if not at then return text end
+  local after = at + #prefix + #def
+  local rest = text:sub(after)
+  if rest:sub(-1) == " " then rest = rest:sub(1, -2) end
+  if marked then marked[mark] = true end
+  return text:sub(1, after - 1) .. defences.mark_colour .. mark .. colour .. rest
+end
+
+-- what a list's marks mean, for under it, in its colour; nil without any
+function defences.mark_key(marked, colour)
+  local parts = {}
+  if marked['*'] then parts[#parts + 1] = defences.mark_colour .. "*" .. colour .. " you defined it" end
+  if marked['+'] then parts[#parts + 1] = defences.mark_colour .. "+" .. colour .. " Svof's own, changed by you" end
+  if #parts == 0 then return nil end
+  return colour .. table.concat(parts, "   ") .. "   (vcustomdef)\n"
+end
+
+-- a link's hint, saying what def's mark means
+function defences.markhint(hint, def)
+  local mark = defences.mark(def)
+  if mark == '*' then return hint .. " (you defined it)" end
+  if mark == '+' then return hint .. " (Svof's own, changed by you)" end
+  return hint
+end
+
 -- prints out a def table
 local function show_defs(tbl, linkcommand, cmdname)
   local count = 1
+  -- the defence being shown, and the marks shown, for the key
+  local current, marked = nil, {}
 
-  local olddechoLink = dechoLink
+  local olddechoLink, olddecho = dechoLink, decho
   local function dechoLink(text, command, hint)
-    olddechoLink(text, command, hint, true)
+    olddechoLink(defences.withmark(text, current, "<153,204,204>", marked), command,
+      defences.markhint(hint, current), true)
+  end
+  local function decho(text)
+    olddecho(defences.withmark(text, current, "<153,204,204>", marked))
   end
 
   local function show_em(skillset, what)
@@ -5277,6 +5330,7 @@ local function show_defs(tbl, linkcommand, cmdname)
       svo.echof("%s defences%s:", skillset:title(), hiddengroup and " (hidden)" or "")
     end
     for _,def in ipairs(what) do
+      current = def
       local disabled = (hiddengroup and true or (sk.ignored_defences[sk.ignored_defences_map[def]].t[def]))
       -- vconfig showhiddendefs lists them anyway
       if conf.showhiddendefs then disabled = false end
@@ -5403,6 +5457,9 @@ local function show_defs(tbl, linkcommand, cmdname)
       if skillset ~= 'general' and skillset ~= 'dragoncraft' then show_em (skillset, defences.def_types[skillset]) end
     end
   end
+
+  local key = defences.mark_key(marked, "<153,204,204>")
+  if key then olddecho(key) end
 
   _G.setUnderline = underline
 end
@@ -5568,6 +5625,8 @@ function svo.showhidelist()
   end
 
   local count = 1
+  -- the marks shown, for the key under the list
+  local marked = {}
   -- shows a specific defences group
   local function show_em(name, what)
     decho(string.format("%s%s %s defences:\n",
@@ -5588,16 +5647,17 @@ function svo.showhidelist()
       local skill_color = (what.status and true or disabled)
 
       if count % 3 == 1 then echo"  " end
+      local colour = skill_color and disabled_c or enabled_c
       if (count % 3) ~= 0 then
-        decho(string.format("%s%s %-23s",
-          (skill_color and disabled_c or enabled_c),
+        decho(defences.withmark(string.format("%s%s %-23s",
+          colour,
           makelink(def, (disabled and "+" or "-"), what.status),
-          def))
+          def), def, colour, marked, " "))
       else
-        decho(string.format("%s%s %s",
-          (skill_color and disabled_c or enabled_c),
+        decho(defences.withmark(string.format("%s%s %s",
+          colour,
           makelink(def, (disabled and "+" or "-"), what.status),
-          def))
+          def), def, colour, marked, " "))
       end
 
       if count % 3 == 0 then echo("\n") end
@@ -5621,6 +5681,8 @@ function svo.showhidelist()
 
   local s,_ = pcall(f)
   if not s then svo.echof("Your Mudlet version doesn't seem to be new enough to display this; please update to latest (http://forums.mudlet.org/viewtopic.php?f=5&t=1874)") end
+  local key = defences.mark_key(marked, enabled_c)
+  if key then decho("  " .. key) end
 
   -- hiding one takes it off defup and keepup; vconfig showhiddendefs
   -- lists hidden ones anyway, to see what's there

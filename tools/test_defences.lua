@@ -2160,6 +2160,93 @@ do -- import: the changes a file holds, with its definitions
   eq(echoed(w, "Added the change to Svof's own treewatch from shared-defences."), true, "changes: saying so")
 end
 
+-- ===== 14. The marks in the defence and priority lists =====
+
+-- * after a defence the player defined, + after one of svof's own they
+-- changed, with a key under the list (the user's choice, 2026-10-10)
+do
+  -- Lua 5.2 and later have no math.log10, which the priority lists use
+  -- through svo.intlen; 5.1, which svof runs on, has it
+  math.log10 = math.log10 or function (x) return math.log(x, 10) end
+  local w = world.new({ class = "Occultist" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  svo.showprompt = function() end
+  cmd("shimmer skillset occultism")
+  cmd("shimmer command shimmer on")
+  cmd("shimmer got You begin to shimmer.")
+  cmd("shimmer install")
+  cmd("alertness command alertness up")
+  w.run('svo.defences.edit_install("alertness", true)')
+  eq(svo.defences.mark("shimmer") .. svo.defences.mark("alertness") .. svo.defences.mark("kola"), "*+",
+    "marks: * for a definition, + for a change to svof's own, nothing for svof's own")
+
+  local cells, hints = {}, {}
+  w.env.dechoLink = function(text, code, hint)
+    cells[#cells + 1] = tostring(text)
+    hints[#hints + 1] = tostring(hint)
+  end
+  local function cell(name)
+    for i, c in ipairs(cells) do
+      if c:find("] " .. name, 1, true) then return c, hints[i] end
+    end
+  end
+  local function visible(s) return (s:gsub("<%d+,%d+,%d+>", "")) end
+  local echoes = #w.echoes
+  svo.show_keepup()
+  local shimmer, shimmerhint = cell("shimmer")
+  local alertness, alertnesshint = cell("alertness")
+  eq(shimmer and visible(shimmer):match("%] (%S+)"), "shimmer*", "marks: vshow keepup marks a definition")
+  eq(alertness and visible(alertness):match("%] (%S+)"), "alertness+", "marks: and a change to svof's own")
+  eq(alertness and alertness:find("alertness<255,170,0>+<153,204,204>", 1, true) ~= nil, true,
+    "marks: the mark in a colour of its own")
+  eq(alertness and #visible(alertness), #"[ ] " + 23, "marks: and the column as wide as before")
+  eq(shimmerhint and shimmerhint:find("(you defined it)", 1, true) ~= nil, true, "marks: the link says what * means")
+  eq(alertnesshint and alertnesshint:find("(Svof's own, changed by you)", 1, true) ~= nil, true,
+    "marks: and what + means")
+  local kola = cell("kola")
+  eq(kola and visible(kola):match("%] (%S+)"), "kola", "marks: svof's own is shown as before")
+  local key = false
+  for i = echoes + 1, #w.echoes do
+    if w.echoes[i]:find("you defined it", 1, true) and w.echoes[i]:find("Svof's own, changed by you", 1, true) then key = true end
+  end
+  eq(key, true, "marks: a key under the list says what they mean")
+
+  -- the priority lists
+  echoes = #w.echoes
+  svo.printorder("physical")
+  local text = table.concat(w.echoes, "", echoes + 1)
+  eq(text:find("alertness<255,170,0>+", 1, true) ~= nil and text:find("shimmer<255,170,0>*", 1, true) ~= nil, true,
+    "marks: the physical priority list marks them")
+  eq(text:find("(vcustomdef)", 1, true) ~= nil, true, "marks: with the key")
+  echoes = #w.echoes
+  svo.printordersync()
+  text = table.concat(w.echoes, "", echoes + 1)
+  eq(text:find("shimmer<255,170,0>*<112,112,112> (physical)", 1, true) ~= nil, true,
+    "marks: the slow curing list marks one between its name and balance")
+
+  -- vshow server and vshow hidelist
+  cells, hints = {}, {}
+  svo.showserverside()
+  alertness, alertnesshint = cell("alertness")
+  eq(alertness and visible(alertness):match("%] (%S+)"), "alertness+", "marks: vshow server marks them")
+  eq(alertnesshint and alertnesshint:find("(Svof's own, changed by you)", 1, true) ~= nil, true,
+    "marks: and its link says so")
+  echoes = #w.echoes
+  svo.showhidelist()
+  text = table.concat(w.echoes, "", echoes + 1)
+  eq(text:find("shimmer<255,170,0>*", 1, true) ~= nil and text:find("alertness<255,170,0>+", 1, true) ~= nil, true,
+    "marks: vshow hidelist marks them")
+end
+
+do -- no marks, no key
+  local w = world.new({ class = "Occultist" })
+  local svo = w.svo
+  svo.showprompt = function() end
+  svo.show_keepup()
+  eq(echoed(w, "(vcustomdef)"), false, "marks: a list with nothing marked has no key")
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end

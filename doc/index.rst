@@ -185,6 +185,8 @@ Svof refuses a name it already uses for something else. With the name of one of 
 
 *vcustomdef* lists every defence you defined, each a link to see or change it, and then your changes to Svof's own. *vconfig2* links to the same list.
 
+In *vshow defup*, *vshow keepup*, the priority lists, *vshow server* and *vshow hidelist*, Svof puts ``*`` after a defence you defined and ``+`` after one of its own you changed, with a key under the list.
+
 Your definitions are saved in *svo/custom/defs* in your profile folder, which updates leave alone. *vcustomdef export <file>* saves them, and your changes to Svof's own, to a file you can share, and *vcustomdef import <file>* reads one in. If a definition breaks your curing, *vconfig customdefinitions off* starts Svof without any of them.
 
 .. _change-svof-defences:

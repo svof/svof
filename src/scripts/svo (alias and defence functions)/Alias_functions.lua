@@ -702,11 +702,14 @@ function svo.showbals(window)
 end
 
 function svo.showserverside()
+  -- the marks shown, for the key under the list
+  local marked = {}
   local function echoaction(action, last)
-    dechoLink(string.format("<153,204,204>[<0,204,0>%s<153,204,204>] %"..(last and '' or '-23')..'s',
-      svo.serverignore[action] and ' ' or 'x', action),
+    -- * for a defence the player defined, + for one of svof's own they changed
+    dechoLink(svo.defences.withmark(string.format("<153,204,204>[<0,204,0>%s<153,204,204>] %"..(last and '' or '-23')..'s',
+      svo.serverignore[action] and ' ' or 'x', action), action, "<153,204,204>", marked),
       string.format([[svo.%ssetserverignore("%s"); svo.showserverside()]], svo.serverignore[action] and 'un' or '', action),
-      svo.serverignore[action] and ('Make Svof handle '..action..' instead of serverside') or ('Make serverside handle '..action..' instead of Svof'), true)
+      svo.defences.markhint(svo.serverignore[action] and ('Make Svof handle '..action..' instead of serverside') or ('Make serverside handle '..action..' instead of Svof'), action), true)
   end
 
   local actions = sk.getallserversideactions()
@@ -720,6 +723,8 @@ function svo.showserverside()
     if action3 then echoaction(action3, true) end
     echo'\n'
   end
+  local key = svo.defences.mark_key(marked, "<153,204,204>")
+  if key then decho(key) end
 
   echo'\n'
 
