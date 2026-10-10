@@ -1163,13 +1163,14 @@ do
       serverside = true },
     rebounding = { class = "all", command = "rebound" },        -- svof's own name
     broken = { class = "Monk", on = "Nothing raises this." },   -- no command
-    stoneward = { class = "Infernal", command = "stoneward" },  -- another class's
+    stoneward = { class = "Infernal", skillset = "malignity", command = "stoneward" },  -- another class's
   }
   svo.defdefup.basic.shimmer = true -- a choice saved last session
   svo.classchange("Infernal")
   eq(svo.defs_data.warded ~= nil and svo.defs_data.stoneward ~= nil, true,
     "custom defences: as an Infernal, the all-class one and the Infernal's are registered")
   eq(svo.defs_data.shimmer, nil, "custom defences: and not the Monk's")
+  eq(svo.defs_data.stoneward and svo.defs_data.stoneward.type, "malignity", "custom defences: the Infernal's under its skillset")
   eq(svo.dict.rebounding.smoke ~= nil and svo.defs_data.rebounding.type, "general",
     "custom defences: a name svof uses is refused, and svof's own rebounding stays")
   eq(echoed(w, "Svof has its own rebounding now, so the one you defined isn't used."), true,
@@ -1177,7 +1178,7 @@ do
 
   svo.classchange("Monk")
   local rec, entry = svo.defs_data.shimmer, svo.dict.shimmer
-  eq(rec and rec.type, "custom", "custom defences: as a Monk, shimmer is registered, as a custom defence")
+  eq(rec and rec.type, "custom", "custom defences: as a Monk, shimmer is registered; saved without a skillset, in a group of its own")
   eq(entry and entry.physical.action, "shimmer on", "custom defences: raised with its command")
   eq(entry and entry.physical.balanceful_act, true, "custom defences: taking balance unless balanceless")
   eq(entry and entry.physical.undeffable, true, "custom defences: and raised by svof, not serverside, unless it says so")
@@ -1257,12 +1258,28 @@ do
   cmd("shimmer def You are shimmering.")
   cmd("shimmer gmcp shimmering")
   cmd("shimmer test")
+  eq(echoed(w, "be installed yet: pick which of its class's skillsets to show it under."), true,
+    "customdef: a class's defence needs a skillset")
+  -- the skillset row has a link for each of the class's
+  local links = {}
+  for _, l in ipairs(w.links) do
+    local skillset = l:match("^(%a+) svo%.defences%.custom_set%(\"shimmer\", 'skillset', \"%a+\"%)$")
+    if skillset and not table.concat(links, ","):find(skillset, 1, true) then links[#links + 1] = skillset end
+  end
+  eq(table.concat(links, ","), "tekura,kaido,telepathy,shikudo", "customdef: a link for each of the Monk's skillsets")
+  w.run([[svo.defences.custom_set("shimmer", 'skillset', "tekura")]])
+  eq(d and d.skillset, "tekura", "customdef: clicking one sets it")
+  cmd("shimmer test")
+  eq(echoed(w, "shimmer, for monk, under Tekura:"), true, "customdef: test says where it's shown")
   eq(echoed(w, "It's ready to install."), true, "customdef: test says it is ready")
   eq(svo.defs_data.shimmer, nil, "customdef: a draft changes nothing in play")
 
   local writes = #w.writes
   cmd("shimmer install")
-  eq(svo.defs_data.shimmer and svo.defs_data.shimmer.type, "custom", "customdef: install registers it")
+  eq(svo.defs_data.shimmer and svo.defs_data.shimmer.type, "tekura", "customdef: install registers it, in its skillset's group")
+  local listed = false
+  for _, def in ipairs(svo.defences.def_types.tekura or {}) do if def == "shimmer" then listed = true end end
+  eq(listed, true, "customdef: so the lists show it under Tekura")
   eq(svo.dict.sstosvod.shimmering, "shimmer", "customdef: with its GMCP name")
   eq(#w.writes > writes, true, "customdef: and saves the definitions")
   eq(custom.custom_drafts.shimmer, nil, "customdef: the draft is done with")
@@ -1270,6 +1287,7 @@ do
   w.line("You begin to shimmer.")
   w.prompt()
   eq(svo.defc.shimmer, true, "customdef: its gain line works at once")
+  svo.ignoreskill("shimmer", true) -- hidden in vshow hidelist
 
   -- changing it: only install puts the change into play, without piling up triggers
   local triggers = live("shimmer")
@@ -1280,6 +1298,8 @@ do
   cmd("shimmer install")
   eq(svo.dict.shimmer and svo.dict.shimmer.physical.action, "shimmer up", "customdef: installing again uses the change")
   eq(live("shimmer"), triggers, "customdef: with the old triggers killed")
+  eq(svo.sk.ignored_defences.tekura.t.shimmer, true, "customdef: and still hidden, as it was")
+  svo.ignoreskill("shimmer", false)
   eq(w.line("You begin to shimmer."), 0, "customdef: the line taken out is no longer heard")
   eq(w.line("You shimmer brightly."), 1, "customdef: and the new one is")
 
@@ -1304,8 +1324,12 @@ do
   if pick then w.run(pick) end
   eq(custom.custom_drafts.glow and custom.custom_drafts.glow.on[1], "You begin to glow.", "customdef: clicking one adds it")
 
-  -- another class's
+  -- another class's, whose skillset doesn't carry over
+  cmd("stoneskin skillset kaido")
   cmd("stoneskin class Infernal")
+  eq(custom.custom_drafts.stoneskin and custom.custom_drafts.stoneskin.skillset, nil,
+    "customdef: a Monk's skillset is dropped when the class changes to Infernal")
+  cmd("stoneskin skillset oppression")
   cmd("stoneskin command stoneskin")
   cmd("stoneskin got Your skin turns to stone.")
   cmd("stoneskin install")
@@ -1313,10 +1337,30 @@ do
     "customdef: one for another class is saved, not added")
   eq(svo.defs_data.stoneskin, nil, "customdef: as a Monk it isn't registered")
   svo.classchange("Infernal")
-  eq(svo.defs_data.stoneskin and svo.defs_data.stoneskin.type, "custom", "customdef: as an Infernal it is")
+  eq(svo.defs_data.stoneskin and svo.defs_data.stoneskin.type, "oppression", "customdef: as an Infernal it is, under Oppression")
   eq(svo.defs_data.shimmer, nil, "customdef: and the Monk's isn't")
   svo.classchange("Monk")
   eq(svo.dict.shimmer and svo.dict.shimmer.physical.action, "shimmer up", "customdef: back as a Monk, shimmer is")
+
+  -- a skillset Svof doesn't list for the class gets a group of its own
+  cmd("wisp skillset general")
+  eq(echoed(w, "Can't show wisp under general: general is Svof's own group, not a skillset."), true,
+    "customdef: general isn't a skillset")
+  cmd("wisp skillset Wyrd craft")
+  cmd("wisp command wisp")
+  cmd("wisp got A wisp circles you.")
+  cmd("wisp install")
+  eq(svo.defs_data.wisp and svo.defs_data.wisp.type, "wyrdcraft", "customdef: a skillset typed in is one word")
+  local order = svo.defences.group_order()
+  eq(order[#order], "wyrdcraft", "customdef: its group comes after the class's skillsets, by name")
+  svo.ignoreskill("wyrdcraft", true)
+  svo.classchange("Infernal")
+  svo.classchange("Monk")
+  eq(svo.sk.ignored_defences.wyrdcraft and svo.sk.ignored_defences.wyrdcraft.status, true,
+    "customdef: hiding the group lasts through a class change and back")
+  svo.ignoreskill("wyrdcraft", false)
+  cmd("wisp delete")
+  eq(svo.defences.def_types.wyrdcraft, nil, "customdef: and the group goes with its last defence")
 
   -- the list, each a link to see and change it: vcustomdef alone, which
   -- captures nothing
@@ -1324,6 +1368,7 @@ do
   w.env.matches = { "vcustomdef" }
   w.run(script, "vcustomdef")
   eq(echoed(w, "Defences you defined (click one to see or change it):"), true, "customdef: vcustomdef lists them")
+  eq(echoed(w, ": monk (tekura), in use"), true, "customdef: each with its class and skillset")
   local shows, game, new = false, false, false
   for i = links + 1, #w.links do
     if w.links[i]:find('svo.defences.custom_show("shimmer")', 1, true) then shows = true end
@@ -1424,6 +1469,11 @@ do
   eq(pick ~= nil, true, "DEFENCE SHOW: with a link for each class")
   if pick then w.run(pick) end
   eq(d.class, "serpent", "DEFENCE SHOW: clicking one sets it")
+  local venom = false
+  for _, l in ipairs(w.links) do
+    if l:find("custom_set(\"steelstance\", 'skillset', \"venom\")", 1, true) then venom = true end
+  end
+  eq(venom, true, "DEFENCE SHOW: and then offers that class's skillsets")
 
   -- a class you chose stays, whatever the game says
   cmd("glimmer class sentinel")

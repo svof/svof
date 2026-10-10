@@ -3537,7 +3537,7 @@ defences.triggers_of = defences.triggers_of or {}
 -- Takes out a defence defences.register put in, as deleting a definition
 -- or installing it again does: its triggers, handlers, record, entry, places
 -- in the defence lists and GMCP name. keepchoices leaves its defup and
--- keepup choices for the next register to keep.
+-- keepup choices, and whether it's hidden, for the next register to keep.
 function defences.unregister(name, keepchoices)
   local rec = defs_data[name]
   for _, id in ipairs(defences.triggers_of[name] or {}) do killTrigger(id) end
@@ -3553,7 +3553,9 @@ function defences.unregister(name, keepchoices)
     for i = #list, 1, -1 do
       if list[i] == name then table.remove(list, i) end
     end
-    if sk.ignored_defences[rec.type] then sk.ignored_defences[rec.type].t[name] = nil end
+    -- a group of the player's own goes with its last defence
+    if #list == 0 then defences.def_types[rec.type] = nil end
+    if sk.ignored_defences[rec.type] and not keepchoices then sk.ignored_defences[rec.type].t[name] = nil end
   end
   sk.ignored_defences_map[name] = nil
   if not keepchoices then
@@ -3641,6 +3643,10 @@ end, 'setup def triggers on system start')
 -- applies. A definition is a table:
 --   class        the class it belongs to, as the game names it, or 'all'
 --                for one any class can have, such as an item's
+--   skillset     for a class's, the group the defence lists show it in:
+--                one of the class's skillsets, or a name the player gives
+--                where svof's list of them is out of date (the user's
+--                choice, 2026-10-10). One any class can have is general.
 --   command      what svof sends to raise it
 --   balanceless  true when raising it takes no balance
 --   on, off      the exact lines saying you gained it and lost it
@@ -3696,7 +3702,8 @@ function defences.custom_register(name, spec)
     svo.dict.sstosvod[spec.gmcp] = name
     svo.dict.svotossd[name] = spec.gmcp
   end
-  defences.register(name, { type = spec.class == 'all' and 'general' or 'custom',
+  -- a definition saved without a skillset has a group of its own
+  defences.register(name, { type = spec.class == 'all' and 'general' or spec.skillset or 'custom',
     on = spec.on, off = spec.off, def = spec.def })
   defences.custom_registered[name] = true
 end
@@ -3763,6 +3770,12 @@ local function custom_copy(spec)
   return t
 end
 
+-- why a skillset can't hold a definition, or nil
+local function skillset_problem(skillset)
+  if type(skillset) ~= 'string' or not skillset:find("^%l+$") then return "a skillset is one word of letters" end
+  if skillset == 'general' or skillset == 'dragoncraft' then return skillset .. " is Svof's own group, not a skillset" end
+end
+
 -- why a definition can't be installed, or nil
 function defences.custom_problem(name, spec)
   if not name:find("^%l[%l%d]*$") then return "a name is lower-case letters and digits, starting with a letter" end
@@ -3774,6 +3787,11 @@ function defences.custom_problem(name, spec)
   if type(spec.command) ~= 'string' or spec.command == '' then return "it has no command to raise it" end
   if not ((type(spec.on) == 'table' and #spec.on > 0) or type(spec.on) == 'string' or spec.gmcp) then
     return "it needs a line saying you gained it, or its GMCP name, or Svof can't tell when it's up"
+  end
+  if spec.class ~= 'all' then
+    if not spec.skillset then return "pick which of its class's skillsets to show it under" end
+    local why = skillset_problem(spec.skillset)
+    if why then return why end
   end
   local mapped = spec.gmcp and svo.dict.sstosvod[spec.gmcp]
   if mapped and mapped ~= name then return "GMCP's " .. spec.gmcp .. " is already Svof's " .. mapped end
@@ -3823,6 +3841,19 @@ function defences.custom_show(name)
     echo("\n")
   end
   row("class:", d.class == 'all' and "every class" or tostring(d.class), "class")
+  -- a class's goes under one of its skillsets: a link for each
+  if d.class ~= 'all' then
+    echo(string.format("  %-12s %s  ", "skillset:", d.skillset or "(not set)"))
+    for _, skillset in ipairs(svo.knownskills[tostring(d.class):lower()] or {}) do
+      if skillset ~= d.skillset then
+        custom_link(skillset, string.format("svo.defences.custom_set(%q, 'skillset', %q)", name, skillset),
+          "Show it under " .. skillset:title())
+        echo("  ")
+      end
+    end
+    custom_link("type one", string.format("printCmdLine(%q)", cmd .. "skillset "), "One Svof doesn't list for the class")
+    echo("\n")
+  end
   row("command:", d.command or "(not set)", "command")
   row("balance:", d.balanceless and "takes none" or "takes balance", "balanceless")
   row("serverside:", d.serverside and "may raise it" or "doesn't; Svof does", "serverside")
@@ -3869,8 +3900,17 @@ function defences.custom_set(name, field, value)
       svo.echof("Svof doesn't know a class called %s. Use a class's name, or all.", value)
       return
     end
+    -- a skillset of the class it was for doesn't carry over
+    if class ~= tostring(d.class):lower() and d.skillset and not table.contains(svo.knownskills[class] or {}, d.skillset) then
+      d.skillset = nil
+    end
     d.class = class
     class_chosen[name] = true
+  elseif field == 'skillset' then
+    local skillset = (value:lower():gsub("%s+", ""))
+    local why = skillset_problem(skillset)
+    if why then svo.echof("Can't show %s under %s: %s.", name, value, why) return end
+    d.skillset = skillset
   elseif field == 'command' then
     if value == '' then svo.echof("What does Svof send to raise %s?", name) return end
     d.command = value
@@ -3891,7 +3931,7 @@ function defences.custom_set(name, field, value)
   elseif field == 'def' then
     d.def = value ~= '' and value or nil
   else
-    svo.echof("A definition has class, command, balanceless, serverside, gmcp, got, lost and def; %s isn't one.", field)
+    svo.echof("A definition has class, skillset, command, balanceless, serverside, gmcp, got, lost and def; %s isn't one.", field)
     return
   end
   defences.custom_show(name)
@@ -4169,7 +4209,9 @@ function defences.custom_test(name)
   if not d then svo.echof("You haven't defined %s.", name) return end
   local on = type(d.on) == 'string' and { d.on } or d.on or {}
   local off = type(d.off) == 'string' and { d.off } or d.off or {}
-  svo.echof("%s, for %s:", name, d.class == 'all' and "every class" or tostring(d.class))
+  svo.echof("%s, for %s, %s:", name, d.class == 'all' and "every class" or tostring(d.class),
+    d.class == 'all' and "in the main defence list" or d.skillset and ("under " .. d.skillset:title())
+    or "under no skillset yet")
   svo.echof("Svof raises it by sending %q, which %s, and %s.", tostring(d.command),
     d.balanceless and "takes no balance" or "takes balance",
     d.serverside and "serverside may do too" or "serverside leaves to Svof")
@@ -4284,7 +4326,8 @@ function defences.customdef_menu()
         or "installed, for another class"
       echo("  ")
       custom_link(name, string.format("svo.defences.custom_show(%q)", name), "See or change " .. name)
-      echo(string.format(": %s, %s  ", spec.class == 'all' and "every class" or tostring(spec.class), state))
+      echo(string.format(": %s, %s  ", spec.class == 'all' and "every class"
+        or tostring(spec.class) .. (spec.skillset and (" (" .. spec.skillset .. ")") or ""), state))
       custom_link("test", string.format("svo.defences.custom_test(%q)", name), "Say what it would do")
       echo("  ")
       custom_link("delete", string.format("svo.defences.custom_delete(%q)", name), "Take it out")

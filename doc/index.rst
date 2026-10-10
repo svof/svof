@@ -177,6 +177,8 @@ To define one:
 
 A definition belongs to the class you define it in. To change that, use *vcustomdef <name> class <class>*, or *class all* for a defence any class can have, such as an artefact's. Svof adds each definition when you're in its class. When the game says a defence isn't a profession defence, Svof sets it to every class; when it is one, Svof asks which class has it, with a link for each.
 
+A defence for one class is shown under one of its skillsets in *vshow defup*, *vshow keepup* and *vshow hidelist*, next to Svof's own. Click the skillset in the definition. If the game has renamed a skillset, or Svof's list of the class's skillsets is out of date, type it with *vcustomdef <name> skillset <skillset>*, and Svof shows it under that name after the class's other skillsets. A defence for every class is shown with the general ones.
+
 Svof refuses a name it already uses. To change a definition, change its parts and install it again; until then, Svof keeps using the installed one. *vcustomdef <name> delete* takes a definition out.
 
 *vcustomdef* lists every defence you defined, each a link to see or change it. *vconfig2* links to the same list.
