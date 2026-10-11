@@ -3682,11 +3682,18 @@ end, 'setup def triggers on system start')
 --   command      what svof sends to raise it
 --   balanceless  true when raising it takes no balance
 --   on, off      the exact lines saying you gained it and lost it
---   def          the exact line DEF shows for it
+--   def          the exact line DEF shows for it. Without one, each DEF
+--                marks it gone, which test and install warn about
+--   notondef     true for a defence DEF doesn't list, such as Pariah's
+--                bloodiedknife, which DEF then leaves alone (svof's own
+--                invisibledef)
 --   gmcp         its name over GMCP, which is its serverside name as well.
 --                With one, serverside raises it while serverside is on,
 --                and svof does otherwise, unless vshow server leaves it to
---                svof; without one, only svof can (the user, 2026-10-10)
+--                svof; without one, only svof can (the user, 2026-10-10).
+--                Only a name the game confirms is taken (the user,
+--                2026-10-10): with a wrong one, svof would leave the
+--                defence to serverside, which couldn't raise it either
 -- A name svof already uses is refused (vcustomdef with the name of one of
 -- svof's own defences changes that instead, further down), and a
 -- definition that fails to register is reported and skipped. vconfig
@@ -3740,7 +3747,7 @@ function defences.custom_register(name, spec)
   end
   -- a definition saved without a skillset has a group of its own
   defences.register(name, { type = spec.class == 'all' and 'general' or spec.skillset or 'custom',
-    on = spec.on, off = spec.off, def = spec.def })
+    on = spec.on, off = spec.off, def = spec.def, invisibledef = spec.notondef or nil })
   defences.custom_registered[name] = true
 end
 
@@ -3940,10 +3947,18 @@ function defences.custom_show(name)
     custom_link("type one", string.format("printCmdLine(%q)", cmd .. which[2] .. " "), "Type or paste the line")
     echo("\n")
   end
-  echo(string.format("  %-12s %s  ", "DEF shows:", d.def or "(no line)"))
-  custom_link("pick from the screen", string.format("svo.defences.custom_capture(%q, 'def')", name), "Pick the line from what's on screen")
-  echo("  ")
-  custom_link("type it", string.format("printCmdLine(%q)", cmd .. "def "), "Type or paste the line")
+  if d.notondef then
+    echo(string.format("  %-12s %s  ", "DEF shows:", "nothing, as DEF doesn't list it"))
+    custom_link("it does", string.format("printCmdLine(%q)", cmd .. "def "), "Type or paste the line DEF shows")
+  else
+    echo(string.format("  %-12s %s  ", "DEF shows:", d.def or "(no line)"))
+    custom_link("pick from the screen", string.format("svo.defences.custom_capture(%q, 'def')", name), "Pick the line from what's on screen")
+    echo("  ")
+    custom_link("type it", string.format("printCmdLine(%q)", cmd .. "def "), "Type or paste the line")
+    echo("  ")
+    custom_link("DEF doesn't list it", string.format("svo.defences.custom_set(%q, 'def', 'none')", name),
+      "For a defence DEF doesn't show, which DEF then leaves alone")
+  end
   echo("\n  ")
   custom_link("get its lines from the game", string.format("svo.defences.custom_fetch(%q, %q)", name, d.gmcp or name),
     "Ask the game with DEFENCE SHOW")
@@ -3990,7 +4005,19 @@ function defences.custom_set(name, field, value)
     svo.echof("Serverside raises a defence by its GMCP name, so give %s one and it does while serverside is on. vshow server can leave it to Svof.", name)
     return
   elseif field == 'gmcp' then
-    d.gmcp = (value ~= '' and value:lower() ~= 'none') and value or nil
+    local gmcp = (value ~= '' and value:lower() ~= 'none') and value:lower() or nil
+    -- only a name the game confirms: one it hasn't yet is asked about,
+    -- and the reply sets it
+    local known = gmcp and defences.gmcp_known(gmcp)
+    if known == false then
+      svo.echof("%s", defences.gmcp_refusal(name, gmcp))
+      return
+    elseif gmcp and known == nil then
+      svo.echof("Asking the game whether GMCP knows a defence called %s.", gmcp)
+      defences.custom_fetch(name, gmcp, 'gmcp')
+      return
+    end
+    d.gmcp = gmcp
     -- the game shows the defence it reports by that name
     if d.gmcp then
       defences.custom_show(name)
@@ -4002,7 +4029,12 @@ function defences.custom_set(name, field, value)
     local lines = d[field == 'got' and 'on' or 'off']
     if not table.contains(lines, value) then lines[#lines + 1] = value end
   elseif field == 'def' then
-    d.def = value ~= '' and value or nil
+    -- none: DEF doesn't list it, so DEF leaves it alone
+    if value:lower() == 'none' then
+      d.def, d.notondef = nil, true
+    else
+      d.def, d.notondef = value ~= '' and value or nil, nil
+    end
   else
     svo.echof("A definition has class, skillset, command, balanceless, gmcp, got, lost and def; %s isn't one.", field)
     return
@@ -4054,7 +4086,31 @@ end
 -- 2026-10-09): one that isn't is for every class, and for one that is the
 -- player is asked which class, as the game doesn't say. A defence the game
 -- doesn't have keeps the player's lines.
+--
+-- A GMCP name is only taken once the game confirms it (the user,
+-- 2026-10-10): by DEFENCE SHOW's reply, by DEFENCE LIST, or by GMCP
+-- sending it. Asked to set one the game hasn't confirmed this session,
+-- custom_fetch asks DEFENCE SHOW (mode 'gmcp'), and the reply sets it, or
+-- says the game has no such defence.
 local fetching = {}
+defences.gmcp_confirmed = defences.gmcp_confirmed or {}
+defences.gmcp_unknown = defences.gmcp_unknown or {}
+
+-- whether the game knows name as a defence over GMCP: true, false, or nil
+-- when svof can't tell without asking it
+function defences.gmcp_known(name)
+  if svo.gdefc[name] or sk.gmcp_defs_seen[name] or defences.gmcp_confirmed[name] then return true end
+  local list = defences.game_defences
+  if list and list.names[name] then return true end
+  if defences.gmcp_unknown[name] or (list and list.complete) then return false end
+  return nil
+end
+
+-- what svof says refusing a GMCP name the game doesn't know
+function defences.gmcp_refusal(name, gmcp)
+  return string.format("The game has no defence called %s over GMCP, so it can't be %s's GMCP name. Check the name, or use vcustomdef %s gmcp none for a defence GMCP doesn't report.",
+    gmcp, name, name)
+end
 local fetch_labels = { Description = true, DefMsg = true, EnactMsg = true, FadeMsg = true,
   Profession = true, Strippable = true }
 local fetch_wraps = { Description = true, DefMsg = true, EnactMsg = true, FadeMsg = true }
@@ -4066,26 +4122,41 @@ local function fetch_stop()
 end
 
 local function fetch_done()
-  local name, asked, f = fetching.name, fetching.keyword, fetching.fields
+  local name, asked, f, mode = fetching.name, fetching.keyword, fetching.fields, fetching.mode
   fetch_stop()
   -- a definition's draft, or a change being made to svof's own
   local d = name and (defences.custom_drafts[name] or defences.edit_drafts[name])
   if not (f and d) then return end
+  local changing = d == defences.edit_drafts[name]
   local function value(label) return f[label] and f[label]:match("^%s*(.-)%s*$") or "" end
   local gmcpname = f.keyword or asked
+  -- the game knows a defence by this GMCP name
+  defences.gmcp_confirmed[gmcpname] = true
   local mapped = svo.dict.sstosvod[gmcpname]
   if mapped and mapped ~= name then
-    svo.echof("The game's %s is Svof's own %s, so there's no need to define it.", gmcpname, mapped)
+    if changing then
+      svo.echof("Can't give %s the GMCP name %s: GMCP's %s is Svof's %s.", name, gmcpname, gmcpname, mapped)
+    else
+      svo.echof("The game's %s is Svof's own %s, so there's no need to define it.", gmcpname, mapped)
+    end
     return
   end
-  if not d.gmcp then d.gmcp = gmcpname end
+  if mode == 'gmcp' then
+    -- asked to set the GMCP name: the game's own spelling of it
+    if gmcpname ~= asked then svo.echof("The game knows %s as %s over GMCP.", asked, gmcpname) end
+    d.gmcp = gmcpname
+    -- a change to svof's own takes the name and nothing else
+    if changing then return defences.custom_show(name) end
+  elseif not d.gmcp then
+    d.gmcp = gmcpname
+  end
   local on, off, def = value('EnactMsg'), value('FadeMsg'), value('DefMsg')
   if on ~= '' and not table.contains(d.on, on) then d.on[#d.on + 1] = on end
   if off ~= '' and not table.contains(d.off, off) then d.off[#d.off + 1] = off end
-  -- a change's DEF lines are a list
-  if def ~= '' and type(d.def) == 'table' then
+  -- a change's DEF lines are a list; and one DEF doesn't list keeps none
+  if def ~= '' and type(d.def) == 'table' and not d.notondef then
     if not table.contains(d.def, def) then d.def[#d.def + 1] = def end
-  elseif def ~= '' and not d.def then
+  elseif def ~= '' and not d.def and not d.notondef then
     d.def = def
   end
   svo.echof("Filled in %s from the game's DEFENCE SHOW %s.", name, gmcpname)
@@ -4121,15 +4192,21 @@ function defences.custom_ask_class(name)
   end
 end
 
-function defences.custom_fetch(name, keyword)
+-- mode 'gmcp' asks in order to set the GMCP name, which only the reply does
+function defences.custom_fetch(name, keyword, mode)
   if type(keyword) ~= 'string' or not keyword:find("%S") then return end
   fetch_stop()
-  fetching = { name = name, keyword = keyword:lower() }
+  fetching = { name = name, keyword = keyword:lower(), mode = mode }
   fetching.trigger = tempRegexTrigger("^", "svo.defences.custom_fetch_line()")
   fetching.timer = tempTimer(5 + svo.getping(), function()
     fetching.timer = nil
     if fetching.fields then fetch_done() return end
-    svo.echof("The game didn't answer about a defence called %s, so add its lines yourself.", tostring(fetching.keyword))
+    if fetching.mode == 'gmcp' then
+      svo.echof("The game didn't answer about %s, so Svof can't take it as %s's GMCP name. Try again, or use vcustomdef %s gmcp none for a defence GMCP doesn't report.",
+        tostring(fetching.keyword), fetching.name, fetching.name)
+    else
+      svo.echof("The game didn't answer about a defence called %s, so add its lines yourself.", tostring(fetching.keyword))
+    end
     fetch_stop()
   end)
   send("defence show " .. fetching.keyword, conf.commandecho)
@@ -4150,9 +4227,14 @@ function defences.custom_fetch_line()
       local keyword = rest:match("%((%S+)%)%s*$")
       fetching.fields = { keyword = keyword and keyword:lower() }
     elseif text == "There is no such defence." then
-      local asked = fetching.keyword
+      local asked, name, mode = fetching.keyword, fetching.name, fetching.mode
       fetch_stop()
-      svo.echof("The game has no defence called %s, so add its lines yourself.", tostring(asked))
+      defences.gmcp_unknown[asked] = true
+      if mode == 'gmcp' then
+        svo.echof("%s", defences.gmcp_refusal(name, asked))
+      else
+        svo.echof("The game has no defence called %s, so add its lines yourself.", tostring(asked))
+      end
     end
     return
   end
@@ -4219,23 +4301,37 @@ local function list_show(names)
   end
 end
 
+-- The list read, or as much of it as came: kept for the session, so a GMCP
+-- name can be checked against it (complete when its last page came), then
+-- shown, or handed to what asked for it (after)
+local function list_done(complete)
+  local names, after = listing.names, listing.after
+  list_stop()
+  if names and #names > 0 then
+    local set = {}
+    for _, name in ipairs(names) do set[name] = true end
+    defences.game_defences = { names = set, complete = complete }
+  end
+  if after then return after() end
+  if names and #names > 0 then
+    list_show(names)
+  else
+    svo.echof("The game didn't send its list of defences.")
+  end
+end
+
 local function list_wait()
   if listing.timer then killTimer(listing.timer) end
   listing.timer = tempTimer(8 + svo.getping(), function()
     listing.timer = nil
-    local names = listing.names
-    list_stop()
-    if names and #names > 0 then
-      list_show(names)
-    else
-      svo.echof("The game didn't send its list of defences.")
-    end
+    list_done(false)
   end)
 end
 
-function defences.custom_gamelist()
+-- after, when given, runs once the list is read, instead of showing it
+function defences.custom_gamelist(after)
   list_stop()
-  listing = { pages = 0 }
+  listing = { pages = 0, after = after }
   listing.trigger = tempRegexTrigger("^", "svo.defences.custom_gamelist_line()")
   list_wait()
   svo.echof("Asking the game for its list of defences.")
@@ -4247,11 +4343,7 @@ end
 function defences.custom_gamelist_line()
   if not listing.pages then return end
   if isPrompt and isPrompt() then
-    if listing.names and not listing.more then
-      local names = listing.names
-      list_stop()
-      list_show(names)
-    end
+    if listing.names and not listing.more then list_done(true) end
     return
   end
   local text = line
@@ -4266,9 +4358,7 @@ function defences.custom_gamelist_line()
     deleteLine()
     listing.pages = listing.pages + 1
     if listing.pages > 50 then
-      local names = listing.names
-      list_stop()
-      list_show(names)
+      list_done(false)
       return
     end
     listing.more = true
@@ -4286,6 +4376,14 @@ function defences.custom_gamelist_line()
   end
 end
 
+-- what svof says of a defence DEF lists, with no DEF line: a warning, not
+-- a refusal, as some defences DEF doesn't show, such as Pariah's
+-- bloodiedknife (the user, 2026-10-10)
+local function no_def_warning(name)
+  return string.format("Without a DEF line, each DEF marks %s gone, and keepup raises it again. Add the line DEF shows for it, or use vcustomdef %s def none if DEF doesn't list it.",
+    name, name)
+end
+
 function defences.custom_test(name)
   if defences.is_own(name) then return defences.edit_test(name) end
   local d = defences.custom_drafts[name] or defences.custom[name]
@@ -4301,6 +4399,11 @@ function defences.custom_test(name)
     .. (d.gmcp and (" and GMCP's " .. d.gmcp) or "") or ("GMCP's " .. tostring(d.gmcp)))
   svo.echof("It knows it's gone from %s.", #off > 0 and string.format("%d line%s", #off, #off == 1 and "" or "s")
     .. (d.gmcp and " and GMCP" or "") or (d.gmcp and "GMCP" or "nothing, until DEF"))
+  if d.notondef then
+    svo.echof("DEF doesn't list it, so DEF leaves it alone.")
+  elseif not d.def then
+    svo.echof("%s", no_def_warning(name))
+  end
   local problem = defences.custom_problem(name, d)
   if problem then
     svo.echof("<250,0,0>It can't%s be installed yet: %s.", svo.getDefaultColor(), problem)
@@ -4349,6 +4452,7 @@ function defences.custom_install(name)
     end
     svo.echof("Installed %s. Add it to defup with vdefup %s, or to keepup with vkeep %s.", name, name, name)
   end
+  if not d.def and not d.notondef then svo.echof("%s", no_def_warning(name)) end
   return true
 end
 
@@ -4388,6 +4492,41 @@ function defences.custom_export(path)
     c > 0 and string.format(" and %d change%s to Svof's own", c, c == 1 and "" or "s") or "", path)
 end
 
+-- why a GMCP name in a file can't be taken, or nil: the game has to
+-- confirm it, as when it's typed
+local function imported_gmcp_problem(gmcp)
+  if type(gmcp) ~= 'string' then return nil end
+  local known = defences.gmcp_known(gmcp:lower())
+  if known then return nil end
+  if known == false then return "the game has no defence called " .. gmcp:lower() .. " over GMCP" end
+  return "Svof couldn't check its GMCP name " .. gmcp:lower() .. " with the game"
+end
+
+local function import_from(t, path)
+  local names = {}
+  for name, spec in pairs(t) do
+    if type(name) == 'string' and name ~= '_changes' and type(spec) == 'table' then names[#names + 1] = name end
+  end
+  table.sort(names)
+  for _, name in ipairs(names) do
+    local problem = imported_gmcp_problem(t[name].gmcp)
+    if defences.custom[name] then
+      svo.echof("You already have %s, so the one in %s isn't used.", name, path)
+    elseif defences.is_own(name) then
+      svo.echof("Svof has its own %s, so the one in %s isn't used.", name, path)
+    elseif problem then
+      svo.echof("Didn't import %s from %s: %s. Check the name, or leave it out for a defence GMCP doesn't report.",
+        name, path, problem)
+    else
+      local d = custom_copy(t[name])
+      d.gmcp = type(d.gmcp) == 'string' and d.gmcp:lower() or nil
+      defences.custom_drafts[name] = d
+      if not defences.custom_install(name) then defences.custom_drafts[name] = nil end
+    end
+  end
+  if type(t._changes) == 'table' then defences.edits_import(t._changes, path) end
+end
+
 function defences.custom_import(path)
   if not path or path == '' or not lfs.attributes(path) then
     svo.echof("There's no file at %s.", tostring(path ~= '' and path or nil))
@@ -4399,22 +4538,28 @@ function defences.custom_import(path)
     svo.echof("<250,0,0>Couldn't%s read %s: %s", svo.getDefaultColor(), path, tostring(msg))
     return
   end
-  local names = {}
-  for name, spec in pairs(t) do
-    if type(name) == 'string' and name ~= '_changes' and type(spec) == 'table' then names[#names + 1] = name end
+  -- GMCP names the game hasn't confirmed this session are checked against
+  -- its DEFENCE LIST first
+  local unchecked = false
+  local function check(gmcp)
+    if type(gmcp) == 'string' and defences.gmcp_known(gmcp:lower()) == nil then unchecked = true end
   end
-  table.sort(names)
-  for _, name in ipairs(names) do
-    if defences.custom[name] then
-      svo.echof("You already have %s, so the one in %s isn't used.", name, path)
-    elseif defences.is_own(name) then
-      svo.echof("Svof has its own %s, so the one in %s isn't used.", name, path)
-    else
-      defences.custom_drafts[name] = custom_copy(t[name])
-      if not defences.custom_install(name) then defences.custom_drafts[name] = nil end
+  for name, spec in pairs(t) do
+    if name == '_changes' and type(spec) == 'table' then
+      for _, changes in pairs(spec) do
+        for _, edit in pairs(type(changes) == 'table' and changes or {}) do
+          if type(edit) == 'table' then check(edit.gmcp) end
+        end
+      end
+    elseif type(spec) == 'table' then
+      check(spec.gmcp)
     end
   end
-  if type(t._changes) == 'table' then defences.edits_import(t._changes, path) end
+  if unchecked then
+    svo.echof("Checking the GMCP names in %s against the game's list of defences.", path)
+    return defences.custom_gamelist(function () import_from(t, path) end)
+  end
+  import_from(t, path)
 end
 
 -- vcustomdef or vcustomdef list: every definition, a link to show and change
@@ -4499,9 +4644,10 @@ end
 -- when it was changed (was), so svof can say when an update has changed it
 -- since. vconfig customdefinitions off leaves them out too.
 local edits_path = getMudletHomeDir() .. "/svo/custom/edits"
-local edit_fields = { 'on', 'off', 'def', 'command', 'gmcp' }
-local edit_labels = { on = "gain lines", off = "loss lines", def = "DEF lines", command = "command",
-  gmcp = "GMCP name" }
+-- notondef: DEF doesn't list it (svof's invisibledef), as definitions have
+local edit_fields = { 'on', 'off', 'def', 'notondef', 'command', 'gmcp' }
+local edit_labels = { on = "gain lines", off = "loss lines", def = "DEF lines", notondef = "whether DEF lists it",
+  command = "command", gmcp = "GMCP name" }
 -- svof's own version of each defence a change is in use for, to put back
 defences.own = defences.own or {}
 defences.edit_drafts = defences.edit_drafts or {}
@@ -4580,11 +4726,13 @@ local function own_version(name)
   local snap, phys = defences.own[name], physical_of(name)
   if snap then
     return { on = line_list(snap.on), off = line_list(snap.off), def = line_list(snap.def),
-      command = snap.command, gmcp = snap.gmcp, sendsaction = phys and phys.sendsaction }
+      notondef = snap.invisibledef and true or nil, command = snap.command, gmcp = snap.gmcp,
+      sendsaction = phys and phys.sendsaction }
   end
   local rec = defs_data[name]
   return { on = line_list(rec.on), off = line_list(rec.off), def = line_list(rec.def),
-    command = phys and phys.action, gmcp = svo.dict.svotossd[name], sendsaction = phys and phys.sendsaction }
+    notondef = rec.invisibledef and true or nil, command = phys and phys.action, gmcp = svo.dict.svotossd[name],
+    sendsaction = phys and phys.sendsaction }
 end
 
 -- the command that raises it, which svof also takes for its own when the
@@ -4610,13 +4758,14 @@ end
 -- back. A GMCP name svof has since given another defence stays that one's
 local function edit_apply(name, edit)
   local rec, entry, phys = defs_data[name], svo.dict[name], physical_of(name)
-  local snap = { on = rec.on, off = rec.off, def = rec.def, gmcp = svo.dict.svotossd[name],
-    gamename = type(entry) == 'table' and entry.gamename or nil,
+  local snap = { on = rec.on, off = rec.off, def = rec.def, invisibledef = rec.invisibledef,
+    gmcp = svo.dict.svotossd[name], gamename = type(entry) == 'table' and entry.gamename or nil,
     command = phys and phys.action, onstart = phys and phys.onstart }
   defences.own[name] = snap
   if edit.on then rec.on = line_list(edit.on) end
   if edit.off then rec.off = line_list(edit.off) end
   if edit.def then rec.def = line_list(edit.def) end
+  if edit.notondef ~= nil then rec.invisibledef = edit.notondef or nil end
   if edit.command and phys and phys.sendsaction then set_command(phys, edit.command) end
   local taken = edit.gmcp and svo.dict.sstosvod[edit.gmcp]
   if edit.gmcp ~= nil and not (taken and taken ~= name) then
@@ -4632,7 +4781,7 @@ local function edit_restore(name)
   if not snap then return end
   defences.own[name] = nil
   local rec, phys = defs_data[name], physical_of(name)
-  if rec then rec.on, rec.off, rec.def = snap.on, snap.off, snap.def end
+  if rec then rec.on, rec.off, rec.def, rec.invisibledef = snap.on, snap.off, snap.def, snap.invisibledef end
   if phys and phys.action ~= snap.command then set_command(phys, snap.command, snap.onstart) end
   local mine = svo.dict.svotossd[name]
   if mine ~= snap.gmcp then
@@ -4743,7 +4892,7 @@ local function edit_draft(name)
     return own[field]
   end
   d = { on = line_list(from('on')), off = line_list(from('off')), def = line_list(from('def')),
-    command = from('command'), gmcp = from('gmcp') or nil }
+    notondef = from('notondef') or nil, command = from('command'), gmcp = from('gmcp') or nil }
   defences.edit_drafts[name] = d
   return d
 end
@@ -4757,6 +4906,12 @@ local function draft_installed(name, d)
     if not same(d[field], installed) then return false end
   end
   return true
+end
+
+-- whether a change leaves a defence DEF lists with no DEF line where
+-- svof's own had one, which test and install warn about
+local function edit_drops_def(name, d)
+  return #d.def == 0 and #own_version(name).def > 0 and not d.notondef and not defs_data[name].defr
 end
 
 -- why a change can't be installed, or nil
@@ -4859,20 +5014,36 @@ function defences.edit_show(name)
   custom_link("change", string.format("printCmdLine(%q)", cmd .. "gmcp "), "Change the GMCP name")
   echo("\n")
   if not same(d.gmcp, own.gmcp) then svofs({ own.gmcp }) end
+  local unlisted = "nothing, as DEF doesn't list it"
   for _, which in ipairs({ { 'on', 'got', "gained when:" }, { 'off', 'lost', "lost when:" }, { 'def', 'def', "DEF shows:" } }) do
-    local lines = d[which[1]]
-    for i, line in ipairs(lines) do
-      echo(string.format("  %-12s %s  ", i == 1 and which[3] or "", line))
-      custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, which[1], i), "Remove this line")
+    local lines, isdef = d[which[1]], which[1] == 'def'
+    if isdef and d.notondef then
+      echo(string.format("  %-12s %s  ", which[3], unlisted))
+      custom_link("it does", string.format("printCmdLine(%q)", cmd .. "def "), "Type or paste the line DEF shows")
+      echo("\n")
+    else
+      for i, line in ipairs(lines) do
+        echo(string.format("  %-12s %s  ", i == 1 and which[3] or "", line))
+        custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, which[1], i), "Remove this line")
+        echo("\n")
+      end
+      echo(string.format("  %-12s %s", #lines == 0 and which[3] or "", #lines == 0 and "(no line)  " or ""))
+      custom_link("add a line from the screen", string.format("svo.defences.custom_capture(%q, %q)", name, which[2]),
+        "Pick the line from what's on screen")
+      echo("  ")
+      custom_link("type one", string.format("printCmdLine(%q)", cmd .. which[2] .. " "), "Type or paste the line")
+      if isdef then
+        echo("  ")
+        custom_link("DEF doesn't list it", string.format("svo.defences.custom_set(%q, 'def', 'none')", name),
+          "For a defence DEF doesn't show, which DEF then leaves alone")
+      end
       echo("\n")
     end
-    echo(string.format("  %-12s %s", #lines == 0 and which[3] or "", #lines == 0 and "(no line)  " or ""))
-    custom_link("add a line from the screen", string.format("svo.defences.custom_capture(%q, %q)", name, which[2]),
-      "Pick the line from what's on screen")
-    echo("  ")
-    custom_link("type one", string.format("printCmdLine(%q)", cmd .. which[2] .. " "), "Type or paste the line")
-    echo("\n")
-    if not same(lines, own[which[1]]) then svofs(own[which[1]]) end
+    if isdef and not (same(lines, own.def) and same(d.notondef, own.notondef)) then
+      svofs(own.notondef and { unlisted } or own.def)
+    elseif not isdef and not same(lines, own[which[1]]) then
+      svofs(own[which[1]])
+    end
   end
   for i, note in ipairs(edit_notes(name)) do
     echo(string.format("  %-12s %s\n", i == 1 and "Svof keeps:" or "", note))
@@ -4905,7 +5076,21 @@ function defences.edit_set(name, field, value)
       svo.echof("Can't give %s the GMCP name %s: GMCP's %s is Svof's %s.", name, gmcp, gmcp, mapped)
       return
     end
+    -- only a name the game confirms, or svof's own back again
+    local new = gmcp and gmcp ~= own.gmcp
+    local known = new and defences.gmcp_known(gmcp)
+    if new and known == false then
+      svo.echof("%s", defences.gmcp_refusal(name, gmcp))
+      return
+    elseif new and known == nil then
+      svo.echof("Asking the game whether GMCP knows a defence called %s.", gmcp)
+      defences.custom_fetch(name, gmcp, 'gmcp')
+      return
+    end
     d.gmcp = gmcp
+  elseif field == 'def' and value:lower() == 'none' then
+    -- DEF doesn't list it, so DEF leaves it alone
+    d.def, d.notondef = {}, true
   elseif field == 'got' or field == 'lost' or field == 'def' then
     if value == '' then
       svo.echof("Which line %s?", field == 'got' and ("says you gained " .. name)
@@ -4914,6 +5099,7 @@ function defences.edit_set(name, field, value)
     end
     local lines = d[field == 'got' and 'on' or field == 'lost' and 'off' or 'def']
     if not table.contains(lines, value) then lines[#lines + 1] = value end
+    if field == 'def' then d.notondef = nil end
   elseif field == 'class' or field == 'skillset' or field == 'balanceless' or field == 'serverside' then
     svo.echof("Svof's own %s keeps its class, skillset and balance. A change can replace its lines and GMCP name, and for some defences the command.", name)
     return
@@ -4958,6 +5144,11 @@ function defences.edit_test(name)
   end
   svo.echof("It knows it's up from %s.", from(d.on, #line_list(rec.onr), d.gmcp and ("GMCP's " .. d.gmcp)))
   svo.echof("It knows it's gone from %s.", from(d.off, #line_list(rec.offr), d.gmcp and "GMCP"))
+  if d.notondef then
+    svo.echof("DEF doesn't list it, so DEF leaves it alone.")
+  elseif edit_drops_def(name, d) then
+    svo.echof("%s", no_def_warning(name))
+  end
   local problem = edit_problem(name, d)
   if problem then
     svo.echof("<250,0,0>It can't%s be installed yet: %s.", svo.getDefaultColor(), problem)
@@ -5002,16 +5193,18 @@ function defences.edit_install(name, sure)
     return false
   end
   new.was = was
+  local drops = edit_drops_def(name, d)
   defences.edits[key] = defences.edits[key] or {}
   defences.edits[key][name] = new
   defences.edit_drafts[name] = nil
   defences.edits_save()
   if not conf.customdefinitions then
     svo.echof("Saved your change to %s. vconfig customdefinitions is off, so Svof doesn't use it.", name)
-    return true
+  else
+    edit_live(name, new)
+    svo.echof("Changed Svof's own %s. vcustomdef %s reset puts Svof's back.", name, name)
   end
-  edit_live(name, new)
-  svo.echof("Changed Svof's own %s. vcustomdef %s reset puts Svof's back.", name, name)
+  if drops then svo.echof("%s", no_def_warning(name)) end
   return true
 end
 
@@ -5105,9 +5298,14 @@ function defences.edits_import(changes, path)
     end
     table.sort(names)
     for _, name in ipairs(names) do
+      local problem = imported_gmcp_problem(changes[key][name].gmcp)
       if defences.edits[key] and defences.edits[key][name] then
         svo.echof("You already changed Svof's own %s, so the change in %s isn't used.", name, path)
+      elseif problem then
+        svo.echof("Didn't import the change to Svof's own %s from %s: %s. Check the name, or leave it out.",
+          name, path, problem)
       else
+        if type(changes[key][name].gmcp) == 'string' then changes[key][name].gmcp = changes[key][name].gmcp:lower() end
         defences.edits[key] = defences.edits[key] or {}
         defences.edits[key][name] = changes[key][name]
         if conf.customdefinitions and defs_data[name] and edit_key(defs_data[name]) == key then

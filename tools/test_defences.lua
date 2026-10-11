@@ -1256,6 +1256,7 @@ do
   cmd("shimmer got You begin to shimmer.")
   cmd("shimmer lost You stop shimmering.")
   cmd("shimmer def You are shimmering.")
+  svo.defences.gmcp_confirmed.shimmering = true -- as if the game confirmed it; how, further down
   cmd("shimmer gmcp shimmering")
   cmd("shimmer test")
   eq(echoed(w, "be installed yet: pick which of its class's skillsets to show it under."), true,
@@ -1418,6 +1419,8 @@ do
   local cmd = svo.defences.customdef_command
   local told = {}
   svo.sendcuringprio = function(prio, kind, slow) told[#told + 1] = kind .. " " .. prio .. (slow and " (slow)" or "") end
+  -- as if the game confirmed both GMCP names
+  svo.defences.gmcp_confirmed.shimmering, svo.defences.gmcp_confirmed.murky = true, true
 
   cmd("shimmer skillset tekura")
   cmd("shimmer command shimmer on")
@@ -1931,6 +1934,7 @@ do
 
   cmd("alertness command alertness up")
   cmd("alertness got You perk up your ears.")
+  svo.sk.gmcp_defs_seen.alert = true -- as if GMCP had sent the name
   cmd("alertness gmcp alert")
   cmd("alertness install")
   eq(echoed(w, "Changing Svof's own alertness replaces Svof's version of it, and Svof's updates to alertness won't reach you until you reset it."),
@@ -2134,6 +2138,7 @@ do -- serverside: a new GMCP name is a new name to the server
   svo.sendcuringprio = function(prio, kind, slow) told[#told + 1] = kind .. " " .. prio .. (slow and " (slow)" or "") end
   svo.conf.serverside = true
   svo.setserverignore("alertness")
+  svo.sk.gmcp_defs_seen.alert = true -- as if GMCP had sent the name
   svo.defences.customdef_command("alertness gmcp alert")
   w.run('svo.defences.edit_install("alertness", true)')
   eq(table.concat(told, ", "), "defence alertness reset, defence alertness reset (slow)",
@@ -2245,6 +2250,192 @@ do -- no marks, no key
   svo.showprompt = function() end
   svo.show_keepup()
   eq(echoed(w, "(vcustomdef)"), false, "marks: a list with nothing marked has no key")
+end
+
+-- ===== 15. DEF lines =====
+
+-- Without a DEF line, each DEF marks a defence gone, so test and install
+-- warn, and def none says DEF doesn't list it, as svof's own invisibledef
+-- does. A warning, not a refusal, as some defences DEF doesn't show (the
+-- user, 2026-10-10)
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  svo.showprompt = function() end
+  local cmd = svo.defences.customdef_command
+  local function def()
+    svo.defences.def_def_list = {}
+    svo.process_defs()
+    w.prompt()
+  end
+  cmd("shimmer skillset tekura")
+  cmd("shimmer command shimmer on")
+  cmd("shimmer got You begin to shimmer.")
+  cmd("shimmer test")
+  eq(echoed(w, "Without a DEF line, each DEF marks shimmer gone, and keepup raises it again."), true,
+    "DEF lines: test warns about a definition without one")
+  eq(echoed(w, "It's ready to install."), true, "DEF lines: which can still be installed")
+  local echoes = #w.echoes
+  cmd("shimmer install")
+  local warned = false
+  for i = echoes + 1, #w.echoes do
+    if w.echoes[i]:find("Without a DEF line", 1, true) then warned = true end
+  end
+  eq(warned, true, "DEF lines: install warns too")
+  svo.defences.got("shimmer")
+  def()
+  eq(svo.defc.shimmer, false, "DEF lines: and each DEF marks it gone, as it warns")
+
+  cmd("shimmer def none")
+  local d = svo.defences.custom_drafts.shimmer or {}
+  eq(d.notondef, true, "DEF lines: def none says DEF doesn't list it")
+  cmd("shimmer test")
+  eq(echoed(w, "DEF doesn't list it, so DEF leaves it alone."), true, "DEF lines: as test says")
+  cmd("shimmer install")
+  eq(svo.defs_data.shimmer and svo.defs_data.shimmer.invisibledef, true, "DEF lines: its record is invisibledef, like svof's own")
+  svo.defences.got("shimmer")
+  def()
+  eq(svo.defc.shimmer, true, "DEF lines: and DEF leaves it alone")
+  cmd("shimmer def You are shimmering.")
+  d = svo.defences.custom_drafts.shimmer or {}
+  eq(d.def == "You are shimmering." and d.notondef == nil, true, "DEF lines: a DEF line given undoes def none")
+end
+
+do -- a change to svof's own can say DEF doesn't list it, and warns taking out its DEF line
+  local w = world.new({ class = "Occultist" })
+  local svo = w.svo
+  svo.showprompt = function() end
+  local cmd = svo.defences.customdef_command
+  cmd("alertness def none")
+  w.run('svo.defences.edit_install("alertness", true)')
+  eq(svo.defs_data.alertness.invisibledef, true, "DEF lines: a change says DEF doesn't list svof's own")
+  svo.defences.got("alertness")
+  svo.defences.def_def_list = {}
+  svo.process_defs()
+  w.prompt()
+  eq(svo.defc.alertness, true, "DEF lines: and DEF leaves it alone")
+  cmd("alertness reset")
+  eq(svo.defs_data.alertness.invisibledef, nil, "DEF lines: reset puts svof's own back")
+  svo.defences.custom_unset("alertness", "def", 1)
+  cmd("alertness test")
+  eq(echoed(w, "Without a DEF line, each DEF marks alertness gone"), true,
+    "DEF lines: taking svof's own DEF line out of a change warns")
+end
+
+-- ===== 16. GMCP names the game confirms =====
+
+-- A definition or a change takes only a GMCP name the game confirms (the
+-- user, 2026-10-10): by DEFENCE SHOW, DEFENCE LIST or GMCP sending it. With
+-- a wrong one, svof would leave the defence to serverside, which couldn't
+-- raise it either.
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function game(text) w.env.line = text svo.defences.custom_fetch_line() end
+  cmd("shimmer command shimmer on")
+  local d = svo.defences.custom_drafts.shimmer or {}
+
+  cmd("shimmer gmcp shimer")
+  eq(w.sent[#w.sent], "defence show shimer", "GMCP names: one the game hasn't confirmed is asked about")
+  eq(d.gmcp, nil, "GMCP names: and isn't taken yet")
+  game("There is no such defence.")
+  eq(echoed(w, "The game has no defence called shimer over GMCP, so it can't be shimmer's GMCP name. Check the name, or use vcustomdef shimmer gmcp none"),
+    true, "GMCP names: one the game doesn't have is refused, saying what to do")
+  eq(d.gmcp, nil, "GMCP names: and isn't taken")
+  local sent = #w.sent
+  cmd("shimmer gmcp shimer")
+  eq(#w.sent, sent, "GMCP names: given again, it's refused without asking the game again")
+
+  cmd("shimmer gmcp Shimmering")
+  game("Defence:            Shimmering (shimmering)")
+  game("EnactMsg:           You begin to shimmer.")
+  game("Profession:         No")
+  game("Strippable:         Yes")
+  eq(d.gmcp, "shimmering", "GMCP names: the game's reply sets it")
+  eq(d.on[1], "You begin to shimmer.", "GMCP names: and fills in its lines, as before")
+  cmd("shimmer gmcp none")
+  cmd("shimmer gmcp shimmering")
+  eq(d.gmcp, "shimmering", "GMCP names: the game's confirmation lasts the session, so it's taken at once")
+
+  cmd("shimmer gmcp shimmer")
+  game("Defence:            Shimmering (shimmering)")
+  game("Strippable:         Yes")
+  eq(echoed(w, "The game knows shimmer as shimmering over GMCP."), true, "GMCP names: the game's own spelling is taken")
+
+  cmd("shimmer gmcp wisp")
+  w.advance(10)
+  eq(echoed(w, "The game didn't answer about wisp, so Svof can't take it as shimmer's GMCP name."), true,
+    "GMCP names: without an answer, it isn't taken")
+  eq(d.gmcp, "shimmering", "GMCP names: and the one before stays")
+
+  svo.sk.gmcp_defs_seen.glimmering = true
+  cmd("shimmer gmcp glimmering")
+  eq(d.gmcp, "glimmering", "GMCP names: one GMCP has sent this session is taken at once")
+  cmd("shimmer gmcp none")
+  eq(d.gmcp, nil, "GMCP names: none takes it away")
+end
+
+do -- a change to svof's own
+  local w = world.new({ class = "Occultist" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function game(text) w.env.line = text svo.defences.custom_fetch_line() end
+  cmd("alertness gmcp alertnes")
+  eq(w.sent[#w.sent], "defence show alertnes", "GMCP names: a change's new GMCP name is asked about too")
+  game("There is no such defence.")
+  eq(echoed(w, "The game has no defence called alertnes over GMCP, so it can't be alertness's GMCP name."), true,
+    "GMCP names: and refused when the game doesn't have it")
+  local d = svo.defences.edit_drafts.alertness or {}
+  eq(d.gmcp, "alertness", "GMCP names: leaving svof's own")
+  cmd("alertness gmcp alert")
+  game("Defence:            Alertness (alert)")
+  game("EnactMsg:           You prick up your ears sharply.")
+  game("Strippable:         Yes")
+  eq(d.gmcp, "alert", "GMCP names: the game's reply sets a change's")
+  eq(#d.on, 3, "GMCP names: and adds none of its lines to a change")
+  local sent = #w.sent
+  cmd("alertness gmcp alertness")
+  eq(d.gmcp == "alertness" and #w.sent == sent, true, "GMCP names: svof's own name back needs no asking")
+end
+
+do -- import checks a file's GMCP names against DEFENCE LIST, which then answers for any name
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function game(text) w.env.line = text svo.defences.custom_gamelist_line() end
+  local old_attributes, old_load = w.env.lfs.attributes, w.env.table.load
+  w.env.lfs.attributes = function() return {} end
+  w.env.table.load = function(_, t)
+    t.veil = { class = "all", command = "veil on", on = { "A veil falls about you." }, gmcp = "Veiled" }
+    t.murk = { class = "all", command = "murk", on = { "A murk gathers about you." }, gmcp = "murkiness" }
+    t._changes = { all = { treewatch = { gmcp = "treewatching", was = { gmcp = svo.dict.svotossd.treewatch } },
+      skywatch = { gmcp = "skywatching", was = { gmcp = svo.dict.svotossd.skywatch } } } }
+  end
+  cmd("import shared-defences")
+  w.env.lfs.attributes, w.env.table.load = old_attributes, old_load
+  eq(w.sent[#w.sent], "defence list", "GMCP names: import checks names the game hasn't confirmed against DEFENCE LIST")
+  eq(svo.defs_data.veil, nil, "GMCP names: and waits for it")
+  game("All defences")
+  game("Veiled")
+  game("Treewatching")
+  w.env.isPrompt = function() return true end
+  game("9975h, 6252m cexkdb-")
+  w.env.isPrompt = function() return false end
+  eq(svo.defs_data.veil and svo.dict.sstosvod.veiled, "veil", "GMCP names: a definition whose name the list has is imported")
+  eq(echoed(w, "Didn't import murk from shared-defences: the game has no defence called murkiness over GMCP."), true,
+    "GMCP names: one whose name it doesn't have isn't")
+  eq(svo.defs_data.murk, nil, "GMCP names: and isn't installed")
+  eq(svo.dict.svotossd.treewatch, "treewatching", "GMCP names: a change whose name the list has is imported too")
+  eq(echoed(w, "Didn't import the change to Svof's own skywatch from shared-defences: the game has no defence called skywatching over GMCP."),
+    true, "GMCP names: and one whose name it doesn't have isn't")
+  eq(svo.dict.svotossd.skywatch == "skywatching", false, "GMCP names: so skywatch keeps svof's own")
+
+  cmd("shimmer command shimmer on")
+  local sent = #w.sent
+  cmd("shimmer gmcp nosuch")
+  eq(#w.sent, sent, "GMCP names: after a whole DEFENCE LIST, a name it doesn't have is refused without asking")
+  eq(echoed(w, "The game has no defence called nosuch over GMCP"), true, "GMCP names: as svof says")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))
