@@ -227,6 +227,66 @@ local STDLIB = {"assert", "error", "ipairs", "next", "pairs", "pcall", "print", 
   "select", "setmetatable", "getmetatable", "tonumber", "tostring", "type", "unpack", "xpcall", "math", "os",
   "io", "coroutine", "debug", "loadstring", "load", "setfenv", "getfenv", "collectgarbage"}
 
+-- ===== a stand-in for Mudlet's rex (PCRE) =====
+
+-- Mudlet matches regex triggers with PCRE, through its rex library, which
+-- plain Lua doesn't have. This stand-in turns a simple PCRE pattern into a
+-- Lua pattern: anchors, ., \w \d \s and their capitals, escaped
+-- punctuation, [classes], * + ? after one item, and groups with nothing
+-- after them. Anything else (alternation, (?:, {n}, a quantified group, a
+-- lazy quantifier) raises, so a test can't take a wrong answer for PCRE's.
+-- A test opts in with w.env.rex = world.rex_stub. It proves nothing about
+-- what PCRE itself does.
+local function lua_pattern(p)
+  local out, i, n, depth = {}, 1, #p, 0
+  while i <= n do
+    local c = p:sub(i, i)
+    local after = p:sub(i + 1, i + 1)
+    if c == "\\" then
+      local cls = ({ w = "%w", d = "%d", s = "%s", W = "%W", D = "%D", S = "%S" })[after]
+      if after == "" or (not cls and after:match("%w")) then error("unsupported escape \\" .. after) end
+      out[#out + 1] = cls or ("%" .. after)
+      i = i + 2
+    elseif c == "(" then
+      if after == "?" then error("unsupported group (?") end
+      depth = depth + 1
+      i = i + 1
+    elseif c == ")" then
+      depth = depth - 1
+      if depth < 0 then error("unmatched )") end
+      if after:match("[%*%+%?{]") then error("unsupported quantified group") end
+      i = i + 1
+    elseif c == "|" or c == "{" then
+      error("unsupported " .. c)
+    elseif c == "[" then
+      local j = p:find("]", i + 2, true)
+      if not j then error("unmatched [") end
+      local body = p:sub(i + 1, j - 1):gsub("\\([wdsWDS])", "%%%1"):gsub("\\(%p)", "%%%1")
+      out[#out + 1] = "[" .. body .. "]"
+      i = j + 1
+    elseif (c == "^" and i == 1) or (c == "$" and i == n) or c == "." then
+      out[#out + 1] = c
+      i = i + 1
+    elseif c == "*" or c == "+" or c == "?" then
+      if after == "?" or after == "+" then error("unsupported lazy or possessive quantifier") end
+      out[#out + 1] = c
+      i = i + 1
+    elseif c:match("%p") then
+      out[#out + 1] = "%" .. c
+      i = i + 1
+    else
+      out[#out + 1] = c
+      i = i + 1
+    end
+  end
+  if depth ~= 0 then error("unmatched (") end
+  return table.concat(out)
+end
+world.rex_stub = {
+  new = function(pattern) return lua_pattern(pattern) end,
+  match = function(subject, pattern) return subject:match(lua_pattern(pattern)) end,
+}
+
 -- ===== one svof =====
 
 -- opts.class: the class svof loads for (svo.me.class), default "Infernal"

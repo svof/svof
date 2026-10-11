@@ -174,6 +174,8 @@ To define one:
 1. Start it with *vcustomdef <name>*, using lower-case letters and digits. Svof shows what the definition holds so far, with links to change each part.
 2. Set the command that raises it with *vcustomdef <name> command <command>*. If raising it takes no balance, add *vcustomdef <name> balanceless yes*. As with its own defences, Svof recognizes the command when you type it or serverside sends it, and tracks it as its own.
 3. Tell Svof how it knows the defence is up. If the game knows the defence by the name you gave it, Svof asks with *DEFENCE SHOW* when you start the definition, and fills in its lines and GMCP name from the game's reply. *vcustomdef <name> fetch <game name>* asks about a different name. For a defence the game doesn't show, raise it once, then use *vcustomdef <name> line got* and click the line that says you gained it, or click **type one** and paste it in. Do the same with *line lost* for the line that says you lost it, and with *line def* for the line DEF shows. Without a DEF line, each DEF marks the defence gone and keepup raises it again, so *test* and *install* warn you. If DEF doesn't list the defence at all, as with Pariah's bloodiedknife, use *vcustomdef <name> def none*, and DEF leaves it alone.
+
+   For a line that varies, such as one with a name in it, add a pattern next to the exact lines: *vcustomdef <name> gotpattern <pattern>*, *lostpattern* or *defpattern*. A pattern is a regular expression, as Mudlet's regex triggers take, such as ``^You glint at (\w+)\.$``. Svof refuses one Mudlet can't read. Exact lines stay the default, and the safer choice: a loose pattern can match other defences' lines, which the clash check refuses (see :ref:`defence-clashes`).
 4. If Svof didn't get the GMCP name from the game and you know it, set it with *vcustomdef <name> gmcp <name>*, which also asks the game for its lines. Svof only takes a GMCP name the game confirms: by its reply to *DEFENCE SHOW*, by *DEFENCE LIST*, or by GMCP sending it. For a name the game doesn't have, Svof says so and keeps the name it had; check the name, or use *vcustomdef <name> gmcp none* for a defence GMCP doesn't report. Svof then takes GMCP's word on the defence, as it does for its own. With *vconfig gmcpdefechoes* on, Svof shows the GMCP names as defences come and go. Serverside curing knows a defence by its GMCP name, so with one it raises the defence while serverside is on, and Svof raises it otherwise. *vshow server* can leave it to Svof, as for Svof's own defences. Without a GMCP name, Svof always raises it.
 5. Check the definition with *vcustomdef <name> test*, then put it into play with *vcustomdef <name> install*.
 
@@ -213,7 +215,7 @@ Copy Svof's own defences from another class
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Sometimes the game gives your class a defence that Svof has only for other classes, or an artefact gives a class defence to anyone who buys it. Instead of defining that defence again, copy Svof's own. *vcustomdef <name> copy*, or *vcustomdef <name>*, shows each class's version of it, with a **copy it** link for each one Svof can copy.
 
-A copy starts from Svof's version: its lines, its DEF line, its GMCP name, its command and whether that takes balance. It also keeps Svof's patterns and other lines for that defence as they are. Pick a skillset for it, or use *vcustomdef <name> class all* for an artefact's, then check it and install it as you would a definition. You can change its lines, GMCP name and command, for example when the artefact uses a different command. The artefact versions so far use the class version's GMCP name.
+A copy starts from Svof's version: its lines, its DEF line, its GMCP name, its command and whether that takes balance. Svof's patterns for its lines that vary come with it, shown and changed like a definition's. Any other lines Svof watches for come with it as they are. Pick a skillset for it, or use *vcustomdef <name> class all* for an artefact's, then check it and install it as you would a definition. You can change its lines, GMCP name and command, for example when the artefact uses a different command. The artefact versions so far use the class version's GMCP name.
 
 Svof copies only a defence it raises by sending its command and tracks by its lines. It doesn't copy one where it does more than that, because that extra handling doesn't come with a copy. For example, it won't copy a defence that can't be up with some others (such as a Monk's forms), one it counts with others (such as the channels), one it waits for after its command, or one that comes with an item. Svof has its own option for each item, such as *vconfig havemindnet*. The copy list says why for each version it can't copy.
 
@@ -227,11 +229,12 @@ Clashes with other defences
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 A line, GMCP name or command that two defences share makes the game's word on one count for the other as well. Svof refuses to install a definition, copy or change that shares any of these with another defence in your class:
 
-- a line it watches for: another defence's gain, loss or DEF line
+- a line it watches for: another defence's gain, loss or DEF line, or one another defence's pattern matches
+- a pattern that matches another defence's line, or the definition's own line of another kind, such as a gain pattern that matches its own loss line
 - its GMCP name: another defence's, Svof's own or one you defined. If two of your definitions share one, the first by name goes in as Svof loads, and the other stays out.
 - its command: one Svof already takes for another action when you type it or serverside sends it, such as a cure, or one another definition sends
 
-Svof checks again every time it loads, since a class change or an update can bring a clash. A definition or change that clashes then stays out, and Svof says what it clashes with. Svof can't check a line against another defence's patterns for lines that vary.
+Svof checks again every time it loads, since a class change or an update can bring a clash. A definition or change that clashes then stays out, and Svof says what it clashes with. Svof can't check one pattern against another, so two patterns that both match some line the game sends aren't caught.
 
 Anti-illusion
 ~~~~~~~~~~~~~

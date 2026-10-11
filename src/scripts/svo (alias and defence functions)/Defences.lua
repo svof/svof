@@ -3698,6 +3698,10 @@ end, 'setup def triggers on system start')
 --   command      what svof sends to raise it
 --   balanceless  true when raising it takes no balance
 --   on, off      the exact lines saying you gained it and lost it
+--   onr, offr, defr  patterns for gain, loss and DEF lines that vary, as
+--                svof's own records have (the user, 2026-10-11), next to
+--                the exact lines; only one Mudlet's rex library reads is
+--                taken
 --   def          the exact line DEF shows for it. Without one, each DEF
 --                marks it gone, which test and install warn about
 --   notondef     true for a defence DEF doesn't list, such as Pariah's
@@ -3827,17 +3831,58 @@ local function whose(name)
   return (defences.custom_registered[name] and "your " or "Svof's ") .. name
 end
 
--- the record fields that hold exact lines
+-- the record fields that hold exact lines, and the ones that hold
+-- patterns, for lines that vary
 local exact_fields = { 'on', 'off', 'def', 'on_only', 'on_free', 'off_free' }
+local pattern_fields = { 'onr', 'offr', 'defr' }
+local kind_of = { on = "gain", off = "loss", def = "DEF", onr = "gain", offr = "loss", defr = "DEF" }
+
+-- Mudlet's PCRE library, which tempRegexTrigger matches patterns with, or
+-- nil where there's none
+local function pcre()
+  return rawget(_G, 'rex')
+end
+
+-- whether pattern matches line, by the library the trigger would use
+local function pattern_matches(pattern, line)
+  local rex = pcre()
+  if not rex then return false end
+  local ok, m = pcall(rex.match, line, pattern)
+  return ok and m ~= nil and m ~= false
+end
+
+-- why pattern can't be a definition's, or nil
+function defences.pattern_problem(pattern)
+  local rex = pcre()
+  if not rex then return "Svof can't read patterns without Mudlet's rex library" end
+  local ok, err = pcall(rex.new, pattern)
+  if not ok then return "it isn't a pattern Svof can read (" .. tostring(err) .. ")" end
+end
 
 -- Why a defence's lines, GMCP name or command clash with what this class
 -- already has, or nil. A clash makes the game's word on one defence count
 -- for another as well, so nothing that clashes goes into play (the user,
 -- 2026-10-10). parts holds lines, every exact line the defence watches
--- for; subs, the part-lines it watches for (a record's offs); gmcp and
--- command. Lines another defence watches for with a pattern can't be
--- checked here.
+-- for, and kinds, the same by kind (on, off, def); subs, the part-lines it
+-- watches for (a record's offs); patterns, its patterns, each { field,
+-- pattern } (onr, offr, defr); gmcp and command. Its lines are checked
+-- against other defences' patterns, and its patterns against other
+-- defences' lines and its own lines of another kind, by the library the
+-- triggers match with. Two patterns can't be checked against each other.
 function defences.clash(name, parts)
+  -- a pattern of one kind that matches its own line of another, so that
+  -- the line would say both
+  for _, p in ipairs(parts.patterns or {}) do
+    for kind, lines in pairs(parts.kinds or {}) do
+      if kind_of[kind] ~= kind_of[p[1]] then
+        for _, line in ipairs(lines) do
+          if pattern_matches(p[2], line) then
+            return string.format("its %s pattern %q matches its own %s line %q", kind_of[p[1]], p[2], kind_of[kind], line)
+          end
+        end
+      end
+    end
+  end
   local gmcp = parts.gmcp
   if gmcp then
     local mapped = svo.dict.sstosvod[gmcp]
@@ -3866,12 +3911,32 @@ function defences.clash(name, parts)
           if line:find(sub, 1, true) then return string.format("%s already watches for lines with %q in them", whose(other), sub) end
         end
       end
+      -- its lines against their patterns, and its patterns against their
+      -- lines
+      for _, field in ipairs(pattern_fields) do
+        for _, theirs in ipairs(line_list(rec[field])) do
+          for _, line in ipairs(lines) do
+            if pattern_matches(theirs, line) then
+              return string.format("%s's pattern %q matches %q", whose(other), theirs, line)
+            end
+          end
+        end
+      end
+      for _, p in ipairs(parts.patterns or {}) do
+        for _, field in ipairs(exact_fields) do
+          for _, theirs in ipairs(line_list(rec[field])) do
+            if pattern_matches(p[2], theirs) then
+              return string.format("the pattern %q matches %s's line %q", p[2], whose(other), theirs)
+            end
+          end
+        end
+      end
     end
   end
   local command = parts.command and parts.command:lower():match("^%s*(.-)%s*$")
   if command and command ~= '' then
     -- what svof takes a command for when the player types it or serverside
-    -- sends it, and the commands of the definitions registered after that
+    -- sends it, the registered definitions' included (defences.register)
     local act = sys.input_to_actions and sys.input_to_actions[command]
     local taken = act and (act.action_name or act.name)
     if taken and taken ~= name and defences.custom_registered[taken] then
@@ -3879,30 +3944,32 @@ function defences.clash(name, parts)
     elseif taken and taken ~= name then
       return string.format("Svof already takes %q as %s's command", parts.command, taken)
     end
-    for other in pairs(defences.custom_registered) do
-      local phys = other ~= name and type(svo.dict[other]) == 'table' and svo.dict[other].physical
-      if phys and type(phys.action) == 'string' and phys.action:lower() == command then
-        return string.format("your %s is raised with %q too", other, parts.command)
-      end
-    end
   end
 end
 
 -- the lines a copy of Svof's own carries besides the ones a definition
--- has, which come from Svof and can't be changed
+-- has, which come from Svof and can't be changed. Svof's patterns go in
+-- the copy's onr, offr and defr, where they can
 local copy_line_fields = { 'def', 'onr', 'offr', 'defr', 'on_only', 'on_free', 'off_free', 'offs' }
 
 -- what a definition watches for and sends, for defences.clash
 local function custom_parts(spec)
   local lines = {}
-  for _, l in ipairs(line_list(spec.on)) do lines[#lines + 1] = l end
-  for _, l in ipairs(line_list(spec.off)) do lines[#lines + 1] = l end
-  if type(spec.def) == 'string' then lines[#lines + 1] = spec.def end
+  local kinds = { on = line_list(spec.on), off = line_list(spec.off), def = line_list(spec.def) }
+  for _, kind in ipairs({ 'on', 'off', 'def' }) do
+    for _, l in ipairs(kinds[kind]) do lines[#lines + 1] = l end
+  end
   local extra = type(spec.copy) == 'table' and type(spec.copy.lines) == 'table' and spec.copy.lines or {}
   for _, field in ipairs({ 'def', 'on_only', 'on_free', 'off_free' }) do
     for _, l in ipairs(line_list(extra[field])) do lines[#lines + 1] = l end
   end
-  return { lines = lines, subs = line_list(extra.offs), gmcp = spec.gmcp, command = spec.command }
+  local patterns = {}
+  for _, field in ipairs(pattern_fields) do
+    for _, p in ipairs(line_list(spec[field])) do patterns[#patterns + 1] = { field, p } end
+    for _, p in ipairs(line_list(extra[field])) do patterns[#patterns + 1] = { field, p } end
+  end
+  return { lines = lines, kinds = kinds, subs = line_list(extra.offs), patterns = patterns, gmcp = spec.gmcp,
+    command = spec.command }
 end
 
 function defences.custom_register(name, spec)
@@ -3931,6 +3998,12 @@ function defences.custom_register(name, spec)
     elseif #l > 0 then
       record[field] = l
     end
+  end
+  -- its patterns, for lines that vary
+  for _, field in ipairs(pattern_fields) do
+    local l = line_list(record[field])
+    for _, p in ipairs(line_list(spec[field])) do l[#l + 1] = p end
+    if #l > 0 then record[field] = l end
   end
   defences.register(name, record)
   defences.custom_registered[name] = true
@@ -3994,6 +4067,8 @@ end, 'register the defences the player defined')
 --   vcustomdef <name> <field> <text> set class, skillset, command,
 --                                    balanceless, gmcp or def, or add a got
 --                                    or lost line
+--   vcustomdef <name> gotpattern|lostpattern|defpattern <pattern>
+--                                    add a pattern, for a line that varies
 --   vcustomdef <name> line <got|lost|def>  pick that line off the screen
 --   vcustomdef <name> fetch [game name]  fill its lines from the game's
 --                                    DEFENCE SHOW, which a new definition
@@ -4026,6 +4101,10 @@ local function custom_copy(spec)
       t[k] = {}
     end
   end
+  -- patterns, for lines that vary, only when it has some
+  for _, k in ipairs(pattern_fields) do
+    if spec[k] then t[k] = line_list(spec[k]) end
+  end
   return t
 end
 
@@ -4053,13 +4132,24 @@ function defences.custom_problem(name, spec)
     return "its class isn't one Svof knows"
   end
   if type(spec.command) ~= 'string' or spec.command == '' then return "it has no command to raise it" end
-  if not ((type(spec.on) == 'table' and #spec.on > 0) or type(spec.on) == 'string' or spec.gmcp) then
+  if not ((type(spec.on) == 'table' and #spec.on > 0) or type(spec.on) == 'string' or #line_list(spec.onr) > 0
+      or spec.gmcp) then
     return "it needs a line saying you gained it, or its GMCP name, or Svof can't tell when it's up"
   end
   if spec.class ~= 'all' then
     if not spec.skillset then return "pick which of its class's skillsets to show it under" end
     local why = skillset_problem(spec.skillset)
     if why then return why end
+  end
+  -- its patterns, such as ones a file brought in, as typed ones are; svof
+  -- can only check them where Mudlet's rex library is
+  if pcre() then
+    for _, field in ipairs(pattern_fields) do
+      for _, p in ipairs(line_list(spec[field])) do
+        local why = defences.pattern_problem(p)
+        if why then return string.format("%s can't be a pattern: %s", p, why) end
+      end
+    end
   end
   -- its lines, GMCP name and command against the class's other defences
   return defences.clash(name, custom_parts(spec))
@@ -4177,6 +4267,19 @@ function defences.custom_show(name)
     custom_link("vshow server", "svo.showserverside()", "Choose whether serverside or Svof raises it")
   end
   echo("\n")
+  -- the patterns for lines that vary, under the exact lines, and a link
+  -- to add one
+  local function patterns(field, verb)
+    for i, p in ipairs(line_list(d[field])) do
+      echo(string.format("  %-12s %s  ", i == 1 and "or matches:" or "", p))
+      custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, field, i), "Remove this pattern")
+      echo("\n")
+    end
+    echo(string.format("  %-12s ", ""))
+    custom_link("add a pattern", string.format("printCmdLine(%q)", cmd .. verb .. " "),
+      "For a line that varies: a pattern, as Mudlet's regex triggers take")
+    echo("\n")
+  end
   for _, which in ipairs({ { 'on', 'got', "gained when:" }, { 'off', 'lost', "lost when:" } }) do
     local lines = d[which[1]]
     for i, line in ipairs(lines) do
@@ -4189,10 +4292,12 @@ function defences.custom_show(name)
     echo("  ")
     custom_link("type one", string.format("printCmdLine(%q)", cmd .. which[2] .. " "), "Type or paste the line")
     echo("\n")
+    patterns(which[1] .. 'r', which[2] .. "pattern")
   end
   if d.notondef then
     echo(string.format("  %-12s %s  ", "DEF shows:", "nothing, as DEF doesn't list it"))
     custom_link("it does", string.format("printCmdLine(%q)", cmd .. "def "), "Type or paste the line DEF shows")
+    echo("\n")
   else
     echo(string.format("  %-12s %s  ", "DEF shows:", d.def or "(no line)"))
     custom_link("pick from the screen", string.format("svo.defences.custom_capture(%q, 'def')", name), "Pick the line from what's on screen")
@@ -4201,8 +4306,9 @@ function defences.custom_show(name)
     echo("  ")
     custom_link("DEF doesn't list it", string.format("svo.defences.custom_set(%q, 'def', 'none')", name),
       "For a defence DEF doesn't show, which DEF then leaves alone")
+    echo("\n")
+    patterns('defr', "defpattern")
   end
-  echo("\n")
   -- what a copy keeps from svof's own as it is
   local extra = type(d.copy) == 'table' and type(d.copy.lines) == 'table' and d.copy.lines or {}
   local kept = 0
@@ -4282,12 +4388,28 @@ function defences.custom_set(name, field, value)
   elseif field == 'def' then
     -- none: DEF doesn't list it, so DEF leaves it alone
     if value:lower() == 'none' then
-      d.def, d.notondef = nil, true
+      d.def, d.defr, d.notondef = nil, nil, true
     else
       d.def, d.notondef = value ~= '' and value or nil, nil
     end
+  elseif field == 'gotpattern' or field == 'lostpattern' or field == 'defpattern' then
+    -- a pattern, for a line that varies, as svof's own records have
+    local key = field == 'gotpattern' and 'onr' or field == 'lostpattern' and 'offr' or 'defr'
+    if value == '' then
+      svo.echof("Which pattern matches the line that %s?", field == 'gotpattern' and ("says you gained " .. name)
+        or field == 'lostpattern' and ("says you lost " .. name) or ("DEF shows for " .. name))
+      return
+    end
+    local why = defences.pattern_problem(value)
+    if why then
+      svo.echof("Can't use %s as a pattern: %s.", value, why)
+      return
+    end
+    d[key] = line_list(d[key])
+    if not table.contains(d[key], value) then d[key][#d[key] + 1] = value end
+    if key == 'defr' then d.notondef = nil end
   else
-    svo.echof("A definition has class, skillset, command, balanceless, gmcp, got, lost and def; %s isn't one.", field)
+    svo.echof("A definition has class, skillset, command, balanceless, gmcp, got, lost, def, gotpattern, lostpattern and defpattern; %s isn't one.", field)
     return
   end
   defences.custom_show(name)
@@ -4655,13 +4777,18 @@ function defences.custom_test(name)
     or "under no skillset yet")
   svo.echof("Svof raises it by sending %q, which %s. Serverside %s.", tostring(d.command),
     d.balanceless and "takes no balance" or "takes balance", custom_serverside(name, d))
-  svo.echof("It knows it's up from %s.", #on > 0 and string.format("%d line%s", #on, #on == 1 and "" or "s")
-    .. (d.gmcp and (" and GMCP's " .. d.gmcp) or "") or ("GMCP's " .. tostring(d.gmcp)))
-  svo.echof("It knows it's gone from %s.", #off > 0 and string.format("%d line%s", #off, #off == 1 and "" or "s")
-    .. (d.gmcp and " and GMCP" or "") or (d.gmcp and "GMCP" or "nothing, until DEF"))
+  local function from(lines, patterns, gmcp)
+    local parts = {}
+    if #lines > 0 then parts[#parts + 1] = string.format("%d line%s", #lines, #lines == 1 and "" or "s") end
+    if patterns > 0 then parts[#parts + 1] = string.format("%d pattern%s", patterns, patterns == 1 and "" or "s") end
+    if gmcp then parts[#parts + 1] = gmcp end
+    return #parts > 0 and svo.concatand(parts) or "nothing, until DEF"
+  end
+  svo.echof("It knows it's up from %s.", from(on, #line_list(d.onr), d.gmcp and ("GMCP's " .. d.gmcp)))
+  svo.echof("It knows it's gone from %s.", from(off, #line_list(d.offr), d.gmcp and "GMCP"))
   if d.notondef then
     svo.echof("DEF doesn't list it, so DEF leaves it alone.")
-  elseif not d.def then
+  elseif not d.def and #line_list(d.defr) == 0 then
     svo.echof("%s", no_def_warning(name))
   end
   local problem = defences.custom_problem(name, d)
@@ -4712,7 +4839,7 @@ function defences.custom_install(name)
     end
     svo.echof("Installed %s. Add it to defup with vdefup %s, or to keepup with vkeep %s.", name, name, name)
   end
-  if not d.def and not d.notondef then svo.echof("%s", no_def_warning(name)) end
+  if not d.def and #line_list(d.defr) == 0 and not d.notondef then svo.echof("%s", no_def_warning(name)) end
   return true
 end
 
@@ -5774,8 +5901,13 @@ function defences.copy_own(name, i)
   local defs = line_list(v.def)
   d.def = table.remove(defs, 1)
   if #defs > 0 then d.copy.lines.def = defs end
+  -- svof's patterns, which the copy shows and can change, and its other
+  -- lines, kept as they are
+  for _, field in ipairs(pattern_fields) do
+    if v[field] then d[field] = line_list(v[field]) end
+  end
   for _, field in ipairs(copy_line_fields) do
-    if field ~= 'def' and v[field] then d.copy.lines[field] = line_list(v[field]) end
+    if field ~= 'def' and not kind_of[field] and v[field] then d.copy.lines[field] = line_list(v[field]) end
   end
   if had and had.skillset then
     d.skillset = had.skillset
@@ -5784,8 +5916,9 @@ function defences.copy_own(name, i)
   end
   -- a definition the player made of it: its lines join svof's
   if had and type(had.copy) ~= 'table' then
-    for _, field in ipairs({ 'on', 'off' }) do
+    for _, field in ipairs({ 'on', 'off', 'onr', 'offr', 'defr' }) do
       for _, l in ipairs(line_list(had[field])) do
+        d[field] = d[field] or {}
         if not table.contains(d[field], l) then d[field][#d[field] + 1] = l end
       end
     end

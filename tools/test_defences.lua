@@ -2584,11 +2584,20 @@ do -- a name svof has in other classes is refused, and copied instead
   eq(d.command .. " " .. d.skillset .. " " .. d.copy.from, "acrobatics on kaido jester",
     "copies: with svof's command, the definition's skillset, from Jester's")
 
-  -- svof's patterns come with a copy, as they are: a Serpent's ghost
+  -- svof's patterns come with a copy, to see and change: a Serpent's ghost
   local pattern = svo.defences.catalog().ghost[1].offr[1]
   svo.defences.copy_own("ghost", 1)
-  eq(echoed(w, "also:        1 more of Svof's own lines and patterns, kept as they are"), true,
+  eq(echoed(w, "or matches:  " .. pattern), true, "copies: the screen shows svof's loss pattern")
+  eq(svo.defences.custom_drafts.ghost.offr[1], pattern, "copies: as the copy's own")
+  -- and its other lines, kept as they are: a Druid's concealment
+  svo.defences.copy_own("concealment", 1)
+  eq(echoed(w, "more of Svof's own lines and patterns, kept as they are"), true,
     "copies: the screen says what else comes from svof's own")
+  local only = svo.defences.catalog().concealment[1].on_only[1]
+  cmd("concealment skillset kaido")
+  cmd("concealment install")
+  eq(svo.defs_data.concealment and svo.defs_data.concealment.on_only and svo.defs_data.concealment.on_only[1], only,
+    "copies: installed, its record has them")
   cmd("ghost skillset kaido")
   cmd("ghost install")
   eq(svo.defs_data.ghost and svo.defs_data.ghost.offr and svo.defs_data.ghost.offr[1], pattern,
@@ -2828,6 +2837,99 @@ do
     def = true, balanceful_act = true, action = "alertness on",
     isadvisable = function() return false end, oncompleted = function() end, onstart = function() end } })
   eq(map()["alertness on"], alertness, "adopting: a command another action has stays that action's")
+end
+
+-- ===== 19. Patterns for lines that vary =====
+
+-- A definition takes patterns next to its exact lines (the user,
+-- 2026-10-11): vcustomdef <name> gotpattern, lostpattern and defpattern,
+-- into the record's onr, offr and defr, as svof's own have. Only a pattern
+-- Mudlet's rex library reads is taken, and the clash check runs them
+-- against the class's other lines, other defences' patterns against the
+-- definition's lines, and each against the definition's own lines of
+-- another kind. Here rex is svof_world's stand-in, which reads only simple
+-- patterns; none of this proves what PCRE does in Mudlet.
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  cmd("glint command glint")
+  cmd("glint skillset kaido")
+  cmd("glint gotpattern ^You glint at (\\w+)\\.$")
+  eq(echoed(w, "Svof can't read patterns without Mudlet's rex library."), true,
+    "patterns: without rex, none is taken")
+  eq(svo.defences.custom_drafts.glint.onr, nil, "patterns: so the definition has none")
+
+  w.env.rex = world.rex_stub
+  cmd("glint gotpattern ^You glint at (\\w+\\.$")
+  eq(echoed(w, "it isn't a pattern Svof can read"), true, "patterns: one rex can't read is refused")
+  eq(svo.defences.custom_drafts.glint.onr, nil, "patterns: and isn't taken")
+  cmd("glint gotpattern ^You glint at (\\w+)\\.$")
+  local d = svo.defences.custom_drafts.glint
+  eq(d.onr and d.onr[1], "^You glint at (\\w+)\\.$", "patterns: gotpattern adds a gain pattern")
+  eq(echoed(w, "or matches:  ^You glint at (\\w+)\\.$"), true, "patterns: shown under the gain lines")
+  eq(link_of(w, "add a pattern") ~= nil, true, "patterns: with a link to add one")
+  cmd("glint test")
+  eq(echoed(w, "It knows it's up from 1 pattern."), true, "patterns: a pattern alone says it's up")
+  cmd("glint got You glint.")
+  cmd("glint lostpattern ^Your glint at (\\w+) fades\\.$")
+  cmd("glint defpattern ^You are glinting at (\\w+)\\.$")
+  eq(d.offr[1] .. " | " .. d.defr[1], "^Your glint at (\\w+) fades\\.$ | ^You are glinting at (\\w+)\\.$",
+    "patterns: lostpattern and defpattern add loss and DEF patterns")
+  w.echoes = {}
+  cmd("glint test")
+  eq(echoed(w, "It knows it's up from 1 line and 1 pattern."), true, "patterns: next to exact lines")
+  eq(echoed(w, "Without a DEF line"), false, "patterns: a DEF pattern is a DEF line")
+  cmd("glint install")
+  local rec = svo.defs_data.glint or {}
+  eq(rec.on and rec.on[1], "You glint.", "patterns: installed, the exact line is the record's")
+  eq((rec.onr or {})[1] .. " " .. (rec.offr or {})[1] .. " " .. (rec.defr or {})[1],
+    "^You glint at (\\w+)\\.$ ^Your glint at (\\w+) fades\\.$ ^You are glinting at (\\w+)\\.$",
+    "patterns: and the patterns its onr, offr and defr")
+  local regex = {}
+  for _, t in ipairs(w.triggers) do
+    if t.kind == "regex" and not t.killed and t.pattern:find("glint", 1, true) then regex[#regex + 1] = t.code end
+  end
+  table.sort(regex)
+  eq(table.concat(regex, ", "), "svo.defs.def_glint(), svo.defs.got_glint(), svo.defs.lost_glint()",
+    "patterns: each a regex trigger calling its handler")
+  w.run('svo.defences.custom_unset("glint", "offr", 1)')
+  eq(#svo.defences.custom_drafts.glint.offr, 0, "patterns: x takes one out")
+  cmd("glint def none")
+  eq(svo.defences.custom_drafts.glint.defr, nil, "patterns: def none takes the DEF patterns too")
+
+  -- the clash check
+  cmd("shimmer command shimmer on")
+  cmd("shimmer skillset kaido")
+  cmd("shimmer gotpattern ^You prick up your \\w+\\.$")
+  cmd("shimmer install")
+  eq(echoed(w, "matches Svof's alertness's line \"You prick up your ears.\""), true,
+    "patterns: one matching another defence's line is refused")
+  eq(svo.defs_data.shimmer, nil, "patterns: and not installed")
+  svo.defences.custom_drafts.shimmer.onr = nil
+  cmd("shimmer got You glint at Bob.")
+  cmd("shimmer install")
+  eq(echoed(w, "your glint's pattern \"^You glint at (\\\\w+)\\\\.$\" matches \"You glint at Bob.\""), true,
+    "patterns: a line another defence's pattern matches is refused")
+  svo.defences.custom_drafts.shimmer.on = {}
+  cmd("shimmer gotpattern ^You (\\w+) about\\.$")
+  cmd("shimmer lost You stop about.")
+  eq(svo.defences.custom_problem("shimmer", svo.defences.custom_drafts.shimmer),
+    "its gain pattern \"^You (\\\\w+) about\\\\.$\" matches its own loss line \"You stop about.\"",
+    "patterns: one matching the definition's own line of another kind is refused")
+
+  -- a pattern a file brought in, not typed
+  svo.defences.custom_drafts.shimmer = { class = "monk", skillset = "kaido", command = "shimmer on", on = {}, off = {},
+    onr = { "^You shimmer (" } }
+  local why = svo.defences.custom_problem("shimmer", svo.defences.custom_drafts.shimmer) or ""
+  eq(why:sub(1, 67), "^You shimmer ( can't be a pattern: it isn't a pattern Svof can read",
+    "patterns: one that came from a file is checked on install too")
+
+  -- a change's new line, which svof's own patterns now check too
+  cmd("treewatch got You glint at Ann.")
+  cmd("treewatch install")
+  eq(echoed(w, "change treewatch: your glint's pattern"), true,
+    "patterns: a change's new line another defence's pattern matches is refused")
 end
 
 do -- an item's defence registers after systemstart too
