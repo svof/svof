@@ -5119,9 +5119,12 @@ if not next(svo.dict) then
         return (svo.defdefup[svo.defs.mode].blind or svo.defkeepup[svo.defs.mode].blind)
       end,
       salve = {
+        -- This used to be advisable whenever scalded, because the same
+        -- epidermal to the head cured scalded. Nothing cures scalded now, so
+        -- that only stripped a blind defence svof wanted.
         isadvisable = function()
           return (affs.blindaff and not ((sys.deffing and defdefup[defs.mode].blind) or
-            (conf.keepup and defkeepup[defs.mode].blind)) or affs.scalded) or false
+            (conf.keepup and defkeepup[defs.mode].blind))) or false
         end,
   
         oncompleted = function()
@@ -9888,8 +9891,12 @@ if not next(svo.dict) then
       herb = {
         def = true,
   
+        -- No scalded test any more. It held blind back while scalded because
+        -- scalded's cure, epidermal to the head, would strip it again. Nothing
+        -- cures scalded now, so it only left a kept-up blind down for the
+        -- whole scald, up to 20 seconds.
         isadvisable = function()
-          return (not affs.scalded and
+          return (
             (not svo.haveskillset('shindo') or (defc.dragonform or (not conf.shindoblind))) and
             (not svo.haveskillset('kaido') or (defc.dragonform or (not conf.kaidoblind))) and
             ((sys.deffing and defdefup[defs.mode].blind and not defc.blind) or (conf.keepup and defkeepup[defs.mode].blind and not defc.blind)) and
