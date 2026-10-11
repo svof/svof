@@ -1173,7 +1173,7 @@ do
   eq(svo.defs_data.stoneward and svo.defs_data.stoneward.type, "malignity", "custom defences: the Infernal's under its skillset")
   eq(svo.dict.rebounding.smoke ~= nil and svo.defs_data.rebounding.type, "general",
     "custom defences: a name svof uses is refused, and svof's own rebounding stays")
-  eq(echoed(w, "Svof has its own rebounding now, so the one you defined isn't used."), true,
+  eq(echoed(w, "Svof has its own rebounding in this class, so the one you defined isn't used."), true,
     "custom defences: and says so")
 
   svo.classchange("Monk")
@@ -2129,6 +2129,50 @@ do -- vcustomdef works with customdefinitions off as svof loads, when the
   eq(ok, true, "customdef: vcustomdef lists definitions with customdefinitions off from the start")
   ok = pcall(svo.defences.customdef_command, "shimmer command shimmer")
   eq(ok, true, "customdef: and starts one")
+end
+
+do -- a definition saved in another class, where svof has its own by that
+  -- name, becomes a change to svof's own when the player says so
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function link(text)
+    for i = #w.links, 1, -1 do
+      if w.links[i]:sub(1, #text + 1) == text .. " " then return w.links[i]:sub(#text + 2) end
+    end
+  end
+  cmd("astralform class occultist")
+  cmd("astralform skillset occultism")
+  cmd("astralform command astral form")
+  cmd("astralform got You become a being of light.")
+  cmd("astralform install")
+  eq(svo.defences.custom.astralform ~= nil, true, "clash: as a Monk, a definition named astralform for Occultists is saved")
+  svo.classchange("Occultist")
+  eq(echoed(w, "Svof has its own astralform in this class, so the one you defined isn't used."), true,
+    "clash: as an Occultist, svof says its own is used")
+  eq(link("(delete it)") ~= nil, true, "clash: with a link to delete the definition")
+  if link("(make it a change to Svof's own)") then w.run(link("(make it a change to Svof's own)")) end
+  local d = svo.defences.edit_drafts.astralform or { on = {} }
+  local joined = false
+  for _, l in ipairs(d.on) do if l == "You become a being of light." then joined = true end end
+  eq(joined, true, "clash: the definition's gain line joins svof's in a change")
+  eq(#d.on > 1, true, "clash: next to svof's own lines")
+  eq(echoed(w, "Svof makes astralform's command itself, so the one you defined, astral form, isn't used."), true,
+    "clash: a command svof makes itself is said to stay")
+  w.run('svo.defences.edit_install("astralform", true)')
+  eq(w.line("You become a being of light."), 1, "clash: installed, the line is heard")
+  eq(svo.defences.custom.astralform, nil, "clash: and the definition goes")
+end
+
+do -- vshow links to vcustomdef
+  local w = world.new({ class = "Monk" })
+  w.svo.showprompt = function() end
+  w.svo.ashow()
+  local found = false
+  for _, l in ipairs(w.links) do
+    if l == "vcustomdef svo.defences.customdef_menu()" then found = true end
+  end
+  eq(found, true, "vshow: links to the defences you defined and changed")
 end
 
 do -- an item's defence registers after systemstart, and its change goes in then

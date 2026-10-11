@@ -3763,7 +3763,18 @@ signals.systemstart:connect(function ()
   end
   table.sort(names)
   for _, name in ipairs(names) do
-    if defences.custom_taken(name) then
+    if defences.custom_taken(name) and defs_data[name] then
+      -- saved in another class, where svof's own didn't show: it can
+      -- become a change to svof's own instead
+      svo.echofn("Svof has its own %s in this class, so the one you defined isn't used. ", name)
+      setUnderline(true)
+      echoLink("(make it a change to Svof's own)", string.format("svo.defences.custom_to_change(%q)", name),
+        "Put your definition's lines, command and GMCP name into a change to Svof's own " .. name, true)
+      echo(" ")
+      echoLink("(delete it)", string.format("svo.defences.custom_delete(%q)", name), "Delete your definition of " .. name, true)
+      setUnderline(false)
+      echo("\n")
+    elseif defences.custom_taken(name) then
       svo.echof("Svof has its own %s now, so the one you defined isn't used.", name)
     else
       local ok, err = pcall(defences.custom_register, name, defences.custom[name])
@@ -4867,7 +4878,7 @@ end
 -- At systemstart, before anything is made from the records: puts this
 -- class's changes into play
 function defences.edits_start()
-  defences.own, defences.edit_drafts = {}, {}
+  defences.own, defences.edit_drafts, defences.edit_converting = {}, {}, {}
   if not defences.edits then defences.edits_load() end
   if not conf.customdefinitions then return end
   for name in defs_data:iter() do defences.edit_put(name) end
@@ -5214,6 +5225,13 @@ function defences.edit_install(name, sure)
     svo.echof("Changed Svof's own %s. vcustomdef %s reset puts Svof's back.", name, name)
   end
   if drops then svo.echof("%s", no_def_warning(name)) end
+  -- a definition turned into this change goes now
+  if defences.edit_converting[name] and defences.custom and defences.custom[name] then
+    defences.custom[name] = nil
+    defences.custom_save()
+    svo.echof("Deleted your definition of %s, which this change replaces.", name)
+  end
+  defences.edit_converting[name] = nil
   return true
 end
 
@@ -5256,6 +5274,41 @@ function defences.edit_keep(name)
   end
   defences.edits_save()
   svo.echof("Kept your change to %s.", name)
+end
+
+-- Turns a definition saved in another class, whose name is svof's own
+-- defence in this one, into a change to svof's own: its lines join svof's,
+-- and its command and GMCP name are taken where a change can have them.
+-- The definition goes once the change is installed.
+defences.edit_converting = defences.edit_converting or {}
+function defences.custom_to_change(name)
+  local spec = defences.custom and defences.custom[name]
+  if not (spec and defences.is_own(name)) then return end
+  defences.edit_drafts[name] = nil
+  local d, own = edit_draft(name), own_version(name)
+  local function add(list, lines)
+    for _, l in ipairs(line_list(lines)) do
+      if not table.contains(list, l) then list[#list + 1] = l end
+    end
+  end
+  add(d.on, spec.on)
+  add(d.off, spec.off)
+  if spec.def then
+    add(d.def, spec.def)
+    d.notondef = nil
+  elseif spec.notondef then
+    d.def, d.notondef = {}, true
+  end
+  if spec.command and own.sendsaction then
+    d.command = spec.command
+  elseif spec.command and spec.command ~= own.command then
+    svo.echof("Svof makes %s's command itself, so the one you defined, %s, isn't used.", name, spec.command)
+  end
+  local mapped = spec.gmcp and svo.dict.sstosvod[spec.gmcp]
+  if spec.gmcp and not (mapped and mapped ~= name) then d.gmcp = spec.gmcp end
+  defences.edit_converting[name] = true
+  svo.echof("Your definition of %s is in a change to Svof's own now. Install it to use it, and the definition goes.", name)
+  defences.edit_show(name)
 end
 
 -- vcustomdef's list of the changes to svof's own, every class's, and the
