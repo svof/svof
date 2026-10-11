@@ -2785,6 +2785,59 @@ do -- (7) svof's own updated since it was copied, or gone from that class
     "copies: svof's own gone from that class says so")
 end
 
+-- ===== 18. Serverside's commands for defences registered after systemstart =====
+
+-- svof takes a command for its own action when the player types it or
+-- serverside sends it (sys.input_to_actions, section 7). systemstart maps
+-- the dictionary's commands before definitions, copies and items' defences
+-- register, so defences.register maps theirs, and unregister takes it out.
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local map = function() return svo.sys.input_to_actions end
+  cmd("shimmer command Shimmer On")
+  cmd("shimmer skillset kaido")
+  cmd("shimmer got You shimmer.")
+  cmd("shimmer install")
+  eq(map()["shimmer on"], svo.dict.shimmer.physical, "adopting: a definition's command, in lower case as the server's is read")
+  svo.conf.serverside = true
+  svo.curingcommand("SHIMMER ON")
+  eq(w.inflight(), "shimmer_physical", "adopting: the server's SHIMMER ON is the definition's action")
+  w.line("You shimmer.")
+  w.prompt()
+  eq(svo.defc.shimmer, true, "adopting: and its line finishes it")
+  svo.conf.serverside = false
+
+  reload(svo, "Monk")
+  eq(map()["shimmer on"], svo.dict.shimmer.physical, "adopting: mapped again as svof loads")
+  cmd("shimmer command shimmer up")
+  cmd("shimmer install")
+  eq(map()["shimmer on"], nil, "adopting: installed with a new command, the old one goes")
+  eq(map()["shimmer up"], svo.dict.shimmer.physical, "adopting: and the new one is mapped")
+  cmd("shimmer delete")
+  eq(map()["shimmer up"], nil, "adopting: deleted, its command goes")
+
+  svo.defences.copy_own("acrobatics", 1)
+  cmd("acrobatics skillset kaido")
+  cmd("acrobatics install")
+  eq(map()["acrobatics on"], svo.dict.acrobatics.physical, "adopting: a copy's command")
+
+  local alertness = map()["alertness on"]
+  svo.defences.register("nudge", { type = "general", on = "You nudge." }, { physical = {
+    def = true, balanceful_act = true, action = "alertness on",
+    isadvisable = function() return false end, oncompleted = function() end, onstart = function() end } })
+  eq(map()["alertness on"], alertness, "adopting: a command another action has stays that action's")
+end
+
+do -- an item's defence registers after systemstart too
+  local w = world.new({ class = "Infernal" })
+  local svo = w.svo
+  eq(svo.sys.input_to_actions["mindnet on"], nil, "adopting: an Infernal has no mindnet")
+  svo.defences.enablemindnet()
+  eq(svo.sys.input_to_actions["mindnet on"], svo.dict.mindnet.physical, "adopting: the phylactery's mindnet")
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end

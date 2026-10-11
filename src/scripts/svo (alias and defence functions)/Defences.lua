@@ -3534,6 +3534,18 @@ function defences.register(name, record, entry)
   -- to svof's own into play, so its change goes in here
   defences.edit_put(name)
 
+  -- svof takes its command for its own when the player types it or
+  -- serverside sends it ([Curing]: <COMMAND>), as for the defences
+  -- systemstart's map made before this one registered. One the map gives
+  -- another action stays that action's
+  local map = sys.input_to_actions
+  if map and type(svo.dict[name]) == 'table' then
+    for _, act in pairs(svo.dict[name]) do
+      local key = type(act) == 'table' and type(act.action) == 'string' and act.action:lower():match("^%s*(.-)%s*$")
+      if key and key ~= '' and not map[key] then map[key] = act end
+    end
+  end
+
   -- what systemstart restored from the saved settings, which wire resets
   local saved = {}
   for mode in pairs(defdefup) do saved[mode] = { defdefup[mode][name], defkeepup[mode] and defkeepup[mode][name] } end
@@ -3597,6 +3609,10 @@ function defences.unregister(name, keepchoices)
   if type(svo.dict[name]) == 'table' then
     for _, act in pairs(svo.dict[name]) do
       if type(act) == 'table' and act.name then svo.killaction(act) end
+      -- and its command, from the map of commands svof takes for its own
+      for key, mapped in pairs(sys.input_to_actions or {}) do
+        if mapped == act then sys.input_to_actions[key] = nil end
+      end
     end
   end
   local beforestate = sk.getbeforestateprios()
@@ -3858,7 +3874,11 @@ function defences.clash(name, parts)
     -- sends it, and the commands of the definitions registered after that
     local act = sys.input_to_actions and sys.input_to_actions[command]
     local taken = act and (act.action_name or act.name)
-    if taken and taken ~= name then return string.format("Svof already takes %q as %s's command", parts.command, taken) end
+    if taken and taken ~= name and defences.custom_registered[taken] then
+      return string.format("your %s is raised with %q too", taken, parts.command)
+    elseif taken and taken ~= name then
+      return string.format("Svof already takes %q as %s's command", parts.command, taken)
+    end
     for other in pairs(defences.custom_registered) do
       local phys = other ~= name and type(svo.dict[other]) == 'table' and svo.dict[other].physical
       if phys and type(phys.action) == 'string' and phys.action:lower() == command then
