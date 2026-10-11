@@ -3694,11 +3694,18 @@ end, 'setup def triggers on system start')
 --                Only a name the game confirms is taken (the user,
 --                2026-10-10): with a wrong one, svof would leave the
 --                defence to serverside, which couldn't raise it either
+--   copy         for a copy of svof's own defence from another class:
+--                from, a class it was copied from; was, svof's version
+--                then, to say when svof has updated it since; lines, the
+--                other lines svof watches for, which a copy keeps as they
+--                are
 -- A name svof already uses is refused (vcustomdef with the name of one of
--- svof's own defences changes that instead, further down), and a
--- definition that fails to register is reported and skipped. vconfig
--- customdefinitions off loads none, for a definition that has broken
--- curing.
+-- svof's own defences changes that instead, further down), and so is one
+-- svof has in another class (defences.catalog), which can be copied in
+-- instead. A definition that clashes with this class's defences
+-- (defences.clash), or fails to register, is reported and skipped.
+-- vconfig customdefinitions off loads none, for a definition that has
+-- broken curing.
 local custom_path = getMudletHomeDir() .. "/svo/custom/defs"
 
 function defences.custom_load()
@@ -3732,6 +3739,152 @@ function defences.custom_applies(spec)
   return spec.class == 'all' or (type(spec.class) == 'string' and spec.class:lower() == tostring(me.class):lower())
 end
 
+-- a record's line or lines, as a new list
+local function line_list(v)
+  if type(v) == 'string' then return { v } end
+  local t = {}
+  if type(v) == 'table' then
+    for i, l in ipairs(v) do t[i] = l end
+  end
+  return t
+end
+
+-- Svof's own defences that only some classes have, with each class's
+-- version: tools/defence_catalog.lua writes them, from every class, to
+-- defence_catalog.lua in Svof's folder. Svof builds only the class it
+-- loads, so this is how it knows a name is its own in another class. A
+-- definition can't take such a name, and Svof's own can be copied in
+-- instead (the user, 2026-10-10), for a class Svof's list is out of date
+-- for, or a defence an artefact gives every class. Read once, when first
+-- needed.
+local catalog
+function defences.catalog()
+  if catalog then return catalog end
+  catalog = {}
+  local path = defences.catalog_file or (svo.installationfolder() .. "/defence_catalog.lua")
+  local f = io.open(path, "r")
+  if not f then return catalog end
+  local text = f:read("*a")
+  f:close()
+  local chunk, err
+  if setfenv then
+    chunk, err = loadstring(text, "=defence_catalog")
+    if chunk then setfenv(chunk, {}) end
+  else
+    chunk, err = load(text, "=defence_catalog", "t", {})
+  end
+  local ok, t = false, err
+  if chunk then ok, t = pcall(chunk) end
+  if ok and type(t) == 'table' then
+    catalog = t
+  else
+    svo.echof("<250,0,0>Couldn't%s read Svof's list of every class's defences, in %s: %s", svo.getDefaultColor(),
+      path, tostring(t))
+  end
+  return catalog
+end
+
+-- the versions of Svof's own name in the classes that have it, when this
+-- class doesn't have Svof's own, or nil
+function defences.own_elsewhere(name)
+  if defs_data[name] and not defences.custom_registered[name] then return nil end
+  return defences.catalog()[name]
+end
+
+-- the classes versions of a defence are for, as the game writes them
+local function class_names(versions)
+  local t, seen = {}, {}
+  for _, v in ipairs(versions) do
+    for _, c in ipairs(v.classes or {}) do
+      local title = c:gsub("(%a)(%a*)", function (a, b) return a:upper() .. b end)
+      if not seen[title] then
+        seen[title] = true
+        t[#t + 1] = title
+      end
+    end
+  end
+  return svo.concatand(t)
+end
+
+-- whose a defence in this class is, for saying what a clash is with
+local function whose(name)
+  return (defences.custom_registered[name] and "your " or "Svof's ") .. name
+end
+
+-- the record fields that hold exact lines
+local exact_fields = { 'on', 'off', 'def', 'on_only', 'on_free', 'off_free' }
+
+-- Why a defence's lines, GMCP name or command clash with what this class
+-- already has, or nil. A clash makes the game's word on one defence count
+-- for another as well, so nothing that clashes goes into play (the user,
+-- 2026-10-10). parts holds lines, every exact line the defence watches
+-- for; subs, the part-lines it watches for (a record's offs); gmcp and
+-- command. Lines another defence watches for with a pattern can't be
+-- checked here.
+function defences.clash(name, parts)
+  local gmcp = parts.gmcp
+  if gmcp then
+    local mapped = svo.dict.sstosvod[gmcp]
+    -- a registered definition's is mapped too. Saved ones that aren't
+    -- aren't counted: as svof loads, two that share a name would each
+    -- refuse the other, where this lets the first in
+    if type(mapped) == 'string' and mapped ~= name then
+      return string.format("GMCP's %s is already %s", gmcp, whose(mapped))
+    end
+  end
+  local lines, subs = parts.lines or {}, parts.subs or {}
+  for other, rec in defs_data:iter() do
+    if other ~= name then
+      for _, field in ipairs(exact_fields) do
+        for _, theirs in ipairs(line_list(rec[field])) do
+          for _, line in ipairs(lines) do
+            if line == theirs then return string.format("%s already watches for %q", whose(other), line) end
+          end
+          for _, sub in ipairs(subs) do
+            if theirs:find(sub, 1, true) then return string.format("%s's line %q has %q in it", whose(other), theirs, sub) end
+          end
+        end
+      end
+      for _, sub in ipairs(line_list(rec.offs)) do
+        for _, line in ipairs(lines) do
+          if line:find(sub, 1, true) then return string.format("%s already watches for lines with %q in them", whose(other), sub) end
+        end
+      end
+    end
+  end
+  local command = parts.command and parts.command:lower():match("^%s*(.-)%s*$")
+  if command and command ~= '' then
+    -- what svof takes a command for when the player types it or serverside
+    -- sends it, and the commands of the definitions registered after that
+    local act = sys.input_to_actions and sys.input_to_actions[command]
+    local taken = act and (act.action_name or act.name)
+    if taken and taken ~= name then return string.format("Svof already takes %q as %s's command", parts.command, taken) end
+    for other in pairs(defences.custom_registered) do
+      local phys = other ~= name and type(svo.dict[other]) == 'table' and svo.dict[other].physical
+      if phys and type(phys.action) == 'string' and phys.action:lower() == command then
+        return string.format("your %s is raised with %q too", other, parts.command)
+      end
+    end
+  end
+end
+
+-- the lines a copy of Svof's own carries besides the ones a definition
+-- has, which come from Svof and can't be changed
+local copy_line_fields = { 'def', 'onr', 'offr', 'defr', 'on_only', 'on_free', 'off_free', 'offs' }
+
+-- what a definition watches for and sends, for defences.clash
+local function custom_parts(spec)
+  local lines = {}
+  for _, l in ipairs(line_list(spec.on)) do lines[#lines + 1] = l end
+  for _, l in ipairs(line_list(spec.off)) do lines[#lines + 1] = l end
+  if type(spec.def) == 'string' then lines[#lines + 1] = spec.def end
+  local extra = type(spec.copy) == 'table' and type(spec.copy.lines) == 'table' and spec.copy.lines or {}
+  for _, field in ipairs({ 'def', 'on_only', 'on_free', 'off_free' }) do
+    for _, l in ipairs(line_list(extra[field])) do lines[#lines + 1] = l end
+  end
+  return { lines = lines, subs = line_list(extra.offs), gmcp = spec.gmcp, command = spec.command }
+end
+
 function defences.custom_register(name, spec)
   if type(spec.command) ~= 'string' or spec.command == '' then error("it has no command to raise it", 0) end
   if spec.gmcp then
@@ -3746,8 +3899,20 @@ function defences.custom_register(name, spec)
     svo.dict.svotossd[name] = spec.gmcp
   end
   -- a definition saved without a skillset has a group of its own
-  defences.register(name, { type = spec.class == 'all' and 'general' or spec.skillset or 'custom',
-    on = spec.on, off = spec.off, def = spec.def, invisibledef = spec.notondef or nil })
+  local record = { type = spec.class == 'all' and 'general' or spec.skillset or 'custom',
+    on = spec.on, off = spec.off, def = spec.def, invisibledef = spec.notondef or nil }
+  -- a copy of Svof's own keeps the other lines Svof watches for
+  local extra = type(spec.copy) == 'table' and type(spec.copy.lines) == 'table' and spec.copy.lines or {}
+  for _, field in ipairs(copy_line_fields) do
+    local l = line_list(extra[field])
+    if field == 'def' and #l > 0 then
+      if type(spec.def) == 'string' then table.insert(l, 1, spec.def) end
+      record.def = l
+    elseif #l > 0 then
+      record[field] = l
+    end
+  end
+  defences.register(name, record)
   defences.custom_registered[name] = true
 end
 
@@ -3763,7 +3928,17 @@ signals.systemstart:connect(function ()
   end
   table.sort(names)
   for _, name in ipairs(names) do
-    if defences.custom_taken(name) and defs_data[name] then
+    local copy = type(defences.custom[name].copy) == 'table'
+    if copy and defs_data[name] and defences.custom[name].class == 'all' then
+      -- a copy for every class isn't needed in a class with Svof's own,
+      -- which is used instead
+    elseif copy and defs_data[name] then
+      svo.echofn("Svof has its own %s in this class now, so your copy of it isn't used. ", name)
+      setUnderline(true)
+      echoLink("(delete it)", string.format("svo.defences.custom_delete(%q)", name), "Delete your copy of " .. name, true)
+      setUnderline(false)
+      echo("\n")
+    elseif defences.custom_taken(name) and defs_data[name] then
       -- saved in another class, where svof's own didn't show: it can
       -- become a change to svof's own instead
       svo.echofn("Svof has its own %s in this class, so the one you defined isn't used. ", name)
@@ -3777,9 +3952,15 @@ signals.systemstart:connect(function ()
     elseif defences.custom_taken(name) then
       svo.echof("Svof has its own %s now, so the one you defined isn't used.", name)
     else
-      local ok, err = pcall(defences.custom_register, name, defences.custom[name])
+      -- one that clashes with this class's defences, which a class change
+      -- or an update to Svof can bring, stays out
+      local clash = defences.clash(name, custom_parts(defences.custom[name]))
+      local ok, err = clash == nil, clash
+      if ok then ok, err = pcall(defences.custom_register, name, defences.custom[name]) end
       if not ok then
         svo.echof("<250,0,0>Couldn't%s add the defence %s you defined: %s", svo.getDefaultColor(), name, tostring(err))
+      elseif copy then
+        defences.copy_check(name)
       end
     end
   end
@@ -3802,6 +3983,7 @@ end, 'register the defences the player defined')
 --   vcustomdef <name> delete         take it out
 --   vcustomdef <svof's name> ...     the same, changing svof's own defence
 --   vcustomdef <svof's name> reset   put svof's own back
+--   vcustomdef <name> copy           copy svof's own from another class
 --   vcustomdef export [file], import <file>
 -- Changes go to a draft, kept until Svof reloads; only install changes play.
 defences.custom_drafts = defences.custom_drafts or {}
@@ -3838,6 +4020,15 @@ function defences.custom_problem(name, spec)
   if not name:find("^%l[%l%d]*$") then return "a name is lower-case letters and digits, starting with a letter" end
   if custom_reserved[name] then return name .. " is a command here, not a name" end
   if defences.custom_taken(name) then return "Svof already has " .. name end
+  local versions = defences.catalog()[name]
+  if versions and type(spec.copy) ~= 'table' then
+    return string.format("Svof has its own %s for %s, so use vcustomdef %s copy to copy it in instead", name,
+      class_names(versions), name)
+  end
+  if type(spec.copy) == 'table' then
+    local why = defences.copy_problem(name, spec)
+    if why then return why end
+  end
   if spec.class ~= 'all' and not (type(spec.class) == 'string' and svo.knownskills[spec.class:lower()]) then
     return "its class isn't one Svof knows"
   end
@@ -3850,8 +4041,8 @@ function defences.custom_problem(name, spec)
     local why = skillset_problem(spec.skillset)
     if why then return why end
   end
-  local mapped = spec.gmcp and svo.dict.sstosvod[spec.gmcp]
-  if mapped and mapped ~= name then return "GMCP's " .. spec.gmcp .. " is already Svof's " .. mapped end
+  -- its lines, GMCP name and command against the class's other defences
+  return defences.clash(name, custom_parts(spec))
 end
 
 -- the draft of name, started from the installed one or new; nil and why
@@ -3867,6 +4058,11 @@ local function custom_draft(name)
     end
     if custom_reserved[name] then return nil, name .. " is a command here, not a name" end
     if defences.custom_taken(name) then return nil, "Svof already has a defence or action called " .. name end
+    local versions = defences.catalog()[name]
+    if versions then
+      return nil, string.format("Svof has its own %s for %s. vcustomdef %s copy copies it in instead", name,
+        class_names(versions), name)
+    end
     d = { class = tostring(me.class):lower(), on = {}, off = {} }
     defences.custom_drafts[name] = d
     -- if the game knows it by this name, its lines come from the game
@@ -3909,13 +4105,29 @@ end
 function defences.custom_show(name)
   -- one of svof's own is changed rather than defined
   if defences.is_own(name) then return defences.edit_show(name) end
+  -- and one svof has in other classes is copied in
+  if not (defences.custom[name] or defences.custom_drafts[name]) and defences.catalog()[name] then
+    return defences.copy_offer(name)
+  end
   local d, why = custom_draft(name)
   if not d then
     svo.echof("<250,0,0>Can't%s define %s: %s.", svo.getDefaultColor(), name, why)
     return
   end
   local installed = defences.custom[name]
-  svo.echof("%s, a defence you %s:", name, installed and "defined" or "are defining (not installed)")
+  if type(d.copy) == 'table' then
+    svo.echof("%s, a copy of Svof's own from %s%s:", name, class_names({ { classes = { tostring(d.copy.from) } } }),
+      installed and "" or " (not installed)")
+  else
+    svo.echof("%s, a defence you %s:", name, installed and "defined" or "are defining (not installed)")
+    -- one defined before Svof had it in another class
+    if defences.catalog()[name] then
+      svo.echofn("Svof has its own %s for %s now. ", name, class_names(defences.catalog()[name]))
+      custom_link("(use Svof's own instead)", string.format("svo.defences.copy_offer(%q)", name),
+        "Copy Svof's own " .. name .. ", with your lines")
+      echo("\n")
+    end
+  end
   local cmd = "vcustomdef " .. name .. " "
   local function row(label, value, field)
     echo(string.format("  %-12s %s  ", label, value))
@@ -3970,7 +4182,15 @@ function defences.custom_show(name)
     custom_link("DEF doesn't list it", string.format("svo.defences.custom_set(%q, 'def', 'none')", name),
       "For a defence DEF doesn't show, which DEF then leaves alone")
   end
-  echo("\n  ")
+  echo("\n")
+  -- what a copy keeps from svof's own as it is
+  local extra = type(d.copy) == 'table' and type(d.copy.lines) == 'table' and d.copy.lines or {}
+  local kept = 0
+  for _, field in ipairs(copy_line_fields) do kept = kept + #line_list(extra[field]) end
+  if kept > 0 then
+    echo(string.format("  %-12s %d more of Svof's own lines and patterns, kept as they are\n", "also:", kept))
+  end
+  echo("  ")
   custom_link("get its lines from the game", string.format("svo.defences.custom_fetch(%q, %q)", name, d.gmcp or name),
     "Ask the game with DEFENCE SHOW")
   echo("  ")
@@ -4601,7 +4821,8 @@ function defences.customdef_menu()
         or "installed, for another class"
       echo("  ")
       custom_link(name, string.format("svo.defences.custom_show(%q)", name), "See or change " .. name)
-      echo(string.format(": %s, %s  ", spec.class == 'all' and "every class"
+      echo(string.format(": %s%s, %s  ", type(spec.copy) == 'table' and "Svof's own, copied, for " or "",
+        spec.class == 'all' and "every class"
         or tostring(spec.class) .. (spec.skillset and (" (" .. spec.skillset .. ")") or ""), state))
       custom_link("test", string.format("svo.defences.custom_test(%q)", name), "Say what it would do")
       echo("  ")
@@ -4633,6 +4854,7 @@ function defences.customdef_command(rest)
   if verb == 'test' then return defences.custom_test(name) end
   if verb == 'install' then return defences.custom_install(name) end
   if verb == 'delete' then return defences.custom_delete(name) end
+  if verb == 'copy' then return defences.copy_offer(name) end
   if verb == 'reset' then
     if defences.is_own(name) then return defences.edit_reset(name) end
     svo.echof("reset puts back a defence of Svof's own that you changed, and %s isn't one. delete takes out one you defined.", name)
@@ -4688,16 +4910,6 @@ end
 function defences.edits_save()
   svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/custom")
   svo.tablesave(edits_path, defences.edits)
-end
-
--- a record's line or lines, as a new list
-local function line_list(v)
-  if type(v) == 'string' then return { v } end
-  local t = {}
-  if type(v) == 'table' then
-    for i, l in ipairs(v) do t[i] = l end
-  end
-  return t
 end
 
 -- whether two parts of a defence are the same: lines in any order, and no
@@ -4853,12 +5065,37 @@ local function edit_moved(name, edit)
   return moved
 end
 
+-- what a change adds to svof's own name, for defences.clash: the lines
+-- svof's own doesn't have, and a command svof's own doesn't send. Its GMCP
+-- name is checked where it's set
+local function edit_parts(name, edit)
+  local own, lines = own_version(name), {}
+  for _, field in ipairs({ 'on', 'off', 'def' }) do
+    for _, l in ipairs(line_list(edit[field])) do
+      if not table.contains(own[field], l) then lines[#lines + 1] = l end
+    end
+  end
+  local command = own.sendsaction and edit.command ~= own.command and edit.command or nil
+  return { lines = lines, command = command }
+end
+
 -- Puts this class's change to svof's own name into play, as svof loads or
 -- registers the defence, saying if svof's own has changed since
 function defences.edit_put(name)
   if not conf.customdefinitions or not defences.edits then return end
   local edit = edit_of(name)
   if not edit or defences.own[name] then return end
+  -- one that clashes with this class's other defences, which a class
+  -- change or an update to Svof can bring, stays out
+  local clash = defences.clash(name, edit_parts(name, edit))
+  if clash then
+    svo.echofn("<250,0,0>Didn't%s use your change to Svof's own %s: %s. ", svo.getDefaultColor(), name, clash)
+    setUnderline(true)
+    echoLink("(see it)", string.format("svo.defences.custom_show(%q)", name), "See your change next to Svof's own", true)
+    setUnderline(false)
+    echo("\n")
+    return
+  end
   local moved = edit_moved(name, edit)
   edit_apply(name, edit)
   if #moved == 0 then return end
@@ -4942,6 +5179,7 @@ local function edit_problem(name, d)
   if #d.on == 0 and #own.on > 0 and not defs_data[name].onr and not d.gmcp then
     return "it needs a line saying you gained it, or its GMCP name, or Svof can't tell when it's up"
   end
+  return defences.clash(name, edit_parts(name, d))
 end
 
 -- what svof does with a defence that lies elsewhere, outside its record and
@@ -5378,6 +5616,202 @@ function defences.edits_import(changes, path)
     end
   end
   defences.edits_save()
+end
+
+-- Copies of svof's own defences from other classes (the user, 2026-10-10):
+-- for a defence the game gave a class svof's list is out of date for, or
+-- one an artefact gives every class, as the phylactery's mindnet does. A
+-- copy is a definition (copy, in the definition's table) started from
+-- svof's own version in another class, defences.catalog: its lines, DEF
+-- line, GMCP name, command and balance, and its other lines and patterns
+-- kept as they are. Only a defence svof raises by sending its command and
+-- tracks by its lines can be copied: svof's other rules for it, such as
+-- the defences it can't be up with, don't come with a copy. Artefact
+-- versions so far have the GMCP name of the class's (the user,
+-- 2026-10-10).
+local copy_rules = {
+  tracked = "Svof only tracks it there, it doesn't raise it",
+  own_code = "Svof's action for it there does more than send its command",
+  ongot = "gaining it changes your other defences or afflictions",
+  onlost = "losing it changes your other defences or afflictions",
+  onenable = "it can't be up with some of your other defences",
+  specialskip = "Svof holds off raising it at times",
+  ondef = "Svof reads what its DEF line says",
+  handlers = "Svof handles its lines with code of its own",
+  wait = "Svof waits for it after its command",
+}
+local item_configs = { mindnet = 'havemindnet', lifevision = 'havelifevision', shroud = 'haveshroud' }
+
+-- why svof's own version v of name can't be copied, or nil
+local function copy_refusal(name, v)
+  if item_configs[name] then
+    return string.format("it comes with an item, and vconfig %s adds Svof's own for that", item_configs[name])
+  end
+  local why = {}
+  for _, rule in ipairs(v.rules or {}) do
+    if rule == 'balances' then
+      why[#why + 1] = "Svof raises it with " .. svo.concatand(v.raisedwith or {}) .. ", not a command"
+    elseif rule == 'counted' then
+      why[#why + 1] = string.format("Svof counts it with your other %s defences", tostring(v.counted))
+    elseif copy_rules[rule] then
+      why[#why + 1] = copy_rules[rule]
+    else
+      why[#why + 1] = "Svof does more with it than a copy can carry"
+    end
+  end
+  if defences.prompt_decides[name] then
+    why[#why + 1] = "Svof decides on each prompt whether it's a defence or an affliction"
+  end
+  if outside_rules[name] then why[#why + 1] = "Svof keeps " .. outside_rules[name] end
+  if #why == 0 and type(v.command) ~= 'string' then why[#why + 1] = "Svof has no command for it" end
+  if #why > 0 then return svo.concatand(why) end
+end
+
+-- the version of name from class, or nil, and its place in the list
+local function version_from(name, class)
+  for i, v in ipairs(defences.catalog()[name] or {}) do
+    for _, c in ipairs(v.classes or {}) do
+      if c == class then return v, i end
+    end
+  end
+end
+
+-- why a copy can't be installed, or nil: svof's own in the class it came
+-- from has to be one a copy can carry
+function defences.copy_problem(name, spec)
+  local v = version_from(name, spec.copy.from)
+  if not v then return string.format("Svof doesn't have %s for %s, which it was copied from", name, tostring(spec.copy.from)) end
+  local why = copy_refusal(name, v)
+  if why then return "it can't be copied: " .. why end
+end
+
+-- svof's own version v, as a copy keeps it to tell when it changes
+local copy_fields = { 'type', 'command', 'balanceless', 'gmcp', 'notondef', 'on', 'off', 'def', 'onr', 'offr',
+  'defr', 'on_only', 'on_free', 'off_free', 'offs' }
+local function copy_was(v)
+  local was = {}
+  for _, field in ipairs(copy_fields) do
+    if type(v[field]) == 'table' then was[field] = line_list(v[field]) else was[field] = v[field] end
+  end
+  return was
+end
+
+local function copy_same(a, b)
+  for _, field in ipairs(copy_fields) do
+    if not same(a[field], b[field]) then return false end
+  end
+  return true
+end
+
+-- vcustomdef <name> copy: svof's own versions of name in other classes,
+-- each a link to copy it
+function defences.copy_offer(name)
+  if defences.is_own(name) then
+    svo.echof("Svof has its own %s in this class, so there's nothing to copy. vcustomdef %s changes it.", name, name)
+    return
+  end
+  local versions = defences.catalog()[name]
+  if not versions then
+    svo.echof("Svof doesn't have a defence called %s in any class, so define it with vcustomdef %s.", name, name)
+    return
+  end
+  svo.echof("Svof has its own %s for %s, so it can't be defined again. If you have it as %s too, or from an artefact, copy Svof's own:",
+    name, class_names(versions), tostring(me.class))
+  for i, v in ipairs(versions) do
+    echo(string.format("  for %s: %s  ", class_names({ v }),
+      type(v.command) == 'string' and string.format("raised with %q", v.command) or "not raised by a command"))
+    local why = copy_refusal(name, v)
+    if why then
+      echo("can't be copied: " .. why .. "\n")
+    else
+      custom_link("copy it", string.format("svo.defences.copy_own(%q, %d)", name, i),
+        "Copy Svof's own " .. name .. " for " .. class_names({ v }))
+      echo("\n")
+    end
+  end
+end
+
+-- Starts a copy of svof's own name, the ith version: into the definition
+-- of name if there is one, keeping its class and skillset, and the lines
+-- one the player defined had
+function defences.copy_own(name, i)
+  local versions = defences.catalog()[name]
+  local v = versions and versions[tonumber(i) or 1]
+  if not v or defences.is_own(name) then
+    svo.echof("Svof doesn't have %s in another class to copy.", name)
+    return
+  end
+  local why = copy_refusal(name, v)
+  if why then
+    svo.echof("Can't copy Svof's own %s: %s.", name, why)
+    return
+  end
+  local had = defences.custom_drafts[name] or defences.custom[name]
+  local d = { class = had and had.class or tostring(me.class):lower(), command = v.command,
+    balanceless = v.balanceless, gmcp = v.gmcp, notondef = v.notondef,
+    on = line_list(v.on), off = line_list(v.off),
+    copy = { from = v.classes[1], was = copy_was(v), lines = {} } }
+  local defs = line_list(v.def)
+  d.def = table.remove(defs, 1)
+  if #defs > 0 then d.copy.lines.def = defs end
+  for _, field in ipairs(copy_line_fields) do
+    if field ~= 'def' and v[field] then d.copy.lines[field] = line_list(v[field]) end
+  end
+  if had and had.skillset then
+    d.skillset = had.skillset
+  elseif d.class ~= 'all' and table.contains(svo.knownskills[d.class] or {}, v.type) then
+    d.skillset = v.type
+  end
+  -- a definition the player made of it: its lines join svof's
+  if had and type(had.copy) ~= 'table' then
+    for _, field in ipairs({ 'on', 'off' }) do
+      for _, l in ipairs(line_list(had[field])) do
+        if not table.contains(d[field], l) then d[field][#d[field] + 1] = l end
+      end
+    end
+    if not d.def and had.def then d.def = had.def end
+  end
+  if had then class_chosen[name] = true end
+  defences.custom_drafts[name] = d
+  svo.echof("Copied Svof's own %s for %s. Check it, and install it to use it.", name, class_names({ v }))
+  defences.custom_show(name)
+end
+
+-- After a copy registers as svof loads: says if svof's own has changed
+-- since it was copied, or isn't in that class any more
+function defences.copy_check(name)
+  local spec = defences.custom[name]
+  local v, i = version_from(name, spec.copy.from)
+  local function link(text, code, hint)
+    setUnderline(true)
+    echoLink(text, code, hint, true)
+    setUnderline(false)
+  end
+  if not v then
+    svo.echofn("Svof doesn't have %s for %s any more. Your copy of it is still in use. ", name,
+      class_names({ { classes = { tostring(spec.copy.from) } } }))
+    link("(delete it)", string.format("svo.defences.custom_delete(%q)", name), "Delete your copy of " .. name)
+    echo("\n")
+    return
+  end
+  if copy_same(spec.copy.was or {}, v) then return end
+  svo.echofn("Svof has updated its own %s since you copied it. Your copy is still in use: ", name)
+  link("see Svof's", string.format("svo.defences.copy_offer(%q)", name), "See Svof's own " .. name)
+  echo(", ")
+  link("copy it again", string.format("svo.defences.copy_own(%q, %d)", name, i), "Copy Svof's own again, to install")
+  echo(", ")
+  link("keep yours", string.format("svo.defences.copy_keep(%q)", name), "Keep your copy, and stop saying so")
+  echo("\n")
+end
+
+-- keeps a copy after svof updated its own, and stops saying so
+function defences.copy_keep(name)
+  local spec = defences.custom[name]
+  local v = spec and type(spec.copy) == 'table' and version_from(name, spec.copy.from)
+  if not v then return end
+  spec.copy.was = copy_was(v)
+  defences.custom_save()
+  svo.echof("Kept your copy of %s.", name)
 end
 
 -- customize for gag

@@ -318,6 +318,9 @@ function world.new(opts)
   env.io = extend(io, {
     open = function(path, mode)
       if mode and mode:find("[wa+]") then return refuse("write")(path) end
+      -- svof's own files, which muddler copies from src/resources to the
+      -- package root, and Mudlet unpacks to svo.installationfolder()
+      if type(path) == "string" and path:sub(1, 7) == "./svof/" then path = "src/resources/" .. path:sub(8) end
       return io.open(path, mode)
     end,
     -- io.write goes to whatever io.output last chose, and svof only ever

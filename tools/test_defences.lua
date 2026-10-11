@@ -1331,19 +1331,19 @@ do
   eq(custom.custom_drafts.glow and custom.custom_drafts.glow.on[1], "You begin to glow.", "customdef: clicking one adds it")
 
   -- another class's, whose skillset doesn't carry over
-  cmd("stoneskin skillset kaido")
-  cmd("stoneskin class Infernal")
-  eq(custom.custom_drafts.stoneskin and custom.custom_drafts.stoneskin.skillset, nil,
+  cmd("ironhide skillset kaido")
+  cmd("ironhide class Infernal")
+  eq(custom.custom_drafts.ironhide and custom.custom_drafts.ironhide.skillset, nil,
     "customdef: a Monk's skillset is dropped when the class changes to Infernal")
-  cmd("stoneskin skillset oppression")
-  cmd("stoneskin command stoneskin")
-  cmd("stoneskin got Your skin turns to stone.")
-  cmd("stoneskin install")
-  eq(echoed(w, "Saved stoneskin. It's for infernal, so Svof adds it when you're one."), true,
+  cmd("ironhide skillset oppression")
+  cmd("ironhide command ironhide")
+  cmd("ironhide got Your skin turns to iron.")
+  cmd("ironhide install")
+  eq(echoed(w, "Saved ironhide. It's for infernal, so Svof adds it when you're one."), true,
     "customdef: one for another class is saved, not added")
-  eq(svo.defs_data.stoneskin, nil, "customdef: as a Monk it isn't registered")
+  eq(svo.defs_data.ironhide, nil, "customdef: as a Monk it isn't registered")
   svo.classchange("Infernal")
-  eq(svo.defs_data.stoneskin and svo.defs_data.stoneskin.type, "oppression", "customdef: as an Infernal it is, under Oppression")
+  eq(svo.defs_data.ironhide and svo.defs_data.ironhide.type, "oppression", "customdef: as an Infernal it is, under Oppression")
   eq(svo.defs_data.shimmer, nil, "customdef: and the Monk's isn't")
   svo.classchange("Monk")
   eq(svo.dict.shimmer and svo.dict.shimmer.physical.action, "shimmer up", "customdef: back as a Monk, shimmer is")
@@ -2132,7 +2132,8 @@ do -- vcustomdef works with customdefinitions off as svof loads, when the
 end
 
 do -- a definition saved in another class, where svof has its own by that
-  -- name, becomes a change to svof's own when the player says so
+  -- name, becomes a change to svof's own when the player says so. One
+  -- can't be made now (section 17), so this is one saved before
   local w = world.new({ class = "Monk" })
   local svo = w.svo
   local cmd = svo.defences.customdef_command
@@ -2141,11 +2142,11 @@ do -- a definition saved in another class, where svof has its own by that
       if w.links[i]:sub(1, #text + 1) == text .. " " then return w.links[i]:sub(#text + 2) end
     end
   end
-  cmd("astralform class occultist")
-  cmd("astralform skillset occultism")
   cmd("astralform command astral form")
-  cmd("astralform got You become a being of light.")
-  cmd("astralform install")
+  eq(echoed(w, "define astralform: Svof has its own astralform for Occultist. vcustomdef astralform copy copies it in instead."), true,
+    "clash: as a Monk, astralform, an Occultist's, can't be defined now")
+  svo.defences.custom.astralform = { class = "occultist", skillset = "occultism", command = "astral form",
+    on = { "You become a being of light." }, off = {} }
   eq(svo.defences.custom.astralform ~= nil, true, "clash: as a Monk, a definition named astralform for Occultists is saved")
   svo.classchange("Occultist")
   eq(echoed(w, "Svof has its own astralform in this class, so the one you defined isn't used."), true,
@@ -2495,6 +2496,293 @@ do -- import checks a file's GMCP names against DEFENCE LIST, which then answers
   cmd("shimmer gmcp nosuch")
   eq(#w.sent, sent, "GMCP names: after a whole DEFENCE LIST, a name it doesn't have is refused without asking")
   eq(echoed(w, "The game has no defence called nosuch over GMCP"), true, "GMCP names: as svof says")
+end
+
+-- ===== 17. Svof's own defences in other classes, and clashes =====
+
+-- svof builds only the class it loads, so src/resources/defence_catalog.lua
+-- (tools/defence_catalog.lua) holds every class's version of the defences
+-- only some classes have. A definition can't take one of those names, and
+-- svof's own can be copied in instead, for a class svof's list is out of
+-- date for or an artefact (the user, 2026-10-10). Nothing that clashes with
+-- the class's other defences goes into play: not a copy, a definition or a
+-- change, when it's installed or as svof loads.
+
+-- the code a link runs, the latest with this text
+local function link_of(w, text)
+  for i = #w.links, 1, -1 do
+    if w.links[i]:sub(1, #text + 1) == text .. " " then return w.links[i]:sub(#text + 2) end
+  end
+end
+
+-- loads svof again as class, as logging in does: a class change to the
+-- class svof already has does nothing
+local function reload(svo, class)
+  svo.classchange("None")
+  svo.classchange(class)
+end
+
+do -- the catalog is the defences some classes have and others don't
+  local w = world.new({ class = "Monk" })
+  local listed = {}
+  for name in pairs(w.svo.defences.catalog()) do listed[name] = true end
+  local expected = {}
+  for name in pairs(union) do if not everywhere[name] then expected[name] = true end end
+  eq(sorted_keys(listed), sorted_keys(expected), "copies: the catalog lists every defence only some classes have")
+  local v = w.svo.defences.catalog().acrobatics[1]
+  eq(v.classes[1] .. " " .. v.command .. " " .. v.gmcp, "bard acrobatics on acrobatics",
+    "copies: with each class's version: Bard's acrobatics")
+end
+
+do -- a name svof has in other classes is refused, and copied instead
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local sent = #w.sent
+  cmd("acrobatics")
+  eq(echoed(w, "Svof has its own acrobatics for Bard and Jester, so it can't be defined again."), true,
+    "copies: vcustomdef with a name svof has in other classes says so")
+  eq(#w.sent, sent, "copies: and doesn't ask the game about a new definition")
+  eq(link_of(w, "copy it"), 'svo.defences.copy_own("acrobatics", 2)', "copies: with a link to copy each class's version")
+  cmd("acrobatics command acrobatics on")
+  eq(echoed(w, "define acrobatics: Svof has its own acrobatics for Bard and Jester. vcustomdef acrobatics copy copies it in instead."),
+    true, "copies: a definition of it is refused")
+  eq(svo.defences.custom_drafts.acrobatics, nil, "copies: and none is started")
+  svo.defences.custom_drafts.acrobatics = { class = "monk", skillset = "kaido", command = "acrobatics on", on = { "x" }, off = {} }
+  cmd("acrobatics install")
+  eq(echoed(w, "install acrobatics: Svof has its own acrobatics for Bard and Jester, so use vcustomdef acrobatics copy"),
+    true, "copies: and can't be installed")
+  eq(svo.defs_data.acrobatics, nil, "copies: so isn't")
+  svo.defences.custom_drafts.acrobatics = nil
+
+  svo.defences.copy_own("acrobatics", 1)
+  local d = svo.defences.custom_drafts.acrobatics or { on = {} }
+  eq(d.command .. " " .. d.gmcp .. " " .. tostring(d.copy and d.copy.from), "acrobatics on acrobatics bard",
+    "copies: a copy takes svof's command and GMCP name, from Bard's")
+  eq(#d.on .. " " .. tostring(d.def), "2 You are bouncing around acrobatically.", "copies: and its lines")
+  eq(d.skillset, nil, "copies: a Monk has no Swashbuckling, so the skillset is left to pick")
+  eq(echoed(w, "acrobatics, a copy of Svof's own from Bard (not installed):"), true, "copies: and shown as a copy")
+  cmd("acrobatics skillset kaido")
+  cmd("acrobatics install")
+  eq(svo.defs_data.acrobatics and svo.defs_data.acrobatics.type, "kaido", "copies: installed under Kaido")
+  w.gmcp_defence_add("acrobatics")
+  eq(svo.defc.acrobatics, true, "copies: and GMCP's acrobatics is it")
+  cmd("list")
+  eq(echoed(w, ": Svof's own, copied, for monk (kaido), in use"), true, "copies: the list says it's a copy")
+
+  -- a definition made before svof had it: the copy keeps its lines
+  svo.defences.custom.glide = nil
+  svo.defences.custom.acrobatics = { class = "monk", skillset = "kaido", command = "flip", on = { "You flip about." }, off = {} }
+  svo.defences.custom_drafts.acrobatics = nil
+  cmd("acrobatics")
+  eq(link_of(w, "(use Svof's own instead)"), 'svo.defences.copy_offer("acrobatics")',
+    "copies: a definition of a name svof has elsewhere links to svof's own")
+  svo.defences.copy_own("acrobatics", 2)
+  d = svo.defences.custom_drafts.acrobatics or { on = {} }
+  eq(table.concat(d.on, "|"), "You begin leaping and bouncing about, making it more difficult to hit you.|You are already bouncing around acrobatically.|You flip about.",
+    "copies: the definition's lines join svof's")
+  eq(d.command .. " " .. d.skillset .. " " .. d.copy.from, "acrobatics on kaido jester",
+    "copies: with svof's command, the definition's skillset, from Jester's")
+
+  -- svof's patterns come with a copy, as they are: a Serpent's ghost
+  local pattern = svo.defences.catalog().ghost[1].offr[1]
+  svo.defences.copy_own("ghost", 1)
+  eq(echoed(w, "also:        1 more of Svof's own lines and patterns, kept as they are"), true,
+    "copies: the screen says what else comes from svof's own")
+  cmd("ghost skillset kaido")
+  cmd("ghost install")
+  eq(svo.defs_data.ghost and svo.defs_data.ghost.offr and svo.defs_data.ghost.offr[1], pattern,
+    "copies: a copy's record has svof's loss pattern")
+  local made = false
+  for _, t in ipairs(w.triggers) do
+    if t.kind == "regex" and t.pattern == pattern and not t.killed then made = true end
+  end
+  eq(made, true, "copies: and a trigger for it")
+end
+
+do -- (6) svof's own that does more than a copy can carry isn't copied
+  local w = world.new({ class = "Infernal" })
+  local svo = w.svo
+  svo.defences.copy_offer("bear")
+  eq(echoed(w, "can't be copied: it can't be up with some of your other defences"), true,
+    "copies: bear, which can't be up with other forms, can't be copied")
+  svo.defences.copy_own("bear", 1)
+  eq(echoed(w, "Can't copy Svof's own bear: it can't be up with some of your other defences"), true,
+    "copies: and copy_own refuses it")
+  eq(svo.defences.custom_drafts.bear, nil, "copies: starting nothing")
+  svo.defences.copy_offer("air")
+  eq(echoed(w, "Svof counts it with your other channel defences"), true, "copies: nor a channel, which svof counts")
+  svo.defences.copy_offer("listen")
+  eq(echoed(w, "Svof keeps losing it when you leave the room"), true, "copies: nor one svof keeps rules for elsewhere")
+  svo.defences.copy_offer("mindnet")
+  eq(echoed(w, "it comes with an item, and vconfig havemindnet adds Svof's own for that"), true,
+    "copies: nor an item's, which its vconfig option adds")
+  svo.defences.custom.acrobatics = { class = "infernal", skillset = "oppression", command = "acrobatics on",
+    on = { "x" }, off = {}, copy = { from = "nosuchclass", was = {} } }
+  eq(svo.defences.custom_problem("acrobatics", svo.defences.custom.acrobatics),
+    "Svof doesn't have acrobatics for nosuchclass, which it was copied from", "copies: one from a file is checked again")
+end
+
+do -- (1) a class with svof's own has nothing to copy, and a copy gives way to it
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  svo.defences.copy_own("acrobatics", 1)
+  cmd("acrobatics class all")
+  cmd("acrobatics install")
+  eq(svo.defences.custom_registered.acrobatics, true, "copies: a copy for every class is in use as a Monk")
+  svo.classchange("Bard")
+  eq(svo.defences.custom_registered.acrobatics, nil, "copies: and as a Bard isn't")
+  eq(svo.defs_data.acrobatics and svo.defs_data.acrobatics.type, "swashbuckling", "copies: Svof's own is")
+  eq(echoed(w, "your copy of it isn't used"), false, "copies: without a word, as it's for every class")
+  cmd("acrobatics copy")
+  eq(echoed(w, "Svof has its own acrobatics in this class, so there's nothing to copy."), true,
+    "copies: and there's nothing to copy as a Bard")
+  svo.defences.custom.acrobatics.class = "bard"
+  reload(svo, "Bard")
+  eq(echoed(w, "Svof has its own acrobatics in this class now, so your copy of it isn't used."), true,
+    "copies: a copy for the class, once svof has it there, says so")
+  eq(link_of(w, "(delete it)"), 'svo.defences.custom_delete("acrobatics")', "copies: with a link to delete it")
+end
+
+do -- (2, 5) a GMCP name another defence has
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  svo.defences.copy_own("acrobatics", 1)
+  cmd("acrobatics skillset kaido")
+  -- two saved definitions sharing a GMCP name: as svof loads, the first by
+  -- name goes in and the other stays out, rather than each refusing the
+  -- other
+  svo.defences.custom.glint = { class = "monk", skillset = "kaido", command = "glint", gmcp = "tumbling",
+    on = { "You glint." }, off = {} }
+  svo.defences.custom.tumble = { class = "monk", skillset = "kaido", command = "tumble", gmcp = "tumbling",
+    on = { "You tumble." }, off = {} }
+  reload(svo, "Monk")
+  eq(svo.defences.custom_registered.glint, true, "clashes: of two definitions with one GMCP name, the first is in")
+  eq(echoed(w, "add the defence tumble you defined: GMCP's tumbling is already your glint"), true,
+    "clashes: and the other stays out, saying why")
+  eq(svo.defs_data.tumble, nil, "clashes: unregistered")
+  svo.defences.custom_drafts.acrobatics.gmcp = "tumbling"
+  cmd("acrobatics install")
+  eq(echoed(w, "install acrobatics: GMCP's tumbling is already your glint"), true,
+    "clashes: a copy with a registered definition's GMCP name")
+  svo.defences.custom_drafts.acrobatics.gmcp = "alertness"
+  cmd("acrobatics install")
+  eq(echoed(w, "install acrobatics: GMCP's alertness is already Svof's alertness"), true,
+    "clashes: one of svof's own GMCP names")
+  eq(svo.defs_data.acrobatics, nil, "clashes: and neither is installed")
+  eq(svo.defences.clash("acrobatics", { gmcp = "alertness" }), "GMCP's alertness is already Svof's alertness",
+    "clashes: defences.clash says so too")
+end
+
+do -- (3) a line another defence watches for
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  svo.defences.copy_own("acrobatics", 1)
+  cmd("acrobatics skillset kaido")
+  cmd("acrobatics got You prick up your ears.")
+  cmd("acrobatics install")
+  eq(echoed(w, 'install acrobatics: Svof\'s alertness already watches for "You prick up your ears."'), true,
+    "clashes: a copy's line svof's alertness watches for")
+  eq(svo.defs_data.acrobatics, nil, "clashes: isn't installed")
+  cmd("shimmer command shimmer on")
+  cmd("shimmer skillset kaido")
+  cmd("shimmer got You shimmer.")
+  cmd("shimmer def You prick up your ears.")
+  eq(svo.defences.custom_problem("shimmer", svo.defences.custom_drafts.shimmer),
+    'Svof\'s alertness already watches for "You prick up your ears."', "clashes: nor a definition's DEF line")
+  -- svof's own records watch for none of a part-line (offs) today
+  svo.defs_data:set("murmur", { offs = "prick up your" })
+  eq(svo.defences.clash("acrobatics", { lines = { "You prick up your nose." } }) ~= nil, true,
+    "clashes: a line with another's part-line in it")
+  eq(svo.defences.clash("acrobatics", { subs = { "prick up" } }) ~= nil, true,
+    "clashes: and a part-line in another's line")
+  svo.defs_data:set("murmur", nil)
+
+  -- a change's new line, and one svof's own already had isn't new
+  cmd("treewatch got You prick up your ears.")
+  cmd("treewatch install")
+  eq(echoed(w, 'change treewatch: Svof\'s alertness already watches for "You prick up your ears."'), true,
+    "clashes: a change's new line another defence watches for")
+  svo.defences.edit_drafts.treewatch = nil
+  -- a line svof's own treewatch already has isn't the change's to clash
+  -- with, even where another defence shares it
+  svo.defs_data:set("treeshare", { on = svo.defs_data.treewatch.on[1] })
+  cmd("treewatch got You watch the trees.")
+  w.run('svo.defences.edit_install("treewatch", true)')
+  eq(svo.defences.edits.all and svo.defences.edits.all.treewatch ~= nil, true,
+    "clashes: a change keeping svof's lines another defence shares is installed")
+  svo.defs_data:set("treeshare", nil)
+  w.run('svo.defences.edit_reset("treewatch")')
+  cmd("treewatch got You watch the trees.")
+  w.run('svo.defences.edit_install("treewatch", true)')
+  eq(svo.defences.edits.all and svo.defences.edits.all.treewatch ~= nil, true, "clashes: one that doesn't is installed")
+
+  -- as svof loads, which a class change or an update to svof can bring
+  svo.defences.edits.all.treewatch.on = { "You prick up your ears." }
+  svo.defences.custom.acrobatics = svo.defences.custom_drafts.acrobatics
+  svo.defences.custom_drafts.acrobatics = nil
+  reload(svo, "Monk")
+  eq(echoed(w, 'use your change to Svof\'s own treewatch: Svof\'s alertness already watches for "You prick up your ears."'),
+    true, "clashes: a change that clashes as svof loads stays out")
+  eq(table.concat(svo.defs_data.treewatch.on, "|") == "You prick up your ears.", false, "clashes: so treewatch keeps svof's lines")
+  eq(echoed(w, 'add the defence acrobatics you defined: Svof\'s alertness already watches for "You prick up your ears."'),
+    true, "clashes: a copy that clashes as svof loads stays out")
+  eq(svo.defs_data.acrobatics, nil, "clashes: and isn't registered")
+end
+
+do -- (4) a command svof already takes for another action
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  svo.defences.copy_own("acrobatics", 1)
+  cmd("acrobatics skillset kaido")
+  cmd("acrobatics command Alertness on")
+  cmd("acrobatics install")
+  eq(echoed(w, 'install acrobatics: Svof already takes "Alertness on" as alertness\'s command'), true,
+    "clashes: a command svof already takes, whatever its case")
+  cmd("acrobatics command eat kola")
+  eq(svo.defences.custom_problem("acrobatics", svo.defences.custom_drafts.acrobatics) ~= nil, true,
+    "clashes: a cure's command too")
+  cmd("acrobatics command acrobatics on")
+  cmd("acrobatics install")
+  cmd("glint command acrobatics on")
+  cmd("glint skillset kaido")
+  cmd("glint got You glint.")
+  cmd("glint install")
+  eq(echoed(w, 'install glint: your acrobatics is raised with "acrobatics on" too'), true,
+    "clashes: a command a registered definition sends")
+  cmd("treewatch command alertness on")
+  cmd("treewatch install")
+  eq(echoed(w, 'change treewatch: Svof already takes "alertness on" as alertness\'s command'), true,
+    "clashes: and a change's")
+end
+
+do -- (7) svof's own updated since it was copied, or gone from that class
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  svo.defences.copy_own("acrobatics", 1)
+  cmd("acrobatics skillset kaido")
+  cmd("acrobatics install")
+  reload(svo, "Monk")
+  eq(echoed(w, "since you copied it"), false, "copies: nothing to say while svof's own is as copied")
+  svo.defences.custom.acrobatics.copy.was.on = { "You leap about." }
+  reload(svo, "Monk")
+  eq(echoed(w, "Svof has updated its own acrobatics since you copied it. Your copy is still in use:"), true,
+    "copies: svof's own changed since says so")
+  eq(svo.defences.custom_registered.acrobatics, true, "copies: and the copy stays in use")
+  eq(link_of(w, "copy it again"), 'svo.defences.copy_own("acrobatics", 1)', "copies: with a link to copy it again")
+  w.run(link_of(w, "keep yours") or "")
+  w.echoes = {}
+  reload(svo, "Monk")
+  eq(echoed(w, "since you copied it"), false, "copies: keep yours stops saying so")
+  svo.defences.custom.acrobatics.copy.from = "nosuchclass"
+  reload(svo, "Monk")
+  eq(echoed(w, "Svof doesn't have acrobatics for Nosuchclass any more. Your copy of it is still in use."), true,
+    "copies: svof's own gone from that class says so")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))

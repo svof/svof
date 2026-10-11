@@ -177,11 +177,11 @@ To define one:
 4. If Svof didn't get the GMCP name from the game and you know it, set it with *vcustomdef <name> gmcp <name>*, which also asks the game for its lines. Svof only takes a GMCP name the game confirms: by its reply to *DEFENCE SHOW*, by *DEFENCE LIST*, or by GMCP sending it. For a name the game doesn't have, Svof says so and keeps the name it had; check the name, or use *vcustomdef <name> gmcp none* for a defence GMCP doesn't report. Svof then takes GMCP's word on the defence, as it does for its own. With *vconfig gmcpdefechoes* on, Svof shows the GMCP names as defences come and go. Serverside curing knows a defence by its GMCP name, so with one it raises the defence while serverside is on, and Svof raises it otherwise. *vshow server* can leave it to Svof, as for Svof's own defences. Without a GMCP name, Svof always raises it.
 5. Check the definition with *vcustomdef <name> test*, then put it into play with *vcustomdef <name> install*.
 
-A definition belongs to the class you define it in. To change that, use *vcustomdef <name> class <class>*, or *class all* for a defence any class can have, such as an artefact's. Svof adds each definition when you're in its class. If Svof turns out to have its own defence by that name in that class, Svof says so as it loads, with links to delete your definition or to make it a change to Svof's own; see :ref:`change-svof-defences`. When the game says a defence isn't a profession defence, Svof sets it to every class; when it is one, Svof asks which class has it, with a link for each.
+A definition belongs to the class you define it in. To change that, use *vcustomdef <name> class <class>*, or *class all* for a defence any class can have, such as an artefact's. Svof adds each definition when you're in its class. If an update gives Svof its own defence by that name in that class, Svof says so as it loads, with links to delete your definition or to make it a change to Svof's own; see :ref:`change-svof-defences`. When the game says a defence isn't a profession defence, Svof sets it to every class; when it is one, Svof asks which class has it, with a link for each.
 
 A defence for one class is shown under one of its skillsets in *vshow defup*, *vshow keepup* and *vshow hidelist*, next to Svof's own. Click the skillset in the definition. If the game has renamed a skillset, or Svof's list of the class's skillsets is out of date, type it with *vcustomdef <name> skillset <skillset>*, and Svof shows it under that name after the class's other skillsets. A defence for every class is shown with the general ones.
 
-Svof refuses a name it already uses for something else. With the name of one of Svof's own defences, *vcustomdef* changes that defence instead; see :ref:`change-svof-defences`. To change a definition, change its parts and install it again; until then, Svof keeps using the installed one. *vcustomdef <name> delete* takes a definition out.
+Svof refuses a name it already uses for something else. With the name of one of Svof's own defences, *vcustomdef* changes that defence instead; see :ref:`change-svof-defences`. With the name of a defence Svof has only in other classes, *vcustomdef* offers to copy Svof's own into yours; see :ref:`copy-svof-defences`. To change a definition, change its parts and install it again; until then, Svof keeps using the installed one. *vcustomdef <name> delete* takes a definition out.
 
 *vcustomdef* lists every defence you defined, each a link to see or change it, and then your changes to Svof's own. *vshow* and *vconfig2* link to the same list.
 
@@ -206,6 +206,32 @@ Check the change with *vcustomdef <name> test*, then put it into play with *vcus
 A change to a defence every class has, such as a general one, is for every class. A change to a defence from a class's skillsets is for that class. Your changes are saved in *svo/custom/edits* in your profile folder, and *vconfig customdefinitions off* starts Svof without them as well.
 
 Reporting a defence that's out of date gets the fix into Svof for everyone, and your change can go once the fix is in.
+
+.. _copy-svof-defences:
+
+Copy Svof's own defences from another class
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sometimes the game gives your class a defence that Svof has only for other classes, or an artefact gives a class defence to anyone who buys it. Instead of defining that defence again, copy Svof's own. *vcustomdef <name> copy*, or *vcustomdef <name>*, shows each class's version of it, with a **copy it** link for each one Svof can copy.
+
+A copy starts from Svof's version: its lines, its DEF line, its GMCP name, its command and whether that takes balance. It also keeps Svof's patterns and other lines for that defence as they are. Pick a skillset for it, or use *vcustomdef <name> class all* for an artefact's, then check it and install it as you would a definition. You can change its lines, GMCP name and command, for example when the artefact uses a different command. The artefact versions so far use the class version's GMCP name.
+
+Svof copies only a defence it raises by sending its command and tracks by its lines. It doesn't copy one where it does more than that, because that extra handling doesn't come with a copy. For example, it won't copy a defence that can't be up with some others (such as a Monk's forms), one it counts with others (such as the channels), one it waits for after its command, or one that comes with an item. Svof has its own option for each item, such as *vconfig havemindnet*. The copy list says why for each version it can't copy.
+
+If you defined the defence before Svof had it in another class, *vcustomdef <name>* links to Svof's own, and copying it keeps your lines.
+
+Svof remembers its version when you copied it. If an update changes that version, Svof says so as it loads, with links to see Svof's, to copy it again, or to keep yours. If an update gives Svof its own version in your class, Svof uses its own, and says so for a copy you made for that class. A copy for every class gives way silently in a class that has Svof's own.
+
+.. _defence-clashes:
+
+Clashes with other defences
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A line, GMCP name or command that two defences share makes the game's word on one count for the other as well. Svof refuses to install a definition, copy or change that shares any of these with another defence in your class:
+
+- a line it watches for: another defence's gain, loss or DEF line
+- its GMCP name: another defence's, Svof's own or one you defined. If two of your definitions share one, the first by name goes in as Svof loads, and the other stays out.
+- its command: one Svof already takes for another action when you type it or serverside sends it, such as a cure, or one another definition sends
+
+Svof checks again every time it loads, since a class change or an update can bring a clash. A definition or change that clashes then stays out, and Svof says what it clashes with. Svof can't check a line against another defence's patterns for lines that vary.
 
 Anti-illusion
 ~~~~~~~~~~~~~
@@ -2081,7 +2107,7 @@ General aliases
     adds/remove a defence to the keepup list. Note that keepup can also be enabled/disabled as a feature, and it won't put defences up when it's disabled.
 
   vcustomdef [*<defence>*]
-    lists the defences you defined and your changes to Svof's own, or shows one to define or change. See :ref:`custom-defences` and :ref:`change-svof-defences`.
+    lists the defences you defined and your changes to Svof's own, or shows one to define, change or copy from another class. See :ref:`custom-defences`, :ref:`change-svof-defences` and :ref:`copy-svof-defences`.
 
   vcreate defmode *<name>*
     creates a new fences mode with the given name. You may wish to have more than the default basic/combat ones in order to specialize for situations (ie when you're out bashing, raiding orgA, raiding orgB, etc.)
