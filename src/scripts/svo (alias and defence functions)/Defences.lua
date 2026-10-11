@@ -3869,10 +3869,13 @@ end
 -- against other defences' patterns, and its patterns against other
 -- defences' lines and its own lines of another kind, by the library the
 -- triggers match with. Two patterns can't be checked against each other.
+-- For a change, lines and patterns are what it adds, which the other
+-- defences are checked against, and selfpatterns all its patterns, which
+-- kinds, all its lines, are
 function defences.clash(name, parts)
   -- a pattern of one kind that matches its own line of another, so that
   -- the line would say both
-  for _, p in ipairs(parts.patterns or {}) do
+  for _, p in ipairs(parts.selfpatterns or parts.patterns or {}) do
     for kind, lines in pairs(parts.kinds or {}) do
       if kind_of[kind] ~= kind_of[p[1]] then
         for _, line in ipairs(lines) do
@@ -5024,9 +5027,10 @@ end
 -- for a defence the game changed before svof caught up (the user's ask,
 -- 2026-10-10). A change replaces svof's exact gain, loss and DEF lines and
 -- its GMCP name, which serverside knows it by too, and for a defence
--- basicdef made, whose action only sends its command, the command. Svof's
--- patterns, its other ways of raising a defence and the logic around it
--- stay, and the change's screen says which. Changes are saved under
+-- basicdef made, whose action only sends its command, the command, and its
+-- patterns for lines that vary (the user, 2026-10-11). Svof's other ways
+-- of raising a defence and the logic around it stay, and the change's
+-- screen says which. Changes are saved under
 -- <profile>/svo/custom/edits, apart from definitions, by whose they are
 -- (the class, or 'all' for a defence every class has the same) and name.
 -- Each holds only what differs from svof's own, and svof's version of that
@@ -5034,9 +5038,10 @@ end
 -- since. vconfig customdefinitions off leaves them out too.
 local edits_path = getMudletHomeDir() .. "/svo/custom/edits"
 -- notondef: DEF doesn't list it (svof's invisibledef), as definitions have
-local edit_fields = { 'on', 'off', 'def', 'notondef', 'command', 'gmcp' }
-local edit_labels = { on = "gain lines", off = "loss lines", def = "DEF lines", notondef = "whether DEF lists it",
-  command = "command", gmcp = "GMCP name" }
+local edit_fields = { 'on', 'off', 'def', 'onr', 'offr', 'defr', 'notondef', 'command', 'gmcp' }
+local edit_labels = { on = "gain lines", off = "loss lines", def = "DEF lines", onr = "gain patterns",
+  offr = "loss patterns", defr = "DEF patterns", notondef = "whether DEF lists it", command = "command",
+  gmcp = "GMCP name" }
 -- svof's own version of each defence a change is in use for, to put back
 defences.own = defences.own or {}
 defences.edit_drafts = defences.edit_drafts or {}
@@ -5105,11 +5110,13 @@ local function own_version(name)
   local snap, phys = defences.own[name], physical_of(name)
   if snap then
     return { on = line_list(snap.on), off = line_list(snap.off), def = line_list(snap.def),
+      onr = line_list(snap.onr), offr = line_list(snap.offr), defr = line_list(snap.defr),
       notondef = snap.invisibledef and true or nil, command = snap.command, gmcp = snap.gmcp,
       sendsaction = phys and phys.sendsaction }
   end
   local rec = defs_data[name]
   return { on = line_list(rec.on), off = line_list(rec.off), def = line_list(rec.def),
+    onr = line_list(rec.onr), offr = line_list(rec.offr), defr = line_list(rec.defr),
     notondef = rec.invisibledef and true or nil, command = phys and phys.action, gmcp = svo.dict.svotossd[name],
     sendsaction = phys and phys.sendsaction }
 end
@@ -5137,13 +5144,14 @@ end
 -- back. A GMCP name svof has since given another defence stays that one's
 local function edit_apply(name, edit)
   local rec, entry, phys = defs_data[name], svo.dict[name], physical_of(name)
-  local snap = { on = rec.on, off = rec.off, def = rec.def, invisibledef = rec.invisibledef,
-    gmcp = svo.dict.svotossd[name], gamename = type(entry) == 'table' and entry.gamename or nil,
-    command = phys and phys.action, onstart = phys and phys.onstart }
+  local snap = { on = rec.on, off = rec.off, def = rec.def, onr = rec.onr, offr = rec.offr, defr = rec.defr,
+    invisibledef = rec.invisibledef, gmcp = svo.dict.svotossd[name],
+    gamename = type(entry) == 'table' and entry.gamename or nil, command = phys and phys.action,
+    onstart = phys and phys.onstart }
   defences.own[name] = snap
-  if edit.on then rec.on = line_list(edit.on) end
-  if edit.off then rec.off = line_list(edit.off) end
-  if edit.def then rec.def = line_list(edit.def) end
+  for _, field in ipairs({ 'on', 'off', 'def', 'onr', 'offr', 'defr' }) do
+    if edit[field] then rec[field] = line_list(edit[field]) end
+  end
   if edit.notondef ~= nil then rec.invisibledef = edit.notondef or nil end
   if edit.command and phys and phys.sendsaction then set_command(phys, edit.command) end
   local taken = edit.gmcp and svo.dict.sstosvod[edit.gmcp]
@@ -5160,7 +5168,10 @@ local function edit_restore(name)
   if not snap then return end
   defences.own[name] = nil
   local rec, phys = defs_data[name], physical_of(name)
-  if rec then rec.on, rec.off, rec.def, rec.invisibledef = snap.on, snap.off, snap.def, snap.invisibledef end
+  if rec then
+    rec.on, rec.off, rec.def, rec.invisibledef = snap.on, snap.off, snap.def, snap.invisibledef
+    rec.onr, rec.offr, rec.defr = snap.onr, snap.offr, snap.defr
+  end
   if phys and phys.action ~= snap.command then set_command(phys, snap.command, snap.onstart) end
   local mine = svo.dict.svotossd[name]
   if mine ~= snap.gmcp then
@@ -5212,18 +5223,26 @@ local function edit_moved(name, edit)
   return moved
 end
 
--- what a change adds to svof's own name, for defences.clash: the lines
--- svof's own doesn't have, and a command svof's own doesn't send. Its GMCP
--- name is checked where it's set
+-- what a change adds to svof's own name, for defences.clash: the lines and
+-- patterns svof's own doesn't have, and a command svof's own doesn't send,
+-- against the class's other defences; and all its patterns against all
+-- its lines of another kind. Its GMCP name is checked where it's set
 local function edit_parts(name, edit)
-  local own, lines = own_version(name), {}
+  local own, lines, patterns, every, kinds = own_version(name), {}, {}, {}, {}
   for _, field in ipairs({ 'on', 'off', 'def' }) do
+    kinds[field] = edit[field] and line_list(edit[field]) or own[field]
     for _, l in ipairs(line_list(edit[field])) do
       if not table.contains(own[field], l) then lines[#lines + 1] = l end
     end
   end
+  for _, field in ipairs(pattern_fields) do
+    for _, p in ipairs(edit[field] and line_list(edit[field]) or own[field]) do
+      every[#every + 1] = { field, p }
+      if not table.contains(own[field], p) then patterns[#patterns + 1] = { field, p } end
+    end
+  end
   local command = own.sendsaction and edit.command ~= own.command and edit.command or nil
-  return { lines = lines, command = command }
+  return { lines = lines, patterns = patterns, kinds = kinds, selfpatterns = every, command = command }
 end
 
 -- Puts this class's change to svof's own name into play, as svof loads or
@@ -5296,6 +5315,7 @@ local function edit_draft(name)
     return own[field]
   end
   d = { on = line_list(from('on')), off = line_list(from('off')), def = line_list(from('def')),
+    onr = line_list(from('onr')), offr = line_list(from('offr')), defr = line_list(from('defr')),
     notondef = from('notondef') or nil, command = from('command'), gmcp = from('gmcp') or nil }
   defences.edit_drafts[name] = d
   return d
@@ -5312,10 +5332,11 @@ local function draft_installed(name, d)
   return true
 end
 
--- whether a change leaves a defence DEF lists with no DEF line where
--- svof's own had one, which test and install warn about
+-- whether a change leaves a defence DEF lists with no DEF line or pattern
+-- where svof's own had one, which test and install warn about
 local function edit_drops_def(name, d)
-  return #d.def == 0 and #own_version(name).def > 0 and not d.notondef and not defs_data[name].defr
+  local own = own_version(name)
+  return #d.def == 0 and #d.defr == 0 and (#own.def > 0 or #own.defr > 0) and not d.notondef
 end
 
 -- why a change can't be installed, or nil
@@ -5323,8 +5344,17 @@ local function edit_problem(name, d)
   local own = own_version(name)
   local mapped = d.gmcp and svo.dict.sstosvod[d.gmcp]
   if mapped and mapped ~= name then return "GMCP's " .. d.gmcp .. " is Svof's " .. mapped end
-  if #d.on == 0 and #own.on > 0 and not defs_data[name].onr and not d.gmcp then
+  if #d.on == 0 and #d.onr == 0 and (#own.on > 0 or #own.onr > 0) and not d.gmcp then
     return "it needs a line saying you gained it, or its GMCP name, or Svof can't tell when it's up"
+  end
+  -- its patterns svof's own doesn't have, such as ones a file brought in
+  if pcre() then
+    for _, field in ipairs(pattern_fields) do
+      for _, p in ipairs(d[field]) do
+        local why = not table.contains(own[field], p) and defences.pattern_problem(p)
+        if why then return string.format("%s can't be a pattern: %s", p, why) end
+      end
+    end
   end
   return defences.clash(name, edit_parts(name, d))
 end
@@ -5367,12 +5397,6 @@ local function edit_notes(name)
   local rec, phys = defs_data[name], physical_of(name)
   local notes = {}
   local function add(note) notes[#notes + 1] = note end
-  local patterns = {}
-  for _, f in ipairs({ { 'onr', "gaining it" }, { 'offr', "losing it" }, { 'defr', "DEF" } }) do
-    local n = #line_list(rec[f[1]])
-    if n > 0 then patterns[#patterns + 1] = string.format("%d for %s", n, f[2]) end
-  end
-  if #patterns > 0 then add("its patterns for lines that vary: " .. svo.concatand(patterns)) end
   if rec.on_only or rec.on_free or rec.off_free or rec.offs then add("other lines it watches for") end
   if rec.ongot or rec.onlost then add("what gaining or losing it does to your other defences and afflictions") end
   if rec.onenable then add("the defences it can't be up with on defup and keepup") end
@@ -5449,6 +5473,20 @@ function defences.edit_show(name)
     elseif not isdef and not same(lines, own[which[1]]) then
       svofs(own[which[1]])
     end
+    -- its patterns, for lines that vary, and svof's own where they differ
+    if not (isdef and d.notondef) then
+      local field = which[1] .. 'r'
+      for i, p in ipairs(d[field]) do
+        echo(string.format("  %-12s %s  ", i == 1 and "or matches:" or "", p))
+        custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, field, i), "Remove this pattern")
+        echo("\n")
+      end
+      echo(string.format("  %-12s ", ""))
+      custom_link("add a pattern", string.format("printCmdLine(%q)", cmd .. which[2] .. "pattern "),
+        "For a line that varies: a pattern, as Mudlet's regex triggers take")
+      echo("\n")
+      if not same(d[field], own[field]) then svofs(own[field]) end
+    end
   end
   for i, note in ipairs(edit_notes(name)) do
     echo(string.format("  %-12s %s\n", i == 1 and "Svof keeps:" or "", note))
@@ -5495,7 +5533,22 @@ function defences.edit_set(name, field, value)
     d.gmcp = gmcp
   elseif field == 'def' and value:lower() == 'none' then
     -- DEF doesn't list it, so DEF leaves it alone
-    d.def, d.notondef = {}, true
+    d.def, d.defr, d.notondef = {}, {}, true
+  elseif field == 'gotpattern' or field == 'lostpattern' or field == 'defpattern' then
+    local key = field == 'gotpattern' and 'onr' or field == 'lostpattern' and 'offr' or 'defr'
+    if value == '' then
+      svo.echof("Which pattern matches the line that %s?", field == 'gotpattern' and ("says you gained " .. name)
+        or field == 'lostpattern' and ("says you lost " .. name) or ("DEF shows for " .. name))
+      return
+    end
+    -- svof's own back again needs no reading
+    local why = not table.contains(own[key], value) and defences.pattern_problem(value)
+    if why then
+      svo.echof("Can't use %s as a pattern: %s.", value, why)
+      return
+    end
+    if not table.contains(d[key], value) then d[key][#d[key] + 1] = value end
+    if key == 'defr' then d.notondef = nil end
   elseif field == 'got' or field == 'lost' or field == 'def' then
     if value == '' then
       svo.echof("Which line %s?", field == 'got' and ("says you gained " .. name)
@@ -5506,10 +5559,10 @@ function defences.edit_set(name, field, value)
     if not table.contains(lines, value) then lines[#lines + 1] = value end
     if field == 'def' then d.notondef = nil end
   elseif field == 'class' or field == 'skillset' or field == 'balanceless' or field == 'serverside' then
-    svo.echof("Svof's own %s keeps its class, skillset and balance. A change can replace its lines and GMCP name, and for some defences the command.", name)
+    svo.echof("Svof's own %s keeps its class, skillset and balance. A change can replace its lines, patterns and GMCP name, and for some defences the command.", name)
     return
   else
-    svo.echof("A change to Svof's own defence has command, gmcp, got, lost and def; %s isn't one.", field)
+    svo.echof("A change to Svof's own defence has command, gmcp, got, lost, def, gotpattern, lostpattern and defpattern; %s isn't one.", field)
     return
   end
   defences.edit_show(name)
@@ -5547,8 +5600,8 @@ function defences.edit_test(name)
     if gmcp then parts[#parts + 1] = gmcp end
     return #parts > 0 and svo.concatand(parts) or "nothing, until DEF"
   end
-  svo.echof("It knows it's up from %s.", from(d.on, #line_list(rec.onr), d.gmcp and ("GMCP's " .. d.gmcp)))
-  svo.echof("It knows it's gone from %s.", from(d.off, #line_list(rec.offr), d.gmcp and "GMCP"))
+  svo.echof("It knows it's up from %s.", from(d.on, #d.onr, d.gmcp and ("GMCP's " .. d.gmcp)))
+  svo.echof("It knows it's gone from %s.", from(d.off, #d.offr, d.gmcp and "GMCP"))
   if d.notondef then
     svo.echof("DEF doesn't list it, so DEF leaves it alone.")
   elseif edit_drops_def(name, d) then
@@ -5678,6 +5731,7 @@ function defences.custom_to_change(name)
   end
   add(d.on, spec.on)
   add(d.off, spec.off)
+  for _, field in ipairs(pattern_fields) do add(d[field], spec[field]) end
   if spec.def then
     add(d.def, spec.def)
     d.notondef = nil
@@ -5745,12 +5799,22 @@ function defences.edits_import(changes, path)
     end
     table.sort(names)
     for _, name in ipairs(names) do
-      local problem = imported_gmcp_problem(changes[key][name].gmcp)
+      local edit = changes[key][name]
+      local here = defs_data[name] and edit_key(defs_data[name]) == key
+      local problem = imported_gmcp_problem(edit.gmcp)
+      -- its patterns, which must read, and for this class, a clash
+      for _, field in ipairs(pattern_fields) do
+        for _, p in ipairs(line_list(edit[field])) do
+          local why = not problem and pcre() and not (here and table.contains(own_version(name)[field], p))
+            and defences.pattern_problem(p)
+          if why then problem = string.format("%s can't be a pattern: %s", p, why) end
+        end
+      end
+      if not problem and here then problem = defences.clash(name, edit_parts(name, edit)) end
       if defences.edits[key] and defences.edits[key][name] then
         svo.echof("You already changed Svof's own %s, so the change in %s isn't used.", name, path)
       elseif problem then
-        svo.echof("Didn't import the change to Svof's own %s from %s: %s. Check the name, or leave it out.",
-          name, path, problem)
+        svo.echof("Didn't import the change to Svof's own %s from %s: %s.", name, path, problem)
       else
         if type(changes[key][name].gmcp) == 'string' then changes[key][name].gmcp = changes[key][name].gmcp:lower() end
         defences.edits[key] = defences.edits[key] or {}

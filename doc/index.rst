@@ -198,10 +198,11 @@ Change Svof's own defences
 When the game changes one of Svof's defences before Svof catches up, you can change Svof's own with *vcustomdef <name>*, using the name Svof shows in *vshow defup*. Svof shows its version of the defence, with links to change each part:
 
 - the lines that say you gained or lost it, and the lines DEF shows. Your change replaces Svof's lines, so take out the ones the game no longer sends. *vcustomdef <name> fetch* asks the game with *DEFENCE SHOW* and adds the lines it shows now. If DEF no longer lists the defence, use *vcustomdef <name> def none*.
+- its patterns for lines that vary, shown under the lines. As for a definition, add one with *gotpattern*, *lostpattern* or *defpattern*, and take one out with its **x**. Your change replaces Svof's patterns too.
 - its GMCP name, which serverside curing knows it by too. As for a definition, Svof only takes a name the game confirms.
 - the command that raises it, for a defence whose action only sends its command. Where Svof makes the command as it raises the defence, such as riding's, or raises it another way, such as smoking for rebounding, the command stays Svof's.
 
-Under those, Svof lists what it keeps doing as before, such as its patterns for lines that vary, or what gaining the defence does to your other defences. A change can't reach those.
+Under those, Svof lists what it keeps doing as before, such as what gaining the defence does to your other defences. A change can't reach those.
 
 Check the change with *vcustomdef <name> test*, then put it into play with *vcustomdef <name> install*. The first time, Svof asks you to confirm, because your change replaces Svof's own version, and Svof's updates to that defence don't reach you while your change is in use. Svof remembers what its own version was when you changed it. If an update changes what you changed, Svof says so as it loads, with links to see both, to use Svof's, or to keep yours. *vcustomdef <name> reset* puts Svof's own back.
 
@@ -230,7 +231,7 @@ Clashes with other defences
 A line, GMCP name or command that two defences share makes the game's word on one count for the other as well. Svof refuses to install a definition, copy or change that shares any of these with another defence in your class:
 
 - a line it watches for: another defence's gain, loss or DEF line, or one another defence's pattern matches
-- a pattern that matches another defence's line, or the definition's own line of another kind, such as a gain pattern that matches its own loss line
+- a pattern that matches another defence's line, or the defence's own line of another kind, such as a gain pattern that matches its own loss line
 - its GMCP name: another defence's, Svof's own or one you defined. If two of your definitions share one, the first by name goes in as Svof loads, and the other stays out.
 - its command: one Svof already takes for another action when you type it or serverside sends it, such as a cure, or one another definition sends
 

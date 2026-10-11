@@ -1990,7 +1990,8 @@ do
   eq(echoed(w, "Can't change rebounding's command: Svof raises it with smoke, so it has no command to change."), true,
     "changes: a defence svof raises another way keeps its command")
   cmd("rebounding")
-  eq(echoed(w, "its patterns for lines that vary: 5 for losing it"), true, "changes: the screen says svof keeps its patterns")
+  eq(echoed(w, "or matches:  " .. svo.defs_data.rebounding.offr[1]), true,
+    "changes: the screen shows svof's patterns, which a change can change (section 19)")
   eq(echoed(w, "the wait for it after its command"), true, "changes: and its wait")
   cmd("riding")
   eq(echoed(w, "Svof makes it as it raises it, so a change can't reach it"), true,
@@ -2930,6 +2931,70 @@ do
   cmd("treewatch install")
   eq(echoed(w, "change treewatch: your glint's pattern"), true,
     "patterns: a change's new line another defence's pattern matches is refused")
+end
+
+do -- a change to svof's own takes patterns too (the user, 2026-10-11)
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  w.env.rex = world.rex_stub
+  local onr = svo.defs_data.shield.onr
+  local own = type(onr) == "table" and onr[1] or onr
+  local new ="^(\\w+)'s guardian surrounds you with a protective shield\\.$"
+  cmd("shield")
+  eq(echoed(w, "or matches:  " .. own), true, "change patterns: the screen shows svof's gain pattern")
+  w.run('svo.defences.custom_unset("shield", "onr", 1)')
+  cmd("shield gotpattern ^(\\w+'s guardian")
+  eq(echoed(w, "it isn't a pattern Svof can read"), true, "change patterns: one rex can't read is refused")
+  cmd("shield gotpattern " .. new)
+  eq(echoed(w, "Svof's: " .. own), true, "change patterns: and svof's next to a changed one")
+  w.echoes = {}
+  cmd("shield test")
+  eq(echoed(w, "Your change replaces its gain patterns."), true, "change patterns: test says what the change replaces")
+  w.run('svo.defences.edit_install("shield", true)')
+  local rec = svo.defs_data.shield
+  eq(table.concat(rec.onr, "|"), new, "change patterns: installed, the record's gain pattern is the change's")
+  local live, old = false, false
+  for _, t in ipairs(w.triggers) do
+    if t.kind == "regex" and not t.killed and t.pattern == new then live = true end
+    if t.kind == "regex" and not t.killed and t.pattern == own then old = true end
+  end
+  eq(live and not old, true, "change patterns: its trigger is made, and svof's is gone")
+  local edit
+  for _, names in pairs(svo.defences.edits) do edit = edit or names.shield end
+  eq(edit and edit.onr and edit.onr[1] == new and edit.on == nil and edit.was.onr[1] == own, true,
+    "change patterns: saved, with svof's as it was, and nothing else")
+
+  reload(svo, "Monk")
+  eq(svo.defs_data.shield.onr[1], new, "change patterns: in play as svof loads")
+  edit.was.onr = { "^(\\w+)'s angel shields you\\.$" }
+  reload(svo, "Monk")
+  eq(echoed(w, "Svof has updated the gain patterns of its own shield since you changed it."), true,
+    "change patterns: svof updating its own pattern says so")
+  w.run('svo.defences.edit_reset("shield")')
+  onr = svo.defs_data.shield.onr
+  eq(type(onr) == "table" and onr[1] or onr, own, "change patterns: reset puts svof's pattern back")
+
+  -- the clash check
+  cmd("shield gotpattern ^You prick up your \\w+\\.$")
+  w.run('svo.defences.edit_install("shield", true)')
+  eq(echoed(w, "matches Svof's alertness's line \"You prick up your ears.\""), true,
+    "change patterns: one matching another defence's line is refused")
+  cmd("treewatch lostpattern ^You begin to keep .+\\.$")
+  w.run('svo.defences.edit_install("treewatch", true)')
+  eq(echoed(w, "its loss pattern \"^You begin to keep .+\\\\.$\" matches its own gain line"), true,
+    "change patterns: one matching its own line of another kind is refused")
+
+  -- import: one that can't be read is left out
+  local old_attributes, old_load = w.env.lfs.attributes, w.env.table.load
+  w.env.lfs.attributes = function() return {} end
+  w.env.table.load = function(_, t)
+    t._changes = { all = { skywatch = { onr = { "^You watch the (" }, was = { onr = {} } } } }
+  end
+  cmd("import shared-defences")
+  w.env.lfs.attributes, w.env.table.load = old_attributes, old_load
+  eq(echoed(w, "Didn't import the change to Svof's own skywatch from shared-defences: ^You watch the ( can't be a pattern"),
+    true, "change patterns: import leaves out a change whose pattern can't be read")
 end
 
 do -- an item's defence registers after systemstart too
