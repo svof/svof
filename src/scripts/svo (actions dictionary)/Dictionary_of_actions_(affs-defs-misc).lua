@@ -7930,16 +7930,6 @@ if not next(svo.dict) then
     -- never cured it and dropped it from affs after 20s whether or not it was
     -- still on you.
     latched = {
-      -- ongained, not onadded: the balance goes when you gain latched, and
-      -- a GMCP List or a DIAGNOSE that finds it already on you is not a gain.
-      -- onadded ran on those too and took sip balance for nothing. The two
-      -- gain paths call this: the GMCP Add handler in Setup.lua, and the gain
-      -- line through aff.oncompleted('gained'). GMCP arrives before the line,
-      -- so the bals.sip test keeps one gain from being counted twice.
-      ongained = function()
-        if bals.sip then svo.lostbal_sip() end
-      end,
-  
       sip = {
         isadvisable = function()
           return (affs.latched and not svo.doingaction('latched')) or false
@@ -7970,11 +7960,17 @@ if not next(svo.dict) then
         end
       },
       aff = {
-        -- 'gained' comes only from the gain line (svo.valid.simplelatched).
-        -- DIAGNOSE and svo.addaff reach here with nothing.
+        -- Only the gain line takes sip balance: it is printed as the balance
+        -- goes, so the game's "You may drink another" line gives it back on
+        -- time. svo.valid.simplelatched passes 'gained'; DIAGNOSE and
+        -- svo.addaff (a GMCP List) reach here with nothing. Nothing GMCP sends
+        -- takes it either: a List is a resync, and an Add can be the game
+        -- unmasking, after blackout, a latched gained during it. Taking the
+        -- balance then, with no regain line to follow, would stop health and
+        -- mana sipping until the fallback timer ran out.
         oncompleted = function(how)
           svo.addaffdict(svo.dict.latched)
-          if how == 'gained' then svo.dict.latched.ongained() end
+          if how == 'gained' then svo.lostbal_sip() end
           codepaste.badaeon()
         end
       },

@@ -83,7 +83,6 @@ FIELDS = {
     "description":        "free text, shown by vaff and friends",
     "onremoved":          "runs after the affliction leaves svo.affs",
     "onadded":            "runs after it is added",
-    "ongained":           "runs on a gain (GMCP Add or gain line), not a resync",
     "onservereignore":    "returns true if serverside should ignore this",
     "reckhp":             "unknownany and unknownmental",
     "reckmana":           "unknownany and unknownmental",

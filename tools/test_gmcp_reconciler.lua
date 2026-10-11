@@ -689,33 +689,6 @@ do
   not_contains(calls.lost, 'untouchable', "G8/whitelist: a defence GMCP cannot report is never removed")
 end
 
--- ===== scenario 8: ongained runs on an Add, never on a List =====
--- latched takes sip balance on a gain. A List that finds it already on you,
--- after a reload or a login, is a resync, not a gain, and must not take it.
-do
-  local env, h, calls, svo = new_environment()
-  load_block(block, env)
-
-  local gained = 0
-  svo.dict.sstosvoa = { latched = 'latched' }
-  svo.dict.latched = { name = 'latched', ongained = function() gained = gained + 1 end }
-  build_reverse_indexes(env)
-
-  env.gmcp.Char.Afflictions.List = { { name = 'latched' } }
-  h.afflist()
-  eq(gained, 0, "ongained: a List that reports the affliction does not run it")
-  contains(calls.addaff, 'latched', "ongained: the List still adds the affliction")
-
-  env.gmcp.Char.Afflictions.Add = { name = 'latched' }
-  h.affadd()
-  eq(gained, 1, "ongained: an Add runs it once")
-
-  -- still tracked from before: the Add is a new gain all the same
-  svo.affl.latched = { sw = 1 }
-  h.affadd()
-  eq(gained, 2, "ongained: an Add runs it even when the affliction was already tracked")
-end
-
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do

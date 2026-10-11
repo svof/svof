@@ -171,6 +171,13 @@ jobs:
       - name: test pyre ladder
         run: lua tools/test_pyre_ladder.lua
 
+      # Gate 1.75. latched's entry and its gain-line handler, extracted the
+      # same way. Only the gain line may take sip balance: a GMCP List and
+      # DIAGNOSE are resyncs, and a GMCP Add can be the game unmasking, after
+      # blackout, a latched gained during it.
+      - name: test latched
+        run: lua tools/test_latched.lua
+
       # Gate 1.8. dict_setup decides what a top-level key on an entry means by
       # its TYPE: a table is a balance and gets a name and a priority, a scalar
       # falls through. Both ways of getting that wrong are silent. A scalar
