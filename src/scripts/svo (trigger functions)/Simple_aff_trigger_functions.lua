@@ -61,6 +61,14 @@ svo.valid.simplehoisted = function(name)
   lifevision.add(actions.hoisted_aff.p)
 end
 
+-- The gain line is the one text path that means "you just got latched", so it
+-- alone tells aff.oncompleted to take sip balance. DIAGNOSE adds through the
+-- same action without it.
+svo.valid.simplelatched = function ()
+  svo.checkaction(svo.dict.latched.aff, true)
+  lifevision.add(actions.latched_aff.p, nil, 'gained')
+end
+
 svo.valid.simpleprone = function ()
   svo.checkaction(svo.dict.prone.aff, true)
   lifevision.add(actions.prone_aff.p)

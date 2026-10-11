@@ -84,7 +84,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "ef0b16748a788449",
+      "digest": "08accaa93e68cc93",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -264,7 +264,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "0ca0b6d1c6525c09",
+      "digest": "c3efe0a4c34a01c0",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -284,7 +284,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Simple aff trigger functions|script",
-      "digest": "8761985fbd21159c",
+      "digest": "dfb96ad433b75baf",
       "text": "Script   svo (trigger functions) Simple aff trigger functions [script]"
     },
     {

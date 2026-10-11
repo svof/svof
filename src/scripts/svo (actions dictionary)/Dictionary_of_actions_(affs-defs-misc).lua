@@ -7930,12 +7930,14 @@ if not next(svo.dict) then
     -- never cured it and dropped it from affs after 20s whether or not it was
     -- still on you.
     latched = {
-      -- onadded rather than aff.oncompleted: the GMCP path calls addaffdict
-      -- directly (Setup.lua:656) and never runs the aff action, and latched
-      -- is in sstosvoa, so GMCP is how it usually arrives. addaffdict runs
-      -- onadded exactly once per gain whichever path added it.
-      onadded = function()
-        svo.lostbal_sip()
+      -- ongained, not onadded: the balance goes when you gain latched, and
+      -- a GMCP List or a DIAGNOSE that finds it already on you is not a gain.
+      -- onadded ran on those too and took sip balance for nothing. The two
+      -- gain paths call this: the GMCP Add handler in Setup.lua, and the gain
+      -- line through aff.oncompleted('gained'). GMCP arrives before the line,
+      -- so the bals.sip test keeps one gain from being counted twice.
+      ongained = function()
+        if bals.sip then svo.lostbal_sip() end
       end,
   
       sip = {
@@ -7968,8 +7970,11 @@ if not next(svo.dict) then
         end
       },
       aff = {
-        oncompleted = function()
+        -- 'gained' comes only from the gain line (svo.valid.simplelatched).
+        -- DIAGNOSE and svo.addaff reach here with nothing.
+        oncompleted = function(how)
           svo.addaffdict(svo.dict.latched)
+          if how == 'gained' then svo.dict.latched.ongained() end
           codepaste.badaeon()
         end
       },

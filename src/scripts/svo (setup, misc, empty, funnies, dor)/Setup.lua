@@ -654,6 +654,11 @@ signals.gmcpcharafflictionsadd:connect(function()
     -- once here (instead of the old two separate, overlapping lookups) does
     -- not change anything observable.
     svo.addaffdict(svoaff)
+    -- An Add is the game reporting a gain, unlike a List, so it runs what an
+    -- affliction does on being gained (latched's balance loss). Not gated on
+    -- addaffdict having added anything: a gain is a gain even when svof was
+    -- still tracking the affliction from before.
+    if svoaff.ongained then svoaff.ongained() end
     -- svo.affl is keyed by name; its values are { sw = ..., count = ... }
     -- tables. table.contains(svo.affl, svoaff.name) searched those values
     -- for a name string, which never matched, so a GMCP-reported level never
