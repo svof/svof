@@ -1609,7 +1609,7 @@ end
 
 function svo.valid.sippedhealth()
   -- While latched, SIP HEALTH clears the latch instead of healing, with its
-  -- own line (generic('latched')). So this heal line arriving while latched's
+  -- own line (sippedlatched below). So this heal line arriving while latched's
   -- sip is in flight means we were not latched: the case latched.sip.empty is
   -- for. Nothing else reaches it - sip2 only looks at the purgative balance -
   -- and without this a stale latched left its sip unanswered until it timed
@@ -1624,6 +1624,17 @@ function svo.valid.sippedhealth()
     svo.sip_cure = true
     lifevision.add(actions.healhealth_sip.p)
   end
+end
+
+-- While latched, SIP HEALTH clears the latch instead of healing, with a line
+-- of its own. Outside blackout nothing answered it: the General cures trigger
+-- is off then, and the tree trigger needs a touch in flight. So latched's sip
+-- timed out and was sent again. generic() is what that trigger runs in
+-- blackout: it completes latched's sip, or, when healhealth had taken the sip,
+-- turns that sip into latched's.
+function svo.valid.sippedlatched()
+  svo.sip_cure = true
+  valid.generic('latched')
 end
 function svo.valid.sippedmana()
   svo.checkaction(svo.dict.healmana.sip)

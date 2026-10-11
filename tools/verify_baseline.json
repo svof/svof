@@ -63,6 +63,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got myrrh generic [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Sip/svo sipped latched",
+      "digest": "bfe8d80c98855831",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Sip/svo sipped latched [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo scalded woreoff",
       "digest": "b33cec5c384c9431",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo scalded woreoff [only in the package]"
@@ -104,8 +109,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "d045e1e3f9e9a2f4",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2535 in merged"
+      "digest": "84e78e298fee56b6",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2536 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -399,7 +404,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "b0f8378b44016ff0",
+      "digest": "ba729faab66507fa",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
