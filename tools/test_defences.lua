@@ -1652,6 +1652,21 @@ do
   w.run('svo.defences.custom_show("agithtailegend")')
   eq(w.sent[#w.sent], "defence show agithtailegend", "DEFENCE LIST: clicking one starts it, asking DEFENCE SHOW")
 
+  -- the last page ends with MORE, and MORE past the end gets the game's
+  -- whisper (the user, 2026-10-10), which ends the list at once, whole
+  cmd("game")
+  game("All defences")
+  game("Shimmering")
+  game("[Type MORE if you wish to continue reading. (100% shown)]")
+  local mores = #w.sent
+  prompt()
+  game('An unseen presence whispers in your ear, "There is no more, friend."')
+  eq(echoed(w, "Of the 1 defences the game lists, Svof doesn't know these 1."), true,
+    "DEFENCE LIST: the game saying there's no more ends the list at once")
+  eq(svo.defences.game_defences and svo.defences.game_defences.complete, true, "DEFENCE LIST: as the whole list")
+  prompt()
+  eq(#w.sent, mores, "DEFENCE LIST: and no more MOREs are sent")
+
   -- no list at all
   cmd("game")
   w.advance(20)

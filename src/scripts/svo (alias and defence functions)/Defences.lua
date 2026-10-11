@@ -4255,9 +4255,12 @@ end
 --   Accursedresolve
 --   Acrobatics
 --   [Type MORE if you wish to continue reading. (8% shown)]
+-- and MORE past its end gets (the user, 2026-10-10):
+--   An unseen presence whispers in your ear, "There is no more, friend."
 -- custom_gamelist sends it, and MORE after each page, hiding the list as it
 -- reads it, then shows the defences Svof doesn't track, each a link to
 -- define it.
+local list_end = 'An unseen presence whispers in your ear, "There is no more, friend."'
 local listing = {}
 
 local function list_stop()
@@ -4339,7 +4342,8 @@ function defences.custom_gamelist(after)
 end
 
 -- every line while the list is read: it starts at "All defences", a MORE
--- line asks for the next page, and a prompt with no MORE before it ends it
+-- line asks for the next page, and a prompt with no MORE before it, or the
+-- game saying there's no more, ends it
 function defences.custom_gamelist_line()
   if not listing.pages then return end
   if isPrompt and isPrompt() then
@@ -4347,6 +4351,11 @@ function defences.custom_gamelist_line()
     return
   end
   local text = line
+  if listing.names and text == list_end then
+    deleteLine()
+    list_done(true)
+    return
+  end
   if not listing.names then
     if text == "All defences" then
       listing.names = {}
