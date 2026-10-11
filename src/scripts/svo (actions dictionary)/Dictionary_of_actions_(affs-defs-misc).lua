@@ -7945,10 +7945,14 @@ if not next(svo.dict) then
           svo.sip(svo.dict.latched.sip)
         end,
   
-        -- the sip did not happen: we were still off sip balance, so record
-        -- that rather than keep believing we had it
+        -- "The elixir flows down your throat without effect." The sip went
+        -- through: that trigger is a child of the Sip folder, so it only fires
+        -- after the drink line. With latched, a health sip gives "Warmth
+        -- floods back..." instead, so this means we did not have latched,
+        -- the same as empty. It used to take the balance and keep latched,
+        -- so a stale latched was sipped for again at every balance.
         noeffect = function()
-          svo.lostbal_sip()
+          svo.dict.latched.sip.empty()
         end,
   
         -- the sip happened and cured nothing, so we did not have latched.
