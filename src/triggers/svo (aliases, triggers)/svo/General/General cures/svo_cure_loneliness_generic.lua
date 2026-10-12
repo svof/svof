@@ -1,1 +1,1 @@
-svo.valid.generic_loneliness()
+svo.valid.generic('loneliness')

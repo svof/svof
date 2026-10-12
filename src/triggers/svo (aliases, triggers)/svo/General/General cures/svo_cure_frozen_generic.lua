@@ -1,1 +1,1 @@
-svo.valid.generic_frozen()
+svo.valid.generic('frozen')

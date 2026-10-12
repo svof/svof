@@ -1,1 +1,1 @@
-svo.valid.diag_cadmus()
+svo.valid.diag('cadmus')

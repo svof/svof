@@ -1,1 +1,1 @@
-svo.valid.generic_selarnia()
+svo.valid.generic('selarnia')

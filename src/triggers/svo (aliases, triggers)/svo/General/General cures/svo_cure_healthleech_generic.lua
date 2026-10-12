@@ -1,1 +1,1 @@
-svo.valid.generic_healthleech()
+svo.valid.generic('healthleech')

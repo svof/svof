@@ -1,1 +1,1 @@
-svo.valid.diag_serioustrauma()
+svo.valid.diag('serioustrauma')

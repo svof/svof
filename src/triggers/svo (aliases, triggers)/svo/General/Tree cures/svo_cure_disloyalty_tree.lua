@@ -1,1 +1,1 @@
-svo.valid.tree_cured_disloyalty()
+svo.valid.tree_cured('disloyalty')

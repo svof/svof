@@ -1,1 +1,1 @@
-svo.valid.diag_inquisition()
+svo.valid.diag('inquisition')

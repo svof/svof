@@ -1,1 +1,1 @@
-svo.valid.diag_dizziness()
+svo.valid.diag('dizziness')

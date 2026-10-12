@@ -1,1 +1,1 @@
-svo.valid.diag_cholerichumour(matches[2])
+svo.valid.diag('cholerichumour', matches[2])

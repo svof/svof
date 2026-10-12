@@ -1,1 +1,1 @@
-svo.valid.generic_deadening()
+svo.valid.generic('deadening')

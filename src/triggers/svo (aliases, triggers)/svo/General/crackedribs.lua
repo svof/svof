@@ -1,1 +1,1 @@
-svo.valid.diag_crackedribs(matches[2])
+svo.valid.diag('crackedribs', matches[2])

@@ -1,1 +1,1 @@
-svo.valid.diag_laceratedthroat()
+svo.valid.diag('laceratedthroat')

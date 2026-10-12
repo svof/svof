@@ -1,1 +1,1 @@
-svo.valid.diag_unweavingspirit()
+svo.valid.diag('unweavingspirit')

@@ -1,1 +1,1 @@
-svo.valid.generic_generosity()
+svo.valid.generic('generosity')

@@ -1,1 +1,1 @@
-svo.valid.diag_flamefisted()
+svo.valid.diag('flamefisted')

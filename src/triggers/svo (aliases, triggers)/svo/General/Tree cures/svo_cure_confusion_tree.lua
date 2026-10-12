@@ -1,1 +1,1 @@
-svo.valid.tree_cured_confusion()
+svo.valid.tree_cured('confusion')

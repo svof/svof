@@ -1,1 +1,1 @@
-svo.valid.diag_timeloop()
+svo.valid.diag('timeloop')

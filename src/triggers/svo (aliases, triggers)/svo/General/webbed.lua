@@ -1,1 +1,1 @@
-svo.valid.diag_webbed()
+svo.valid.diag('webbed')

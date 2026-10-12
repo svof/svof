@@ -1,1 +1,1 @@
-svo.valid.diag_revealed()
+svo.valid.diag('revealed')

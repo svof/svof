@@ -1,1 +1,1 @@
-svo.valid.tree_cured_vertigo()
+svo.valid.tree_cured('vertigo')

@@ -1,1 +1,1 @@
-svo.valid.diag_claustrophobia()
+svo.valid.diag('claustrophobia')

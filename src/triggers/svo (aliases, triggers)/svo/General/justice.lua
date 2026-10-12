@@ -1,1 +1,1 @@
-svo.valid.diag_justice()
+svo.valid.diag('justice')

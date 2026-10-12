@@ -1,1 +1,1 @@
-svo.valid.diag_darkshade()
+svo.valid.diag('darkshade')

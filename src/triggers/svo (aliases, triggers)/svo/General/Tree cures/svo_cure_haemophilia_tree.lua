@@ -1,1 +1,1 @@
-svo.valid.tree_cured_haemophilia()
+svo.valid.tree_cured('haemophilia')

@@ -1,1 +1,1 @@
-svo.valid.diag_voided()
+svo.valid.diag('voided')

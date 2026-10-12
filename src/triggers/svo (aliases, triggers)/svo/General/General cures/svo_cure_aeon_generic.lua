@@ -1,1 +1,1 @@
-svo.valid.generic_aeon()
+svo.valid.generic('aeon')

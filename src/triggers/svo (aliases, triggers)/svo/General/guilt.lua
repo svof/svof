@@ -1,1 +1,1 @@
-svo.valid.diag_guilt()
+svo.valid.diag('guilt')

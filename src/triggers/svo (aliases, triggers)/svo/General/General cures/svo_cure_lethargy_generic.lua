@@ -1,1 +1,1 @@
-svo.valid.generic_lethargy()
+svo.valid.generic('lethargy')

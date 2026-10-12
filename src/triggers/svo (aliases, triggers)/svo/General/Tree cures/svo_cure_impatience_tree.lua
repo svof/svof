@@ -1,1 +1,1 @@
-svo.valid.tree_cured_impatience()
+svo.valid.tree_cured('impatience')

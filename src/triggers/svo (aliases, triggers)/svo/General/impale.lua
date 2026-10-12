@@ -1,1 +1,1 @@
-svo.valid.diag_impale()
+svo.valid.diag('impale')

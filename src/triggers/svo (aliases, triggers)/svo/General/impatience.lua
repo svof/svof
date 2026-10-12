@@ -1,1 +1,1 @@
-svo.valid.diag_impatience()
+svo.valid.diag('impatience')

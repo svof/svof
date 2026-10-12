@@ -1,1 +1,1 @@
-svo.valid.tree_cured_inlove()
+svo.valid.tree_cured('inlove')

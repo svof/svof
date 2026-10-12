@@ -1683,6 +1683,8 @@ To add a new bashing trigger, go to the 'Bashing triggers' Svof folder, and copy
 
 To add a trigger for anything else, you can use *svo.valid.proper_<affliction>()*, or if that function doesn't exist, *svo.valid.simple<affliction>()*. To see the list of affliction names, check *vshow afflist* - ones that have a *proper_* function are marked *pr* beside their name.  If you're on a recent enough version of Mudlet, then you can click on the affliction to get the text for the function.
 
+:note: every affliction *vshow afflist* lists has a *simple* function. They are generated from the system's dictionary, so an affliction has one as soon as it has an entry there.
+
 :note: bleeding, unknowncrippledlimb, unknowncrippledarm, unknowncrippledleg (and possibly others) take a number parameter - for example, if a mob breaks two random limbs, you do ``svo.valid.simpleunknowncrippledlimb(2)``.
 
 Working with balances
