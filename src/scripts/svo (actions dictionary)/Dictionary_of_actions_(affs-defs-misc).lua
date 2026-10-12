@@ -7925,6 +7925,25 @@ if not next(svo.dict) then
     -- instead of healing you, the way applying health to a limb mends the
     -- fracture instead. It does NOT block the other sip cures.
     --
+    -- The balance loss is taken from the gain line, never from GMCP, though
+    -- GMCP reports latched itself. GMCP does not report elixir balance, so it
+    -- can only say latched is on you, not that it was just gained: a List is
+    -- a resync, and an Add can be the game unmasking, after blackout, a
+    -- latched gained during it. The two ways of being wrong cost very
+    -- different amounts:
+    --
+    --   * Taking the balance when it was not just lost (that Add) leaves
+    --     health and mana sipping off until the fallback timer runs out,
+    --     10s or 20s with addiction. No "You may drink another health or
+    --     mana elixir." line follows to give it back, and svof does not sip,
+    --     so it never sees a sip fail either.
+    --   * Missing a loss (a gain line not seen) costs one sip. It gets "The
+    --     elixir flows down your throat without effect.", sip.noeffect
+    --     records the balance, and the regain line gives it back.
+    --
+    -- The gain line is printed as the balance goes, so it is never late. So
+    -- here the trigger decides, and GMCP only says whether latched is there.
+    --
     -- It used to be modelled as a timed affliction on 'waitingfor' with the
     -- comment "not sure how this is cured yet exactly", which meant svof
     -- never cured it and dropped it from affs after 20s whether or not it was
@@ -7962,14 +7981,10 @@ if not next(svo.dict) then
         end
       },
       aff = {
-        -- Only the gain line takes sip balance: it is printed as the balance
-        -- goes, so the game's "You may drink another" line gives it back on
-        -- time. svo.valid.simplelatched passes 'gained'; DIAGNOSE and
-        -- svo.addaff (a GMCP List) reach here with nothing. Nothing GMCP sends
-        -- takes it either: a List is a resync, and an Add can be the game
-        -- unmasking, after blackout, a latched gained during it. Taking the
-        -- balance then, with no regain line to follow, would stop health and
-        -- mana sipping until the fallback timer ran out.
+        -- Only the gain line takes sip balance (see above the entry for why
+        -- not GMCP). svo.valid.simplelatched passes 'gained'; DIAGNOSE and
+        -- svo.addaff (a GMCP List) reach here with nothing, and a GMCP Add
+        -- never runs this at all.
         oncompleted = function(how)
           svo.addaffdict(svo.dict.latched)
           if how == 'gained' then svo.lostbal_sip() end
