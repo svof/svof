@@ -11,6 +11,15 @@ their conditions; the guard only skips that one case. Shrugging and
 dragonheal cure the same afflictions, are sent after the same cures and share
 empty.tree, so they carry the same guard and are run here too.
 
+The game, not svof, decides which affliction a cure takes. A focus aimed at
+stupidity can cure confusion instead, and then ash finds nothing to cure. So
+the guard tries every affliction each cure on its way could take, in the
+order they were sent, and holds tree back only if none of those ways leaves a
+tree-curable affliction. Whether two afflictions share a cure is read from
+their real dictionary entries: the herb, pipe or elixir, or the salve or
+health and where it goes. Only svof's own strategies are held back; one a
+user adds is taken at its word.
+
 Like the other suites, this does not run svof or Mudlet. It extracts the real
 code by anchor text and runs it under stubs: the touchtree, shrugging and
 dragonheal actions' isadvisable, codepaste.treecurablescovered,
@@ -56,7 +65,7 @@ local SHRUG_STRATS = "src/scripts/svo (core)/svo Utilities/Shrugging_curing_stra
 local DRAGON_STRATS = "src/scripts/svo (core)/svo Utilities/Dragonheal_curing_strats.lua"
 local PENLIGHT = "src/scripts/svo (core)/3rdparty/Penlight/"
 
-local GUARDED = "if s and m then return not codepaste.treecurablescovered() end"
+local GUARDED = "if s and m and not (svo.builtin_strats[func] and codepaste.treecurablescovered()) then return true end"
 
 local blocks = {
   actions = extract(ACTIONS, "svo.doaction = function(arg1, arg2)",
@@ -89,6 +98,33 @@ for _, name in ipairs({"touchtree", "shrugging", "dragonheal"}) do
   local replaced
   unguarded[name], replaced = blocks[name]:gsub((GUARDED:gsub("%p", "%%%0")), "if s and m then return true end")
   assert(replaced == 1, "the guarded return was not found in " .. name .. "'s isadvisable")
+end
+
+-- The cure fields of an affliction's real dictionary entry, by balance: what
+-- the guard compares to tell whether two afflictions share a cure.
+local dict_source = read_file(DICT)
+local CURE_BALANCES = {"focus", "salve", "sip", "purgative", "smoke", "herb", "misc"}
+local function real_cures(name)
+  local s = dict_source:find("\n    " .. name .. " = {", 1, true)
+  if not s then return {} end
+  local e = dict_source:find("\n    [%w_]+ = {", s + 1) or #dict_source
+  local entry = dict_source:sub(s, e)
+  local cures = {}
+  for _, balance in ipairs(CURE_BALANCES) do
+    local bs = entry:find("\n      " .. balance .. " = {", 1, true)
+    if bs then
+      local body = entry:sub(bs, entry:find("\n      [%w_]+ = {", bs + 1) or #entry)
+      local cure = {}
+      local first = body:match('\n        actions = {%s*"([^"]+)"')
+      if first then cure.actions = { first } end
+      for _, field in ipairs({"eatcure", "smokecure", "sipcure"}) do
+        local v = body:match("\n        " .. field .. " = {%s*['\"]([^'\"]+)['\"]")
+        if v then cure[field] = { v } end
+      end
+      cures[balance] = cure
+    end
+  end
+  return cures
 end
 
 -- ===== Penlight, loaded the way svof ships it =====
@@ -148,11 +184,12 @@ end
 
 -- opts.old: run the isadvisable from before the guard
 -- opts.strategies: the strategies left on, default any2affs (svof ships it off)
+-- opts.early: tree strategies already there when svof's strategies load
 local function new_svof(opts)
   opts = opts or {}
   local affs, dict = {}, {}
   local svo = {
-    affs = affs, affl = affs, dict = dict, tree = {}, shrugging = {}, dragonheal = {}, ignore = {},
+    affs = affs, affl = affs, dict = dict, tree = opts.early or {}, shrugging = {}, dragonheal = {}, ignore = {},
     codepaste = {}, defc = { dragonform = opts.dragonform },
     me = { disabledtreefunc = {}, disabledshruggingfunc = {}, disableddragonhealfunc = {}, locks = {} },
     bals = { tree = true, salve = true, sip = true, shrugging = true, dragonheal = true },
@@ -204,18 +241,19 @@ local function new_svof(opts)
 
   local s = { env = env, svo = svo }
 
-  -- have an affliction, with a count for the counted ones
+  -- have an affliction, with its real cures and a count for the counted ones
   function s.aff(name, count)
-    dict[name] = dict[name] or { count = count }
+    dict[name] = dict[name] or real_cures(name)
     if count then dict[name].count = count end
     affs[name] = { p = dict[name] }
   end
 
   -- put an action on its way with the real doaction, named the way dict_setup names it
   function s.send(name, balance)
-    dict[name] = dict[name] or {}
-    local act = { name = name .. "_" .. balance, action_name = name, balance = balance,
-      onstart = function() end, oncompleted = function() end }
+    dict[name] = dict[name] or real_cures(name)
+    local act = dict[name][balance] or {}
+    act.name, act.action_name, act.balance = name .. "_" .. balance, name, balance
+    act.onstart, act.oncompleted = function() end, function() end
     dict[name][balance] = act
     svo.doaction(act)
     return act
@@ -319,11 +357,20 @@ s.aff("fear"); s.aff("selarnia"); s.aff("voyria"); s.aff("aeon")
 s.send("fear", "misc"); s.send("selarnia", "salve"); s.send("voyria", "purgative"); s.send("aeon", "smoke")
 eq(s.touch(), false, "misc, salve, purgative and smoke cures all count")
 
--- the blocks gettreeableaffs applies still apply
-s = new_svof()
-s.aff("madness"); s.aff("stupidity"); s.aff("confusion")
-s.send("madness", "smoke")
-eq(s.touch(), false, "madness blocks tree for stupidity and confusion, and madness is covered")
+-- the blocks gettreeableaffs applies still apply: madness blocks tree for
+-- stupidity, so only asthma has to be covered. hardlock is the strategy, so
+-- the count of tree-curable affs doesn't decide it
+s = new_svof({ strategies = {"hardlock"} })
+s.svo.me.locks.hard = true
+s.aff("madness"); s.aff("stupidity"); s.aff("asthma")
+s.send("asthma", "herb")
+eq(s.touch(), false, "madness blocks tree for stupidity, and asthma is covered")
+
+s = new_svof({ strategies = {"hardlock"} })
+s.svo.me.locks.hard = true
+s.aff("stupidity"); s.aff("asthma")
+s.send("asthma", "herb")
+eq(s.touch(), true, "without madness, stupidity has no cure on its way")
 
 -- the unknown crippled limbs are covered like any other aff: a mending
 -- application on its way will cure the arm, whichever it is
@@ -336,6 +383,106 @@ s = new_svof()
 s.aff("stupidity"); s.aff("unknowncrippledarm", 2)
 s.send("stupidity", "focus"); s.send("unknowncrippledarm", "salve")
 eq(s.touch(), true, "two unknown crippled arms and one mending")
+
+-- ===== the game picks which aff a cure takes =====
+
+-- the cures these scenarios rely on, as the dictionary has them
+local probe = new_svof()
+for _, c in ipairs({ {"stupidity", "goldenseal"}, {"confusion", "ash"}, {"dizziness", "goldenseal"},
+    {"depression", "goldenseal"}, {"unweavingmind", "goldenseal"}, {"asthma", "kelp"} }) do
+  probe.aff(c[1])
+  local herb = probe.svo.dict[c[1]].herb
+  eq(herb and herb.eatcure and herb.eatcure[1], c[2], c[1] .. " is cured by " .. c[2])
+end
+for _, name in ipairs({"stupidity", "confusion", "dizziness"}) do
+  eq(probe.svo.dict[name].focus ~= nil, true, name .. " can be focused")
+end
+for _, name in ipairs({"depression", "unweavingmind", "asthma"}) do
+  eq(probe.svo.dict[name].focus == nil, true, name .. " can't be focused")
+end
+probe.aff("aeon")
+eq(probe.svo.dict.aeon.smoke and probe.svo.dict.aeon.smoke.smokecure[1], "elm", "aeon is cured by elm")
+
+-- the review's case: the focus can take confusion, and then ash has nothing
+-- to cure, since stupidity is a goldenseal aff
+s = new_svof()
+s.aff("stupidity"); s.aff("confusion")
+s.send("stupidity", "focus"); s.send("confusion", "herb")
+eq(s.touch(), true, "focus for stupidity can cure confusion, and ash can't cure stupidity")
+
+-- both cures can take both affs, so whichever the first takes, the second
+-- takes the other
+s = new_svof()
+s.aff("stupidity"); s.aff("dizziness")
+s.send("stupidity", "focus"); s.send("dizziness", "herb")
+eq(s.touch(), false, "focus and goldenseal for stupidity and dizziness cure both either way")
+
+s = new_svof()
+s.aff("stupidity"); s.aff("dizziness")
+s.send("dizziness", "herb"); s.send("stupidity", "focus")
+eq(s.touch(), false, "the same, with the goldenseal sent first")
+
+-- the order the cures were sent decides: goldenseal sent first can take
+-- stupidity, and then the focus can't cure depression
+s = new_svof()
+s.aff("stupidity"); s.aff("depression")
+s.send("depression", "herb"); s.send("stupidity", "focus")
+eq(s.touch(), true, "goldenseal before focus can leave depression")
+
+s = new_svof()
+s.aff("stupidity"); s.aff("depression")
+s.send("stupidity", "focus"); s.send("depression", "herb")
+eq(s.touch(), false, "focus before goldenseal cures both")
+
+-- an aff tree doesn't cure can take a cure too
+s = new_svof()
+s.aff("stupidity"); s.aff("aeon"); s.aff("unweavingmind")
+s.send("stupidity", "herb"); s.send("aeon", "smoke")
+eq(s.touch(), true, "goldenseal for stupidity can cure unweavingmind instead")
+
+s = new_svof()
+s.aff("stupidity"); s.aff("aeon")
+s.send("stupidity", "herb"); s.send("aeon", "smoke")
+eq(s.touch(), false, "without unweavingmind, goldenseal and elm cure both")
+
+-- ===== only svof's own strategies are held back =====
+
+s = new_svof({ strategies = {"mine"} })
+s.svo.tree.mine = { function() return true end }
+s.svo.me.disabledtreefunc.mine = false
+s.aff("stupidity"); s.aff("asthma")
+s.send("stupidity", "focus"); s.send("asthma", "herb")
+eq(s.touch(), true, "a user's strategy with every tree-curable aff covered")
+
+s = new_svof()
+s.svo.tree.any2affs = { function() return #s.svo.gettreeableaffs() >= 2 end }
+s.aff("stupidity"); s.aff("asthma")
+s.send("stupidity", "focus"); s.send("asthma", "herb")
+eq(s.touch(), true, "a user's strategy put in place of one of svof's")
+
+s = new_svof({ strategies = {"mine"} })
+s.svo.shrugging.mine = { function() return true end }
+s.svo.me.disabledshruggingfunc.mine = false
+s.aff("stupidity"); s.aff("asthma")
+s.send("stupidity", "focus"); s.send("asthma", "herb")
+eq(s.shrug(), true, "a user's shrugging strategy with every aff covered")
+
+-- a strategy added before svof's load isn't taken for svof's own
+s = new_svof({ early = { early = { function() return true end } }, strategies = {"early"} })
+s.aff("stupidity"); s.aff("asthma")
+s.send("stupidity", "focus"); s.send("asthma", "herb")
+eq(s.touch(), true, "a user's strategy loaded before svof's")
+for _, kind in ipairs({"tree", "shrugging", "dragonheal"}) do
+  local n = 0
+  for name, strat in pairs(s.svo[kind]) do
+    if name ~= "early" then
+      n = n + 1
+      eq(s.svo.builtin_strats[strat], true, kind .. " " .. name .. " is svof's own")
+    end
+  end
+  eq(n > 0, true, "svof's " .. kind .. " strategies loaded")
+end
+eq(s.svo.builtin_strats[s.svo.tree.early], nil, "the early strategy is the user's")
 
 -- ===== shrugging and dragonheal: the same guard =====
 

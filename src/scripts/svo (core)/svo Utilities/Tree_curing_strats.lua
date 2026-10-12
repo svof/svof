@@ -6,6 +6,11 @@
 
 svo.tree = svo.tree or {}
 
+-- the strats in this file are marked as svof's own at the end of it. svof holds its own back when every tree-curable
+-- aff already has a cure on its way, and takes yours at their word, since yours may cure what svof doesn't know tree cures
+local others = {}
+for _, strat in pairs(svo.tree) do others[strat] = true end
+
 svo.tree.blackout = {
   desc = "Use tree to cure blackout",
 
@@ -106,3 +111,8 @@ svo.tree.fractures = {
     return not svo.bals.sip and svo.havefractures()
   end
 }
+
+svo.builtin_strats = svo.builtin_strats or setmetatable({}, {__mode = 'k'})
+for _, strat in pairs(svo.tree) do
+  if not others[strat] then svo.builtin_strats[strat] = true end
+end

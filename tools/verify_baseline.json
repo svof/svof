@@ -204,7 +204,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "15f4e3ada74b0320",
+      "digest": "cd015bdb64d5c4a6",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -306,6 +306,21 @@
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Custom prompt tags/@affs|script",
       "digest": "cf6e57ca187eb12f",
       "text": "Script   svo (install me in module manager) svo Utilities/Custom prompt tags/@affs [script]"
+    },
+    {
+      "id": "item|Script|svo (install me in module manager)|svo Utilities/Dragonheal curing strats|script",
+      "digest": "a9379a3a07b7d0bc",
+      "text": "Script   svo (install me in module manager) svo Utilities/Dragonheal curing strats [script]"
+    },
+    {
+      "id": "item|Script|svo (install me in module manager)|svo Utilities/Shrugging curing strats|script",
+      "digest": "c51bbf8ba2e500f6",
+      "text": "Script   svo (install me in module manager) svo Utilities/Shrugging curing strats [script]"
+    },
+    {
+      "id": "item|Script|svo (install me in module manager)|svo Utilities/Tree curing strats|script",
+      "digest": "de0de9aefac867dc",
+      "text": "Script   svo (install me in module manager) svo Utilities/Tree curing strats [script]"
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Config system|script",
