@@ -6414,10 +6414,11 @@ if not next(svo.dict) then
           svo.dict.unknownany.count = 0
         end,
   
-        -- to be used when you lost one unknown (for example, you saw a symptom for something else)
-        lost_level = function()
+        -- to be used when you lost one unknown (for example, you saw a symptom for something else),
+        -- or amount of them: one claim stands for every ? taken off in its paragraph
+        lost_level = function(amount)
           if not affs.unknownany then return end
-          affs.unknownany.p.count = affs.unknownany.p.count - 1
+          affs.unknownany.p.count = affs.unknownany.p.count - (amount or 1)
           if affs.unknownany.p.count <= 0 then
             svo.rmaff('unknownany')
             svo.dict.unknownany.count = 0
@@ -6495,10 +6496,11 @@ if not next(svo.dict) then
           svo.dict.unknownmental.count = 0
         end,
   
-        -- to be used when you lost one focusable (for example, you saw a symptom for something else)
-        lost_level = function()
+        -- to be used when you lost one focusable (for example, you saw a symptom for something else),
+        -- or amount of them: one claim stands for every ? taken off in its paragraph
+        lost_level = function(amount)
           if not affs.unknownmental then return end
-          affs.unknownmental.p.count = affs.unknownmental.p.count - 1
+          affs.unknownmental.p.count = affs.unknownmental.p.count - (amount or 1)
           if affs.unknownmental.p.count <= 0 then
             svo.rmaff('unknownmental')
             svo.dict.unknownmental.count = 0

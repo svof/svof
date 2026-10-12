@@ -98,7 +98,8 @@ local blocks = {
     "for _, affname in ipairs({'skullfractures', 'crackedribs', 'wristfractures', 'torntendons'}) do", false),
 }
 
-for _, name in ipairs({"Paralysis", "Anorexia", "Weakness", "Clumsiness"}) do
+for _, name in ipairs({"Paralysis", "Anorexia", "Weakness", "Clumsiness", "Confusion",
+    "Epilepsy", "Illness", "Shyness_2", "Dizziness_fell", "Dizziness_dismounted"}) do
   blocks["symptom_" .. name] = read_file(SYMPTOMS .. name .. ".lua")
 end
 
@@ -303,13 +304,17 @@ local function new_svof(opts)
   for _, aff in ipairs({"paralysis", "anorexia", "weakness", "clumsiness", "crippledrightleg",
       "impatience", "pacifism", "peace", "confusion", "disloyalty", "hamstring", "crippledleftarm",
       "crippledrightarm", "crippledleftleg", "stuttering", "stupidity", "sleep", "impale", "webbed",
-      "transfixed", "slickness", "asthma"}) do
+      "transfixed", "slickness", "asthma", "epilepsy", "illness", "dizziness", "shyness"}) do
     svo.dict[aff] = { name = aff, aff = { name = aff .. "_aff", balance = "aff", action_name = aff,
       oncompleted = function() svo.addaffdict(svo.dict[aff]) end } }
   end
-  svo.dict.anorexia.focus = { name = "anorexia_focus" } -- focus cures anorexia
+  -- focus cures these, as in the real dictionary; illness it does not
+  for _, aff in ipairs({"anorexia", "confusion", "epilepsy", "dizziness", "shyness"}) do
+    svo.dict[aff].focus = { name = aff .. "_focus" }
+  end
   svo.dict.sstosvoa = { paralysis = "paralysis", anorexia = "anorexia", weariness = "weakness",
-    clumsiness = "clumsiness", brokenrightleg = "crippledrightleg" }
+    clumsiness = "clumsiness", brokenrightleg = "crippledrightleg", epilepsy = "epilepsy",
+    nausea = "illness", dizziness = "dizziness", shyness = "shyness" }
   for _, w in ipairs(WIRED) do svo.dict.sstosvoa[w.gmcp] = w.svo end
   svo.dict.sstosvod = { insulation = "caloric", insomnia = "insomnia" }
   -- svof name -> GMCP name: how the GMCP gate knows GMCP can report an affliction
@@ -572,6 +577,67 @@ do
   s.trigger("Paralysis")
   s.prompt()
   eq(s.unknowns(), 1, "a paralysis symptom with no GMCP: the ? stays, as before")
+end
+
+-- ===== review of this PR =====
+
+-- Confusion, epilepsy and both dizziness lines called remove_unknownany and
+-- remove_unknownmental both, so one revealed affliction took two ?s off.
+for _, case in ipairs({
+  {"Confusion", "confusion"}, {"Epilepsy", "epilepsy"},
+  {"Dizziness_fell", "dizziness"}, {"Dizziness_dismounted", "dizziness"},
+}) do
+  local trigger, gmcpname = case[1], case[2]
+  local s = new_svof()
+  s.hold_unknowns(1)
+  s.svo.addaffdict(s.svo.dict.unknownmental)
+  s.svo.dict.unknownmental.count = 1
+  s.gmcp_add(gmcpname)
+  s.svo.valid.symp_dizziness_fell = function() s.svo.valid.simpledizziness() end
+  s.trigger(trigger)
+  s.prompt()
+  eq(s.mental_unknowns() + s.unknowns(), 1, trigger .. " revealed with both kinds held: one ? goes, not two")
+  eq(s.mental_unknowns(), 0, trigger .. " revealed with both kinds held: the mental one, as focus cures it")
+end
+
+-- The spontaneous symptoms can be faked by an illusion. Without GMCP's Add
+-- behind one, it takes no ? off and vouches for nothing, so a live GMCP gate
+-- refuses the claim. Confusion is a reply to a command and keeps the old rule.
+for _, case in ipairs({
+  {"Epilepsy", "epilepsy"}, {"Illness", "illness"}, {"Shyness_2", "shyness"},
+  {"Dizziness_fell", "dizziness"}, {"Dizziness_dismounted", "dizziness"},
+}) do
+  local trigger, aff = case[1], case[2]
+  local s = new_svof()
+  s.hold_unknowns(1)
+  s.svo.valid.symp_dizziness_fell = function() s.svo.valid.simpledizziness() end
+  s.trigger(trigger)
+  s.prompt()
+  eq(s.unknowns(), 1, trigger .. " with no GMCP Add (an illusion, or blackout): the ? stays")
+  eq(s.svo.affs[aff] ~= nil, not LIVE, trigger .. " with no GMCP Add: believed only when GMCP is not live")
+
+  local revealed = new_svof()
+  revealed.hold_unknowns(1)
+  revealed.gmcp_add(aff == "illness" and "nausea" or aff)
+  revealed.svo.valid.symp_dizziness_fell = function() revealed.svo.valid.simpledizziness() end
+  revealed.trigger(trigger)
+  revealed.prompt()
+  eq(revealed.unknowns() + revealed.mental_unknowns(), 0, trigger .. " revealed by GMCP: its ? is taken off")
+  eq(revealed.svo.affs[aff] ~= nil, true, trigger .. " revealed by GMCP: tracked")
+end
+
+-- Two afflictions revealed in one paragraph take two ?s off. lifevision keeps
+-- one claim per name, so the second used to replace the first.
+do
+  local s = new_svof()
+  s.hold_unknowns(2)
+  s.gmcp_add("paralysis")
+  s.gmcp_add("clumsiness")
+  s.env.svo.valid.symp_paralysis = function() s.svo.valid.simpleparalysis() end
+  s.trigger("Paralysis")
+  s.trigger("Clumsiness")
+  s.prompt()
+  eq(s.unknowns(), 0, "two reveals in one paragraph: both ?s are taken off")
 end
 
 -- A reveal in one paragraph does not carry over to a symptom in the next.

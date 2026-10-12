@@ -1,4 +1,3 @@
 svo.valid.simpledizziness()
 
-svo.valid.remove_unknownany("dizziness")
-svo.valid.remove_unknownmental("dizziness")
+svo.valid.remove_revealed_unknown("dizziness")

@@ -204,7 +204,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "cadd59b9cbf857d5",
+      "digest": "ed5b66aebaeda4a0",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -414,7 +414,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "e3b2d458ffadaaa2",
+      "digest": "9a12b4d9be3ad9a5",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -878,6 +878,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Confusion 2 [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Confusion|script",
+      "digest": "8bf2da75d6707865",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Confusion [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Damaged arm/regexes (damaged arm)|script",
       "digest": "b50472e402949465",
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Damaged arm/regexes (damaged arm) [script]"
@@ -888,6 +893,21 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Disloyalty [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Dizziness dismounted|script",
+      "digest": "96183011fca55563",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Dizziness dismounted [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Dizziness fell|script",
+      "digest": "08a4cf436e74d3c7",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Dizziness fell [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Epilepsy|script",
+      "digest": "ceee84468c254452",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Epilepsy [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Failed focus (impatience)|script",
       "digest": "10a5637f61b77e68",
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Failed focus (impatience) [script]"
@@ -896,6 +916,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Hamstring riding|script",
       "digest": "3c1a4aa376d31cd3",
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Hamstring riding [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Illness|script",
+      "digest": "e2453d24a835d52e",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Illness [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Impale|script",
@@ -921,6 +946,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Peace|script",
       "digest": "a00c7ca82c5280a0",
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Peace [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Shyness 2|script",
+      "digest": "660ef53887c5542e",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Shyness 2 [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Stupidity|script",
