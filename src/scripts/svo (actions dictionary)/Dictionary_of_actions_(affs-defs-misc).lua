@@ -4270,6 +4270,7 @@ if not next(svo.dict) then
         end,
   
         noeffect = function()
+          svo.lostbal_salve()
           empty.apply_epidermal_head()
         end,
   
@@ -4907,6 +4908,7 @@ if not next(svo.dict) then
         end,
   
         noeffect = function()
+          svo.lostbal_salve()
           empty.apply_epidermal_body()
         end,
   
@@ -4941,6 +4943,7 @@ if not next(svo.dict) then
         end,
   
         noeffect = function()
+          svo.lostbal_salve()
           empty.apply_epidermal_head()
         end,
   
@@ -4963,39 +4966,53 @@ if not next(svo.dict) then
         oncompleted = function() svo.rmaff('stuttering') end,
       }
     },
+    -- Nothing cures scalded; it wears off after 20 seconds (the repo owner,
+    -- 2026-09-26). It used to be a throat affliction cured by epidermal to the
+    -- head, and with the GMCP empty-cure gate keeping it, svof applied salve
+    -- on every salve balance until it wore off.
     scalded = {
-      salve = {
+      waitingfor = {
+        customwait = 20,
+
         isadvisable = function()
-          return (affs.scalded and not defc.blind and not affs.blindaff) or false
+          return false
         end,
-  
-        oncompleted = function()
-          svo.lostbal_salve()
+
+        onstart = function() end,
+
+        ontimeout = function()
           svo.rmaff('scalded')
         end,
-  
-        noeffect = function()
-          empty.apply_epidermal_head()
-        end,
-  
-        empty = function()
-          empty.apply_epidermal_head()
-        end,
-  
-        applycure = {'epidermal', 'sensory'},
-        actions = {"apply epidermal to head", "apply epidermal", "apply sensory to head", "apply sensory"},
-        onstart = function()
-          svo.apply(svo.dict.scalded.salve, " to head")
+
+        oncompleted = function()
+          svo.rmaff('scalded')
+          svo.make_gnomes_work()
         end
       },
       aff = {
         oncompleted = function()
+          -- A fresh scald while already scalded starts the 20 seconds again.
+          -- addaffdict does nothing for an affliction already tracked, so
+          -- onadded would not. Only the fallback moves: the wear-off line
+          -- still clears it whenever the game prints it.
+          if affs.scalded and svo.actions.scalded_waitingfor then
+            svo.killaction(svo.dict.scalded.waitingfor)
+            svo.doaction(svo.dict.scalded.waitingfor)
+          end
           svo.addaffdict(svo.dict.scalded)
         end,
       },
       gone = {
         oncompleted = function() svo.rmaff('scalded') end,
-      }
+      },
+      -- onadded and not aff.oncompleted, because GMCP adds it with addaffdict
+      -- and never runs the aff action.
+      onadded = function()
+        if not svo.actions.scalded_waitingfor then svo.doaction(svo.dict.scalded.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.scalded_waitingfor then svo.killaction(svo.dict.scalded.waitingfor) end
+      end,
     },
     numbedleftarm = {
       waitingfor = {
@@ -5102,9 +5119,12 @@ if not next(svo.dict) then
         return (svo.defdefup[svo.defs.mode].blind or svo.defkeepup[svo.defs.mode].blind)
       end,
       salve = {
+        -- This used to be advisable whenever scalded, because the same
+        -- epidermal to the head cured scalded. Nothing cures scalded now, so
+        -- that only stripped a blind defence svof wanted.
         isadvisable = function()
           return (affs.blindaff and not ((sys.deffing and defdefup[defs.mode].blind) or
-            (conf.keepup and defkeepup[defs.mode].blind)) or affs.scalded) or false
+            (conf.keepup and defkeepup[defs.mode].blind))) or false
         end,
   
         oncompleted = function()
@@ -5123,6 +5143,7 @@ if not next(svo.dict) then
         end,
   
         noeffect = function()
+          svo.lostbal_salve()
           empty.apply_epidermal_head()
         end,
   
@@ -5171,6 +5192,7 @@ if not next(svo.dict) then
         end,
   
         noeffect = function()
+          svo.lostbal_salve()
           empty.apply_epidermal_head()
         end,
   
@@ -8551,6 +8573,10 @@ if not next(svo.dict) then
       },
       aff = {
         oncompleted = function (herb)
+          -- "" when added without a herb (a bare simpleparadox()), the value
+          -- the entry starts with and gone resets it to. nil made
+          -- paradox_weakened call string.find with no pattern and raise.
+          herb = herb or ""
           svo.dict.paradox.count = 5
           svo.dict.paradox.blocked_herb = herb
           svo.addaffdict(svo.dict.paradox)
@@ -9687,7 +9713,17 @@ if not next(svo.dict) then
         action = 'insomnia',
         onstart = function() send('insomnia', conf.commandecho) end
       },
-      -- small cheat for insomnia being on diagnose
+      -- Originally "small cheat for insomnia being on diagnose". DIAGNOSE's
+      -- text does not list insomnia today and no diag trigger names it
+      -- (checked in game, 2026-10-03). The game does model it as an affliction
+      -- as well as a defence, though: GMCP sends insomnia in Char.Afflictions,
+      -- with the cure EAT GOLDENSEAL, in lockstep with Char.Defences (seen in
+      -- both captured fights), and goldenseal strips it (herb_cured_insomnia).
+      -- sstosvoa maps it to false, so svof reads only the defence feed. The
+      -- block is kept for that affliction side. It makes insomnia look like an
+      -- affliction to anything that tests for an `aff` block, which is why
+      -- svo.valid.generic rejects entries by their def flag rather than by
+      -- that test.
       aff = {
         oncompleted = function() defences.got('insomnia') end
       },
@@ -9855,8 +9891,12 @@ if not next(svo.dict) then
       herb = {
         def = true,
   
+        -- No scalded test any more. It held blind back while scalded because
+        -- scalded's cure, epidermal to the head, would strip it again. Nothing
+        -- cures scalded now, so it only left a kept-up blind down for the
+        -- whole scald, up to 20 seconds.
         isadvisable = function()
-          return (not affs.scalded and
+          return (
             (not svo.haveskillset('shindo') or (defc.dragonform or (not conf.shindoblind))) and
             (not svo.haveskillset('kaido') or (defc.dragonform or (not conf.kaidoblind))) and
             ((sys.deffing and defdefup[defs.mode].blind and not defc.blind) or (conf.keepup and defkeepup[defs.mode].blind and not defc.blind)) and
@@ -10510,6 +10550,7 @@ if not next(svo.dict) then
       disrupted = 'disrupt',
       dissonance = 'dissonance',
       dizziness = 'dizziness',
+      earworm = 'earworm',
       enlightenment = false,
       enmesh = false,
       ensorcelled = 'ensorcelled',
