@@ -26,11 +26,6 @@ latched is added is not the moment it was gained:
 So the entry must have no onadded at all, and aff.oncompleted must take the
 balance only when the gain line says 'gained'.
 
-It also pins what a health sip for latched that does nothing means. "The
-elixir flows down your throat without effect." only fires after the drink
-line, so the sip went through; with latched it would have given "Warmth floods
-back..." instead. So noeffect, like empty, clears latched.
-
 It proves nothing about Mudlet integration, the game, or real combat.
 
 Run: lua tools/test_latched.lua
@@ -144,14 +139,15 @@ do
   check("the gain line takes sip balance once", w.strips, 1)
 end
 
--- "The elixir flows down your throat without effect." after a health sip for
--- latched: the sip went through and did nothing, so latched was not there.
-for _, outcome in ipairs({'noeffect', 'empty'}) do
+-- "The elixir flows down your throat without effect." is the reply to a sip
+-- while off sip balance, which gaining latched knocks you off. It must not be
+-- read as "latched is gone": that would drop a real latched right after the
+-- gain. It records the balance and nothing else.
+do
   local w = world()
-  w.svo.dict.latched.sip[outcome]()
-  check("sip " .. outcome .. " clears latched", w.removed[1], 'latched')
-  check("sip " .. outcome .. " clears nothing else", #w.removed, 1)
-  check("sip " .. outcome .. " takes sip balance once", w.strips, 1)
+  w.svo.dict.latched.sip.noeffect()
+  check("sip noeffect takes sip balance once", w.strips, 1)
+  check("sip noeffect keeps latched", #w.removed, 0)
 end
 
 print(string.format("%d checks, %d failures", checks, failures))
