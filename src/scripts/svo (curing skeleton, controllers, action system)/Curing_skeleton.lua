@@ -316,11 +316,22 @@ svo.check_moss = function(sync_mode)
     return svo.dict[svo.getHighestKey(prios)].moss end
 end
 
+-- Afflictions that punish a focus, unless the player chose to risk it with
+-- the matching vconfig option: cadmus gives a physical affliction, fulminated
+-- paralyses, guilt gives a mental affliction. Anything that sends focus asks
+-- this, check_focus and the impatience probe alike, so a new option only
+-- needs adding here.
+function svo.focus_would_hurt()
+  return (affs.cadmus and not conf.focuswithcadmus)
+    or (affs.fulminated and not conf.focuswithfulminated)
+    or (affs.guilt and not conf.focuswithguilt) or false
+end
+
 svo.check_focus = function(sync_mode)
   -- can we even focus?
   if not next(affs) or svo.usingbal('focus') or affs.stun or affs.unconsciousness or not bals.focus
     or affs.sleep or not svo.can_usemana() or not conf.focus or stats.currentwillpower <= 75
-    or affs.impatience or affs.sandfever or affs.inquisition or (affs.cadmus and not conf.focuswithcadmus) then
+    or affs.impatience or affs.sandfever or affs.inquisition or svo.focus_would_hurt() then
       return
   end
 

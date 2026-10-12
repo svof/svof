@@ -204,7 +204,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "36000c26b0d7742e",
+      "digest": "b6aeed9242c0c9e8",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -224,13 +224,18 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "30c3f27a92a786c0",
+      "digest": "35126502bfa4f0f8",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Custom prompt|script",
       "digest": "168eba2e62c02b9a",
       "text": "Script   svo (custom prompt, serverside) Custom prompt [script]"
+    },
+    {
+      "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
+      "digest": "af3ca519b494c9b4",
+      "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
       "id": "item|Script|svo (elistsorter)|svo Elixer Sorter/elistsorter code|script",
@@ -301,6 +306,11 @@
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Custom prompt tags/@affs|script",
       "digest": "cf6e57ca187eb12f",
       "text": "Script   svo (install me in module manager) svo Utilities/Custom prompt tags/@affs [script]"
+    },
+    {
+      "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Config system|script",
+      "digest": "aeb9d946f0369a94",
+      "text": "Script   svo (install, config, pipes, rift, parry, prios) Config system [script]"
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Install system|script",
