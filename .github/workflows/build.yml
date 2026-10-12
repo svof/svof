@@ -192,9 +192,10 @@ jobs:
       - name: test latched
         run: lua tools/test_latched.lua
 
-      # Gate 1.76. svo.focus_would_hurt and what asks it: check_focus and the
-      # impatience probe, a bare focus of its own, which must wait while
-      # cadmus, fulminated or guilt would punish it. Extracted the same way.
+      # Gate 1.76. svo.focus_would_hurt and what asks it: check_focus, the
+      # impatience probe (a bare focus of its own, which must wait while
+      # cadmus, fulminated or guilt would punish it) and the login sync that
+      # sends the game the focus-with switches. Extracted the same way.
       - name: test focus guards
         run: lua tools/test_focus_guards.lua
 

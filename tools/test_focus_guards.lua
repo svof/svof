@@ -1,7 +1,8 @@
 --[[
 Logic-level regression test for the focus guards in
-`src/scripts/svo (curing skeleton, controllers, action system)/Curing_skeleton.lua`
-and `src/scripts/svo (actions dictionary)/Dictionary_of_actions_(affs-defs-misc).lua`.
+`src/scripts/svo (curing skeleton, controllers, action system)/Curing_skeleton.lua`,
+`src/scripts/svo (actions dictionary)/Dictionary_of_actions_(affs-defs-misc).lua`
+and `src/scripts/svo (custom prompt, serverside)/Serverside.lua`.
 
 Same approach as tools/test_latched.lua: the code under test is extracted
 from the real source files by anchor text and run in a stub environment, so it
@@ -17,6 +18,9 @@ What it pins:
     its own: it waits while a focus would hurt. It used to check only focus
     balance and conf.focus, so it could focus while fulminated (paralysis) or
     guilt (a mental affliction) were held with both options off.
+  * svo.setupserverside, run at every login: it sends the game the
+    focus-with switches, so a player who already had serverside on when the
+    options arrived does not keep whatever the game had.
 
 It proves nothing about Mudlet integration, the game, or real combat.
 
@@ -26,6 +30,7 @@ Exits 0 and prints "ALL PASS" on success, exits 1 and prints failures.
 
 local SKEL = "src/scripts/svo (curing skeleton, controllers, action system)/Curing_skeleton.lua"
 local DICT = "src/scripts/svo (actions dictionary)/Dictionary_of_actions_(affs-defs-misc).lua"
+local SERVER = "src/scripts/svo (custom prompt, serverside)/Serverside.lua"
 
 local function read_file(path)
   local f, err = io.open(path, "r")
@@ -47,8 +52,9 @@ local skel = read_file(SKEL)
 local helper_src = extract(skel, SKEL, "function svo.focus_would_hurt()", "\nend\n", true)
 local check_focus_src = extract(skel, SKEL, "svo.check_focus = function(sync_mode)", "\nend\n", true)
 local probe_src = extract(read_file(DICT), DICT, "    checkimpatience = {", "    checkasthma = {")
-print(string.format("extracted %d, %d and %d bytes of the real helper, check_focus and probe",
-  #helper_src, #check_focus_src, #probe_src))
+local setup_src = extract(read_file(SERVER), SERVER, "function svo.setupserverside()", "\nend\n", true)
+print(string.format("extracted %d, %d, %d and %d bytes of the real helper, check_focus, probe and setupserverside",
+  #helper_src, #check_focus_src, #probe_src, #setup_src))
 
 -- Mudlet runs Lua 5.1, where only loadstring() takes a source string and the
 -- environment is applied separately via setfenv. Branch on setfenv rather than
@@ -139,6 +145,28 @@ do
   end
   w.svo.affsp.impatience = nil
   check("probe: no suspected impatience: no probe", w.probe.isadvisable(), false)
+end
+
+-- setupserverside at login
+do
+  local function login(serverside)
+    local w = world()
+    w.conf.serverside = serverside
+    w.svo.sendc = function(c) w.sent[#w.sent + 1] = c end
+    w.svo.getping = function() return 0.1 end
+    w.svo.sk.sendfocuswith = function(only) w.focuswith = w.focuswith + 1 w.only = only end
+    w.env.tempTimer = function() return 1 end
+    w.env.killTimer = function() end
+    run(setup_src, "setupserverside", w.env)
+    w.svo.setupserverside()
+    return w
+  end
+  local w = login(true)
+  check("login with serverside: both focus-with switches sent once", w.focuswith, 1)
+  check("login with serverside: sent for both, not one", w.only, nil)
+  check("login with serverside: curing sets still created", w.sent[1], "curingset new normal")
+  w = login(false)
+  check("login without serverside: nothing sent", w.focuswith, 0)
 end
 
 print(string.format("%d checks, %d failures", checks, failures))

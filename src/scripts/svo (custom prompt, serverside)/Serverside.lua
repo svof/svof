@@ -871,6 +871,11 @@ function svo.setupserverside()
   svo.sendc("curingset new normal")
   svo.sendc("curingset new slowcuring")
 
+  -- The full sync runs only when serverside is switched on, so a player who
+  -- already had it on when focuswithfulminated and focuswithguilt arrived
+  -- would never send the game either switch. Send both at every login.
+  sk.sendfocuswith()
+
   if svo.serversidesetup then killTimer(svo.serversidesetup) end
   svo.serversidesetup = tempTimer(5+svo.getping(), function()
     svo.serversidesetup = nil
