@@ -1958,6 +1958,20 @@ do
   eq((answer_of(svo, 'paralysis') or {}).act, stand, "refusal: or while standing up")
   eq((answer_of(svo, 'paralysis') or {}).timerid, stand_timer, "refusal: the stand's timer read before it is killed")
 
+  -- slowcuring, with something else on physical balance: the tail files
+  -- paralysis for it, and must not replace the answer to the stand
+  svo.lifevision.l = ordered_map()
+  env.sys.sync = true
+  local usingbal = svo.usingbal
+  function svo.usingbal(balance) return balance == 'physical' end
+  local stand2 = send('prone', 'misc')
+  svo.valid.symp_paralysis()
+  eq((answer_of(svo, 'paralysis') or {}).act, stand2, "refusal: slowcuring keeps the answer to the stand")
+  svo.lifevision.l = ordered_map()
+  svo.valid.symp_paralysis()
+  truthy(svo.lifevision.l.paralysis_aff, "refusal: slowcuring with nothing to answer still files paralysis")
+  env.sys.sync, svo.usingbal = nil, usingbal
+
   -- an action checkaction filed for a line, not a command svof sent
   svo.lifevision.l = ordered_map()
   local filed = send('crippledrightarm', 'salve')

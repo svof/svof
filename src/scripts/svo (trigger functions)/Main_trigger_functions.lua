@@ -568,8 +568,11 @@ function svo.valid.symp_paralysis()
     svo.killaction(svo.dict.prone.misc)
   end
 
-  -- in slowcuring only (for AI safety for now), count all balanceful actions for paralysis
-  if sys.sync and svo.usingbal'physical' then
+  -- in slowcuring only (for AI safety for now), count all balanceful actions for paralysis.
+  -- Not when paralysis is already filed this paragraph: lifevision keeps one
+  -- claim per name, so filing it again replaced the answer to the stand above
+  -- with a bare claim, which GMCP could then refuse.
+  if sys.sync and svo.usingbal'physical' and not lifevision.l.paralysis_aff then
     valid.simpleparalysis()
   end
 end
