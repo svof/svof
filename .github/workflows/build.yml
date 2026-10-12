@@ -192,6 +192,12 @@ jobs:
       - name: test latched
         run: lua tools/test_latched.lua
 
+      # Gate 1.76. svo.focus_would_hurt and what asks it: check_focus and the
+      # impatience probe, a bare focus of its own, which must wait while
+      # cadmus, fulminated or guilt would punish it. Extracted the same way.
+      - name: test focus guards
+        run: lua tools/test_focus_guards.lua
+
       # Gate 1.8. dict_setup decides what a top-level key on an entry means by
       # its TYPE: a table is a balance and gets a name and a priority, a scalar
       # falls through. Both ways of getting that wrong are silent. A scalar

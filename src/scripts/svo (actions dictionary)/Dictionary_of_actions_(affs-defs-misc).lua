@@ -7143,8 +7143,12 @@ if not next(svo.dict) then
       misc = {
         uncurable = true,
   
+        -- The probe is a bare focus: impatience refuses it, anything else
+        -- lets it through. So it waits while a focus would be punished, the
+        -- same as check_focus does.
         isadvisable = function()
-          return (svo.affsp.impatience and not affs.sleep and bals.focus and conf.focus) or false
+          return (svo.affsp.impatience and not affs.sleep and bals.focus and conf.focus
+            and not svo.focus_would_hurt()) or false
         end,
   
         oncompleted = function() end,
