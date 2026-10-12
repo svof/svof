@@ -782,8 +782,16 @@ end
 -- The affliction a lifevision claim says is gone (a wore-off line, a passive
 -- cure), when GMCP still reports it; nil for everything else. Defences also
 -- file under 'gone', but gmcp_holds only ever matches affliction names.
+--
+-- Only a claim that runs the plain oncompleted says the affliction is gone.
+-- One filed with an other_action is a step that leaves it in place, and GMCP
+-- still reporting it is what you would expect: ninkharsag's hiddencures (a
+-- cure it hid, not ninkharsag ending), a fracture's general_cure (one level
+-- cured) and the burn ladder's generic_reducelevel (one rung down). Dropping
+-- those lost the step. Anything they do remove still goes through svo.rmaff,
+-- whose own backstop asks GMCP.
 function svo.gmcp_kept_claim(claim)
-  if claim.p.balance ~= 'gone' then return nil end
+  if claim.p.balance ~= 'gone' or claim.other_action then return nil end
   if svo.gmcp_holds(claim.p.action_name) then return claim.p.action_name end
   return nil
 end

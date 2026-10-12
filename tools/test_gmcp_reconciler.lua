@@ -1140,11 +1140,18 @@ do
   env.gmcp.Char.Afflictions.List = { { name = 'asthma' } }
   h.afflist()
 
-  local function claim(action_name, balance)
-    return { p = { action_name = action_name, balance = balance, name = action_name .. '_' .. balance } }
+  local function claim(action_name, balance, other_action)
+    return { p = { action_name = action_name, balance = balance, name = action_name .. '_' .. balance },
+      other_action = other_action }
   end
 
   eq(svo.gmcp_kept_claim(claim('asthma', 'gone')), 'asthma', "gone claim: kept when GMCP still reports it")
+  -- a step that leaves the affliction in place is not a removal: ninkharsag's
+  -- hiddencures, a fracture's general_cure, a burn's generic_reducelevel
+  for _, step in ipairs({'hiddencures', 'general_cure', 'generic_reducelevel'}) do
+    eq(svo.gmcp_kept_claim(claim('asthma', 'gone', step)), nil,
+      "gone claim: a " .. step .. " step goes through while GMCP still reports it")
+  end
   eq(svo.gmcp_kept_claim(claim('slickness', 'gone')), nil, "gone claim: not when GMCP does not")
   eq(svo.gmcp_kept_claim(claim('rebounding', 'gone')), nil, "gone claim: a defence's is never kept")
   eq(svo.gmcp_kept_claim(claim('asthma', 'herb')), nil, "gone claim: a cure is not one, its own rmaff decides")
