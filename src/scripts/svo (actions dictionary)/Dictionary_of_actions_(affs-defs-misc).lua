@@ -353,6 +353,16 @@ codepaste.addunknownany = function(amount)
   svo.updateaffcount(svo.dict.unknownany)
 end
 
+-- The burn ladder is legacy. Achaea made burning one stacking affliction,
+-- which GMCP and serverside report as `burning` with a level, so these five
+-- separate afflictions are no longer needed. Replacing them with one counted
+-- entry (keeping the name ablaze), and reworking pyre with it, is planned as
+-- its own change. Don't build new logic on sk.burns.
+--
+-- A known problem until then: GMCP's `burning` maps to ablaze alone, so when
+-- a rung above it is gained, remove_burns tries to remove ablaze, GMCP still
+-- reports burning, and svo.rmaff refuses. ablaze and the new rung both stay
+-- tracked, and sk.current_burn returns ablaze.
 sk.burns = {'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn'}
 -- removes all burning afflictions except for the optional specified one
 codepaste.remove_burns = function(skipaff)
