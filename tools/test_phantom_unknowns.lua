@@ -640,6 +640,18 @@ do
   eq(s.unknowns(), 0, "two reveals in one paragraph: both ?s are taken off")
 end
 
+-- caloric's insulation took a ? off without telling the prompt the new count.
+do
+  local s = new_svof()
+  s.hold_unknowns(2)
+  s.gmcp_lost_def("insulation")
+  s.svo.valid.simpleunknownany()           -- the absorbed venom
+  s.svo.valid.stripped_caloric()
+  s.prompt()
+  eq(s.unknowns(), 2, "insulation with two ? held: one is absorbed")
+  eq(s.svo.affl.unknownany and s.svo.affl.unknownany.count, 2, "insulation: the prompt's count follows")
+end
+
 -- A reveal in one paragraph does not carry over to a symptom in the next.
 do
   local s = new_svof()

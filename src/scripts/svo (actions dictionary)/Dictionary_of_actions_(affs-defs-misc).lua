@@ -9873,17 +9873,23 @@ if not next(svo.dict) then
         oncompleted = function(aff)
           defences.lost('caloric')
   
+          -- the prompt shows the count from svo.affl, so a ? that stays has to
+          -- be told its new count, as insomnia's copy of this does
           if aff and aff == 'unknownany' then
             svo.dict.unknownany.count = svo.dict.unknownany.count - 1
             if svo.dict.unknownany.count <= 0 then
               svo.rmaff('unknownany')
               svo.dict.unknownany.count = 0
+            else
+              svo.updateaffcount(svo.dict.unknownany)
             end
           elseif aff and aff == 'unknownmental' then
             svo.dict.unknownmental.count = svo.dict.unknownmental.count - 1
             if svo.dict.unknownmental.count <= 0 then
               svo.rmaff('unknownmental')
               svo.dict.unknownmental.count = 0
+            else
+              svo.updateaffcount(svo.dict.unknownmental)
             end
           end
         end
