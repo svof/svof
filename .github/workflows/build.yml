@@ -199,6 +199,12 @@ jobs:
       - name: test focus guards
         run: lua tools/test_focus_guards.lua
 
+      # Gate 1.77. The balances a pear takes, from pressure's entry and
+      # empty.eat_pear, extracted the same way. A pear takes smoke balance
+      # only when it cures pressure, and none when it cures nothing.
+      - name: test pear balance
+        run: lua tools/test_pear_balance.lua
+
       # Gate 1.8. dict_setup decides what a top-level key on an entry means by
       # its TYPE: a table is a balance and gets a name and a priority, a scalar
       # falls through. Both ways of getting that wrong are silent. A scalar
