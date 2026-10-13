@@ -474,10 +474,9 @@ end
 -- { p = <the dict entry>, sw = <stopwatch> } with no __index on svo.affs - so
 -- reading affs.pyre.count gave nil and raised on the comparison. And having
 -- pyre at all is level 1 or more, which is why presence floors the answer at
--- 1: only the GMCP path ever raises svo.dict.pyre.count, since
--- svo.valid.simplepyre passes no argument and pyre sits in the plain diag list
--- rather than the counted one, so without GMCP the stored level stays 0 while
--- the affliction is genuinely there.
+-- 1. svo.valid.simplepyre and DIAGNOSE give no level, so pyre's aff handler
+-- raises a count of 0 to 1 itself; the floor stays for anything that records
+-- pyre some other way.
 codepaste.pyre_holds = function(burn)
   if not affs.pyre then return false end
 
@@ -1918,6 +1917,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.pyre)
+          -- the gain line and DIAGNOSE give no level, and having pyre at all is level 1. A level GMCP already set
+          -- is kept, and a pyre GMCP refused is left at 0
+          if affs.pyre and svo.dict.pyre.count < 1 then svo.dict.pyre.count = 1 end
           svo.updateaffcount(svo.dict.pyre)
         end
       },

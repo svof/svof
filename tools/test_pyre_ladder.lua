@@ -22,9 +22,9 @@ Three things it pins:
     svo.affs carries no __index, so reading affs.pyre.count gave nil and
     `nil >= 2` raised - aborting the whole prompt, not returning a wrong
     answer.
-  * the floor. Having pyre at all is level 1 or more, but only the GMCP path
-    ever raises svo.dict.pyre.count, so without GMCP the stored level sits at
-    0 while the affliction is genuinely there.
+  * the floor. Having pyre at all is level 1 or more, but the gain line and
+    DIAGNOSE give no level. pyre's aff handler raises a count of 0 to 1, run
+    here from the real entry, and pyre_holds still floors a stored 0 at 1.
 
 It proves nothing about Mudlet integration or real combat.
 
@@ -159,6 +159,46 @@ check("pyre with no count field frees severeburn", codepaste.pyre_holds('severeb
 affs.pyre = {count = 5, p = {count = 1}}
 check("a bare .count is not read for severeburn", codepaste.pyre_holds('severeburn'), false)
 check("a bare .count is not read for ablaze", codepaste.pyre_holds('ablaze'), true)
+
+-- pyre's own aff handler, from the real entry. The gain line and DIAGNOSE run
+-- it with no level, and used to leave the count at 0, which the @affs prompt
+-- tag showed as pyre(0).
+local source = read_file(SRC):gsub("\r\n", "\n")
+local es = source:find("\n    pyre = {", 1, true)
+local ee = es and source:find("\n    generosity = {", es, true)
+if not ee then error("pyre's entry not found in " .. SRC .. "; update this test's anchors") end
+
+-- refuse: addaffdict refuses the add, as the GMCP backstop does
+local function run_aff(count, refuse)
+  local w = { updated = 0, affs = {} }
+  local svo = { dict = {} }
+  function svo.addaffdict(entry) if not refuse then w.affs.pyre = { p = entry } end end
+  function svo.updateaffcount() w.updated = w.updated + 1 end
+  function svo.haveskillset() return false end
+  local entry_env = { svo = svo, affs = w.affs, empty = {}, codepaste = {} }
+  local code = "return {" .. source:sub(es, ee) .. "}"
+  local entry_chunk, entry_err
+  if setfenv then
+    entry_chunk, entry_err = loadstring(code, "pyre entry")
+    if entry_chunk then setfenv(entry_chunk, entry_env) end
+  else
+    entry_chunk, entry_err = load(code, "pyre entry", "t", entry_env)
+  end
+  if not entry_chunk then error("could not load pyre's entry: " .. tostring(entry_err)) end
+  local entry = entry_chunk().pyre
+  svo.dict.pyre = entry
+  entry.count = count
+  entry.aff.oncompleted()
+  return entry.count, w
+end
+
+local count, w = run_aff(0)
+check("the gain line or DIAGNOSE records pyre at level 1", count, 1)
+check("the level is shown", w.updated, 1)
+count = run_aff(2)
+check("a level GMCP already set is kept", count, 2)
+count = run_aff(0, true)
+check("a pyre GMCP refused stays at 0", count, 0)
 
 print(string.format("%d checks, %d failures", checks, failures))
 if failures > 0 then print("FAILED") os.exit(1) end
