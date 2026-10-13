@@ -3512,14 +3512,32 @@ function defences.wire(defname, defdata)
     end
 end
 
+-- the key sys.input_to_actions holds a command under, or nil: as curingcommand
+-- looks serverside's up, in lower case without the spaces around it
+function defences.command_key(command)
+  local key = type(command) == 'string' and command:lower():match("^%s*(.-)%s*$")
+  if key and key ~= '' then return key end
+end
+
+-- puts act in map under its command as serverside sends it and as the
+-- player typed it, which processusercommand looks up as it is, unless the
+-- map gives either to another action
+local function map_command(map, act, command)
+  local key = defences.command_key(command)
+  if not key then return end
+  if not map[key] then map[key] = act end
+  if command ~= key and not map[command] then map[command] = act end
+end
+
 -- Registers a defence after systemstart, the way systemstart wires every
 -- other: its record (what the game prints), its dictionary entry (how svof
 -- raises it) when one is given, then defences.wire. For a defence that comes
 -- with an item, such as the phylactery's mindnet. dict_setup gives the entry
 -- its names and priorities, a player's saved defup and keepup choice for it
 -- is kept, and its handlers are remembered with the ones systemstart made,
--- for the next systemstart to clear.
-function defences.register(name, record, entry)
+-- for the next systemstart to clear. definition says it's one the player
+-- defined, which no change to svof's own goes on.
+function defences.register(name, record, entry, definition)
   defs_data:set(name, record)
   if entry then svo.dict[name] = entry end
 
@@ -3532,7 +3550,7 @@ function defences.register(name, record, entry)
 
   -- an item's defence registers after systemstart put the player's changes
   -- to svof's own into play, so its change goes in here
-  defences.edit_put(name)
+  if not definition then defences.edit_put(name) end
 
   -- svof takes its command for its own when the player types it or
   -- serverside sends it ([Curing]: <COMMAND>), as for the defences
@@ -3541,8 +3559,7 @@ function defences.register(name, record, entry)
   local map = sys.input_to_actions
   if map and type(svo.dict[name]) == 'table' then
     for _, act in pairs(svo.dict[name]) do
-      local key = type(act) == 'table' and type(act.action) == 'string' and act.action:lower():match("^%s*(.-)%s*$")
-      if key and key ~= '' and not map[key] then map[key] = act end
+      if type(act) == 'table' then map_command(map, act, act.action) end
     end
   end
 
@@ -3605,6 +3622,14 @@ function defences.unregister(name, keepchoices)
   local gamename = svo.dict.svotossd[name]
   if gamename and svo.dict.sstosvod[gamename] == name then svo.dict.sstosvod[gamename] = nil end
   svo.dict.svotossd[name] = nil
+  -- what the GMCP name meant before a definition took it, such as a copy's
+  -- name, which svof's own has in every class
+  local held = defences.gmcp_held[name]
+  if held then
+    svo.dict.sstosvod[held.gmcp] = held.mapped
+    svo.dict.svotossd[name] = held.gamename
+    defences.gmcp_held[name] = nil
+  end
 
   if type(svo.dict[name]) == 'table' then
     for _, act in pairs(svo.dict[name]) do
@@ -3749,6 +3774,8 @@ end
 -- item brings, or anything else in the dictionary, such as an affliction.
 -- One a definition registered (defences.custom_registered) is the player's.
 defences.custom_registered = defences.custom_registered or {}
+-- what the GMCP names registered definitions took meant before
+defences.gmcp_held = defences.gmcp_held or {}
 local item_defences = { mindnet = true, lifevision = true, shroud = true }
 function defences.custom_taken(name)
   if defences.custom_registered[name] then return false end
@@ -3804,13 +3831,6 @@ function defences.catalog()
   return catalog
 end
 
--- the versions of Svof's own name in the classes that have it, when this
--- class doesn't have Svof's own, or nil
-function defences.own_elsewhere(name)
-  if defs_data[name] and not defences.custom_registered[name] then return nil end
-  return defences.catalog()[name]
-end
-
 -- the classes versions of a defence are for, as the game writes them
 local function class_names(versions)
   local t, seen = {}, {}
@@ -3843,11 +3863,27 @@ local function pcre()
   return rawget(_G, 'rex')
 end
 
+-- each pattern compiled once, since clash matches every pattern against
+-- every line; false for one the library can't read
+local compiled = setmetatable({}, { __mode = 'k' })
+
 -- whether pattern matches line, by the library the trigger would use
 local function pattern_matches(pattern, line)
   local rex = pcre()
   if not rex then return false end
-  local ok, m = pcall(rex.match, line, pattern)
+  local byrex = compiled[rex]
+  if not byrex then
+    byrex = {}
+    compiled[rex] = byrex
+  end
+  local re = byrex[pattern]
+  if re == nil then
+    local ok, made = pcall(rex.new, pattern)
+    re = ok and made or false
+    byrex[pattern] = re
+  end
+  if not re then return false end
+  local ok, m = pcall(re.match, re, line)
   return ok and m ~= nil and m ~= false
 end
 
@@ -3857,6 +3893,20 @@ function defences.pattern_problem(pattern)
   if not rex then return "Svof can't read patterns without Mudlet's rex library" end
   local ok, err = pcall(rex.new, pattern)
   if not ok then return "it isn't a pattern Svof can read (" .. tostring(err) .. ")" end
+end
+
+-- why one of spec's patterns can't be used, or nil, for those kept(field,
+-- pattern) doesn't keep, such as svof's own. Such as ones a file brought
+-- in, as typed ones are checked; svof can only check them where Mudlet's
+-- rex library is
+local function patterns_problem(spec, kept)
+  if not pcre() then return end
+  for _, field in ipairs(pattern_fields) do
+    for _, p in ipairs(line_list(spec[field])) do
+      local why = not (kept and kept(field, p)) and defences.pattern_problem(p)
+      if why then return string.format("%s can't be a pattern: %s", p, why) end
+    end
+  end
 end
 
 -- Why a defence's lines, GMCP name or command clash with what this class
@@ -3936,8 +3986,8 @@ function defences.clash(name, parts)
       end
     end
   end
-  local command = parts.command and parts.command:lower():match("^%s*(.-)%s*$")
-  if command and command ~= '' then
+  local command = defences.command_key(parts.command)
+  if command then
     -- what svof takes a command for when the player types it or serverside
     -- sends it, the registered definitions' included (defences.register)
     local act = sys.input_to_actions and sys.input_to_actions[command]
@@ -3985,6 +4035,9 @@ function defences.custom_register(name, spec)
   end
   svo.basicdef(name, spec.command, spec.balanceless, spec.gmcp, not spec.gmcp)
   if spec.gmcp then
+    -- for defences.unregister to put back
+    defences.gmcp_held[name] = { gmcp = spec.gmcp, mapped = svo.dict.sstosvod[spec.gmcp],
+      gamename = svo.dict.svotossd[name] }
     svo.dict.sstosvod[spec.gmcp] = name
     svo.dict.svotossd[name] = spec.gmcp
   end
@@ -4008,12 +4061,12 @@ function defences.custom_register(name, spec)
     for _, p in ipairs(line_list(spec[field])) do l[#l + 1] = p end
     if #l > 0 then record[field] = l end
   end
-  defences.register(name, record)
+  defences.register(name, record, nil, true)
   defences.custom_registered[name] = true
 end
 
 signals.systemstart:connect(function ()
-  defences.custom_registered = {}
+  defences.custom_registered, defences.gmcp_held = {}, {}
   -- read whether or not they're added, for vcustomdef to list and change
   if not defences.custom then defences.custom_load() end
   if not conf.customdefinitions then return end
@@ -4144,16 +4197,8 @@ function defences.custom_problem(name, spec)
     local why = skillset_problem(spec.skillset)
     if why then return why end
   end
-  -- its patterns, such as ones a file brought in, as typed ones are; svof
-  -- can only check them where Mudlet's rex library is
-  if pcre() then
-    for _, field in ipairs(pattern_fields) do
-      for _, p in ipairs(line_list(spec[field])) do
-        local why = defences.pattern_problem(p)
-        if why then return string.format("%s can't be a pattern: %s", p, why) end
-      end
-    end
-  end
+  local why = patterns_problem(spec)
+  if why then return why end
   -- its lines, GMCP name and command against the class's other defences
   return defences.clash(name, custom_parts(spec))
 end
@@ -4190,6 +4235,20 @@ local function custom_link(text, code, hint)
   setUnderline(true)
   echoLink(text, code, hint, true)
   setUnderline(false)
+end
+
+-- the patterns in field, for lines that vary, under the exact lines: each
+-- with a link to remove it, then a link to add one with vcustomdef's verb
+local function pattern_rows(name, cmd, patterns, field, verb)
+  for i, p in ipairs(patterns) do
+    echo(string.format("  %-12s %s  ", i == 1 and "or matches:" or "", p))
+    custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, field, i), "Remove this pattern")
+    echo("\n")
+  end
+  echo(string.format("  %-12s ", ""))
+  custom_link("add a pattern", string.format("printCmdLine(%q)", cmd .. verb .. " "),
+    "For a line that varies: a pattern, as Mudlet's regex triggers take")
+  echo("\n")
 end
 
 -- what serverside does about a definition: it knows a defence by its GMCP
@@ -4270,19 +4329,7 @@ function defences.custom_show(name)
     custom_link("vshow server", "svo.showserverside()", "Choose whether serverside or Svof raises it")
   end
   echo("\n")
-  -- the patterns for lines that vary, under the exact lines, and a link
-  -- to add one
-  local function patterns(field, verb)
-    for i, p in ipairs(line_list(d[field])) do
-      echo(string.format("  %-12s %s  ", i == 1 and "or matches:" or "", p))
-      custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, field, i), "Remove this pattern")
-      echo("\n")
-    end
-    echo(string.format("  %-12s ", ""))
-    custom_link("add a pattern", string.format("printCmdLine(%q)", cmd .. verb .. " "),
-      "For a line that varies: a pattern, as Mudlet's regex triggers take")
-    echo("\n")
-  end
+  local function patterns(field, verb) pattern_rows(name, cmd, line_list(d[field]), field, verb) end
   for _, which in ipairs({ { 'on', 'got', "gained when:" }, { 'off', 'lost', "lost when:" } }) do
     local lines = d[which[1]]
     for i, line in ipairs(lines) do
@@ -4769,6 +4816,16 @@ local function no_def_warning(name)
     name, name)
 end
 
+-- what test says a defence knows it's up or gone from: its lines, its
+-- patterns (a count) and GMCP
+local function known_from(lines, patterns, gmcp)
+  local parts = {}
+  if #lines > 0 then parts[#parts + 1] = string.format("%d line%s", #lines, #lines == 1 and "" or "s") end
+  if patterns > 0 then parts[#parts + 1] = string.format("%d pattern%s", patterns, patterns == 1 and "" or "s") end
+  if gmcp then parts[#parts + 1] = gmcp end
+  return #parts > 0 and svo.concatand(parts) or "nothing, until DEF"
+end
+
 function defences.custom_test(name)
   if defences.is_own(name) then return defences.edit_test(name) end
   local d = defences.custom_drafts[name] or defences.custom[name]
@@ -4780,15 +4837,8 @@ function defences.custom_test(name)
     or "under no skillset yet")
   svo.echof("Svof raises it by sending %q, which %s. Serverside %s.", tostring(d.command),
     d.balanceless and "takes no balance" or "takes balance", custom_serverside(name, d))
-  local function from(lines, patterns, gmcp)
-    local parts = {}
-    if #lines > 0 then parts[#parts + 1] = string.format("%d line%s", #lines, #lines == 1 and "" or "s") end
-    if patterns > 0 then parts[#parts + 1] = string.format("%d pattern%s", patterns, patterns == 1 and "" or "s") end
-    if gmcp then parts[#parts + 1] = gmcp end
-    return #parts > 0 and svo.concatand(parts) or "nothing, until DEF"
-  end
-  svo.echof("It knows it's up from %s.", from(on, #line_list(d.onr), d.gmcp and ("GMCP's " .. d.gmcp)))
-  svo.echof("It knows it's gone from %s.", from(off, #line_list(d.offr), d.gmcp and "GMCP"))
+  svo.echof("It knows it's up from %s.", known_from(on, #line_list(d.onr), d.gmcp and ("GMCP's " .. d.gmcp)))
+  svo.echof("It knows it's gone from %s.", known_from(off, #line_list(d.offr), d.gmcp and "GMCP"))
   if d.notondef then
     svo.echof("DEF doesn't list it, so DEF leaves it alone.")
   elseif not d.def and #line_list(d.defr) == 0 then
@@ -4823,8 +4873,12 @@ function defences.custom_install(name)
 
   -- serverside raises one with a GMCP name, as it does svof's own, from
   -- when it first has one, until vshow server says otherwise. Without one
-  -- it can't, and left to serverside nothing would raise it
-  if d.gmcp and not (had and had.gmcp) then
+  -- it can't, and left to serverside nothing would raise it. A copy of
+  -- svof's own shares vshow server's choice with svof's own, which is
+  -- by name in every class, so keeps it
+  if defences.catalog()[name] then
+    -- (the choice made for svof's own)
+  elseif d.gmcp and not (had and had.gmcp) then
     svo.setserverignore(name)
   elseif not d.gmcp and svo.serverignore[name] then
     svo.unsetserverignore(name)
@@ -4856,6 +4910,8 @@ function defences.custom_delete(name)
     svo.echof("You haven't defined %s.", name)
     return
   end
+  -- a name svof has in other classes, which a copy of svof's own takes
+  local svofs = defences.catalog()[name] ~= nil
   if defences.custom_registered[name] then
     custom_server_forget(name)
     defences.unregister(name)
@@ -4864,7 +4920,8 @@ function defences.custom_delete(name)
   defences.custom[name] = nil
   defences.custom_drafts[name] = nil
   defences.custom_save()
-  if svo.serverignore[name] then svo.unsetserverignore(name) end
+  -- a copy's vshow server choice is svof's own's too, which stays
+  if svo.serverignore[name] and not svofs then svo.unsetserverignore(name) end
   svo.echof("Deleted %s.", name)
 end
 
@@ -5125,10 +5182,15 @@ end
 -- player types it or serverside sends it (sys.input_to_actions)
 local function set_command(phys, command, onstart)
   local map = sys.input_to_actions
-  if map[phys.action] == phys then map[phys.action] = nil end
+  -- the old command's, as it is and in lower case
+  for _, old in ipairs({ phys.action, defences.command_key(phys.action) }) do
+    if map[old] == phys then map[old] = nil end
+  end
   phys.action = command
   phys.onstart = onstart or function () send(command, conf.commandecho) end
-  map[command] = phys
+  local key = defences.command_key(command)
+  if key then map[key] = phys end
+  if key and command ~= key then map[command] = phys end
 end
 
 -- its GMCP name, which serverside knows it by too
@@ -5347,15 +5409,9 @@ local function edit_problem(name, d)
   if #d.on == 0 and #d.onr == 0 and (#own.on > 0 or #own.onr > 0) and not d.gmcp then
     return "it needs a line saying you gained it, or its GMCP name, or Svof can't tell when it's up"
   end
-  -- its patterns svof's own doesn't have, such as ones a file brought in
-  if pcre() then
-    for _, field in ipairs(pattern_fields) do
-      for _, p in ipairs(d[field]) do
-        local why = not table.contains(own[field], p) and defences.pattern_problem(p)
-        if why then return string.format("%s can't be a pattern: %s", p, why) end
-      end
-    end
-  end
+  -- its patterns svof's own doesn't have
+  local why = patterns_problem(d, function (field, p) return table.contains(own[field], p) end)
+  if why then return why end
   return defences.clash(name, edit_parts(name, d))
 end
 
@@ -5476,15 +5532,7 @@ function defences.edit_show(name)
     -- its patterns, for lines that vary, and svof's own where they differ
     if not (isdef and d.notondef) then
       local field = which[1] .. 'r'
-      for i, p in ipairs(d[field]) do
-        echo(string.format("  %-12s %s  ", i == 1 and "or matches:" or "", p))
-        custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, field, i), "Remove this pattern")
-        echo("\n")
-      end
-      echo(string.format("  %-12s ", ""))
-      custom_link("add a pattern", string.format("printCmdLine(%q)", cmd .. which[2] .. "pattern "),
-        "For a line that varies: a pattern, as Mudlet's regex triggers take")
-      echo("\n")
+      pattern_rows(name, cmd, d[field], field, which[2] .. "pattern")
       if not same(d[field], own[field]) then svofs(own[field]) end
     end
   end
@@ -5593,15 +5641,8 @@ function defences.edit_test(name)
   else
     svo.echof("Your change replaces its %s.", svo.concatand(changes))
   end
-  local function from(lines, patterns, gmcp)
-    local parts = {}
-    if #lines > 0 then parts[#parts + 1] = string.format("%d line%s", #lines, #lines == 1 and "" or "s") end
-    if patterns > 0 then parts[#parts + 1] = string.format("%d pattern%s", patterns, patterns == 1 and "" or "s") end
-    if gmcp then parts[#parts + 1] = gmcp end
-    return #parts > 0 and svo.concatand(parts) or "nothing, until DEF"
-  end
-  svo.echof("It knows it's up from %s.", from(d.on, #d.onr, d.gmcp and ("GMCP's " .. d.gmcp)))
-  svo.echof("It knows it's gone from %s.", from(d.off, #d.offr, d.gmcp and "GMCP"))
+  svo.echof("It knows it's up from %s.", known_from(d.on, #d.onr, d.gmcp and ("GMCP's " .. d.gmcp)))
+  svo.echof("It knows it's gone from %s.", known_from(d.off, #d.offr, d.gmcp and "GMCP"))
   if d.notondef then
     svo.echof("DEF doesn't list it, so DEF leaves it alone.")
   elseif edit_drops_def(name, d) then
@@ -5803,12 +5844,8 @@ function defences.edits_import(changes, path)
       local here = defs_data[name] and edit_key(defs_data[name]) == key
       local problem = imported_gmcp_problem(edit.gmcp)
       -- its patterns, which must read, and for this class, a clash
-      for _, field in ipairs(pattern_fields) do
-        for _, p in ipairs(line_list(edit[field])) do
-          local why = not problem and pcre() and not (here and table.contains(own_version(name)[field], p))
-            and defences.pattern_problem(p)
-          if why then problem = string.format("%s can't be a pattern: %s", p, why) end
-        end
+      if not problem then
+        problem = patterns_problem(edit, here and function (field, p) return table.contains(own_version(name)[field], p) end)
       end
       if not problem and here then problem = defences.clash(name, edit_parts(name, edit)) end
       if defences.edits[key] and defences.edits[key][name] then

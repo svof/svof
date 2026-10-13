@@ -218,6 +218,8 @@ Sometimes the game gives your class a defence that Svof has only for other class
 
 A copy starts from Svof's version: its lines, its DEF line, its GMCP name, its command and whether that takes balance. Svof's patterns for its lines that vary come with it, shown and changed like a definition's. Any other lines Svof watches for come with it as they are. Pick a skillset for it, or use *vcustomdef <name> class all* for an artefact's, then check it and install it as you would a definition. You can change its lines, GMCP name and command, for example when the artefact uses a different command. The artefact versions so far use the class version's GMCP name.
 
+*vshow server* keeps one choice for each defence's name, in every class, so a copy shares Svof's own choice of whether serverside or Svof raises it. Installing or deleting a copy leaves that choice as it is. Unless that choice gives it to serverside, Svof raises the copy, and *vshow server* can change that.
+
 Svof copies only a defence it raises by sending its command and tracks by its lines. It doesn't copy one where it does more than that, because that extra handling doesn't come with a copy. For example, it won't copy a defence that can't be up with some others (such as a Monk's forms), one it counts with others (such as the channels), one it waits for after its command, or one that comes with an item. Svof has its own option for each item, such as *vconfig havemindnet*. The copy list says why for each version it can't copy.
 
 If you defined the defence before Svof had it in another class, *vcustomdef <name>* links to Svof's own, and copying it keeps your lines.

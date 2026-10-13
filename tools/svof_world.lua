@@ -282,8 +282,12 @@ local function lua_pattern(p)
   if depth ~= 0 then error("unmatched (") end
   return table.concat(out)
 end
+-- new compiles, as Lrexlib's does, to an object with a match method
 world.rex_stub = {
-  new = function(pattern) return lua_pattern(pattern) end,
+  new = function(pattern)
+    local lp = lua_pattern(pattern)
+    return { match = function(_, subject) return subject:match(lp) end }
+  end,
   match = function(subject, pattern) return subject:match(lua_pattern(pattern)) end,
 }
 

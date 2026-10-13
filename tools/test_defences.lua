@@ -3005,6 +3005,135 @@ do -- an item's defence registers after systemstart too
   eq(svo.sys.input_to_actions["mindnet on"], svo.dict.mindnet.physical, "adopting: the phylactery's mindnet")
 end
 
+-- ===== 20. What a definition shares with svof's own by name =====
+
+-- vshow server's choice (svo.serverignore) and GMCP's names (sstosvod,
+-- svotossd) are by name in every class, so a copy of svof's own shares
+-- them with svof's own. A change to svof's own goes on svof's own only.
+do -- vshow server's choice stays svof's own's
+  local w = world.new({ class = "Bard" })
+  local svo = w.svo
+  svo.setserverignore("acrobatics")
+  -- a copy for every class saved as a Monk, which gives way here
+  svo.defences.custom.acrobatics = { class = "all", command = "acrobatics on", gmcp = "acrobatics",
+    on = { "You begin leaping and bouncing about, making it more difficult to hit you." }, off = {},
+    copy = { from = "bard", was = {}, lines = {} } }
+  svo.defences.custom_delete("acrobatics")
+  eq(svo.serverignore.acrobatics, true, "sharing: deleting a copy leaves serverside raising svof's own")
+end
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  eq(svo.serverignore.acrobatics, nil, "sharing: acrobatics left to Svof")
+  svo.defences.copy_own("acrobatics", 1)
+  svo.defences.customdef_command("acrobatics class all")
+  svo.defences.customdef_command("acrobatics install")
+  eq(svo.defences.custom.acrobatics ~= nil, true, "sharing: a copy for every class installed")
+  eq(svo.serverignore.acrobatics, nil, "sharing: and it's left to Svof still")
+end
+
+do -- GMCP's name for svof's own comes back when a copy goes
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local ss, svod = svo.dict.sstosvod.acrobatics, svo.dict.svotossd.acrobatics
+  eq(ss, "acrobatics", "sharing: GMCP's acrobatics is svof's in every class")
+  svo.defences.copy_own("acrobatics", 1)
+  cmd("acrobatics skillset kaido")
+  cmd("acrobatics install")
+  cmd("acrobatics delete")
+  eq(svo.dict.sstosvod.acrobatics, ss, "sharing: deleting a copy leaves GMCP's acrobatics svof's")
+  eq(svo.dict.svotossd.acrobatics, svod, "sharing: and svof's name for it")
+  -- one GMCP name nothing had before goes with the definition
+  cmd("shimmer command shimmer on")
+  cmd("shimmer skillset kaido")
+  cmd("shimmer got You shimmer.")
+  svo.defences.gmcp_confirmed.shimmering = true -- as if the game confirmed it (section 16)
+  cmd("shimmer gmcp shimmering")
+  cmd("shimmer install")
+  eq(svo.dict.sstosvod.shimmering, "shimmer", "sharing: a definition's own GMCP name")
+  cmd("shimmer delete")
+  eq(svo.dict.sstosvod.shimmering, nil, "sharing: goes when it does")
+end
+
+do -- a change saved for svof's own goes on svof's own only
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  eq(svo.defs_data.glimmer == nil and svo.defences.catalog().glimmer == nil, true, "sharing: no glimmer of svof's")
+  svo.defences.edits = { monk = { glimmer = { on = { "Your old glimmer line." }, was = { on = { "x" } } } } }
+  cmd("glimmer command glimmer")
+  cmd("glimmer skillset kaido")
+  cmd("glimmer got You begin to glimmer.")
+  cmd("glimmer install")
+  eq(table.concat(svo.defs_data.glimmer.on, "|"), "You begin to glimmer.", "sharing: a definition keeps its own lines")
+  eq(w.line("Your old glimmer line."), 0, "sharing: and an old change's line isn't heard")
+  reload(svo, "Monk")
+  eq(table.concat(svo.defs_data.glimmer.on, "|"), "You begin to glimmer.", "sharing: as svof loads too")
+end
+
+do -- the commands svof takes for its own, in either case
+  local w = world.new({ class = "Monk", paused = false })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function server(text)
+    svo.conf.serverside = true
+    svo.curingcommand(text)
+    svo.conf.serverside = false
+    local got = w.inflight()
+    svo.killaction(svo.dict.sturdiness.physical)
+    if svo.dict.shimmer then svo.killaction(svo.dict.shimmer.physical) end
+    return got
+  end
+  local function typed(text)
+    svo.cnrl.processusercommand(text)
+    w.run_timers()
+    local got = w.inflight()
+    svo.killaction(svo.dict.sturdiness.physical)
+    if svo.dict.shimmer then svo.killaction(svo.dict.shimmer.physical) end
+    return got
+  end
+  cmd("sturdiness command Stand Firm")
+  w.run('svo.defences.edit_install("sturdiness", true)')
+  eq(server("STAND FIRM"), "sturdiness_physical", "case: a change's command, as serverside sends it")
+  eq(typed("Stand Firm"), "sturdiness_physical", "case: and as the player typed it")
+  w.run('svo.defences.edit_reset("sturdiness")')
+  eq(svo.sys.input_to_actions["stand firm"], svo.dict.sturdiness.physical, "case: reset puts svof's back")
+  eq(svo.sys.input_to_actions["Stand Firm"], nil, "case: and the change's goes")
+  cmd("shimmer command Shimmer On")
+  cmd("shimmer skillset kaido")
+  cmd("shimmer got You shimmer.")
+  cmd("shimmer install")
+  eq(server("SHIMMER ON"), "shimmer_physical", "case: a definition's command, as serverside sends it")
+  eq(typed("Shimmer On"), "shimmer_physical", "case: as the player typed it")
+  eq(typed("shimmer on"), "shimmer_physical", "case: and in lower case")
+end
+
+do -- each pattern compiled once, not each time clash matches it
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local news, strings = 0, 0
+  w.env.rex = {
+    new = function(p) news = news + 1 return world.rex_stub.new(p) end,
+    match = function(s, p) strings = strings + 1 return world.rex_stub.match(s, p) end,
+  }
+  for _, n in ipairs({ "glinta", "glintb" }) do
+    cmd(n .. " command " .. n)
+    cmd(n .. " skillset kaido")
+    cmd(n .. " got You " .. n .. ".")
+    cmd(n .. " gotpattern ^You " .. n .. " at (\\w+)\\.$")
+    cmd(n .. " install")
+  end
+  news, strings = 0, 0
+  local parts = { lines = { "You glintc." }, patterns = { { 'onr', "^You glintc at (\\w+)\\.$" } } }
+  svo.defences.clash("glintc", parts)
+  local first = news
+  svo.defences.clash("glintc", parts)
+  eq(strings, 0, "patterns: clash matches with compiled patterns")
+  eq(first > 0 and news == first, true, "patterns: and compiles none again")
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end
