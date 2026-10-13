@@ -259,6 +259,8 @@ local function new_environment()
   -- clears are the point here, not the action teardown.
   svo.actions = { iter = function() return function() return nil end end }
   svo.bals_in_use = {}
+  -- Action_system creates it at load, and the reset empties it in place
+  svo.actions_performed = {}
   function svo.killaction() end
   function svo.check_generics() end
   -- for the public add/remove API and the aliases
