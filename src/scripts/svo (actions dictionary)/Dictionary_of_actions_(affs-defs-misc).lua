@@ -1190,7 +1190,7 @@ if not next(svo.dict) then
         end,
   
         empty = function()
-          empty.eat_goldenseal()
+          empty.eat_lobelia()
           svo.lostbal_herb()
         end,
   
@@ -1204,7 +1204,7 @@ if not next(svo.dict) then
   			  svo.lostbal_herb()
   		  end,
   
-        eatcure = {'goldenseal', 'plumbum'},
+        eatcure = {'lobelia', 'argentum'},
   
         onstart = function() svo.eat(svo.dict.horror.herb) end
       },
