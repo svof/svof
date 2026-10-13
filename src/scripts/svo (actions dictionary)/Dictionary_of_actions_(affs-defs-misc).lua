@@ -8764,7 +8764,7 @@ if not next(svo.dict) then
       },
       aff = {
         oncompleted = function (number)
-          svo.addaffdict(dict.unweavingbody)
+          svo.addaffdict(svo.dict.unweavingbody)
           svo.updateaffcount(svo.dict.unweavingbody)
         end
       },
@@ -9195,7 +9195,7 @@ if not next(svo.dict) then
       },
       aff = {
         oncompleted = function (number)
-          svo.addaffdict(dict.crescendo)
+          svo.addaffdict(svo.dict.crescendo)
           svo.updateaffcount(svo.dict.crescendo)
         end
       },

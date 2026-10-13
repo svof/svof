@@ -259,6 +259,14 @@ jobs:
       - name: test slow curing
         run: lua tools/test_slow_curing.lua
 
+      # Gate 1.94. The aff handlers of unweavingbody and crescendo, extracted
+      # from the dictionary and run with no global `dict`. Both read one that
+      # nothing defines, so gaining either from text or DIAGNOSE raised
+      # instead of recording it. Also fails on any other bare `dict.`
+      # reference in that file.
+      - name: test bare dict references
+        run: lua tools/test_bare_dict.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
