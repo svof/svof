@@ -6,6 +6,11 @@
 
 svo.dragonheal = svo.dragonheal or {}
 
+-- the strats in this file are marked as svof's own at the end of it. svof holds its own back when every tree-curable
+-- aff already has a cure on its way, and takes yours at their word, since yours may cure what svof doesn't know dragonheal cures
+local others = {}
+for _, strat in pairs(svo.dragonheal) do others[strat] = true end
+
 svo.dragonheal.riftlock = {
   desc = "Use dragonheal on riftlocks",
 
@@ -46,3 +51,8 @@ svo.dragonheal.maybevivi = {
     return svo.countbrokenlimbs() >= 3
   end
 }
+
+svo.builtin_strats = svo.builtin_strats or setmetatable({}, {__mode = 'k'})
+for _, strat in pairs(svo.dragonheal) do
+  if not others[strat] then svo.builtin_strats[strat] = true end
+end

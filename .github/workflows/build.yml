@@ -233,6 +233,15 @@ jobs:
       - name: test phantom unknowns
         run: lua tools/test_phantom_unknowns.lua
 
+      # Gate 1.92. The tree guard - svof's own strategies don't touch tree when
+      # the cures on their way will cure every tree-curable aff, whichever aff
+      # the game has each cure take, while the strategies keep deciding
+      # everything else. Same extract-the-real-function approach, with cures
+      # put on their way through the real doaction and read from the real
+      # dictionary.
+      - name: test tree guard
+        run: lua tools/test_tree_guard.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

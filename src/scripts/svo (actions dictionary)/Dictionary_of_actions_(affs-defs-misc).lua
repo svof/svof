@@ -293,6 +293,89 @@ codepaste.nonstdcure = function()
   return (svo.doingaction'touchtree' or svo.doingaction'restore')
 end
 
+-- -> boolean
+-- returns true if the cures on their way will cure every tree-curable aff we have. Tree, shrugging and dragonheal
+-- cure the same affs and are sent after those cures, so they would find nothing left to cure. unknownany and
+-- unknownmental are never covered, since either could be any aff tree cures; unknowncrippledarm and
+-- unknowncrippledleg are covered like any other aff, by a mending application on its way. Counted affs above 1 are
+-- never covered, since tree can still take a level. With no tree-curable affs at all, says false and leaves the decision to the strategy.
+-- The game, not svof, decides which aff a cure takes, so a cure aimed at one aff can cure another that shares it: see
+-- leavesnone. Only svof's own strategies are held back by this, the ones in svo.builtin_strats; a user's strategy is
+-- taken at its word.
+local tree_cure_balances = {focus = true, salve = true, sip = true, purgative = true, smoke = true, herb = true, misc = true}
+
+-- what a cure sends: the salve or health and where it goes, else the herb, pipe or elixir. Focus is one cure for
+-- every aff it can take, and a misc action is its aff's own, shared with nothing
+local function sentcure(cure, balance)
+  if balance == 'focus' then return 'focus' end
+  if balance == 'misc' then return end
+  if cure.actions then return cure.actions[1] end
+  for _, field in ipairs{'eatcure', 'smokecure', 'sipcure'} do
+    if cure[field] then return field..' '..cure[field][1] end
+  end
+end
+
+local function couldcure(cure, aff)
+  if not cure.sent then return aff == cure.aff end
+  local own = svo.dict[aff] and svo.dict[aff][cure.balance]
+  return own and sentcure(own, cure.balance) == cure.sent or false
+end
+
+-- a focus aimed at stupidity can cure confusion instead, and goldenseal aimed at one goldenseal aff can cure another.
+-- So this tries every aff each cure could take, in the order the cures were sent, and says true only if none of those
+-- ways leaves a tree-curable aff behind. left holds the affs we have, with their counts
+local function leavesnone(cures, i, left, treeable)
+  local cure = cures[i]
+  if not cure then
+    for _, aff in ipairs(treeable) do
+      if left[aff] then return false end
+    end
+    return true
+  end
+
+  local takes = {}
+  for aff in pairs(left) do
+    if couldcure(cure, aff) then takes[#takes+1] = aff end
+  end
+  if not takes[1] then return leavesnone(cures, i + 1, left, treeable) end
+
+  for _, aff in ipairs(takes) do
+    local count = left[aff]
+    left[aff] = count > 1 and count - 1 or nil
+    local none = leavesnone(cures, i + 1, left, treeable)
+    left[aff] = count
+    if not none then return false end
+  end
+  return true
+end
+
+codepaste.treecurablescovered = function()
+  local treeable = svo.gettreeableaffs()
+  if not next(treeable) then return false end
+
+  for _, aff in ipairs(treeable) do
+    if aff == 'unknownany' or aff == 'unknownmental' then return false end
+    if svo.dict[aff] and svo.dict[aff].count and svo.dict[aff].count > 1 then return false end
+  end
+
+  local cures = {}
+  for _, action in svo.actions:iter() do
+    local cure = action.p
+    if tree_cure_balances[cure.balance] then
+      cures[#cures+1] = {aff = cure.action_name, balance = cure.balance, sent = sentcure(cure, cure.balance)}
+    end
+  end
+  if #cures < #treeable then return false end
+
+  local left = {}
+  for aff in pairs(affs) do
+    local count = svo.dict[aff] and svo.dict[aff].count
+    left[aff] = count and count > 1 and count or 1
+  end
+
+  return leavesnone(cures, 1, left, treeable)
+end
+
 if svo.haveskillset('metamorphosis') then
   codepaste.nonmorphdefs = function()
     for _, def in ipairs{'flame', 'lyre', 'nightsight', 'rest', 'resistance', 'stealth', 'temperance', 'elusiveness'} do
@@ -5637,7 +5720,7 @@ if not next(svo.dict) then
           for name, func in pairs(svo.tree) do
             if not me.disabledtreefunc[name] then
               local s,m = pcall(func[1])
-              if s and m then return true end
+              if s and m and not (svo.builtin_strats[func] and codepaste.treecurablescovered()) then return true end
             end
           end
         end,
@@ -5752,7 +5835,7 @@ if not next(svo.dict) then
           for name, func in pairs(svo.dragonheal) do
             if not me.disableddragonhealfunc[name] then
               local s,m = pcall(func[1])
-              if s and m then return true end
+              if s and m and not (svo.builtin_strats[func] and codepaste.treecurablescovered()) then return true end
             end
           end
         end,
@@ -13269,7 +13352,7 @@ if not next(svo.dict) then
           for name, func in pairs(svo.shrugging) do
             if not me.disabledshruggingfunc[name] then
               local s,m = pcall(func[1])
-              if s and m then return true end
+              if s and m and not (svo.builtin_strats[func] and codepaste.treecurablescovered()) then return true end
             end
           end
         end,
