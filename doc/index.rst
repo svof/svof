@@ -153,6 +153,12 @@ Keepup works in a special manner with selfishness - if it's off keepup, keepup w
 
 If you'd like to disable this behavior, do *vignore selfishness*.
 
+Elemental channels
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Put *simultaneity* on defup or keepup to keep all your elemental channels open: air, fire, water and earth for a Magi, or air, water and earth for a Sylvan. Simultaneity opens them all at once and costs 1000 mana however many it opens, so Svof uses it only when none is open, such as at the start of defup or after you lose them all. When you lose one or some, Svof opens those alone with *channel <element>*. Without 1000 mana, or with *vignore simultaneity*, Svof opens each channel by itself. You can also put a channel on defup or keepup by itself.
+
+Svof follows your open channels from the game's GMCP as well as from the channel lines, so it knows when one closes even if it missed the line. Serverside curing doesn't raise channels, so Svof always does.
+
 Lifevision & Shroud
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Lifevision is included in the system! If you have it as a skill (lifevision, clarity or astralvision) - then you can vdefup or vkeep it. The system will then subsequently when lifevision detects an illusion and will ignore it as such.

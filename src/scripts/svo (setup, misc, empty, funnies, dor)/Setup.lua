@@ -427,6 +427,40 @@ signals.gmcpcharvitals:connect(function()
 end, 'update morph')
 end
 
+-- The game lists the open channels in Char.Vitals' charstats, by initial:
+-- "Channels: F W A E ", and "Channels: None" with none open (the user,
+-- 2026-10-14), so a word that isn't an initial opens nothing. That is the
+-- game's word on them, as GMCP's is on a defence, so a channel it lists is
+-- confirmed, finishing svof's command for it if one is in flight, and one
+-- it leaves out is lost. With every channel open, simultaneity is up,
+-- which finishes svof's simultaneity if that's in flight
+if svo.haveskillset('elementalism') or svo.haveskillset('weatherweaving') then
+local channel_initials = { A = 'air', F = 'fire', W = 'water', E = 'earth' }
+signals.gmcpcharvitals:connect(function()
+  if not gmcp.Char.Vitals.charstats then return end
+  for _, val in ipairs(gmcp.Char.Vitals.charstats) do
+    local listed = val:match("^Channels:(.*)$")
+    if listed then
+      local open = {}
+      for initial in listed:gmatch("%S+") do
+        if channel_initials[initial] then open[channel_initials[initial]] = true end
+      end
+      local all = true
+      for _, channel in ipairs(defences.channels) do
+        if open[channel] then
+          defences.confirm(channel)
+        else
+          all = false
+          if defc[channel] then defences.unconfirm(channel) end
+        end
+      end
+      if all then defences.confirm('simultaneity') end
+      break
+    end
+  end
+end, 'update channels')
+end
+
 if svo.haveskillset('tekura') or svo.haveskillset('shikudo') then
 signals.gmcpcharvitals:connect(function()
   if gmcp.Char.Vitals.charstats then

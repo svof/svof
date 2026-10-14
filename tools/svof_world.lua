@@ -483,6 +483,11 @@ function world.new(opts)
     env.gmcp.Char.Defences.List = list
     svo.signals.gmcpchardefenceslist:emit()
   end
+  -- Char.Vitals with these charstats, such as { "Channels: F W A E " }
+  function w.gmcp_vitals(charstats)
+    env.gmcp.Char.Vitals = { charstats = charstats }
+    svo.signals.gmcpcharvitals:emit()
+  end
 
   function w.inflight()
     local t = {}
