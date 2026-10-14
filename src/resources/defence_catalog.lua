@@ -44,7 +44,7 @@ return {
     counted = "channel",
     off = { "You sever the link to the realm of air.", "The power of the knife sigil cuts your air channel." },
     on = { "You already have a channel opened to air.", "The power of air is harnessed to your will." },
-    rules = { "counted", "own_code" },
+    rules = { "counted", "ongot", "onlost", "own_code" },
     type = "elementalism"
   }, {
     classes = { "sylvan" },
@@ -52,7 +52,7 @@ return {
     counted = "channel",
     off = { "You sever the link to the realm of air.", "The power of the knife sigil cuts your air channel." },
     on = { "You already have a channel opened to air.", "The power of air is harnessed to your will." },
-    rules = { "counted", "own_code" },
+    rules = { "counted", "ongot", "onlost", "own_code" },
     type = "weatherweaving"
   } },
   anthem = { {
@@ -740,7 +740,7 @@ return {
     counted = "channel",
     off = { "You sever the link to the realm of earth.", "The power of the knife sigil cuts your earth channel." },
     on = { "You already have a channel opened to earth.", "The strength of earth is at your command." },
-    rules = { "counted", "own_code" },
+    rules = { "counted", "ongot", "onlost", "own_code" },
     type = "elementalism"
   }, {
     classes = { "sylvan" },
@@ -748,7 +748,7 @@ return {
     counted = "channel",
     off = { "You sever the link to the realm of earth.", "The power of the knife sigil cuts your earth channel." },
     on = { "You already have a channel opened to earth.", "The strength of earth is at your command." },
-    rules = { "counted", "own_code" },
+    rules = { "counted", "ongot", "onlost", "own_code" },
     type = "weatherweaving"
   } },
   eavesdrop = { {
@@ -861,7 +861,7 @@ return {
     counted = "channel",
     off = { "You sever the link to the realm of fire.", "The power of the knife sigil cuts your fire channel." },
     on = { "You already have a channel opened to fire.", "Elemental fire burns at your behest." },
-    rules = { "counted", "own_code" },
+    rules = { "counted", "ongot", "onlost", "own_code" },
     type = "elementalism"
   } },
   fireshroud = { {
@@ -2361,7 +2361,7 @@ return {
     counted = "channel",
     off = { "You sever the link to the realm of water.", "The power of the knife sigil cuts your water channel." },
     on = { "You already have a channel opened to water.", "Purest water soothes you into calm." },
-    rules = { "counted", "own_code" },
+    rules = { "counted", "ongot", "onlost", "own_code" },
     type = "elementalism"
   }, {
     classes = { "sylvan" },
@@ -2369,7 +2369,7 @@ return {
     counted = "channel",
     off = { "You sever the link to the realm of water.", "The power of the knife sigil cuts your water channel." },
     on = { "You already have a channel opened to water.", "Purest water soothes you into calm." },
-    rules = { "counted", "own_code" },
+    rules = { "counted", "ongot", "onlost", "own_code" },
     type = "weatherweaving"
   } },
   waterwalk = { {

@@ -4304,6 +4304,109 @@ do -- the last class's own at the bottom of the list, vcleargaps in another
   eq(lowest, 1, "bottom: and the lowest of them at 1")
 end
 
+-- ===== 22. Elemental channels and simultaneity =====
+
+-- Simultaneity opens every channel at once for 1000 mana, however many it
+-- opens (the user, 2026-10-14). svof uses it only when no channel is open,
+-- and opens a lost channel or two alone. The game lists the open channels
+-- in Char.Vitals' charstats, "Channels: F W A E ", by initial.
+local magi_lines = { "The strength of earth is at your command.", "The power of air is harnessed to your will.",
+  "Elemental fire burns at your behest.", "Purest water soothes you into calm." }
+local function advisable(svo, name) return svo.dict[name].physical.isadvisable() end
+
+do -- keepup with simultaneity
+  local w = world.new({ class = "Magi", paused = false })
+  local svo = w.svo
+  eq(table.concat(svo.defences.channels, " "), "air fire water earth", "channels: a Magi's four")
+  svo.stats.currentmana = 5000
+  svo.conf.keepup, svo.defkeepup.basic.simultaneity = true, true
+  eq(advisable(svo, "simultaneity"), true, "channels: none open, simultaneity opens them")
+  for _, c in ipairs({ "air", "fire", "water", "earth" }) do
+    eq(advisable(svo, c), false, "channels: and " .. c .. " doesn't go alone")
+  end
+  w.prompt()
+  eq(w.inflight(), "simultaneity_physical", "channels: svof sends simultaneity")
+  w.line("You forge a channel through to the elemental skein of the universe.")
+  for _, l in ipairs(magi_lines) do w.line(l) end
+  w.prompt()
+  eq(svo.defc.air and svo.defc.fire and svo.defc.water and svo.defc.earth, true, "channels: its lines open all four")
+  eq(svo.defc.simultaneity, true, "channels: so simultaneity is up")
+  w.gmcp_vitals({ "Bleed: 0", "Rage: 0", "Channels: F W A E ", "rair: none" })
+  eq(w.inflight(), "", "channels: GMCP's four finish svof's simultaneity")
+
+  -- one lost: that one alone
+  w.gmcp_vitals({ "Channels: F W E " })
+  eq(svo.defc.air, false, "channels: GMCP leaving air out loses it")
+  eq(svo.defc.simultaneity, false, "channels: and simultaneity")
+  eq(advisable(svo, "simultaneity"), false, "channels: one lost isn't simultaneity's")
+  eq(advisable(svo, "air"), true, "channels: air goes alone")
+  w.prompt()
+  eq(w.inflight(), "air_physical", "channels: svof sends channel air")
+  w.gmcp_vitals({ "Channels: F W A E " })
+  eq(w.inflight(), "", "channels: GMCP's air finishes it")
+  eq(svo.defc.simultaneity, true, "channels: and all four are simultaneity again")
+
+  -- two lost, by their lines: those alone
+  w.line("You sever the link to the realm of air.")
+  w.line("The power of the knife sigil cuts your fire channel.")
+  w.prompt()
+  eq(svo.defc.air or svo.defc.fire, false, "channels: their lines lose air and fire")
+  eq(svo.defc.simultaneity, false, "channels: and simultaneity")
+  eq(w.inflight() == "air_physical" or w.inflight() == "fire_physical", true, "channels: they go alone")
+  for name in svo.actions:iter() do svo.killaction(svo.actions[name].p) end
+
+  -- all lost: simultaneity
+  -- (the game's own, with none open)
+  w.gmcp_vitals({ "Bleed: 0", "Rage: 0", "Channels: None", "rair: none", "rearth: none", "rfire: none", "rwater: none" })
+  eq(svo.defc.water or svo.defc.earth, false, "channels: GMCP's None loses all")
+  eq(advisable(svo, "simultaneity"), true, "channels: all lost is simultaneity's")
+  eq(advisable(svo, "water"), false, "channels: and none goes alone")
+
+  -- without the mana for it, one at a time
+  svo.stats.currentmana = 999
+  eq(advisable(svo, "simultaneity"), false, "channels: simultaneity needs 1000 mana")
+  eq(advisable(svo, "water"), true, "channels: without it, they go one at a time")
+  svo.stats.currentmana = 5000
+  svo.ignore.simultaneity = true
+  eq(advisable(svo, "simultaneity"), false, "channels: an ignored simultaneity isn't sent")
+  eq(advisable(svo, "water"), false, "channels: nor wanted for its channels")
+  svo.ignore.simultaneity = nil
+
+  -- charstats without Channels says nothing about them
+  w.gmcp_vitals({ "Channels: F W A E " })
+  w.gmcp_vitals({ "Bleed: 0", "Rage: 0" })
+  eq(svo.defc.air and svo.defc.simultaneity, true, "channels: charstats without Channels changes nothing")
+end
+
+do -- defup, and channels wanted on their own
+  local w = world.new({ class = "Magi" })
+  local svo = w.svo
+  svo.stats.currentmana = 5000
+  svo.sys.deffing, svo.defdefup.basic.simultaneity = true, true
+  eq(advisable(svo, "simultaneity"), true, "channels: defup with none open, simultaneity")
+  w.gmcp_vitals({ "Channels: F W A " })
+  eq(advisable(svo, "simultaneity"), false, "channels: defup with three open isn't simultaneity's")
+  eq(advisable(svo, "earth"), true, "channels: earth goes alone")
+  eq(advisable(svo, "air"), false, "channels: and an open one doesn't")
+
+  svo.sys.deffing, svo.defdefup.basic.simultaneity = false, false
+  svo.conf.keepup, svo.defkeepup.basic.earth = true, true
+  w.gmcp_vitals({ "Channels: None" })
+  eq(advisable(svo, "earth"), true, "channels: one wanted on its own goes alone")
+  eq(advisable(svo, "air") or advisable(svo, "simultaneity"), false, "channels: and nothing else")
+end
+
+do -- a Sylvan's three
+  local w = world.new({ class = "Sylvan" })
+  local svo = w.svo
+  eq(table.concat(svo.defences.channels, " "), "air water earth", "channels: a Sylvan's three")
+  eq(svo.dict.fire, nil, "channels: and no fire")
+  w.gmcp_vitals({ "Channels: W A E " })
+  eq(svo.defc.simultaneity, true, "channels: all three are simultaneity")
+  w.gmcp_vitals({ "Channels: W A " })
+  eq(svo.defc.earth or svo.defc.simultaneity, false, "channels: earth lost, and simultaneity")
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end
