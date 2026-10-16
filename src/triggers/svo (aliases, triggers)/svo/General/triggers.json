@@ -6975,8 +6975,8 @@
     "highlightBG": "#ffff00",
     "patterns": [
       {
-        "pattern": "You use",
-        "type": "startOfLine"
+        "pattern": "^You (?:use .+ to make fire|summon a tiny gout of natural fire for the lighting)\\.$",
+        "type": "regex"
       },
       {
         "pattern": "You light",
