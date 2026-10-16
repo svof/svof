@@ -3782,10 +3782,6 @@ function defences.custom_taken(name)
   return (defs_data[name] or svo.dict[name] or item_defences[name]) and true or false
 end
 
-function defences.custom_applies(spec)
-  return spec.class == 'all' or (type(spec.class) == 'string' and spec.class:lower() == tostring(me.class):lower())
-end
-
 -- a record's line or lines, as a new list
 local function line_list(v)
   if type(v) == 'string' then return { v } end
@@ -3794,6 +3790,55 @@ local function line_list(v)
     for i, l in ipairs(v) do t[i] = l end
   end
   return t
+end
+
+-- A lord and a lady of one element are one class: svo.knownskills lists
+-- both, with the same skillset. A definition's class is the element's,
+-- whichever the player is
+local function class_key(class)
+  class = tostring(class):lower()
+  return class:match("^(%a+ elemental) lord$") or class:match("^(%a+ elemental) lady$") or class
+end
+defences.class_key = class_key
+
+-- a class's skillsets, from svo.knownskills, or nil for a class svof
+-- doesn't know
+local function class_skills(class)
+  local key = class_key(class)
+  return svo.knownskills[key] or svo.knownskills[key .. " lord"]
+end
+
+local function class_title(class)
+  if class == 'all' then return "every class" end
+  return (class_key(class):gsub("(%a)(%a*)", function (a, b) return a:upper() .. b end))
+end
+
+function defences.custom_applies(spec)
+  return spec.class == 'all' or (type(spec.class) == 'string' and class_key(spec.class) == class_key(me.class))
+end
+
+-- vcustomdef's screens: links white, ones that take something out red,
+-- and ones that put something into play green; labels in the colour of
+-- svof's defence lists, and a part not set yet grey
+local link_colours = { remove = { 255, 99, 71 }, go = { 0, 204, 0 } }
+local function custom_link(text, code, hint, kind)
+  local c = link_colours[kind] or { 255, 255, 255 }
+  setUnderline(true)
+  setFgColor(c[1], c[2], c[3])
+  echoLink(text, code, hint, true)
+  resetFormat()
+end
+
+local function custom_label(text)
+  setFgColor(153, 204, 204)
+  echo(string.format("  %-12s ", text))
+  resetFormat()
+end
+
+local function custom_unset_text(text)
+  setFgColor(128, 128, 128)
+  echo(text)
+  resetFormat()
 end
 
 -- Svof's own defences that only some classes have, with each class's
@@ -3831,12 +3876,13 @@ function defences.catalog()
   return catalog
 end
 
--- the classes versions of a defence are for, as the game writes them
+-- the classes versions of a defence are for, as the game writes them, an
+-- element's lord and lady as one
 local function class_names(versions)
   local t, seen = {}, {}
   for _, v in ipairs(versions) do
     for _, c in ipairs(v.classes or {}) do
-      local title = c:gsub("(%a)(%a*)", function (a, b) return a:upper() .. b end)
+      local title = class_title(c)
       if not seen[title] then
         seen[title] = true
         t[#t + 1] = title
@@ -4083,20 +4129,18 @@ signals.systemstart:connect(function ()
       -- which is used instead
     elseif copy and defs_data[name] then
       svo.echofn("Svof has its own %s in this class now, so your copy of it isn't used. ", name)
-      setUnderline(true)
-      echoLink("(delete it)", string.format("svo.defences.custom_delete(%q)", name), "Delete your copy of " .. name, true)
-      setUnderline(false)
+      custom_link("(delete it)", string.format("svo.defences.custom_delete(%q)", name), "Delete your copy of " .. name,
+        'remove')
       echo("\n")
     elseif defences.custom_taken(name) and defs_data[name] then
       -- saved in another class, where svof's own didn't show: it can
       -- become a change to svof's own instead
       svo.echofn("Svof has its own %s in this class, so the one you defined isn't used. ", name)
-      setUnderline(true)
-      echoLink("(make it a change to Svof's own)", string.format("svo.defences.custom_to_change(%q)", name),
-        "Put your definition's lines, command and GMCP name into a change to Svof's own " .. name, true)
+      custom_link("(make it a change to Svof's own)", string.format("svo.defences.custom_to_change(%q)", name),
+        "Put your definition's lines, command and GMCP name into a change to Svof's own " .. name)
       echo(" ")
-      echoLink("(delete it)", string.format("svo.defences.custom_delete(%q)", name), "Delete your definition of " .. name, true)
-      setUnderline(false)
+      custom_link("(delete it)", string.format("svo.defences.custom_delete(%q)", name),
+        "Delete your definition of " .. name, 'remove')
       echo("\n")
     elseif defences.custom_taken(name) then
       svo.echof("Svof has its own %s now, so the one you defined isn't used.", name)
@@ -4139,10 +4183,13 @@ end, 'register the defences the player defined')
 -- Changes go to a draft, kept until Svof reloads; only install changes play.
 defences.custom_drafts = defences.custom_drafts or {}
 -- words vcustomdef takes in place of a name
-local custom_reserved = { export = true, import = true, list = true, game = true }
+local custom_reserved = { export = true, import = true, list = true, game = true, help = true }
 -- the definitions whose class the player chose, which the game's word on
 -- a defence doesn't change
 local class_chosen = {}
+-- the new definitions whose screen waits for the game's DEFENCE SHOW, so
+-- it's shown once, filled in
+local show_waits = {}
 
 local function custom_copy(spec)
   local t = {}
@@ -4184,7 +4231,7 @@ function defences.custom_problem(name, spec)
     local why = defences.copy_problem(name, spec)
     if why then return why end
   end
-  if spec.class ~= 'all' and not (type(spec.class) == 'string' and svo.knownskills[spec.class:lower()]) then
+  if spec.class ~= 'all' and not (type(spec.class) == 'string' and class_skills(spec.class)) then
     return "its class isn't one Svof knows"
   end
   if type(spec.command) ~= 'string' or spec.command == '' then return "it has no command to raise it" end
@@ -4221,31 +4268,28 @@ local function custom_draft(name)
       return nil, string.format("Svof has its own %s for %s. vcustomdef %s copy copies it in instead", name,
         class_names(versions), name)
     end
-    d = { class = tostring(me.class):lower(), on = {}, off = {} }
+    d = { class = class_key(me.class), on = {}, off = {} }
     defences.custom_drafts[name] = d
     -- if the game knows it by this name, its lines come from the game
     defences.custom_fetch(name, name)
+    show_waits[name] = true
     return d
   end
   defences.custom_drafts[name] = d
   return d
 end
 
-local function custom_link(text, code, hint)
-  setUnderline(true)
-  echoLink(text, code, hint, true)
-  setUnderline(false)
-end
-
 -- the patterns in field, for lines that vary, under the exact lines: each
 -- with a link to remove it, then a link to add one with vcustomdef's verb
 local function pattern_rows(name, cmd, patterns, field, verb)
   for i, p in ipairs(patterns) do
-    echo(string.format("  %-12s %s  ", i == 1 and "or matches:" or "", p))
-    custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, field, i), "Remove this pattern")
+    custom_label(i == 1 and "or matches:" or "")
+    echo(p .. "  ")
+    custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, field, i), "Remove this pattern",
+      'remove')
     echo("\n")
   end
-  echo(string.format("  %-12s ", ""))
+  custom_label("")
   custom_link("add a pattern", string.format("printCmdLine(%q)", cmd .. verb .. " "),
     "For a line that varies: a pattern, as Mudlet's regex triggers take")
   echo("\n")
@@ -4286,6 +4330,13 @@ function defences.custom_show(name)
     svo.echof("<250,0,0>Can't%s define %s: %s.", svo.getDefaultColor(), name, why)
     return
   end
+  -- a new one asks the game for its lines, and is shown once it answers
+  local waits = show_waits[name]
+  show_waits[name] = nil
+  if waits and defences.fetch_pending(name) then
+    svo.echof("Asking the game for %s's lines.", name)
+    return
+  end
   local installed = defences.custom[name]
   if type(d.copy) == 'table' then
     svo.echof("%s, a copy of Svof's own from %s%s:", name, class_names({ { classes = { tostring(d.copy.from) } } }),
@@ -4301,16 +4352,22 @@ function defences.custom_show(name)
     end
   end
   local cmd = "vcustomdef " .. name .. " "
-  local function row(label, value, field)
-    echo(string.format("  %-12s %s  ", label, value))
+  -- a value, or a grey placeholder for one not set
+  local function value(text, missing)
+    if text then echo(text .. "  ") else custom_unset_text(missing .. "  ") end
+  end
+  local function row(label, text, field, missing)
+    custom_label(label)
+    value(text, missing)
     custom_link("change", string.format("printCmdLine(%q)", cmd .. field .. " "), "Change " .. label)
     echo("\n")
   end
-  row("class:", d.class == 'all' and "every class" or tostring(d.class), "class")
+  row("class:", class_title(d.class), "class")
   -- a class's goes under one of its skillsets: a link for each
   if d.class ~= 'all' then
-    echo(string.format("  %-12s %s  ", "skillset:", d.skillset or "(not set)"))
-    for _, skillset in ipairs(svo.knownskills[tostring(d.class):lower()] or {}) do
+    custom_label("skillset:")
+    value(d.skillset, "(not set)")
+    for _, skillset in ipairs(class_skills(d.class) or {}) do
       if skillset ~= d.skillset then
         custom_link(skillset, string.format("svo.defences.custom_set(%q, 'skillset', %q)", name, skillset),
           "Show it under " .. skillset:title())
@@ -4320,10 +4377,11 @@ function defences.custom_show(name)
     custom_link("type one", string.format("printCmdLine(%q)", cmd .. "skillset "), "One Svof doesn't list for the class")
     echo("\n")
   end
-  row("command:", d.command or "(not set)", "command")
+  row("command:", d.command, "command", "(not set)")
   row("balance:", d.balanceless and "takes none" or "takes balance", "balanceless")
-  row("GMCP name:", d.gmcp or "(not set)", "gmcp")
-  echo(string.format("  %-12s %s", "serverside:", custom_serverside(name, d)))
+  row("GMCP name:", d.gmcp, "gmcp", "(not set)")
+  custom_label("serverside:")
+  echo(custom_serverside(name, d))
   if d.gmcp and defences.custom_registered[name] then
     echo("  ")
     custom_link("vshow server", "svo.showserverside()", "Choose whether serverside or Svof raises it")
@@ -4333,11 +4391,14 @@ function defences.custom_show(name)
   for _, which in ipairs({ { 'on', 'got', "gained when:" }, { 'off', 'lost', "lost when:" } }) do
     local lines = d[which[1]]
     for i, line in ipairs(lines) do
-      echo(string.format("  %-12s %s  ", i == 1 and which[3] or "", line))
-      custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, which[1], i), "Remove this line")
+      custom_label(i == 1 and which[3] or "")
+      echo(line .. "  ")
+      custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, which[1], i), "Remove this line",
+        'remove')
       echo("\n")
     end
-    echo(string.format("  %-12s %s", #lines == 0 and which[3] or "", #lines == 0 and "(no line)  " or ""))
+    custom_label(#lines == 0 and which[3] or "")
+    if #lines == 0 then custom_unset_text("(no line)  ") end
     custom_link("add a line from the screen", string.format("svo.defences.custom_capture(%q, %q)", name, which[2]), "Pick the line from what's on screen")
     echo("  ")
     custom_link("type one", string.format("printCmdLine(%q)", cmd .. which[2] .. " "), "Type or paste the line")
@@ -4345,11 +4406,13 @@ function defences.custom_show(name)
     patterns(which[1] .. 'r', which[2] .. "pattern")
   end
   if d.notondef then
-    echo(string.format("  %-12s %s  ", "DEF shows:", "nothing, as DEF doesn't list it"))
+    custom_label("DEF shows:")
+    echo("nothing, as DEF doesn't list it  ")
     custom_link("it does", string.format("printCmdLine(%q)", cmd .. "def "), "Type or paste the line DEF shows")
     echo("\n")
   else
-    echo(string.format("  %-12s %s  ", "DEF shows:", d.def or "(no line)"))
+    custom_label("DEF shows:")
+    value(d.def, "(no line)")
     custom_link("pick from the screen", string.format("svo.defences.custom_capture(%q, 'def')", name), "Pick the line from what's on screen")
     echo("  ")
     custom_link("type it", string.format("printCmdLine(%q)", cmd .. "def "), "Type or paste the line")
@@ -4364,7 +4427,8 @@ function defences.custom_show(name)
   local kept = 0
   for _, field in ipairs(copy_line_fields) do kept = kept + #line_list(extra[field]) end
   if kept > 0 then
-    echo(string.format("  %-12s %d more of Svof's own lines and patterns, kept as they are\n", "also:", kept))
+    custom_label("also:")
+    echo(string.format("%d more of Svof's own lines and patterns, kept as they are\n", kept))
   end
   echo("  ")
   custom_link("get its lines from the game", string.format("svo.defences.custom_fetch(%q, %q)", name, d.gmcp or name),
@@ -4372,9 +4436,9 @@ function defences.custom_show(name)
   echo("  ")
   custom_link("test", string.format("svo.defences.custom_test(%q)", name), "Say what it would do")
   echo("  ")
-  custom_link("install", string.format("svo.defences.custom_install(%q)", name), "Put it into play")
+  custom_link("install", string.format("svo.defences.custom_install(%q)", name), "Put it into play", 'go')
   echo("  ")
-  custom_link("delete", string.format("svo.defences.custom_delete(%q)", name), "Take it out")
+  custom_link("delete", string.format("svo.defences.custom_delete(%q)", name), "Take it out", 'remove')
   echo("\n")
 end
 
@@ -4387,13 +4451,13 @@ function defences.custom_set(name, field, value)
   end
   value = value or ''
   if field == 'class' then
-    local class = value:lower()
-    if class ~= 'all' and not svo.knownskills[class] then
+    local class = class_key(value)
+    if class ~= 'all' and not class_skills(class) then
       svo.echof("Svof doesn't know a class called %s. Use a class's name, or all.", value)
       return
     end
     -- a skillset of the class it was for doesn't carry over
-    if class ~= tostring(d.class):lower() and d.skillset and not table.contains(svo.knownskills[class] or {}, d.skillset) then
+    if class ~= class_key(d.class) and d.skillset and not table.contains(class_skills(class) or {}, d.skillset) then
       d.skillset = nil
     end
     d.class = class
@@ -4425,9 +4489,10 @@ function defences.custom_set(name, field, value)
       return
     end
     d.gmcp = gmcp
-    -- the game shows the defence it reports by that name
+    -- the game shows the defence it reports by that name, and the screen
+    -- follows its answer
     if d.gmcp then
-      defences.custom_show(name)
+      svo.echof("Asking the game for %s's lines.", name)
       defences.custom_fetch(name, d.gmcp)
       return
     end
@@ -4544,9 +4609,36 @@ local function fetch_stop()
   fetching = {}
 end
 
-local function fetch_done()
-  local name, asked, f, mode = fetching.name, fetching.keyword, fetching.fields, fetching.mode
-  fetch_stop()
+-- whether svof is waiting on the game's DEFENCE SHOW for name, to fill it
+-- in, so its screen waits for the answer
+function defences.fetch_pending(name)
+  return fetching.name == name and fetching.mode ~= 'gmcp' and not fetching.fields
+end
+
+-- starts svof's output on a line of its own, rather than after a prompt
+local function fresh_line()
+  moveCursorEnd("main")
+  if getCurrentLine() ~= "" then echo("\n") end
+end
+
+-- The game's reply is gagged as it's read, and the prompt after it
+-- (svo.deleteLineP). Echoed from the trigger, svof's output would go with
+-- the line being deleted, so it waits until the line is gone
+local function after_gag(f)
+  tempTimer(0, function ()
+    fresh_line()
+    f()
+  end)
+end
+
+-- shows what's being defined or changed, once the game has had its say
+local function show_after_fetch(name)
+  if defences.custom_drafts[name] or defences.edit_drafts[name] then defences.custom_show(name) end
+end
+
+-- fills in name's draft from the game's DEFENCE SHOW fields f, asked about
+-- as asked
+local function fetch_fill(name, asked, f, mode)
   -- a definition's draft, or a change being made to svof's own
   local d = name and (defences.custom_drafts[name] or defences.edit_drafts[name])
   if not (f and d) then return end
@@ -4562,7 +4654,7 @@ local function fetch_done()
     else
       svo.echof("The game's %s is Svof's own %s, so there's no need to define it.", gmcpname, mapped)
     end
-    return
+    return show_after_fetch(name)
   end
   if mode == 'gmcp' then
     -- asked to set the GMCP name: the game's own spelling of it
@@ -4596,20 +4688,32 @@ local function fetch_done()
   end
 end
 
--- asks which class a profession defence belongs to, a link for each
+local function fetch_done()
+  local name, asked, f, mode = fetching.name, fetching.keyword, fetching.fields, fetching.mode
+  fetch_stop()
+  after_gag(function () fetch_fill(name, asked, f, mode) end)
+end
+
+-- asks which class a profession defence belongs to, a link for each, an
+-- element's lord and lady as one
 function defences.custom_ask_class(name)
   local d = defences.custom_drafts[name]
   if not d then return end
   svo.echof("The game says %s is a profession defence. Which class has it? It's set to %s now:", name,
-    d.class == 'all' and "every class" or tostring(d.class):title())
-  local classes = {}
+    class_title(d.class))
+  local classes, seen = {}, {}
   for class in pairs(svo.knownskills) do
-    if class ~= 'none' then classes[#classes + 1] = class end
+    local key = class_key(class)
+    if key ~= 'none' and not seen[key] then
+      seen[key] = true
+      classes[#classes + 1] = key
+    end
   end
   table.sort(classes)
   echo("  ")
   for i, class in ipairs(classes) do
-    custom_link(class:title(), string.format("svo.defences.custom_set(%q, 'class', %q)", name, class), "It's " .. class:title() .. "'s")
+    local title = class_title(class)
+    custom_link(title, string.format("svo.defences.custom_set(%q, 'class', %q)", name, class), "It's " .. title .. "'s")
     echo(i < #classes and ", " or "\n")
     if i % 6 == 0 and i < #classes then echo("\n  ") end
   end
@@ -4624,19 +4728,25 @@ function defences.custom_fetch(name, keyword, mode)
   fetching.timer = tempTimer(5 + svo.getping(), function()
     fetching.timer = nil
     if fetching.fields then fetch_done() return end
-    if fetching.mode == 'gmcp' then
-      svo.echof("The game didn't answer about %s, so Svof can't take it as %s's GMCP name. Try again, or use vcustomdef %s gmcp none for a defence GMCP doesn't report.",
-        tostring(fetching.keyword), fetching.name, fetching.name)
-    else
-      svo.echof("The game didn't answer about a defence called %s, so add its lines yourself.", tostring(fetching.keyword))
-    end
+    local asked, defining = tostring(fetching.keyword), fetching.name
+    local gmcp = fetching.mode == 'gmcp'
     fetch_stop()
+    fresh_line()
+    if gmcp then
+      svo.echof("The game didn't answer about %s, so Svof can't take it as %s's GMCP name. Try again, or use vcustomdef %s gmcp none for a defence GMCP doesn't report.",
+        asked, defining, defining)
+    else
+      svo.echof("The game didn't answer about a defence called %s, so add its lines yourself.", asked)
+      show_after_fetch(defining)
+    end
   end)
-  send("defence show " .. fetching.keyword, conf.commandecho)
+  -- svof says what it's asking, so the command isn't echoed
+  send("defence show " .. fetching.keyword, false)
 end
 
 -- every line while a fetch waits: the reply starts at its Defence: line
--- and ends at Strippable: or the prompt
+-- and ends at Strippable: or the prompt, and is gagged, with the prompt
+-- after it
 function defences.custom_fetch_line()
   if not fetching.name then return end
   if isPrompt and isPrompt() then
@@ -4649,18 +4759,24 @@ function defences.custom_fetch_line()
     if label == 'Defence' then
       local keyword = rest:match("%((%S+)%)%s*$")
       fetching.fields = { keyword = keyword and keyword:lower() }
+      svo.deleteLineP()
     elseif text == "There is no such defence." then
       local asked, name, mode = fetching.keyword, fetching.name, fetching.mode
       fetch_stop()
+      svo.deleteLineP()
       defences.gmcp_unknown[asked] = true
-      if mode == 'gmcp' then
-        svo.echof("%s", defences.gmcp_refusal(name, asked))
-      else
-        svo.echof("The game has no defence called %s, so add its lines yourself.", tostring(asked))
-      end
+      after_gag(function ()
+        if mode == 'gmcp' then
+          svo.echof("%s", defences.gmcp_refusal(name, asked))
+        else
+          svo.echof("The game has no defence called %s, so add its lines yourself.", tostring(asked))
+          show_after_fetch(name)
+        end
+      end)
     end
     return
   end
+  svo.deleteLineP()
   if label and fetch_labels[label] then
     fetching.fields[label] = rest
     fetching.last = label
@@ -4738,12 +4854,14 @@ local function list_done(complete)
     for _, name in ipairs(names) do set[name] = true end
     defences.game_defences = { names = set, complete = complete }
   end
-  if after then return after() end
-  if names and #names > 0 then
-    list_show(names)
-  else
-    svo.echof("The game didn't send its list of defences.")
-  end
+  after_gag(function ()
+    if after then return after() end
+    if names and #names > 0 then
+      list_show(names)
+    else
+      svo.echof("The game didn't send its list of defences.")
+    end
+  end)
 end
 
 local function list_wait()
@@ -4761,12 +4879,15 @@ function defences.custom_gamelist(after)
   listing.trigger = tempRegexTrigger("^", "svo.defences.custom_gamelist_line()")
   list_wait()
   svo.echof("Asking the game for its list of defences.")
-  send("defence list", conf.commandecho)
+  -- svof says what it's asking, so the command isn't echoed
+  send("defence list", false)
 end
 
 -- every line while the list is read: it starts at "All defences", a MORE
 -- line asks for the next page, and a prompt with no MORE before it, or the
--- game saying there's no more, ends it
+-- game saying there's no more, ends it. Every line of it is gagged, with
+-- the prompts between and after its pages (svo.deleteLineP), and the
+-- "[File continued via MORE]" each page after the first starts with
 function defences.custom_gamelist_line()
   if not listing.pages then return end
   if isPrompt and isPrompt() then
@@ -4775,19 +4896,23 @@ function defences.custom_gamelist_line()
   end
   local text = line
   if listing.names and text == list_end then
-    deleteLine()
+    svo.deleteLineP()
     list_done(true)
     return
   end
   if not listing.names then
     if text == "All defences" then
       listing.names = {}
-      deleteLine()
+      svo.deleteLineP()
     end
     return
   end
+  if text:find("^%[File continued via MORE%]") then
+    svo.deleteLineP()
+    return
+  end
   if text:find("^%[Type MORE if you wish to continue reading") then
-    deleteLine()
+    svo.deleteLineP()
     listing.pages = listing.pages + 1
     if listing.pages > 50 then
       list_done(false)
@@ -4802,9 +4927,9 @@ function defences.custom_gamelist_line()
   if name then
     listing.names[#listing.names + 1] = name:lower()
     listing.more = false
-    deleteLine()
+    svo.deleteLineP()
   elseif text:find("^%-+%s*$") then
-    deleteLine()
+    svo.deleteLineP()
   end
 end
 
@@ -4832,7 +4957,7 @@ function defences.custom_test(name)
   if not d then svo.echof("You haven't defined %s.", name) return end
   local on = type(d.on) == 'string' and { d.on } or d.on or {}
   local off = type(d.off) == 'string' and { d.off } or d.off or {}
-  svo.echof("%s, for %s, %s:", name, d.class == 'all' and "every class" or tostring(d.class),
+  svo.echof("%s, for %s, %s:", name, class_title(d.class),
     d.class == 'all' and "in the main defence list" or d.skillset and ("under " .. d.skillset:title())
     or "under no skillset yet")
   svo.echof("Svof raises it by sending %q, which %s. Serverside %s.", tostring(d.command),
@@ -4887,7 +5012,7 @@ function defences.custom_install(name)
   if not conf.customdefinitions then
     svo.echof("Saved %s. vconfig customdefinitions is off, so Svof doesn't add it.", name)
   elseif not defences.custom_applies(d) then
-    svo.echof("Saved %s. It's for %s, so Svof adds it when you're one.", name, d.class)
+    svo.echof("Saved %s. It's for %s, so Svof adds it when you're one.", name, class_title(d.class))
   else
     local ok, err = pcall(defences.custom_register, name, d)
     if not ok then
@@ -5030,19 +5155,55 @@ function defences.customdef_menu()
       custom_link(name, string.format("svo.defences.custom_show(%q)", name), "See or change " .. name)
       echo(string.format(": %s%s, %s  ", type(spec.copy) == 'table' and "Svof's own, copied, for " or "",
         spec.class == 'all' and "every class"
-        or tostring(spec.class) .. (spec.skillset and (" (" .. spec.skillset .. ")") or ""), state))
+        or class_title(spec.class) .. (spec.skillset and (" (" .. spec.skillset .. ")") or ""), state))
       custom_link("test", string.format("svo.defences.custom_test(%q)", name), "Say what it would do")
       echo("  ")
-      custom_link("delete", string.format("svo.defences.custom_delete(%q)", name), "Take it out")
+      custom_link("delete", string.format("svo.defences.custom_delete(%q)", name), "Take it out", 'remove')
       echo("\n")
     end
   end
   defences.edits_menu()
   echo("  ")
-  custom_link("define a new one", "printCmdLine('vcustomdef ')", "Type its name, or one of Svof's to change it")
+  custom_link("define a new one", "printCmdLine('vcustomdef <name>')",
+    "Put vcustomdef <name> on the command line: replace <name> with its name, or one of Svof's to change it")
   echo("  ")
   custom_link("see the game's defences Svof doesn't know", "svo.defences.custom_gamelist()", "Compare with DEFENCE LIST")
   echo("\n")
+  defences.customdef_usage()
+end
+
+-- every form of vcustomdef, each with what it does (the user's ask,
+-- 2026-10-14). One command sets one thing; the screen vcustomdef <name>
+-- shows has a link for each
+local customdef_forms = {
+  { "<name>", "see one, or start it, filling it in from the game" },
+  { "<name> class|skillset|command|gmcp <value>", "set one of those" },
+  { "<name> balanceless yes|no", "whether raising it takes balance" },
+  { "<name> got|lost <line>", "add a line saying it's gained or lost" },
+  { "<name> def <line>|none", "the line DEF shows, or none if DEF doesn't list it" },
+  { "<name> gotpattern|lostpattern|defpattern <pattern>", "add a pattern, for a line that varies" },
+  { "<name> line got|lost|def", "pick that line off the screen" },
+  { "<name> fetch [game name]", "fill it in from the game's DEFENCE SHOW" },
+  { "<name> test|install|delete", "say what it would do, put it into play, or take it out" },
+  { "<name> copy", "copy Svof's own from another class" },
+  { "<Svof's name> ...|reset", "change one of Svof's own, or put Svof's back" },
+  { "game", "the game's defences Svof doesn't know" },
+  { "export [file]|import <file>", "save your definitions and changes to a file, or read them in" },
+}
+
+-- the values the forms above leave to fill in
+local customdef_placeholders = { ["<value>"] = true, ["yes|no"] = true, ["<line>"] = true, ["<line>|none"] = true,
+  ["<pattern>"] = true, ["got|lost|def"] = true, ["[game name]"] = true, ["[file]"] = true, ["<file>"] = true }
+
+function defences.customdef_usage()
+  svo.echof("vcustomdef takes (click one to put it on the command line):")
+  for _, form in ipairs(customdef_forms) do
+    echo("  ")
+    custom_link("vcustomdef " .. form[1], string.format("printCmdLine(%q)", "vcustomdef " .. form[1]), form[2])
+    setFgColor(128, 128, 128)
+    echo("  " .. form[2] .. "\n")
+    resetFormat()
+  end
 end
 
 -- what the vcustomdef alias passes on: everything after its name
@@ -5052,10 +5213,17 @@ function defences.customdef_command(rest)
   if not name then return defences.customdef_menu() end
   name = name:lower()
   if name == 'list' then return defences.customdef_menu() end
+  if name == 'help' then return defences.customdef_usage() end
+  -- a form from the usage, sent with its placeholders still in. Only the
+  -- usage's own: a line or pattern can hold < > or |, such as a named group
+  local verb, value = tail:match("^(%S*)%s*(.-)$")
+  if name:find("^<") or verb:find("|", 1, true) or customdef_placeholders[verb] or customdef_placeholders[value] then
+    svo.echof("Replace each <...> with what it stands for, and pick one of each a|b, such as vcustomdef shimmer command shimmer on.")
+    return defences.customdef_usage()
+  end
   if name == 'game' then return defences.custom_gamelist() end
   if name == 'export' then return defences.custom_export(tail) end
   if name == 'import' then return defences.custom_import(tail) end
-  local verb, value = tail:match("^(%S*)%s*(.-)$")
   verb = verb:lower()
   if verb == '' then return defences.custom_show(name) end
   if verb == 'test' then return defences.custom_test(name) end
@@ -5140,7 +5308,7 @@ end
 local function edit_key(rec)
   local group = rec and rec.type
   if group == nil or group == 'general' or group == 'dragoncraft' then return 'all' end
-  return tostring(me.class):lower()
+  return class_key(me.class)
 end
 
 -- whether name is svof's own defence in this class, which the player can
@@ -5318,9 +5486,7 @@ function defences.edit_put(name)
   local clash = defences.clash(name, edit_parts(name, edit))
   if clash then
     svo.echofn("<250,0,0>Didn't%s use your change to Svof's own %s: %s. ", svo.getDefaultColor(), name, clash)
-    setUnderline(true)
-    echoLink("(see it)", string.format("svo.defences.custom_show(%q)", name), "See your change next to Svof's own", true)
-    setUnderline(false)
+    custom_link("(see it)", string.format("svo.defences.custom_show(%q)", name), "See your change next to Svof's own")
     echo("\n")
     return
   end
@@ -5330,13 +5496,12 @@ function defences.edit_put(name)
   for i, field in ipairs(moved) do moved[i] = edit_labels[field] end
   svo.echofn("Svof has updated the %s of its own %s since you changed it. Yours %s still in use: ",
     svo.concatand(moved), name, #moved == 1 and "is" or "are")
-  setUnderline(true)
-  echoLink("see both", string.format("svo.defences.custom_show(%q)", name), "See your change next to Svof's own", true)
+  custom_link("see both", string.format("svo.defences.custom_show(%q)", name), "See your change next to Svof's own")
   echo(", ")
-  echoLink("use Svof's", string.format("svo.defences.edit_reset(%q)", name), "Delete your change and use Svof's", true)
+  custom_link("use Svof's", string.format("svo.defences.edit_reset(%q)", name), "Delete your change and use Svof's",
+    'remove')
   echo(", ")
-  echoLink("keep yours", string.format("svo.defences.edit_keep(%q)", name), "Keep your change, and stop saying so", true)
-  setUnderline(false)
+  custom_link("keep yours", string.format("svo.defences.edit_keep(%q)", name), "Keep your change, and stop saying so")
   echo("\n")
 end
 
@@ -5350,7 +5515,7 @@ function defences.edits_start()
 
   -- a change to a defence svof doesn't have any more. An item's defence
   -- registers later
-  for _, key in ipairs({ 'all', tostring(me.class):lower() }) do
+  for _, key in ipairs({ 'all', class_key(me.class) }) do
     local names = {}
     for name in pairs(defences.edits[key] or {}) do
       if not defs_data[name] and not item_defences[name] then names[#names + 1] = name end
@@ -5358,9 +5523,8 @@ function defences.edits_start()
     table.sort(names)
     for _, name in ipairs(names) do
       svo.echofn("Svof doesn't have %s any more, so your change to it isn't used. ", name)
-      setUnderline(true)
-      echoLink("(forget it)", string.format("svo.defences.edit_reset(%q, %q)", name, key), "Delete your change to " .. name, true)
-      setUnderline(false)
+      custom_link("(forget it)", string.format("svo.defences.edit_reset(%q, %q)", name, key),
+        "Delete your change to " .. name, 'remove')
       echo("\n")
     end
   end
@@ -5484,18 +5648,22 @@ function defences.edit_show(name)
   local function svofs(values)
     if #values == 0 then values = { "(none)" } end
     for i, value in ipairs(values) do
-      echo(string.format("  %-12s %s %s\n", "", i == 1 and "Svof's:" or "       ", value))
+      custom_label("")
+      custom_unset_text(string.format("%s %s\n", i == 1 and "Svof's:" or "       ", value))
     end
   end
   if phys and phys.sendsaction then
-    echo(string.format("  %-12s %s  ", "command:", tostring(d.command)))
+    custom_label("command:")
+    echo(tostring(d.command) .. "  ")
     custom_link("change", string.format("printCmdLine(%q)", cmd .. "command "), "Change the command")
     echo("\n")
     if d.command ~= own.command then svofs({ tostring(own.command) }) end
   else
-    echo(string.format("  %-12s %s\n", "command:", fixed_command(name)))
+    custom_label("command:")
+    echo(fixed_command(name) .. "\n")
   end
-  echo(string.format("  %-12s %s  ", "GMCP name:", d.gmcp or "(none)"))
+  custom_label("GMCP name:")
+  if d.gmcp then echo(d.gmcp .. "  ") else custom_unset_text("(none)  ") end
   custom_link("change", string.format("printCmdLine(%q)", cmd .. "gmcp "), "Change the GMCP name")
   echo("\n")
   if not same(d.gmcp, own.gmcp) then svofs({ own.gmcp }) end
@@ -5503,16 +5671,20 @@ function defences.edit_show(name)
   for _, which in ipairs({ { 'on', 'got', "gained when:" }, { 'off', 'lost', "lost when:" }, { 'def', 'def', "DEF shows:" } }) do
     local lines, isdef = d[which[1]], which[1] == 'def'
     if isdef and d.notondef then
-      echo(string.format("  %-12s %s  ", which[3], unlisted))
+      custom_label(which[3])
+      echo(unlisted .. "  ")
       custom_link("it does", string.format("printCmdLine(%q)", cmd .. "def "), "Type or paste the line DEF shows")
       echo("\n")
     else
       for i, line in ipairs(lines) do
-        echo(string.format("  %-12s %s  ", i == 1 and which[3] or "", line))
-        custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, which[1], i), "Remove this line")
+        custom_label(i == 1 and which[3] or "")
+        echo(line .. "  ")
+        custom_link("x", string.format("svo.defences.custom_unset(%q, %q, %d)", name, which[1], i), "Remove this line",
+          'remove')
         echo("\n")
       end
-      echo(string.format("  %-12s %s", #lines == 0 and which[3] or "", #lines == 0 and "(no line)  " or ""))
+      custom_label(#lines == 0 and which[3] or "")
+      if #lines == 0 then custom_unset_text("(no line)  ") end
       custom_link("add a line from the screen", string.format("svo.defences.custom_capture(%q, %q)", name, which[2]),
         "Pick the line from what's on screen")
       echo("  ")
@@ -5537,16 +5709,17 @@ function defences.edit_show(name)
     end
   end
   for i, note in ipairs(edit_notes(name)) do
-    echo(string.format("  %-12s %s\n", i == 1 and "Svof keeps:" or "", note))
+    custom_label(i == 1 and "Svof keeps:" or "")
+    echo(note .. "\n")
   end
   echo("  ")
   custom_link("get its lines from the game", string.format("svo.defences.edit_fetch(%q)", name), "Ask the game with DEFENCE SHOW")
   echo("  ")
   custom_link("test", string.format("svo.defences.custom_test(%q)", name), "Say what it would do")
   echo("  ")
-  custom_link("install", string.format("svo.defences.custom_install(%q)", name), "Put it into play")
+  custom_link("install", string.format("svo.defences.custom_install(%q)", name), "Put it into play", 'go')
   echo("  ")
-  custom_link("reset to Svof's", string.format("svo.defences.edit_reset(%q)", name), "Put Svof's own back")
+  custom_link("reset to Svof's", string.format("svo.defences.edit_reset(%q)", name), "Put Svof's own back", 'remove')
   echo("\n")
 end
 
@@ -5685,9 +5858,8 @@ function defences.edit_install(name, sure)
   if not edit and not sure then
     svo.echofn("Changing Svof's own %s replaces Svof's version of it, and Svof's updates to %s won't reach you until you reset it. ",
       name, name)
-    setUnderline(true)
-    echoLink("(change it)", string.format("svo.defences.edit_install(%q, true)", name), "Put your change into play", true)
-    setUnderline(false)
+    custom_link("(change it)", string.format("svo.defences.edit_install(%q, true)", name), "Put your change into play",
+      'go')
     echo("\n")
     return false
   end
@@ -5733,7 +5905,7 @@ function defences.edit_reset(name, key)
   if not next(defences.edits[key]) then defences.edits[key] = nil end
   defences.edits_save()
   if key ~= here then
-    svo.echof("Deleted your change to %s for %s.", name, key == 'all' and "every class" or key)
+    svo.echof("Deleted your change to %s for %s.", name, class_title(key))
     return
   end
   if defences.own[name] then edit_live(name, nil) end
@@ -5818,9 +5990,9 @@ function defences.edits_menu()
     else
       echo(c.name)
     end
-    echo(string.format(": %s, %s  ", c.key == 'all' and "every class" or c.key, state))
+    echo(string.format(": %s, %s  ", class_title(c.key), state))
     custom_link(c.draft and "discard" or "reset", string.format("svo.defences.edit_reset(%q, %q)", c.name, c.key),
-      c.draft and "Throw the change away" or "Delete the change, for Svof's own")
+      c.draft and "Throw the change away" or "Delete the change, for Svof's own", 'remove')
     echo("\n")
   end
 end
@@ -5973,7 +6145,7 @@ function defences.copy_offer(name)
       echo("can't be copied: " .. why .. "\n")
     else
       custom_link("copy it", string.format("svo.defences.copy_own(%q, %d)", name, i),
-        "Copy Svof's own " .. name .. " for " .. class_names({ v }))
+        "Copy Svof's own " .. name .. " for " .. class_names({ v }), 'go')
       echo("\n")
     end
   end
@@ -5995,7 +6167,7 @@ function defences.copy_own(name, i)
     return
   end
   local had = defences.custom_drafts[name] or defences.custom[name]
-  local d = { class = had and had.class or tostring(me.class):lower(), command = v.command,
+  local d = { class = had and had.class or class_key(me.class), command = v.command,
     balanceless = v.balanceless, gmcp = v.gmcp, notondef = v.notondef,
     on = line_list(v.on), off = line_list(v.off),
     copy = { from = v.classes[1], was = copy_was(v), lines = {} } }
@@ -6012,7 +6184,7 @@ function defences.copy_own(name, i)
   end
   if had and had.skillset then
     d.skillset = had.skillset
-  elseif d.class ~= 'all' and table.contains(svo.knownskills[d.class] or {}, v.type) then
+  elseif d.class ~= 'all' and table.contains(class_skills(d.class) or {}, v.type) then
     d.skillset = v.type
   end
   -- a definition the player made of it: its lines join svof's
@@ -6036,25 +6208,21 @@ end
 function defences.copy_check(name)
   local spec = defences.custom[name]
   local v, i = version_from(name, spec.copy.from)
-  local function link(text, code, hint)
-    setUnderline(true)
-    echoLink(text, code, hint, true)
-    setUnderline(false)
-  end
   if not v then
     svo.echofn("Svof doesn't have %s for %s any more. Your copy of it is still in use. ", name,
       class_names({ { classes = { tostring(spec.copy.from) } } }))
-    link("(delete it)", string.format("svo.defences.custom_delete(%q)", name), "Delete your copy of " .. name)
+    custom_link("(delete it)", string.format("svo.defences.custom_delete(%q)", name), "Delete your copy of " .. name,
+      'remove')
     echo("\n")
     return
   end
   if copy_same(spec.copy.was or {}, v) then return end
   svo.echofn("Svof has updated its own %s since you copied it. Your copy is still in use: ", name)
-  link("see Svof's", string.format("svo.defences.copy_offer(%q)", name), "See Svof's own " .. name)
+  custom_link("see Svof's", string.format("svo.defences.copy_offer(%q)", name), "See Svof's own " .. name)
   echo(", ")
-  link("copy it again", string.format("svo.defences.copy_own(%q, %d)", name, i), "Copy Svof's own again, to install")
+  custom_link("copy it again", string.format("svo.defences.copy_own(%q, %d)", name, i), "Copy Svof's own again, to install")
   echo(", ")
-  link("keep yours", string.format("svo.defences.copy_keep(%q)", name), "Keep your copy, and stop saying so")
+  custom_link("keep yours", string.format("svo.defences.copy_keep(%q)", name), "Keep your copy, and stop saying so")
   echo("\n")
 end
 

@@ -185,7 +185,7 @@ A defence for one class is shown under one of its skillsets in *vshow defup*, *v
 
 Svof refuses a name it already uses for something else. With the name of one of Svof's own defences, *vcustomdef* changes that defence instead; see :ref:`change-svof-defences`. With the name of a defence Svof has only in other classes, *vcustomdef* offers to copy Svof's own into yours; see :ref:`copy-svof-defences`. To change a definition, change its parts and install it again; until then, Svof keeps using the installed one. *vcustomdef <name> delete* takes a definition out.
 
-*vcustomdef* lists every defence you defined, each a link to see or change it, and then your changes to Svof's own. *vshow* and *vconfig2* link to the same list.
+*vcustomdef* lists every defence you defined, each a link to see or change it, and then your changes to Svof's own. *vshow* and *vconfig2* link to the same list. Under it, Svof lists every form *vcustomdef* takes, each a link that puts it on the command line; replace the parts in angle brackets, and pick one of each choice such as *got|lost*. *vcustomdef help* shows that list alone.
 
 In *vshow defup*, *vshow keepup*, the priority lists, *vshow server* and *vshow hidelist*, Svof puts ``*`` after a defence you defined and ``+`` after one of its own you changed, with a key under the list.
 
@@ -2113,7 +2113,7 @@ General aliases
     adds/remove a defence to the keepup list. Note that keepup can also be enabled/disabled as a feature, and it won't put defences up when it's disabled.
 
   vcustomdef [*<defence>*]
-    lists the defences you defined and your changes to Svof's own, or shows one to define, change or copy from another class. See :ref:`custom-defences`, :ref:`change-svof-defences` and :ref:`copy-svof-defences`.
+    lists the defences you defined and your changes to Svof's own, or shows one to define, change or copy from another class. *vcustomdef help* lists every form it takes. See :ref:`custom-defences`, :ref:`change-svof-defences` and :ref:`copy-svof-defences`.
 
   vcreate defmode *<name>*
     creates a new fences mode with the given name. You may wish to have more than the default basic/combat ones in order to specialize for situations (ie when you're out bashing, raiding orgA, raiding orgB, etc.)

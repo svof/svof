@@ -97,6 +97,15 @@ local function echoed(w, text)
   return false
 end
 
+-- a row of vcustomdef's screen: its label, then its value, echoed apart so
+-- each takes its own colour
+local function row_echoed(w, label, value)
+  for i = 1, #w.echoes - 1 do
+    if w.echoes[i]:find(label, 1, true) and w.echoes[i + 1]:find(value, 1, true) == 1 then return true end
+  end
+  return false
+end
+
 -- an "(e!)" link svof shows when something it ran raised
 local function error_shown(w, text)
   for _, l in ipairs(w.links) do
@@ -1247,6 +1256,9 @@ do
   w.run(script, "vcustomdef")
   local d = custom.custom_drafts.shimmer
   eq(d and d.command, "shimmer on", "customdef: vcustomdef <name> command <text> starts a draft")
+  eq(echoed(w, "Asking the game for shimmer's lines."), true,
+    "customdef: a new one's screen waits for the game's DEFENCE SHOW")
+  w.advance(10) -- which doesn't answer here
   local typed = false
   for _, l in ipairs(w.links) do
     if l:find('printCmdLine("vcustomdef shimmer command ")', 1, true) then typed = true end
@@ -1258,6 +1270,7 @@ do
   cmd("shimmer def You are shimmering.")
   svo.defences.gmcp_confirmed.shimmering = true -- as if the game confirmed it; how, further down
   cmd("shimmer gmcp shimmering")
+  w.advance(10) -- the screen follows the game's DEFENCE SHOW, which doesn't answer here
   cmd("shimmer test")
   eq(echoed(w, "be installed yet: pick which of its class's skillsets to show it under."), true,
     "customdef: a class's defence needs a skillset")
@@ -1271,7 +1284,7 @@ do
   w.run([[svo.defences.custom_set("shimmer", 'skillset', "tekura")]])
   eq(d and d.skillset, "tekura", "customdef: clicking one sets it")
   cmd("shimmer test")
-  eq(echoed(w, "shimmer, for monk, under Tekura:"), true, "customdef: test says where it's shown")
+  eq(echoed(w, "shimmer, for Monk, under Tekura:"), true, "customdef: test says where it's shown")
   eq(echoed(w, "It's ready to install."), true, "customdef: test says it is ready")
   eq(svo.defs_data.shimmer, nil, "customdef: a draft changes nothing in play")
 
@@ -1339,7 +1352,7 @@ do
   cmd("ironhide command ironhide")
   cmd("ironhide got Your skin turns to iron.")
   cmd("ironhide install")
-  eq(echoed(w, "Saved ironhide. It's for infernal, so Svof adds it when you're one."), true,
+  eq(echoed(w, "Saved ironhide. It's for Infernal, so Svof adds it when you're one."), true,
     "customdef: one for another class is saved, not added")
   eq(svo.defs_data.ironhide, nil, "customdef: as a Monk it isn't registered")
   svo.classchange("Infernal")
@@ -1374,16 +1387,45 @@ do
   w.env.matches = { "vcustomdef" }
   w.run(script, "vcustomdef")
   eq(echoed(w, "Defences you defined (click one to see or change it):"), true, "customdef: vcustomdef lists them")
-  eq(echoed(w, ": monk (tekura), in use"), true, "customdef: each with its class and skillset")
+  eq(echoed(w, ": Monk (tekura), in use"), true, "customdef: each with its class and skillset")
   local shows, game, new = false, false, false
   for i = links + 1, #w.links do
     if w.links[i]:find('svo.defences.custom_show("shimmer")', 1, true) then shows = true end
     if w.links[i]:find("svo.defences.custom_gamelist()", 1, true) then game = true end
-    if w.links[i]:find("printCmdLine('vcustomdef ')", 1, true) then new = true end
+    if w.links[i]:find("printCmdLine('vcustomdef <name>')", 1, true) then new = true end
   end
   eq(shows, true, "customdef: each a link to see and change it")
   eq(game, true, "customdef: and a link to the game's defences Svof doesn't know")
-  eq(new, true, "customdef: and one that types vcustomdef, to define a new one")
+  eq(new, true, "customdef: and one that types vcustomdef <name>, to define a new one")
+
+  -- under it, every form of vcustomdef, each a link that types it (the
+  -- user's ask, 2026-10-14)
+  eq(echoed(w, "vcustomdef takes (click one to put it on the command line):"), true, "usage: the menu lists the forms")
+  local forms = 0
+  for i = links + 1, #w.links do
+    if w.links[i]:find('^vcustomdef .* printCmdLine%("vcustomdef ') then forms = forms + 1 end
+  end
+  eq(forms, 13, "usage: each a link that types it")
+  for _, typed in ipairs({ "<name>", "shimmer got <line>", "shimmer class|skillset|command|gmcp <value>",
+      "export [file]|import <file>", "export [file]", "shimmer fetch [game name]" }) do
+    local before = #w.echoes
+    cmd(typed)
+    local said = false
+    for i = before + 1, #w.echoes do
+      if w.echoes[i]:find("Replace each <...> with what it stands for", 1, true) then said = true end
+    end
+    eq(said, true, "usage: sent with its placeholders, " .. typed .. " says what to replace")
+  end
+  eq(svo.defences.custom_drafts.shimmer, nil, "usage: and changes nothing")
+  -- (a library that reads any pattern: world.rex_stub has no (?<name>)
+  w.env.rex = { new = function () return { match = function () end } end }
+  cmd("shimmer gotpattern ^(?<who>\\w+) shimmers\\.$")
+  eq(table.concat(svo.defences.custom_drafts.shimmer.onr or {}, "|"), "^(?<who>\\w+) shimmers\\.$",
+    "usage: a pattern's own < > isn't taken for a placeholder")
+  w.env.rex = nil
+  local before = #w.echoes
+  cmd("help")
+  eq(#w.echoes > before and echoed(w, "vcustomdef takes"), true, "usage: vcustomdef help shows it alone")
   links = #w.links
   cmd("list")
   eq(#w.links > links, true, "customdef: vcustomdef list does the same")
@@ -1500,7 +1542,7 @@ do
   local w = world.new({ class = "Monk" })
   local svo = w.svo
   local cmd = svo.defences.customdef_command
-  local function game(text) w.env.line = text svo.defences.custom_fetch_line() end
+  local function game(text) w.env.line = text svo.defences.custom_fetch_line() w.run_timers() end
   local function listening()
     for _, t in ipairs(w.triggers) do
       if not t.killed and t.code == "svo.defences.custom_fetch_line()" then return true end
@@ -1606,6 +1648,82 @@ do
   -- asking again by hand
   cmd("hush fetch hushing")
   eq(w.sent[#w.sent], "defence show hushing", "DEFENCE SHOW: fetch asks again, by the name given")
+
+  -- the reply is gagged with the prompt after it, and a new definition's
+  -- screen shows once, after it, filled in (the user's screenshot,
+  -- 2026-10-14: it showed before and after the reply, and the reply too)
+  local gagged = {}
+  local deleteLineP = svo.deleteLineP
+  svo.deleteLineP = function () gagged[#gagged + 1] = w.env.line end
+  local function screens(name)
+    local n = 0
+    for _, e in ipairs(w.echoes) do
+      if e:find(name .. ", a defence you are defining", 1, true) then n = n + 1 end
+    end
+    return n
+  end
+  cmd("mistral")
+  eq(screens("mistral"), 0, "DEFENCE SHOW: a new definition's screen waits for the game")
+  eq(echoed(w, "Asking the game for mistral's lines."), true, "DEFENCE SHOW: saying it's asking")
+  game("You snap your head up as you break your meditation.")
+  w.env.line = "Defence:            Mistral (mistral)"
+  svo.defences.custom_fetch_line()
+  w.env.line = "Profession:         No"
+  svo.defences.custom_fetch_line()
+  w.env.line = "Strippable:         Yes"
+  svo.defences.custom_fetch_line()
+  eq(screens("mistral"), 0, "DEFENCE SHOW: nothing is echoed onto the gagged reply")
+  w.run_timers()
+  svo.deleteLineP = deleteLineP
+  eq(table.concat(gagged, "|"), "Defence:            Mistral (mistral)|Profession:         No|Strippable:         Yes",
+    "DEFENCE SHOW: every line of the reply is gagged, and nothing before it")
+  eq(screens("mistral"), 1, "DEFENCE SHOW: and the screen shows once it's gone, once")
+
+  -- its links: white, red for taking something out, green for putting it
+  -- into play
+  local colour, coloured = nil, {}
+  local setFgColor, echoLink = w.env.setFgColor, w.env.echoLink
+  w.env.setFgColor = function (r, g, b) colour = table.concat({ r, g, b }, ",") end
+  w.env.echoLink = function (text, ...) coloured[text] = colour return echoLink(text, ...) end
+  cmd("mistral got With a great rushing sound, you become mistral.")
+  w.env.setFgColor, w.env.echoLink = setFgColor, echoLink
+  eq(coloured.change, "255,255,255", "links: white")
+  eq(coloured.x, "255,99,71", "links: x red")
+  eq(coloured.delete, "255,99,71", "links: delete red")
+  eq(coloured.install, "0,204,0", "links: install green")
+end
+
+-- An element's lord and lady are one class: svof gives both the same
+-- skillset (the user, 2026-10-14)
+do
+  local w = world.new({ class = "Fire Elemental Lady" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function game(text) w.env.line = text svo.defences.custom_fetch_line() w.run_timers() end
+  cmd("blaze")
+  game("Defence:            Blaze (blaze)")
+  game("Profession:         Yes")
+  game("Strippable:         Yes")
+  local d = svo.defences.custom_drafts.blaze or {}
+  eq(d.class, "fire elemental", "elementals: a definition is the element's")
+  local fire, lady = 0, false
+  for _, l in ipairs(w.links) do
+    if l:find("custom_set(\"blaze\", 'class', \"fire elemental\")", 1, true) then fire = fire + 1 end
+    if l:find("elemental lady", 1, true) or l:find("elemental lord", 1, true) then lady = true end
+  end
+  eq(fire, 1, "elementals: the class question offers the element once")
+  eq(lady, false, "elementals: and no lord or lady apart")
+  cmd("blaze class Water Elemental Lord")
+  eq(d.class, "water elemental", "elementals: a lord typed is the element")
+  cmd("blaze class fire elemental")
+  cmd("blaze skillset ignition")
+  cmd("blaze command blaze")
+  cmd("blaze install")
+  eq(svo.defs_data.blaze ~= nil, true, "elementals: installed as a lady")
+  svo.classchange("Fire Elemental Lord")
+  eq(svo.defs_data.blaze ~= nil, true, "elementals: and in use as a lord")
+  svo.classchange("Water Elemental Lady")
+  eq(svo.defs_data.blaze, nil, "elementals: but not another element")
 end
 
 -- DEFENCE LIST names every defence the game reports, a page at a time, and
@@ -1614,7 +1732,7 @@ do
   local w = world.new({ class = "Monk" })
   local svo = w.svo
   local cmd = svo.defences.customdef_command
-  local function game(text) w.env.line = text svo.defences.custom_gamelist_line() end
+  local function game(text) w.env.line = text svo.defences.custom_gamelist_line() w.run_timers() end
   local function prompt()
     w.env.isPrompt = function() return true end
     game("9975h, 6252m, 21982e, 9637w cexkdb[disl]-")
@@ -1671,6 +1789,37 @@ do
   cmd("game")
   w.advance(20)
   eq(echoed(w, "The game didn't send its list of defences."), true, "DEFENCE LIST: says when nothing came")
+
+  -- the whole list is gagged, with the prompts between and after its pages
+  -- (svo.deleteLineP), and the "[File continued via MORE]" that starts
+  -- every page after the first (the user's screenshot, 2026-10-14)
+  local gagged = {}
+  local deleteLineP = svo.deleteLineP
+  svo.deleteLineP = function () gagged[#gagged + 1] = w.env.line end
+  local send, echoes_command = w.env.send, nil
+  w.env.send = function (c, e) echoes_command = e return send(c, e) end
+  cmd("game")
+  w.env.send = send
+  game("All defences")
+  game("------------------------------------------------")
+  game("Accursedresolve")
+  game("[Type MORE if you wish to continue reading. (50% shown)]")
+  prompt()
+  game("[File continued via MORE]")
+  game("Arcaneshield")
+  local before = #w.echoes
+  w.env.isPrompt = function() return true end
+  w.env.line = "9975h, 6252m, 21982e, 9637w cexkdb[disl]-"
+  svo.defences.custom_gamelist_line()
+  w.env.isPrompt = function() return false end
+  svo.deleteLineP = deleteLineP
+  eq(table.concat(gagged, "|"), "All defences|------------------------------------------------|Accursedresolve|"
+    .. "[Type MORE if you wish to continue reading. (50% shown)]|[File continued via MORE]|Arcaneshield",
+    "DEFENCE LIST: every line of it is gagged with the prompt after it, MORE's continuation line too")
+  eq(#w.echoes, before, "DEFENCE LIST: and nothing is echoed onto the last, gagged prompt")
+  w.run_timers()
+  eq(echoed(w, "Of the 2 defences the game lists"), true, "DEFENCE LIST: the list follows once it's gone")
+  eq(echoes_command, false, "DEFENCE LIST: the command isn't echoed, as svof says it's asking")
 end
 
 do -- vconfig2 links to the list
@@ -1990,7 +2139,7 @@ do
   eq(echoed(w, "Can't change rebounding's command: Svof raises it with smoke, so it has no command to change."), true,
     "changes: a defence svof raises another way keeps its command")
   cmd("rebounding")
-  eq(echoed(w, "or matches:  " .. svo.defs_data.rebounding.offr[1]), true,
+  eq(row_echoed(w, "or matches:", svo.defs_data.rebounding.offr[1]), true,
     "changes: the screen shows svof's patterns, which a change can change (section 19)")
   eq(echoed(w, "the wait for it after its command"), true, "changes: and its wait")
   cmd("riding")
@@ -2028,7 +2177,7 @@ do
   -- the game's own lines for one of svof's, with DEFENCE SHOW
   cmd("kola fetch")
   eq(w.sent[#w.sent], "defence show kola", "changes: fetch asks the game about svof's own")
-  local function game(text) w.env.line = text svo.defences.custom_fetch_line() end
+  local function game(text) w.env.line = text svo.defences.custom_fetch_line() w.run_timers() end
   game("Defence:            Kola (kola)")
   game("DefMsg:             You are feeling extremely energetic.")
   game("EnactMsg:           You feel energy course through you.")
@@ -2393,7 +2542,7 @@ do
   local w = world.new({ class = "Monk" })
   local svo = w.svo
   local cmd = svo.defences.customdef_command
-  local function game(text) w.env.line = text svo.defences.custom_fetch_line() end
+  local function game(text) w.env.line = text svo.defences.custom_fetch_line() w.run_timers() end
   cmd("shimmer command shimmer on")
   local d = svo.defences.custom_drafts.shimmer or {}
 
@@ -2441,7 +2590,7 @@ do -- a change to svof's own
   local w = world.new({ class = "Occultist" })
   local svo = w.svo
   local cmd = svo.defences.customdef_command
-  local function game(text) w.env.line = text svo.defences.custom_fetch_line() end
+  local function game(text) w.env.line = text svo.defences.custom_fetch_line() w.run_timers() end
   cmd("alertness gmcp alertnes")
   eq(w.sent[#w.sent], "defence show alertnes", "GMCP names: a change's new GMCP name is asked about too")
   game("There is no such defence.")
@@ -2464,7 +2613,7 @@ do -- import checks a file's GMCP names against DEFENCE LIST, which then answers
   local w = world.new({ class = "Monk" })
   local svo = w.svo
   local cmd = svo.defences.customdef_command
-  local function game(text) w.env.line = text svo.defences.custom_gamelist_line() end
+  local function game(text) w.env.line = text svo.defences.custom_gamelist_line() w.run_timers() end
   local old_attributes, old_load = w.env.lfs.attributes, w.env.table.load
   w.env.lfs.attributes = function() return {} end
   w.env.table.load = function(_, t)
@@ -2569,7 +2718,7 @@ do -- a name svof has in other classes is refused, and copied instead
   w.gmcp_defence_add("acrobatics")
   eq(svo.defc.acrobatics, true, "copies: and GMCP's acrobatics is it")
   cmd("list")
-  eq(echoed(w, ": Svof's own, copied, for monk (kaido), in use"), true, "copies: the list says it's a copy")
+  eq(echoed(w, ": Svof's own, copied, for Monk (kaido), in use"), true, "copies: the list says it's a copy")
 
   -- a definition made before svof had it: the copy keeps its lines
   svo.defences.custom.glide = nil
@@ -2588,7 +2737,7 @@ do -- a name svof has in other classes is refused, and copied instead
   -- svof's patterns come with a copy, to see and change: a Serpent's ghost
   local pattern = svo.defences.catalog().ghost[1].offr[1]
   svo.defences.copy_own("ghost", 1)
-  eq(echoed(w, "or matches:  " .. pattern), true, "copies: the screen shows svof's loss pattern")
+  eq(row_echoed(w, "or matches:", pattern), true, "copies: the screen shows svof's loss pattern")
   eq(svo.defences.custom_drafts.ghost.offr[1], pattern, "copies: as the copy's own")
   -- and its other lines, kept as they are: a Druid's concealment
   svo.defences.copy_own("concealment", 1)
@@ -2868,7 +3017,7 @@ do
   cmd("glint gotpattern ^You glint at (\\w+)\\.$")
   local d = svo.defences.custom_drafts.glint
   eq(d.onr and d.onr[1], "^You glint at (\\w+)\\.$", "patterns: gotpattern adds a gain pattern")
-  eq(echoed(w, "or matches:  ^You glint at (\\w+)\\.$"), true, "patterns: shown under the gain lines")
+  eq(row_echoed(w, "or matches:", "^You glint at (\\w+)\\.$"), true, "patterns: shown under the gain lines")
   eq(link_of(w, "add a pattern") ~= nil, true, "patterns: with a link to add one")
   cmd("glint test")
   eq(echoed(w, "It knows it's up from 1 pattern."), true, "patterns: a pattern alone says it's up")
@@ -2942,7 +3091,7 @@ do -- a change to svof's own takes patterns too (the user, 2026-10-11)
   local own = type(onr) == "table" and onr[1] or onr
   local new ="^(\\w+)'s guardian surrounds you with a protective shield\\.$"
   cmd("shield")
-  eq(echoed(w, "or matches:  " .. own), true, "change patterns: the screen shows svof's gain pattern")
+  eq(row_echoed(w, "or matches:", own), true, "change patterns: the screen shows svof's gain pattern")
   w.run('svo.defences.custom_unset("shield", "onr", 1)')
   cmd("shield gotpattern ^(\\w+'s guardian")
   eq(echoed(w, "it isn't a pattern Svof can read"), true, "change patterns: one rex can't read is refused")
