@@ -1,3 +1,4 @@
+if isPrompt() then return end
 local match = getColorWildcard(14)
 
 if match then

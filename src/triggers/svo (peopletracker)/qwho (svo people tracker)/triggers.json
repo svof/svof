@@ -124,10 +124,6 @@
       {
         "pattern": "2,0",
         "type": "color"
-      },
-      {
-        "pattern": "return not isPrompt()",
-        "type": "lua"
       }
     ]
   },
