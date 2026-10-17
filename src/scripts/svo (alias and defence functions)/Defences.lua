@@ -5781,10 +5781,13 @@ local function raised_with(name)
   return others
 end
 
--- why a change can't reach the command of svof's own name
+-- why a change can't reach the command of svof's own name. Only basicdef's
+-- actions are known to send their command and nothing else; a hand-written
+-- one may build its command, such as riding's, or send a fixed one, such as
+-- waterweird's, and svof can't tell which (the user, 2026-10-17)
 local function fixed_command(name)
   local others = raised_with(name)
-  if physical_of(name) then return "Svof makes it as it raises it, so a change can't reach it" end
+  if physical_of(name) then return "Svof's action for it is written by hand, so a change can't replace its command" end
   if #others > 0 then return "Svof raises it with " .. svo.concatand(others) .. ", so it has no command to change" end
   return "Svof doesn't raise it, it only tracks it"
 end

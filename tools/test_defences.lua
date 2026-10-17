@@ -2253,8 +2253,8 @@ do
     "changes: the screen shows svof's patterns, which a change can change (section 19)")
   eq(echoed(w, "the wait for it after its command"), true, "changes: and its wait")
   cmd("riding")
-  eq(echoed(w, "Svof makes it as it raises it, so a change can't reach it"), true,
-    "changes: riding's command is made as svof raises it")
+  eq(echoed(w, "Svof's action for it is written by hand, so a change can't replace its command"), true,
+    "changes: riding's action is written by hand, so its command stays")
   eq(echoed(w, "its own handling of its lines"), true, "changes: and its loss lines have a handler of their own")
   cmd("alertness class all")
   eq(echoed(w, "Svof's own alertness keeps its class and balance."), true, "changes: the class stays svof's")

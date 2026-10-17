@@ -200,7 +200,7 @@ When the game changes one of Svof's defences before Svof catches up, you can cha
 - the lines that say you gained or lost it, and the lines DEF shows. Your change replaces Svof's lines, so take out the ones the game no longer sends. *vcustomdef <name> fetch* asks the game with *DEFENCE SHOW* and adds the lines it shows now. If DEF no longer lists the defence, use *vcustomdef <name> def none*.
 - its patterns for lines that vary, shown under the lines. As for a definition, add one with *gotpattern*, *lostpattern* or *defpattern*, and take one out with its **x**. Your change replaces Svof's patterns too.
 - its GMCP name, which serverside curing knows it by too. As for a definition, Svof only takes a name the game confirms.
-- the command that raises it, for a defence whose action only sends its command. Where Svof makes the command as it raises the defence, such as riding's, or raises it another way, such as smoking for rebounding, the command stays Svof's.
+- the command that raises it, for a defence whose action only sends its command. Where Svof's action for the defence is written by hand, such as riding's or waterweird's, or Svof raises it another way, such as smoking for rebounding, the command stays Svof's.
 - the skillset it's listed under, for a class defence a class update moved to another skillset. Click one of your class's skillsets, or type one with *vcustomdef <name> skillset <skillset>*. A general defence stays general.
 
 Under those, Svof lists what it keeps doing as before, such as what gaining the defence does to your other defences. A change can't reach those.
