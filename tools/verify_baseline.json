@@ -418,6 +418,46 @@
       "text": "Trigger  svo (namedb) Data Capture/Lists/Clan Position Start/Clan Position Name [colorTriggerFgColor]"
     },
     {
+      "id": "item|Trigger|svo (namedb)|Data Capture/Lists/Clan who/Get name (clan who)|patterns",
+      "digest": "a39db264f3d3c0e0",
+      "text": "Trigger  svo (namedb) Data Capture/Lists/Clan who/Get name (clan who) [patterns]"
+    },
+    {
+      "id": "item|Trigger|svo (namedb)|Data Capture/Lists/Clan who/Get name (clan who)|script",
+      "digest": "54c8d1aa689ea560",
+      "text": "Trigger  svo (namedb) Data Capture/Lists/Clan who/Get name (clan who) [script]"
+    },
+    {
+      "id": "item|Trigger|svo (namedb)|Data Capture/Lists/NameDB cwho/Get name (cwho)|patterns",
+      "digest": "e9560af2b733f47d",
+      "text": "Trigger  svo (namedb) Data Capture/Lists/NameDB cwho/Get name (cwho) [patterns]"
+    },
+    {
+      "id": "item|Trigger|svo (namedb)|Data Capture/Lists/NameDB cwho/Get name (cwho)|script",
+      "digest": "16581ce0687bbc53",
+      "text": "Trigger  svo (namedb) Data Capture/Lists/NameDB cwho/Get name (cwho) [script]"
+    },
+    {
+      "id": "item|Trigger|svo (namedb)|Data Capture/Lists/NameDB qw|patterns",
+      "digest": "9b2d1369296029fa",
+      "text": "Trigger  svo (namedb) Data Capture/Lists/NameDB qw [patterns]"
+    },
+    {
+      "id": "item|Trigger|svo (namedb)|Data Capture/Lists/NameDB qw|script",
+      "digest": "dd2d8666079ef2d9",
+      "text": "Trigger  svo (namedb) Data Capture/Lists/NameDB qw [script]"
+    },
+    {
+      "id": "item|Trigger|svo (namedb)|Data Capture/Lists/Party who/Get name (party who)|patterns",
+      "digest": "a39db264f3d3c0e0",
+      "text": "Trigger  svo (namedb) Data Capture/Lists/Party who/Get name (party who) [patterns]"
+    },
+    {
+      "id": "item|Trigger|svo (namedb)|Data Capture/Lists/Party who/Get name (party who)|script",
+      "digest": "fe148a4f3ce7c4d4",
+      "text": "Trigger  svo (namedb) Data Capture/Lists/Party who/Get name (party who) [script]"
+    },
+    {
       "id": "item|Trigger|svo (offering)|Shrine full-gone|script",
       "digest": "11100580842989ba",
       "text": "Trigger  svo (offering) Shrine full-gone [script]"
@@ -428,6 +468,16 @@
       "text": "Trigger  svo (peopletracker) qwho (svo people tracker)/Gag no-location (gods) [colorTriggerFgColor]"
     },
     {
+      "id": "item|Trigger|svo (peopletracker)|qwho (svo people tracker)/Gag no-location (gods)|patterns",
+      "digest": "d6859aedff299f32",
+      "text": "Trigger  svo (peopletracker) qwho (svo people tracker)/Gag no-location (gods) [patterns]"
+    },
+    {
+      "id": "item|Trigger|svo (peopletracker)|qwho (svo people tracker)/Gag no-location (gods)|script",
+      "digest": "21f9ddeac11d7766",
+      "text": "Trigger  svo (peopletracker) qwho (svo people tracker)/Gag no-location (gods) [script]"
+    },
+    {
       "id": "item|Trigger|svo (reboundingsileristracker)|Self-removed|highlightBg",
       "digest": "71b4cb5ddd3c8de5",
       "text": "Trigger  svo (reboundingsileristracker) Self-removed [highlightBg]"
@@ -436,6 +486,16 @@
       "id": "item|Trigger|svo (reboundingsileristracker)|Self-removed|highlightFg",
       "digest": "6f31875f570e9adc",
       "text": "Trigger  svo (reboundingsileristracker) Self-removed [highlightFg]"
+    },
+    {
+      "id": "item|Trigger|svo (refiller)|Giving vials away|patterns",
+      "digest": "aca7dfc2cee581d8",
+      "text": "Trigger  svo (refiller) Giving vials away [patterns]"
+    },
+    {
+      "id": "item|Trigger|svo (refiller)|Giving vials away|script",
+      "digest": "8e6f0f90336c1741",
+      "text": "Trigger  svo (refiller) Giving vials away [script]"
     }
   ]
 }

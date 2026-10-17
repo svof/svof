@@ -184,8 +184,8 @@
         "type": "startOfLine"
       },
       {
-        "pattern": "return isPrompt() and svo.givevials",
-        "type": "lua"
+        "pattern": "",
+        "type": "prompt"
       }
     ]
   },
