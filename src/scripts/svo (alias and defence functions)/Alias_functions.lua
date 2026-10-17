@@ -446,6 +446,23 @@ function svo.ashow()
   resetFormat()
   echo(")\n")
 
+  -- what the defence lists hide, every class's (the user's ask, 2026-10-16)
+  local hiddengroups, hiddendefs = 0, 0
+  for _, group in pairs(sk.ignored_defences) do
+    if group.status then hiddengroups = hiddengroups + 1 end
+    for _, hidden in pairs(group.t) do
+      if hidden then hiddendefs = hiddendefs + 1 end
+    end
+  end
+  svo.echofn("Hidden from the defence lists: %d skillset%s, %d defence%s (", hiddengroups, hiddengroups == 1 and "" or "s",
+    hiddendefs, hiddendefs == 1 and "" or "s")
+  setFgColor(unpack(svo.getDefaultColorNums))
+  setUnderline(true)
+  echoLink("vshow hidelist", 'svo.showhidelist()', "Choose which skillsets and defences the defence lists show", true)
+  setUnderline(false)
+  resetFormat()
+  echo(")\n")
+
   echo"\n"
 
   svo.echofn("View priorities (")

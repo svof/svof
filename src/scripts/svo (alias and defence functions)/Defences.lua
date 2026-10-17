@@ -3841,6 +3841,12 @@ local function custom_unset_text(text)
   resetFormat()
 end
 
+-- a line between a list or screen and the links under it (the user's ask,
+-- 2026-10-17)
+local function custom_separator()
+  custom_unset_text("  " .. string.rep("-", 70) .. "\n")
+end
+
 -- Svof's own defences that only some classes have, with each class's
 -- version: tools/defence_catalog.lua writes them, from every class, to
 -- defence_catalog.lua in Svof's folder. Svof builds only the class it
@@ -4179,11 +4185,13 @@ end, 'register the defences the player defined')
 --   vcustomdef <svof's name> ...     the same, changing svof's own defence
 --   vcustomdef <svof's name> reset   put svof's own back
 --   vcustomdef <name> copy           copy svof's own from another class
+--   vcustomdef svof [all]            svof's own, this class's or every
+--                                    class's, each a link to change it
 --   vcustomdef export [file], import <file>
 -- Changes go to a draft, kept until Svof reloads; only install changes play.
 defences.custom_drafts = defences.custom_drafts or {}
 -- words vcustomdef takes in place of a name
-local custom_reserved = { export = true, import = true, list = true, game = true, help = true }
+local custom_reserved = { export = true, import = true, list = true, game = true, help = true, svof = true }
 -- the definitions whose class the player chose, which the game's word on
 -- a defence doesn't change
 local class_chosen = {}
@@ -4430,7 +4438,8 @@ function defences.custom_show(name)
     custom_label("also:")
     echo(string.format("%d more of Svof's own lines and patterns, kept as they are\n", kept))
   end
-  echo("  ")
+  custom_separator()
+  custom_label("Actions:")
   custom_link("get its lines from the game", string.format("svo.defences.custom_fetch(%q, %q)", name, d.gmcp or name),
     "Ask the game with DEFENCE SHOW")
   echo("  ")
@@ -5163,13 +5172,138 @@ function defences.customdef_menu()
     end
   end
   defences.edits_menu()
+  -- vconfig customdefinitions, with a link to turn it the other way (the
+  -- user's ask, 2026-10-16)
+  if conf.customdefinitions then
+    svo.echofn("Svof uses your definitions and changes (vconfig customdefinitions is on). ")
+    custom_link("turn it off", 'svo.config.set("customdefinitions", false, true)',
+      "Leave out your definitions and changes, from when Svof next loads", 'remove')
+  else
+    svo.echofn("Svof leaves out your definitions and changes (vconfig customdefinitions is off). ")
+    custom_link("turn it on", 'svo.config.set("customdefinitions", true, true)',
+      "Use your definitions and changes, from when Svof next loads", 'go')
+  end
+  echo("\n")
   echo("  ")
   custom_link("define a new one", "printCmdLine('vcustomdef <name>')",
     "Put vcustomdef <name> on the command line: replace <name> with its name, or one of Svof's to change it")
   echo("  ")
+  custom_link("change one of Svof's own", "svo.defences.own_list()", "List Svof's own defences for your class")
+  echo("  ")
   custom_link("see the game's defences Svof doesn't know", "svo.defences.custom_gamelist()", "Compare with DEFENCE LIST")
   echo("\n")
   defences.customdef_usage()
+end
+
+-- the classes that have skillset, as the game writes them, an element's
+-- lord and lady as one
+local function skillset_classes(skillset)
+  local t, seen = {}, {}
+  for class, skills in pairs(svo.knownskills) do
+    local title = class_title(class)
+    if not seen[title] and table.contains(skills, skillset) then
+      seen[title] = true
+      t[#t + 1] = title
+    end
+  end
+  table.sort(t)
+  return t
+end
+
+-- vcustomdef svof [all]: Svof's own defences, by skillset, each a link to
+-- change it, or for another class's, to copy it in (the user's ask,
+-- 2026-10-16). Without all, this class's, the way the defence lists show
+-- them; with all, every class's from the catalog too. The player's own
+-- definitions are vcustomdef's list, not this one
+function defences.own_list(all)
+  local groups = {}
+  local function add(group, name)
+    if defences.custom_registered[name] then return end
+    groups[group] = groups[group] or {}
+    groups[group][name] = true
+  end
+  for group, names in pairs(defences.def_types) do
+    for _, name in ipairs(names) do add(group, name) end
+  end
+  if all then
+    for name, versions in pairs(defences.catalog()) do
+      for _, v in ipairs(versions) do
+        if v.type then add(v.type, name) end
+      end
+    end
+  end
+  -- general, then this class's skillsets, then the rest by name
+  local order, seen = {}, {}
+  local function put(group)
+    if groups[group] and not seen[group] then
+      order[#order + 1] = group
+      seen[group] = true
+    end
+  end
+  put('general')
+  for _, skillset in ipairs(class_skills(me.class) or {}) do put(skillset) end
+  local rest = {}
+  for group in pairs(groups) do
+    if not seen[group] then rest[#rest + 1] = group end
+  end
+  table.sort(rest)
+  for _, group in ipairs(rest) do put(group) end
+
+  local mine = class_skills(me.class) or {}
+  if all then
+    svo.echof("Svof's own defences, every class's, by skillset (click one to change it, or to copy another class's in):")
+  else
+    svo.echof("Svof's own defences for %s (click one to change it):", class_title(me.class))
+  end
+  local marked = {}
+  for _, group in ipairs(order) do
+    local names = {}
+    for name in pairs(groups[group]) do names[#names + 1] = name end
+    table.sort(names)
+    local heading = ""
+    if all and group == 'general' then
+      heading = " (every class)"
+    elseif all and not table.contains(mine, group) then
+      local classes = skillset_classes(group)
+      if #classes > 0 then heading = " (" .. table.concat(classes, ", ") .. ")" end
+    end
+    svo.echof("%s%s:", group:title(), heading)
+    for i, name in ipairs(names) do
+      local mark = defences.mark(name)
+      if mark ~= '' then marked[mark] = true end
+      echo("  ")
+      local hint = defences.is_own(name) and defences.markhint("See or change Svof's own " .. name, name)
+        or defences.custom[name] and "See your copy of " .. name
+        or "Copy Svof's own " .. name .. " from another class"
+      custom_link(name, string.format("svo.defences.custom_show(%q)", name), hint)
+      if mark ~= '' then
+        setFgColor(255, 170, 0)
+        echo(mark)
+        resetFormat()
+      end
+      if i % 3 == 0 or i == #names then
+        echo("\n")
+      else
+        echo(string.rep(" ", math.max(1, 22 - #name - #mark)))
+      end
+    end
+  end
+  local key = defences.mark_key(marked, "<153,204,204>")
+  if key then decho(key) end
+  custom_separator()
+  echo("  ")
+  if all then
+    custom_link("show only " .. class_title(me.class) .. "'s defences", "svo.defences.own_list()",
+      "List Svof's own defences for your class (vcustomdef svof)")
+  else
+    custom_link("show every class's defences", "svo.defences.own_list(true)",
+      "List Svof's own defences for every class, by skillset (vcustomdef svof all)")
+  end
+  -- hiding them is vshow hidelist's (the user's choice, 2026-10-16)
+  echo("  ")
+  custom_link("hide defences", all and "svo.showhidelist(true)" or "svo.showhidelist()",
+    "Choose which skillsets and defences the defence lists show (vshow hidelist)")
+  echo("\n")
 end
 
 -- every form of vcustomdef, each with what it does (the user's ask,
@@ -5187,13 +5321,15 @@ local customdef_forms = {
   { "<name> test|install|delete", "say what it would do, put it into play, or take it out" },
   { "<name> copy", "copy Svof's own from another class" },
   { "<Svof's name> ...|reset", "change one of Svof's own, or put Svof's back" },
+  { "svof [all]", "Svof's own defences to change: your class's, or every class's by skillset" },
   { "game", "the game's defences Svof doesn't know" },
   { "export [file]|import <file>", "save your definitions and changes to a file, or read them in" },
 }
 
 -- the values the forms above leave to fill in
 local customdef_placeholders = { ["<value>"] = true, ["yes|no"] = true, ["<line>"] = true, ["<line>|none"] = true,
-  ["<pattern>"] = true, ["got|lost|def"] = true, ["[game name]"] = true, ["[file]"] = true, ["<file>"] = true }
+  ["<pattern>"] = true, ["got|lost|def"] = true, ["[game name]"] = true, ["[file]"] = true, ["<file>"] = true,
+  ["[all]"] = true }
 
 function defences.customdef_usage()
   svo.echof("vcustomdef takes (click one to put it on the command line):")
@@ -5222,6 +5358,11 @@ function defences.customdef_command(rest)
     return defences.customdef_usage()
   end
   if name == 'game' then return defences.custom_gamelist() end
+  if name == 'svof' then
+    if verb == '' or verb:lower() == 'all' then return defences.own_list(verb ~= '') end
+    svo.echof("vcustomdef svof lists Svof's own defences for your class, and vcustomdef svof all every class's.")
+    return
+  end
   if name == 'export' then return defences.custom_export(tail) end
   if name == 'import' then return defences.custom_import(tail) end
   verb = verb:lower()
@@ -5263,10 +5404,12 @@ end
 -- since. vconfig customdefinitions off leaves them out too.
 local edits_path = getMudletHomeDir() .. "/svo/custom/edits"
 -- notondef: DEF doesn't list it (svof's invisibledef), as definitions have
-local edit_fields = { 'on', 'off', 'def', 'onr', 'offr', 'defr', 'notondef', 'command', 'gmcp' }
+-- skillset: the one a class's defence is listed under, for a class update
+-- that moved it (the user's ask, 2026-10-17)
+local edit_fields = { 'on', 'off', 'def', 'onr', 'offr', 'defr', 'notondef', 'command', 'gmcp', 'skillset' }
 local edit_labels = { on = "gain lines", off = "loss lines", def = "DEF lines", onr = "gain patterns",
   offr = "loss patterns", defr = "DEF patterns", notondef = "whether DEF lists it", command = "command",
-  gmcp = "GMCP name" }
+  gmcp = "GMCP name", skillset = "skillset" }
 -- svof's own version of each defence a change is in use for, to put back
 defences.own = defences.own or {}
 defences.edit_drafts = defences.edit_drafts or {}
@@ -5337,13 +5480,13 @@ local function own_version(name)
     return { on = line_list(snap.on), off = line_list(snap.off), def = line_list(snap.def),
       onr = line_list(snap.onr), offr = line_list(snap.offr), defr = line_list(snap.defr),
       notondef = snap.invisibledef and true or nil, command = snap.command, gmcp = snap.gmcp,
-      sendsaction = phys and phys.sendsaction }
+      skillset = snap.type, sendsaction = phys and phys.sendsaction }
   end
   local rec = defs_data[name]
   return { on = line_list(rec.on), off = line_list(rec.off), def = line_list(rec.def),
     onr = line_list(rec.onr), offr = line_list(rec.offr), defr = line_list(rec.defr),
     notondef = rec.invisibledef and true or nil, command = phys and phys.action, gmcp = svo.dict.svotossd[name],
-    sendsaction = phys and phys.sendsaction }
+    skillset = rec.type, sendsaction = phys and phys.sendsaction }
 end
 
 -- the command that raises it, which svof also takes for its own when the
@@ -5370,6 +5513,32 @@ local function set_gmcp(name, gmcp, gamename)
   if type(svo.dict[name]) == 'table' then svo.dict[name].gamename = gamename end
 end
 
+-- moves a defence the lists already have from one skillset to another:
+-- its place in the lists, and whether it's hidden. One svof hasn't listed
+-- yet, as it loads, is listed under its record's
+local function regroup(name, from, to)
+  if from == to then return end
+  -- listed already: def_types starts again each load, and the hide list's
+  -- map of defences to groups doesn't
+  local list, listed = defences.def_types[from] or {}, false
+  for i = #list, 1, -1 do
+    if list[i] == name then
+      table.remove(list, i)
+      listed = true
+    end
+  end
+  if not listed then return end
+  if #list == 0 then defences.def_types[from] = nil end
+  defences.def_types[to] = defences.def_types[to] or {}
+  defences.def_types[to][#defences.def_types[to] + 1] = name
+  local old = sk.ignored_defences[from]
+  local hidden = old and old.t[name] or false
+  if old then old.t[name] = nil end
+  sk.ignored_defences[to] = sk.ignored_defences[to] or { status = false, t = {} }
+  sk.ignored_defences[to].t[name] = hidden
+  sk.ignored_defences_map[name] = to
+end
+
 -- puts a change into play over svof's own version, keeping that to put
 -- back. A GMCP name svof has since given another defence stays that one's
 local function edit_apply(name, edit)
@@ -5377,13 +5546,17 @@ local function edit_apply(name, edit)
   local snap = { on = rec.on, off = rec.off, def = rec.def, onr = rec.onr, offr = rec.offr, defr = rec.defr,
     invisibledef = rec.invisibledef, gmcp = svo.dict.svotossd[name],
     gamename = type(entry) == 'table' and entry.gamename or nil, command = phys and phys.action,
-    onstart = phys and phys.onstart }
+    onstart = phys and phys.onstart, type = rec.type }
   defences.own[name] = snap
   for _, field in ipairs({ 'on', 'off', 'def', 'onr', 'offr', 'defr' }) do
     if edit[field] then rec[field] = line_list(edit[field]) end
   end
   if edit.notondef ~= nil then rec.invisibledef = edit.notondef or nil end
   if edit.command and phys and phys.sendsaction then set_command(phys, edit.command) end
+  if edit.skillset then
+    regroup(name, rec.type, edit.skillset)
+    rec.type = edit.skillset
+  end
   local taken = edit.gmcp and svo.dict.sstosvod[edit.gmcp]
   if edit.gmcp ~= nil and not (taken and taken ~= name) then
     -- what the name meant before, such as a defence svof leaves alone
@@ -5401,6 +5574,10 @@ local function edit_restore(name)
   if rec then
     rec.on, rec.off, rec.def, rec.invisibledef = snap.on, snap.off, snap.def, snap.invisibledef
     rec.onr, rec.offr, rec.defr = snap.onr, snap.offr, snap.defr
+    if snap.type and rec.type ~= snap.type then
+      regroup(name, rec.type, snap.type)
+      rec.type = snap.type
+    end
   end
   if phys and phys.action ~= snap.command then set_command(phys, snap.command, snap.onstart) end
   local mine = svo.dict.svotossd[name]
@@ -5542,7 +5719,8 @@ local function edit_draft(name)
   end
   d = { on = line_list(from('on')), off = line_list(from('off')), def = line_list(from('def')),
     onr = line_list(from('onr')), offr = line_list(from('offr')), defr = line_list(from('defr')),
-    notondef = from('notondef') or nil, command = from('command'), gmcp = from('gmcp') or nil }
+    notondef = from('notondef') or nil, command = from('command'), gmcp = from('gmcp') or nil,
+    skillset = from('skillset') }
   defences.edit_drafts[name] = d
   return d
 end
@@ -5667,6 +5845,23 @@ function defences.edit_show(name)
   custom_link("change", string.format("printCmdLine(%q)", cmd .. "gmcp "), "Change the GMCP name")
   echo("\n")
   if not same(d.gmcp, own.gmcp) then svofs({ own.gmcp }) end
+  -- the skillset it's listed under, which a class update can move it from
+  custom_label("skillset:")
+  if edit_key(defs_data[name]) == 'all' then
+    echo(tostring(d.skillset) .. ", which every class has, so it stays there\n")
+  else
+    echo(tostring(d.skillset) .. "  ")
+    for _, skillset in ipairs(class_skills(me.class) or {}) do
+      if skillset ~= d.skillset then
+        custom_link(skillset, string.format("svo.defences.custom_set(%q, 'skillset', %q)", name, skillset),
+          "List it under " .. skillset:title())
+        echo("  ")
+      end
+    end
+    custom_link("type one", string.format("printCmdLine(%q)", cmd .. "skillset "), "One Svof doesn't list for the class")
+    echo("\n")
+    if d.skillset ~= own.skillset then svofs({ tostring(own.skillset) }) end
+  end
   local unlisted = "nothing, as DEF doesn't list it"
   for _, which in ipairs({ { 'on', 'got', "gained when:" }, { 'off', 'lost', "lost when:" }, { 'def', 'def', "DEF shows:" } }) do
     local lines, isdef = d[which[1]], which[1] == 'def'
@@ -5712,7 +5907,8 @@ function defences.edit_show(name)
     custom_label(i == 1 and "Svof keeps:" or "")
     echo(note .. "\n")
   end
-  echo("  ")
+  custom_separator()
+  custom_label("Actions:")
   custom_link("get its lines from the game", string.format("svo.defences.edit_fetch(%q)", name), "Ask the game with DEFENCE SHOW")
   echo("  ")
   custom_link("test", string.format("svo.defences.custom_test(%q)", name), "Say what it would do")
@@ -5779,11 +5975,24 @@ function defences.edit_set(name, field, value)
     local lines = d[field == 'got' and 'on' or field == 'lost' and 'off' or 'def']
     if not table.contains(lines, value) then lines[#lines + 1] = value end
     if field == 'def' then d.notondef = nil end
-  elseif field == 'class' or field == 'skillset' or field == 'balanceless' or field == 'serverside' then
-    svo.echof("Svof's own %s keeps its class, skillset and balance. A change can replace its lines, patterns and GMCP name, and for some defences the command.", name)
+  elseif field == 'skillset' then
+    if edit_key(defs_data[name]) == 'all' then
+      svo.echof("Svof's own %s is a %s defence, which every class has, so its skillset stays.", name, tostring(own.skillset))
+      return
+    end
+    local skillset = value:lower()
+    if skillset == '' then svo.echof("Which skillset is %s in now?", name) return end
+    local why = skillset_problem(skillset)
+    if why then
+      svo.echof("Can't list %s under %s: %s.", name, skillset, why)
+      return
+    end
+    d.skillset = skillset
+  elseif field == 'class' or field == 'balanceless' or field == 'serverside' then
+    svo.echof("Svof's own %s keeps its class and balance. A change can replace its lines, patterns, GMCP name and skillset, and for some defences the command.", name)
     return
   else
-    svo.echof("A change to Svof's own defence has command, gmcp, got, lost, def, gotpattern, lostpattern and defpattern; %s isn't one.", field)
+    svo.echof("A change to Svof's own defence has command, gmcp, skillset, got, lost, def, gotpattern, lostpattern and defpattern; %s isn't one.", field)
     return
   end
   defences.edit_show(name)
@@ -6663,9 +6872,10 @@ end;
 
 -- Hiding a defence takes it off defup and keepup in every mode, so svof
 -- doesn't raise what the lists don't show (the user's choice, 2026-10-10).
--- Says what it took off, with a link to show it and put it all back.
-local function takeoff_hidden(skill, names)
-  local off, undo = {}, { string.format("svo.ignoreskill(%q, false)", skill) }
+-- Says what it took off, with a link, undo, that shows it and puts it all
+-- back.
+local function takeoff_hidden(undo, names)
+  local off, back = {}, { undo }
   for _, def in ipairs(names) do
     local where = {}
     for _, list in ipairs({ { defdefup, 'defup' }, { defkeepup, 'keepup' } }) do
@@ -6673,7 +6883,7 @@ local function takeoff_hidden(skill, names)
         if t[def] then
           defs[list[2]](def, false, mode)
           where[#where+1] = mode .. " " .. list[2]
-          undo[#undo+1] = string.format("svo.defs.%s(%q, true, %q)", list[2], def, mode)
+          back[#back+1] = string.format("svo.defs.%s(%q, true, %q)", list[2], def, mode)
         end
       end
     end
@@ -6685,121 +6895,190 @@ local function takeoff_hidden(skill, names)
   if #off == 0 then return end
   svo.echofn("Took %s off, so Svof doesn't raise what it hides. ", svo.concatand(off))
   setUnderline(true)
-  echoLink("(undo)", table.concat(undo, " "), "Show it again and put it all back", true)
+  echoLink("(undo)", table.concat(back, " "), "Show it again and put it all back", true)
   setUnderline(false)
   echo("\n")
 end
 
-function svo.ignoreskill(skill, newstatus)
-  skill = skill:lower()
-
-  -- first, check if this is a group we're disabling as a whole
-  if sk.ignored_defences[skill] then
-    sk.ignored_defences[skill].status = newstatus
-    svo.showhidelist()
-    if newstatus then takeoff_hidden(skill, defences.def_types[skill] or {}) end
-    return
-  end
-
-  -- otherwise, the group this class has it in: another class's group with
-  -- the same defence stays in the list, kept for when you change back
-  local group = defs_data[skill] and sk.ignored_defences[defs_data[skill].type]
-  if group and group.t[skill] ~= nil then
-    group.t[skill] = newstatus
-    svo.showhidelist()
-    if newstatus then takeoff_hidden(skill, { skill }) end
-    return
-  end
-
-  -- otherwise, loop through all skillsets, looking for the skill
-  for _, group in pairs(sk.ignored_defences) do
-    for skills, _ in pairs(group.t) do
-      if skills == skill then
-        group.t[skill] = newstatus
-        svo.showhidelist() return
+-- the defences in group: this class's, or for a group it doesn't have,
+-- every class's from the catalog
+local function hide_group_names(group)
+  local names = {}
+  if defences.def_types[group] then
+    for _, def in ipairs(defences.def_types[group]) do names[#names+1] = def end
+  else
+    for name, versions in pairs(defences.catalog()) do
+      for _, v in ipairs(versions) do
+        if v.type == group then names[#names+1] = name break end
       end
     end
+  end
+  table.sort(names)
+  return names
+end
+
+-- whether group is a skillset or group of defences: this class's, or any
+-- class's svof knows
+local function is_hide_group(group)
+  if sk.ignored_defences[group] or defences.def_types[group] then return true end
+  for _, skills in pairs(svo.knownskills) do
+    if table.contains(skills, group) then return true end
+  end
+  return false
+end
+
+-- what hiding name means: { group } for a skillset, or the groups a
+-- defence is in, as { group, def }: this class's group if it has the
+-- defence, or every other class's it's in
+local function hide_targets(name)
+  name = name:lower()
+  if is_hide_group(name) then return { { name } } end
+  local rec = defs_data[name]
+  if rec and rec.type then return { { rec.type, name } } end
+  local targets, seen = {}, {}
+  for _, v in ipairs(defences.catalog()[name] or {}) do
+    if v.type and not seen[v.type] then
+      seen[v.type] = true
+      targets[#targets+1] = { v.type, name }
+    end
+  end
+  -- a defence a class had before, such as one defined there
+  if #targets == 0 then
+    for group, g in pairs(sk.ignored_defences) do
+      if g.t[name] ~= nil then targets[#targets+1] = { group, name } end
+    end
+    table.sort(targets, function (a, b) return a[1] < b[1] end)
+  end
+  return targets
+end
+
+-- Hides def in group, or the whole group without def, or shows it again;
+-- what's hidden is kept for a group or class this one doesn't have, for
+-- when you change to it. show, if given, runs before hiding takes the
+-- defences off defup and keepup, so that comes under the list
+function defences.set_hidden(group, def, status, show)
+  status = status and true or false
+  local g = sk.ignored_defences[group]
+  if not g then
+    g = { status = false, t = {} }
+    sk.ignored_defences[group] = g
+  end
+  if def then g.t[def] = status else g.status = status end
+  if show then show() end
+  if status then
+    takeoff_hidden(def and string.format("svo.defences.set_hidden(%q, %q, false)", group, def)
+      or string.format("svo.defences.set_hidden(%q, nil, false)", group), def and { def } or hide_group_names(group))
   end
 end
 
-function svo.showhidelist()
-  local enabled_c, disabled_c = "<242,218,218>", "<156,140,140>"
+-- the hide list's links: hide or show one, then the list again
+function defences.hide_click(group, def, status, all)
+  defences.set_hidden(group, def, status, function () svo.showhidelist(all) end)
+end
 
-  -- adds in the link with a proper tooltip
-  local function makelink(skill, sign, groupstatus)
-    if sign == "+" then
-      echoLink(sign, [[svo.ignoreskill("]]..skill..[[", false, true)]],
-        string.format("Click to start showing " .. skill.."%s", groupstatus and " (won't do anything since the group is disabled, though)" or ""), true)
-    elseif sign == "-" then
-      echoLink(sign, [[svo.ignoreskill("]]..skill..[[", true, true)]],
-        string.format("Click to hide " .. skill.."%s", groupstatus and " (won't do anything since the group is disabled, though)" or ""), true)
-    else
-      echo " "
-    end
-
-    return ""
+-- vshow hide <name> and vshow unhide <name>, for the command line
+function defences.hide_command(verb, name)
+  local status = verb == 'hide'
+  name = (name or ''):match("^%s*(.-)%s*$")
+  if name == '' then
+    svo.echof("vshow %s takes a skillset or a defence, such as vshow %s tekura or vshow %s rebounding.", verb, verb, verb)
+    return
   end
+  local targets = hide_targets(name)
+  if #targets == 0 then
+    svo.echof("Svof doesn't know a skillset or defence called %s. vshow hidelist all lists every class's.", name:lower())
+    return
+  end
+  local where = {}
+  for _, t in ipairs(targets) do
+    if t[2] then where[#where+1] = t[1] end
+  end
+  if targets[1][2] then
+    svo.echof("%s %s, in %s, %s the defence lists.", status and "Hid" or "Showed", targets[1][2],
+      svo.concatand(where), status and "from" or "in")
+  else
+    svo.echof("%s %s, the whole skillset, %s the defence lists.", status and "Hid" or "Showed", targets[1][1],
+      status and "from" or "in")
+  end
+  for _, t in ipairs(targets) do defences.set_hidden(t[1], t[2], status) end
+end
 
-  local count = 1
+-- the hide list's own vocabulary, kept for scripts and links from before:
+-- hides or shows a skillset or defence, as vshow hide does
+function svo.ignoreskill(skill, newstatus)
+  local targets = hide_targets(skill)
+  if #targets == 0 then return end
+  local shown = false
+  for _, t in ipairs(targets) do
+    defences.set_hidden(t[1], t[2], newstatus, not shown and function () svo.showhidelist() end or nil)
+    shown = true
+  end
+end
+
+-- vshow hidelist [all]: every skillset and defence of this class, or with
+-- all every class's, each a link to hide it from the defence lists or
+-- show it again, and the commands that do the same
+function svo.showhidelist(all)
+  all = all and true or false
+  local enabled_c, disabled_c = "<242,218,218>", "<128,128,128>"
   -- the marks shown, for the key under the list
   local marked = {}
-  -- shows a specific defences group
-  local function show_em(name, what)
-    decho(string.format("%s%s %s defences:\n",
-      (what.status and disabled_c or enabled_c),
-      makelink(name, (what.status and "+" or "-")),
-      name:title()))
 
-    -- the defences this class has in the group; the list keeps other
-    -- classes' too, for when you change back
-    local shown = {}
-    for def, disabled in pairs(what.t) do
-      if defs_data[def] and defs_data[def].type == name then shown[def] = disabled end
-    end
-
-    -- loops through all defences within the group
-    for def,disabled in pairs(shown) do
-      -- if the whole group is disabled, then all things inside it should be as well
-      local skill_color = (what.status and true or disabled)
-
-      if count % 3 == 1 then echo"  " end
-      local colour = skill_color and disabled_c or enabled_c
-      if (count % 3) ~= 0 then
-        decho(defences.withmark(string.format("%s%s %-23s",
-          colour,
-          makelink(def, (disabled and "+" or "-"), what.status),
-          def), def, colour, marked, " "))
+  local function show_em(name, names, whose)
+    local what = sk.ignored_defences[name] or { status = false, t = {} }
+    decho(string.format("%s%s%s defences%s: ", what.status and disabled_c or enabled_c, name:title(), whose or "",
+      what.status and " (hidden)" or ""))
+    setUnderline(true)
+    echoLink(what.status and "show them" or "hide them",
+      string.format("svo.defences.hide_click(%q, nil, %s, %s)", name, tostring(not what.status), tostring(all)),
+      (what.status and "Show " or "Hide ") .. name .. " in the defence lists", true)
+    setUnderline(false)
+    echo("\n")
+    for i, def in ipairs(names) do
+      local hidden = what.t[def] and true or false
+      local colour = (what.status or hidden) and disabled_c or enabled_c
+      if i % 3 == 1 then echo("  ") end
+      -- the link is the name and its mark, the padding after it plain
+      local mark = defences.mark(def)
+      dechoLink(defences.withmark(colour .. def .. (mark ~= '' and " " or ""), def, colour, marked, colour), string.format("svo.defences.hide_click(%q, %q, %s, %s)",
+        name, def, tostring(not hidden), tostring(all)), (hidden and "Show " or "Hide ") .. def .. " in the defence lists"
+        .. (what.status and " (its skillset is hidden, though)" or ""), true)
+      if i % 3 == 0 or i == #names then
+        echo("\n")
       else
-        decho(defences.withmark(string.format("%s%s %s",
-          colour,
-          makelink(def, (disabled and "+" or "-"), what.status),
-          def), def, colour, marked, " "))
+        echo(string.rep(" ", math.max(1, 24 - #def - #mark)))
       end
-
-      if count % 3 == 0 then echo("\n") end
-      --~ if count % 3 ~= 1 then echo("  ") end
-      count = count + 1
-    end
-
-    if count %3 ~= 1 then echo("\n") end
-    count = 1
-  end
-
-  svo.echof("Select which skillsets or skills to show in defence display lists:")
-  show_em('general', sk.ignored_defences.general)
-
-  local function f()
-    -- only the groups this class has, in order
-    for _, j in ipairs(defences.group_order()) do
-      if j ~= 'general' and sk.ignored_defences[j] then show_em (j, sk.ignored_defences[j]) end
     end
   end
 
-  local s,_ = pcall(f)
-  if not s then svo.echof("Your Mudlet version doesn't seem to be new enough to display this; please update to latest (http://forums.mudlet.org/viewtopic.php?f=5&t=1874)") end
+  svo.echof("Click a skillset or defence to hide it from the defence lists, or to show it again. Grey ones are hidden:")
+  -- this class's groups, in order, with its own defences in each; the list
+  -- keeps other classes' too, for when you change to one
+  local here = {}
+  for _, group in ipairs(defences.group_order()) do
+    here[group] = true
+    local names = {}
+    for _, def in ipairs(defences.def_types[group] or {}) do names[#names+1] = def end
+    table.sort(names)
+    show_em(group, names)
+  end
+  if all then
+    local others = {}
+    for _, versions in pairs(defences.catalog()) do
+      for _, v in ipairs(versions) do
+        if v.type and not here[v.type] then here[v.type] = true others[#others+1] = v.type end
+      end
+    end
+    table.sort(others)
+    for _, group in ipairs(others) do
+      local classes = skillset_classes(group)
+      show_em(group, hide_group_names(group), #classes > 0 and (" (" .. table.concat(classes, ", ") .. ")") or nil)
+    end
+  end
   local key = defences.mark_key(marked, enabled_c)
   if key then decho("  " .. key) end
 
+  custom_separator()
   -- hiding one takes it off defup and keepup; vconfig showhiddendefs
   -- lists hidden ones anyway, to see what's there
   svo.echofn("Hiding a defence takes it off defup and keepup. ")
@@ -6807,6 +7086,18 @@ function svo.showhidelist()
   echoLink(conf.showhiddendefs and "Leave them out of the defence lists" or "Show them in the defence lists anyway",
     string.format("svo.config.set('showhiddendefs', %s, true)", conf.showhiddendefs and "false" or "true"),
     "vconfig showhiddendefs", true)
+  setUnderline(false)
+  echo("\n")
+  svo.echof("Or type vshow hide <skillset or defence> to hide one, and vshow unhide <skillset or defence> to show it again.")
+  echo("  ")
+  setUnderline(true)
+  if all then
+    echoLink("show only " .. class_title(me.class) .. "'s skillsets", "svo.showhidelist()",
+      "List your class's skillsets (vshow hidelist)", true)
+  else
+    echoLink("show every class's skillsets", "svo.showhidelist(true)",
+      "List every class's skillsets, to hide one or its defences (vshow hidelist all)", true)
+  end
   setUnderline(false)
   echo("\n")
 end

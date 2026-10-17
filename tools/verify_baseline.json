@@ -208,6 +208,16 @@
       "text": "Alias    svo (aliases, triggers) svo/(vversion) Show system version [script]"
     },
     {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Show hidelist|regex",
+      "digest": "1eb8d9a5a673bd5a",
+      "text": "Alias    svo (aliases, triggers) svo/Show hidelist [regex]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Show hidelist|script",
+      "digest": "f6002ce9a5d2cb57",
+      "text": "Alias    svo (aliases, triggers) svo/Show hidelist [script]"
+    },
+    {
       "id": "item|Alias|svo (namedb)|NameDB/Enemies lists|script",
       "digest": "47331a71696caa53",
       "text": "Alias    svo (namedb) NameDB/Enemies lists [script]"
@@ -224,12 +234,12 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Alias functions|script",
-      "digest": "e749da059714683c",
+      "digest": "924deeb2971257f3",
       "text": "Script   svo (alias and defence functions) Alias functions [script]"
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "9506f6b24bb515d6",
+      "digest": "13c69d0a69f37785",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {

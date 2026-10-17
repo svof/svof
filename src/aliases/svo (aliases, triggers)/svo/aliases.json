@@ -135,7 +135,7 @@
     "name": "Show hidelist",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^vshow ?(h|hidelist)$"
+    "regex": "^vshow ?(h|hidelist|hide|unhide)(?: (.+))?$"
   },
   {
     "name": "Toggle clot use",

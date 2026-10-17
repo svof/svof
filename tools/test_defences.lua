@@ -1283,7 +1283,8 @@ do
   eq(table.concat(links, ","), "tekura,kaido,telepathy,shikudo", "customdef: a link for each of the Monk's skillsets")
   w.run([[svo.defences.custom_set("shimmer", 'skillset', "tekura")]])
   eq(d and d.skillset, "tekura", "customdef: clicking one sets it")
-  cmd("shimmer test")
+  eq(row_echoed(w, string.rep("-", 70), "  Actions:"), true,
+    "customdef: the screen's links come under a line, labelled Actions (the user's ask, 2026-10-17)")  cmd("shimmer test")
   eq(echoed(w, "shimmer, for Monk, under Tekura:"), true, "customdef: test says where it's shown")
   eq(echoed(w, "It's ready to install."), true, "customdef: test says it is ready")
   eq(svo.defs_data.shimmer, nil, "customdef: a draft changes nothing in play")
@@ -1405,7 +1406,7 @@ do
   for i = links + 1, #w.links do
     if w.links[i]:find('^vcustomdef .* printCmdLine%("vcustomdef ') then forms = forms + 1 end
   end
-  eq(forms, 13, "usage: each a link that types it")
+  eq(forms, 14, "usage: each a link that types it")
   for _, typed in ipairs({ "<name>", "shimmer got <line>", "shimmer class|skillset|command|gmcp <value>",
       "export [file]|import <file>", "export [file]", "shimmer fetch [game name]" }) do
     local before = #w.echoes
@@ -1958,6 +1959,8 @@ do -- a defence two classes have is hidden in the group this class has it in
   -- and the general group keeps the name from before
   local shown = {}
   w.env.decho = function(s) shown[#shown + 1] = tostring(s) end
+  -- each defence is a link now, to hide or show it
+  w.env.dechoLink = function(s) shown[#shown + 1] = tostring(s) end
   showhidelist()
   local text = table.concat(shown)
   local general = text:match("General defences:(.-) defences:") or ""
@@ -2040,6 +2043,112 @@ do
   eq(link, true, "hide list: links to vconfig showhiddendefs")
 end
 
+-- Each skillset and defence in the hide list is a link to hide it or show
+-- it again, the list says the commands that do the same, and with all it
+-- has every class's skillsets, to hide another class's (the user's ask,
+-- 2026-10-16)
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  svo.showprompt = function() end
+  local function link_to(text)
+    for i = #w.links, 1, -1 do
+      -- (a defence's link text carries its colour)
+      local l = w.links[i]:gsub("<%d+,%d+,%d+>", "")
+      if l:sub(1, #text + 1) == text .. " " then return l:sub(#text + 2) end
+    end
+  end
+
+  svo.showhidelist()
+  eq(link_to("bear"), 'svo.defences.hide_click("tekura", "bear", true, false)', "hide list: a defence is a link to hide it")
+  eq(link_to("hide them"), 'svo.defences.hide_click("dragoncraft", nil, true, false)', "hide list: a skillset has a link to hide it")
+  eq(echoed(w, "Or type vshow hide <skillset or defence> to hide one, and vshow unhide <skillset or defence> to show it again."),
+    true, "hide list: it says the commands")
+  eq(link_to("show every class's skillsets"), "svo.showhidelist(true)", "hide list: and links to every class's")
+  eq(echoed(w, "  " .. string.rep("-", 70)), true, "hide list: a line between the list and the rest")
+  eq(link_to("acrobatics"), nil, "hide list: only this class's, without all")
+
+  local before = #w.links
+  if link_to("bear") then w.run(link_to("bear")) end
+  eq(svo.sk.ignored_defences.tekura.t.bear, true, "hide list: clicking a defence hides it")
+  eq(#w.links > before and link_to("bear"), 'svo.defences.hide_click("tekura", "bear", false, false)',
+    "hide list: and shows the list again, with a link to show it")
+  if link_to("bear") then w.run(link_to("bear")) end
+  eq(svo.sk.ignored_defences.tekura.t.bear, false, "hide list: which shows it again")
+
+  svo.showhidelist(true)
+  eq(echoed(w, "Swashbuckling (Bard) defences:") and echoed(w, "Pranks (Jester) defences:"), true,
+    "hide list: all lists every class's skillsets, saying whose")
+  eq(link_to("show only Monk's skillsets"), "svo.showhidelist()", "hide list: with a link back to this class's")
+  local hide
+  for i = #w.links, 1, -1 do
+    if w.links[i]:find('hide_click("pranks", "acrobatics", true, true)', 1, true) then hide = w.links[i]:match(" (svo%..*)$") end
+  end
+  eq(hide ~= nil, true, "hide list: another class's defence is a link to hide it")
+  if hide then w.run(hide) end
+  eq(svo.sk.ignored_defences.pranks and svo.sk.ignored_defences.pranks.t.acrobatics, true,
+    "hide list: which hides it in that class's skillset")
+  eq(svo.sk.ignored_defences.swashbuckling == nil or not svo.sk.ignored_defences.swashbuckling.t.acrobatics, true,
+    "hide list: and only that one")
+  svo.classchange("Jester")
+  w.run_timers()
+  eq(svo.defences.hidden("acrobatics"), true, "hide list: it's hidden once you're that class")
+  svo.classchange("Monk")
+  w.run_timers()
+
+  -- the command line, through the alias as Mudlet runs it
+  local dir = "src/aliases/svo (aliases, triggers)/svo/"
+  local fh = io.open(dir .. "aliases.json", "r")
+  local items = fh and fh:read("*a") or ""
+  if fh then fh:close() end
+  local at = items:find('"name": "Show hidelist"', 1, true)
+  local item = at and items:sub(at, (items:find("}", at, true) or #items))
+  eq(item and item:match('"regex": "([^"]*)"'), "^vshow ?(h|hidelist|hide|unhide)(?: (.+))?$",
+    "hide command: the hidelist alias takes hide and unhide too")
+  fh = io.open(dir .. "Show_hidelist.lua", "r")
+  local script = fh and fh:read("*a") or ""
+  if fh then fh:close() end
+  -- (the alias redraws the prompt, which the world has no buffer for)
+  w.env.appendBuffer = w.env.appendBuffer or function () end
+  local function vshow(verb, rest)
+    w.env.matches = { "vshow " .. verb .. (rest and (" " .. rest) or ""), verb, rest }
+    w.run(script, "vshow")
+  end
+  vshow("hide", "Tekura")
+  eq(svo.sk.ignored_defences.tekura.status, true, "hide command: vshow hide <skillset> hides it")
+  eq(echoed(w, "Hid tekura, the whole skillset, from the defence lists."), true, "hide command: and says so")
+  vshow("unhide", "tekura")
+  eq(svo.sk.ignored_defences.tekura.status, false, "hide command: vshow unhide shows it again")
+  vshow("hide", "kaiboost")
+  eq(svo.sk.ignored_defences.kaido.t.kaiboost, true, "hide command: vshow hide <defence> hides it in this class's skillset")
+  eq(echoed(w, "Hid kaiboost, in kaido, from the defence lists."), true, "hide command: saying where")
+  vshow("unhide", "kaiboost")
+  eq(svo.sk.ignored_defences.kaido.t.kaiboost, false, "hide command: and unhide shows it")
+  vshow("hide", "acrobatics")
+  eq(svo.sk.ignored_defences.pranks.t.acrobatics and svo.sk.ignored_defences.swashbuckling.t.acrobatics, true,
+    "hide command: another class's defence is hidden in every skillset it's in")
+  vshow("hide", "nosuchthing")
+  eq(echoed(w, "Svof doesn't know a skillset or defence called nosuchthing."), true, "hide command: an unknown name says so")
+  vshow("hide")
+  eq(echoed(w, "vshow hide takes a skillset or a defence"), true, "hide command: no name says what it takes")
+  local shown = 0
+  local showhidelist = svo.showhidelist
+  svo.showhidelist = function (all) shown = shown + (all and 10 or 1) end
+  vshow("hidelist", "all")
+  vshow("h")
+  svo.showhidelist = showhidelist
+  eq(shown, 11, "hide command: vshow hidelist all and vshow h still list them")
+
+  -- vcustomdef svof and vshow link to it
+  svo.defences.own_list()
+  eq(link_to("hide defences"), "svo.showhidelist()", "hide list: vcustomdef svof links to it")
+  svo.defences.own_list(true)
+  eq(link_to("hide defences"), "svo.showhidelist(true)", "hide list: and vcustomdef svof all to every class's")
+  svo.ashow()
+  eq(link_to("vshow hidelist"), "svo.showhidelist()", "hide list: vshow links to it")
+  eq(echoed(w, "Hidden from the defence lists: 0 skillsets, 2 defences"), true, "hide list: vshow says how many are hidden")
+end
+
 do -- the groups come in the class's order: Lua 5.1's pairs() gave a Monk
   -- Kaido, Shikudo, Telepathy, Tekura
   local w = world.new({ class = "Monk" })
@@ -2093,6 +2202,7 @@ do
   eq(echoed(w, "alertness, Svof's own defence:"), true, "changes: vcustomdef with svof's own name shows svof's own")
   eq(echoed(w, "A change replaces Svof's version, and Svof's updates to alertness don't reach you while it's in use."),
     true, "changes: and what a change does")
+  eq(row_echoed(w, string.rep("-", 70), "  Actions:"), true, "changes: its links come under a line, labelled Actions")
   local d = svo.defences.edit_drafts.alertness or { on = {} }
   eq(#d.on, 3, "changes: the change starts from svof's own lines")
 
@@ -2147,7 +2257,7 @@ do
     "changes: riding's command is made as svof raises it")
   eq(echoed(w, "its own handling of its lines"), true, "changes: and its loss lines have a handler of their own")
   cmd("alertness class all")
-  eq(echoed(w, "Svof's own alertness keeps its class, skillset and balance."), true, "changes: the class stays svof's")
+  eq(echoed(w, "Svof's own alertness keeps its class and balance."), true, "changes: the class stays svof's")
   cmd("alertness gmcp rebounding")
   eq(echoed(w, "Can't give alertness the GMCP name rebounding: GMCP's rebounding is Svof's rebounding."), true,
     "changes: a GMCP name another of svof's defences has is refused")
@@ -2266,6 +2376,67 @@ do -- a change is put into play as svof loads, and says when svof's own changed 
   cmd("")
   eq(echoed(w, "not in use, as vconfig customdefinitions is off"), true, "changes: and the list says why")
   svo.conf.customdefinitions = true
+end
+
+do -- a change can move a class's defence to another skillset, as a class
+  -- update can (the user's ask, 2026-10-17)
+  local w = world.new({ class = "Occultist" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function link(text)
+    for i = #w.links, 1, -1 do
+      if w.links[i]:sub(1, #text + 1) == text .. " " then return w.links[i]:sub(#text + 2) end
+    end
+  end
+  local function listed(group, name)
+    for _, def in ipairs(svo.defences.def_types[group] or {}) do
+      if def == name then return true end
+    end
+    return false
+  end
+  eq(svo.defs_data.astralform.type, "occultism", "skillset change: astralform starts in Occultism")
+  svo.ignoreskill("astralform", true)
+
+  cmd("astralform")
+  eq(row_echoed(w, "skillset:", "occultism"), true, "skillset change: the screen shows its skillset")
+  eq(link("tarot"), [[svo.defences.custom_set("astralform", 'skillset', "tarot")]],
+    "skillset change: with a link to each of the class's others")
+  eq(link("type one") ~= nil, true, "skillset change: and one to type one")
+  cmd("astralform skillset Tarot")
+  eq(svo.defences.edit_drafts.astralform.skillset, "tarot", "skillset change: vcustomdef <name> skillset sets it")
+  eq(svo.defs_data.astralform.type, "occultism", "skillset change: which waits for install")
+  w.run('svo.defences.edit_install("astralform", true)')
+  eq(svo.defs_data.astralform.type, "tarot", "skillset change: installed, it's in the new skillset")
+  eq(listed("tarot", "astralform") and not listed("occultism", "astralform"), true,
+    "skillset change: and the lists show it there, not in the old one")
+  eq(svo.sk.ignored_defences_map.astralform, "tarot", "skillset change: hiding it goes by the new one")
+  eq(svo.sk.ignored_defences.tarot.t.astralform, true, "skillset change: and it's still hidden, as it was")
+  eq(svo.sk.ignored_defences.occultism.t.astralform, nil, "skillset change: and gone from the old one")
+  local saved = svo.defences.edits.occultist and svo.defences.edits.occultist.astralform or {}
+  eq(saved.skillset, "tarot", "skillset change: saved as the Occultist's change")
+  eq(saved.was and saved.was.skillset, "occultism", "skillset change: with svof's own skillset when it was changed")
+
+  svo.classchange("Monk")
+  svo.classchange("Occultist")
+  eq(svo.defs_data.astralform.type, "tarot", "skillset change: in the new skillset as svof loads")
+  eq(listed("tarot", "astralform") and not listed("occultism", "astralform"), true,
+    "skillset change: and listed there as svof loads")
+
+  cmd("astralform reset")
+  eq(svo.defs_data.astralform.type, "occultism", "skillset change: reset puts it back in svof's own skillset")
+  eq(listed("occultism", "astralform") and not listed("tarot", "astralform"), true,
+    "skillset change: and in the lists")
+  eq(svo.sk.ignored_defences.occultism.t.astralform, true, "skillset change: still hidden")
+
+  cmd("astralform skillset general")
+  eq(echoed(w, "Can't list astralform under general: general is Svof's own group, not a skillset."), true,
+    "skillset change: general isn't a skillset to move it to")
+  cmd("alertness skillset tarot")
+  eq(echoed(w, "Svof's own alertness is a general defence, which every class has, so its skillset stays."), true,
+    "skillset change: a general defence's skillset stays")
+  cmd("alertness")
+  eq(row_echoed(w, "skillset:", "general, which every class has, so it stays there"), true,
+    "skillset change: and its screen says so")
 end
 
 do -- vcustomdef works with customdefinitions off as svof loads, when the
@@ -2447,9 +2618,10 @@ do
   eq(alertness and visible(alertness):match("%] (%S+)"), "alertness+", "marks: vshow server marks them")
   eq(alertnesshint and alertnesshint:find("(Svof's own, changed by you)", 1, true) ~= nil, true,
     "marks: and its link says so")
-  echoes = #w.echoes
+  echoes = #cells
   svo.showhidelist()
-  text = table.concat(w.echoes, "", echoes + 1)
+  -- each defence is a link, to hide or show it
+  text = table.concat(cells, "\n", echoes + 1)
   eq(text:find("shimmer<255,170,0>*", 1, true) ~= nil and text:find("alertness<255,170,0>+", 1, true) ~= nil, true,
     "marks: vshow hidelist marks them")
 end
@@ -2682,6 +2854,56 @@ do -- the catalog is the defences some classes have and others don't
   local v = w.svo.defences.catalog().acrobatics[1]
   eq(v.classes[1] .. " " .. v.command .. " " .. v.gmcp, "bard acrobatics on acrobatics",
     "copies: with each class's version: Bard's acrobatics")
+end
+
+do -- vcustomdef svof [all]: svof's own, each a link to change or copy it (the user's ask, 2026-10-16)
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local tekura = {}
+  for _, name in ipairs(svo.defences.def_types.tekura) do tekura[#tekura + 1] = name end
+  table.sort(tekura)
+  cmd("svof")
+  eq(echoed(w, "Svof's own defences for Monk (click one to change it):"), true, "own list: vcustomdef svof lists them")
+  eq(link_of(w, tekura[1]), string.format('svo.defences.custom_show("%s")', tekura[1]),
+    "own list: each a link to its screen")
+  eq(link_of(w, "acrobatics"), nil, "own list: only this class's")
+  eq(link_of(w, "show every class's defences"), "svo.defences.own_list(true)", "own list: with a link to every class's")
+  eq(echoed(w, "  " .. string.rep("-", 70)), true, "own list: a line between the list and its links")
+  local general, tekura_at
+  for i, e in ipairs(w.echoes) do
+    if e:find("General:", 1, true) and not general then general = i end
+    if e:find("Tekura:", 1, true) and not tekura_at then tekura_at = i end
+  end
+  eq(general ~= nil and tekura_at ~= nil and general < tekura_at, true, "own list: by skillset, general first")
+
+  cmd("svof all")
+  eq(echoed(w, "Svof's own defences, every class's, by skillset"), true, "own list: vcustomdef svof all lists every class's")
+  eq(link_of(w, "acrobatics"), 'svo.defences.custom_show("acrobatics")', "own list: another class's too, a link to copy it")
+  eq(echoed(w, "Swashbuckling (Bard):") and echoed(w, "Pranks (Jester):"), true,
+    "own list: another class's skillset says whose it is")
+  eq(echoed(w, "General (every class):") and echoed(w, "Tekura:"), true, "own list: general for every class, and Monk's as they are")
+  eq(link_of(w, "show only Monk's defences"), "svo.defences.own_list()", "own list: with a link back to this class's")
+
+  cmd("svof everything")
+  eq(echoed(w, "vcustomdef svof lists Svof's own defences for your class, and vcustomdef svof all every class's."), true,
+    "own list: anything else after svof says what it takes")
+  eq(svo.defences.custom_problem("svof", {}), "svof is a command here, not a name", "own list: svof can't be a defence's name")
+
+  -- the menu links to it, and to turning vconfig customdefinitions on or off
+  cmd("list")
+  eq(link_of(w, "change one of Svof's own"), "svo.defences.own_list()", "own list: vcustomdef's menu links to it")
+  eq(echoed(w, "Svof uses your definitions and changes (vconfig customdefinitions is on)."), true,
+    "customdefinitions: the menu says it's on")
+  eq(link_of(w, "turn it off"), 'svo.config.set("customdefinitions", false, true)', "customdefinitions: with a link to turn it off")
+  -- (vconfig redraws the prompt, which the world has no buffer for)
+  w.env.appendBuffer = w.env.appendBuffer or function () end
+  svo.config.set("customdefinitions", false, true)
+  eq(svo.conf.customdefinitions, false, "customdefinitions: which turns it off")
+  cmd("list")
+  eq(echoed(w, "Svof leaves out your definitions and changes (vconfig customdefinitions is off)."), true,
+    "customdefinitions: the menu says it's off")
+  eq(link_of(w, "turn it on"), 'svo.config.set("customdefinitions", true, true)', "customdefinitions: with a link to turn it on")
 end
 
 do -- a name svof has in other classes is refused, and copied instead

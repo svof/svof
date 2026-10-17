@@ -129,7 +129,7 @@ When you QQ, the system will automatically go into the *empty* defences mode - s
 
 Adjusting defence menus
 ^^^^^^^^^^^^^^^^^^^^^^^
-If you'd like to hide certain defences or groups from showing in the (huge) list, use the *vshow hidelist* alias and click on - or + beside defences, or even entire skillsets, to hide or show them. *vshow hidelist* shows the groups your class has, and keeps what you hid in another class for when you change back.
+If you'd like to hide certain defences or groups from showing in the (huge) list, use the *vshow hidelist* alias and click a defence, or *hide them* beside a skillset, to hide it; hidden ones are grey, and clicking one shows it again. From the command line, *vshow hide <skillset or defence>* hides one and *vshow unhide <skillset or defence>* shows it again. *vshow hidelist* shows the groups your class has, and keeps what you hid in another class for when you change back. *vshow hidelist all* lists every class's skillsets too, so you can hide another class's skillset or defences before you change to it. *vshow hide* with another class's defence hides it in every skillset it's in. *vshow* says how many skillsets and defences you've hidden, with a link to the list.
 
 Hiding a defence, or a whole group, takes it off defup and keepup in every defence mode, so Svof doesn't raise what it hides. Svof says what it took off, with an **(undo)** link that shows it again and puts it all back. Showing it again later doesn't put it back. Hiding the general group hides the main list. To see hidden defences in the lists anyway, turn on *vconfig showhiddendefs*.
 
@@ -185,7 +185,7 @@ A defence for one class is shown under one of its skillsets in *vshow defup*, *v
 
 Svof refuses a name it already uses for something else. With the name of one of Svof's own defences, *vcustomdef* changes that defence instead; see :ref:`change-svof-defences`. With the name of a defence Svof has only in other classes, *vcustomdef* offers to copy Svof's own into yours; see :ref:`copy-svof-defences`. To change a definition, change its parts and install it again; until then, Svof keeps using the installed one. *vcustomdef <name> delete* takes a definition out.
 
-*vcustomdef* lists every defence you defined, each a link to see or change it, and then your changes to Svof's own. *vshow* and *vconfig2* link to the same list. Under it, Svof lists every form *vcustomdef* takes, each a link that puts it on the command line; replace the parts in angle brackets, and pick one of each choice such as *got|lost*. *vcustomdef help* shows that list alone.
+*vcustomdef* lists every defence you defined, each a link to see or change it, and then your changes to Svof's own. *vshow* and *vconfig2* link to the same list. Under it, Svof lists every form *vcustomdef* takes, each a link that puts it on the command line; replace the parts in angle brackets, and pick one of each choice such as *got|lost*. *vcustomdef help* shows that list alone. The list also says whether *vconfig customdefinitions* is on, with a link to turn it off or on; that takes effect the next time Svof loads.
 
 In *vshow defup*, *vshow keepup*, the priority lists, *vshow server* and *vshow hidelist*, Svof puts ``*`` after a defence you defined and ``+`` after one of its own you changed, with a key under the list.
 
@@ -195,12 +195,13 @@ Your definitions are saved in *svo/custom/defs* in your profile folder, which up
 
 Change Svof's own defences
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-When the game changes one of Svof's defences before Svof catches up, you can change Svof's own with *vcustomdef <name>*, using the name Svof shows in *vshow defup*. Svof shows its version of the defence, with links to change each part:
+When the game changes one of Svof's defences before Svof catches up, you can change Svof's own with *vcustomdef <name>*, using the name Svof shows in *vshow defup*. *vcustomdef svof* lists Svof's own defences for your class by skillset, each a link to its screen, and *vcustomdef svof all* lists every class's, where clicking another class's defence offers to copy it in. Svof shows its version of the defence, with links to change each part:
 
 - the lines that say you gained or lost it, and the lines DEF shows. Your change replaces Svof's lines, so take out the ones the game no longer sends. *vcustomdef <name> fetch* asks the game with *DEFENCE SHOW* and adds the lines it shows now. If DEF no longer lists the defence, use *vcustomdef <name> def none*.
 - its patterns for lines that vary, shown under the lines. As for a definition, add one with *gotpattern*, *lostpattern* or *defpattern*, and take one out with its **x**. Your change replaces Svof's patterns too.
 - its GMCP name, which serverside curing knows it by too. As for a definition, Svof only takes a name the game confirms.
 - the command that raises it, for a defence whose action only sends its command. Where Svof makes the command as it raises the defence, such as riding's, or raises it another way, such as smoking for rebounding, the command stays Svof's.
+- the skillset it's listed under, for a class defence a class update moved to another skillset. Click one of your class's skillsets, or type one with *vcustomdef <name> skillset <skillset>*. A general defence stays general.
 
 Under those, Svof lists what it keeps doing as before, such as what gaining the defence does to your other defences. A change can't reach those.
 
@@ -2069,7 +2070,14 @@ General aliases
 
   vshowh
   vshow hidelist
-    shows the list of defences / groups which are currently shown or not. To toggle whenever a defence or a group of defences should be shown or not in defence lists, click on the + or - sign beside it.
+    shows your class's skillsets and defences, each a link to hide it from the defence lists or show it again. Hidden ones are grey.
+
+  vshow hidelist all
+    shows every class's skillsets and defences, to hide another class's.
+
+  vshow hide <skillset or defence>
+  vshow unhide <skillset or defence>
+    hides a skillset or defence from the defence lists, or shows it again. A defence of another class's is hidden in every skillset it's in.
 
   vshow ignorelist
     shows a list of all things - defences and afflictions - that you can ignore.
@@ -2113,7 +2121,7 @@ General aliases
     adds/remove a defence to the keepup list. Note that keepup can also be enabled/disabled as a feature, and it won't put defences up when it's disabled.
 
   vcustomdef [*<defence>*]
-    lists the defences you defined and your changes to Svof's own, or shows one to define, change or copy from another class. *vcustomdef help* lists every form it takes. See :ref:`custom-defences`, :ref:`change-svof-defences` and :ref:`copy-svof-defences`.
+    lists the defences you defined and your changes to Svof's own, or shows one to define, change or copy from another class. *vcustomdef svof* lists Svof's own defences to change, and *vcustomdef svof all* every class's. *vcustomdef help* lists every form it takes. See :ref:`custom-defences`, :ref:`change-svof-defences` and :ref:`copy-svof-defences`.
 
   vcreate defmode *<name>*
     creates a new fences mode with the given name. You may wish to have more than the default basic/combat ones in order to specialize for situations (ie when you're out bashing, raiding orgA, raiding orgB, etc.)
@@ -2672,7 +2680,7 @@ Svof API functions
 
 .. function:: svo.ignoreskill(skill, newstatus, echoback)
 
-    Sets whenever a skill or a skillgroup shouldn't be displayed in defence lists (this is what ``vshow hidelist`` uses).
+    Sets whenever a skill or a skillgroup shouldn't be displayed in defence lists (this is what ``vshow hidelist`` uses). A defence your class has is set in its skillset; another class's defence is set in every skillset it's in.
 
 .. function:: svo.addaff(aff)
 
