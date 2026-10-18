@@ -267,6 +267,15 @@ jobs:
       - name: test bare dict references
         run: lua tools/test_bare_dict.lua
 
+      # Gate 1.98. svo.prio.insert, which vset calls, in the slow curing list,
+      # whose entries are named action_balance. Moving one into a free number
+      # indexed the dictionary by the whole name and raised; it splits the
+      # name now, as the shuffle onto a taken number already did. Runs the
+      # real priorities loader and vset alias, with a control that puts the
+      # old insertat back.
+      - name: test prio insert
+        run: lua tools/test_prio_insert.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
