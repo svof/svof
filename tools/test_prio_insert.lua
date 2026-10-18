@@ -23,13 +23,31 @@ prio.insert refuses a name with no slow curing number now. Every cure has
 one: dict_setup gives one to every balance but aff, gone, waitingfor,
 boosted and weakened.
 
+svo.basictableindexdiff listed a value that moved once from each table, so
+the shuffle above, prio.cleargaps and every other caller raised "svo prio
+changed" twice for each entry that moved. It lists each value once now.
+
+`vswapslow <action_balance> <action_balance>`, svo.prio_slowswap, checked
+for the second balance before it parsed it, so it always said "What
+balances do you want to use for swapping?", then swapped anyway. After a
+swap its two lines disagreed: the plain line named the entries in one order
+and the coloured line in the other, and with a number the plain line could
+be wrong too. A misspelled name on either side raised a Lua error, and a
+swap onto a free number stored the number as a string, which
+svo.printordersync and prio.getsortedlist can't sort. It refuses names the
+slow curing list doesn't have now, as prio.insert does, says the order the
+swap left, and stores a number.
+
 Like the other suites, this does not run svof or Mudlet. It runs the real
 priorities loader from Priorities.lua, the real svo.valid_sync_action,
-svo.make_prio_table, svo.make_sync_prio_table, svo.basictableindexdiff and
-svo.deepcopy, and the real vset alias script, over a small dictionary with
-the slow curing numbers default_prios gives those entries. Mudlet's raiseEvent
-and svof's echo are stubs that record what they get. The controls put the
-old insertat and the old name checks back.
+svo.make_prio_table, svo.make_sync_prio_table and their filtered forms,
+svo.basictableindexdiff, svo.deepcopy, svo.prio_slowswap,
+svo.printordersync, Serverside's priority snapshots and
+sk.notifypriodiffs, and the real vset and vswapslow alias scripts, over a
+small dictionary with the slow curing numbers default_prios gives those
+entries. Mudlet's raiseEvent and svof's echo are stubs that record what
+they get. The controls put the old insertat, the old name checks, the old
+diff and the old swap back.
 
 Run: lua tools/test_prio_insert.lua
 ]]
@@ -66,6 +84,73 @@ local DICTIONARY = read_file(SCRIPTS .. "svo (actions dictionary)/Dictionary_of_
 local MISC = read_file(SCRIPTS .. "svo (setup, misc, empty, funnies, dor)/Miscellaneous_functions.lua")
 local SETUP = read_file(SCRIPTS .. "svo (setup, misc, empty, funnies, dor)/Setup.lua")
 local VSET = read_file("src/aliases/svo (aliases, triggers)/svo/Set_an_affliction_priority.lua")
+local CONTROLLERS = read_file(SCRIPTS .. "svo (curing skeleton, controllers, action system)/Controllers.lua")
+local SERVERSIDE = read_file(SCRIPTS .. "svo (custom prompt, serverside)/Serverside.lua")
+local VSWAPSLOW = read_file("src/aliases/svo (aliases, triggers)/svo/Swap_slow_mode_affliction_priorities.lua")
+
+local DIFF = between(MISC, "svo.basictableindexdiff = function (t1, t2)", "svo.oldsend = _G.send")
+local SLOWSWAP = between(CONTROLLERS, "function svo.prio_slowswap(", "function svo.prio_swap(")
+local PRINTORDERSYNC = between(CONTROLLERS, "function svo.printordersync(limited_around)", "\nend\n", true)
+
+-- the old diff, which listed a value that moved from both tables, for the control
+local DIFF_OLD = [[
+svo.basictableindexdiff = function (t1, t2)
+  local diff = {}
+  -- have to use pairs to cover holes
+  for k,v in pairs(t1) do
+    if v ~= t2[k] then diff[#diff+1] = v end
+  end
+  for k,v in pairs(t2) do
+    if v ~= t1[k] then diff[#diff+1] = v end
+  end
+
+  return diff
+end
+]]
+
+-- and the old swap
+local SLOWSWAP_OLD = [[
+function svo.prio_slowswap(what, arg3, echoback, callback, ...)
+  local sendf; if echoback then sendf = svo.echof else sendf = svo.errorf end
+  local what, balance = what:match("(%w+)_(%w+)")
+  local balance2
+  if not tonumber(arg3) then
+    svo.assert(balance and balance2, "What balances do you want to use for swapping?", sendf)
+    arg3, balance2 = arg3:match("(%w+)_(%w+)")
+  end
+
+  local beforestate = sk.getbeforestateprios()
+
+  if tonumber(arg3) then -- swap to a #
+    local name, balance2 = svo.prio.getslowaction(tonumber(arg3))
+    if not name then -- see if we have anyone in that # already
+      svo.dict[what][balance].spriority = arg3
+      if echoback then
+        svo.echof("%s is now at %d.", what, arg3)
+      end
+    else -- if we do have someone at that #, swap them
+      svo.dict[what][balance].spriority, svo.dict[name][balance2].spriority =
+      svo.dict[name][balance2].spriority, svo.dict[what][balance].spriority
+      if echoback then svo.echof("%s is now > %s.", what, name) end
+      if echoback then svo.echof("<0,255,0>%s (%s) <255,255,255>> <0,255,0>%s (%s)", what, balance, name, balance2) end
+    end
+  else -- swap one action_balance with another action_balance
+    if svo.dict[what][balance].spriority < svo.dict[arg3][balance2].spriority then
+      svo.dict[what][balance].spriority, svo.dict[arg3][balance2].spriority =
+      svo.dict[arg3][balance2].spriority, svo.dict[what][balance].spriority
+      if echoback then svo.echof("%s is now > %s.", what, arg3) end
+      if echoback then svo.echof("<0,255,0>%s (%s) <255,255,255>> <0,255,0>%s (%s)", arg3, balance2, what, balance) end
+    elseif echoback then
+      svo.echof("%s is already > %s.", what, arg3)
+    end
+  end
+
+  local afterstate = sk.getafterstateprios()
+  sk.notifypriodiffs(beforestate, afterstate)
+
+  if callback and type(callback) == 'function' then callback(...) end
+end
+]]
 
 -- Priorities.lua with the old insertat, for the control.
 local INSERTAT = between(PRIORITIES, "  local function insertat(actionname, balancename, newprio)\n", "\n  end\n", true)
@@ -134,18 +219,23 @@ local ENTRIES = {
   { "deathsight", "physical", 22, 53 },
 }
 
--- opts.priorities: the Priorities.lua source to run, default the shipped one
+-- opts.priorities, opts.diff, opts.slowswap: the source to run for each, default the shipped one
 local function new_svof(opts)
   opts = opts or {}
-  local events, echoes = {}, {}
+  local events, echoes, printed = {}, {}, {}
   local noop = function() end
   local svo = {
     dict = {}, sys = {}, sk = {}, prio = {}, loader = {},
     signals = { saveconfig = { add_pre_emit = noop }, systemstart = { connect = noop } },
     pl = { dir = { makepath = noop } },
     echof = function(fmt, ...) echoes[#echoes + 1] = string.format(fmt, ...) end,
-    debugf = noop,
+    debugf = noop, echofn = noop, showprompt = noop,
+    getDefaultColorNums = { 255, 255, 255 },
+    -- the snapshots notify only once svof has loaded
+    systemloaded = true,
   }
+  -- Serverside ignores nothing here
+  svo.sk.shouldignoreserverside = function() return false end
   for _, e in ipairs(ENTRIES) do
     svo.dict[e[1]] = svo.dict[e[1]] or {}
     svo.dict[e[1]][e[2]] = { spriority = e[3], aspriority = e[4] }
@@ -159,19 +249,51 @@ local function new_svof(opts)
     svo = svo,
     getMudletHomeDir = function() return "home" end,
     raiseEvent = function(...) events[#events + 1] = { ... } end,
+    -- what printordersync draws with
+    selectString = function() return -1 end,
+    setFgColor = noop, setLink = noop, resetFormat = noop, setUnderline = noop,
+    echoLink = noop,
+    echo = function(text) printed[#printed + 1] = text end,
+    unpack = unpack or table.unpack,
   }, { __index = _G })
 
   load_into(env, between(SETUP, "function svo.deepcopy(object)", "\nend\n", true), "deepcopy")
-  load_into(env, between(MISC, "svo.basictableindexdiff = function (t1, t2)", "svo.oldsend = _G.send"),
-    "basictableindexdiff")
+  load_into(env, between(SETUP, "function svo.assert(condition, msg, extra)", "\nend\n", true), "assert")
+  load_into(env, between(MISC, "function svo.errorf(...)", "\nend\n", true), "errorf")
+  load_into(env, opts.diff or DIFF, "basictableindexdiff")
   load_into(env, between(DICTIONARY, "svo.make_prio_table = function (filterbalance)",
-    "-- func gets passed the action name to operate on, needs to return true"), "make_prio_table")
+    "svo.clear_balance_prios = function"), "make_prio_table")
   load_into(env, "local dict = svo.dict\n" .. between(ACTIONS, "svo.valid_sync_action = function(name)",
     "\nend\n", true), "valid_sync_action")
+  load_into(env, "local sk = svo.sk\n" .. between(SERVERSIDE, "function sk.getbeforestateprios()",
+    "-- returns an alphabetically sorted"), "priority snapshots")
+  load_into(env, "local sk = svo.sk\n" .. (opts.slowswap or SLOWSWAP), "prio_slowswap")
+  load_into(env, PRINTORDERSYNC, "printordersync")
   load_into(env, opts.priorities or PRIORITIES, "Priorities")
   svo.loader.prio()
 
-  local s = { svo = svo, events = events, echoes = echoes }
+  local s = { svo = svo, events = events, echoes = echoes, printed = printed }
+
+  -- the vswapslow alias, as Mudlet runs it on "vswapslow <what> <with>";
+  -- returns what it raised, if anything
+  function s.vswapslow(what, with)
+    env.matches = { "vswapslow " .. what .. " " .. with, what, with }
+    local _, err = pcall(load_into, env, VSWAPSLOW, "vswapslow")
+    return err
+  end
+
+  -- svo.printordersync: what it raised, if anything
+  function s.printordersync(...)
+    local ran, err = pcall(svo.printordersync, ...)
+    if not ran then return err end
+  end
+
+  -- the slow curing list as getsortedlist gives it, or what it raised
+  function s.sortedslow()
+    local ran, list = pcall(svo.prio.getsortedlist, 'slowcuring')
+    if not ran then return "raised: " .. tostring(list) end
+    return table.concat(list, " ")
+  end
 
   -- the vset alias, as Mudlet runs it on "vset <action> <balance> <number>";
   -- returns what it raised, if anything
@@ -194,6 +316,18 @@ local function new_svof(opts)
     for _, ev in ipairs(events) do
       local text = string.format("%s %s %s %s", tostring(ev[2]), tostring(ev[3]), tostring(ev[4]), tostring(ev[5]))
       if not seen[text] then seen[text] = true; t[#t + 1] = text end
+    end
+    table.sort(t)
+    return table.concat(t, " | ")
+  end
+
+  -- "action balance slowcuring" for each event, sorted, repeats kept. Without
+  -- the new number: sk.notifypriodiffs, which vswapslow raises through, looks
+  -- it up under the entry's own balance, not slowcuring's, and finds nil
+  function s.moved()
+    local t = {}
+    for _, ev in ipairs(events) do
+      t[#t + 1] = string.format("%s %s %s", tostring(ev[2]), tostring(ev[3]), tostring(ev[5]))
     end
     table.sort(t)
     return table.concat(t, " | ")
@@ -262,6 +396,7 @@ eq(s.aspriorities(), ASPRIORITIES, "vset onto a taken number: no own-balance num
 eq(s.changes(), "defcheck physical 18 slowcuring | doparry physical 19 slowcuring | "
   .. "mindseye physical 17 slowcuring | paranoia focus 20 slowcuring",
   "vset onto a taken number: an event for each entry that moved")
+eq(#s.events, 4, "vset onto a taken number: one event for each entry that moved, not two")
 eq(s.events_name_entries(), true, "vset onto a taken number: every event names a dictionary entry")
 eq(s.echoes[1], "Set paranoia_focus's priority in slowcuring balance to 20.", "vset onto a taken number: what vset says")
 
@@ -322,6 +457,7 @@ eq(s.aspriorities(), "hallucinations=32 dementia=30 paranoia=31 mindseye=50 defc
 eq(s.spriorities(), SPRIORITIES, "own balance, a taken number: no slow curing number moved")
 eq(s.changes(), "dementia focus 30 nil | hallucinations focus 32 nil | paranoia focus 31 nil",
   "own balance, a taken number: an event for each entry that moved")
+eq(#s.events, 3, "own balance, a taken number: one event for each entry that moved, not two")
 
 -- ===== names an action's own balance does not have =====
 
@@ -351,6 +487,184 @@ for _, case in ipairs(REFUSALS) do
   eq(s.vset(case[2], case[3], "40"), nil, "vset, " .. case[1] .. ": raised nothing")
   eq(s.echoes[1], "Can't set that priority: " .. case[4] .. ".", "vset, " .. case[1] .. ": what vset says")
   eq(#s.echoes, 1, "vset, " .. case[1] .. ": said once")
+end
+
+-- ===== svo.basictableindexdiff =====
+
+-- sorted, so pairs order doesn't matter
+local function diffof(t1, t2)
+  local d = new_svof().svo.basictableindexdiff(t1, t2)
+  table.sort(d)
+  return table.concat(d, " ")
+end
+eq(diffof({ "a", "b", "c" }, { "b", "a", "c" }), "a b", "diff: each value that moved, once")
+eq(diffof({ "a", "b" }, { "a", "b" }), "", "diff: nothing moved, nothing listed")
+-- a value that is in one table only, as when Serverside starts or stops ignoring an action
+eq(diffof({ "a", "b" }, { "a" }), "b", "diff: a value only the first table has")
+eq(diffof({ "a" }, { "a", nil, "c" }), "c", "diff: a value only the second table has")
+eq(diffof({ [1] = "a", [5] = "b" }, { "a", "b" }), "b", "diff: across a gap")
+
+-- ===== prio.cleargaps: one event for each entry that moved =====
+
+s = new_svof()
+s.svo.prio.cleargaps('slowcuring')
+eq(s.spriorities(), "hallucinations=1 dementia=2 paranoia=3 mindseye=4 defcheck=5 doparry=6 deathsight=7",
+  "cleargaps, slow curing: the numbers")
+eq(s.aspriorities(), ASPRIORITIES, "cleargaps, slow curing: no own-balance number moved")
+eq(s.changes(), "deathsight physical 7 slowcuring | defcheck physical 5 slowcuring | dementia focus 2 slowcuring | "
+  .. "doparry physical 6 slowcuring | hallucinations focus 1 slowcuring | mindseye physical 4 slowcuring | "
+  .. "paranoia focus 3 slowcuring", "cleargaps, slow curing: an event for each entry that moved")
+eq(#s.events, 7, "cleargaps, slow curing: one event for each entry, not two")
+
+s = new_svof()
+s.svo.prio.cleargaps('physical')
+eq(s.aspriorities(), "hallucinations=30 dementia=31 paranoia=32 mindseye=1 defcheck=2 doparry=3 deathsight=4",
+  "cleargaps, own balance: the numbers")
+eq(s.changes(), "deathsight physical 4 nil | defcheck physical 2 nil | doparry physical 3 nil | mindseye physical 1 nil",
+  "cleargaps, own balance: an event for each entry that moved")
+eq(#s.events, 4, "cleargaps, own balance: one event for each entry, not two")
+
+-- ===== vswapslow with two names =====
+
+-- mindseye has 18, doparry 20: mindseye goes above
+s = new_svof()
+eq(s.vswapslow("mindseye_physical", "doparry_physical"), nil, "vswapslow two names: raised nothing")
+eq(s.spriorities(), "hallucinations=10 dementia=11 paranoia=12 mindseye=20 defcheck=19 doparry=18 deathsight=22",
+  "vswapslow two names: the two swapped")
+eq(s.echoes[1], "mindseye is now > doparry.", "vswapslow two names: says the order")
+eq(s.echoes[2], "<0,255,0>mindseye (physical) <255,255,255>> <0,255,0>doparry (physical)",
+  "vswapslow two names: the coloured line says the same order")
+eq(#s.echoes, 2, "vswapslow two names: asks nothing about balances")
+eq(s.moved(), "doparry physical slowcuring | mindseye physical slowcuring",
+  "vswapslow two names: one event for each entry, not two")
+
+s = new_svof()
+eq(s.vswapslow("doparry_physical", "mindseye_physical"), nil, "vswapslow, already above: raised nothing")
+eq(s.spriorities(), SPRIORITIES, "vswapslow, already above: nothing moved")
+eq(s.echoes[1], "doparry is already > mindseye.", "vswapslow, already above: says so")
+eq(#s.echoes, 1, "vswapslow, already above: said once")
+eq(#s.events, 0, "vswapslow, already above: no event")
+
+-- ===== vswapslow onto a number =====
+
+-- deathsight has 22, mindseye 18: deathsight goes down to 18, so mindseye is above it now
+s = new_svof()
+eq(s.vswapslow("deathsight_physical", "18"), nil, "vswapslow down onto a taken number: raised nothing")
+eq(s.spriorities(), "hallucinations=10 dementia=11 paranoia=12 mindseye=22 defcheck=19 doparry=20 deathsight=18",
+  "vswapslow down onto a taken number: the two swapped")
+eq(s.echoes[1], "mindseye is now > deathsight.", "vswapslow down onto a taken number: says the order")
+eq(s.echoes[2], "<0,255,0>mindseye (physical) <255,255,255>> <0,255,0>deathsight (physical)",
+  "vswapslow down onto a taken number: the coloured line says the same order")
+eq(s.moved(), "deathsight physical slowcuring | mindseye physical slowcuring",
+  "vswapslow down onto a taken number: one event for each entry")
+
+s = new_svof()
+eq(s.vswapslow("mindseye_physical", "22"), nil, "vswapslow up onto a taken number: raised nothing")
+eq(s.spriorities(), "hallucinations=10 dementia=11 paranoia=12 mindseye=22 defcheck=19 doparry=20 deathsight=18",
+  "vswapslow up onto a taken number: the two swapped")
+eq(s.echoes[1], "mindseye is now > deathsight.", "vswapslow up onto a taken number: says the order")
+eq(s.echoes[2], "<0,255,0>mindseye (physical) <255,255,255>> <0,255,0>deathsight (physical)",
+  "vswapslow up onto a taken number: the coloured line says the same order")
+eq(type(s.svo.dict.mindseye.physical.spriority), "number", "vswapslow onto a taken number: stores a number")
+
+s = new_svof()
+eq(s.vswapslow("mindseye_physical", "18"), nil, "vswapslow onto its own number: raised nothing")
+eq(s.spriorities(), SPRIORITIES, "vswapslow onto its own number: nothing moved")
+eq(s.echoes[1], "mindseye is already at 18.", "vswapslow onto its own number: says so")
+eq(#s.events, 0, "vswapslow onto its own number: no event")
+
+s = new_svof()
+eq(s.vswapslow("mindseye_physical", "15"), nil, "vswapslow onto a free number: raised nothing")
+eq(s.svo.dict.mindseye.physical.spriority, 15, "vswapslow onto a free number: stores the number as a number")
+eq(s.spriorities(), "hallucinations=10 dementia=11 paranoia=12 mindseye=15 defcheck=19 doparry=20 deathsight=22",
+  "vswapslow onto a free number: nothing else moved")
+eq(s.echoes[1], "mindseye is now at 15.", "vswapslow onto a free number: says so")
+eq(s.moved(), "mindseye physical slowcuring", "vswapslow onto a free number: one event")
+eq(s.sortedslow(), "deathsight_physical doparry_physical defcheck_physical mindseye_physical "
+  .. "paranoia_focus dementia_focus hallucinations_focus", "vswapslow onto a free number: getsortedlist sorts it")
+eq(s.printordersync(), nil, "vswapslow onto a free number: printordersync raised nothing")
+local listed = false
+for _, text in ipairs(s.printed) do if text == " (15) mindseye (physical)" then listed = true end end
+eq(listed, true, "vswapslow onto a free number: printordersync lists it at 15")
+
+-- the ^^ and vv links in printordersync pass a number, no echoback and printordersync to call after
+s = new_svof()
+local ran, linkerr = pcall(s.svo.prio_slowswap, "mindseye_physical", 15, false, s.svo.printordersync, 15)
+eq(ran, true, "the printordersync link: raised nothing " .. tostring(linkerr))
+eq(s.svo.dict.mindseye.physical.spriority, 15, "the printordersync link: moved the entry")
+eq(#s.printed > 0, true, "the printordersync link: printed the list again")
+s = new_svof()
+ran, linkerr = pcall(s.svo.prio_slowswap, "deathsight_physical", 18, false, s.svo.printordersync, 18)
+eq(ran, true, "the printordersync link onto a taken number: raised nothing " .. tostring(linkerr))
+eq(s.svo.dict.deathsight.physical.spriority, 18, "the printordersync link onto a taken number: swapped")
+local saidorder = false
+for _, text in ipairs(s.echoes) do if text:find(" > ", 1, true) then saidorder = true end end
+eq(saidorder, false, "the printordersync link onto a taken number: says no order without echoback")
+
+-- what it returns
+s = new_svof()
+local _, okswap, why = pcall(s.svo.prio_slowswap, "mindseye_physical", "doparry_physical", true)
+eq(okswap, true, "prio_slowswap returns true after a swap")
+_, okswap, why = pcall(s.svo.prio_slowswap, "nosuch_physical", "doparry_physical", true)
+eq(okswap, false, "prio_slowswap returns false for a refusal")
+eq(why, "action nosuch doesn't exist", "prio_slowswap returns the reason")
+
+-- ===== vswapslow with names the slow curing list does not have =====
+
+for _, case in ipairs(SLOW_REFUSALS) do
+  for _, pair in ipairs({ { case[2], "doparry_physical" }, { "doparry_physical", case[2] }, { case[2], "15" } }) do
+    local label = string.format("vswapslow %s %s: ", pair[1], pair[2])
+    s = new_svof()
+    eq(s.vswapslow(pair[1], pair[2]), nil, label .. "raised nothing")
+    eq(s.echoes[1], "Can't swap that: " .. case[3] .. ".", label .. "says why")
+    eq(#s.echoes, 1, label .. "said once")
+    eq(s.spriorities(), SPRIORITIES, label .. "no slow curing number moved")
+    eq(s.svo.dict.paranoia.aff.spriority, nil, label .. "the table that isn't a cure got no number")
+    eq(#s.events, 0, label .. "no event")
+  end
+  -- a script, with no echoback, gets an error, as it did for the old balances question
+  s = new_svof()
+  local ok, swaperr = pcall(s.svo.prio_slowswap, case[2], "doparry_physical")
+  eq(ok, false, "prio_slowswap without echoback, " .. case[1] .. ": raised")
+  eq(tostring(swaperr):find("Can't swap that: " .. case[3] .. ".", 1, true) ~= nil, true,
+    "prio_slowswap without echoback, " .. case[1] .. ": with the reason")
+  eq(s.spriorities(), SPRIORITIES, "prio_slowswap without echoback, " .. case[1] .. ": nothing moved")
+end
+
+-- ===== control: the old diff =====
+
+s = new_svof({ diff = DIFF_OLD })
+s.vset("paranoia_focus", "slowcuring", "20")
+eq(#s.events, 8, "control: the old diff raised two events for each of the shuffle's four moves")
+s = new_svof({ diff = DIFF_OLD })
+s.svo.prio.cleargaps('slowcuring')
+eq(#s.events, 14, "control: and for each of cleargaps' seven")
+s = new_svof({ diff = DIFF_OLD })
+s.vswapslow("mindseye_physical", "doparry_physical")
+eq(#s.events, 4, "control: and for each of vswapslow's two")
+
+-- ===== control: the old swap =====
+
+s = new_svof({ slowswap = SLOWSWAP_OLD })
+eq(s.vswapslow("mindseye_physical", "doparry_physical"), nil, "control: vswapslow two names raised nothing")
+eq(s.echoes[1], "What balances do you want to use for swapping?", "control: and asked for the balances")
+eq(s.svo.dict.mindseye.physical.spriority, 20, "control: then swapped anyway")
+eq(s.echoes[2], "mindseye is now > doparry.", "control: said mindseye was above")
+eq(s.echoes[3], "<0,255,0>doparry (physical) <255,255,255>> <0,255,0>mindseye (physical)",
+  "control: and coloured it the other way round")
+s = new_svof({ slowswap = SLOWSWAP_OLD })
+s.vswapslow("deathsight_physical", "18")
+eq(s.echoes[1], "deathsight is now > mindseye.", "control: moving down onto a number, said the wrong order")
+s = new_svof({ slowswap = SLOWSWAP_OLD })
+s.vswapslow("mindseye_physical", "15")
+eq(type(s.svo.dict.mindseye.physical.spriority), "string", "control: a free number was stored as a string")
+eq(s.sortedslow():find("compare", 1, true) ~= nil, true, "control: which getsortedlist can't sort")
+eq(tostring(s.printordersync()):find("compare", 1, true) ~= nil, true, "control: nor printordersync")
+for _, pair in ipairs({ { "nosuch_physical", "doparry_physical" }, { "doparry_physical", "nosuch_physical" },
+    { "nosuch_physical", "15" }, { "doparry_physical", "mindseye_herb" }, { "paranoia_aff", "doparry_physical" } }) do
+  s = new_svof({ slowswap = SLOWSWAP_OLD })
+  eq(s.vswapslow(pair[1], pair[2]) ~= nil, true,
+    string.format("control: vswapslow %s %s raised", pair[1], pair[2]))
 end
 
 -- ===== control: the old insertat =====

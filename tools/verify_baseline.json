@@ -233,6 +233,11 @@
       "text": "Script   svo (curing skeleton, controllers, action system) Action system [script]"
     },
     {
+      "id": "item|Script|svo (curing skeleton, controllers, action system)|Controllers|script",
+      "digest": "97aa9360654d9906",
+      "text": "Script   svo (curing skeleton, controllers, action system) Controllers [script]"
+    },
+    {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
       "digest": "bfcbcbc91f9ed11e",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
@@ -419,7 +424,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",
-      "digest": "5c5278698d3f7046",
+      "digest": "3c9a4ce1818accd2",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Miscellaneous functions [script]"
     },
     {
