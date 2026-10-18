@@ -189,7 +189,7 @@ Svof refuses a name it already uses for something else. With the name of one of 
 
 In *vshow defup*, *vshow keepup*, the priority lists, *vshow server* and *vshow hidelist*, Svof puts ``*`` after a defence you defined and ``+`` after one of its own you changed, with a key under the list.
 
-Your definitions are saved in *svo/custom/defs* in your profile folder, which updates leave alone. *vcustomdef export <file>* saves them, and your changes to Svof's own, to a file you can share, and *vcustomdef import <file>* reads one in. Import checks the file's GMCP names against the game's *DEFENCE LIST* first, and leaves out a definition or change whose GMCP name the game doesn't have. If a definition breaks your curing, *vconfig customdefinitions off* starts Svof without any of them.
+Your definitions are saved in *svo/custom/defs* in your profile folder, which updates leave alone. *vcustomdef export <file>* saves them, and your changes to Svof's own, to a file you can share, and *vcustomdef import <file>* reads one in. Import checks the file's GMCP names against the game's *DEFENCE LIST* first, and leaves out a definition or change whose GMCP name the game doesn't have. If a definition breaks your curing, *vconfig customdefinitions off* starts Svof without any of them. Your priority lists keep the places of the definitions Svof leaves out, this way or because they're for another class, for when they're back.
 
 .. _change-svof-defences:
 
@@ -1077,7 +1077,7 @@ vconfig options
     toggles whenever the system should gag (hide) system's of serverside commands when serverside is enabled - this is things like priority switching, option changing and so on. This does not cover serverside's ``[CURING]:`` messages, use the ``gagservercuring`` option for that.
 
   customdefinitions
-    (on by default) adds the defences you defined with *vcustomdef*, and uses your changes to Svof's own, when Svof loads. Turn it off to start Svof without them.
+    (on by default) adds the defences you defined with *vcustomdef*, and uses your changes to Svof's own, when Svof loads. Turn it off to start Svof without them; your definitions keep their places in your priority lists.
 
   showhiddendefs
     lists the defences you hid with *vshow hidelist* in the defence lists too, so you can see whether any is on defup or keepup.

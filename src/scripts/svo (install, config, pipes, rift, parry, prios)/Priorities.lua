@@ -16,6 +16,65 @@ local sys, signals, sk, prio = svo.sys, svo.signals, svo.sk, svo.prio
 
 svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/prios")
 
+-- The saved places of defences the player defined or changed (vcustomdef)
+-- that svof doesn't have this session, by balance and number, as the last
+-- import found them. vconfig customdefinitions off leaves the definitions
+-- out, and svof loads only the class it's in, so export would drop them
+-- and they'd come back at the bottom of the list (live test, 2026-10-18).
+-- Export writes them back where they were instead. prio.loaded holds the
+-- numbers import gave everything else, by balance and name
+prio.kept, prio.loaded = prio.kept or {}, prio.loaded or {}
+
+-- whether the saved place of action is kept: it's a defence the player
+-- defined or changed, saved, that svof doesn't have this session
+local function keeps(action)
+  if svo.dict[action] then return false end
+  local defences = svo.defences
+  if defences.custom and defences.custom[action] then return true end
+  for _, names in pairs(defences.edits or {}) do
+    if type(names) == 'table' and names[action] then return true end
+  end
+  return false
+end
+
+-- How far the places import gave have moved since, in data, the list
+-- export writes: the move most of them share. dict_setup moves every place
+-- up to make room at the bottom for what has none, and every call moves
+-- the slow curing ones, for svo.dict.lovers.map
+local function moved(data, loaded)
+  local counts, by, most = {}, 0, 0
+  for num, name in pairs(data) do
+    local was = loaded[name]
+    if was then
+      local d = num - was
+      counts[d] = (counts[d] or 0) + 1
+      if counts[d] > most or (counts[d] == most and math.abs(d) < math.abs(by)) then by, most = d, counts[d] end
+    end
+  end
+  return by
+end
+
+-- puts a balance's kept places back into data, each moved as far as the
+-- rest of the list. Something svof put there this session moves up one,
+-- with the ones above it up to the next gap
+local function putback(data, balance)
+  local kept, nums = prio.kept[balance] or {}, {}
+  for num, action in pairs(kept) do
+    if keeps(balance == 'slowcuring' and action:match('(%w+)_%w+') or action) then nums[#nums+1] = num end
+  end
+  if not nums[1] then return end
+  table.sort(nums)
+
+  local by = moved(data, prio.loaded[balance] or {})
+  for _, num in ipairs(nums) do
+    local at = math.max(1, num + by)
+    local top = at
+    while data[top] do top = top + 1 end
+    for i = top, at + 1, -1 do data[i] = data[i-1] end
+    data[at] = kept[num]
+  end
+end
+
 function prio.export (name, options, echoback)
   local sendf; if echoback then sendf = svo.echof end
   svo.assert(name, "what name do you want to save this list as?", sendf)
@@ -100,6 +159,7 @@ function prio.export (name, options, echoback)
       else
         data = svo.make_prio_table(priority)
       end
+      putback(data, priority)
 
       s[#s+1] = "\n-- " .. priotbl.prewrite
       s[#s+1] = priority .. " = " .. svo.pl.pretty.write(data)
@@ -480,6 +540,8 @@ function prio.import(name, echoback, report_errors, use_default)
   -- table i now contains subtables with all of our stuff
   for balance,balancet in pairs(i) do
     if contains(importables, balance) then
+      -- and the places this list keeps (prio.kept)
+      prio.kept[balance], prio.loaded[balance] = {}, {}
       if balance == 'slowcuring' then
         -- reset all current ones to zero
         svo.clear_sync_prios()
@@ -487,13 +549,23 @@ function prio.import(name, echoback, report_errors, use_default)
         for num, action in pairs(balancet) do
           -- have to weed out action name _ balance name first
           local _,_, actionname, balancename = sfind(action, '(%w+)_(%w+)')
-          set(num, actionname, balancename, 'spriority')
+          if keeps(actionname) then
+            prio.kept[balance][num] = action
+          else
+            set(num, actionname, balancename, 'spriority')
+            prio.loaded[balance][action] = num
+          end
         end
       else
         -- reset all current ones to zero
         svo.clear_balance_prios(balance)
         for num, action in pairs(balancet) do
-          set(num, action, balance, 'aspriority')
+          if keeps(action) then
+            prio.kept[balance][num] = action
+          else
+            set(num, action, balance, 'aspriority')
+            prio.loaded[balance][action] = num
+          end
         end
       end
     end

@@ -50,6 +50,8 @@ behaviour meant to stay. All of these are in the 2018 module xmls:
   28  what a player hid in a class's skillsets was forgotten on changing
       class and back, and vshow hidelist listed a defence under a group
       another class had it in (fixed)
+  29  a class change loses the saved priorities of the last class's own
+      defences; only definitions and changed ones keep their places
 
 Nothing here proves anything about Mudlet, the static trigger items in
 src/triggers, the game's real wording or timing, or play.
@@ -3503,6 +3505,181 @@ do -- each pattern compiled once, not each time clash matches it
   svo.defences.clash("glintc", parts)
   eq(strings, 0, "patterns: clash matches with compiled patterns")
   eq(first > 0 and news == first, true, "patterns: and compiles none again")
+end
+
+-- ===== 21. The saved priorities of defences svof leaves out =====
+
+-- svof saves its priorities as it quits, from its dictionary, and loads
+-- them as it starts. A definition vconfig customdefinitions off leaves
+-- out, or one for another class, keeps its saved place for when it's
+-- back, and so does a change to svof's own defence for another class
+-- (live test, 2026-10-18: probealpha was 176 before a session with
+-- definitions off, and 4 after).
+
+-- the saved priorities, in a file the harness keeps instead of the disk
+local function prio_file(w)
+  local file, out = {}, nil
+  local function serialize(t)
+    local parts = {}
+    for k, v in pairs(t) do parts[#parts + 1] = string.format("[%s] = %q", tostring(k), v) end
+    return "{" .. table.concat(parts, ", ") .. "}"
+  end
+  w.env.io.output = function(path) out = path return true end
+  w.env.io.write = function(s) if out and out:find("/svo/prios/current$") then file.text = s end return true end
+  w.env.io.input = function(path) file.reading = path end
+  w.env.io.read = function()
+    if file.reading:find("/svo/prios/current$") then return file.text end
+    return world.read_file("src/resources/" .. file.reading:match("^%./svof/(.+)$"))
+  end
+  w.env.lfs.attributes = function(path)
+    if path:find("/svo/prios/current$") then return file.text and {} or nil end
+    if path == "./svof/default_prios" then return {} end
+  end
+  -- import runs the file with loadstring and setfenv, which Lua 5.2 and
+  -- later don't have
+  w.env.loadstring = w.env.loadstring or function(s, n) return load(s, n) end
+  w.env.setfenv = w.env.setfenv or function(f, e) debug.setupvalue(f, 1, e) return f end
+  -- export writes with pl.pretty, which the harness stubs, and Setup takes
+  -- it again each time svof loads
+  local pretty, req = { write = serialize }, w.env.require
+  w.env.require = function(name) if name == "pl.pretty" then return pretty end return req(name) end
+  w.svo.pl.pretty = pretty
+  return file
+end
+
+-- quits and starts svof again in the same class, as logging out and in
+-- does: the save as it quits, then the load
+local function relaunch(w)
+  w.svo.signals.saveconfig:emit()
+  w.svo.dict = {}
+  w.svo.systemloaded = false
+  w.env.svo_init_system()
+end
+
+-- a balance of the saved list, number -> name
+local function saved_list(file, balance)
+  local t = {}
+  local list = file.text and file.text:match("\n" .. balance .. " = (%b{})") or ""
+  for num, name in list:gmatch('%[(%d+)%] = "([^"]+)"') do t[tonumber(num)] = name end
+  return t
+end
+
+local function saved_at(file, balance, name)
+  for num, n in pairs(saved_list(file, balance)) do
+    if n == name then return num end
+  end
+end
+
+-- the names of a number -> name list that wanted has, lowest first
+local function in_order(list, wanted)
+  local nums = {}
+  for num, name in pairs(list) do if wanted[name] then nums[#nums + 1] = num end end
+  table.sort(nums)
+  for i, num in ipairs(nums) do nums[i] = list[num] end
+  return table.concat(nums, " ")
+end
+
+-- an entry's place in slow curing, between the ones next to it
+local function slow_place(svo, entry)
+  local t = svo.make_sync_prio_table("%s_%s")
+  local at, lo, hi
+  for n, e in pairs(t) do if e == entry then at = n end end
+  if not at then return "none" end
+  for n in pairs(t) do
+    if n < at and (not lo or n > lo) then lo = n end
+    if n > at and (not hi or n < hi) then hi = n end
+  end
+  return tostring(t[lo]) .. " < " .. entry .. " < " .. tostring(t[hi])
+end
+
+do -- a session with definitions off
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local file = prio_file(w)
+  local function at(n) return tostring(svo.prio.getaction(n, "physical")) end
+  svo.defences.custom.shimmer = { class = "Monk", skillset = "tekura", command = "shimmer on",
+    on = { "You begin to shimmer." } }
+  relaunch(w)
+  -- the places the player gave it, in the middle of each list. prio.insert
+  -- can't put one in a slow curing gap, so it takes a number that's used
+  svo.prio.insert("shimmer", "physical", 40)
+  local sync, slow = svo.make_sync_prio_table("%s_%s"), 100
+  while not sync[slow] do slow = slow + 1 end
+  svo.prio.insert("shimmer_physical", "slowcuring", slow)
+  local below, above, x, xbelow, xabove = at(39), at(41), at(60), at(59), at(61)
+  local slowplace = slow_place(svo, "shimmer_physical")
+
+  svo.conf.customdefinitions = false
+  relaunch(w)
+  eq(svo.dict.shimmer, nil, "priorities: with customdefinitions off, svof starts without shimmer")
+  eq(at(40), "nil", "priorities: and its place is empty")
+  relaunch(w)
+  eq(saved_at(file, "physical", "shimmer"), 40, "priorities: the save as that session quits keeps shimmer's place")
+  eq(saved_at(file, "slowcuring", "shimmer_physical") ~= nil, true, "priorities: and its slow curing one")
+
+  svo.conf.customdefinitions = true
+  relaunch(w)
+  eq(svo.dict.shimmer and svo.dict.shimmer.physical.aspriority, 40,
+    "priorities: with definitions on again, shimmer has its place back")
+  eq(at(39) .. " " .. at(41), below .. " " .. above, "priorities: between the same two")
+  -- each load moves every slow curing number up (dict_setup gives
+  -- svo.dict.lovers.map one), and the kept place moves with them
+  eq(slow_place(svo, "shimmer_physical"), slowplace, "priorities: and in slow curing")
+
+  -- one the player put in its empty place moves up one, with the ones
+  -- above it up to the gap that one left
+  svo.conf.customdefinitions = false
+  relaunch(w)
+  svo.prio.insert(x, "physical", 40)
+  relaunch(w)
+  svo.conf.customdefinitions = true
+  relaunch(w)
+  eq(svo.dict.shimmer and svo.dict.shimmer.physical.aspriority, 40,
+    "priorities: shimmer keeps its place when the player put another there")
+  eq(at(41) .. " " .. at(42), x .. " " .. above, "priorities: which moves up one, and the next one too")
+  eq(at(60) .. " " .. at(61), xbelow .. " " .. xabove, "priorities: up to the gap it left")
+
+  -- svof's default priorities forget it, as they do every place
+  svo.conf.customdefinitions = false
+  relaunch(w)
+  svo.prio.usedefault()
+  relaunch(w)
+  eq(saved_at(file, "physical", "shimmer"), nil, "priorities: going back to the default priorities forgets shimmer's place")
+
+  -- and so does deleting it
+  svo.conf.customdefinitions = true
+  relaunch(w)
+  svo.prio.insert("shimmer", "physical", 40)
+  svo.conf.customdefinitions = false
+  relaunch(w)
+  svo.defences.custom_delete("shimmer")
+  relaunch(w)
+  eq(saved_at(file, "physical", "shimmer"), nil, "priorities: deleting a definition svof left out forgets its place")
+end
+
+do -- another class's definition and change
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local file = prio_file(w)
+  svo.defences.custom.shimmer = { class = "Monk", skillset = "tekura", command = "shimmer on",
+    on = { "You begin to shimmer." } }
+  svo.defences.edits = { monk = { mindcloak = { notondef = true, was = {} } } }
+  relaunch(w)
+  local monk = svo.make_prio_table("physical")
+  svo.classchange("Infernal")
+  relaunch(w) -- the save as an Infernal quits
+  local infernal = saved_list(file, "physical")
+  -- the two, and the actions both classes have
+  local wanted, inmonk = { shimmer = true, mindcloak = true }, {}
+  for _, name in pairs(monk) do inmonk[name] = true end
+  for _, name in pairs(infernal) do if inmonk[name] then wanted[name] = true end end
+  eq(in_order(infernal, wanted), in_order(monk, wanted),
+    "priorities: an Infernal's save keeps the Monk's definition and changed mindcloak in their places")
+  eq(saved_at(file, "physical", "kaiboost"), nil,
+    "today (defect 29): and not a Monk defence of svof's own the player didn't change")
+  svo.classchange("Monk")
+  eq(in_order(svo.make_prio_table("physical"), wanted), in_order(monk, wanted),
+    "priorities: back as a Monk, both have their places")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))
