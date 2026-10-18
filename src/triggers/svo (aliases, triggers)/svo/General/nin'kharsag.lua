@@ -1,1 +1,1 @@
-svo.valid.diag_ninkharsag()
+svo.valid.diag('ninkharsag')

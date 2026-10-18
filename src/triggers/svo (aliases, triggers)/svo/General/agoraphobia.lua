@@ -1,1 +1,1 @@
-svo.valid.diag_agoraphobia()
+svo.valid.diag('agoraphobia')

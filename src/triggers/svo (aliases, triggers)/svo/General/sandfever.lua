@@ -1,1 +1,1 @@
-svo.valid.diag_sandfever()
+svo.valid.diag('sandfever')

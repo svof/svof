@@ -1,1 +1,1 @@
-svo.valid.generic_dementia()
+svo.valid.generic('dementia')

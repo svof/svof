@@ -1,1 +1,1 @@
-svo.valid.tree_cured_dementia()
+svo.valid.tree_cured('dementia')

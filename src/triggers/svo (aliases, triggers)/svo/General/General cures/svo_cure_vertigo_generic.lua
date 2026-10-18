@@ -1,1 +1,1 @@
-svo.valid.generic_vertigo()
+svo.valid.generic('vertigo')

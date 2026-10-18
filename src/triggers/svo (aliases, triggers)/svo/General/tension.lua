@@ -1,1 +1,1 @@
-svo.valid.diag_tension()
+svo.valid.diag('tension')

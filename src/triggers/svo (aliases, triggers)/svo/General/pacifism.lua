@@ -1,1 +1,1 @@
-svo.valid.diag_pacifism()
+svo.valid.diag('pacifism')

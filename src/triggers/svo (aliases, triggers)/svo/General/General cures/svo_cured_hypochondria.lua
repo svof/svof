@@ -1,1 +1,1 @@
-svo.valid.generic_hypochondria()
+svo.valid.generic('hypochondria')

@@ -1,1 +1,1 @@
-svo.valid.tree_cured_crackedribs()
+svo.valid.tree_cured('crackedribs cured')

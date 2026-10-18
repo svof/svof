@@ -1,1 +1,1 @@
-svo.valid.diag_shadowmadness()
+svo.valid.diag('shadowmadness')

@@ -1,1 +1,1 @@
-svo.valid.diag_mutilatedleftleg()
+svo.valid.diag('mutilatedleftleg')

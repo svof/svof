@@ -1,1 +1,1 @@
-svo.valid.diag_asthma()
+svo.valid.diag('asthma')

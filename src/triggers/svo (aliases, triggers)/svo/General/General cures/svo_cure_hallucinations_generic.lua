@@ -1,1 +1,1 @@
-svo.valid.generic_hallucinations()
+svo.valid.generic('hallucinations')

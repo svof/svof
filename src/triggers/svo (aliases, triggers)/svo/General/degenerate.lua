@@ -1,1 +1,1 @@
-svo.valid.diag_degenerate()
+svo.valid.diag('degenerate')

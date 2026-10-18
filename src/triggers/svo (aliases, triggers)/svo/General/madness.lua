@@ -1,1 +1,1 @@
-svo.valid.diag_madness()
+svo.valid.diag('madness')

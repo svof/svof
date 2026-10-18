@@ -1,0 +1,53 @@
+{
+  "note": "svo.valid calls in src/triggers and src/aliases that resolve to nothing. Every one is absent from the 2018 module xmls too, so none is conversion damage. Recorded so the count can only go down: a new one fails, and fixing one of these fails until it is removed from here.",
+  "known": [
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General/svo_healing_bedevil.lua",
+      "name": "bedevilheal"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General/svo_cure_concussion.lua",
+      "name": "curedconcussion"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General/Nothing_cured.lua",
+      "name": "emptyheal"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General/svo_healer_nothing_cured.lua",
+      "name": "emptyheal"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General/svo_healer_selfcure.lua",
+      "name": "healercure"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General/svo_healer_selfcure2.lua",
+      "name": "healercure"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General/svo_healing_cured_insomnia.lua",
+      "name": "healing_cured_insomnia"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General/svo_no_healing_balance.lua",
+      "name": "nohealbalance"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/svo Bashing triggers/Qwindor's svo bashing triggers/Annwyn/Annwyn_Aeon.lua",
+      "name": "simplecheckwrithes"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/svo Bashing triggers/Qwindor's svo bashing triggers/Morindar_arm_break.lua",
+      "name": "simplecheckwrithes"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/Sculpting/Calcified_Skull_Concussion.lua",
+      "name": "simpleconcussion"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General/General cures/svo_sour_sparkle.lua",
+      "name": "sour_sparkle"
+    }
+  ]
+}

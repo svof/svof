@@ -1,1 +1,1 @@
-svo.valid.diag_clumsiness()
+svo.valid.diag('clumsiness')

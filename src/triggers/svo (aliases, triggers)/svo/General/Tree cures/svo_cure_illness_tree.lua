@@ -1,1 +1,1 @@
-svo.valid.tree_cured_illness()
+svo.valid.tree_cured('illness')

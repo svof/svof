@@ -1,1 +1,1 @@
-svo.valid.tree_cured_sensitivity()
+svo.valid.tree_cured('sensitivity')

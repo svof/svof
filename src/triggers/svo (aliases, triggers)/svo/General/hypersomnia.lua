@@ -1,1 +1,1 @@
-svo.valid.diag_hypersomnia()
+svo.valid.diag('hypersomnia')

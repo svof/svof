@@ -1,1 +1,1 @@
-svo.valid.tree_cured_darkshade()
+svo.valid.tree_cured('darkshade')

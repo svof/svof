@@ -1,1 +1,1 @@
-svo.valid.tree_cured_loneliness()
+svo.valid.tree_cured('loneliness')

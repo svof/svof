@@ -1,1 +1,1 @@
-svo.valid.diag_scalded()
+svo.valid.diag('scalded')

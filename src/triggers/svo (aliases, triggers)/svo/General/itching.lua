@@ -1,1 +1,1 @@
-svo.valid.diag_itching()
+svo.valid.diag('itching')

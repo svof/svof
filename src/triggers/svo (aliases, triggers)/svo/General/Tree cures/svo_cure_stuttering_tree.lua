@@ -1,1 +1,1 @@
-svo.valid.tree_cured_stuttering()
+svo.valid.tree_cured('stuttering')

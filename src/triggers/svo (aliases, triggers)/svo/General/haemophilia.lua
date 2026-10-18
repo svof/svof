@@ -1,1 +1,1 @@
-svo.valid.diag_haemophilia()
+svo.valid.diag('haemophilia')

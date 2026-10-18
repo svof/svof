@@ -1,1 +1,1 @@
-svo.valid.diag_icing()
+svo.valid.diag('icing')

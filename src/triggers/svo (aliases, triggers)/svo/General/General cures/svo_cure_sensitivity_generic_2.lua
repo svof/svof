@@ -1,1 +1,1 @@
-svo.valid.generic_sensitivity()
+svo.valid.generic('sensitivity')

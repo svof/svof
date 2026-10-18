@@ -1,1 +1,1 @@
-svo.valid.diag_aeon()
+svo.valid.diag('aeon')

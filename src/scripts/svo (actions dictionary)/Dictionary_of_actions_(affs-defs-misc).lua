@@ -10,14 +10,20 @@
 -- When to use something, how to use something.
 -- For the record, oncompleted is a mandatory dictionary entry. (The Action system gets cranky without it)
 
+-- To add an affliction:
 -- * add it in 'Dictionary of actions (affs-defs-misc)' in the dict table, with the appropriate functions and curing logic
--- * add it in 'Empty cure handling'
--- * add it in 'Diag trigger functions' and add a new diagnose trigger for it
--- * add gaining affliction 'Simple aff trigger functions', and if there's any complicated logic around it,
--- * 'Main trigger functions'. Add triggers receiving the affliction (triggers section of the code editor)
--- * add losing/curing affliction in 'Main trigger functions and the appropriate triggers
--- * add to tree curing system (touchtree action in this file and and 'Main trigger functions')
--- * add to generic cures (passive cures or cures that happen in blackout) (generic_cures_data in 'Main trigger functions')
+-- * add the triggers for it (triggers section of the code editor). Each one names
+--   the affliction itself, so none of these needs a list edited anywhere:
+--     gaining it          svo.valid.simple<name>()      generated from the entry above
+--     DIAGNOSE reports it svo.valid.diag('<name>')
+--     a passive cure, or one that lands during blackout
+--                         svo.valid.generic('<name>')
+--     touching a tree cures it
+--                         svo.valid.tree_cured('<name>')
+-- * add it in 'Empty cure handling' - what a cure that cured nothing rules out
+-- * add losing/curing it in 'Main trigger functions' and the appropriate triggers
+-- * if gaining it needs more than "record the affliction", write that handler in
+--   'Simple aff trigger functions' BELOW the generated loop, which overwrites it
 -- * check failure conditions and add them, ie salves fizzling off balance
 
 
@@ -7914,32 +7920,80 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- Gaining latched knocks you off elixir balance once, and the affliction
+    -- itself is cured only by sipping health - the sip clears the latch
+    -- instead of healing you, the way applying health to a limb mends the
+    -- fracture instead. It does NOT block the other sip cures.
+    --
+    -- The balance loss is taken from the gain line, never from GMCP, though
+    -- GMCP reports latched itself. GMCP does not report elixir balance, so it
+    -- can only say latched is on you, not that it was just gained: a List is
+    -- a resync, and an Add can be the game unmasking, after blackout, a
+    -- latched gained during it. The two ways of being wrong cost very
+    -- different amounts:
+    --
+    --   * Taking the balance when it was not just lost (that Add) leaves
+    --     health and mana sipping off until the fallback timer runs out,
+    --     10s or 20s with addiction. No "You may drink another health or
+    --     mana elixir." line follows to give it back, and svof does not sip,
+    --     so it never sees a sip fail either.
+    --   * Missing a loss (a gain line not seen) costs one sip. It gets "The
+    --     elixir flows down your throat without effect.", sip.noeffect
+    --     records the balance, and the regain line gives it back.
+    --
+    -- The gain line is printed as the balance goes, so it is never late. So
+    -- here the trigger decides, and GMCP only says whether latched is there.
+    --
+    -- It used to be modelled as a timed affliction on 'waitingfor' with the
+    -- comment "not sure how this is cured yet exactly", which meant svof
+    -- never cured it and dropped it from affs after 20s whether or not it was
+    -- still on you.
     latched = {
-      waitingfor = {
-        customwait = 20, -- not sure how this is cured yet exactly
-  
+      sip = {
         isadvisable = function()
-          return false
+          return (affs.latched and not svo.doingaction('latched')) or false
         end,
   
-        onstart = function() end,
-  
         oncompleted = function()
+          svo.lostbal_sip()
           svo.rmaff('latched')
-          svo.make_gnomes_work()
+        end,
+  
+        sipcure = {'health'},
+        onstart = function()
+          svo.sip(svo.dict.latched.sip)
+        end,
+  
+        -- "The elixir flows down your throat without effect." is what a sip
+        -- gives while off sip balance, which gaining latched knocks you off.
+        -- It says nothing about whether latched is still there, so keep it
+        -- and record the balance rather than keep believing we had it.
+        noeffect = function()
+          svo.lostbal_sip()
+        end,
+  
+        -- the sip happened and cured nothing, so we did not have latched.
+        -- This cure treats exactly one affliction, so clearing it and
+        -- completing it are the same operation.
+        empty = function()
+          svo.lostbal_sip()
+          svo.rmaff('latched')
         end
       },
       aff = {
-        oncompleted = function()
+        -- Only the gain line takes sip balance (see above the entry for why
+        -- not GMCP). svo.valid.simplelatched passes 'gained'; DIAGNOSE and
+        -- svo.addaff (a GMCP List) reach here with nothing, and a GMCP Add
+        -- never runs this at all.
+        oncompleted = function(how)
           svo.addaffdict(svo.dict.latched)
+          if how == 'gained' then svo.lostbal_sip() end
           codepaste.badaeon()
-          if not svo.actions.latched_waitingfor then svo.doaction(svo.dict.latched.waitingfor) end
         end
       },
       gone = {
         oncompleted = function()
           svo.rmaff('latched')
-          svo.killaction(svo.dict.latched.waitingfor)
         end,
       }
     },

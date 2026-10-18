@@ -1,1 +1,1 @@
-svo.valid.diag_lethargy()
+svo.valid.diag('lethargy')

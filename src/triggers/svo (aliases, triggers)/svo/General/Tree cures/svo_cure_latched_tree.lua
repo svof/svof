@@ -1,1 +1,1 @@
-svo.valid.tree_cured_latched()
+svo.valid.tree_cured('latched')

@@ -1,1 +1,1 @@
-svo.valid.diag_bound()
+svo.valid.diag('bound')

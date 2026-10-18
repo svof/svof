@@ -1,1 +1,1 @@
-svo.valid.tree_cured_voyria()
+svo.valid.tree_cured('voyria')

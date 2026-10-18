@@ -1,1 +1,1 @@
-svo.valid.tree_cured_fear()
+svo.valid.tree_cured('fear')

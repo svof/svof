@@ -1,1 +1,1 @@
-svo.valid.tree_cured_shyness()
+svo.valid.tree_cured('shyness')

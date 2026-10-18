@@ -1,1 +1,1 @@
-svo.valid.diag_palpatar()
+svo.valid.diag('palpatar')

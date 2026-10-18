@@ -1,1 +1,1 @@
-svo.valid.tree_cured_crippledleftleg()
+svo.valid.tree_cured('crippledleftleg')

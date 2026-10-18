@@ -1,1 +1,1 @@
-svo.valid.diag_hypothermia()
+svo.valid.diag('hypothermia')

@@ -1,1 +1,1 @@
-svo.valid.diag_mycalium()
+svo.valid.diag('mycalium')
