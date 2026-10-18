@@ -89,7 +89,7 @@ local LIFEVISION_END_ANCHOR = "svo.checkanyaffs = function"
 local SILERIS_START_ANCHOR = "    sileris = {"
 local SILERIS_END_ANCHOR = "    waitingforsileris = {"
 local TRIGGERS_SRC = "src/scripts/svo (trigger functions)/Main_trigger_functions.lua"
-local SYMPTOM_START_ANCHOR = "valid.remove_unknownmental = function (affliction)"
+local SYMPTOM_START_ANCHOR = "local function lose_unknown_level(which)"
 local SYMPTOM_END_ANCHOR = "function svo.valid.loki()"
 
 -- The triggers that work out which of svof's commands a refusal line answers,
