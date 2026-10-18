@@ -16,6 +16,13 @@ svo.make_prio_table always returns a table. It refuses them now, and with
 echoback (vset, which ignores the return) it says why, for slow curing names
 too.
 
+In slow curing, svo.valid_sync_action only checks that the entry exists, so
+paranoia_aff, a table that isn't a cure, went into the list onto a free
+number (and stayed there, saved with the rest), and raised onto a taken one.
+prio.insert refuses a name with no slow curing number now. Every cure has
+one: dict_setup gives one to every balance but aff, gone, waitingfor,
+boosted and weakened.
+
 Like the other suites, this does not run svof or Mudlet. It runs the real
 priorities loader from Priorities.lua, the real svo.valid_sync_action,
 svo.make_prio_table, svo.make_sync_prio_table, svo.basictableindexdiff and
@@ -145,6 +152,8 @@ local function new_svof(opts)
   end
   -- a balance dict_setup gives no priority, as it does aff, gone and waitingfor
   svo.dict.paranoia.aff = {}
+  -- and a plain field, such as unweavingbody's count
+  svo.dict.paranoia.count = 0
 
   local env = setmetatable({
     svo = svo,
@@ -256,21 +265,36 @@ eq(s.changes(), "defcheck physical 18 slowcuring | doparry physical 19 slowcurin
 eq(s.events_name_entries(), true, "vset onto a taken number: every event names a dictionary entry")
 eq(s.echoes[1], "Set paranoia_focus's priority in slowcuring balance to 20.", "vset onto a taken number: what vset says")
 
--- ===== a name the slow curing list does not have =====
+-- ===== names the slow curing list does not have =====
 
-s = new_svof()
-err, ok, msg = s.insert("paranoia_herb", "slowcuring", 15)
-eq(err, nil, "a balance the action lacks: raised nothing")
-eq(ok, false, "a balance the action lacks: refused")
-eq(msg, "paranoia doesn't operate on the herb balance", "a balance the action lacks: why")
-eq(s.spriorities(), SPRIORITIES, "a balance the action lacks: nothing moved")
-eq(#s.events, 0, "a balance the action lacks: no event")
-eq(#s.echoes, 0, "a balance the action lacks: nothing said without echoback")
-s = new_svof()
-eq(s.vset("paranoia_herb", "slowcuring", "15"), nil, "vset, a balance the action lacks: raised nothing")
-eq(s.echoes[1], "Can't set that priority: paranoia doesn't operate on the herb balance.",
-  "vset, a balance the action lacks: what vset says")
-eq(#s.echoes, 1, "vset, a balance the action lacks: said once")
+local SLOW_REFUSALS = {
+  { "a balance the action lacks", "paranoia_herb", "paranoia doesn't operate on the herb balance" },
+  { "a table that isn't a cure", "paranoia_aff", "paranoia_aff isn't in the slow curing list" },
+  { "a plain field", "paranoia_count", "paranoia_count isn't in the slow curing list" },
+  { "an unknown action", "nosuch_focus", "action nosuch doesn't exist" },
+  { "no balance in the name", "paranoia",
+    "actionname is in invalid format; it should be as 'actionname_balance'" },
+}
+for _, case in ipairs(SLOW_REFUSALS) do
+  -- 15 is free in slow curing, 20 is doparry's
+  for _, number in ipairs({ 15, 20 }) do
+    local label = string.format("slow curing, %s, onto %d: ", case[1], number)
+    s = new_svof()
+    err, ok, msg = s.insert(case[2], "slowcuring", number)
+    eq(err, nil, label .. "raised nothing")
+    eq(ok, false, label .. "refused")
+    eq(msg, case[3], label .. "why")
+    eq(s.spriorities(), SPRIORITIES, label .. "no slow curing number moved")
+    eq(s.aspriorities(), ASPRIORITIES, label .. "no own-balance number moved")
+    eq(s.svo.dict.paranoia.aff.spriority, nil, label .. "the table that isn't a cure got no number")
+    eq(#s.events, 0, label .. "no event")
+    eq(#s.echoes, 0, label .. "nothing said without echoback")
+  end
+  s = new_svof()
+  eq(s.vset(case[2], "slowcuring", "15"), nil, "vset, slow curing, " .. case[1] .. ": raised nothing")
+  eq(s.echoes[1], "Can't set that priority: " .. case[3] .. ".", "vset, slow curing, " .. case[1] .. ": what vset says")
+  eq(#s.echoes, 1, "vset, slow curing, " .. case[1] .. ": said once")
+end
 
 -- ===== a free number in an action's own balance is unchanged =====
 
@@ -306,6 +330,7 @@ local REFUSALS = {
   { "a balance the action lacks", "mindseye", "focus", "mindseye doesn't operate on the focus balance" },
   { "an unknown balance", "paranoia", "nosuchbal", "paranoia doesn't operate on the nosuchbal balance" },
   { "a balance with no priority", "paranoia", "aff", "paranoia doesn't operate on the aff balance" },
+  { "a plain field", "paranoia", "count", "paranoia doesn't operate on the count balance" },
 }
 for _, case in ipairs(REFUSALS) do
   -- 40 is free in focus, 31 is dementia's
@@ -351,6 +376,13 @@ eq(tostring(err):find("index is nil", 1, true) ~= nil, true, "control: onto a ta
 s = new_svof({ priorities = PRIORITIES_UNCHECKED })
 eq(s.vset("paranoia_herb", "slowcuring", "15"), nil, "control: vset with a bad slow curing name raised nothing")
 eq(#s.echoes, 0, "control: and said nothing")
+s = new_svof({ priorities = PRIORITIES_UNCHECKED })
+err, ok = s.insert("paranoia_aff", "slowcuring", 15)
+eq(ok, true, "control: a table that isn't a cure went in onto a free number")
+eq(s.svo.dict.paranoia.aff.spriority, 15, "control: and got a slow curing number")
+s = new_svof({ priorities = PRIORITIES_UNCHECKED })
+err = s.insert("paranoia_aff", "slowcuring", 20)
+eq(tostring(err):find("index is nil", 1, true) ~= nil, true, "control: onto a taken number it raised")
 
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
