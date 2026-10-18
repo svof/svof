@@ -347,10 +347,21 @@ function prio.insert(action, balance, number, echoback)
 
   if balance == 'balance' then balance = 'physical' end
 
+  -- vset ignores what this returns, so say why there
+  local function refuse(why)
+    if echoback then svo.echof("Can't set that priority: %s.", why) end
+    return false, why
+  end
+
   if balance == 'slowcuring' then
     local validaction, plainaction = svo.valid_sync_action(action)
 
-    if not validaction then return false, plainaction end
+    if not validaction then return refuse(plainaction) end
+  elseif not svo.dict[action] then
+    return refuse("action "..tostring(action).." doesn't exist")
+  -- the balances dict_setup gives no priority (aff, gone, waitingfor...) aren't in any list
+  elseif not (type(svo.dict[action][balance]) == 'table' and svo.dict[action][balance].aspriority) then
+    return refuse(action.." doesn't operate on the "..tostring(balance).." balance")
   end
 
   local function getpriotable(balancename)

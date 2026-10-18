@@ -9,13 +9,20 @@ svo.valid_sync_action before it set the entry's spriority and raised
 indexed svo.dict["paranoia_focus"], which is nil, and raised, so moving an
 entry into any of the slow curing list's many gaps failed.
 
+In an action's own balance, prio.insert checked no names: an unknown
+action, an action without that balance, or a balance with no priority list
+raised a Lua error, and its "no such balance" check never fired, because
+svo.make_prio_table always returns a table. It refuses them now, and with
+echoback (vset, which ignores the return) it says why, for slow curing names
+too.
+
 Like the other suites, this does not run svof or Mudlet. It runs the real
 priorities loader from Priorities.lua, the real svo.valid_sync_action,
 svo.make_prio_table, svo.make_sync_prio_table, svo.basictableindexdiff and
 svo.deepcopy, and the real vset alias script, over a small dictionary with
 the slow curing numbers default_prios gives those entries. Mudlet's raiseEvent
-and svof's echo are stubs that record what they get. The control puts the
-old insertat back.
+and svof's echo are stubs that record what they get. The controls put the
+old insertat and the old name checks back.
 
 Run: lua tools/test_prio_insert.lua
 ]]
@@ -65,6 +72,22 @@ local PRIORITIES_OLD = swap(PRIORITIES, INSERTAT, [[
     if echoback then svo.echof("Set %s's priority in %s balance to %d.", actionname, balancename, newprio) end
     raiseEvent("svo prio changed", actionname, balancename, newprio, (balancename == 'slowcuring' and 'slowcuring'))
   end
+]])
+-- and with the old name checks: slow curing names only, and silent
+local CHECKS = between(PRIORITIES, "function prio.insert(action, balance, number, echoback)\n",
+  "  local function getpriotable(balancename)")
+local PRIORITIES_UNCHECKED = swap(PRIORITIES, CHECKS, [[
+function prio.insert(action, balance, number, echoback)
+  number = tonumber(number)
+
+  if balance == 'balance' then balance = 'physical' end
+
+  if balance == 'slowcuring' then
+    local validaction, plainaction = svo.valid_sync_action(action)
+
+    if not validaction then return false, plainaction end
+  end
+
 ]])
 
 -- ===== assertions =====
@@ -120,6 +143,8 @@ local function new_svof(opts)
     svo.dict[e[1]] = svo.dict[e[1]] or {}
     svo.dict[e[1]][e[2]] = { spriority = e[3], aspriority = e[4] }
   end
+  -- a balance dict_setup gives no priority, as it does aff, gone and waitingfor
+  svo.dict.paranoia.aff = {}
 
   local env = setmetatable({
     svo = svo,
@@ -240,6 +265,12 @@ eq(ok, false, "a balance the action lacks: refused")
 eq(msg, "paranoia doesn't operate on the herb balance", "a balance the action lacks: why")
 eq(s.spriorities(), SPRIORITIES, "a balance the action lacks: nothing moved")
 eq(#s.events, 0, "a balance the action lacks: no event")
+eq(#s.echoes, 0, "a balance the action lacks: nothing said without echoback")
+s = new_svof()
+eq(s.vset("paranoia_herb", "slowcuring", "15"), nil, "vset, a balance the action lacks: raised nothing")
+eq(s.echoes[1], "Can't set that priority: paranoia doesn't operate on the herb balance.",
+  "vset, a balance the action lacks: what vset says")
+eq(#s.echoes, 1, "vset, a balance the action lacks: said once")
 
 -- ===== a free number in an action's own balance is unchanged =====
 
@@ -255,6 +286,48 @@ eq(string.format("%s %s %s", tostring(ev[2]), tostring(ev[3]), tostring(ev[4])),
   "own balance, a gap: the event")
 eq(not ev[5], true, "own balance, a gap: the event does not say slow curing")
 
+-- ===== a taken number in an action's own balance is unchanged =====
+
+-- paranoia has 32; hallucinations goes there, and dementia and paranoia move down one
+s = new_svof()
+err, ok = s.insert("hallucinations", "focus", 32)
+eq(err, nil, "own balance, a taken number: raised nothing")
+eq(ok, true, "own balance, a taken number: returns true")
+eq(s.aspriorities(), "hallucinations=32 dementia=30 paranoia=31 mindseye=50 defcheck=51 doparry=52 deathsight=53",
+  "own balance, a taken number: the focus numbers")
+eq(s.spriorities(), SPRIORITIES, "own balance, a taken number: no slow curing number moved")
+eq(s.changes(), "dementia focus 30 nil | hallucinations focus 32 nil | paranoia focus 31 nil",
+  "own balance, a taken number: an event for each entry that moved")
+
+-- ===== names an action's own balance does not have =====
+
+local REFUSALS = {
+  { "an unknown action", "nosuch", "focus", "action nosuch doesn't exist" },
+  { "a balance the action lacks", "mindseye", "focus", "mindseye doesn't operate on the focus balance" },
+  { "an unknown balance", "paranoia", "nosuchbal", "paranoia doesn't operate on the nosuchbal balance" },
+  { "a balance with no priority", "paranoia", "aff", "paranoia doesn't operate on the aff balance" },
+}
+for _, case in ipairs(REFUSALS) do
+  -- 40 is free in focus, 31 is dementia's
+  for _, number in ipairs({ 40, 31 }) do
+    local label = string.format("own balance, %s, onto %d: ", case[1], number)
+    s = new_svof()
+    err, ok, msg = s.insert(case[2], case[3], number)
+    eq(err, nil, label .. "raised nothing")
+    eq(ok, false, label .. "refused")
+    eq(msg, case[4], label .. "why")
+    eq(s.aspriorities(), ASPRIORITIES, label .. "no own-balance number moved")
+    eq(s.spriorities(), SPRIORITIES, label .. "no slow curing number moved")
+    eq(s.svo.dict.paranoia.aff.aspriority, nil, label .. "the balance with no priority got none")
+    eq(#s.events, 0, label .. "no event")
+    eq(#s.echoes, 0, label .. "nothing said without echoback")
+  end
+  s = new_svof()
+  eq(s.vset(case[2], case[3], "40"), nil, "vset, " .. case[1] .. ": raised nothing")
+  eq(s.echoes[1], "Can't set that priority: " .. case[4] .. ".", "vset, " .. case[1] .. ": what vset says")
+  eq(#s.echoes, 1, "vset, " .. case[1] .. ": said once")
+end
+
 -- ===== control: the old insertat =====
 
 s = new_svof({ priorities = PRIORITIES_OLD })
@@ -266,6 +339,18 @@ eq(#s.events, 0, "control: no event")
 s = new_svof({ priorities = PRIORITIES_OLD })
 eq(s.vset("paranoia_focus", "slowcuring", "20"), nil, "control: a taken number raised nothing already")
 eq(s.svo.dict.paranoia.focus.spriority, 20, "control: and moved the entry")
+
+-- ===== control: the old name checks =====
+
+s = new_svof({ priorities = PRIORITIES_UNCHECKED })
+err = s.insert("nosuch", "focus", 40)
+eq(tostring(err):find("index", 1, true) ~= nil, true, "control: an unknown action onto a free number raised")
+s = new_svof({ priorities = PRIORITIES_UNCHECKED })
+err = s.insert("nosuch", "focus", 31)
+eq(tostring(err):find("index is nil", 1, true) ~= nil, true, "control: onto a taken number, by a nil table index")
+s = new_svof({ priorities = PRIORITIES_UNCHECKED })
+eq(s.vset("paranoia_herb", "slowcuring", "15"), nil, "control: vset with a bad slow curing name raised nothing")
+eq(#s.echoes, 0, "control: and said nothing")
 
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
