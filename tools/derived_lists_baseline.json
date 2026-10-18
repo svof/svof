@@ -2,24 +2,24 @@
   "note": "Differences between what svo.dict can derive and the literals holding the same information, that are deliberate. check_derived_lists.py --baseline fails on anything not listed here, and on any of these whose nature has changed. Regenerate only when you meant to change one, in the same commit that causes it.",
   "accepted": [
     {
-      "id": "cures|ash|only_empty_map|crescendo",
-      "digest": "3c060df311dfc79c",
-      "text": "cures: empty.eat_ash clears crescendo, no dictionary entry names ash as its cure"
+      "id": "curelines|herbs|ginseng|only_dictionary|unweavingbody",
+      "digest": "e2f4a6835fd67b5c",
+      "text": "cure lines: the dictionary says ginseng cures unweavingbody, the normal herbs map in Main trigger functions does not list it"
     },
     {
-      "id": "cures|bloodroot|only_dictionary|pyramides",
-      "digest": "3709d875365e019a",
-      "text": "cures: the dictionary says bloodroot cures pyramides, empty.eat_bloodroot does not clear it"
+      "id": "curelines|herbs|goldenseal|only_dictionary|unweavingmind",
+      "digest": "43b6031736375a54",
+      "text": "cure lines: the dictionary says goldenseal cures unweavingmind, the normal herbs map in Main trigger functions does not list it"
     },
     {
-      "id": "cures|kelp|only_dictionary|parasite",
-      "digest": "90c464cdbaeba36d",
-      "text": "cures: the dictionary says kelp cures parasite, empty.eat_kelp does not clear it"
+      "id": "curelines|smokes|elm|only_dictionary|unweavingspirit",
+      "digest": "b47921be3c637d0f",
+      "text": "cure lines: the dictionary says elm cures unweavingspirit, the normal smokes map in Main trigger functions does not list it"
     },
     {
-      "id": "cures|pear|only_dictionary|waterbubble",
-      "digest": "04cd0c6331dbd814",
-      "text": "cures: the dictionary says pear cures waterbubble, empty.eat_pear does not clear it"
+      "id": "curelines|smokes|valerian|only_dictionary|checkasthma",
+      "digest": "5dfbda79ec04ee3f",
+      "text": "cure lines: the dictionary says valerian cures checkasthma, the normal smokes map in Main trigger functions does not list it"
     },
     {
       "id": "focus|block_only|fear",
@@ -27,9 +27,9 @@
       "text": "focus: fear has a focus block and is not in focuscurables (disabled)"
     },
     {
-      "id": "shadow|bloodroot",
-      "digest": "5f22bc5110376b0f",
-      "text": "empty.eat_bloodroot is generated and then redefined; live set is paralysis, slickness"
+      "id": "smokes|valerian|only_dictionary|checkasthma",
+      "digest": "3c9b290489822371",
+      "text": "smokes: the dictionary says valerian cures checkasthma, empty.smoke_valerian does not clear it"
     },
     {
       "id": "tree|only_treecurables|blackout",
