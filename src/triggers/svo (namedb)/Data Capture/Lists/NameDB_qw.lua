@@ -1,3 +1,4 @@
+if isPrompt() then return end
 local data = string.split(line, ", ")
 
 -- fix last name that ends with a dot

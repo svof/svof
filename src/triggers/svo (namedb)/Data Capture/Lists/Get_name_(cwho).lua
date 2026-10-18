@@ -1,3 +1,4 @@
+if isPrompt() then return end
 resetFormat()
 local match = getColorWildcard(14)
 
