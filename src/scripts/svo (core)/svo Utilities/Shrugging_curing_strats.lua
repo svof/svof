@@ -6,6 +6,11 @@
 
 svo.shrugging = svo.shrugging or {}
 
+-- the strats in this file are marked as svof's own at the end of it. svof holds its own back when every shruggable
+-- aff already has a cure on its way, and takes yours at their word, since yours may cure what svof doesn't know shrugging cures
+local others = {}
+for _, strat in pairs(svo.shrugging) do others[strat] = true end
+
 -- desc should should assume it starts with 'Scenarios to use shrugging in:'
 svo.shrugging.riftlock = {
   desc = "when you're riftlocked",
@@ -62,3 +67,8 @@ svo.shrugging.maybevivi = {
     return svo.countbrokenlimbs() >= 3
   end
 }
+
+svo.builtin_strats = svo.builtin_strats or setmetatable({}, {__mode = 'k'})
+for _, strat in pairs(svo.shrugging) do
+  if not others[strat] then svo.builtin_strats[strat] = true end
+end
