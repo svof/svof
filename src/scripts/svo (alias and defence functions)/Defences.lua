@@ -3747,7 +3747,8 @@ end, 'setup def triggers on system start')
 -- A name svof already uses is refused (vcustomdef with the name of one of
 -- svof's own defences changes that instead, further down), and so is one
 -- svof has in another class (defences.catalog), which can be copied in
--- instead. A definition that clashes with this class's defences
+-- instead, and one of svof's actions in another class that isn't a
+-- defence (defences.class_action). A definition that clashes with this class's defences
 -- (defences.clash), or fails to register, is reported and skipped.
 -- vconfig customdefinitions off loads none, for a definition that has
 -- broken curing.
@@ -3880,6 +3881,33 @@ function defences.catalog()
       path, tostring(t))
   end
   return catalog
+end
+
+-- Svof's own actions that only other classes have and that aren't
+-- defences, such as fitness: the names in prio_catalog.lua (prio.catalog)
+-- that this class doesn't have and defence_catalog.lua doesn't list, a
+-- slow curing one by its name without its balance. A definition can't
+-- take such a name. It would share the saved priority place Svof keeps
+-- for its own (prio.kept), and clash with its own in a class that has it
+local prio_names
+function defences.class_action(name)
+  if defences.custom_taken(name) or defences.catalog()[name] then return false end
+  if not prio_names then
+    prio_names = {}
+    for balance, names in pairs(svo.prio.catalog()) do
+      for action in pairs(names) do
+        prio_names[balance == 'slowcuring' and action:match("^(.-)_%w+$") or action] = true
+      end
+    end
+  end
+  return prio_names[name] or false
+end
+
+local function class_action_problem(name)
+  if defences.class_action(name) then
+    return string.format("Svof has its own %s in other classes, and it isn't a defence, so give yours another name",
+      name)
+  end
 end
 
 -- the classes versions of a defence are for, as the game writes them, an
@@ -4153,7 +4181,8 @@ signals.systemstart:connect(function ()
     else
       -- one that clashes with this class's defences, which a class change
       -- or an update to Svof can bring, stays out
-      local clash = defences.clash(name, custom_parts(defences.custom[name]))
+      -- as does one named after Svof's own action in another class
+      local clash = class_action_problem(name) or defences.clash(name, custom_parts(defences.custom[name]))
       local ok, err = clash == nil, clash
       if ok then ok, err = pcall(defences.custom_register, name, defences.custom[name]) end
       if not ok then
@@ -4235,6 +4264,8 @@ function defences.custom_problem(name, spec)
     return string.format("Svof has its own %s for %s, so use vcustomdef %s copy to copy it in instead", name,
       class_names(versions), name)
   end
+  local why = class_action_problem(name)
+  if why then return why end
   if type(spec.copy) == 'table' then
     local why = defences.copy_problem(name, spec)
     if why then return why end
@@ -4276,6 +4307,8 @@ local function custom_draft(name)
       return nil, string.format("Svof has its own %s for %s. vcustomdef %s copy copies it in instead", name,
         class_names(versions), name)
     end
+    local why = class_action_problem(name)
+    if why then return nil, why end
     d = { class = class_key(me.class), on = {}, off = {} }
     defences.custom_drafts[name] = d
     -- if the game knows it by this name, its lines come from the game

@@ -52,6 +52,9 @@ behaviour meant to stay. All of these are in the 2018 module xmls:
       another class had it in (fixed)
   29  a class change lost the saved priorities of the last class's own
       defences and actions (fixed: src/resources/prio_catalog.lua)
+  30  a definition could take the name of svof's own action in another
+      class that isn't a defence, and share its saved priority place
+      (fixed: defences.class_action)
 
 Nothing here proves anything about Mudlet, the static trigger items in
 src/triggers, the game's real wording or timing, or play.
@@ -2981,6 +2984,58 @@ do -- a name svof has in other classes is refused, and copied instead
     if t.kind == "regex" and t.pattern == pattern and not t.killed then made = true end
   end
   eq(made, true, "copies: and a trigger for it")
+end
+
+do -- so is the name of svof's own action in other classes that isn't a defence (prio_catalog.lua)
+  local w = world.new({ class = "Bard" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local why = "Svof has its own %s in other classes, and it isn't a defence, so give yours another name"
+  eq(svo.dict.fitness == nil and svo.defences.catalog().fitness == nil, true,
+    "actions: a Bard has no fitness, and it isn't a defence elsewhere")
+  local sent = #w.sent
+  cmd("fitness")
+  eq(echoed(w, "define fitness: " .. why:format("fitness") .. "."), true, "actions: vcustomdef with its name says so")
+  eq(svo.defences.custom_drafts.fitness, nil, "actions: and starts no definition")
+  eq(#w.sent, sent, "actions: nor asks the game about one")
+  svo.defences.custom_drafts.fitness = { class = "bard", skillset = "swashbuckling", command = "fitness", on = { "x" },
+    off = {} }
+  eq(svo.defences.custom_problem("fitness", svo.defences.custom_drafts.fitness), why:format("fitness"),
+    "actions: a definition of it has that problem")
+  cmd("fitness install")
+  eq(echoed(w, "install fitness: " .. why:format("fitness") .. "."), true, "actions: and can't be installed")
+  eq(svo.dict.fitness == nil and svo.defences.custom.fitness == nil, true, "actions: so isn't")
+  svo.defences.custom_drafts.fitness = nil
+  -- one only in the slow curing list is named there with its balance
+  eq(svo.dict.age == nil and svo.defences.class_action("age"), true, "actions: a slow curing one by its name alone")
+  -- the copy of a defence svof has elsewhere, and a name nothing has, aren't such names
+  eq(svo.defences.class_action("acrobatics") or svo.defences.class_action("shimmer"), false,
+    "actions: not a defence in the catalog, nor a name svof doesn't have")
+
+  -- import
+  local old_attributes, old_load = w.env.lfs.attributes, w.env.table.load
+  w.env.lfs.attributes = function() return {} end
+  w.env.table.load = function(_, t)
+    t.transmute = { class = "all", command = "transmute", on = { "You transmute." } }
+    t.veil = { class = "all", command = "veil on", on = { "A veil falls about you." } }
+  end
+  cmd("import shared-defences")
+  w.env.lfs.attributes, w.env.table.load = old_attributes, old_load
+  eq(echoed(w, "install transmute: " .. why:format("transmute") .. "."), true, "actions: import refuses one, saying why")
+  eq(svo.defences.custom.transmute, nil, "actions: and doesn't install it")
+  eq(svo.defs_data.veil ~= nil, true, "actions: but installs the rest")
+
+  -- one saved before Svof refused it is left out as Svof loads
+  svo.defences.custom.rage = { class = "bard", skillset = "swashbuckling", command = "rage", on = { "You rage." },
+    off = {} }
+  reload(svo, "Bard")
+  eq(echoed(w, "add the defence rage you defined: " .. why:format("rage")), true,
+    "actions: one saved is refused as Svof loads, saying why")
+  eq(svo.defences.custom_registered.rage == nil and svo.dict.rage == nil, true, "actions: and isn't added")
+  svo.classchange("Infernal")
+  eq(svo.dict.rage and svo.dict.rage.misc ~= nil and svo.defences.custom_registered.rage == nil, true,
+    "actions: an Infernal has svof's own rage")
+  eq(svo.defences.class_action("rage"), false, "actions: which isn't another class's there")
 end
 
 do -- (6) svof's own that does more than a copy can carry isn't copied
