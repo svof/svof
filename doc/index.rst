@@ -2167,6 +2167,9 @@ General aliases
   vswap <aff name> <balance> <priority number>
     swaps the cure on the given balance with another at a given number. ie, ``vswap asthma salve 30`` will set the salve cure for asthma at priority number 30 (and if anything was there previously, it'll be set to what asthma was).
 
+  vswapslow <action_balance> <action_balance or priority number>
+    swaps two cures in the aeon/retardation (slow curing) priorities, or moves a cure to a given number there, swapping with whatever was at that number. ``vswapslow asthma_herb paralysis_herb`` puts asthma's herb cure above paralysis's, and says the order the swap left. A name that isn't in the slow curing list is refused with the reason, and nothing moves.
+
   vset <aff name> <balance> <priority number>
     sets the cure on the given balance to be on the given number. ie, ``vset wristfractures sip 5`` will set the sip cure for wristfractures at priority number 5 - and if anything was there previously, it will be shuffled down to make space. For the aeon/retardation curing, use ``vset wristfractures_sip slowcuring 5`` instead.
 
@@ -2577,7 +2580,9 @@ Svof API functions
 
 .. function:: svo.prio_slowswap(what, whatwith, echoback)
 
-    Swaps action *what* (should be in the format of action_balance, ie *healhealth_sip*) with *whatwith*, which should be in a similar format.
+    Swaps action *what* (should be in the format of action_balance, ie *healhealth_sip*) with *whatwith*, which should be in a similar format, or be a priority number.
+
+    Returns true. If either name isn't in the slow curing list, nothing moves: with *echoback* it says why and returns false and the reason, and without it, it raises an error with the reason.
 
 .. function:: svo.asave()
 

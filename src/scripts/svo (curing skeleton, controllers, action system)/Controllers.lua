@@ -444,34 +444,65 @@ end
 
 function svo.prio_slowswap(what, arg3, echoback, callback, ...)
   local sendf; if echoback then sendf = svo.echof else sendf = svo.errorf end
-  local what, balance = what:match("(%w+)_(%w+)")
+
+  -- splits a slow curing name, action_balance, as prio.insert does; nil and why if it isn't one
+  local function slowentry(name)
+    local valid, action, balance = svo.valid_sync_action(name)
+    if not valid then return nil, action end
+    -- that only checks the entry exists; its aff, gone, waitingfor... aren't cures
+    local entry = svo.dict[action][balance]
+    if not (type(entry) == 'table' and entry.spriority) then
+      return nil, name.." isn't in the slow curing list"
+    end
+    return action, balance
+  end
+
+  local function refuse(why)
+    sendf("Can't swap that: %s.", why)
+    return false, why
+  end
+
+  -- says which of the two now comes first, after a swap
+  local function sayorder(a, abalance, b, bbalance)
+    if not echoback then return end
+    if svo.dict[a][abalance].spriority < svo.dict[b][bbalance].spriority then
+      a, abalance, b, bbalance = b, bbalance, a, abalance
+    end
+    svo.echof("%s is now > %s.", a, b)
+    svo.echof("<0,255,0>%s (%s) <255,255,255>> <0,255,0>%s (%s)", a, abalance, b, bbalance)
+  end
+
+  local what, balance = slowentry(what)
+  if not what then return refuse(balance) end
   local balance2
-  if not tonumber(arg3) then
-    svo.assert(balance and balance2, "What balances do you want to use for swapping?", sendf)
-    arg3, balance2 = arg3:match("(%w+)_(%w+)")
+  if tonumber(arg3) then
+    arg3 = tonumber(arg3)
+  else
+    arg3, balance2 = slowentry(arg3)
+    if not arg3 then return refuse(balance2) end
   end
 
   local beforestate = sk.getbeforestateprios()
 
-  if tonumber(arg3) then -- swap to a #
-    local name, balance2 = svo.prio.getslowaction(tonumber(arg3))
+  if type(arg3) == 'number' then -- swap to a #
+    local name, balance2 = svo.prio.getslowaction(arg3)
     if not name then -- see if we have anyone in that # already
       svo.dict[what][balance].spriority = arg3
       if echoback then
         svo.echof("%s is now at %d.", what, arg3)
       end
+    elseif name == what and balance2 == balance then
+      if echoback then svo.echof("%s is already at %d.", what, arg3) end
     else -- if we do have someone at that #, swap them
       svo.dict[what][balance].spriority, svo.dict[name][balance2].spriority =
       svo.dict[name][balance2].spriority, svo.dict[what][balance].spriority
-      if echoback then svo.echof("%s is now > %s.", what, name) end
-      if echoback then svo.echof("<0,255,0>%s (%s) <255,255,255>> <0,255,0>%s (%s)", what, balance, name, balance2) end
+      sayorder(what, balance, name, balance2)
     end
   else -- swap one action_balance with another action_balance
     if svo.dict[what][balance].spriority < svo.dict[arg3][balance2].spriority then
       svo.dict[what][balance].spriority, svo.dict[arg3][balance2].spriority =
       svo.dict[arg3][balance2].spriority, svo.dict[what][balance].spriority
-      if echoback then svo.echof("%s is now > %s.", what, arg3) end
-      if echoback then svo.echof("<0,255,0>%s (%s) <255,255,255>> <0,255,0>%s (%s)", arg3, balance2, what, balance) end
+      sayorder(what, balance, arg3, balance2)
     elseif echoback then
       svo.echof("%s is already > %s.", what, arg3)
     end
@@ -481,6 +512,7 @@ function svo.prio_slowswap(what, arg3, echoback, callback, ...)
   sk.notifypriodiffs(beforestate, afterstate)
 
   if callback and type(callback) == 'function' then callback(...) end
+  return true
 end
 
 function svo.prio_swap(what, balance, arg2, arg3, echoback, callback, ...)

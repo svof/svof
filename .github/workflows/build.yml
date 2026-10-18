@@ -305,8 +305,12 @@ jobs:
       # name now, as the shuffle onto a taken number already did. In an
       # action's own balance it checked no names and raised on a typo, and in
       # slow curing it took names that aren't cures, such as paranoia_aff; it
-      # refuses both now, and vset says why. Runs the real priorities loader
-      # and vset alias, with controls that put the old code back.
+      # refuses both now, and vset says why. vswapslow (svo.prio_slowswap)
+      # refuses the same names, says the order a swap left in both its lines,
+      # and stores a number; and "svo prio changed" is raised once for each
+      # entry that moved, not twice. Runs the real priorities loader,
+      # prio_slowswap, the priority snapshots and the vset and vswapslow
+      # aliases, with controls that put the old code back.
       - name: test prio insert
         run: lua tools/test_prio_insert.lua
 
