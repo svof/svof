@@ -16,61 +16,134 @@ local sys, signals, sk, prio = svo.sys, svo.signals, svo.sk, svo.prio
 
 svo.pl.dir.makepath(getMudletHomeDir() .. "/svo/prios")
 
--- The saved places of defences the player defined or changed (vcustomdef)
--- that svof doesn't have this session, by balance and number, as the last
--- import found them. vconfig customdefinitions off leaves the definitions
--- out, and svof loads only the class it's in, so export would drop them
--- and they'd come back at the bottom of the list (live test, 2026-10-18).
--- Export writes them back where they were instead. prio.loaded holds the
--- numbers import gave everything else, by balance and name
+-- The saved places of what svof doesn't have this session, by balance and
+-- number, as the last import found them: defences the player defined or
+-- changed (vcustomdef), which vconfig customdefinitions off leaves out,
+-- and svof's own actions in another class, as svof loads only the class
+-- it's in. Export would drop them, and they'd come back at the bottom of
+-- the list (live test, 2026-10-18; a class change and back did it to the
+-- last class's own). Export writes them back where they were instead.
+-- prio.loaded holds the numbers import gave everything else, by balance
+-- and name
 prio.kept, prio.loaded = prio.kept or {}, prio.loaded or {}
 
--- whether the saved place of action is kept: it's a defence the player
--- defined or changed, saved, that svof doesn't have this session
-local function keeps(action)
-  if svo.dict[action] then return false end
+-- svof's own actions with a priority that only some classes have, by
+-- balance and name as the saved lists name them: tools/defence_catalog.lua
+-- writes them, from every class, to prio_catalog.lua in Svof's folder.
+-- Read once, when first needed
+local catalog
+function prio.catalog()
+  if catalog then return catalog end
+  catalog = {}
+  local path = svo.installationfolder() .. "/prio_catalog.lua"
+  local f = io.open(path, "r")
+  if not f then return catalog end
+  local text = f:read("*a")
+  f:close()
+  local chunk, err
+  if setfenv then
+    chunk, err = loadstring(text, "=prio_catalog")
+    if chunk then setfenv(chunk, {}) end
+  else
+    chunk, err = load(text, "=prio_catalog", "t", {})
+  end
+  local ok, t = false, err
+  if chunk then ok, t = pcall(chunk) end
+  if ok and type(t) == 'table' then
+    for balance, names in pairs(t) do
+      catalog[balance] = {}
+      for _, name in ipairs(type(names) == 'table' and names or {}) do catalog[balance][name] = true end
+    end
+  else
+    svo.echof("<250,0,0>Couldn't%s read Svof's list of every class's priorities, in %s: %s", svo.getDefaultColor(),
+      path, tostring(t))
+  end
+  return catalog
+end
+
+-- whether the saved place of action in balance is kept: svof doesn't have
+-- it there this session, and it's a defence the player defined or changed,
+-- or svof has it there in another class. A slow curing action is named
+-- with its balance
+local function keeps(action, balance)
+  local name, bal = action, balance
+  if balance == 'slowcuring' then name, bal = action:match('(%w+)_(%w+)') end
+  if name and svo.dict[name] and svo.dict[name][bal] then return false end
+  if (prio.catalog()[balance] or {})[action] then return true end
   local defences = svo.defences
-  if defences.custom and defences.custom[action] then return true end
+  if defences.custom and defences.custom[name] then return true end
   for _, names in pairs(defences.edits or {}) do
-    if type(names) == 'table' and names[action] then return true end
+    if type(names) == 'table' and names[name] then return true end
   end
   return false
 end
 
--- How far the places import gave have moved since, in data, the list
--- export writes: the move most of them share. dict_setup moves every place
--- up to make room at the bottom for what has none, and every call moves
--- the slow curing ones, for svo.dict.lovers.map
-local function moved(data, loaded)
-  local counts, by, most = {}, 0, 0
-  for num, name in pairs(data) do
-    local was = loaded[name]
-    if was then
-      local d = num - was
-      counts[d] = (counts[d] or 0) + 1
-      if counts[d] > most or (counts[d] == most and math.abs(d) < math.abs(by)) then by, most = d, counts[d] end
-    end
+-- Of the actions import gave places to, the ones still in import's order
+-- in now (name -> place): the longest run of them that is, so one the
+-- player moved isn't in it
+local function steady(loaded, now)
+  local names = {}
+  for name in pairs(loaded) do
+    if now[name] then names[#names+1] = name end
   end
-  return by
+  table.sort(names, function(a, b) return loaded[a] < loaded[b] end)
+  -- tails[k]: the index of the run of k with the lowest last place
+  local tails, prev = {}, {}
+  for i, name in ipairs(names) do
+    local lo, hi = 1, #tails
+    while lo <= hi do
+      local mid = math.floor((lo + hi) / 2)
+      if now[names[tails[mid]]] < now[name] then lo = mid + 1 else hi = mid - 1 end
+    end
+    prev[i] = tails[lo - 1]
+    tails[lo] = i
+  end
+  local t, i = {}, tails[#tails]
+  while i do
+    t[names[i]] = true
+    i = prev[i]
+  end
+  return t
 end
 
--- puts a balance's kept places back into data, each moved as far as the
--- rest of the list. Something svof put there this session moves up one,
--- with the ones above it up to the next gap
+-- Puts a balance's kept places back into data, the list export writes.
+-- The places import gave move in a session: dict_setup moves every place
+-- up to make room at the bottom for what has none, every call moves the
+-- slow curing ones, for svo.dict.lovers.map, vcleargaps closes the gaps
+-- the kept ones leave, and the player moves actions. So a kept place moves
+-- as far as the nearest place below it that's still in import's order, or
+-- the nearest above with none below, and stays below the nearest above.
+-- Something svof put there this session moves up one, with the ones above
+-- it up to the next gap
 local function putback(data, balance)
   local kept, nums = prio.kept[balance] or {}, {}
   for num, action in pairs(kept) do
-    if keeps(balance == 'slowcuring' and action:match('(%w+)_%w+') or action) then nums[#nums+1] = num end
+    if keeps(action, balance) then nums[#nums+1] = num end
   end
   if not nums[1] then return end
   table.sort(nums)
 
-  local by = moved(data, prio.loaded[balance] or {})
+  local loaded, now = prio.loaded[balance] or {}, {}
+  for num, name in pairs(data) do now[name] = num end
+  local still = steady(loaded, now)
   for _, num in ipairs(nums) do
-    local at = math.max(1, num + by)
+    local below, above
+    for name in pairs(still) do
+      local was = loaded[name]
+      if was < num and (not below or was > loaded[below]) then below = name end
+      if was > num and (not above or was < loaded[above]) then above = name end
+    end
+    local at = num
+    if below then at = num + now[below] - loaded[below]
+    elseif above then at = num + now[above] - loaded[above] end
+    if above and at > now[above] then at = now[above] end
+    at = math.max(1, at)
     local top = at
     while data[top] do top = top + 1 end
-    for i = top, at + 1, -1 do data[i] = data[i-1] end
+    for i = top, at + 1, -1 do
+      data[i] = data[i-1]
+      now[data[i]] = i
+    end
     data[at] = kept[num]
   end
 end
@@ -549,7 +622,7 @@ function prio.import(name, echoback, report_errors, use_default)
         for num, action in pairs(balancet) do
           -- have to weed out action name _ balance name first
           local _,_, actionname, balancename = sfind(action, '(%w+)_(%w+)')
-          if keeps(actionname) then
+          if keeps(action, balance) then
             prio.kept[balance][num] = action
           else
             set(num, actionname, balancename, 'spriority')
@@ -560,7 +633,7 @@ function prio.import(name, echoback, report_errors, use_default)
         -- reset all current ones to zero
         svo.clear_balance_prios(balance)
         for num, action in pairs(balancet) do
-          if keeps(action) then
+          if keeps(action, balance) then
             prio.kept[balance][num] = action
           else
             set(num, action, balance, 'aspriority')

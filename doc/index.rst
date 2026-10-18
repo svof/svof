@@ -1716,6 +1716,8 @@ The other, more long-term way to set priorities is to create whole lists of them
 
 To view the list of priorities that you can load, you can use the **vlistprios** alias or the :func:`svo.prio.list` function. The system always operates on the *current* priority. When you import a priority list, the system copies it into the *current* list - and that's what you modify via *vshow* and other functions. The original list that priorities were imported from is not affected. When you export a priority list, the *current* priority is copied into it.
 
+Svof keeps one *current* list for every class, so a cure, or a defence two classes have, has one place that every class uses. When you change class, the places of the actions the new class doesn't have stay in the list, for when you're back. *vcleargaps* and *vset* in the new class leave them next to the actions around them. If you put an action in a place one of them holds, Svof moves yours one place up, just above it, when it saves. Lists you export carry those places as well.
+
 To export your priorities, you can use the :func:`svo.prio.export` function or the *vexportprio <name> [<options>]* alias. ``name`` is the name you'd like to give to the priority list, ``options`` is a list of balances for it to export that you can selectively provide. If you don't provide it, it'll export all balances.
 
 When you export a priority with the *echoback* argument provided, it'll also tell you where it saved the file - it'll be somewhere in your Svof config folder. If you'd like to share this file with someone else, you can just send it to them, have them place it in their Svof config folder (not the system one, but one that is inside their Mudlet profile) and import it in.

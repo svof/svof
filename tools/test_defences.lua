@@ -50,8 +50,8 @@ behaviour meant to stay. All of these are in the 2018 module xmls:
   28  what a player hid in a class's skillsets was forgotten on changing
       class and back, and vshow hidelist listed a defence under a group
       another class had it in (fixed)
-  29  a class change loses the saved priorities of the last class's own
-      defences; only definitions and changed ones keep their places
+  29  a class change lost the saved priorities of the last class's own
+      defences and actions (fixed: src/resources/prio_catalog.lua)
 
 Nothing here proves anything about Mudlet, the static trigger items in
 src/triggers, the game's real wording or timing, or play.
@@ -3514,7 +3514,9 @@ end
 -- out, or one for another class, keeps its saved place for when it's
 -- back, and so does a change to svof's own defence for another class
 -- (live test, 2026-10-18: probealpha was 176 before a session with
--- definitions off, and 4 after).
+-- definitions off, and 4 after), and every action svof has in another
+-- class (defect 29). vcleargaps and vset there leave those places next to
+-- the same actions.
 
 -- the saved priorities, in a file the harness keeps instead of the disk
 local function prio_file(w)
@@ -3547,13 +3549,19 @@ local function prio_file(w)
   return file
 end
 
+-- starts svof again in the same class without the save as it quits: the
+-- load alone
+local function start(w)
+  w.svo.dict = {}
+  w.svo.systemloaded = false
+  w.env.svo_init_system()
+end
+
 -- quits and starts svof again in the same class, as logging out and in
 -- does: the save as it quits, then the load
 local function relaunch(w)
   w.svo.signals.saveconfig:emit()
-  w.svo.dict = {}
-  w.svo.systemloaded = false
-  w.env.svo_init_system()
+  start(w)
 end
 
 -- a balance of the saved list, number -> name
@@ -3675,11 +3683,134 @@ do -- another class's definition and change
   for _, name in pairs(infernal) do if inmonk[name] then wanted[name] = true end end
   eq(in_order(infernal, wanted), in_order(monk, wanted),
     "priorities: an Infernal's save keeps the Monk's definition and changed mindcloak in their places")
-  eq(saved_at(file, "physical", "kaiboost"), nil,
-    "today (defect 29): and not a Monk defence of svof's own the player didn't change")
+  eq(saved_at(file, "physical", "kaiboost") ~= nil, true,
+    "priorities: and a Monk defence of svof's own the player didn't change (defect 29, fixed)")
   svo.classchange("Monk")
   eq(in_order(svo.make_prio_table("physical"), wanted), in_order(monk, wanted),
     "priorities: back as a Monk, both have their places")
+end
+
+do -- a class change and back keeps the last class's own (defect 29, fixed)
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local file = prio_file(w)
+  relaunch(w)
+  local balances = { "physical", "misc", "slowcuring" }
+  local function lists()
+    return { physical = svo.make_prio_table("physical"), misc = svo.make_prio_table("misc"),
+      slowcuring = svo.make_sync_prio_table("%s_%s") }
+  end
+  local monk = lists()
+  svo.classchange("Infernal")
+
+  -- what the Monk has that an Infernal doesn't, by balance. Every class
+  -- has a blind entry, and an Infernal's has no misc
+  local monkonly = {}
+  for _, b in ipairs(balances) do
+    monkonly[b] = {}
+    for _, name in pairs(monk[b]) do
+      local a, bal = name, b
+      if b == "slowcuring" then a, bal = name:match("(%w+)_(%w+)") end
+      if not (svo.dict[a] and svo.dict[a][bal]) then monkonly[b][name] = true end
+    end
+  end
+  eq(tostring(monkonly.physical.kaiboost) .. " " .. tostring(monkonly.physical.toughness) .. " "
+    .. tostring(monkonly.physical.transmute) .. " " .. tostring(monkonly.misc.blind) .. " "
+    .. tostring(monkonly.slowcuring.kaiboost_physical) .. " " .. tostring(monkonly.slowcuring.blind_misc),
+    "true true true true true true",
+    "class change: an Infernal has no kaiboost, toughness, transmute, blind misc or their slow curing")
+  eq(svo.dict.blind ~= nil, true, "class change: but has a blind entry")
+
+  -- the Monk's whole list, in the Monk's order, among the Infernal's
+  relaunch(w) -- the save as an Infernal quits
+  local all = {}
+  for _, b in ipairs(balances) do
+    all[b] = {}
+    for _, name in pairs(monk[b]) do all[b][name] = true end
+    eq(in_order(saved_list(file, b), all[b]), in_order(monk[b], all[b]),
+      "class change: an Infernal's save keeps every " .. b .. " place the Monk had, in the Monk's order")
+  end
+
+  -- a name no class has is dropped, and so is one in a balance no class
+  -- has it in. Each goes in above the highest number in its list, as one
+  -- at a number the list has would be overwritten as the file loads
+  local put = {}
+  local function add(b, name)
+    local top = 0
+    for num in pairs(saved_list(file, b)) do top = math.max(top, num) end
+    file.text = file.text:gsub("\n" .. b .. " = {", string.format('\n%s = {[%d] = "%s", ', b, top + 1, name), 1)
+    put[#put + 1] = { b, top + 1, name }
+  end
+  add("physical", "nosuchaction")
+  add("misc", "kaiboost")
+  add("slowcuring", "nosuchaction_physical")
+  add("slowcuring", "kaiboost_misc")
+  local there = {}
+  for i, p in ipairs(put) do there[i] = tostring(saved_list(file, p[1])[p[2]]) end
+  eq(table.concat(there, " "), "nosuchaction kaiboost nosuchaction_physical kaiboost_misc",
+    "class change: the saved file has the names put in it")
+  start(w)
+  relaunch(w)
+  local function where(b, name) return tostring((saved_at(file, b, name))) end
+  eq(where("physical", "nosuchaction") .. " " .. where("slowcuring", "nosuchaction_physical"), "nil nil",
+    "class change: a name no class has is dropped")
+  eq(where("misc", "kaiboost") .. " " .. where("slowcuring", "kaiboost_misc"), "nil nil",
+    "class change: and so is one in a balance no class has it in")
+  eq(saved_at(file, "physical", "kaiboost") ~= nil, true, "class change: while the Monk's kaiboost stays")
+
+  -- back as a Monk, every list is the Monk's again, in the Monk's order
+  svo.classchange("Monk")
+  local back = lists()
+  for _, b in ipairs(balances) do
+    eq(in_order(back[b], all[b]) .. " | " .. count(back[b]), in_order(monk[b], all[b]) .. " | " .. count(monk[b]),
+      "class change: back as a Monk, " .. b .. " is as the Monk left it")
+  end
+end
+
+do -- what the player does in another class leaves the last class's places
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local file = prio_file(w)
+  relaunch(w)
+  -- two empty numbers below kaiboost, which vcleargaps closes as well
+  local kat = svo.dict.kaiboost.physical.aspriority
+  for _, entry in pairs(svo.dict) do
+    local p = type(entry) == "table" and entry.physical
+    if type(p) == "table" and p.aspriority and p.aspriority >= kat then p.aspriority = p.aspriority + 2 end
+  end
+  local monk = svo.make_prio_table("physical")
+  eq(tostring(monk[kat]) .. " " .. tostring(monk[kat + 1]) .. " " .. tostring(monk[kat + 2]), "nil nil kaiboost",
+    "another class: two empty numbers below kaiboost")
+  local all = {}
+  for _, name in pairs(monk) do all[name] = true end
+
+  svo.classchange("Infernal")
+  svo.showprompt = function() end -- vcleargaps shows the prompt
+  svo.prio.cleargaps("physical")
+  relaunch(w)
+  svo.classchange("Monk")
+  local back = svo.make_prio_table("physical")
+  eq(in_order(back, all), in_order(monk, all), "another class: vcleargaps there keeps the Monk's order")
+
+  -- the player moves the nearest action below kaiboost an Infernal has to
+  -- the bottom of an Infernal's list, and kaiboost doesn't go with it
+  kat = svo.dict.kaiboost.physical.aspriority
+  svo.classchange("Infernal")
+  local below, at
+  for n, a in pairs(back) do
+    if n < kat and svo.dict[a] and svo.dict[a].physical and (not at or n > at) then below, at = a, n end
+  end
+  svo.prio.insert(below, "physical", 1)
+  local lowest
+  for n in pairs(svo.make_prio_table("physical")) do lowest = math.min(lowest or n, n) end
+  eq(svo.prio.getaction(lowest, "physical"), below,
+    "another class: the action below kaiboost is at the bottom of an Infernal's list")
+  relaunch(w)
+  svo.classchange("Monk")
+  local others = {}
+  for name in pairs(all) do others[name] = name ~= below or nil end
+  eq(in_order(svo.make_prio_table("physical"), others), in_order(back, others),
+    "another class: moving it there leaves the Monk's own where they were")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))
