@@ -353,6 +353,16 @@ codepaste.addunknownany = function(amount)
   svo.updateaffcount(svo.dict.unknownany)
 end
 
+-- The burn ladder is legacy. Achaea made burning one stacking affliction,
+-- which GMCP and serverside report as `burning` with a level, so these five
+-- separate afflictions are no longer needed. Replacing them with one counted
+-- entry (keeping the name ablaze), and reworking pyre with it, is planned as
+-- its own change. Don't build new logic on sk.burns.
+--
+-- A known problem until then: GMCP's `burning` maps to ablaze alone, so when
+-- a rung above it is gained, remove_burns tries to remove ablaze, GMCP still
+-- reports burning, and svo.rmaff refuses. ablaze and the new rung both stay
+-- tracked, and sk.current_burn returns ablaze.
 sk.burns = {'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn'}
 -- removes all burning afflictions except for the optional specified one
 codepaste.remove_burns = function(skipaff)
@@ -6297,7 +6307,10 @@ if not next(svo.dict) then
       },
       onremoved = function()
         svo.check_generics()
-        if sk.sylvan_eclipse then
+        -- The List a diagnose brings gives GMCP the whole picture again
+        -- (sk.gmcp_unconfirmed in Setup.lua). Diagnosing costs balance, so
+        -- outside a Sylvan eclipse that is the player's call.
+        if sk.sylvan_eclipse or conf.diagafterblackout then
           sys.manualdiag = true
         end
   
@@ -6312,7 +6325,8 @@ if not next(svo.dict) then
         end
   
         tempTimer(0.5, function()
-          if not bals.equilibrium and not conf.serverside then svo.addaffdict(svo.dict.disrupt) end
+          -- a guess about the blackout, which GMCP was silent through (svo.gmcp_set_aside in Setup.lua)
+          if not bals.equilibrium and not conf.serverside then svo.gmcp_set_aside(svo.addaffdict, svo.dict.disrupt) end
   
           if stats.currenthealth == 0 and conf.assumestats ~= 0 then
             svo.reset.affs()
@@ -6326,7 +6340,8 @@ if not next(svo.dict) then
   
         -- if we came out with full health and mana out of blackout, assume we've got recklessness meanwhile. don't do it in serverside curing though, because that doesn't assume the same
         if (not svo.dict.blackout.addedon or svo.dict.blackout.addedon ~= os.time()) and stats.currenthealth == stats.maxhealth and stats.currentmana == stats.maxmana then
-          svo.addaffdict(svo.dict.recklessness)
+          -- GMCP was silent through the blackout, so it is set aside, as in unknownany below
+          svo.gmcp_set_aside(svo.addaffdict, svo.dict.recklessness)
           svo.echof("suspicious full stats out of blackout - going to assume reckless.")
           if conf.serverside then
             svo.sendcuring("predict recklessness")
@@ -6353,7 +6368,11 @@ if not next(svo.dict) then
   
           if ((svo.dict.unknownany.reckhp and stats.currenthealth == stats.maxhealth) or
             (svo.dict.unknownany.reckmana and stats.currentmana == stats.maxmana)) then
-              svo.addaffdict(svo.dict.recklessness)
+              -- A hidden affliction is one the game does not send over GMCP, so
+              -- GMCP not reporting recklessness proves nothing here, and full
+              -- stats right after one are the only sign of it short of a
+              -- diagnose (svo.gmcp_set_aside in Setup.lua).
+              svo.gmcp_set_aside(svo.addaffdict, svo.dict.recklessness)
   
               if conf.serverside then
                 svo.sendcuring("predict recklessness")
@@ -6376,7 +6395,8 @@ if not next(svo.dict) then
   
           if ((svo.dict.unknownany.reckhp and stats.currenthealth == stats.maxhealth) or
             (svo.dict.unknownany.reckmana and stats.currentmana == stats.maxmana)) then
-              svo.addaffdict(svo.dict.recklessness)
+              -- a hidden affliction, so GMCP is set aside as in oncompleted
+              svo.gmcp_set_aside(svo.addaffdict, svo.dict.recklessness)
   
               if conf.serverside then
                 svo.sendcuring("predict recklessness")
@@ -6444,7 +6464,8 @@ if not next(svo.dict) then
         oncompleted = function (number)
           if ((svo.dict.unknownmental.reckhp and stats.currenthealth == stats.maxhealth) or
             (svo.dict.unknownmental.reckmana and stats.currentmana == stats.maxmana)) then
-              svo.addaffdict(svo.dict.recklessness)
+              -- a hidden affliction, so GMCP is set aside as in unknownany
+              svo.gmcp_set_aside(svo.addaffdict, svo.dict.recklessness)
   
               if conf.serverside then
                 svo.sendcuring("predict recklessness")

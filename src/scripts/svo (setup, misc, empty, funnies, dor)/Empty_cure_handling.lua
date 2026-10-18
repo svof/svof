@@ -20,11 +20,14 @@ local affs = svo.affs
 -- is usually right and occasionally very wrong, and when it is wrong svof
 -- forgets an affliction you still have and stops curing it.
 --
--- So ask the game first. svo.gaffl mirrors Char.Afflictions, and
--- svo.dict.svotossa says whether GMCP can speak to a given svof name at all -
--- the same gate the Char.Afflictions.List reconciler uses in Setup.lua before
--- it will drop anything. Where GMCP can speak and still reports the affliction,
--- the inference is simply wrong, so the affliction stays.
+-- So ask the game first. svo.rmaff does: it keeps anything GMCP still reports
+-- (svo.gmcp_refuse_remove in Setup.lua), so handing it the whole list removes
+-- only what the game no longer lists. That one check used to be a second copy
+-- here, which read svo.gaffl through svotossa and so missed sleep and
+-- seriousconcussion under their other game names, and which went on trusting
+-- gaffl after a blackout had left it stale, keeping and re-curing forever an
+-- affliction cured during the blackout. rmaff's check does neither: it knows
+-- both names, and it stands down until the next List.
 --
 -- Where GMCP cannot speak, the inference is the only information there is and
 -- it stands. That is the four unknowns, which are meant to be resolved exactly
@@ -41,43 +44,19 @@ local affs = svo.affs
 -- reports it through Char.Vitals.charstats as "Bleed: N" rather than as an
 -- affliction, and Setup.lua already clears it when that reads 0.
 --
--- Blackout stops Char.Afflictions entirely, so svo.gaffl goes stale rather than
--- empty and every name would read as still held. Presume nothing at all there.
--- The cure messages still arrive as text, which is what the generic and tree
--- triggers are for.
+-- Blackout stops Char.Afflictions entirely, and the cure lines themselves can
+-- go unseen. Presume nothing at all there. The cure messages still arrive as
+-- text, which is what the generic and tree triggers are for.
 local function presume_cured(which)
-  if type(which) == 'string' then which = {which} end
-
   if affs.blackout then
     svo.debugf("empty cure: presuming nothing, blackout has stopped Char.Afflictions")
     return
   end
 
-  -- GMCP keys a levelled affliction "name (2)" and up, bare at level 1, so
-  -- compare on the bare name the way Setup.lua's parseaffname does.
-  local reported = {}
-  for key in pairs(svo.gaffl) do
-    reported[key:match("^(.-) %(%d+%)$") or key] = true
-  end
-
-  local gone, kept = {}, nil
-  for _, aff in ipairs(which) do
-    local gmcpname = svo.dict.svotossa[aff]
-    if gmcpname and reported[gmcpname] then
-      kept = (kept and kept .. ", " or "") .. aff
-    else
-      gone[#gone+1] = aff
-    end
-  end
-
-  if kept then
-    svo.debugf("empty cure: keeping %s, the game still reports it", kept)
-  end
-
-  svo.rmaff(gone)
+  svo.rmaff(which)
 end
--- expose publicly, so an addon or a user's own empty handler can use the same
--- rule instead of calling svo.rmaff on a list and hoping
+-- expose publicly, so an addon or a user's own empty handler gets the same
+-- rule, blackout included, instead of calling svo.rmaff on a list itself
 empty.presume_cured = presume_cured
 svo.presume_cured = presume_cured
 
@@ -268,11 +247,11 @@ empty.apply_mending_head = function()
   presume_cured({'crushedthroat'})
 end
 
--- The handlers below are NOT gated, deliberately. Each pairs its removal with
--- an explicit count reset, and keeping an affliction while zeroing its count
--- would leave svof in a state neither half agrees with. Deciding what the count
--- should do when GMCP overrules the removal is its own question, so these keep
--- today's behaviour until it is answered.
+-- The handlers below call svo.rmaff themselves rather than presume_cured,
+-- because each pairs its removal with an explicit count reset. rmaff still
+-- keeps anything GMCP reports, and when it keeps a counted affliction it puts
+-- GMCP's level back at the prompt (svo.gmcp_refuse_remove in Setup.lua), so
+-- the reset here cannot leave a kept affliction at a count of 0.
 empty.apply_mending = function()
   svo.dict.unknowncrippledlimb.count = 0
   svo.dict.unknowncrippledarm.count = 0

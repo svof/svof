@@ -927,6 +927,9 @@ vconfig options
   customprompt
     see *Setting a custom prompt*.
 
+  diagafterblackout
+    has the system diagnose as soon as it can after a blackout ends. GMCP goes quiet during blackout, so afterwards the system doesn't know what you gained or were cured of while it lasted, and goes by what it saw during the blackout until your next diagnose. Diagnosing costs a balance you might rather attack with, so this option is off by default. The system always diagnoses after a Sylvan eclipse.
+
   doubledo
    has Svof do everything twice while afflicted with stupidity.
 
