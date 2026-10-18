@@ -724,7 +724,14 @@ signals.gmcpcharafflictionsremove:connect(function()
 end, 'track lost gmcp aff')
 
 signals.gmcpcharafflictionslist:connect(function()
-  svo.gaffl = {}
+  -- Clear in place. `svo.gaffl = {}` rebound the public name to a fresh table
+  -- while the loop below, and the serverside predictor at the bottom of this
+  -- file, kept writing to and reading the one the file-local `gaffl` (line 133)
+  -- still pointed at. Two silent effects: svo.gaffl was an empty table from the
+  -- first List onwards, and the resync this line exists to perform never
+  -- happened, so an Add whose Remove was missed stayed in `gaffl` for the rest
+  -- of the session.
+  for name in pairs(gaffl) do gaffl[name] = nil end
   local preaffl = {}
   -- svo.affl is keyed by name (values are {sw=..., count=...} tables), so
   -- this must key preaffl on the name via pairs, not ipairs over a
