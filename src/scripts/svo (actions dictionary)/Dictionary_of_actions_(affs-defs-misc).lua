@@ -7143,8 +7143,12 @@ if not next(svo.dict) then
       misc = {
         uncurable = true,
   
+        -- The probe is a bare focus: impatience refuses it, anything else
+        -- lets it through. So it waits while a focus would be punished, the
+        -- same as check_focus does.
         isadvisable = function()
-          return (svo.affsp.impatience and not affs.sleep and bals.focus and conf.focus) or false
+          return (svo.affsp.impatience and not affs.sleep and bals.focus and conf.focus
+            and not svo.focus_would_hurt()) or false
         end,
   
         oncompleted = function() end,
@@ -9140,11 +9144,14 @@ if not next(svo.dict) then
       }
     },
     
+    -- No focus block. Focusing never cures fulminated, and while it is held,
+    -- focusing for any mental affliction paralyses you instead - which
+    -- conf.focuswithfulminated decides whether to risk, in svo.check_focus.
     fulminated = {
       herb = {
         isadvisable = function()
           return (affs.fulminated and
-            not svo.doingaction('fulminated') and not svo.usingbal('focus')) or false
+            not svo.doingaction('fulminated')) or false
         end,
   
         oncompleted = function()
@@ -9156,25 +9163,6 @@ if not next(svo.dict) then
         onstart = function() svo.eat(svo.dict.fulminated.herb) end,
   
         empty = function() empty.eat_goldenseal() end
-      },
-      focus = {
-        isadvisable = function()
-          return (affs.fulminated and
-            not svo.doingaction('fulminated') and not affs.madness) or false
-        end,
-  
-        oncompleted = function()
-          svo.rmaff('fulminated')
-          svo.lostbal_focus()
-        end,
-  
-        action = 'focus',
-        onstart = function() send('focus', conf.commandecho) end,
-  
-        empty = function()
-          svo.lostbal_focus()
-          empty.focus()
-        end
       },
       
       aff = {
