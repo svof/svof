@@ -1635,7 +1635,9 @@ do
   w.advance(10)
   eq(echoed(w, "The game didn't answer about a defence called murmur, so add its lines yourself."), true,
     "DEFENCE SHOW: says when the game doesn't answer")
-  eq(listening(), false, "DEFENCE SHOW: and stops reading lines")
+  eq(listening(), true, "DEFENCE SHOW: and reads on only to gag a late answer")
+  w.advance(120)
+  eq(listening(), false, "DEFENCE SHOW: for two minutes, then stops reading lines")
 
   -- a GMCP name that is one of svof's own
   cmd("attuned gmcp alertness")
@@ -1795,6 +1797,7 @@ do
   cmd("game")
   w.advance(20)
   eq(echoed(w, "The game didn't send its list of defences."), true, "DEFENCE LIST: says when nothing came")
+  w.advance(120) -- and it never comes, so svof stops waiting for its page
 
   -- the whole list is gagged, with the prompts between and after its pages
   -- (svo.deleteLineP), and the "[File continued via MORE]" that starts
@@ -1826,6 +1829,367 @@ do
   w.run_timers()
   eq(echoed(w, "Of the 2 defences the game lists"), true, "DEFENCE LIST: the list follows once it's gone")
   eq(echoes_command, false, "DEFENCE LIST: the command isn't echoed, as svof says it's asking")
+end
+
+-- Under lag a reply comes late, and can't fill the wrong definition. The
+-- game answers DEFENCE SHOWs in the order asked, and a fetch takes only a
+-- reply about what it asked (live, 2026-10-18: the game lagged 60 to 90
+-- seconds, and arcaneshield's reply, timed out, filled moontest; the
+-- replies here are that session's)
+do
+  local w = world.new({ class = "Magi" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function game(text) w.env.line = text svo.defences.custom_fetch_line() w.run_timers() end
+  local function prompt()
+    w.env.isPrompt = function() return true end
+    game("4926h, 5909m, 14083e, 17586w exdb-")
+    w.env.isPrompt = function() return false end
+  end
+  local function listening()
+    for _, t in ipairs(w.triggers) do
+      if not t.killed and t.code == "svo.defences.custom_fetch_line()" then return true end
+    end
+    return false
+  end
+  local gagged = {}
+  svo.deleteLineP = function () gagged[#gagged + 1] = w.env.line end
+  local function was_gagged(text)
+    for _, g in ipairs(gagged) do if g == text then return true end end
+    return false
+  end
+  local function fills(name)
+    local n = 0
+    for _, e in ipairs(w.echoes) do
+      if e:find("Filled in " .. name .. " from", 1, true) then n = n + 1 end
+    end
+    return n
+  end
+
+  cmd("arcaneshield")
+  w.advance(10)
+  eq(echoed(w, "The game didn't answer about a defence called arcaneshield"), true,
+    "late replies: the fetch for arcaneshield times out")
+  cmd("moontest")
+  w.advance(10)
+  svo.sk.gmcp_defs_seen.moontattoo = true
+  cmd("moontest gmcp moontattoo")
+  eq(w.sent[#w.sent], "defence show moontattoo", "late replies: moontest asks about moontattoo")
+  local d = svo.defences.custom_drafts.moontest or { on = {}, off = {} }
+  -- the game catches up: arcaneshield's reply, moontest's, then moontattoo's
+  game("Defence:            Arcaneshield (arcaneshield)")
+  game("Description:        This shield will deflect incoming meteors to strike another in your location, if")
+  game("possible.")
+  game("DefMsg:             You are surrounded by an arcane shield.")
+  game("EnactMsg:           With a crackle an arcane shield snaps into being surrounding you.")
+  game("FadeMsg:            The arcane shield surrounding you flickers and fades.")
+  game("Profession:         No")
+  game("Strippable:         No")
+  prompt()
+  eq(#d.on, 0, "late replies: arcaneshield's reply doesn't fill moontest")
+  eq(was_gagged("Defence:            Arcaneshield (arcaneshield)") and was_gagged("possible.")
+    and was_gagged("Strippable:         No"), true, "late replies: it's gagged, every line")
+  local a = svo.defences.custom_drafts.arcaneshield or {}
+  eq(a.on and #a.on, 0, "late replies: and fills nothing, its own draft either")
+  game("There is no such defence.")
+  prompt()
+  eq(was_gagged("There is no such defence."), true, "late replies: moontest's own late answer is gagged")
+  eq(echoed(w, "The game has no defence called moontattoo"), false, "late replies: and isn't taken as moontattoo's")
+  eq(svo.defences.gmcp_unknown.moontattoo, nil, "late replies: which isn't marked unknown")
+  eq(svo.defences.gmcp_unknown.moontest, nil, "late replies: and a late answer marks nothing")
+  eq(listening(), true, "late replies: the fetch still waits for its own reply")
+  game("Defence:            Moontattoo (moontattoo)")
+  game("Description:        This tattoo will passively regenerate your mana.")
+  game("DefMsg:             Illuminated by the light of the moon.")
+  game("EnactMsg:           The light of the moon illuminates you.")
+  game("FadeMsg:            The moonlight fades, leaving an aching absence in her wake.")
+  game("Profession:         No")
+  game("Strippable:         No")
+  prompt()
+  eq(d.on[1], "The light of the moon illuminates you.", "late replies: moontest takes moontattoo's reply")
+  eq(#d.on == 1 and #d.off == 1 and d.def, "Illuminated by the light of the moon.",
+    "late replies: and only its lines")
+  eq(fills("moontest"), 1, "late replies: filled once")
+  eq(echoed(w, "Filled in moontest from the game's DEFENCE SHOW moontattoo."), true, "late replies: from moontattoo")
+  eq(listening(), false, "late replies: every ask answered, svof stops reading lines")
+
+  -- the player's own DEFENCE SHOW, while svof waits on its own
+  cmd("veil")
+  local before = #gagged
+  game("Defence:            Rebounding (rebounding)")
+  game("EnactMsg:           You smoke and feel an aura of protection.")
+  game("Strippable:         Yes")
+  prompt()
+  eq(#gagged, before, "late replies: a DEFENCE SHOW svof didn't send is left alone, not gagged")
+  local v = svo.defences.custom_drafts.veil or { on = {} }
+  eq(#v.on, 0, "late replies: and fills nothing")
+  eq(svo.defences.fetch_pending("veil"), true, "late replies: as veil's fetch still waits")
+
+  -- an earlier ask's "There is no such defence." doesn't refuse a GMCP name
+  -- asked about since
+  cmd("veil gmcp veiled")
+  eq(w.sent[#w.sent], "defence show veiled", "late replies: veil asks about veiled")
+  game("There is no such defence.") -- veil's own, asked first
+  prompt()
+  eq(echoed(w, "The game has no defence called veiled over GMCP"), false,
+    "late replies: an earlier ask's no such defence doesn't refuse a GMCP name")
+  eq(svo.defences.gmcp_unknown.veiled, nil, "late replies: or mark it unknown")
+  game("Defence:            Veiled (veiled)")
+  game("Strippable:         Yes")
+  eq(v.gmcp, "veiled", "late replies: its own answer sets it")
+
+  -- asked again under lag: the first ask's answer is about the same, and
+  -- fills it; the second's own is then late
+  cmd("mistral")
+  w.advance(10)
+  cmd("mistral fetch")
+  eq(w.sent[#w.sent], "defence show mistral", "late replies: mistral asked again")
+  game("Defence:            Mistral (mistral)")
+  game("EnactMsg:           With a great rushing sound, you become mistral.")
+  game("Strippable:         Yes")
+  prompt()
+  local m = svo.defences.custom_drafts.mistral or { on = {} }
+  eq(m.on[1], "With a great rushing sound, you become mistral.",
+    "late replies: asked again, the first ask's answer fills it")
+  before = #gagged
+  game("Defence:            Mistral (mistral)")
+  game("EnactMsg:           With a great rushing sound, you become mistral.")
+  game("Strippable:         Yes")
+  prompt()
+  eq(#gagged - before, 3, "late replies: and the second's own is gagged")
+  eq(fills("mistral"), 1, "late replies: filling it once")
+  eq(listening(), false, "late replies: then svof stops reading lines")
+
+  -- the game's spelling: a name in words, and the start of a name
+  cmd("tremor")
+  eq(w.sent[#w.sent], "defence show tremor", "spelling: a new definition asks by its name")
+  game("Defence:            Tremor sense (tremorsense)")
+  game("EnactMsg:           You attune yourself to the tremors of the earth.")
+  game("Strippable:         Yes")
+  eq(fills("tremor"), 1, "spelling: a reply for a name starting with the one asked fills it")
+  local t = svo.defences.custom_drafts.tremor or {}
+  eq(t.gmcp, "tremorsense", "spelling: its GMCP name the game's")
+  cmd("tremor fetch tremor sense")
+  game("Defence:            Tremor sense (tremorsense)")
+  game("Strippable:         Yes")
+  eq(fills("tremor"), 2, "spelling: asked by the game's name for it, in words")
+  cmd("tremor fetch tremorsense")
+  before = #gagged
+  game("Defence:            Tremors (tremors)")
+  game("Strippable:         Yes")
+  eq(#gagged == before and fills("tremor") == 2, true, "spelling: a reply about another defence isn't taken")
+  game("Defence:            Tremor sense (tremorsense)")
+  game("Strippable:         Yes")
+  eq(fills("tremor"), 3, "spelling: the one about it is")
+  cmd("tremor fetch tremors")
+  game("Defence:            Tremor sense (tremorsense)")
+  game("Strippable:         Yes")
+  eq(fills("tremor"), 4, "spelling: and asked by the start of its GMCP name, not of its name in words")
+
+  -- an ask whose answer svof didn't know: a reply about a later ask shows
+  -- it won't come, so a later "There is no such defence." isn't taken as
+  -- its
+  cmd("ward")
+  w.advance(10)
+  cmd("bulwark")
+  game("Defence:            Bulwark (bulwark)")
+  game("Strippable:         Yes")
+  eq(fills("bulwark"), 1, "late replies: a reply about a later ask is taken")
+  cmd("rampart")
+  game("There is no such defence.")
+  eq(echoed(w, "The game has no defence called rampart, so add its lines yourself."), true,
+    "late replies: and an earlier ask it passed isn't waited for")
+
+  -- an answer after svof stopped waiting is gagged, and fills nothing; two
+  -- minutes on, svof stops reading lines, and leaves one alone
+  cmd("aura")
+  w.advance(10)
+  before = #gagged
+  game("Defence:            Aura (aura)")
+  game("EnactMsg:           An aura surrounds you.")
+  game("Strippable:         Yes")
+  eq(#gagged - before, 3, "late replies: an answer once svof stopped waiting is gagged")
+  local au = svo.defences.custom_drafts.aura or { on = {} }
+  eq(#au.on, 0, "late replies: and fills nothing")
+  eq(listening(), false, "late replies: then svof stops reading lines")
+  -- a late reply cut short by the prompt ends there
+  cmd("glow")
+  w.advance(10)
+  game("Defence:            Glow (glow)")
+  game("EnactMsg:           You begin to glow.")
+  prompt()
+  before = #gagged
+  game("You glow brightly.")
+  eq(#gagged, before, "late replies: one cut short ends at the prompt, gagging nothing after")
+  cmd("halo")
+  w.advance(10)
+  eq(listening(), true, "late replies: waiting for halo's late answer")
+  w.advance(120)
+  eq(listening(), false, "late replies: for two minutes")
+  before = #gagged
+  game("Defence:            Halo (halo)")
+  game("Strippable:         Yes")
+  eq(#gagged, before, "late replies: after which svof leaves it alone")
+end
+
+-- A DEFENCE LIST that ends waiting too long for a page leaves the game a
+-- page to send, which comes late under lag and is gagged then (live,
+-- 2026-10-18: the rest of a list showed on screen a minute later)
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function game(text) w.env.line = text svo.defences.custom_gamelist_line() w.run_timers() end
+  local function prompt()
+    w.env.isPrompt = function() return true end
+    game("9975h, 6252m, 21982e, 9637w cexkdb[disl]-")
+    w.env.isPrompt = function() return false end
+  end
+  local function listening()
+    for _, t in ipairs(w.triggers) do
+      if not t.killed and t.code == "svo.defences.custom_gamelist_line()" then return true end
+    end
+    return false
+  end
+  local gagged = {}
+  svo.deleteLineP = function () gagged[#gagged + 1] = w.env.line end
+  local function names() return svo.defences.game_defences and svo.defences.game_defences.names or {} end
+
+  -- the next page doesn't come in time
+  cmd("game")
+  game("All defences")
+  game("------------------------------------------------")
+  game("Accursedresolve")
+  game("Arcaneshield")
+  game("[Type MORE if you wish to continue reading. (8% shown)]")
+  prompt()
+  local sent = #w.sent
+  w.advance(10)
+  eq(echoed(w, "Of the 2 defences the game lists"), true, "late pages: the list ends with what came")
+  eq(svo.defences.game_defences.complete, false, "late pages: as part of the list")
+  eq(listening(), true, "late pages: and reads on for the page the game owes")
+  local before = #gagged
+  game("A bird flies past.")
+  game("[File continued via MORE]")
+  game("Firstaid")
+  game("Fleetness")
+  game("[Type MORE if you wish to continue reading. (43% shown)]")
+  prompt()
+  eq(#gagged - before, 4, "late pages: the page comes late and is gagged, and nothing before it")
+  eq(#w.sent, sent, "late pages: with no MORE sent for it")
+  eq(names().firstaid, nil, "late pages: nor its names kept")
+  eq(listening(), false, "late pages: then svof stops reading lines")
+  before = #gagged
+  game("[File continued via MORE]")
+  eq(#gagged, before, "late pages: and gags nothing more")
+
+  -- no page in time, and asked again: the first page owed answers it
+  cmd("game")
+  sent = #w.sent
+  w.advance(10)
+  eq(echoed(w, "The game didn't send its list of defences."), true, "late pages: no page came")
+  cmd("game")
+  eq(#w.sent, sent, "late pages: asked again, svof waits for the first page owed rather than ask twice")
+  game("All defences")
+  game("Accursedresolve")
+  game("Arcaneshield")
+  game("Avoid")
+  prompt()
+  eq(names().avoid and svo.defences.game_defences.complete, true, "late pages: which is the list asked for")
+
+  -- asked again while the first page owed is coming: that page is gagged
+  -- to its end, and the new list asks for its own
+  cmd("game")
+  w.advance(10)
+  before = #gagged
+  game("All defences")
+  cmd("game")
+  eq(w.sent[#w.sent], "defence list", "late pages: asked again once the page owed has started, svof asks")
+  game("Accursedresolve")
+  prompt()
+  eq(#gagged - before, 2, "late pages: and the rest of the page owed is gagged")
+  game("All defences")
+  game("Aiming")
+  prompt()
+  eq(names().aiming == true and names().accursedresolve == nil, true, "late pages: the new list reads its own")
+
+  -- a first page late, with no list asked since, is gagged too
+  cmd("game")
+  w.advance(10)
+  before = #gagged
+  sent = #w.sent
+  game("All defences")
+  game("------------------------------------------------")
+  game("Accursedresolve")
+  game("[Type MORE if you wish to continue reading. (8% shown)]")
+  prompt()
+  eq(#gagged - before, 4, "late pages: a first page that comes late is gagged")
+  eq(#w.sent, sent, "late pages: with no MORE sent")
+
+  -- a page owed that turns out not to be the list's, such as another text
+  -- continued by MORE: gagging stops at its first line no page has
+  cmd("game")
+  game("All defences")
+  game("Accursedresolve")
+  game("[Type MORE if you wish to continue reading. (50% shown)]")
+  prompt()
+  w.advance(10)
+  before = #gagged
+  game("[File continued via MORE]")
+  game("Curing is the art of keeping yourself alive.")
+  prompt()
+  eq(#gagged - before, 1, "late pages: gagging stops at a line no page has")
+  eq(listening(), false, "late pages: and svof stops reading lines")
+
+  -- a list asked while a page after MORE is owed: the page comes first,
+  -- and is gagged, and the new list reads its own
+  cmd("game")
+  game("All defences")
+  game("Accursedresolve")
+  game("[Type MORE if you wish to continue reading. (50% shown)]")
+  prompt()
+  w.advance(10)
+  cmd("game")
+  eq(w.sent[#w.sent], "defence list", "late pages: a new list asks for it")
+  before = #gagged
+  game("[File continued via MORE]")
+  game("Firstaid")
+  game("[Type MORE if you wish to continue reading. (100% shown)]")
+  prompt()
+  eq(#gagged - before, 3, "late pages: an earlier list's page comes first, and is gagged")
+  eq(w.sent[#w.sent], "defence list", "late pages: with no MORE sent for it")
+  game("All defences")
+  game("Aiming")
+  prompt()
+  eq(names().aiming == true and names().firstaid == nil and svo.defences.game_defences.complete, true,
+    "late pages: and the new list is its own")
+
+  -- the page owed never comes: the new list's first page shows it won't
+  cmd("game")
+  game("All defences")
+  game("Accursedresolve")
+  game("[Type MORE if you wish to continue reading. (50% shown)]")
+  prompt()
+  w.advance(10)
+  cmd("game")
+  game("All defences")
+  game("Aiming")
+  game("[Type MORE if you wish to continue reading. (50% shown)]")
+  prompt()
+  before = #gagged
+  game("[File continued via MORE]")
+  game("Arcaneshield")
+  prompt()
+  eq(#gagged - before, 2, "late pages: once a new list's first page comes, an earlier page owed isn't waited for")
+  eq(names().arcaneshield == true and names().aiming == true and svo.defences.game_defences.complete, true,
+    "late pages: and the new list reads its next page")
+
+  -- svof waits two minutes for a page owed
+  cmd("game")
+  w.advance(10)
+  eq(listening(), true, "late pages: waiting for the first page owed")
+  w.advance(120)
+  eq(listening(), false, "late pages: for two minutes")
 end
 
 do -- vconfig2 links to the list
@@ -2726,6 +3090,10 @@ do
   cmd("shimmer gmcp shimer")
   eq(w.sent[#w.sent], "defence show shimer", "GMCP names: one the game hasn't confirmed is asked about")
   eq(d.gmcp, nil, "GMCP names: and isn't taken yet")
+  -- the game answers the new draft's own DEFENCE SHOW shimmer first
+  game("Defence:            Shimmering (shimmering)")
+  game("Strippable:         Yes")
+  eq(d.gmcp, nil, "GMCP names: the answer to an earlier ask doesn't set it")
   game("There is no such defence.")
   eq(echoed(w, "The game has no defence called shimer over GMCP, so it can't be shimmer's GMCP name. Check the name, or use vcustomdef shimmer gmcp none"),
     true, "GMCP names: one the game doesn't have is refused, saying what to do")

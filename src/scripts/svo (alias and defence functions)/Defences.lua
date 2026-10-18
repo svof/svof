@@ -4623,6 +4623,18 @@ end
 -- custom_fetch asks DEFENCE SHOW (mode 'gmcp'), and the reply sets it, or
 -- says the game has no such defence.
 local fetching = {}
+-- The DEFENCE SHOWs sent that the game hasn't answered yet, oldest first.
+-- The game answers in the order it's asked, and under lag long after:
+-- 60 to 90 seconds in the live test of 2026-10-18, where the reply about
+-- arcaneshield came once svof had stopped waiting for it, and filled
+-- moontest. So a fetch takes only a reply about what it asked, and one
+-- svof stopped waiting for is gagged and left out, for up to late_wait
+-- seconds
+local unanswered = {}
+local late_wait = 120
+-- the trigger reading the replies while one is due, and whether the
+-- reply being read is a late one
+local fetch_reader, late_reply
 defences.gmcp_confirmed = defences.gmcp_confirmed or {}
 defences.gmcp_unknown = defences.gmcp_unknown or {}
 
@@ -4645,10 +4657,54 @@ local fetch_labels = { Description = true, DefMsg = true, EnactMsg = true, FadeM
   Profession = true, Strippable = true }
 local fetch_wraps = { Description = true, DefMsg = true, EnactMsg = true, FadeMsg = true }
 
+-- whether the game's Defence: line, its name for the defence and its GMCP
+-- name in brackets, is about keyword. The game's spelling needn't be the
+-- one asked, as in "Tremor sense (tremorsense)", and it may take the start
+-- of a name
+local function answers(keyword, rest)
+  local name, key = rest:match("^(.-)%s*%((%S+)%)%s*$")
+  name, key = (name or rest:match("^(.-)%s*$")):lower(), key and key:lower() or ""
+  return keyword ~= "" and (key:sub(1, #keyword) == keyword or name:sub(1, #keyword) == keyword)
+end
+
+local function reader_check()
+  local due = #unanswered > 0 or fetching.fields or late_reply
+  if due and not fetch_reader then
+    fetch_reader = tempRegexTrigger("^", "svo.defences.custom_fetch_line()")
+  elseif not due and fetch_reader then
+    killTrigger(fetch_reader)
+    fetch_reader = nil
+  end
+end
+
+-- takes ask off the list, answered, and the ones asked before it, as
+-- their answers can't come after it
+local function answered(ask)
+  while unanswered[1] do
+    local first = table.remove(unanswered, 1)
+    if first.timer then killTimer(first.timer) end
+    first.answered = true
+    if first == ask then return end
+  end
+end
+
+-- an ask svof stops waiting for still gets its answer, which is gagged
+-- until late_wait is up
+local function stop_waiting(ask)
+  if not ask or ask.answered or ask.timer then return end
+  ask.timer = tempTimer(late_wait, function ()
+    for i, a in ipairs(unanswered) do
+      if a == ask then table.remove(unanswered, i) break end
+    end
+    reader_check()
+  end)
+end
+
 local function fetch_stop()
-  if fetching.trigger then killTrigger(fetching.trigger) end
   if fetching.timer then killTimer(fetching.timer) end
+  stop_waiting(fetching.ask)
   fetching = {}
+  reader_check()
 end
 
 -- whether svof is waiting on the game's DEFENCE SHOW for name, to fill it
@@ -4766,7 +4822,9 @@ function defences.custom_fetch(name, keyword, mode)
   if type(keyword) ~= 'string' or not keyword:find("%S") then return end
   fetch_stop()
   fetching = { name = name, keyword = keyword:lower(), mode = mode }
-  fetching.trigger = tempRegexTrigger("^", "svo.defences.custom_fetch_line()")
+  fetching.ask = { keyword = fetching.keyword }
+  unanswered[#unanswered + 1] = fetching.ask
+  reader_check()
   fetching.timer = tempTimer(5 + svo.getping(), function()
     fetching.timer = nil
     if fetching.fields then fetch_done() return end
@@ -4786,23 +4844,56 @@ function defences.custom_fetch(name, keyword, mode)
   send("defence show " .. fetching.keyword, false)
 end
 
--- every line while a fetch waits: the reply starts at its Defence: line
+-- every line while a reply is due: a reply starts at its Defence: line
 -- and ends at Strippable: or the prompt, and is gagged, with the prompt
 -- after it
 function defences.custom_fetch_line()
-  if not fetching.name then return end
   if isPrompt and isPrompt() then
-    if fetching.fields then fetch_done() end
+    late_reply = nil
+    if fetching.fields then fetch_done() else reader_check() end
     return
   end
   local text = line
   local label, rest = text:match("^(%a+):%s+(.*)$")
+  -- a late reply, gagged to its end
+  if late_reply then
+    svo.deleteLineP()
+    if label == 'Strippable' then
+      late_reply = nil
+      reader_check()
+    end
+    return
+  end
   if not fetching.fields then
     if label == 'Defence' then
-      local keyword = rest:match("%((%S+)%)%s*$")
-      fetching.fields = { keyword = keyword and keyword:lower() }
+      -- the first ask it's about. None is a DEFENCE SHOW svof didn't send,
+      -- such as the player's own, which is left alone
+      local ask
+      for _, a in ipairs(unanswered) do
+        if answers(a.keyword, rest) then ask = a break end
+      end
+      if not ask then return end
+      answered(ask)
       svo.deleteLineP()
+      -- the fetch waiting takes a reply about what it asked, from an
+      -- earlier ask too, as when it's asked again under lag; any other is
+      -- late
+      if fetching.keyword and answers(fetching.keyword, rest) then
+        local keyword = rest:match("%((%S+)%)%s*$")
+        fetching.fields = { keyword = keyword and keyword:lower() }
+      else
+        late_reply = true
+      end
     elseif text == "There is no such defence." then
+      -- which doesn't say what it's about, so answers the first ask
+      local ask = unanswered[1]
+      if not ask then return end
+      answered(ask)
+      if ask.keyword ~= fetching.keyword then
+        svo.deleteLineP()
+        reader_check()
+        return
+      end
       local asked, name, mode = fetching.keyword, fetching.name, fetching.mode
       fetch_stop()
       svo.deleteLineP()
@@ -4843,11 +4934,65 @@ end
 -- define it.
 local list_end = 'An unseen presence whispers in your ear, "There is no more, friend."'
 local listing = {}
+-- A list that ends before the game's last page, having waited too long
+-- for one, leaves the game a page to send: the first, or the one after
+-- MORE (first is false). Under lag it comes late, as in the live test of
+-- 2026-10-18, and is gagged then, for up to late_wait seconds
+local list_owed
+-- the trigger reading the list, and a page owed
+local list_reader
+
+local function list_reader_check()
+  local due = listing.pages or list_owed
+  if due and not list_reader then
+    list_reader = tempRegexTrigger("^", "svo.defences.custom_gamelist_line()")
+  elseif not due and list_reader then
+    killTrigger(list_reader)
+    list_reader = nil
+  end
+end
 
 local function list_stop()
-  if listing.trigger then killTrigger(listing.trigger) end
   if listing.timer then killTimer(listing.timer) end
   listing = {}
+  list_reader_check()
+end
+
+-- the page owed is gagged when it comes, until late_wait is up
+local function owe(page)
+  list_owed = page
+  if not page.timer then
+    page.timer = tempTimer(late_wait, function ()
+      page.gone = true
+      if list_owed == page then list_owed = nil end
+      list_reader_check()
+    end)
+  end
+  list_reader_check()
+end
+
+-- a line while a page is owed: true when it's that page's, which is
+-- gagged. It starts the way the page owed does, and ends at the prompt
+-- after it, or at a line no page has
+local function owed_line(text)
+  local page, prompt = list_owed, isPrompt and isPrompt()
+  if not page.started then
+    local starts = page.first and text == "All defences"
+      or not page.first and (text:find("^%[File continued via MORE%]") or text == list_end)
+    if prompt or not starts then return false end
+    page.started = true
+    svo.deleteLineP()
+    return true
+  end
+  if not prompt and (text:find("^%a+%s*$") or text:find("^%-+%s*$") or text == list_end
+      or text:find("^%[Type MORE if you wish to continue reading")) then
+    svo.deleteLineP()
+    return true
+  end
+  killTimer(page.timer)
+  list_owed = nil
+  list_reader_check()
+  return prompt
 end
 
 local function list_show(names)
@@ -4890,7 +5035,11 @@ end
 -- shown, or handed to what asked for it (after)
 local function list_done(complete)
   local names, after = listing.names, listing.after
+  -- the page the game still owes, when it ended waiting for one
+  local page = not complete and (not names and (listing.reused or { first = true })
+    or listing.more and { first = false })
   list_stop()
+  if page and not page.gone then owe(page) end
   if names and #names > 0 then
     local set = {}
     for _, name in ipairs(names) do set[name] = true end
@@ -4916,21 +5065,28 @@ end
 
 -- after, when given, runs once the list is read, instead of showing it
 function defences.custom_gamelist(after)
+  -- the game still owes an earlier list's first page, which answers this
+  -- one: asking again would have it start the list twice. One already
+  -- coming is gagged to its end, and this list asks for its own
+  local reused = list_owed and list_owed.first and not list_owed.started and list_owed
+  if reused then list_owed = nil end
   list_stop()
-  listing = { pages = 0, after = after }
-  listing.trigger = tempRegexTrigger("^", "svo.defences.custom_gamelist_line()")
+  listing = { pages = 0, after = after, reused = reused or nil }
+  list_reader_check()
   list_wait()
   svo.echof("Asking the game for its list of defences.")
   -- svof says what it's asking, so the command isn't echoed
-  send("defence list", false)
+  if not reused then send("defence list", false) end
 end
 
 -- every line while the list is read: it starts at "All defences", a MORE
 -- line asks for the next page, and a prompt with no MORE before it, or the
 -- game saying there's no more, ends it. Every line of it is gagged, with
 -- the prompts between and after its pages (svo.deleteLineP), and the
--- "[File continued via MORE]" each page after the first starts with
+-- "[File continued via MORE]" each page after the first starts with. A
+-- page owed to an earlier list comes before anything asked since
 function defences.custom_gamelist_line()
+  if list_owed and owed_line(line) then return end
   if not listing.pages then return end
   if isPrompt and isPrompt() then
     if listing.names and not listing.more then list_done(true) end
@@ -4946,6 +5102,12 @@ function defences.custom_gamelist_line()
     if text == "All defences" then
       listing.names = {}
       svo.deleteLineP()
+      if listing.reused then killTimer(listing.reused.timer) end
+      -- a page owed to an earlier list would have come before it
+      if list_owed then
+        killTimer(list_owed.timer)
+        list_owed = nil
+      end
     end
     return
   end
