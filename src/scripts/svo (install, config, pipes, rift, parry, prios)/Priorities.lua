@@ -362,13 +362,17 @@ function prio.insert(action, balance, number, echoback)
   end
 
   local function insertat(actionname, balancename, newprio)
+    local eventaction, eventbalance = actionname, balancename
     if balancename ~= 'slowcuring' then
       svo.dict[actionname][balancename].aspriority = newprio
     else
-      svo.dict[actionname][balancename].spriority = newprio
+      -- actionname is the sync name, action_balance: split it, as the shuffle below does
+      local _, syncaction, syncbalance = svo.valid_sync_action(actionname)
+      svo.dict[syncaction][syncbalance].spriority = newprio
+      eventaction, eventbalance = syncaction, syncbalance
     end
     if echoback then svo.echof("Set %s's priority in %s balance to %d.", actionname, balancename, newprio) end
-    raiseEvent("svo prio changed", actionname, balancename, newprio, (balancename == 'slowcuring' and 'slowcuring'))
+    raiseEvent("svo prio changed", eventaction, eventbalance, newprio, (balancename == 'slowcuring' and 'slowcuring'))
   end
 
   local t = getpriotable(balance)
