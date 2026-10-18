@@ -2460,6 +2460,8 @@ Svof API functions
       -- move paranoia herb cure to the 30th spot, bumping down whatever was the 29, and everything else below it as necessary
       svo.prio.insert("paranoia", "herb", 30)
 
+    Returns true, or false and the reason if the action has no priority in that balance.
+
 .. function:: svo.prio_swap(what, balance, arg2, nil, echoback)
 
     Swaps action *what* with the balance of *balance* with the action that has a priority number of *arg2*.
