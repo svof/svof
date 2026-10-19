@@ -4236,6 +4236,44 @@ do -- what the player does in another class leaves the last class's places
     "another class: moving it there leaves the Monk's own where they were")
 end
 
+do -- the last class's own at the bottom of the list, vcleargaps in another
+  -- (live test, 2026-10-19: a Magi's own, Monk and back, came back turned
+  -- over)
+  local w = world.new({ class = "Magi" })
+  local svo = w.svo
+  prio_file(w)
+  relaunch(w)
+  -- every action only some classes have to the bottom, in its order, so
+  -- nothing svof keeps in a Monk's list is below them
+  local list, own = svo.make_prio_table("physical"), {}
+  local nums = {}
+  for n, name in pairs(list) do
+    if svo.prio.catalog().physical[name] then nums[#nums + 1] = n end
+  end
+  table.sort(nums, function(a, b) return a > b end)
+  for _, n in ipairs(nums) do svo.prio.insert(list[n], "physical", 1) end
+  -- and a wide gap above them, as the profile's own list had, which
+  -- vcleargaps closes: the nearest place above moves far down
+  for _, entry in pairs(svo.dict) do
+    local p = type(entry) == "table" and entry.physical
+    if type(p) == "table" and p.aspriority and p.aspriority > #nums then p.aspriority = p.aspriority + 100 end
+  end
+  local magi = svo.make_prio_table("physical")
+  for _, name in pairs(magi) do own[name] = true end
+  eq(#nums > 10 and svo.prio.catalog().physical[svo.prio.getaction(1, "physical")] == true, true,
+    "bottom: the Magi's own at the bottom of the list")
+  relaunch(w)
+  svo.classchange("Monk")
+  svo.showprompt = function() end -- vcleargaps shows the prompt
+  svo.prio.cleargaps("physical")
+  svo.classchange("Magi")
+  local back, lowest = svo.make_prio_table("physical"), nil
+  for n in pairs(back) do lowest = math.min(lowest or n, n) end
+  eq(in_order(back, own), in_order(magi, own),
+    "bottom: vcleargaps in a Monk leaves the Magi's own in their order")
+  eq(lowest, 1, "bottom: and the lowest of them at 1")
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end

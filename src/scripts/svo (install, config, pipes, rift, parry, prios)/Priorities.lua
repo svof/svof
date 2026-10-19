@@ -114,7 +114,11 @@ end
 -- as far as the nearest place below it that's still in import's order, or
 -- the nearest above with none below, and stays below the nearest above.
 -- Something svof put there this session moves up one, with the ones above
--- it up to the next gap
+-- it up to the next gap. Each goes above the one put back before it: a run
+-- of them with nothing below, after vcleargaps in another class, all move
+-- to the bottom, and each put at the bottom would push the last one up,
+-- turning the run over (live test, 2026-10-19: the Magi's own, Monk and
+-- back)
 local function putback(data, balance)
   local kept, nums = prio.kept[balance] or {}, {}
   for num, action in pairs(kept) do
@@ -126,6 +130,7 @@ local function putback(data, balance)
   local loaded, now = prio.loaded[balance] or {}, {}
   for num, name in pairs(data) do now[name] = num end
   local still = steady(loaded, now)
+  local last = 0
   for _, num in ipairs(nums) do
     local below, above
     for name in pairs(still) do
@@ -137,7 +142,7 @@ local function putback(data, balance)
     if below then at = num + now[below] - loaded[below]
     elseif above then at = num + now[above] - loaded[above] end
     if above and at > now[above] then at = now[above] end
-    at = math.max(1, at)
+    at = math.max(last + 1, at)
     local top = at
     while data[top] do top = top + 1 end
     for i = top, at + 1, -1 do
@@ -145,6 +150,7 @@ local function putback(data, balance)
       now[data[i]] = i
     end
     data[at] = kept[num]
+    last = at
   end
 end
 
