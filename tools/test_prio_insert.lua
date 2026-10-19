@@ -38,6 +38,11 @@ svo.printordersync and prio.getsortedlist can't sort. It refuses names the
 slow curing list doesn't have now, as prio.insert does, says the order the
 swap left, and stores a number.
 
+sk.notifypriodiffs, which vswapslow and a priority import raise their
+events through, split each slow curing name into a local that hid the
+loop's balance, so it looked the new number up in the entry's own
+balance's snapshot (herb, physical) and every slow curing event said nil.
+
 Like the other suites, this does not run svof or Mudlet. It runs the real
 priorities loader from Priorities.lua, the real svo.valid_sync_action,
 svo.make_prio_table, svo.make_sync_prio_table and their filtered forms,
@@ -89,6 +94,14 @@ local SERVERSIDE = read_file(SCRIPTS .. "svo (custom prompt, serverside)/Servers
 local VSWAPSLOW = read_file("src/aliases/svo (aliases, triggers)/svo/Swap_slow_mode_affliction_priorities.lua")
 
 local DIFF = between(MISC, "svo.basictableindexdiff = function (t1, t2)", "svo.oldsend = _G.send")
+-- Serverside's snapshots and notifypriodiffs, and the same with the old lookup, for the control
+local SNAPSHOTS = between(SERVERSIDE, "function sk.getbeforestateprios()", "-- returns an alphabetically sorted")
+local NOTIFY = between(SNAPSHOTS, "      for _, a in pairs(diff) do\n", "      end\n    else\n")
+local SNAPSHOTS_OLD = swap(SNAPSHOTS, NOTIFY, [[
+      for _, a in pairs(diff) do
+        local _, action, balance = valid_sync_action(a)
+        raiseEvent("svo prio changed", action, balance, afterstate[balance].action_prio[a], 'slowcuring')
+]])
 local SLOWSWAP = between(CONTROLLERS, "function svo.prio_slowswap(", "function svo.prio_swap(")
 local PRINTORDERSYNC = between(CONTROLLERS, "function svo.printordersync(limited_around)", "\nend\n", true)
 
@@ -219,7 +232,7 @@ local ENTRIES = {
   { "deathsight", "physical", 22, 53 },
 }
 
--- opts.priorities, opts.diff, opts.slowswap: the source to run for each, default the shipped one
+-- opts.priorities, opts.diff, opts.slowswap, opts.snapshots: the source to run for each, default the shipped one
 local function new_svof(opts)
   opts = opts or {}
   local events, echoes, printed = {}, {}, {}
@@ -265,8 +278,7 @@ local function new_svof(opts)
     "svo.clear_balance_prios = function"), "make_prio_table")
   load_into(env, "local dict = svo.dict\n" .. between(ACTIONS, "svo.valid_sync_action = function(name)",
     "\nend\n", true), "valid_sync_action")
-  load_into(env, "local sk = svo.sk\n" .. between(SERVERSIDE, "function sk.getbeforestateprios()",
-    "-- returns an alphabetically sorted"), "priority snapshots")
+  load_into(env, "local sk = svo.sk\n" .. (opts.snapshots or SNAPSHOTS), "priority snapshots")
   load_into(env, "local sk = svo.sk\n" .. (opts.slowswap or SLOWSWAP), "prio_slowswap")
   load_into(env, PRINTORDERSYNC, "printordersync")
   load_into(env, opts.priorities or PRIORITIES, "Priorities")
@@ -321,13 +333,11 @@ local function new_svof(opts)
     return table.concat(t, " | ")
   end
 
-  -- "action balance slowcuring" for each event, sorted, repeats kept. Without
-  -- the new number: sk.notifypriodiffs, which vswapslow raises through, looks
-  -- it up under the entry's own balance, not slowcuring's, and finds nil
+  -- "action balance number slowcuring" for each event, sorted, repeats kept
   function s.moved()
     local t = {}
     for _, ev in ipairs(events) do
-      t[#t + 1] = string.format("%s %s %s", tostring(ev[2]), tostring(ev[3]), tostring(ev[5]))
+      t[#t + 1] = string.format("%s %s %s %s", tostring(ev[2]), tostring(ev[3]), tostring(ev[4]), tostring(ev[5]))
     end
     table.sort(t)
     return table.concat(t, " | ")
@@ -535,7 +545,7 @@ eq(s.echoes[1], "mindseye is now > doparry.", "vswapslow two names: says the ord
 eq(s.echoes[2], "<0,255,0>mindseye (physical) <255,255,255>> <0,255,0>doparry (physical)",
   "vswapslow two names: the coloured line says the same order")
 eq(#s.echoes, 2, "vswapslow two names: asks nothing about balances")
-eq(s.moved(), "doparry physical slowcuring | mindseye physical slowcuring",
+eq(s.moved(), "doparry physical 18 slowcuring | mindseye physical 20 slowcuring",
   "vswapslow two names: one event for each entry, not two")
 
 s = new_svof()
@@ -555,7 +565,7 @@ eq(s.spriorities(), "hallucinations=10 dementia=11 paranoia=12 mindseye=22 defch
 eq(s.echoes[1], "mindseye is now > deathsight.", "vswapslow down onto a taken number: says the order")
 eq(s.echoes[2], "<0,255,0>mindseye (physical) <255,255,255>> <0,255,0>deathsight (physical)",
   "vswapslow down onto a taken number: the coloured line says the same order")
-eq(s.moved(), "deathsight physical slowcuring | mindseye physical slowcuring",
+eq(s.moved(), "deathsight physical 18 slowcuring | mindseye physical 22 slowcuring",
   "vswapslow down onto a taken number: one event for each entry")
 
 s = new_svof()
@@ -566,6 +576,8 @@ eq(s.echoes[1], "mindseye is now > deathsight.", "vswapslow up onto a taken numb
 eq(s.echoes[2], "<0,255,0>mindseye (physical) <255,255,255>> <0,255,0>deathsight (physical)",
   "vswapslow up onto a taken number: the coloured line says the same order")
 eq(type(s.svo.dict.mindseye.physical.spriority), "number", "vswapslow onto a taken number: stores a number")
+eq(s.moved(), "deathsight physical 18 slowcuring | mindseye physical 22 slowcuring",
+  "vswapslow up onto a taken number: one event for each entry, with its new number")
 
 s = new_svof()
 eq(s.vswapslow("mindseye_physical", "18"), nil, "vswapslow onto its own number: raised nothing")
@@ -579,7 +591,7 @@ eq(s.svo.dict.mindseye.physical.spriority, 15, "vswapslow onto a free number: st
 eq(s.spriorities(), "hallucinations=10 dementia=11 paranoia=12 mindseye=15 defcheck=19 doparry=20 deathsight=22",
   "vswapslow onto a free number: nothing else moved")
 eq(s.echoes[1], "mindseye is now at 15.", "vswapslow onto a free number: says so")
-eq(s.moved(), "mindseye physical slowcuring", "vswapslow onto a free number: one event")
+eq(s.moved(), "mindseye physical 15 slowcuring", "vswapslow onto a free number: one event")
 eq(s.sortedslow(), "deathsight_physical doparry_physical defcheck_physical mindseye_physical "
   .. "paranoia_focus dementia_focus hallucinations_focus", "vswapslow onto a free number: getsortedlist sorts it")
 eq(s.printordersync(), nil, "vswapslow onto a free number: printordersync raised nothing")
@@ -642,6 +654,16 @@ eq(#s.events, 14, "control: and for each of cleargaps' seven")
 s = new_svof({ diff = DIFF_OLD })
 s.vswapslow("mindseye_physical", "doparry_physical")
 eq(#s.events, 4, "control: and for each of vswapslow's two")
+
+-- ===== control: the old lookup in notifypriodiffs =====
+
+s = new_svof({ snapshots = SNAPSHOTS_OLD })
+s.vswapslow("mindseye_physical", "doparry_physical")
+eq(s.moved(), "doparry physical nil slowcuring | mindseye physical nil slowcuring",
+  "control: the old lookup raised the swap's events without a number")
+s = new_svof({ snapshots = SNAPSHOTS_OLD })
+s.vswapslow("mindseye_physical", "15")
+eq(s.moved(), "mindseye physical nil slowcuring", "control: onto a free number too")
 
 -- ===== control: the old swap =====
 
