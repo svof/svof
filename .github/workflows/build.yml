@@ -276,7 +276,8 @@ jobs:
       # refuses both now, and vset says why. vswapslow (svo.prio_slowswap)
       # refuses the same names, says the order a swap left in both its lines,
       # and stores a number; and "svo prio changed" is raised once for each
-      # entry that moved, not twice. Runs the real priorities loader,
+      # entry that moved, not twice, and slow curing events carry the new
+      # number, not nil. Runs the real priorities loader,
       # prio_slowswap, the priority snapshots and the vset and vswapslow
       # aliases, with controls that put the old code back.
       - name: test prio insert

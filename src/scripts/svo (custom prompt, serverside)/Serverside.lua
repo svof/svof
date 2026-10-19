@@ -430,8 +430,9 @@ function sk.notifypriodiffs(beforestate, afterstate)
 
       -- now only notify for the differences
       for _, a in pairs(diff) do
-        local _, action, balance = valid_sync_action(a)
-        raiseEvent("svo prio changed", action, balance, afterstate[balance].action_prio[a], 'slowcuring')
+        -- not balance: the number is in slowcuring's snapshot, not the entry's own balance's
+        local _, action, syncbalance = valid_sync_action(a)
+        raiseEvent("svo prio changed", action, syncbalance, afterstate[balance].action_prio[a], 'slowcuring')
       end
     else
       -- make the diff of snapshots
