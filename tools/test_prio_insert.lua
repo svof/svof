@@ -244,6 +244,8 @@ local function new_svof(opts)
     echof = function(fmt, ...) echoes[#echoes + 1] = string.format(fmt, ...) end,
     debugf = noop, echofn = noop, showprompt = noop,
     getDefaultColorNums = { 255, 255, 255 },
+    -- printordersync marks the defences players defined or changed: none here
+    defences = { mark = function() return '' end, mark_colour = '', mark_key = function() return '' end },
     -- the snapshots notify only once svof has loaded
     systemloaded = true,
   }
@@ -267,6 +269,7 @@ local function new_svof(opts)
     setFgColor = noop, setLink = noop, resetFormat = noop, setUnderline = noop,
     echoLink = noop,
     echo = function(text) printed[#printed + 1] = text end,
+    decho = function(text) printed[#printed + 1] = text end,
     unpack = unpack or table.unpack,
   }, { __index = _G })
 
