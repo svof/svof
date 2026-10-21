@@ -3,7 +3,7 @@ Loads svof's real subsystems into plain Lua, for the logic-level tests that
 need more of svof than one extracted block: the whole dictionary, the
 defence records and the handlers svof generates from them at systemstart.
 
-It runs the 22 required loaders in svo_init_system's order, then
+It runs the 23 required loaders in svo_init_system's order, then
 svo.signals.systemstart, then svo.reset.bals, for the class you ask for, so
 every svo.haveskillset gate in the source decides what loads exactly as it
 does in Mudlet. The code is the shipped source, read from src/ at run time,
@@ -47,6 +47,7 @@ world.LOADERS = {
   {"install", "svo (install, config, pipes, rift, parry, prios)/Install_system.lua"},
   {"aliases", "svo (alias and defence functions)/Alias_functions.lua"},
   {"defences", "svo (alias and defence functions)/Defences.lua"},
+  {"customaffs", "svo (alias and defence functions)/Custom_afflictions.lua"},
   {"prio", "svo (install, config, pipes, rift, parry, prios)/Priorities.lua"},
   {"parry", "svo (install, config, pipes, rift, parry, prios)/Parry.lua"},
   {"funnies", "svo (setup, misc, empty, funnies, dor)/Funnies.lua"},
