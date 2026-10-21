@@ -51,7 +51,8 @@ local empty_source = read_file(EMPTY)
 -- The entry runs from its own key to the next entry's.
 local entry_src = extract(read_file(DICT), DICT, "    pressure = {", "    cholerichumour = {")
 local eat_pear_src = extract(empty_source, EMPTY, "empty.eat_pear = function()", "\nend\n", true)
-local herb_loop_src = extract(empty_source, EMPTY, "for herbname, herbaffs in pairs({", "}) do")
+-- the herbs the herb loop makes handlers for, empty.herb_affs
+local herb_loop_src = extract(empty_source, EMPTY, "empty.herb_affs = {", "for herbname, herbaffs in pairs(empty.herb_affs) do")
 print(string.format("extracted %d bytes of the real pressure entry and %d of empty.eat_pear",
   #entry_src, #eat_pear_src))
 

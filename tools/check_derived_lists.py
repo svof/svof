@@ -516,8 +516,9 @@ def compare(data):
         broken.append("derived cures for only %d items, expected at least %d"
                       % (len(by_item), CURES_BY_ITEM_FLOOR))
 
+    # the table the herb loop makes handlers from, empty.herb_affs
     gen = brace_body(EMPTY, EMPTY.index(
-        "{", EMPTY.index("for herbname, herbaffs in pairs(")))
+        "{", EMPTY.index("empty.herb_affs = {")))
     empty_map = {m.group(1): set(quoted(m.group(2)))
                  for m in re.finditer(r"(\w+) = \{([^}]*)\}", gen)}
 

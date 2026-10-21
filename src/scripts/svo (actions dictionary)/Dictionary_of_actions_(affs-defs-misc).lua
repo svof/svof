@@ -15070,6 +15070,264 @@ if svo.haveskillset('excision') then
   basicdef('retributionvow', 'perform retribution', false, 'retribution')
 end
 
+-- Afflictions a player defines (vcustomaff), built from the game's own
+-- record of them, AFFLICTION SHOW <name> (the user's captures, 2026-10-20):
+--   Cure(s):            Eat Ginseng / Eat Ferrum
+--   Cure(s):            Time
+-- with Default time: 15 seconds for a timed one. svo.affcures reads that
+-- Cure(s) text, and svo.basicaff builds a dictionary entry from it in the
+-- shape svof's own entries have, one action on each balance that cures it.
+-- Only svof's own cure forms are taken, as svof can't cure with anything
+-- else: a herb with a mineral (rift.herb_conversions), a salve on a place
+-- or none, a herb svof keeps a pipe of, and immunity on purgative balance.
+-- Anything else is refused with its text, rather than guessed. Both run
+-- after systemstart, once rift has its tables.
+local aff_salves = { epidermal = true, mending = true, caloric = true, restoration = true }
+local aff_salve_places = { head = true, body = true, torso = true, arms = true, legs = true }
+local aff_pipes = { elm = true, valerian = true, skullcap = true }
+local aff_purgatives = { immunity = true }
+
+-- the item and its alternative from a pair table, by either name
+local function aff_pair(pairs_of, item)
+  if pairs_of[item] then return item, pairs_of[item] end
+  for first, second in pairs(pairs_of) do
+    if second == item then return first, second end
+  end
+end
+
+-- -> list of cures, or nil and why. Each cure is { kind = 'herb', item,
+-- alt }, { kind = 'salve', item, alt, place }, { kind = 'smoke', item, alt },
+-- { kind = 'purgative', item, alt } or { kind = 'time' }, at most one of a
+-- kind: an entry has one action on each balance, and a herb and its mineral
+-- are one cure
+function svo.affcures(text)
+  if type(text) ~= 'string' or not text:find("%S") then return nil, "it has no cure" end
+  local cures, seen = {}, {}
+  for each in (text:lower() .. "/"):gmatch("([^/]*)/") do
+    local part = each:gsub("^%s+", ""):gsub("%s+$", ""):gsub("%s+", " ")
+    local cure
+    local verb, rest = part:match("^(%a+) (.+)$")
+    if part == 'time' then
+      cure = { kind = 'time' }
+    elseif verb == 'eat' then
+      local herb, mineral = aff_pair(rift.herb_conversions, rest)
+      -- a pear takes smoke balance when it cures pressure, and no balance
+      -- otherwise, which a herb action can't say
+      if herb and herb ~= 'pear' then cure = { kind = 'herb', herb, mineral } end
+    elseif verb == 'apply' then
+      local what, place = rest:match("^(%a+) to (%a+)$")
+      what = what or rest
+      local salve, alt = aff_pair(rift.vial_conversions, what)
+      if salve and aff_salves[salve] and (not place or aff_salve_places[place]) then
+        cure = { kind = 'salve', salve, alt, place = place }
+      end
+    elseif verb == 'smoke' then
+      local herb, mineral = aff_pair(rift.herb_conversions, rest)
+      if herb and aff_pipes[herb] then cure = { kind = 'smoke', herb, mineral } end
+    elseif verb == 'sip' or verb == 'drink' then
+      local elixir, alt = aff_pair(rift.vial_conversions, rest)
+      if elixir and aff_purgatives[elixir] then cure = { kind = 'purgative', elixir, alt } end
+    end
+    if not cure then
+      return nil, string.format("Svof can't cure with %q", part)
+    end
+    local before = seen[cure.kind]
+    if not before then
+      cures[#cures + 1] = cure
+      seen[cure.kind] = cure
+    elseif before[1] ~= cure[1] or before.place ~= cure.place then
+      return nil, string.format("Svof can cure it with only one %s, and it says %q too",
+        cure.kind == 'purgative' and 'elixir' or cure.kind, part)
+    end
+  end
+  return cures
+end
+
+-- the empty-cure handler svof's own entries use for a cure, or nil
+local function aff_empty_handler(cure)
+  if cure.kind == 'herb' then return empty['eat_' .. cure[1]] end
+  if cure.kind == 'smoke' then return empty['smoke_' .. cure[1]] end
+  if cure.kind == 'purgative' then return empty['sip_' .. cure[1]] end
+  if cure.kind == 'salve' then
+    return (cure.place and empty['apply_' .. cure[1] .. '_' .. cure.place]) or empty['apply_' .. cure[1]]
+  end
+end
+
+-- the salve commands a salve cure answers to, the one it sends first
+local function aff_salve_actions(cure)
+  local t = {}
+  for _, salve in ipairs({ cure[1], cure[2] }) do
+    if cure.place then t[#t + 1] = "apply " .. salve .. " to " .. cure.place end
+    t[#t + 1] = "apply " .. salve
+  end
+  return t
+end
+
+-- Builds svo.dict[name] from spec, or says why not:
+--   cures      svo.affcures' list, or its text
+--   madness    true for one of the game's WhisperingMadness afflictions:
+--              its cures wait while you have madness, as svof's own do
+--   time       seconds, for a timed one (Cure(s): Time)
+--   gmcp       the game's name for it, when that isn't name
+-- The entry has an aff and a gone block, an action for each cure, and a
+-- waitingfor for a timed one, in the shape of scalded's: it's removed when
+-- the time is up, and a fresh one starts the time again. It doesn't wire
+-- triggers or lists, which registering does.
+function svo.basicaff(name, spec)
+  if type(name) ~= 'string' or not name:find("^[%l%d]+$") then
+    return false, "a name is lowercase letters and digits"
+  end
+  if svo.dict[name] then return false, string.format("Svof already has %s", name) end
+  local cures, why = spec.cures, nil
+  if type(cures) ~= 'table' then
+    cures, why = svo.affcures(cures)
+    if not cures then return false, why end
+  end
+  local timed
+  for _, cure in ipairs(cures) do
+    if cure.kind == 'time' then timed = true end
+  end
+  if timed and not (tonumber(spec.time) and tonumber(spec.time) > 0) then
+    return false, "a timed affliction needs its time"
+  end
+
+  local madness = spec.madness
+  local function afflicted()
+    return affs[name] and not (madness and affs.madness)
+  end
+  -- svof's own handler for the cure, then this one: a cure that cured
+  -- nothing rules it out too, except a madness affliction while you have
+  -- madness, which the cure couldn't have taken (as empty.herb_affs'
+  -- handlers do)
+  local function after_empty(cure)
+    return function()
+      local handler = aff_empty_handler(cure)
+      if handler then handler() end
+      if not (madness and affs.madness) then svo.presume_cured(name) end
+    end
+  end
+
+  local entry = {
+    aff = {
+      oncompleted = function()
+        -- a fresh one while it's already tracked starts its time again,
+        -- which addaffdict wouldn't
+        if timed and affs[name] and svo.actions[name .. '_waitingfor'] then
+          svo.killaction(svo.dict[name].waitingfor)
+          svo.doaction(svo.dict[name].waitingfor)
+        end
+        svo.addaffdict(svo.dict[name])
+      end,
+    },
+    gone = {
+      oncompleted = function() svo.rmaff(name) end,
+    },
+  }
+  if spec.gmcp and spec.gmcp ~= name then entry.gamename = spec.gmcp end
+
+  for _, cure in ipairs(cures) do
+    local kind = cure.kind
+    if kind == 'herb' then
+      local empty_cure = after_empty(cure)
+      entry.herb = {
+        isadvisable = function() return afflicted() or false end,
+        oncompleted = function()
+          svo.rmaff(name)
+          svo.lostbal_herb()
+        end,
+        eatcure = { cure[1], cure[2] },
+        onstart = function() svo.eat(svo.dict[name].herb) end,
+        -- the handlers for the herbs in empty.herb_affs take herb balance
+        -- themselves, and the others, such as ginger's, leave it to the
+        -- entry, as svof's own entries do
+        empty = function()
+          empty_cure()
+          if not empty.herb_affs[cure[1]] then svo.lostbal_herb() end
+        end,
+      }
+    elseif kind == 'smoke' then
+      local herb, empty_cure = cure[1], after_empty(cure)
+      entry.smoke = {
+        isadvisable = function()
+          return (afflicted() and codepaste['smoke_' .. herb .. '_pipe']()) or false
+        end,
+        oncompleted = function()
+          svo.rmaff(name)
+          svo.lostbal_smoke()
+          sk[herb .. '_smokepuff']()
+        end,
+        smokecure = { cure[1], cure[2] },
+        onstart = function() send("smoke " .. pipes[herb].id, conf.commandecho) end,
+        empty = function()
+          empty_cure()
+          svo.lostbal_smoke()
+          sk[herb .. '_smokepuff']()
+        end,
+      }
+    elseif kind == 'salve' then
+      local empty_cure = after_empty(cure)
+      local whereto = cure.place and (" to " .. cure.place) or nil
+      entry.salve = {
+        isadvisable = function() return afflicted() or false end,
+        oncompleted = function()
+          svo.lostbal_salve()
+          svo.rmaff(name)
+        end,
+        noeffect = function()
+          svo.lostbal_salve()
+          empty_cure()
+        end,
+        empty = function()
+          svo.lostbal_salve()
+          empty_cure()
+        end,
+        applycure = { cure[1], cure[2] },
+        actions = aff_salve_actions(cure),
+        onstart = function() svo.apply(svo.dict[name].salve, whereto) end,
+      }
+    elseif kind == 'purgative' then
+      local empty_cure = after_empty(cure)
+      entry.purgative = {
+        isadvisable = function()
+          return not affs.latency and (afflicted() or false)
+        end,
+        oncompleted = function()
+          svo.lostbal_purgative()
+          svo.rmaff(name)
+        end,
+        sipcure = { cure[1], cure[2] },
+        onstart = function() svo.sip(svo.dict[name].purgative) end,
+        noeffect = function()
+          svo.rmaff(name)
+          svo.lostbal_purgative()
+        end,
+        empty = function()
+          svo.lostbal_purgative()
+          empty_cure()
+        end,
+      }
+    elseif kind == 'time' then
+      entry.waitingfor = {
+        customwait = tonumber(spec.time),
+        isadvisable = function() return false end,
+        onstart = function() end,
+        ontimeout = function() svo.rmaff(name) end,
+        oncompleted = function()
+          svo.rmaff(name)
+          svo.make_gnomes_work()
+        end,
+      }
+      -- onadded, as GMCP adds it with addaffdict and never runs the aff action
+      entry.onadded = function()
+        if not svo.actions[name .. '_waitingfor'] then svo.doaction(svo.dict[name].waitingfor) end
+      end
+    end
+  end
+
+  svo.dict[name] = entry
+  return true
+end
+
 for ssa, svoa in pairs(svo.dict.sstosvoa) do
   if type(svoa) == 'string' then svo.dict.svotossa[svoa] = ssa end
 end
