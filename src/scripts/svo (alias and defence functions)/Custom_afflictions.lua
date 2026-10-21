@@ -216,6 +216,12 @@ function afflictions.register(name, spec)
     end)
   end
   afflictions.handlers_of[name] = handlers
+  -- one only time cures has a cure line when the game gives a Cured msg
+  -- and no Expire msg, as accentato and asphyxiating do (the capture,
+  -- 2026-10-20), and it's the line it ends on
+  if timed and #cured_code == 0 then
+    cured_code[1] = string.format("svo.valid.%s_woreoff()", name)
+  end
 
   if not spec.norandomcure then empty.treecurables[#empty.treecurables + 1] = name end
   if spec.madness then empty.madness_affs[#empty.madness_affs + 1] = name end
@@ -817,6 +823,14 @@ end
 -- afflictions (the user, 2026-10-20). The reply ends at the prompt, as its
 -- last label differs. For a name the game doesn't have, it says "There is
 -- no such affliction." (the user, 2026-10-20).
+-- The whole record, captured on muddlertest on 2026-10-20, shows two more
+-- things. A second cure route is an entry of its own, on the next line,
+-- indented to the values:
+--   Cure(s):            Eat Lobelia / Eat Argentum
+--                       Focus Mind
+-- and 43 of the 203 titles don't start with the name, such as
+-- grievouswounds' "Grievously wounded" and icebound's "Restricted by frozen
+-- bonds", so a reply is the ask's whose turn it is (by_order)
 local show_labels = { Diagnose = true, ["Afflicted msg"] = true, ["Cured msg"] = true, ["Expire msg"] = true,
   ["Cure(s)"] = true, Description = true, NoRandomCure = true, WhisperingMadness = true, Enlighten = true,
   Tzantza = true, Accentato = true, CadmusCurse = true, ["Default time"] = true }
@@ -907,7 +921,9 @@ local show_reader = svo.gamereader.show{
   label = "^(%a[%a%(%) ]-):%s+(.*)$",
   labels = show_labels,
   wraps = show_wraps,
+  entries = { ["Cure(s)"] = " / " },
   answers = show_answers,
+  by_order = true,
   none = "There is no such affliction.",
   reply = fill,
   none_reply = function (name, asked, mode)

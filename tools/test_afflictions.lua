@@ -463,6 +463,17 @@ do -- a timed one's expire line
   w.prompt()
   eq(svo.affs.testgale, nil, "its expire line ends it")
   eq(w.inflight(), "", "and its time")
+
+  -- accentato's layout: only time cures it, and the game gives a Cured msg
+  -- and no Expire msg (the capture, 2026-10-20)
+  svo.afflictions.register("testhold", { cures = "Time", time = 20, cured = { "The test hold lets go of you." },
+    norandomcure = true })
+  svo.addaffdict(svo.dict.testhold)
+  w.advance(5)
+  w.line("The test hold lets go of you.")
+  w.prompt()
+  eq(svo.affs.testhold, nil, "its cure line ends one only time cures")
+  eq(w.inflight(), "", "and its time")
 end
 
 -- ===== 7. Through a class change =====
@@ -615,6 +626,76 @@ do
   gagged = {}
   game("Affliction:         Testfire")
   eq(#gagged, 0, "a reply svof didn't ask for isn't gagged")
+end
+
+-- the whole record, captured on muddlertest 2026-10-20: 43 of the 203
+-- titles don't start with the name, and a second cure route is an entry of
+-- its own, indented to the values
+do
+  local w = world.new()
+  local svo = w.svo
+  local game, prompt, listening = reader(w, "svo.afflictions.show_line()")
+  local gagged = {}
+  local delete = svo.deleteLineP
+  svo.deleteLineP = function () gagged[#gagged + 1] = w.env.line delete() end
+  -- what Mudlet raises for each command sent, svof's own among them
+  local send = w.env.send
+  w.env.send = function (command, ...)
+    for _, h in ipairs(w.handlers) do
+      if h.name == "sysDataSendRequest" and not h.killed then h.f("sysDataSendRequest", command) end
+    end
+    return send(command, ...)
+  end
+  local function player(command) w.env.send(command) end
+
+  svo.afflictions.command("testwound")
+  game("Affliction:         Grievously tested")
+  game("Cured msg:          The testwound closes.")
+  game("Cure(s):            Eat Kelp / Eat Aurum")
+  game("                    Focus Mind")
+  prompt()
+  local d = svo.afflictions.drafts.testwound or {}
+  eq(d.title, "Grievously tested", "a reply whose title doesn't name what was asked is the ask's whose turn it is")
+  eq(d.cures, "Eat Kelp / Eat Aurum / Focus Mind", "and a second route joins the first")
+  eq(gagged[1], "Affliction:         Grievously tested", "and is gagged")
+  eq(d.gmcp, nil, "but its GMCP name isn't taken from a title that doesn't name it")
+  eq(listening(), false, "and the reading stops")
+
+  -- the player's own, after svof's
+  gagged = {}
+  svo.afflictions.command("testbind")
+  player("affliction show aeon")
+  game("Affliction:         Restricted by tests")
+  game("Cure(s):            Eat Kelp")
+  prompt()
+  game("Affliction:         The aeon curse")
+  game("Cure(s):            Smoke Elm / Smoke Cinnabar")
+  prompt()
+  eq((svo.afflictions.drafts.testbind or {}).title, "Restricted by tests", "svof's ask takes the first reply")
+  eq(#gagged, 2, "and only it, with its prompt, is gagged")
+  eq(listening(), false, "and the reading stops once both are answered")
+
+  -- and before
+  gagged = {}
+  player("affliction show dazzled")
+  svo.afflictions.command("testlast")
+  game("Affliction:         Dazzled")
+  game("Cure(s):            Apply Mending To Head")
+  game("                    Time")
+  prompt()
+  eq(#gagged, 0, "the player's reply, first, is left alone")
+  game("Affliction:         A test at the last")
+  game("Cure(s):            Eat Kelp")
+  prompt()
+  eq((svo.afflictions.drafts.testlast or {}).title, "A test at the last", "and svof's comes next")
+  eq((svo.afflictions.drafts.testlast or {}).cures, "Eat Kelp", "with only its own lines")
+
+  -- the player's ask for a name the game doesn't have
+  gagged = {}
+  player("affliction show nothing")
+  game("There is no such affliction.")
+  eq(#gagged, 0, "the game's no to the player's own is left alone")
+  eq(listening(), false, "and answers it")
 end
 
 do -- svof's lines as Mudlet runs its triggers (tools/trigger_catalog.py)

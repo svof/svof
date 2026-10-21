@@ -300,7 +300,7 @@ world.rex_stub = {
 function world.new(opts)
   opts = opts or {}
   local w = {
-    sent = {}, echoes = {}, links = {}, events = {}, triggers = {}, timers = {},
+    sent = {}, echoes = {}, links = {}, events = {}, triggers = {}, timers = {}, handlers = {},
     unknown_globals = {}, now = 0,
   }
   local timerseq = 0
@@ -334,7 +334,16 @@ function world.new(opts)
       w.triggers[id].killed = true
       return true
     end,
-    registerAnonymousEventHandler = function() return 1 end,
+    -- kept in w.handlers, so a test can raise one; a killed one is marked
+    registerAnonymousEventHandler = function(name, f)
+      w.handlers[#w.handlers + 1] = { name = name, f = f }
+      return #w.handlers
+    end,
+    killAnonymousEventHandler = function(id)
+      if not w.handlers[id] then return false end
+      w.handlers[id].killed = true
+      return true
+    end,
     raiseEvent = function(name, ...) w.events[#w.events + 1] = { name = name, args = {...} } end,
     getMudletHomeDir = function() return "." end,
     createStopWatch = function() return 1 end, startStopWatch = noop,
