@@ -308,6 +308,13 @@ jobs:
       - name: check the trigger catalog is current
         run: python tools/trigger_catalog.py
 
+      # Gate 1.991. Afflictions a player defines: svo.affcures reads the
+      # game's Cure(s) text and svo.basicaff builds a dictionary entry from
+      # it. Runs the real loaders (tools/svof_world.lua) and checks each built
+      # entry against svof's own entry for the same cure.
+      - name: test afflictions
+        run: lua tools/test_afflictions.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

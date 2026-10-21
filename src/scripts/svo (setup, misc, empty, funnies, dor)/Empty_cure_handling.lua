@@ -60,11 +60,16 @@ end
 empty.presume_cured = presume_cured
 svo.presume_cured = presume_cured
 
--- handle affs with madness separately
+-- handle affs with madness separately. Public, as an affliction a player
+-- defines (svo.basicaff) can be one of them
 local madness_affs = {'addiction', 'confusion', 'dementia', 'hallucinations', 'hypersomnia', 'illness', 'impatience',
 'lethargy', 'loneliness', 'madness', 'masochism', 'paranoia', 'recklessness', 'stupidity', 'vertigo'}
+empty.madness_affs = madness_affs
 
-for herbname, herbaffs in pairs({
+-- what each herb cures, for the herbs whose handler below takes herb
+-- balance itself. Public, for an affliction a player defines to be cured
+-- by one
+empty.herb_affs = {
   goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression',
    'shadowmadness', 'mycalium', 'sandfever', 'fulminated', 'unweavingmind'},
   kelp = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'parasite', 'rebbies'},
@@ -73,8 +78,10 @@ for herbname, herbaffs in pairs({
   ash = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia', 'crescendo'},
   bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'pyre', 'retribution', 'timeloop', 'indifference'},
   bloodroot = {'paralysis', 'slickness', 'pyramides'}
-  
-}) do
+
+}
+
+for herbname, herbaffs in pairs(empty.herb_affs) do
   empty['eat_'..herbname] = function()
     svo.lostbal_herb()
 
