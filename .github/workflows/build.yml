@@ -299,6 +299,15 @@ jobs:
       - name: check the defence and priority catalogs are current
         run: lua tools/defence_catalog.lua
 
+      # Gate 1.99. src/resources/trigger_catalog.lua holds every line
+      # pattern of svof's own triggers, which svof reads to refuse an
+      # affliction definition whose line one of them already watches for.
+      # It's generated from src/triggers, so this fails when a trigger's
+      # patterns change and the file doesn't: regenerate it with --write in
+      # the same commit.
+      - name: check the trigger catalog is current
+        run: python tools/trigger_catalog.py
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
