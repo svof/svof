@@ -267,6 +267,240 @@ do
   eq(w.inflight(), "", "leaving nothing in flight")
 end
 
+-- ===== 5. svof's own cure lines =====
+
+-- A cure takes one affliction of the ones it can, and the game picks which:
+-- a line naming one claims the action svof sent for another. The loops in
+-- Main trigger functions make these handlers; this pins what they do.
+local function claimed(w)
+  local t = {}
+  -- the map's entries, not its own _keys, which Lua 5.1's pairs shows too
+  for name in pairs(w.svo.lifevision.l) do
+    if type(name) == 'string' and name ~= '_keys' then t[#t + 1] = name end
+  end
+  table.sort(t)
+  return table.concat(t, ", ")
+end
+
+do
+  for _, case in ipairs({
+    { "herb", "weakness", "clumsiness", "herb_cured_clumsiness" },
+    { "smoke", "disloyalty", "slickness", "smoke_cured_slickness" },
+    { "salve", "itching", "anorexia", "salve_cured_anorexia" },
+  }) do
+    local balance, sent, named, handler = case[1], case[2], case[3], case[4]
+    local w = world.new()
+    local svo = w.svo
+    svo.addaffdict(svo.dict[sent])
+    svo.addaffdict(svo.dict[named])
+    svo.doaction(svo.dict[sent][balance])
+    svo.valid[handler]()
+    eq(w.inflight(), named .. "_" .. balance, handler .. " with " .. sent .. "'s " .. balance .. " in flight claims it for " .. named)
+    eq(claimed(w), named .. "_" .. balance, "and lifevision has " .. named .. "'s")
+  end
+end
+
+-- ===== 6. Registering =====
+
+local function gmcp_aff_add(w, name)
+  w.env.gmcp.Char.Afflictions.Add = { name = name, cure = "", desc = "" }
+  w.svo.signals.gmcpcharafflictionsadd:emit()
+end
+
+local KELPY = {
+  cures = "Eat Kelp / Eat Aurum", gmcp = "kelpyaff",
+  gain = { "You feel terribly kelpy." }, cured = { "The kelpiness leaves you." },
+  diag = { "terribly kelpy." },
+}
+
+do -- a gain line, and GMCP
+  local w = world.new()
+  local svo = w.svo
+  local ok, why = svo.afflictions.register("testkelpy", KELPY)
+  eq(ok, true, "registers (" .. tostring(why) .. ")")
+  eq(svo.dict.testkelpy.herb.name, "testkelpy_herb", "with dict_setup's names")
+  eq(w.line("You feel terribly kelpy."), 1, "its gain line has a trigger")
+  w.prompt()
+  eq(not not svo.affs.testkelpy, true, "which afflicts you with it")
+  svo.rmaff("testkelpy")
+  eq(svo.dict.sstosvoa.kelpyaff, "testkelpy", "GMCP's name is mapped to it")
+  eq(svo.dict.svotossa.testkelpy, "kelpyaff", "and back")
+  gmcp_aff_add(w, "kelpyaff")
+  eq(not not svo.affs.testkelpy, true, "so GMCP's Add tracks it")
+end
+
+do -- its cure line, against its own herb and svof's
+  local w = world.new()
+  local svo = w.svo
+  -- a cure faster than half the ping looks like an illusion to svof, and
+  -- the harness's stopwatches read 0; a second is an ordinary eat
+  w.env.getStopWatchTime = function() return 1 end
+  svo.afflictions.register("testkelpy", KELPY)
+  local herbs = counter(w, "lostbal_herb")
+  svo.addaffdict(svo.dict.testkelpy)
+  svo.doaction(svo.dict.testkelpy.herb)
+  w.line("The kelpiness leaves you.")
+  w.prompt()
+  eq(svo.affs.testkelpy, nil, "its cure line cures it, with its own herb in flight")
+  eq(herbs.n, 1, "and takes herb balance")
+
+  -- svof ate kelp for clumsiness, and the game cured this instead
+  svo.addaffdict(svo.dict.testkelpy)
+  svo.addaffdict(svo.dict.clumsiness)
+  svo.doaction(svo.dict.clumsiness.herb)
+  w.line("The kelpiness leaves you.")
+  eq(w.inflight(), "testkelpy_herb", "with clumsiness's kelp in flight, its cure line claims it")
+  w.prompt()
+  eq(svo.affs.testkelpy, nil, "and it's cured")
+  eq(not not svo.affs.clumsiness, true, "while clumsiness stays")
+
+  -- and the other way: svof ate kelp for this, and the game cured clumsiness
+  svo.addaffdict(svo.dict.testkelpy)
+  svo.doaction(svo.dict.testkelpy.herb)
+  svo.valid.herb_cured_clumsiness()
+  eq(w.inflight(), "clumsiness_herb", "with its kelp in flight, clumsiness's cure line claims it")
+  w.prompt()
+  eq(svo.affs.clumsiness, nil, "and clumsiness is cured")
+  eq(not not svo.affs.testkelpy, true, "while it stays")
+end
+
+do -- an empty kelp, from svof's own handler
+  local w = world.new()
+  local svo = w.svo
+  svo.afflictions.register("testkelpy", KELPY)
+  svo.addaffdict(svo.dict.testkelpy)
+  svo.empty.eat_kelp()
+  eq(svo.affs.testkelpy, nil, "svof's empty kelp rules it out too")
+  local plain = world.new()
+  eq(plain.svo.empty.defined.eat_kelp, nil, "and with nothing defined, the handler has nothing more to do")
+end
+
+do -- random cures, DIAGNOSE and the commands you type
+  local w = world.new()
+  local svo = w.svo
+  local before = svo.sys.input_to_actions["eat kelp"]
+  svo.afflictions.register("testkelpy", KELPY)
+  eq(svo.sys.input_to_actions["eat kelp"], before, "a command svof's own has stays svof's")
+  local found
+  for _, n in ipairs(svo.empty.treecurables) do if n == "testkelpy" then found = true end end
+  eq(found, true, "a random cure takes it")
+  w.line("terribly kelpy.")
+  eq(svo.sk.diag_list.testkelpy, nil, "its DIAGNOSE line counts for nothing outside a diagnose")
+  svo.doaction(svo.dict.diag.physical)
+  w.line("terribly kelpy.")
+  eq(svo.sk.diag_list.testkelpy, true, "and is read during one")
+
+  local spec = {}
+  for k, v in pairs(KELPY) do spec[k] = v end
+  spec.gmcp, spec.norandomcure = nil, true
+  svo.afflictions.register("testfixed", spec)
+  found = nil
+  for _, n in ipairs(svo.empty.treecurables) do if n == "testfixed" then found = true end end
+  eq(found, nil, "one no random cure takes isn't a tree cure")
+end
+
+do -- unregistering leaves nothing
+  local w = world.new()
+  local svo = w.svo
+  local before = #svo.empty.treecurables
+  svo.afflictions.register("testkelpy", KELPY)
+  svo.addaffdict(svo.dict.testkelpy)
+  svo.afflictions.unregister("testkelpy")
+  eq(svo.dict.testkelpy, nil, "its entry is gone")
+  eq(svo.affs.testkelpy, nil, "and the affliction")
+  eq(w.line("You feel terribly kelpy."), 0, "and its triggers")
+  eq(svo.valid.simpletestkelpy, nil, "and its handlers")
+  eq(svo.valid.herb_cured_testkelpy, nil, "both")
+  eq(svo.dict.sstosvoa.kelpyaff, nil, "and its GMCP name")
+  eq(svo.dict.svotossa.testkelpy, nil, "both ways")
+  eq(#svo.empty.treecurables, before, "and its tree place")
+  eq(svo.empty.defined.eat_kelp, nil, "and its empty kelp")
+  eq(svo.afflictions.cures_with("herb", "kelp"), nil, "and its kelp cure")
+end
+
+do -- refusals, in both of svof's vocabularies
+  local w = world.new()
+  local svo = w.svo
+  local sstosvoa = svo.dict.sstosvoa
+  -- a GMCP name svof knows under another of its own names
+  local gamename, svofname
+  for g, s in pairs(sstosvoa) do
+    if type(s) == 'string' and s ~= g and not svo.dict[g] then gamename, svofname = g, s break end
+  end
+  local ok, why = svo.afflictions.register(gamename, { cures = "Eat Kelp" })
+  eq(ok, false, "the game's name for one of svof's own is refused")
+  eq(why, string.format("Svof knows the game's %s as its own %s", gamename, svofname), "and says so")
+  ok, why = svo.afflictions.register("testaff", { cures = "Eat Kelp", gmcp = gamename })
+  eq(why, string.format("GMCP's %s is already Svof's %s", gamename, svofname), "and so is its GMCP name")
+  ok, why = svo.afflictions.register("testaff", { cures = "Eat Kelp", gmcp = "blindness" })
+  eq(why, "Svof leaves GMCP's blindness out on purpose", "and one svof leaves out on purpose")
+  eq(svo.dict.testaff, nil, "with no entry made")
+end
+
+do -- a madness affliction
+  local w = world.new()
+  local svo = w.svo
+  svo.afflictions.register("testmad", { cures = "Eat Ginseng", madness = true })
+  local found
+  for _, n in ipairs(svo.empty.madness_affs) do if n == "testmad" then found = true end end
+  eq(found, true, "joins svof's madness afflictions")
+  svo.addaffdict(svo.dict.testmad)
+  svo.addaffdict(svo.dict.madness)
+  svo.empty.eat_ginseng()
+  eq(not not svo.affs.testmad, true, "so svof's empty ginseng doesn't rule it out with madness")
+  svo.rmaff("madness")
+  svo.empty.eat_ginseng()
+  eq(svo.affs.testmad, nil, "and does without")
+end
+
+do -- a timed one's expire line
+  local w = world.new()
+  local svo = w.svo
+  svo.afflictions.register("testgale", { cures = "Time", time = 15, expire = { "The gale dies down." } })
+  svo.addaffdict(svo.dict.testgale)
+  w.advance(5)
+  w.line("The gale dies down.")
+  w.prompt()
+  eq(svo.affs.testgale, nil, "its expire line ends it")
+  eq(w.inflight(), "", "and its time")
+end
+
+-- ===== 7. Through a class change =====
+
+local function reload(w, class)
+  local svo = w.svo
+  svo.me.class = class or svo.me.class
+  svo.dict = {}
+  svo.systemloaded = false
+  w.env.svo_init_system()
+end
+
+do
+  local w = world.new()
+  local svo = w.svo
+  local ok, why = svo.afflictions.define("testkelpy", KELPY)
+  eq(ok, true, "defines (" .. tostring(why) .. ")")
+  reload(w, "Monk")
+  svo = w.svo
+  eq(svo.dict.testkelpy and svo.dict.testkelpy.herb.name, "testkelpy_herb", "a class change registers it again")
+  eq(w.line("You feel terribly kelpy."), 1, "with one trigger for its line, the last class's gone")
+  eq(svo.dict.sstosvoa.kelpyaff, "testkelpy", "and its GMCP name")
+
+  svo.conf.customdefinitions = false
+  reload(w)
+  svo = w.svo
+  eq(svo.dict.testkelpy, nil, "customdefinitions off starts svof without it")
+  eq(w.line("You feel terribly kelpy."), 0, "or its triggers")
+  eq(svo.valid.simpletestkelpy, nil, "or its handlers")
+  svo.conf.customdefinitions = true
+  reload(w)
+  eq(w.svo.dict.testkelpy ~= nil, true, "and back on, it's there")
+
+  w.svo.afflictions.undefine("testkelpy")
+  reload(w)
+  eq(w.svo.dict.testkelpy, nil, "undefined, it stays out")
+end
+
 if #failures > 0 then
   for _, f in ipairs(failures) do print("FAIL: " .. f) end
   print(string.format("%d checks, %d failures", checks, #failures))

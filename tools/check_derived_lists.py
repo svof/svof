@@ -586,7 +586,8 @@ def compare(data):
                      "dictionary entry names %s as its cure" % (p, n, p))
 
     for kind in sorted(CURE_MAP_FLOORS):
-        start = TRIG.index("-- normal %s\nfor _, " % kind)
+        # the loop's key is named (for herbname, herb in ...), for own_cures
+        start = TRIG.index("-- normal %s\nfor " % kind)
         body = brace_body(TRIG, TRIG.index("{", start))
         cure_map = {m.group(1): set(quoted(m.group(2)))
                     for m in re.finditer(r"(\w+)\s*=\s*\{([^}]*)\}", body)}

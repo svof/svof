@@ -8,6 +8,11 @@
       "text": "Alias    svo (aliases, triggers) svo/(vcustomdef) Define your own defences [only in the package]"
     },
     {
+      "id": "added|Script|svo (alias and defence functions)|Custom afflictions",
+      "digest": "4cea7f2496a360de",
+      "text": "Script   svo (alias and defence functions) Custom afflictions [only in the package]"
+    },
+    {
       "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_download_done",
       "digest": "238f77f1fa9d8ec5",
       "text": "Script   svo (install me in module manager) Check for system updates/svo.update_download_done [only in the package]"
@@ -338,6 +343,11 @@
       "text": "Script   svo (install me in module manager) Load & init/svo.uninstall_all_modules [script]"
     },
     {
+      "id": "item|Script|svo (install me in module manager)|Load & init/svo_init_system|script",
+      "digest": "39ca7a11ad968743",
+      "text": "Script   svo (install me in module manager) Load & init/svo_init_system [script]"
+    },
+    {
       "id": "item|Script|svo (install me in module manager)|Load & init|script",
       "digest": "68331464e9801bc3",
       "text": "Script   svo (install me in module manager) Load & init [script]"
@@ -444,7 +454,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "e3508d71736fd3a5",
+      "digest": "37d189f091d78c8e",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
@@ -469,7 +479,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "99047e6499bbb06a",
+      "digest": "b38d724616ff020a",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
