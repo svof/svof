@@ -4195,6 +4195,10 @@ do -- what the player does in another class leaves the last class's places
   local svo = w.svo
   local file = prio_file(w)
   relaunch(w)
+  -- kaiboost has no place in default_prios, so dict_setup numbers it in
+  -- pairs() order, and in about one run in 20 it came out the lowest, with
+  -- nothing an Infernal has below it to move. At the top, all of them are
+  svo.prio.insert("kaiboost", "physical", svo.prio.gethighest("physical"))
   -- two empty numbers below kaiboost, which vcleargaps closes as well
   local kat = svo.dict.kaiboost.physical.aspriority
   for _, entry in pairs(svo.dict) do
