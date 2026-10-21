@@ -3,13 +3,18 @@
   "source": "svof.xml",
   "accepted": [
     {
+      "id": "added|Alias|svo (aliases, triggers)|svo/(vcustomaff) Define your own afflictions",
+      "digest": "462f05c35f76adea",
+      "text": "Alias    svo (aliases, triggers) svo/(vcustomaff) Define your own afflictions [only in the package]"
+    },
+    {
       "id": "added|Alias|svo (aliases, triggers)|svo/(vcustomdef) Define your own defences",
       "digest": "788b05cdbb2f41c8",
       "text": "Alias    svo (aliases, triggers) svo/(vcustomdef) Define your own defences [only in the package]"
     },
     {
       "id": "added|Script|svo (alias and defence functions)|Custom afflictions",
-      "digest": "4cea7f2496a360de",
+      "digest": "63bdce9429253872",
       "text": "Script   svo (alias and defence functions) Custom afflictions [only in the package]"
     },
     {
@@ -114,8 +119,8 @@
     },
     {
       "id": "count|Alias|svo (aliases, triggers)|svo",
-      "digest": "8c4b3201feabbd64",
-      "text": "Alias    svo (aliases, triggers) / 'svo': 121 items originally, 122 in merged"
+      "digest": "54fafd06c004bb94",
+      "text": "Alias    svo (aliases, triggers) / 'svo': 121 items originally, 123 in merged"
     },
     {
       "id": "count|Script|svo (install me in module manager)|Check for system updates",

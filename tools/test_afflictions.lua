@@ -501,6 +501,275 @@ do
   eq(w.svo.dict.testkelpy, nil, "undefined, it stays out")
 end
 
+-- ===== 8. vcustomaff =====
+
+local function echoed(w, text)
+  for _, e in ipairs(w.echoes) do
+    if e:find(text, 1, true) then return true end
+  end
+  return false
+end
+
+-- the game's lines, as a trigger reading them gets them, and its prompt
+local function reader(w, code)
+  local function listening()
+    for _, t in ipairs(w.triggers) do
+      if not t.killed and t.code == code then return true end
+    end
+    return false
+  end
+  local function game(text)
+    w.env.line = text
+    if listening() then w.run(code) end
+    w.run_timers()
+  end
+  local function prompt()
+    w.env.isPrompt = function() return true end
+    game("9975h, 6252m cexkdb-")
+    w.env.isPrompt = function() return false end
+  end
+  return game, prompt, listening
+end
+
+-- AFFLICTION SHOW's layout is the user's capture (2026-10-20); the
+-- afflictions and their lines are made up for the test
+do
+  local w = world.new()
+  local svo = w.svo
+  local cmd = svo.afflictions.command
+  local game, prompt, listening = reader(w, "svo.afflictions.show_line()")
+  local gagged = {}
+  local delete = svo.deleteLineP
+  svo.deleteLineP = function () gagged[#gagged + 1] = w.env.line delete() end
+
+  cmd("testfire")
+  eq(w.sent[#w.sent], "affliction show testfire", "a new definition asks the game about it")
+  eq(listening(), true, "and reads the reply")
+  game("You glance about.")
+  game("Affliction:         Testfire")
+  game("Diagnose:           burning with testfire.")
+  game("Afflicted msg:      Testfire burns within you.")
+  game("Cured msg:          The testfire within you dies.")
+  game("Cure(s):            Eat Kelp / Eat Aurum")
+  game("Description:        Testfire makes everything you eat taste of ")
+  game("ashes.")
+  game("NoRandomCure:       No")
+  game("WhisperingMadness:  Yes")
+  game("Enlighten:          No")
+  game("Tzantza:            No")
+  game("Accentato:          No")
+  game("CadmusCurse:        No")
+  prompt()
+  local d = svo.afflictions.drafts.testfire or {}
+  eq(d.gmcp, "testfire", "the name the game shows it under is its GMCP name")
+  eq((d.gain or {})[1], "Testfire burns within you.", "Afflicted msg is its gain line")
+  eq((d.cured or {})[1], "The testfire within you dies.", "Cured msg its cure line")
+  eq((d.diag or {})[1], "burning with testfire.", "Diagnose its DIAGNOSE line")
+  eq(d.cures, "Eat Kelp / Eat Aurum", "Cure(s) its cures")
+  eq(d.desc, "Testfire makes everything you eat taste of ashes.", "a wrapped value is joined")
+  eq(d.norandomcure, nil, "NoRandomCure No leaves random cures taking it")
+  eq(d.madness, true, "WhisperingMadness Yes makes it a madness affliction")
+  eq(gagged[1], "Affliction:         Testfire", "the reply is gagged from its first line")
+  -- svo.deleteLineP takes the prompt after the line with it
+  eq(gagged[#gagged], "CadmusCurse:        No", "to its last line, and the prompt with it")
+  eq(listening(), false, "and the trigger reading it is killed")
+  eq(echoed(w, "Filled in testfire from the game's AFFLICTION SHOW testfire."), true, "and says so")
+  eq(svo.afflictions.problem("testfire", d), nil, "it's ready to install")
+
+  -- a timed one, the airfisted capture's layout
+  cmd("testgust")
+  game("Affliction:         Testgust")
+  game("Diagnose:           being blown about by a testgust.")
+  game("Afflicted msg:      none")
+  game("Cured msg:          none")
+  game("Expire msg:         The testgust about you dies ")
+  game("down.")
+  game("Cure(s):            Time")
+  game("NoRandomCure:       Yes")
+  game("Default time:       15 seconds")
+  prompt()
+  d = svo.afflictions.drafts.testgust or {}
+  eq(#(d.gain or {}), 0, "none is no gain line")
+  eq((d.expire or {})[1], "The testgust about you dies down.", "Expire msg, joined, is its expire line")
+  eq(d.cures, "Time", "Cure(s) Time")
+  eq(d.time, 15, "and Default time its time")
+  eq(d.norandomcure, true, "NoRandomCure Yes keeps random cures off it")
+  eq(d.gmcp, "testgust", "its GMCP name, as the game shows it")
+  eq(svo.afflictions.problem("testgust", d), nil, "is what tells svof you have it, with no gain line")
+  d.gmcp = nil
+  eq(svo.afflictions.problem("testgust", d), "it needs a line saying you have it, or its GMCP name, or Svof can't tell when you do",
+    "and without either, it can't be installed")
+
+  -- one of svof's own, under the game's name for it
+  cmd("testair")
+  w.sent = {}
+  svo.afflictions.fetch("testair", "airfisted")
+  game("Affliction:         Airfisted")
+  game("Cure(s):            Time")
+  prompt()
+  eq(echoed(w, "The game's airfisted is Svof's own galed, so there's no need to define it."), true,
+    "the game's name for one of svof's own points at svof's")
+  eq((svo.afflictions.drafts.testair or {}).cures, nil, "and fills nothing")
+
+  -- a SHOW the player sends is left alone
+  gagged = {}
+  game("Affliction:         Testfire")
+  eq(#gagged, 0, "a reply svof didn't ask for isn't gagged")
+end
+
+do -- a late reply goes to nothing but the gag
+  local w = world.new()
+  local svo = w.svo
+  local game, prompt = reader(w, "svo.afflictions.show_line()")
+  svo.afflictions.command("testslow")
+  w.advance(6)
+  eq(echoed(w, "The game didn't answer about an affliction called testslow, so add its parts yourself."), true,
+    "no answer in time is said")
+  svo.afflictions.command("testnext")
+  game("Affliction:         Testslow")
+  game("Afflicted msg:      The slow one hits you.")
+  prompt()
+  eq(#((svo.afflictions.drafts.testnext or {}).gain or {}), 0, "the late reply about testslow fills nothing in testnext")
+end
+
+do -- a name the game doesn't have (the user, 2026-10-20)
+  local w = world.new()
+  local svo = w.svo
+  local game, prompt, listening = reader(w, "svo.afflictions.show_line()")
+  local gagged = {}
+  local delete = svo.deleteLineP
+  svo.deleteLineP = function () gagged[#gagged + 1] = w.env.line delete() end
+  svo.afflictions.command("testnone")
+  game("There is no such affliction.")
+  eq(gagged[1], "There is no such affliction.", "the game's no is gagged")
+  eq(listening(), false, "and ends the wait")
+  eq(echoed(w, "The game has no affliction called testnone, so add its parts yourself."), true, "and is said")
+  eq(svo.afflictions.gmcp_known("testnone"), false, "so it isn't a GMCP name")
+  svo.afflictions.set("testnone", "gmcp", "testnone")
+  eq(echoed(w, "The game has no affliction called testnone over GMCP, so it can't be testnone's GMCP name."), true,
+    "and can't be set as one")
+
+  -- asked to set a GMCP name, the game's no refuses it
+  svo.afflictions.set("testnone", "gmcp", "testother")
+  eq(w.sent[#w.sent], "affliction show testother", "a GMCP name the game hasn't confirmed is asked about")
+  game("There is no such affliction.")
+  eq(echoed(w, "The game has no affliction called testother, so it can't be testnone's GMCP name."), true,
+    "and refused on the game's no")
+  eq((svo.afflictions.drafts.testnone or {}).gmcp, nil, "leaving it unset")
+end
+
+do -- installing, and the clash checks
+  local w = world.new()
+  local svo = w.svo
+  w.env.rex = world.rex_stub
+  local function spec(over)
+    local t = { cures = "Eat Kelp", gain = { "A test affliction takes you." }, cured = { "The test affliction leaves you." } }
+    for k, v in pairs(over or {}) do t[k] = v end
+    return t
+  end
+  local problem = svo.afflictions.problem
+  eq(problem("testone", spec()), nil, "a definition with its own lines is fine")
+  -- the first of the three triggers on clumsiness's cure line, in the catalog's order
+  eq(problem("testone", spec({ gain = { "Thank Maya, the Great Mother! Your clumsiness has been cured." } })),
+    "Svof's trigger svo (aliases, triggers) / svo / General / General cures / svo cure clumsiness generic already watches for \"Thank Maya, the Great Mother! Your clumsiness has been cured.\"",
+    "a line one of svof's triggers watches for is refused, naming it")
+  -- a line only a defence record has, which no trigger item does
+  eq(problem("testone", spec({ gain = { "You bring your eyes back into focus." } })),
+    "Svof's defence softfocus watches for \"You bring your eyes back into focus.\"",
+    "and one of svof's defence lines")
+  eq(problem("testone", spec({ cured = { "A test affliction takes you." } })),
+    "its gain line \"A test affliction takes you.\" is its cure line too", "and its gain line as its cure line")
+  eq(problem("testone", spec({ gainpattern = { "^A test affliction takes (\\w+)%.$" } })), nil,
+    "a pattern matching nothing else is fine")
+  eq(problem("testone", spec({ curedpattern = { "^A test affliction takes .+$" } })),
+    "its cure pattern \"^A test affliction takes .+$\" matches its own gain line \"A test affliction takes you.\"",
+    "a pattern matching its own line of another kind is refused")
+  eq(problem("testone", spec({ gmcp = "testone" })), "Svof couldn't check its GMCP name testone with the game",
+    "a GMCP name the game hasn't confirmed is refused")
+  eq(problem("clumsiness", spec()), "Svof already has clumsiness", "and a name svof has")
+  eq(problem("testone", spec({ cures = "Stand" })), "Svof can't cure with \"stand\"", "and a cure svof can't give")
+
+  w.writes = {}
+  eq(svo.afflictions.install("testone"), false, "install needs a draft")
+  svo.afflictions.drafts.testone = spec()
+  eq(svo.afflictions.install("testone"), true, "installs")
+  eq(svo.afflictions.registered.testone ~= nil, true, "into play")
+  eq(svo.afflictions.custom.testone ~= nil, true, "and saved")
+  local saved = false
+  for _, wr in ipairs(w.writes) do if wr:find("svo/custom/affs", 1, true) then saved = true end end
+  eq(saved, true, "to svo/custom/affs")
+  eq(w.line("A test affliction takes you."), 1, "its gain line has a trigger")
+
+  svo.afflictions.drafts.testtwo = spec({ gain = { "A second one takes you." }, cured = { "The test affliction leaves you." } })
+  eq(svo.afflictions.install("testtwo"), false, "a line another definition watches for is refused")
+  eq(echoed(w, "your testone watches for \"The test affliction leaves you.\" too"), true, "naming it")
+
+  svo.afflictions.delete("testone")
+  eq(svo.afflictions.registered.testone, nil, "delete takes it out of play")
+  eq(svo.afflictions.custom.testone, nil, "and out of the saved ones")
+  eq(w.line("A test affliction takes you."), 0, "with its trigger")
+end
+
+do -- MORE past AFFLICTION LIST's end gets DEFENCE LIST's line (the user, 2026-10-20)
+  local w = world.new()
+  local svo = w.svo
+  local game, _, listening = reader(w, "svo.afflictions.list_line()")
+  svo.afflictions.gamelist()
+  game("All afflictions")
+  game("Accentato")
+  game("[Type MORE if you wish to continue reading. (50% shown)]")
+  game('An unseen presence whispers in your ear, "There is no more, friend."')
+  eq(listening(), false, "the game's line past its end ends the list")
+  eq(svo.afflictions.game_list and svo.afflictions.game_list.complete, true, "as complete")
+end
+
+do -- AFFLICTION LIST: what svof doesn't know, what it knows by another name, what it leaves out
+  local w = world.new()
+  local svo = w.svo
+  local game, prompt, listening = reader(w, "svo.afflictions.list_line()")
+  svo.afflictions.command("game")
+  eq(w.sent[#w.sent], "affliction list", "vcustomaff game sends AFFLICTION LIST")
+  game("All afflictions")
+  game("------------------------------------------------")
+  for _, n in ipairs({ "Accentato", "Addiction", "Airfisted", "Blindness" }) do game(n) end
+  game("[Type MORE if you wish to continue reading. (10% shown)]")
+  eq(w.sent[#w.sent], "more", "and MORE after a page")
+  game("[File continued via MORE]")
+  game("Testfire")
+  prompt()
+  eq(listening(), false, "the list ends at a prompt with no MORE before it")
+  eq(echoed(w, "Of the 5 afflictions the game lists, Svof doesn't know these 2. Click one to define it:"), true,
+    "it lists the ones svof doesn't know")
+  local links = table.concat(w.links, "|")
+  eq(links:find('svo.afflictions.show("accentato")', 1, true) ~= nil, true, "as links")
+  eq(echoed(w, "airfisted (galed)"), true, "the ones svof knows by its own name, the game's first")
+  eq(echoed(w, "blindness"), true, "and the ones it reads another way")
+  eq(svo.afflictions.gmcp_known("accentato"), true, "the list confirms its names as GMCP names")
+  eq(svo.afflictions.gmcp_known("nosuchthing"), false, "and that a name it lacks isn't one")
+end
+
+do -- the forms
+  local w = world.new()
+  local svo = w.svo
+  local cmd = svo.afflictions.command
+  svo.afflictions.drafts.testform = { gain = {}, cured = {}, expire = {}, diag = {}, gainpattern = {}, curedpattern = {} }
+  cmd("testform cures Smoke Valerian")
+  eq(svo.afflictions.drafts.testform.cures, "Smoke Valerian", "cures sets its cures")
+  cmd("testform madness yes")
+  eq(svo.afflictions.drafts.testform.madness, true, "madness yes")
+  cmd("testform randomcure no")
+  eq(svo.afflictions.drafts.testform.norandomcure, true, "randomcure no")
+  cmd("testform gain You feel tested.")
+  eq(svo.afflictions.drafts.testform.gain[1], "You feel tested.", "gain adds a line")
+  cmd("testform time 20")
+  eq(svo.afflictions.drafts.testform.time, 20, "time sets it")
+  w.echoes = {}
+  cmd("testform madness|randomcure yes|no")
+  eq(echoed(w, "Replace each <...> with what it stands for"), true, "a form with its placeholders is explained")
+  cmd("testform colour red")
+  eq(echoed(w, "colour isn't one"), true, "and a field it doesn't have")
+end
+
 if #failures > 0 then
   for _, f in ipairs(failures) do print("FAIL: " .. f) end
   print(string.format("%d checks, %d failures", checks, #failures))
