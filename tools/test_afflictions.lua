@@ -617,6 +617,35 @@ do
   eq(#gagged, 0, "a reply svof didn't ask for isn't gagged")
 end
 
+do -- svof's lines as Mudlet runs its triggers (tools/trigger_catalog.py)
+  local w = world.new()
+  local svo = w.svo
+  w.env.rex = world.rex_stub
+  local function problem(field, line)
+    return svo.afflictions.problem("testone", { cures = "Eat Kelp", gmcp = nil, [field] = { line },
+      gain = field ~= 'gain' and { "A test affliction takes you." } or { line } })
+  end
+  -- Apostasy's Def strip is an AND trigger: start "Your " and a regex
+  eq(problem('cured', "Your skin ceases its painful tingling."), nil,
+    "a line starting as one of an AND trigger's patterns does isn't refused")
+  eq(problem('cured', "Your rebounding defence has been stripped by Testa's Baalzadeen.") ~= nil, true,
+    "a line all its patterns match is")
+  -- Chaosrays hit / red is "red" on the line "You are hit by a ... ray." starts
+  eq(problem('cured', "You are rendered entirely unable to communicate."), nil,
+    "a child's pattern alone, without its parent's line, isn't refused")
+  eq(problem('cured', "You are hit by a red ray.") ~= nil, true, "but with it is")
+  -- Channels' children read the 5 lines after "You have harnessed the power
+  -- of:", and nothing else
+  eq(problem('gain', "Bound by tendrils of water."), nil, "a line a longer chain's child reads isn't refused")
+  -- svo diag's children are DIAGNOSE's lines
+  eq(problem('diag', "paralysed.") ~= nil, true, "a DIAGNOSE line svof's diagnose reads is refused there")
+  eq(problem('cured', "paralysed."), nil, "but not as a cure line")
+  -- Ate is an AND trigger with a spacer: it fires on the line after "You
+  -- eat", so its children are cure lines there, which only it watches for
+  eq(problem('cured', "Your dissonant nature becomes harmonious.") ~= nil, true,
+    "a cure line a spacer trigger's child watches for is refused")
+end
+
 do -- a late reply goes to nothing but the gag
   local w = world.new()
   local svo = w.svo

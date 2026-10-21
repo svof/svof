@@ -17,8 +17,24 @@ definition's line would clash with. A pattern counts as general when it
 matches one of the unrelated lines in PROBES, a regex tried with Python's
 re, which reads these patterns as PCRE does.
 
-A multi-line trigger's patterns are each kept: each is a game line one of
-svof's triggers waits for, even if it fires only after another.
+A trigger matches a line the way Mudlet runs it:
+
+- an AND trigger with a line delta of 0 matches a line that all its
+  patterns match, so it's marked all, and is general only when one probe
+  matches them all. Apostasy's Def strip is start "Your " and a regex, and
+  "Your " alone is any line starting so. With a delta of more, its patterns
+  are lines apart, so each is kept, as a line svof waits for
+- a trigger's children run on the line it matched, and, for a fire length
+  of more than 0, on that many lines after. A child of a fire length of 0
+  matches only with its parent, so it carries the parent's patterns as
+  need: Chaosrays hit / red is "red" on a line "You are hit by a" starts.
+  An AND trigger whose patterns are lines apart fires on its last line,
+  which its patterns needn't match, so its children are kept as lines svof
+  waits for: Ate's are the cure lines after "You eat", a spacer of 1 on.
+  The children of a longer chain match only inside it: svo diag's, the
+  DIAGNOSE lines, are marked diag, and are checked against a definition's
+  DIAGNOSE lines, while other chains' are left out, as lines svof reads
+  only after a line of its own, such as the channels or honours lists.
 
   python tools/trigger_catalog.py          check the file is current
   python tools/trigger_catalog.py --write  write it
@@ -67,25 +83,41 @@ def lua_string(s):
     return "".join(out)
 
 
-def general(kind, pattern):
+DIAG_CHAIN = "svo diag"
+
+
+def matches(kind, pattern, line):
+    if kind == "exact":
+        return line == pattern
     if kind == "sub":
-        return any(pattern in p for p in PROBES)
+        return pattern in line
     if kind == "start":
-        return any(p.startswith(pattern) for p in PROBES)
-    if kind != "regex":
-        return False
+        return line.startswith(pattern)
     try:
-        r = re.compile(pattern)
+        return re.search(pattern, line) is not None
     except re.error:
         # Python can't read it; keep it, and let Mudlet's PCRE decide
         return False
-    return any(r.search(p) for p in PROBES)
+
+
+# whether a condition, (patterns, all), matches line: all of them or any
+def cond_matches(cond, line):
+    pats, every = cond
+    hits = (matches(k, t, line) for k, t in pats)
+    return all(hits) if every else any(hits)
+
+
+# whether a trigger matching cond, on a line each of need matches too,
+# matches lines in general
+def general(cond, need):
+    return any(cond_matches(cond, p) and all(cond_matches(n, p) for n in need) for p in PROBES)
 
 
 # A filter trigger's children are matched against what it captured, not a
 # game line, such as the prompt's flags under "Capture flags", so they and
-# theirs are left out
-def walk(items, folder, path, entries, skipped, filtered=False):
+# theirs are left out. need is the conditions of the parents a child
+# matches only with, and diag whether it's in svo diag's chain
+def walk(items, folder, path, entries, skipped, filtered=False, need=(), diag=False, window=None):
     for item in items:
         name = item.get("name", "")
         here = path + [name]
@@ -93,16 +125,47 @@ def walk(items, folder, path, entries, skipped, filtered=False):
         for p in item.get("patterns", []):
             kind = KINDS.get(p.get("type"))
             text = p.get("pattern", "")
-            if filtered or not kind or text == "":
-                continue
-            if general(kind, text):
-                skipped.append((folder + " / " + " / ".join(here), text))
-                continue
-            pats.append((kind, text))
+            if kind and text != "":
+                pats.append((kind, text))
+        every = (item.get("multiline") == "yes" and item.get("multilineDelta", "0") in ("0", "") and len(pats) > 1
+                 and not any(p.get("type") == "spacer" for p in item.get("patterns", [])))
+        where = folder + " / " + " / ".join(here)
+        if filtered or window:
+            pats = []
+        elif every:
+            if general((pats, True), need):
+                skipped.append((where, " & ".join(t for _, t in pats)))
+                pats = []
+        else:
+            kept = []
+            for kind, text in pats:
+                if general(([(kind, text)], False), need):
+                    skipped.append((where, text))
+                else:
+                    kept.append((kind, text))
+            pats = kept
         if pats:
-            entries.append((folder, " / ".join(here), pats))
+            entries.append((folder, " / ".join(here), pats, every, list(need), diag))
+        child_need, child_diag, child_window = need, diag, window
+        own = [(k, t) for k, t in ((KINDS.get(p.get("type")), p.get("pattern", "")) for p in item.get("patterns", []))
+               if k and t != ""]
+        # an AND trigger whose patterns are lines apart fires on its last
+        # line, which its own patterns needn't match: Ate's children are the
+        # cure lines on the line after "You eat", a spacer of 1 on
+        spans = item.get("multiline") == "yes" and (item.get("multilineDelta", "0") not in ("0", "")
+                                                    or any(p.get("type") == "spacer" for p in item.get("patterns", [])))
+        if own and item.get("isFolder") != "yes":
+            fire = int(item.get("fireLength") or 0)
+            if name == DIAG_CHAIN:
+                child_need, child_diag = (), True
+            elif spans:
+                child_need = ()
+            elif fire == 0:
+                child_need = tuple(need) + ((own, every),)
+            else:
+                child_window = where
         walk(item.get("children", []), folder, here, entries, skipped,
-             filtered or item.get("filter") == "yes")
+             filtered or item.get("filter") == "yes", child_need, child_diag, child_window)
 
 
 def collect():
@@ -127,18 +190,32 @@ def render(entries):
         "-- tools/trigger_catalog.py from src/triggers. Don't edit it by hand.",
         "-- Each entry is a folder's path, then its triggers, each the trigger's",
         "-- name (with the triggers it's nested under), then its patterns, each a",
-        "-- kind (exact, sub, start or regex) and the pattern.",
+        "-- kind (exact, sub, start or regex) and the pattern. A trigger matches a",
+        "-- line one of its patterns matches, or, marked all, that they all do; with",
+        "-- need, only a line each of its parents' conditions there matches too,",
+        "-- and, marked diag, only in DIAGNOSE's output.",
         "return {",
     ]
+
+    def pat_list(pats):
+        return ", ".join("{ %s, %s }" % (lua_string(k), lua_string(t)) for k, t in pats)
+
     current = None
-    for folder, item, pats in entries:
+    for folder, item, pats, every, need, diag in entries:
         if folder != current:
             if current is not None:
                 lines.append("  },")
             lines.append("  { %s," % lua_string(folder))
             current = folder
-        parts = ", ".join("{ %s, %s }" % (lua_string(k), lua_string(t)) for k, t in pats)
-        lines.append("    { %s, %s }," % (lua_string(item), parts))
+        extra = ""
+        if every:
+            extra += ", all = true"
+        if need:
+            extra += ", need = { %s }" % ", ".join(
+                "{ %s%s }" % (pat_list(p), ", all = true" if e else "") for p, e in need)
+        if diag:
+            extra += ", diag = true"
+        lines.append("    { %s, %s%s }," % (lua_string(item), pat_list(pats), extra))
     if current is not None:
         lines.append("  },")
     lines.append("}")
@@ -148,7 +225,7 @@ def render(entries):
 def main():
     entries, skipped = collect()
     text = render(entries)
-    count = sum(len(p) for _, _, p in entries)
+    count = sum(len(e[2]) for e in entries)
     if "--write" in sys.argv[1:]:
         with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(text)

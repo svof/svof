@@ -425,6 +425,29 @@ local function catalog_matches(kind, pattern, line)
   return pattern_matches(pattern, line)
 end
 
+-- whether a catalog condition, its patterns from first on, matches line:
+-- one of them, or, marked all, each
+local function catalog_cond(cond, first, line)
+  for k = first, #cond do
+    local hit = catalog_matches(cond[k][1], cond[k][2], line)
+    if hit and not cond.all then return true end
+    if not hit and cond.all then return false end
+  end
+  return cond.all and true or false
+end
+
+-- whether one of svof's triggers in the catalog matches line, a
+-- definition's line of field: with need, only a line its parents' patterns
+-- there match too, and, marked diag, only a line in DIAGNOSE's output
+local function catalog_trigger(trig, line, field)
+  if trig.diag and field ~= 'diag' then return false end
+  if not catalog_cond(trig, 2, line) then return false end
+  for _, cond in ipairs(trig.need or {}) do
+    if not catalog_cond(cond, 1, line) then return false end
+  end
+  return true
+end
+
 -- Why spec's lines clash with a line svof or another definition watches
 -- for, or nil. A clash makes one line count for two things, so nothing that
 -- clashes goes into play, as for defences (the user, 2026-10-10): each line
@@ -457,14 +480,16 @@ function afflictions.line_clash(name, spec)
   for _, folder in ipairs(afflictions.trigger_catalog()) do
     for i = 2, #folder do
       local trig = folder[i]
+      for _, a in ipairs(mine) do
+        if catalog_trigger(trig, a[2], a[1]) then
+          return string.format("Svof's trigger %s / %s already watches for %q", folder[1], trig[1], a[2])
+        end
+      end
       for k = 2, #trig do
         local kind, pattern = trig[k][1], trig[k][2]
-        for _, a in ipairs(mine) do
-          if catalog_matches(kind, pattern, a[2]) then
-            return string.format("Svof's trigger %s / %s already watches for %q", folder[1], trig[1], a[2])
-          end
-        end
-        if kind == 'exact' then
+        -- a gain or cure pattern against an exact line the trigger takes
+        -- as a whole, outside DIAGNOSE
+        if kind == 'exact' and catalog_trigger(trig, pattern, 'gain') then
           for _, p in ipairs(patterns) do
             if pattern_matches(p[2], pattern) then
               return string.format("the pattern %q matches the line %q Svof's trigger %s / %s watches for", p[2],
