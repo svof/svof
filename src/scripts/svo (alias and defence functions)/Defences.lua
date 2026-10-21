@@ -4658,8 +4658,14 @@ local after_gag = gamereader.after_gag
 --   label        the pattern a "Label: value" line matches
 --   labels       the labels taken, and wraps, the ones whose value the game
 --                carries onto the next line
+--   entries      the wraps whose value can be several entries, each on a line
+--                of its own, indented, and what joins them, such as Cure(s)'s
+--                second route
 --   none         the line the game sends for a name it doesn't have, if any
 --   answers(keyword, rest)  whether the title line's value is about keyword
+--   by_order     the title doesn't always name what was asked, so a reply
+--                that answers no ask is the oldest's, and the player's own
+--                asks are watched, to be left alone
 --   keyword_of(rest)  the title line's GMCP name, if it gives one
 --   reply(name, asked, fields, mode)  the reply, once its lines are gagged;
 --                fields holds the labels' values, title's among them, and
@@ -4732,6 +4738,25 @@ function gamereader.show(o)
     after_gag(function () o.reply(name, asked, fields, mode) end)
   end
 
+  -- The game answers in the order it's asked (Achaea keeps command order),
+  -- so with by_order a SHOW the player sends takes its place among svof's,
+  -- and its reply is theirs. One handler a command, as the reader is made
+  -- again each time svof loads
+  local sending
+  if o.by_order then
+    gamereader.watching = gamereader.watching or {}
+    if gamereader.watching[o.command] then killAnonymousEventHandler(gamereader.watching[o.command]) end
+    gamereader.watching[o.command] = registerAnonymousEventHandler("sysDataSendRequest", function (_, command)
+      if sending or type(command) ~= 'string' then return end
+      local keyword = command:lower():match("^%s*" .. o.command .. "%s+(%S.-)%s*$")
+      if not keyword then return end
+      local ask = { keyword = keyword, player = true }
+      unanswered[#unanswered + 1] = ask
+      stop_waiting(ask)
+      reader_check()
+    end)
+  end
+
   function r.ask(name, keyword, mode)
     if type(keyword) ~= 'string' or not keyword:find("%S") then return end
     r.stop()
@@ -4750,7 +4775,9 @@ function gamereader.show(o)
       o.timeout(defining, asked, asked_mode)
     end)
     -- svof says what it's asking, so the command isn't echoed
+    sending = true
     send(o.command .. " " .. fetching.keyword, false)
+    sending = nil
   end
 
   -- every line while a reply is due: a reply starts at its title line and
@@ -4782,13 +4809,18 @@ function gamereader.show(o)
         for _, a in ipairs(unanswered) do
           if o.answers(a.keyword, rest) then ask = a break end
         end
+        if not ask and o.by_order then ask = unanswered[1] end
         if not ask then return end
         answered(ask)
+        if ask.player then
+          reader_check()
+          return
+        end
         svo.deleteLineP()
         -- the fetch waiting takes a reply about what it asked, from an
         -- earlier ask too, as when it's asked again under lag; any other is
         -- late
-        if fetching.keyword and o.answers(fetching.keyword, rest) then
+        if fetching.keyword and (ask == fetching.ask or o.answers(fetching.keyword, rest)) then
           fetching.fields = { keyword = o.keyword_of and o.keyword_of(rest) or nil, [o.title] = rest }
         else
           late_reply = true
@@ -4798,6 +4830,10 @@ function gamereader.show(o)
         local ask = unanswered[1]
         if not ask then return end
         answered(ask)
+        if ask.player then
+          reader_check()
+          return
+        end
         if ask.keyword ~= fetching.keyword then
           svo.deleteLineP()
           reader_check()
@@ -4817,7 +4853,14 @@ function gamereader.show(o)
       if label == o.last then done() end
     elseif fetching.last and o.wraps[fetching.last] then
       local prev = fetching.fields[fetching.last]
-      fetching.fields[fetching.last] = prev .. (prev:find("%s$") and "" or " ") .. text
+      -- a value wrapped at the screen width goes on at the line's start, and
+      -- another entry is indented to the values
+      local join = o.entries and o.entries[fetching.last]
+      if join and text:find("^%s") then
+        fetching.fields[fetching.last] = prev:match("^(.-)%s*$") .. join .. text:match("^%s*(.-)%s*$")
+      else
+        fetching.fields[fetching.last] = prev .. (prev:find("%s$") and "" or " ") .. text
+      end
     end
   end
 
