@@ -10,11 +10,12 @@ how vcustomaff knows them.
 
 It holds, folder by folder, each trigger's exact, substring, start-of-line and regex
 patterns, the ones a game line is matched against. Lua function, prompt,
-colour and spacer patterns don't match line text and are left out, as is
-a regex that matches lines in general, such as ^ or .+, which every
-definition's line would clash with. A regex counts as general when it
-matches one of the unrelated lines in PROBES, tried with Python's re, which
-reads these patterns as PCRE does.
+colour and spacer patterns don't match line text and are left out, as are
+the patterns of a filter trigger's children, which match what it captured,
+and a pattern that matches lines in general, such as ^ or .+, which every
+definition's line would clash with. A pattern counts as general when it
+matches one of the unrelated lines in PROBES, a regex tried with Python's
+re, which reads these patterns as PCRE does.
 
 A multi-line trigger's patterns are each kept: each is a game line one of
 svof's triggers waits for, even if it fires only after another.
@@ -39,9 +40,12 @@ OUT = os.path.join(REPO, "src", "resources", "trigger_catalog.lua")
 
 KINDS = {"exactMatch": "exact", "substring": "sub", "startOfLine": "start", "regex": "regex"}
 
-# lines no trigger should match; a regex matching any of them matches lines
-# in general
-PROBES = ["", "Zq9 xyzzy plugh 42.", "The quick brown fox jumps over the lazy dog.", "a"]
+# lines no trigger should match; a pattern matching any of them matches lines
+# in general. The hyphen is the prompt's flags pattern's, which matches any
+# line with a hyphenated word in it, and "You" starts most of the game's lines,
+# as Damaged arm's start-of-line pattern does, whose script decides
+PROBES = ["", "Zq9 xyzzy plugh 42.", "The quick brown fox jumps over the lazy dog.", "a",
+          "A well-known line.", "You see nothing special."]
 
 
 def lua_string(s):
@@ -63,7 +67,13 @@ def lua_string(s):
     return "".join(out)
 
 
-def general(pattern):
+def general(kind, pattern):
+    if kind == "sub":
+        return any(pattern in p for p in PROBES)
+    if kind == "start":
+        return any(p.startswith(pattern) for p in PROBES)
+    if kind != "regex":
+        return False
     try:
         r = re.compile(pattern)
     except re.error:
@@ -72,7 +82,10 @@ def general(pattern):
     return any(r.search(p) for p in PROBES)
 
 
-def walk(items, folder, path, entries, skipped):
+# A filter trigger's children are matched against what it captured, not a
+# game line, such as the prompt's flags under "Capture flags", so they and
+# theirs are left out
+def walk(items, folder, path, entries, skipped, filtered=False):
     for item in items:
         name = item.get("name", "")
         here = path + [name]
@@ -80,15 +93,16 @@ def walk(items, folder, path, entries, skipped):
         for p in item.get("patterns", []):
             kind = KINDS.get(p.get("type"))
             text = p.get("pattern", "")
-            if not kind or text == "":
+            if filtered or not kind or text == "":
                 continue
-            if kind == "regex" and general(text):
+            if general(kind, text):
                 skipped.append((folder + " / " + " / ".join(here), text))
                 continue
             pats.append((kind, text))
         if pats:
             entries.append((folder, " / ".join(here), pats))
-        walk(item.get("children", []), folder, here, entries, skipped)
+        walk(item.get("children", []), folder, here, entries, skipped,
+             filtered or item.get("filter") == "yes")
 
 
 def collect():
@@ -138,7 +152,7 @@ def main():
     if "--write" in sys.argv[1:]:
         with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(text)
-        print("wrote %s: %d patterns from %d triggers, %d general regexes left out"
+        print("wrote %s: %d patterns from %d triggers, %d general patterns left out"
               % (os.path.relpath(OUT, REPO), count, len(entries), len(skipped)))
         return 0
     try:
@@ -151,7 +165,7 @@ def main():
         print("FAIL: %s is out of date; run tools/trigger_catalog.py --write in this commit"
               % os.path.relpath(OUT, REPO))
         return 1
-    print("OK: %s is current: %d patterns from %d triggers, %d general regexes left out"
+    print("OK: %s is current: %d patterns from %d triggers, %d general patterns left out"
           % (os.path.relpath(OUT, REPO), count, len(entries), len(skipped)))
     return 0
 
