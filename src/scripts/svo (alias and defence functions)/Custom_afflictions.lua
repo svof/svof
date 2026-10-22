@@ -10,7 +10,9 @@
 --               then svo.valid.generic while svof reads cures it didn't
 --               send (svo.generics_enabled), as its General cures folder
 --               does, and svo.valid.tree_cured unless no random cure takes
---               it
+--               it. With no cure svof gives, the cure line ends it:
+--               svo.valid.<name>_woreoff for a timed one, and
+--               svo.valid.<name>_cured, its gone, for one only tracked
 --   expire      svo.valid.<name>_woreoff, for a timed one
 --   diagnose    svo.valid.diag, while svof is diagnosing, as the svo diag
 --               trigger's children are
@@ -188,11 +190,12 @@ function afflictions.register(name, spec)
   end)
 
   local cured_code = {}
-  local timed
+  local timed, own_cure
   for _, cure in ipairs(cures) do
     if cure.kind == 'time' then
       timed = true
-    else
+    elseif cure.kind ~= 'game' then
+      own_cure = true
       local items = afflictions.cures[cure.kind]
       items[cure[1]] = items[cure[1]] or {}
       items[cure[1]][name] = true
@@ -215,13 +218,22 @@ function afflictions.register(name, spec)
       end
     end)
   end
-  afflictions.handlers_of[name] = handlers
-  -- one only time cures has a cure line when the game gives a Cured msg
-  -- and no Expire msg, as accentato and asphyxiating do (the capture,
-  -- 2026-10-20), and it's the line it ends on
-  if timed and #cured_code == 0 then
+  -- With no cure of svof's, its cure line is the line it ends on: the game
+  -- gives a Cured msg and no Expire msg for one only time cures, as for
+  -- accentato and asphyxiating (the capture, 2026-10-20), and the game
+  -- cures one svof only tracks, as icebound's Writhe (the user, 2026-10-22)
+  if not own_cure and timed then
     cured_code[1] = string.format("svo.valid.%s_woreoff()", name)
+  elseif not own_cure then
+    make(name .. '_cured', function()
+      svo.checkaction(svo.dict[name].gone, true)
+      if svo.actions[name .. '_gone'] then
+        svo.lifevision.add(svo.actions[name .. '_gone'].p)
+      end
+    end)
+    cured_code[1] = string.format("svo.valid.%s_cured()", name)
   end
+  afflictions.handlers_of[name] = handlers
 
   if not spec.norandomcure then empty.treecurables[#empty.treecurables + 1] = name end
   if spec.madness then empty.madness_affs[#empty.madness_affs + 1] = name end
@@ -664,6 +676,15 @@ function afflictions.show(name)
     echo(cure_why .. "\n")
     resetFormat()
   end
+  local game, own = {}, false
+  for _, cure in ipairs(cures or {}) do
+    if cure.kind == 'game' then game[#game + 1] = cure[1] elseif cure.kind ~= 'time' then own = true end
+  end
+  if #game > 0 then
+    label("")
+    unset_text(string.format("Svof can't cure with %s, so %s\n", svo.concatand(game),
+      own and "it leaves that to you" or "it only tracks it"))
+  end
   local timed = false
   for _, cure in ipairs(cures or {}) do if cure.kind == 'time' then timed = true end end
   if timed or d.time then row("lasts:", d.time and (d.time .. " seconds"), "time", "(not set)") end
@@ -1044,10 +1065,12 @@ function afflictions.test(name)
   if not d then svo.echof("You haven't defined %s.", name) return end
   local cures, why = svo.affcures(d.cures)
   if cures then
-    local t = {}
+    local t, game = {}, {}
     for _, cure in ipairs(cures) do
       if cure.kind == 'time' then
         t[#t + 1] = string.format("waiting %s seconds", tostring(d.time))
+      elseif cure.kind == 'game' then
+        game[#game + 1] = cure[1]
       elseif cure.kind == 'salve' then
         t[#t + 1] = string.format("applying %s%s", cure[1], cure.place and (" to " .. cure.place) or "")
       else
@@ -1055,7 +1078,14 @@ function afflictions.test(name)
           cure[1])
       end
     end
-    svo.echof("Svof cures %s by %s.", name, svo.concatand(t))
+    if #t > 0 then svo.echof("Svof cures %s by %s.", name, svo.concatand(t)) end
+    if #game > 0 and #t > 0 then
+      svo.echof("It's also cured by %s, which Svof can't do, so it leaves that to you.", svo.concatand(game))
+    elseif #game > 0 then
+      svo.echof("Svof only tracks %s: it's cured by %s, which Svof can't do.", name, svo.concatand(game))
+    elseif #t == 0 then
+      svo.echof("Svof only tracks %s, as the game gives no cure for it.", name)
+    end
   else
     svo.echof("Svof can't cure %s yet: %s.", name, why)
   end

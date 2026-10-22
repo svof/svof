@@ -15095,11 +15095,13 @@ end
 -- with Default time: 15 seconds for a timed one. svo.affcures reads that
 -- Cure(s) text, and svo.basicaff builds a dictionary entry from it in the
 -- shape svof's own entries have, one action on each balance that cures it.
--- Only svof's own cure forms are taken, as svof can't cure with anything
--- else: a herb with a mineral (rift.herb_conversions), a salve on a place
--- or none, a herb svof keeps a pipe of, and immunity on purgative balance.
--- Anything else is refused with its text, rather than guessed. Both run
--- after systemstart, once rift has its tables.
+-- svof cures with its own cure forms only: a herb with a mineral
+-- (rift.herb_conversions), a salve on a place or none, a herb svof keeps a
+-- pipe of, and immunity on purgative balance. Any other, such as Writhe,
+-- Sip Health or Apply Health To Torso (the capture, 2026-10-21), is the
+-- game's to cure, and one with no cure, as bloodfire has none, is tracked
+-- only: svof tracks them and leaves the curing to the game (the user,
+-- 2026-10-22). Both run after systemstart, once rift has its tables.
 local aff_salves = { epidermal = true, mending = true, caloric = true, restoration = true }
 local aff_salve_places = { head = true, body = true, torso = true, arms = true, legs = true }
 local aff_pipes = { elm = true, valerian = true, skullcap = true }
@@ -15117,9 +15119,10 @@ end
 -- alt }, { kind = 'salve', item, alt, place }, { kind = 'smoke', item, alt },
 -- { kind = 'purgative', item, alt } or { kind = 'time' }, at most one of a
 -- kind: an entry has one action on each balance, and a herb and its mineral
--- are one cure
+-- are one cure. A cure svof can't give is { kind = 'game', text }, with no
+-- action, and no text is no cures
 function svo.affcures(text)
-  if type(text) ~= 'string' or not text:find("%S") then return nil, "it has no cure" end
+  if type(text) ~= 'string' or not text:find("%S") then return {} end
   local cures, seen = {}, {}
   for each in (text:lower() .. "/"):gmatch("([^/]*)/") do
     local part = each:gsub("^%s+", ""):gsub("%s+$", ""):gsub("%s+", " ")
@@ -15146,11 +15149,13 @@ function svo.affcures(text)
       local elixir, alt = aff_pair(rift.vial_conversions, rest)
       if elixir and aff_purgatives[elixir] then cure = { kind = 'purgative', elixir, alt } end
     end
+    if not cure and part ~= '' then cure = { kind = 'game', part } end
+    local before = cure and seen[cure.kind]
     if not cure then
-      return nil, string.format("Svof can't cure with %q", part)
-    end
-    local before = seen[cure.kind]
-    if not before then
+      -- nothing between two slashes
+    elseif cure.kind == 'game' then
+      cures[#cures + 1] = cure
+    elseif not before then
       cures[#cures + 1] = cure
       seen[cure.kind] = cure
     elseif before[1] ~= cure[1] or before.place ~= cure.place then
