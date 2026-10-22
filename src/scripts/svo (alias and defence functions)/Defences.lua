@@ -1752,6 +1752,30 @@ if svo.haveskillset('weatherweaving') then
     off = {"One of your reflections has been destroyed! You have 0 left.", "All your reflections wink out of existence!"}})
 end
 
+-- The channels simultaneity opens: every one the class has. Simultaneity
+-- is up while all of them are, however each came or went (svof's command,
+-- a line, or GMCP's Channels in Char.Vitals), so the channels' records say
+-- so. Spirit was Healing's and never comes now (the plan's question 9)
+if svo.haveskillset('elementalism') then
+  defences.channels = { 'air', 'fire', 'water', 'earth' }
+elseif svo.haveskillset('weatherweaving') then
+  defences.channels = { 'air', 'water', 'earth' }
+else
+  defences.channels = {}
+end
+do
+  local function ongot()
+    for _, channel in ipairs(defences.channels) do
+      if not defc[channel] then return end
+    end
+    if not defc.spirit then defences.got('simultaneity') end
+  end
+  local function onlost() defences.lost('simultaneity') end
+  for _, channel in ipairs(defences.channels) do
+    defs_data[channel].ongot, defs_data[channel].onlost = ongot, onlost
+  end
+end
+
 if svo.haveskillset('pranks') then
   defs_data:set('arrowcatch', { type = 'pranks',
     mana = 'lots',

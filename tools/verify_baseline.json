@@ -229,7 +229,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "846866addd3bad33",
+      "digest": "b03d2c9a36d929bb",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -239,7 +239,7 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "eb92adb89edf0dc1",
+      "digest": "c2b7dcb7d38f9da7",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -454,7 +454,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "30388f873f2f9289",
+      "digest": "cc8fa31cab7f0eb6",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {

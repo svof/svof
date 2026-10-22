@@ -12513,12 +12513,39 @@ if not next(svo.dict) then
   end
   
   if svo.haveskillset('elementalism') or svo.haveskillset('weatherweaving') then
+    -- Simultaneity opens every channel at once, and costs 1000 mana however
+    -- many it opens (the user, 2026-10-14). So svof uses it only when no
+    -- channel is open, as at the start of defup or once all are lost: when
+    -- one or some go, svof opens those alone. Wanting simultaneity, on defup
+    -- or keepup, is wanting every channel it opens (defences.channels).
+    local function wanted(def)
+      return (sys.deffing and defdefup[defs.mode][def]) or (conf.keepup and defkeepup[defs.mode][def])
+    end
+    local function simultaneity_wanted()
+      return wanted('simultaneity') and not svo.ignore.simultaneity
+    end
+    local function none_open()
+      for _, channel in ipairs(defences.channels) do
+        if defc[channel] then return false end
+      end
+      return true
+    end
+    -- whether svof opens the channels with simultaneity, rather than one
+    -- at a time
+    local function simultaneity_due()
+      return simultaneity_wanted() and none_open() and stats.currentmana >= 1000
+    end
+    local function channel_advisable(channel)
+      return (not defc[channel] and (wanted(channel) or simultaneity_wanted()) and not simultaneity_due()
+        and not codepaste.balanceful_defs_codepaste()) or false
+    end
+
     svo.dict.simultaneity = {
       physical = {
         balanceful_act = true, def = true, undeffable = true,
   
         isadvisable = function()
-         return (not defc.simultaneity and ((sys.deffing and defdefup[defs.mode].simultaneity) or (conf.keepup and defkeepup[defs.mode].simultaneity)) and not codepaste.balanceful_defs_codepaste() and stats.currentmana >= 1000) or false
+         return (not defc.simultaneity and simultaneity_due() and not codepaste.balanceful_defs_codepaste()) or false
         end,
   
         oncompleted = function() defences.got('simultaneity') end,
@@ -12531,78 +12558,46 @@ if not next(svo.dict) then
       physical = {
         balanceful_act = true, def = true, undeffable = true,
   
-        isadvisable = function()
-         return (not defc.air and ((sys.deffing and defdefup[defs.mode].air) or (conf.keepup and defkeepup[defs.mode].air)) and not codepaste.balanceful_defs_codepaste()) or false
-        end,
+        isadvisable = function() return channel_advisable('air') end,
   
-        oncompleted = function()
-          defences.got('air')
-          if defc.air and defc.earth and defc.water and not defc.spirit
-          and (svo.haveskillset('weatherweaving') or defc.fire) then
-            defences.got('simultaneity')
-          end
-        end,
+        -- (simultaneity comes and goes with the channels, on their records)
+        oncompleted = function() defences.got('air') end,
   
         action = "channel air",
         onstart = function() send('channel air', conf.commandecho) end
       },
       gone = {
-        oncompleted = function()
-          defences.lost('air')
-          defences.lost('simultaneity')
-        end
+        oncompleted = function() defences.lost('air') end
       }
     }
     svo.dict.water = {
       physical = {
         balanceful_act = true, def = true, undeffable = true,
   
-        isadvisable = function()
-         return (not defc.water and ((sys.deffing and defdefup[defs.mode].water) or (conf.keepup and defkeepup[defs.mode].water)) and not codepaste.balanceful_defs_codepaste()) or false
-        end,
+        isadvisable = function() return channel_advisable('water') end,
   
-        oncompleted = function()
-          defences.got('water')
-          if defc.air and defc.earth and defc.water and not defc.spirit
-          and (svo.haveskillset('weatherweaving') or defc.fire) then
-            defences.got('simultaneity')
-          end
-        end,
+        oncompleted = function() defences.got('water') end,
   
         action = "channel water",
         onstart = function() send('channel water', conf.commandecho) end
       },
       gone = {
-        oncompleted = function()
-          defences.lost('water')
-          defences.lost('simultaneity')
-        end
+        oncompleted = function() defences.lost('water') end
       }
     }
     svo.dict.earth = {
       physical = {
         balanceful_act = true, def = true, undeffable = true,
   
-        isadvisable = function()
-         return (not defc.earth and ((sys.deffing and defdefup[defs.mode].earth) or (conf.keepup and defkeepup[defs.mode].earth)) and not codepaste.balanceful_defs_codepaste()) or false
-        end,
+        isadvisable = function() return channel_advisable('earth') end,
   
-        oncompleted = function()
-          defences.got('earth')
-          if defc.air and defc.earth and defc.water and not defc.spirit
-          and (svo.haveskillset('weatherweaving') or defc.fire) then
-            defences.got('simultaneity')
-          end
-        end,
+        oncompleted = function() defences.got('earth') end,
   
         action = "channel earth",
         onstart = function() send('channel earth', conf.commandecho) end
       },
       gone = {
-        oncompleted = function()
-          defences.lost('earth')
-          defences.lost('simultaneity')
-        end
+        oncompleted = function() defences.lost('earth') end
       }
     }
   if not svo.haveskillset('weatherweaving') then
@@ -12610,29 +12605,19 @@ if not next(svo.dict) then
       physical = {
         balanceful_act = true, def = true, undeffable = true,
   
-        isadvisable = function()
-         return (not defc.fire and ((sys.deffing and defdefup[defs.mode].fire) or (conf.keepup and defkeepup[defs.mode].fire)) and not codepaste.balanceful_defs_codepaste()) or false
-        end,
+        isadvisable = function() return channel_advisable('fire') end,
   
-        oncompleted = function()
-          defences.got('fire')
-          if defc.air and defc.fire and defc.earth and defc.water and not defc.spirit then
-            defences.got('simultaneity')
-          end
-        end,
+        oncompleted = function() defences.got('fire') end,
   
         action = "channel fire",
         onstart = function() send('channel fire', conf.commandecho) end
       },
       gone = {
-        oncompleted = function()
-          defences.lost('fire')
-          defences.lost('simultaneity')
-        end
+        oncompleted = function() defences.lost('fire') end
       }
     }
   end
-    svo.dict.bindall = {
+      svo.dict.bindall = {
       physical = {
         balanceful_act = true, def = true, undeffable = true,
   
