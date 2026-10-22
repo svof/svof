@@ -4084,6 +4084,11 @@ function defences.clash(name, parts)
       end
     end
   end
+  -- and the afflictions the player defined (vcustomaff), whose lines are
+  -- triggers as well
+  local affclash = svo.afflictions and svo.afflictions.defence_clash
+    and svo.afflictions.defence_clash(lines, subs, parts.patterns or {})
+  if affclash then return affclash end
   local command = defences.command_key(parts.command)
   if command then
     -- what svof takes a command for when the player types it or serverside

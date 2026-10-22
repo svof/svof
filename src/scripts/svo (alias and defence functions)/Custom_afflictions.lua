@@ -177,7 +177,11 @@ end
 function afflictions.register(name, spec)
   if afflictions.registered[name] then afflictions.unregister(name) end
   if type(spec) ~= 'table' then return false, "it has no definition" end
+  -- the lines too, as install checks them: a class change or an update to
+  -- Svof can bring a line a saved definition watches for, and one that
+  -- clashes stays out, as a defined defence does
   local why = svo.dict[name] == nil and clash(name, spec) or afflictions.unending(spec)
+    or afflictions.line_clash(name, spec)
   if why then return false, why end
   local ok
   ok, why = svo.basicaff(name, spec)
@@ -600,6 +604,46 @@ function afflictions.line_clash(name, spec)
             if pattern_matches(p, a[2]) then
               return string.format("your %s's pattern %q matches %q", other, p, a[2])
             end
+          end
+        end
+      end
+    end
+  end
+end
+
+-- Why a defence's lines clash with a defined affliction's, or nil, for
+-- defences.clash: the other half of line_clash's check of svof's defences,
+-- so a defence defined or changed after an affliction can't take its line
+-- either. lines are the defence's exact lines, subs the part-lines it
+-- watches for and patterns its { field, pattern }s
+function afflictions.defence_clash(lines, subs, patterns)
+  local names = {}
+  for name in pairs(afflictions.custom or {}) do names[#names + 1] = name end
+  table.sort(names)
+  for _, name in ipairs(names) do
+    local spec = afflictions.custom[name]
+    for _, field in ipairs({ 'gain', 'cured', 'expire', 'diag' }) do
+      for _, theirs in ipairs(line_list(spec[field])) do
+        for _, l in ipairs(lines) do
+          if l == theirs then return string.format("your affliction %s watches for %q", name, l) end
+        end
+        for _, sub in ipairs(subs) do
+          if theirs:find(sub, 1, true) then
+            return string.format("your affliction %s's line %q has %q in it", name, theirs, sub)
+          end
+        end
+        for _, p in ipairs(patterns) do
+          if pattern_matches(p[2], theirs) then
+            return string.format("the pattern %q matches your affliction %s's line %q", p[2], name, theirs)
+          end
+        end
+      end
+    end
+    for _, field in ipairs({ 'gainpattern', 'curedpattern' }) do
+      for _, p in ipairs(line_list(spec[field])) do
+        for _, l in ipairs(lines) do
+          if pattern_matches(p, l) then
+            return string.format("your affliction %s's pattern %q matches %q", name, p, l)
           end
         end
       end
