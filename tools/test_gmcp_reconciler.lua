@@ -303,6 +303,17 @@ local function new_environment()
     end,
   })
 
+  -- The defence handlers take the game's word through defences.confirm and
+  -- unconfirm (Defences.lua, not loaded here). Record which defence each is
+  -- handed, in calls.got and calls.lost as the line handlers above are.
+  svo.defences = {
+    confirm = function(name) calls.got[#calls.got + 1] = name end,
+    unconfirm = function(name) calls.lost[#calls.lost + 1] = name end,
+  }
+  -- and they act only on a defence this class has a record for; here every
+  -- name a scenario uses has one
+  svo.defs_data = setmetatable({}, { __index = function() return {} end })
+
   local signals = {}
   signals.changecuring = new_signal(nil)
   signals.changecuring.emit = function(self, ...) calls.changecuring = calls.changecuring + 1 end
@@ -324,7 +335,7 @@ local function new_environment()
     svo = svo, signals = signals, luanotify = luanotify, gmcp = gmcp,
     -- upvalues the real file aliases at the top of Setup.lua before this block
     sk = svo.sk, conf = svo.conf, defc = svo.defc, gaffl = svo.gaffl, me = svo.me,
-    affs = svo.affs,
+    affs = svo.affs, defences = svo.defences,
     -- and the ones Curing_skeleton.lua and Alias_functions.lua alias
     cnrl = {}, lifevision = svo.lifevision,
     -- stdlib the block needs

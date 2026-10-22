@@ -126,7 +126,7 @@ svo.config_dict = svo.pl.OrderedMap {
   }},
   {havemindnet = {
     type = 'boolean',
-    onenabled = function () defences.enablelifevision() svo.echof("<0,250,0>Have%s Phylactery of Sixth Sense - added it to defup/keepup.", svo.getDefaultColor()) end,
+    onenabled = function () defences.enablemindnet() svo.echof("<0,250,0>Have%s Phylactery of Sixth Sense - added it to defup/keepup.", svo.getDefaultColor()) end,
     ondisabled = function () svo.echof("<250,0,0>Don't%s have Phylactery of Sixth Sense - won't be adding it to defup/keepup.", svo.getDefaultColor()) end,
   }},
   {autoarena = {
@@ -1509,6 +1509,33 @@ svo.config_dict = svo.pl.OrderedMap {
     onenabled = function () svo.echof("<0,250,0>Will%s notify you when GMCP updates your defences.", svo.getDefaultColor()) end,
     ondisabled = function () svo.echof("<250,0,0>Won't%s notify you when GMCP updates your defences.", svo.getDefaultColor()) end,
   }},
+  {customdefinitions = {
+    type = 'boolean',
+    vconfig2 = true,
+    onshow = function (defaultcolour)
+      local n, c = 0, 0
+      for _ in pairs(defences.custom or {}) do n = n + 1 end
+      -- and the changes to svof's own, every class's
+      for _, names in pairs(defences.edits or {}) do
+        for _ in pairs(names) do c = c + 1 end
+      end
+      fg(defaultcolour)
+      echo(string.format("%s the %d defence%s you defined and your %d change%s to Svof's own (",
+        conf.customdefinitions and "Uses" or "Doesn't use", n, n == 1 and "" or "s", c, c == 1 and "" or "s"))
+      fg('a_cyan')
+      echoLink("see them", "svo.defences.customdef_menu()", "List the defences you defined and changed, to see or change them", true)
+      fg(defaultcolour)
+      echo(").\n")
+    end,
+    onenabled = function () svo.echof("<0,250,0>Will%s use the defences you defined and your changes to Svof's own the next time Svof loads.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("<250,0,0>Won't%s use the defences you defined or your changes to Svof's own the next time Svof loads.", svo.getDefaultColor()) end,
+  }},
+  -- hidden defences (vshow hidelist) aren't raised; this lists them anyway
+  {showhiddendefs = {
+    type = 'boolean',
+    onenabled = function () svo.echof("<0,250,0>Will%s list the defences you hid in vshow hidelist too.", svo.getDefaultColor()) end,
+    ondisabled = function () svo.echof("<250,0,0>Won't%s list the defences you hid in vshow hidelist.", svo.getDefaultColor()) end,
+  }},
   {releasechannel = {
     type = 'string',
     vconfig2string = true,
@@ -1939,6 +1966,8 @@ do
   if conf.recovery then conf.efficiency = true; conf.recovery = nil end
 
   if conf.gagserverside == nil then conf.gagserverside = true end
+  -- the defences you define are added unless you switch them off
+  if conf.customdefinitions == nil then conf.customdefinitions = true end
 
   -- purgative used to be set at a default 5 before it was even used, it is now 7 for voyria
   if conf.ai_resetpurgativebal == 5 then conf.ai_resetpurgativebal = 10 end

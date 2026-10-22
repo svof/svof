@@ -1079,7 +1079,7 @@ function svo.valid.defstrip(which)
   }
 
   if svo.haveskillset('apostasy') then
-    t["demon armour"]           = 'demonarmour'
+    t["demon armour"]           = 'armour'
   end
   if svo.haveskillset('necromancy') then
     t["death aura"]             = 'deathaura'

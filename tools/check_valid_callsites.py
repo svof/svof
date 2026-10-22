@@ -41,6 +41,14 @@ under-reports and an under-reporting gate is worse than none:
     for i = 1, #listvar do local aff = listvar[i]
     valid['proper_'..status..name]          -- two variables
 
+The defence handlers in `svo.defs` fail the same way and get the same check.
+`svo.defs` is a plain table too (Setup.lua), and most of its names are made at
+systemstart by Defences.lua: a got_, lost_ and def_ handler for every record in
+svo.defs_data, a gotonly_ for every record with an on_only line, and a
+def<type>start for every custom_def_type. Those are read from the records here;
+the rest are written by hand. A mistyped defence handler used to be visible to
+no gate at all. Recorded in known_unresolved_valid.json as "defs.<name>".
+
 Pre-existing unresolved names live in known_unresolved_valid.json, the way
 check_renamed_callsites.py records its own. Every one of them is absent from
 the 2018 module xmls too, so none is conversion damage. Recording them means
@@ -142,6 +150,14 @@ RUNTIME_ENTRIES = {"cantmorph": {"aff"}}
 
 # Below this, the call-site reading is broken rather than the source clean.
 NAME_CALL_FLOOR = 250
+
+# The defence handlers. Defences.lua holds the records the systemstart loop
+# generates them from. Floors well below today's counts, as above: 317 record
+# names make about 950 generated handlers, and about 60 are written by hand.
+DEFENCES = ("svo (alias and defence functions)", "Defences.lua")
+DEFS_GENERATED_FLOOR = 800
+DEFS_HANDWRITTEN_FLOOR = 40
+DEFS_CALL_FLOOR = 80
 
 
 def read(path):
@@ -302,6 +318,48 @@ def collect_calls():
     return calls
 
 
+def defs_definitions():
+    """(hand-written names, generated names) in svo.defs.
+
+    Generated: what the systemstart loop in Defences.lua makes from every
+    defs_data:set record - got_<name> and lost_<name> keyed by the name as it
+    is, def_<name> with spaces made underscores, gotonly_<name> for a record
+    with on_only, and def<type>start for each custom_def_type. Every record is
+    read whatever skillset gates it, so this is the union over all classes,
+    which is the right set for a call site: a trigger for one class's
+    defence is only enabled for that class.
+    """
+    hand = set()
+    for p in lua_files(os.path.join(SRC, "scripts")):
+        s = read(p)
+        hand |= set(re.findall(r"function\s+(?:svo\.)?\bdefs\.([A-Za-z_]\w*)", s))
+        hand |= set(re.findall(r"(?:svo\.)?\bdefs\.([A-Za-z_]\w*)\s*=(?!=)", s))
+        hand |= set(re.findall(r"(?:svo\.)?\bdefs\[\s*['\"]([^'\"]+)['\"]\s*\]\s*=(?!=)", s))
+
+    src = read(os.path.join(SRC, "scripts", *DEFENCES))
+    generated = set()
+    for m in re.finditer(r"defs_data:set\(\s*(['\"])([^'\"]+)\1\s*,\s*\{", src):
+        name = m.group(2)
+        body = table_body(src, m.end() - 1)
+        generated |= {"got_" + name, "lost_" + name, "def_" + name.replace(" ", "_")}
+        if re.search(r"\bon_only\s*=", body):
+            generated.add("gotonly_" + name)
+        for t in re.findall(r"\bcustom_def_type\s*=\s*['\"](\w+)['\"]", body):
+            generated.add("def%sstart" % t)
+    return hand, generated
+
+
+def collect_defs_calls():
+    """{name: [files]} for every svo.defs.<name>(...) call in a trigger or
+    alias, the .lua files and the scripts kept inline in the json."""
+    calls = defaultdict(list)
+    call = re.compile(r"\bdefs\s*(?:\.\s*([A-Za-z_]\w*)|\[\s*['\"]([^'\"]+)['\"]\s*\])\s*\(")
+    for where, text in script_texts():
+        for m in call.finditer(text):
+            calls[m.group(1) or m.group(2)].append(where.split(" > ")[0])
+    return calls
+
+
 def script_texts():
     """(where, script) for every trigger and alias script: the .lua files, and
     the scripts muddler keeps inline in the json, which collect_calls does not
@@ -424,12 +482,26 @@ def main():
                         "- this check is reading less than it should"
                         % (named, "/".join(NAME_FAMILIES), NAME_CALL_FLOOR))
 
+    defs_hand, defs_generated = defs_definitions()
+    defs_calls = collect_defs_calls()
+    for what, got, floor in (("generated svo.defs handlers", len(defs_generated), DEFS_GENERATED_FLOOR),
+                             ("hand-written svo.defs handlers", len(defs_hand), DEFS_HANDWRITTEN_FLOOR),
+                             ("distinct svo.defs calls", len(defs_calls), DEFS_CALL_FLOOR)):
+        if got < floor:
+            problems.append("read only %d %s, expected at least %d - this check is "
+                            "reading less than it should" % (got, what, floor))
+
     unresolved = []
     for name in sorted(calls):
         if resolves(name):
             continue
         for f in sorted(set(calls[name])):
             unresolved.append({"file": f, "name": name})
+    for name in sorted(defs_calls):
+        if name in defs_hand or name in defs_generated:
+            continue
+        for f in sorted(set(defs_calls[name])):
+            unresolved.append({"file": f, "name": "defs." + name})
 
     if a.write_known:
         if problems:
@@ -440,7 +512,8 @@ def main():
             return 1
         payload = {
             "note": "svo.valid calls in src/triggers and src/aliases that "
-                    "resolve to nothing. Every one is absent from the 2018 "
+                    "resolve to nothing, and svo.defs calls as defs.<name>. "
+                    "Every one is absent from the 2018 "
                     "module xmls too, so none is conversion damage. Recorded "
                     "so the count can only go down: a new one fails, and "
                     "fixing one of these fails until it is removed from here.",
@@ -463,14 +536,19 @@ def main():
           % (len(literal), generated, len(prefixed) + len(suffixed) + len(twopart)))
     print("%d name arguments to %s checked against svo.dict"
           % (named, "/".join(NAME_FAMILIES)))
+    print("%d distinct svo.defs names called; %d handlers written by hand, %d "
+          "generated from the defence records" % (len(defs_calls), len(defs_hand), len(defs_generated)))
     print()
 
+    def shown(name):
+        return "svo." + name if name.startswith("defs.") else "svo.valid." + name
+
     for e in new:
-        print("[FAIL] svo.valid.%s() has no definition anywhere" % e["name"])
+        print("[FAIL] %s() has no definition anywhere" % shown(e["name"]))
         print("           called from %s" % e["file"])
     for f, n in sorted(fixed):
-        print("[FAIL] svo.valid.%s() is no longer an unresolved call, and %s "
-              "still records it" % (n, os.path.basename(KNOWN)))
+        print("[FAIL] %s() is no longer an unresolved call, and %s "
+              "still records it" % (shown(n), os.path.basename(KNOWN)))
         print("           either a handler was written for it or its caller was "
               "removed - %s" % f)
         print("           drop that entry in the same commit that did it")
@@ -488,8 +566,8 @@ def main():
         print("\nVALID CALL SITES FAILED - %d problem(s)" % bad)
         return 1
 
-    print("every svo.valid call resolves (%d known pre-existing dead call(s) "
-          "ignored)" % len(known))
+    print("every svo.valid and svo.defs call resolves (%d known pre-existing dead "
+          "call(s) ignored)" % len(known))
     return 0
 
 
