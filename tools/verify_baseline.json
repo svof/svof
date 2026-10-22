@@ -3,9 +3,19 @@
   "source": "svof.xml",
   "accepted": [
     {
+      "id": "added|Alias|svo (aliases, triggers)|svo/(vcustomaff) Define your own afflictions",
+      "digest": "462f05c35f76adea",
+      "text": "Alias    svo (aliases, triggers) svo/(vcustomaff) Define your own afflictions [only in the package]"
+    },
+    {
       "id": "added|Alias|svo (aliases, triggers)|svo/(vcustomdef) Define your own defences",
       "digest": "788b05cdbb2f41c8",
       "text": "Alias    svo (aliases, triggers) svo/(vcustomdef) Define your own defences [only in the package]"
+    },
+    {
+      "id": "added|Script|svo (alias and defence functions)|Custom afflictions",
+      "digest": "6ffb96cd60a2c557",
+      "text": "Script   svo (alias and defence functions) Custom afflictions [only in the package]"
     },
     {
       "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_download_done",
@@ -109,8 +119,8 @@
     },
     {
       "id": "count|Alias|svo (aliases, triggers)|svo",
-      "digest": "8c4b3201feabbd64",
-      "text": "Alias    svo (aliases, triggers) / 'svo': 121 items originally, 122 in merged"
+      "digest": "54fafd06c004bb94",
+      "text": "Alias    svo (aliases, triggers) / 'svo': 121 items originally, 123 in merged"
     },
     {
       "id": "count|Script|svo (install me in module manager)|Check for system updates",
@@ -229,7 +239,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "846866addd3bad33",
+      "digest": "022362f87eb23674",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -239,7 +249,7 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "eb92adb89edf0dc1",
+      "digest": "b23cb8a48ba8dc2d",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -336,6 +346,11 @@
       "id": "item|Script|svo (install me in module manager)|Load & init/svo.uninstall_all_modules|script",
       "digest": "46a5212a5163d950",
       "text": "Script   svo (install me in module manager) Load & init/svo.uninstall_all_modules [script]"
+    },
+    {
+      "id": "item|Script|svo (install me in module manager)|Load & init/svo_init_system|script",
+      "digest": "39ca7a11ad968743",
+      "text": "Script   svo (install me in module manager) Load & init/svo_init_system [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|Load & init|script",
@@ -444,7 +459,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "4659110c65313e73",
+      "digest": "37d189f091d78c8e",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
@@ -469,7 +484,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "99047e6499bbb06a",
+      "digest": "b38d724616ff020a",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

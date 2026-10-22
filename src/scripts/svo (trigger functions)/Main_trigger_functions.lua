@@ -2776,8 +2776,42 @@ for _, restoration in pairs({
   end
 end
 
+-- A cure takes one affliction of the ones it can, and the game picks which,
+-- so a cure line ("<aff> is cured") claims the action svof has in flight
+-- for aff, or else the one it sent with the same cure for another
+-- affliction, and puts aff's in its place. own_cures holds, by balance and
+-- item, svof's own actions a cure takes, which the loops below fill;
+-- cures_with adds the actions of afflictions a player defined
+-- (svo.afflictions) that the same cure takes, as they are when the line
+-- arrives
+local own_cures = { salve = {}, smoke = {}, herb = {} }
+local function cures_with(balance, item)
+  local own = own_cures[balance][item] or {}
+  local defined = svo.afflictions and svo.afflictions.cures_with(balance, item)
+  if not defined or #defined == 0 then return own end
+  local t = {}
+  for i, act in ipairs(own) do t[i] = act end
+  for _, act in ipairs(defined) do t[#t + 1] = act end
+  return t
+end
+
+local function salve_cured(aff, cures)
+  local result = svo.checkany(svo.dict[aff].salve, unpack(cures))
+
+  if not result then return end
+
+  svo.apply_cure = true
+  if result.name == aff..'_salve' then
+    lifevision.add(actions[aff..'_salve'].p)
+  else
+    svo.killaction(svo.dict[result.action_name].salve)
+    svo.checkaction(svo.dict[aff].salve, true)
+    lifevision.add(svo.dict[aff].salve)
+  end
+end
+
 -- salve cures - instantaneous only
-for _, regeneration in pairs({
+for salve, regeneration in pairs({
   caloric   = {'frozen', 'shivering', 'caloric'},
   epidermal = {'anorexia', 'itching', 'stuttering', 'slashedthroat', 'blindaff', 'deafaff'},
   mending   = {'crushedthroat','selarnia', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'ablaze', 'unknowncrippledarm', 'unknowncrippledleg', 'unknowncrippledlimb'}}) do
@@ -2786,21 +2820,11 @@ for _, regeneration in pairs({
   for _, aff in pairs(regeneration) do
     other_regeneration_affs[#other_regeneration_affs+1] = svo.dict[aff].salve
   end
+  own_cures.salve[salve] = other_regeneration_affs
 
   for _, aff in pairs(regeneration) do
     valid['salve_cured_'..aff] = function()
-      local result = svo.checkany(svo.dict[aff].salve, unpack(other_regeneration_affs))
-
-      if not result then return end
-
-      svo.apply_cure = true
-      if result.name == aff..'_salve' then
-        lifevision.add(actions[aff..'_salve'].p)
-      else
-        svo.killaction(svo.dict[result.action_name].salve)
-        svo.checkaction(svo.dict[aff].salve, true)
-        lifevision.add(svo.dict[aff].salve)
-      end
+      salve_cured(aff, cures_with('salve', salve))
     end
   end
 end
@@ -2845,8 +2869,24 @@ do
 end
 
 
+local function smoke_cured(aff, cures)
+  local result = svo.checkany(svo.dict[aff].smoke, unpack(cures))
+ -- aff twice in the svo.checkany list, first so most cases it gets returned first when it's the only aff
+
+  if not result then return end
+
+  svo.smoke_cure = true
+  if result.name == aff..'_smoke' then
+    lifevision.add(actions[aff..'_smoke'].p)
+  else
+    svo.killaction(svo.dict[result.action_name].smoke)
+    svo.checkaction(svo.dict[aff].smoke, true)
+    lifevision.add(svo.dict[aff].smoke)
+  end
+end
+
 -- normal smokes
-for _, smoke in pairs({
+for pipe, smoke in pairs({
   valerian = {'disloyalty', 'slickness', 'manaleech', 'hellsight'},
   pear = {'pressure'},
   elm = {'deadening', 'madness', 'aeon', 'tension', 'earworm'}}) do
@@ -2855,29 +2895,61 @@ for _, smoke in pairs({
   for _, aff in pairs(smoke) do
     other_smoke_cures[#other_smoke_cures+1] = svo.dict[aff].smoke
   end
+  own_cures.smoke[pipe] = other_smoke_cures
 
   for _, aff in pairs(smoke) do
     valid['smoke_cured_'..aff] = function()
-      local result = svo.checkany(svo.dict[aff].smoke, unpack(other_smoke_cures))
-     -- aff twice in the svo.checkany list, first so most cases it gets returned first when it's the only aff
-
-      if not result then return end
-
-      svo.smoke_cure = true
-      if result.name == aff..'_smoke' then
-        lifevision.add(actions[aff..'_smoke'].p)
-      else
-        svo.killaction(svo.dict[result.action_name].smoke)
-        svo.checkaction(svo.dict[aff].smoke, true)
-        lifevision.add(svo.dict[aff].smoke)
-      end
+      smoke_cured(aff, cures_with('smoke', pipe))
     end
 
   end
 end
 
+local function herb_cured(aff, cures)
+  local result = svo.checkany(svo.dict[aff].herb, unpack(cures))
+
+  if not result then return end
+
+  svo.herb_cure = true
+  if result.name == aff..'_herb' then
+    -- check timers here! should not be less than half of svo.getping(). Check *action*, not affliction timer as well
+    if conf.aillusion and not conf.serverside then
+      local time, lat = getStopWatchTime(actions[aff..'_herb'].p.actionwatch), svo.getping()
+
+      if time < (lat/2) then
+        svo.ignore_illusion("This 'cure' looks fake - finished way too quickly, in "..time.."s, while our ping is "..lat)
+        return
+      end
+    end
+
+    lifevision.add(actions[aff..'_herb'].p)
+  -- with AI on, don't accept cures for affs that we don't have (although do consider check*s).
+  -- sk.gmcp_cured[aff] covers the case where GMCP already removed this
+  -- affliction earlier in the same paragraph - GMCP is processed before
+  -- the text it accompanies, so affs[aff] is necessarily nil by now and
+  -- would otherwise make every such genuine cure look like an illusion.
+  elseif (not conf.aillusion or (conf.aillusion and (affs[aff] or sk.gmcp_cured[aff] or affs.unknownany or affs.unknownmental or svo.affsp[aff]))) then
+    svo.killaction(svo.dict[result.action_name].herb)
+    svo.checkaction(svo.dict[aff].herb, true)
+    lifevision.add(svo.dict[aff].herb)
+  elseif not sk.sawcuringcommand then
+    moveCursor(0, getLineNumber()-1)
+    moveCursor(#getCurrentLine(), getLineNumber())
+    insertLink(" (i)", '', "Ignored the "..aff.." herb cure, because I don't think we have this affliction atm, and we don't have any unknown affs either - so seems it's an illusion.")
+    moveCursorEnd()
+  end
+end
+
+-- the cure-line handler for aff, an affliction a player defined
+-- (svo.afflictions), cured on balance (herb, smoke or salve) with item, the
+-- way the loops here make svof's own; nil for a balance with none
+function svo.valid_cure_line(balance, aff, item)
+  local cured = ({ salve = salve_cured, smoke = smoke_cured, herb = herb_cured })[balance]
+  return cured and function() cured(aff, cures_with(balance, item)) end
+end
+
 -- normal herbs
-for _, herb in pairs({
+for herbname, herb in pairs({
   ash        = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia', 'crescendo'},
   bellwort   = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'pyre', 'retribution', 'timeloop', 'indifference'},
   bloodroot  = {'paralysis', 'slickness', 'pyramides'},
@@ -2891,41 +2963,11 @@ for _, herb in pairs({
   for _, aff in pairs(herb) do
     other_herb_cures[#other_herb_cures+1] = svo.dict[aff].herb
   end
+  own_cures.herb[herbname] = other_herb_cures
 
   for _, aff in pairs(herb) do
     valid['herb_cured_'..aff] = function()
-      local result = svo.checkany(svo.dict[aff].herb, unpack(other_herb_cures))
-
-      if not result then return end
-
-      svo.herb_cure = true
-      if result.name == aff..'_herb' then
-        -- check timers here! should not be less than half of svo.getping(). Check *action*, not affliction timer as well
-        if conf.aillusion and not conf.serverside then
-          local time, lat = getStopWatchTime(actions[aff..'_herb'].p.actionwatch), svo.getping()
-
-          if time < (lat/2) then
-            svo.ignore_illusion("This 'cure' looks fake - finished way too quickly, in "..time.."s, while our ping is "..lat)
-            return
-          end
-        end
-
-        lifevision.add(actions[aff..'_herb'].p)
-      -- with AI on, don't accept cures for affs that we don't have (although do consider check*s).
-      -- sk.gmcp_cured[aff] covers the case where GMCP already removed this
-      -- affliction earlier in the same paragraph - GMCP is processed before
-      -- the text it accompanies, so affs[aff] is necessarily nil by now and
-      -- would otherwise make every such genuine cure look like an illusion.
-      elseif (not conf.aillusion or (conf.aillusion and (affs[aff] or sk.gmcp_cured[aff] or affs.unknownany or affs.unknownmental or svo.affsp[aff]))) then
-        svo.killaction(svo.dict[result.action_name].herb)
-        svo.checkaction(svo.dict[aff].herb, true)
-        lifevision.add(svo.dict[aff].herb)
-      elseif not sk.sawcuringcommand then
-        moveCursor(0, getLineNumber()-1)
-        moveCursor(#getCurrentLine(), getLineNumber())
-        insertLink(" (i)", '', "Ignored the "..aff.." herb cure, because I don't think we have this affliction atm, and we don't have any unknown affs either - so seems it's an illusion.")
-        moveCursorEnd()
-      end
+      herb_cured(aff, cures_with('herb', herbname))
     end
 
   end

@@ -51,6 +51,9 @@ REQUIRED = {
     # every class's actions with a priority that only some classes have
     # (tools/defence_catalog.lua), which keep their saved places
     "prio_catalog.lua": 5_000,
+    # every line pattern of svof's own triggers (tools/trigger_catalog.py),
+    # which vcustomaff checks definitions against
+    "trigger_catalog.lua": 200_000,
 }
 
 MIN_ARCHIVE_BYTES = 100_000
