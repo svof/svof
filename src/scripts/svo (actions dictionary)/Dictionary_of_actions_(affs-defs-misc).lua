@@ -15172,7 +15172,8 @@ end
 --   cures      svo.affcures' list, or its text
 --   madness    true for one of the game's WhisperingMadness afflictions:
 --              its cures wait while you have madness, as svof's own do
---   time       seconds, for a timed one (Cure(s): Time)
+--   time       seconds, for a timed one (Cure(s): Time), if the game gives
+--              them (Default time); with none it has no timer
 --   gmcp       the game's name for it, when that isn't name
 -- The entry has an aff and a gone block, an action for each cure, and a
 -- waitingfor for a timed one, in the shape of scalded's: it's removed when
@@ -15188,12 +15189,12 @@ function svo.basicaff(name, spec)
     cures, why = svo.affcures(cures)
     if not cures then return false, why end
   end
+  -- one time cures with no time given has no timer: 21 of the game's timed
+  -- ones have no Default time (the capture, 2026-10-21), and end on their
+  -- line or GMCP's Remove (the user, 2026-10-22)
   local timed
   for _, cure in ipairs(cures) do
-    if cure.kind == 'time' then timed = true end
-  end
-  if timed and not (tonumber(spec.time) and tonumber(spec.time) > 0) then
-    return false, "a timed affliction needs its time"
+    if cure.kind == 'time' and tonumber(spec.time) and tonumber(spec.time) > 0 then timed = true end
   end
 
   local madness = spec.madness
@@ -15311,7 +15312,7 @@ function svo.basicaff(name, spec)
           empty_cure()
         end,
       }
-    elseif kind == 'time' then
+    elseif kind == 'time' and timed then
       entry.waitingfor = {
         customwait = tonumber(spec.time),
         isadvisable = function() return false end,

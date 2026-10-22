@@ -13,7 +13,8 @@
 --               it. With no cure svof gives, the cure line ends it:
 --               svo.valid.<name>_woreoff for a timed one, and
 --               svo.valid.<name>_cured, its gone, for one only tracked
---   expire      svo.valid.<name>_woreoff, for a timed one
+--   expire      svo.valid.<name>_woreoff, for a timed one, or with no timer
+--               svo.valid.<name>_cured
 --   diagnose    svo.valid.diag, while svof is diagnosing, as the svo diag
 --               trigger's children are
 -- A purgative cure has no cure-line handler, as svof's voyria has none: the
@@ -145,6 +146,24 @@ local function clash(name, spec)
   end
 end
 
+-- Why nothing would end spec's affliction, or nil. One with no cure of
+-- svof's and no time ends on its cure or expire line, or on GMCP's Remove,
+-- as 21 of the game's timed ones have no Default time (the capture,
+-- 2026-10-21; the user, 2026-10-22), so it needs one of them, or svof
+-- would track it for good
+function afflictions.unending(spec)
+  local cures = type(spec.cures) == 'table' and spec.cures or svo.affcures(spec.cures) or {}
+  local timer = tonumber(spec.time) and tonumber(spec.time) > 0
+  for _, cure in ipairs(cures) do
+    if cure.kind ~= 'game' and cure.kind ~= 'time' then return nil end
+  end
+  if timer or spec.gmcp then return nil end
+  for _, field in ipairs({ 'cured', 'curedpattern', 'expire' }) do
+    if #lines(spec[field]) > 0 then return nil end
+  end
+  return "nothing would end it: with no cure of Svof's and no time, it needs a line it ends on or its GMCP name"
+end
+
 -- Registers an affliction from spec, after systemstart, or says why not.
 -- spec is what svo.basicaff takes, and the lines (each one or a list; none
 -- for a field the game says "none" for):
@@ -158,7 +177,7 @@ end
 function afflictions.register(name, spec)
   if afflictions.registered[name] then afflictions.unregister(name) end
   if type(spec) ~= 'table' then return false, "it has no definition" end
-  local why = svo.dict[name] == nil and clash(name, spec)
+  local why = svo.dict[name] == nil and clash(name, spec) or afflictions.unending(spec)
   if why then return false, why end
   local ok
   ok, why = svo.basicaff(name, spec)
@@ -190,10 +209,11 @@ function afflictions.register(name, spec)
   end)
 
   local cured_code = {}
+  -- timed: with a timer, which basicaff makes only for a time it's given
   local timed, own_cure
   for _, cure in ipairs(cures) do
     if cure.kind == 'time' then
-      timed = true
+      timed = entry.waitingfor ~= nil
     elseif cure.kind ~= 'game' then
       own_cure = true
       local items = afflictions.cures[cure.kind]
@@ -218,6 +238,20 @@ function afflictions.register(name, spec)
       end
     end)
   end
+  -- the line it ends on with no timer to end: its gone
+  local ended
+  local function ends()
+    if not ended then
+      make(name .. '_cured', function()
+        svo.checkaction(svo.dict[name].gone, true)
+        if svo.actions[name .. '_gone'] then
+          svo.lifevision.add(svo.actions[name .. '_gone'].p)
+        end
+      end)
+      ended = string.format("svo.valid.%s_cured()", name)
+    end
+    return ended
+  end
   -- With no cure of svof's, its cure line is the line it ends on: the game
   -- gives a Cured msg and no Expire msg for one only time cures, as for
   -- accentato and asphyxiating (the capture, 2026-10-20), and the game
@@ -225,14 +259,9 @@ function afflictions.register(name, spec)
   if not own_cure and timed then
     cured_code[1] = string.format("svo.valid.%s_woreoff()", name)
   elseif not own_cure then
-    make(name .. '_cured', function()
-      svo.checkaction(svo.dict[name].gone, true)
-      if svo.actions[name .. '_gone'] then
-        svo.lifevision.add(svo.actions[name .. '_gone'].p)
-      end
-    end)
-    cured_code[1] = string.format("svo.valid.%s_cured()", name)
+    cured_code[1] = ends()
   end
+  local expired = timed and string.format("svo.valid.%s_woreoff()", name) or (#lines(spec.expire) > 0 and ends())
   afflictions.handlers_of[name] = handlers
 
   if not spec.norandomcure then empty.treecurables[#empty.treecurables + 1] = name end
@@ -254,8 +283,9 @@ function afflictions.register(name, spec)
   for _, p in ipairs(lines(spec.gainpattern)) do pattern(p, gained) end
   for _, line in ipairs(lines(spec.cured)) do trigger(line, cured) end
   for _, p in ipairs(lines(spec.curedpattern)) do pattern(p, cured) end
-  if timed then
-    for _, line in ipairs(lines(spec.expire)) do trigger(line, "svo.valid." .. name .. "_woreoff()") end
+  -- its expire line ends its time, or, with no timer, it
+  if expired then
+    for _, line in ipairs(lines(spec.expire)) do trigger(line, expired) end
   end
   for _, line in ipairs(lines(spec.diag)) do
     trigger(line, string.format("if svo.actions.diag_physical then svo.valid.diag(%q) end", name))
@@ -586,11 +616,8 @@ function afflictions.problem(name, spec)
   local cures
   cures, why = svo.affcures(spec.cures)
   if not cures then return why end
-  for _, cure in ipairs(cures) do
-    if cure.kind == 'time' and not (tonumber(spec.time) and tonumber(spec.time) > 0) then
-      return "a timed affliction needs its time"
-    end
-  end
+  why = afflictions.unending(spec)
+  if why then return why end
   if #line_list(spec.gain) == 0 and #line_list(spec.gainpattern) == 0 and not spec.gmcp then
     return "it needs a line saying you have it, or its GMCP name, or Svof can't tell when you do"
   end
@@ -687,7 +714,10 @@ function afflictions.show(name)
   end
   local timed = false
   for _, cure in ipairs(cures or {}) do if cure.kind == 'time' then timed = true end end
-  if timed or d.time then row("lasts:", d.time and (d.time .. " seconds"), "time", "(not set)") end
+  -- the game gives no Default time for some, which end on their line or GMCP
+  if timed or d.time then
+    row("lasts:", d.time and (d.time .. " seconds"), "time", "no time: its line or GMCP ends it")
+  end
   label("random cures:")
   echo(d.norandomcure and "don't take it  " or "take it  ")
   link(d.norandomcure and "they do" or "they don't", string.format("svo.afflictions.set(%q, 'randomcure', %q)", name,
@@ -1065,10 +1095,14 @@ function afflictions.test(name)
   if not d then svo.echof("You haven't defined %s.", name) return end
   local cures, why = svo.affcures(d.cures)
   if cures then
-    local t, game = {}, {}
+    local t, game, untimed = {}, {}, false
     for _, cure in ipairs(cures) do
       if cure.kind == 'time' then
-        t[#t + 1] = string.format("waiting %s seconds", tostring(d.time))
+        if tonumber(d.time) and tonumber(d.time) > 0 then
+          t[#t + 1] = string.format("waiting %s seconds", tostring(d.time))
+        else
+          untimed = true
+        end
       elseif cure.kind == 'game' then
         game[#game + 1] = cure[1]
       elseif cure.kind == 'salve' then
@@ -1083,8 +1117,11 @@ function afflictions.test(name)
       svo.echof("It's also cured by %s, which Svof can't do, so it leaves that to you.", svo.concatand(game))
     elseif #game > 0 then
       svo.echof("Svof only tracks %s: it's cured by %s, which Svof can't do.", name, svo.concatand(game))
-    elseif #t == 0 then
+    elseif #t == 0 and not untimed then
       svo.echof("Svof only tracks %s, as the game gives no cure for it.", name)
+    end
+    if untimed then
+      svo.echof("Time cures it, and the game doesn't say how long, so its line or GMCP ends it, with no timer.")
     end
   else
     svo.echof("Svof can't cure %s yet: %s.", name, why)

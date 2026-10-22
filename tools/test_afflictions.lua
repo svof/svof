@@ -94,14 +94,21 @@ do
   for _, case in ipairs({
     { "clumsiness", { cures = "Eat Kelp" }, "Svof already has clumsiness" },
     { "Bad Name", { cures = "Eat Kelp" }, "a name is lowercase letters and digits" },
-    { "testaff", { cures = "Time" }, "a timed affliction needs its time" },
-    { "testaff", { cures = "Time", time = 0 }, "a timed affliction needs its time" },
   }) do
     local ok, why = svo.basicaff(case[1], case[2])
     eq(ok, false, "basicaff " .. case[1] .. " " .. case[2].cures .. " is refused")
     eq(why, case[3], "and says why")
   end
   eq(svo.dict.testaff, nil, "and makes no entry")
+
+  -- 21 of the game's timed ones have no Default time (the capture,
+  -- 2026-10-21), and have no timer (the user, 2026-10-22)
+  for _, time in ipairs({ "none", 0 }) do
+    local ok = svo.basicaff("testlong", { cures = "Time", time = time ~= "none" and time or nil })
+    eq(ok, true, "basicaff takes Time with " .. tostring(time) .. " for its time")
+    eq(svo.dict.testlong and svo.dict.testlong.waitingfor, nil, "and gives it no timer")
+    svo.dict.testlong = nil
+  end
 end
 
 -- ===== 3. Each cure, against svof's own entry for it =====
@@ -513,6 +520,53 @@ do -- a timed one's expire line
   w.prompt()
   eq(svo.affs.testhold, nil, "its cure line ends one only time cures")
   eq(w.inflight(), "", "and its time")
+
+  -- asphyxiating's layout: Time, and no Default time (the capture,
+  -- 2026-10-21), so no timer, and its line or GMCP ends it (the user,
+  -- 2026-10-22)
+  local ok, why = svo.afflictions.register("testbreath", { cures = "Time", norandomcure = true, gmcp = "testbreathaff",
+    gain = { "Your test breath fails you." }, cured = { "Your test breath comes easier." } })
+  eq(ok, true, "one with no time registers (" .. tostring(why) .. ")")
+  eq(svo.dict.testbreath.waitingfor, nil, "with no timer")
+  gmcp_aff_add(w, "testbreathaff")
+  w.prompt()
+  eq(not not svo.affs.testbreath, true, "GMCP's Add tracks it")
+  eq(w.inflight(), "", "with nothing waiting on a time")
+  w.advance(600)
+  eq(not not svo.affs.testbreath, true, "and it stays, however long")
+  -- while GMCP lists it, it has the final word (svo.gmcp_refuse_remove), so
+  -- the line counts once GMCP doesn't, as in a blackout
+  svo.gaffl.testbreathaff = nil
+  w.line("Your test breath comes easier.")
+  w.prompt()
+  eq(svo.affs.testbreath, nil, "until its cure line ends it")
+  gmcp_aff_add(w, "testbreathaff")
+  w.env.gmcp.Char.Afflictions.Remove = { "testbreathaff" }
+  svo.signals.gmcpcharafflictionsremove:emit()
+  eq(svo.affs.testbreath, nil, "or GMCP's Remove")
+
+  -- an expire line, with no timer to end
+  svo.afflictions.register("testchill", { cures = "Time", norandomcure = true, gain = { "A test chill takes you." },
+    expire = { "The test chill lifts." } })
+  w.line("A test chill takes you.")
+  w.prompt()
+  w.line("The test chill lifts.")
+  w.prompt()
+  eq(svo.affs.testchill, nil, "an expire line ends one with no timer")
+
+  -- nothing to end it
+  local unending = "nothing would end it: with no cure of Svof's and no time, it needs a line it ends on or its GMCP name"
+  eq(select(2, svo.afflictions.register("testforever", { cures = "Time", gain = { "A test without end takes you." } })),
+    unending, "one with no time, no line it ends on and no GMCP name is refused")
+  eq(svo.dict.testforever, nil, "and isn't registered")
+  eq(svo.afflictions.register("testgmcpend", { cures = "Time", gmcp = "testgmcpendaff" }), true,
+    "while its GMCP name alone, whose Remove ends it, is enough")
+  eq(svo.afflictions.problem("testforever", { cures = "Writhe", gain = { "A test without end takes you." } }), unending,
+    "as is one only tracked with nothing to end it")
+  eq(svo.afflictions.problem("testforever", { cures = "Time", time = 10, gain = { "A test without end takes you." } }), nil,
+    "while a timer ends one")
+  eq(svo.afflictions.problem("testforever", { cures = "Eat Kelp", gain = { "A test without end takes you." } }), nil,
+    "and so does a cure of svof's")
 end
 
 -- ===== 7. Through a class change =====
