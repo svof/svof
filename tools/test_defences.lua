@@ -964,6 +964,32 @@ do -- DEF's paragraph is the game's own list, so it stands
   eq(svo.defc.alertness, false, "DEF not listing alertness loses it, whatever GMCP said")
 end
 
+do -- a death keeps what GMCP still reports (live, 2026-10-22: speed lasts
+  -- through a death, gets no Add on revive, and defup waited on it forever)
+  local w = world.new()
+  local svo = w.svo
+  w.gmcp_defence_list({ "speed", "shield" })
+  svo.reset.defs()
+  eq(svo.defc.speed, true, "after the List, a death keeps speed while GMCP reports it")
+  w.gmcp_defence_remove("shield")
+  svo.defences.got("shield")
+  svo.reset.defs()
+  eq(svo.defc.shield, nil, "and loses shield, which GMCP removed")
+  svo.affs.blackout = {}
+  svo.signals.svogotaff:emit("blackout")
+  svo.affs.blackout = nil
+  svo.reset.defs()
+  eq(svo.defc.speed, nil, "and loses speed after a blackout, until GMCP repeats it")
+end
+
+do -- before the List, a death loses what GMCP reported
+  local w = world.new()
+  local svo = w.svo
+  svo.defences.got("speed")
+  svo.reset.defs()
+  eq(svo.defc.speed, nil, "before GMCP's List, a death loses speed")
+end
+
 -- ===== 10c. And on the gains =====
 
 -- A real gain reaches GMCP first, as an Add, and defences.confirm finishes

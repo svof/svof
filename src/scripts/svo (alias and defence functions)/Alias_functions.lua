@@ -975,8 +975,13 @@ function svo.reset.general()
 end
 
 function svo.reset.defs(echoback)
+  -- Every caller is the game's own event (a death, a starburst, an arena
+  -- loss), and a defence the game keeps through one, as speed is through a
+  -- death, gets no GMCP Add afterwards. So one GMCP still reports stays, or
+  -- svof waits forever for a defence that is already up. Those the game
+  -- takes away come as GMCP Removes.
   for def, _ in pairs(defc) do
-    if not svo.defs_data[def] or (svo.defs_data[def] and not svo.defs_data[def].stays_on_death) then
+    if not (svo.defs_data[def] and svo.defs_data[def].stays_on_death) and not svo.gmcp_def_holds(def) then
       svo.defc[def] = nil
     end
   end
