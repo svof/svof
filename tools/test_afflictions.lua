@@ -569,6 +569,28 @@ do -- a timed one's expire line
     "and so does a cure of svof's")
 end
 
+do -- a line that clashes stays out however it's registered, and either way round with a defence
+  local w = world.new()
+  local svo = w.svo
+  local taken = { cures = "Eat Kelp", gain = { "You prick up your ears." } }
+  local why = "Svof's defence alertness watches for \"You prick up your ears.\""
+  eq(svo.afflictions.problem("testears", taken), why, "install refuses a line svof's defence watches for")
+  local ok, err = svo.afflictions.register("testears", taken)
+  eq(ok, false, "and so does registering, as systemstart does for a saved one")
+  eq(err, why, "saying why")
+  eq(w.line("You prick up your ears."), 1, "so the line is the defence's alone")
+
+  local shimmer = { cures = "Eat Kelp", gain = { "A strange shimmer surrounds you." } }
+  eq(svo.afflictions.define("testshimmer", shimmer), true, "an affliction with its own line defines")
+  eq(svo.defences.custom_problem("testshimmerdef", { class = 'all', command = "shimmer on",
+    on = { "A strange shimmer surrounds you." }, off = {}, def = "You shimmer." }),
+    "your affliction testshimmer watches for \"A strange shimmer surrounds you.\"",
+    "and a defence defined after it can't take that line")
+  eq(svo.defences.custom_problem("testshimmerdef", { class = 'all', command = "shimmer on",
+    on = { "You begin to shimmer." }, off = {}, def = "You shimmer." }), nil, "while one with its own lines can")
+  svo.afflictions.undefine("testshimmer")
+end
+
 -- ===== 7. Through a class change =====
 
 local function reload(w, class)
