@@ -62,16 +62,21 @@ do
     ["Smoke Realgar"] = "smoke valerian/realgar",
     ["Sip Immunity"] = "purgative immunity/antigen",
     ["Eat Bloodroot / Smoke Valerian"] = "herb bloodroot/magnesium, smoke valerian/realgar",
+    -- the game's to cure, and svof only tracks it (the user, 2026-10-22)
+    [""] = "",
+    ["Writhe"] = "game writhe/nil",
+    ["Stand"] = "game stand/nil",
+    ["Eat Pear"] = "game eat pear/nil",
+    ["Smoke Kelp"] = "game smoke kelp/nil",
+    ["Apply Mending to Wings"] = "game apply mending to wings/nil",
+    ["Sip Health"] = "game sip health/nil",
+    ["Apply Health To Torso"] = "game apply health to torso/nil",
+    ["Eat Kelp / Writhe / Concentrate"] = "herb kelp/aurum, game writhe/nil, game concentrate/nil",
+    ["Eat Kelp / "] = "herb kelp/aurum",
   }) do
     eq(describe((affcures(text))), expected, "Cure(s) " .. text)
   end
   for text, why in pairs({
-    [""] = "it has no cure",
-    ["Stand"] = 'Svof can\'t cure with "stand"',
-    ["Eat Pear"] = 'Svof can\'t cure with "eat pear"',
-    ["Smoke Kelp"] = 'Svof can\'t cure with "smoke kelp"',
-    ["Apply Mending to Wings"] = 'Svof can\'t cure with "apply mending to wings"',
-    ["Sip Health"] = 'Svof can\'t cure with "sip health"',
     ["Eat Kelp / Eat Ginseng"] = 'Svof can cure it with only one herb, and it says "eat ginseng" too',
     ["Apply Epidermal to Head / Apply Epidermal to Body"] = 'Svof can cure it with only one salve, and it says "apply epidermal to body" too',
   }) do
@@ -89,7 +94,6 @@ do
   for _, case in ipairs({
     { "clumsiness", { cures = "Eat Kelp" }, "Svof already has clumsiness" },
     { "Bad Name", { cures = "Eat Kelp" }, "a name is lowercase letters and digits" },
-    { "testaff", { cures = "Stand" }, 'Svof can\'t cure with "stand"' },
     { "testaff", { cures = "Time" }, "a timed affliction needs its time" },
     { "testaff", { cures = "Time", time = 0 }, "a timed affliction needs its time" },
   }) do
@@ -453,6 +457,41 @@ do -- a madness affliction
   eq(svo.affs.testmad, nil, "and does without")
 end
 
+do -- one svof can't cure is only tracked (the user, 2026-10-22)
+  local w = world.new()
+  local svo = w.svo
+  -- icebound's record: Writhe, which svof can't send as a cure
+  local ok, why = svo.afflictions.register("testice", { cures = "Writhe", norandomcure = true,
+    gain = { "Frost tests your limbs." }, cured = { "Your limbs thaw from the test." } })
+  eq(ok, true, "registers (" .. tostring(why) .. ")")
+  local balances = {}
+  for _, b in ipairs({ "herb", "salve", "smoke", "purgative", "focus", "waitingfor" }) do
+    if svo.dict.testice[b] then balances[#balances + 1] = b end
+  end
+  eq(table.concat(balances, " "), "", "with no action to cure it")
+  w.line("Frost tests your limbs.")
+  w.prompt()
+  eq(not not svo.affs.testice, true, "its gain line afflicts you")
+  w.line("Your limbs thaw from the test.")
+  w.prompt()
+  eq(svo.affs.testice, nil, "and its cure line, the game's cure, ends it")
+
+  -- bloodfire's: no Cure(s) at all
+  ok, why = svo.afflictions.register("testblood", { gain = { "Your blood tests you." }, cured = { "Your blood calms." } })
+  eq(ok, true, "one the game gives no cure for registers too (" .. tostring(why) .. ")")
+  w.line("Your blood tests you.")
+  w.prompt()
+  w.line("Your blood calms.")
+  w.prompt()
+  eq(svo.affs.testblood, nil, "and its cure line ends it")
+
+  -- a cure of svof's beside one it can't give: svof's cure line handler, as before
+  svo.afflictions.register("testboth", { cures = "Eat Kelp / Writhe", gain = { "A test of both takes you." },
+    cured = { "The test of both lets go." } })
+  eq(svo.dict.testboth.herb ~= nil, true, "a cure svof can give beside it still has its action")
+  eq(svo.valid.testboth_cured, nil, "and no gone handler of its own on the cure line")
+end
+
 do -- a timed one's expire line
   local w = world.new()
   local svo = w.svo
@@ -797,7 +836,7 @@ do -- installing, and the clash checks
   eq(problem("testone", spec({ gmcp = "testone" })), "Svof couldn't check its GMCP name testone with the game",
     "a GMCP name the game hasn't confirmed is refused")
   eq(problem("clumsiness", spec()), "Svof already has clumsiness", "and a name svof has")
-  eq(problem("testone", spec({ cures = "Stand" })), "Svof can't cure with \"stand\"", "and a cure svof can't give")
+  eq(problem("testone", spec({ cures = "Stand" })), nil, "while a cure svof can't give is only tracked")
 
   w.writes = {}
   eq(svo.afflictions.install("testone"), false, "install needs a draft")
