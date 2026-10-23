@@ -584,6 +584,7 @@ function svo.lifevision.validate()
   svo.lifevision.l = svo.pl.OrderedMap()
   sk.stopprocessing = nil
   sk.gmcp_vouched = {}
+  sk.relapse_paragraph = nil
   sys.lineguard = false
 end
 
