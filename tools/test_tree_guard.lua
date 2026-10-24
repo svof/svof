@@ -388,39 +388,50 @@ s.aff("fear"); s.aff("selarnia"); s.aff("voyria"); s.aff("aeon")
 s.send("fear", "misc"); s.send("selarnia", "salve"); s.send("voyria", "purgative"); s.send("aeon", "smoke")
 eq(s.touch(), false, "misc, salve, purgative and smoke cures all count")
 
--- the blocks gettreeableaffs applies still apply: madness blocks tree for
--- stupidity, so only asthma has to be covered. hardlock is the strategy, so
+-- the blocks gettreeableaffs applies still apply: hypothermia blocks tree for
+-- frozen, so only asthma has to be covered. hardlock is the strategy, so
 -- the count of tree-curable affs doesn't decide it
+s = new_svof({ strategies = {"hardlock"} })
+s.svo.me.locks.hard = true
+s.aff("hypothermia"); s.aff("frozen"); s.aff("asthma")
+s.send("asthma", "herb")
+eq(s.touch(), false, "hypothermia blocks tree for frozen, and asthma is covered")
+
+s = new_svof({ strategies = {"hardlock"} })
+s.svo.me.locks.hard = true
+s.aff("frozen"); s.aff("asthma")
+s.send("asthma", "herb")
+eq(s.touch(), true, "without hypothermia, frozen has no cure on its way")
+
+-- whispering madness blocks nothing (its ability file: only focus takes
+-- longer to recover from), so stupidity still wants the tree
 s = new_svof({ strategies = {"hardlock"} })
 s.svo.me.locks.hard = true
 s.aff("madness"); s.aff("stupidity"); s.aff("asthma")
 s.send("asthma", "herb")
-eq(s.touch(), false, "madness blocks tree for stupidity, and asthma is covered")
-
-s = new_svof({ strategies = {"hardlock"} })
-s.svo.me.locks.hard = true
-s.aff("stupidity"); s.aff("asthma")
-s.send("asthma", "herb")
-eq(s.touch(), true, "without madness, stupidity has no cure on its way")
+eq(s.touch(), true, "with madness, stupidity has no cure on its way")
 
 -- gettreeableaffs takes each blocked name out by its index in treecurables,
 -- so one that isn't there took the list's last name instead. madness left
--- treecurables (the game: NoRandomCure Yes) and had to leave its own block
+-- treecurables (the game: NoRandomCure Yes) while it still had a block
 s = new_svof()
 for blocker, blocked in pairs(s.env.empty.treeblocks) do
   for _, name in ipairs(blocked) do
     eq(svotable.index_of(s.svo.treecurables, name) ~= nil, true, blocker .. " blocks " .. name .. ", which is in treecurables")
   end
 end
-s.aff("madness")
-local left = {}
-for _, name in ipairs(s.svo.gettreeableaffs(true)) do left[name] = true end
-local dropped = {}
-for _, name in ipairs(s.svo.treecurables) do if not left[name] then dropped[#dropped + 1] = name end end
-table.sort(dropped)
-local blocked = deepcopy(s.env.empty.treeblocks.madness)
-table.sort(blocked)
-eq(table.concat(dropped, " "), table.concat(blocked, " "), "with madness, exactly its blocks leave the tree-curable list")
+-- what leaves the tree-curable list while an affliction is held
+local function dropped_with(name)
+  local t = new_svof()
+  t.aff(name)
+  local left, dropped = {}, {}
+  for _, n in ipairs(t.svo.gettreeableaffs(true)) do left[n] = true end
+  for _, n in ipairs(t.svo.treecurables) do if not left[n] then dropped[#dropped + 1] = n end end
+  table.sort(dropped)
+  return table.concat(dropped, " ")
+end
+eq(dropped_with("madness"), "", "with madness, nothing leaves the tree-curable list")
+eq(dropped_with("hypothermia"), "frozen shivering", "with hypothermia, exactly its blocks leave it")
 
 -- the unknown crippled limbs are covered like any other aff: a mending
 -- application on its way will cure the arm, whichever it is

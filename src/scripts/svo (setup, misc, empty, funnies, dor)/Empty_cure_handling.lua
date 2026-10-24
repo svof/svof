@@ -164,10 +164,11 @@ empty.treecurables = {'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 
 'slashedthroat', 'tension',
 'indifference', 'manaleech', 'phlogistication', 'unweavingspirit'}
 -- What a tree can't cure while an affliction is held. Each name must be in
--- treecurables: svo.gettreeableaffs removes it by its index there
+-- treecurables: svo.gettreeableaffs removes it by its index there.
+-- Whispering madness blocks nothing: its ability file says only that focus
+-- takes longer to recover from. Its block here was from before the 2020
+-- Occultist rework
 empty.treeblocks = {
-  madness = {'dementia', 'stupidity', 'confusion', 'hypersomnia', 'paranoia', 'hallucinations', 'impatience',
-  'addiction', 'agoraphobia', 'inlove', 'loneliness', 'recklessness', 'masochism'},
   hypothermia = {'frozen', 'shivering'},
 }
 -- expose publicly
