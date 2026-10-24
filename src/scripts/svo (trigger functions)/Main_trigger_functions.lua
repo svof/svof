@@ -2124,7 +2124,22 @@ function svo.valid.litpipe(gag2)
   -- the answer to lighting one pipe by its ID. svof lights them all with
   -- LIGHT PIPES (svo.valid.litallpipes), so there's nothing of its own to
   -- finish. The actions for lighting one pipe went before 2018, and looking
-  -- them up here raised an error
+  -- them up here raised an error.
+  -- The line names the pipe's description, not which it is, so the pipe is
+  -- the one the latest LIGHT <id> sent named (commandTracker's
+  -- lastCommands), and it's lit: otherwise svof thought it still out and
+  -- sent LIGHT PIPES for nothing. A pipe lit by another name stays as it was
+  for _, command in ipairs(rawget(_G, 'lastCommands') or {}) do
+    local id = tonumber(command:match("^light (%d+)%s*$"))
+    if id then
+      for _, name in ipairs(pipes.pnames) do
+        local pipe = pipes[name]
+        if tonumber(pipe.id) == id then pipe.lit = true end
+        if tonumber(pipe.id2) == id then pipe.lit2 = true end
+      end
+      break
+    end
+  end
 end
 
 -- The game's answer to LIGHT PIPES, whoever sent it: svof, the server after
