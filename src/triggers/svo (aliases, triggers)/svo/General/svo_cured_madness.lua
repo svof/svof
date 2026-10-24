@@ -1,1 +1,1 @@
-svo.valid.smoke_cured_madness()
+svo.valid.herb_cured_madness()

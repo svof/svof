@@ -180,10 +180,10 @@ function svo.valid.smoke_stillgot_inquisition()
   end
 end
 
-function svo.valid.smoke_stillhave_madness()
-  svo.checkaction(svo.dict.madness.smoke)
-  if actions.madness_smoke then
-    lifevision.add(actions.madness_smoke.p, 'hecate')
+function svo.valid.herb_stillhave_madness()
+  svo.checkaction(svo.dict.madness.herb)
+  if actions.madness_herb then
+    lifevision.add(actions.madness_herb.p, 'hecate')
   end
 end
 
@@ -2919,7 +2919,7 @@ end
 for pipe, smoke in pairs({
   valerian = {'disloyalty', 'slickness', 'manaleech', 'hellsight'},
   pear = {'pressure'},
-  elm = {'deadening', 'madness', 'aeon', 'tension', 'earworm'}}) do
+  elm = {'deadening', 'aeon', 'tension', 'earworm'}}) do
   local other_smoke_cures = {}
 
   for _, aff in pairs(smoke) do
@@ -2987,7 +2987,7 @@ for herbname, herb in pairs({
   ginseng    = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy','flushings'},
   goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression', 'shadowmadness', 'mycalium', 'sandfever', 'fulminated'},
   kelp       = {'asthma', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'parasite', 'rebbies'},
-  lobelia    = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'tenderskin', 'spiritburn', 'horror', 'hypochondria'}}) do
+  lobelia    = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'tenderskin', 'spiritburn', 'horror', 'hypochondria', 'madness'}}) do
   local other_herb_cures = {}
 
   for _, aff in pairs(herb) do
