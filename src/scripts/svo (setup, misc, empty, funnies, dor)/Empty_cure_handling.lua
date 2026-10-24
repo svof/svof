@@ -60,15 +60,18 @@ end
 empty.presume_cured = presume_cured
 svo.presume_cured = presume_cured
 
--- handle affs with madness separately
+-- handle affs with madness separately: what madness keeps a cure from
+-- curing. Not madness itself: the game gives it WhisperingMadness: No, and a
+-- lobelia eat that cures nothing rules it out
 local madness_affs = {'addiction', 'confusion', 'dementia', 'hallucinations', 'hypersomnia', 'illness', 'impatience',
-'lethargy', 'loneliness', 'madness', 'masochism', 'paranoia', 'recklessness', 'stupidity', 'vertigo'}
+'lethargy', 'loneliness', 'masochism', 'paranoia', 'recklessness', 'stupidity', 'vertigo'}
 
 for herbname, herbaffs in pairs({
   goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression',
    'shadowmadness', 'mycalium', 'sandfever', 'fulminated', 'unweavingmind'},
-  kelp = {'asthma', 'hypochondria', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'parasite', 'rebbies'},
-  lobelia = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'spiritburn', 'tenderskin', 'horror'},
+  kelp = {'asthma', 'healthleech', 'sensitivity', 'clumsiness', 'weakness', 'parasite', 'rebbies'},
+  lobelia = {'claustrophobia', 'recklessness', 'agoraphobia', 'loneliness', 'masochism', 'vertigo', 'guilt', 'spiritburn', 'tenderskin', 'horror',
+   'hypochondria', 'madness'},
   ginseng = {'haemophilia', 'darkshade', 'relapsing', 'addiction', 'illness', 'lethargy', 'flushings', 'unweavingbody'},
   ash = {'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia', 'crescendo'},
   bellwort = {'generosity', 'pacifism', 'justice', 'inlove', 'peace', 'pyre', 'retribution', 'timeloop', 'indifference'},
@@ -209,8 +212,9 @@ empty.shrugging  = empty.tree
 empty.smoke_elm = function()
   -- earworm, unweavingspirit and tension were missing. Each entry says
   -- smokecure = {'elm', 'cinnabar'} and calls this handler, so elm curing
-  -- nothing rules them out the same way it rules out the other three.
-  presume_cured({'deadening', 'madness', 'aeon', 'earworm', 'unweavingspirit', 'tension'})
+  -- nothing rules them out the same way it rules out the other two.
+  -- madness left: the game cures it with lobelia.
+  presume_cured({'deadening', 'aeon', 'earworm', 'unweavingspirit', 'tension'})
 end
 
 empty.smoke_valerian = function()
