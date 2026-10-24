@@ -60,12 +60,11 @@ end
 empty.presume_cured = presume_cured
 svo.presume_cured = presume_cured
 
--- handle affs with madness separately: what madness keeps a cure from
--- curing. Not madness itself: the game gives it WhisperingMadness: No, and a
--- lobelia eat that cures nothing rules it out
-local madness_affs = {'addiction', 'confusion', 'dementia', 'hallucinations', 'hypersomnia', 'illness', 'impatience',
-'lethargy', 'loneliness', 'masochism', 'paranoia', 'recklessness', 'stupidity', 'vertigo'}
-
+-- Whispering madness keeps no cure from curing. Its ability file: once
+-- afflicted, "attempts to focus their mind take far longer to recover from",
+-- and nothing else. svof used to hold the mental afflictions out of these
+-- lists while you had it, and out of an empty focus altogether, from before
+-- the 2020 Occultist rework
 for herbname, herbaffs in pairs({
   goldenseal = {'dissonance', 'impatience', 'stupidity', 'dizziness', 'epilepsy', 'shyness', 'depression',
    'shadowmadness', 'mycalium', 'sandfever', 'fulminated', 'unweavingmind'},
@@ -81,12 +80,7 @@ for herbname, herbaffs in pairs({
   empty['eat_'..herbname] = function()
     svo.lostbal_herb()
 
-    if not affs.madness then
-      presume_cured(herbaffs)
-    else
-      presume_cured(table.n_complement(herbaffs, madness_affs))
-    end
-
+    presume_cured(herbaffs)
   end
 end
 
@@ -106,8 +100,6 @@ empty.focuscurables = {'claustrophobia', 'masochism', 'dizziness', 'confusion', 
 -- expose publicly
 svo.focuscurables = empty.focuscurables
 empty.focus = function()
-  if affs.madness then return end
-
   presume_cured(empty.focuscurables)
 end
 
