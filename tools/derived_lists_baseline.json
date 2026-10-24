@@ -57,19 +57,9 @@
       "text": "tree: fulminated is in treecurables and has no tree-cure trigger"
     },
     {
-      "id": "tree|only_treecurables|indifference",
-      "digest": "e898fcf4aefbe02c",
-      "text": "tree: indifference is in treecurables and has no tree-cure trigger"
-    },
-    {
       "id": "tree|only_treecurables|itching",
       "digest": "5e53d1a91268e848",
       "text": "tree: itching is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|manaleech",
-      "digest": "d837c16180b197e3",
-      "text": "tree: manaleech is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|mycalium",
@@ -140,11 +130,6 @@
       "id": "tree|only_treecurables|unknownmental",
       "digest": "f8dfee0c3e6264af",
       "text": "tree: unknownmental is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|unweavingspirit",
-      "digest": "b8c4395f8daf9015",
-      "text": "tree: unweavingspirit is in treecurables and has no tree-cure trigger"
     }
   ]
 }

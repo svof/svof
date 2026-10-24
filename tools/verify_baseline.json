@@ -83,6 +83,21 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Sip/svo sipped latched [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure indifference tree",
+      "digest": "89a61958c09c5af8",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure indifference tree [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure manaleech tree",
+      "digest": "b0275fe78083db95",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure manaleech tree [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure unweavingspirit tree",
+      "digest": "8772443c45b336ad",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure unweavingspirit tree [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/pyre",
       "digest": "fd92c852b629ed42",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/pyre [only in the package]"
@@ -134,8 +149,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "84e78e298fee56b6",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2536 in merged"
+      "digest": "833f82d02549dd11",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2539 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
