@@ -44,7 +44,8 @@ loop's balance, so it looked the new number up in the entry's own
 balance's snapshot (herb, physical) and every slow curing event said nil.
 
 Like the other suites, this does not run svof or Mudlet. It runs the real
-priorities loader from Priorities.lua, the real svo.valid_sync_action,
+priorities loader from Priorities.lua, the real svo.valid_sync_action and
+svo.slow_curing_entry,
 svo.make_prio_table, svo.make_sync_prio_table and their filtered forms,
 svo.basictableindexdiff, svo.deepcopy, svo.prio_slowswap,
 svo.printordersync, Serverside's priority snapshots and
@@ -281,6 +282,8 @@ local function new_svof(opts)
     "svo.clear_balance_prios = function"), "make_prio_table")
   load_into(env, "local dict = svo.dict\n" .. between(ACTIONS, "svo.valid_sync_action = function(name)",
     "\nend\n", true), "valid_sync_action")
+  load_into(env, "local dict = svo.dict\n" .. between(ACTIONS, "svo.slow_curing_entry = function(name)",
+    "\nend\n", true), "slow_curing_entry")
   load_into(env, "local sk = svo.sk\n" .. (opts.snapshots or SNAPSHOTS), "priority snapshots")
   load_into(env, "local sk = svo.sk\n" .. (opts.slowswap or SLOWSWAP), "prio_slowswap")
   load_into(env, PRINTORDERSYNC, "printordersync")

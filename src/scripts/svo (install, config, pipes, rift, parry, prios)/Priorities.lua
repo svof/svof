@@ -354,14 +354,8 @@ function prio.insert(action, balance, number, echoback)
   end
 
   if balance == 'slowcuring' then
-    local validaction, plainaction, syncbalance = svo.valid_sync_action(action)
-
-    if not validaction then return refuse(plainaction) end
-    -- that only checks the entry exists; its aff, gone, waitingfor... aren't cures
-    local entry = svo.dict[plainaction][syncbalance]
-    if not (type(entry) == 'table' and entry.spriority) then
-      return refuse(action.." isn't in the slow curing list")
-    end
+    local plainaction, why = svo.slow_curing_entry(action)
+    if not plainaction then return refuse(why) end
   elseif not svo.dict[action] then
     return refuse("action "..tostring(action).." doesn't exist")
   -- the balances dict_setup gives no priority (aff, gone, waitingfor...) aren't in any list
@@ -393,8 +387,6 @@ function prio.insert(action, balance, number, echoback)
 
   local t = getpriotable(balance)
   local originalt = svo.deepcopy(t)
-
-  if balance ~= 'slowcuring' and not t then return nil, "no such balance: "..balance end
 
   -- if nothing is in the desired index, then just insert. If something is, shuffle down first.
   if not t[number] then

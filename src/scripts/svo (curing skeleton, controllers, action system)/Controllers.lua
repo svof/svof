@@ -446,16 +446,7 @@ function svo.prio_slowswap(what, arg3, echoback, callback, ...)
   local sendf; if echoback then sendf = svo.echof else sendf = svo.errorf end
 
   -- splits a slow curing name, action_balance, as prio.insert does; nil and why if it isn't one
-  local function slowentry(name)
-    local valid, action, balance = svo.valid_sync_action(name)
-    if not valid then return nil, action end
-    -- that only checks the entry exists; its aff, gone, waitingfor... aren't cures
-    local entry = svo.dict[action][balance]
-    if not (type(entry) == 'table' and entry.spriority) then
-      return nil, name.." isn't in the slow curing list"
-    end
-    return action, balance
-  end
+  local slowentry = svo.slow_curing_entry
 
   local function refuse(why)
     sendf("Can't swap that: %s.", why)
