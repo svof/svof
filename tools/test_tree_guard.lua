@@ -403,6 +403,25 @@ s.aff("stupidity"); s.aff("asthma")
 s.send("asthma", "herb")
 eq(s.touch(), true, "without madness, stupidity has no cure on its way")
 
+-- gettreeableaffs takes each blocked name out by its index in treecurables,
+-- so one that isn't there took the list's last name instead. madness left
+-- treecurables (the game: NoRandomCure Yes) and had to leave its own block
+s = new_svof()
+for blocker, blocked in pairs(s.env.empty.treeblocks) do
+  for _, name in ipairs(blocked) do
+    eq(svotable.index_of(s.svo.treecurables, name) ~= nil, true, blocker .. " blocks " .. name .. ", which is in treecurables")
+  end
+end
+s.aff("madness")
+local left = {}
+for _, name in ipairs(s.svo.gettreeableaffs(true)) do left[name] = true end
+local dropped = {}
+for _, name in ipairs(s.svo.treecurables) do if not left[name] then dropped[#dropped + 1] = name end end
+table.sort(dropped)
+local blocked = deepcopy(s.env.empty.treeblocks.madness)
+table.sort(blocked)
+eq(table.concat(dropped, " "), table.concat(blocked, " "), "with madness, exactly its blocks leave the tree-curable list")
+
 -- the unknown crippled limbs are covered like any other aff: a mending
 -- application on its way will cure the arm, whichever it is
 s = new_svof()

@@ -121,8 +121,10 @@ end
 --
 -- Ten names were added on 2026-09-23, nine on the repo owner confirming tree
 -- cures them and tension on his judgement that an ordinary affliction most
--- likely is tree-curable. Two weaker kinds of evidence were tried first and
--- both turned out to be worthless:
+-- likely is tree-curable. The game's record below took three of the nine
+-- back out (laceratedthroat, latched and mildconcussion), and disrupt, which
+-- was already here. Two weaker kinds of evidence were tried first and both
+-- turned out to be worthless:
 --
 --   * The 86-name tree list that used to live in Main trigger functions. It
 --     claimed bound, prone, flamefisted, galed, icing, voided and bleeding,
@@ -144,27 +146,32 @@ end
 -- will not remove it anyway, and the entry costs nothing. Before that gate
 -- existed, every name in here was a chance to drop an affliction still held.
 --
--- UNCONFIRMED, kept rather than removed on suspicion, pending the owner
--- checking in game: paralysis, skullfractures, crackedribs, wristfractures and
--- torntendons, all of which have been here since 2018 and rest on nothing
--- better than the trigger pairing above; and latched, added 2026-09-23, whose
--- only tree evidence is a Tree cures trigger and whose confirmed cure is
--- SIP HEALTH. If tree does not cure latched, an empty tree makes svof forget a
--- latch still held and the next health sip heals instead of clearing it.
+-- The game's own word now decides. AFFLICTION SHOW gives every affliction a
+-- NoRandomCure field (game changelog #432): Yes means nothing that cures a
+-- random affliction cures it, tree, shrugging and panacea included. Checked
+-- against the whole record (captured 2026-10-21): crescendo, degenerate,
+-- deteriorate, disrupt, dissonance, horror, laceratedthroat, latched,
+-- madness, mildconcussion and pyre are Yes and left; indifference, manaleech,
+-- phlogistication and unweavingspirit are No and added, phlogistication
+-- though it is timed. paralysis, the three fractures, torntendons and
+-- tension, once doubted here, are No and stay.
 empty.treecurables = {'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 'asthma', 'blackout', 'claustrophobia',
 'clumsiness', 'confusion', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'darkshade',
-'deadening', 'dementia', 'disloyalty', 'disrupt', 'dissonance', 'dizziness', 'epilepsy', 'fear', 'generosity',
+'deadening', 'dementia', 'disloyalty', 'dizziness', 'epilepsy', 'fear', 'generosity',
 'haemophilia', 'hallucinations', 'healthleech',  'hellsight', 'hypersomnia', 'hypochondria', 'illness', 'impatience',
-'inlove', 'itching', 'justice', 'lethargy', 'loneliness', 'madness', 'masochism', 'pacifism', 'paralysis', 'paranoia',
-'peace', 'pyre', 'recklessness', 'relapsing', 'selarnia', 'sensitivity', 'shyness', 'slickness', 'stupidity', 'stuttering',
+'inlove', 'itching', 'justice', 'lethargy', 'loneliness', 'masochism', 'pacifism', 'paralysis', 'paranoia',
+'peace', 'recklessness', 'relapsing', 'selarnia', 'sensitivity', 'shyness', 'slickness', 'stupidity', 'stuttering',
 'unknownany', 'unknowncrippledarm', 'unknowncrippledleg', 'unknownmental', 'vertigo', 'voyria', 'weakness',
 'shivering', 'frozen', 'skullfractures', 'crackedribs', 'wristfractures', 'torntendons', 'depression', 'parasite',
-'retribution', 'shadowmadness', 'timeloop', 'degenerate', 'deteriorate', 'guilt', 'spiritburn', 'tenderskin', 'crushedthroat',
-'horror', 'earworm', 'crescendo', 'fulminated',
-'latched', 'flushings', 'mycalium', 'pyramides', 'rebbies', 'sandfever',
-'laceratedthroat', 'mildconcussion', 'slashedthroat', 'tension'}
+'retribution', 'shadowmadness', 'timeloop', 'guilt', 'spiritburn', 'tenderskin', 'crushedthroat',
+'earworm', 'fulminated',
+'flushings', 'mycalium', 'pyramides', 'rebbies', 'sandfever',
+'slashedthroat', 'tension',
+'indifference', 'manaleech', 'phlogistication', 'unweavingspirit'}
+-- What a tree can't cure while an affliction is held. Each name must be in
+-- treecurables: svo.gettreeableaffs removes it by its index there
 empty.treeblocks = {
-  madness = {'madness', 'dementia', 'stupidity', 'confusion', 'hypersomnia', 'paranoia', 'hallucinations', 'impatience',
+  madness = {'dementia', 'stupidity', 'confusion', 'hypersomnia', 'paranoia', 'hallucinations', 'impatience',
   'addiction', 'agoraphobia', 'inlove', 'loneliness', 'recklessness', 'masochism'},
   hypothermia = {'frozen', 'shivering'},
 }

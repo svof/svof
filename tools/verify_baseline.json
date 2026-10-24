@@ -134,8 +134,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "d6bf1c7402493337",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2537 in merged"
+      "digest": "84e78e298fee56b6",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2536 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -166,6 +166,11 @@
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure bleeding tree",
       "digest": "2fa57919bafab427",
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure bleeding tree [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure latched tree",
+      "digest": "4d18c458f5242b69",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure latched tree [only in the originals]"
     },
     {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure voided tree",
@@ -469,7 +474,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "e88747e2d5b429d0",
+      "digest": "8b48e0c0e198cb66",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
@@ -1246,11 +1251,6 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure justice tree|script",
       "digest": "957b0beddc461349",
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure justice tree [script]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure latched tree|script",
-      "digest": "58a814a53af64887",
-      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure latched tree [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure lethargy tree|script",
