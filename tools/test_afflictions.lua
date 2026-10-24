@@ -231,22 +231,16 @@ do -- purgative: immunity, like voyria
   eq(not not e.purgative.isadvisable(), false, "not with latency, like voyria")
 end
 
-do -- a madness affliction waits while you have madness
+do -- whispering madness keeps no cure from curing (AB OCCULTISM WHISPERINGMADNESS)
   local w = world.new()
   local svo = w.svo
+  -- one marked a WhisperingMadness affliction is tracked as one, not held back
   local e = build(w, "testmad", { cures = "Eat Ginseng", madness = true })
-  local plain = build(w, "testsane", { cures = "Eat Ginseng" })
   svo.addaffdict(e)
-  svo.addaffdict(plain)
-  eq(not not e.herb.isadvisable(), true, "a madness affliction is cured without madness")
   svo.addaffdict(svo.dict.madness)
-  eq(not not e.herb.isadvisable(), false, "and not with it")
-  eq(not not plain.herb.isadvisable(), true, "while one that isn't still is")
+  eq(not not e.herb.isadvisable(), true, "madness: a defined affliction is cured while you have madness")
   e.herb.empty()
-  eq(not not svo.affs.testmad, true, "an empty ginseng with madness doesn't rule it out")
-  svo.rmaff("madness")
-  e.herb.empty()
-  eq(svo.affs.testmad, nil, "and does without")
+  eq(svo.affs.testmad, nil, "madness: and an empty ginseng rules it out")
 end
 
 do -- the GMCP name
@@ -448,20 +442,15 @@ do -- refusals, in both of svof's vocabularies
   eq(svo.dict.testaff, nil, "with no entry made")
 end
 
-do -- a madness affliction
+do -- madness holds nothing back for one registered either
   local w = world.new()
   local svo = w.svo
   svo.afflictions.register("testmad", { cures = "Eat Ginseng", madness = true })
-  local found
-  for _, n in ipairs(svo.empty.madness_affs) do if n == "testmad" then found = true end end
-  eq(found, true, "joins svof's madness afflictions")
+  eq(svo.empty.madness_affs, nil, "madness: svof keeps no list of madness afflictions for definitions")
   svo.addaffdict(svo.dict.testmad)
   svo.addaffdict(svo.dict.madness)
   svo.empty.eat_ginseng()
-  eq(not not svo.affs.testmad, true, "so svof's empty ginseng doesn't rule it out with madness")
-  svo.rmaff("madness")
-  svo.empty.eat_ginseng()
-  eq(svo.affs.testmad, nil, "and does without")
+  eq(svo.affs.testmad, nil, "madness: svof's empty ginseng rules it out while you have madness")
 end
 
 do -- one svof can't cure is only tracked (the user, 2026-10-22)
@@ -694,7 +683,7 @@ do
   eq(d.cures, "Eat Kelp / Eat Aurum", "Cure(s) its cures")
   eq(d.desc, "Testfire makes everything you eat taste of ashes.", "a wrapped value is joined")
   eq(d.norandomcure, nil, "NoRandomCure No leaves random cures taking it")
-  eq(d.madness, true, "WhisperingMadness Yes makes it a madness affliction")
+  eq(d.madness, true, "WhisperingMadness Yes marks it a WhisperingMadness affliction, tracked only")
   eq(gagged[1], "Affliction:         Testfire", "the reply is gagged from its first line")
   -- svo.deleteLineP takes the prompt after the line with it
   eq(gagged[#gagged], "CadmusCurse:        No", "to its last line, and the prompt with it")

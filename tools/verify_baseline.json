@@ -14,7 +14,7 @@
     },
     {
       "id": "added|Script|svo (alias and defence functions)|Custom afflictions",
-      "digest": "cfd08a16f62a5077",
+      "digest": "22b31e844ac8df87",
       "text": "Script   svo (alias and defence functions) Custom afflictions [only in the package]"
     },
     {
@@ -239,7 +239,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "cfa580871df00b9f",
+      "digest": "432ffb93a8d1874b",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -469,7 +469,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "37d189f091d78c8e",
+      "digest": "e88747e2d5b429d0",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {

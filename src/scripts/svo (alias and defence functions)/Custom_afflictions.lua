@@ -269,7 +269,6 @@ function afflictions.register(name, spec)
   afflictions.handlers_of[name] = handlers
 
   if not spec.norandomcure then empty.treecurables[#empty.treecurables + 1] = name end
-  if spec.madness then empty.madness_affs[#empty.madness_affs + 1] = name end
 
   cured_code[#cured_code + 1] = string.format("if svo.generics_enabled then svo.valid.generic(%q) end", name)
   if not spec.norandomcure then
@@ -321,7 +320,6 @@ function afflictions.unregister(name)
     if not next(names) then empty.defined[key] = nil end
   end
   remove_value(empty.treecurables, name)
-  remove_value(empty.madness_affs, name)
   local held = afflictions.gmcp_held[name]
   if held then
     svo.dict.sstosvoa[held.gmcp] = held.mapped
@@ -753,8 +751,9 @@ function afflictions.show(name)
   link(d.norandomcure and "they do" or "they don't", string.format("svo.afflictions.set(%q, 'randomcure', %q)", name,
     d.norandomcure and "yes" or "no"), "Whether tree, shrugging and other random cures take it")
   echo("\n")
+  -- tracked, for focus balance; madness doesn't keep it from curing
   label("madness:")
-  echo(d.madness and "one of the madness afflictions  " or "not a madness affliction  ")
+  echo(d.madness and "one of the WhisperingMadness afflictions  " or "not a WhisperingMadness affliction  ")
   link(d.madness and "it isn't" or "it is", string.format("svo.afflictions.set(%q, 'madness', %q)", name,
     d.madness and "no" or "yes"), "Whether it's one of the game's WhisperingMadness afflictions")
   echo("\n")
@@ -900,8 +899,12 @@ end
 -- and for a timed one, Expire msg: before Cure(s): Time, and a last
 -- Default time: 15 seconds. "none" is a message it doesn't have.
 -- NoRandomCure: Yes means tree, shrugging, panacea and other random cures
--- don't take it, and WhisperingMadness: Yes that it's one of svof's madness
--- afflictions (the user, 2026-10-20). The reply ends at the prompt, as its
+-- don't take it. WhisperingMadness: Yes marks one of the afflictions that
+-- let an Occultist cast whispering madness (AB OCCULTISM
+-- WHISPERINGMADNESS). It's kept as the definition's madness, for focus
+-- balance tracking; whispering madness keeps no cure from curing, so
+-- nothing waits on it (the user, 2026-10-24). The reply ends at the prompt,
+-- as its
 -- last label differs. For a name the game doesn't have, it says "There is
 -- no such affliction." (the user, 2026-10-20).
 -- The whole record, captured on muddlertest on 2026-10-20, shows two more
@@ -983,12 +986,13 @@ local function fill(name, asked, f, mode)
   if d.norandomcure == nil and value('NoRandomCure') ~= '' then
     d.norandomcure = value('NoRandomCure'):lower() == 'yes' or nil
   end
-  if d.madness == nil and value('WhisperingMadness') ~= '' then
-    d.madness = value('WhisperingMadness'):lower() == 'yes' or nil
-  end
   -- kept, not used (the user, 2026-10-20)
   d.game = { enlighten = value('Enlighten'), tzantza = value('Tzantza'), accentato = value('Accentato'),
     cadmuscurse = value('CadmusCurse') }
+  -- one of the WhisperingMadness afflictions: tracked, never waited on
+  if d.madness == nil and value('WhisperingMadness') ~= '' then
+    d.madness = value('WhisperingMadness'):lower() == 'yes' or nil
+  end
   if value('Affliction') ~= '' then d.title = value('Affliction') end
   if value('Description') ~= '' then d.desc = value('Description') end
   svo.echof("Filled in %s from the game's AFFLICTION SHOW %s.", name, asked)
@@ -1160,7 +1164,7 @@ function afflictions.test(name)
     known_from(d, 'gain', 'gainpattern', d.gmcp and ("GMCP's " .. d.gmcp)),
     known_from(d, 'cured', 'curedpattern', d.gmcp and "GMCP"))
   svo.echof("Random cures %s it%s.", d.norandomcure and "don't take" or "take",
-    d.madness and ", and it's one of the madness afflictions, whose cures wait while you have madness" or "")
+    d.madness and ", and it's one of the WhisperingMadness afflictions, which madness doesn't keep from curing" or "")
   local problem = afflictions.problem(name, d)
   if problem then
     svo.echof("<250,0,0>It can't%s be installed yet: %s.", svo.getDefaultColor(), problem)
@@ -1310,7 +1314,7 @@ end
 local forms = {
   { "<name>", "see one, or start it, filling it in from the game" },
   { "<name> gmcp|cures|time <value>", "set one of those" },
-  { "<name> madness|randomcure yes|no", "whether it's a madness affliction, and whether random cures take it" },
+  { "<name> madness|randomcure yes|no", "whether it's a WhisperingMadness affliction, and whether random cures take it" },
   { "<name> gain|cured|expire|diag <line>", "add a line" },
   { "<name> gainpattern|curedpattern <pattern>", "add a pattern, for a line that varies" },
   { "<name> line gain|cured|expire|diag", "pick that line off the screen" },

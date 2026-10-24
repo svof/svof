@@ -15171,9 +15171,7 @@ end
 
 -- Builds svo.dict[name] from spec, or says why not:
 --   cures      svo.affcures' list, or its text
---   madness    true for one of the game's WhisperingMadness afflictions:
---              its cures wait while you have madness, as svof's own do
---   time       seconds, for a timed one (Cure(s): Time), if the game gives
+--   time      seconds, for a timed one (Cure(s): Time), if the game gives
 --              them (Default time); with none it has no timer
 --   gmcp       the game's name for it, when that isn't name
 -- The entry has an aff and a gone block, an action for each cure, and a
@@ -15198,20 +15196,18 @@ function svo.basicaff(name, spec)
     if cure.kind == 'time' and tonumber(spec.time) and tonumber(spec.time) > 0 then timed = true end
   end
 
-  local madness = spec.madness
+  -- whispering madness keeps no cure from curing, so nothing here waits on it
   local function afflicted()
-    return affs[name] and not (madness and affs.madness)
+    return affs[name]
   end
   -- svof's own handler for the cure, then this one: a cure that cured
-  -- nothing rules it out too, except a madness affliction while you have
-  -- madness, which the cure couldn't have taken (as empty.herb_affs'
-  -- handlers do). Registering puts it in empty.defined, so svof's handler
-  -- has ruled it out already, unless GMCP kept it
+  -- nothing rules it out too. Registering puts it in empty.defined, so
+  -- svof's handler has ruled it out already, unless GMCP kept it
   local function after_empty(cure)
     return function()
       local handler = aff_empty_handler(cure)
       if handler then handler() end
-      if affs[name] and not (madness and affs.madness) then svo.presume_cured(name) end
+      if affs[name] then svo.presume_cured(name) end
     end
   end
 

@@ -60,11 +60,9 @@ end
 empty.presume_cured = presume_cured
 svo.presume_cured = presume_cured
 
--- handle affs with madness separately. Public, as an affliction a player
--- defines (svo.basicaff) can be one of them
+-- handle affs with madness separately
 local madness_affs = {'addiction', 'confusion', 'dementia', 'hallucinations', 'hypersomnia', 'illness', 'impatience',
 'lethargy', 'loneliness', 'madness', 'masochism', 'paranoia', 'recklessness', 'stupidity', 'vertigo'}
-empty.madness_affs = madness_affs
 
 -- what each herb cures, for the herbs whose handler below takes herb
 -- balance itself. Public, for an affliction a player defines to be cured
@@ -308,17 +306,11 @@ end
 -- Afflictions a player defined (svo.afflictions), by the handler above that
 -- a cure of theirs runs when it cures nothing: an empty kelp aimed at
 -- clumsiness rules out a defined kelp affliction too. Registering fills it.
--- So each eat, smoke, apply and sip handler rules them out after its own,
--- except a madness one while you have madness, which the cure couldn't have
--- taken. The loader makes the handlers afresh each time it runs, so each is
+-- So each eat, smoke, apply and sip handler rules them out after its own.
+-- Whispering madness keeps no cure from curing, so it doesn't hold them
+-- back. The loader makes the handlers afresh each time it runs, so each is
 -- wrapped once
 empty.defined = {}
-local function is_madness_aff(name)
-  for _, aff in ipairs(madness_affs) do
-    if aff == name then return true end
-  end
-  return false
-end
 for key, handler in pairs(empty) do
   if type(handler) == 'function' and (key:find("^eat_") or key:find("^smoke_") or key:find("^apply_")
     or key:find("^sip_")) then
@@ -327,10 +319,7 @@ for key, handler in pairs(empty) do
       local names = empty.defined[key]
       if not names then return end
       local t = {}
-      for name in pairs(names) do
-        if not (affs.madness and is_madness_aff(name)) then t[#t + 1] = name end
-      end
-      if #t == 0 then return end
+      for name in pairs(names) do t[#t + 1] = name end
       table.sort(t)
       presume_cured(t)
     end
