@@ -2834,10 +2834,12 @@ if not next(svo.dict) then
           svo.lostbal_herb()
         end,
   
-        eatcure = {'kelp', 'aurum'},
+        -- the game's AFFLICTION SHOW: Eat Lobelia / Eat Argentum (svof had
+        -- kelp, which never cured it)
+        eatcure = {'lobelia', 'argentum'},
         onstart = function() svo.eat(svo.dict.hypochondria.herb) end,
-  
-        empty = function() empty.eat_kelp() end
+
+        empty = function() empty.eat_lobelia() end
       },
       aff = {
         oncompleted = function()
