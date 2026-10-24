@@ -1,1 +1,1 @@
-svo.valid.smoke_stillhave_madness()
+svo.valid.herb_stillhave_madness()

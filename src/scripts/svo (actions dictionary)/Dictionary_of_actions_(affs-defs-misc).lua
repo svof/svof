@@ -2965,32 +2965,29 @@ if not next(svo.dict) then
         oncompleted = function() svo.rmaff('deadening') end,
       }
     },
+    -- the game's AFFLICTION SHOW: Eat Lobelia / Eat Argentum. svof smoked elm
+    -- for it, which never cured it. The hecate curse "Prevents curing of the
+    -- whispering madness affliction for its duration", so it still waits on it
     madness = {
       gamename = 'whisperingmadness',
-      smoke = {
+      herb = {
         isadvisable = function()
-          return (affs.madness and codepaste.smoke_elm_pipe() and not affs.hecate) or false
+          return (affs.madness and not affs.hecate and not svo.doingaction('madness')) or false
         end,
-  
+
         oncompleted = function()
           svo.rmaff('madness')
-          svo.lostbal_smoke()
-          sk.elm_smokepuff()
+          svo.lostbal_herb()
         end,
-  
-        smokecure = {'elm', 'cinnabar'},
-        onstart = function()
-          send("smoke " .. pipes.elm.id, conf.commandecho)
-        end,
-  
-        empty = function()
-          empty.smoke_elm()
-          svo.lostbal_smoke()
-          sk.elm_smokepuff()
-        end,
-  
+
+        eatcure = {'lobelia', 'argentum'},
+        onstart = function() svo.eat(svo.dict.madness.herb) end,
+
+        empty = function() empty.eat_lobelia() end,
+
+        -- eaten, and hecate kept it
         hecate = function()
-          sk.elm_smokepuff()
+          svo.lostbal_herb()
         end
       },
       aff = {
