@@ -2109,8 +2109,10 @@ local function relapse_env()
       h.affadd()
     end
     svo.paragraph_length = 0
-    for _, handlers in ipairs(lines) do
+    for i, handlers in ipairs(lines) do
       svo.paragraph_length = svo.paragraph_length + 1
+      -- Mudlet's line, which a claim records and a relapse marks
+      env.line = "line " .. i
       for _, handler in ipairs(handlers) do handler() end
     end
     svo.promptcount = svo.promptcount + 1
@@ -2140,7 +2142,7 @@ for _, aillusion in ipairs({ false, true }) do
     not_contains(calls.echof, "Ignored a line claiming weakness: GMCP doesn't report it.",
       "relapse: where the log refused it" .. how)
     truthy(svo.affs.relapsing, "relapse: scytherus is tracked from its Add" .. how)
-    eq(svo.sk.relapse_paragraph, nil, "relapse: the mark ends with the paragraph" .. how)
+    eq(svo.sk.relapse_lines, nil, "relapse: the mark ends with the paragraph" .. how)
   end
 end
 
@@ -2195,7 +2197,7 @@ do
   on_prompt_line(true)
   v.proper_relapsing()
   on_prompt_line(false)
-  eq(svo.sk.relapse_paragraph, nil, "relapse: fired on the prompt line, it marks nothing")
+  eq(svo.sk.relapse_lines, nil, "relapse: fired on the prompt line, it marks nothing")
   paragraph({}, { { v.simpleweakness } })
   eq(svo.affs.weakness, nil, "relapse: so the next paragraph's line is refused")
   truthy(svo.affs.unknownany, "relapse: and its ? kept")
@@ -2212,6 +2214,22 @@ do
   paragraph({}, { { v.simpleclumsiness } })
   eq(svo.affs.clumsiness, nil, "relapse: a later paragraph without one is refused")
   truthy(svo.affs.unknownany, "relapse: keeping its ?")
+end
+
+-- and the line it brought back alone: another line in its paragraph is
+-- something else's, an illusion's maybe, and is refused with its ? kept
+for _, illusion_first in ipairs({ true, false }) do
+  local env, h, calls, svo, paragraph = relapse_env()
+  svo.dict.unknownany.aff.oncompleted(1)
+  local v = svo.valid
+  if illusion_first then
+    paragraph({ 'scytherus' }, { { v.simpleweakness }, {}, { v.proper_relapsing } })
+  else
+    paragraph({ 'scytherus' }, { {}, { v.proper_relapsing }, { v.simpleweakness } })
+  end
+  local how = illusion_first and " (before the relapse)" or " (after it)"
+  eq(svo.affs.weakness, nil, "relapse: weakness on another line of its paragraph is refused" .. how)
+  truthy(svo.affs.unknownany, "relapse: and the ? is kept" .. how)
 end
 
 -- every affliction in the table is one GMCP names, so the gate can refuse it

@@ -996,14 +996,17 @@ local relapsed_venom = {
   weakness         = 'vernalius',
 }
 
--- Whether a relapse in this paragraph (sk.relapse_paragraph, set by
--- svo.valid.proper_relapsing) brought back aff while the game hid it, and
--- if so uses up the ? it was. The game shows a relapsed affliction's line
--- again but sends no Add for one you already hold, hidden or not. It does
--- send scytherus' own Add before the relapse line when it had hidden that
--- too, so a faked relapse counts only while you really have scytherus.
-local function relapse_brought_back(aff)
-  return sk.relapse_paragraph and relapsed_venom[aff] ~= nil
+-- Whether a relapse in this paragraph brought back aff while the game hid
+-- it, and if so uses up the ? it was. The game shows a relapsed affliction's
+-- line again but sends no Add for one you already hold, hidden or not. It
+-- does send scytherus' own Add before the relapse line when it had hidden
+-- that too, so a faked relapse counts only while you really have scytherus.
+-- Only the claim from the line the relapse brought back counts
+-- (sk.relapse_lines, set by svo.valid.proper_relapsing): in the user's
+-- logs, a relapse is followed by that one line, and another line in the
+-- paragraph is something else's, an illusion's maybe.
+local function relapse_brought_back(aff, claim)
+  return sk.relapse_lines and claim.at ~= nil and sk.relapse_lines[claim.at] and relapsed_venom[aff] ~= nil
     and svo.gmcp_reports('relapsing') and use_up_unknown(aff)
 end
 
@@ -1013,7 +1016,7 @@ function svo.gmcp_overlooked(aff, claim)
     why = 'again'
   elseif sk.gmcp_vouched[aff] then
     why = 'hidden'
-  elseif claim and relapse_brought_back(aff) then
+  elseif claim and relapse_brought_back(aff, claim) then
     why = 'hidden'
   elseif claim and claim.answer then
     local answer = claim.answer

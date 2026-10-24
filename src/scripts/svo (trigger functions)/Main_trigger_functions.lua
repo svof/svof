@@ -1280,10 +1280,13 @@ end
 
 function svo.valid.proper_relapsing()
   -- Mudlet fires this on the line after the relapse, which is what the relapse
-  -- brought back, or on the prompt when it brought nothing. A relapse in the
-  -- paragraph lets svo.gmcp_overlooked (Setup.lua) believe a venom's
-  -- affliction the game hid; lifevision.validate clears the mark.
-  if not isPrompt() then sk.relapse_paragraph = true end
+  -- brought back, or on the prompt when it brought nothing. That line lets
+  -- svo.gmcp_overlooked (Setup.lua) believe a venom's affliction the game
+  -- hid; lifevision.validate clears the mark.
+  if not isPrompt() then
+    sk.relapse_lines = sk.relapse_lines or {}
+    sk.relapse_lines[line] = true
+  end
 
   if not conf.aillusion then
     valid.simplerelapsing()

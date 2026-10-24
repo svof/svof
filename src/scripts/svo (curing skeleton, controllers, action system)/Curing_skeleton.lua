@@ -411,6 +411,9 @@ function svo.lifevision.add(what, other_action, arg, lineguard)
     -- game's answer to it, as sileris' "slick" is.
     answer = sk.filing_answer or (other_action and sent and answer_to(what)) or nil,
     confirmed = sk.filing_confirmed,
+    -- the game line it came from, such as the one a toxic relapse brought
+    -- back (sk.relapse_lines)
+    at = line,
   })
 
   if lineguard and (not sys.lineguard or sys.lineguard > lineguard) then -- remember the smallest one, because if we have two conflicts, the smallest one is most valid
@@ -584,7 +587,7 @@ function svo.lifevision.validate()
   svo.lifevision.l = svo.pl.OrderedMap()
   sk.stopprocessing = nil
   sk.gmcp_vouched = {}
-  sk.relapse_paragraph = nil
+  sk.relapse_lines = nil
   sys.lineguard = false
 end
 
