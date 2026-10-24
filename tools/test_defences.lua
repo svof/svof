@@ -4425,8 +4425,16 @@ do -- keepup with simultaneity
   svo.stats.currentmana = 5000
   svo.ignore.simultaneity = true
   eq(advisable(svo, "simultaneity"), false, "channels: an ignored simultaneity isn't sent")
-  eq(advisable(svo, "water"), false, "channels: nor wanted for its channels")
+  eq(advisable(svo, "water"), true, "channels: its channels go one at a time instead, as the docs say")
   svo.ignore.simultaneity = nil
+
+  -- Vitals with nothing changed confirm nothing
+  w.gmcp_vitals({ "Channels: F W A E " })
+  local confirms, confirm = 0, svo.defences.confirm
+  svo.defences.confirm = function(...) confirms = confirms + 1 return confirm(...) end
+  for _ = 1, 10 do w.gmcp_vitals({ "Channels: F W A E " }) end
+  svo.defences.confirm = confirm
+  eq(confirms, 0, "channels: ten Vitals with the same channels confirm nothing")
 
   -- charstats without Channels says nothing about them
   w.gmcp_vitals({ "Channels: F W A E " })

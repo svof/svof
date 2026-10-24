@@ -12517,12 +12517,10 @@ if not next(svo.dict) then
     -- many it opens (the user, 2026-10-14). So svof uses it only when no
     -- channel is open, as at the start of defup or once all are lost: when
     -- one or some go, svof opens those alone. Wanting simultaneity, on defup
-    -- or keepup, is wanting every channel it opens (defences.channels).
+    -- or keepup, is wanting every channel it opens (defences.channels), and
+    -- vignore simultaneity opens each by itself instead.
     local function wanted(def)
       return (sys.deffing and defdefup[defs.mode][def]) or (conf.keepup and defkeepup[defs.mode][def])
-    end
-    local function simultaneity_wanted()
-      return wanted('simultaneity') and not svo.ignore.simultaneity
     end
     local function none_open()
       for _, channel in ipairs(defences.channels) do
@@ -12533,10 +12531,10 @@ if not next(svo.dict) then
     -- whether svof opens the channels with simultaneity, rather than one
     -- at a time
     local function simultaneity_due()
-      return simultaneity_wanted() and none_open() and stats.currentmana >= 1000
+      return wanted('simultaneity') and not svo.ignore.simultaneity and none_open() and stats.currentmana >= 1000
     end
     local function channel_advisable(channel)
-      return (not defc[channel] and (wanted(channel) or simultaneity_wanted()) and not simultaneity_due()
+      return (not defc[channel] and (wanted(channel) or wanted('simultaneity')) and not simultaneity_due()
         and not codepaste.balanceful_defs_codepaste()) or false
     end
 

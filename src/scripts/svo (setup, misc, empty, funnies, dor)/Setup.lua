@@ -445,16 +445,21 @@ signals.gmcpcharvitals:connect(function()
       for initial in listed:gmatch("%S+") do
         if channel_initials[initial] then open[channel_initials[initial]] = true end
       end
+      -- Vitals come with nearly every prompt: only what they change, or a
+      -- command of svof's they answer, needs confirming
+      local function settle(def)
+        if not defc[def] or svo.doingaction(def) then defences.confirm(def) end
+      end
       local all = true
       for _, channel in ipairs(defences.channels) do
         if open[channel] then
-          defences.confirm(channel)
+          settle(channel)
         else
           all = false
           if defc[channel] then defences.unconfirm(channel) end
         end
       end
-      if all then defences.confirm('simultaneity') end
+      if all then settle('simultaneity') end
       break
     end
   end
