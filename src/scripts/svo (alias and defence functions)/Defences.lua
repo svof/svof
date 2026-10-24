@@ -3592,7 +3592,9 @@ defences.triggers_of = defences.triggers_of or {}
 -- Takes out a defence defences.register put in, as deleting a definition
 -- or installing it again does: its triggers, handlers, record, entry, places
 -- in the defence lists and GMCP name. keepchoices leaves its defup and
--- keepup choices, and whether it's hidden, for the next register to keep.
+-- keepup choices, whether it's hidden and whether it's up, for the next
+-- register to keep: installing it again doesn't take it down, and GMCP
+-- sends no Add for a defence that never went.
 function defences.unregister(name, keepchoices)
   local rec = defs_data[name]
   for _, id in ipairs(defences.triggers_of[name] or {}) do killTrigger(id) end
@@ -3647,7 +3649,7 @@ function defences.unregister(name, keepchoices)
   svo.dict_validate()
   sk.notifypriodiffs(beforestate, sk.getafterstateprios())
 
-  defc[name] = nil
+  if not keepchoices then defc[name] = nil end
   signals.dragonform:emit()
 end
 
@@ -3859,26 +3861,12 @@ end
 local catalog
 function defences.catalog()
   if catalog then return catalog end
-  catalog = {}
   local path = defences.catalog_file or (svo.installationfolder() .. "/defence_catalog.lua")
-  local f = io.open(path, "r")
-  if not f then return catalog end
-  local text = f:read("*a")
-  f:close()
-  local chunk, err
-  if setfenv then
-    chunk, err = loadstring(text, "=defence_catalog")
-    if chunk then setfenv(chunk, {}) end
-  else
-    chunk, err = load(text, "=defence_catalog", "t", {})
-  end
-  local ok, t = false, err
-  if chunk then ok, t = pcall(chunk) end
-  if ok and type(t) == 'table' then
-    catalog = t
-  else
+  local t, err = svo.read_data_file(path, "defence_catalog")
+  catalog = t or {}
+  if t == nil then
     svo.echof("<250,0,0>Couldn't%s read Svof's list of every class's defences, in %s: %s", svo.getDefaultColor(),
-      path, tostring(t))
+      path, err)
   end
   return catalog
 end
@@ -5213,13 +5201,17 @@ function defences.custom_install(name)
     svo.unsetserverignore(name)
   end
 
+  -- one taken out above and not put back in isn't up any more to svof
   if not conf.customdefinitions then
+    defc[name] = nil
     svo.echof("Saved %s. vconfig customdefinitions is off, so Svof doesn't add it.", name)
   elseif not defences.custom_applies(d) then
+    defc[name] = nil
     svo.echof("Saved %s. It's for %s, so Svof adds it when you're one.", name, class_title(d.class))
   else
     local ok, err = pcall(defences.custom_register, name, d)
     if not ok then
+      defc[name] = nil
       svo.echof("<250,0,0>Couldn't%s add %s: %s.", svo.getDefaultColor(), name, tostring(err))
       return false
     end
@@ -5254,14 +5246,23 @@ function defences.custom_delete(name)
   svo.echof("Deleted %s.", name)
 end
 
+-- how many defences the player defined, and how many changes to svof's
+-- own they made, every class's
+function defences.custom_counts()
+  local defined, changed = 0, 0
+  for _ in pairs(defences.custom or {}) do defined = defined + 1 end
+  for _, names in pairs(defences.edits or {}) do
+    for _ in pairs(names) do changed = changed + 1 end
+  end
+  return defined, changed
+end
+
 function defences.custom_export(path)
   path = (path and path ~= '') and path or (getMudletHomeDir() .. "/svo/custom/defs-export")
-  local t, n, c = {}, 0, 0
-  for name, spec in pairs(defences.custom) do t[name] = spec n = n + 1 end
+  local t = {}
+  for name, spec in pairs(defences.custom) do t[name] = spec end
+  local n, c = defences.custom_counts()
   -- the changes to svof's own go too, under a key no name can be
-  for _, names in pairs(defences.edits or {}) do
-    for _ in pairs(names) do c = c + 1 end
-  end
   if c > 0 then t._changes = defences.edits end
   svo.tablesave(path, t)
   svo.echof("Saved the %d defence%s you defined%s to %s.", n, n == 1 and "" or "s",
@@ -5806,7 +5807,10 @@ end
 local function edit_live(name, edit)
   local before = svo.dict.svotossd[name]
   local after = own_version(name).gmcp
-  if edit and edit.gmcp ~= nil then after = edit.gmcp or nil end
+  -- the change's name, unless another defence has it, which edit_apply
+  -- leaves alone
+  local taken = edit and edit.gmcp and svo.dict.sstosvod[edit.gmcp]
+  if edit and edit.gmcp ~= nil and not (taken and taken ~= name) then after = edit.gmcp or nil end
   local renamed = before ~= after
   if renamed then custom_server_forget(name) end
   edit_restore(name)
@@ -6178,11 +6182,12 @@ function defences.edit_set(name, field, value)
       svo.echof("Svof's own %s is a %s defence, which every class has, so its skillset stays.", name, tostring(own.skillset))
       return
     end
-    local skillset = value:lower()
+    -- as a definition's: weather weaving is weatherweaving
+    local skillset = (value:lower():gsub("%s+", ""))
     if skillset == '' then svo.echof("Which skillset is %s in now?", name) return end
     local why = skillset_problem(skillset)
     if why then
-      svo.echof("Can't list %s under %s: %s.", name, skillset, why)
+      svo.echof("Can't list %s under %s: %s.", name, value, why)
       return
     end
     d.skillset = skillset
@@ -6422,6 +6427,11 @@ function defences.edits_import(changes, path)
       local edit = changes[key][name]
       local here = defs_data[name] and edit_key(defs_data[name]) == key
       local problem = imported_gmcp_problem(edit.gmcp)
+      -- a GMCP name this class gives another defence, as edit_problem refuses
+      local mapped = here and type(edit.gmcp) == 'string' and svo.dict.sstosvod[edit.gmcp:lower()]
+      if not problem and mapped and mapped ~= name then
+        problem = "GMCP's " .. edit.gmcp:lower() .. " is Svof's " .. mapped
+      end
       -- its patterns, which must read, and for this class, a clash
       if not problem then
         problem = patterns_problem(edit, here and function (field, p) return table.contains(own_version(name)[field], p) end)

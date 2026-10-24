@@ -4304,6 +4304,62 @@ do -- the last class's own at the bottom of the list, vcleargaps in another
   eq(lowest, 1, "bottom: and the lowest of them at 1")
 end
 
+-- ===== 22. Review fixes, 2026-10-24 =====
+
+-- Installing a definition again keeps it up: GMCP sends no Add for a
+-- defence that never went, so svof marking it down raised it again
+do
+  local w = world.new({ class = "Monk" })
+  local svo, d = w.svo, w.svo.defences
+  svo.conf.customdefinitions, svo.conf.keepup = true, true
+  local mode = svo.defs.mode
+  d.custom_drafts.shimmer = { class = "monk", skillset = "tekura", command = "shimmer on",
+    on = { "You begin to shimmer." }, off = { "You stop shimmering." }, def = "You are shimmering." }
+  eq(d.custom_install("shimmer"), true, "reinstall: the first install")
+  svo.defs.keepup("shimmer", true, mode)
+  d.got("shimmer")
+  d.custom_show("shimmer")
+  d.custom_set("shimmer", "got", "You shimmer brightly.")
+  eq(d.custom_install("shimmer"), true, "reinstall: installing a changed line")
+  eq(svo.defc.shimmer, true, "reinstall: the defence is still up")
+  eq(svo.dict.shimmer.physical.isadvisable(), false, "reinstall: so keepup doesn't raise it again")
+  eq(svo.defkeepup[mode].shimmer, true, "reinstall: and it's still on keepup")
+
+  -- one it isn't put back in for isn't up to svof any more
+  d.custom_show("shimmer")
+  d.custom_set("shimmer", "class", "magi")
+  d.custom_set("shimmer", "skillset", "elementalism")
+  eq(d.custom_install("shimmer"), true, "reinstall: moving it to another class")
+  eq(svo.defc.shimmer, nil, "reinstall: one for another class isn't up in this one")
+
+  -- a change's skillset takes spaces out, as a definition's does
+  local own
+  for name, rec in svo.defs_data:iter() do
+    if rec.type == "tekura" and svo.dict[name] then own = name break end
+  end
+  d.edit_set(own, "skillset", "weather weaving")
+  eq(d.edit_drafts[own].skillset, "weatherweaving", "skillset: a change takes weather weaving as weatherweaving")
+end
+
+-- An imported change with a GMCP name another defence has is refused, as
+-- typing it is, and serverside isn't told of a rename that can't happen
+do
+  local w = world.new({ class = "Monk" })
+  local svo, d, sk = w.svo, w.svo.defences, w.svo.sk
+  svo.conf.customdefinitions, svo.conf.serverside = true, true
+  d.gmcp_confirmed.alertness = true
+  local forgets, switches = 0, 0
+  sk.sendpriorityignore = function() forgets = forgets + 1 end
+  sk.handleserversideswitch = function() switches = switches + 1 end
+  svo.serverignore.bodyblock = true
+  local key = d.class_key(svo.me.class)
+  d.edits_import({ [key] = { bodyblock = { gmcp = "alertness", was = {} } } }, "test")
+  eq(echoed(w, "Didn't import the change to Svof's own bodyblock from test: GMCP's alertness is Svof's alertness."),
+    true, "import: a GMCP name another defence has is refused")
+  eq(d.edits[key] and d.edits[key].bodyblock, nil, "import: and the change isn't kept")
+  eq(forgets + switches, 0, "import: and serverside isn't told of a rename")
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end

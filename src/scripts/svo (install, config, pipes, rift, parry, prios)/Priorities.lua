@@ -36,27 +36,15 @@ function prio.catalog()
   if catalog then return catalog end
   catalog = {}
   local path = svo.installationfolder() .. "/prio_catalog.lua"
-  local f = io.open(path, "r")
-  if not f then return catalog end
-  local text = f:read("*a")
-  f:close()
-  local chunk, err
-  if setfenv then
-    chunk, err = loadstring(text, "=prio_catalog")
-    if chunk then setfenv(chunk, {}) end
-  else
-    chunk, err = load(text, "=prio_catalog", "t", {})
-  end
-  local ok, t = false, err
-  if chunk then ok, t = pcall(chunk) end
-  if ok and type(t) == 'table' then
+  local t, err = svo.read_data_file(path, "prio_catalog")
+  if t then
     for balance, names in pairs(t) do
       catalog[balance] = {}
       for _, name in ipairs(type(names) == 'table' and names or {}) do catalog[balance][name] = true end
     end
-  else
+  elseif t == nil then
     svo.echof("<250,0,0>Couldn't%s read Svof's list of every class's priorities, in %s: %s", svo.getDefaultColor(),
-      path, tostring(t))
+      path, err)
   end
   return catalog
 end

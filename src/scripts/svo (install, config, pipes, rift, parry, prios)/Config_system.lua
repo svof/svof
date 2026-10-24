@@ -1513,12 +1513,8 @@ svo.config_dict = svo.pl.OrderedMap {
     type = 'boolean',
     vconfig2 = true,
     onshow = function (defaultcolour)
-      local n, c = 0, 0
-      for _ in pairs(defences.custom or {}) do n = n + 1 end
       -- and the changes to svof's own, every class's
-      for _, names in pairs(defences.edits or {}) do
-        for _ in pairs(names) do c = c + 1 end
-      end
+      local n, c = defences.custom_counts()
       fg(defaultcolour)
       echo(string.format("%s the %d defence%s you defined and your %d change%s to Svof's own (",
         conf.customdefinitions and "Uses" or "Doesn't use", n, n == 1 and "" or "s", c, c == 1 and "" or "s"))

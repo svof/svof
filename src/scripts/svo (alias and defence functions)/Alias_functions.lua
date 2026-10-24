@@ -433,11 +433,7 @@ function svo.ashow()
   end
 
   -- the defences the player defined and their changes to svof's own
-  local defined, changed = 0, 0
-  for _ in pairs(defences.custom or {}) do defined = defined + 1 end
-  for _, names in pairs(defences.edits or {}) do
-    for _ in pairs(names) do changed = changed + 1 end
-  end
+  local defined, changed = defences.custom_counts()
   svo.echofn("Your own defences: %d defined, %d change%s to Svof's (", defined, changed, changed == 1 and "" or "s")
   setFgColor(unpack(svo.getDefaultColorNums))
   setUnderline(true)

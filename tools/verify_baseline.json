@@ -234,12 +234,12 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Alias functions|script",
-      "digest": "ae755ae7f71350e4",
+      "digest": "2e7417d1f531fc8e",
       "text": "Script   svo (alias and defence functions) Alias functions [script]"
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "eb92adb89edf0dc1",
+      "digest": "31e23506f0df7697",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -364,7 +364,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Config system|script",
-      "digest": "7e27a1bca41a93ff",
+      "digest": "de743316e588e980",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Config system [script]"
     },
     {
@@ -374,7 +374,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Priorities|script",
-      "digest": "af641cd1d6714c63",
+      "digest": "ea522a064df845fd",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Priorities [script]"
     },
     {
@@ -449,7 +449,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",
-      "digest": "5c5278698d3f7046",
+      "digest": "813033b79482c469",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Miscellaneous functions [script]"
     },
     {
