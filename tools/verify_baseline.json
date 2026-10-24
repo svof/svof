@@ -14,7 +14,7 @@
     },
     {
       "id": "added|Script|svo (alias and defence functions)|Custom afflictions",
-      "digest": "6ffb96cd60a2c557",
+      "digest": "cfd08a16f62a5077",
       "text": "Script   svo (alias and defence functions) Custom afflictions [only in the package]"
     },
     {
@@ -239,7 +239,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "a599154c6075fa8c",
+      "digest": "cfa580871df00b9f",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -396,6 +396,11 @@
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Priorities|script",
       "digest": "cc35aa9876f66610",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Priorities [script]"
+    },
+    {
+      "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Rift|script",
+      "digest": "80753b5bc4ec1860",
+      "text": "Script   svo (install, config, pipes, rift, parry, prios) Rift [script]"
     },
     {
       "id": "item|Script|svo (limbcounter)|svo (limbcounter)/svo count show|script",

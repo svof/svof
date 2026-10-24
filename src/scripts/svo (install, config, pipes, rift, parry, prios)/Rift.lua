@@ -616,11 +616,15 @@ svo.signals.changecuring:connect(function ()
   end
 end, 'update svo.eat on aeon/retardation')
 
-local smoke_herb_conversions = {
+-- the minerals smoked in place of the herbs, which for skullcap isn't the
+-- one eaten in place of it (rift.herb_conversions): malachite to smoke,
+-- azurite to eat
+rift.smoke_herb_conversions = {
   elm      = 'cinnabar',
   skullcap = 'malachite',
   valerian = 'realgar',
 }
+local smoke_herb_conversions = rift.smoke_herb_conversions
 
 -- pipes don't need to be refilled that often, so we'll do the herb selection realtime instead of recompiling this huge monster all the time
 function sk.asyncfill(what, where)

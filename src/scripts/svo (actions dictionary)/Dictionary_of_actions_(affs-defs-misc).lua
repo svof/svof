@@ -15125,7 +15125,8 @@ function svo.affcures(text)
         cure = { kind = 'salve', salve, alt, place = place }
       end
     elseif verb == 'smoke' then
-      local herb, mineral = aff_pair(rift.herb_conversions, rest)
+      -- skullcap's mineral to smoke is malachite, not the azurite eaten
+      local herb, mineral = aff_pair(rift.smoke_herb_conversions, rest)
       if herb and aff_pipes[herb] then cure = { kind = 'smoke', herb, mineral } end
     elseif verb == 'sip' or verb == 'drink' then
       local elixir, alt = aff_pair(rift.vial_conversions, rest)
@@ -15204,12 +15205,13 @@ function svo.basicaff(name, spec)
   -- svof's own handler for the cure, then this one: a cure that cured
   -- nothing rules it out too, except a madness affliction while you have
   -- madness, which the cure couldn't have taken (as empty.herb_affs'
-  -- handlers do)
+  -- handlers do). Registering puts it in empty.defined, so svof's handler
+  -- has ruled it out already, unless GMCP kept it
   local function after_empty(cure)
     return function()
       local handler = aff_empty_handler(cure)
       if handler then handler() end
-      if not (madness and affs.madness) then svo.presume_cured(name) end
+      if affs[name] and not (madness and affs.madness) then svo.presume_cured(name) end
     end
   end
 

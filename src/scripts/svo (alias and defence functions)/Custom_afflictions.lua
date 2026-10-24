@@ -445,26 +445,12 @@ end
 local catalog
 function afflictions.trigger_catalog()
   if catalog then return catalog end
-  catalog = {}
   local path = afflictions.catalog_file or (svo.installationfolder() .. "/trigger_catalog.lua")
-  local f = io.open(path, "r")
-  if not f then return catalog end
-  local text = f:read("*a")
-  f:close()
-  local chunk, err
-  if setfenv then
-    chunk, err = loadstring(text, "=trigger_catalog")
-    if chunk then setfenv(chunk, {}) end
-  else
-    chunk, err = load(text, "=trigger_catalog", "t", {})
-  end
-  local ok, t = false, err
-  if chunk then ok, t = pcall(chunk) end
-  if ok and type(t) == 'table' then
-    catalog = t
-  else
+  local t, err = svo.read_data_file(path, "trigger_catalog")
+  catalog = t or {}
+  if t == nil then
     svo.echof("<250,0,0>Couldn't%s read Svof's list of its own trigger lines, in %s: %s", svo.getDefaultColor(),
-      path, tostring(t))
+      path, err)
   end
   return catalog
 end
@@ -1192,6 +1178,9 @@ function afflictions.install(name)
     svo.echof("<250,0,0>Can't%s install %s: %s.", svo.getDefaultColor(), name, problem)
     return false
   end
+  -- one you have stays had: unregister takes it off, and with no GMCP name
+  -- nothing would put it back until its line came again
+  local had = svo.affs[name] ~= nil
   afflictions.unregister(name)
   afflictions.custom[name] = d
   afflictions.drafts[name] = nil
@@ -1205,6 +1194,7 @@ function afflictions.install(name)
     svo.echof("<250,0,0>Couldn't%s add %s: %s.", svo.getDefaultColor(), name, tostring(why))
     return false
   end
+  if had then svo.addaffdict(svo.dict[name]) end
   svo.echof("Installed %s.", name)
   return true
 end

@@ -995,6 +995,47 @@ do -- the forms
   eq(echoed(w, "colour isn't one"), true, "and a field it doesn't have")
 end
 
+-- ===== 9. Review fixes, 2026-10-24 =====
+
+do
+  local w = world.new({ class = "Monk" })
+  local svo, A = w.svo, w.svo.afflictions
+  svo.conf.customdefinitions = true
+
+  -- skullcap is smoked as malachite and eaten as azurite
+  eq(describe(svo.affcures("Smoke Skullcap / Smoke Malachite")), "smoke skullcap/malachite",
+    "smoke: skullcap's mineral to smoke is malachite")
+  eq(describe(svo.affcures("Smoke Elm / Smoke Cinnabar")), "smoke elm/cinnabar", "smoke: elm's is cinnabar")
+
+  -- installing it again while you have it keeps it, with or without a
+  -- GMCP name to put it back
+  A.drafts.itchy = { cures = "Eat Kelp / Eat Aurum", gain = { "You feel itchy all over." } }
+  eq(A.install("itchy"), true, "reinstall: the first install")
+  svo.addaffdict(svo.dict.itchy)
+  A.set("itchy", "diag", "covered in itches.")
+  eq(A.install("itchy"), true, "reinstall: installing it with a DIAGNOSE line added")
+  eq(svo.affs.itchy ~= nil, true, "reinstall: you still have it")
+  eq(svo.affs.itchy and svo.affs.itchy.p == svo.dict.itchy, true, "reinstall: as its new entry")
+  A.set("itchy", "diag", "covered in itches all over.")
+  svo.rmaff("itchy")
+  eq(A.install("itchy"), true, "reinstall: installing it again without it")
+  eq(svo.affs.itchy, nil, "reinstall: one you don't have isn't added")
+
+  -- an empty kelp rules it out once, by kelp's own handler
+  svo.addaffdict(svo.dict.itchy)
+  local ruled = 0
+  local rmaff = svo.rmaff
+  svo.rmaff = function(which)
+    -- (a list is removed a name at a time, through svo.rmaff again)
+    if which == "itchy" then ruled = ruled + 1 end
+    return rmaff(which)
+  end
+  svo.dict.itchy.herb.empty()
+  svo.rmaff = rmaff
+  eq(ruled, 1, "empty: an empty kelp rules it out once")
+  eq(svo.affs.itchy, nil, "empty: and it's gone")
+end
+
 if #failures > 0 then
   for _, f in ipairs(failures) do print("FAIL: " .. f) end
   print(string.format("%d checks, %d failures", checks, #failures))
