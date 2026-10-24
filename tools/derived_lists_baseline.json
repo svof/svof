@@ -37,34 +37,9 @@
       "text": "tree: blackout is in treecurables and has no tree-cure trigger"
     },
     {
-      "id": "tree|only_treecurables|crescendo",
-      "digest": "2338f89eb6724c6b",
-      "text": "tree: crescendo is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|degenerate",
-      "digest": "8b23f881f7d0c02b",
-      "text": "tree: degenerate is in treecurables and has no tree-cure trigger"
-    },
-    {
       "id": "tree|only_treecurables|depression",
       "digest": "412ff76258900a46",
       "text": "tree: depression is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|deteriorate",
-      "digest": "bb38eaa50fa2d21a",
-      "text": "tree: deteriorate is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|disrupt",
-      "digest": "70b5c4bcb19afa7b",
-      "text": "tree: disrupt is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|dissonance",
-      "digest": "bd39db2a134b8839",
-      "text": "tree: dissonance is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|earworm",
@@ -82,9 +57,9 @@
       "text": "tree: fulminated is in treecurables and has no tree-cure trigger"
     },
     {
-      "id": "tree|only_treecurables|horror",
-      "digest": "b1e09a32a07e70f6",
-      "text": "tree: horror is in treecurables and has no tree-cure trigger"
+      "id": "tree|only_treecurables|indifference",
+      "digest": "e898fcf4aefbe02c",
+      "text": "tree: indifference is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|itching",
@@ -92,19 +67,9 @@
       "text": "tree: itching is in treecurables and has no tree-cure trigger"
     },
     {
-      "id": "tree|only_treecurables|laceratedthroat",
-      "digest": "67fbb97d2cff345c",
-      "text": "tree: laceratedthroat is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|madness",
-      "digest": "28337478e6119f29",
-      "text": "tree: madness is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|mildconcussion",
-      "digest": "e8c84ef9b5cd8615",
-      "text": "tree: mildconcussion is in treecurables and has no tree-cure trigger"
+      "id": "tree|only_treecurables|manaleech",
+      "digest": "d837c16180b197e3",
+      "text": "tree: manaleech is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|mycalium",
@@ -117,14 +82,14 @@
       "text": "tree: parasite is in treecurables and has no tree-cure trigger"
     },
     {
+      "id": "tree|only_treecurables|phlogistication",
+      "digest": "7884b40fb0ee8064",
+      "text": "tree: phlogistication is in treecurables and has no tree-cure trigger"
+    },
+    {
       "id": "tree|only_treecurables|pyramides",
       "digest": "8c7ee3ba815e88e6",
       "text": "tree: pyramides is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|pyre",
-      "digest": "d44439ae398c4360",
-      "text": "tree: pyre is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|rebbies",
@@ -175,6 +140,11 @@
       "id": "tree|only_treecurables|unknownmental",
       "digest": "f8dfee0c3e6264af",
       "text": "tree: unknownmental is in treecurables and has no tree-cure trigger"
+    },
+    {
+      "id": "tree|only_treecurables|unweavingspirit",
+      "digest": "b8c4395f8daf9015",
+      "text": "tree: unweavingspirit is in treecurables and has no tree-cure trigger"
     }
   ]
 }
