@@ -1638,6 +1638,12 @@ svo.lostbal_focus = function()
       timeout = 8
     end
   end
+  -- Whispering madness slows focusing one of its afflictions to about 4
+  -- seconds (the user, from a player), and under lag the line saying focus
+  -- is back can come later still: never give it back sooner than that.
+  -- getNetworkLatency, not svo.getping, whose cap of half a second would
+  -- hide the lag that matters here
+  if affs.madness then timeout = math.max(timeout, 4 + getNetworkLatency()) end
 
   tempTimer(timeout, function ()
     if not bals.focus and sk.focustick == oldfocustick then

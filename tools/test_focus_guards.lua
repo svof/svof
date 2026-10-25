@@ -21,6 +21,8 @@ What it pins:
   * svo.setupserverside, run at every login: it sends the game the
     focus-with switches, so a player who already had serverside on when the
     options arrived does not keep whatever the game had.
+  * svo.lostbal_focus: with whispering madness, focus balance isn't taken
+    as back sooner than 4 seconds plus the network latency, uncapped.
 
 It proves nothing about Mudlet integration, the game, or real combat.
 
@@ -167,6 +169,32 @@ do
   check("login with serverside: curing sets still created", w.sent[1], "curingset new normal")
   w = login(false)
   check("login without serverside: nothing sent", w.focuswith, 0)
+end
+
+-- The wait before svof takes focus balance as back without the game's
+-- line. Whispering madness slows focusing its afflictions to about 4
+-- seconds, and the line can come later under lag
+do
+  local lostbal_src = extract(skel, SKEL, "svo.lostbal_focus = function()", "\nend\n", true)
+  local function wait(held, latency)
+    local w = world()
+    local timeout
+    for _, aff in ipairs(held) do w.affs[aff] = true end
+    w.conf.ai_resetfocusbal = 5
+    w.env.sk.focustick = 0
+    w.env.svo.startbalancewatch = function() end
+    w.env.tempTimer = function(t) timeout = t end
+    w.env.raiseEvent = function() end
+    w.env.getNetworkLatency = function() return latency end
+    w.env.math = math
+    run(lostbal_src, "lostbal_focus", w.env)
+    w.env.svo.lostbal_focus()
+    return timeout
+  end
+  check("focus balance: back after 5s", wait({}, 2), 5)
+  check("focus balance: madness with little lag keeps the 5s", wait({ 'madness' }, 0.3), 5)
+  check("focus balance: madness under 2s of lag waits 4s and the lag", wait({ 'madness' }, 2), 6)
+  check("focus balance: rixil's longer wait stays", wait({ 'madness', 'rixil' }, 0.3), 8)
 end
 
 print(string.format("%d checks, %d failures", checks, failures))
