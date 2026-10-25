@@ -5221,7 +5221,7 @@ if not next(svo.dict) then
     },
   revealed = {
       waitingfor = {
-        customwait = 80, -- lasts 80s
+        customwait = 60, -- AFFLICTION SHOW's default time
   
         isadvisable = function()
           return false
@@ -7760,7 +7760,7 @@ if not next(svo.dict) then
     },
     pinshot = {
       waitingfor = {
-        customwait = 20, -- lasts 18s
+        customwait = 21, -- AFFLICTION SHOW's default time
   
         isadvisable = function()
           return false
@@ -7826,7 +7826,7 @@ if not next(svo.dict) then
     },
     timeflux = {
       waitingfor = {
-        customwait = 50, -- lasts 50s
+        customwait = 60, -- AFFLICTION SHOW's default time
   
         isadvisable = function()
           return false
@@ -8032,7 +8032,7 @@ if not next(svo.dict) then
   
     icing = {
       waitingfor = {
-        customwait = 30, -- ??
+        customwait = 15, -- AFFLICTION SHOW's default time
   
         isadvisable = function()
           return false
@@ -8071,7 +8071,7 @@ if not next(svo.dict) then
     -- untouched.
     flamefisted = {
       waitingfor = {
-        customwait = 30, -- ??
+        customwait = 15, -- AFFLICTION SHOW's default time
   
         isadvisable = function()
           return false
@@ -8251,7 +8251,7 @@ if not next(svo.dict) then
     },
     galed = {
       waitingfor = {
-        customwait = 10,
+        customwait = 15, -- AFFLICTION SHOW's default time
   
         isadvisable = function()
           return false

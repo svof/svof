@@ -345,6 +345,12 @@ jobs:
       - name: test focus wiring
         run: lua tools/test_focus_wiring.lua
 
+      # Gate 1.96. Waits for afflictions only time cures: each listed
+      # entry's customwait against AFFLICTION SHOW's default time, read from
+      # the real dictionary.
+      - name: test timed waits
+        run: lua tools/test_timed_waits.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
