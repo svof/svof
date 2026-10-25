@@ -1278,7 +1278,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('pacifism')
-          svo.lostbal_focus()
+          svo.lostbal_focus('pacifism')
         end,
   
         onstart = function() send('focus', conf.commandecho) end,
@@ -1402,7 +1402,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('dizziness')
-          svo.lostbal_focus()
+          svo.lostbal_focus('dizziness')
         end,
   
         action = 'focus',
@@ -1451,7 +1451,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('shyness')
-          svo.lostbal_focus()
+          svo.lostbal_focus('shyness')
         end,
   
         action = 'focus',
@@ -1500,7 +1500,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('epilepsy')
-          svo.lostbal_focus()
+          svo.lostbal_focus('epilepsy')
         end,
   
         action = 'focus',
@@ -1580,7 +1580,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('stupidity')
-          svo.lostbal_focus()
+          svo.lostbal_focus('stupidity')
         end,
   
         action = 'focus',
@@ -1763,7 +1763,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('masochism')
-          svo.lostbal_focus()
+          svo.lostbal_focus('masochism')
         end,
   
         action = 'focus',
@@ -1812,7 +1812,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('recklessness')
-          svo.lostbal_focus()
+          svo.lostbal_focus('recklessness')
         end,
   
         action = 'focus',
@@ -1962,7 +1962,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('generosity')
-          svo.lostbal_focus()
+          svo.lostbal_focus('generosity')
         end,
   
         action = 'focus',
@@ -2041,7 +2041,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('vertigo')
-          svo.lostbal_focus()
+          svo.lostbal_focus('vertigo')
         end,
   
         action = 'focus',
@@ -2088,7 +2088,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('loneliness')
-          svo.lostbal_focus()
+          svo.lostbal_focus('loneliness')
         end,
   
         action = 'focus',
@@ -2135,7 +2135,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('dementia')
-          svo.lostbal_focus()
+          svo.lostbal_focus('dementia')
         end,
   
         action = 'focus',
@@ -2179,7 +2179,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('paranoia')
-          svo.lostbal_focus()
+          svo.lostbal_focus('paranoia')
         end,
   
         action = 'focus',
@@ -2248,7 +2248,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('hallucinations')
-          svo.lostbal_focus()
+          svo.lostbal_focus('hallucinations')
         end,
   
         action = 'focus',
@@ -2294,7 +2294,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('confusion')
-          svo.lostbal_focus()
+          svo.lostbal_focus('confusion')
         end,
   
         action = 'focus',
@@ -2344,7 +2344,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('agoraphobia')
-          svo.lostbal_focus()
+          svo.lostbal_focus('agoraphobia')
         end,
   
         action = 'focus',
@@ -2391,7 +2391,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('claustrophobia')
-          svo.lostbal_focus()
+          svo.lostbal_focus('claustrophobia')
         end,
   
         action = 'focus',
@@ -4663,7 +4663,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('anorexia')
-          svo.lostbal_focus()
+          svo.lostbal_focus('anorexia')
         end,
   
         action = 'focus',
@@ -5520,7 +5520,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('fear')
-          svo.lostbal_focus()
+          svo.lostbal_focus('fear')
         end,
   
         action = 'focus',

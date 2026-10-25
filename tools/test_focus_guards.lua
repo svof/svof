@@ -21,8 +21,10 @@ What it pins:
   * svo.setupserverside, run at every login: it sends the game the
     focus-with switches, so a player who already had serverside on when the
     options arrived does not keep whatever the game had.
-  * svo.lostbal_focus: with whispering madness, focus balance isn't taken
-    as back sooner than 4 seconds plus the network latency, uncapped.
+  * svo.lostbal_focus: with whispering madness, after a focus that cured
+    one of the ability file's 13 afflictions, or an unknown one, focus
+    balance isn't taken as back sooner than 4 seconds plus the network
+    latency, the latency capped at 3 seconds.
 
 It proves nothing about Mudlet integration, the game, or real combat.
 
@@ -175,8 +177,8 @@ end
 -- line. Whispering madness slows focusing its afflictions to about 4
 -- seconds, and the line can come later under lag
 do
-  local lostbal_src = extract(skel, SKEL, "svo.lostbal_focus = function()", "\nend\n", true)
-  local function wait(held, latency)
+  local lostbal_src = extract(skel, SKEL, "svo.madness_slows_focus = {", "\nend\n", true)
+  local function wait(held, latency, cured)
     local w = world()
     local timeout
     for _, aff in ipairs(held) do w.affs[aff] = true end
@@ -188,13 +190,20 @@ do
     w.env.getNetworkLatency = function() return latency end
     w.env.math = math
     run(lostbal_src, "lostbal_focus", w.env)
-    w.env.svo.lostbal_focus()
+    w.env.svo.lostbal_focus(cured)
     return timeout
   end
-  check("focus balance: back after 5s", wait({}, 2), 5)
-  check("focus balance: madness with little lag keeps the 5s", wait({ 'madness' }, 0.3), 5)
-  check("focus balance: madness under 2s of lag waits 4s and the lag", wait({ 'madness' }, 2), 6)
-  check("focus balance: rixil's longer wait stays", wait({ 'madness', 'rixil' }, 0.3), 8)
+  check("focus balance: back after 5s", wait({}, 2, 'stupidity'), 5)
+  check("focus balance: madness with little lag keeps the 5s", wait({ 'madness' }, 0.3, 'stupidity'), 5)
+  check("focus balance: madness under 2s of lag waits 4s and the lag", wait({ 'madness' }, 2, 'stupidity'), 6)
+  check("focus balance: rixil's longer wait stays", wait({ 'madness', 'rixil' }, 0.3, 'stupidity'), 8)
+  -- only the ability file's 13 are slowed, vertigo included in AFFLICTION
+  -- SHOW's WhisperingMadness but not in the ability file
+  check("focus balance: madness, dizziness cured: no madness wait", wait({ 'madness' }, 2, 'dizziness'), 5)
+  check("focus balance: madness, vertigo cured: no madness wait", wait({ 'madness' }, 2, 'vertigo'), 5)
+  check("focus balance: madness, cure unknown: madness wait", wait({ 'madness' }, 2), 6)
+  -- one lag spike can't stall focus more than 3s past the 4
+  check("focus balance: madness, a 9.9s reading counts as 3s", wait({ 'madness' }, 9.9, 'paranoia'), 7)
 end
 
 print(string.format("%d checks, %d failures", checks, failures))

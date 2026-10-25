@@ -1621,7 +1621,17 @@ svo.lostbal_tree = function()
     raiseEvent("svo got balance", 'tree')]])
 end
 
-svo.lostbal_focus = function()
+-- the 13 afflictions AB OCCULTISM WHISPERINGMADNESS names: while you have
+-- whispering madness, focusing one of them takes longer to recover from
+svo.madness_slows_focus = {
+  addiction = true, agoraphobia = true, confusion = true, dementia = true,
+  hallucinations = true, hypersomnia = true, impatience = true, loneliness = true,
+  lovers = true, masochism = true, paranoia = true, recklessness = true,
+  stupidity = true,
+}
+
+-- cured is the affliction the focus cured, or nil when svof doesn't know
+svo.lostbal_focus = function(cured)
   if not bals.focus then return end
 
   bals.focus = false
@@ -1629,7 +1639,7 @@ svo.lostbal_focus = function()
   sk.focustick = sk.focustick + 1
   local oldfocustick = sk.focustick
 
-  -- respect conf.ai_resetfocusbal while setting a minimum of 8s
+  -- conf.ai_resetfocusbal; with rixil, 5s more when that is under 5s, else 8s
   local timeout = conf.ai_resetfocusbal
   if affs.rixil then
     if conf.ai_resetfocusbal < 5 then
@@ -1638,12 +1648,16 @@ svo.lostbal_focus = function()
       timeout = 8
     end
   end
-  -- Whispering madness slows focusing one of its afflictions to about 4
-  -- seconds (the user, from a player), and under lag the line saying focus
-  -- is back can come later still: never give it back sooner than that.
-  -- getNetworkLatency, not svo.getping, whose cap of half a second would
-  -- hide the lag that matters here
-  if affs.madness then timeout = math.max(timeout, 4 + getNetworkLatency()) end
+  -- With whispering madness, focusing one of its afflictions takes about 4
+  -- seconds to recover from instead of about 2 (a player's timing), and the
+  -- line can come later under lag. When svof doesn't know what the focus
+  -- cured, it may have been one of them. getNetworkLatency rather than
+  -- svo.getping, whose half second cap is too low here; capped at 3s
+  -- itself, since it is the last reading only and one spike would stall
+  -- focus curing whenever the line is missed
+  if affs.madness and (not cured or svo.madness_slows_focus[cured]) then
+    timeout = math.max(timeout, 4 + math.min(getNetworkLatency(), 3))
+  end
 
   tempTimer(timeout, function ()
     if not bals.focus and sk.focustick == oldfocustick then
