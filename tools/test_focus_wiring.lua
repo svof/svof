@@ -99,6 +99,18 @@ local chain = {}
 for name in triggers:sub(s, e):gmatch('"name": "svo cured ([%w_]+)"') do chain[name] = true end
 local calls = {}
 for name in triggers:sub(s, e):gmatch('svo%.valid%.focus_cured_([%w_]+)%(') do calls[name] = true end
+-- a line's script can also live in its own .lua beside triggers.json, which
+-- muddler finds as name:gsub(" ", "_")..".lua", as svo cured fear's does
+local chain_dir = CHAIN:match("^(.*/)")
+local lua_scripts = 0
+for item in triggers:sub(s, e):gmatch('"name": "([^"]+)"') do
+  local f = io.open(chain_dir .. (item:gsub(" ", "_")) .. ".lua", "r")
+  if f then
+    lua_scripts = lua_scripts + 1
+    for name in f:read("*a"):gmatch('svo%.valid%.focus_cured_([%w_]+)%(') do calls[name] = true end
+    f:close()
+  end
+end
 
 local game = {}
 for _, name in ipairs(GAME_FOCUS) do game[name] = true end
@@ -108,6 +120,7 @@ check("read at least 15 focus blocks", #sorted(blocks) >= 15, true)
 check("read at least 15 names in empty.focuscurables", #sorted(focuscurables) >= 15, true)
 check("read at least 15 names in the generator", #sorted(generator) >= 15, true)
 check("read at least 15 lines in the Focus chain", #sorted(chain) >= 15, true)
+check("read svo cured fear's script from its own .lua", lua_scripts >= 1, true)
 
 -- every Focus Mind affliction can be focused for, and a focus is credited
 check("Focus Mind afflictions with no focus block", missing(game, blocks), "")
