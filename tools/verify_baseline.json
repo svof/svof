@@ -153,6 +153,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo vitrification woreoff [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Poisons + Generic lines/Revealed",
+      "digest": "45d6a16c53c3d762",
+      "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Revealed [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/Swashbuckling/Crescendo hum",
       "digest": "7b425eed3828859f",
       "text": "Trigger  svo (aliases, triggers) svo/Swashbuckling/Crescendo hum [only in the package]"
@@ -194,8 +199,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "566811349c54704c",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2544 in merged"
+      "digest": "5f40116822b64cbb",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2545 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",

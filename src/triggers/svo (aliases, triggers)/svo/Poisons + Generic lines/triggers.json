@@ -1035,5 +1035,23 @@
         "type": "exactMatch"
       }
     ]
+  },
+  {
+    "name": "Revealed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "A strange dust settles upon your form, illuminating your outline.",
+        "type": "exactMatch"
+      }
+    ]
   }
 ]

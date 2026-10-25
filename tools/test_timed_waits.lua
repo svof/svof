@@ -72,6 +72,11 @@ local LINES = {
   { group = "General", name = "svo vitrification woreoff",
     pattern = "The glass shards embedded in your skin revert to flesh.",
     call = "svo.valid.vitrification_woreoff()" },
+  -- revealed's Afflicted msg: GMCP doesn't report revealed, and svof only
+  -- learnt of it from DIAGNOSE
+  { group = "Poisons + Generic lines", name = "Revealed",
+    pattern = "A strange dust settles upon your form, illuminating your outline.",
+    call = "svo.valid.simplerevealed()" },
 }
 
 for _, t in ipairs(LINES) do
