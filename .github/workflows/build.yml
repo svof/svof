@@ -338,6 +338,13 @@ jobs:
       - name: test afflictions
         run: lua tools/test_afflictions.lua
 
+      # Gate 1.95. Focus wiring: an affliction's focus block, its name in
+      # empty.focuscurables and in the focus_cured_ generator, and its line in
+      # the Focus trigger chain, read from the real sources and checked
+      # against each other and against the game's Focus Mind list.
+      - name: test focus wiring
+        run: lua tools/test_focus_wiring.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

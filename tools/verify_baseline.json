@@ -58,6 +58,21 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo still have madness  [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured inlove",
+      "digest": "06ed575dfddfcb31",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured inlove [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured peace",
+      "digest": "5bd60582c822563e",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured peace [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured stuttering",
+      "digest": "6d54fc81c9dcccdd",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured stuttering [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo already blind generic",
       "digest": "89a0eb3febdf23ce",
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo already blind generic [only in the package]"
@@ -159,8 +174,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "833f82d02549dd11",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2539 in merged"
+      "digest": "76f91ae04a7b7646",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2542 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -279,7 +294,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "c1033ac460ef632b",
+      "digest": "0a1878a7ada22e1f",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -509,7 +524,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "e1a070dca2dbc3b1",
+      "digest": "c4b90a875bb02795",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
@@ -534,7 +549,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "fe71a1585cd3115f",
+      "digest": "eb6b6dfc1ec8a3e4",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

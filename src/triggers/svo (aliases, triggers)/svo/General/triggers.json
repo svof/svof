@@ -2799,6 +2799,63 @@
         "script": "svo.valid.focus_cured_vertigo()"
       },
       {
+        "name": "svo cured peace",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The unnatural feeling of peace leaves you.",
+            "type": "exactMatch"
+          }
+        ],
+        "script": "svo.valid.focus_cured_peace()"
+      },
+      {
+        "name": "svo cured inlove",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You shake your head, wondering what you ever saw in",
+            "type": "startOfLine"
+          }
+        ],
+        "script": "svo.valid.focus_cured_inlove()"
+      },
+      {
+        "name": "svo cured stuttering",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Your tongue will finally obey your commands properly.",
+            "type": "exactMatch"
+          }
+        ],
+        "script": "svo.valid.focus_cured_stuttering()"
+      },
+      {
         "name": "svo cured fear",
         "isActive": "yes",
         "isFolder": "no",

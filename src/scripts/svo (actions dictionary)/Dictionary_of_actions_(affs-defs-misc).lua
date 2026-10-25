@@ -1304,7 +1304,8 @@ if not next(svo.dict) then
     peace = {
       herb = {
         isadvisable = function()
-          return (affs.peace and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
+          return (affs.peace and
+            not svo.doingaction('peace') and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
         end,
   
         oncompleted = function()
@@ -1317,20 +1318,44 @@ if not next(svo.dict) then
   
         empty = function() empty.eat_bellwort() end
       },
+      focus = {
+        isadvisable = function()
+          return (affs.peace and
+            not svo.doingaction('peace') and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
+        end,
+  
+        oncompleted = function()
+          svo.rmaff('peace')
+          svo.lostbal_focus()
+        end,
+  
+        action = 'focus',
+        onstart = function() send('focus', conf.commandecho) end,
+  
+        empty = function()
+          svo.lostbal_focus()
+  
+          empty.focus()
+        end
+      },
       aff = {
         oncompleted = function()
           svo.addaffdict(svo.dict.peace)
         end,
       },
       gone = {
-        oncompleted = function() svo.rmaff('peace') end,
+        oncompleted = function()
+          svo.rmaff('peace')
+          codepaste.remove_focusable()
+        end,
       }
     },
     inlove = {
       gamename = 'lovers',
       herb = {
         isadvisable = function()
-          return (affs.inlove and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
+          return (affs.inlove and
+            not svo.doingaction('inlove') and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
         end,
   
         oncompleted = function()
@@ -1343,13 +1368,36 @@ if not next(svo.dict) then
   
         empty = function() empty.eat_bellwort() end
       },
+      focus = {
+        isadvisable = function()
+          return (affs.inlove and
+            not svo.doingaction('inlove') and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
+        end,
+  
+        oncompleted = function()
+          svo.rmaff('inlove')
+          svo.lostbal_focus()
+        end,
+  
+        action = 'focus',
+        onstart = function() send('focus', conf.commandecho) end,
+  
+        empty = function()
+          svo.lostbal_focus()
+  
+          empty.focus()
+        end
+      },
       aff = {
         oncompleted = function()
           svo.addaffdict(svo.dict.inlove)
         end,
       },
       gone = {
-        oncompleted = function() svo.rmaff('inlove') end,
+        oncompleted = function()
+          svo.rmaff('inlove')
+          codepaste.remove_focusable()
+        end,
       }
     },
     dissonance = {
@@ -5025,7 +5073,7 @@ if not next(svo.dict) then
     stuttering = {
       salve = {
         isadvisable = function()
-          return (affs.stuttering and not affs.tonguetied) or false
+          return (affs.stuttering and not affs.tonguetied and not svo.doingaction('stuttering')) or false
         end,
   
         oncompleted = function()
@@ -5048,13 +5096,36 @@ if not next(svo.dict) then
           svo.apply(svo.dict.stuttering.salve, " to head")
         end
       },
+      focus = {
+        isadvisable = function()
+          return (affs.stuttering and
+            not svo.doingaction('stuttering')) or false
+        end,
+  
+        oncompleted = function()
+          svo.rmaff('stuttering')
+          svo.lostbal_focus()
+        end,
+  
+        action = 'focus',
+        onstart = function() send('focus', conf.commandecho) end,
+  
+        empty = function()
+          svo.lostbal_focus()
+  
+          empty.focus()
+        end
+      },
       aff = {
         oncompleted = function()
           svo.addaffdict(svo.dict.stuttering)
         end,
       },
       gone = {
-        oncompleted = function() svo.rmaff('stuttering') end,
+        oncompleted = function()
+          svo.rmaff('stuttering')
+          codepaste.remove_focusable()
+        end,
       }
     },
     -- Nothing cures scalded; it wears off after 20 seconds (the repo owner,
