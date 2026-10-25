@@ -97,6 +97,8 @@ local e = s and triggers:find('"name": "svo focus2"', s, true)
 if not e then error("the Focus chain not found in " .. CHAIN) end
 local chain = {}
 for name in triggers:sub(s, e):gmatch('"name": "svo cured ([%w_]+)"') do chain[name] = true end
+local calls = {}
+for name in triggers:sub(s, e):gmatch('svo%.valid%.focus_cured_([%w_]+)%(') do calls[name] = true end
 
 local game = {}
 for _, name in ipairs(GAME_FOCUS) do game[name] = true end
@@ -124,6 +126,10 @@ check("generator names the game doesn't focus-cure", missing(generator, own), ""
 -- a focus that cures one of them is credited to the focus: without its line
 -- in the chain, svo focus2 finds no cure and svof reads the focus as empty
 check("generator names with no line in the Focus chain", missing(generator, chain), "")
+
+-- and every line calls a function the generator defines: Mudlet reports a
+-- call to a missing one as a Lua error when its line arrives after a focus
+check("Focus chain calls to a focus_cured_ the generator doesn't define", missing(calls, generator), "")
 
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
