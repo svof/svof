@@ -63,6 +63,28 @@ for name, seconds in pairs(GAME_TIME) do
   check(name .. "'s wait", wait_of(name), seconds)
 end
 
+-- Trigger lines from the same record. Each is an item in a group's
+-- triggers.json whose script muddler reads from the file named after it.
+local TRIGGERS = "src/triggers/svo (aliases, triggers)/svo/"
+local LINES = {
+  -- vitrified's Expire msg: without it, only GMCP took vitrification off,
+  -- and in blackout it stayed until the next List
+  { group = "General", name = "svo vitrification woreoff",
+    pattern = "The glass shards embedded in your skin revert to flesh.",
+    call = "svo.valid.vitrification_woreoff()" },
+}
+
+for _, t in ipairs(LINES) do
+  local json = read_file(TRIGGERS .. t.group .. "/triggers.json")
+  local s = json:find('"name": "' .. t.name .. '"', 1, true)
+  local e = s and json:find('"name": ', s + 1, true) or #json
+  check(t.name .. " is in " .. t.group, s ~= nil, true)
+  check(t.name .. " matches its line", s and json:sub(s, e):find('"pattern": "' .. t.pattern .. '"', 1, true) ~= nil, true)
+  local f = io.open(TRIGGERS .. t.group .. "/" .. t.name:gsub(" ", "_") .. ".lua", "r")
+  check(t.name .. " calls " .. t.call, f and f:read("*a"), t.call)
+  if f then f:close() end
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end
