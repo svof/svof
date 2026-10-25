@@ -2002,36 +2002,13 @@ if not next(svo.dict) then
   
         empty = function() empty.eat_bellwort() end
       },
-      focus = {
-        isadvisable = function()
-          return (affs.generosity and
-            not svo.doingaction('generosity') and (not (svo.haveskillset('discipline') or svo.haveskillset('malignity')or svo.haveskillset('valour') or svo.haveskillset('dominion')) or not svo.dict.rage.misc.isadvisable())) or false
-        end,
-  
-        oncompleted = function()
-          svo.rmaff('generosity')
-          svo.lostbal_focus('generosity')
-        end,
-  
-        action = 'focus',
-        onstart = function() send('focus', conf.commandecho) end,
-  
-        empty = function()
-          svo.lostbal_focus()
-  
-          empty.focus()
-        end
-      },
       aff = {
         oncompleted = function()
           svo.addaffdict(svo.dict.generosity)
         end,
       },
       gone = {
-        oncompleted = function()
-          svo.rmaff('generosity')
-          codepaste.remove_focusable()
-        end,
+        oncompleted = function() svo.rmaff('generosity') end,
       }
     },
     weakness = {

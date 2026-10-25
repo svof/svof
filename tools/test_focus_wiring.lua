@@ -102,6 +102,15 @@ check("Focus Mind afflictions with no focus block", missing(game, blocks), "")
 check("Focus Mind afflictions not in empty.focuscurables", missing(game, focuscurables), "")
 check("Focus Mind afflictions not in the generator", missing(game, generator), "")
 
+-- and nothing else is focused for. fear's focus block is switched off with a
+-- bare return false (the game cures fear with compose), and unknownmental
+-- stands for any of the game's list.
+local own = { fear = true, unknownmental = true }
+for name in pairs(game) do own[name] = true end
+check("focus blocks the game doesn't focus-cure", missing(blocks, own), "")
+check("empty.focuscurables names the game doesn't focus-cure", missing(focuscurables, own), "")
+check("generator names the game doesn't focus-cure", missing(generator, own), "")
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end

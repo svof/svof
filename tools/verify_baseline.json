@@ -174,8 +174,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "76f91ae04a7b7646",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2542 in merged"
+      "digest": "9c6d4b8f63f1d223",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2541 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -201,6 +201,11 @@
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Applied salve/svo cure scalded",
       "digest": "b618797a78de67fc",
       "text": "Trigger  svo (aliases, triggers) svo/General/Applied salve/svo cure scalded [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured generosity",
+      "digest": "cde8ee5c8f3a3177",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured generosity [only in the originals]"
     },
     {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Smoke/svo cured madness",
@@ -294,7 +299,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "0a1878a7ada22e1f",
+      "digest": "0d5938445eaf8198",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -524,7 +529,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "c4b90a875bb02795",
+      "digest": "604eeefdb914514c",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
@@ -549,7 +554,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "eb6b6dfc1ec8a3e4",
+      "digest": "8c388a8962af143d",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
