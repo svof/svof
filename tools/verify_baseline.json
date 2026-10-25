@@ -58,9 +58,24 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo still have madness  [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured dementia",
+      "digest": "35a09565b62fc46b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured dementia [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured hallucinations",
+      "digest": "b943d0a3df9d8ebc",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured hallucinations [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured inlove",
       "digest": "06ed575dfddfcb31",
       "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured inlove [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured paranoia",
+      "digest": "771d66dafacbf050",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured paranoia [only in the package]"
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured peace",
@@ -174,8 +189,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "9c6d4b8f63f1d223",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2541 in merged"
+      "digest": "566811349c54704c",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2544 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",

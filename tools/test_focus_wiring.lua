@@ -28,6 +28,7 @@ Exits 0 and prints "ALL PASS" on success, exits 1 and prints failures.
 local DICT = "src/scripts/svo (actions dictionary)/Dictionary_of_actions_(affs-defs-misc).lua"
 local EMPTY = "src/scripts/svo (setup, misc, empty, funnies, dor)/Empty_cure_handling.lua"
 local MAIN = "src/scripts/svo (trigger functions)/Main_trigger_functions.lua"
+local CHAIN = "src/triggers/svo (aliases, triggers)/svo/General/triggers.json"
 
 local GAME_FOCUS = {
   'agoraphobia', 'anorexia', 'claustrophobia', 'confusion', 'dementia',
@@ -89,6 +90,14 @@ local generator = read_file(MAIN):match("%-%- focus\ndo\n  local afflist = (%b{}
 if not generator then error("the focus_cured_ generator not found in " .. MAIN) end
 generator = names(generator)
 
+-- the Focus chain's children, from its first line to svo focus2, its last
+local triggers = read_file(CHAIN)
+local s = triggers:find('"name": "Focus",', 1, true)
+local e = s and triggers:find('"name": "svo focus2"', s, true)
+if not e then error("the Focus chain not found in " .. CHAIN) end
+local chain = {}
+for name in triggers:sub(s, e):gmatch('"name": "svo cured ([%w_]+)"') do chain[name] = true end
+
 local game = {}
 for _, name in ipairs(GAME_FOCUS) do game[name] = true end
 
@@ -96,6 +105,7 @@ for _, name in ipairs(GAME_FOCUS) do game[name] = true end
 check("read at least 15 focus blocks", #sorted(blocks) >= 15, true)
 check("read at least 15 names in empty.focuscurables", #sorted(focuscurables) >= 15, true)
 check("read at least 15 names in the generator", #sorted(generator) >= 15, true)
+check("read at least 15 lines in the Focus chain", #sorted(chain) >= 15, true)
 
 -- every Focus Mind affliction can be focused for, and a focus is credited
 check("Focus Mind afflictions with no focus block", missing(game, blocks), "")
@@ -110,6 +120,10 @@ for name in pairs(game) do own[name] = true end
 check("focus blocks the game doesn't focus-cure", missing(blocks, own), "")
 check("empty.focuscurables names the game doesn't focus-cure", missing(focuscurables, own), "")
 check("generator names the game doesn't focus-cure", missing(generator, own), "")
+
+-- a focus that cures one of them is credited to the focus: without its line
+-- in the chain, svo focus2 finds no cure and svof reads the focus as empty
+check("generator names with no line in the Focus chain", missing(generator, chain), "")
 
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
