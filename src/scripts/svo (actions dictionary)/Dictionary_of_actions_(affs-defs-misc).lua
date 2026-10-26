@@ -10750,7 +10750,7 @@ if not next(svo.dict) then
       rebbies = 'rebbies',
       recklessness = 'recklessness',
       retribution = 'retribution',
-      revealed = false,
+      revealed = 'revealed',
       sandfever = 'sandfever',
       scalded = 'scalded',
       scrambledbrains = false,

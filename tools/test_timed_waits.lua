@@ -63,6 +63,12 @@ for name, seconds in pairs(GAME_TIME) do
   check(name .. "'s wait", wait_of(name), seconds)
 end
 
+-- GMCP reports revealed, which AFFLICTION LIST names. sstosvoa mapped it to
+-- false, so svof dropped GMCP's Add and Remove, and outside blackout only the
+-- wait running out took it off.
+local sstosvoa = dict:match("\n    sstosvoa = {\n(.-)\n    },")
+check("sstosvoa maps revealed", sstosvoa and sstosvoa:match("\n      revealed = ([^\n]-),\n"), "'revealed'")
+
 -- Trigger lines from the same record. Each is an item in a group's
 -- triggers.json whose script muddler reads from the file named after it.
 local TRIGGERS = "src/triggers/svo (aliases, triggers)/svo/"
@@ -72,8 +78,8 @@ local LINES = {
   { group = "General", name = "svo vitrification woreoff",
     pattern = "The glass shards embedded in your skin revert to flesh.",
     call = "svo.valid.vitrification_woreoff()" },
-  -- revealed's Afflicted msg: GMCP doesn't report revealed, and svof only
-  -- learnt of it from DIAGNOSE
+  -- revealed's Afflicted msg: without it, svof learnt of revealed in blackout
+  -- only from DIAGNOSE
   { group = "Poisons + Generic lines", name = "Revealed",
     pattern = "A strange dust settles upon your form, illuminating your outline.",
     call = "svo.valid.simplerevealed()" },
