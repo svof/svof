@@ -80,7 +80,10 @@ local LINES = {
     call = "svo.valid.vitrification_woreoff()" },
   -- revealed's Afflicted msg: without it, svof learnt of revealed in blackout
   -- only from DIAGNOSE
-  { group = "Poisons + Generic lines", name = "Revealed",
+  -- Named apart from General's DIAGNOSE trigger "revealed": Mudlet's name
+  -- lookups are case-sensitive, so two names differing only in case invite
+  -- an enableTrigger that silently reaches the wrong one.
+  { group = "Poisons + Generic lines", name = "Revealed by star sigil",
     pattern = "A strange dust settles upon your form, illuminating your outline.",
     call = "svo.valid.simplerevealed()" },
 }
