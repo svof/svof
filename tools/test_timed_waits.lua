@@ -91,6 +91,10 @@ for _, t in ipairs(LINES) do
   local e = s and json:find('"name": ', s + 1, true) or #json
   check(t.name .. " is in " .. t.group, s ~= nil, true)
   check(t.name .. " matches its line", s and json:sub(s, e):find('"pattern": "' .. t.pattern .. '"', 1, true) ~= nil, true)
+  -- the line alone proves nothing if the trigger is off or matches it some
+  -- other way
+  check(t.name .. " is active", s and json:sub(s, e):find('"isActive": "yes"', 1, true) ~= nil, true)
+  check(t.name .. " is an exact match", s and json:sub(s, e):find('"type": "exactMatch"', 1, true) ~= nil, true)
   local f = io.open(TRIGGERS .. t.group .. "/" .. t.name:gsub(" ", "_") .. ".lua", "r")
   check(t.name .. " calls " .. t.call, f and f:read("*a"), t.call)
   if f then f:close() end
