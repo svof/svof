@@ -872,7 +872,8 @@ end
 -- trigger sets it, so it has to run first: one after svo ate2 in the Ate
 -- group lands in the same paragraph as an empty eat with lineguard 1, and
 -- validate throws the lot away as an illusion (vadi2, 2026-10-28, for
--- madness's two lines). So does a handler that doesn't set svo.herb_cure.
+-- madness's two lines; fulminated's, added after it in #855, was the same).
+-- So does a handler that doesn't set svo.herb_cure.
 do
   local dir = "src/triggers/svo (aliases, triggers)/svo/General/"
   local json = read_file(dir .. "triggers.json"):gsub("\r\n", "\n")
@@ -884,8 +885,6 @@ do
   local ate2
   for i, name in ipairs(names) do if name == "svo ate2" then ate2 = i end end
   eq(ate2 ~= nil, true, "ate order: svo ate2 is in the Ate group")
-  -- after svo ate2 since before this check, and not changed here
-  local known = { ["svo cured fulminated"] = true }
   local cure_lines = 0
   for i, name in ipairs(names) do
     local f = io.open(dir .. name:gsub(" ", "_") .. ".lua", "r")
@@ -893,7 +892,7 @@ do
     if f then f:close() end
     if body:find("herb_cured_", 1, true) or body:find("herb_stillhave_", 1, true) then
       cure_lines = cure_lines + 1
-      if not known[name] then eq(i < (ate2 or 0), true, "ate order: " .. name .. " runs before svo ate2") end
+      eq(i < (ate2 or 0), true, "ate order: " .. name .. " runs before svo ate2")
     end
   end
   eq(cure_lines > 20, true, "ate order: the herb cure lines were found")
