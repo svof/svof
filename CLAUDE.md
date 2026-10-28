@@ -502,6 +502,5 @@ holds read-only shipped content (`default_prios`, `ndb-help.lua`).
 
 ## Conventions
 
-- No AI or Co-Authored-By attribution in commits, PRs or issues.
 - In public issues, refer to svof by name and link only - no description of
   what it is.

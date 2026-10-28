@@ -128,13 +128,12 @@ CLAUDE.md                 the repository working notes
    without running the gates and saying what they printed.
 4. **Read code in full.** Use grep to locate, never as the sole basis for a
    claim about behaviour. This repo punishes partial reading.
-5. **No AI or Co-Authored-By attribution** in commits, pull requests, or issues.
-6. **In public issues, refer to svof by name and link only.** Do not describe
+5. **In public issues, refer to svof by name and link only.** Do not describe
    what it is.
-7. **Add a `.lua` to the sibling `.json` first.** muddler builds from the JSON
+6. **Add a `.lua` to the sibling `.json` first.** muddler builds from the JSON
    and looks for `name:gsub(" ","_")..".lua"`. A `.lua` with no JSON entry ships
    as nothing and warns about nothing.
-8. **Add items inside an existing group.** The 126 top-level slots are frozen
+7. **Add items inside an existing group.** The 126 top-level slots are frozen
    and checked against the reference XML files. A new one is a structural
    difference, and `--write-baseline` refuses to bless it.
 
@@ -1491,18 +1490,17 @@ Report these as observations, not as confirmed bugs, unless a row says otherwise
    command that does.
 3. **Diff every file a bulk edit touches before committing.**
 4. **`src/` is the source.** Never regenerate it from the reference XML files.
-5. **Never add AI attribution** to commits, pull requests, or issues.
-6. **Keep the three evidence tiers apart**: gates have verified structural
+5. **Keep the three evidence tiers apart**: gates have verified structural
    correctness, two captured fights have verified curing over 54 afflictions, and
    sustained play is unverified.
-7. **Anything added to `dict_setup` must be idempotent.** It runs at least twice
+6. **Anything added to `dict_setup` must be idempotent.** It runs at least twice
    per load and is reachable five ways.
-8. **Anything that must survive a class change** goes in a `svo.X = svo.X or {}`
+7. **Anything that must survive a class change** goes in a `svo.X = svo.X or {}`
    table in `Setup.lua`, not into `svo.dict`.
-9. **Declare every item rename in `ITEM_RENAME`** and rename the `.lua` file too.
-10. **Build on Linux before believing a build**, and verify any raw-bytes check
+8. **Declare every item rename in `ITEM_RENAME`** and rename the `.lua` file too.
+9. **Build on Linux before believing a build**, and verify any raw-bytes check
     against the git blob rather than the working tree.
-11. **Do not edit files in the svof working copy automatically.** `CLAUDE.md`
+10. **Do not edit files in the svof working copy automatically.** `CLAUDE.md`
     there is the exception.
 
 ### Writing conventions
