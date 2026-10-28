@@ -1,0 +1,83 @@
+time       aeon                   game: Time, no default; svof: no waitingfor
+time       airfisted (galed)      game: Time, 15 seconds; svof: waitingfor 10s
+time       blackout               game: Time, 4 seconds; svof: waitingfor 60s
+time       blistered              game: Time, no default; svof: waitingfor 20s
+other      bound                  game: writhe; svof balances: misc
+place      calcifiedtorso         game: to body; svof: to torso
+time       corruption (corrupted) game: Time, 45 seconds; svof: waitingfor 999s
+other      crackedribs            game: apply health to torso; svof balances: sip
+random     crescendo              game: no random cure; svof: tree cures it
+random     damagedhead (mildconcussion) game: no random cure; svof: tree cures it
+time       degenerate             game: Time, no default; svof: waitingfor 0s
+random     degenerate             game: no random cure; svof: tree cures it
+time       dehydrated             game: Time, 45 seconds; svof: waitingfor 45s
+time       demonstain (stain)     game: Time, no default; svof: waitingfor 140s
+time       deteriorate            game: Time, no default; svof: waitingfor 0s
+random     deteriorate            game: no random cure; svof: tree cures it
+other      disrupted (disrupt)    game: concentrate; svof balances: misc
+random     disrupted (disrupt)    game: no random cure; svof: tree cures it
+random     dissonance             game: no random cure; svof: tree cures it
+time       ensorcelled            game: Time, 20 seconds; svof: waitingfor 20s
+other      entangled (roped)      game: writhe; svof balances: misc
+focus      fear                   svof: focus; game: no focus cure
+other      fear                   game: compose; svof balances: focus,misc
+time       flamefisted            game: Time, 15 seconds; svof: waitingfor 30s
+place      frozen                 game: to nil; svof: to body
+focus      generosity             svof: focus; game: no focus cure
+time       hamstrung (hamstring)  game: Time, 10 seconds; svof: waitingfor 10s
+time       hatred                 game: Time, no default; svof: waitingfor 15s
+place      heartseed              game: to body; svof: to torso
+time       hecatecurse (hecate)   game: Time, 16 seconds; svof: waitingfor 22s
+random     horror                 game: no random cure; svof: tree cures it
+herb       hypochondria           game: eat lobelia; svof: eat kelp/aurum
+place      hypothermia            game: to body; svof: to torso
+time       icefisted (icing)      game: Time, 15 seconds; svof: waitingfor 30s
+other      impaled (impale)       game: writhe; svof balances: misc
+random     indifference           game: random cures take it; svof: not tree-curable
+herb       insomnia               game: eat goldenseal; svof: eat cohosh/gypsum
+random     laceratedthroat        game: no random cure; svof: tree cures it
+other      latched                game: sip health; svof balances: sip
+random     latched                game: no random cure; svof: tree cures it
+focus      lovers (inlove)        game: focus; svof: no focus cure
+random     manaleech              game: random cures take it; svof: not tree-curable
+place      mildtrauma             game: to body; svof: to torso
+time       mindravaged            game: Time, no default; svof: waitingfor 30s
+time       numbedleftarm          game: Time, no default; svof: waitingfor 15s
+time       numbedrightarm         game: Time, no default; svof: waitingfor 8s
+time       palpatarfeed (palpatar) game: Time, 20 seconds; svof: waitingfor 999s
+focus      peace                  game: focus; svof: no focus cure
+time       phlogisticated (phlogistication) game: Time, 45 seconds; svof: waitingfor 999s
+random     phlogisticated (phlogistication) game: random cures take it; svof: not tree-curable
+time       pinshot                game: Time, 21 seconds; svof: waitingfor 20s
+other      pressure               game: eat pear, eat calcite; svof balances: 
+other      prone                  game: stand; svof balances: misc
+random     pyre                   game: no random cure; svof: tree cures it
+time       revealed               game: Time, 60 seconds; svof: waitingfor 80s
+time       scalded                game: Time, 20 seconds; svof: waitingfor 20s
+place      serioustrauma          game: to body; svof: to torso
+place      shivering              game: to nil; svof: to body
+other      skullfractures         game: apply health to head; svof balances: sip
+other      sleeping (sleep)       game: wake; svof balances: misc
+time       slimeobscure (ninkharsag) game: Time, 60 seconds; svof: waitingfor 60s
+focus      stuttering             game: focus; svof: no focus cure
+time       timeflux               game: Time, 60 seconds; svof: waitingfor 50s
+other      torntendons            game: apply health to legs; svof balances: sip
+other      transfixation (transfixed) game: writhe; svof balances: misc
+time       unconsciousness        game: Time, no default; svof: waitingfor 7s
+random     unweavingspirit        game: random cures take it; svof: not tree-curable
+time       vitrified (vitrification) game: Time, 45 seconds; svof: waitingfor 999s
+time       voidfisted (voided)    game: Time, 15 seconds; svof: waitingfor 20s
+other      webbed                 game: writhe; svof balances: misc
+herb       whisperingmadness (madness) game: eat lobelia; svof: no herb cure
+smoke      whisperingmadness (madness) svof: smoke elm/cinnabar; game: no smoke cure
+random     whisperingmadness (madness) game: no random cure; svof: tree cures it
+other      wristfractures         game: apply health to arms; svof balances: sip
+
+149 of 203 afflictions svof knows
+  focus    5
+  herb     3
+  other    15
+  place    7
+  random   15
+  smoke    1
+  time     28
