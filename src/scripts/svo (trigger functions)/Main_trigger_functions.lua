@@ -183,6 +183,7 @@ end
 function svo.valid.herb_stillhave_madness()
   svo.checkaction(svo.dict.madness.herb)
   if actions.madness_herb then
+    svo.herb_cure = true
     lifevision.add(actions.madness_herb.p, 'hecate')
   end
 end

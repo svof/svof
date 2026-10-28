@@ -866,6 +866,45 @@ do
   end
 end
 
+-- ===== scenario 22: a herb cure line runs before svo ate2 =====
+-- svo ate2 (svo.valid.ate2) fires on every line of the eat's paragraph and
+-- files an empty eat unless svo.herb_cure is already set. A cure line's
+-- trigger sets it, so it has to run first: one after svo ate2 in the Ate
+-- group lands in the same paragraph as an empty eat with lineguard 1, and
+-- validate throws the lot away as an illusion (vadi2, 2026-10-28, for
+-- madness's two lines). So does a handler that doesn't set svo.herb_cure.
+do
+  local dir = "src/triggers/svo (aliases, triggers)/svo/General/"
+  local json = read_file(dir .. "triggers.json"):gsub("\r\n", "\n")
+  local s = json:find('\n    "name": "Ate",', 1, true)
+  local e = s and json:find('\n    "name": ', s + 1, true)
+  if not (s and e) then error("the Ate group wasn't found in " .. dir .. "triggers.json - update this test") end
+  local names = {}
+  for name in json:sub(s, e):gmatch('\n        "name": "([^"]*)",') do names[#names + 1] = name end
+  local ate2
+  for i, name in ipairs(names) do if name == "svo ate2" then ate2 = i end end
+  eq(ate2 ~= nil, true, "ate order: svo ate2 is in the Ate group")
+  -- after svo ate2 since before this check, and not changed here
+  local known = { ["svo cured fulminated"] = true }
+  local cure_lines = 0
+  for i, name in ipairs(names) do
+    local f = io.open(dir .. name:gsub(" ", "_") .. ".lua", "r")
+    local body = f and f:read("*a") or ""
+    if f then f:close() end
+    if body:find("herb_cured_", 1, true) or body:find("herb_stillhave_", 1, true) then
+      cure_lines = cure_lines + 1
+      if not known[name] then eq(i < (ate2 or 0), true, "ate order: " .. name .. " runs before svo ate2") end
+    end
+  end
+  eq(cure_lines > 20, true, "ate order: the herb cure lines were found")
+
+  local main = read_file("src/scripts/svo (trigger functions)/Main_trigger_functions.lua"):gsub("\r\n", "\n")
+  local body = main:match("\nfunction svo%.valid%.herb_stillhave_madness%(%)\n(.-)\nend\n")
+  eq(body ~= nil, true, "ate order: herb_stillhave_madness is found")
+  eq((body or ""):find("svo.herb_cure = true", 1, true) ~= nil, true,
+    "ate order: herb_stillhave_madness sets svo.herb_cure, so svo ate2 files no empty eat")
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end

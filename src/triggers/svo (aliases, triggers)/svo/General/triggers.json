@@ -1147,6 +1147,42 @@
         ]
       },
       {
+        "name": "svo cured madness",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The whispering in your mind subsides.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo still have madness ",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The whispering in your mind fades for a moment, then resurges with sudden ferocity.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
         "name": "svo ate2",
         "isActive": "yes",
         "isFolder": "no",
@@ -1239,43 +1275,8 @@
             "type": "exactMatch"
           }
         ]
-      },
-      {
-        "name": "svo cured madness",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "The whispering in your mind subsides.",
-            "type": "exactMatch"
-          }
-        ]
-      },
-      {
-        "name": "svo still have madness ",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "The whispering in your mind fades for a moment, then resurges with sudden ferocity.",
-            "type": "exactMatch"
-          }
-        ]
       }
+
     ]
   },
   {
