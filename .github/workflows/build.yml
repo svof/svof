@@ -351,6 +351,13 @@ jobs:
       - name: test timed waits
         run: lua tools/test_timed_waits.lua
 
+      # Gate 1.992. Writhes and serverside: roped's game name, daeggerimpale's
+      # entry, triggers, serverside defaults and priorities, and that every
+      # line of the curing code that holds back for an impale holds back for
+      # a daegger's too, read from the real sources.
+      - name: test writhes
+        run: lua tools/test_writhes.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

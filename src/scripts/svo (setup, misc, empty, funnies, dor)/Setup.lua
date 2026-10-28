@@ -208,7 +208,7 @@ end
 
 signals.canoutr = signals.canoutr or luanotify.signal.new()
 signals.canoutr:connect(function()
-  if (affs.webbed or affs.bound or affs.transfixed or affs.roped or affs.impale or
+  if (affs.webbed or affs.bound or affs.transfixed or affs.roped or affs.impale or affs.daeggerimpale or
     ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and
       (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))) then
     svo.sys.canoutr = false
@@ -828,7 +828,7 @@ local probe_target = {
     return claim.arg
   end,
   checkwrithes = function(claim)
-    if claim.other_action == 'impale' then return 'impale' end
+    if claim.other_action == 'impale' or claim.other_action == 'daeggerimpale' then return claim.other_action end
     return claim.arg
   end,
 }

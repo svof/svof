@@ -29,6 +29,7 @@ local aff_abbrev = {
   crippledrightarm    = "ra1",
   crippledrightleg    = "rl1",
   crushedthroat       = 'cru',
+  daeggerimpale       = "dimpale",
   darkshade           = "dark",
   deadening           = "dea",
   deafaff             = "deaf",

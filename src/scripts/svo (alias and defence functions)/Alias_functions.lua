@@ -781,6 +781,7 @@ end
 
 function svo.enabledefaultserverside()
   svo.unsetserverignore'impale'
+  svo.unsetserverignore'daeggerimpale'
   svo.unsetserverignore'lovers'
   svo.unsetserverignore'roped'
   svo.unsetserverignore'transfixed'

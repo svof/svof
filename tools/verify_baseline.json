@@ -43,6 +43,11 @@
       "text": "Script   svo (install me in module manager) Load & init/svo.remove_legacy_modules [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Apostasy/Daegger withdrew",
+      "digest": "15a7f8478518344e",
+      "text": "Trigger  svo (aliases, triggers) svo/Apostasy/Daegger withdrew [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured fulminated",
       "digest": "2718a0aabb772743",
       "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured fulminated [only in the package]"
@@ -138,6 +143,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure unweavingspirit tree [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/daeggerimpale",
+      "digest": "c063c8f00341d2da",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/daeggerimpale [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/pyre",
       "digest": "fd92c852b629ed42",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/pyre [only in the package]"
@@ -199,8 +209,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "5f40116822b64cbb",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2545 in merged"
+      "digest": "965f27b3c38a713f",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2547 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -329,12 +339,12 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "4b30092eb7d749d5",
+      "digest": "b07284ffd8be4e5c",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Alias functions|script",
-      "digest": "2e7417d1f531fc8e",
+      "digest": "d0dd3f6501b6a958",
       "text": "Script   svo (alias and defence functions) Alias functions [script]"
     },
     {
@@ -364,7 +374,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "088b748f10bb9869",
+      "digest": "49bd3adc54cefcdc",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -374,7 +384,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "014b908e3c0f2cf9",
+      "digest": "eec1570db15acbbf",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
@@ -449,7 +459,7 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Custom prompt tags/@affs|script",
-      "digest": "cf6e57ca187eb12f",
+      "digest": "917e6d7a65c60b40",
       "text": "Script   svo (install me in module manager) svo Utilities/Custom prompt tags/@affs [script]"
     },
     {
@@ -559,7 +569,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "604eeefdb914514c",
+      "digest": "8d3b38ceb54de3a6",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
@@ -569,7 +579,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "91a169278d155ff3",
+      "digest": "6efee374155e3901",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -584,13 +594,18 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "8c388a8962af143d",
+      "digest": "7c105e9ef1dc1b55",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
       "id": "item|Script|svo (trigger functions)|Simple aff trigger functions|script",
       "digest": "97a2a3df02ef047a",
       "text": "Script   svo (trigger functions) Simple aff trigger functions [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Apostasy/Dagger impaled|script",
+      "digest": "da550d0b4c47c278",
+      "text": "Trigger  svo (aliases, triggers) svo/Apostasy/Dagger impaled [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General defences/svo sileris-quicksilver slickness|script",
@@ -1081,6 +1096,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Failed focus (impatience)|script",
       "digest": "10a5637f61b77e68",
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Failed focus (impatience) [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Full, injured, or restrained arms|script",
+      "digest": "1e9e190af34ddcd6",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Full, injured, or restrained arms [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Hamstring riding|script",
@@ -1876,6 +1896,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/illness|script",
       "digest": "a2972a071b850334",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/illness [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/impale|patterns",
+      "digest": "19b91e784a80afcd",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/impale [patterns]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/impale|script",
