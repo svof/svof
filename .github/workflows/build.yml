@@ -358,6 +358,12 @@ jobs:
       - name: test writhes
         run: lua tools/test_writhes.lua
 
+      # Gate 1.993. Afflictions svof filed under the wrong name: a Dragoncraft
+      # enmeshment is the game's time-cured enmesh, not roped, and GMCP's
+      # homunculusmercury is svof's swellskin. Read from the real sources.
+      - name: test affliction names
+        run: lua tools/test_affliction_names.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

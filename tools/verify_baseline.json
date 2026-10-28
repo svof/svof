@@ -48,6 +48,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/Apostasy/Daegger withdrew [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Dragoncraft/Enmeshment freed",
+      "digest": "075c83fe6d55356e",
+      "text": "Trigger  svo (aliases, triggers) svo/Dragoncraft/Enmeshment freed [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured fulminated",
       "digest": "2718a0aabb772743",
       "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured fulminated [only in the package]"
@@ -148,6 +153,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/daeggerimpale [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/enmesh",
+      "digest": "36e71596a9343973",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/enmesh [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/pyre",
       "digest": "fd92c852b629ed42",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/pyre [only in the package]"
@@ -209,8 +219,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "965f27b3c38a713f",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2547 in merged"
+      "digest": "1baeb8a41ed68579",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2549 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -339,7 +349,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "b2db0c310e7abeba",
+      "digest": "3d1afe7456054bb0",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -594,7 +604,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "0b2bcbcf0450384f",
+      "digest": "2d5fc30212e76e05",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

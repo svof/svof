@@ -36,6 +36,24 @@
     ]
   },
   {
+    "name": "Enmeshment freed",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You manage to free yourself of the bonds clinging to your limbs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
     "name": "Dragoncurse",
     "isActive": "yes",
     "isFolder": "no",

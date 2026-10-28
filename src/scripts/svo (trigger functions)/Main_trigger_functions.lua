@@ -1511,7 +1511,7 @@ end
 
 
 do
-  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'flamefisted', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'mucous', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed', 'scalded'}
+  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'flamefisted', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'mucous', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed', 'scalded', 'enmesh'}
   if svo.haveskillset('metamorphosis') then
     afflist[#afflist+1] = 'cantmorph'
   end
@@ -4357,7 +4357,7 @@ end
 
 function svo.valid.enmesh_hit()
   if not conf.aillusion or (sys.enmesh2timer and not sys.enmesh1timer) then
-    valid.simpleroped()
+    valid.simpleenmesh()
   else
     svo.ignore_illusion("We weren't getting enmeshed, this looks fake.")
   end
