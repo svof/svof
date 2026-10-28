@@ -6924,6 +6924,7 @@ if not next(svo.dict) then
       }
     },
     roped = {
+      gamename = 'entangled',
       misc = {
         dontbatch = true,
   
