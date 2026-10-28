@@ -149,6 +149,25 @@ local main = read_file(MAIN)
 check("svo.valid.daeggerimpale_withdrew is defined", main:find("\nfunction svo.valid.daeggerimpale_withdrew()\n", 1, true) ~= nil, true)
 check("svo.valid.proper_daeggerimpale is defined", main:find("\nfunction svo.valid.proper_daeggerimpale()\n", 1, true) ~= nil, true)
 check("the writhed loop makes svo.valid.writheddaeggerimpale", main:find("'impale', 'daeggerimpale', 'hoisted'}) do\nvalid['writhed'..aff]", 1, true) ~= nil, true)
+-- the symptom handlers' own paths to simpleimpale and proper_impale don't
+-- test affs.impale, so the parity above can't see them
+for _, f in ipairs({ "symp_impale", "symp_impaled" }) do
+  local body = main:match("\nfunction svo%.valid%." .. f .. "%(%)\n(.-)\nend\n") or ""
+  check(f .. " holds back for a daegger's impale", body:find("^  %-%- [^\n]*\n  if affs%.daeggerimpale then return end\n") ~= nil, true)
+end
+local withdrawn = main:match("\nfunction svo%.valid%.daeggerimpale_withdrew%(%)\n(.-)\nend\n") or ""
+check("the expire line ends an impale svof has for the daegger", withdrawn:find("and affs.impale then\n    valid.impale_withdrew()", 1, true) ~= nil, true)
+
+-- GMCP's adds update canoutr, which addaffdict alone doesn't
+local setup = read_file("src/scripts/svo (setup, misc, empty, funnies, dor)/Setup.lua")
+for _, h in ipairs({ "track gained gmcp aff", "update list of gmcp affs" }) do
+  -- from the handler's label back to its own connect, and no further
+  local e = setup:find("\nend, '" .. h .. "')", 1, true) or 0
+  local s = 0
+  for at in setup:sub(1, e):gmatch("()\nsignals%.[%w_]+:connect%(") do s = at end
+  local body = e > 0 and setup:sub(s, e) or ""
+  check("GMCP's '" .. h .. "' updates canoutr", body:find("signals.canoutr:emit()", 1, true) ~= nil, true)
+end
 
 -- serverside: svof writhes it by default, as it does impale, until the
 -- player hands it over

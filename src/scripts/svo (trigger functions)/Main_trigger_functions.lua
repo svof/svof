@@ -506,6 +506,9 @@ function svo.valid.spiders_all_overme()
 end
 
 function svo.valid.symp_impale()
+  -- a daegger's impale shows the same symptom
+  if affs.daeggerimpale then return end
+
   if affs.blackout then
     valid.proper_impale()
   elseif not conf.aillusion then
@@ -725,6 +728,9 @@ function svo.valid.symp_webbed()
 end
 
 function svo.valid.symp_impaled()
+  -- a daegger's impale shows the same symptom
+  if affs.daeggerimpale then return end
+
   if not conf.aillusion then
     valid.simpleimpale()
   else
@@ -846,6 +852,13 @@ valid.impale_withdrew = valid.knighthood_disembowel
 -- The daegger's Expire msg (AFFLICTION SHOW, captured 2026-10-20): it lets go
 -- by itself, as a knight withdrawing ends an impale
 function svo.valid.daeggerimpale_withdrew()
+  -- The impale symptoms can't tell a daegger from a blade, so svof may have
+  -- this one as impale. GMCP still reporting a blade's keeps it
+  if not affs.daeggerimpale and not actions.curingdaeggerimpale_waitingfor and affs.impale then
+    valid.impale_withdrew()
+    return
+  end
+
   local result = svo.checkany(svo.dict.curingdaeggerimpale.waitingfor)
 
   if not result and affs.daeggerimpale then
