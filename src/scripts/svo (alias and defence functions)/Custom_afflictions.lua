@@ -146,6 +146,23 @@ local function clash(name, spec)
   end
 end
 
+-- Why name can't be registered for its svo.valid handlers, or nil: one that
+-- svof has already, and not name's own, as registering would write over it.
+-- svof's tree_cured and generic_cured are tree's and generic's, so an
+-- affliction can't be called either (vadi2, 2026-10-28)
+local function handler_clash(name)
+  local own = {}
+  for _, key in ipairs(afflictions.handlers_of[name] or {}) do own[key] = true end
+  local keys = { 'simple' .. name, name .. '_cured', name .. '_woreoff' }
+  for kind in pairs(afflictions.cures) do keys[#keys + 1] = kind .. '_cured_' .. name end
+  table.sort(keys)
+  for _, key in ipairs(keys) do
+    if valid[key] ~= nil and not own[key] then
+      return string.format("Svof has its own svo.valid.%s, which %s's would replace", key, name)
+    end
+  end
+end
+
 -- Why nothing would end spec's affliction, or nil. One with no cure of
 -- svof's and no time ends on its cure or expire line, or on GMCP's Remove,
 -- as 21 of the game's timed ones have no Default time (the capture,
@@ -179,8 +196,9 @@ function afflictions.register(name, spec)
   if type(spec) ~= 'table' then return false, "it has no definition" end
   -- the lines too, as install checks them: a class change or an update to
   -- Svof can bring a line a saved definition watches for, and one that
-  -- clashes stays out, as a defined defence does
-  local why = svo.dict[name] == nil and clash(name, spec) or afflictions.unending(spec)
+  -- clashes stays out, as a defined defence does, and so does a name svof's
+  -- own handlers have
+  local why = handler_clash(name) or svo.dict[name] == nil and clash(name, spec) or afflictions.unending(spec)
     or afflictions.line_clash(name, spec)
   if why then return false, why end
   local ok
@@ -415,13 +433,15 @@ end
 
 -- whether name is already svof's: an affliction, defence or action this
 -- class has, a defence it has in another class, or one of its actions in
--- another class. One a definition registered is the player's
+-- another class, or a name its svo.valid handlers have. One a definition
+-- registered is the player's
 local function taken(name)
   if afflictions.registered[name] then return nil end
   if svo.dict[name] or svo.defs_data[name] then return "Svof already has " .. name end
   local defences = svo.defences
   if defences.catalog()[name] then return "Svof has a defence called " .. name .. " in other classes" end
   if defences.class_action(name) then return "Svof has its own " .. name .. " in other classes" end
+  return handler_clash(name)
 end
 
 -- whether the game knows gmcp as an affliction over GMCP: true, false, or

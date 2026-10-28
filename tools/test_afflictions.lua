@@ -1025,6 +1025,40 @@ do
   eq(svo.affs.itchy, nil, "empty: and it's gone")
 end
 
+-- ===== 10. Review fixes, 2026-10-28 =====
+
+do -- a name svof's own svo.valid handlers have can't be an affliction's
+  local w = world.new()
+  local svo, A = w.svo, w.svo.afflictions
+  svo.conf.customdefinitions = true
+  local tree_cured, generic_cured = svo.valid.tree_cured, svo.valid.generic_cured
+  local spec = { cures = "Eat Kelp", gain = { "A test affliction takes you." } }
+  for _, case in ipairs({ { "tree", "tree_cured" }, { "generic", "generic_cured" } }) do
+    local name, key = case[1], case[2]
+    local why = string.format("Svof has its own svo.valid.%s, which %s's would replace", key, name)
+    eq(A.problem(name, spec), why, "handlers: install refuses " .. name)
+    local ok, err = A.register(name, spec)
+    eq(ok, false, "handlers: and so does registering " .. name .. ", as systemstart does for a saved one")
+    eq(err, why, "handlers: saying why for " .. name)
+    eq(svo.dict[name], nil, "handlers: and " .. name .. " isn't registered")
+    w.echoes = {}
+    A.show(name)
+    eq(echoed(w, why), true, "handlers: nor can " .. name .. " be started")
+    eq(A.drafts[name], nil, "handlers: so there's no draft of " .. name)
+  end
+  eq(svo.valid.tree_cured, tree_cured, "handlers: svof's tree_cured is still its own")
+  eq(svo.valid.generic_cured, generic_cured, "handlers: and so is its generic_cured")
+
+  -- a definition's own handlers aren't svof's: it installs again
+  A.drafts.testhandlers = { cures = "Eat Kelp", gain = { "A test affliction takes you." } }
+  eq(A.install("testhandlers"), true, "handlers: a name of its own installs")
+  eq(svo.valid.simpletesthandlers ~= nil, true, "handlers: with its handlers")
+  eq(A.problem("testhandlers", A.custom.testhandlers), nil, "handlers: which don't stop it installing again")
+  A.set("testhandlers", "diag", "covered in test handlers.")
+  eq(A.install("testhandlers"), true, "handlers: and it does")
+  A.delete("testhandlers")
+end
+
 if #failures > 0 then
   for _, f in ipairs(failures) do print("FAIL: " .. f) end
   print(string.format("%d checks, %d failures", checks, #failures))
