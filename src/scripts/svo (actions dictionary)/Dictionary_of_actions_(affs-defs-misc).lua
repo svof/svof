@@ -10775,7 +10775,7 @@ if not next(svo.dict) then
       hecatecurse = 'hecate',
       hellsight = 'hellsight',
       hindered = false,
-      homunculusmercury = false,
+      homunculusmercury = 'swellskin',
       horror = 'horror',
       hypersomnia = 'hypersomnia',
       hypochondria = 'hypochondria',
