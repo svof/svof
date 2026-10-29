@@ -2121,19 +2121,42 @@ function svo.valid.litpipe(gag2)
     if conf.gagrelight and gag2 then deleteLine() end
   end
 
-  local result = svo.checkany(
-    svo.dict.lightelm.physical, svo.dict.lightvalerian.physical, svo.dict.lightskullcap.physical)
-
-  if not result then return end
-  lifevision.add(actions[result.name].p)
+  -- the answer to lighting one pipe by its ID. svof lights them all with
+  -- LIGHT PIPES (svo.valid.litallpipes), so there's nothing of its own to
+  -- finish. The actions for lighting one pipe went before 2018, and looking
+  -- them up here raised an error.
+  -- The line names the pipe's description, not which it is, so the pipe is
+  -- the one the latest LIGHT sent named, by its ID (commandTracker's
+  -- lastCommands, newest first), and it's lit: otherwise svof thought it
+  -- still out and sent LIGHT PIPES for nothing. Only the latest LIGHT
+  -- counts, so one by another name, even after an older LIGHT <id>, leaves
+  -- the pipes as they were (vadi2, 2026-10-28)
+  for _, command in ipairs(rawget(_G, 'lastCommands') or {}) do
+    local what = command:match("^light (.-)%s*$")
+    if what then
+      local id = tonumber(what:match("^(%d+)$"))
+      for _, name in ipairs(id and pipes.pnames or {}) do
+        local pipe = pipes[name]
+        if tonumber(pipe.id) == id then pipe.lit = true end
+        if tonumber(pipe.id2) == id then pipe.lit2 = true end
+      end
+      break
+    end
+  end
 end
 
+-- The game's answer to LIGHT PIPES, whoever sent it: svof, the server after
+-- filling a pipe, or the player. Either way every pipe that needed lighting
+-- is lit, so svof takes the game's word without its own command in flight
+-- too; before, a pipe the server or the player lit stayed out to svof
 function svo.valid.litallpipes()
   if not sys.sync and conf.gagrelight then svo.deleteLineP() end
 
   svo.checkaction(svo.dict.lightpipes.physical)
   if actions.lightpipes_physical then
     lifevision.add(actions.lightpipes_physical.p)
+  else
+    svo.allpipeslit()
   end
 end
 
@@ -2680,17 +2703,15 @@ function svo.valid.pipe_emptied()
   end
 end
 
+-- There is nothing in the pipe to light: the game's answer about an empty
+-- pipe. When svof's LIGHT PIPES is in flight, this ends it, so svof stops
+-- asking. The actions for lighting one pipe this used to look up went
+-- before 2018, and raised an error here
 function svo.valid.empty_light()
-  local r = svo.checkany(svo.dict.lightskullcap.physical, svo.dict.lightelm.physical, svo.dict.lightvalerian.physical)
-
-  if not r then return end
-
-  if svo.dict[r.action_name].fillingid == pipes[svo.dict[r.action_name].physical.herb].id then
-    pipes[svo.dict[r.action_name].physical.herb].puffs = 0
-  else
-    pipes[svo.dict[r.action_name].physical.herb].puffs2 = 0
+  svo.checkaction(svo.dict.lightpipes.physical)
+  if actions.lightpipes_physical then
+    lifevision.add(actions.lightpipes_physical.p)
   end
-  svo.killaction(svo.dict[r.action_name].physical)
 end
 
 -- bindings
@@ -3175,38 +3196,17 @@ function svo.missing_enchant()
   end
 end
 
--- a function to stop any light* actions and put all current non-artefact pipes on ignore
+-- No tinderbox while svof lights its pipes: stop, and put lighting on
+-- ignore until there is one. It used to look for actions that light one
+-- pipe, which went before 2018, so it never found any and svof kept asking
 function svo.missing_tinderbox()
-  -- find which pipes were we lighting and kill those actions. We we were lighting at least one, figure out which pipes are non-arty, get a list, put them on ignore and say which ones we've added to ignore now
-
-  local gotaction
-  if actions.lightvalerian_physical then
-    svo.killaction(svo.dict.lightvalerian.physical); gotaction = true
-  end
-  if actions.lightelm_physical then
-    svo.killaction(svo.dict.lightelm.physical); gotaction = true
-  end
-  if actions.lightskullcap_physical then
-    svo.killaction(svo.dict.lightskullcap.physical); gotaction = true
-  end
-
   -- if we weren't lighting - then... this might not be real!
-  if not gotaction then return end
+  if not actions.lightpipes_physical then return end
+  svo.killaction(svo.dict.lightpipes.physical)
 
-  -- find out which pipes are not artefact & ignore
-  local realthing, assumedname = {}, {}
-  for id = 1, #pipes.pnames do
-    local herb, pipe = pipes.pnames[id], pipes[pipes.pnames[id]]
-    if not pipe.arty and not svo.ignore['light'..herb] then
-      realthing[#realthing+1] = 'light'..herb
-      assumedname[#assumedname+1] = pipe.filledwith
-      svo.setignore('light'..herb, { because = "you were missing a tinderbox" })
-    end
-  end
-
-  if realthing[1] then
-    echo"\n" svo.echof("Looks like you don't have a tinderbox! I've put non-artefact pipes - %s on the ignore list (under the names of %s). To unignore them, check vshow ignore.", svo.concatand(assumedname), svo.concatand(realthing))
-  end
+  if svo.ignore.lightpipes then return end
+  svo.setignore('lightpipes', { because = "you were missing a tinderbox" })
+  echo"\n" svo.echof("Looks like you don't have a tinderbox! I've put lighting your pipes (lightpipes) on the ignore list. To unignore it, check vshow ignore.")
 end
 
 function svo.valid.restoration_noeffect()

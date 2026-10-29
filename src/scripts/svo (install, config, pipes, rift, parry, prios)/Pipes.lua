@@ -29,26 +29,42 @@ me.pipes.skullcap = pipes.skullcap
 
 pipes.pnames = {'valerian','elm','skullcap'}
 
-pipes.expectations = {'valerian','elm','skullcap'}
-
 pipes.empties = {}
 
-function svo.lastlit(which)
-  for i = 1, #pipes.expectations do
-    local v = pipes.expectations[i]
-    if v == which then
-      table.remove(pipes.expectations, i)
-      pipes.expectations[#pipes.expectations+1] = which
-      return
+-- which of svof's pipes holds contents, as the game names them: the herb,
+-- or the mineral that cures the same, or nil
+local function pipe_holding(contents)
+  contents = contents:lower()
+  if contents:find("skullcap", 1, true) or contents:find("malachite", 1, true) then return 'skullcap' end
+  if contents:find("valerian", 1, true) or contents:find("realgar", 1, true) then return 'valerian' end
+  if contents:find("elm", 1, true) or contents:find("cinnabar", 1, true) then return 'elm' end
+end
+
+-- A pipe went out. The game says what it holds:
+--   Your pipe, containing a skullcap flower, has gone cold and dark.
+-- so that herb's pipes are marked out, both when there are two, as the line
+-- doesn't say which. svof used to guess the pipe from the order it last lit
+-- them in, and marked the wrong one out. LIGHT PIPES relights it, and the
+-- game's answer marks every pipe lit (svo.valid.litallpipes).
+function svo.pipeout()
+  local contents = type(line) == 'string' and line:match("containing (.-), has gone cold and dark")
+  local herb = contents and pipe_holding(contents)
+  for _, name in ipairs(pipes.pnames) do
+    -- a line svof can't read could be any of them
+    if not herb or name == herb then
+      local pipe = pipes[name]
+      if not pipe.arty then pipe.lit = false end
+      if not pipe.arty2 then pipe.lit2 = false end
     end
   end
 end
 
-function svo.pipeout()
-  local what = pipes.expectations[1]
-  pipes[what].lit = false
-  table.remove(pipes.expectations, 1)
-  pipes.expectations[#pipes.expectations+1] = what
+-- the game lit every pipe that needed it, or said none did
+function svo.allpipeslit()
+  for _, name in ipairs(pipes.pnames) do
+    pipes[name].lit, pipes[name].lit2 = true, true
+  end
+  svo.sk.forcelight_valerian, svo.sk.forcelight_elm, svo.sk.forcelight_skullcap = false, false, false
 end
 
 function svo.pipestart()
@@ -132,12 +148,13 @@ function svo.parseplist()
     echo("(a 20-puff pipe)")
   end
 
-  -- warn if relighting any pipes is on ignore, to make it more obvious - people tended to miss the original line
-  if svo.ignore['light'..herb] then
+  -- warn if relighting pipes is on ignore, to make it more obvious - people tended to miss the original line
+  if svo.ignore.lightpipes and status ~= 'artf' then
+    local because = type(svo.ignore.lightpipes) == 'table' and svo.ignore.lightpipes.because or "you asked"
     decho(" "..svo.getDefaultColor().."(")
     setFgColor(unpack(svo.getDefaultColorNums))
     setUnderline(true)
-    echoLink("re-enable lighting", 'svo.ignore.light'..herb..' = nil; svo.echof("Re-enabled lighting of the '..pipes[herb].filledwith..' pipe."); if not svo.conf.relight then svo.config.set([[relight]], [[on]], true) end', 'Re-lighting the '..pipes[herb].filledwith..' pipe was put on ignore because '..svo.ignore['light'..herb].because..' - click the link to re-enable it', true)
+    echoLink("re-enable lighting", 'svo.unsetignore("lightpipes"); svo.echof("Re-enabled lighting of pipes."); if not svo.conf.relight then svo.config.set([[relight]], [[on]], true) end', 'Re-lighting pipes was put on ignore because '..because..' - click the link to re-enable it', true)
     setUnderline(false)
     decho(svo.getDefaultColor()..")")
   end

@@ -315,6 +315,13 @@ jobs:
       - name: test prio insert
         run: lua tools/test_prio_insert.lua
 
+      # Gate 1.994. svo.valid.litpipe, extracted from Main trigger functions:
+      # lighting one pipe marks lit the pipe the latest LIGHT named by its
+      # ID, and a LIGHT by another name after an older LIGHT <id> marks
+      # nothing.
+      - name: test litpipe
+        run: lua tools/test_litpipe.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

@@ -6136,30 +6136,29 @@ if not next(svo.dict) then
         balanceless_act = true,
         uncurable = true,
   
+        -- A pipe svof knows to be out. Its puffs count only when svof fills
+        -- the pipes itself: serverside fills them, and svof's count drifts
+        -- there, so a pipe it counted empty would never be relit. Lighting
+        -- takes no balance, so svof relights while serverside is on too;
+        -- the server has only been seen lighting pipes after filling one.
+        -- Each answer the game gives ends the action (svo.valid.litallpipes,
+        -- svo.valid.empty_light), marking the pipes lit, so it doesn't repeat
         isadvisable = function()
-          return ((not pipes.valerian.arty and not pipes.valerian.lit and pipes.valerian.puffs > 0 and not (pipes.valerian.id == 0)
-            or (not pipes.elm.arty and not pipes.elm.lit and pipes.elm.puffs > 0 and not (pipes.elm.id == 0))
-            or (not pipes.skullcap.arty and not pipes.skullcap.lit and pipes.skullcap.puffs > 0 and not (pipes.skullcap.id == 0))
-            or (not pipes.elm.arty2 and not pipes.elm.lit2 and pipes.elm.puffs2 > 0 and not (pipes.elm.id2 == 0))
-            or (not pipes.valerian.arty2 and not pipes.valerian.lit2 and pipes.valerian.puffs2 > 0 and not (pipes.valerian.id2 == 0))
-            or (not pipes.skullcap.arty2 and not pipes.skullcap.lit2 and pipes.skullcap.puffs2 > 0 and not (pipes.skullcap.id2 == 0))
-            )
+          local function out(herb, lit, arty, puffs, id)
+            local pipe = pipes[herb]
+            return not pipe[arty] and not pipe[lit] and pipe[id] ~= 0 and (conf.serverside or pipe[puffs] > 0)
+          end
+          local anyout = false
+          for _, herb in ipairs({ 'valerian', 'elm', 'skullcap' }) do
+            if out(herb, 'lit', 'arty', 'puffs', 'id') or out(herb, 'lit2', 'arty2', 'puffs2', 'id2') then anyout = true end
+          end
+          return (anyout
           and (conf.relight or sk.forcelight_valerian or sk.forcelight_skullcap or sk.forcelight_elm)
-          and not (conf.serverside or svo.doingaction('lightskullcap') or svo.doingaction('lightelm') or svo.doingaction('lightvalerian') or svo.doingaction('lightpipes'))) or false
+          and not svo.doingaction('lightpipes')) or false
         end,
   
         oncompleted = function()
-          pipes.valerian.lit = true
-          pipes.valerian.lit2 = true
-          sk.forcelight_valerian = false
-          pipes.elm.lit = true
-          pipes.elm.lit2 = true
-          sk.forcelight_elm = false
-          pipes.skullcap.lit = true
-          pipes.skullcap.lit2 = true
-          sk.forcelight_skullcap = false
-  
-          svo.lastlit('valerian')
+          svo.allpipeslit()
         end,
   
         actions = {"light pipes"},
