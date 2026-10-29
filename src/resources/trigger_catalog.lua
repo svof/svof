@@ -1090,7 +1090,7 @@ return {
     { "svo lit / second line", { "start", "You carefully light" }, { "sub", "pipe" }, all = true },
     { "svo already lit", { "exact", "That pipe is already lit and burning nicely." } },
     { "svo already lit all", { "exact", "You have no pipes that require lighting." } },
-    { "svo light pipes", { "start", "You use" }, { "start", "You light" }, { "regex", "^You light (.+)\\.$" } },
+    { "svo light pipes", { "regex", "^You (?:use .+ to make fire|summon a tiny gout of natural fire for the lighting)\\.$" }, { "start", "You light" }, { "regex", "^You light (.+)\\.$" } },
     { "svo light tinderbox", { "start", "You use a" }, { "sub", "tinderbox" }, { "sub", " to make fire." }, all = true },
     { "svo pipe went out", { "start", "Your " }, { "sub", "pipe" }, { "sub", " has gone cold and dark." }, all = true },
     { "svo insomnia healed", { "regex", "^\\w+ invokes the powers of Air and lays \\w+ hands on you\\.$" }, { "regex", "^You feel the spiritual presence of \\w+ touch you momentarily\\.$" } },
