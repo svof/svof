@@ -728,6 +728,60 @@
     ]
   },
   {
+    "name": "svo cure indifference tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your blood surges as the rage of battle returns to you.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure manaleech tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your rapidly weakening mind is stabilized.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure unweavingspirit tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You feel your fundamental essence stabilise, your spiritual energy surging with new strength.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
     "name": "svo cure masochism tree",
     "isActive": "yes",
     "isFolder": "no",
@@ -921,24 +975,6 @@
     "patterns": [
       {
         "pattern": "Your fear of heights subsides.",
-        "type": "exactMatch"
-      }
-    ]
-  },
-  {
-    "name": "svo cure latched tree",
-    "isActive": "yes",
-    "isFolder": "no",
-    "multiline": "no",
-    "multilineDelta": "0",
-    "filter": "no",
-    "fireLength": "0",
-    "highlight": "no",
-    "highlightFG": "#ff0000",
-    "highlightBG": "#ffff00",
-    "patterns": [
-      {
-        "pattern": "Warmth floods back into your limbs, and you feel suddenly vital.",
         "type": "exactMatch"
       }
     ]
