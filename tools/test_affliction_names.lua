@@ -42,7 +42,8 @@ local function entry(name)
   -- an entry's line can carry a comment, as swellskin's does
   local s = dict:find("\n    " .. name .. " = {[^\n]*\n")
   if not s then return nil end
-  local e = dict:find("\n    [%w_]+ = {\n", s + 1) or #dict
+  -- to its own closing brace, so the comment above the next entry isn't read
+  local e = dict:find("\n    }", s + 1, true) or #dict
   return dict:sub(s, e)
 end
 
@@ -92,6 +93,69 @@ end
 -- homunculusmercury
 check("GMCP's homunculusmercury is svof's swellskin", mapped("homunculusmercury"), "'swellskin'")
 check("svof has a swellskin entry", entry("swellskin") ~= nil, true)
+
+-- constricted, snared and vinewreathed: time-cured, with the default times,
+-- cure and expire lines and DIAGNOSE lines AFFLICTION SHOW gives
+for _, t in ipairs({
+  { "constricted", 30, "You manage to wrestle the vines away from your limbs.", "being constricted by vines." },
+  { "snared", 20, "You manage to disentangle yourself from the rope trap which had snared your ankles.", "tangled up by a rope snare." },
+  { "vinewreathed", 20, "The vines flailing about your form recede.", "wreathed in flailing vines." },
+}) do
+  local name = t[1]
+  local body = entry(name) or ""
+  check(name .. " has an entry", body ~= "", true)
+  check(name .. " waits the game's default time", body:match("customwait = (%d+)"), tostring(t[2]))
+  check(name .. "'s wait running out ends it", body:find("ontimeout = function()\n          svo.rmaff('" .. name .. "')", 1, true) ~= nil, true)
+  check(name .. " is not writhed", body:find("writhe", 1, true), nil)
+  check("GMCP's " .. name .. " is svof's", mapped(name), "'" .. name .. "'")
+  check("svo.valid." .. name .. "_woreoff is generated", afflist:find("'" .. name .. "'", 1, true) ~= nil, true)
+  for _, tr in ipairs({
+    { "svo " .. name .. " woreoff", t[3], "svo.valid." .. name .. "_woreoff()" },
+    { name, t[4], "svo.valid.diag('" .. name .. "')" },
+  }) do
+    local item = trigger("General", tr[1])
+    check(tr[1] .. " matches its line exactly", item:find('"pattern": "' .. tr[2]:gsub("%p", "%%%0") .. '",\n%s*"type": "exactMatch"') ~= nil, true)
+    check(tr[1] .. " is active", item:find('"isActive": "yes"', 1, true) ~= nil, true)
+    check(tr[1] .. "'s script", script("General", tr[1]), tr[3])
+  end
+end
+
+-- deepsleep: its own entry, not sleep. You never wake from it on your own,
+-- so svof mustn't try to wake you, which sleep's misc action does
+local deepsleep = entry("deepsleep") or ""
+check("deepsleep has an entry", deepsleep ~= "", true)
+check("GMCP's deepsleep is svof's deepsleep", mapped("deepsleep"), "'deepsleep'")
+check("GMCP's sleeping is still sleep", mapped("sleeping"), "'sleep'")
+check("deepsleep has no action to wake", deepsleep:find("misc = {", 1, true), nil)
+check("nor a wait to time out", deepsleep:find("waitingfor", 1, true), nil)
+check("nor sends anything", deepsleep:find("send(", 1, true), nil)
+
+-- and wherever svof's curing holds back for sleep, it holds back for
+-- deepsleep. The exceptions only make sense for sleep itself: sleep's own
+-- entry, which wakes you, and the misc check letting that wake through
+-- (it returns early for deepsleep instead)
+local SKELETON = "src/scripts/svo (curing skeleton, controllers, action system)/Curing_skeleton.lua"
+local sleep_entry = entry("sleep") or ""
+local outside_sleep = dict:gsub(sleep_entry:gsub("%p", "%%%0"), "", 1)
+check("sleep's entry is found to leave out", #outside_sleep < #dict, true)
+local SLEEP_ONLY = { "(not affs.sleep or j.p.misc.action_name == 'sleep')" }
+for path, src in pairs({ [DICT] = outside_sleep, [SKELETON] = read_file(SKELETON) }) do
+  -- a gate can run over several lines, so look at the statement around it
+  for at in src:gmatch("()affs%.sleep") do
+    local s = at
+    while s > 1 and not src:sub(s - 1, s - 1):find("[\n]") do s = s - 1 end
+    local line = src:sub(s, (src:find("\n", at, true) or #src))
+    local around = src:sub(math.max(1, s - 200), (src:find("\n", at, true) or #src) + 200)
+    local only = false
+    for _, ok in ipairs(SLEEP_ONLY) do if line:find(ok, 1, true) then only = true end end
+    if not only and not line:find("^%s*%-%-") then
+      check(path:match("[^/]+$") .. ": holds back for deepsleep where it does for sleep: " .. line:gsub("^%s+", ""):sub(1, 60),
+        line:find("affs.deepsleep", 1, true) ~= nil, true)
+    end
+  end
+end
+local misc_check = read_file(SKELETON):match("\nsvo%.check_misc = function%(sync_mode, onlyamnesia%)\n(.-)\n  end\n") or ""
+check("the misc check returns early in deepsleep", misc_check:find("if affs.stun or affs.unconsciousness or affs.deepsleep then", 1, true) ~= nil, true)
 
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then

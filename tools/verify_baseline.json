@@ -148,6 +148,16 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure unweavingspirit tree [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo constricted woreoff",
+      "digest": "ed5441c0224037a4",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo constricted woreoff [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/constricted",
+      "digest": "c42312278f15107f",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/constricted [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/daeggerimpale",
       "digest": "c063c8f00341d2da",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/daeggerimpale [only in the package]"
@@ -163,9 +173,29 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/pyre [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/snared",
+      "digest": "17c5823d658aca72",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/snared [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/vinewreathed",
+      "digest": "60e0276be82cfbf3",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/vinewreathed [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo scalded woreoff",
       "digest": "b33cec5c384c9431",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo scalded woreoff [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo snared woreoff",
+      "digest": "ef97139c59e4516e",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo snared woreoff [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo vinewreathed woreoff",
+      "digest": "a6020fb1aa01a81c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo vinewreathed woreoff [only in the package]"
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo vitrification woreoff",
@@ -219,8 +249,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "1baeb8a41ed68579",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2549 in merged"
+      "digest": "fab317e51097a75a",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2555 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -349,7 +379,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "3d1afe7456054bb0",
+      "digest": "ea61c9fbe575adf5",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -384,7 +414,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "49bd3adc54cefcdc",
+      "digest": "3b1150c26809ff3c",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -604,7 +634,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "2d5fc30212e76e05",
+      "digest": "abb9c84c26f01735",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

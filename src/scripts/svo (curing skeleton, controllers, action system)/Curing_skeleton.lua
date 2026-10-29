@@ -66,7 +66,7 @@ local healthchecks = {
 -- sort it, and do the topmost thing.
 svo.check_sip = function(sync_mode)
   -- can we even sip?
-  if not bals.sip or svo.usingbal('sip') or affs.stun or affs.unconsciousness or affs.sleep or affs.anorexia then
+  if not bals.sip or svo.usingbal('sip') or affs.stun or affs.unconsciousness or affs.sleep or affs.deepsleep or affs.anorexia then
       return
   end
 
@@ -95,7 +95,7 @@ end
 -- purgative check: needs to be asynced as well
 svo.check_purgative = function(sync_mode)
   -- can we even sip?
-  if not bals.purgative or svo.usingbal('purgative') or affs.stun or affs.unconsciousness or affs.sleep or affs.anorexia then
+  if not bals.purgative or svo.usingbal('purgative') or affs.stun or affs.unconsciousness or affs.sleep or affs.deepsleep or affs.anorexia then
       return
   end
 
@@ -133,7 +133,7 @@ end
 svo.check_salve = function(sync_mode)
   -- can we even use salves?
   if not bals.salve or svo.usingbal('salve') or
-    affs.sleep or affs.stun or affs.unconsciousness or affs.slickness then
+    affs.sleep or affs.deepsleep or affs.stun or affs.unconsciousness or affs.slickness then
       return
   end
 
@@ -165,7 +165,7 @@ end
 -- sort it, and do the topmost thing.
 svo.check_herb = function(sync_mode)
   -- can we even eat?
-  if not bals.herb or svo.usingbal('herb') or affs.sleep
+  if not bals.herb or svo.usingbal('herb') or affs.sleep or affs.deepsleep
     or affs.stun or affs.unconsciousness or svo.sacid or affs.anorexia
     or (conf.aillusion and conf.waitherbai and sk.checking_herb_ai()) then
       return
@@ -207,7 +207,7 @@ local amnesias = {
 }
 svo.check_misc = function(sync_mode, onlyamnesia)
   -- we -don't- check for sleep here, but a bit lower down - so waking can be on a misc
-  if affs.stun or affs.unconsciousness then
+  if affs.stun or affs.unconsciousness or affs.deepsleep then
     return
   end
 
@@ -258,7 +258,7 @@ local check_for_asthma = {
   checkasthma = {p = svo.dict.checkasthma}
 }
 svo.check_smoke = function(sync_mode)
-  if not bals.smoke or affs.stun or affs.unconsciousness or affs.sleep or affs.asthma or affs.mucous then
+  if not bals.smoke or affs.stun or affs.unconsciousness or affs.sleep or affs.deepsleep or affs.asthma or affs.mucous then
     return
   end
 
@@ -291,7 +291,7 @@ end
 svo.check_moss = function(sync_mode)
   -- can we even sip?
   if not conf.moss or svo.usingbal('moss') or affs.stun or affs.unconsciousness or not bals.moss
-    or affs.sleep or affs.anorexia then
+    or affs.sleep or affs.deepsleep or affs.anorexia then
       return
   end
 
@@ -330,7 +330,7 @@ end
 svo.check_focus = function(sync_mode)
   -- can we even focus?
   if not next(affs) or svo.usingbal('focus') or affs.stun or affs.unconsciousness or not bals.focus
-    or affs.sleep or not svo.can_usemana() or not conf.focus or stats.currentwillpower <= 75
+    or affs.sleep or affs.deepsleep or not svo.can_usemana() or not conf.focus or stats.currentwillpower <= 75
     or affs.impatience or affs.sandfever or affs.inquisition or svo.focus_would_hurt() then
       return
   end
@@ -603,7 +603,7 @@ end
 
 -- balanceful check
 svo.check_balanceful_acts = function(sync_mode)
-  if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == 'Druid' and not bals.hydra)
+  if affs.sleep or affs.deepsleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == 'Druid' and not bals.hydra)
   then return end
 
   -- get all prios in the list
@@ -635,7 +635,7 @@ end
 
 -- balanceless check
 svo.check_balanceless_acts = function(sync_mode)
-  if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == 'Druid' and not bals.hydra)
+  if affs.sleep or affs.deepsleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == 'Druid' and not bals.hydra)
    then return end
 
   -- get all prios in the list
@@ -685,7 +685,7 @@ local balanceful = svo.balanceful or {}
 function svo.sk.balance_controller()
   if sys.balanceid == sys.balancetick then return end
 
-  if not (bals.balance and bals.equilibrium) or (affs.webbed or affs.bound or affs.transfixed or affs.roped or affs.impale or affs.daeggerimpale or affs.paralysis or affs.sleep) then return end
+  if not (bals.balance and bals.equilibrium) or (affs.webbed or affs.bound or affs.transfixed or affs.roped or affs.impale or affs.daeggerimpale or affs.paralysis or affs.sleep or affs.deepsleep) then return end
 
   -- loop through all balanceless functions
   for _, f in pairs(balanceless) do
