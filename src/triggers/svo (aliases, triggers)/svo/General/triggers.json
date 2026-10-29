@@ -1147,6 +1147,60 @@
         ]
       },
       {
+        "name": "svo cured madness",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The whispering in your mind subsides.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo still have madness ",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The whispering in your mind fades for a moment, then resurges with sudden ferocity.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo cured fulminated",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You are no longer suffering from the ravages of fulminous energy.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
         "name": "svo ate2",
         "isActive": "yes",
         "isFolder": "no",
@@ -1218,24 +1272,6 @@
           },
           {
             "pattern": "You eat the plant and hear the sound of air rushing from your pores.",
-            "type": "exactMatch"
-          }
-        ]
-      },
-      {
-        "name": "svo cured fulminated",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "You are no longer suffering from the ravages of fulminous energy.",
             "type": "exactMatch"
           }
         ]
@@ -1568,24 +1604,6 @@
         ]
       },
       {
-        "name": "svo cured madness",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "The whispering in your mind subsides.",
-            "type": "exactMatch"
-          }
-        ]
-      },
-      {
         "name": "svo cured aeon",
         "isActive": "yes",
         "isFolder": "no",
@@ -1599,24 +1617,6 @@
         "patterns": [
           {
             "pattern": "The curse of the Aeon wears off and you return to the normal timestream.",
-            "type": "exactMatch"
-          }
-        ]
-      },
-      {
-        "name": "svo still have madness ",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "The whispering in your mind fades for a moment, then resurges with sudden ferocity.",
             "type": "exactMatch"
           }
         ]

@@ -48,6 +48,16 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured fulminated [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured madness",
+      "digest": "01c19748a60e1a30",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured madness [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo still have madness ",
+      "digest": "8d514435d197528e",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo still have madness  [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo already blind generic",
       "digest": "89a0eb3febdf23ce",
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo already blind generic [only in the package]"
@@ -178,6 +188,16 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Applied salve/svo cure scalded [only in the originals]"
     },
     {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Smoke/svo cured madness",
+      "digest": "3f1097281afcf9b6",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Smoke/svo cured madness [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Smoke/svo still have madness ",
+      "digest": "812fb183144ce9c8",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Smoke/svo still have madness  [only in the originals]"
+    },
+    {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure bleeding tree",
       "digest": "2fa57919bafab427",
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure bleeding tree [only in the originals]"
@@ -259,7 +279,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "432ffb93a8d1874b",
+      "digest": "b96cda7678f39c27",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -414,7 +434,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Priorities|script",
-      "digest": "cc35aa9876f66610",
+      "digest": "9cdb2513a71f8495",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Priorities [script]"
     },
     {
@@ -489,7 +509,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "dc32f536f1c75643",
+      "digest": "4420648dda5cdfd7",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
@@ -514,7 +534,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "08eb9a6d8e90c2a7",
+      "digest": "fe71a1585cd3115f",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

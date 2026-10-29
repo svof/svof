@@ -525,6 +525,58 @@ function prio.usedefault(echoback)
     sendf("Couldn't update to default priorities :|") end
 end
 
+-- Cures that moved to another balance. A list saved before has one where
+-- it was, which the import would skip, and with no place it would go to the
+-- bottom of its new balance: the list every player has, current, is saved
+-- on every quit. So it goes where the default list puts it, after the cure
+-- named, or at the bottom when the list doesn't have that one; and its
+-- slow curing entry keeps its place under its new name.
+local moved = {
+  -- whispering madness is eaten with lobelia, not smoked with elm
+  { action = 'madness', from = 'smoke', to = 'herb', after = 'impatience' },
+}
+
+-- puts the moved cures in i, a saved list as read, where they are now
+local function import_moved(i)
+  for _, m in ipairs(moved) do
+    local from, to = i[m.from], i[m.to]
+    local was
+    for num, action in pairs(type(from) == 'table' and from or {}) do
+      if action == m.action then was = num end
+    end
+    local has = false
+    for _, action in pairs(type(to) == 'table' and to or {}) do
+      if action == m.action then has = true end
+    end
+    if was and type(to) == 'table' and not has then
+      from[was] = nil
+      local after = 0
+      for num, action in pairs(to) do
+        if action == m.after then after = num end
+      end
+      -- the ones above make room, as prio.insert's shuffle does
+      local nums = {}
+      for num in pairs(to) do
+        if num > after then nums[#nums + 1] = num end
+      end
+      table.sort(nums, function(a, b) return a > b end)
+      for _, num in ipairs(nums) do to[num + 1], to[num] = to[num], nil end
+      to[after + 1] = m.action
+    end
+    -- and its slow curing entry, in its place
+    local slow = i.slowcuring
+    if type(slow) == 'table' then
+      local old, new, newat = m.action .. '_' .. m.from, m.action .. '_' .. m.to, nil
+      for _, action in pairs(slow) do
+        if action == new then newat = true end
+      end
+      for num, action in pairs(slow) do
+        if action == old and not newat then slow[num] = new end
+      end
+    end
+  end
+end
+
 function prio.import(name, echoback, report_errors, use_default)
   local sendf; if echoback then sendf = svo.echof else sendf = function() end end
 
@@ -600,6 +652,7 @@ function prio.import(name, echoback, report_errors, use_default)
 
   local ok, m = run(s)
   if not ok then failf("There's a syntax problem in the prios file, we couldn't load it:\n  %s", m) return end
+  import_moved(i)
 
   local function set(num, action, balance, priority)
     if not (svo.dict[action] and svo.dict[action][balance]) then
