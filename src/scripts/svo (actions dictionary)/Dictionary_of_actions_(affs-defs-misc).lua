@@ -7835,6 +7835,43 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- A Dragoncraft enmeshment: partly bound, so you can't parry, until time
+    -- frees you. Not entanglement, which is writhed out of: the game gives
+    -- it no Writhe (AFFLICTION SHOW, captured 2026-10-20; the user,
+    -- 2026-10-28)
+    enmesh = {
+      waitingfor = {
+        customwait = 6, -- AFFLICTION SHOW's default time
+  
+        isadvisable = function()
+          return false
+        end,
+  
+        onstart = function() end,
+  
+        ontimeout = function()
+          svo.rmaff('enmesh')
+          svo.make_gnomes_work()
+        end,
+  
+        oncompleted = function()
+          svo.rmaff('enmesh')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.enmesh)
+          if not svo.actions.enmesh_waitingfor then svo.doaction(svo.dict.enmesh.waitingfor) end
+        end
+      },
+      gone = {
+        oncompleted = function()
+          svo.rmaff('enmesh')
+          svo.killaction(svo.dict.enmesh.waitingfor)
+        end,
+      }
+    },
     pinshot = {
       waitingfor = {
         customwait = 21, -- AFFLICTION SHOW's default time
@@ -10754,7 +10791,7 @@ if not next(svo.dict) then
       dizziness = 'dizziness',
       earworm = 'earworm',
       enlightenment = false,
-      enmesh = false,
+      enmesh = 'enmesh',
       ensorcelled = 'ensorcelled',
       entangled = 'roped',
       entropy = false,
@@ -10775,7 +10812,7 @@ if not next(svo.dict) then
       hecatecurse = 'hecate',
       hellsight = 'hellsight',
       hindered = false,
-      homunculusmercury = false,
+      homunculusmercury = 'swellskin',
       horror = 'horror',
       hypersomnia = 'hypersomnia',
       hypochondria = 'hypochondria',
