@@ -45,6 +45,12 @@ REQUIRED = {
     "config.lua": 50,
     "default_prios": 1000,
     "ndb-help.lua": 1000,
+    # every class's version of the defences only some classes have
+    # (tools/defence_catalog.lua), which vcustomdef reads
+    "defence_catalog.lua": 50_000,
+    # every class's actions with a priority that only some classes have
+    # (tools/defence_catalog.lua), which keep their saved places
+    "prio_catalog.lua": 5_000,
 }
 
 MIN_ARCHIVE_BYTES = 100_000

@@ -428,10 +428,14 @@ function sk.notifypriodiffs(beforestate, afterstate)
       local diff = basictableindexdiff(data.data, afterstate[balance].newdata)
       local valid_sync_action = svo.valid_sync_action
 
-      -- now only notify for the differences
+      -- now only notify for the differences. An action taken out, such as
+      -- a defence the player defined and deleted, is in the before state
+      -- only, and there is nothing to change for it
       for _, a in pairs(diff) do
-        local _, action, balance = valid_sync_action(a)
-        raiseEvent("svo prio changed", action, balance, afterstate[balance].action_prio[a], 'slowcuring')
+        local valid, action, balance = valid_sync_action(a)
+        if valid then
+          raiseEvent("svo prio changed", action, balance, afterstate[balance].action_prio[a], 'slowcuring')
+        end
       end
     else
       -- make the diff of snapshots
@@ -439,7 +443,9 @@ function sk.notifypriodiffs(beforestate, afterstate)
 
       -- notify only for the changes
       for _, a in pairs(diff) do
-        raiseEvent("svo prio changed", a, balance, afterstate[balance].action_prio[a])
+        if svo.dict[a] then
+          raiseEvent("svo prio changed", a, balance, afterstate[balance].action_prio[a])
+        end
       end
     end
   end

@@ -538,6 +538,28 @@ function svo.count_until_last_paragraph (pattern, type)
   return count
 end
 
+-- Reads a Lua file that returns a table, such as the catalogs in Svof's
+-- folder, in an environment of its own so it can't reach svof: the table,
+-- false when there's no file, or nil and why it couldn't be read. name is
+-- the chunk's name in an error
+function svo.read_data_file(path, name)
+  local f = io.open(path, "r")
+  if not f then return false end
+  local text = f:read("*a")
+  f:close()
+  local chunk, err
+  if setfenv then
+    chunk, err = loadstring(text, "=" .. name)
+    if chunk then setfenv(chunk, {}) end
+  else
+    chunk, err = load(text, "=" .. name, "t", {})
+  end
+  local ok, t = false, err
+  if chunk then ok, t = pcall(chunk) end
+  if ok and type(t) == 'table' then return t end
+  return nil, ok and "it doesn't return a table" or tostring(t)
+end
+
 -- merge table2 into table1
 svo.update = function (t1, t2)
   for k,v in pairs(t2) do

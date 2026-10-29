@@ -997,6 +997,8 @@ function svo.printorder(balance, limited_around)
   local intlen = svo.intlen
   local prioamount = intlen(table.size(orderly))
   local ssprioamount = intlen(table.size(raffs) and table.size(raffs) or table.size(rdefs))
+  -- the marks shown, for the key under the list
+  local marked = {}
   for _,j in pairs(orderly) do
     if not limited_around or not (counter > (center+6) or counter < (center-6)) then
       setFgColor(255,147,107) echo"  "
@@ -1012,12 +1014,21 @@ function svo.printorder(balance, limited_around)
         -- defs not on defup/keepup won't have a priority
         echo(string.format(" (svo %"..prioamount.."s|%s) %s", j, echoserver(j, raffs, rdefs, balance, ssprioamount), data[j]))
       end
+      -- * for a defence the player defined, + for one of svof's own they
+      -- changed
+      local mark = svo.defences.mark(data[j]:match(" for (.+)$") or data[j])
+      if mark ~= '' then
+        decho(svo.defences.mark_colour .. mark)
+        marked[mark] = true
+      end
       echo("\n")
       resetFormat()
     end
 
     counter = counter + 1
   end
+  local key = svo.defences.mark_key(marked, "<112,112,112>")
+  if key then decho("  " .. key) resetFormat() end
 
   svo.showprompt()
 end
@@ -1064,6 +1075,8 @@ function svo.printordersync(limited_around)
   end
 
   local counter = 1
+  -- the marks shown, for the key under the list
+  local marked = {}
   for _,j in pairs(orderly) do
     if not limited_around or not (counter > (center+6) or counter < (center-6)) then
       setFgColor(255,147,107) echo"  "
@@ -1072,13 +1085,25 @@ function svo.printordersync(limited_around)
       setFgColor(148,148,255)
       echoLink('vv', 'svo.prio_slowswap("'..string.format("%s_%s", string.match(data[j], "(%w+) %((%w+)%)"))..'", '..(j-1)..', false, svo.printordersync, '..(j-1)..')', 'shuffle '..data[j]..' up', true)
       setFgColor(112,112,112)
-      echo(" (" .. j..") "..data[j])
+      -- * for a defence the player defined, + for one of svof's own they
+      -- changed, after its name and before its balance
+      local action, bal = data[j]:match("^(.-) (%(%w+%))$")
+      local mark = action and svo.defences.mark(action) or ''
+      if mark ~= '' then
+        echo(" (" .. j..") "..action)
+        decho(svo.defences.mark_colour .. mark .. "<112,112,112> " .. bal)
+        marked[mark] = true
+      else
+        echo(" (" .. j..") "..data[j])
+      end
       echo("\n")
       resetFormat()
     end
 
     counter = counter + 1
   end
+  local key = svo.defences.mark_key(marked, "<112,112,112>")
+  if key then decho("  " .. key) resetFormat() end
 
   svo.showprompt()
 end
@@ -1199,6 +1224,11 @@ end, "new balance detection")
 function svo.curingcommand(command)
   sk.sawcuringcommand = true
   cnrl.processusercommand(command:lower(), true)
+  -- the server sent it, and the game does not allow its [Curing]: lines to be
+  -- illusioned, so a line saying it raised a defence counts even where GMCP
+  -- is silent (svo.gmcp_refuted_defence)
+  local adopted = sys.input_to_actions[command:lower():trim()]
+  if adopted and actions[adopted.name] then actions[adopted.name].served = true end
   svo.prompttrigger("clear curing command", function() sk.sawcuringcommand = false end)
 
   if conf.gagservercuring then deleteLine() end

@@ -135,7 +135,7 @@
     "name": "Show hidelist",
     "isActive": "yes",
     "isFolder": "no",
-    "regex": "^vshow ?(h|hidelist)$"
+    "regex": "^vshow ?(h|hidelist|hide|unhide)(?: (.+))?$"
   },
   {
     "name": "Toggle clot use",
@@ -586,5 +586,11 @@
     "isActive": "yes",
     "isFolder": "no",
     "regex": "^dil(?: (\\w+))?$"
+  },
+  {
+    "name": "(vcustomdef) Define your own defences",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vcustomdef(?: (.+))?$"
   }
 ]

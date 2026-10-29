@@ -1,9 +1,33 @@
 {
-  "note": "svo.valid calls in src/triggers and src/aliases that resolve to nothing. Every one is absent from the 2018 module xmls too, so none is conversion damage. Recorded so the count can only go down: a new one fails, and fixing one of these fails until it is removed from here.",
+  "note": "svo.valid calls in src/triggers and src/aliases that resolve to nothing, and svo.defs calls as defs.<name>. Every one is absent from the 2018 module xmls too, so none is conversion damage. Recorded so the count can only go down: a new one fails, and fixing one of these fails until it is removed from here.",
   "known": [
     {
       "file": "src/triggers/svo (aliases, triggers)/svo/General/svo_cure_concussion.lua",
       "name": "curedconcussion"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General/General cures/svo_cured_blind_generic.lua",
+      "name": "defs.curedblind"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General/Tree cures/svo_cured_blind_tree.lua",
+      "name": "defs.curedblind"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General/General cures/svo_cured_deaf.lua",
+      "name": "defs.cureddeaf"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General defences/Healing + Elementalism channels/triggers.json",
+      "name": "defs.got_boundspirit"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General defences/Healing + Elementalism channels/triggers.json",
+      "name": "defs.got_fortifiedspirit"
+    },
+    {
+      "file": "src/triggers/svo (aliases, triggers)/svo/General defences/Healing + Elementalism channels/Spirit.lua",
+      "name": "defs.got_spirit"
     },
     {
       "file": "src/triggers/svo (aliases, triggers)/svo/svo Bashing triggers/Qwindor's svo bashing triggers/Annwyn/Annwyn_Aeon.lua",

@@ -9460,6 +9460,7 @@ if not next(svo.dict) then
       }
     },
     frost = {
+      gamename = 'temperance',
       purgative = {
         def = true,
         --undeffable = true,
@@ -9470,9 +9471,6 @@ if not next(svo.dict) then
   
         oncompleted = function()
           defences.got('frost')
-          if svo.haveskillset('metamorphosis') then
-            defences.got('temperance')
-          end
         end,
   
         sipcure = {'frost', 'endothermia'},
@@ -9487,9 +9485,7 @@ if not next(svo.dict) then
       },
       gone = {
         oncompleted = function()
-          if svo.haveskillset('metamorphosis') then
-            defences.lost('temperance')
-          end
+          defences.lost('frost')
         end
       }
     },
@@ -9925,6 +9921,7 @@ if not next(svo.dict) then
       },
     },
     caloric = {
+      gamename = 'insulation',
       salve = {
         def = true,
   
@@ -10469,25 +10466,8 @@ if not next(svo.dict) then
         end,
   
         oncompleted = function()
+          -- reclassifying blindness and deafness is mindseye's ongot, on its record
           defences.got('mindseye')
-  
-          -- check if we need to re-classify deaf
-          if (defc.deaf or affs.deafaff) and (defdefup[defs.mode].deaf) or (conf.keepup and defkeepup[defs.mode].deaf) or defc.mindseye then
-            defences.got('deaf')
-            svo.rmaff('deafaff')
-          elseif (defc.deaf or affs.deafaff) then
-            defences.lost('deaf')
-            svo.addaffdict(svo.dict.deafaff)
-          end
-  
-          -- check if we need to re-classify blind
-          if (defc.blind or affs.blindaff) and (defdefup[defs.mode].blind) or (conf.keepup and defkeepup[defs.mode].blind) and (svo.me.class == 'Apostate' or defc.mindseye) then
-            defences.got('blind')
-            svo.rmaff('blindaff')
-          elseif (defc.blind or affs.blindaff) then
-            defences.lost('blind')
-            svo.addaffdict(svo.dict.blindaff)
-          end
         end,
   
         action = "touch mindseye",
@@ -10950,10 +10930,12 @@ if not next(svo.dict) then
       stonefist = 'stonefist',
       stoneskin = 'stoneskin',
       sulphur = 'sulphur',
+      susurrating = 'susurrating',
       swiftcurse = 'swiftcurse',
       tekurastance = false,
       telesense = 'telesense',
       temperance = 'frost',
+      tempest = 'tempest',
       tentacles = 'tentacles',
       thermalshield = 'thermalblessing',
       thirdeye = 'thirdeye',
@@ -11613,7 +11595,6 @@ if not next(svo.dict) then
   
         oncompleted = function()
           defences.got('temperance')
-          defences.got('frost')
         end,
   
         action = 'temperance',
@@ -11633,7 +11614,9 @@ if not next(svo.dict) then
         end
       },
       gone = {
-        oncompleted = function() defences.lost('frost') end
+        oncompleted = function()
+          defences.lost('temperance')
+        end
       }
     }
     svo.dict.bonding = {
@@ -11666,11 +11649,10 @@ if not next(svo.dict) then
             end
           end
   			end,
-  
-     		gone = {
-        	oncompleted = function() defences.lost('bonding') end
-      	}
-  		}
+      },
+      gone = {
+        oncompleted = function() defences.lost('bonding') end
+      }
     }
     svo.dict.stealth = {
       physical = {
@@ -12522,7 +12504,6 @@ if not next(svo.dict) then
   
         oncompleted = function()
           defences.got('astralform')
-          defences.lost('riding')
         end,
   
         action = 'astralform',
@@ -12794,7 +12775,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           defences.got('fortifiedair')
-          if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwaterand and not defc.fortifiedspirit and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
+          if defc.fortifiedair and defc.fortifiedearth and defc.fortifiedwater and not defc.fortifiedspirit and (svo.haveskillset('weatherweaving') or defc.fortifiedfire) then
             defences.got('fortifyall')
           end
         end,
@@ -13510,8 +13491,8 @@ if not next(svo.dict) then
         customwait = 20,
   
         oncompleted = function()
+          -- leaving the steed is viridian's ongot, on its record
           defences.got('viridian')
-          svo.dict.riding.gone.oncompleted()
   
           if conf.paused and svo.dict.viridian.physical.unpauselater then
             conf.paused = false; raiseEvent("svo config changed", 'paused')
@@ -14844,6 +14825,9 @@ function svo.basicdef(which, command, balanceless, gamename, undeffable)
   svo.dict[which] = {
     physical = {
       def = true,
+      -- onstart sends action and nothing else, so a player's change to the
+      -- command (vcustomdef) can replace the two together
+      sendsaction = true,
 
       isadvisable = function()
         return (not defc[which] and ((sys.deffing and defdefup[defs.mode][which]) or (conf.keepup and defkeepup[defs.mode][which])) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone and (balanceless or not svo.doingaction(which))) or false
@@ -15175,6 +15159,7 @@ function svo.dict_setup()
   local unassigned_sync_actions = {}
 
   for action, balance in pairs(svo.dict) do
+    local raises
     for balancename, balancedata in pairs(balance) do
       if type(balancedata) == 'table' then
         if not balancedata.name then balancedata.name = action .. '_' .. balancename end
@@ -15197,19 +15182,24 @@ function svo.dict_setup()
           unassigned_sync_actions[balancename][#unassigned_sync_actions[balancename]+1] = action
         end
 
-        -- if it's a def, create the gone handler as well so lifevision will watch it
-        if not balance.gone and balancedata.def then
-          balance.gone = {
-            name = action .. '_gone',
-            balance = 'gone',
-            action_name = action,
-
-            oncompleted = function()
-              defences.lost(action)
-            end
-          }
-        end
+        if balancedata.def then raises = true end
       end
+    end
+
+    -- if it's a def, create the gone handler as well so lifevision will watch it.
+    -- Made after the loop: adding a key to a table pairs() is walking makes the
+    -- walk undefined, and on Lua 5.4 it could skip a balance, which then had no
+    -- name until the prio import called this again
+    if raises and not balance.gone then
+      balance.gone = {
+        name = action .. '_gone',
+        balance = 'gone',
+        action_name = action,
+
+        oncompleted = function()
+          defences.lost(action)
+        end
+      }
     end
 
     if not balance.name then balance.name = action end

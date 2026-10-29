@@ -3,6 +3,11 @@
   "source": "svof.xml",
   "accepted": [
     {
+      "id": "added|Alias|svo (aliases, triggers)|svo/(vcustomdef) Define your own defences",
+      "digest": "788b05cdbb2f41c8",
+      "text": "Alias    svo (aliases, triggers) svo/(vcustomdef) Define your own defences [only in the package]"
+    },
+    {
       "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_download_done",
       "digest": "238f77f1fa9d8ec5",
       "text": "Script   svo (install me in module manager) Check for system updates/svo.update_download_done [only in the package]"
@@ -103,6 +108,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/Voicecraft/Crescendo peaks [only in the package]"
     },
     {
+      "id": "count|Alias|svo (aliases, triggers)|svo",
+      "digest": "8c4b3201feabbd64",
+      "text": "Alias    svo (aliases, triggers) / 'svo': 121 items originally, 122 in merged"
+    },
+    {
       "id": "count|Script|svo (install me in module manager)|Check for system updates",
       "digest": "c0dcf72fc2cc0600",
       "text": "Script   svo (install me in module manager) / 'Check for system updates': 5 items originally, 8 in merged"
@@ -198,6 +208,16 @@
       "text": "Alias    svo (aliases, triggers) svo/(vversion) Show system version [script]"
     },
     {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Show hidelist|regex",
+      "digest": "1eb8d9a5a673bd5a",
+      "text": "Alias    svo (aliases, triggers) svo/Show hidelist [regex]"
+    },
+    {
+      "id": "item|Alias|svo (aliases, triggers)|svo/Show hidelist|script",
+      "digest": "f6002ce9a5d2cb57",
+      "text": "Alias    svo (aliases, triggers) svo/Show hidelist [script]"
+    },
+    {
       "id": "item|Alias|svo (namedb)|NameDB/Enemies lists|script",
       "digest": "47331a71696caa53",
       "text": "Alias    svo (namedb) NameDB/Enemies lists [script]"
@@ -209,13 +229,18 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "ff9b3e4b195763f1",
+      "digest": "846866addd3bad33",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Alias functions|script",
-      "digest": "5ef702de4485c180",
+      "digest": "2e7417d1f531fc8e",
       "text": "Script   svo (alias and defence functions) Alias functions [script]"
+    },
+    {
+      "id": "item|Script|svo (alias and defence functions)|Defences|script",
+      "digest": "31e23506f0df7697",
+      "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
       "id": "item|Script|svo (aliases, triggers)|svo (aliases, triggers)|script",
@@ -233,8 +258,13 @@
       "text": "Script   svo (curing skeleton, controllers, action system) Action system [script]"
     },
     {
+      "id": "item|Script|svo (curing skeleton, controllers, action system)|Controllers|script",
+      "digest": "0ce029bcf55bfdd3",
+      "text": "Script   svo (curing skeleton, controllers, action system) Controllers [script]"
+    },
+    {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "bfcbcbc91f9ed11e",
+      "digest": "d097729a9a4d1692",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -244,7 +274,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "af3ca519b494c9b4",
+      "digest": "f99525f0f8127d56",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
@@ -334,7 +364,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Config system|script",
-      "digest": "cacf49b16acb2e3e",
+      "digest": "de743316e588e980",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Config system [script]"
     },
     {
@@ -344,7 +374,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Priorities|script",
-      "digest": "17a4695e2b53060c",
+      "digest": "ea522a064df845fd",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Priorities [script]"
     },
     {
@@ -419,12 +449,12 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",
-      "digest": "5c5278698d3f7046",
+      "digest": "813033b79482c469",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Miscellaneous functions [script]"
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "af9a4f05baa9b689",
+      "digest": "30388f873f2f9289",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -439,7 +469,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "d92aadabd10d5a68",
+      "digest": "99047e6499bbb06a",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

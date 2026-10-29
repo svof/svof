@@ -432,6 +432,33 @@ function svo.ashow()
     svo.echof("Currently deffing up; waiting on %s to come up.", sk.showwaitingdefup())
   end
 
+  -- the defences the player defined and their changes to svof's own
+  local defined, changed = defences.custom_counts()
+  svo.echofn("Your own defences: %d defined, %d change%s to Svof's (", defined, changed, changed == 1 and "" or "s")
+  setFgColor(unpack(svo.getDefaultColorNums))
+  setUnderline(true)
+  echoLink("vcustomdef", 'svo.defences.customdef_menu()', "List the defences you defined and changed, to see or change them", true)
+  setUnderline(false)
+  resetFormat()
+  echo(")\n")
+
+  -- what the defence lists hide, every class's (the user's ask, 2026-10-16)
+  local hiddengroups, hiddendefs = 0, 0
+  for _, group in pairs(sk.ignored_defences) do
+    if group.status then hiddengroups = hiddengroups + 1 end
+    for _, hidden in pairs(group.t) do
+      if hidden then hiddendefs = hiddendefs + 1 end
+    end
+  end
+  svo.echofn("Hidden from the defence lists: %d skillset%s, %d defence%s (", hiddengroups, hiddengroups == 1 and "" or "s",
+    hiddendefs, hiddendefs == 1 and "" or "s")
+  setFgColor(unpack(svo.getDefaultColorNums))
+  setUnderline(true)
+  echoLink("vshow hidelist", 'svo.showhidelist()', "Choose which skillsets and defences the defence lists show", true)
+  setUnderline(false)
+  resetFormat()
+  echo(")\n")
+
   echo"\n"
 
   svo.echofn("View priorities (")
@@ -702,11 +729,14 @@ function svo.showbals(window)
 end
 
 function svo.showserverside()
+  -- the marks shown, for the key under the list
+  local marked = {}
   local function echoaction(action, last)
-    dechoLink(string.format("<153,204,204>[<0,204,0>%s<153,204,204>] %"..(last and '' or '-23')..'s',
-      svo.serverignore[action] and ' ' or 'x', action),
+    -- * for a defence the player defined, + for one of svof's own they changed
+    dechoLink(svo.defences.withmark(string.format("<153,204,204>[<0,204,0>%s<153,204,204>] %"..(last and '' or '-23')..'s',
+      svo.serverignore[action] and ' ' or 'x', action), action, "<153,204,204>", marked),
       string.format([[svo.%ssetserverignore("%s"); svo.showserverside()]], svo.serverignore[action] and 'un' or '', action),
-      svo.serverignore[action] and ('Make Svof handle '..action..' instead of serverside') or ('Make serverside handle '..action..' instead of Svof'), true)
+      svo.defences.markhint(svo.serverignore[action] and ('Make Svof handle '..action..' instead of serverside') or ('Make serverside handle '..action..' instead of Svof'), action), true)
   end
 
   local actions = sk.getallserversideactions()
@@ -720,6 +750,8 @@ function svo.showserverside()
     if action3 then echoaction(action3, true) end
     echo'\n'
   end
+  local key = svo.defences.mark_key(marked, "<153,204,204>")
+  if key then decho(key) end
 
   echo'\n'
 
@@ -939,8 +971,13 @@ function svo.reset.general()
 end
 
 function svo.reset.defs(echoback)
+  -- Every caller is the game's own event (a death, a starburst, an arena
+  -- loss), and a defence the game keeps through one, as speed is through a
+  -- death, gets no GMCP Add afterwards. So one GMCP still reports stays, or
+  -- svof waits forever for a defence that is already up. Those the game
+  -- takes away come as GMCP Removes.
   for def, _ in pairs(defc) do
-    if not svo.defs_data[def] or (svo.defs_data[def] and not svo.defs_data[def].stays_on_death) then
+    if not (svo.defs_data[def] and svo.defs_data[def].stays_on_death) and not svo.gmcp_def_holds(def) then
       svo.defc[def] = nil
     end
   end

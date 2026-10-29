@@ -164,6 +164,20 @@ local function new_environment()
     calls.asked[#calls.asked + 1] = claim.p.name
     return svo.gmcp_kept[claim.p.name]
   end
+  -- and the defences GMCP still reports, by claim name, under their own
+  -- live flag (svo.gmcp_defs_live), not live unless a scenario says so
+  svo.gmcp_defs_are_live = false
+  svo.gmcp_kept_defences = {}
+  function svo.gmcp_defs_live() return svo.gmcp_defs_are_live end
+  function svo.gmcp_kept_defence(claim)
+    calls.asked[#calls.asked + 1] = claim.p.name
+    return svo.gmcp_kept_defences[claim.p.name]
+  end
+  -- and the defences a line says you gained that GMCP does not report
+  svo.gmcp_refuted_defences = {}
+  function svo.gmcp_refuted_defence(claim)
+    return svo.gmcp_refuted_defences[claim.p.name]
+  end
   -- which refused afflictions GMCP overlooks, by affliction
   svo.gmcp_believed = {}
   function svo.gmcp_overlooked(aff, claim)
@@ -524,6 +538,72 @@ do
   not_contains(calls.finished, 'asthma_gone', "gone gate: and never runs")
   contains(calls.finished, 'prone_gone', "gone gate: a claim GMCP agrees with runs as before")
   eq(calls.echof[1], "Ignored a line saying asthma is gone: GMCP still reports it.", "gone gate: the refusal is echoed")
+end
+
+-- ===== scenario 15b: a line saying a defence is gone, while GMCP still reports it =====
+do
+  local env, calls, svo, sys, sk, conf = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'shield_gone', 'gone')
+  queue(svo, 'alertness_gone', 'gone')
+  svo.gmcp_defs_are_live = true
+  svo.gmcp_kept_defences = {shield_gone = 'shield'}
+  conf.gmcpdefechoes = true
+
+  svo.lifevision.validate()
+
+  contains(calls.cleared, 'shield_gone', "defence gate: a loss GMCP contradicts is cleared")
+  not_contains(calls.finished, 'shield_gone', "defence gate: and never runs")
+  contains(calls.finished, 'alertness_gone', "defence gate: a loss GMCP agrees with runs as before")
+  eq(calls.echof[1], "Ignored a line saying shield is gone: GMCP still reports it.", "defence gate: echoed under gmcpdefechoes")
+end
+
+-- ===== scenario 15c: a line saying you gained a defence GMCP does not report =====
+do
+  local env, calls, svo, sys, sk, conf = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  queue(svo, 'mass_salve', 'salve')            -- svof's application, still in flight
+  queue(svo, 'alertness_physical', 'physical') -- nothing of svof's behind it
+  queue(svo, 'shield_physical', 'physical')    -- a gain GMCP agrees with
+  svo.actions.mass_salve = {timerid = 3}
+  svo.gmcp_defs_are_live = true
+  svo.gmcp_refuted_defences = {mass_salve = 'mass', alertness_physical = 'alertness'}
+  conf.gmcpdefechoes = true
+
+  svo.lifevision.validate()
+
+  not_contains(calls.finished, 'mass_salve', "gain gate: a gain GMCP does not report never runs")
+  not_contains(calls.cleared, 'mass_salve', "gain gate: svof's own command stays in flight for the game's answer")
+  contains(calls.cleared, 'alertness_physical', "gain gate: one the line made up is cleared")
+  not_contains(calls.finished, 'alertness_physical', "gain gate: and never runs")
+  contains(calls.finished, 'shield_physical', "gain gate: a gain GMCP agrees with runs as before")
+  eq(calls.echof[1], "Ignored a line saying you have mass: GMCP doesn't report it.", "gain gate: echoed under gmcpdefechoes")
+end
+
+-- the defence gate is off until the defences' List, and in DEF's paragraph
+for _, case in ipairs({ { live = false, label = "before the defences' List" },
+                        { live = true, def = true, label = "in DEF's paragraph" } }) do
+  local env, calls, svo, sys, sk, conf = new_environment()
+  load_block(block, env)
+  svo.lifevision.l = ordered_map()
+
+  if case.def then queue(svo, 'defcheck_physical', 'physical') end
+  queue(svo, 'shield_gone', 'gone')
+  queue(svo, 'mass_salve', 'salve')
+  svo.actions.mass_salve = {timerid = 3}
+  svo.gmcp_defs_are_live = case.live
+  svo.gmcp_kept_defences = {shield_gone = 'shield'}
+  svo.gmcp_refuted_defences = {mass_salve = 'mass'}
+
+  svo.lifevision.validate()
+
+  contains(calls.finished, 'shield_gone', "defence gate, " .. case.label .. ": the loss runs")
+  not_contains(calls.cleared, 'shield_gone', "defence gate, " .. case.label .. ": and is not cleared")
+  contains(calls.finished, 'mass_salve', "defence gate, " .. case.label .. ": the gain runs")
 end
 
 -- ===== scenario 16: the backstops are told which paragraphs to trust =====
