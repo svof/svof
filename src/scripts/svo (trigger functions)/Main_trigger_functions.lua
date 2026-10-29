@@ -506,6 +506,9 @@ function svo.valid.spiders_all_overme()
 end
 
 function svo.valid.symp_impale()
+  -- a daegger's impale shows the same symptom
+  if affs.daeggerimpale then return end
+
   if affs.blackout then
     valid.proper_impale()
   elseif not conf.aillusion then
@@ -725,6 +728,9 @@ function svo.valid.symp_webbed()
 end
 
 function svo.valid.symp_impaled()
+  -- a daegger's impale shows the same symptom
+  if affs.daeggerimpale then return end
+
   if not conf.aillusion then
     valid.simpleimpale()
   else
@@ -843,6 +849,28 @@ end
 
 valid.impale_withdrew = valid.knighthood_disembowel
 
+-- The daegger's Expire msg (AFFLICTION SHOW, captured 2026-10-20): it lets go
+-- by itself, as a knight withdrawing ends an impale
+function svo.valid.daeggerimpale_withdrew()
+  -- The impale symptoms can't tell a daegger from a blade, so svof may have
+  -- this one as impale. GMCP still reporting a blade's keeps it
+  if not affs.daeggerimpale and not actions.curingdaeggerimpale_waitingfor and affs.impale then
+    valid.impale_withdrew()
+    return
+  end
+
+  local result = svo.checkany(svo.dict.curingdaeggerimpale.waitingfor)
+
+  if not result and affs.daeggerimpale then
+    svo.checkaction(svo.dict.curingdaeggerimpale.waitingfor, true)
+    result = { name = 'curingdaeggerimpale_waitingfor' }
+  end
+
+  if result and actions[result.name] then
+    lifevision.add(actions[result.name].p, 'withdrew')
+  end
+end
+
 function svo.valid.fell_sleep()
   svo.checkaction(svo.dict.sleep.aff, true)
   svo.checkaction(svo.dict.prone.aff, true)
@@ -906,6 +934,15 @@ function svo.valid.proper_impale()
   else
     svo.checkaction(svo.dict.checkwrithes.aff, true)
     lifevision.add(actions.checkwrithes_aff.p, 'impale', stats.currenthealth)
+  end
+end
+
+function svo.valid.proper_daeggerimpale()
+  if not conf.aillusion then
+    valid.simpledaeggerimpale()
+  else
+    svo.checkaction(svo.dict.checkwrithes.aff, true)
+    lifevision.add(actions.checkwrithes_aff.p, 'daeggerimpale', stats.currenthealth)
   end
 end
 
@@ -2725,11 +2762,11 @@ function svo.valid.empty_light()
 end
 
 -- bindings
-for _,aff in ipairs({'bound', 'webbed', 'roped', 'transfixed', 'impale', 'hoisted'}) do
+for _,aff in ipairs({'bound', 'webbed', 'roped', 'transfixed', 'impale', 'daeggerimpale', 'hoisted'}) do
 valid['writhed'..aff] = function()
   if not affs[aff] then return end
 
-  local result = svo.checkany(svo.dict.curingbound.waitingfor, svo.dict.curingwebbed.waitingfor, svo.dict.curingroped.waitingfor, svo.dict.curingtransfixed.waitingfor, svo.dict.curingimpale.waitingfor, svo.dict.curinghoisted.waitingfor)
+  local result = svo.checkany(svo.dict.curingbound.waitingfor, svo.dict.curingwebbed.waitingfor, svo.dict.curingroped.waitingfor, svo.dict.curingtransfixed.waitingfor, svo.dict.curingimpale.waitingfor, svo.dict.curingdaeggerimpale.waitingfor, svo.dict.curinghoisted.waitingfor)
 
   if not result then return end
 
@@ -2745,8 +2782,21 @@ valid['writhed'..aff] = function()
 end
 end
 
+-- The writhed-free line is the same for a daegger as for a blade, so it ends
+-- the impale svof was writhing out of, or, writhing out of neither, the
+-- daegger's when that's the only impale svof has
+local writhedblade = valid.writhedimpale
+valid.writhedimpale = function()
+  if actions.curingdaeggerimpale_waitingfor
+    or (affs.daeggerimpale and not affs.impale and not actions.curingimpale_waitingfor) then
+    valid.writheddaeggerimpale()
+  else
+    writhedblade()
+  end
+end
+
 function svo.valid.writhe()
-  local result = svo.checkany(svo.dict.bound.misc, svo.dict.webbed.misc, svo.dict.roped.misc, svo.dict.transfixed.misc, svo.dict.hoisted.misc, svo.dict.impale.misc)
+  local result = svo.checkany(svo.dict.bound.misc, svo.dict.webbed.misc, svo.dict.roped.misc, svo.dict.transfixed.misc, svo.dict.hoisted.misc, svo.dict.impale.misc, svo.dict.daeggerimpale.misc)
 
   if not result then return end
   if actions[result.name] then
@@ -2755,12 +2805,14 @@ function svo.valid.writhe()
 end
 
 
+-- The line names the weapon, a daegger's too, so it's the start of writhing
+-- out of either impale
 function svo.valid.writheimpale()
-  local result = svo.checkany(svo.dict.impale.misc, svo.dict.transfixed.misc, svo.dict.webbed.misc, svo.dict.roped.misc, svo.dict.hoisted.misc, svo.dict.bound.misc)
+  local result = svo.checkany(svo.dict.impale.misc, svo.dict.daeggerimpale.misc, svo.dict.transfixed.misc, svo.dict.webbed.misc, svo.dict.roped.misc, svo.dict.hoisted.misc, svo.dict.bound.misc)
 
   if not result then return end
 
-  if result.name == 'impale_misc' then
+  if result.name == 'impale_misc' or result.name == 'daeggerimpale_misc' then
     lifevision.add(actions[result.name].p)
   else
     lifevision.add(actions[result.name].p, 'impale')
@@ -2768,7 +2820,7 @@ function svo.valid.writheimpale()
 end
 
 function svo.valid.writhe_helpless()
-  local result = svo.checkany(svo.dict.bound.misc, svo.dict.webbed.misc, svo.dict.roped.misc, svo.dict.impale.misc, svo.dict.transfixed.misc, svo.dict.hoisted.misc)
+  local result = svo.checkany(svo.dict.bound.misc, svo.dict.webbed.misc, svo.dict.roped.misc, svo.dict.impale.misc, svo.dict.daeggerimpale.misc, svo.dict.transfixed.misc, svo.dict.hoisted.misc)
 
   if not result then svo.ignore_illusion("We aren't actually writhing from anything right now (or we were forced).") return end
   if actions[result.name] then

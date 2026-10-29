@@ -920,6 +920,7 @@ function svo.setup_default_serverignore()
     end
 
     svo.serverignore.impale     = false -- serverside does not stack writhing atm
+    svo.serverignore.daeggerimpale = false -- writhed as impale is
     svo.serverignore.lovers     = false -- lust not handled by serverside
     svo.serverignore.selfishness = false -- doesn't take selfish off
   end

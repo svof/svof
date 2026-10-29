@@ -208,7 +208,7 @@ end
 
 signals.canoutr = signals.canoutr or luanotify.signal.new()
 signals.canoutr:connect(function()
-  if (affs.webbed or affs.bound or affs.transfixed or affs.roped or affs.impale or
+  if (affs.webbed or affs.bound or affs.transfixed or affs.roped or affs.impale or affs.daeggerimpale or
     ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and
       (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))) then
     svo.sys.canoutr = false
@@ -828,7 +828,7 @@ local probe_target = {
     return claim.arg
   end,
   checkwrithes = function(claim)
-    if claim.other_action == 'impale' then return 'impale' end
+    if claim.other_action == 'impale' or claim.other_action == 'daeggerimpale' then return claim.other_action end
     return claim.arg
   end,
 }
@@ -1091,6 +1091,9 @@ signals.gmcpcharafflictionsadd:connect(function()
 
   sk.checkaeony()
   signals.changecuring:emit()
+  -- addaffdict skips the entry's own aff.oncompleted, which is what updates
+  -- canoutr for a binding or an impale. A removal updates it in onremoved
+  signals.canoutr:emit()
 end, 'track gained gmcp aff')
 
 signals.gmcpcharafflictionsremove:connect(function()
@@ -1200,6 +1203,7 @@ signals.gmcpcharafflictionslist:connect(function()
   -- instead of once per List event.
   sk.checkaeony()
   signals.changecuring:emit()
+  signals.canoutr:emit() -- as in the add handler
 
   -- svo.dict.svotossa is sstosvoa reversed, built by the dictionary itself
   -- as it loads. It gates removal on the affliction being one GMCP can

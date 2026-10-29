@@ -235,7 +235,7 @@ empty.eat_pear = function()
 end
 
 empty.writhe = function()
-  presume_cured({'impale', 'bound', 'webbed', 'roped', 'transfixed', 'hoisted'})
+  presume_cured({'impale', 'daeggerimpale', 'bound', 'webbed', 'roped', 'transfixed', 'hoisted'})
 end
 
 empty.apply_epidermal_head = function ()

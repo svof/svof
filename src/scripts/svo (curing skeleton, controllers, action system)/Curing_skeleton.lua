@@ -685,7 +685,7 @@ local balanceful = svo.balanceful or {}
 function svo.sk.balance_controller()
   if sys.balanceid == sys.balancetick then return end
 
-  if not (bals.balance and bals.equilibrium) or (affs.webbed or affs.bound or affs.transfixed or affs.roped or affs.impale or affs.paralysis or affs.sleep) then return end
+  if not (bals.balance and bals.equilibrium) or (affs.webbed or affs.bound or affs.transfixed or affs.roped or affs.impale or affs.daeggerimpale or affs.paralysis or affs.sleep) then return end
 
   -- loop through all balanceless functions
   for _, f in pairs(balanceless) do
@@ -1212,7 +1212,7 @@ sk.impale_count = 0
 function svo.sk.impale_symptom()
   if conf.serverside then return end
 
-  if affs.impale then return end
+  if affs.impale or affs.daeggerimpale then return end
 
   sk.impale_count = sk.impale_count + 1
 
@@ -1335,7 +1335,7 @@ sk.impaled_count = 0
 function svo.sk.impaled_symptom()
   if conf.serverside then return end
 
-  if affs.impale then return end
+  if affs.impale or affs.daeggerimpale then return end
 
   sk.impaled_count = sk.impaled_count + 1
 

@@ -250,7 +250,7 @@ local function new_svof(opts)
   svo.defc.caloric, svo.defc.insomnia = true, true
   svo.defs_data = { caloric = {}, insomnia = {} }
   local signals = {
-    svogotaff = signal(), svolostaff = signal(), changecuring = signal(),
+    svogotaff = signal(), svolostaff = signal(), changecuring = signal(), canoutr = signal(),
     after_lifevision_processing = signal(), curedwith_focus = signal(),
   }
   for _, s in ipairs({"afflictionslist", "afflictionsremove", "afflictionsadd",

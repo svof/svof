@@ -139,11 +139,23 @@ codepaste.writhe = function()
   return (
     not svo.doingaction('curingtransfixed') and not svo.doingaction('transfixed') and
     not svo.doingaction('curingimpale') and not svo.doingaction('impale') and
+    not svo.doingaction('curingdaeggerimpale') and not svo.doingaction('daeggerimpale') and
     not svo.doingaction('curingbound') and not svo.doingaction('bound') and
     not svo.doingaction('curingwebbed') and not svo.doingaction('webbed') and
     not svo.doingaction('curingroped') and not svo.doingaction('roped') and
     not svo.doingaction('curinghoisted') and not svo.doingaction('hoisted') and
     not svo.doingaction('dragonflex'))
+end
+
+-- A writhe that ran into an impale waits on it: a daegger's when that's the
+-- only impale svof has, otherwise a blade's, as every impale was before
+-- daeggerimpale had an entry
+codepaste.writhingimpale = function()
+  if affs.daeggerimpale and not affs.impale then
+    svo.doaction(svo.dict.curingdaeggerimpale.waitingfor)
+  else
+    svo.doaction(svo.dict.curingimpale.waitingfor)
+  end
 end
 
 -- gives a warning if we're having too many reaves
@@ -5759,7 +5771,7 @@ if not next(svo.dict) then
         isadvisable = function()
           if not next(affs) or not bals.tree or svo.doingaction('touchtree') or affs.sleep or not conf.tree or affs.stun
            or affs.unconsciousness or affs.numbedrightarm or affs.numbedleftarm or affs.paralysis or affs.webbed
-            or affs.bound or affs.transfixed or affs.roped or affs.impale or ((affs.crippledleftarm or affs.mangledleftarm
+            or affs.bound or affs.transfixed or affs.roped or affs.impale or affs.daeggerimpale or ((affs.crippledleftarm or affs.mangledleftarm
              or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))
               or codepaste.nonstdcure() then return false end
   
@@ -6113,7 +6125,7 @@ if not next(svo.dict) then
           return (affs.prone and (not affs.paralysis or svo.doingaction'paralysis')
             and (svo.haveskillset('weaponmastery') and (sk.didfootingattack or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm)) or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm))
             and not svo.doingaction('prone') and not affs.sleep
-            and not affs.impale
+            and not affs.impale and not affs.daeggerimpale
             and not affs.transfixed
             and not affs.webbed and not affs.bound and not affs.roped
             and not affs.crippledleftleg and not affs.crippledrightleg
@@ -6364,7 +6376,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          return (conf.autorewield and svo.dict.rewield.rewieldables and not svo.doingaction'rewield' and not affs.impale and not affs.webbed and not affs.transfixed and not affs.roped and not affs.transfixed and sys.canoutr and not affs.mutilatedleftarm and not affs.mutilatedrightarm and not affs.mangledrightarm and not affs.mangledleftarm and not affs.crippledrightarm and not affs.crippledleftarm) or false
+          return (conf.autorewield and svo.dict.rewield.rewieldables and not svo.doingaction'rewield' and not affs.impale and not affs.daeggerimpale and not affs.webbed and not affs.transfixed and not affs.roped and not affs.transfixed and sys.canoutr and not affs.mutilatedleftarm and not affs.mutilatedrightarm and not affs.mangledrightarm and not affs.mangledleftarm and not affs.crippledrightarm and not affs.crippledleftarm) or false
         end,
   
         oncompleted = function (id)
@@ -6850,7 +6862,7 @@ if not next(svo.dict) then
         end,
   
         impale = function()
-          svo.doaction(svo.dict.curingimpale.waitingfor)
+          codepaste.writhingimpale()
         end
       },
       aff = {
@@ -6899,7 +6911,7 @@ if not next(svo.dict) then
         end,
   
         impale = function()
-          svo.doaction(svo.dict.curingimpale.waitingfor)
+          codepaste.writhingimpale()
         end
       },
       aff = {
@@ -6924,6 +6936,7 @@ if not next(svo.dict) then
       }
     },
     roped = {
+      gamename = 'entangled',
       misc = {
         dontbatch = true,
   
@@ -6943,7 +6956,7 @@ if not next(svo.dict) then
         end,
   
         impale = function()
-          svo.doaction(svo.dict.curingimpale.waitingfor)
+          codepaste.writhingimpale()
         end
       },
       aff = {
@@ -6987,7 +7000,7 @@ if not next(svo.dict) then
         end,
   
         impale = function()
-          svo.doaction(svo.dict.curingimpale.waitingfor)
+          codepaste.writhingimpale()
         end
       },
       aff = {
@@ -7029,7 +7042,7 @@ if not next(svo.dict) then
         end,
   
         impale = function()
-          svo.doaction(svo.dict.curingimpale.waitingfor)
+          codepaste.writhingimpale()
         end
       },
       aff = {
@@ -7063,7 +7076,7 @@ if not next(svo.dict) then
   
   
         isadvisable = function()
-          return (affs.impale and not svo.doingaction('curingimpale') and not svo.doingaction('impale') and bals.balance and bals.rightarm and bals.leftarm) or false
+          return (affs.impale and not svo.doingaction('curingimpale') and not svo.doingaction('impale') and not svo.doingaction('curingdaeggerimpale') and not svo.doingaction('daeggerimpale') and bals.balance and bals.rightarm and bals.leftarm) or false
         end,
   
         oncompleted = function()
@@ -7103,12 +7116,60 @@ if not next(svo.dict) then
         onstart = function() end
       }
     },
+    -- An impale by an Apostate's daegger, which the game names apart from
+    -- impaled. Writhing out of it prints what writhing out of any impale
+    -- does, as far as the user knows (2026-10-28), and as svof assumed when it
+    -- tracked one as impale, so it's writhed as impale is, one of the two at
+    -- a time. Its own entry lets serverside writhe it, from vshow serverside
+    daeggerimpale = {
+      gamename = 'daeggerimpale',
+      misc = {
+        dontbatch = true,
+  
+  
+        isadvisable = function()
+          return (affs.daeggerimpale and not svo.doingaction('curingdaeggerimpale') and not svo.doingaction('daeggerimpale') and not svo.doingaction('curingimpale') and not svo.doingaction('impale') and bals.balance and bals.rightarm and bals.leftarm) or false
+        end,
+  
+        oncompleted = function()
+          svo.doaction(svo.dict.curingdaeggerimpale.waitingfor)
+        end,
+  
+        action = 'writhe',
+        onstart = function() send('writhe', conf.commandecho) end,
+  
+        helpless = function()
+          empty.writhe()
+        end,
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.daeggerimpale)
+          signals.canoutr:emit()
+        end,
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('daeggerimpale') end,
+      },
+      onremoved = function() signals.canoutr:emit() end
+    },
+    curingdaeggerimpale = {
+      waitingfor = {
+        customwait = 6,
+  
+        oncompleted = function() svo.rmaff('daeggerimpale') end,
+  
+        withdrew = function() svo.rmaff('daeggerimpale') end,
+  
+        onstart = function() end
+      }
+    },
     dragonflex = {
       misc = {
         uncurable = true,
   
         isadvisable = function()
-          return (conf.dragonflex and ((affs.webbed and not svo.ignore.webbed) or (affs.roped and not svo.ignore.roped)) and codepaste.writhe() and not affs.paralysis and defc.dragonform and bals.balance and not svo.doingaction'impale') or false
+          return (conf.dragonflex and ((affs.webbed and not svo.ignore.webbed) or (affs.roped and not svo.ignore.roped)) and codepaste.writhe() and not affs.paralysis and defc.dragonform and bals.balance and not svo.doingaction'impale' and not svo.doingaction'daeggerimpale') or false
         end,
   
         oncompleted = function()
@@ -7554,7 +7615,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          return (next(svo.affsp) and ((svo.affsp.impale and not affs.transfixed and not affs.webbed and not affs.roped) or (svo.affsp.webbed and not affs.transfixed and not affs.roped) or svo.affsp.transfixed)) or false
+          return (next(svo.affsp) and (((svo.affsp.impale or svo.affsp.daeggerimpale) and not affs.transfixed and not affs.webbed and not affs.roped) or (svo.affsp.webbed and not affs.transfixed and not affs.roped) or svo.affsp.transfixed)) or false
         end,
   
         oncompleted = function() end,
@@ -7565,9 +7626,15 @@ if not next(svo.dict) then
           signals.canoutr:emit()
         end,
   
+        -- a daegger's impale shows the same symptom
         impaly = function()
-          svo.affsp.impale = nil
-          svo.addaffdict(svo.dict.impale)
+          if svo.affsp.daeggerimpale and not svo.affsp.impale then
+            svo.affsp.daeggerimpale = nil
+            svo.addaffdict(svo.dict.daeggerimpale)
+          else
+            svo.affsp.impale = nil
+            svo.addaffdict(svo.dict.impale)
+          end
           signals.canoutr:emit()
         end,
   
@@ -7579,6 +7646,7 @@ if not next(svo.dict) then
   
         onclear = function()
           svo.affsp.impale = nil
+          svo.affsp.daeggerimpale = nil
           svo.affsp.webbed = nil
           svo.affsp.transfixed = nil
         end,
@@ -7604,6 +7672,15 @@ if not next(svo.dict) then
             signals.canoutr:emit()
           else
             svo.affsp.impale = true
+          end
+        end,
+  
+        daeggerimpale = function (oldhp)
+          if (oldhp and stats.currenthealth < oldhp) then
+            svo.addaffdict(svo.dict.daeggerimpale)
+            signals.canoutr:emit()
+          else
+            svo.affsp.daeggerimpale = true
           end
         end
       }
@@ -10653,7 +10730,7 @@ if not next(svo.dict) then
       crackedribs = 'crackedribs',
       crescendo = 'crescendo',
       crushedthroat = 'crushedthroat',
-      daeggerimpale = false,
+      daeggerimpale = 'daeggerimpale',
       damagedhead = 'mildconcussion',
       damagedleftarm = 'mangledleftarm',
       damagedleftleg = 'mangledleftleg',
@@ -15844,7 +15921,7 @@ signals.newroom:block(sk.check_retardation)
 signals.newroom:connect(function()
   if not next(affs) then return end
 
-  local removables = {'impale'}
+  local removables = {'impale', 'daeggerimpale'}
   local escaped = {}
   for i = 1, #removables do
     if affs[removables[i]] then
