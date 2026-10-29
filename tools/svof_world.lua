@@ -3,7 +3,7 @@ Loads svof's real subsystems into plain Lua, for the logic-level tests that
 need more of svof than one extracted block: the whole dictionary, the
 defence records and the handlers svof generates from them at systemstart.
 
-It runs the 22 required loaders in svo_init_system's order, then
+It runs the 23 required loaders in svo_init_system's order, then
 svo.signals.systemstart, then svo.reset.bals, for the class you ask for, so
 every svo.haveskillset gate in the source decides what loads exactly as it
 does in Mudlet. The code is the shipped source, read from src/ at run time,
@@ -47,6 +47,7 @@ world.LOADERS = {
   {"install", "svo (install, config, pipes, rift, parry, prios)/Install_system.lua"},
   {"aliases", "svo (alias and defence functions)/Alias_functions.lua"},
   {"defences", "svo (alias and defence functions)/Defences.lua"},
+  {"customaffs", "svo (alias and defence functions)/Custom_afflictions.lua"},
   {"prio", "svo (install, config, pipes, rift, parry, prios)/Priorities.lua"},
   {"parry", "svo (install, config, pipes, rift, parry, prios)/Parry.lua"},
   {"funnies", "svo (setup, misc, empty, funnies, dor)/Funnies.lua"},
@@ -299,7 +300,7 @@ world.rex_stub = {
 function world.new(opts)
   opts = opts or {}
   local w = {
-    sent = {}, echoes = {}, links = {}, events = {}, triggers = {}, timers = {},
+    sent = {}, echoes = {}, links = {}, events = {}, triggers = {}, timers = {}, handlers = {},
     unknown_globals = {}, now = 0,
   }
   local timerseq = 0
@@ -333,7 +334,16 @@ function world.new(opts)
       w.triggers[id].killed = true
       return true
     end,
-    registerAnonymousEventHandler = function() return 1 end,
+    -- kept in w.handlers, so a test can raise one; a killed one is marked
+    registerAnonymousEventHandler = function(name, f)
+      w.handlers[#w.handlers + 1] = { name = name, f = f }
+      return #w.handlers
+    end,
+    killAnonymousEventHandler = function(id)
+      if not w.handlers[id] then return false end
+      w.handlers[id].killed = true
+      return true
+    end,
     raiseEvent = function(name, ...) w.events[#w.events + 1] = { name = name, args = {...} } end,
     getMudletHomeDir = function() return "." end,
     createStopWatch = function() return 1 end, startStopWatch = noop,

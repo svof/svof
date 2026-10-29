@@ -120,6 +120,21 @@ ITEM_RENAME = {
 # then records, so the moved item's body is still digested.
 ITEM_MOVE = {}
 
+# Top-level items only the package has, added on purpose, keyed by kind: the
+# item's name to (module, the module's top-level item it comes straight
+# after). Any other top-level item only the package has is structural. A
+# listed one is expected at its place, so the load order still checks where
+# it sits, and its whole tree is digested as package-only content, so an edit
+# to it fails the gate until the baseline is regenerated. A listed item the
+# package doesn't have is structural.
+TOP_LEVEL_ADDED = {
+    "Script": {
+        # the afflictions a player defines (vcustomaff). It loads straight
+        # after the defences, before the saved priorities are read
+        "Custom afflictions": ("svo (alias and defence functions)", "Defences"),
+    },
+}
+
 # describe_tree's suffix for the second and later siblings sharing one name.
 DUP_SUFFIX = re.compile(r"^(.*)#(\d+)$")
 
@@ -344,6 +359,9 @@ def compare(merged):
                 continue
             for nm, el in mod_top:
                 expected_order.append(nm)
+                for added, (amod, after) in sorted(TOP_LEVEL_ADDED.get(kind, {}).items()):
+                    if amod == module and after == nm:
+                        expected_order.append(added)
                 if nm not in merged_by_name or not merged_by_name[nm]:
                     structural.append("%-8s %s: top-level %r MISSING from merged package"
                                       % (kind, module, nm))
@@ -444,6 +462,22 @@ def compare(merged):
                         structural.append("%-8s %s: path %r != %r" % (kind, module, pa, pb))
                         break
                     diff_one(pa, da, db)
+
+        # The top-level items added on purpose: each one's whole tree is
+        # package-only content, digested by its descriptors as other
+        # package-only items are
+        for added, (amod, _after) in sorted(TOP_LEVEL_ADDED.get(kind, {}).items()):
+            items = merged_by_name.get(added)
+            if not items:
+                structural.append("%-8s TOP_LEVEL_ADDED item %r is not in the merged package"
+                                  % (kind, added))
+                continue
+            for path, d in describe_tree(items.pop(0), kind):
+                content.append({
+                    "id": "added|%s|%s|%s%s" % (kind, amod, added, path),
+                    "digest": digest(None, path, *[(k, d[k]) for k in sorted(d)]),
+                    "text": "%-8s %s %s%s [only in the package]" % (kind, amod, added, path),
+                })
 
         # An item that left one place and turned up unchanged in another has
         # moved, or been renamed without an ITEM_RENAME entry. Matched on

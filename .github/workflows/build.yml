@@ -281,7 +281,7 @@ jobs:
       # Gate 1.95. Defences: the records and dictionary entries in every
       # class, the handlers systemstart generates, and what a GMCP gain or
       # loss, a DEF listing and a serverside command do to svof's state.
-      # Unlike the extract-the-block suites, this one runs all 22 real
+      # Unlike the extract-the-block suites, this one runs all 23 real
       # loaders through svo_init_system (tools/svof_world.lua), once per
       # class. Several checks pin behaviour that is wrong today, labelled
       # "today", so the commit that fixes one has to change its expectation.
@@ -321,6 +321,22 @@ jobs:
       # nothing.
       - name: test litpipe
         run: lua tools/test_litpipe.lua
+
+      # Gate 1.99. src/resources/trigger_catalog.lua holds every line
+      # pattern of svof's own triggers, which svof reads to refuse an
+      # affliction definition whose line one of them already watches for.
+      # It's generated from src/triggers, so this fails when a trigger's
+      # patterns change and the file doesn't: regenerate it with --write in
+      # the same commit.
+      - name: check the trigger catalog is current
+        run: python tools/trigger_catalog.py
+
+      # Gate 1.991. Afflictions a player defines: svo.affcures reads the
+      # game's Cure(s) text and svo.basicaff builds a dictionary entry from
+      # it. Runs the real loaders (tools/svof_world.lua) and checks each built
+      # entry against svof's own entry for the same cure.
+      - name: test afflictions
+        run: lua tools/test_afflictions.lua
 
       - uses: actions/setup-java@v4
         with:

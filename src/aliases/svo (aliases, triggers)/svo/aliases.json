@@ -592,5 +592,11 @@
     "isActive": "yes",
     "isFolder": "no",
     "regex": "^vcustomdef(?: (.+))?$"
+  },
+  {
+    "name": "(vcustomaff) Define your own afflictions",
+    "isActive": "yes",
+    "isFolder": "no",
+    "regex": "^vcustomaff(?: (.+))?$"
   }
 ]

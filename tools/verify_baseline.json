@@ -3,9 +3,19 @@
   "source": "svof.xml",
   "accepted": [
     {
+      "id": "added|Alias|svo (aliases, triggers)|svo/(vcustomaff) Define your own afflictions",
+      "digest": "462f05c35f76adea",
+      "text": "Alias    svo (aliases, triggers) svo/(vcustomaff) Define your own afflictions [only in the package]"
+    },
+    {
       "id": "added|Alias|svo (aliases, triggers)|svo/(vcustomdef) Define your own defences",
       "digest": "788b05cdbb2f41c8",
       "text": "Alias    svo (aliases, triggers) svo/(vcustomdef) Define your own defences [only in the package]"
+    },
+    {
+      "id": "added|Script|svo (alias and defence functions)|Custom afflictions",
+      "digest": "623f90d28ff27b8f",
+      "text": "Script   svo (alias and defence functions) Custom afflictions [only in the package]"
     },
     {
       "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_download_done",
@@ -109,8 +119,8 @@
     },
     {
       "id": "count|Alias|svo (aliases, triggers)|svo",
-      "digest": "8c4b3201feabbd64",
-      "text": "Alias    svo (aliases, triggers) / 'svo': 121 items originally, 122 in merged"
+      "digest": "54fafd06c004bb94",
+      "text": "Alias    svo (aliases, triggers) / 'svo': 121 items originally, 123 in merged"
     },
     {
       "id": "count|Script|svo (install me in module manager)|Check for system updates",
@@ -229,7 +239,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "5fff4399341162d0",
+      "digest": "432ffb93a8d1874b",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -239,7 +249,7 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "2d22b682479a13fc",
+      "digest": "81e5559370900a4d",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -338,6 +348,11 @@
       "text": "Script   svo (install me in module manager) Load & init/svo.uninstall_all_modules [script]"
     },
     {
+      "id": "item|Script|svo (install me in module manager)|Load & init/svo_init_system|script",
+      "digest": "39ca7a11ad968743",
+      "text": "Script   svo (install me in module manager) Load & init/svo_init_system [script]"
+    },
+    {
       "id": "item|Script|svo (install me in module manager)|Load & init|script",
       "digest": "68331464e9801bc3",
       "text": "Script   svo (install me in module manager) Load & init [script]"
@@ -381,6 +396,11 @@
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Priorities|script",
       "digest": "cc35aa9876f66610",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Priorities [script]"
+    },
+    {
+      "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Rift|script",
+      "digest": "80753b5bc4ec1860",
+      "text": "Script   svo (install, config, pipes, rift, parry, prios) Rift [script]"
     },
     {
       "id": "item|Script|svo (limbcounter)|svo (limbcounter)/svo count show|script",
@@ -449,7 +469,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "4659110c65313e73",
+      "digest": "e88747e2d5b429d0",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
@@ -474,7 +494,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "00fb68046b825933",
+      "digest": "47f01701ac6e152e",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

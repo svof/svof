@@ -28,6 +28,7 @@ function svo_init_system()
     'install',
     'aliases',
     'defences',
+    'customaffs',
     'prio',
     'parry',
     'funnies',
