@@ -58,6 +58,36 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo still have madness  [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured dementia",
+      "digest": "35a09565b62fc46b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured dementia [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured hallucinations",
+      "digest": "b943d0a3df9d8ebc",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured hallucinations [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured inlove",
+      "digest": "06ed575dfddfcb31",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured inlove [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured paranoia",
+      "digest": "771d66dafacbf050",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured paranoia [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured peace",
+      "digest": "5bd60582c822563e",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured peace [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured stuttering",
+      "digest": "6d54fc81c9dcccdd",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured stuttering [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo already blind generic",
       "digest": "89a0eb3febdf23ce",
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo already blind generic [only in the package]"
@@ -159,8 +189,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "833f82d02549dd11",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2539 in merged"
+      "digest": "5821df92060e1d17",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2543 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -186,6 +216,16 @@
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Applied salve/svo cure scalded",
       "digest": "b618797a78de67fc",
       "text": "Trigger  svo (aliases, triggers) svo/General/Applied salve/svo cure scalded [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured generosity",
+      "digest": "cde8ee5c8f3a3177",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured generosity [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured weakness",
+      "digest": "1ed3c3749c9af5ba",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured weakness [only in the originals]"
     },
     {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Smoke/svo cured madness",
@@ -279,7 +319,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "c1033ac460ef632b",
+      "digest": "0d5938445eaf8198",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -509,7 +549,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "e1a070dca2dbc3b1",
+      "digest": "604eeefdb914514c",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
@@ -519,7 +559,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "96b23d7fc0713c6e",
+      "digest": "91a169278d155ff3",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -534,7 +574,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "fe71a1585cd3115f",
+      "digest": "8c388a8962af143d",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

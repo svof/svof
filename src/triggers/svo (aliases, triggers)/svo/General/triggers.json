@@ -2590,25 +2590,6 @@
         "script": "svo.valid.focus_cured_loneliness()"
       },
       {
-        "name": "svo cured generosity",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "Ahhhh. The freedom to be stingy again!",
-            "type": "exactMatch"
-          }
-        ],
-        "script": "svo.valid.focus_cured_generosity()"
-      },
-      {
         "name": "svo cured stupidity",
         "isActive": "yes",
         "isFolder": "no",
@@ -2683,25 +2664,6 @@
           }
         ],
         "script": "svo.valid.focus_cured_masochism()"
-      },
-      {
-        "name": "svo cured weakness",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "99",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "Your limbs strengthen and you feel stronger.",
-            "type": "exactMatch"
-          }
-        ],
-        "script": "svo.valid.focus_cured_weakness()"
       },
       {
         "name": "svo cured epilepsy",
@@ -2797,6 +2759,120 @@
           }
         ],
         "script": "svo.valid.focus_cured_vertigo()"
+      },
+      {
+        "name": "svo cured peace",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The unnatural feeling of peace leaves you.",
+            "type": "exactMatch"
+          }
+        ],
+        "script": "svo.valid.focus_cured_peace()"
+      },
+      {
+        "name": "svo cured inlove",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You shake your head, wondering what you ever saw in",
+            "type": "startOfLine"
+          }
+        ],
+        "script": "svo.valid.focus_cured_inlove()"
+      },
+      {
+        "name": "svo cured stuttering",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Your tongue will finally obey your commands properly.",
+            "type": "exactMatch"
+          }
+        ],
+        "script": "svo.valid.focus_cured_stuttering()"
+      },
+      {
+        "name": "svo cured paranoia",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Aaaahhh. No one is out to get you after all.",
+            "type": "exactMatch"
+          }
+        ],
+        "script": "svo.valid.focus_cured_paranoia()"
+      },
+      {
+        "name": "svo cured dementia",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Sanity returns to you and you are no longer demented.",
+            "type": "exactMatch"
+          }
+        ],
+        "script": "svo.valid.focus_cured_dementia()"
+      },
+      {
+        "name": "svo cured hallucinations",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Your hallucinations cease to plague you.",
+            "type": "exactMatch"
+          }
+        ],
+        "script": "svo.valid.focus_cured_hallucinations()"
       },
       {
         "name": "svo cured fear",

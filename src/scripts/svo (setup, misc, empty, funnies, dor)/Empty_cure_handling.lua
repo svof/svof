@@ -99,9 +99,9 @@ empty.deteriorateaffs = {'stupidity', 'confusion', 'hallucinations', 'depression
 -- expose publicly
 svo.deteriorateaffs = empty.deteriorateaffs
 
-empty.focuscurables = {'claustrophobia', 'masochism', 'dizziness', 'confusion', 'stupidity', 'generosity',
+empty.focuscurables = {'claustrophobia', 'masochism', 'dizziness', 'confusion', 'stupidity',
 'loneliness', 'agoraphobia', 'recklessness', 'epilepsy', 'pacifism', 'anorexia', 'shyness', 'vertigo', 'unknownmental',
-'paranoia', 'hallucinations', 'dementia'}
+'paranoia', 'hallucinations', 'dementia', 'peace', 'inlove', 'stuttering'}
 
 -- expose publicly
 svo.focuscurables = empty.focuscurables

@@ -1714,7 +1714,6 @@ me.cadmusaffs = me.cadmusaffs or {
   ['dizziness']      = false,
   ['epilepsy']       = false,
   ['fear']           = false,
-  ['generosity']     = false,
   ['loneliness']     = false,
   ['masochism']      = false,
   ['pacifism']       = false,
@@ -1723,7 +1722,6 @@ me.cadmusaffs = me.cadmusaffs or {
   ['stupidity']      = true,
   ['unknownmental']  = false,
   ['vertigo']        = false,
-  ['weakness']       = false,
 }
 
 me.inventory = {}
@@ -2329,7 +2327,14 @@ end, 'save dragonheal data')
 
 for _, config in ipairs{
  {location = 'serverignore', localtable = svo.serverignore, errormsg = "re-set all of the server ignore strats"},
- {location = 'cadmusaffs', localtable = svo.me.cadmusaffs, errormsg = "re-set all of the cadmus affs"},
+ -- a saved list can tick an affliction svof no longer focuses for, such as
+ -- generosity, which sk.canfocus would still act on and the menu can't show
+ {location = 'cadmusaffs', localtable = svo.me.cadmusaffs, errormsg = "re-set all of the cadmus affs",
+  afterload = function ()
+    for aff in pairs(svo.me.cadmusaffs) do
+      if not (svo.dict[aff] and svo.dict[aff].focus) then svo.me.cadmusaffs[aff] = nil end
+    end
+  end},
  {location = 'prefercustom', localtable = svo.me.curelist, errormsg = "re-set all of the custom curelist"},
 } do
   -- load the config.location list
@@ -2347,6 +2352,7 @@ for _, config in ipairs{
         end)
       end
     end
+    if config.afterload then config.afterload() end
 		svo.setup_default_serverignore()
   end, 'load '..config.location..' data')
   

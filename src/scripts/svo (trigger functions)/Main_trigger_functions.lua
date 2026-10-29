@@ -2863,7 +2863,7 @@ end
 
 -- focus
 do
-  local afflist = {'claustrophobia', 'masochism', 'dizziness', 'confusion', 'stupidity', 'generosity', 'loneliness', 'agoraphobia', 'recklessness', 'epilepsy', 'pacifism', 'anorexia', 'shyness', 'vertigo', 'fear', 'dementia', 'paranoia', 'hallucinations'}
+  local afflist = {'claustrophobia', 'masochism', 'dizziness', 'confusion', 'stupidity', 'loneliness', 'agoraphobia', 'recklessness', 'epilepsy', 'pacifism', 'anorexia', 'shyness', 'vertigo', 'fear', 'dementia', 'paranoia', 'hallucinations', 'peace', 'inlove', 'stuttering'}
   local other_focus_affs = {}
 
   for _, aff in pairs(afflist) do
