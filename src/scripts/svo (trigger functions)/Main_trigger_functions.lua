@@ -2126,13 +2126,16 @@ function svo.valid.litpipe(gag2)
   -- finish. The actions for lighting one pipe went before 2018, and looking
   -- them up here raised an error.
   -- The line names the pipe's description, not which it is, so the pipe is
-  -- the one the latest LIGHT <id> sent named (commandTracker's
-  -- lastCommands), and it's lit: otherwise svof thought it still out and
-  -- sent LIGHT PIPES for nothing. A pipe lit by another name stays as it was
+  -- the one the latest LIGHT sent named, by its ID (commandTracker's
+  -- lastCommands, newest first), and it's lit: otherwise svof thought it
+  -- still out and sent LIGHT PIPES for nothing. Only the latest LIGHT
+  -- counts, so one by another name, even after an older LIGHT <id>, leaves
+  -- the pipes as they were (vadi2, 2026-10-28)
   for _, command in ipairs(rawget(_G, 'lastCommands') or {}) do
-    local id = tonumber(command:match("^light (%d+)%s*$"))
-    if id then
-      for _, name in ipairs(pipes.pnames) do
+    local what = command:match("^light (.-)%s*$")
+    if what then
+      local id = tonumber(what:match("^(%d+)$"))
+      for _, name in ipairs(id and pipes.pnames or {}) do
         local pipe = pipes[name]
         if tonumber(pipe.id) == id then pipe.lit = true end
         if tonumber(pipe.id2) == id then pipe.lit2 = true end
