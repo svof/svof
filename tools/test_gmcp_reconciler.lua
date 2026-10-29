@@ -105,6 +105,16 @@ local SIMPLE_SRC = "src/scripts/svo (trigger functions)/Simple_aff_trigger_funct
 local SIMPLE_START_ANCHOR = "  local no_simple_handler = {"
 local SIMPLE_END_ANCHOR = "svo.valid.simplehoisted = function(name)"
 
+-- A toxic relapse: the real svo.valid.proper_relapsing, which marks the
+-- paragraph, the table of what a relapse can bring back, and the
+-- dictionary's sstosvoa that table has to agree with.
+local RELAPSE_START_ANCHOR = "function svo.valid.proper_relapsing()"
+local RELAPSE_END_ANCHOR = "function svo.valid.relapsing_camus()"
+local VENOMS_START_ANCHOR = "local relapsed_venom = {"
+local VENOMS_END_ANCHOR = "\n-- Whether a relapse"
+local SSTOSVOA_START_ANCHOR = "    sstosvoa = {"
+local SSTOSVOA_END_ANCHOR = "    sstosvod = {"
+
 local function read_file(path)
   local f, err = io.open(path, "r")
   if not f then error("cannot open " .. path .. ": " .. tostring(err)) end
@@ -447,6 +457,15 @@ local simple_block = "do\n" .. extract_between(read_file(SIMPLE_SRC), SIMPLE_SRC
   SIMPLE_START_ANCHOR, SIMPLE_END_ANCHOR, false)
 print("extracted " .. #refusal_blocks .. " refusal trigger handlers and "
   .. #simple_block .. " bytes of the valid.simple<aff> generator")
+
+local relapse_block = extract_between(read_file(TRIGGERS_SRC), TRIGGERS_SRC,
+  RELAPSE_START_ANCHOR, RELAPSE_END_ANCHOR, false)
+local venoms_block = extract_between(source, SRC, VENOMS_START_ANCHOR, VENOMS_END_ANCHOR, false)
+local sstosvoa_block = extract_between(read_file(DICT_SRC), DICT_SRC,
+  SSTOSVOA_START_ANCHOR, SSTOSVOA_END_ANCHOR, false)
+print("extracted " .. #relapse_block .. " bytes of svo.valid.proper_relapsing, "
+  .. #venoms_block .. " of the relapsed venom table and "
+  .. #sstosvoa_block .. " of the dictionary's sstosvoa")
 
 -- Minimal stand-in for the Penlight OrderedMap that svo.lifevision.l is:
 -- iter() in insertion order, and a claim readable by its key.
@@ -2047,6 +2066,189 @@ do
   eq(svo.affs.slickness, nil, "refusal replay: a salve svof never sent, refused three times, is not believed")
   not_contains(calls.echof, "Believed slickness: the game showed it again, though GMCP doesn't report it.",
     "refusal replay: and nothing says it was")
+end
+
+-- ===== scenario 27: GMCP first - a toxic relapse brings back an affliction the game hid =====
+-- Scytherus makes a venom you were hit with relapse. When that venom's
+-- affliction is already on you but hidden behind a ?, the game shows its line
+-- again and sends no Add, as you already hold it, so the claim gate refused
+-- it. From a live log (2026-10-14): scytherus' Add, "You swoon as you suffer a
+-- toxic relapse.", "Your limbs grow heavy and you groan feebly.", "Ignored a
+-- line claiming weakness", and GMCP removing the weariness two seconds later
+-- when kelp cured it. Runs the real svo.valid.proper_relapsing, the real
+-- valid.simple<aff> generator, lifevision and svo.gmcp_overlooked.
+local function relapse_env()
+  local env, h, calls, svo = replay_env()
+  env.valid, env.actions = svo.valid, svo.actions
+  local prompt_line = false
+  env.isPrompt = function() return prompt_line end
+  -- Setup.lua creates it at load, above the handler block; the Add handler
+  -- writes to it when an Add arrives while a ? is held
+  svo.sk.gmcp_revealed = {}
+
+  -- beside overlook_env's names: scytherus and weariness under their own
+  -- GMCP names, and hypersomnia, which no venom gives
+  for gmcp_name, name in pairs({ scytherus = 'relapsing', weariness = 'weakness', hypersomnia = 'hypersomnia' }) do
+    svo.dict.sstosvoa[gmcp_name] = name
+    local entry = { name = name }
+    entry.aff = { name = name .. '_aff', action_name = name, balance = 'aff',
+      oncompleted = function() svo.addaffdict(entry) end }
+    svo.dict[name] = entry
+  end
+  build_reverse_indexes(env)
+  load_block(simple_block, env)
+  load_block(relapse_block, env)
+
+  -- one paragraph: GMCP's Adds, which arrive before its text, then each
+  -- line's handlers in the order given, then the prompt. Mudlet fires the
+  -- relapse trigger on the line after the relapse, so the relapse line
+  -- itself runs nothing.
+  local function paragraph(adds, lines)
+    for _, name in ipairs(adds) do
+      env.gmcp.Char.Afflictions.Add = { name = name }
+      h.affadd()
+    end
+    svo.paragraph_length = 0
+    for i, handlers in ipairs(lines) do
+      svo.paragraph_length = svo.paragraph_length + 1
+      -- Mudlet's line, which a claim records and a relapse marks
+      env.line = "line " .. i
+      for _, handler in ipairs(handlers) do handler() end
+    end
+    svo.promptcount = svo.promptcount + 1
+    svo.lifevision.validate()
+  end
+
+  local function on_prompt_line(on) prompt_line = on end
+  return env, h, calls, svo, paragraph, on_prompt_line
+end
+
+-- the live log, whichever trigger runs first on the weariness line
+for _, aillusion in ipairs({ false, true }) do
+  for _, relapse_first in ipairs({ true, false }) do
+    local env, h, calls, svo, paragraph = relapse_env()
+    svo.conf.aillusion = aillusion
+    svo.dict.unknownany.aff.oncompleted(1)
+    local v = svo.valid
+    local weariness = relapse_first and { v.proper_relapsing, v.simpleweakness }
+      or { v.simpleweakness, v.proper_relapsing }
+    paragraph({ 'scytherus' }, { {}, weariness })
+
+    local how = string.format(" (anti-illusion %s, %s)", aillusion and "on" or "off",
+      relapse_first and "relapse trigger first" or "weakness trigger first")
+    truthy(svo.affs.weakness, "relapse: the weariness it brought back is believed" .. how)
+    eq(svo.affs.unknownany, nil, "relapse: using up the ? it was" .. how)
+    contains(calls.echof, "Believed weakness: it's hidden, so GMCP can't report it.", "relapse: and says why" .. how)
+    not_contains(calls.echof, "Ignored a line claiming weakness: GMCP doesn't report it.",
+      "relapse: where the log refused it" .. how)
+    truthy(svo.affs.relapsing, "relapse: scytherus is tracked from its Add" .. how)
+    eq(svo.sk.relapse_lines, nil, "relapse: the mark ends with the paragraph" .. how)
+  end
+end
+
+-- with no ? held there is nothing hidden for it to be, so GMCP's word stands
+do
+  local env, h, calls, svo, paragraph = relapse_env()
+  local v = svo.valid
+  paragraph({ 'scytherus' }, { {}, { v.proper_relapsing, v.simpleweakness } })
+  eq(svo.affs.weakness, nil, "relapse: with no ? held, the line is refused")
+  contains(calls.echof, "Ignored a line claiming weakness: GMCP doesn't report it.", "relapse: as before")
+end
+
+-- a relapse line with no scytherus behind it is a fake: refused, ? kept
+do
+  local env, h, calls, svo, paragraph = relapse_env()
+  svo.dict.unknownany.aff.oncompleted(1)
+  local v = svo.valid
+  paragraph({}, { {}, { v.proper_relapsing, v.simpleweakness } })
+  eq(svo.affs.weakness, nil, "relapse: without scytherus reported, the line is refused")
+  truthy(svo.affs.unknownany, "relapse: and the ? is kept")
+  eq(svo.affs.relapsing, nil, "relapse: as is the relapse's own claim")
+end
+
+-- what the original report described: a relapse with an affliction no venom gives
+do
+  local env, h, calls, svo, paragraph = relapse_env()
+  svo.dict.unknownany.aff.oncompleted(1)
+  local v = svo.valid
+  paragraph({ 'scytherus' }, { {}, { v.proper_relapsing, v.simplehypersomnia } })
+  eq(svo.affs.hypersomnia, nil, "relapse: an affliction no venom gives is refused")
+  truthy(svo.affs.unknownany, "relapse: and the ? is kept")
+end
+
+-- one ? covers one affliction
+do
+  local env, h, calls, svo, paragraph = relapse_env()
+  svo.dict.unknownany.aff.oncompleted(1)
+  local v = svo.valid
+  paragraph({ 'scytherus' }, { {}, { v.proper_relapsing, v.simpleweakness }, { v.simpleclumsiness } })
+  local believed = (svo.affs.weakness and 1 or 0) + (svo.affs.clumsiness and 1 or 0)
+  eq(believed, 1, "relapse: with one ? held, one of two relapsed afflictions is believed")
+  eq(svo.affs.unknownany, nil, "relapse: using it up")
+end
+
+-- a relapse that brought nothing back fires the trigger on the prompt line,
+-- possibly after the paragraph settled, so it must mark nothing there
+do
+  local env, h, calls, svo, paragraph, on_prompt_line = relapse_env()
+  svo.dict.unknownany.aff.oncompleted(1)
+  local v = svo.valid
+  paragraph({ 'scytherus' }, { {} })
+  on_prompt_line(true)
+  v.proper_relapsing()
+  on_prompt_line(false)
+  eq(svo.sk.relapse_lines, nil, "relapse: fired on the prompt line, it marks nothing")
+  paragraph({}, { { v.simpleweakness } })
+  eq(svo.affs.weakness, nil, "relapse: so the next paragraph's line is refused")
+  truthy(svo.affs.unknownany, "relapse: and its ? kept")
+end
+
+-- the mark is the relapse's paragraph's alone
+do
+  local env, h, calls, svo, paragraph = relapse_env()
+  svo.dict.unknownany.aff.oncompleted(1)
+  local v = svo.valid
+  paragraph({ 'scytherus' }, { {}, { v.proper_relapsing, v.simpleweakness } })
+  truthy(svo.affs.weakness, "relapse: believed in its own paragraph")
+  svo.dict.unknownany.aff.oncompleted(1)
+  paragraph({}, { { v.simpleclumsiness } })
+  eq(svo.affs.clumsiness, nil, "relapse: a later paragraph without one is refused")
+  truthy(svo.affs.unknownany, "relapse: keeping its ?")
+end
+
+-- and the line it brought back alone: another line in its paragraph is
+-- something else's, an illusion's maybe, and is refused with its ? kept
+for _, illusion_first in ipairs({ true, false }) do
+  local env, h, calls, svo, paragraph = relapse_env()
+  svo.dict.unknownany.aff.oncompleted(1)
+  local v = svo.valid
+  if illusion_first then
+    paragraph({ 'scytherus' }, { { v.simpleweakness }, {}, { v.proper_relapsing } })
+  else
+    paragraph({ 'scytherus' }, { {}, { v.proper_relapsing }, { v.simpleweakness } })
+  end
+  local how = illusion_first and " (before the relapse)" or " (after it)"
+  eq(svo.affs.weakness, nil, "relapse: weakness on another line of its paragraph is refused" .. how)
+  truthy(svo.affs.unknownany, "relapse: and the ? is kept" .. how)
+end
+
+-- every affliction in the table is one GMCP names, so the gate can refuse it
+-- and the rule can believe it; a misspelt name would match nothing, silently
+do
+  local env, h, calls, svo = new_environment()
+  load_block(venoms_block .. "\nsvo.relapsed_venom_under_test = relapsed_venom", env)
+  load_block("svo.sstosvoa_under_test = {\n" .. sstosvoa_block .. "}", env)
+  local named = {}
+  for _, svoname in pairs(svo.sstosvoa_under_test.sstosvoa) do
+    if type(svoname) == 'string' then named[svoname] = true end
+  end
+  local count = 0
+  for aff, venom in pairs(svo.relapsed_venom_under_test) do
+    count = count + 1
+    truthy(named[aff], "venom table: " .. aff .. " is an affliction GMCP names")
+    truthy(type(venom) == 'string' and venom ~= '', "venom table: " .. aff .. " names its venom")
+  end
+  eq(count, 24, "venom table: the 24 afflictions HELP 9.1 VENOM's venoms give")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))

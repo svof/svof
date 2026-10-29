@@ -932,6 +932,9 @@ end
 --  * svof's own symptom counters (sk.stupidity_symptom and the others in
 --    Curing_skeleton.lua) confirmed it by seeing it two to four times;
 --  * a symptom trigger took a ? off for it (svo.valid.remove_unknownany);
+--  * a toxic relapse brought it back while a ? is held and GMCP reports
+--    scytherus, and a venom gives it (relapse_brought_back below), and that
+--    ? is used up;
 --  * the game refused a command svof sent because of it (lifevision marks
 --    these as answers) while a ? is held, and that ? is used up;
 --  * or the game refused two of svof's commands for it, two separate sends
@@ -959,11 +962,61 @@ local function use_up_unknown(aff)
   return true
 end
 
+-- What a toxic relapse can bring back, by svof affliction name, with the venom
+-- that gives it. Scytherus makes "any venoms you get affected by" relapse
+-- (AFFLICTION SHOW), so a relapse brings back only a venom's affliction. From
+-- the game's HELP 9.1 VENOM. Not here: sumac and camus, which only damage;
+-- oleander, colocasia and oculus, which work on blindness and deafness, kept
+-- by svof as defences; loki, whose effects are random; and ekanelia, which
+-- gives no affliction.
+local relapsed_venom = {
+  addiction        = 'vardrax',
+  anorexia         = 'slike',
+  asthma           = 'kalmia',
+  clumsiness       = 'xentio',
+  crippledleftarm  = 'epteth',
+  crippledleftleg  = 'epseth',
+  crippledrightarm = 'epteth',
+  crippledrightleg = 'epseth',
+  darkshade        = 'darkshade',
+  disloyalty       = 'monkshood',
+  dizziness        = 'larkspur',
+  haemophilia      = 'notechis',
+  illness          = 'euphorbia',
+  paralysis        = 'curare',
+  recklessness     = 'eurypteria',
+  selarnia         = 'selarnia',
+  sensitivity      = 'prefarar',
+  shivering        = 'nechamandra',
+  shyness          = 'digitalis',
+  sleep            = 'delphinium',
+  slickness        = 'gecko',
+  stupidity        = 'aconite',
+  voyria           = 'voyria',
+  weakness         = 'vernalius',
+}
+
+-- Whether a relapse in this paragraph brought back aff while the game hid
+-- it, and if so uses up the ? it was. The game shows a relapsed affliction's
+-- line again but sends no Add for one you already hold, hidden or not. It
+-- does send scytherus' own Add before the relapse line when it had hidden
+-- that too, so a faked relapse counts only while you really have scytherus.
+-- Only the claim from the line the relapse brought back counts
+-- (sk.relapse_lines, set by svo.valid.proper_relapsing): in the user's
+-- logs, a relapse is followed by that one line, and another line in the
+-- paragraph is something else's, an illusion's maybe.
+local function relapse_brought_back(aff, claim)
+  return sk.relapse_lines and claim.at ~= nil and sk.relapse_lines[claim.at] and relapsed_venom[aff] ~= nil
+    and svo.gmcp_reports('relapsing') and use_up_unknown(aff)
+end
+
 function svo.gmcp_overlooked(aff, claim)
   local why
   if claim and claim.confirmed then
     why = 'again'
   elseif sk.gmcp_vouched[aff] then
+    why = 'hidden'
+  elseif claim and relapse_brought_back(aff, claim) then
     why = 'hidden'
   elseif claim and claim.answer then
     local answer = claim.answer
