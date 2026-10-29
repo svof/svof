@@ -347,10 +347,20 @@ function prio.insert(action, balance, number, echoback)
 
   if balance == 'balance' then balance = 'physical' end
 
-  if balance == 'slowcuring' then
-    local validaction, plainaction = svo.valid_sync_action(action)
+  -- vset ignores what this returns, so say why there
+  local function refuse(why)
+    if echoback then svo.echof("Can't set that priority: %s.", why) end
+    return false, why
+  end
 
-    if not validaction then return false, plainaction end
+  if balance == 'slowcuring' then
+    local plainaction, why = svo.slow_curing_entry(action)
+    if not plainaction then return refuse(why) end
+  elseif not svo.dict[action] then
+    return refuse("action "..tostring(action).." doesn't exist")
+  -- the balances dict_setup gives no priority (aff, gone, waitingfor...) aren't in any list
+  elseif not (type(svo.dict[action][balance]) == 'table' and svo.dict[action][balance].aspriority) then
+    return refuse(action.." doesn't operate on the "..tostring(balance).." balance")
   end
 
   local function getpriotable(balancename)
@@ -362,19 +372,21 @@ function prio.insert(action, balance, number, echoback)
   end
 
   local function insertat(actionname, balancename, newprio)
+    local eventaction, eventbalance = actionname, balancename
     if balancename ~= 'slowcuring' then
       svo.dict[actionname][balancename].aspriority = newprio
     else
-      svo.dict[actionname][balancename].spriority = newprio
+      -- actionname is the sync name, action_balance: split it, as the shuffle below does
+      local _, syncaction, syncbalance = svo.valid_sync_action(actionname)
+      svo.dict[syncaction][syncbalance].spriority = newprio
+      eventaction, eventbalance = syncaction, syncbalance
     end
     if echoback then svo.echof("Set %s's priority in %s balance to %d.", actionname, balancename, newprio) end
-    raiseEvent("svo prio changed", actionname, balancename, newprio, (balancename == 'slowcuring' and 'slowcuring'))
+    raiseEvent("svo prio changed", eventaction, eventbalance, newprio, (balancename == 'slowcuring' and 'slowcuring'))
   end
 
   local t = getpriotable(balance)
   local originalt = svo.deepcopy(t)
-
-  if balance ~= 'slowcuring' and not t then return nil, "no such balance: "..balance end
 
   -- if nothing is in the desired index, then just insert. If something is, shuffle down first.
   if not t[number] then

@@ -573,15 +573,16 @@ svo.update = function (t1, t2)
 end
 
 -- assumes two table are of same length and does not recurse
--- Returns the value-key list of differences as the values are in t2
+-- Returns the value-key list of differences as the values are in t2, each value once
 svo.basictableindexdiff = function (t1, t2)
-  local diff = {}
+  local diff, listed = {}, {}
   -- have to use pairs to cover holes
+  -- a value that moved differs in both tables; list it once
   for k,v in pairs(t1) do
-    if v ~= t2[k] then diff[#diff+1] = v end
+    if v ~= t2[k] and not listed[v] then diff[#diff+1] = v; listed[v] = true end
   end
   for k,v in pairs(t2) do
-    if v ~= t1[k] then diff[#diff+1] = v end
+    if v ~= t1[k] and not listed[v] then diff[#diff+1] = v; listed[v] = true end
   end
 
   return diff

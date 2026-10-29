@@ -254,12 +254,12 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Action system|script",
-      "digest": "16c2f4b8be435701",
+      "digest": "bb9b9d3da5e9f19d",
       "text": "Script   svo (curing skeleton, controllers, action system) Action system [script]"
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Controllers|script",
-      "digest": "0ce029bcf55bfdd3",
+      "digest": "b1aacedafbbb83b2",
       "text": "Script   svo (curing skeleton, controllers, action system) Controllers [script]"
     },
     {
@@ -274,7 +274,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "f99525f0f8127d56",
+      "digest": "014b908e3c0f2cf9",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
@@ -374,7 +374,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Priorities|script",
-      "digest": "ea522a064df845fd",
+      "digest": "cc35aa9876f66610",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Priorities [script]"
     },
     {
@@ -449,7 +449,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",
-      "digest": "813033b79482c469",
+      "digest": "47f90edfc93eab09",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Miscellaneous functions [script]"
     },
     {

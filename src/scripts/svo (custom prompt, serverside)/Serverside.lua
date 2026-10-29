@@ -432,9 +432,10 @@ function sk.notifypriodiffs(beforestate, afterstate)
       -- a defence the player defined and deleted, is in the before state
       -- only, and there is nothing to change for it
       for _, a in pairs(diff) do
-        local valid, action, balance = valid_sync_action(a)
+        -- not balance: the number is in slowcuring's snapshot, not the entry's own balance's
+        local valid, action, syncbalance = valid_sync_action(a)
         if valid then
-          raiseEvent("svo prio changed", action, balance, afterstate[balance].action_prio[a], 'slowcuring')
+          raiseEvent("svo prio changed", action, syncbalance, afterstate[balance].action_prio[a], 'slowcuring')
         end
       end
     else

@@ -388,6 +388,20 @@ svo.valid_sync_action = function(name)
   return true, actionname, balance
 end
 
+-- string -> action, balance, or nil and why: a slow curing action named as
+-- actionname_balance, one with a place in the slow curing list.
+-- valid_sync_action only checks the entry exists; its aff, gone,
+-- waitingfor... aren't cures
+svo.slow_curing_entry = function(name)
+  local valid, actionname, balance = svo.valid_sync_action(name)
+  if not valid then return nil, actionname end
+  local entry = dict[actionname][balance]
+  if not (type(entry) == 'table' and entry.spriority) then
+    return nil, name.." isn't in the slow curing list"
+  end
+  return actionname, balance
+end
+
 end -- end of svo action loader
 
 if svo.systemloaded then svo.loader.action() end
