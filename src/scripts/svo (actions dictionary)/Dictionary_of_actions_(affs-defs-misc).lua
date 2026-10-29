@@ -1278,7 +1278,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('pacifism')
-          svo.lostbal_focus()
+          svo.lostbal_focus('pacifism')
         end,
   
         onstart = function() send('focus', conf.commandecho) end,
@@ -1402,7 +1402,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('dizziness')
-          svo.lostbal_focus()
+          svo.lostbal_focus('dizziness')
         end,
   
         action = 'focus',
@@ -1451,7 +1451,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('shyness')
-          svo.lostbal_focus()
+          svo.lostbal_focus('shyness')
         end,
   
         action = 'focus',
@@ -1500,7 +1500,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('epilepsy')
-          svo.lostbal_focus()
+          svo.lostbal_focus('epilepsy')
         end,
   
         action = 'focus',
@@ -1528,7 +1528,7 @@ if not next(svo.dict) then
       herb = {
         isadvisable = function()
           -- curing impatience before hypochondria will make it get re-applied
-          return (affs.impatience and not affs.madness and not svo.usingbal('focus')  and not affs.hypochondria) or false
+          return (affs.impatience and not svo.usingbal('focus')  and not affs.hypochondria) or false
         end,
   
         oncompleted = function()
@@ -1575,12 +1575,12 @@ if not next(svo.dict) then
       focus = {
         isadvisable = function()
           return (affs.stupidity and
-            not svo.doingaction('stupidity') and not affs.madness) or false
+            not svo.doingaction('stupidity')) or false
         end,
   
         oncompleted = function()
           svo.rmaff('stupidity')
-          svo.lostbal_focus()
+          svo.lostbal_focus('stupidity')
         end,
   
         action = 'focus',
@@ -1741,7 +1741,7 @@ if not next(svo.dict) then
     masochism = {
       herb = {
         isadvisable = function()
-          return (affs.masochism and not affs.madness and
+          return (affs.masochism and
             not svo.doingaction('masochism')) or false
         end,
   
@@ -1757,13 +1757,13 @@ if not next(svo.dict) then
       },
       focus = {
         isadvisable = function()
-          return (affs.masochism and not affs.madness and
+          return (affs.masochism and
             not svo.doingaction('masochism')) or false
         end,
   
         oncompleted = function()
           svo.rmaff('masochism')
-          svo.lostbal_focus()
+          svo.lostbal_focus('masochism')
         end,
   
         action = 'focus',
@@ -1790,7 +1790,7 @@ if not next(svo.dict) then
     recklessness = {
       herb = {
         isadvisable = function()
-          return (affs.recklessness and not affs.madness and
+          return (affs.recklessness and
             not svo.doingaction('recklessness')) or false
         end,
   
@@ -1806,13 +1806,13 @@ if not next(svo.dict) then
       },
       focus = {
         isadvisable = function()
-          return (affs.recklessness and not affs.madness and
+          return (affs.recklessness and
             not svo.doingaction('recklessness')) or false
         end,
   
         oncompleted = function()
           svo.rmaff('recklessness')
-          svo.lostbal_focus()
+          svo.lostbal_focus('recklessness')
         end,
   
         action = 'focus',
@@ -1962,7 +1962,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('generosity')
-          svo.lostbal_focus()
+          svo.lostbal_focus('generosity')
         end,
   
         action = 'focus',
@@ -2019,7 +2019,7 @@ if not next(svo.dict) then
     vertigo = {
       herb = {
         isadvisable = function()
-          return (affs.vertigo and not affs.madness and
+          return (affs.vertigo and
             not svo.doingaction('vertigo')) or false
         end,
   
@@ -2035,13 +2035,13 @@ if not next(svo.dict) then
       },
       focus = {
         isadvisable = function()
-          return (affs.vertigo and not affs.madness and
+          return (affs.vertigo and
             not svo.doingaction('vertigo')) or false
         end,
   
         oncompleted = function()
           svo.rmaff('vertigo')
-          svo.lostbal_focus()
+          svo.lostbal_focus('vertigo')
         end,
   
         action = 'focus',
@@ -2068,7 +2068,7 @@ if not next(svo.dict) then
     loneliness = {
       herb = {
         isadvisable = function()
-          return (affs.loneliness and not affs.madness and not svo.doingaction('loneliness')) or false
+          return (affs.loneliness and not svo.doingaction('loneliness')) or false
         end,
   
         oncompleted = function()
@@ -2083,12 +2083,12 @@ if not next(svo.dict) then
       },
       focus = {
         isadvisable = function()
-          return (affs.loneliness and not affs.madness and not svo.doingaction('loneliness')) or false
+          return (affs.loneliness and not svo.doingaction('loneliness')) or false
         end,
   
         oncompleted = function()
           svo.rmaff('loneliness')
-          svo.lostbal_focus()
+          svo.lostbal_focus('loneliness')
         end,
   
         action = 'focus',
@@ -2115,7 +2115,7 @@ if not next(svo.dict) then
     dementia = {
       herb = {
         isadvisable = function()
-          return (affs.dementia and not affs.madness and not svo.doingaction('dementia')) or false
+          return (affs.dementia and not svo.doingaction('dementia')) or false
         end,
   
         oncompleted = function()
@@ -2130,12 +2130,12 @@ if not next(svo.dict) then
       },
       focus = {
         isadvisable = function()
-          return (affs.dementia and not affs.madness and not svo.doingaction('dementia')) or false
+          return (affs.dementia and not svo.doingaction('dementia')) or false
         end,
   
         oncompleted = function()
           svo.rmaff('dementia')
-          svo.lostbal_focus()
+          svo.lostbal_focus('dementia')
         end,
   
         action = 'focus',
@@ -2159,7 +2159,7 @@ if not next(svo.dict) then
     paranoia = {
       herb = {
         isadvisable = function()
-          return (affs.paranoia and not affs.madness and not svo.doingaction('paranoia')) or false
+          return (affs.paranoia and not svo.doingaction('paranoia')) or false
         end,
   
         oncompleted = function()
@@ -2174,12 +2174,12 @@ if not next(svo.dict) then
       },
       focus = {
         isadvisable = function()
-          return (affs.paranoia and not affs.madness and not svo.doingaction('paranoia')) or false
+          return (affs.paranoia and not svo.doingaction('paranoia')) or false
         end,
   
         oncompleted = function()
           svo.rmaff('paranoia')
-          svo.lostbal_focus()
+          svo.lostbal_focus('paranoia')
         end,
   
         action = 'focus',
@@ -2203,7 +2203,7 @@ if not next(svo.dict) then
     hypersomnia = {
       herb = {
         isadvisable = function()
-          return (affs.hypersomnia and not affs.madness) or false
+          return (affs.hypersomnia) or false
         end,
   
         oncompleted = function()
@@ -2228,7 +2228,7 @@ if not next(svo.dict) then
     hallucinations = {
       herb = {
         isadvisable = function()
-          return (affs.hallucinations and not affs.madness and not svo.doingaction('hallucinations')) or false
+          return (affs.hallucinations and not svo.doingaction('hallucinations')) or false
         end,
   
         oncompleted = function()
@@ -2243,12 +2243,12 @@ if not next(svo.dict) then
       },
       focus = {
         isadvisable = function()
-          return (affs.hallucinations and not affs.madness and not svo.doingaction('hallucinations')) or false
+          return (affs.hallucinations and not svo.doingaction('hallucinations')) or false
         end,
   
         oncompleted = function()
           svo.rmaff('hallucinations')
-          svo.lostbal_focus()
+          svo.lostbal_focus('hallucinations')
         end,
   
         action = 'focus',
@@ -2273,7 +2273,7 @@ if not next(svo.dict) then
       herb = {
         isadvisable = function()
           return (affs.confusion and
-            not svo.doingaction('confusion') and not affs.madness) or false
+            not svo.doingaction('confusion')) or false
         end,
   
         oncompleted = function()
@@ -2289,12 +2289,12 @@ if not next(svo.dict) then
       focus = {
         isadvisable = function()
           return (affs.confusion and
-            not svo.doingaction('confusion') and not affs.madness) or false
+            not svo.doingaction('confusion')) or false
         end,
   
         oncompleted = function()
           svo.rmaff('confusion')
-          svo.lostbal_focus()
+          svo.lostbal_focus('confusion')
         end,
   
         action = 'focus',
@@ -2344,7 +2344,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('agoraphobia')
-          svo.lostbal_focus()
+          svo.lostbal_focus('agoraphobia')
         end,
   
         action = 'focus',
@@ -2391,7 +2391,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('claustrophobia')
-          svo.lostbal_focus()
+          svo.lostbal_focus('claustrophobia')
         end,
   
         action = 'focus',
@@ -2718,7 +2718,7 @@ if not next(svo.dict) then
       herb = {
         isadvisable = function()
           -- curing lethargy before hypochondria or torntendons will make it get re-applied
-          return (affs.lethargy and not affs.madness and not affs.hypochondria) or false
+          return (affs.lethargy and not affs.hypochondria) or false
         end,
   
         oncompleted = function()
@@ -2745,7 +2745,7 @@ if not next(svo.dict) then
       herb = {
         isadvisable = function()
           -- curing illness before hypochondria will make it get re-applied
-          return (affs.illness and not affs.madness and not affs.hypochondria) or false
+          return (affs.illness and not affs.hypochondria) or false
         end,
   
         oncompleted = function()
@@ -2773,7 +2773,7 @@ if not next(svo.dict) then
       herb = {
         isadvisable = function()
           -- curing addiction before hypochondria or skullfractures will make it get re-applied
-          return (affs.addiction and not affs.madness and not affs.hypochondria) or false
+          return (affs.addiction and not affs.hypochondria) or false
         end,
   
         oncompleted = function()
@@ -4663,7 +4663,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('anorexia')
-          svo.lostbal_focus()
+          svo.lostbal_focus('anorexia')
         end,
   
         action = 'focus',
@@ -5520,7 +5520,7 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('fear')
-          svo.lostbal_focus()
+          svo.lostbal_focus('fear')
         end,
   
         action = 'focus',

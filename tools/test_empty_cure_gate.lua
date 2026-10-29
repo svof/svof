@@ -33,6 +33,10 @@ Three things it pins here:
   * A string argument behaves like a one-element list, because two call sites
     pass one.
 
+And one about the handlers that call it: whispering madness keeps no cure
+from curing, so an empty herb or focus rules out its whole list while you
+have it, and no cure action but madness's own waits on it.
+
 It proves nothing about Mudlet integration or real combat.
 
 Run: lua tools/test_empty_cure_gate.lua
@@ -165,6 +169,83 @@ do
   local presume_cured, removed = harness({}, true)
   presume_cured('voyria')
   check("a string in blackout removes nothing", #removed, 0)
+end
+
+-- ===== whispering madness keeps no cure from curing =====
+-- Its ability file: once afflicted, "attempts to focus their mind take far
+-- longer to recover from", and nothing else. svof used to hold the mental
+-- afflictions out of an empty herb's list while you had it, out of an empty
+-- focus altogether, and back from their herb and focus cures.
+local MADNESS_END = "  presume_cured(empty.focuscurables)\nend"
+do
+  local source = read_file(SRC)
+  local s = source:find(START_ANCHOR, 1, true)
+  local e = source:find(MADNESS_END, s, true)
+  if not e then error("end anchor not found in " .. SRC .. " - empty.focus changed shape; update this test") end
+  local handlers = source:sub(s, e + #MADNESS_END - 1)
+
+  local removed = {}
+  local affs = { madness = true }
+  local empty = {}
+  local svo = {
+    affs = affs, empty = empty,
+    debugf = function() end, lostbal_herb = function() end,
+    rmaff = function(list)
+      if type(list) == 'string' then list = {list} end
+      for _, name in ipairs(list) do removed[#removed + 1] = name end
+    end,
+  }
+  -- svof's own table extension, which the old madness branch used
+  local svotable = setmetatable({
+    n_complement = function(a, b)
+      local out = {}
+      for _, v in ipairs(a) do
+        local found = false
+        for _, w in ipairs(b) do if v == w then found = true end end
+        if not found then out[#out + 1] = v end
+      end
+      return out
+    end,
+  }, { __index = table })
+  local env = {
+    svo = svo, affs = affs, empty = empty,
+    type = type, pairs = pairs, ipairs = ipairs, tostring = tostring,
+    string = string, table = svotable,
+  }
+  local chunk, err
+  if setfenv then
+    chunk, err = loadstring(handlers, "empty_handlers_under_test")
+    if chunk then setfenv(chunk, env) end
+  else
+    chunk, err = load(handlers, "empty_handlers_under_test", "t", env)
+  end
+  if not chunk then error("could not load the extracted handlers: " .. tostring(err)) end
+  chunk()
+
+  empty.eat_ash()
+  for _, name in ipairs({'hallucinations', 'hypersomnia', 'confusion', 'paranoia', 'dementia', 'crescendo'}) do
+    check("with madness, an empty ash eat rules out " .. name, has(removed, name), true)
+  end
+  removed = {}
+  svo.rmaff = function(list) for _, name in ipairs(list) do removed[#removed + 1] = name end end
+  empty.eat_lobelia()
+  check("with madness, an empty lobelia eat rules out recklessness", has(removed, 'recklessness'), true)
+  check("and madness itself", has(removed, 'madness'), true)
+  removed = {}
+  empty.focus()
+  check("with madness, an empty focus rules out its whole list", #removed, #empty.focuscurables)
+  check("stupidity among them", has(removed, 'stupidity'), true)
+end
+
+-- and no cure action waits on it: madness appears in no isadvisable but its own
+do
+  local DICT = "src/scripts/svo (actions dictionary)/Dictionary_of_actions_(affs-defs-misc).lua"
+  local entry, outside = nil, {}
+  for l in (read_file(DICT) .. "\n"):gmatch("([^\n]*)\n") do
+    entry = l:match("^    ([%w_]+) = {") or entry
+    if l:find("affs.madness", 1, true) and entry ~= "madness" then outside[#outside + 1] = entry end
+  end
+  check("no entry but madness's own reads affs.madness", table.concat(outside, " "), "")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))

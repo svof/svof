@@ -279,7 +279,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "b96cda7678f39c27",
+      "digest": "c1033ac460ef632b",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -314,7 +314,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "503fce8c597fbf16",
+      "digest": "088b748f10bb9869",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -509,7 +509,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "4420648dda5cdfd7",
+      "digest": "e1a070dca2dbc3b1",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
