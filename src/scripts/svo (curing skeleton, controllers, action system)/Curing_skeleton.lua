@@ -2433,7 +2433,12 @@ function sk.dosendprios()
     end
     local function sendstuff(what, queue)
       if queue == "normal" then
-        send(what,false)
+        -- in slow curing the game is on the slowcuring curingset
+        if sys.sync == true and svo.conf.serverside then
+          sendAll("curingset switch normal", what, "curingset switch slowcuring", false)
+        else
+          send(what,false)
+        end
       elseif queue == "slow" then
         if sys.sync == true then
           sendAll("curingset switch slowcuring", what, false)
@@ -2528,6 +2533,8 @@ function svo.sendcuringprio(prio, kind, slow)
       else
         sendAll( "curingset switch slowcuring", what, "curingset switch normal", false )
       end
+    elseif sys.sync and svo.conf.serverside then
+      sendAll( "curingset switch normal", what, "curingset switch slowcuring", false )
     else
       send( what )
     end
