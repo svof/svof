@@ -1511,7 +1511,7 @@ end
 
 
 do
-  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'flamefisted', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'mucous', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed', 'scalded', 'enmesh', 'constricted', 'snared', 'vinewreathed'}
+  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'flamefisted', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed', 'scalded', 'enmesh', 'constricted', 'snared', 'vinewreathed'}
   if svo.haveskillset('metamorphosis') then
     afflist[#afflist+1] = 'cantmorph'
   end
@@ -2618,8 +2618,25 @@ function svo.valid.smoke_failed_asthma()
   end
 end
 
--- mucous is a tempered phlegmatic humour's side effect on smoking, not an
--- affliction the game lists: see svo.dict.mucous
+-- Mucous in your lungs is not an affliction: the game doesn't list it, and
+-- GMCP never reports it. It's a tempered phlegmatic humour's effect on
+-- smoking (svo.dict.phlegmatichumour, the game's temperedphlegmatic), which
+-- an Alchemist's TEMPER gives. HELP HUMOURISM: "Smoking will have a chance of
+-- filling your lungs with phlegm, increasing your lungs recovery time." So
+-- svof takes smoke balance for longer than a smoke's usual recovery, and the
+-- smoke counts as failed, so svof smokes for the same thing again later.
+--
+-- Neither of those two is confirmed: how much longer recovery takes was
+-- never measured, and nothing says whether the smoke's cure still lands.
+-- MUCOUS_RECOVERY is the 6 seconds svof's old mucous affliction waited.
+local MUCOUS_RECOVERY = 6
+
+local function lungs_clogged(r)
+  if r and r.action_name ~= 'checkasthma' then svo.killaction(svo.dict[r.action_name].smoke) end
+  svo.lostbal_smoke(MUCOUS_RECOVERY)
+end
+
+-- "As you attempt to inhale the smoke, your lungs fill with a thick mucous."
 function svo.valid.got_mucous()
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
 
@@ -2629,33 +2646,34 @@ function svo.valid.got_mucous()
 
   local r = svo.findbybal('smoke')
   if r or not conf.aillusion then
-
-    if not affs.mucous then
-      lifevision.answering(r, function()
-        svo.checkaction(svo.dict.mucous.aff, true)
-        lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
-      end)
-    end
+    lungs_clogged(r)
   elseif conf.aillusion then
     svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
   end
 end
 
+-- "Your lungs are too clogged with mucous for you to attempt smoking."
 function svo.valid.have_mucous()
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
 
   local r = svo.findbybal('smoke')
   if r or not conf.aillusion then
-
-    if not affs.mucous then
-      lifevision.answering(r, function()
-        svo.checkaction(svo.dict.mucous.aff, true)
-        lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
-      end)
-    end
+    lungs_clogged(r)
   elseif conf.aillusion then
     svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
   end
+end
+
+-- "You manage to cough away the mucous filling your lungs." Your lungs are
+-- clear, so smoke balance is back before MUCOUS_RECOVERY runs out. If it
+-- isn't, the next smoke's "too clogged" line takes it again
+function svo.valid.mucous_woreoff()
+  if bals.smoke then return end
+
+  sk.smoketick = sk.smoketick + 1 -- so the recovery timer doesn't give it back twice
+  bals.smoke = true
+  svo.make_gnomes_work()
+  raiseEvent("svo got balance", 'smoke')
 end
 
 function svo.valid.unlit_pipe()

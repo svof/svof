@@ -1593,7 +1593,7 @@ local function overlook_env()
   load_block(block, env)
 
   local names = {'prone', 'slickness', 'sensitivity', 'anorexia', 'impatience', 'clumsiness',
-    'paralysis', 'asthma', 'mucous'}
+    'paralysis', 'asthma'}
   svo.dict.sstosvoa = {}
   for _, name in ipairs(names) do
     svo.dict.sstosvoa[name] = name
@@ -1997,13 +1997,32 @@ do
   local pipe = send('slickness', 'smoke')
   svo.valid.smoke_failed_asthma()
   eq((answer_of(svo, 'asthma') or {}).act, pipe, "refusal: a smoke refused answers the smoke")
-  svo.lifevision.l = ordered_map()
-  svo.valid.got_mucous()
-  eq((answer_of(svo, 'mucous') or {}).act, pipe, "refusal: mucous gained on a smoke answers it")
-  svo.lifevision.l = ordered_map()
-  svo.valid.have_mucous()
-  eq((answer_of(svo, 'mucous') or {}).act, pipe, "refusal: and mucous blocking one")
   svo.killaction(pipe)
+
+  -- mucous is a longer smoke recovery, not an affliction: a mucous line
+  -- claims nothing, cancels the smoke, and takes smoke balance for longer
+  local lost = {}
+  function svo.lostbal_smoke(howlong) lost[#lost + 1] = howlong or 'usual' end
+  for _, line in ipairs({ 'got_mucous', 'have_mucous' }) do
+    svo.lifevision.l = ordered_map()
+    lost = {}
+    local smoke = send('slickness', 'smoke')
+    svo.valid[line]()
+    eq(next(svo.lifevision.l.keys), nil, "mucous: " .. line .. " claims no affliction")
+    eq(svo.actions[smoke.name], nil, "mucous: " .. line .. " cancels the smoke")
+    eq(lost[1], 6, "mucous: " .. line .. " takes smoke balance for longer than a smoke does")
+  end
+
+  -- coughing it up gives smoke balance back, and only once
+  env.bals = { smoke = false }
+  svo.sk.smoketick = 4
+  calls.events = {}
+  svo.valid.mucous_woreoff()
+  eq(env.bals.smoke, true, "mucous: coughing it up gives smoke balance back")
+  eq(svo.sk.smoketick, 5, "mucous: and stops the recovery timer giving it back again")
+  eq(calls.events[1], "svo got balance smoke", "mucous: and says so")
+  svo.valid.mucous_woreoff()
+  eq(#calls.events, 1, "mucous: a second cough line changes nothing")
 
   svo.lifevision.l = ordered_map()
   local fill = send('fillskullcap', 'physical')
