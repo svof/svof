@@ -6,8 +6,9 @@ each affliction in svo.affl by its entry in aff_abbrev, in
 `src/scripts/svo (core)/svo Utilities/Custom prompt tags/@affs.lua`. An
 affliction with no entry shows its whole name instead, so an affliction added
 to the dictionary without a tag still works, but makes the prompt longer, and
-nothing caught it: deepsleep, constricted, snared, vinewreathed and enmesh
-were all added without one.
+nothing caught it: 28 afflictions had no tag, and three tags sat under names
+svof doesn't use (asleep, impaled and nausea), so sleep, impale and illness
+never got theirs.
 
 It runs svof's real loaders through tools/svof_world.lua for every class svof
 knows, and checks:
@@ -16,10 +17,6 @@ knows, and checks:
     NOT_SHOWN, whose aff block never adds the entry itself to svo.affl
   * every tag names an affliction, so a renamed one can't leave its tag behind
   * no two afflictions share a tag
-
-KNOWN_UNTAGGED and KNOWN_STALE hold what was already missing or dead before
-this test existed. Each is checked too: a name that gets its tag, or a dead
-tag that's fixed, has to come off its list.
 
 Run: lua tools/test_prompt_tags.lua
 Exits 0 and prints "ALL PASS" on success, exits 1 and prints failures.
@@ -39,20 +36,6 @@ local NOT_SHOWN = {
   checkwrithes = "adds a writhe",
   insomnia = "its aff block gains the insomnia defence",
 }
-
--- afflictions shown by their whole name, from before this test
-local KNOWN_UNTAGGED = {
-  amnesia = true, cadmus = true, cantmorph = true, enmesh = true,
-  galed = true, hecate = true, hoisted = true, hypothermia = true,
-  impale = true, indifference = true, inlove = true, inquisition = true,
-  itching = true, lullaby = true, manaleech = true, mucous = true,
-  palpatar = true, parestoarms = true, parestolegs = true, rixil = true,
-  scalded = true, sleep = true, stun = true, tonguetied = true,
-}
-
--- tags under a name svof doesn't use, from before this test: sleep is
--- svof's sleep, impale its impale, and nausea its illness
-local KNOWN_STALE = { asleep = true, impaled = true, nausea = true }
 
 local function read_file(path)
   local f, err = io.open(path, "r")
@@ -95,22 +78,15 @@ table.sort(names)
 for _, name in ipairs(names) do
   if NOT_SHOWN[name] then
     check(name .. " is never shown, so it has no tag", tags[name] == nil)
-  elseif KNOWN_UNTAGGED[name] then
-    check(name .. " has a tag now: take it off KNOWN_UNTAGGED", tags[name] == nil)
   else
     check(name .. " has a prompt tag", tags[name] ~= nil)
   end
 end
 for name in pairs(NOT_SHOWN) do check(name .. " in NOT_SHOWN is an entry", affs[name] ~= nil) end
-for name in pairs(KNOWN_UNTAGGED) do check(name .. " in KNOWN_UNTAGGED is an affliction", affs[name] ~= nil) end
 
 local by_tag = {}
 for name, tag in pairs(tags) do
-  if KNOWN_STALE[name] then
-    check(name .. "'s tag is fixed now: take it off KNOWN_STALE", not affs[name])
-  else
-    check("the tag " .. name .. " names an affliction", affs[name] ~= nil)
-  end
+  check("the tag " .. name .. " names an affliction", affs[name] ~= nil)
   -- unknownany and unknownmental both show as ?, and blackout as nothing
   if tag ~= "?" and tag ~= "" then
     check(string.format("%s and %s share the tag %s", tostring(by_tag[tag]), name, tag), by_tag[tag] == nil)
