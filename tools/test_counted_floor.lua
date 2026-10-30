@@ -9,17 +9,21 @@ loudly if the anchors move instead of silently testing stale logic.
 
 What it covers: GMCP reports a counted affliction at level 1 when it is
 gained, and the GMCP Add handler copies that level into the count. The gain
-line and DIAGNOSE give no level, and run aff.oncompleted with none, so a
-counted affliction only text reported (blackout, or GMCP off) used to keep a
-count of 0, which the @affs prompt tag showed as pressure(0). Each handler now
-raises a count of 0 to 1 once the affliction is recorded.
+line gives no level, and DIAGNOSE's level of one svof didn't have reached
+aff.oncompleted and was ignored, so a counted affliction only text reported
+(blackout, or GMCP off) used to keep a count of 0, which the @affs prompt tag
+showed as pressure(0). Each handler now raises the count to the level it's
+given, or to 1 without one, once the affliction is recorded.
 
-Four things it pins:
+Six things it pins:
 
   * each of the 15 handlers records its affliction at count 1 from 0, and
     publishes that once.
-  * a level GMCP already set is kept.
+  * given a level, as DIAGNOSE gives one, it records that level.
+  * a higher level GMCP already set is kept, with or without a level given.
   * an add GMCP refused, which records nothing, leaves the count at 0.
+  * the fracture gain functions pass no level of their own: a hit's line
+    can't say the level, and they used to pass 1 for each hit in a paragraph.
   * every entry in the file with a count field either has the floor or is
     listed in OWN_AMOUNT with the reason it sets its own count, so a new
     counted affliction can't be added without deciding.
@@ -125,7 +129,7 @@ end
 -- Runs a handler from count start. refuse: addaffdict records nothing, as
 -- when the GMCP gate refuses the add. Returns the count and how many times
 -- it was published.
-local function run(block, name, start, refuse)
+local function run(block, name, start, refuse, level)
   local affs, published = {}, 0
   local entry = {name = name, count = start}
   local svo = {
@@ -133,8 +137,8 @@ local function run(block, name, start, refuse)
     addaffdict = function(what) if not refuse then affs[what.name] = {p = what} end end,
     updateaffcount = function() published = published + 1 end,
   }
-  local handler = load_in(block, name .. "_aff_under_test", {svo = svo, affs = affs})
-  local ok, err = pcall(handler)
+  local handler = load_in(block, name .. "_aff_under_test", {svo = svo, affs = affs, tonumber = tonumber})
+  local ok, err = pcall(handler, level)
   if not ok then return "error: " .. tostring(err), published end
   return entry.count, published
 end
@@ -145,7 +149,11 @@ for _, name in ipairs(FLOORED) do
   check(name .. " gained by text is recorded at count 1", count, 1)
   check(name .. " publishes the count once", published, 1)
   check(name .. " keeps a level GMCP set", (run(block, name, 3)), 3)
+  check(name .. " takes the level DIAGNOSE gives", (run(block, name, 0, false, 3)), 3)
+  check(name .. " takes a level given as text", (run(block, name, 0, false, "2")), 2)
+  check(name .. " keeps a higher level GMCP set", (run(block, name, 4, false, 2)), 4)
   check(name .. " refused stays at 0", (run(block, name, 0, true)), 0)
+  check(name .. " refused with a level stays at 0", (run(block, name, 0, true, 3)), 0)
 end
 
 -- The control: the same handler with the floor taken out keeps 0, so the
@@ -153,6 +161,38 @@ end
 local stripped, n = extract_handler('pressure'):gsub("\n%s*if affs%.pressure and [^\n]*", "")
 check("the control found the floor to take out", n, 1)
 check("control: pressure without the floor stays at 0", (run(stripped, 'pressure', 0)), 0)
+check("control: pressure without the floor ignores a level", (run(stripped, 'pressure', 0, false, 3)), 0)
+
+-- The fracture gain functions, from the real loop in Simple aff trigger
+-- functions, run twice in one paragraph: each passes no level on.
+local SIMPLE = "src/scripts/svo (trigger functions)/Simple_aff_trigger_functions.lua"
+local simple = read_file(SIMPLE)
+local ls = simple:find("for _, affname in ipairs({'skullfractures', 'crackedribs', 'wristfractures', 'torntendons'}) do", 1, true)
+local le = ls and simple:find("\nend\n", ls, true)
+if not le then error("the fracture gain loop not found in " .. SIMPLE .. "; update this test's anchors") end
+local added = {}
+local lifevision = {l = {}}
+function lifevision.add(p, other, arg)
+  added[#added + 1] = {p = p, arg = arg}
+  lifevision.l[p.name] = {arg = arg}
+end
+local fenv = {
+  ipairs = ipairs, tonumber = tonumber, valid = {}, lifevision = lifevision,
+  actions = {}, svo = {assert = function(c, m) if not c then error(m) end end,
+    checkaction = function() end, dict = {}},
+}
+for _, f in ipairs({'skullfractures', 'crackedribs', 'wristfractures', 'torntendons'}) do
+  fenv.svo.dict[f] = {aff = {}}
+  fenv.actions[f .. '_aff'] = {p = {name = f .. '_aff'}}
+end
+load_in("return function() " .. simple:sub(ls, le + #"\nend") .. " end", "fracture gain loop", fenv)()
+fenv.valid.simpleskullfractures()
+fenv.valid.simpleskullfractures()
+check("two fracture hits are added twice", #added, 2)
+check("the first hit passes no level", added[1] and added[1].arg, nil)
+check("the second hit passes no level", added[2] and added[2].arg, nil)
+fenv.valid.simplecrackedribs(3)
+check("a level a script gives is passed on", added[3] and added[3].arg, 3)
 
 -- Every entry with a count field is floored or sets its own count.
 local floored, seen = {}, {}

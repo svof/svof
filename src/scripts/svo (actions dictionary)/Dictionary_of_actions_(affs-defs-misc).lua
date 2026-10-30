@@ -701,9 +701,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.skullfractures)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.skullfractures and svo.dict.skullfractures.count < 1 then svo.dict.skullfractures.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.skullfractures and svo.dict.skullfractures.count < level then svo.dict.skullfractures.count = level end
           svo.updateaffcount(svo.dict.skullfractures)
         end
       },
@@ -757,9 +758,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.crackedribs)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.crackedribs and svo.dict.crackedribs.count < 1 then svo.dict.crackedribs.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.crackedribs and svo.dict.crackedribs.count < level then svo.dict.crackedribs.count = level end
           svo.updateaffcount(svo.dict.crackedribs)
         end
       },
@@ -813,9 +815,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.wristfractures)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.wristfractures and svo.dict.wristfractures.count < 1 then svo.dict.wristfractures.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.wristfractures and svo.dict.wristfractures.count < level then svo.dict.wristfractures.count = level end
           svo.updateaffcount(svo.dict.wristfractures)
         end
       },
@@ -869,9 +872,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.torntendons)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.torntendons and svo.dict.torntendons.count < 1 then svo.dict.torntendons.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.torntendons and svo.dict.torntendons.count < level then svo.dict.torntendons.count = level end
           svo.updateaffcount(svo.dict.torntendons)
         end
       },
@@ -928,9 +932,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.pressure)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.pressure and svo.dict.pressure.count < 1 then svo.dict.pressure.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.pressure and svo.dict.pressure.count < level then svo.dict.pressure.count = level end
           svo.updateaffcount(svo.dict.pressure)
         end
       },
@@ -991,9 +996,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.cholerichumour)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.cholerichumour and svo.dict.cholerichumour.count < 1 then svo.dict.cholerichumour.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.cholerichumour and svo.dict.cholerichumour.count < level then svo.dict.cholerichumour.count = level end
           svo.updateaffcount(svo.dict.cholerichumour)
         end
       },
@@ -1054,9 +1060,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.melancholichumour)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.melancholichumour and svo.dict.melancholichumour.count < 1 then svo.dict.melancholichumour.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.melancholichumour and svo.dict.melancholichumour.count < level then svo.dict.melancholichumour.count = level end
           svo.updateaffcount(svo.dict.melancholichumour)
         end
       },
@@ -1116,9 +1123,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.phlegmatichumour)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.phlegmatichumour and svo.dict.phlegmatichumour.count < 1 then svo.dict.phlegmatichumour.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.phlegmatichumour and svo.dict.phlegmatichumour.count < level then svo.dict.phlegmatichumour.count = level end
           svo.updateaffcount(svo.dict.phlegmatichumour)
         end
       },
@@ -1189,9 +1197,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.sanguinehumour)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.sanguinehumour and svo.dict.sanguinehumour.count < 1 then svo.dict.sanguinehumour.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.sanguinehumour and svo.dict.sanguinehumour.count < level then svo.dict.sanguinehumour.count = level end
           svo.updateaffcount(svo.dict.sanguinehumour)
         end
       },
@@ -1249,9 +1258,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.horror)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.horror and svo.dict.horror.count < 1 then svo.dict.horror.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.horror and svo.dict.horror.count < level then svo.dict.horror.count = level end
           svo.updateaffcount(svo.dict.horror)
         end
       },
@@ -2007,9 +2017,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.pyre)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.pyre and svo.dict.pyre.count < 1 then svo.dict.pyre.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.pyre and svo.dict.pyre.count < level then svo.dict.pyre.count = level end
           svo.updateaffcount(svo.dict.pyre)
         end
       },
@@ -8957,9 +8968,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingbody)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.unweavingbody and svo.dict.unweavingbody.count < 1 then svo.dict.unweavingbody.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingbody and svo.dict.unweavingbody.count < level then svo.dict.unweavingbody.count = level end
           svo.updateaffcount(svo.dict.unweavingbody)
         end
       },
@@ -9016,9 +9028,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingmind)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.unweavingmind and svo.dict.unweavingmind.count < 1 then svo.dict.unweavingmind.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingmind and svo.dict.unweavingmind.count < level then svo.dict.unweavingmind.count = level end
           svo.updateaffcount(svo.dict.unweavingmind)
         end
       },
@@ -9075,9 +9088,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingspirit)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.unweavingspirit and svo.dict.unweavingspirit.count < 1 then svo.dict.unweavingspirit.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingspirit and svo.dict.unweavingspirit.count < level then svo.dict.unweavingspirit.count = level end
           svo.updateaffcount(svo.dict.unweavingspirit)
         end
       },
@@ -9397,9 +9411,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.crescendo)
-          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
-          -- and one GMCP refused is left at 0
-          if affs.crescendo and svo.dict.crescendo.count < 1 then svo.dict.crescendo.count = 1 end
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.crescendo and svo.dict.crescendo.count < level then svo.dict.crescendo.count = level end
           svo.updateaffcount(svo.dict.crescendo)
         end
       },

@@ -20,10 +20,9 @@ Three things it pins:
 
   * both real handlers run in an environment with no global `dict`, and add
     their own dictionary entry.
-  * the count is published once. Text never sets stacks - only the GMCP Add
-    handler does - so a count already above 0 is left alone, and a 0 becomes
-    1 once the affliction is recorded (tools/test_counted_floor.lua covers
-    that for every counted affliction).
+  * the count is published once, and never lowered: a 0 becomes 1 once the
+    affliction is recorded, or the level the caller gave, as DIAGNOSE does
+    (tools/test_counted_floor.lua covers that for every counted affliction).
   * no other bare `dict.` or `dict[` reference is left anywhere in the file.
 
 It proves nothing about Mudlet integration or real combat.
@@ -111,7 +110,7 @@ for _, name in ipairs(NAMES) do
       updateaffcount = function(what) published[#published + 1] = what end,
     }
     -- No `dict` here, on purpose: the bug was reading one.
-    local env = {svo = svo, affs = affs}
+    local env = {svo = svo, affs = affs, tonumber = tonumber}
 
     local handler = load_in(block, name .. "_aff_under_test", env)
     local ok, err = pcall(handler)
@@ -124,12 +123,11 @@ for _, name in ipairs(NAMES) do
     local want = math.max(start_count, 1)
     check(label .. " publishes at least 1", entry.count, want)
 
-    -- With a number, as the fracture-style simple functions pass one: still
-    -- ignored, since text never sets stacks.
+    -- With a level, as DIAGNOSE gives one: taken, but never lowers a count.
     added, published = {}, {}
     ok, err = pcall(handler, 3)
-    check(label .. " with a number runs without error", ok and true or tostring(err), true)
-    check(label .. " with a number leaves the count alone", entry.count, want)
+    check(label .. " with a level runs without error", ok and true or tostring(err), true)
+    check(label .. " with a level takes it, never lower", entry.count, math.max(want, 3))
   end
 end
 
