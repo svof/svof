@@ -38,9 +38,20 @@ signals["svo system loaded"]:connect(function()
 end, 'get initial state of prios')
 
 function sk.resetserversideprios()
-  svo.sendcuringprio("reset","affliction")
-  svo.sendcuringprio("list reset","defence")
-  
+  if conf.serverside then
+    -- clear both curingsets, not just the one in use, or the other keeps the
+    -- old class's defences on keepup. Anything still queued was meant for the
+    -- old class and is resent from scratch after this
+    sk.affqueue, sk.defqueue, sk.affqueueslow, sk.defqueueslow = {}, {}, {}, {}
+    sk.priolength = {affqueue = 0, affqueueslow = 0, defqueue = 0, defqueueslow = 0}
+    sendAll("curingset switch normal", "curing priority reset", "curing priority defence list reset",
+      "curingset switch slowcuring", "curing priority reset", "curing priority defence list reset",
+      sys.sync and "curingset switch slowcuring" or "curingset switch normal", false)
+  else
+    svo.sendcuringprio("reset","affliction")
+    svo.sendcuringprio("list reset","defence")
+  end
+
 	sk.priochangecache = {
     special = {
       focustoggle = conf.focus
