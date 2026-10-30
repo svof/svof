@@ -20,9 +20,10 @@ Three things it pins:
 
   * both real handlers run in an environment with no global `dict`, and add
     their own dictionary entry.
-  * the count is published unchanged. Counted afflictions gained by text
-    never set their stacks - only the GMCP Add handler does - so the handler
-    must not touch .count.
+  * the count is published once. Text never sets stacks - only the GMCP Add
+    handler does - so a count already above 0 is left alone, and a 0 becomes
+    1 once the affliction is recorded (tools/test_counted_floor.lua covers
+    that for every counted affliction).
   * no other bare `dict.` or `dict[` reference is left anywhere in the file.
 
 It proves nothing about Mudlet integration or real combat.
@@ -102,15 +103,15 @@ for _, name in ipairs(NAMES) do
   print(string.format("extracted %d bytes of %s's real aff handler", #block, name))
 
   for _, start_count in ipairs({0, 4}) do
-    local added, published = {}, {}
+    local added, published, affs = {}, {}, {}
     local entry = {name = name, count = start_count}
     local svo = {
       dict = {[name] = entry},
-      addaffdict = function(what) added[#added + 1] = what end,
+      addaffdict = function(what) added[#added + 1] = what; affs[what.name] = {p = what} end,
       updateaffcount = function(what) published[#published + 1] = what end,
     }
     -- No `dict` here, on purpose: the bug was reading one.
-    local env = {svo = svo}
+    local env = {svo = svo, affs = affs}
 
     local handler = load_in(block, name .. "_aff_under_test", env)
     local ok, err = pcall(handler)
@@ -120,14 +121,15 @@ for _, name in ipairs(NAMES) do
     check(label .. " adds its own entry", added[1], entry)
     check(label .. " publishes the count once", #published, 1)
     check(label .. " publishes its own entry", published[1], entry)
-    check(label .. " leaves the count alone", entry.count, start_count)
+    local want = math.max(start_count, 1)
+    check(label .. " publishes at least 1", entry.count, want)
 
     -- With a number, as the fracture-style simple functions pass one: still
     -- ignored, since text never sets stacks.
     added, published = {}, {}
     ok, err = pcall(handler, 3)
     check(label .. " with a number runs without error", ok and true or tostring(err), true)
-    check(label .. " with a number leaves the count alone", entry.count, start_count)
+    check(label .. " with a number leaves the count alone", entry.count, want)
   end
 end
 

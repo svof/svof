@@ -486,10 +486,9 @@ end
 -- { p = <the dict entry>, sw = <stopwatch> } with no __index on svo.affs - so
 -- reading affs.pyre.count gave nil and raised on the comparison. And having
 -- pyre at all is level 1 or more, which is why presence floors the answer at
--- 1: only the GMCP path ever raises svo.dict.pyre.count, since
--- svo.valid.simplepyre passes no argument and pyre sits in the plain diag list
--- rather than the counted one, so without GMCP the stored level stays 0 while
--- the affliction is genuinely there.
+-- 1. svo.valid.simplepyre and DIAGNOSE give no level, so pyre's aff handler
+-- raises a count of 0 to 1 itself, as every counted affliction's does; the
+-- floor stays for anything that records pyre some other way.
 codepaste.pyre_holds = function(burn)
   if not affs.pyre then return false end
 
@@ -702,6 +701,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.skullfractures)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.skullfractures and svo.dict.skullfractures.count < 1 then svo.dict.skullfractures.count = 1 end
           svo.updateaffcount(svo.dict.skullfractures)
         end
       },
@@ -755,6 +757,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.crackedribs)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.crackedribs and svo.dict.crackedribs.count < 1 then svo.dict.crackedribs.count = 1 end
           svo.updateaffcount(svo.dict.crackedribs)
         end
       },
@@ -808,6 +813,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.wristfractures)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.wristfractures and svo.dict.wristfractures.count < 1 then svo.dict.wristfractures.count = 1 end
           svo.updateaffcount(svo.dict.wristfractures)
         end
       },
@@ -861,6 +869,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.torntendons)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.torntendons and svo.dict.torntendons.count < 1 then svo.dict.torntendons.count = 1 end
           svo.updateaffcount(svo.dict.torntendons)
         end
       },
@@ -917,6 +928,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.pressure)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.pressure and svo.dict.pressure.count < 1 then svo.dict.pressure.count = 1 end
           svo.updateaffcount(svo.dict.pressure)
         end
       },
@@ -977,6 +991,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.cholerichumour)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.cholerichumour and svo.dict.cholerichumour.count < 1 then svo.dict.cholerichumour.count = 1 end
           svo.updateaffcount(svo.dict.cholerichumour)
         end
       },
@@ -1037,6 +1054,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.melancholichumour)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.melancholichumour and svo.dict.melancholichumour.count < 1 then svo.dict.melancholichumour.count = 1 end
           svo.updateaffcount(svo.dict.melancholichumour)
         end
       },
@@ -1096,6 +1116,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.phlegmatichumour)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.phlegmatichumour and svo.dict.phlegmatichumour.count < 1 then svo.dict.phlegmatichumour.count = 1 end
           svo.updateaffcount(svo.dict.phlegmatichumour)
         end
       },
@@ -1166,6 +1189,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.sanguinehumour)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.sanguinehumour and svo.dict.sanguinehumour.count < 1 then svo.dict.sanguinehumour.count = 1 end
           svo.updateaffcount(svo.dict.sanguinehumour)
         end
       },
@@ -1223,6 +1249,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.horror)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.horror and svo.dict.horror.count < 1 then svo.dict.horror.count = 1 end
           svo.updateaffcount(svo.dict.horror)
         end
       },
@@ -1978,6 +2007,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.pyre)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.pyre and svo.dict.pyre.count < 1 then svo.dict.pyre.count = 1 end
           svo.updateaffcount(svo.dict.pyre)
         end
       },
@@ -8925,6 +8957,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingbody)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.unweavingbody and svo.dict.unweavingbody.count < 1 then svo.dict.unweavingbody.count = 1 end
           svo.updateaffcount(svo.dict.unweavingbody)
         end
       },
@@ -8981,6 +9016,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingmind)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.unweavingmind and svo.dict.unweavingmind.count < 1 then svo.dict.unweavingmind.count = 1 end
           svo.updateaffcount(svo.dict.unweavingmind)
         end
       },
@@ -9037,6 +9075,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingspirit)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.unweavingspirit and svo.dict.unweavingspirit.count < 1 then svo.dict.unweavingspirit.count = 1 end
           svo.updateaffcount(svo.dict.unweavingspirit)
         end
       },
@@ -9356,6 +9397,9 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.crescendo)
+          -- the gain line and DIAGNOSE give no level, and having it at all is level 1. A level GMCP set is kept,
+          -- and one GMCP refused is left at 0
+          if affs.crescendo and svo.dict.crescendo.count < 1 then svo.dict.crescendo.count = 1 end
           svo.updateaffcount(svo.dict.crescendo)
         end
       },
