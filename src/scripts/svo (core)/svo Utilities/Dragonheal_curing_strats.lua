@@ -24,9 +24,9 @@ svo.dragonheal.riftlock = {
 }
 
 svo.dragonheal.aeon = {
-  desc = "Use dragonheal to cure aeon when we have asthma or mucous",
+  desc = "Use dragonheal to cure aeon when we have asthma",
 
-  function () return svo.affl.aeon and (svo.affl.asthma or svo.affl.mucous) end
+  function () return svo.affl.aeon and svo.affl.asthma end
 }
 
 svo.dragonheal.hardlock = {
