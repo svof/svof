@@ -1056,6 +1056,8 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- Tempered by an Alchemist. Besides its own effects, it gives smoking a
+    -- chance of filling your lungs with mucous: see mucous
     phlegmatichumour = {
       gamename = 'temperedphlegmatic',
       name = 'phlegmatichumour',
@@ -8175,6 +8177,17 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- Not an affliction of its own in the game's list, and GMCP never reports
+    -- it: a side effect of a tempered phlegmatic humour (phlegmatichumour,
+    -- the game's temperedphlegmatic), which an Alchemist's phlegmatic
+    -- tempering gives. AFFLICTION SHOW (captured 2026-10-20): "A tempered
+    -- phlegmatic humour fills your lungs with phlegm when you try to smoke."
+    -- While it's tempered, a smoke has a chance of filling your lungs with
+    -- mucous, which keeps you from smoking until you cough it up. Text alone
+    -- tracks it: "As you attempt to inhale the smoke, your lungs fill with a
+    -- thick mucous." or "Your lungs are too clogged with mucous for you to
+    -- attempt smoking." adds it, and "You manage to cough away the mucous
+    -- filling your lungs." or the end of the wait ends it
     mucous = {
       waitingfor = {
         customwait = 6,

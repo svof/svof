@@ -2618,6 +2618,8 @@ function svo.valid.smoke_failed_asthma()
   end
 end
 
+-- mucous is a tempered phlegmatic humour's side effect on smoking, not an
+-- affliction the game lists: see svo.dict.mucous
 function svo.valid.got_mucous()
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
 
