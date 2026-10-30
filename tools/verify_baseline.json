@@ -379,7 +379,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "4b0a201b393ed01c",
+      "digest": "bf195fb40f8fc1fe",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -414,7 +414,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "3b1150c26809ff3c",
+      "digest": "6fe24b84efee14d3",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -499,22 +499,22 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Custom prompt tags/@affs|script",
-      "digest": "20dc6b7d821168ba",
+      "digest": "94e542e6f50001d5",
       "text": "Script   svo (install me in module manager) svo Utilities/Custom prompt tags/@affs [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Dragonheal curing strats|script",
-      "digest": "a9379a3a07b7d0bc",
+      "digest": "71f01ab1c6120e9e",
       "text": "Script   svo (install me in module manager) svo Utilities/Dragonheal curing strats [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Shrugging curing strats|script",
-      "digest": "c51bbf8ba2e500f6",
+      "digest": "08ddba2c355e08d0",
       "text": "Script   svo (install me in module manager) svo Utilities/Shrugging curing strats [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Tree curing strats|script",
-      "digest": "de0de9aefac867dc",
+      "digest": "2b89878d61041630",
       "text": "Script   svo (install me in module manager) svo Utilities/Tree curing strats [script]"
     },
     {
@@ -634,7 +634,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "5e3b79326784374e",
+      "digest": "3929d91d59ff8361",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
