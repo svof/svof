@@ -1517,7 +1517,9 @@ local function public_removeaff(which)
     if svo.dict[which].gone then
       svo.dict[which].gone.oncompleted()
     else
-      svo.removeaff(which)
+      -- the check* predictions have no gone. This called svo.removeaff,
+      -- itself, until the stack overflowed
+      svo.rmaff(which)
     end
 
     removed = true
@@ -1540,14 +1542,28 @@ local function public_removeafflevel(which, amount, keep)
     removed = true
   end
 
+  -- The levels come off the entry's count here. This called gone.general_cure,
+  -- which every counted entry has as a stub that takes nothing off, and which
+  -- the others lack, so it raised on 168 of them. One that isn't counted has
+  -- a single level: it goes, as removeaff takes it, or with keep it stays
+  local entry = svo.dict[which]
   if affs[which] then
-    if svo.dict[which].gone then
-      svo.dict[which].gone.general_cure(amount or 1, not keep)
-    else
-      svo.removeaff(which)
+    if type(entry.count) == 'number' then
+      local left = entry.count - (amount or 1)
+      if left >= 1 or keep then
+        entry.count = math.max(left, 1)
+        svo.updateaffcount(entry)
+      elseif entry.gone and entry.gone.general_cured then
+        entry.gone.general_cured()
+      else
+        svo.rmaff(which)
+        entry.count = 0
+      end
+      removed = true
+    elseif not keep then
+      if entry.gone then entry.gone.oncompleted() else svo.rmaff(which) end
+      removed = true
     end
-
-    removed = true
   end
 
   signals.after_lifevision_processing:unblock(cnrl.checkwarning)
