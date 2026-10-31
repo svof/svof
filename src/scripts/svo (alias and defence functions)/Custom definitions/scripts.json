@@ -1,5 +1,10 @@
 [
   {
+    "name": "Custom defences",
+    "isActive": "yes",
+    "isFolder": "no"
+  },
+  {
     "name": "Custom afflictions",
     "isActive": "yes",
     "isFolder": "no"
