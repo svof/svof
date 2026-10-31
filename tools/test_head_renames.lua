@@ -150,6 +150,29 @@ do -- full parry guards the head for head damage and the torso for trauma
   end
 end
 
+do -- and an arm or leg for its mangled or mutilated affliction
+  local LIMBS = { "head", "right arm", "left arm", "right leg", "left leg" }
+  for _, limb in ipairs({ "right arm", "left arm", "right leg", "left leg" }) do
+    for _, status in ipairs({ "mangled", "mutilated" }) do
+      local aff = status .. limb:gsub(" ", "")
+      local w = world.new()
+      local svo = w.svo
+      local sp = svo.sp_config
+      -- the damaged limb comes after the head, so falling back on the first
+      -- limb in the list doesn't pass
+      sp.parry, sp.priority, sp.parry_actionlevel = "full", LIMBS, {}
+      for _, l in ipairs(LIMBS) do sp.parry_actionlevel[l] = 1 end
+      svo.addaffdict(svo.dict[aff])
+      svo.sp_checksp()
+      local guarded = {}
+      for _, l in ipairs(LIMBS) do
+        if sp.parry_shouldbe[l] then guarded[#guarded + 1] = l end
+      end
+      eq(table.concat(guarded, ", "), limb, "full parry guards the " .. limb .. " for " .. aff)
+    end
+  end
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 for _, f in ipairs(failures) do print("FAIL " .. f) end
 if #failures > 0 then os.exit(1) end
