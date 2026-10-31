@@ -364,6 +364,12 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.9993. The Blademaster slash lookback: its pattern, read from
+      # the real source as Lua 5.1 reads the string, matches the captured
+      # line beside it.
+      - name: test blademaster slash
+        run: lua tools/test_blademaster_slash.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
