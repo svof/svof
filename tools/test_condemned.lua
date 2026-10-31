@@ -69,6 +69,13 @@ for _, burn in ipairs(BURNS) do -- no burn salve while condemned
   eq(svo.dict[burn].salve.isadvisable(), true, "and is again once it's gone")
 end
 
+do -- its abbreviation in the @affs prompt tag
+  local f = assert(io.open("src/scripts/svo (core)/svo Utilities/Custom prompt tags/@affs.lua", "r"))
+  local tag = f:read("*a")
+  f:close()
+  eq(tag:match('\n%s*condemned%s*=%s*"([^"]*)"'), "cond", "@affs shows it as cond")
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 for _, f in ipairs(failures) do print("FAIL " .. f) end
 if #failures > 0 then os.exit(1) end
