@@ -912,8 +912,9 @@ function svo.valid.disruptingshiver()
 end
 
 function svo.valid.check_dragonform()
-  -- show xp? ignore!
-  if svo.lastpromptnumber+1 == getLastLineNumber('main') or not svo.find_until_last_paragraph(me.name, 'substring') then return end
+  -- show xp? ignore! The paragraph's first line, counted in game lines: a
+  -- buffer line count took wrapped pieces and echoes for lines
+  if svo.paragraph_length == 1 or not svo.find_until_last_paragraph(me.name, 'substring') then return end
 
   if defc.dragonform and not svo.find_until_last_paragraph("Dragon)", 'substring') then
     echo"\n" svo.echof("Apparently we aren't in Dragon.")
@@ -1292,13 +1293,15 @@ function svo.valid.curse_dispel()
   if defc.shroud then defs.lost_shroud() return end
 end
 
+-- only as the paragraph's second line, counted in game lines: a buffer line
+-- count took a wrapped first line or an echo for a line
 function svo.valid.subterfuge_hallucinations()
-  if getLineNumber('main') ~= svo.lastpromptnumber+2 then return end
+  if svo.paragraph_length ~= 2 then return end
   valid.simplehallucinations()
 end
 
 function svo.valid.subterfuge_confusion()
-  if getLineNumber('main') ~= svo.lastpromptnumber+2 then return end
+  if svo.paragraph_length ~= 2 then return end
   valid.simpleconfusion()
 end
 
