@@ -127,6 +127,36 @@ for aff, line in pairs(LINES) do
   end
 end
 
+-- phlogistication is timed, and its expiry line is its cure line too
+-- (the user, 2026-10-31): the wore-off trigger ends its wait, and the tree
+-- one finishes a touch that cured it
+do
+  local line = "The internal burning sensation subsides."
+  local woreoff = scripts_for(GENERAL, line, "woreoff")
+  local tree = scripts_for(GENERAL .. "Tree cures/", line)
+  eq(#woreoff, 1, "phlogistication: one wore-off trigger")
+  eq(#tree, 1, "phlogistication: one Tree cures trigger")
+  if woreoff[1] and tree[1] then
+    local w = world.new()
+    local svo = w.svo
+    svo.addaffdict(svo.dict.phlogistication)
+    svo.doaction(svo.dict.touchtree.misc)
+    w.run(woreoff[1], "phlogistication woreoff")
+    w.run(tree[1], "phlogistication tree")
+    w.prompt()
+    eq(svo.affs.phlogistication, nil, "phlogistication: a tree touch takes it off")
+    eq(w.inflight(), "", "phlogistication: and the touch and the wait are done")
+
+    w = world.new()
+    svo = w.svo
+    svo.addaffdict(svo.dict.phlogistication)
+    w.run(woreoff[1], "phlogistication woreoff")
+    w.run(tree[1], "phlogistication tree")
+    w.prompt()
+    eq(svo.affs.phlogistication, nil, "phlogistication: with no touch, it wears off as before")
+  end
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 for _, f in ipairs(failures) do print("FAIL " .. f) end
 if #failures > 0 then os.exit(1) end

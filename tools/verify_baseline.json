@@ -293,6 +293,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure parasite tree [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure phlogistication tree",
+      "digest": "01a5ed0263e844d0",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure phlogistication tree [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure pyramides tree",
       "digest": "1fe4397fbcd6dc58",
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure pyramides tree [only in the package]"
@@ -404,8 +409,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "a460225b0a3d1830",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2586 in merged"
+      "digest": "6dcb0628b9a02051",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2587 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",

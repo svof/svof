@@ -37,11 +37,6 @@
       "text": "tree: blackout is in treecurables and has no tree-cure trigger"
     },
     {
-      "id": "tree|only_treecurables|phlogistication",
-      "digest": "7884b40fb0ee8064",
-      "text": "tree: phlogistication is in treecurables and has no tree-cure trigger"
-    },
-    {
       "id": "tree|only_treecurables|unknownany",
       "digest": "dabcb41b2d7c4e3f",
       "text": "tree: unknownany is in treecurables and has no tree-cure trigger"

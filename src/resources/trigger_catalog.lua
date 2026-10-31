@@ -734,6 +734,7 @@ return {
     { "svo cure slashedthroat tree", { "exact", "The bleeding gash in your throat closes up completely." } },
     { "svo cure itching tree", { "exact", "Thankfully, the itching subsides." } },
     { "svo cure fulminated tree", { "exact", "You are no longer suffering from the ravages of fulminous energy." } },
+    { "svo cure phlogistication tree", { "exact", "The internal burning sensation subsides." } },
   },
   { "svo (aliases, triggers) / svo / General / Two-hander recover footing",
     { "Slaughter", { "start", "Drawing back" }, { "regex", "^Drawing back .+?, you unleash a flesh-mincing blow at" }, all = true },
