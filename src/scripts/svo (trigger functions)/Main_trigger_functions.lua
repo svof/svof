@@ -912,8 +912,9 @@ function svo.valid.disruptingshiver()
 end
 
 function svo.valid.check_dragonform()
-  -- show xp? ignore!
-  if svo.lastpromptnumber+1 == getLastLineNumber('main') or not svo.find_until_last_paragraph(me.name, 'substring') then return end
+  -- show xp? ignore! The paragraph's first line, counted in game lines: a
+  -- buffer line count took wrapped pieces and echoes for lines
+  if svo.paragraph_length == 1 or not svo.find_until_last_paragraph(me.name, 'substring') then return end
 
   if defc.dragonform and not svo.find_until_last_paragraph("Dragon)", 'substring') then
     echo"\n" svo.echof("Apparently we aren't in Dragon.")
@@ -1292,13 +1293,15 @@ function svo.valid.curse_dispel()
   if defc.shroud then defs.lost_shroud() return end
 end
 
+-- only as the paragraph's second line, counted in game lines: a buffer line
+-- count took a wrapped first line or an echo for a line
 function svo.valid.subterfuge_hallucinations()
-  if getLineNumber('main') ~= svo.lastpromptnumber+2 then return end
+  if svo.paragraph_length ~= 2 then return end
   valid.simplehallucinations()
 end
 
 function svo.valid.subterfuge_confusion()
-  if getLineNumber('main') ~= svo.lastpromptnumber+2 then return end
+  if svo.paragraph_length ~= 2 then return end
   valid.simpleconfusion()
 end
 
@@ -1720,7 +1723,7 @@ end
 
 function svo.valid.gotsalve()
   if conf.aillusion and svo.paragraph_length ~= 1 then
-    local lastline = getLines(getLineNumber()-1, getLineNumber())[1]
+    local lastline = svo.previous_paragraph_line()
 
     local lines = {
       ["Your left leg feels stronger and healthier."] = {affs = {'curingmutilatedrightleg', 'curingmutilatedleftleg', 'curingmangledrightleg', 'curingmangledleftleg', 'curingparestolegs'}, location = 'legs'},
@@ -4024,20 +4027,10 @@ for _,name in ipairs({'rightarm', 'leftarm', 'leftleg', 'rightleg'}) do
         local limb = string.format("%s %s", string.match(name, "(%w+)(%w%w%w)"))
         local plural = name:sub(-3)..'s'
 
-        -- last line doesn't work with stuff like bm breaks, where it is limb\anothermsg\actualbreak. So go until the prompt.
-        local previouslinenumber, currentlinenumber = svo.lastpromptnumber+1, getLastLineNumber('main')
-
-        -- workaround for deleteLine() making svo.lastpromptnumber's tracking get invalidated
-        if currentlinenumber <= previouslinenumber then
-          previouslinenumber = currentlinenumber - 1
-        end
-
-        -- this, with short enough wrapping, might not get the line that the rend starts on. So if this line doesn't start with a capital, pull in one more line
-        local combined = table.concat(getLines(previouslinenumber, currentlinenumber))
-
-        if not combined:sub(1,1):match("%u") then
-          combined = table.concat(getLines(previouslinenumber-1, currentlinenumber))
-        end
+        -- last line doesn't work with stuff like bm breaks, where it is limb\anothermsg\actualbreak. So go until the prompt,
+        -- in the lines the game sent: the buffer's were cut where they wrapped, joined with no space at the cut, and
+        -- counted from a prompt line number that deleteLine() moved
+        local combined = table.concat(svo.paragraph_so_far(), "\n")
 
         -- remember blackout, don't check this in it
         if not affs.blackout and (combined:find(limb, 1, true) or combined:find(plural, 1, true)) then

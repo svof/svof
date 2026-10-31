@@ -283,6 +283,7 @@ function svo.onprompt()
   -- using this, we can then find which was the most recent prompt line. Sometimes another line will share the time with the prompt, but the prompt will always be latest
   svo.lastprompttime = getTimestamp(currentlinenumber)
   svo.paragraph_length = 0
+  svo.paragraph_lines = {}
   sk.processing_prompt = false
   raiseEvent("svo done with prompt")
 end

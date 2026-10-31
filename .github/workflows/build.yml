@@ -364,6 +364,14 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.998. The paragraph lookbacks search the lines the game sent,
+      # saved by the Prompt trigger's condition, not Mudlet's buffer, where
+      # svof's warning suffix and the wrap cut made exact lookbacks miss.
+      # Runs the real condition and lookbacks over a buffer stand-in, with
+      # the getLines() versions as controls.
+      - name: test paragraph lookbacks
+        run: lua tools/test_paragraph_lookbacks.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
