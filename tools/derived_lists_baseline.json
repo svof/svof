@@ -37,79 +37,9 @@
       "text": "tree: blackout is in treecurables and has no tree-cure trigger"
     },
     {
-      "id": "tree|only_treecurables|depression",
-      "digest": "412ff76258900a46",
-      "text": "tree: depression is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|earworm",
-      "digest": "9e54106876facd62",
-      "text": "tree: earworm is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|flushings",
-      "digest": "edc262bb3086d987",
-      "text": "tree: flushings is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|fulminated",
-      "digest": "68c306f6153d4918",
-      "text": "tree: fulminated is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|itching",
-      "digest": "5e53d1a91268e848",
-      "text": "tree: itching is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|mycalium",
-      "digest": "88119a6cd8a6d968",
-      "text": "tree: mycalium is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|parasite",
-      "digest": "e5b46bdf377b0f44",
-      "text": "tree: parasite is in treecurables and has no tree-cure trigger"
-    },
-    {
       "id": "tree|only_treecurables|phlogistication",
       "digest": "7884b40fb0ee8064",
       "text": "tree: phlogistication is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|pyramides",
-      "digest": "8c7ee3ba815e88e6",
-      "text": "tree: pyramides is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|rebbies",
-      "digest": "30f474cf973d15cd",
-      "text": "tree: rebbies is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|retribution",
-      "digest": "9b9a6ba4a555e988",
-      "text": "tree: retribution is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|sandfever",
-      "digest": "cfc781d66171cfd6",
-      "text": "tree: sandfever is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|shadowmadness",
-      "digest": "8eab52ceb9af81c9",
-      "text": "tree: shadowmadness is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|slashedthroat",
-      "digest": "f3de2472953d68bf",
-      "text": "tree: slashedthroat is in treecurables and has no tree-cure trigger"
-    },
-    {
-      "id": "tree|only_treecurables|timeloop",
-      "digest": "8aea344a879f5dc4",
-      "text": "tree: timeloop is in treecurables and has no tree-cure trigger"
     },
     {
       "id": "tree|only_treecurables|unknownany",

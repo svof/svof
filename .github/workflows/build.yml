@@ -364,6 +364,13 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.9996. Cure lines for 14 tree-curable afflictions: AFFLICTION
+      # SHOW's line for each reaches its herb, smoke or salve cure, a passive
+      # cure and a tree touch, through the real trigger files and loaders
+      # (tools/svof_world.lua).
+      - name: test cure lines
+        run: lua tools/test_cure_lines.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

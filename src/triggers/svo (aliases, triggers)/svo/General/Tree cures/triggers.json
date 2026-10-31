@@ -1626,5 +1626,257 @@
         "type": "exactMatch"
       }
     ]
+  },
+  {
+    "name": "svo cure depression tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Maybe things aren't so bad after all.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure parasite tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The leeching of your strength comes to an end.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure retribution tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The terrible sense of foreboding lifts.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure shadowmadness tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your sanity reestablishes itself.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure timeloop tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You break out of the feedback loop.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure flushings tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The prickling in your skin fades and you feel blessedly cool.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure mycalium tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your thoughts suddenly crystalise, the insidious whispers falling abruptly silent.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure pyramides tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The burning in your veins abruptly fades.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure rebbies tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your skin ceases secreting slime.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure sandfever tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your fever finally breaks, the terrible burning retreating.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure earworm tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The endlessly playing song in your mind falls silent.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure slashedthroat tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The bleeding gash in your throat closes up completely.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure itching tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Thankfully, the itching subsides.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure fulminated tree",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You are no longer suffering from the ravages of fulminous energy.",
+        "type": "exactMatch"
+      }
+    ]
   }
 ]

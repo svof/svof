@@ -53,6 +53,16 @@
       "text": "Trigger  svo (aliases, triggers) svo/Dragoncraft/Enmeshment freed [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured depression",
+      "digest": "8663204323efba4b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured depression [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured flushings",
+      "digest": "50f901765f517f62",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured flushings [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured fulminated",
       "digest": "2718a0aabb772743",
       "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured fulminated [only in the package]"
@@ -61,6 +71,46 @@
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured madness",
       "digest": "01c19748a60e1a30",
       "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured madness [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured mycalium",
+      "digest": "99de1e348c3c52f1",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured mycalium [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured parasite",
+      "digest": "0d434a5ddbc0f838",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured parasite [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured pyramides",
+      "digest": "a65a4e14424385ab",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured pyramides [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured rebbies",
+      "digest": "ef8303179dc019b6",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured rebbies [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured retribution",
+      "digest": "4a5beaedd8bbd309",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured retribution [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured sandfever",
+      "digest": "30cb52bfb4ead780",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured sandfever [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured shadowmadness",
+      "digest": "ab861ff7d9f1ec26",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured shadowmadness [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo cured timeloop",
+      "digest": "b1b2884dd613f454",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Ate/svo cured timeloop [only in the package]"
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Ate/svo still have madness ",
@@ -103,9 +153,69 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo already blind generic [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure depression generic",
+      "digest": "bad6281564c0a3b8",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure depression generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure earworm generic",
+      "digest": "7af3de1c8f390de3",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure earworm generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure flushings generic",
+      "digest": "d6adb11ae478c910",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure flushings generic [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure fulminated generic",
       "digest": "71494b641df0adc8",
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure fulminated generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure mycalium generic",
+      "digest": "c9c2cf010dd660e4",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure mycalium generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure parasite generic",
+      "digest": "3f5d168381af2b7d",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure parasite generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure pyramides generic",
+      "digest": "831a15365ad7b21b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure pyramides generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure rebbies generic",
+      "digest": "2ca5e0c25e4ebcd0",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure rebbies generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure retribution generic",
+      "digest": "b7a4a2b134662df4",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure retribution generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure sandfever generic",
+      "digest": "0c740751ec6d5496",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure sandfever generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure shadowmadness generic",
+      "digest": "4483bfffce6949d3",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure shadowmadness generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure slashedthroat generic",
+      "digest": "fa44bf2bd7ad2bab",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure slashedthroat generic [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo cure timeloop generic",
+      "digest": "514a95ff162d7d16",
+      "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo cure timeloop generic [only in the package]"
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/General cures/svo got blind generic",
@@ -133,14 +243,89 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Sip/svo sipped latched [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Smoke/svo cured earworm",
+      "digest": "7cb08acc64150895",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Smoke/svo cured earworm [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure depression tree",
+      "digest": "8e6e05a6e4a02a0b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure depression tree [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure earworm tree",
+      "digest": "9ec7633aa23797c0",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure earworm tree [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure flushings tree",
+      "digest": "2270e46cd2cbd826",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure flushings tree [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure fulminated tree",
+      "digest": "083db0d0e84ffb84",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure fulminated tree [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure indifference tree",
       "digest": "89a61958c09c5af8",
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure indifference tree [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure itching tree",
+      "digest": "b8421baff9a163e3",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure itching tree [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure manaleech tree",
       "digest": "b0275fe78083db95",
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure manaleech tree [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure mycalium tree",
+      "digest": "b80e8d80a6384e6e",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure mycalium tree [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure parasite tree",
+      "digest": "2e4c5f720daa057a",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure parasite tree [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure pyramides tree",
+      "digest": "1fe4397fbcd6dc58",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure pyramides tree [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure rebbies tree",
+      "digest": "f0d0c46783f31e24",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure rebbies tree [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure retribution tree",
+      "digest": "cbf617ddc939e63b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure retribution tree [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure sandfever tree",
+      "digest": "7689b6d6766b6aa5",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure sandfever tree [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure shadowmadness tree",
+      "digest": "e325e4a14fb7999b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure shadowmadness tree [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure slashedthroat tree",
+      "digest": "f3e7f50a4e0775eb",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure slashedthroat tree [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure timeloop tree",
+      "digest": "b3bea7fadb0deae6",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure timeloop tree [only in the package]"
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure unweavingspirit tree",
@@ -219,8 +404,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "1baeb8a41ed68579",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2549 in merged"
+      "digest": "a460225b0a3d1830",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2586 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
