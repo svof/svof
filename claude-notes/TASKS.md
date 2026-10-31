@@ -1,6 +1,13 @@
 # Task list
 
-Last updated 2026-10-30: the in-flight note rewritten for #881 to #887,
+Last updated 2026-10-31, later: #892 to #896 added (the Blademaster slash
+lookback, sleep's two handlers, the transmutation cleanup, cure lines for 14
+tree-curable afflictions, and pipe puffs under serverside); the class defences
+batch stays open. Before that, 2026-10-31: #888 to #890 added to the in-flight note
+(condemned, the head afflictions under the game's names, and concussion),
+the dead `svo.valid` calls down to three, scalded's diag trigger fixed, and
+the burning work started with its game questions answered. Before that,
+2026-10-30: the in-flight note rewritten for #881 to #887,
 which carry the paragraph copy, the vcustomdef move and the counted
 afflictions starting at 1, and the statuses of items stacks 856 and 866-879
 settled. Before that, 2026-10-20: moving vcustomdef into a script of its own, after
@@ -34,7 +41,7 @@ Merged: stack 856 (#854 to #864) on 2026-10-18, #865 the same day, and #866
 to #879 on 2026-10-29, `in-client-svof` at `e4904d5`. The
 `svof-stack-merged-and-open-work` memory has how each merge went.
 
-In flight (2026-10-30), all ready for review and none merged:
+In flight (2026-10-31), all ready for review and none merged:
 
 | PR | branch, worktree | what |
 |---|---|---|
@@ -44,18 +51,36 @@ In flight (2026-10-30), all ready for review and none merged:
 | #885 | `sanguine-bleed-gmcp`, `C:\work\svof-bleed` | an inundated sanguine humour leaves bleeding to GMCP's `Bleed:` and falls back to level times 250 in blackout, which stops Vitals (gate 1.997) |
 | #886 | `paragraph-copy-lookbacks`, `C:\work\svof-lookback` | the lookbacks search a saved copy of the paragraph, item below (gate 1.998) |
 | #887 | `custom-definitions-folder`, `C:\work\svof-customdefs` | a Custom definitions folder holding Custom defences, vcustomdef moved out of `Defences.lua`, and Custom afflictions |
+| #888 | `condemned-affliction`, `C:\work\svof-condemned` | condemned as a 40 s timed affliction that holds the five burn salves while it lasts, `cond` in `@affs`, and scalded's diag trigger on the game's "horrifically scalded." (gate 1.999) |
+| #889 | `head-affs-game-names` | mildconcussion and seriousconcussion renamed damagedhead and mangledhead, with saved priorities and ignore lists migrated through `svo.renamed_affs`; full parry fixed to guard the head for head damage, the torso for trauma, and a mangled or mutilated arm or leg, which it never found before (gate 1.9991) |
+| #890 | `concussion-affliction`, `C:\work\svof-concussion`, stacked on #889 | concussion as its own affliction: the shared cure line, DIAGNOSE, doubling moved off mangledhead, calcified skull stepping head damage up, the "concussion lifts" trigger removed, `conc` in `@affs` (gate 1.9992). Retarget onto `in-client-svof` once #889 merges |
+| #891 | `burning-counted`, `C:\work\svof-burning`, stacked on #888, draft | burning as one counted `ablaze` entry, with pyre reworked against the count. Retarget onto `in-client-svof` once #888 merges |
+| #892 | `blademaster-slash-pattern`, `C:\work\svof-bm` | the Blademaster slash lookback's `\w+` (the letter w in Lua 5.1) made `%w+`, so a light slash is a simple break again; CLAUDE.md's syntax-check note no longer counts the false alarms (gate 1.9993) |
+| #893 | `asleep-is-sleep`, `C:\work\svof-asleep` | `symp_asleep` and `transfixily` checked a key named asleep: a refused command while asleep now clears what was in flight (wake and gones kept), and a transfixed refusal takes sleep off in blackout. The `@affs` asleep key is #881's (gate 1.9994) |
+| #894 | `transmutation-cleanup`, `C:\work\svof-transmute` | the dead transmutation names out of 44 cure lists and 37 actions lists, `rift.vial_conversions` removed (`svo.affcures` reads the live names), defstrip's density row removed; GMCP's and serverside's `density` for mass kept (gate 1.9995) |
+| #895 | `missing-cure-lines`, `C:\work\svof-curelines` | AFFLICTION SHOW's cure line on Ate, Smoke, General cures and Tree cures triggers for 14 tree-curable afflictions, 37 triggers; twelve had none (gate 1.9996) |
+| #896 | `pipe-puffs-by-herb`, `C:\work\svof-puffs` | under serverside the server's fill line refills the emptier pipe of its herb, a puff comes off pipe 1 then pipe 2, and filling pipe 2 keeps to its own fields (gate 1.9997) |
 
-#883 to #887 each branch from `e4904d5` and each regenerates
-`tools/verify_baseline.json`, and #883, #885 and #886 each add a gate to
-`build.yml`. After the first merges, regenerate the baseline on the others
+#883 to #889 and #892 to #896 each branch from `in-client-svof` and each regenerates
+`tools/verify_baseline.json`, and all but #887 add a gate to `build.yml`. After the first merges, regenerate the baseline on the others
 instead of merging it by hand.
 
 Owed in game: for #881, (restore defaults) under serverside, deepsleep over
 GMCP, the three timed afflictions, and latched sipped first; for #882, a
 mucous line, the wait and the cough line; for #883, a counted affliction
 gained in blackout and one DIAGNOSE finds above level 1; for #885, an
-inundation with GMCP and in blackout; for #886, the live wrap test below; and
-the older ones in the `svof-pending-live-tests` memory. Waiting on the owner:
+inundation with GMCP and in blackout; for #886, the live wrap test below;
+for #888, burning while condemned and a DIAGNOSE while scalded; for #889, a
+saved priority list kept across the update and full parry on each limb; for
+#890, the concussion gain line, DIAGNOSE, its cure, doubling and calcified
+skull; for #892, a Blademaster slash across the arms; for #893, a command
+refused while asleep and resent on waking, and a transfixed refusal in
+blackout; for #895, a herb cure of one of the ten in blackout and a tree
+touch curing one of the 14; for #896, a server refill under serverside, which
+#896 assumes prints the same fill line as your own; and the older ones in the
+`svof-pending-live-tests` memory. Not done: phlogistication's cure line, which
+the capture lacks (it lists `phlogisticated` with none), and the class defences
+batch below, left out on 2026-10-31. Waiting on the owner:
 which abilities constricted slows, the Spiritlore Snare and Tarot Hanged Man
 affliction names, and a mucous capture for its recovery time.
 
@@ -154,7 +179,9 @@ expectations encode today's behaviour, so flip them for the fixed build.
 never matches, because `\w` in a Lua 5.1 string is just `w`.
 
 ### Transmutation cure cleanup
-**Status: agreed 2026-09-21, deferred to its own piece of work later.**
+**Status: agreed 2026-09-21. Opened 2026-10-31 as #894. `rift.vial_conversions` turned out to
+have one reader by then, `svo.affcures`, which now reads the live names; the
+`density` strip row went on the user's word.**
 
 Remove the dead transmutation cure names. All transmutation cures are gone from
 Achaea, so every right-hand name in `rift.vial_conversions` is dead, including
@@ -172,9 +199,10 @@ defence recognition depends on.
 Full detail in the `svof-transmutation-cure-cleanup` memory.
 
 ### Burning is one counted affliction now
-**Status: agreed 2026-09-25, the repo owner's direction. Not started. #854 and
-#855 merged on 2026-10-18, so step 1 of the order below now waits only on the
-play test.**
+**Status: agreed 2026-09-25, the repo owner's direction. Started 2026-10-31 at
+the user's direction, ahead of the play test that step 1 of the order below
+waited on. The game questions are answered (see the end of this item), and
+condemned, which holds the burn salves, is in as #888.**
 
 Achaea replaced the burn ladder with a single counted affliction, `burning`, to
 simplify it. svof still models the old ladder as five separate afflictions,
@@ -241,6 +269,13 @@ only.
   much per application; what pyre does to it now; and whether the Magi
   burncounter addon, which tracks burn levels on a target, needs the same
   change.
+- **Answered 2026-10-31 by the user and AFFLICTION SHOW:** GMCP sends
+  `burning (n)`; mending to the body cures it, one level per application;
+  ablaze can't be cured below pyre's stacks, so `pyre_holds` keeps its rule
+  against the count; burncounter is an offensive addon, so it's left out.
+  condemned, a 40 s Paladin affliction, keeps ablaze from being cured while
+  it lasts, and #888 holds the burn salves for it: the counted entry keeps
+  that check.
 
 Detail in the `svof-burning-counted` memory.
 
@@ -248,8 +283,8 @@ Detail in the `svof-burning-counted` memory.
 **Status: DONE 2026-09-26 on #855, after the focus toggles: scalded in
 `4d4b9f2`, the no-effect balance in `ff2ba5a`, fulminated's focus block in
 `f4f67fc` and its cure line in `470cb42`. Awaiting in-game confirmation.
-Open from it: scalded's diag trigger still matches "suffering from a scalded
-throat.", which may be as stale as the old throat cure line.** Found in his first fight on the `99e354b` test build. Full
+Open from it: scalded's diag trigger still matched "suffering from a scalded
+throat."; fixed on #888 to the game's "horrifically scalded."** Found in his first fight on the `99e354b` test build. Full
 analysis in the `svof-cure-mismatch-loops` memory.
 
 The GMCP empty-cure gate is correct, but it removed an accidental loop
@@ -440,8 +475,10 @@ fixes can go alongside the paragraph fix; D2.1, D3 and D4 are the defences PR.
 
 ### Pipe puff counts drift, worst under serverside
 **Status: found 2026-10-08 from the owner's login log ("(0 malachite left)"
-on a smoke that worked); the owner called it a bug. Causes read, not run. Not
-started.**
+on a smoke that worked); the owner called it a bug. Causes read, not run.
+Opened 2026-10-31 as #896 for causes 2 to 4 (1 was fixed in #866). The user:
+the server refills and relights, and a player keeps one pipe per herb, so
+svof never sends PIPELIST.**
 
 svof's puff count for a pipe is wrong in four ways, all in the 2018 code:
 
@@ -698,7 +735,7 @@ worth knowing before anyone starts:
 reachable through `sstosvoa`. That is what made earworm the one affliction the
 GMCP gate could not protect, and it went unnoticed until someone looked.
 
-### The dead `svo.valid` calls - 12, now 5
+### The dead `svo.valid` calls - 12, now 3
 
 **Gauged 2026-09-23 at the repo owner's request: after, not now - but not
 because it is expensive. Then the Healing seven were answered the same day and
@@ -725,15 +762,22 @@ Left alone because they only look related: the `bedevil` Zeal defence, the
 Elementalism channel folder named "Healing + Elementalism channels", and
 *Passive-active heals*, which calls the live `svo.valid.passive_cure()`.
 
-Five remain:
+Three remain. The concussion pair went in #890 (2026-10-31): concussion has
+its own entry, `Calcified_Skull_Concussion` steps the head damage up instead
+of calling `simpleconcussion`, and the `svo_cure_concussion` trigger is gone,
+since its line isn't the game's cure line.
 
 | group | files | the question |
 |---|---|---|
-| concussion | `svo_cure_concussion`, `Calcified_Skull_Concussion` | **the owner confirmed 2026-09-23 that concussion is a real affliction in the game, and svof should get an entry for it - later, as its own piece of work.** See below |
 | `sour_sparkle` | 1 | what "The aftertaste of the berry turns sour" does mechanically |
 | `simplecheckwrithes` | 2 bashing triggers | they want the affliction the symptom is, not the anti-illusion probe. Morindar arm break reads like `simpleunknowncrippledarm`; Annwyn aeon already calls `proper_aeon` on the line before and may want nothing else. Guessing is worse than leaving them |
 
 #### concussion wants its own entry
+
+**DONE 2026-10-31 as #889 and #890, the history kept below.** The user
+answered the game questions: concussion's amnesia is what command doubling
+was for, mangledhead is what can be pulped, the Vodun temple flick gives
+mangledhead, and calcified skull takes the head's damage up a level.
 
 **Agreed 2026-09-23, deferred.** svof models two head afflictions and the game
 has a third that svof folds into one of them:
@@ -1001,7 +1045,7 @@ detail. Do not restate their content here.
 |---|---|---|
 | The affliction name-space cleanup, five steps ending in `svo.dict` as the single source of truth | agreed 2026-08-23, first batch merged as #850 | `svof-name-space-cleanup-backlog`, `svof-affliction-name-topology` |
 | Two dead diagnose triggers, `blistered` and `pyre`, as one small PR. Can land before the burning work, and helps it | agreed 2026-08-30, fixed in #862, merged 2026-10-18 | `svof-dead-diag-triggers` |
-| The `asleep` bug, its own PR. Not a mechanical fix: correcting the guard makes a kill loop run for the first time | agreed, wants thought and live testing | `svof-review-followups` |
+| The `asleep` bug, its own PR. Not a mechanical fix: correcting the guard makes a kill loop run for the first time | opened 2026-10-31 as #893: every curing balance waits while asleep, so the loop resends nothing early; owes a live test | `svof-review-followups` |
 | Non-blocking findings from the 2026-08-23 review of #850 | open | `svof-review-followups` |
 
 ## The repo's own backlog
