@@ -210,12 +210,14 @@ duplicated-resource-file check, then the reference-xml hash pin) - the same
 lesson this rebase reapplied rather than a new one.
 
 - `check_lua_syntax.py`: 2800 chunks parsed, **0 errors** under real 5.1 -
-  the 5 you see locally are entirely 5.5 artifacts, confirmed by CI.
+  the ones you see locally are entirely 5.5 artifacts, confirmed by CI.
   CI installs Lua 5.1.5 and passes `--strict-version`, so it fails rather than
-  check against the wrong grammar. Locally it reports 5 if your `luac` is
-  5.2+, and prints a loud banner saying so: `goto` as an identifier, `\w` and
-  `\/` escapes, and two Penlight const assignments are all legal 5.1. Never
-  "fix" code to satisfy a newer luac.
+  check against the wrong grammar. Locally it reports them if your `luac` is
+  5.2+, and prints a loud banner saying so: `goto` as an identifier, a `\/`
+  escape, and two Penlight const assignments are all legal 5.1. Never
+  "fix" code to satisfy a newer luac. The one exception so far was a real
+  bug as well: the Blademaster slash lookback's `\w+`, legal 5.1 but read
+  there as the letter `w`, so the pattern never matched.
 
 **The gate had nine blind spots across three review rounds and all are closed -
 do not reintroduce them.** Round three found five more, every one of which let
