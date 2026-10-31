@@ -133,6 +133,23 @@ do -- the ignore list
   eq(svo.ignore.seriousconcussion, nil, "both of them")
 end
 
+do -- full parry guards the head for head damage and the torso for trauma
+  for _, case in ipairs({
+    { "damagedhead", "head" }, { "mangledhead", "head" },
+    { "mildtrauma", "torso" }, { "serioustrauma", "torso" },
+  }) do
+    local aff, limb = case[1], case[2]
+    local w = world.new()
+    local svo = w.svo
+    local sp = svo.sp_config
+    sp.parry, sp.priority, sp.parry_actionlevel = "full", { "head", "torso" }, { head = 1, torso = 1 }
+    svo.addaffdict(svo.dict[aff])
+    svo.sp_checksp()
+    eq(sp.parry_shouldbe[limb], true, "full parry guards the " .. limb .. " for " .. aff)
+    eq(sp.parry_shouldbe[limb == "head" and "torso" or "head"], false, "and not the other one")
+  end
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 for _, f in ipairs(failures) do print("FAIL " .. f) end
 if #failures > 0 then os.exit(1) end
