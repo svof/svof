@@ -958,7 +958,7 @@ function svo.sk.makewarnings()
     },
     pulpable = {
       time = 5,
-      msg = "Warning: prone and serious concussion - you can be installed! (pulp)"
+      msg = "Warning: prone and a mangled head - you can be installed! (pulp)"
     },
     badaeon = {
       time = 5,

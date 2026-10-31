@@ -2832,7 +2832,7 @@ end
 for _, restoration in pairs({
   restorationlegs = {'mutilatedrightleg', 'mutilatedleftleg', 'mangledrightleg', 'mangledleftleg', 'parestolegs'},
   restorationarms = {'mutilatedrightarm', 'mutilatedleftarm', 'mangledrightarm', 'mangledleftarm', 'parestoarms'},
-  restorationother = {'calcifiedtorso', 'calcifiedskull', 'mildtrauma', 'serioustrauma', 'damagedhead', 'mangledhead', 'laceratedthroat', 'heartseed', 'tonguetied'}}) do
+  restorationother = {'calcifiedtorso', 'calcifiedskull', 'mildtrauma', 'serioustrauma', 'damagedhead', 'mangledhead', 'concussion', 'laceratedthroat', 'heartseed', 'tonguetied'}}) do
   local other_restoration_affs = {}
 
   -- compile a list of other things we can cure but aren't intending to with this action
@@ -3313,9 +3313,20 @@ function svo.missing_tinderbox()
   echo"\n" svo.echof("Looks like you don't have a tinderbox! I've put lighting your pipes (lightpipes) on the ignore list. To unignore it, check vshow ignore.")
 end
 
+-- "Your head feels stronger and healthier." is the cure line of damagedhead
+-- and concussion both (AFFLICTION SHOW), so it is concussion's when svof
+-- applied restoration for that, and damagedhead's otherwise
+function svo.valid.head_feels_stronger()
+  if actions.curingconcussion_waitingfor then
+    valid.curingconcussion()
+  else
+    valid.curingdamagedhead()
+  end
+end
+
 function svo.valid.restoration_noeffect()
   local r = svo.checkany(
-  svo.dict.curingheartseed.waitingfor, svo.dict.curingmangledleftleg.waitingfor, svo.dict.curingmangledrightleg.waitingfor, svo.dict.curingmangledrightarm.waitingfor, svo.dict.curingmangledleftarm.waitingfor, svo.dict.curingmutilatedrightarm.waitingfor, svo.dict.curingmutilatedleftarm.waitingfor, svo.dict.curingparestolegs.waitingfor, svo.dict.curingmildtrauma.waitingfor, svo.dict.curingserioustrauma.waitingfor, svo.dict.curingmutilatedrightleg.waitingfor, svo.dict.curingmutilatedleftleg.waitingfor, svo.dict.curingmangledhead.waitingfor, svo.dict.curingdamagedhead.waitingfor, svo.dict.curinglaceratedthroat.waitingfor)
+  svo.dict.curingheartseed.waitingfor, svo.dict.curingmangledleftleg.waitingfor, svo.dict.curingmangledrightleg.waitingfor, svo.dict.curingmangledrightarm.waitingfor, svo.dict.curingmangledleftarm.waitingfor, svo.dict.curingmutilatedrightarm.waitingfor, svo.dict.curingmutilatedleftarm.waitingfor, svo.dict.curingparestolegs.waitingfor, svo.dict.curingmildtrauma.waitingfor, svo.dict.curingserioustrauma.waitingfor, svo.dict.curingmutilatedrightleg.waitingfor, svo.dict.curingmutilatedleftleg.waitingfor, svo.dict.curingmangledhead.waitingfor, svo.dict.curingdamagedhead.waitingfor, svo.dict.curingconcussion.waitingfor, svo.dict.curinglaceratedthroat.waitingfor)
 
   if not r then return end
 
@@ -4106,7 +4117,7 @@ for _,name in ipairs({'rightarm', 'leftarm', 'leftleg', 'rightleg'}) do
   end
 end
 
-for _, name in ipairs({'serioustrauma', 'mildtrauma', 'damagedhead', 'mangledhead'}) do
+for _, name in ipairs({'serioustrauma', 'mildtrauma', 'damagedhead', 'mangledhead', 'concussion'}) do
   valid['proper_'..name] = function ()
     svo.checkaction(svo.dict[name].aff, true)
     lifevision.add(actions[name..'_aff'].p, nil, stats.currenthealth)
