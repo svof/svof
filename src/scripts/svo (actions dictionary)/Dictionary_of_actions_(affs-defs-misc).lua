@@ -1143,18 +1143,22 @@ if not next(svo.dict) then
   
         noeffect = function() svo.lostbal_herb() end,
   
-        -- gives bleeding depending on your sanguine humour level, from 250 for first to 2500 for last
+        -- gives bleeding depending on your sanguine humour level, from 250 for first to 2500 for last. GMCP's
+        -- Bleed: in this paragraph's Char.Vitals already holds it, and Setup.lua recorded that amount, so it's
+        -- left alone. Without one, as in blackout, which stops Vitals, the level gives the amount until the next
         inundated = function()
           local min = 250
           -- local max = 2500
           if not affs.sanguinehumour then return end
-  
-          local bledfor = svo.dict.sanguinehumour.count * min
-  
-          svo.addaffdict(svo.dict.bleeding)
-          svo.dict.bleeding.count = bledfor
-          svo.updateaffcount(svo.dict.bleeding)
-  
+
+          if not sk.gmcp_bleed_seen then
+            local bledfor = svo.dict.sanguinehumour.count * min
+
+            svo.addaffdict(svo.dict.bleeding)
+            svo.dict.bleeding.count = bledfor
+            svo.updateaffcount(svo.dict.bleeding)
+          end
+
           svo.rmaff('sanguinehumour')
           svo.dict.sanguinehumour.count = 0
         end,

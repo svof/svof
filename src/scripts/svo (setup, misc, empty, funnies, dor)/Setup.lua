@@ -305,6 +305,13 @@ signals.gmcpcharvitals:connect(function()
       else
         local bleed = val:match("^Bleed: (%d+)$")
         if bleed then
+          -- the game's amount for this paragraph, which sanguinehumour's
+          -- inundated leaves alone. Vitals stops in blackout, so without one
+          -- inundated works the amount out. Cleared on the next prompt
+          sk.gmcp_bleed_seen = true
+          sk.onprompt_beforeaction_add('gmcpbleedseen', function()
+            sk.gmcp_bleed_seen = nil
+          end)
           if bleed == '0' then
             svo.rmaff('bleeding')
           else
