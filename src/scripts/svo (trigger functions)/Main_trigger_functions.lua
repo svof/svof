@@ -4027,20 +4027,10 @@ for _,name in ipairs({'rightarm', 'leftarm', 'leftleg', 'rightleg'}) do
         local limb = string.format("%s %s", string.match(name, "(%w+)(%w%w%w)"))
         local plural = name:sub(-3)..'s'
 
-        -- last line doesn't work with stuff like bm breaks, where it is limb\anothermsg\actualbreak. So go until the prompt.
-        local previouslinenumber, currentlinenumber = svo.lastpromptnumber+1, getLastLineNumber('main')
-
-        -- workaround for deleteLine() making svo.lastpromptnumber's tracking get invalidated
-        if currentlinenumber <= previouslinenumber then
-          previouslinenumber = currentlinenumber - 1
-        end
-
-        -- this, with short enough wrapping, might not get the line that the rend starts on. So if this line doesn't start with a capital, pull in one more line
-        local combined = table.concat(getLines(previouslinenumber, currentlinenumber))
-
-        if not combined:sub(1,1):match("%u") then
-          combined = table.concat(getLines(previouslinenumber-1, currentlinenumber))
-        end
+        -- last line doesn't work with stuff like bm breaks, where it is limb\anothermsg\actualbreak. So go until the prompt,
+        -- in the lines the game sent: the buffer's were cut where they wrapped, joined with no space at the cut, and
+        -- counted from a prompt line number that deleteLine() moved
+        local combined = table.concat(svo.paragraph_so_far(), "\n")
 
         -- remember blackout, don't check this in it
         if not affs.blackout and (combined:find(limb, 1, true) or combined:find(plural, 1, true)) then
