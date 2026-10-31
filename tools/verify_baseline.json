@@ -379,7 +379,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Controllers|script",
-      "digest": "b1aacedafbbb83b2",
+      "digest": "0b54a5f4dfbdca35",
       "text": "Script   svo (curing skeleton, controllers, action system) Controllers [script]"
     },
     {
@@ -584,12 +584,12 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",
-      "digest": "47f90edfc93eab09",
+      "digest": "d98a83b59bbd3f04",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Miscellaneous functions [script]"
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "82e64a45dfb4b39f",
+      "digest": "4946a6900d07e0f5",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -1036,6 +1036,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/General cures/svo salve slickness|script",
       "digest": "7afb91e05005d930",
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo salve slickness [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Prompt|patterns",
+      "digest": "ded5c9be6ce0eac5",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Prompt [patterns]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",

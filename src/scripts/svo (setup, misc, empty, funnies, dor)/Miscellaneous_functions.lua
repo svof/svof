@@ -505,10 +505,39 @@ function svo.convert_boolean(which)
   else return 'off' end
 end
 
--- this should also cache to prevent a lot of getLines() calls from the tekura function
--- warning, wrapped lines -will- be split up here
+-- The lines of the paragraph so far, as the game sent them. Mudlet's buffer
+-- isn't: svof's own warnings and other echoes are added to its lines, and
+-- a line longer than the profile's "Wrap lines at" is cut into several, so
+-- an exact search of getLines() missed lines that were there. The Prompt
+-- trigger's condition calls this for every line that isn't a prompt, before
+-- that line is wrapped, and svo.onprompt clears the list. Each entry keeps
+-- the buffer line it arrived on, to leave out the line being processed.
+function svo.note_paragraph_line()
+  local t = svo.paragraph_lines
+  t[#t+1] = { n = getLastLineNumber('main'), text = line }
+end
+
+-- The paragraph's lines before the one being processed, which is the last
+-- line in the buffer, as getLines() up to it gave: a trigger doesn't find
+-- its own line, and the prompt finds every line
+function svo.paragraph_so_far()
+  local last, t, lines = getLastLineNumber('main'), {}, svo.paragraph_lines
+  for i = 1, #lines do
+    if lines[i].n < last then t[#t+1] = lines[i].text end
+  end
+  return t
+end
+local paragraph_so_far = svo.paragraph_so_far
+
+-- the game's line before the one being processed, or "" for the paragraph's
+-- first, where getLines() gave the prompt
+function svo.previous_paragraph_line()
+  local t = paragraph_so_far()
+  return t[#t] or ""
+end
+
 function svo.find_until_last_paragraph (pattern, type)
-  local t = getLines(svo.lastpromptnumber, getLastLineNumber('main'))
+  local t = paragraph_so_far()
 
   local find = string.find
   for i = 1, #t do
@@ -524,7 +553,7 @@ end
 
 -- returns the count of matches from the current line until the start of the paragraph
 function svo.count_until_last_paragraph (pattern, type)
-  local t = getLines(svo.lastpromptnumber, getLastLineNumber('main'))
+  local t = paragraph_so_far()
 
   local find, count = string.find, 0
   for i = 1, #t do
