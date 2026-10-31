@@ -3025,6 +3025,60 @@
         ]
       },
       {
+        "name": "constricted",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "being constricted by vines.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "snared",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "tangled up by a rope snare.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "vinewreathed",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "wreathed in flailing vines.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
         "name": "inlove",
         "isActive": "yes",
         "isFolder": "no",
@@ -7796,6 +7850,60 @@
     "patterns": [
       {
         "pattern": "You regain consciousness with a start.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo constricted woreoff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You manage to wrestle the vines away from your limbs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo snared woreoff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You manage to disentangle yourself from the rope trap which had snared your ankles.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo vinewreathed woreoff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The vines flailing about your form recede.",
         "type": "exactMatch"
       }
     ]

@@ -1056,6 +1056,8 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- Tempered by an Alchemist. Besides its own effects, it gives smoking a
+    -- chance of filling your lungs with mucous: see mucous
     phlegmatichumour = {
       gamename = 'temperedphlegmatic',
       name = 'phlegmatichumour',
@@ -5668,7 +5670,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          if affs.bleeding and not svo.doingaction('bleeding') and not affs.bleeding.spammingbleed and not affs.haemophilia and not affs.sleep and svo.can_usemana() and conf.clot then
+          if affs.bleeding and not svo.doingaction('bleeding') and not affs.bleeding.spammingbleed and not affs.haemophilia and not affs.sleep and not affs.deepsleep and svo.can_usemana() and conf.clot then
             if (not affs.corrupted and svo.dict.bleeding.count >= conf.bleedamount) then
               return true
             elseif (affs.corrupted and svo.dict.bleeding.count >= conf.manableedamount) then
@@ -5769,7 +5771,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          if not next(affs) or not bals.tree or svo.doingaction('touchtree') or affs.sleep or not conf.tree or affs.stun
+          if not next(affs) or not bals.tree or svo.doingaction('touchtree') or affs.sleep or affs.deepsleep or not conf.tree or affs.stun
            or affs.unconsciousness or affs.numbedrightarm or affs.numbedleftarm or affs.paralysis or affs.webbed
             or affs.bound or affs.transfixed or affs.roped or affs.impale or affs.daeggerimpale or ((affs.crippledleftarm or affs.mangledleftarm
              or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))
@@ -6124,7 +6126,7 @@ if not next(svo.dict) then
         isadvisable = function()
           return (affs.prone and (not affs.paralysis or svo.doingaction'paralysis')
             and (svo.haveskillset('weaponmastery') and (sk.didfootingattack or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm)) or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm))
-            and not svo.doingaction('prone') and not affs.sleep
+            and not svo.doingaction('prone') and not affs.sleep and not affs.deepsleep
             and not affs.impale and not affs.daeggerimpale
             and not affs.transfixed
             and not affs.webbed and not affs.bound and not affs.roped
@@ -6170,7 +6172,7 @@ if not next(svo.dict) then
       misc = {
         isadvisable = function()
           return (affs.disrupt and not svo.doingaction('disrupt')
-            and not affs.confusion and not affs.sleep) or false
+            and not affs.confusion and not affs.sleep and not affs.deepsleep) or false
         end,
   
         oncompleted = function() svo.rmaff('disrupt') end,
@@ -7359,7 +7361,7 @@ if not next(svo.dict) then
         -- lets it through. So it waits while a focus would be punished, the
         -- same as check_focus does.
         isadvisable = function()
-          return (svo.affsp.impatience and not affs.sleep and bals.focus and conf.focus
+          return (svo.affsp.impatience and not affs.sleep and not affs.deepsleep and bals.focus and conf.focus
             and not svo.focus_would_hurt()) or false
         end,
   
@@ -7508,7 +7510,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          return (svo.affsp.hypersomnia and not affs.sleep) or false
+          return (svo.affsp.hypersomnia and not affs.sleep and not affs.deepsleep) or false
         end,
   
         oncompleted = function() end,
@@ -7599,7 +7601,7 @@ if not next(svo.dict) then
         if svo.paragraph_length > 2 then
             svo.dict.stun.aff.oncompleted()
             svo.killaction(svo.dict.checkstun.misc)
-          elseif not affs.sleep and not conf.paused then -- let autodetection take care of after we wake up. otherwise, a well timed stun & stun symptom on awake can trick us. if paused, let it through as well, because we don't want to kill affs
+          elseif not affs.sleep and not affs.deepsleep and not conf.paused then -- let autodetection take care of after we wake up. otherwise, a well timed stun & stun symptom on awake can trick us. if paused, let it through as well, because we don't want to kill affs
             svo.affsp.stun = true
             svo.dict.checkstun.time = num
             svo.dict.checkstun.templifevision = deepcopy(svo.lifevision.l)
@@ -7872,6 +7874,129 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- Vines that slow writhing, until time frees you: 30 seconds by default
+    -- (AFFLICTION SHOW, captured 2026-10-20). Not entanglement, which is
+    -- writhed out of
+    constricted = {
+      waitingfor = {
+        customwait = 30, -- AFFLICTION SHOW's default time
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('constricted')
+          svo.make_gnomes_work()
+        end,
+
+        oncompleted = function()
+          svo.rmaff('constricted')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.constricted)
+          if not svo.actions.constricted_waitingfor then svo.doaction(svo.dict.constricted.waitingfor) end
+        end
+      },
+      gone = {
+        oncompleted = function()
+          svo.rmaff('constricted')
+          svo.killaction(svo.dict.constricted.waitingfor)
+        end,
+      }
+    },
+    -- A rope trap about the ankles, until time frees you: 20 seconds by
+    -- default (AFFLICTION SHOW, captured 2026-10-20)
+    snared = {
+      waitingfor = {
+        customwait = 20, -- AFFLICTION SHOW's default time
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('snared')
+          svo.make_gnomes_work()
+        end,
+
+        oncompleted = function()
+          svo.rmaff('snared')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.snared)
+          if not svo.actions.snared_waitingfor then svo.doaction(svo.dict.snared.waitingfor) end
+        end
+      },
+      gone = {
+        oncompleted = function()
+          svo.rmaff('snared')
+          svo.killaction(svo.dict.snared.waitingfor)
+        end,
+      }
+    },
+    -- A Viridian's flailing vines, which keep you from parrying their thorn
+    -- rends, until they recede: 20 seconds by default (AFFLICTION SHOW,
+    -- captured 2026-10-20)
+    vinewreathed = {
+      waitingfor = {
+        customwait = 20, -- AFFLICTION SHOW's default time
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('vinewreathed')
+          svo.make_gnomes_work()
+        end,
+
+        oncompleted = function()
+          svo.rmaff('vinewreathed')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.vinewreathed)
+          if not svo.actions.vinewreathed_waitingfor then svo.doaction(svo.dict.vinewreathed.waitingfor) end
+        end
+      },
+      gone = {
+        oncompleted = function()
+          svo.rmaff('vinewreathed')
+          svo.killaction(svo.dict.vinewreathed.waitingfor)
+        end,
+      }
+    },
+    -- A sleep you never wake from on your own (AFFLICTION SHOW, captured
+    -- 2026-10-20): you can do nothing in it, as in sleep, but svof doesn't
+    -- try to wake you, which sleep's misc action would. GMCP's deepsleep
+    -- used to be read as sleep
+    deepsleep = {
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.deepsleep)
+        end
+      },
+      gone = {
+        oncompleted = function()
+          svo.rmaff('deepsleep')
+        end,
+      }
+    },
     pinshot = {
       waitingfor = {
         customwait = 21, -- AFFLICTION SHOW's default time
@@ -8052,6 +8177,17 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- Not an affliction of its own in the game's list, and GMCP never reports
+    -- it: a side effect of a tempered phlegmatic humour (phlegmatichumour,
+    -- the game's temperedphlegmatic), which an Alchemist's phlegmatic
+    -- tempering gives. AFFLICTION SHOW (captured 2026-10-20): "A tempered
+    -- phlegmatic humour fills your lungs with phlegm when you try to smoke."
+    -- While it's tempered, a smoke has a chance of filling your lungs with
+    -- mucous, which keeps you from smoking until you cough it up. Text alone
+    -- tracks it: "As you attempt to inhale the smoke, your lungs fill with a
+    -- thick mucous." or "Your lungs are too clogged with mucous for you to
+    -- attempt smoking." adds it, and "You manage to cough away the mucous
+    -- filling your lungs." or the end of the wait ends it
     mucous = {
       waitingfor = {
         customwait = 6,
@@ -10763,6 +10899,7 @@ if not next(svo.dict) then
       concussion = 'seriousconcussion',
       conflagration = false,
       confusion = 'confusion',
+      constricted = 'constricted',
       corruption = 'corrupted',
       crackedribs = 'crackedribs',
       crescendo = 'crescendo',
@@ -10778,7 +10915,7 @@ if not next(svo.dict) then
       dazzled = false,
       deadening = 'deadening',
       deafness = false,
-      deepsleep = 'sleep',
+      deepsleep = 'deepsleep',
       degenerate = 'degenerate',
       dehydrated = 'dehydrated',
       dementia = 'dementia',
@@ -10881,6 +11018,7 @@ if not next(svo.dict) then
       sleeping = 'sleep',
       slickness = 'slickness',
       slimeobscure = 'ninkharsag',
+      snared = 'snared',
       spiritburn = 'spiritburn',
       stupidity = 'stupidity',
       stuttering = 'stuttering',
@@ -10900,7 +11038,7 @@ if not next(svo.dict) then
       unweavingmind = 'unweavingmind',
       unweavingspirit = 'unweavingspirit',
       vertigo = 'vertigo',
-      vinewreathed = false,
+      vinewreathed = 'vinewreathed',
       vitiated = false,
       vitrified = 'vitrification',
       voidfisted = 'voided',
@@ -13470,7 +13608,7 @@ if not next(svo.dict) then
         balanceless_act = true,
   
         isadvisable = function()
-          if not next(affs) or not bals.shrugging or affs.sleep or not conf.shrugging or affs.stun or affs.unconsciousness or affs.weakness or codepaste.nonstdcure() or defc.dragonform then return false end
+          if not next(affs) or not bals.shrugging or affs.sleep or affs.deepsleep or not conf.shrugging or affs.stun or affs.unconsciousness or affs.weakness or codepaste.nonstdcure() or defc.dragonform then return false end
   
           for name, func in pairs(svo.shrugging) do
             if not me.disabledshruggingfunc[name] then
