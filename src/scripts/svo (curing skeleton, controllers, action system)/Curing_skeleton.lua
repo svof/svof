@@ -1144,7 +1144,7 @@ function svo.sk.illness_constitution_symptom()
   if not defc.constitution then return end
   if conf.serverside then return end
 
-  if affs.illness_constitution then return end
+  if affs.hypochondria then return end
 
   sk.illness_constitution_count = sk.illness_constitution_count + 1
 

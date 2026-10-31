@@ -9,6 +9,11 @@ nothing (mindravaged removed "burning"; two handlers checked "asleep").
     affliction off, and keep leaves an uncounted one. removeaff recursed
     into itself on the eight check* entries, and removeafflevel raised on
     every entry with no general_cure, 168 of them
+  * every affliction name the code reads, in affs.<name>, affs['<name>'],
+    rmaff('<name>') and svo.dict.<name>, is an entry svof has in some class.
+    It found asleep, a shield check reading mangledlrightarm, an arm check
+    reading unwknowncrippledarm, two reading missing arms svof never had,
+    and a hypochondria guard reading illness_constitution
 
   lua tools/test_removal_paths.lua
 ]]
@@ -90,6 +95,67 @@ local ok, err = pcall(function()
   eq(svo.dict.skullfractures.count, 1, "at a count of 1")
 end)
 eq(ok, true, "removeafflevel with keep runs (" .. tostring(err) .. ")")
+
+-- ===== 3. every name read is an entry =====
+
+-- names read that aren't entries, and why. A fixed one fails until it's
+-- taken off this list, so it can only get shorter
+local NOT_ENTRIES = {
+  -- sk.unparryable_symptom's guard: a weapon you can't parry with is in
+  -- me.unparryables, and no affliction is unparryable
+  unparryable = true,
+  -- symp_asleep and transfixily, fixed by #893
+  asleep = true,
+}
+
+local CLASSES = { "Alchemist", "Apostate", "Bard", "Blademaster", "Depthswalker", "Druid", "Infernal", "Jester",
+  "Magi", "Monk", "None", "Occultist", "Paladin", "Pariah", "Priest", "Runewarden", "Sentinel", "Serpent",
+  "Shaman", "Sylvan", "Psion", "Unnamable", "Earth Elemental Lord", "Fire Elemental Lord", "Air Elemental Lord",
+  "Water Elemental Lord" }
+local entries = {}
+for _, class in ipairs(CLASSES) do
+  for name, entry in pairs(world.new({ class = class }).svo.dict) do
+    if type(entry) == 'table' then entries[name] = true end
+  end
+end
+
+local READS = {
+  "%f[%w_]affs%.([%a_][%w_]*)", "%f[%w_]affs%[%s*['\"]([%w_]+)['\"]%s*%]",
+  "%f[%w_]rmaff%(%s*['\"]([%w_]+)['\"]", "%f[%w_]svo%.dict%.([%a_][%w_]*)",
+}
+-- an affliction entry's own fields, read through affs
+local FIELDS = { p = true, sw = true, count = true }
+
+local files = io.popen('git ls-files -- "src/*.lua"')
+local found, scanned = {}, 0
+for path in files:lines() do
+  if not path:find("3rdparty", 1, true) and not path:find("src/resources/", 1, true) then
+    local f = assert(io.open(path, "r"))
+    local text = f:read("*a")
+    f:close()
+    scanned = scanned + 1
+    local n = 0
+    for line in (text .. "\n"):gmatch("([^\n]*)\n") do
+      n = n + 1
+      local code = line:gsub("%-%-.*$", "")
+      for _, pattern in ipairs(READS) do
+        for name in code:gmatch(pattern) do
+          if not entries[name] and not FIELDS[name] then
+            found[name] = found[name] or (path .. ":" .. n)
+          end
+        end
+      end
+    end
+  end
+end
+files:close()
+eq(scanned > 1000, true, "the source files are there to read (" .. scanned .. ")")
+for name, where in pairs(found) do
+  eq(NOT_ENTRIES[name] or false, true, "the code reads " .. name .. ", which svof has no entry for (" .. where .. ")")
+end
+for name in pairs(NOT_ENTRIES) do
+  eq(found[name] ~= nil, true, name .. " is still read somewhere; if not, take it off NOT_ENTRIES")
+end
 
 print(string.format("%d checks, %d failures", checks, #failures))
 for _, f in ipairs(failures) do print("FAIL " .. f) end
