@@ -1,6 +1,9 @@
 # Task list
 
-Last updated 2026-10-20: moving vcustomdef into a script of its own, after
+Last updated 2026-10-30: the in-flight note rewritten for #881 to #887,
+which carry the paragraph copy, the vcustomdef move and the counted
+afflictions starting at 1, and the statuses of items stacks 856 and 866-879
+settled. Before that, 2026-10-20: moving vcustomdef into a script of its own, after
 #866 merges. Before that, 2026-10-18: efreeti and waterweird added for the batch of outdated
 class defences. Before that, 2026-10-08: the defence half of the single-source work planned in
 `defences-single-source-plan.md`, item below. Before that, 2026-10-05: the
@@ -27,30 +30,34 @@ apart: **agreed** means the repo owner decided it, **proposed** means I am
 suggesting it and nobody has said yes, and **found** means it came out of
 reading or a harness and has not been discussed.
 
-In flight (2026-10-04): GitHub stack 856, all unmerged and all green on Linux
-CI at their current tips: #854 > #855 > #857 > #858 > #859 > #860 > #861 > #862 > #863.
-#858 (`gmcp-first`) is GMCP first for afflictions, with the recklessness,
-blackout and hidden-affliction fixes on top (`svof-gmcp-first-direction`,
-`svof-hidden-aff-refusal-loop`). #859 fixes two pre-existing phantom `?`
-counts (`svof-phantom-unknowns`), #860 stops empty tree touches
-(`svof-tree-wasted-touches`). #857 to #860 took the 2026-10-04 review fixes.
-#861 is plan step 1.6: seven afflictions missing from their empty-cure lists
-(pyramides, parasite, the three unweavings, tension) and two false drifts in
-`check_derived_lists`, plus no balance for a pear that cures nothing
-(`svof-pressure-pear-balances`) and hellsight's cure line grouped with
-valerian. #862 records blistered and pyre on DIAGNOSE
-(`svof-dead-diag-triggers`) and keeps a doubled tree touch's cure
-(`svof-doubled-commands-and-debug-echo`). #863 stops Action_system using
-stale copies: the gnome (svof denied its own cures in aeon), the logger, and
-actions_performed across a reset. Test build from the tip (`81dd764`):
-`C:\work\svof-test-builds\svof-66-stack-81dd764.mpackage`. Merge with
-`gh stack merge 856 --squash` once the drafts are marked ready. Queued after
-the merge, as its own PR from `in-client-svof`: searching a saved copy of the
-paragraph instead of Mudlet's buffer (agreed 2026-10-05, below). Defences
-follow #858 as their own PR; I proposed doing the paragraph fix before them,
-which nobody has confirmed. The defences PR is designed in
-`defences-single-source-plan.md` (D2.1, D3, D4), because a GMCP defence gain
-runs svof's own command bookkeeping today and has to be separated first.
+Merged: stack 856 (#854 to #864) on 2026-10-18, #865 the same day, and #866
+to #879 on 2026-10-29, `in-client-svof` at `e4904d5`. The
+`svof-stack-merged-and-open-work` memory has how each merge went.
+
+In flight (2026-10-30), all ready for review and none merged:
+
+| PR | branch, worktree | what |
+|---|---|---|
+| #881 | `sleep-writhes-latched`, `C:\work\svof-tip` | shared serverside defaults, deepsleep its own entry with no wake, constricted, snared and vinewreathed as timed entries, a GMCP removal that another game name still lists kept, latched sipped first, a prompt tag for every affliction (gate 1.995) |
+| #882 | `mucous-is-smoke-recovery`, stacked on #881 | mucous as a 6 s smoke recovery, not an affliction. Kept apart so it reverts in one step. Rebase onto `in-client-svof` once #881 merges |
+| #883 | `counted-affs-start-at-1`, `C:\work\svof-counted` | counted afflictions take the level they're given, or 1, never lower. Only DIAGNOSE or a script gives one: fracture hits and humour temperings pass none (gate 1.996) |
+| #885 | `sanguine-bleed-gmcp`, `C:\work\svof-bleed` | an inundated sanguine humour leaves bleeding to GMCP's `Bleed:` and falls back to level times 250 in blackout, which stops Vitals (gate 1.997) |
+| #886 | `paragraph-copy-lookbacks`, `C:\work\svof-lookback` | the lookbacks search a saved copy of the paragraph, item below (gate 1.998) |
+| #887 | `custom-definitions-folder`, `C:\work\svof-customdefs` | a Custom definitions folder holding Custom defences, vcustomdef moved out of `Defences.lua`, and Custom afflictions |
+
+#883 to #887 each branch from `e4904d5` and each regenerates
+`tools/verify_baseline.json`, and #883, #885 and #886 each add a gate to
+`build.yml`. After the first merges, regenerate the baseline on the others
+instead of merging it by hand.
+
+Owed in game: for #881, (restore defaults) under serverside, deepsleep over
+GMCP, the three timed afflictions, and latched sipped first; for #882, a
+mucous line, the wait and the cough line; for #883, a counted affliction
+gained in blackout and one DIAGNOSE finds above level 1; for #885, an
+inundation with GMCP and in blackout; for #886, the live wrap test below; and
+the older ones in the `svof-pending-live-tests` memory. Waiting on the owner:
+which abilities constricted slows, the Spiritlore Snare and Tarot Hanged Man
+affliction names, and a mucous capture for its recovery time.
 
 ---
 
@@ -94,8 +101,11 @@ Found in the 2026-10-18 live test (`customdef-live-test-2026-10-18.md`, items
   its new group as svof loads.
 
 ### Search a saved copy of the paragraph, not Mudlet's buffer
-**Status: agreed 2026-10-05. Queued as its own PR from `in-client-svof`, after
-stack 856 merges.** Detail and evidence in the
+**Status: agreed 2026-10-05. Opened 2026-10-30 as #886, as designed here, in
+four commits: the saved copy, the four previous-line readers, the three
+position checks, and the limb-break check. Rift, elist, Hallelujah and chaos
+rays stay on the buffer, since the copy isn't the same thing for them. The live
+wrap test is still to run.** Detail and evidence in the
 `svof-warning-suffix-breaks-lookbacks` memory.
 
 **Why.** `svo.find_until_last_paragraph` and `count_until_last_paragraph` read
@@ -162,7 +172,9 @@ defence recognition depends on.
 Full detail in the `svof-transmutation-cure-cleanup` memory.
 
 ### Burning is one counted affliction now
-**Status: agreed 2026-09-25, the repo owner's direction. Not started.**
+**Status: agreed 2026-09-25, the repo owner's direction. Not started. #854 and
+#855 merged on 2026-10-18, so step 1 of the order below now waits only on the
+play test.**
 
 Achaea replaced the burn ladder with a single counted affliction, `burning`, to
 simplify it. svof still models the old ladder as five separate afflictions,
@@ -318,7 +330,8 @@ send `curing focus withfulminated` / `withoutfulminated`.
 ### Document GMCP first for script writers
 **Status: agreed 2026-09-27, deferred by the owner to the docs pass once the
 GMCP-first work (branch `gmcp-first`, stacked on #857) is finished,
-defences included.**
+defences included. Both have merged, #858 on 2026-10-18 and the defences in
+#866 on 2026-10-29, so this can start when the owner wants the docs pass.**
 
 What `doc/index.rst` has to say, and where:
 
@@ -349,7 +362,12 @@ Style: the `google-doc-style` skill applies to docs.
 
 ### Move vcustomdef out of `Defences.lua` into a script of its own
 **Status: the user's suggestion, 2026-10-20, checked the same day as
-feasible. Waits for #866 to merge.**
+feasible. Opened 2026-10-30 as #887. The user chose one Custom definitions
+folder holding a script for each, Custom defences and Custom afflictions. The
+move is byte-identical, and the hide list reaches the three helpers it shared
+through `defences.class_title`, `defences.skillset_classes` and
+`defences.ui.separator`. The plan below was written against `3daf75b`; the
+block on `e4904d5` was lines 3738 to 6842.**
 
 `vcustomaff` has its own script, `Custom afflictions`, since 2026-10-20
 (branch `custom-afflictions`). The user would like `vcustomdef` to have one
@@ -390,8 +408,10 @@ helpers for `vcustomaff` (plan step 4), so whichever lands second takes the
 shared table the other made.
 
 ### Defences: the single-source plan
-**Status: written 2026-10-08 against `4f4c017`. Proposed; 11 game questions
-and 3 decisions for the owner at its end. Not started.**
+**Status: written 2026-10-08 against `4f4c017`. Carried out on branch
+`defences-single-source` and merged as #866 on 2026-10-29, with vcustomdef.
+The `svof-defences-plan` memory has which steps landed. The outdated classes
+are still open, as the batch item at the top of the deferred section.**
 
 `defences-single-source-plan.md` in this folder. It replaces the defence steps
 of the main plan (2.4, 2.6, 3.1, 3.2, the defence half of 3.5, `customdef`) and
@@ -489,6 +509,11 @@ the same day.** See *The dead `svo.valid` calls* below.
 against the raw git blobs. Neither touches anything muddler reads. Everything
 else in Phase 1 waits on the renames in the name-space backlog.
 
+**Answered 2026-10-23: AFFLICTION SHOW's NoRandomCure field is the game's
+own word on what tree, shrugging and panacea cure, and #873 (merged
+2026-10-29) made `empty.treecurables` follow it. The `svof-tree-list-split`
+memory has the list. What follows is the 2026-09-23 state.**
+
 **Still open from the tree work, 2026-09-23: six names want in-game
 confirmation.** The 14 game questions and the timed afflictions are answered -
 tree cures all 14, and none of the timed ones including `voided`. What is left
@@ -529,6 +554,11 @@ purgative defences are untouched. The only real change was recording the
 balance loss, which `648d73c` does with `onadded` on the entry - not
 `aff.oncompleted`, because the GMCP path calls `addaffdict` directly
 (`Setup.lua:656`) and never runs the aff action.
+
+**Changed 2026-10-29: the owner wants latched sipped before healhealth.**
+#881 puts `latched` last on the sip list and `latched_sip` at 157, above
+`healhealth_sip`, in both copies of `default_prios`. The 2026-09-23 decision
+it replaces:
 
 **The sip priority stays where it is. Settled 2026-09-23.** `default_prios`
 orders the sip balance with `healhealth` last, which the file's own comment
@@ -776,7 +806,8 @@ rather than from `afflist`, keeping its per-name functions.
 The `simple` derivation lost nothing and gained 17 names, of which **12 are new
 usable API**: `insomnia`, `mindravaged`, `mucous`, `paradox`, `parestoarms`,
 `parestolegs`, `pressure`, `tension`, `unknowncure`, `unweavingbody`,
-`unweavingmind`, `unweavingspirit`. The other five - `hoisted` and the four
+`unweavingmind`, `unweavingspirit`. (#882 removes `mucous`'s entry, and with
+it `simplemucous`.) The other five - `hoisted` and the four
 fractures - were already defined by hand further down the file, which
 overwrites the generated one. (`deef315`'s message says six and eleven. It is
 five and twelve; the code is right and the arithmetic in the message is not.)
@@ -969,7 +1000,7 @@ detail. Do not restate their content here.
 | work | status | memory |
 |---|---|---|
 | The affliction name-space cleanup, five steps ending in `svo.dict` as the single source of truth | agreed 2026-08-23, first batch merged as #850 | `svof-name-space-cleanup-backlog`, `svof-affliction-name-topology` |
-| Two dead diagnose triggers, `blistered` and `pyre`, as one small PR. Can land before the burning work, and helps it | agreed 2026-08-30, fixed in draft #862 | `svof-dead-diag-triggers` |
+| Two dead diagnose triggers, `blistered` and `pyre`, as one small PR. Can land before the burning work, and helps it | agreed 2026-08-30, fixed in #862, merged 2026-10-18 | `svof-dead-diag-triggers` |
 | The `asleep` bug, its own PR. Not a mechanical fix: correcting the guard makes a kill loop run for the first time | agreed, wants thought and live testing | `svof-review-followups` |
 | Non-blocking findings from the 2026-08-23 review of #850 | open | `svof-review-followups` |
 
