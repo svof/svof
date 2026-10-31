@@ -364,6 +364,12 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.999. condemned: GMCP's name, its 40 seconds, its wore-off
+      # line and DIAGNOSE, and that no burn salve is advisable while it
+      # lasts. Runs the real loaders (tools/svof_world.lua).
+      - name: test condemned
+        run: lua tools/test_condemned.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

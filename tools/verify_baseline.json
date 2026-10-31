@@ -148,6 +148,16 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure unweavingspirit tree [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo condemned woreoff",
+      "digest": "a0be7c0c7617f61b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo condemned woreoff [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/condemned",
+      "digest": "7b79e0ccb6703b5a",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/condemned [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/daeggerimpale",
       "digest": "c063c8f00341d2da",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/daeggerimpale [only in the package]"
@@ -219,8 +229,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "1baeb8a41ed68579",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2549 in merged"
+      "digest": "c3eb4f588dc25ee7",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2551 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -349,7 +359,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "3d1afe7456054bb0",
+      "digest": "dc54017fbf2e96ef",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -604,7 +614,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "2d5fc30212e76e05",
+      "digest": "99cf145b0eef6fc2",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
