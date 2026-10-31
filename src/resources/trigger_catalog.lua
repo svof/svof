@@ -1003,7 +1003,7 @@ return {
     { "svo diag / nin'kharsag", { "exact", "Covered in viscous slime." }, { "exact", "covered in viscous slime." }, diag = true },
     { "svo diag / pinshot", { "exact", "impaled through the foot." }, diag = true },
     { "svo diag / hypothermia", { "exact", "suffering from hypothermia." }, diag = true },
-    { "svo diag / scalded", { "exact", "suffering from a scalded throat." }, diag = true },
+    { "svo diag / scalded", { "exact", "horrifically scalded." }, diag = true },
     { "svo diag / dehydrated", { "exact", "seriously dehydrated." }, diag = true },
     { "svo diag / severeburn", { "exact", "you are severely burned." }, diag = true },
     { "svo diag / extremeburn", { "exact", "you are extremely burned." }, diag = true },

@@ -2183,6 +2183,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/sanguine humour [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/scalded|patterns",
+      "digest": "9c9354b1532fad4b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/scalded [patterns]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/scalded|script",
       "digest": "f562dd67ac567039",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/scalded [script]"

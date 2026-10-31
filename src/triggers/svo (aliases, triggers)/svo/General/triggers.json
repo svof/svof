@@ -4918,7 +4918,7 @@
         "highlightBG": "#ffff00",
         "patterns": [
           {
-            "pattern": "suffering from a scalded throat.",
+            "pattern": "horrifically scalded.",
             "type": "exactMatch"
           }
         ]
