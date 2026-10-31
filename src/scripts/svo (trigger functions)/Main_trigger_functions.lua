@@ -75,10 +75,16 @@ function svo.valid.symp_asleep()
     lifevision.add(actions['sleep_aff'].p, 'symptom', nil, 1)
   end
 
-  -- svo.reset non-wait things we were doing, because they got cancelled by the sleep
-  if affs.asleep or actions.asleep_aff then
+  -- svo.reset non-wait things we were doing, because they got cancelled by the sleep.
+  -- This line is the game refusing a command sent while asleep, so what svof
+  -- had in flight failed, and goes again once awake: nothing is sent while
+  -- asleep. It checked a key named asleep, which svof never had, so until
+  -- 2026-10-31 it never ran, and only the first symptom (sleep.aff.symptom)
+  -- cleared them. The wake stays, as there, and so does a gone, a cure being
+  -- recorded
+  if affs.sleep or actions.sleep_aff then
     for _,v in actions:iter() do
-      if v.p.balance ~= 'waitingfor' and v.p.balance ~= 'aff' then
+      if v.p.balance ~= 'waitingfor' and v.p.balance ~= 'aff' and v.p.balance ~= 'gone' and v.p.name ~= 'sleep_misc' then
         svo.killaction(svo.dict[v.p.action_name][v.p.balance])
       end
     end
@@ -745,7 +751,7 @@ function svo.valid.transfixily()
 
   -- special workaround for waking up not showing up in blackout: clear sleep if we saw this msg
   -- it's an issue otherwise to miss the sleep msg from a totem while in blackout and think you're still asleep
-  if affs.asleep then svo.rmaff('asleep') end
+  if affs.sleep then svo.rmaff('sleep') end
 end
 
 function svo.valid.symp_roped()
