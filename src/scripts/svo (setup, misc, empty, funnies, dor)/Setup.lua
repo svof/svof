@@ -187,6 +187,14 @@ svo.serverignore = svo.serverignore or {}
 svo.ignore = svo.ignore or {}
 svo.dict = svo.dict or {}
 
+-- Afflictions renamed to the game's own names, old name to new. A player's
+-- saved priorities and ignore list name them the old way, so both loads
+-- read an old name as the new one
+svo.renamed_affs = {
+  mildconcussion = 'damagedhead',
+  seriousconcussion = 'mangledhead',
+}
+
 
 local oldecho = svo.conf.commandecho
 signals.changecuring = signals.changecuring or luanotify.signal.new()
@@ -702,7 +710,7 @@ sk.gmcp_unconfirmed = sk.gmcp_unconfirmed or {}
 -- gaffl, which holds only what you have right now, and translates each game
 -- name forward through sstosvoa. Going forward matters: svotossa keeps only
 -- one game name per svof name, and sleep (deepsleep, sleeping) and
--- seriousconcussion (concussion, mangledhead) each have two.
+-- mangledhead (concussion, mangledhead) each have two.
 function svo.gmcp_reports(aff)
   for rawaff in pairs(gaffl) do
     if not sk.gmcp_unconfirmed[rawaff] and svo.dict.sstosvoa[(parseaffname(rawaff))] == aff then return true end
@@ -2204,6 +2212,12 @@ signals.systemstart:connect(function ()
   if lfs.attributes(conf_path) then
     local t = {}
     table.load(conf_path, t)
+    for old, new in pairs(svo.renamed_affs) do
+      if t[old] ~= nil then
+        if t[new] == nil then t[new] = t[old] end
+        t[old] = nil
+      end
+    end
     svo.update(svo.ignore, t)
   end
   svo.ignore.checkparalysis = true

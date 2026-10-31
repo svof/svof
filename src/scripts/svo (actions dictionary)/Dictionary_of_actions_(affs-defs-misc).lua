@@ -3234,7 +3234,7 @@ if not next(svo.dict) then
     calcifiedskull = {
       salve = {
         isadvisable = function()
-          return (affs.calcifiedskull and not affs.mildconcussion) or false
+          return (affs.calcifiedskull and not affs.damagedhead) or false
         end,
   
         oncompleted = function()
@@ -4539,128 +4539,126 @@ if not next(svo.dict) then
         noeffect = function() svo.rmaff('mildtrauma') end
       }
     },
-    seriousconcussion = {
-      gamename = 'mangledhead',
+    mangledhead = {
       salve = {
         isadvisable = function()
-          return (affs.seriousconcussion) or false
+          return (affs.mangledhead) or false
         end,
   
         oncompleted = function()
           svo.lostbal_salve()
   
-          svo.doaction(svo.dict.curingseriousconcussion.waitingfor)
+          svo.doaction(svo.dict.curingmangledhead.waitingfor)
         end,
   
         applycure = {'restoration', 'reconstructive'},
         actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
         onstart = function()
-          svo.apply(svo.dict.seriousconcussion.salve, " to head")
+          svo.apply(svo.dict.mangledhead.salve, " to head")
         end,
   
         -- we get no msg from an application of this
         empty = function()
-          svo.dict.seriousconcussion.salve.oncompleted()
+          svo.dict.mangledhead.salve.oncompleted()
         end
       },
       aff = {
         oncompleted = function (oldhp)
           if not conf.aillusion or not oldhp or oldhp > stats.currenthealth or svo.paragraph_length >= 3 then
-            if affs.mildconcussion then svo.rmaff('mildconcussion') end
-            svo.addaffdict(svo.dict.seriousconcussion)
+            if affs.damagedhead then svo.rmaff('damagedhead') end
+            svo.addaffdict(svo.dict.mangledhead)
             signals.after_lifevision_processing:unblock(cnrl.checkwarning)
           end
         end,
   
         forced = function()
-          if affs.mildconcussion then svo.rmaff('mildconcussion') end
-          svo.addaffdict(svo.dict.seriousconcussion)
+          if affs.damagedhead then svo.rmaff('damagedhead') end
+          svo.addaffdict(svo.dict.mangledhead)
         end
       },
       gone = {
-        oncompleted = function() svo.rmaff('seriousconcussion') end,
+        oncompleted = function() svo.rmaff('mangledhead') end,
       },
       onadded = function()
-        if affs.prone and affs.seriousconcussion then
+        if affs.prone and affs.mangledhead then
           sk.warn 'pulpable'
         end
       end
     },
-    curingseriousconcussion = {
+    curingmangledhead = {
       waitingfor = {
         customwait = 6,
   
         oncompleted = function()
-          svo.rmaff('seriousconcussion')
-          svo.addaffdict(svo.dict.mildconcussion)
+          svo.rmaff('mangledhead')
+          svo.addaffdict(svo.dict.damagedhead)
         end,
   
         ontimeout = function()
-          if affs.seriousconcussion then
-            svo.rmaff('seriousconcussion')
-            svo.addaffdict(svo.dict.mildconcussion)
+          if affs.mangledhead then
+            svo.rmaff('mangledhead')
+            svo.addaffdict(svo.dict.damagedhead)
           end
         end,
   
         onstart = function() end,
   
         noeffect = function()
-          svo.rmaff('seriousconcussion')
-          svo.rmaff('mildconcussion')
+          svo.rmaff('mangledhead')
+          svo.rmaff('damagedhead')
         end
       }
     },
-    mildconcussion = {
-      gamename = 'damagedhead',
+    damagedhead = {
       salve = {
         isadvisable = function()
-          return (affs.mildconcussion) or false
+          return (affs.damagedhead) or false
         end,
   
         oncompleted = function()
           svo.lostbal_salve()
   
-          svo.doaction(svo.dict.curingmildconcussion.waitingfor)
+          svo.doaction(svo.dict.curingdamagedhead.waitingfor)
         end,
   
         applycure = {'restoration', 'reconstructive'},
         actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
         onstart = function()
-          svo.apply(svo.dict.mildconcussion.salve, " to head")
+          svo.apply(svo.dict.damagedhead.salve, " to head")
         end,
   
         -- we get no msg from an application of this
         empty = function()
-          svo.dict.mildconcussion.salve.oncompleted()
+          svo.dict.damagedhead.salve.oncompleted()
         end
       },
       aff = {
         oncompleted = function (oldhp)
           if not conf.aillusion or not oldhp or oldhp > stats.currenthealth or svo.paragraph_length >= 3 then
-            svo.addaffdict(svo.dict.mildconcussion)
+            svo.addaffdict(svo.dict.damagedhead)
             signals.after_lifevision_processing:unblock(cnrl.checkwarning)
           end
         end,
   
         forced = function()
-          svo.addaffdict(svo.dict.mildconcussion)
+          svo.addaffdict(svo.dict.damagedhead)
         end
       },
       gone = {
-        oncompleted = function() svo.rmaff('mildconcussion') end,
+        oncompleted = function() svo.rmaff('damagedhead') end,
       }
     },
-    curingmildconcussion = {
+    curingdamagedhead = {
       waitingfor = {
         customwait = 6,
   
-        oncompleted = function() svo.rmaff('mildconcussion') end,
+        oncompleted = function() svo.rmaff('damagedhead') end,
   
-        ontimeout = function() svo.rmaff('mildconcussion') end,
+        ontimeout = function() svo.rmaff('damagedhead') end,
   
         onstart = function() end,
   
-        noeffect = function() svo.rmaff('mildconcussion') end
+        noeffect = function() svo.rmaff('damagedhead') end
       }
     },
   
@@ -6160,7 +6158,7 @@ if not next(svo.dict) then
       },
       onremoved = function() svo.donext() end,
       onadded = function()
-        if affs.prone and affs.seriousconcussion then
+        if affs.prone and affs.mangledhead then
           sk.warn 'pulpable'
         end
       end
@@ -10760,7 +10758,7 @@ if not next(svo.dict) then
       calcifiedtorso = 'calcifiedtorso',
       claustrophobia = 'claustrophobia',
       clumsiness = 'clumsiness',
-      concussion = 'seriousconcussion',
+      concussion = 'mangledhead',
       conflagration = false,
       confusion = 'confusion',
       corruption = 'corrupted',
@@ -10768,7 +10766,7 @@ if not next(svo.dict) then
       crescendo = 'crescendo',
       crushedthroat = 'crushedthroat',
       daeggerimpale = 'daeggerimpale',
-      damagedhead = 'mildconcussion',
+      damagedhead = 'damagedhead',
       damagedleftarm = 'mangledleftarm',
       damagedleftleg = 'mangledleftleg',
       damagedrightarm = 'mangledrightarm',
@@ -10835,7 +10833,7 @@ if not next(svo.dict) then
       loneliness = 'loneliness',
       lovers = 'inlove',
       manaleech = 'manaleech',
-      mangledhead = 'seriousconcussion',
+      mangledhead = 'mangledhead',
       mangledleftarm = 'mutilatedleftarm',
       mangledleftleg = 'mutilatedleftleg',
       mangledrightarm = 'mutilatedrightarm',

@@ -300,7 +300,7 @@ svo.sp_checksp = function ()
     local alreadyset
     for i = 1, #prios do
       local limb = prios[i]
-      if not alreadyset and type(sp_config.parry_actionlevel[limb]) == 'number' and (affs['mangled'..limb] or (limb == 'head' and (affs.serioustrauma or affs.mildtrauma)) or (limb == 'torso' and (affs.mildconcussion or affs.seriousconcussion))) then
+      if not alreadyset and type(sp_config.parry_actionlevel[limb]) == 'number' and (affs['mangled'..limb] or (limb == 'head' and (affs.serioustrauma or affs.mildtrauma)) or (limb == 'torso' and (affs.damagedhead or affs.mangledhead))) then
         sp_config.parry_shouldbe[limb] = true
         alreadyset = true
       else
