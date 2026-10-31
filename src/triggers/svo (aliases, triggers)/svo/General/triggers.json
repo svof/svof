@@ -4116,11 +4116,25 @@
         "highlightBG": "#ffff00",
         "patterns": [
           {
-            "pattern": "has a serious concussion.",
-            "type": "exactMatch"
-          },
-          {
             "pattern": "has a mangled head.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "concussion",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "85",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "has a serious concussion.",
             "type": "exactMatch"
           }
         ]
@@ -7290,24 +7304,6 @@
     "patterns": [
       {
         "pattern": "Your tree of life tattoo glows faintly for a moment then fades, leaving you unchanged.",
-        "type": "exactMatch"
-      }
-    ]
-  },
-  {
-    "name": "svo cure concussion",
-    "isActive": "yes",
-    "isFolder": "no",
-    "multiline": "no",
-    "multilineDelta": "0",
-    "filter": "no",
-    "fireLength": "0",
-    "highlight": "no",
-    "highlightFG": "#ff0000",
-    "highlightBG": "#ffff00",
-    "patterns": [
-      {
-        "pattern": "As your concussion lifts, your thinking becomes clearer.",
         "type": "exactMatch"
       }
     ]

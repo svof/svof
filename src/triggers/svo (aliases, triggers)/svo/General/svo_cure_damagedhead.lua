@@ -1,1 +1,1 @@
-svo.valid.curingdamagedhead()
+svo.valid.head_feels_stronger()

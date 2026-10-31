@@ -709,8 +709,7 @@ sk.gmcp_unconfirmed = sk.gmcp_unconfirmed or {}
 -- Whether the game currently reports this svof affliction over GMCP. Walks
 -- gaffl, which holds only what you have right now, and translates each game
 -- name forward through sstosvoa. Going forward matters: svotossa keeps only
--- one game name per svof name, and sleep (deepsleep, sleeping) and
--- mangledhead (concussion, mangledhead) each have two.
+-- one game name per svof name, and sleep has two (deepsleep, sleeping).
 function svo.gmcp_reports(aff)
   for rawaff in pairs(gaffl) do
     if not sk.gmcp_unconfirmed[rawaff] and svo.dict.sstosvoa[(parseaffname(rawaff))] == aff then return true end
