@@ -13,9 +13,19 @@
       "text": "Alias    svo (aliases, triggers) svo/(vcustomdef) Define your own defences [only in the package]"
     },
     {
-      "id": "added|Script|svo (alias and defence functions)|Custom afflictions",
-      "digest": "623f90d28ff27b8f",
-      "text": "Script   svo (alias and defence functions) Custom afflictions [only in the package]"
+      "id": "added|Script|svo (alias and defence functions)|Custom definitions",
+      "digest": "2eaf7a1e36492fce",
+      "text": "Script   svo (alias and defence functions) Custom definitions [only in the package]"
+    },
+    {
+      "id": "added|Script|svo (alias and defence functions)|Custom definitions/Custom afflictions",
+      "digest": "f060581d75194107",
+      "text": "Script   svo (alias and defence functions) Custom definitions/Custom afflictions [only in the package]"
+    },
+    {
+      "id": "added|Script|svo (alias and defence functions)|Custom definitions/Custom defences",
+      "digest": "77c642ac938e2153",
+      "text": "Script   svo (alias and defence functions) Custom definitions/Custom defences [only in the package]"
     },
     {
       "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_download_done",
@@ -359,7 +369,7 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "81e5559370900a4d",
+      "digest": "4218ef8242e05c99",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -459,7 +469,7 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|Load & init/svo_init_system|script",
-      "digest": "39ca7a11ad968743",
+      "digest": "e8cc631ea96f68f1",
       "text": "Script   svo (install me in module manager) Load & init/svo_init_system [script]"
     },
     {

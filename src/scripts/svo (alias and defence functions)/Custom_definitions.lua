@@ -1,0 +1,2 @@
+-- What a player defines for svof: defences (vcustomdef, Custom defences)
+-- and afflictions (vcustomaff, Custom afflictions), each in its own script
