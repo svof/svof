@@ -262,21 +262,6 @@ rift.herb_conversions = {
   valerian   = 'realgar',
 }
 
-rift.vial_conversions = {
-  caloric     = 'exothermic',
-  epidermal   = 'sensory',
-  frost       = 'endothermia',
-  health      = 'vitality',
-  immunity    = 'antigen',
-  levitation  = 'hovering',
-  mana        = 'mentality',
-  mass        = 'density',
-  mending     = 'renewal',
-  restoration = 'reconstructive',
-  speed       = 'haste',
-  venom       = 'toxin',
-}
-
 function svo.intlen(number)
   return number == 0 and 1 or math.floor(math.log10(number)+1)
 end
