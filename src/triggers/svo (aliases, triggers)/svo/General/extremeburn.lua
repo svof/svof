@@ -1,1 +1,1 @@
-svo.valid.diag('extremeburn')
+svo.valid.diag('ablaze', 3)
