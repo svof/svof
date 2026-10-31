@@ -596,7 +596,7 @@ if not next(svo.dict) then
           codepaste.serversideahealthmanaprio()
         end,
   
-        sipcure = {'health', 'vitality'},
+        sipcure = {'health'},
   
         onstart = function()
           svo.sip(svo.dict.healhealth.sip)
@@ -643,7 +643,7 @@ if not next(svo.dict) then
           codepaste.serversideahealthmanaprio()
         end,
   
-        sipcure = {'mana', 'mentality'},
+        sipcure = {'mana'},
   
         onstart = function()
           svo.sip(svo.dict.healmana.sip)
@@ -3196,8 +3196,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingheartseed.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to torso", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.heartseed.salve, " to torso")
         end,
@@ -3243,8 +3243,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingcalcifiedskull.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to head", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.calcifiedskull.salve, " to head")
         end,
@@ -3290,8 +3290,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingcalcifiedtorso.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to torso", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.calcifiedtorso.salve, " to torso")
         end,
@@ -3337,8 +3337,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curinghypothermia.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to torso", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.hypothermia.salve, " to torso")
         end,
@@ -3384,8 +3384,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingtonguetied.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to head", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.tonguetied.salve, " to head")
         end,
@@ -3433,8 +3433,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmutilatedrightleg.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to legs", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mutilatedrightleg.salve, " to legs")
         end,
@@ -3514,8 +3514,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingparestolegs.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to legs", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.parestolegs.salve, " to legs")
         end,
@@ -3568,8 +3568,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmangledrightleg.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to legs", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mangledrightleg.salve, " to legs")
         end,
@@ -3653,8 +3653,8 @@ if not next(svo.dict) then
           if svo.dict.unknowncrippledleg.count <= 0 then svo.rmaff'unknowncrippledleg' else svo.updateaffcount(svo.dict.unknowncrippledleg) end
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending to legs", "apply mending", "apply renewal to legs", "apply renewal"},
+        applycure = {'mending'},
+        actions = {"apply mending to legs", "apply mending"},
         onstart = function()
           svo.apply(svo.dict.crippledrightleg.salve, " to legs")
         end,
@@ -3694,8 +3694,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmutilatedleftleg.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to legs", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mutilatedleftleg.salve, " to legs")
         end,
@@ -3770,8 +3770,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmangledleftleg.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to legs", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mangledleftleg.salve, " to legs")
         end,
@@ -3855,8 +3855,8 @@ if not next(svo.dict) then
           if svo.dict.unknowncrippledleg.count <= 0 then svo.rmaff'unknowncrippledleg' else svo.updateaffcount(svo.dict.unknowncrippledleg) end
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending to legs", "apply mending", "apply renewal to legs", "apply renewal"},
+        applycure = {'mending'},
+        actions = {"apply mending to legs", "apply mending"},
         onstart = function()
           svo.apply(svo.dict.crippledleftleg.salve, " to legs")
         end,
@@ -3901,8 +3901,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingparestoarms.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to arms", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.parestoarms.salve, " to arms")
         end,
@@ -3955,8 +3955,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmutilatedleftarm.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to arms", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mutilatedleftarm.salve, " to arms")
         end,
@@ -4026,8 +4026,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmangledleftarm.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to arms", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mangledleftarm.salve, " to arms")
         end,
@@ -4108,8 +4108,8 @@ if not next(svo.dict) then
           if svo.dict.unknowncrippledarm.count <= 0 then svo.rmaff'unknowncrippledarm' else svo.updateaffcount(svo.dict.unknowncrippledarm) end
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending to arms", "apply mending", "apply renewal to arms", "apply renewal"},
+        applycure = {'mending'},
+        actions = {"apply mending to arms", "apply mending"},
         onstart = function()
           svo.apply(svo.dict.crippledleftarm.salve, " to arms")
         end,
@@ -4149,8 +4149,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmutilatedrightarm.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to arms", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mutilatedrightarm.salve, " to arms")
         end,
@@ -4220,8 +4220,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmangledrightarm.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to arms", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mangledrightarm.salve, " to arms")
         end,
@@ -4302,8 +4302,8 @@ if not next(svo.dict) then
           if svo.dict.unknowncrippledarm.count <= 0 then svo.rmaff'unknowncrippledarm' else svo.updateaffcount(svo.dict.unknowncrippledarm) end
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending to arms", "apply mending", "apply renewal to arms", "apply renewal"},
+        applycure = {'mending'},
+        actions = {"apply mending to arms", "apply mending"},
         onstart = function()
           svo.apply(svo.dict.crippledrightarm.salve, " to arms")
         end,
@@ -4342,8 +4342,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curinglaceratedthroat.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to head", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.laceratedthroat.salve, " to head")
         end,
@@ -4406,8 +4406,8 @@ if not next(svo.dict) then
           empty.apply_epidermal_head()
         end,
   
-        applycure = {'epidermal', 'sensory'},
-        actions = {"apply epidermal to head", "apply epidermal", "apply sensory to head", "apply sensory"},
+        applycure = {'epidermal'},
+        actions = {"apply epidermal to head", "apply epidermal"},
         onstart = function()
           svo.apply(svo.dict.slashedthroat.salve, " to head")
         end
@@ -4440,8 +4440,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingserioustrauma.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to torso", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.serioustrauma.salve, " to torso")
         end,
@@ -4504,8 +4504,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmildtrauma.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to torso", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mildtrauma.salve, " to torso")
         end,
@@ -4552,8 +4552,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingseriousconcussion.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to head", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.seriousconcussion.salve, " to head")
         end,
@@ -4623,8 +4623,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmildconcussion.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to head", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mildconcussion.salve, " to head")
         end,
@@ -4686,8 +4686,8 @@ if not next(svo.dict) then
           empty.apply_epidermal_body()
         end,
   
-        applycure = {'epidermal', 'sensory'},
-        actions = {"apply epidermal to body", "apply epidermal", "apply sensory to body", "apply sensory"},
+        applycure = {'epidermal'},
+        actions = {"apply epidermal to body", "apply epidermal"},
         onstart = function()
           svo.apply(svo.dict.anorexia.salve, " to body")
         end
@@ -5009,8 +5009,8 @@ if not next(svo.dict) then
           empty.apply_mending()
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending to body", "apply mending", "apply renewal to body", "apply renewal", "apply mending to torso", "apply renewal to torso"},
+        applycure = {'mending'},
+        actions = {"apply mending to body", "apply mending", "apply mending to torso"},
         onstart = function()
           svo.apply(svo.dict.selarnia.salve, " to body")
         end
@@ -5044,8 +5044,8 @@ if not next(svo.dict) then
           empty.apply_epidermal_body()
         end,
   
-        applycure = {'epidermal', 'sensory'},
-        actions = {"apply epidermal to body", "apply epidermal", "apply sensory to body", "apply sensory"},
+        applycure = {'epidermal'},
+        actions = {"apply epidermal to body", "apply epidermal"},
         onstart = function()
           svo.apply(svo.dict.itching.salve, " to body")
         end
@@ -5079,8 +5079,8 @@ if not next(svo.dict) then
           empty.apply_epidermal_head()
         end,
   
-        applycure = {'epidermal', 'sensory'},
-        actions = {"apply epidermal to head", "apply epidermal", "apply sensory to head", "apply sensory"},
+        applycure = {'epidermal'},
+        actions = {"apply epidermal to head", "apply epidermal"},
         onstart = function()
           svo.apply(svo.dict.stuttering.salve, " to head")
         end
@@ -5351,8 +5351,8 @@ if not next(svo.dict) then
           empty.apply_epidermal_head()
         end,
   
-        applycure = {'epidermal', 'sensory'},
-        actions = {"apply epidermal to head", "apply epidermal", "apply sensory to head", "apply sensory"},
+        applycure = {'epidermal'},
+        actions = {"apply epidermal to head", "apply epidermal"},
         onstart = function()
           svo.apply(svo.dict.deafaff.salve, " to head")
         end
@@ -5392,8 +5392,8 @@ if not next(svo.dict) then
           svo.dict.caloric.salve.oncompleted ()
         end,
   
-        applycure = {'caloric', 'exothermic'},
-        actions = {"apply caloric to body", "apply caloric", "apply exothermic to body", "apply exothermic"},
+        applycure = {'caloric'},
+        actions = {"apply caloric to body", "apply caloric"},
         onstart = function()
           svo.apply(svo.dict.shivering.salve, " to body")
         end,
@@ -5432,8 +5432,8 @@ if not next(svo.dict) then
           svo.dict.caloric.salve.oncompleted ()
         end,
   
-        applycure = {'caloric', 'exothermic'},
-        actions = {"apply caloric to body", "apply caloric", "apply exothermic to body", "apply exothermic"},
+        applycure = {'caloric'},
+        actions = {"apply caloric to body", "apply caloric"},
         onstart = function()
           svo.apply(svo.dict.frozen.salve, " to body")
         end,
@@ -5466,7 +5466,7 @@ if not next(svo.dict) then
           svo.rmaff('voyria')
         end,
   
-        sipcure = {'immunity', 'antigen'},
+        sipcure = {'immunity'},
         onstart = function()
           svo.sip(svo.dict.voyria.purgative)
         end,
@@ -6664,8 +6664,8 @@ if not next(svo.dict) then
           svo.rmaff('unknowncrippledlimb')
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending", "apply renewal"},
+        applycure = {'mending'},
+        actions = {"apply mending"},
         onstart = function()
           svo.apply(svo.dict.unknowncrippledlimb.salve)
         end,
@@ -6722,8 +6722,8 @@ if not next(svo.dict) then
           svo.rmaff('unknowncrippledarm')
         end,
   
-        actions = {"apply mending to arms", "apply mending", "apply renewal to arms", "apply renewal"},
-        applycure = {'mending', 'renewal'},
+        actions = {"apply mending to arms", "apply mending"},
+        applycure = {'mending'},
         onstart = function()
           svo.apply(svo.dict.unknowncrippledarm.salve, " to arms")
         end,
@@ -6775,8 +6775,8 @@ if not next(svo.dict) then
           svo.rmaff('unknowncrippledleg')
         end,
   
-        actions = {"apply mending to legs", "apply mending", "apply renewal to legs", "apply renewal"},
-        applycure = {'mending', 'renewal'},
+        actions = {"apply mending to legs", "apply mending"},
+        applycure = {'mending'},
         onstart = function()
           svo.apply(svo.dict.unknowncrippledleg.salve, " to legs")
         end,
@@ -9633,7 +9633,7 @@ if not next(svo.dict) then
           defences.got('frost')
         end,
   
-        sipcure = {'frost', 'endothermia'},
+        sipcure = {'frost'},
   
         onstart = function()
           svo.sip(svo.dict.frost.purgative)
@@ -9662,7 +9662,7 @@ if not next(svo.dict) then
   
         noeffect = function() defences.got('venom') end,
   
-        sipcure = {'venom', 'toxin'},
+        sipcure = {'venom'},
   
         onstart = function()
           svo.sip(svo.dict.venom.purgative)
@@ -9684,7 +9684,7 @@ if not next(svo.dict) then
   
         noeffect = function() defences.got('levitation') end,
   
-        sipcure = {'levitation', 'hovering'},
+        sipcure = {'levitation'},
   
         onstart = function()
           svo.sip(svo.dict.levitation.purgative)
@@ -9724,7 +9724,7 @@ if not next(svo.dict) then
   
         noeffect = function() defences.got('speed') end,
   
-        sipcure = {'speed', 'haste'},
+        sipcure = {'speed'},
   
         onstart = function()
           svo.sip(svo.dict.speed.purgative)
@@ -10073,8 +10073,8 @@ if not next(svo.dict) then
         noeffect = function() end,
         empty = function() end,
   
-        applycure = {'mass', 'density'},
-        actions = {"apply mass to body", "apply mass", "apply density to body", "apply density"},
+        applycure = {'mass'},
+        actions = {"apply mass to body", "apply mass"},
         onstart = function()
           svo.apply(svo.dict.mass.salve, " to body")
         end,
@@ -10102,8 +10102,8 @@ if not next(svo.dict) then
           svo.dict.caloric.salve.oncompleted ()
         end,
   
-        applycure = {'caloric', 'exothermic'},
-        actions = {"apply caloric to body", "apply caloric", "apply exothermic to body", "apply exothermic"},
+        applycure = {'caloric'},
+        actions = {"apply caloric to body", "apply caloric"},
         onstart = function()
           svo.apply(svo.dict.caloric.salve, " to body")
         end,
@@ -15259,8 +15259,8 @@ local function aff_pair(pairs_of, item)
 end
 
 -- -> list of cures, or nil and why. Each cure is { kind = 'herb', item,
--- alt }, { kind = 'salve', item, alt, place }, { kind = 'smoke', item, alt },
--- { kind = 'purgative', item, alt } or { kind = 'time' }, at most one of a
+-- alt }, { kind = 'salve', item, place }, { kind = 'smoke', item, alt },
+-- { kind = 'purgative', item } or { kind = 'time' }, at most one of a
 -- kind: an entry has one action on each balance, and a herb and its mineral
 -- are one cure. A cure svof can't give is { kind = 'game', text }, with no
 -- action, and no text is no cures
@@ -15281,17 +15281,17 @@ function svo.affcures(text)
     elseif verb == 'apply' then
       local what, place = rest:match("^(%a+) to (%a+)$")
       what = what or rest
-      local salve, alt = aff_pair(rift.vial_conversions, what)
-      if salve and aff_salves[salve] and (not place or aff_salve_places[place]) then
-        cure = { kind = 'salve', salve, alt, place = place }
+      -- a salve has one name: the transmutation ones, such as sensory, are
+      -- gone from the game
+      if aff_salves[what] and (not place or aff_salve_places[place]) then
+        cure = { kind = 'salve', what, place = place }
       end
     elseif verb == 'smoke' then
       -- skullcap's mineral to smoke is malachite, not the azurite eaten
       local herb, mineral = aff_pair(rift.smoke_herb_conversions, rest)
       if herb and aff_pipes[herb] then cure = { kind = 'smoke', herb, mineral } end
     elseif verb == 'sip' or verb == 'drink' then
-      local elixir, alt = aff_pair(rift.vial_conversions, rest)
-      if elixir and aff_purgatives[elixir] then cure = { kind = 'purgative', elixir, alt } end
+      if aff_purgatives[rest] then cure = { kind = 'purgative', rest } end
     end
     if not cure and part ~= '' then cure = { kind = 'game', part } end
     local before = cure and seen[cure.kind]

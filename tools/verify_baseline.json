@@ -349,7 +349,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "3d1afe7456054bb0",
+      "digest": "25f1d338a1e12389",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -509,7 +509,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Rift|script",
-      "digest": "80753b5bc4ec1860",
+      "digest": "56f31ce7e8c7fca4",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Rift [script]"
     },
     {
@@ -604,7 +604,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "2d5fc30212e76e05",
+      "digest": "a903e30b37e5eae0",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

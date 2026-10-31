@@ -1100,7 +1100,6 @@ function svo.valid.defstrip(which)
     ["anti-weapon field"]      = 'rebounding',
     ["caloric salve"]          = 'caloric',
     ["cold resistance"]        = 'coldresist',
-    ['density']                = 'mass',
     ["electricity resistance"] = 'electricresist',
     ["fire resistance"]        = 'fireresist',
     ['gripping']               = 'grip',
