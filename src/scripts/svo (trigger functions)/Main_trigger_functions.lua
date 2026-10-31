@@ -2137,6 +2137,9 @@ function svo.valid.fillskullcap()
   svo.checkaction(svo.dict.fillskullcap.physical)
   if actions.fillskullcap_physical then
     lifevision.add(actions.fillskullcap_physical.p)
+  elseif conf.serverside then
+    -- the server's own refill
+    svo.pipe_refilled('skullcap')
   end
 end
 
@@ -2144,6 +2147,9 @@ function svo.valid.fillelm()
   svo.checkaction(svo.dict.fillelm.physical)
   if actions.fillelm_physical then
     lifevision.add(actions.fillelm_physical.p)
+  elseif conf.serverside then
+    -- the server's own refill
+    svo.pipe_refilled('elm')
   end
 end
 
@@ -2151,6 +2157,9 @@ function svo.valid.fillvalerian()
   svo.checkaction(svo.dict.fillvalerian.physical)
   if actions.fillvalerian_physical then
     lifevision.add(actions.fillvalerian_physical.p)
+  elseif conf.serverside then
+    -- the server's own refill
+    svo.pipe_refilled('valerian')
   end
 end
 
