@@ -47,7 +47,7 @@ world.LOADERS = {
   {"install", "svo (install, config, pipes, rift, parry, prios)/Install_system.lua"},
   {"aliases", "svo (alias and defence functions)/Alias_functions.lua"},
   {"defences", "svo (alias and defence functions)/Defences.lua"},
-  {"customaffs", "svo (alias and defence functions)/Custom_afflictions.lua"},
+  {"customaffs", "svo (alias and defence functions)/Custom definitions/Custom_afflictions.lua"},
   {"prio", "svo (install, config, pipes, rift, parry, prios)/Priorities.lua"},
   {"parry", "svo (install, config, pipes, rift, parry, prios)/Parry.lua"},
   {"funnies", "svo (setup, misc, empty, funnies, dor)/Funnies.lua"},
