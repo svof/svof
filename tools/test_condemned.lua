@@ -25,7 +25,8 @@ local function gmcp_aff_add(w, name)
   w.svo.signals.gmcpcharafflictionsadd:emit()
 end
 
-local BURNS = { 'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn' }
+-- burning, at every level the old ladder had
+local BURNS = { 1, 2, 3, 4, 5 }
 
 do -- GMCP's name, and its time
   local w = world.new()
@@ -58,15 +59,17 @@ do -- DIAGNOSE
   eq(svo.sk.diag_list.condemned, true, "DIAGNOSE reports it")
 end
 
-for _, burn in ipairs(BURNS) do -- no burn salve while condemned
+for _, level in ipairs(BURNS) do -- no burn salve while condemned
   local w = world.new()
   local svo = w.svo
-  svo.addaffdict(svo.dict[burn])
-  eq(svo.dict[burn].salve.isadvisable(), true, burn .. "'s salve is advisable")
+  svo.addaffdict(svo.dict.ablaze)
+  svo.dict.ablaze.count = level
+  local burn = "burning " .. level
+  eq(svo.dict.ablaze.salve.isadvisable(), true, burn .. "'s salve is advisable")
   svo.addaffdict(svo.dict.condemned)
-  eq(svo.dict[burn].salve.isadvisable(), false, "but not while condemned")
+  eq(svo.dict.ablaze.salve.isadvisable(), false, "but not while condemned")
   svo.rmaff('condemned')
-  eq(svo.dict[burn].salve.isadvisable(), true, "and is again once it's gone")
+  eq(svo.dict.ablaze.salve.isadvisable(), true, "and is again once it's gone")
 end
 
 do -- its abbreviation in the @affs prompt tag

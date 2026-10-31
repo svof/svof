@@ -1,1 +1,1 @@
-svo.valid.simplemeltingburn()
+svo.valid.simpleablaze()

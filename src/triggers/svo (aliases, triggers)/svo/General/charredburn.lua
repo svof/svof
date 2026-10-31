@@ -1,1 +1,1 @@
-svo.valid.diag('charredburn')
+svo.valid.diag('ablaze', 4)
