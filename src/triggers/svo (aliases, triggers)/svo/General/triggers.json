@@ -4014,7 +4014,7 @@
         ]
       },
       {
-        "name": "concussionhead",
+        "name": "damagedhead",
         "isActive": "yes",
         "isFolder": "no",
         "multiline": "no",
@@ -4104,7 +4104,7 @@
         ]
       },
       {
-        "name": "seriousconcussion",
+        "name": "mangledhead",
         "isActive": "yes",
         "isFolder": "no",
         "multiline": "no",
@@ -6647,7 +6647,7 @@
     ]
   },
   {
-    "name": "svo cure mildconcussion",
+    "name": "svo cure damagedhead",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -6669,7 +6669,7 @@
     ]
   },
   {
-    "name": "svo cure seriousconcussion",
+    "name": "svo cure mangledhead",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",

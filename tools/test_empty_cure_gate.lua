@@ -18,7 +18,7 @@ Setup.lua). The GMCP cases this file used to cover - an affliction the game
 still reports is kept, levelled names match, names GMCP cannot report are
 removed, nothing is kept before the first List - are tested against the real
 backstop in tools/test_gmcp_reconciler.lua (scenarios 14 and 17), along with
-the two it used to get wrong: sleep and seriousconcussion under their other
+the two it used to get wrong: sleep and mangledhead under their other
 game name, and the stale entry after a blackout that kept an affliction cured
 during it and re-cured it forever.
 
