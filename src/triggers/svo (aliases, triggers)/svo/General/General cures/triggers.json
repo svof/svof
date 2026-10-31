@@ -1896,5 +1896,221 @@
         "type": "exactMatch"
       }
     ]
+  },
+  {
+    "name": "svo cure depression generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Maybe things aren't so bad after all.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure parasite generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The leeching of your strength comes to an end.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure retribution generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The terrible sense of foreboding lifts.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure shadowmadness generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your sanity reestablishes itself.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure timeloop generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You break out of the feedback loop.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure flushings generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The prickling in your skin fades and you feel blessedly cool.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure mycalium generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your thoughts suddenly crystalise, the insidious whispers falling abruptly silent.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure pyramides generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The burning in your veins abruptly fades.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure rebbies generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your skin ceases secreting slime.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure sandfever generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "Your fever finally breaks, the terrible burning retreating.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure earworm generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The endlessly playing song in your mind falls silent.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo cure slashedthroat generic",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The bleeding gash in your throat closes up completely.",
+        "type": "exactMatch"
+      }
+    ]
   }
 ]
