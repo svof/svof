@@ -604,7 +604,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "2d5fc30212e76e05",
+      "digest": "bd789e21adb98c19",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -1086,6 +1086,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Damaged arm/regexes (damaged arm)|script",
       "digest": "b50472e402949465",
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Damaged arm/regexes (damaged arm) [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Damaged arms|script",
+      "digest": "837cf7480dcf89f4",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Damaged arms [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Disloyalty|script",
@@ -2388,6 +2393,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo smoke failed asthma [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Generic illusions/Doublestab, single aff|script",
+      "digest": "12d964dd372b1895",
+      "text": "Trigger  svo (aliases, triggers) svo/Generic illusions/Doublestab, single aff [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Herb tracker/Capture inv|colorTrigger",
       "digest": "13c33f87153efd9e",
       "text": "Trigger  svo (aliases, triggers) svo/Herb tracker/Capture inv [colorTrigger]"
@@ -2441,6 +2451,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/Striking/Flamefisted|script",
       "digest": "0d36ac310a873be1",
       "text": "Trigger  svo (aliases, triggers) svo/Striking/Flamefisted [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Tekura/Limb damage|script",
+      "digest": "2029e6a8601761a0",
+      "text": "Trigger  svo (aliases, triggers) svo/Tekura/Limb damage [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Zeal/Tenderskin|script",

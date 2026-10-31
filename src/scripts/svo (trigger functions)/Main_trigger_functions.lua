@@ -1720,7 +1720,7 @@ end
 
 function svo.valid.gotsalve()
   if conf.aillusion and svo.paragraph_length ~= 1 then
-    local lastline = getLines(getLineNumber()-1, getLineNumber())[1]
+    local lastline = svo.previous_paragraph_line()
 
     local lines = {
       ["Your left leg feels stronger and healthier."] = {affs = {'curingmutilatedrightleg', 'curingmutilatedleftleg', 'curingmangledrightleg', 'curingmangledleftleg', 'curingparestolegs'}, location = 'legs'},
