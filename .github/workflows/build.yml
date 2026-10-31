@@ -364,6 +364,13 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.9997. Pipe puff counts: the server's own refills under
+      # serverside, a puff off the first pipe then the second, and a fill of
+      # the second pipe kept to its own fields. Runs the real loaders
+      # (tools/svof_world.lua).
+      - name: test pipe puffs
+        run: lua tools/test_pipe_puffs.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

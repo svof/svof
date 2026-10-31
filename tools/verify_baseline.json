@@ -384,7 +384,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "49bd3adc54cefcdc",
+      "digest": "c786db02a27205c7",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -499,7 +499,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Pipes|script",
-      "digest": "fc3d7176e1b94e98",
+      "digest": "609e2535e8cd2fa3",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Pipes [script]"
     },
     {
@@ -509,7 +509,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Rift|script",
-      "digest": "80753b5bc4ec1860",
+      "digest": "0011a5e0eb87a1c5",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Rift [script]"
     },
     {
@@ -604,7 +604,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "2d5fc30212e76e05",
+      "digest": "e20715b3e87c121d",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

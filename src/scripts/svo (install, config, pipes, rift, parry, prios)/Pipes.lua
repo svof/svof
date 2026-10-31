@@ -59,6 +59,34 @@ function svo.pipeout()
   end
 end
 
+-- what a fill line put in a pipe, as svof names it
+local fill_contents = {
+  ["slippery elm"]                = 'elm',
+  ["a valerian leaf"]             = 'valerian',
+  ["a skullcap flower"]           = 'skullcap',
+  ["a pinch of ground cinnabar"]  = 'cinnabar',
+  ["a pinch of realgar crystals"] = 'realgar',
+  ["a pinch of ground malachite"] = 'malachite',
+}
+
+-- Serverside refills pipes itself (the user, 2026-10-31), so a fill line
+-- comes with nothing of svof's in flight:
+--   You fill your pipe with a skullcap flower.
+-- A fill always gives a pipe its full puffs, so the emptier of the herb's
+-- pipes is full again, holding what the line names. Under serverside the
+-- count stayed at what svof last saw, and read 0 on a pipe the server kept
+-- full
+function svo.pipe_refilled(herb)
+  local pipe = pipes[herb]
+  local contents = type(line) == 'string' and fill_contents[line:match("^You fill your pipe with (.-)%.$") or ""] or herb
+  if pipe.id2 ~= 0 and pipe.puffs2 < pipe.puffs then
+    pipe.puffs2, pipe.filledwith2 = pipe.maxpuffs2 or 10, contents
+  else
+    pipe.puffs, pipe.filledwith = pipe.maxpuffs or 10, contents
+  end
+  svo.rift.invcontents[contents] = math.max((svo.rift.invcontents[contents] or 1) - 1, 0)
+end
+
 -- the game lit every pipe that needed it, or said none did
 function svo.allpipeslit()
   for _, name in ipairs(pipes.pnames) do
