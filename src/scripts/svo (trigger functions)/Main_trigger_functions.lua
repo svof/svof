@@ -3314,8 +3314,11 @@ function svo.missing_tinderbox()
 end
 
 -- "Your head feels stronger and healthier." is the cure line of damagedhead
--- and concussion both (AFFLICTION SHOW), so it is concussion's when svof
--- applied restoration for that, and damagedhead's otherwise
+-- and concussion both (AFFLICTION SHOW), and doesn't say which restoration
+-- cured. It claims the one svof applied for. Outside blackout that is only
+-- the cure: GMCP removes the one cured, and rmaff keeps the other while GMCP
+-- still reports it. In blackout it's a guess, which DIAGNOSE corrects (the
+-- user, 2026-10-31)
 function svo.valid.head_feels_stronger()
   if actions.curingconcussion_waitingfor then
     valid.curingconcussion()

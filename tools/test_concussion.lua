@@ -84,6 +84,26 @@ do -- and damagedhead otherwise
   eq(has(svo, "concussion"), true, "and leaves concussion")
 end
 
+for _, case in ipairs({ { "concussion", "damagedhead" }, { "damagedhead", "concussion" } }) do
+  -- restoration with both can cure either, and outside blackout GMCP says
+  -- which: the line then only claims the cure, and the other one stays
+  local applied, cured = case[1], case[2]
+  local w = world.new()
+  local svo = w.svo
+  w.env.gmcp.Char.Afflictions.List = {
+    { name = "concussion", cure = "", desc = "" }, { name = "damagedhead", cure = "", desc = "" },
+  }
+  svo.signals.gmcpcharafflictionslist:emit()
+  svo.doaction(svo.dict["curing" .. applied].waitingfor)
+  w.env.gmcp.Char.Afflictions.Remove = { cured }
+  svo.signals.gmcpcharafflictionsremove:emit()
+  w.run(CURED, "cured")
+  w.prompt()
+  eq(has(svo, cured), false, "applied for " .. applied .. " and GMCP removed " .. cured .. ": it's gone")
+  eq(has(svo, applied), true, "and " .. applied .. ", which GMCP still reports, stays")
+  eq(w.inflight(), "", "with nothing left in flight")
+end
+
 do -- restoration to the head for it
   local w = world.new()
   local svo = w.svo
