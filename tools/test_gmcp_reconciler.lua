@@ -74,7 +74,7 @@ local VAFF_END_ANCHOR = "if svo.haveskillset('kaido') then"
 local HIDDEN_START_ANCHOR = "    unknownany = {"
 local HIDDEN_END_ANCHOR = "    unknowncrippledlimb = {"
 local ADDUNKNOWN_START_ANCHOR = "codepaste.addunknownany = function(amount)"
-local ADDUNKNOWN_END_ANCHOR = "sk.burns = {"
+local ADDUNKNOWN_END_ANCHOR = "-- Burning is one counted affliction, ablaze"
 
 -- The dictionary's blackout entry, whose end asks for a diagnose and makes
 -- two guesses about the blackout.

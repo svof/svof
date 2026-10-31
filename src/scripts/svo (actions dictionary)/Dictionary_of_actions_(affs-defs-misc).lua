@@ -448,70 +448,62 @@ codepaste.addunknownany = function(amount)
   svo.updateaffcount(svo.dict.unknownany)
 end
 
--- The burn ladder is legacy. Achaea made burning one stacking affliction,
--- which GMCP and serverside report as `burning` with a level, so these five
--- separate afflictions are no longer needed. Replacing them with one counted
--- entry (keeping the name ablaze), and reworking pyre with it, is planned as
--- its own change. Don't build new logic on sk.burns.
---
--- A known problem until then: GMCP's `burning` maps to ablaze alone, so when
--- a rung above it is gained, remove_burns tries to remove ablaze, GMCP still
--- reports burning, and svo.rmaff refuses. ablaze and the new rung both stay
--- tracked, and sk.current_burn returns ablaze.
-sk.burns = {'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn'}
--- removes all burning afflictions except for the optional specified one
-codepaste.remove_burns = function(skipaff)
-  local burns = deepcopy(sk.burns)
-  if skipaff then
-    table.remove(burns, table.index_of(burns, skipaff))
-  end
+-- Burning is one counted affliction, ablaze, as the game has it: GMCP and
+-- serverside report it as `burning` with a level (the repo owner, 2026-09-25;
+-- the user, 2026-10-31). Mending takes it down a level per application, and
+-- so does a tree touch; the line "The raging fire about your skin goes out."
+-- ends it. Catching fire again, or one of the four old escalation lines,
+-- raises it a level, and DIAGNOSE's old rung lines give levels 2 to 5. GMCP's
+-- level, outside blackout, has the final word.
 
-  svo.rmaff(burns)
+-- raises ablaze a level, or to level when one is given (DIAGNOSE). While
+-- GMCP reports burning, its Add has already set the level the line brought,
+-- so the line leaves it
+codepaste.add_burn = function(level)
+  local was = affs.ablaze
+  svo.addaffdict(svo.dict.ablaze)
+  if not affs.ablaze then return end
+  if svo.gmcp_holds('ablaze') and not tonumber(level) then return end
+  local count = svo.dict.ablaze.count or 0
+  if tonumber(level) then
+    count = tonumber(level)
+  elseif was then
+    count = count + 1
+  end
+  svo.dict.ablaze.count = math.max(count, 1)
+  svo.updateaffcount(svo.dict.ablaze)
+  -- the old ladder's top, meltingburn, warned of this
+  if svo.dict.ablaze.count >= 5 then sk.warn 'golemdestroyable' end
+end
+
+-- takes ablaze down amount levels, and off below one. While GMCP reports
+-- burning, its Add or Remove has already said where the cure left it
+codepaste.reduce_burn = function(amount)
+  if not affs.ablaze then return end
+  if svo.gmcp_holds('ablaze') then return end
+  local count = (svo.dict.ablaze.count or 1) - (amount or 1)
+  if count < 1 then
+    svo.rmaff('ablaze')
+    return
+  end
+  svo.dict.ablaze.count = count
+  svo.updateaffcount(svo.dict.ablaze)
 end
 
 -- -> boolean
--- Pyre builds pyre and ablaze, and a burn cannot tick down below the pyre
--- level. Salving a burn that sits at or under that level is wasted - it comes
--- straight back - so this returns true when pyre is holding the given burn in
--- place and the salve should be skipped.
+-- While pyre is active, ablaze may not be cured below the intensity of the
+-- pyre's own stacks (AFFLICTION SHOW). Mending takes ablaze down one level,
+-- so salving it at or under pyre's level is wasted - it comes straight back -
+-- and this says to skip the salve.
 --
--- Applying takes the burn down exactly one rung, and the rung it lands on has
--- to be at or above the pyre level to survive, so the burn's own index in
--- sk.burns is the threshold: ablaze is held from pyre 1, severeburn from 2,
--- extremeburn from 3. Pyre caps at 3 in game, so charredburn and meltingburn
--- are never held today; they are written the same way rather than dropped, so
--- the rule stays right if that cap ever moves.
---
--- Two traps live here. The level is on .p - svo.affs entries are
--- { p = <the dict entry>, sw = <stopwatch> } with no __index on svo.affs - so
--- reading affs.pyre.count gave nil and raised on the comparison. And having
--- pyre at all is level 1 or more, which is why presence floors the answer at
--- 1: only the GMCP path ever raises svo.dict.pyre.count, since
--- svo.valid.simplepyre passes no argument and pyre sits in the plain diag list
--- rather than the counted one, so without GMCP the stored level stays 0 while
--- the affliction is genuinely there.
-codepaste.pyre_holds = function(burn)
-  if not affs.pyre then return false end
+-- The level is on .p - svo.affs entries are { p = <the dict entry>, sw =
+-- <stopwatch> } with no __index on svo.affs. And having pyre or ablaze at all
+-- is level 1 or more, which is why presence floors both at 1: without GMCP a
+-- stored level can sit at 0 while the affliction is genuinely there.
+codepaste.pyre_holds = function()
+  if not affs.pyre or not affs.ablaze then return false end
 
-  return math.max(affs.pyre.p.count or 0, 1) >= table.index_of(sk.burns, burn)
-end
-
-sk.next_burn = function()
-  for i,v in ipairs(sk.burns) do
-    if affs[v] then return sk.burns[i+1] or sk.burns[#sk.burns] end
-  end
-end
-
-sk.current_burn = function()
-  for _,v in ipairs(sk.burns) do
-    if affs[v] then return v end
-  end
-end
-
-sk.previous_burn = function(howfar)
-  for i,v in ipairs(sk.burns) do
-    if affs[v] then return sk.burns[i-(howfar and howfar or 1)] or nil end
-  end
+  return math.max(affs.pyre.p.count or 0, 1) >= math.max(affs.ablaze.p.count or 0, 1)
 end
 
 codepaste.serversideahealthmanaprio = function()
@@ -4727,29 +4719,36 @@ if not next(svo.dict) then
       }
     },
     
-    ablaze = {           
+    -- Burning, as one counted affliction: see codepaste.add_burn
+    ablaze = {
       gamename = 'burning',
+      count = 0,
       onservereignore = function()
         return ((svo.defdefup[svo.defs.mode].torch or svo.defkeepup[svo.defs.mode].torch) and 
         (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))
       end,
       salve = {
         isadvisable = function()
-          return (affs.ablaze and not affs.condemned and not codepaste.pyre_holds('ablaze') and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and
+          return (affs.ablaze and not affs.condemned and not codepaste.pyre_holds() and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and
           (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))) or false
         end,
   
+        -- "The fires consuming you diminish somewhat."
         oncompleted = function()
+          svo.lostbal_salve()
+          codepaste.reduce_burn(1)
+          if not affs.ablaze and defc.torch and (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
+            defences.lost('torch')
+          end
+        end,
+  
+        -- "The raging fire about your skin goes out."
+        all = function()
           svo.lostbal_salve()
           svo.rmaff('ablaze')
           if defc.torch and (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
             defences.lost('torch')
           end
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
         end,
   
         noeffect = function()
@@ -4769,224 +4768,37 @@ if not next(svo.dict) then
         end
       },
       aff = {
-        oncompleted = function()
+        oncompleted = function(level)
           if ((defdefup[defs.mode].torch) or (conf.keepup and defkeepup[defs.mode].torch)) and 
           (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
             defences.got('torch')
           else
-            codepaste.remove_burns('ablaze')
-            svo.addaffdict(svo.dict.ablaze)
+            codepaste.add_burn(level)
           end
         end,
       },
       gone = {
         oncompleted = function()
-          local currentburn = sk.current_burn()
-          svo.rmaff(currentburn)
+          svo.rmaff('ablaze')
           if defc.torch and (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
             defences.lost('torch')
           end
         end,
   
-        -- used in blackout and passive curing where multiple levels could be cured at once
+        -- used in blackout and passive curing where several levels could be
+        -- cured at once: amount levels down, or one
         generic_reducelevel = function(amount)
-          -- if no amount is specified, find the current level and take it down a notch
-          if not amount then
-            local reduceto, currentburn = sk.previous_burn(), sk.current_burn()
-  
-            svo.rmaff(currentburn)
-            svo.addaffdict(svo.dict[reduceto])
-          else -- amount is specified
-            local reduceto, currentburn = sk.previous_burn(amount), sk.current_burn()
-            svo.rmaff(currentburn)
-  
-            if not reduceto then reduceto = 'ablaze' end
-            svo.addaffdict(svo.dict[reduceto])
-          end
-        end
-      }
-    },
-    severeburn = {
-      salve = {
-        irregular = true,
-  
-        isadvisable = function()
-          return (affs.severeburn and not affs.condemned and not codepaste.pyre_holds('severeburn')) or false
-        end,
-  
-        oncompleted = function()
-          svo.lostbal_salve()
-          svo.rmaff('severeburn')
-          svo.addaffdict(svo.dict.ablaze)
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
-        end,
-  
-        noeffect = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        empty = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        applycure = {'mending'},
-        actions = {"apply mending to body", "apply mending"},
-        onstart = function()
-          svo.apply(svo.dict.severeburn.salve, " to body")
+          codepaste.reduce_burn(tonumber(amount) or 1)
         end
       },
-      aff = {
-        oncompleted = function()
-          codepaste.remove_burns('severeburn')
-          svo.addaffdict(svo.dict.severeburn)
-        end,
-      },
-      gone = {
-        oncompleted = function() svo.rmaff('severeburn') end,
-      }
-    },
-    extremeburn = {
-      salve = {
-        irregular = true,
-  
-        isadvisable = function()
-          return (affs.extremeburn and not affs.condemned and not codepaste.pyre_holds('extremeburn')) or false
-        end,
-  
-        oncompleted = function()
-          svo.lostbal_salve()
-          svo.rmaff('extremeburn')
-          svo.addaffdict(svo.dict.severeburn)
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
-        end,
-  
-        noeffect = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        empty = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        applycure = {'mending'},
-        actions = {"apply mending to body", "apply mending"},
-        onstart = function()
-          svo.apply(svo.dict.extremeburn.salve, " to body")
-        end
-      },
-      aff = {
-        oncompleted = function()
-          codepaste.remove_burns('extremeburn')
-          svo.addaffdict(svo.dict.extremeburn)
-        end,
-      },
-      gone = {
-        oncompleted = function() svo.rmaff('extremeburn') end,
-      }
-    },
-    charredburn = {
-      salve = {
-        irregular = true,
-  
-        isadvisable = function()
-          return (affs.charredburn and not affs.condemned and not codepaste.pyre_holds('charredburn')) or false
-        end,
-  
-        oncompleted = function()
-          svo.lostbal_salve()
-          svo.rmaff('charredburn')
-          svo.addaffdict(svo.dict.extremeburn)
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
-        end,
-  
-        noeffect = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        empty = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        applycure = {'mending'},
-        actions = {"apply mending to body", "apply mending"},
-        onstart = function()
-          svo.apply(svo.dict.charredburn.salve, " to body")
-        end
-      },
-      aff = {
-        oncompleted = function()
-          codepaste.remove_burns('charredburn')
-          svo.addaffdict(svo.dict.charredburn)
-        end,
-      },
-      gone = {
-        oncompleted = function() svo.rmaff('charredburn') end,
-      }
-    },
-    meltingburn = {
-      salve = {
-        irregular = true,
-  
-        isadvisable = function()
-          return (affs.meltingburn and not affs.condemned and not codepaste.pyre_holds('meltingburn')) or false
-        end,
-  
-        oncompleted = function()
-          svo.lostbal_salve()
-          svo.rmaff('meltingburn')
-          svo.addaffdict(svo.dict.charredburn)
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
-        end,
-  
-        noeffect = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        empty = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        applycure = {'mending'},
-        actions = {"apply mending to body", "apply mending"},
-        onstart = function()
-          svo.apply(svo.dict.meltingburn.salve, " to body")
-        end
-      },
-      aff = {
-        oncompleted = function()
-          codepaste.remove_burns('meltingburn')
-          svo.addaffdict(svo.dict.meltingburn)
-  
-          sk.warn 'golemdestroyable'
-        end,
-      },
-      gone = {
-        oncompleted = function() svo.rmaff('meltingburn') end,
-      }
+      -- having it at all is level 1, whichever way it was added, and GMCP
+      -- sets its own level straight after
+      onadded = function()
+        if (svo.dict.ablaze.count or 0) < 1 then svo.dict.ablaze.count = 1 end
+      end,
+      onremoved = function()
+        svo.dict.ablaze.count = 0
+      end,
     },
     selarnia = {
       salve = {
@@ -5827,20 +5639,14 @@ if not next(svo.dict) then
           -- small heuristic - shivering can be upgraded to frozen
           if aff == 'shivering' and not affs.shivering and affs.frozen then
             svo.rmaff('frozen')
-          -- handle levels of burns
+          -- burning: a touch takes it down a level (the user, 2026-10-31), and
+          -- "goes out" ends it
   
           elseif aff == "all burns" then
-            codepaste.remove_burns()
+            svo.rmaff('ablaze')
   
           elseif aff == 'burn' then
-            local previousburn, currentburn = sk.previous_burn(), sk.current_burn()
-  
-            if not currentburn then
-              codepaste.remove_burns()
-            else
-              svo.rmaff(currentburn)
-              svo.addaffdict(svo.dict[previousburn])
-            end
+            codepaste.reduce_burn(1)
   
           elseif aff == 'skullfractures' then
             svo.updateaffcount(svo.dict.skullfractures)
@@ -8220,9 +8026,8 @@ if not next(svo.dict) then
     -- are NOT precedent for it. The game calls all four *fisted and svof
     -- declines that name for the other three (airfisted is galed, icefisted
     -- is icing, voidfisted is voided), so this is now the only one of the
-    -- four whose svof name matches the game's. Nothing here belongs to the
-    -- ablaze burn escalation (severeburn -> meltingburn), which is
-    -- untouched.
+    -- four whose svof name matches the game's. Nothing here belongs to
+    -- ablaze, the game's burning.
     flamefisted = {
       waitingfor = {
         customwait = 15, -- AFFLICTION SHOW's default time

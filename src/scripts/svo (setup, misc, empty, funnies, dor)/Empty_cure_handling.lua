@@ -262,7 +262,7 @@ empty.apply_mending = function()
   svo.dict.unknowncrippledarm.count = 0
   svo.dict.unknowncrippledleg.count = 0
   svo.rmaff({'selarnia', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'ablaze',
-    'severeburn', 'extremeburn', 'charredburn', 'meltingburn', 'unknowncrippledarm', 'unknowncrippledleg',
+    'unknowncrippledarm', 'unknowncrippledleg',
     'unknowncrippledlimb'})
 end
 

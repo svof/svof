@@ -1,1 +1,1 @@
-svo.valid.diag('meltingburn')
+svo.valid.diag('ablaze', 5)
