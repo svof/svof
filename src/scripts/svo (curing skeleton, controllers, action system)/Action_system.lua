@@ -57,7 +57,7 @@ svo.doaction = function(arg1, arg2)
   -- it in dict action.
 
   local expirein =
-    affs.mangledhead and sys.sync
+    affs.concussion and sys.sync
     and (syncdelay()+.3) -- w/ aeon, waits 1.3s and etc, w/o aeon - 0.3s and etc..
     or ((act.customwait or (act.customwaitf and act.customwaitf()) or 0) + sys.wait) + syncdelay()
 

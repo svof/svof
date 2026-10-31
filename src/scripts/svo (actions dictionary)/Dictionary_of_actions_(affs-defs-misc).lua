@@ -4661,6 +4661,62 @@ if not next(svo.dict) then
         noeffect = function() svo.rmaff('damagedhead') end
       }
     },
+    -- The game's third head affliction, beside damagedhead and mangledhead:
+    -- restoration to the head cures it outright, and its cure line is
+    -- damagedhead's (AFFLICTION SHOW, captured 2026-10-20). svof used to
+    -- count it as mangledhead.
+    concussion = {
+      salve = {
+        isadvisable = function()
+          return (affs.concussion) or false
+        end,
+  
+        oncompleted = function()
+          svo.lostbal_salve()
+  
+          svo.doaction(svo.dict.curingconcussion.waitingfor)
+        end,
+  
+        applycure = {'restoration', 'reconstructive'},
+        actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
+        onstart = function()
+          svo.apply(svo.dict.concussion.salve, " to head")
+        end,
+  
+        -- we get no msg from an application of this
+        empty = function()
+          svo.dict.concussion.salve.oncompleted()
+        end
+      },
+      aff = {
+        oncompleted = function (oldhp)
+          if not conf.aillusion or not oldhp or oldhp > stats.currenthealth or svo.paragraph_length >= 3 then
+            svo.addaffdict(svo.dict.concussion)
+            signals.after_lifevision_processing:unblock(cnrl.checkwarning)
+          end
+        end,
+  
+        forced = function()
+          svo.addaffdict(svo.dict.concussion)
+        end
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('concussion') end,
+      }
+    },
+    curingconcussion = {
+      waitingfor = {
+        customwait = 6,
+  
+        oncompleted = function() svo.rmaff('concussion') end,
+  
+        ontimeout = function() svo.rmaff('concussion') end,
+  
+        onstart = function() end,
+  
+        noeffect = function() svo.rmaff('concussion') end
+      }
+    },
   
   
   -- salve cures
@@ -10758,7 +10814,7 @@ if not next(svo.dict) then
       calcifiedtorso = 'calcifiedtorso',
       claustrophobia = 'claustrophobia',
       clumsiness = 'clumsiness',
-      concussion = 'mangledhead',
+      concussion = 'concussion',
       conflagration = false,
       confusion = 'confusion',
       corruption = 'corrupted',

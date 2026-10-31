@@ -20,6 +20,7 @@ local aff_abbrev = {
   cholerichumour      = "choH",
   claustrophobia      = "clau",
   clumsiness          = "cl",
+  concussion          = "conc",
   confusion           = "con",
   corrupted           = "corr",
   crackedribs         = "cr",
