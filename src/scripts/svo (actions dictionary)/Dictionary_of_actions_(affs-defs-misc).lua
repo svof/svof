@@ -4735,7 +4735,7 @@ if not next(svo.dict) then
       end,
       salve = {
         isadvisable = function()
-          return (affs.ablaze and not codepaste.pyre_holds('ablaze') and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and
+          return (affs.ablaze and not affs.condemned and not codepaste.pyre_holds('ablaze') and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and
           (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))) or false
         end,
   
@@ -4811,7 +4811,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.severeburn and not codepaste.pyre_holds('severeburn')) or false
+          return (affs.severeburn and not affs.condemned and not codepaste.pyre_holds('severeburn')) or false
         end,
   
         oncompleted = function()
@@ -4856,7 +4856,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.extremeburn and not codepaste.pyre_holds('extremeburn')) or false
+          return (affs.extremeburn and not affs.condemned and not codepaste.pyre_holds('extremeburn')) or false
         end,
   
         oncompleted = function()
@@ -4901,7 +4901,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.charredburn and not codepaste.pyre_holds('charredburn')) or false
+          return (affs.charredburn and not affs.condemned and not codepaste.pyre_holds('charredburn')) or false
         end,
   
         oncompleted = function()
@@ -4946,7 +4946,7 @@ if not next(svo.dict) then
         irregular = true,
   
         isadvisable = function()
-          return (affs.meltingburn and not codepaste.pyre_holds('meltingburn')) or false
+          return (affs.meltingburn and not affs.condemned and not codepaste.pyre_holds('meltingburn')) or false
         end,
   
         oncompleted = function()
@@ -5163,6 +5163,46 @@ if not next(svo.dict) then
       end,
       onremoved = function()
         if svo.actions.scalded_waitingfor then svo.killaction(svo.dict.scalded.waitingfor) end
+      end,
+    },
+    -- Nothing cures condemned; it wears off after 40 seconds (AFFLICTION SHOW,
+    -- 2026-10-20). While it lasts, ablaze can't be cured, so the burn salves
+    -- wait on it. The game prints no line when it's given, so GMCP or DIAGNOSE
+    -- adds it.
+    condemned = {
+      waitingfor = {
+        customwait = 40,
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('condemned')
+        end,
+
+        oncompleted = function()
+          svo.rmaff('condemned')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.condemned)
+        end,
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('condemned') end,
+      },
+      -- onadded and not aff.oncompleted, because GMCP adds it with addaffdict
+      -- and never runs the aff action.
+      onadded = function()
+        if not svo.actions.condemned_waitingfor then svo.doaction(svo.dict.condemned.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.condemned_waitingfor then svo.killaction(svo.dict.condemned.waitingfor) end
       end,
     },
     numbedleftarm = {
@@ -10761,6 +10801,7 @@ if not next(svo.dict) then
       claustrophobia = 'claustrophobia',
       clumsiness = 'clumsiness',
       concussion = 'seriousconcussion',
+      condemned = 'condemned',
       conflagration = false,
       confusion = 'confusion',
       corruption = 'corrupted',
