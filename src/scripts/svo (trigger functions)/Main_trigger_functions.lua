@@ -1926,11 +1926,13 @@ function svo.valid.got_pressure(calc)
 	end
 end
 
+-- count is how many times the line says the humour was tempered, which the
+-- aff handler would take as its level: a tempering line can't say the level,
+-- and can be an illusion, so it passes none. Kept for scripts that pass it
 function svo.valid.got_humour(which,count)
   svo.assert(svo.dict[which..'humour'], "svo.valid.got_humour: which humour to add?")
-  local humourlevels = count or 1
   svo.checkaction(svo.dict[which..'humour'].aff, true)
-  lifevision.add(actions[which..'humour_aff'].p, nil, humourlevels)
+  lifevision.add(actions[which..'humour_aff'].p)
 end
 
 function svo.valid.sanguine_inundate()

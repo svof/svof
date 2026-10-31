@@ -194,6 +194,26 @@ check("the second hit passes no level", added[2] and added[2].arg, nil)
 fenv.valid.simplecrackedribs(3)
 check("a level a script gives is passed on", added[3] and added[3].arg, 3)
 
+-- The humour tempering lines, from the real svo.valid.got_humour: the
+-- doubly tempered one passes 2, which is how many temperings the line saw,
+-- not a level, so none is passed on.
+local MAIN = "src/scripts/svo (trigger functions)/Main_trigger_functions.lua"
+local main = read_file(MAIN)
+local hs = main:find("function svo.valid.got_humour(which,count)", 1, true)
+local he = hs and main:find("\nend\n", hs, true)
+if not he then error("svo.valid.got_humour not found in " .. MAIN .. "; update this test's anchors") end
+added = {}
+local henv = {
+  lifevision = lifevision, actions = {cholerichumour_aff = {p = {name = 'cholerichumour_aff'}}},
+  svo = {valid = {}, dict = {cholerichumour = {aff = {}}},
+    assert = function(c, m) if not c then error(m) end end, checkaction = function() end},
+}
+load_in("return function() " .. main:sub(hs, he + #"\nend") .. " end", "got_humour", henv)()
+henv.svo.valid.got_humour('choleric')
+henv.svo.valid.got_humour('choleric', 2)
+check("a tempering line passes no level", added[1] and added[1].arg, nil)
+check("a doubly tempered line passes no level", added[2] and added[2].arg, nil)
+
 -- Every entry with a count field is floored or sets its own count.
 local floored, seen = {}, {}
 for _, name in ipairs(FLOORED) do floored[name] = true end
