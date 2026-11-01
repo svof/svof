@@ -58,7 +58,9 @@ In flight (2026-10-31), all ready for review and none merged:
 | #892 | `blademaster-slash-pattern`, `C:\work\svof-bm` | the Blademaster slash lookback's `\w+` (the letter w in Lua 5.1) made `%w+`, so a light slash is a simple break again; CLAUDE.md's syntax-check note no longer counts the false alarms (gate 1.9993) |
 | #893 | `asleep-is-sleep`, `C:\work\svof-asleep` | `symp_asleep` and `transfixily` checked a key named asleep: a refused command while asleep now clears what was in flight (wake and gones kept), and a transfixed refusal takes sleep off in blackout. The `@affs` asleep key is #881's (gate 1.9994) |
 | #894 | `transmutation-cleanup`, `C:\work\svof-transmute` | the dead transmutation names out of 44 cure lists and 37 actions lists, `rift.vial_conversions` removed (`svo.affcures` reads the live names), defstrip's density row removed; GMCP's and serverside's `density` for mass kept (gate 1.9995) |
-| #895 | `missing-cure-lines`, `C:\work\svof-curelines` | AFFLICTION SHOW's cure line on Ate, Smoke, General cures and Tree cures triggers for 14 tree-curable afflictions, 37 triggers; twelve had none (gate 1.9996) |
+| #895 | `missing-cure-lines`, `C:\work\svof-curelines` | AFFLICTION SHOW's cure line on Ate, Smoke, General cures and Tree cures triggers for 15 tree-curable afflictions, 38 triggers; twelve had none, and phlogistication's is its Expire msg (gate 1.9996) |
+| #897 | `removal-path-check`, `C:\work\svof-removal` | `svo.removeaff` and `svo.removeafflevel` fixed for every affliction, and five wrong names a scan found (shield's `mangledlrightarm`, `unwknowncrippledarm`, the missing arms, `illness_constitution`); the scan, every gone and both public removals checked (gate 1.9998). `asleep` comes off its recorded list when #893 merges |
+| #898 | `verify-merged-hygiene`, `C:\work\svof-vmh` | an `ITEM_MOVE` entry that matches nothing is structural, as an unused `ITEM_RENAME` key is |
 | #896 | `pipe-puffs-by-herb`, `C:\work\svof-puffs` | under serverside the server's fill line refills the emptier pipe of its herb, a puff comes off pipe 1 then pipe 2, and filling pipe 2 keeps to its own fields (gate 1.9997) |
 
 #883 to #889 and #892 to #896 each branch from `in-client-svof` and each regenerates
@@ -76,11 +78,10 @@ saved priority list kept across the update and full parry on each limb; for
 skull; for #892, a Blademaster slash across the arms; for #893, a command
 refused while asleep and resent on waking, and a transfixed refusal in
 blackout; for #895, a herb cure of one of the ten in blackout and a tree
-touch curing one of the 14; for #896, a server refill under serverside, which
+touch curing one of the 15; for #896, a server refill under serverside, which
 #896 assumes prints the same fill line as your own; and the older ones in the
-`svof-pending-live-tests` memory. Not done: phlogistication's cure line, which
-the capture lacks (it lists `phlogisticated` with none), and the class defences
-batch below, left out on 2026-10-31. Waiting on the owner:
+`svof-pending-live-tests` memory. Not done: the class defences batch below,
+left out on 2026-10-31. Waiting on the owner:
 which abilities constricted slows, the Spiritlore Snare and Tarot Hanged Man
 affliction names, and a mucous capture for its recovery time.
 
@@ -908,7 +909,10 @@ own from whatever the dictionary holds. Phase 3 has to re-run
 of it.
 
 ### Four fixes to `check_guide_claims.py`
-**Status: found 2026-09-21. Proposed, not discussed.**
+**Status: found 2026-09-21. Items 3 and 4 applied 2026-10-31 in the Cowork export
+(125 of 129 pass against `82e7f14`; the zip still has the old copy). Items 1
+and 2 wait on #891. The tool no longer runs against `in-client-svof`: it
+parses the `diag` name list the handler inversion removed.**
 
 That gate exits 1 on this checkout, 123 of 129 claims passing. While it sits
 red, a real regression in it is easy to miss. Four of the six failures are the
@@ -992,7 +996,10 @@ a Windows checkout differs by exactly the line count. Four such figures were
 checked and all four match under LF.
 
 ### A static check over the dictionary's removal paths
-**Status: found 2026-09-21. Proposed, not discussed.**
+**Status: opened 2026-10-31 as #897, with both removal API defects fixed. Found
+on the way, not fixed: every counted entry's `gone.general_cure` is a stub, so
+svof's own text lines for one cured level, through `svo.valid.generic_cure`,
+don't lower the count in blackout.**
 
 The spec's section 18.3 already proposes a `tools/` check for a `gone` or `aff`
 handler whose `rmaff` names something other than its own entry. Widen it to
@@ -1020,7 +1027,7 @@ move would then need a declared map, like `ITEM_RENAME`. Detail in the
 `svof-item-renames-are-structural` memory.
 
 ### Report an `ITEM_MOVE` entry that matches nothing
-**Status: found 2026-09-27. Proposed, not discussed.**
+**Status: opened 2026-10-31 as #898.**
 
 #852 (merged 2026-09-27 as `95a89a4`) made an unused `ITEM_RENAME` key a
 structural failure, since a typo'd or re-pinned entry otherwise sits there as
