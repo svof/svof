@@ -22,9 +22,10 @@ control in three ways:
   (`Serverside.lua:36`), so the first sync re-sends every number.
   `vconfig serverside on` sends `PRIORITY RESET` (`Serverside.lua:496`), and a
   class change sends `curing priority reset` (`svo.classchange.lua:36`).
-- **The defence list is svof's too.** The server keeps up whatever is on its
-  defence list, and svof writes that list from its own keepup list. Edits
-  made to it in game get overwritten the same way.
+- **The defence numbers are svof's too.** The server keeps up whatever is on
+  its defence list, and svof writes that list, numbers included, from its
+  own keepup list and positions. Numbers set in game get overwritten the
+  same way.
 
 ## Game facts (the user, 2026-10-31)
 
@@ -71,10 +72,10 @@ control in three ways:
    ignores, go to 26 and get the user's number back afterwards.
 5. **Tactical switches stay** (autoslick, `pva`, `avs`, `pvd`), as temporary
    changes to the user's numbers.
-6. **Custom mode covers the server's defence list too.** The server already
-   keeps up whatever is on that list, so in custom mode it's the user's
-   keepup. svof steps in only for defup: it adds the mode's defup defences
-   and takes them off again when defup finishes.
+6. **Keepup and defup stay svof's in both modes.** `vkeep`, `vdefup`,
+   `vshow keepup`, `vdefs`, and their toggles work as today, and svof still
+   decides which defences are on the server's list. In custom mode, only the
+   defence numbers are the user's.
 7. **svof recognizes stack entries.** It never widens the user's per-stack
    choices: 26 on stack 1 with `(2)` at 6 is deliberate. svof sets every
    stack entry to 26 only when its reason covers the whole affliction.
@@ -96,8 +97,13 @@ control in three ways:
     overrides. The table takes the game's defaults.
 15. **Parry stays out.** The server has no parry priorities, and
     `vp nextprio` stays as it is.
-16. **One server defence list per defence mode.** Switching mode with `vdefs`
-    sends that mode's list.
+16. **Each defence mode has its own defence numbers.** A new mode starts from
+    auto's numbers. The slowcuring set gets the same numbers as the normal
+    set.
+17. **`vp serveraffs` and `vp serverdefs` show the server lists**, and
+    `vp serveraffs slowcuring` shows the slow set. There's no per-balance
+    view, because the server's list doesn't group by balance. The edit
+    commands keep `server` last.
 
 ## What svof does today (read in full)
 
@@ -177,6 +183,12 @@ control in three ways:
   defences, and swaps it back on `svo done defup` (`Serverside.lua:754`).
   `vshow keepup` links to `CURING PRIORITY DEFENCE LIST` and says it's the
   same as svof's keepup list.
+- **The keepup and defup toggles.** `vshow keepup` and `vshow defup` show a
+  grid of toggles, three per row in fixed-width columns, that call
+  `defs.keepup` and `defs.defup` (`Defences.lua:3035`, `:3089`). Keepup
+  changes raise `svo keepup changed`, which the sync listens to. Defup
+  changes raise `svo defup changed`, which nothing listens to, so a change
+  during defup reaches the server only at the next sync.
 - **Defences svof keeps for itself.** Defences the server can't raise
   (`undeffable`, such as metamorphosis morphs) and ones svof handles itself
   stay with svof. `onservereignore` takes blind and deaf off the server's
@@ -184,10 +196,11 @@ control in three ways:
   elementals.
 - **Defence modes.** svof saves them once per profile in
   `svo/defup+keepup/`, not per class, and each mode's lists can hold
-  defences from every class. A
-  class change rebuilds the dictionary for the new class, so svof only uses
-  that class's defences, and resets the server's affliction and defence
-  lists (`svo.classchange.lua:34`).
+  defences from every class. svof's defence order is shared by every mode,
+  because it lives on the dictionary entries. A class change rebuilds the
+  dictionary for the new class, so svof only uses that class's defences,
+  and resets the server's affliction and defence lists
+  (`svo.classchange.lua:34`).
 - **The keepup commands:** `vkeep` (`^vkeep(?:up)? (\w+)(?: (\w+))?$`, a
   defence and then `on` or `off`), `vdefup`, `vshow keepup`
   (`^vshow(k| keepup| keep)$`), and `vdefs <mode>`.
@@ -320,60 +333,82 @@ svof echoes each warning once per change, with a clickable fix:
 
 ### Defences
 
-- **The table** holds one server defence list per defence mode, keyed by the
-  game's defence names, with their numbers.
-- **Sending a mode's list.** svof sends only the defences the current class
-  can raise, plus the general ones, the way svof's own modes work today.
-  Defences svof has no entry for go as they are, because svof can't tell
-  their class.
-- **Switching mode.** `vdefs <mode>` sends the difference between the old
-  mode's list and the new one, and defup then adds its defences on top.
-- **Defup.** When defup starts, svof adds the mode's defup defences that
-  aren't on the list, at the numbers auto mode would give them. Defences
-  already on the list keep the user's number. When defup finishes or is
-  cancelled, svof takes off the ones it added. These sends are overrides,
-  so the echo-loop guard keeps them out of the table.
-- **Defences svof keeps for itself.** `undeffable` defences and ones svof
-  handles itself stay on svof's own keepup list, and svof keeps them off the
-  server's list. The conditional ones (blind and deaf with a Shindo or Kaido
-  skill, and waterbubble for water elementals) come off the server's list
-  while their condition holds, and go back afterwards.
-- **Edits in game.** `curing priority defence <def> <n>` goes into the
-  current mode's list. The confirmation line is owed (step 0).
-- **Edits in svof** use the keepup commands with `server` last, not `vset`.
-  The server uses `blindness` and `deafness` in both the affliction and the
-  defence list, so `vset` couldn't tell which one is meant.
-  - `vshow keepup server` shows the current mode's server defence list, with
+- **What's on the list stays svof's.** Keepup and defup decide which
+  defences are on the server's list in both modes, exactly as today: svof
+  swaps the list to the defup defences during defup, and back to keepup
+  afterwards. The toggles in `vshow keepup` and `vshow defup`, and `vkeep`,
+  `vdefup`, and `vdefs`, work as they do now.
+- **The numbers are the user's in custom mode.** Whenever svof puts a
+  defence on the server's list, it uses the user's number for that defence
+  in the current mode instead of its own position.
+- **One table of numbers per defence mode**, keyed by the game's defence
+  names. Every mode's table covers every defence svof knows, so a toggle
+  always has a number to use.
+- **Where the numbers start.** Switching to custom fills the current mode
+  from the server's defence list, and every other mode from auto's order.
+  svof's defence order is shared by every mode, so auto's number for a
+  defence is the same in each. A custom defence created later gets auto's
+  number in every mode.
+- **The mode commands:**
+  - `vcreate defmode` gives the new mode auto's numbers.
+  - `vcopy defmode A TO B` copies A's numbers along with its lists.
+  - `vrename defmode` and `vdelete defmode` rename or drop that mode's
     numbers.
-  - `vkeep cloak server` toggles a defence on that list.
-  - `vkeep cloak 3 server` puts it on the list at 3.
-- **`curing defences on` and `off`** still follow `conf.keepup`, as today.
+- **Switching mode.** `vdefs <mode>` sends the numbers that differ between
+  the two modes, along with the keepup changes, batched like any other send.
+- **Both curingsets** get the same numbers.
+- **Edits in game.** `curing priority defence <def> <n>` goes into the
+  current mode's numbers. The confirmation line is owed (step 0). If the
+  defence isn't on the current mode's keepup list, svof records the number
+  but takes the defence off at its next sync, because keepup decides what's
+  on the list. svof says so, with a link to run `vkeep <def>`.
+- **Edits in svof.** `vset cloak defences 3 server` sets cloak's number in
+  the current mode, with `defences` where `slowcuring` would go. Plain
+  `vset cloak 3 server` can't do it, because the server uses `blindness` and
+  `deafness` in both the affliction and the defence list. svof names the
+  mode when it confirms, for example "cloak is 3 in combat mode". To edit
+  another mode's numbers, switch to it first.
+- **Showing them.** `vp serverdefs` shows the current mode's numbers, with
+  the mode in the header. In custom mode, the "view serverside keepup" link
+  in `vshow keepup` opens `vp serverdefs` instead of sending `CURING
+  PRIORITY DEFENCE LIST`. The toggle grid stays as it is: its columns are
+  fixed-width, and some entries already use the space after the name.
+- **Defup toggles reach the server at once.** The sync starts listening to
+  `svo defup changed` while defup runs, in both modes.
+- **Unchanged:**
+  - Defences svof keeps for itself: `undeffable` defences and ones svof
+    handles itself stay off the server's list. The conditional ones (blind
+    and deaf with a Shindo or Kaido skill, and waterbubble for water
+    elementals) come off it while their condition holds.
+  - Class changes: the sync already sends only the current class's
+    defences, and now uses the user's numbers for them.
+  - `curing defences on` and `off` still follow `conf.keepup`.
 
 ### Mode switches and resets
 
 - **Auto to custom.** Read the normal list, then the slowcuring list (inside
   a `curingset switch` wrapper), then the defence list, and commit each.
-  The server only holds the current defence mode's list, so every other mode
-  starts from what auto mode would send for its keepup list. Then stop the
-  sync and apply the overrides. The overrides mostly match what auto already
-  sent.
+  The defence list gives the current mode's numbers, and every other mode
+  starts from auto's (see Defences). Then stop the affliction half of the
+  sync, switch the defence half to the user's numbers, and apply the
+  overrides. The overrides mostly match what auto already sent.
 - **In custom:**
-  - `updateserversideprios` sends neither affliction numbers nor defences.
-    The defence list follows the rules in the Defences section.
+  - `updateserversideprios` sends no affliction numbers. It still puts
+    defences on and off the server's list, with the user's numbers.
   - `vconfig serverside on` sends no `PRIORITY RESET`, and sends the table
     plus overrides instead.
   - A class change sends only the defence reset, which clears the old
-    class's defences, and then sends the current mode's defence list for the
-    new class.
+    class's defences. The sync then puts the new class's defences on with
+    the user's numbers.
 - **At login in custom.** Read the affliction and defence lists once, and
   compare them with what svof expects on the server: the table plus the
   active overrides, saved toggles included. That way an active `pva`, or a
-  26 for an affliction svof cures, doesn't show up as a difference. If anything else differs, show the
-  differences, with one link to keep the server's numbers and one to send
-  svof's.
+  26 for an affliction svof cures, doesn't show up as a difference. If
+  anything else differs, show the differences, with one link to keep the
+  server's numbers and one to send svof's.
 - **Custom to auto.** Give every per-stack ignore its number back, clear the
   per-stack ignores, then run the full resync `vconfig serverside on` does
-  today, which also writes the defence list from svof's keepup list again.
+  today, which also gives the defences svof's positions again.
   Say that any stack entries the user set stay on the server, since auto
   never touches them.
 
@@ -382,13 +417,12 @@ svof echoes each warning once per change, with a clickable fix:
 svof's own list commands edit the server lists when the last word is
 `server`. The user picks the slow set the same way as for svof's lists. The
 server has one number per affliction, not one per balance, so the server
-forms of `vset` and `vswap` take no balance. The defence list has its own
-commands, in the Defences section.
+forms of `vset` and `vswap` take no balance. `vp` takes a list name
+instead, and the defence numbers are covered in the Defences section.
 
 | Normal set | Slowcuring set | What it does |
 |---|---|---|
-| `vp server` | `vp slowcuring server` | Shows the whole set, grouped by number like the game's list |
-| `vp herb server` | `vp slowcuring herb server` | Shows only the afflictions one balance cures, in server order |
+| `vp serveraffs` | `vp serveraffs slowcuring` | Shows the whole set, grouped by number like the game's list |
 | `vset paralysis 3 server` | `vset paralysis slowcuring 3 server` | Sets one entry |
 | `vswap paralysis asthma server` | `vswapslow paralysis asthma server` | Swaps two entries' numbers |
 
@@ -399,7 +433,11 @@ commands, in the Defences section.
 - **Stack entries** use the game's form: `vset unweavingmind2 6 server`.
 - **Edits** go into the table when the game confirms them, like any other.
 - **`vexportprio <name> server` and `vimportprio <name> server`** save and
-  restore both server sets.
+  restore both server affliction sets and every mode's defence numbers, so
+  one file holds a whole server setup. Import restores the numbers for the
+  modes the user has, and says which modes in the file it skipped.
+- **No per-balance view.** The server's list doesn't group by balance, so
+  `vp` shows it whole.
 - **Without `server`**, the commands change only svof's lists. In custom
   mode they remind the user that `server` at the end edits the server list.
   These commands work on list positions, so letting them reach the server
@@ -408,12 +446,15 @@ commands, in the Defences section.
 - **svof refuses `vcleargaps <balance> server`**: empty numbers on the server
   do no harm, because only the order between afflictions matters.
 - **There's no `vupdate prios server`.** See choice 13.
-- **In auto mode**, `vp server` shows the numbers auto sends, marked as
-  such. svof refuses server edits and points to `vconfig serverprios
-  custom`.
-- **Patterns.** `vp`, `vset`, `vswapslow`, and `vimportprio` widen to accept
-  the server forms. Widening `vp` must not catch `vp nextprio ...`, the
-  parry alias. `vswap paralysis asthma server` already matches `vswap`'s
+- **In auto mode**, `vp serveraffs` and `vp serverdefs` show the numbers
+  auto sends, marked as such. svof refuses server edits and points to
+  `vconfig serverprios custom`.
+- **Patterns.** `vp serveraffs` and `vp serverdefs` already match `vp`'s
+  pattern, because `vp` takes a list name. `vp` widens only by an optional
+  second word limited to `slowcuring`, which keeps it clear of
+  `vp nextprio ...`, the parry alias. `vset`, `vswapslow`, and `vimportprio`
+  widen to accept the server forms. `vswap paralysis asthma server` already
+  matches `vswap`'s
   pattern, with `asthma` where the balance goes, so its handler checks for a
   trailing `server` first. No svof action is called `server`, so svof's own
   forms can't be mistaken for it. `vexportprio`'s `(.*)` already takes the
@@ -451,18 +492,19 @@ commands, in the Defences section.
 6. **Stack entries and `vignore <aff> <count>`.**
 7. **Warnings.**
 8. **The server forms of the list commands**, and the `ss aff` column.
-9. **Defences**: the per-mode lists, defup as an override, the class-change
-   send, and the `server` forms of `vkeep` and `vshow keepup`.
-10. **Docs** for the option, the `server` forms of the list and keepup
-    commands, and the `vignore` count.
+9. **Defences**: the per-mode numbers and the mode command hooks,
+   `vset <def> defences <n> server`, `vp serverdefs`, the keepup link, and
+   the `svo defup changed` listener.
+10. **Docs** for the option, `vp serveraffs` and `vp serverdefs`, the
+    `server` forms of the list commands, and the `vignore` count.
 11. **Live test** in `muddlertest`, after asking.
 
 ## Gates and tests
 
 - New and changed items need the baseline regenerated in the same commit
   that causes the difference. That includes the new triggers and the
-  widened patterns of `vignore`, `vp`, `vset`, `vswapslow`, `vimportprio`,
-  `vkeep`, and `vshow keepup`.
+  widened patterns of `vignore`, `vp`, `vset`, `vswapslow`, and
+  `vimportprio`.
 - New `.lua` files need their json entries (`check_src_tree.py`).
 - The parser and override tests run in plain Lua, extracting the real code
   the way `test_gmcp_reconciler.lua` does, and go into both `build.yml` and
@@ -482,6 +524,4 @@ commands, in the Defences section.
 
 ## Open questions
 
-1. Do `vexportprio <name> server` and `vimportprio <name> server` carry the
-   defence lists too? The recommendation is yes, so one saved file holds a
-   whole server setup.
+None.
