@@ -6,8 +6,8 @@ entry now, still called ablaze (the repo owner, 2026-09-25).
 
 It runs svof's real loaders through tools/svof_world.lua, and checks how the
 level moves: GMCP's level, catching fire again and the four escalation lines
-(a level up each), DIAGNOSE's rung lines (levels 2 to 5), mending and a tree
-touch (a level down each, the user, 2026-10-31), the line that ends it, and
+(a level up each), DIAGNOSE, which shows "ablaze." at every level (the user,
+2026-10-31) and so keeps the level svof has, mending and a tree touch (a level down each, the user, 2026-10-31), the line that ends it, and
 pyre, which keeps ablaze from being cured below its own level (AFFLICTION
 SHOW).
 
@@ -107,15 +107,23 @@ do -- mending with GMCP
   eq(level(svo), 2, "mending with GMCP is GMCP's 2, not 1")
 end
 
-do -- DIAGNOSE's level stands with GMCP too, as a diagnose is the game's list
+do -- and with GMCP, DIAGNOSE keeps GMCP's level
   local w = world.new()
   local svo = w.svo
-  gmcp_list(w, { "burning (2)" })
+  gmcp_list(w, { "burning (3)" })
   svo.lifevision.add(svo.dict.diag.physical)
-  w.run(read(T .. "General/charredburn.lua"), "diag")
+  w.run(read(T .. "General/ablaze.lua"), "diag")
   svo.valid.diagnose_end()
   w.prompt()
-  eq(level(svo), 4, "DIAGNOSE's charred line sets 4 with GMCP on")
+  eq(level(svo), 3, "DIAGNOSE's ablaze line keeps GMCP's 3")
+end
+
+do -- the four old rung diag lines are gone
+  local diag = read(T .. "General/triggers.json")
+  for _, line in ipairs({ "you are severely burned.", "you are extremely burned.",
+    "your flesh is blackened and charred.", "the flesh is melting from your bones." }) do
+    eq(diag:find(line, 1, true), nil, "no trigger for \"" .. line .. "\"")
+  end
 end
 
 do -- GMCP with no level is level 1
@@ -163,11 +171,9 @@ do -- level 5 warns of a golem's destroy, as meltingburn did
   eq(warned, 1, "which warns of a golem's destroy")
 end
 
--- DIAGNOSE: a rung line's level, or "ablaze." as at least 1
-for _, case in ipairs({
-  { "ablaze", nil, 1 }, { "severeburn", nil, 2 }, { "extremeburn", nil, 3 }, { "charredburn", nil, 4 },
-  { "meltingburn", nil, 5 }, { "extremeburn", 1, 3 }, { "ablaze", 4, 4 },
-}) do
+-- DIAGNOSE: "ablaze." at every level, so it adds level 1 when svof had no
+-- burning, and keeps the level svof has
+for _, case in ipairs({ { "ablaze", nil, 1 }, { "ablaze", 4, 4 } }) do
   local file, before, want = case[1], case[2], case[3]
   local w = world.new()
   local svo = w.svo

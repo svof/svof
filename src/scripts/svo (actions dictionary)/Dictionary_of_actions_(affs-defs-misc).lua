@@ -453,10 +453,11 @@ end
 -- the user, 2026-10-31). Mending takes it down a level per application, and
 -- so does a tree touch; the line "The raging fire about your skin goes out."
 -- ends it. Catching fire again, or one of the four old escalation lines,
--- raises it a level, and DIAGNOSE's old rung lines give levels 2 to 5. GMCP's
--- level, outside blackout, has the final word.
+-- raises it a level. DIAGNOSE shows "ablaze." at every level (the user,
+-- 2026-10-31), so it says only that you're burning. GMCP's level, outside
+-- blackout, has the final word.
 
--- raises ablaze a level, or to level when one is given (DIAGNOSE). While
+-- raises ablaze a level, or to level when one is given. While
 -- GMCP reports burning, its Add has already set the level the line brought,
 -- so the line leaves it
 codepaste.add_burn = function(level)
