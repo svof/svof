@@ -834,9 +834,11 @@ function afflictions.show(name)
 end
 
 function afflictions.set(name, field, value)
-  -- a GMCP name the game hasn't confirmed yet gets asked about further down
+  -- a GMCP name the game hasn't refused gets asked about further down
   local given = field == 'gmcp' and value and value ~= '' and value:lower() ~= 'none' and value:lower()
-  local d, why = draft(name, given and afflictions.gmcp_known(given) == nil)
+  if not afflictions.custom then afflictions.load() end
+  local new = not afflictions.drafts[name] and not afflictions.custom[name]
+  local d, why = draft(name, given and afflictions.gmcp_known(given) ~= false)
   if not d then
     svo.echof("<250,0,0>Can't%s define %s: %s.", svo.getDefaultColor(), name, why)
     return
@@ -854,6 +856,11 @@ function afflictions.set(name, field, value)
       return
     end
     d.gmcp = gmcp
+    -- the rest of a new one comes from the game, by the name it knows
+    if gmcp and new then
+      afflictions.fetch(name, gmcp)
+      show_waits[name] = true
+    end
   elseif field == 'cures' then
     if value == '' then svo.echof("What cures %s? As the game's Cure(s) says, such as Eat Kelp / Eat Aurum.", name) return end
     d.cures = value

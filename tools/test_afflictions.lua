@@ -1078,6 +1078,9 @@ do
   eq(asked("onceone fetch vertigo"), "affliction show vertigo", "asks once: a new one's fetch, by the name given")
   eq(asked("oncetwo fetch"), "affliction show oncetwo", "asks once: a new one's fetch, by its own name")
   eq(asked("oncethree gmcp someaff"), "affliction show someaff", "asks once: a new one's GMCP name")
+  eq(asked("oncesix gmcp vertigo"), "affliction show vertigo", "asks once: a new one's GMCP name the game knows, by that name")
+  eq(svo.afflictions.drafts.oncesix.gmcp, "vertigo", "and that name is set")
+  eq(asked("oncesix gmcp vertigo"), "", "asks nothing for one already started")
   eq(asked("oncefour"), "affliction show oncefour", "asks once: a new one on its own, by its name")
   eq(asked("oncefive cures Eat Kelp"), "affliction show oncefive", "asks once: a new one's other fields, by its name")
 end
