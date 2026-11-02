@@ -504,7 +504,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Pipes|script",
-      "digest": "d0afade00b04c9ca",
+      "digest": "95dbde1e4a7cb99d",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Pipes [script]"
     },
     {
@@ -609,7 +609,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "e20715b3e87c121d",
+      "digest": "1dc9d6a1cd299498",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -1046,6 +1046,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",
       "digest": "61baa56f5354675b",
       "text": "Trigger  svo (aliases, triggers) svo/General/Registration/Started [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Smoke|script",
+      "digest": "f22247d093e25983",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Smoke [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Anorexia|script",
