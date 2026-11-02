@@ -128,6 +128,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got myrrh generic [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Server-side commands/Server pipe fill",
+      "digest": "59b9d457f8196cf5",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Server-side commands/Server pipe fill [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Sip/svo sipped latched",
       "digest": "bfe8d80c98855831",
       "text": "Trigger  svo (aliases, triggers) svo/General/Sip/svo sipped latched [only in the package]"
@@ -219,8 +224,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "1baeb8a41ed68579",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2549 in merged"
+      "digest": "d492fe36cc16fae1",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2550 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -499,7 +504,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Pipes|script",
-      "digest": "609e2535e8cd2fa3",
+      "digest": "d0afade00b04c9ca",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Pipes [script]"
     },
     {

@@ -76,12 +76,39 @@ local fill_contents = {
 -- pipes is full again, holding what the line names. Under serverside the
 -- count stayed at what svof last saw, and read 0 on a pipe the server kept
 -- full
+--
+-- The fill line doesn't say which pipe, but the server's own comes right after
+--   [Curing]: PUT VALERIAN IN 535340
+-- which does
+local server_filling
+
+function svo.pipe_filling(id)
+  server_filling = tonumber(id)
+  svo.prompttrigger("clear server pipe fill", function() server_filling = nil end)
+end
+
+-- returns 1 or 2 for the pipe a fill went in, or nil for one svof doesn't track
+local function filled_pipe(pipe, id, contents)
+  if id and pipe.id ~= 0 then
+    if id == pipe.id then return 1 end
+    if id == pipe.id2 then return 2 end
+    return nil
+  end
+  if pipe.id2 == 0 then return 1 end
+  -- no pipe named: a fill of the player's, so go by what they hold, then the emptier
+  local first, second = pipe.filledwith == contents, pipe.filledwith2 == contents
+  if first ~= second then return first and 1 or 2 end
+  return pipe.puffs2 < pipe.puffs and 2 or 1
+end
+
 function svo.pipe_refilled(herb)
   local pipe = pipes[herb]
   local contents = type(line) == 'string' and fill_contents[line:match("^You fill your pipe with (.-)%.$") or ""] or herb
-  if pipe.id2 ~= 0 and pipe.puffs2 < pipe.puffs then
+  local which = filled_pipe(pipe, server_filling, contents)
+  server_filling = nil
+  if which == 2 then
     pipe.puffs2, pipe.filledwith2 = pipe.maxpuffs2 or 10, contents
-  else
+  elseif which == 1 then
     pipe.puffs, pipe.filledwith = pipe.maxpuffs or 10, contents
   end
   svo.rift.invcontents[contents] = math.max((svo.rift.invcontents[contents] or 1) - 1, 0)

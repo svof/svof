@@ -62,6 +62,78 @@ do -- two pipes of one herb: the emptier
   eq(pipe.puffs, 4, "and the other is left alone")
 end
 
+do -- a fill with both pipes level, from the live run: svo.pipe_refilled gave
+   -- a fill of the second to the first, which then read as holding realgar
+  local w = world.new()
+  local svo = w.svo
+  svo.conf.serverside = true
+  local pipe = set_pipe(svo, 'valerian', { id = 535340, id2 = 688072, puffs = 10, puffs2 = 10,
+    filledwith = 'valerian', filledwith2 = 'realgar', maxpuffs = 10, maxpuffs2 = 10 })
+  w.env.line = FILLS.valerian[3]
+  svo.valid.fillvalerian()
+  eq(pipe.filledwith, "valerian", "level pipes: the first keeps its contents")
+  eq(pipe.filledwith2, "realgar", "level pipes: the second holds what it did")
+end
+
+do -- the server names the pipe, whatever the counts say
+  local w = world.new()
+  local svo = w.svo
+  svo.conf.serverside = true
+  local pipe = set_pipe(svo, 'valerian', { id = 101, id2 = 102, puffs = 0, puffs2 = 7,
+    filledwith = 'valerian', filledwith2 = 'valerian', maxpuffs = 10, maxpuffs2 = 10 })
+  svo.pipe_filling("102")
+  w.env.line = FILLS.valerian[3]
+  svo.valid.fillvalerian()
+  eq(pipe.puffs2, 10, "named pipe: the second is filled, though the first is emptier")
+  eq(pipe.filledwith2, "realgar", "named pipe: holding what the line names")
+  eq(pipe.puffs, 0, "named pipe: the first is left alone")
+  eq(pipe.filledwith, "valerian", "named pipe: and keeps its contents")
+
+  -- the name is for that fill only
+  pipe.puffs, pipe.puffs2 = 0, 7
+  w.env.line = FILLS.valerian[1]
+  svo.valid.fillvalerian()
+  eq(pipe.puffs, 10, "named pipe: the next fill goes by the counts again")
+  eq(pipe.puffs2, 7, "named pipe: and leaves the second")
+end
+
+do -- a pipe svof doesn't track: nothing it counts changes
+  local w = world.new()
+  local svo = w.svo
+  svo.conf.serverside = true
+  local pipe = set_pipe(svo, 'elm', { id = 101, id2 = 102, puffs = 2, puffs2 = 3, filledwith = 'elm', filledwith2 = 'elm' })
+  svo.pipe_filling("999")
+  w.env.line = FILLS.elm[1]
+  svo.valid.fillelm()
+  eq(pipe.puffs, 2, "untracked pipe: the first is left alone")
+  eq(pipe.puffs2, 3, "untracked pipe: the second is left alone")
+end
+
+do -- a name with no fill after it is gone by the prompt
+  local w = world.new()
+  local svo = w.svo
+  svo.conf.serverside = true
+  local pipe = set_pipe(svo, 'elm', { id = 101, id2 = 102, puffs = 0, puffs2 = 3, filledwith = 'elm', filledwith2 = 'elm' })
+  svo.pipe_filling("102")
+  w.prompt()
+  w.env.line = FILLS.elm[1]
+  svo.valid.fillelm()
+  eq(pipe.puffs, 10, "stale name: the prompt clears it, so the emptier is filled")
+  eq(pipe.puffs2, 3, "stale name: and the named pipe is left alone")
+end
+
+do -- the trigger that reads the server's line
+  local dir = "src/triggers/svo (aliases, triggers)/svo/General/Server-side commands/"
+  local f = assert(io.open(dir .. "triggers.json", "r"))
+  local json = f:read("*a")
+  f:close()
+  eq(json:find('PUT [A-Z ]+ IN (', 1, true) ~= nil, true, "the trigger's pattern is there")
+  f = assert(io.open(dir .. "Server_pipe_fill.lua", "r"))
+  local script = f:read("*a")
+  f:close()
+  eq(script, "svo.pipe_filling(matches[2])", "and passes the pipe's number")
+end
+
 do -- not serverside, and nothing of svof's in flight: not a fill of svof's
   local w = world.new()
   local svo = w.svo
