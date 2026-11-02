@@ -71,6 +71,10 @@ end)())
 check("rift.vial_conversions is gone", not read(RIFT):find("vial_conversions", 1, true))
 check("nothing reads rift.vial_conversions", not dict:find("vial_conversions", 1, true))
 
+-- the tree strategy for voyria waited on a tonic that's gone, so it never fired
+local strats = read("src/scripts/svo (core)/svo Utilities/Tree_curing_strats.lua")
+check("no tree strategy looks for an antigen tonic", not strats:find("antigen", 1, true))
+
 local trig = read(TRIG)
 local defstrip = trig:match("function svo%.valid%.defstrip%(which%)(.-)\nend")
 check("svo.valid.defstrip is where this test looks", defstrip ~= nil)
