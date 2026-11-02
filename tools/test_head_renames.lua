@@ -133,6 +133,30 @@ do -- the ignore list
   eq(svo.ignore.seriousconcussion, nil, "both of them")
 end
 
+do -- what's left to serverside, which a player's first setup filled in
+  local w = world.new()
+  local svo = w.svo
+  w.env.table.load = function(_, t)
+    t.asthma = true
+    t.mildconcussion = true
+    t.seriousconcussion = false
+  end
+  local lfs = w.env.require('lfs')
+  local attributes = lfs.attributes
+  lfs.attributes = function(p)
+    if p == "./svo/config/serverignore" then return {} end
+    return attributes(p)
+  end
+  for k in pairs(svo.serverignore) do svo.serverignore[k] = nil end
+  svo.signals.systemstart:emit()
+  lfs.attributes = attributes
+  eq(svo.serverignore.damagedhead, true, "a mildconcussion left to serverside is a damagedhead left to it")
+  eq(svo.sk.shouldignoreserverside('damagedhead') and true or false, false, "so serverside goes on curing it")
+  eq(svo.serverignore.mangledhead, false, "and a seriousconcussion svof handled stays svof's")
+  eq(svo.serverignore.mildconcussion, nil, "and the old names are gone")
+  eq(svo.serverignore.seriousconcussion, nil, "both of them")
+end
+
 do -- full parry guards the head for head damage and the torso for trauma
   for _, case in ipairs({
     { "damagedhead", "head" }, { "mangledhead", "head" },
