@@ -349,7 +349,7 @@ local function new_environment()
     -- and the ones Curing_skeleton.lua and Alias_functions.lua alias
     cnrl = {}, lifevision = svo.lifevision,
     -- stdlib the block needs
-    string = string, table = table, tonumber = tonumber, pairs = pairs, ipairs = ipairs,
+    string = string, table = table, math = math, tonumber = tonumber, pairs = pairs, ipairs = ipairs,
     type = type, tostring = tostring, error = error, setmetatable = setmetatable,
     pcall = pcall, next = next, select = select,
     -- Mudlet's; only reached when a queued prompt callback raises.
@@ -1362,6 +1362,9 @@ do
   eq(svo.removeaff('prone'), true, "public API: svo.removeaff reports the removal")
   eq(svo.affs.prone, nil, "public API: and removes what GMCP still reports")
 
+  svo.removeafflevel('skullfractures')
+  eq(svo.dict.skullfractures.count, 1, "public API: svo.removeafflevel takes one level off")
+  truthy(svo.affs.skullfractures, "public API: and leaves the affliction at the level left")
   svo.removeafflevel('skullfractures')
   eq(svo.affs.skullfractures, nil, "public API: svo.removeafflevel acts even where GMCP disagrees")
 
