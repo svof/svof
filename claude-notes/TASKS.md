@@ -1,6 +1,6 @@
 # Task list
 
-Last updated 2026-11-02: #903 and #904 added, and the pipe counts item.
+Last updated 2026-11-02: #903, #904, and #906 added, and the pipe counts item.
 2026-10-31, later: #892 to #896 added (the Blademaster slash
 lookback, sleep's two handlers, the transmutation cleanup, cure lines for 14
 tree-curable afflictions, and pipe puffs under serverside); the class defences
@@ -65,6 +65,7 @@ In flight (2026-10-31), all ready for review and none merged:
 | #896 | `pipe-puffs-by-herb`, `C:\work\svof-puffs` | under serverside the server's fill line refills the pipe it names, or the one holding what the line names, then the emptier; a puff comes off pipe 1 then pipe 2, and filling pipe 2 keeps to its own fields (gate 1.9997) |
 | #903 | `prio-spam-limit`, `C:\work\svof-priolimit` | stacked on #884: every `CURING PRIORITY` use goes through one paced queue, and refused ones are resent |
 | #904 | `custom-fetch-once`, `C:\work\svof-fetchonce` | stacked on #887: `fetch` and `gmcp` on a new `vcustomdef` or `vcustomaff` name ask the game once |
+| #906 | `pipe-own-smokes`, `C:\work\svof-puffs2` | stacked on #896: the player's own smokes and tap-outs count, and a fill with no pipe named goes in the only empty pipe |
 
 #883 to #889 and #892 to #896 each branch from `in-client-svof` and each regenerates
 `tools/verify_baseline.json`, and all but #887 add a gate to `build.yml`. After the first merges, regenerate the baseline on the others
@@ -516,9 +517,10 @@ send `PIPELIST` at login under serverside.
 
 ### Pipe counts miss the player's own smokes and tap-outs
 **Status: found 2026-11-01 in the live run for #896, read from its log. Both
-predate #896. Not started. The user wants this tracked apart from #896.**
+predate #896. Opened 2026-11-02 as #906, stacked on #896, with both fixed and
+checked against `PIPELIST` in game. The lit mismatch below is still open.**
 
-Both last until the next fill or `PIPELIST`:
+Both lasted until the next fill or `PIPELIST`:
 
 1. `smoke ID` sent outside svof isn't counted. svof still held 9 puffs after 9
    such smokes had emptied the valerian pipe, and it held 10 on the elm pipe
@@ -530,10 +532,6 @@ Both last until the next fill or `PIPELIST`:
 A related mismatch from the same log: after a fill, `PIPELIST` showed
 `pipe688072` as out while svof held `lit2 = true`, and the server hadn't
 relit it. This might belong with `svof-pipe-relight`.
-
-To decide first: how svof treats a smoke the player sends, since counting it
-means reading "You take a long drag of ..." with nothing of svof's or the
-server's in flight, and that line doesn't name the pipe either.
 
 ### The single-source implementation plan
 **Status: written 2026-09-22, four questions answered by the owner the same
