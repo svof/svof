@@ -592,7 +592,8 @@ end
 
 -- the draft of name, started from the installed one or new; nil and why
 -- not when the name can't be a definition
-local function custom_draft(name)
+-- asking: the caller asks the game itself, so a new one doesn't ask by its name
+local function custom_draft(name, asking)
   local d = defences.custom_drafts[name]
   if d then return d end
   if defences.custom[name] then
@@ -613,8 +614,10 @@ local function custom_draft(name)
     d = { class = class_key(me.class), on = {}, off = {} }
     defences.custom_drafts[name] = d
     -- if the game knows it by this name, its lines come from the game
-    defences.custom_fetch(name, name)
-    show_waits[name] = true
+    if not asking then
+      defences.custom_fetch(name, name)
+      show_waits[name] = true
+    end
     return d
   end
   defences.custom_drafts[name] = d
@@ -787,7 +790,9 @@ end
 
 function defences.custom_set(name, field, value)
   if defences.is_own(name) then return defences.edit_set(name, field, value) end
-  local d, why = custom_draft(name)
+  -- a GMCP name the game hasn't refused gets asked about further down
+  local given = field == 'gmcp' and value and value ~= '' and value:lower() ~= 'none' and value:lower()
+  local d, why = custom_draft(name, given and defences.gmcp_known(given) ~= false)
   if not d then
     svo.echof("<250,0,0>Can't%s define %s: %s.", svo.getDefaultColor(), name, why)
     return
@@ -2041,7 +2046,7 @@ function defences.customdef_command(rest)
   if verb == 'line' then return defences.custom_capture(name, value:lower()) end
   if verb == 'fetch' then
     if defences.is_own(name) then return defences.edit_fetch(name, value) end
-    local d, why = custom_draft(name)
+    local d, why = custom_draft(name, true)
     if not d then
       svo.echof("<250,0,0>Can't%s define %s: %s.", svo.getDefaultColor(), name, why)
       return
