@@ -81,13 +81,16 @@ function svo.valid.symp_asleep()
   -- asleep. It checked a key named asleep, which svof never had, so until
   -- 2026-10-31 it never ran, and only the first symptom (sleep.aff.symptom)
   -- cleared them. The wake stays, as there, and so does a gone, a cure being
-  -- recorded
+  -- recorded. They're listed first: killing one while going through actions
+  -- moves the next into its place, and the loop skips it
   if affs.sleep or actions.sleep_aff then
+    local failed = {}
     for _,v in actions:iter() do
       if v.p.balance ~= 'waitingfor' and v.p.balance ~= 'aff' and v.p.balance ~= 'gone' and v.p.name ~= 'sleep_misc' then
-        svo.killaction(svo.dict[v.p.action_name][v.p.balance])
+        failed[#failed+1] = svo.dict[v.p.action_name][v.p.balance]
       end
     end
+    for _, action in ipairs(failed) do svo.killaction(action) end
   end
 end
 
