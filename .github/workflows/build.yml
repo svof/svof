@@ -371,6 +371,14 @@ jobs:
       - name: test head renames
         run: lua tools/test_head_renames.lua
 
+      # Gate 1.9992. concussion, the game's third head affliction: GMCP's
+      # name, its gain line, the cure line it shares with damagedhead,
+      # DIAGNOSE, command doubling, the pulp warning, and calcified skull
+      # taking the head's damage up a level. Runs the real loaders
+      # (tools/svof_world.lua).
+      - name: test concussion
+        run: lua tools/test_concussion.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
