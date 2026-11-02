@@ -175,6 +175,15 @@ do -- by name: what the line says was smoked
   eq(pipe.puffs, 4, "with nothing sent: still the line's")
 end
 
+do -- an older SMOKE <id> of the same herb's other pipe doesn't decide either,
+   -- when the pipes hold different things and the line names one
+  local w = world.new()
+  local pipe = two_valerian(w.svo)
+  smoke(w, DRAG, "look", "kill rat", "smoke 102")
+  eq(pipe.puffs, 4, "stale ID of the herb's other pipe: the pipe holding what the line names")
+  eq(pipe.puffs2, 5, "stale ID of the herb's other pipe: not the pipe it named")
+end
+
 do -- an older SMOKE <id> of another herb doesn't decide
   local GURGLE = "Your draw is accompanied by a deep gurgling sound before a series of shining bubbles erupt from the bowl of your pipe."
   local w = world.new()

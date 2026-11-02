@@ -150,7 +150,8 @@ end
 -- A smoke with nothing of svof's or the server's to answer it: one the player
 -- sent. svof's own puffs count from the action, and this used to count nothing,
 -- so a pipe read full after it was smoked out. The line names what was smoked,
--- and SMOKE <id> names the pipe, unless that's a stale one of another herb
+-- and SMOKE <id> names the pipe, unless that's a stale one: of another herb, or
+-- holding something else than the line names
 --   You take a long drag of valerian off your pipe.
 function svo.pipe_smoked()
   local drag = smoke_line
@@ -165,7 +166,7 @@ function svo.pipe_smoked()
   if not herb then return end
 
   local pipe = pipes[herb]
-  if not puffs and contents and pipe.id2 ~= 0 then
+  if contents and pipe.id2 ~= 0 then
     local first, second = contents:find(pipe.filledwith, 1, true) ~= nil, contents:find(pipe.filledwith2, 1, true) ~= nil
     if first ~= second then puffs = first and 'puffs' or 'puffs2' end
   end
