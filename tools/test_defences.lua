@@ -1568,6 +1568,31 @@ do
     "serverside: there's no serverside switch; the GMCP name decides")
 end
 
+-- A new definition asks the game by its name, unless the command asks itself.
+-- Asking both ways printed the first reply, "There is no such defence.",
+-- ahead of the one wanted (live run, 2026-11-01)
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function asked(rest)
+    w.sent = {}
+    cmd(rest)
+    local out = {}
+    for _, sent in ipairs(w.sent) do
+      if sent:find("^defence show") then out[#out + 1] = sent end
+    end
+    return table.concat(out, "; ")
+  end
+
+  eq(asked("onceone fetch hiding"), "defence show hiding", "asks once: a new one's fetch, by the name given")
+  eq(asked("oncetwo fetch"), "defence show oncetwo", "asks once: a new one's fetch, by its own name")
+  eq(asked("oncethree gmcp somedefence"), "defence show somedefence", "asks once: a new one's GMCP name")
+  eq(asked("oncefour"), "defence show oncefour", "asks once: a new one on its own, by its name")
+  eq(asked("oncefive command raise it"), "defence show oncefive", "asks once: a new one's other fields, by its name")
+  eq(asked("oncesix gmcp none"), "defence show oncesix", "asks once: no GMCP name, so by its name")
+end
+
 -- For a defence the game knows, DEFENCE SHOW gives its lines and GMCP name
 -- (the reply's layout is the owner's capture, 2026-10-09)
 do

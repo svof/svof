@@ -1059,6 +1059,29 @@ do -- a name svof's own svo.valid handlers have can't be an affliction's
   A.delete("testhandlers")
 end
 
+-- A new definition asks the game by its name, unless the command asks itself.
+-- Asking both ways printed the first reply ahead of the one wanted (live run,
+-- 2026-11-01)
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local function asked(rest)
+    w.sent = {}
+    svo.afflictions.command(rest)
+    local out = {}
+    for _, sent in ipairs(w.sent) do
+      if sent:find("^affliction show") then out[#out + 1] = sent end
+    end
+    return table.concat(out, "; ")
+  end
+
+  eq(asked("onceone fetch vertigo"), "affliction show vertigo", "asks once: a new one's fetch, by the name given")
+  eq(asked("oncetwo fetch"), "affliction show oncetwo", "asks once: a new one's fetch, by its own name")
+  eq(asked("oncethree gmcp someaff"), "affliction show someaff", "asks once: a new one's GMCP name")
+  eq(asked("oncefour"), "affliction show oncefour", "asks once: a new one on its own, by its name")
+  eq(asked("oncefive cures Eat Kelp"), "affliction show oncefive", "asks once: a new one's other fields, by its name")
+end
+
 if #failures > 0 then
   for _, f in ipairs(failures) do print("FAIL: " .. f) end
   print(string.format("%d checks, %d failures", checks, #failures))
