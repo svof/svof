@@ -121,16 +121,28 @@ for _, t in ipairs({
 
   -- GMCP adds it without the aff action, and its wait has to start all the
   -- same: the wear-off can come in blackout, which stops GMCP's Remove
-  local w = dofile("tools/svof_world.lua").new()
-  w.env.gmcp.Char.Afflictions.Add = { name = name, cure = "", desc = "" }
-  w.svo.signals.gmcpcharafflictionsadd:emit()
+  local function added_by_gmcp()
+    local w = dofile("tools/svof_world.lua").new()
+    w.env.gmcp.Char.Afflictions.List = {}
+    w.svo.signals.gmcpcharafflictionslist:emit()
+    w.env.gmcp.Char.Afflictions.Add = { name = name, cure = "", desc = "" }
+    w.svo.signals.gmcpcharafflictionsadd:emit()
+    return w
+  end
+
+  local w = added_by_gmcp()
   check("GMCP adds " .. name, w.svo.affs[name] ~= nil, true)
   check("and starts its wait", w.inflight(), name .. "_waitingfor")
+  w.advance(t[2] + 1)
+  check("while GMCP still reports " .. name .. ", its time doesn't take it off", w.svo.affs[name] ~= nil, true)
+  check("and its wait is over", w.inflight(), "")
+
+  w = added_by_gmcp()
+  w.svo.addaffdict(w.svo.dict.blackout)
   w.advance(t[2] - 1)
-  check(name .. " lasts until its time", w.svo.affs[name] ~= nil, true)
+  check(name .. " lasts until its time in blackout", w.svo.affs[name] ~= nil, true)
   w.advance(2)
-  check(name .. " ends with its time, with no Remove", w.svo.affs[name], nil)
-  check("leaving nothing in flight", w.inflight(), "")
+  check(name .. " ends with its time in blackout, with no Remove", w.svo.affs[name], nil)
 end
 
 -- deepsleep: its own entry, not sleep. You never wake from it on your own,
