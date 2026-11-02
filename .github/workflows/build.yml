@@ -371,6 +371,8 @@ jobs:
       # of the curingsets.
       - name: test class change curingsets
         run: lua tools/test_classchange_curingsets.lua
+      - name: test curing priority limit
+        run: lua tools/test_prio_spam_limit.lua
 
       - uses: actions/setup-java@v4
         with:
