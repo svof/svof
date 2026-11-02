@@ -170,6 +170,28 @@ do -- calcified skull takes the head's damage up a level
   end
 end
 
+for _, setting in ipairs({ true, false }) do
+  -- a saved serverignore from when seriousconcussion stood for concussion too
+  local w = world.new()
+  local svo = w.svo
+  w.env.table.load = function(_, t)
+    t.asthma = true
+    t.seriousconcussion = setting
+  end
+  local lfs = w.env.require('lfs')
+  local attributes = lfs.attributes
+  lfs.attributes = function(p)
+    if p == "./svo/config/serverignore" then return {} end
+    return attributes(p)
+  end
+  for k in pairs(svo.serverignore) do svo.serverignore[k] = nil end
+  svo.signals.systemstart:emit()
+  lfs.attributes = attributes
+  eq(svo.serverignore.concussion, setting, "concussion starts as seriousconcussion was: " .. tostring(setting))
+  eq(svo.serverignore.mangledhead, setting, "and so does mangledhead")
+  eq(svo.serverignore.seriousconcussion, nil, "and the old name is gone")
+end
+
 do -- @affs, and the default priorities
   local tag = read("src/scripts/svo (core)/svo Utilities/Custom prompt tags/@affs.lua")
   eq(tag:match('\n%s*concussion%s*=%s*"([^"]*)"'), "conc", "@affs shows it as conc")

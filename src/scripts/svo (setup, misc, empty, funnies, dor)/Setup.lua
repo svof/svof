@@ -2350,7 +2350,12 @@ end, 'save dragonheal data')
 
 for _, config in ipairs{
  {location = 'serverignore', localtable = svo.serverignore, errormsg = "re-set all of the server ignore strats",
-  afterload = function () import_renamed_affs(svo.serverignore) end},
+  afterload = function ()
+    -- seriousconcussion stood for concussion too, so it starts as that was
+    local list = svo.serverignore
+    if list.concussion == nil then list.concussion = list.seriousconcussion end
+    import_renamed_affs(list)
+  end},
  -- a saved list can tick an affliction svof no longer focuses for, such as
  -- generosity, which sk.canfocus would still act on and the menu can't show
  {location = 'cadmusaffs', localtable = svo.me.cadmusaffs, errormsg = "re-set all of the cadmus affs",
