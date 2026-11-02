@@ -599,13 +599,16 @@ function svo.valid.symp_stun()
     sk.stun_symptom()
   end
 
-  -- svo.reset non-wait things we were doing, because they got cancelled by the stun
+  -- svo.reset non-wait things we were doing, because they got cancelled by the stun.
+  -- Listed first, as in symp_asleep: killing one moves the next into its place
   if affs.stun or actions.stun_aff then
+    local failed = {}
     for _,v in actions:iter() do
       if v.p.balance ~= 'waitingfor' and v.p.balance ~= 'aff' then
-        svo.killaction(svo.dict[v.p.action_name][v.p.balance])
+        failed[#failed+1] = svo.dict[v.p.action_name][v.p.balance]
       end
     end
+    for _, action in ipairs(failed) do svo.killaction(action) end
   end
 end
 

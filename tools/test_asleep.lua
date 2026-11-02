@@ -49,6 +49,25 @@ do -- asleep already, and a command refused
   eq(inflight:find("asthma_gone", 1, true) ~= nil, true, "and a cure being recorded")
 end
 
+-- The first sleep symptom and the stun symptom clear what's in flight the same
+-- way, and killing an action while going through them skipped the next
+local function in_flight_cleared(label, setup, symptom)
+  local w = world.new()
+  local svo = w.svo
+  setup(svo)
+  local affs = { { "asthma", "herb" }, { "slickness", "smoke" }, { "anorexia", "salve" }, { "stupidity", "focus" } }
+  for _, a in ipairs(affs) do svo.doaction(svo.dict[a[1]][a[2]]) end
+  svo.paragraph_length = 1
+  symptom(svo)
+  local inflight = w.inflight()
+  for _, a in ipairs(affs) do
+    eq(inflight:find(a[1] .. "_" .. a[2], 1, true), nil, label .. " clears " .. a[1] .. "_" .. a[2])
+  end
+end
+
+in_flight_cleared("the first sleep symptom", function() end, function(svo) svo.dict.sleep.aff.symptom() end)
+in_flight_cleared("the stun symptom", function(svo) svo.addaffdict(svo.dict.stun) end, function(svo) svo.valid.symp_stun() end)
+
 do -- the transfixed refusal, in blackout
   local w = world.new()
   local svo = w.svo

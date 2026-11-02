@@ -5630,13 +5630,16 @@ if not next(svo.dict) then
           if not affs.sleep then svo.addaffdict(svo.dict.sleep) defences.lost('insomnia') end
           svo.addaffdict(svo.dict.prone)
   
-          -- reset non-wait things we were doing, because they got cancelled by the stun
+          -- reset non-wait things we were doing, because they got cancelled by the stun.
+          -- Listed first: killing one while going through actions moves the next into its place
           if affs.sleep or svo.actions.sleep_aff then
+            local failed = {}
             for _,v in svo.actions:iter() do
               if v.p.balance ~= 'waitingfor' and v.p.balance ~= 'aff' and v.p.name ~= 'sleep_misc' then
-                svo.killaction(svo.dict[v.p.action_name][v.p.balance])
+                failed[#failed+1] = svo.dict[v.p.action_name][v.p.balance]
               end
             end
+            for _, action in ipairs(failed) do svo.killaction(action) end
           end
         end
       },
