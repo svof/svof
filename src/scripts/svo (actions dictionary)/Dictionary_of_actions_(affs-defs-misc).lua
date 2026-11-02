@@ -7900,15 +7900,19 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function()
           svo.addaffdict(svo.dict.constricted)
-          if not svo.actions.constricted_waitingfor then svo.doaction(svo.dict.constricted.waitingfor) end
         end
       },
       gone = {
-        oncompleted = function()
-          svo.rmaff('constricted')
-          svo.killaction(svo.dict.constricted.waitingfor)
-        end,
-      }
+        oncompleted = function() svo.rmaff('constricted') end,
+      },
+      -- onadded and not aff.oncompleted, because GMCP adds it with addaffdict
+      -- and never runs the aff action
+      onadded = function()
+        if not svo.actions.constricted_waitingfor then svo.doaction(svo.dict.constricted.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.constricted_waitingfor then svo.killaction(svo.dict.constricted.waitingfor) end
+      end,
     },
     -- A rope trap about the ankles, until time frees you: 20 seconds by
     -- default (AFFLICTION SHOW, captured 2026-10-20)
@@ -7935,15 +7939,18 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function()
           svo.addaffdict(svo.dict.snared)
-          if not svo.actions.snared_waitingfor then svo.doaction(svo.dict.snared.waitingfor) end
         end
       },
       gone = {
-        oncompleted = function()
-          svo.rmaff('snared')
-          svo.killaction(svo.dict.snared.waitingfor)
-        end,
-      }
+        oncompleted = function() svo.rmaff('snared') end,
+      },
+      -- as constricted's
+      onadded = function()
+        if not svo.actions.snared_waitingfor then svo.doaction(svo.dict.snared.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.snared_waitingfor then svo.killaction(svo.dict.snared.waitingfor) end
+      end,
     },
     -- A Viridian's flailing vines, which keep you from parrying their thorn
     -- rends, until they recede: 20 seconds by default (AFFLICTION SHOW,
@@ -7971,15 +7978,18 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function()
           svo.addaffdict(svo.dict.vinewreathed)
-          if not svo.actions.vinewreathed_waitingfor then svo.doaction(svo.dict.vinewreathed.waitingfor) end
         end
       },
       gone = {
-        oncompleted = function()
-          svo.rmaff('vinewreathed')
-          svo.killaction(svo.dict.vinewreathed.waitingfor)
-        end,
-      }
+        oncompleted = function() svo.rmaff('vinewreathed') end,
+      },
+      -- as constricted's
+      onadded = function()
+        if not svo.actions.vinewreathed_waitingfor then svo.doaction(svo.dict.vinewreathed.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.vinewreathed_waitingfor then svo.killaction(svo.dict.vinewreathed.waitingfor) end
+      end,
     },
     -- A sleep you never wake from on your own (AFFLICTION SHOW, captured
     -- 2026-10-20): you can do nothing in it, as in sleep, but svof doesn't

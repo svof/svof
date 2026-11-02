@@ -118,6 +118,19 @@ for _, t in ipairs({
     check(tr[1] .. " is active", item:find('"isActive": "yes"', 1, true) ~= nil, true)
     check(tr[1] .. "'s script", script("General", tr[1]), tr[3])
   end
+
+  -- GMCP adds it without the aff action, and its wait has to start all the
+  -- same: the wear-off can come in blackout, which stops GMCP's Remove
+  local w = dofile("tools/svof_world.lua").new()
+  w.env.gmcp.Char.Afflictions.Add = { name = name, cure = "", desc = "" }
+  w.svo.signals.gmcpcharafflictionsadd:emit()
+  check("GMCP adds " .. name, w.svo.affs[name] ~= nil, true)
+  check("and starts its wait", w.inflight(), name .. "_waitingfor")
+  w.advance(t[2] - 1)
+  check(name .. " lasts until its time", w.svo.affs[name] ~= nil, true)
+  w.advance(2)
+  check(name .. " ends with its time, with no Remove", w.svo.affs[name], nil)
+  check("leaving nothing in flight", w.inflight(), "")
 end
 
 -- deepsleep: its own entry, not sleep. You never wake from it on your own,
