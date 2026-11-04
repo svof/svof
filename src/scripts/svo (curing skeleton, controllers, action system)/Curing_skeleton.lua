@@ -2191,11 +2191,17 @@ signals.gmcpcharitemslist:connect(function()
   sk.retrieving_herbs = nil
 end, "pick up plants")
 
+-- A puff off the herb's pipe: the first while it has any, then the second.
+-- svof's own smokes name the first, and refill it before it's empty, while
+-- the server's SMOKE <herb> lets the game take either
 for _, herb in ipairs{'elm', 'valerian', 'skullcap'} do
   sk[herb..'_smokepuff'] = function ()
+    local pipe = pipes[herb]
+    local second = pipe.puffs <= 0 and pipe.id2 ~= 0 and pipe.puffs2 > 0
+    local puffs, filledwith = second and 'puffs2' or 'puffs', second and 'filledwith2' or 'filledwith'
     if not conf.arena then
-      pipes[herb].puffs = pipes[herb].puffs - 1
-      if pipes[herb].puffs < 0 then pipes[herb].puffs = 0 end
+      pipe[puffs] = pipe[puffs] - 1
+      if pipe[puffs] < 0 then pipe[puffs] = 0 end
     end
 
     if herb == 'valerian' then
@@ -2205,7 +2211,7 @@ for _, herb in ipairs{'elm', 'valerian', 'skullcap'} do
     moveCursor(0, getLineNumber()-1)
     moveCursor(#getCurrentLine(), getLineNumber())
     setFgColor(unpack(svo.getDefaultColorNums))
-    insertText(string.format(" (%s %s left)", pipes[herb].puffs, pipes[herb].filledwith))
+    insertText(string.format(" (%s %s left)", pipe[puffs], pipe[filledwith]))
     resetFormat()
     moveCursorEnd()
   end
