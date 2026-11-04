@@ -366,7 +366,7 @@ signals.gmcpcharskillsinfo:block(install.checkskillgmcp)
 
 function svo.install.checkinvgmcp()
   local t = _G.gmcp.Char.Items.List
-  if not t.location == 'inv' then return end
+  if t.location ~= 'inv' then return end
 
   -- feh! Easier to hardcode it for such a miniscule amount of items.
   -- If list enlarges, fix appopriately.
