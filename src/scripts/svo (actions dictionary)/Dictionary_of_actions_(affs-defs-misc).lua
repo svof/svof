@@ -10940,6 +10940,7 @@ if not next(svo.dict) then
       chargeshield = 'chargeshield',
       circulate = 'circulate',
       clinging = 'clinging',
+      circling = 'circling',
       cloak = 'cloak',
       coldresist = 'coldresist',
       consciousness = 'consciousness',
@@ -10969,6 +10970,7 @@ if not next(svo.dict) then
       eavesdropping = 'eavesdrop',
       electricresist = 'electricresist',
       elusiveness = 'elusiveness',
+      encircling = 'encircling',
       enduranceblessing = 'enduranceblessing',
       enhancedform = false,
       evadeblock = 'evadeblock',
@@ -10991,6 +10993,7 @@ if not next(svo.dict) then
       groundwatch = 'groundwatch',
       harmony = 'harmony',
       haste = false,
+      hawkstep = 'hawkstep',
       heads = 'heads',
       heldbreath = 'breath',
       heresy = 'heresy',
@@ -11084,6 +11087,7 @@ if not next(svo.dict) then
       tekurastance = false,
       telesense = 'telesense',
       temperance = 'frost',
+      tempo = false,
       tempest = 'tempest',
       tentacles = 'tentacles',
       thermalshield = 'thermalblessing',
@@ -11106,6 +11110,7 @@ if not next(svo.dict) then
       vitality = 'vitality',
       ward = false,
       waterwalking = 'waterwalk',
+      wavedance = 'wavedance',
       weakvigour = false,
       weathering = 'weathering',
       weaving = 'weaving',
@@ -12554,6 +12559,47 @@ if not next(svo.dict) then
     }
   end
   
+  if svo.haveskillset('bladedance') then
+    -- A dance or a tempo replaces whichever is up. Defup switches to the one
+    -- chosen, and keepup leaves alone one the player's offence picked
+    for _, group in ipairs({
+      {command = 'dance', list = {'harrying', 'hawkstep', 'wavedance'}},
+      {command = 'tempo', list = {'adagio', 'moderato', 'allegro', 'vivace'}},
+    }) do
+      local command, list = group.command, group.list
+
+      local function kept_up(which)
+        if sys.deffing then return false end
+        for _, other in ipairs(list) do
+          if other ~= which and defc[other] then return true end
+        end
+        return false
+      end
+
+      for _, which in ipairs(list) do
+        svo.dict[which] = {
+          physical = {
+            balanceful_act = true, def = true, undeffable = true,
+
+            isadvisable = function()
+              return (not defc[which] and ((sys.deffing and defdefup[defs.mode][which]) or (conf.keepup and defkeepup[defs.mode][which])) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone and not kept_up(which)) or false
+            end,
+
+            oncompleted = function()
+              for _, other in ipairs(list) do
+                if other ~= which then defences.lost(other) end
+              end
+              defences.got(which)
+            end,
+
+            action = command..' '..which,
+            onstart = function() send(command..' '..which, conf.commandecho) end
+          },
+        }
+      end
+    end
+  end
+
   if svo.haveskillset('occultism') then
     svo.dict.astralform = {
       physical = {

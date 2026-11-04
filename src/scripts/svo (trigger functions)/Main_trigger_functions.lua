@@ -946,6 +946,25 @@ function svo.valid.proper_daeggerimpale()
   end
 end
 
+local bard_tempos = {'adagio', 'moderato', 'allegro', 'vivace'}
+
+-- the game named the tempo you're dancing to. Its action takes the others off
+function svo.valid.bard_tempo(tempo)
+  tempo = tempo:lower()
+  local got = table.contains(bard_tempos, tempo) and svo.defs['got_'..tempo]
+  if got then got() end
+end
+
+-- "You are already dancing to that tempo." doesn't say which: the one svof sent
+function svo.valid.bard_tempo_already()
+  for _, name in ipairs(bard_tempos) do
+    if svo.doingaction(name) then
+      svo.defs['got_'..name]()
+      return
+    end
+  end
+end
+
 function svo.valid.bloodleech()
   sk.bloodleech_hit = true
   sk.onprompt_beforeaction_add("unset bloodleech", function()

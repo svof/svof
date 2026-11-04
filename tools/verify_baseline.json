@@ -58,6 +58,21 @@
       "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Earworm hum [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Bladedance/Tempo already",
+      "digest": "2c787b1cfb9b975c",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Tempo already [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Bladedance/Tempo set",
+      "digest": "358fe2e9eb893d1a",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Tempo set [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Bladedance/Tempo shown",
+      "digest": "63e751d57b03ab62",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Tempo shown [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/Composition/Crescendo begins",
       "digest": "f766c761d81ba6fd",
       "text": "Trigger  svo (aliases, triggers) svo/Composition/Crescendo begins [only in the package]"
@@ -219,8 +234,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "619763d3c0e934a4",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2479 in merged"
+      "digest": "4549bf4488d5f38c",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2482 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -699,7 +714,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "54e7dc3545b838f0",
+      "digest": "44938758fb75c7e0",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -709,7 +724,7 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "5eae2c064183af6c",
+      "digest": "f4e635df7f83aa5b",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -734,7 +749,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "49bd3adc54cefcdc",
+      "digest": "ac54baa3d17bff31",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -959,7 +974,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "72ce6c4857a1a073",
+      "digest": "f00a0e1422523553",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

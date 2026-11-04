@@ -364,6 +364,12 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.9999. Bard after the class's rework: the skillsets, the dances
+      # and tempos, what svof tracks and doesn't raise, and what the rework
+      # removed staying gone. Runs the real loaders as a Bard.
+      - name: test bard
+        run: lua tools/test_bard.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

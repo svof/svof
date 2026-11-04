@@ -29,6 +29,13 @@ return {
     on = { "You begin leaping and bouncing about, making it more difficult to hit you.", "You are already bouncing around acrobatically." },
     type = "pranks"
   } },
+  adagio = { {
+    classes = { "bard" },
+    command = "tempo adagio",
+    counted = "bladedance",
+    rules = { "counted", "onenable", "own_code" },
+    type = "bladedance"
+  } },
   affinity = { {
     classes = { "druid", "sentinel" },
     command = "embrace spirit",
@@ -54,6 +61,13 @@ return {
     on = { "You already have a channel opened to air.", "The power of air is harnessed to your will." },
     rules = { "counted", "ongot", "onlost", "own_code" },
     type = "weatherweaving"
+  } },
+  allegro = { {
+    classes = { "bard" },
+    command = "tempo allegro",
+    counted = "bladedance",
+    rules = { "counted", "onenable", "own_code" },
+    type = "bladedance"
   } },
   arash = { {
     classes = { "blademaster" },
@@ -401,6 +415,14 @@ return {
     rules = { "onenable", "own_code" },
     type = "metamorphosis"
   } },
+  circling = { {
+    classes = { "bard" },
+    def = { "You are demonstrating peerless footwork." },
+    gmcp = "circling",
+    nodef = true,
+    off = { "Your foe has escaped your deadly footwork." },
+    rules = { "tracked" }
+  } },
   circulate = { {
     classes = { "sylvan" },
     command = "cast circulate",
@@ -719,6 +741,14 @@ return {
     on = { "A feeling of deep peace fills you as your fate is bound with that of your guardian angel.", "Your guardian informs you sadly that she lacks the power to obey your command." },
     rules = { "counted", "own_code", "specialskip" },
     type = "spirituality"
+  } },
+  encircling = { {
+    classes = { "bard" },
+    def = { "You are attacking in synchrony with an ally." },
+    gmcp = "encircling",
+    nodef = true,
+    off = { "You are no longer encircling with your ally." },
+    rules = { "tracked" }
   } },
   evadeblock = { {
     classes = { "monk" },
@@ -1080,6 +1110,26 @@ return {
     on = { "You focus on enhancing your personal luck.", "Your strikes are already guided by preternatural luck." },
     type = "emulation"
   } },
+  harrying = { {
+    classes = { "bard" },
+    command = "dance harrying",
+    counted = "bladedance",
+    off = { "You cease your peerless dancing, returning to explosive stillness." },
+    on = { "You begin the spiral steps of your blade-wrought song, weapon and body in perfect symmetry.", "Spiral steps bleed into a perfect staccato as for the briefest moment you transition into the deadly harrying.", "You are already dancing the harrying." },
+    rules = { "counted", "onenable", "own_code" },
+    type = "bladedance"
+  } },
+  hawkstep = { {
+    classes = { "bard" },
+    command = "dance hawkstep",
+    counted = "bladedance",
+    def = { "You have the grace of a striking hawk." },
+    gmcp = "hawkstep",
+    off = { "You cease your peerless dancing, returning to explosive stillness." },
+    on = { "Your step moves in the exacting precision of a staccato bladesong, the flawless footwork rapidly accelerating in tune with the unheard beat as your surroundings blur.", "Spiral steps bleed into a perfect staccato as for the briefest moment you move in a harrying hawkstep.", "You are already dancing the hawkstep." },
+    rules = { "counted", "onenable", "own_code" },
+    type = "bladedance"
+  } },
   heads = { {
     classes = { "unnamable" },
     def = { "Multiple heads have sprouted from your shoulders and back." },
@@ -1379,6 +1429,13 @@ return {
     on = { "Resolving to move as water, you enter the Mir stance." },
     rules = { "onenable", "own_code", "specialskip" },
     type = "twoarts"
+  } },
+  moderato = { {
+    classes = { "bard" },
+    command = "tempo moderato",
+    counted = "bladedance",
+    rules = { "counted", "onenable", "own_code" },
+    type = "bladedance"
   } },
   mouths = { {
     classes = { "unnamable" },
@@ -2170,6 +2227,13 @@ return {
     rules = { "own_code" },
     type = "kaido"
   } },
+  vivace = { {
+    classes = { "bard" },
+    command = "tempo vivace",
+    counted = "bladedance",
+    rules = { "counted", "onenable", "own_code" },
+    type = "bladedance"
+  } },
   watch = { {
     classes = { "priest" },
     command = "angel watch on",
@@ -2211,6 +2275,17 @@ return {
     on = { "You do not have the power to summon more than one water weird.", "You summon a water weird to assist you in water crossings." },
     rules = { "own_code" },
     type = "elementalism"
+  } },
+  wavedance = { {
+    classes = { "bard" },
+    command = "dance wavedance",
+    counted = "bladedance",
+    def = { "You are as the endlessly crashing waves." },
+    gmcp = "wavedance",
+    off = { "You cease your peerless dancing, returning to explosive stillness." },
+    on = { "You begin the unrelenting dance of the waves, feet carrying you ever forward and yet never quite at the full extent of motion.", "Spiral steps bleed into a perfect staccato as for the briefest moment you move as the crashing waves.", "You are already dancing like the unrelenting waves." },
+    rules = { "counted", "onenable", "own_code" },
+    type = "bladedance"
   } },
   weathering = { {
     balanceless = true,

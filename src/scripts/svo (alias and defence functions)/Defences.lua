@@ -908,6 +908,56 @@ if svo.haveskillset('bladedance') then
     on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
     def = "Your hands are gripping your wielded items tightly.",
     off = "You relax your grip."})
+
+  -- One dance and one tempo at a time, as with stances: choosing one in defup
+  -- or keepup takes the others out. custom_def_type counts a line of theirs
+  -- whoever sent the command, as an offence script often does.
+  local function one_of(list)
+    return function (mode, newdef, whereto, echoback)
+      for _, other in ipairs(list) do
+        if other ~= newdef and svo['def'..whereto][mode][other] then
+          svo['def'..whereto][mode][other] = false
+          if echoback then svo.echof("Removed %s from %s, it's incompatible with %s to have simultaneously up.", other, whereto, newdef) end
+        end
+      end
+
+      return true
+    end
+  end
+
+  local one_dance = one_of({'harrying', 'hawkstep', 'wavedance'})
+  defs_data:set('harrying', { type = 'bladedance', custom_def_type = 'bladedance',
+    onenable = one_dance,
+    on = {"You begin the spiral steps of your blade-wrought song, weapon and body in perfect symmetry.", "Spiral steps bleed into a perfect staccato as for the briefest moment you transition into the deadly harrying.", "You are already dancing the harrying."},
+    off = "You cease your peerless dancing, returning to explosive stillness."})
+  defs_data:set('hawkstep', { type = 'bladedance', custom_def_type = 'bladedance',
+    onenable = one_dance,
+    on = {"Your step moves in the exacting precision of a staccato bladesong, the flawless footwork rapidly accelerating in tune with the unheard beat as your surroundings blur.", "Spiral steps bleed into a perfect staccato as for the briefest moment you move in a harrying hawkstep.", "You are already dancing the hawkstep."},
+    def = "You have the grace of a striking hawk.",
+    off = "You cease your peerless dancing, returning to explosive stillness."})
+  defs_data:set('wavedance', { type = 'bladedance', custom_def_type = 'bladedance',
+    onenable = one_dance,
+    on = {"You begin the unrelenting dance of the waves, feet carrying you ever forward and yet never quite at the full extent of motion.", "Spiral steps bleed into a perfect staccato as for the briefest moment you move as the crashing waves.", "You are already dancing like the unrelenting waves."},
+    def = "You are as the endlessly crashing waves.",
+    off = "You cease your peerless dancing, returning to explosive stillness."})
+
+  -- the Bladedance triggers and svo.valid.bard_tempo track these: their lines
+  -- hold the tempo's name, and one doesn't name it at all
+  local one_tempo = one_of({'adagio', 'moderato', 'allegro', 'vivace'})
+  defs_data:set('adagio', { type = 'bladedance', custom_def_type = 'bladedance', onenable = one_tempo })
+  defs_data:set('moderato', { type = 'bladedance', custom_def_type = 'bladedance', onenable = one_tempo })
+  defs_data:set('allegro', { type = 'bladedance', custom_def_type = 'bladedance', onenable = one_tempo })
+  defs_data:set('vivace', { type = 'bladedance', custom_def_type = 'bladedance', onenable = one_tempo })
+
+  -- these come and go with the fight, so svof tracks them for a player's
+  -- scripts and doesn't raise them. circling comes up with most Bladedance
+  -- attacks and ends a few seconds after you and your foe part
+  defs_data:set('circling', { nodef = true,
+    def = "You are demonstrating peerless footwork.",
+    off = "Your foe has escaped your deadly footwork."})
+  defs_data:set('encircling', { nodef = true,
+    def = "You are attacking in synchrony with an ally.",
+    off = "You are no longer encircling with your ally."})
 end
 
 if svo.haveskillset('composition') then

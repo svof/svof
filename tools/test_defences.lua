@@ -175,9 +175,9 @@ for _, class in ipairs(CLASSES) do
     end
   end
 end
-eq(count(union), 299, "299 defence records across every class")
+eq(count(union), 308, "308 defence records across every class")
 eq(count(everywhere), 78, "78 of them exist whatever the class")
-eq(count(entries), 268, "268 defences have a dictionary entry")
+eq(count(entries), 275, "275 defences have a dictionary entry")
 eq(sorted_keys(without_record), "", "no dictionary defence lacks a record, in any class")
 eq(sorted_keys(unflagged), "bedevil, evasion",
   "today (defect 22): two records have no entry and no recognise-only flag")
@@ -196,9 +196,9 @@ do
   -- table in it, these two included (plan defect 20)
   eq(svo.dict.sstosvod.name, "sstosvod", "today (defect 20): dict_setup stamped a name onto sstosvod")
   eq(type(svo.dict.sstosvod.sw), "number", "today (defect 20): and a stopwatch")
-  -- 170 names plus the stamped name and the shroud line
-  eq(strings, 172, "sstosvod: 170 game names map to svof names, plus the stamped name and shroud")
-  eq(falses, 37, "sstosvod: 37 game names svof leaves alone")
+  -- 174 names plus the stamped name and the shroud line
+  eq(strings, 176, "sstosvod: 174 game names map to svof names, plus the stamped name and shroud")
+  eq(falses, 38, "sstosvod: 38 game names svof leaves alone")
   eq(svo.dict.sstosvod.shroud, "shroud", "shroud is shroud outside Subterfuge")
   eq(worlds.Serpent.svo.dict.sstosvod.shroud, "cloaking", "and Subterfuge's cloaking")
 end
