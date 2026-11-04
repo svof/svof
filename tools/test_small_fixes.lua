@@ -378,6 +378,49 @@ do
   check("shn without a number doesn't raise", ok, true)
 end
 
+-- Shrine full-gone: it disables itself, as undoall has just thrown away the
+-- disable step svo.corpse_stuff queued. The queue can hold functions, or only
+-- that step, once the last offer has gone out.
+do
+  local code = read_file("src/triggers/svo (offering)/Shrine_full-gone.lua")
+  local step = function() end
+  local function run(queue)
+    local w = world.new({ class = "Monk" })
+    w.svo.me.doqueue = { repeating = false }
+    for i, v in ipairs(queue) do w.svo.me.doqueue[i] = v end
+    local off = {}
+    w.env.disableTrigger = function(name) off[#off + 1] = name end
+    local ok, err = pcall(w.run, code, "Shrine full-gone")
+    local left = {}
+    for i, v in ipairs(w.svo.me.doqueue) do left[i] = type(v) == "string" and v or "<step>" end
+    return ok and "ok" or tostring(err), off[1], table.concat(left, ", ")
+  end
+
+  local ok, off, left = run({ "offer 1 to sanctify", "offer 2 to sanctify", step })
+  check("offers queued: no error", ok, "ok")
+  check("offers queued: it turns itself off", off, "Shrine full-gone")
+  check("offers queued: the queue is cleared", left, "")
+
+  ok, off, left = run({ "offer 1 to sanctify", "vkeep selfishness on", step })
+  check("selfishness queued: no error", ok, "ok")
+  check("selfishness queued: it turns itself off", off, "Shrine full-gone")
+  check("selfishness queued: selfishness stays", left, "vkeep selfishness on")
+
+  ok, off, left = run({ "vkeep selfishness on", step })
+  check("no offer next: no error", ok, "ok")
+  check("no offer next: it turns itself off", off, "Shrine full-gone")
+  check("no offer next: the queue is left alone", left, "vkeep selfishness on, <step>")
+
+  ok, off, left = run({ step })
+  check("only the disable step left: no error", ok, "ok")
+  check("only the disable step left: it turns itself off", off, "Shrine full-gone")
+  check("only the disable step left: the queue is left alone", left, "<step>")
+
+  ok, off = run({})
+  check("empty queue: no error", ok, "ok")
+  check("empty queue: it turns itself off", off, "Shrine full-gone")
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end
