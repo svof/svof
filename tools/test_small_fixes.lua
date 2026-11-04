@@ -238,6 +238,97 @@ do
   check("and doesn't warn, though matches holds my name", #w.warned, 0)
 end
 
+-- tonguetied and mindravaged, which the game reports over GMCP. svof had no
+-- name for either in sstosvoa, so an Add, a Remove and a List all passed it by.
+do
+  local function live()
+    local w = fresh(STALE)
+    w.env.gmcp.Char.Afflictions.List = {}
+    w.svo.signals.gmcpcharafflictionslist:emit()
+    return w
+  end
+  local function add(w, name)
+    w.env.gmcp.Char.Afflictions.Add = { name = name, cure = "", desc = "" }
+    w.svo.signals.gmcpcharafflictionsadd:emit()
+    w.prompt()
+  end
+  local function remove(w, name)
+    w.env.gmcp.Char.Afflictions.Remove = { name }
+    w.svo.signals.gmcpcharafflictionsremove:emit()
+    w.prompt()
+  end
+  local function listed(w, names)
+    local t = {}
+    for i, name in ipairs(names) do t[i] = { name = name, cure = "", desc = "" } end
+    w.env.gmcp.Char.Afflictions.List = t
+    w.svo.signals.gmcpcharafflictionslist:emit()
+    w.prompt()
+  end
+  local function has(w, name) return w.svo.affs[name] ~= nil end
+
+  for _, name in ipairs({ "tonguetied", "mindravaged" }) do
+    local w = live()
+    check(name .. ": the name is mapped", w.svo.dict.sstosvoa[name], name)
+    check(name .. ": and back", w.svo.dict.svotossa[name], name)
+    add(w, name)
+    check(name .. ": a GMCP Add tracks it", has(w, name), true)
+    remove(w, name)
+    check(name .. ": a GMCP Remove clears it", has(w, name), false)
+    listed(w, { name })
+    check(name .. ": a GMCP List tracks it", has(w, name), true)
+    listed(w, {})
+    check(name .. ": a List without it clears it", has(w, name), false)
+  end
+
+  local w = live()
+  add(w, "tonguetied")
+  check("tonguetied's salve is advisable once GMCP adds it", w.svo.dict.tonguetied.salve.isadvisable() and true, true)
+  w.svo.rmaff("tonguetied")
+  w.prompt()
+  check("a cure's timeout doesn't clear what GMCP still reports", has(w, "tonguetied"), true)
+
+  -- the two lines of the attack, through the real triggers
+  local PUPPET = ATTACKER .. " twists and contorts the wooden tongue of a puppet of " .. ME .. "."
+  local PUPPET_OTHER = ATTACKER .. " twists and contorts the wooden tongue of a puppet of " .. OTHER .. "."
+  local GAIN = "Your tongue twists and writhes in your mouth as if with a will of its own."
+  local V = "Vodun & Puppetry"
+
+  local function see(w, lines)
+    for _, l in ipairs(lines) do
+      fire(w, V, "tonguetied", { l })
+      fire(w, V, "tonguetied gain", { l })
+    end
+    w.prompt()
+    return has(w, "tonguetied")
+  end
+  local function blackout(aillusion)
+    local b = fresh(STALE)
+    b.env.gmcp.Char.Afflictions.List = {}
+    b.svo.signals.gmcpcharafflictionslist:emit()
+    b.svo.valid.simpleblackout()
+    b.prompt()
+    b.svo.conf.aillusion = aillusion
+    check("the test is in blackout", b.svo.affs.blackout ~= nil, true)
+    return b
+  end
+
+  check("GMCP live and silent: both lines don't add it", see(live(), { PUPPET, GAIN }), false)
+  check("before GMCP is live, the gain line adds it", see(fresh(STALE), { GAIN }), true)
+
+  check("blackout: the puppet line alone doesn't add it", see(blackout(true), { PUPPET }), false)
+  check("blackout: the gain line alone doesn't add it", see(blackout(true), { GAIN }), false)
+  check("blackout: the puppet line, then the gain line, adds it", see(blackout(true), { PUPPET, GAIN }), true)
+  check("blackout: the gain line, then the puppet line, adds it", see(blackout(true), { GAIN, PUPPET }), true)
+  check("blackout: a puppet of someone else doesn't count", see(blackout(true), { PUPPET_OTHER, GAIN }), false)
+
+  w = blackout(true)
+  see(w, { PUPPET })
+  check("blackout: a prompt between the two lines starts over", see(w, { GAIN }), false)
+
+  check("blackout, anti-illusion off: the gain line alone adds it", see(blackout(false), { GAIN }), true)
+  check("blackout, anti-illusion off: the puppet line alone doesn't", see(blackout(false), { PUPPET }), false)
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end

@@ -188,6 +188,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/Swashbuckling/Earworm hum [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Vodun & Puppetry/tonguetied gain",
+      "digest": "32e8bc48aa48728f",
+      "text": "Trigger  svo (aliases, triggers) svo/Vodun & Puppetry/tonguetied gain [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/Voicecraft/Crescendo begins",
       "digest": "4b75414ecea6bba0",
       "text": "Trigger  svo (aliases, triggers) svo/Voicecraft/Crescendo begins [only in the package]"
@@ -219,8 +224,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "1baeb8a41ed68579",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2549 in merged"
+      "digest": "d492fe36cc16fae1",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2550 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -349,7 +354,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "3d1afe7456054bb0",
+      "digest": "ac9e934776484975",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -604,7 +609,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "2d5fc30212e76e05",
+      "digest": "cd91b43413bd26c9",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -2456,6 +2461,16 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/Striking/Flamefisted|script",
       "digest": "0d36ac310a873be1",
       "text": "Trigger  svo (aliases, triggers) svo/Striking/Flamefisted [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Vodun & Puppetry/tonguetied|patterns",
+      "digest": "f5692ba183bac122",
+      "text": "Trigger  svo (aliases, triggers) svo/Vodun & Puppetry/tonguetied [patterns]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Vodun & Puppetry/tonguetied|script",
+      "digest": "9d7f3d1866613578",
+      "text": "Trigger  svo (aliases, triggers) svo/Vodun & Puppetry/tonguetied [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Zeal/Judgement three|multiline",

@@ -1,1 +1,1 @@
-svo.valid.simpletonguetied()
+svo.valid.tonguetied_line('puppet')
