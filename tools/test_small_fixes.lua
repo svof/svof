@@ -421,6 +421,33 @@ do
   check("empty queue: it turns itself off", off, "Shrine full-gone")
 end
 
+-- sstosvod spelled the game's insufflate with one f, so vcustomdef's list told
+-- players Svof didn't know it, where it means to leave it alone.
+do
+  local w = world.new({ class = "Monk" })
+  check("the game's insufflate is left alone", w.svo.dict.sstosvod.insufflate, false)
+  check("the misspelling is gone", w.svo.dict.sstosvod.insuflate, nil)
+
+  w.svo.defences.custom_gamelist()
+  local function game(text)
+    w.env.line = text
+    w.svo.defences.custom_gamelist_line()
+    w.run_timers()
+  end
+  w.echoes = {}
+  game("All defences")
+  game("------------------------------------------------")
+  game("Insufflate")
+  game('An unseen presence whispers in your ear, "There is no more, friend."')
+  local says, unknown = false, false
+  for _, e in ipairs(w.echoes) do
+    if e:find("leaves them alone", 1, true) then says = true end
+    if e:find("doesn't know", 1, true) then unknown = true end
+  end
+  check("vcustomdef's list says Svof leaves it alone", says, true)
+  check("and doesn't call it unknown", unknown, false)
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end

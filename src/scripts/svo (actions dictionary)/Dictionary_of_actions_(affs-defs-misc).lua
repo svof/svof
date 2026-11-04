@@ -11011,7 +11011,7 @@ if not next(svo.dict) then
       immunity = 'immunity',
       insomnia = 'insomnia',
       inspiration = 'inspiration',
-      insuflate = false,
+      insufflate = false,
       insulation = 'caloric',
       ironform = false,
       ironwill = 'qamad',
