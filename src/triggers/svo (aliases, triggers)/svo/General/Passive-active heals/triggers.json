@@ -206,24 +206,6 @@
     ]
   },
   {
-    "name": "Hallelujah",
-    "isActive": "yes",
-    "isFolder": "no",
-    "multiline": "no",
-    "multilineDelta": "0",
-    "filter": "no",
-    "fireLength": "0",
-    "highlight": "yes",
-    "highlightFG": "#00aaff",
-    "highlightBG": "#000000",
-    "patterns": [
-      {
-        "pattern": "The exaltation of the Hallelujah lifts yet another burden from you.",
-        "type": "exactMatch"
-      }
-    ]
-  },
-  {
     "name": "Angel sacrifice",
     "isActive": "yes",
     "isFolder": "no",

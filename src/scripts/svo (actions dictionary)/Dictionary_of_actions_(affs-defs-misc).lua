@@ -202,14 +202,7 @@ codepaste.addrestobreakleg = function(aff, oldhp, tekura)
 
   if not conf.aillusion or ((not oldhp or oldhp > stats.currenthealth) or svo.paragraph_length >= 3 or
     (affs.recklessness and getStopWatchTime(affs[aff].sw) >= conf.ai_restoreckless))
-    -- accept it when it was a tremolo hit that set us up for a break as well
-    or (sk.tremoloside and sk.tremoloside[leg])
   then
-
-    -- clear sk.tremoloside for the leg, so tremolo later on can know when it /didn't/ break a leg
-    if sk.tremoloside and sk.tremoloside[leg] then
-      sk.tremoloside[leg] = nil
-    end
 
     if not tekura then
       svo.addaffdict(svo.dict[aff])
