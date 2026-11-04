@@ -701,8 +701,8 @@ sk.gmcp_unconfirmed = sk.gmcp_unconfirmed or {}
 -- Whether the game currently reports this svof affliction over GMCP. Walks
 -- gaffl, which holds only what you have right now, and translates each game
 -- name forward through sstosvoa. Going forward matters: svotossa keeps only
--- one game name per svof name, and sleep (deepsleep, sleeping) and
--- seriousconcussion (concussion, mangledhead) each have two.
+-- one game name per svof name, and seriousconcussion has two (concussion,
+-- mangledhead).
 function svo.gmcp_reports(aff)
   for rawaff in pairs(gaffl) do
     if not sk.gmcp_unconfirmed[rawaff] and svo.dict.sstosvoa[(parseaffname(rawaff))] == aff then return true end
@@ -1107,6 +1107,16 @@ signals.gmcpcharafflictionsremove:connect(function()
   gaffl[thisaff] = nil
   sk.gmcp_unconfirmed[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
+
+  -- An affliction with two game names (seriousconcussion: concussion,
+  -- mangledhead) isn't gone while the game still lists the other one. Only
+  -- another name counts, so a levelled entry of this one changes nothing
+  if svoaffkey then
+    for other in pairs(gaffl) do
+      local othername = parseaffname(other)
+      if othername ~= affname and svo.dict.sstosvoa[othername] == svoaffkey then svoaffkey = nil break end
+    end
+  end
 
   -- "A real affliction was cured that svof wasn't tracking" means one of the
   -- unknowns is accounted for. That is only true when the GMCP name
