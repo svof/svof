@@ -542,6 +542,49 @@ do
   eq(svo.defc.alertness, false, "a defence DEF did not list is lost at the prompt")
 end
 
+-- A nodef defence has no place in the defup or keepup lists, and its DEF line
+-- goes in nodef_list, which process_defs never read. So DEF took one off even
+-- when it listed it, and never set one svof didn't know about.
+do
+  local LINE = "Your skin is toughened."
+  local function run_def(w, ...)
+    w.svo.doaction(w.svo.dict.defcheck.physical)
+    w.svo.defs.defstart()
+    for _, l in ipairs({...}) do w.line(l) end
+    w.svo.defs.defline()
+    w.prompt()
+  end
+
+  local w = world.new()
+  w.svo.defences.got("toughness")
+  run_def(w, LINE)
+  eq(w.svo.defc.toughness, true, "nodef: DEF listing one that's up keeps it")
+  eq(w.svo.defences.nodef_list.toughness, true, "nodef: and it's still there to show as an additional defence")
+  local flickered = false
+  for _, e in ipairs(w.events) do
+    if e.name == "svo lost def" and e.args[1] == "toughness" then flickered = true end
+  end
+  eq(flickered, false, "nodef: and a script listening never hears it was lost")
+
+  w = world.new()
+  w.svo.defences.got("toughness")
+  run_def(w)
+  eq(w.svo.defc.toughness, false, "nodef: DEF not listing one that's up takes it off")
+
+  w = world.new()
+  run_def(w, LINE)
+  eq(w.svo.defc.toughness, true, "nodef: DEF listing one svof didn't know about sets it")
+
+  -- a class defence shown as an additional one in dragonform is in nodef_list
+  -- too, and stays out of this: it's not a nodef record
+  w = world.new()
+  w.svo.defences.got("alertness")
+  w.svo.defences.nodef_list.alertness = true
+  w.svo.process_defs()
+  w.prompt()
+  eq(w.svo.defc.alertness, false, "nodef: a record that isn't nodef isn't kept by nodef_list")
+end
+
 -- ===== 7. Serverside raising a defence =====
 
 -- With serverside on, the game prints "[Curing]: <COMMAND>" for every command

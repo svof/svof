@@ -6938,7 +6938,7 @@ svo.process_defs = function ()
 
   for defname, _ in pairs(defc) do
     -- clear ones we don't have
-    if defc[defname] and not defences.def_def_list[defname] and not (defs_data[defname] and (defs_data[defname].invisibledef or defs_data[defname].custom_def_type)) then
+    if defc[defname] and not defences.def_def_list[defname] and not (defs_data[defname] and (defs_data[defname].invisibledef or defs_data[defname].custom_def_type or (defs_data[defname].nodef and defences.nodef_list[defname]))) then
       if svo.dict[defname] and svo.dict[defname].gone then
         svo.checkaction(svo.dict[defname].gone, true)
         lifevision.add(actions[defname..'_gone'].p)
@@ -6956,6 +6956,12 @@ svo.process_defs = function ()
   -- booked for nothing: rebounding's smoke and a puff, blind's herb
   for defname,_ in pairs(defences.def_def_list) do
     defences.confirm(defname)
+  end
+
+  -- a nodef defence is only ever in nodef_list, and DEF listing it says the
+  -- same as for any other: it's up
+  for defname in defences.nodef_list:pairs() do
+    if defs_data[defname] and defs_data[defname].nodef then defences.confirm(defname) end
   end
 
   for k,v in pairs(addback) do defences.def_def_list[k] = v end
