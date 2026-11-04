@@ -364,6 +364,13 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.997. The bleeding an inundated sanguine humour gives: with
+      # GMCP's Bleed: in the paragraph's Char.Vitals, inundated leaves that
+      # amount alone, and without one, as in blackout, it works the amount
+      # out from the level. Read from the real sources.
+      - name: test sanguine bleed
+        run: lua tools/test_sanguine_bleed.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
