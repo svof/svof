@@ -269,7 +269,7 @@ end
 function svo.snd(what, show)
   for _,w in ipairs(string.split(what, "%$")) do
     _G.send(w, show or false)
-    if (affs.seriousconcussion or (conf.doubledo and affs.stupidity)) and not svo.sys.sync then
+    if (affs.mangledhead or (conf.doubledo and affs.stupidity)) and not svo.sys.sync then
       _G.send(w, show or false)
     end
   end
@@ -594,7 +594,7 @@ local fancy_send_commands = {}
 function svo.fancysend(what, store)
   if conf.batch then svo.sendc(what); sk.systemscommands[what] = true else svo.oldsend(what, false) end
 
-  if (affs.seriousconcussion or (conf.doubledo and affs.stupidity)) and not svo.sys.sync and
+  if (affs.mangledhead or (conf.doubledo and affs.stupidity)) and not svo.sys.sync and
     not svo.sys.sendonceonly then
     if conf.batch then svo.sendc(what); sk.systemscommands[what] = true else svo.oldsend(what, false) end
   end

@@ -364,6 +364,13 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.9991. The head afflictions under the game's names: damagedhead
+      # and mangledhead, which were mildconcussion and seriousconcussion, and
+      # a saved priority list and ignore list that still name them the old
+      # way. Runs the real loaders (tools/svof_world.lua).
+      - name: test head renames
+        run: lua tools/test_head_renames.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

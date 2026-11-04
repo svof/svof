@@ -804,7 +804,7 @@ svo.cnrl.lockdata = {
   ['dragon'] = function () return (defc.dragonform and affs.slickness and affs.anorexia and affs.asthma and ((affs.impatience or affs.sandfever) or (not svo.can_usemana() or not svo.conf.focus)) and affs.recklessness and affs.weakness) end,
   ['rift'] = function() return ((affs.asthma and (rift.invcontents.kelp == 0 and rift.invcontents.aurum == 0)) and affs.slickness and ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))) end,
   ["rift 2"] = function() return (affs.asthma and affs.slickness and affs.anorexia and (affs.paralysis or (affs.disrupt and not bals.equilibrium)) and ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))) end,
-  ['slow'] = function () return (affs.asthma and affs.slickness and ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm)) and (affs.mildconcussion or affs.seriousconcussion) and affs.aeon) end,
+  ['slow'] = function () return (affs.asthma and affs.slickness and ((affs.crippledleftarm or affs.mangledleftarm or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm)) and (affs.damagedhead or affs.mangledhead) and affs.aeon) end,
   ['true'] = function () return (affs.slickness and affs.anorexia and affs.asthma and affs.paralysis and (affs.impatience or affs.sandfever) and affs.disrupt and affs.confusion) end
 }
 

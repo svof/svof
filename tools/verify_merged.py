@@ -109,6 +109,12 @@ ITEM_RENAME = {
         "/Striking/Burning": "Flamefisted",
         "/General/svo diag/burning": "flamefisted",
         "/General/svo burning woreoff": "svo flamefisted woreoff",
+        # svof called the game's damagedhead and mangledhead mildconcussion and
+        # seriousconcussion, beside the game's own concussion.
+        "/General/svo diag/concussionhead": "damagedhead",
+        "/General/svo diag/seriousconcussion": "mangledhead",
+        "/General/svo cure mildconcussion": "svo cure damagedhead",
+        "/General/svo cure seriousconcussion": "svo cure mangledhead",
     },
 }
 

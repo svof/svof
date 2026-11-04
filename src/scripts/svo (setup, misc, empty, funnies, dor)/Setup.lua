@@ -187,6 +187,14 @@ svo.serverignore = svo.serverignore or {}
 svo.ignore = svo.ignore or {}
 svo.dict = svo.dict or {}
 
+-- Afflictions renamed to the game's own names, old name to new. A player's
+-- saved priorities and ignore list name them the old way, so both loads
+-- read an old name as the new one
+svo.renamed_affs = {
+  mildconcussion = 'damagedhead',
+  seriousconcussion = 'mangledhead',
+}
+
 
 local oldecho = svo.conf.commandecho
 signals.changecuring = signals.changecuring or luanotify.signal.new()
@@ -702,7 +710,7 @@ sk.gmcp_unconfirmed = sk.gmcp_unconfirmed or {}
 -- gaffl, which holds only what you have right now, and translates each game
 -- name forward through sstosvoa. Going forward matters: svotossa keeps only
 -- one game name per svof name, and sleep (deepsleep, sleeping) and
--- seriousconcussion (concussion, mangledhead) each have two.
+-- mangledhead (concussion, mangledhead) each have two.
 function svo.gmcp_reports(aff)
   for rawaff in pairs(gaffl) do
     if not sk.gmcp_unconfirmed[rawaff] and svo.dict.sstosvoa[(parseaffname(rawaff))] == aff then return true end
@@ -2197,6 +2205,17 @@ end, 'load hoist list')
 signals.saveconfig:connect(function () me.hoistlist = me.hoistlist or {}
   svo.tablesave(getMudletHomeDir() .. "/svo/config/hoistlist", me.hoistlist) end, 'save hoist list')
 
+-- moves a saved list's renamed afflictions to their new names. A list that
+-- has the new name already keeps that one
+local function import_renamed_affs(t)
+  for old, new in pairs(svo.renamed_affs) do
+    if t[old] ~= nil then
+      if t[new] == nil then t[new] = t[old] end
+      t[old] = nil
+    end
+  end
+end
+
 -- load the ignore list
 signals.systemstart:connect(function ()
   local conf_path = getMudletHomeDir() .. "/svo/config/ignore"
@@ -2204,6 +2223,7 @@ signals.systemstart:connect(function ()
   if lfs.attributes(conf_path) then
     local t = {}
     table.load(conf_path, t)
+    import_renamed_affs(t)
     svo.update(svo.ignore, t)
   end
   svo.ignore.checkparalysis = true
@@ -2330,7 +2350,8 @@ signals.saveconfig:connect(function ()
 end, 'save dragonheal data')
 
 for _, config in ipairs{
- {location = 'serverignore', localtable = svo.serverignore, errormsg = "re-set all of the server ignore strats"},
+ {location = 'serverignore', localtable = svo.serverignore, errormsg = "re-set all of the server ignore strats",
+  afterload = function () import_renamed_affs(svo.serverignore) end},
  -- a saved list can tick an affliction svof no longer focuses for, such as
  -- generosity, which sk.canfocus would still act on and the menu can't show
  {location = 'cadmusaffs', localtable = svo.me.cadmusaffs, errormsg = "re-set all of the cadmus affs",
