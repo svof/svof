@@ -20,7 +20,7 @@ Installing
 
 To install the system, make sure that you're connected to server **achaea.com** and port **23** (or 2003), and logged are in.
 
-1) Download the zip.
+1) Download the `zip <https://github.com/svof/svof/archive/in-client-svof.zip>`_.
 
 2) Unzip it somewhere permanent. Don't delete the unzipped files.
 
