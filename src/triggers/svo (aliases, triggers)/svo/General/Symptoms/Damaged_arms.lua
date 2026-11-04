@@ -5,7 +5,7 @@ if previousline == "You try to use your right hand but it is still too numb."
 
 local affs = svo.affl
 -- do we know something is wrong already?
-if affs.crippledleftarm or affs.crippledrightarm or affs.mangledrightarm or affs.mangledleftarm or affs.missingrightarm or affs.missingleftarm or affs.unknowncrippledarm or affs.unknowncrippledlimb then return end
+if affs.crippledleftarm or affs.crippledrightarm or affs.mangledrightarm or affs.mangledleftarm or affs.mutilatedrightarm or affs.mutilatedleftarm or affs.unknowncrippledarm or affs.unknowncrippledlimb then return end
 
 -- if no, we should cure it
 svo.valid.simpleunknowncrippledarm()

@@ -10710,7 +10710,7 @@ if not next(svo.dict) then
         balanceful_act = true, def = true,
   
         isadvisable = function()
-          return (((sys.deffing and defdefup[defs.mode].shield and not defc.shield) or (conf.keepup and defkeepup[defs.mode].shield and not defc.shield)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not (affs.mangledleftarm and affs.mangledlrightarm) and not affs.prone) or false
+          return (((sys.deffing and defdefup[defs.mode].shield and not defc.shield) or (conf.keepup and defkeepup[defs.mode].shield and not defc.shield)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not (affs.mangledleftarm and affs.mangledrightarm) and not affs.prone) or false
         end,
   
         oncompleted = function()

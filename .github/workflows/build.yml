@@ -364,6 +364,13 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.9998. Removal paths: every affliction's gone removes it, the
+      # public svo.removeaff and svo.removeafflevel take every affliction off,
+      # and every affliction name the code reads is one svof has. Runs the
+      # real loaders (tools/svof_world.lua).
+      - name: test removal paths
+        run: lua tools/test_removal_paths.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

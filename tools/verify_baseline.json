@@ -349,7 +349,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "3d1afe7456054bb0",
+      "digest": "70bc212e97c54e42",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -384,7 +384,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "49bd3adc54cefcdc",
+      "digest": "3429c886332b7b4e",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -1083,6 +1083,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Damaged arm/regexes (damaged arm) [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Damaged arms|script",
+      "digest": "6a561820054ad392",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Damaged arms [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Disloyalty|script",
       "digest": "5b9ef50bf434dd48",
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Disloyalty [script]"
@@ -1109,7 +1114,7 @@
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Full, injured, or restrained arms|script",
-      "digest": "1e9e190af34ddcd6",
+      "digest": "32852271b79f3d56",
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Full, injured, or restrained arms [script]"
     },
     {
