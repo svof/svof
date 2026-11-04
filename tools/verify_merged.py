@@ -109,6 +109,10 @@ ITEM_RENAME = {
         "/Striking/Burning": "Flamefisted",
         "/General/svo diag/burning": "flamefisted",
         "/General/svo burning woreoff": "svo flamefisted woreoff",
+        # Achaea replaced these Bard skillsets. Their other triggers went with
+        # them, and what's left is lines the game still prints.
+        "/Swashbuckling": "Bladedance",
+        "/Voicecraft": "Composition",
     },
 }
 

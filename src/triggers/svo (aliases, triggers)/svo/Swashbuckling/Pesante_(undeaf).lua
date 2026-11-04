@@ -1,1 +1,0 @@
-svo.valid.swachbuckling_pesante()

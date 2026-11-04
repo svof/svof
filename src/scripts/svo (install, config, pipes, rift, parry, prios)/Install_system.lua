@@ -96,11 +96,6 @@ if svo.haveskillset('venom') then
     gmcp = {group = 'venom', name = 'shrugging'}
   }
 end
-if svo.haveskillset('voicecraft') then
-  installdata.dwinnu = {
-    gmcp = {group = 'voicecraft', name = 'dwinnu'},
-  }
-end
 if not svo.haveskillset('tekura') then
   installdata.parry = {
     gmcp = {group = 'weaponry', name = 'parrying'},

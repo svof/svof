@@ -8431,28 +8431,6 @@
     ]
   },
   {
-    "name": "svo voicecraft dwinnu",
-    "isActive": "yes",
-    "isFolder": "no",
-    "multiline": "no",
-    "multilineDelta": "0",
-    "filter": "no",
-    "fireLength": "0",
-    "highlight": "no",
-    "highlightFG": "#ff0000",
-    "highlightBG": "#ffff00",
-    "patterns": [
-      {
-        "pattern": "'DWINNU! DWINNU! you chant, to no effect.",
-        "type": "exactMatch"
-      },
-      {
-        "pattern": "'DWINNU! DWINNU!' you chant urgently as your bonds turn to dust.",
-        "type": "exactMatch"
-      }
-    ]
-  },
-  {
     "name": "svo jump",
     "isActive": "yes",
     "isFolder": "no",

@@ -337,7 +337,7 @@ end, 'save my class')
 svo.knownskills = {
   alchemist                = {'transmutation', 'physiology', 'alchemy'},
   apostate                 = {'evileye', 'necromancy', 'apostasy'},
-  bard                     = {'voicecraft', 'swashbuckling', 'harmonics'},
+  bard                     = {'bladedance', 'composition', 'sagas'},
   blademaster              = {'twoarts', 'striking', 'shindo'},
   depthswalker             = {'shadowmancy','aeonics','terminus'},
   druid                    = {'groves', 'metamorphosis', 'reclamation'},
@@ -1763,7 +1763,7 @@ else
 disableTrigger("Hydra balance")
 end
 
-if svo.haveskillset('voicecraft') then
+if svo.haveskillset('sagas') then
 enableTrigger("Voice balance")
 else
 disableTrigger("Voice balance")
@@ -1856,12 +1856,6 @@ if not svo.haveskillset('groves') then
 disableTrigger("Groves defences")
 else
 enableTrigger("Groves defences")
-end
-
-if not svo.haveskillset('harmonics') then
-disableTrigger("Harmonics defences")
-else
-enableTrigger("Harmonics defences")
 end
 
 if not svo.haveskillset('physiology') then

@@ -946,145 +946,24 @@ function svo.valid.proper_daeggerimpale()
   end
 end
 
-function svo.valid.swachbuckling_pesante()
-  if (not svo.find_until_last_paragraph("The attack rebounds back onto", 'substring')) and (svo.find_until_last_paragraph('jabs', 'substring')) and (svo.find_until_last_paragraph('you', 'substring')) then
-    if (not conf.aillusion) or (defc.deaf or affs.deafaff) then
-      valid.simplestun(.5)
+local bard_tempos = {'adagio', 'moderato', 'allegro', 'vivace'}
+
+-- the game named the tempo you're dancing to. Its action takes the others off
+function svo.valid.bard_tempo(tempo)
+  tempo = tempo:lower()
+  local got = table.contains(bard_tempos, tempo) and svo.defs['got_'..tempo]
+  if got then got() end
+end
+
+-- "You are already dancing to that tempo." doesn't say which: the one svof sent
+function svo.valid.bard_tempo_already()
+  for _, name in ipairs(bard_tempos) do
+    if svo.doingaction(name) then
+      svo.defs['got_'..name]()
+      return
     end
   end
 end
-
---[[
-  Martellato can get tricked by the following, avoid it:
-
-  Lightning-quick, Bob jabs you with a Soulpiercer.
-  A prickly, stinging sensation spreads through your body.
-  The songblessing upon the rapier sings out with a piercing high note.
-  Mary viciously jabs an elegant Mhaldorian rapier into Bob.
-  The songblessing upon the rapier swells with a rich, vibrant hum.
-
-]]
-function svo.valid.swachbuckling_martellato()
-  if not svo.find_until_last_paragraph("The attack rebounds back onto", 'substring') and
-     svo.find_until_last_paragraph('jabs', 'substring') and
-     svo.find_until_last_paragraph('you', 'substring') and
-     not svo.find_until_last_paragraph("^%w+ viciously jabs", 'pattern') then
-    valid.simpleprone()
-  end
-end
-
-local last_jabber = ""
-function svo.valid.swashbuckling_jab(name)
-  if sk.swashbuckling_jab then killTimer(sk.swashbuckling_jab) end
-  sk.swashbuckling_jab = tempTimer(.5, function() sk.swashbuckling_jab = nil end)
-  last_jabber = name
-end
-
-function svo.valid.voicecraft_tremolo(name, side)
-  local known_class = (ndb and ndb.getclass(name))
-  if not conf.aillusion or ((affs['crippled'..side..'leg'] or sk['delayvenom_'..side..'leg'] or sk['delayacciaccatura_'..side..'leg']) and ((sk.swashbuckling_jab and last_jabber == name) or known_class == 'bard')) then
-
-    -- when we've accepted that the Tremolo is legitimate, record the side - to be checked later in the mangle trigger for verification
-    sk.tremoloside = sk.tremoloside or {}
-    sk.tremoloside[side] = true
-    svo.prompttrigger("clear tremolo", function()
-      -- the svo.prompttrigger happens after the mangle should have been processed:
-      -- so if we still have tremoloside setup, it means no mangle happened as the
-      -- mangle would have cleared it. Hence, make the venom timer go off at the
-      -- earlist possible time.
-      if sk.tremoloside and sk.tremoloside[side] and sk['delayvenom_'..side..'leg'] then
-        killTimer(sk['delayvenom_'..side..'leg'])
-        sk['delayvenom_'..side..'leg'] = nil
-        -- we can't use valid here, but we can use addaff
-        svo.addaffdict(svo.dict['crippled'..side..'leg'])
-
-        signals.after_lifevision_processing:unblock(cnrl.checkwarning)
-        signals.canoutr:emit()
-      end
-
-      sk.tremoloside = nil
-    end)
-  end
-end
-
-function svo.valid.voicecraft_vibrato(name, side)
-  local known_class = (ndb and ndb.getclass(name))
-  if not conf.aillusion or ((affs['crippled'..side..'arm'] or sk['delayvenom_'..side..'arm'] or sk['delayacciaccatura_'..side..'arm']) and ((sk.swashbuckling_jab and last_jabber == name) or known_class == 'bard')) then
-    valid['simplemangled'..side..'arm']()
-  end
-end
-
--- for a Bard tremolo/vibrato hit, avoid curing the crippled limb right away
--- because that will use up our salve balance and delay the mangled break, which
--- follows soon after. Hence this, upon detecting a jab form a Bard with
--- epteth/epseth, delays adding the crippled affliction until after the tremolo
--- or vibrato
-function svo.valid.swashbuckling_poison()
-  if not conf.aillusion or (svo.paragraph_length == 2 and not conf.batch) then
-    for _, limb in ipairs{'rightleg', 'rightarm', 'leftarm', 'leftleg'} do
-      if actions['crippled'..limb..'_aff'] then
-        svo.killaction(svo.dict['crippled'..limb].aff)
-
-        sk['delayvenom_'..limb] = tempTimer(.25, function()
-          if not affs['mangled'..limb] then
-            svo.addaffdict(svo.dict['crippled'..limb])
-
-            signals.after_lifevision_processing:unblock(cnrl.checkwarning)
-            signals.canoutr:emit()
-            svo.make_gnomes_work()
-          end
-
-          sk['delayvenom_'..limb] = nil
-        end)
-        break
-      end
-    end
-  end
-end
-
-function svo.valid.swashbuckling_acciaccatura(side, limb)
-  local aff = side..limb
-
-  sk['delayacciaccatura_'..aff] = tempTimer(.25, function()
-    if not affs['mangled'..aff] then
-      svo.addaffdict(svo.dict['crippled'..aff])
-
-      signals.after_lifevision_processing:unblock(cnrl.checkwarning)
-      signals.canoutr:emit()
-      svo.make_gnomes_work()
-    end
-
-    sk['delayacciaccatura_'..aff] = nil
-  end)
-end
-
--- handle cancelling of delayvenom in case of this being a DSL:
--- apply the cripples right away, so the cure of a potential mangled limb in the
--- dsl, the venoms and the limb break get computed for cure at once on the prompt
-signals.limbhit:connect(function(attacktype)
-  if attacktype ~= 'weapon' then return end
-
-  sk.weapon_hits = (sk.weapon_hits or 0) + 1
-  sk.onprompt_beforeaction_add("track a dsl", function()
-    -- if we got a DSL, apply the delayvenoms right now
-    if sk.weapon_hits == 2 then
-      for _, aff in ipairs{'rightleg', 'rightarm', 'leftarm', 'leftleg'} do
-        if sk['delayvenom_'..aff] then
-          if not affs['mangled'..aff] then
-            svo.addaffdict(svo.dict['crippled'..aff])
-            signals.after_lifevision_processing:unblock(cnrl.checkwarning)
-            signals.canoutr:emit()
-          end
-
-          killTimer(sk['delayvenom_'..aff])
-          sk['delayvenom_'..aff] = nil
-        end
-      end
-    end
-
-    sk.weapon_hits = nil
-  end)
-end, 'handle mangle/venom combo')
 
 function svo.valid.bloodleech()
   sk.bloodleech_hit = true
@@ -1132,7 +1011,7 @@ function svo.valid.defstrip(which)
     t["thermal spiritshield"]   = 'thermalblessing'
     t["willpower spiritshield"] = 'willpowerblessing'
   end
-  if svo.haveskillset('pranks') or svo.haveskillset('swashbuckling') then
+  if svo.haveskillset('pranks') then
     t["arrow catching"]         = 'arrowcatch'
   end
   if svo.haveskillset('metamorphosis') then
@@ -3664,13 +3543,6 @@ function svo.valid.dragonflex()
   end
 end
 
-function svo.valid.dwinnu()
-  svo.checkaction (svo.dict.dwinnu.misc)
-  if actions.dwinnu_misc then
-    lifevision.add(actions.dwinnu_misc.p)
-  end
-end
-
 function svo.valid.got_blind()
   sk.onprompt_beforeaction_add('hypochondria_blind', function ()
     if not affs.blindaff and not defs.blind then
@@ -4574,7 +4446,7 @@ if svo.haveskillset('venom') then
   end
 end
 
-if svo.haveskillset('voicecraft') then
+if svo.haveskillset('sagas') then
   function svo.valid.usedvoicebalance()
     svo.checkaction(svo.dict.stolebalance.happened, true)
     lifevision.add(actions.stolebalance_happened.p, nil, 'voice')
