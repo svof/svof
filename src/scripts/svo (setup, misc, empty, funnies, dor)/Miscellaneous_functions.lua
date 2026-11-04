@@ -278,9 +278,9 @@ end
 -- given a table of keys and values as integers, return the key with highest value
 function svo.getHighestKey(tbl)
   local result
-  local highest = -1
+  local highest
   for i,j in pairs(tbl) do
-    if j > highest then
+    if not highest or j > highest then
       highest = j
       result = i
     end

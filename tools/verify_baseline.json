@@ -499,7 +499,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Install system|script",
-      "digest": "209a385a5e8a58af",
+      "digest": "e6c9d1e6cf5c8221",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Install system [script]"
     },
     {
@@ -524,7 +524,7 @@
     },
     {
       "id": "item|Script|svo (limbcounter)|svo (limbcounter)/svo limbcounter|script",
-      "digest": "61d50f9fe357ffa6",
+      "digest": "2def4a8340598def",
       "text": "Script   svo (limbcounter) svo (limbcounter)/svo limbcounter [script]"
     },
     {
@@ -589,7 +589,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",
-      "digest": "47f90edfc93eab09",
+      "digest": "146791e0f10bca52",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Miscellaneous functions [script]"
     },
     {

@@ -329,6 +329,55 @@ do
   check("blackout, anti-illusion off: the puppet line alone doesn't", see(blackout(false), { PUPPET }), false)
 end
 
+-- svo.getHighestKey started from -1, so it found no key when every value was
+-- -1 or lower, and the curing pass that asked for one raised. svo.prio.insert
+-- takes a negative priority from a player's script.
+do
+  local w = world.new({ class = "Monk" })
+  local g = w.svo.getHighestKey
+  check("getHighestKey: all negative", g({ a = -5, b = -2 }), "b")
+  check("getHighestKey: -1 alone", g({ a = -1 }), "a")
+  check("getHighestKey: 0 alone", g({ a = 0 }), "a")
+  check("getHighestKey: mixed", g({ a = -5, b = 3 }), "b")
+  check("getHighestKey: positive", g({ a = 3, b = 9 }), "b")
+  check("getHighestKey: empty", g({}), nil)
+
+  local d = w.svo.dict
+  d.healhealth.sip.isadvisable = function() return true end
+  d.healmana.sip.isadvisable = function() return false end
+  w.svo.prio.insert("healhealth", "sip", -5)
+  check("the test's priority is negative", d.healhealth.sip.aspriority, -5)
+  local ok = pcall(w.svo.check_sip)
+  check("the sip pass doesn't raise at a negative priority", ok, true)
+  check("and sips", w.svo.doingaction("healhealth"), true)
+end
+
+-- svo.install.checkinvgmcp: `not t.location == 'inv'` was never true, so a pipe
+-- on the floor took a pipe slot, and svof emptied it.
+do
+  local w = world.new({ class = "Monk" })
+  local function list(location, id)
+    w.env.gmcp.Char.Items.List = { location = location, items = { { id = id, name = "a wooden pipe" } } }
+    w.svo.install.checkinvgmcp()
+  end
+  w.sent = {}
+  list("room", 5)
+  check("a pipe in a room's list isn't sent anything", #w.sent, 0)
+  check("and takes no pipe slot", w.svo.pipes.valerian.id, 0)
+  list("inv", 6)
+  check("a pipe in the inventory is emptied", w.sent[1], "empty 6")
+  check("and takes the slot", w.svo.pipes.valerian.id, 6)
+end
+
+-- svo.lc_sethitsneeded: a bare echof raised on hits that aren't a number,
+-- which the shn alias can pass, as its pattern takes "." alone.
+do
+  local w = world.new({ class = "Magi" })
+  w.run(read_file("src/scripts/svo (limbcounter)/svo_limbcounter.lua"), "limbcounter")
+  local ok = pcall(w.svo.lc_sethitsneeded, nil, nil)
+  check("shn without a number doesn't raise", ok, true)
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
   for _, msg in ipairs(failures) do print("FAIL: " .. msg) end
