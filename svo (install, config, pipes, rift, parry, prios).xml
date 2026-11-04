@@ -1936,8 +1936,8 @@ svo.config_dict = svo.pl.OrderedMap {
       echo(" channel for downloading updates.\n")
     end,
     check = function (what)
-      if what == 'stable' or what == 'testing' or what == 'inclient' then return true end
-      return nil, {'stable', 'testing', 'inclient'}
+      if what == 'stable' or what == 'testing' then return true end
+      return nil, {'stable', 'testing'}
     end,
     onset = function ()
       conf.releasechannel = conf.releasechannel:lower()
@@ -1945,7 +1945,7 @@ svo.config_dict = svo.pl.OrderedMap {
         conf.releasechannel)
     end,
     installstart = function ()
-      conf.releasechannel = 'inclient'
+      conf.releasechannel = 'stable'
     end
   }},
 }
@@ -2316,8 +2316,8 @@ if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.havesk
   })
 end
 
-if not conf.releasechannel or true then --force everybody to use the 'inclient' channel at the moment.
-  conf.releasechannel = 'inclient'
+if not conf.releasechannel or true then --force everybody to use the 'stable' channel at the moment.
+  conf.releasechannel = 'stable'
 end
 
 if not conf.autowrithe then
