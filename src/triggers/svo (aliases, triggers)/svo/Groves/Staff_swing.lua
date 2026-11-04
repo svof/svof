@@ -1,3 +1,3 @@
 svo.valid.simpleprone()
 
-svo.startedfighting("druid", matches[2])
+svo.startedfighting("druid", multimatches[1][2])

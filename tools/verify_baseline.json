@@ -2383,6 +2383,16 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo smoke failed asthma [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Groves/Staff swing|patterns",
+      "digest": "5b8d3832cac6e0d2",
+      "text": "Trigger  svo (aliases, triggers) svo/Groves/Staff swing [patterns]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Groves/Staff swing|script",
+      "digest": "465da1b2afa25aa9",
+      "text": "Trigger  svo (aliases, triggers) svo/Groves/Staff swing [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Herb tracker/Capture inv|colorTrigger",
       "digest": "13c33f87153efd9e",
       "text": "Trigger  svo (aliases, triggers) svo/Herb tracker/Capture inv [colorTrigger]"
@@ -2433,9 +2443,29 @@
       "text": "Trigger  svo (aliases, triggers) svo/Pipelist/Pipelist start [colorTriggerFgColor]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Pranks/Jack-in-the-Box two|script",
+      "digest": "04545bdf3e866256",
+      "text": "Trigger  svo (aliases, triggers) svo/Pranks/Jack-in-the-Box two [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Psionics/Lightbind|patterns",
+      "digest": "26bc8be53fe06ee0",
+      "text": "Trigger  svo (aliases, triggers) svo/Psionics/Lightbind [patterns]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Striking/Flamefisted|script",
       "digest": "0d36ac310a873be1",
       "text": "Trigger  svo (aliases, triggers) svo/Striking/Flamefisted [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Zeal/Judgement three|multiline",
+      "digest": "78c0a994a5e7be76",
+      "text": "Trigger  svo (aliases, triggers) svo/Zeal/Judgement three [multiline]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Zeal/Judgement two|multiline",
+      "digest": "78c0a994a5e7be76",
+      "text": "Trigger  svo (aliases, triggers) svo/Zeal/Judgement two [multiline]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Zeal/Tenderskin|script",
