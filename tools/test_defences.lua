@@ -21,8 +21,10 @@ behaviour meant to stay. All of these are in the 2018 module xmls:
    6  fortifying air tests defc.fortifiedwaterand, so never grants fortifyall
    7  bonding's gone is nested inside physical
    8  the "demon armour" strip line maps to demonarmour; the record is armour
-   9  aria applies svo.dict.aria.salve, which does not exist
-  10  drunkensailor and heartsfury skip their checks during defup (and/or)
+   9  aria applied svo.dict.aria.salve, which did not exist (gone with the
+      Bard rework, which also left svof nothing of aria's to raise)
+  10  drunkensailor and heartsfury skipped their checks during defup (gone
+      with the Bard rework)
   11  lipread's specialskip reads an undefined global mindseye
   12  mindseye's oncompleted marks you deaf, and blind on keepup (and/or)
   13  svo.defs.curedblind and cureddeaf are called and never defined
@@ -173,9 +175,9 @@ for _, class in ipairs(CLASSES) do
     end
   end
 end
-eq(count(union), 317, "317 defence records across every class")
+eq(count(union), 299, "299 defence records across every class")
 eq(count(everywhere), 78, "78 of them exist whatever the class")
-eq(count(entries), 287, "287 defences have a dictionary entry")
+eq(count(entries), 268, "268 defences have a dictionary entry")
 eq(sorted_keys(without_record), "", "no dictionary defence lacks a record, in any class")
 eq(sorted_keys(unflagged), "bedevil, evasion",
   "today (defect 22): two records have no entry and no recognise-only flag")
@@ -194,8 +196,8 @@ do
   -- table in it, these two included (plan defect 20)
   eq(svo.dict.sstosvod.name, "sstosvod", "today (defect 20): dict_setup stamped a name onto sstosvod")
   eq(type(svo.dict.sstosvod.sw), "number", "today (defect 20): and a stopwatch")
-  -- 174 names plus the stamped name and the shroud line
-  eq(strings, 176, "sstosvod: 174 game names map to svof names, plus the stamped name and shroud")
+  -- 170 names plus the stamped name and the shroud line
+  eq(strings, 172, "sstosvod: 170 game names map to svof names, plus the stamped name and shroud")
   eq(falses, 37, "sstosvod: 37 game names svof leaves alone")
   eq(svo.dict.sstosvod.shroud, "shroud", "shroud is shroud outside Subterfuge")
   eq(worlds.Serpent.svo.dict.sstosvod.shroud, "cloaking", "and Subterfuge's cloaking")
@@ -341,7 +343,7 @@ do -- the five Zeal blessings
   eq(w.svo.defc.earthblessing, nil, "with benediction, GMCP frostshield sets only frostblessing")
 end
 
-for _, def in ipairs({ "lay", "tune", "aria" }) do -- Voicecraft
+for _, def in ipairs({ "tune", "aria" }) do -- Bard's, neither on voice balance any more
   local w = world.new({ class = "Bard" })
   local voices = counter(w, "lostbal_voice")
   w.gmcp_defence_add(def)
@@ -727,22 +729,6 @@ do -- 8: the demon armour strip line loses armour, the record's name
   w.svo.valid.defstrip("demon armour")
   w.prompt()
   eq(w.svo.defc.armour, false, "a demon armour strip loses armour")
-end
-
-do -- 9: aria applies a salve route that does not exist
-  local w = world.new({ class = "Bard" })
-  w.svo.defences.got("deaf")
-  local ok = pcall(w.svo.dict.aria.physical.onstart)
-  eq(ok, false, "today (defect 9): while deaf, aria's onstart raises")
-end
-
-do -- 10: drunkensailor and heartsfury skip their checks during defup
-  local w = world.new({ class = "Bard" })
-  local svo = w.svo
-  svo.sys.deffing, svo.defdefup.basic.drunkensailor, svo.defdefup.basic.heartsfury = true, true, true
-  svo.affs.paralysis = {}
-  eq(svo.dict.drunkensailor.physical.isadvisable(), true, "today (defect 10): drunkensailor is advisable while paralysed in defup")
-  eq(svo.dict.heartsfury.physical.isadvisable(), true, "today (defect 10): heartsfury too")
 end
 
 do -- 11: lipread's specialskip reads a global that does not exist
@@ -2515,7 +2501,7 @@ do
   eq(svo.sk.ignored_defences.tekura.t.bear, false, "hide list: which shows it again")
 
   svo.showhidelist(true)
-  eq(echoed(w, "Swashbuckling (Bard) defences:") and echoed(w, "Pranks (Jester) defences:"), true,
+  eq(echoed(w, "Bladedance (Bard) defences:") and echoed(w, "Pranks (Jester) defences:"), true,
     "hide list: all lists every class's skillsets, saying whose")
   eq(link_to("show only Monk's skillsets"), "svo.showhidelist()", "hide list: with a link back to this class's")
   local hide
@@ -2526,7 +2512,7 @@ do
   if hide then w.run(hide) end
   eq(svo.sk.ignored_defences.pranks and svo.sk.ignored_defences.pranks.t.acrobatics, true,
     "hide list: which hides it in that class's skillset")
-  eq(svo.sk.ignored_defences.swashbuckling == nil or not svo.sk.ignored_defences.swashbuckling.t.acrobatics, true,
+  eq(svo.sk.ignored_defences.bladedance == nil or not svo.sk.ignored_defences.bladedance.t.acrobatics, true,
     "hide list: and only that one")
   svo.classchange("Jester")
   w.run_timers()
@@ -2563,7 +2549,7 @@ do
   vshow("unhide", "kaiboost")
   eq(svo.sk.ignored_defences.kaido.t.kaiboost, false, "hide command: and unhide shows it")
   vshow("hide", "acrobatics")
-  eq(svo.sk.ignored_defences.pranks.t.acrobatics and svo.sk.ignored_defences.swashbuckling.t.acrobatics, true,
+  eq(svo.sk.ignored_defences.pranks.t.acrobatics and svo.sk.ignored_defences.bladedance.t.acrobatics, true,
     "hide command: another class's defence is hidden in every skillset it's in")
   vshow("hide", "nosuchthing")
   eq(echoed(w, "Svof doesn't know a skillset or defence called nosuchthing."), true, "hide command: an unknown name says so")
@@ -3322,7 +3308,7 @@ do -- vcustomdef svof [all]: svof's own, each a link to change or copy it (the u
   cmd("svof all")
   eq(echoed(w, "Svof's own defences, every class's, by skillset"), true, "own list: vcustomdef svof all lists every class's")
   eq(link_of(w, "acrobatics"), 'svo.defences.custom_show("acrobatics")', "own list: another class's too, a link to copy it")
-  eq(echoed(w, "Swashbuckling (Bard):") and echoed(w, "Pranks (Jester):"), true,
+  eq(echoed(w, "Bladedance (Bard):") and echoed(w, "Pranks (Jester):"), true,
     "own list: another class's skillset says whose it is")
   eq(echoed(w, "General (every class):") and echoed(w, "Tekura:"), true, "own list: general for every class, and Monk's as they are")
   eq(link_of(w, "show only Monk's defences"), "svo.defences.own_list()", "own list: with a link back to this class's")
@@ -3435,7 +3421,7 @@ do -- so is the name of svof's own action in other classes that isn't a defence 
   eq(echoed(w, "define fitness: " .. why:format("fitness") .. "."), true, "actions: vcustomdef with its name says so")
   eq(svo.defences.custom_drafts.fitness, nil, "actions: and starts no definition")
   eq(#w.sent, sent, "actions: nor asks the game about one")
-  svo.defences.custom_drafts.fitness = { class = "bard", skillset = "swashbuckling", command = "fitness", on = { "x" },
+  svo.defences.custom_drafts.fitness = { class = "bard", skillset = "bladedance", command = "fitness", on = { "x" },
     off = {} }
   eq(svo.defences.custom_problem("fitness", svo.defences.custom_drafts.fitness), why:format("fitness"),
     "actions: a definition of it has that problem")
@@ -3463,7 +3449,7 @@ do -- so is the name of svof's own action in other classes that isn't a defence 
   eq(svo.defs_data.veil ~= nil, true, "actions: but installs the rest")
 
   -- one saved before Svof refused it is left out as Svof loads
-  svo.defences.custom.rage = { class = "bard", skillset = "swashbuckling", command = "rage", on = { "You rage." },
+  svo.defences.custom.rage = { class = "bard", skillset = "bladedance", command = "rage", on = { "You rage." },
     off = {} }
   reload(svo, "Bard")
   eq(echoed(w, "add the defence rage you defined: " .. why:format("rage")), true,
@@ -3508,7 +3494,7 @@ do -- (1) a class with svof's own has nothing to copy, and a copy gives way to i
   eq(svo.defences.custom_registered.acrobatics, true, "copies: a copy for every class is in use as a Monk")
   svo.classchange("Bard")
   eq(svo.defences.custom_registered.acrobatics, nil, "copies: and as a Bard isn't")
-  eq(svo.defs_data.acrobatics and svo.defs_data.acrobatics.type, "swashbuckling", "copies: Svof's own is")
+  eq(svo.defs_data.acrobatics and svo.defs_data.acrobatics.type, "bladedance", "copies: Svof's own is")
   eq(echoed(w, "your copy of it isn't used"), false, "copies: without a word, as it's for every class")
   cmd("acrobatics copy")
   eq(echoed(w, "Svof has its own acrobatics in this class, so there's nothing to copy."), true,

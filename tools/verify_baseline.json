@@ -219,8 +219,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "1baeb8a41ed68579",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2549 in merged"
+      "digest": "2066c93d6d458dd0",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2531 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -241,6 +241,91 @@
       "id": "gone|Script|svo (install me in module manager)|Load & init/svo.installed_as_package",
       "digest": "f76b4c01815ab275",
       "text": "Script   svo (install me in module manager) Load & init/svo.installed_as_package [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences",
+      "digest": "4421dd35871d689d",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list",
+      "digest": "a95112694125f907",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Anthem",
+      "digest": "a638f213ea260b60",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Anthem [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Bagatelle",
+      "digest": "3a234d9a36da56fc",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Bagatelle [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Berceuse",
+      "digest": "27d9cac59363bd18",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Berceuse [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Canticle",
+      "digest": "817d76f08d9983c3",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Canticle [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Continuo",
+      "digest": "751593d98ab691db",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Continuo [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Contradanse",
+      "digest": "34cf15a167a4b487",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Contradanse [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Gigue",
+      "digest": "357f34e7a3f460bd",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Gigue [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Hallelujah",
+      "digest": "bf1a98d19ae75ea2",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Hallelujah [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Harmonius",
+      "digest": "497ffbc2c6365070",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Harmonius [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Lament",
+      "digest": "ba262bab0ad98525",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Lament [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Partita",
+      "digest": "a1d8fe92667e4344",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Partita [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Paxmusicalis",
+      "digest": "23773b065ae76395",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Paxmusicalis [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Reel",
+      "digest": "633e8e864ee1bc42",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Reel [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Wassail",
+      "digest": "63352e933cd9bc23",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Wassail [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/No harmonics",
+      "digest": "3520baeeff3db743",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/No harmonics [only in the originals]"
     },
     {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Applied salve/svo cure scalded",
@@ -323,6 +408,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo no healing balance [only in the originals]"
     },
     {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo voicecraft dwinnu",
+      "digest": "82972082297b2878",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo voicecraft dwinnu [only in the originals]"
+    },
+    {
       "id": "item|Alias|svo (aliases, triggers)|svo/(vversion) Show system version|script",
       "digest": "7b8e8fa2b7a3b73d",
       "text": "Alias    svo (aliases, triggers) svo/(vversion) Show system version [script]"
@@ -349,17 +439,17 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "3d1afe7456054bb0",
+      "digest": "12c91f7ad8f40f99",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Alias functions|script",
-      "digest": "d0dd3f6501b6a958",
+      "digest": "afbd38afd1386e8f",
       "text": "Script   svo (alias and defence functions) Alias functions [script]"
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "c54de7b82029ae85",
+      "digest": "5eae2c064183af6c",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -389,7 +479,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Custom prompt|script",
-      "digest": "168eba2e62c02b9a",
+      "digest": "9074358751e173dd",
       "text": "Script   svo (custom prompt, serverside) Custom prompt [script]"
     },
     {
@@ -468,6 +558,11 @@
       "text": "Script   svo (install me in module manager) Load & init [script]"
     },
     {
+      "id": "item|Script|svo (install me in module manager)|svo Class Management|script",
+      "digest": "0d9842a374be2744",
+      "text": "Script   svo (install me in module manager) svo Class Management [script]"
+    },
+    {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Custom prompt tags/@affs|script",
       "digest": "917e6d7a65c60b40",
       "text": "Script   svo (install me in module manager) svo Utilities/Custom prompt tags/@affs [script]"
@@ -489,12 +584,12 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Config system|script",
-      "digest": "de743316e588e980",
+      "digest": "c15fc19e3420060b",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Config system [script]"
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Install system|script",
-      "digest": "209a385a5e8a58af",
+      "digest": "e1ba5483c908e517",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Install system [script]"
     },
     {
@@ -589,7 +684,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "82e64a45dfb4b39f",
+      "digest": "266074f473e43ba2",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -604,7 +699,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "2d5fc30212e76e05",
+      "digest": "983507745c769dad",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -616,6 +711,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/Apostasy/Dagger impaled|script",
       "digest": "da550d0b4c47c278",
       "text": "Trigger  svo (aliases, triggers) svo/Apostasy/Dagger impaled [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General defences/svo got rebounding|script",
+      "digest": "3a9b6644e39cb37c",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/svo got rebounding [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General defences/svo sileris-quicksilver slickness|script",

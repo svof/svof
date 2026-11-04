@@ -887,127 +887,34 @@ if svo.haveskillset('subterfuge') then
     def = "You are able to detect wormholes due to possessing the second sight.",})
 end
 
-if svo.haveskillset('swashbuckling') then
-  defs_data:set('drunkensailor', { type = 'swashbuckling',
-    on = {"You start swaying to and fro seemingly unpredictably as you enter the stance of the Drunken Sailor.", "You are already in the stance of the Drunken Sailor."},
-    def = "The Drunken Sailor stance protects you.",
-    off = "You relax into your normal fighting stance.",
-    onenable = function (mode, newdef, whereto, echoback)
-      if svo['def'..whereto][mode].heartsfury then
-        svo['def'..whereto][mode].heartsfury = false
-        if echoback then svo.echof("Removed heartsfury from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
-      end
-
-      return true
-    end,
-    specialskip = function ()
-      return (defc.heartsfury)
-    end})
-  defs_data:set('arrowcatch', { type = 'swashbuckling',
-    mana = 'lots',
-    on = {"You have begun to look for arrows to pluck from the air.", "You already have arrowcatching on."},
-    def = "You are attempting to pluck arrows from the air.",
-    off = "You've turned off arrowcatching."})
-  defs_data:set('balancing', { type = 'swashbuckling',
+if svo.haveskillset('bladedance') then
+  defs_data:set('tune', { type = 'bladedance',
+    onr = [[weaves the notes of your songs into a protective barrier\.$]],
+    def = "You are protected from damage by a tune of safety."})
+  defs_data:set('balancing', { type = 'bladedance',
     mana = 'lots',
     on = {"You move onto the balls of your feet and begin to concentrate on balance.", "You're already balancing."},
     def = "You are balancing on the balls of your feet.",
     off = "You cease to balance on the balls of your feet."})
-  defs_data:set('acrobatics', { type = 'swashbuckling',
+  defs_data:set('acrobatics', { type = 'bladedance',
     on = {"You begin leaping and bouncing about, making it more difficult to hit you.", "You are already bouncing around acrobatically."},
     def = "You are bouncing around acrobatically.",
     off = "You cease your acrobatic leaping and bouncing."})
-  defs_data:set('dodging', { type = 'swashbuckling',
+  defs_data:set('dodging', { type = 'bladedance',
     on = {"You resolve to keep an eye on the skies for danger.", "You are already watching the skies."},
     def = "You are watching the skies for danger.",
     off = "You cease watching the skies."})
-  defs_data:set('grip', { type = 'swashbuckling',
+  defs_data:set('grip', { type = 'bladedance',
     on = {"You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands."},
     def = "Your hands are gripping your wielded items tightly.",
     off = "You relax your grip."})
-  defs_data:set('heartsfury', { type = 'swashbuckling',
-    on = {"Taut with rage, you enter the Heart's Fury stance.", "You are already in the Heart's Fury stance."},
-    def = "The Heart's Fury stance protects you.",
-    off = "You relax into your normal fighting stance.",
-    onenable = function (mode, newdef, whereto, echoback)
-      if svo['def'..whereto][mode].drunkensailor then
-        svo['def'..whereto][mode].drunkensailor = false
-        if echoback then svo.echof("Removed drunkensailor from %s, it's incompatible with %s to have simultaneously up.", whereto, newdef) end
-      end
-
-      return true
-    end,
-    specialskip = function ()
-      return (defc.drunkensailor)
-    end})
-
-  --[[trueparry = { type = 'swashbuckling',
-    on = "You will now attempt to parry attacks on your arms", --arms replaceable with legs/centre/right/left
-    def = {"You will attempt to parry attacks to your left arm.", "You will attempt to parry attacks to your right arm."} --DEF shows both limbs being parried when trueparrying
-    off = "You cease your attempts at parrying."]]
 end
 
-if svo.haveskillset('voicecraft') then
-  defs_data:set('lay', { type = 'voicecraft',
-    on = {"You sing a powerful Lay of distortion, protecting against the creation of physical images of yourself.", "You sing a powerful Lay of distortion."},
-    def = "You are protected from the creation of physical images of yourself.",
-    offr = [[^Your Lay of distortion is destroyed by \w+'s attempted fashion\.$]]})
-  defs_data:set('tune', { type = 'voicecraft',
-    on = "Singing a powerful tune of safety and protection, you weave musical defences around yourself.",
-    def = "You are protected from damage by a tune of safety."})
-  defs_data:set('songbird', { type = 'voicecraft',
-    on = {"Lifting your head, you whistle an intricate, lilting tune. You are soon answered by a blue-feathered songbird that wings swiftly in and perches upon your shoulder.", "Your songbird twitters upon your shoulder, reminding you of its presence."},
-    def = "A songbird is perched upon your shoulder.",
-    off = "With a final chirp, the songbird upon your shoulder takes flight and wings swiftly away."})
-  defs_data:set('aria', { type = 'voicecraft',
-    on = {"Your voice rises to the heavens with your instrument as you sing an Aria of healing to yourself.", "Your voice rises to the heavens with your instrument, but without your audience, as you sing an Aria of healing to yourself."},
+if svo.haveskillset('composition') then
+  -- comes up only under certain conditions, so svof tracks it and doesn't raise it
+  defs_data:set('aria', { nodef = true,
     def = "Your health is enhanced by the beauties of an Aria.",
     off = "The heavenly strains of the Aria slowly fall silent."})
-end
-
-if svo.haveskillset('harmonics') then
-  defs_data:set('lament', {type = 'harmonics', custom_def_type = 'harmonic',
-    on = "Slowly you take up the dark and sombre tones of a Lament.",
-    off = "A burdensome sense of oppression lifts as the Lament arrives at its mournful conclusion."})
-  defs_data:set('anthem', {type = 'harmonics', custom_def_type = 'harmonic',
-    on = "An Anthem fills the air with its mighty fortress of protective influences as you take up its stately music.",
-    off = "The structure of protection afforded by the Anthem decays with the final notes of the composition."})
-  defs_data:set('harmonius', {type = 'harmonics', custom_def_type = 'harmonic',
-    on = "Blending several seemingly distinct musical ideas into one majestic whole, you begin the Harmonius.",
-    off = "The individual strands blended by the Harmonius slowly disintegrate into cacophony as the song ends."})
-  defs_data:set('contradanse', {type = 'harmonics', custom_def_type = 'harmonic',
-    on = "An elaborate Contradanse melody begins to pervade the room.",
-    off = "Melody slows, simplifies, and comes to an end, terminating the elaborate Contradanse."})
-  defs_data:set('paxmusicalis', {type = 'harmonics', custom_def_type = 'harmonic',
-    on = "You experience true rest and relief as you gently enter into the first soothing passage of the Pax Musicalis.",
-    off = "The peaceful strains of the Paxmusicalis slowly fade to silence."})
-  defs_data:set('gigue', {type = 'harmonics', custom_def_type = 'harmonic',
-    on = "You dash off a few bars, launching into the detailed patterns of a Gigue.",
-    off = "Your thoughts return to their normal order as the Gigue's airs fade from the room."})
-  defs_data:set('bagatelle', {type = 'harmonics', custom_def_type = 'harmonic',
-    on = "Through a series of musical twists and turns you begin the Bagatelle.",
-    off = "Twisting and turning no more, the Bagatelle ends suddenly."})
-  defs_data:set('partita', {type = 'harmonics', custom_def_type = 'harmonic',
-    on = "Delicate and precise, you take up a Partita.",
-    off = "The Partita ends without fanfare, precisely as it began."})
-  defs_data:set('berceuse', {type = 'harmonics', custom_def_type = 'harmonic',
-    on = "You begin a delicate Berceuse, playing with great tenderness.",
-    off = "The Berceuse drifts faintly away as its final notes float softly through the area."})
-  defs_data:set('continuo', {type = 'harmonics', custom_def_type = 'harmonic',
-    on = "Your feelings rise with a Continuo's opening movement.",
-    off = "The Continuo falters and dies and, along with it, the thrilling feeling it had brought."})
-  defs_data:set('wassail', {type = 'harmonics', custom_def_type = 'harmonic',
-    on = "The Wassail's first notes stir and strengthen you.",
-    off = "The Wassail trails slowly off, coming to a melancholy conclusion."})
-  defs_data:set('canticle', {type = 'harmonics', custom_def_type = 'harmonic',
-    on = "You enter into the realms of the divine as you play the opening strains of a sacred Canticle.",
-    off = "The instabilities of the world again impinge upon you as the Canticle draws to a close."})
-  defs_data:set('reel', {type = 'harmonics', custom_def_type = 'harmonic',
-    on = "With a hop you enter into the complex, up-tempo dance melody of a Reel.",
-    off = "The Reel comes around again, sounding as though ready to begin another step, and suddenly stops."})
-  defs_data:set('hallelujah', {type = 'harmonics', custom_def_type = 'harmonic',
-    on = "With a powerful fanfare, you begin a resounding Hallelujah.",
-    off = "The Hallelujah's final amen fills you with awe at its power, and sorrow for the ending of this uplifting piece."})
 end
 
 if svo.haveskillset('devotion') then

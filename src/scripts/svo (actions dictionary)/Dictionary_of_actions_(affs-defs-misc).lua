@@ -6890,7 +6890,7 @@ if not next(svo.dict) then
         dontbatch = true,
   
         isadvisable = function()
-          return (affs.webbed and codepaste.writhe() and not (bals.balance and bals.rightarm and bals.leftarm and svo.dict.dragonflex.misc.isadvisable()) and (not svo.haveskillset('voicecraft') or (not conf.dwinnu or not svo.dict.dwinnu.misc.isadvisable()))) or false
+          return (affs.webbed and codepaste.writhe() and not (bals.balance and bals.rightarm and bals.leftarm and svo.dict.dragonflex.misc.isadvisable())) or false
         end,
   
         oncompleted = function()
@@ -6941,7 +6941,7 @@ if not next(svo.dict) then
         dontbatch = true,
   
         isadvisable = function()
-          return (affs.roped and codepaste.writhe() and not (bals.balance and bals.rightarm and bals.leftarm and svo.dict.dragonflex.misc.isadvisable()) and (not svo.haveskillset('voicecraft') or (not conf.dwinnu or not svo.dict.dwinnu.misc.isadvisable()))) or false
+          return (affs.roped and codepaste.writhe() and not (bals.balance and bals.rightarm and bals.leftarm and svo.dict.dragonflex.misc.isadvisable())) or false
         end,
   
         oncompleted = function()
@@ -10971,7 +10971,6 @@ if not next(svo.dict) then
       dodging = 'dodging',
       dragonarmour = 'dragonarmour',
       dragonbreath = 'dragonbreath',
-      drunkensailor = 'drunkensailor',
       durability = 'tsuura',
       earthshield = 'earthblessing',
       eavesdropping = 'eavesdrop',
@@ -11000,7 +10999,6 @@ if not next(svo.dict) then
       harmony = 'harmony',
       haste = false,
       heads = 'heads',
-      heartsfury = 'heartsfury',
       heldbreath = 'breath',
       heresy = 'heresy',
       hiding = 'hiding',
@@ -11018,7 +11016,6 @@ if not next(svo.dict) then
       kaitrance = 'trance',
       kola = 'kola',
       lament = false,
-      lay = 'lay',
       leechlogograph = 'traceleech',
       levitating = 'levitation',
       lifegiver = false,
@@ -11076,7 +11073,6 @@ if not next(svo.dict) then
       skywatch = 'skywatch',
       slippery = 'slipperiness',
       softfocusing = 'softfocus',
-      songbird = 'songbird',
       soulcage = 'soulcage',
       speed = 'speed',
       spinning = 'spinning',
@@ -12562,94 +12558,6 @@ if not next(svo.dict) then
       gone = {
         oncompleted = function() defences.lost('icewyrm') end,
       }
-    }
-  end
-  
-  if svo.haveskillset('swashbuckling') then
-    svo.dict.drunkensailor = {
-      physical = {
-        balanceful_act = true, def = true,
-  
-        isadvisable = function()
-          return ((sys.deffing and defdefup[defs.mode].drunkensailor and not defc.drunkensailor) or (conf.keepup and defkeepup[defs.mode].drunkensailor and not defc.drunkensailor) and not defc.heartsfury and not svo.doingaction'drunkensailor' and not affs.paralysis) or false
-        end,
-  
-        oncompleted = function() defences.got('drunkensailor') end,
-  
-        action = 'drunkensailor',
-        onstart = function() send('drunkensailor', conf.commandecho) end
-      },
-    }
-    svo.dict.heartsfury = {
-      physical = {
-        balanceful_act = true, def = true,
-  
-        isadvisable = function()
-          return ((sys.deffing and defdefup[defs.mode].heartsfury and not defc.heartsfury) or (conf.keepup and defkeepup[defs.mode].heartsfury and not defc.heartsfury) and not defc.drunkensailor and not svo.doingaction'heartsfury' and not affs.paralysis) or false
-        end,
-  
-        oncompleted = function() defences.got('heartsfury') end,
-  
-        action = 'heartsfury',
-        onstart = function() send('heartsfury', conf.commandecho) end
-      },
-    }
-  end
-  
-  if svo.haveskillset('voicecraft') then
-    svo.dict.lay = {
-      physical = {
-        balanceful_act = true, def = true,
-  
-        isadvisable = function()
-          return (((sys.deffing and defdefup[defs.mode].lay and not defc.lay) or (conf.keepup and defkeepup[defs.mode].lay and not defc.lay)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'lay' and bals.voice) or false
-        end,
-  
-        oncompleted = function()
-          defences.got('lay')
-          svo.lostbal_voice()
-        end,
-  
-        action = "sing lay",
-        onstart = function() send('sing lay', conf.commandecho) end
-      },
-    }
-    svo.dict.tune = {
-      physical = {
-        balanceful_act = true, def = true,
-  
-        isadvisable = function()
-          return (((sys.deffing and defdefup[defs.mode].tune and not defc.tune) or (conf.keepup and defkeepup[defs.mode].tune and not defc.tune)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'tune' and bals.voice) or false
-        end,
-  
-        oncompleted = function()
-          defences.got('tune')
-          svo.lostbal_voice()
-        end,
-  
-        action = "sing tune",
-        onstart = function() send('sing tune', conf.commandecho) end
-      },
-    }
-    svo.dict.aria = {
-      physical = {
-        balanceful_act = true, def = true,
-  
-        isadvisable = function()
-          return (((sys.deffing and defdefup[defs.mode].aria and not defc.aria) or (conf.keepup and defkeepup[defs.mode].aria and not defc.aria)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'aria' and bals.voice) or false
-        end,
-  
-        oncompleted = function()
-          defences.got('aria')
-          svo.lostbal_voice()
-        end,
-        applycure = {'epidermal'},
-        action = 'sing aria at me',
-        onstart = function()
-          if defc.deaf or affs.deafaff then svo.apply(svo.dict.aria.salve, ' to ears', conf.commandecho) end
-          send('sing aria at me', conf.commandecho)   
-        end
-      },
     }
   end
   
@@ -14452,23 +14360,6 @@ if not next(svo.dict) then
       }
     }
   end
-  if svo.haveskillset('voicecraft') then
-    svo.dict.dwinnu = {
-      misc = {
-        isadvisable = function()
-          return (conf.dwinnu and bals.voice and (affs.webbed or affs.roped) and codepaste.writhe() and not affs.paralysis and not defc.dragonform) or false
-        end,
-  
-        oncompleted = function()
-          svo.rmaff{'webbed', 'roped'}
-          svo.lostbal_voice()
-        end,
-  
-        action = "chant dwinnu",
-        onstart = function() send('chant dwinnu', conf.commandecho) end
-      },
-    }
-  end
   
   if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')  then
     svo.dict.rage = {
@@ -15057,31 +14948,12 @@ if svo.haveskillset('shindo') then
   basicdef('dodging', "dodging on")
   basicdef('immunity', 'immunity')
 end
-if svo.haveskillset('swashbuckling') then
-  basicdef('arrowcatch', "arrowcatch on", nil, 'arrowcatching')
+if svo.haveskillset('bladedance') then
+  basicdef('tune', "blade tune", nil, nil, true)
   basicdef('balancing', "balancing on")
   basicdef('acrobatics', "acrobatics on")
   basicdef('dodging', "dodging on")
   basicdef('grip', 'grip', true, 'gripping')
-end
-if svo.haveskillset('voicecraft') then
-  basicdef('songbird', "whistle for songbird")
-end
-if svo.haveskillset('harmonics') then
-  basicdef('lament', "play lament", nil, nil, true)
-  basicdef('anthem', "play anthem", nil, nil, true)
-  basicdef('harmonius', "play harmonius", nil, nil, true)
-  basicdef('contradanse', "play contradanse", nil, nil, true)
-  basicdef('paxmusicalis', "play paxmusicalis", nil, nil, true)
-  basicdef('gigue', "play gigue", nil, nil, true)
-  basicdef('bagatelle', "play bagatelle", nil, nil, true)
-  basicdef('partita', "play partita", nil, nil, true)
-  basicdef('berceuse', "play berceuse", nil, nil, true)
-  basicdef('continuo', "play continuo", nil, nil, true)
-  basicdef('wassail', "play wassail", nil, nil, true)
-  basicdef('canticle', "play canticle", nil, nil, true)
-  basicdef('reel', "play reel", nil, nil, true)
-  basicdef('hallelujah', "play hallelujah", nil, nil, true)
 end
 if svo.haveskillset('occultism') then
   basicdef('shroud', 'shroud')

@@ -1132,7 +1132,7 @@ function svo.valid.defstrip(which)
     t["thermal spiritshield"]   = 'thermalblessing'
     t["willpower spiritshield"] = 'willpowerblessing'
   end
-  if svo.haveskillset('pranks') or svo.haveskillset('swashbuckling') then
+  if svo.haveskillset('pranks') then
     t["arrow catching"]         = 'arrowcatch'
   end
   if svo.haveskillset('metamorphosis') then
@@ -3664,13 +3664,6 @@ function svo.valid.dragonflex()
   end
 end
 
-function svo.valid.dwinnu()
-  svo.checkaction (svo.dict.dwinnu.misc)
-  if actions.dwinnu_misc then
-    lifevision.add(actions.dwinnu_misc.p)
-  end
-end
-
 function svo.valid.got_blind()
   sk.onprompt_beforeaction_add('hypochondria_blind', function ()
     if not affs.blindaff and not defs.blind then
@@ -4574,7 +4567,7 @@ if svo.haveskillset('venom') then
   end
 end
 
-if svo.haveskillset('voicecraft') then
+if svo.haveskillset('sagas') then
   function svo.valid.usedvoicebalance()
     svo.checkaction(svo.dict.stolebalance.happened, true)
     lifevision.add(actions.stolebalance_happened.p, nil, 'voice')

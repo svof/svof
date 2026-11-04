@@ -19,7 +19,7 @@ return {
     gmcp = "acrobatics",
     off = { "You cease your acrobatic leaping and bouncing." },
     on = { "You begin leaping and bouncing about, making it more difficult to hit you.", "You are already bouncing around acrobatically." },
-    type = "swashbuckling"
+    type = "bladedance"
   }, {
     classes = { "jester" },
     command = "acrobatics on",
@@ -55,15 +55,6 @@ return {
     rules = { "counted", "ongot", "onlost", "own_code" },
     type = "weatherweaving"
   } },
-  anthem = { {
-    classes = { "bard" },
-    command = "play anthem",
-    counted = "harmonic",
-    off = { "The structure of protection afforded by the Anthem decays with the final notes of the composition." },
-    on = { "An Anthem fills the air with its mighty fortress of protective influences as you take up its stately music." },
-    rules = { "counted" },
-    type = "harmonics"
-  } },
   arash = { {
     classes = { "blademaster" },
     command = "arash",
@@ -86,13 +77,11 @@ return {
   } },
   aria = { {
     classes = { "bard" },
-    command = "sing aria at me",
     def = { "Your health is enhanced by the beauties of an Aria." },
     gmcp = "aria",
+    nodef = true,
     off = { "The heavenly strains of the Aria slowly fall silent." },
-    on = { "Your voice rises to the heavens with your instrument as you sing an Aria of healing to yourself.", "Your voice rises to the heavens with your instrument, but without your audience, as you sing an Aria of healing to yourself." },
-    rules = { "own_code" },
-    type = "voicecraft"
+    rules = { "tracked" }
   } },
   armour = { {
     classes = { "apostate" },
@@ -104,14 +93,6 @@ return {
     type = "apostasy"
   } },
   arrowcatch = { {
-    classes = { "bard" },
-    command = "arrowcatch on",
-    def = { "You are attempting to pluck arrows from the air." },
-    gmcp = "arrowcatching",
-    off = { "You've turned off arrowcatching." },
-    on = { "You have begun to look for arrows to pluck from the air.", "You already have arrowcatching on." },
-    type = "swashbuckling"
-  }, {
     classes = { "jester" },
     command = "arrowcatch on",
     def = { "You are attempting to pluck arrows from the air." },
@@ -146,15 +127,6 @@ return {
     rules = { "own_code" },
     type = "apostasy"
   } },
-  bagatelle = { {
-    classes = { "bard" },
-    command = "play bagatelle",
-    counted = "harmonic",
-    off = { "Twisting and turning no more, the Bagatelle ends suddenly." },
-    on = { "Through a series of musical twists and turns you begin the Bagatelle." },
-    rules = { "counted" },
-    type = "harmonics"
-  } },
   balancing = { {
     classes = { "bard" },
     command = "balancing on",
@@ -162,7 +134,7 @@ return {
     gmcp = "balancing",
     off = { "You cease to balance on the balls of your feet." },
     on = { "You move onto the balls of your feet and begin to concentrate on balance.", "You're already balancing." },
-    type = "swashbuckling"
+    type = "bladedance"
   }, {
     classes = { "jester" },
     command = "balancing on",
@@ -227,15 +199,6 @@ return {
     on = { "You manipulate the elements to lash at those who would do you harm.", "You are already protected by the bedeviling aura." },
     rules = { "tracked" },
     type = "zeal"
-  } },
-  berceuse = { {
-    classes = { "bard" },
-    command = "play berceuse",
-    counted = "harmonic",
-    off = { "The Berceuse drifts faintly away as its final notes float softly through the area." },
-    on = { "You begin a delicate Berceuse, playing with great tenderness." },
-    rules = { "counted" },
-    type = "harmonics"
   } },
   bind = { {
     classes = { "blademaster" },
@@ -413,15 +376,6 @@ return {
     rules = { "own_code" },
     type = "anathema"
   } },
-  canticle = { {
-    classes = { "bard" },
-    command = "play canticle",
-    counted = "harmonic",
-    off = { "The instabilities of the world again impinge upon you as the Canticle draws to a close." },
-    on = { "You enter into the realms of the divine as you play the opening strains of a sacred Canticle." },
-    rules = { "counted" },
-    type = "harmonics"
-  } },
   care = { {
     classes = { "priest" },
     command = "angel care on",
@@ -521,24 +475,6 @@ return {
     off = { "You are not maintaining consciousness.", "You will no longer concentrate on retaining full consciousness." },
     on = { "You are already maintaining consciousness.", "You will remain conscious at all times." },
     type = "kaido"
-  } },
-  continuo = { {
-    classes = { "bard" },
-    command = "play continuo",
-    counted = "harmonic",
-    off = { "The Continuo falters and dies and, along with it, the thrilling feeling it had brought." },
-    on = { "Your feelings rise with a Continuo's opening movement." },
-    rules = { "counted" },
-    type = "harmonics"
-  } },
-  contradanse = { {
-    classes = { "bard" },
-    command = "play contradanse",
-    counted = "harmonic",
-    off = { "Melody slows, simplifies, and comes to an end, terminating the elaborate Contradanse." },
-    on = { "An elaborate Contradanse melody begins to pervade the room." },
-    rules = { "counted" },
-    type = "harmonics"
   } },
   croonmirror = { {
     classes = { "unnamable" },
@@ -672,7 +608,7 @@ return {
     gmcp = "dodging",
     off = { "You cease watching the skies." },
     on = { "You resolve to keep an eye on the skies for danger.", "You are already watching the skies." },
-    type = "swashbuckling"
+    type = "bladedance"
   }, {
     classes = { "blademaster" },
     command = "dodging on",
@@ -708,16 +644,6 @@ return {
     on = { "You allow the form of the Dragon to fill your mind and govern your actions." },
     rules = { "onenable", "own_code" },
     type = "tekura"
-  } },
-  drunkensailor = { {
-    classes = { "bard" },
-    command = "drunkensailor",
-    def = { "The Drunken Sailor stance protects you." },
-    gmcp = "drunkensailor",
-    off = { "You relax into your normal fighting stance." },
-    on = { "You start swaying to and fro seemingly unpredictably as you enter the stance of the Drunken Sailor.", "You are already in the stance of the Drunken Sailor." },
-    rules = { "onenable", "own_code", "specialskip" },
-    type = "swashbuckling"
   } },
   eagle = { {
     classes = { "druid", "sentinel" },
@@ -1029,15 +955,6 @@ return {
     on = { "You project a net of light about yourself until your image becomes faded and ghostly." },
     type = "subterfuge"
   } },
-  gigue = { {
-    classes = { "bard" },
-    command = "play gigue",
-    counted = "harmonic",
-    off = { "Your thoughts return to their normal order as the Gigue's airs fade from the room." },
-    on = { "You dash off a few bars, launching into the detailed patterns of a Gigue." },
-    rules = { "counted" },
-    type = "harmonics"
-  } },
   golgotha = { {
     classes = { "occultist" },
     command = "summon golgotha",
@@ -1068,7 +985,7 @@ return {
     gmcp = "gripping",
     off = { "You relax your grip." },
     on = { "You concentrate on gripping tightly with your hands.", "You are already tightly gripping with your hands." },
-    type = "swashbuckling"
+    type = "bladedance"
   }, {
     balanceless = true,
     classes = { "blademaster" },
@@ -1163,24 +1080,6 @@ return {
     on = { "You focus on enhancing your personal luck.", "Your strikes are already guided by preternatural luck." },
     type = "emulation"
   } },
-  hallelujah = { {
-    classes = { "bard" },
-    command = "play hallelujah",
-    counted = "harmonic",
-    off = { "The Hallelujah's final amen fills you with awe at its power, and sorrow for the ending of this uplifting piece." },
-    on = { "With a powerful fanfare, you begin a resounding Hallelujah." },
-    rules = { "counted" },
-    type = "harmonics"
-  } },
-  harmonius = { {
-    classes = { "bard" },
-    command = "play harmonius",
-    counted = "harmonic",
-    off = { "The individual strands blended by the Harmonius slowly disintegrate into cacophony as the song ends." },
-    on = { "Blending several seemingly distinct musical ideas into one majestic whole, you begin the Harmonius." },
-    rules = { "counted" },
-    type = "harmonics"
-  } },
   heads = { {
     classes = { "unnamable" },
     def = { "Multiple heads have sprouted from your shoulders and back." },
@@ -1189,16 +1088,6 @@ return {
     off = { "The multiple heads sprouting from your shoulders and back quake and tremble, before ripping away and falling to the ground in a bloody mess." },
     on = { "The flesh across your shoulders and back bubbles and writhes, then multiple heads erupt from within your body as you undergo mutation." },
     rules = { "tracked" }
-  } },
-  heartsfury = { {
-    classes = { "bard" },
-    command = "heartsfury",
-    def = { "The Heart's Fury stance protects you." },
-    gmcp = "heartsfury",
-    off = { "You relax into your normal fighting stance." },
-    on = { "Taut with rage, you enter the Heart's Fury stance.", "You are already in the Heart's Fury stance." },
-    rules = { "onenable", "own_code", "specialskip" },
-    type = "swashbuckling"
   } },
   heartstone = { {
     classes = { "occultist" },
@@ -1349,25 +1238,6 @@ return {
     on = { "You gather up and expend your Kai energy to enhance your sensitivity to its energies." },
     rules = { "own_code" },
     type = "kaido"
-  } },
-  lament = { {
-    classes = { "bard" },
-    command = "play lament",
-    counted = "harmonic",
-    off = { "A burdensome sense of oppression lifts as the Lament arrives at its mournful conclusion." },
-    on = { "Slowly you take up the dark and sombre tones of a Lament." },
-    rules = { "counted" },
-    type = "harmonics"
-  } },
-  lay = { {
-    classes = { "bard" },
-    command = "sing lay",
-    def = { "You are protected from the creation of physical images of yourself." },
-    gmcp = "lay",
-    offr = { "^Your Lay of distortion is destroyed by \\w+'s attempted fashion\\.$" },
-    on = { "You sing a powerful Lay of distortion, protecting against the creation of physical images of yourself.", "You sing a powerful Lay of distortion." },
-    rules = { "own_code" },
-    type = "voicecraft"
   } },
   lead = { {
     classes = { "alchemist" },
@@ -1571,24 +1441,6 @@ return {
     on_only = { "You find your sunlight reserves too low to attempt that." },
     type = "groves"
   } },
-  partita = { {
-    classes = { "bard" },
-    command = "play partita",
-    counted = "harmonic",
-    off = { "The Partita ends without fanfare, precisely as it began." },
-    on = { "Delicate and precise, you take up a Partita." },
-    rules = { "counted" },
-    type = "harmonics"
-  } },
-  paxmusicalis = { {
-    classes = { "bard" },
-    command = "play paxmusicalis",
-    counted = "harmonic",
-    off = { "The peaceful strains of the Paxmusicalis slowly fade to silence." },
-    on = { "You experience true rest and relief as you gently enter into the first soothing passage of the Pax Musicalis." },
-    rules = { "counted" },
-    type = "harmonics"
-  } },
   pentagram = { {
     classes = { "apostate" },
     command = "carve pentagram",
@@ -1666,15 +1518,6 @@ return {
     on = { "You take the Rat stance." },
     rules = { "onenable", "own_code" },
     type = "tekura"
-  } },
-  reel = { {
-    classes = { "bard" },
-    command = "play reel",
-    counted = "harmonic",
-    off = { "The Reel comes around again, sounding as though ready to begin another step, and suddenly stops." },
-    on = { "With a hop you enter into the complex, up-tempo dance melody of a Reel." },
-    rules = { "counted" },
-    type = "harmonics"
   } },
   regeneration = { {
     balanceless = true,
@@ -1887,15 +1730,6 @@ return {
     on = { "You grip your quarterstaff tightly and with a whisper invoke winter's icy chill, the vapour of your breath growing visible as you speak. First scattered flakes and then great gusts of snow respond, as the area is overwhelmed by a glacial shroud of white." },
     on_only = { "You find your sunlight reserves too low to attempt that." },
     type = "groves"
-  } },
-  songbird = { {
-    classes = { "bard" },
-    command = "whistle for songbird",
-    def = { "A songbird is perched upon your shoulder." },
-    gmcp = "songbird",
-    off = { "With a final chirp, the songbird upon your shoulder takes flight and wings swiftly away." },
-    on = { "Lifting your head, you whistle an intricate, lilting tune. You are soon answered by a blue-feathered songbird that wings swiftly in and perches upon your shoulder.", "Your songbird twitters upon your shoulder, reminding you of its presence." },
-    type = "voicecraft"
   } },
   soulcage = { {
     classes = { "apostate" },
@@ -2223,12 +2057,11 @@ return {
   } },
   tune = { {
     classes = { "bard" },
-    command = "sing tune",
+    command = "blade tune",
     def = { "You are protected from damage by a tune of safety." },
     gmcp = "tune",
-    on = { "Singing a powerful tune of safety and protection, you weave musical defences around yourself." },
-    rules = { "own_code" },
-    type = "voicecraft"
+    onr = { "weaves the notes of your songs into a protective barrier\\.$" },
+    type = "bladedance"
   } },
   turtle = { {
     classes = { "druid", "sentinel" },
@@ -2336,15 +2169,6 @@ return {
     on = { "Your body is already aglow with vitality.", "Your body positively glows with health and vitality." },
     rules = { "own_code" },
     type = "kaido"
-  } },
-  wassail = { {
-    classes = { "bard" },
-    command = "play wassail",
-    counted = "harmonic",
-    off = { "The Wassail trails slowly off, coming to a melancholy conclusion." },
-    on = { "The Wassail's first notes stir and strengthen you." },
-    rules = { "counted" },
-    type = "harmonics"
   } },
   watch = { {
     classes = { "priest" },
