@@ -364,6 +364,13 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.9994. Two handlers that checked a key named asleep, which svof
+      # never had: a refused command while asleep clears what was in flight,
+      # and a transfixed refusal takes sleep off in blackout. Runs the real
+      # loaders (tools/svof_world.lua).
+      - name: test asleep
+        run: lua tools/test_asleep.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

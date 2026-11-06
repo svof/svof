@@ -349,6 +349,23 @@ svo.killaction = function (act)
   if sys.sync then tempTimer(0, function() make_gnomes_work() end) end
 end
 
+-- Cancels the commands svof has in flight, which the game refused: stun and
+-- sleep both stop every command, and svof sends them again once they're over.
+-- What waits on time (waitingfor), the afflictions and cures the paragraph
+-- has already seen (aff, gone), and the action named keep stay. They're
+-- listed first: killing one while going through actions moves the next into
+-- its place, and the loop skipped it
+svo.cancel_sent_actions = function (keep)
+  local failed = {}
+  for _, v in actions:iter() do
+    local balance = v.p.balance
+    if balance ~= 'waitingfor' and balance ~= 'aff' and balance ~= 'gone' and v.p.name ~= keep then
+      failed[#failed+1] = svo.dict[v.p.action_name][balance]
+    end
+  end
+  for _, act in ipairs(failed) do svo.killaction(act) end
+end
+
 -- returns true if the balance will be used up by an action that was sent
 svo.usingbal = function (which)
   return (bals_in_use[which] and next(bals_in_use[which])) and true or false
