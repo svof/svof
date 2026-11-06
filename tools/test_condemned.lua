@@ -69,6 +69,21 @@ for _, burn in ipairs(BURNS) do -- no burn salve while condemned
   eq(svo.dict[burn].salve.isadvisable(), true, "and is again once it's gone")
 end
 
+do -- the tree: ablaze can't be cured while condemned, so a touch can't cure it
+  local w = world.new()
+  local svo = w.svo
+  svo.addaffdict(svo.dict.ablaze)
+  eq(table.concat(svo.gettreeableaffs(), ","), "ablaze", "the tree can cure ablaze")
+  svo.addaffdict(svo.dict.condemned)
+  eq(table.concat(svo.gettreeableaffs(), ","), "", "but not while condemned")
+  -- with GMCP off, an empty touch while condemned used to rule ablaze out
+  eq(svo.gmcp_live(), false, "GMCP isn't live here")
+  svo.empty.tree()
+  eq(not not svo.affs.ablaze, true, "so an empty touch while condemned keeps ablaze")
+  svo.rmaff('condemned')
+  eq(table.concat(svo.gettreeableaffs(), ","), "ablaze", "and the tree can cure it again once condemned is gone")
+end
+
 do -- its abbreviation in the @affs prompt tag
   local f = assert(io.open("src/scripts/svo (core)/svo Utilities/Custom prompt tags/@affs.lua", "r"))
   local tag = f:read("*a")
