@@ -457,19 +457,23 @@ end
 -- 2026-10-31), so it says only that you're burning. GMCP's level, outside
 -- blackout, has the final word.
 
--- raises ablaze a level, or to level when one is given. While
--- GMCP reports burning, its Add has already set the level the line brought,
--- so the line leaves it
-codepaste.add_burn = function(level)
+-- raises ablaze a level for each of lines, the ignite lines of one paragraph
+-- (svo.valid.simpleablaze), or one, or to level when one is given. Not
+-- burning before, the first line is level 1. While GMCP reports burning, its
+-- Add has already set the level the lines brought, so they leave it
+codepaste.add_burn = function(level, lines)
   local was = affs.ablaze
   svo.addaffdict(svo.dict.ablaze)
   if not affs.ablaze then return end
   if svo.gmcp_holds('ablaze') and not tonumber(level) then return end
   local count = svo.dict.ablaze.count or 0
+  local raises = math.max(tonumber(lines) or 1, 1)
   if tonumber(level) then
     count = tonumber(level)
   elseif was then
-    count = count + 1
+    count = count + raises
+  else
+    count = raises
   end
   svo.dict.ablaze.count = math.max(count, 1)
   svo.updateaffcount(svo.dict.ablaze)
@@ -4769,13 +4773,18 @@ if not next(svo.dict) then
         end
       },
       aff = {
-        oncompleted = function(level)
-          if ((defdefup[defs.mode].torch) or (conf.keepup and defkeepup[defs.mode].torch)) and 
+        oncompleted = function(level, lines)
+          if ((defdefup[defs.mode].torch) or (conf.keepup and defkeepup[defs.mode].torch)) and
           (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
             defences.got('torch')
           else
-            codepaste.add_burn(level)
+            codepaste.add_burn(level, lines)
           end
+        end,
+
+        -- the ignite lines of one paragraph, counted by svo.valid.simpleablaze
+        ignite = function(lines)
+          svo.dict.ablaze.aff.oncompleted(nil, lines)
         end,
       },
       gone = {

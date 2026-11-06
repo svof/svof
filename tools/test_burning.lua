@@ -6,7 +6,7 @@ entry now, still called ablaze (the repo owner, 2026-09-25).
 
 It runs svof's real loaders through tools/svof_world.lua, and checks how the
 level moves: GMCP's level, catching fire again and the four escalation lines
-(a level up each), DIAGNOSE, which shows "ablaze." at every level (the user,
+(a level up each, two lines in one paragraph included), DIAGNOSE, which shows "ablaze." at every level (the user,
 2026-10-31) and so keeps the level svof has, mending and a tree touch (a level down each, the user, 2026-10-31), the line that ends it, and
 pyre, which keeps ablaze from being cured below its own level (AFFLICTION
 SHOW).
@@ -143,6 +143,33 @@ do -- catching fire, and again
   svo.valid.proper_ablaze()
   w.prompt()
   eq(level(svo), 2, "catching fire again is a level up")
+end
+
+do -- two ignite lines in one paragraph are two levels
+  local w = world.new()
+  local svo = w.svo
+  svo.valid.proper_ablaze()
+  svo.valid.proper_ablaze()
+  w.prompt()
+  eq(level(svo), 2, "catching fire twice in one paragraph is level 2")
+  svo.valid.proper_ablaze()
+  w.run(read(T .. "Poisons + Generic lines/Severe_burn.lua"), "Severe_burn")
+  w.prompt()
+  eq(level(svo), 4, "and an ignite and an escalation line in the next are two levels more")
+  svo.valid.simpleablaze(1)
+  w.prompt()
+  eq(level(svo), 1, "a level given sets that level")
+end
+
+do -- with GMCP, two ignite lines leave GMCP's level
+  local w = world.new()
+  local svo = w.svo
+  gmcp_list(w, { "burning (2)" })
+  gmcp_add(w, "burning (4)")
+  svo.valid.proper_ablaze()
+  svo.valid.proper_ablaze()
+  w.prompt()
+  eq(level(svo), 4, "two ignite lines with GMCP are GMCP's 4")
 end
 
 do -- the four escalation lines, a level up each
