@@ -145,6 +145,22 @@ do -- catching fire, and again
   eq(level(svo), 2, "catching fire again is a level up")
 end
 
+do -- the fire symptoms show you're burning and raise no level (the user, 2026-11-06)
+  local w = world.new()
+  local svo = w.svo
+  local symptom = read(T .. "General/Symptoms/Ablaze.lua")
+  w.run(symptom, "Symptoms/Ablaze")
+  w.prompt()
+  eq(level(svo), 1, "a fire symptom while not burning is level 1")
+  w.run(symptom, "Symptoms/Ablaze")
+  w.prompt()
+  eq(level(svo), 1, "another, while burning, leaves the level")
+  svo.valid.proper_ablaze()
+  w.run(symptom, "Symptoms/Ablaze")
+  w.prompt()
+  eq(level(svo), 2, "an ignite line and a symptom in one paragraph raise one level")
+end
+
 do -- two ignite lines in one paragraph are two levels
   local w = world.new()
   local svo = w.svo

@@ -634,7 +634,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "41b6ca06bc69c98b",
+      "digest": "0d5d8878f15e3b64",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -1071,6 +1071,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",
       "digest": "61baa56f5354675b",
       "text": "Trigger  svo (aliases, triggers) svo/General/Registration/Started [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Ablaze|script",
+      "digest": "b54e28afdd247a92",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Ablaze [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Anorexia|script",

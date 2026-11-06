@@ -4817,6 +4817,15 @@ function svo.valid.proper_ablaze()
   valid.simpleablaze()
 end
 
+-- "Flames lick around you - you are on fire!" and the firewall and firestorm
+-- lines only show you're burning, and raise no level (the user, 2026-11-06).
+-- They add burning at level 1 when svof isn't tracking it, and otherwise
+-- leave the level, a line in the same paragraph claiming it included
+function svo.valid.symptom_ablaze()
+  if affs.ablaze or lifevision.l.ablaze_aff then return end
+  valid.simpleablaze()
+end
+
 function svo.valid.riding_alreadyon()
   svo.checkaction(svo.dict.riding.physical, true)
   lifevision.add(actions.riding_physical.p, 'alreadyon')
