@@ -187,9 +187,11 @@ Found while building step 1 (2026-10-20), so registering also has to:
 `defences` and before `prio` (the user, 2026-10-20). `verify_merged` refuses
 a new top-level item by design, so it's declared in a new `TOP_LEVEL_ADDED`
 list, which keeps it in the load order check and digests its whole tree.
-Moving `vcustomdef` into a `Custom defences` script waits for #866 to merge
-(TASKS). Until then, step 4 reaches the `vcustomdef` helpers it shares
-through a table `Defences.lua` makes public.
+Since #887, both are scripts in a `Custom definitions` folder:
+`Custom defences` (`Custom_defences.lua`, loader `customdefs`) holds
+`vcustomdef`, and `Custom afflictions` (`Custom_afflictions.lua`) runs straight
+after it. Step 4 reaches the `vcustomdef` helpers it shares through
+`svo.defences.ui` and `svo.gamereader`, which `Custom defences` sets.
 
 `Stand` isn't a cure form step 1 takes: svof's one stand cure is `prone`'s,
 whose conditions are about being knocked down. It's refused like any other
