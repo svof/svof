@@ -349,7 +349,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "16bc7a940b3a5416",
+      "digest": "18997fd4b24c0fd1",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -374,7 +374,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Action system|script",
-      "digest": "bb9b9d3da5e9f19d",
+      "digest": "674358a0a7be25b0",
       "text": "Script   svo (curing skeleton, controllers, action system) Action system [script]"
     },
     {
@@ -604,7 +604,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "f849a4e48bae21df",
+      "digest": "5965d8d20ba523ff",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

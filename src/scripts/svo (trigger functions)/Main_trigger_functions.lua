@@ -81,16 +81,9 @@ function svo.valid.symp_asleep()
   -- asleep. It checked a key named asleep, which svof never had, so until
   -- 2026-10-31 it never ran, and only the first symptom (sleep.aff.symptom)
   -- cleared them. The wake stays, as there, and so does a gone, a cure being
-  -- recorded. They're listed first: killing one while going through actions
-  -- moves the next into its place, and the loop skips it
+  -- recorded (svo.cancel_sent_actions)
   if affs.sleep or actions.sleep_aff then
-    local failed = {}
-    for _,v in actions:iter() do
-      if v.p.balance ~= 'waitingfor' and v.p.balance ~= 'aff' and v.p.balance ~= 'gone' and v.p.name ~= 'sleep_misc' then
-        failed[#failed+1] = svo.dict[v.p.action_name][v.p.balance]
-      end
-    end
-    for _, action in ipairs(failed) do svo.killaction(action) end
+    svo.cancel_sent_actions('sleep_misc')
   end
 end
 
@@ -599,16 +592,10 @@ function svo.valid.symp_stun()
     sk.stun_symptom()
   end
 
-  -- svo.reset non-wait things we were doing, because they got cancelled by the stun.
-  -- Listed first, as in symp_asleep: killing one moves the next into its place
+  -- svo.reset non-wait things we were doing, because they got cancelled by the
+  -- stun. A cure the paragraph already showed stays (svo.cancel_sent_actions)
   if affs.stun or actions.stun_aff then
-    local failed = {}
-    for _,v in actions:iter() do
-      if v.p.balance ~= 'waitingfor' and v.p.balance ~= 'aff' then
-        failed[#failed+1] = svo.dict[v.p.action_name][v.p.balance]
-      end
-    end
-    for _, action in ipairs(failed) do svo.killaction(action) end
+    svo.cancel_sent_actions()
   end
 end
 

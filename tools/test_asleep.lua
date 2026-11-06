@@ -11,6 +11,9 @@ svof's. Neither ever ran.
     the game gives only to someone awake. It takes sleep off, for blackout,
     where the wake line can be missed. Outside it, GMCP decides.
 
+The first sleep symptom and the stun symptom clear what's in flight through
+the same svo.cancel_sent_actions, and keep a cure being recorded too.
+
 It runs svof's real loaders through tools/svof_world.lua.
 
   lua tools/test_asleep.lua
@@ -50,23 +53,42 @@ do -- asleep already, and a command refused
 end
 
 -- The first sleep symptom and the stun symptom clear what's in flight the same
--- way, and killing an action while going through them skipped the next
+-- way, and killing an action while going through them skipped the next. Both
+-- keep a cure the paragraph already showed, as symp_asleep does
 local function in_flight_cleared(label, setup, symptom)
   local w = world.new()
   local svo = w.svo
   setup(svo)
   local affs = { { "asthma", "herb" }, { "slickness", "smoke" }, { "anorexia", "salve" }, { "stupidity", "focus" } }
   for _, a in ipairs(affs) do svo.doaction(svo.dict[a[1]][a[2]]) end
+  svo.doaction(svo.dict.paralysis.gone)
   svo.paragraph_length = 1
   symptom(svo)
   local inflight = w.inflight()
   for _, a in ipairs(affs) do
     eq(inflight:find(a[1] .. "_" .. a[2], 1, true), nil, label .. " clears " .. a[1] .. "_" .. a[2])
   end
+  eq(inflight:find("paralysis_gone", 1, true) ~= nil, true, label .. " keeps a cure being recorded")
 end
 
 in_flight_cleared("the first sleep symptom", function() end, function(svo) svo.dict.sleep.aff.symptom() end)
 in_flight_cleared("the stun symptom", function(svo) svo.addaffdict(svo.dict.stun) end, function(svo) svo.valid.symp_stun() end)
+
+do -- a cure line, then the stun symptom, in one paragraph: the cure stands
+  local w = world.new()
+  local svo = w.svo
+  svo.conf.aillusion = false
+  svo.addaffdict(svo.dict.paralysis)
+  svo.addaffdict(svo.dict.stun)
+  w.prompt()
+  svo.paragraph_length = 1
+  svo.checkaction(svo.dict.paralysis.gone, true)
+  svo.lifevision.add(svo.actions.paralysis_gone.p)
+  svo.paragraph_length = 2
+  svo.valid.symp_stun()
+  w.prompt()
+  eq(svo.affs.paralysis, nil, "a paralysis cure line before a stun symptom still cures it")
+end
 
 do -- the transfixed refusal, in blackout
   local w = world.new()
