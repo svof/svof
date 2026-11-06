@@ -364,6 +364,14 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.996. Counted afflictions gained from text: the gain line and
+      # DIAGNOSE give no level, so each counted affliction's aff handler
+      # records it at count 1, keeps a level GMCP set, and leaves a refused
+      # add at 0. Also fails on a counted entry that neither has that floor
+      # nor is listed as setting its own count.
+      - name: test counted floor
+        run: lua tools/test_counted_floor.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
