@@ -5806,7 +5806,7 @@
     "highlightBG": "#ffff00",
     "patterns": [
       {
-        "pattern": "if isPrompt() then return true else svo.paragraph_length = svo.paragraph_length + 1 return false end",
+        "pattern": "if isPrompt() then return true else svo.paragraph_length = svo.paragraph_length + 1 svo.note_paragraph_line() return false end",
         "type": "lua"
       }
     ],

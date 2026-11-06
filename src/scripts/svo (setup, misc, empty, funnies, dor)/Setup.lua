@@ -118,6 +118,7 @@ svo.dragonheal       = svo.dragonheal or {} -- stores dragonheal curing strats
 svo.lifep            = svo.lifep or {}
 svo.lifevision.l     = svo.lifevision.l or pl.OrderedMap()
 svo.paragraph_length = 0
+svo.paragraph_lines  = {}
 svo.restore          = svo.restore or {}
 svo.shrugging        = svo.shrugging or {} -- stores shrugging curing strats
 svo.sp               = svo.sp or {} -- parry
