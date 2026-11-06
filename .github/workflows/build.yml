@@ -364,6 +364,12 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.99997. Defup waits for lipread unless you're blind without
+      # mindseye, and the skip reads no undefined global. Runs the real
+      # loaders (tools/svof_world.lua).
+      - name: test lipread
+        run: lua tools/test_lipread.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
