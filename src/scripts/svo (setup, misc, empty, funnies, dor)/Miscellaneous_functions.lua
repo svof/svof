@@ -517,17 +517,36 @@ function svo.note_paragraph_line()
   t[#t+1] = { n = getLastLineNumber('main'), text = line }
 end
 
--- The paragraph's lines before the one being processed, which is the last
--- line in the buffer, as getLines() up to it gave: a trigger doesn't find
--- its own line, and the prompt finds every line
+-- Whether entry, a saved line, is the line being processed: the last line in
+-- the buffer, which the Prompt trigger has saved already if it ran before the
+-- trigger asking. Its buffer line alone can't say: deleteLine(), as a gag
+-- uses, renumbers the buffer, so the line after a gagged one arrives on the
+-- gagged one's number
+local function is_current(entry)
+  return entry ~= nil and entry.n == getLastLineNumber('main') and entry.text == line
+end
+
+-- The paragraph's lines before the one being processed, as getLines() up to
+-- it gave: a trigger doesn't find its own line, and the prompt finds every
+-- line, a gagged one included
 function svo.paragraph_so_far()
-  local last, t, lines = getLastLineNumber('main'), {}, svo.paragraph_lines
-  for i = 1, #lines do
-    if lines[i].n < last then t[#t+1] = lines[i].text end
-  end
+  local lines = svo.paragraph_lines
+  local n = #lines
+  if is_current(lines[n]) then n = n - 1 end
+  local t = {}
+  for i = 1, n do t[i] = lines[i].text end
   return t
 end
 local paragraph_so_far = svo.paragraph_so_far
+
+-- Forgets the saved lines before the one being processed, for a trigger that
+-- deletes them and feeds them through the triggers again, which saves each
+-- one anew. Call it before deleting them
+function svo.forget_paragraph_so_far()
+  local lines = svo.paragraph_lines
+  local own = lines[#lines]
+  svo.paragraph_lines = is_current(own) and { own } or {}
+end
 
 -- the game's line before the one being processed, or "" for the paragraph's
 -- first, where getLines() gave the prompt

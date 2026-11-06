@@ -38,6 +38,9 @@ functions from in-client-svof, run over the same buffer):
   * at the prompt every line is found, and the previous prompt and svof's
     own echoes are not.
   * outside a trigger, the last line is left out, as getLines() left it out.
+  * the line after a gagged one, which deleteLine() gives the gagged one's
+    buffer number, still finds it, and a trigger that deletes the paragraph's
+    lines and feeds them again, as Pyradius does, leaves each saved once.
   * counts, the previous line, and the reset at the prompt.
 
 It proves nothing about Mudlet itself; the live wrap test in
@@ -181,6 +184,9 @@ local function arrive(w, text, opts)
   if opts.before then opts.before() end
   w.condition()
   if opts.after then opts.after() end
+  -- a gag: deleteLine() takes the line out of the buffer, so the next line
+  -- arrives on its number
+  if opts.gag then table.remove(w.buffer) return end
   if opts.warning then w.buffer[#w.buffer] = w.buffer[#w.buffer] .. opts.warning end
   -- wrap: the last buffer line cut into pieces of w.wrap
   local last = table.remove(w.buffer)
@@ -305,6 +311,43 @@ do
     check("two hits are counted", w.new.count("balls up one fist and hammerfists you", 'substring'), 2)
     check("a pattern finds the long line", w.new.find("^Spinning to the right as %w+ draws", 'pattern'), true)
     check("a long line is counted once", w.new.count(LONG, 'exact'), 1)
+  end)
+end
+
+-- 7. a gagged line: the next line arrives on its buffer number, and still
+-- finds it, before the Prompt trigger and after it
+do
+  local w = new_world(100)
+  prompt(w)
+  local before, after
+  arrive(w, "You light your pipe.", {gag = true})
+  arrive(w, HEARING, {
+    before = function() before = w.new.find("You light your pipe.", 'exact') end,
+    after = function() after = w.new.find("You light your pipe.", 'exact') end,
+  })
+  check("the line after a gagged one finds it, before the Prompt trigger", before, true)
+  check("and after it", after, true)
+  check("and still doesn't find its own line", w.new.find(HEARING, 'exact'), false)
+end
+
+-- 8. a trigger that deletes the paragraph's lines and feeds them through the
+-- triggers again, as Pyradius does: each is saved once
+do
+  local w = new_world(100)
+  prompt(w)
+  arrive(w, "You feel less clumsy.")
+  arrive(w, "You feel less lethargic.")
+  arrive(w, "A pyradius line.", {after = function()
+    -- without it, the count below finds each cure line twice
+    if w.svo.forget_paragraph_so_far then w.svo.forget_paragraph_so_far() end
+    table.remove(w.buffer, #w.buffer - 1)
+    table.remove(w.buffer, #w.buffer - 1)
+  end})
+  arrive(w, "You feel less clumsy.")
+  arrive(w, "You feel less lethargic.")
+  prompt(w, function()
+    check("a cure line fed again is counted once", w.new.count("You feel less clumsy.", 'exact'), 1)
+    check("and the trigger's own line is kept", w.new.find("A pyradius line.", 'exact'), true)
   end)
 end
 

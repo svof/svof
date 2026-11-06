@@ -4505,6 +4505,9 @@ function svo.valid.pyradius()
   -- no affs cured?
   if #cures == 0 then return end
 
+  -- feedTriggers saves each of them again (svo.note_paragraph_line), so
+  -- forget the copies saved as they first arrived
+  svo.forget_paragraph_so_far()
   for i = 1, #cures do
     moveCursor(0, startline-i)
     deleteLine()
