@@ -364,6 +364,12 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.9995. No transmutation cures: no applycure, sipcure or actions
+      # list names one, rift.vial_conversions is gone, and defstrip no longer
+      # reads density as mass. Read from the real sources.
+      - name: test transmutation
+        run: lua tools/test_transmutation.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

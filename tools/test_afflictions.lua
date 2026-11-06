@@ -55,12 +55,14 @@ do
     ["Eat Ferrum"] = "herb ginseng/ferrum",
     ["eat   kelp "] = "herb kelp/aurum",
     ["Time"] = "time",
-    ["Apply Epidermal to Head"] = "salve epidermal/sensory to head",
-    ["Apply Sensory to Body / Apply Epidermal to Body"] = "salve epidermal/sensory to body",
-    ["Apply Caloric"] = "salve caloric/exothermic",
+    -- a salve or elixir has one name: the transmutation ones, such as
+    -- sensory and antigen, are gone from the game, so svof can't give one
+    ["Apply Epidermal to Head"] = "salve epidermal/nil to head",
+    ["Apply Sensory to Body / Apply Epidermal to Body"] = "game apply sensory to body/nil, salve epidermal/nil to body",
+    ["Apply Caloric"] = "salve caloric/nil",
     ["Smoke Valerian"] = "smoke valerian/realgar",
     ["Smoke Realgar"] = "smoke valerian/realgar",
-    ["Sip Immunity"] = "purgative immunity/antigen",
+    ["Sip Immunity"] = "purgative immunity/nil",
     ["Eat Bloodroot / Smoke Valerian"] = "herb bloodroot/magnesium, smoke valerian/realgar",
     -- the game's to cure, and svof only tracks it (the user, 2026-10-22)
     [""] = "",
@@ -196,7 +198,7 @@ end
 do -- salve with no place
   local w = world.new()
   local e = build(w, "testcold", { cures = "Apply Caloric" })
-  eq(same_list(e.salve.actions, { "apply caloric", "apply exothermic" }), true, "caloric with no place answers to apply caloric")
+  eq(same_list(e.salve.actions, { "apply caloric" }), true, "caloric with no place answers to apply caloric")
   eq(sends(w, e.salve), "apply caloric", "and sends it")
 end
 
