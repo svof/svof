@@ -82,6 +82,18 @@ check("defstrip no longer turns density into mass", defstrip and not defstrip:fi
 check("and keeps its other wordings, such as insulation", defstrip and defstrip:find("['insulation']", 1, true) ~= nil)
 check("GMCP and serverside still name mass density", dict:find("gamename = 'density'", 1, true) ~= nil)
 
+-- the text a player reads names no transmutation vial either: the
+-- dictionary's descriptions, and the tips
+local funnies = read("src/scripts/svo (setup, misc, empty, funnies, dor)/Funnies.lua")
+for description in dict:gmatch('description = "([^"]*)"') do
+  for word in description:gmatch("%a+") do
+    check("a description names no transmutation vial: " .. description, not DEAD[word:lower()] or word:lower() == 'density')
+  end
+end
+for _, name in ipairs({ 'vitality', 'mentality' }) do
+  check("the tips don't offer " .. name, not funnies:find("mana or " .. name, 1, true) and not funnies:find("health or " .. name, 1, true))
+end
+
 print(string.format("%d checks, %d failures", checks, #failures))
 for _, f in ipairs(failures) do print("FAIL " .. f) end
 if #failures > 0 then os.exit(1) end

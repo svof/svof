@@ -349,7 +349,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "25f1d338a1e12389",
+      "digest": "ec50b5f8c6d8e9b4",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -581,6 +581,11 @@
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
       "digest": "8d3b38ceb54de3a6",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
+    },
+    {
+      "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Funnies|script",
+      "digest": "8f48444350a71a45",
+      "text": "Script   svo (setup, misc, empty, funnies, dor) Funnies [script]"
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",

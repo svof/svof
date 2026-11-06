@@ -542,7 +542,7 @@ if not next(svo.dict) then
     gamename = nil,
     onservereignore = nil, -- (function) a function which'll return true if this needs to be ignored serverside
     healhealth = {
-      description = "heals health with health/vitality or moss/potash",
+      description = "heals health with health or moss/potash",
       sip = {
         name = false, --'healhealth_sip',
         balance = false, --'sip',
@@ -626,7 +626,7 @@ if not next(svo.dict) then
       },
     },
     healmana = {
-      description = "heals mana with mana/mentality or moss/potash",
+      description = "heals mana with mana or moss/potash",
       sip = {
         -- managed outside priority lists
         irregular = true,
