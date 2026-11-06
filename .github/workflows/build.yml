@@ -370,6 +370,12 @@ jobs:
       - name: test lipread
         run: lua tools/test_lipread.lua
 
+      # Gate 1.99998. nightsight is a general defence: a Metamorphosis class
+      # raises it with no morph first, and serverside can raise it too. Runs
+      # the real loaders (tools/svof_world.lua).
+      - name: test nightsight
+        run: lua tools/test_nightsight.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
