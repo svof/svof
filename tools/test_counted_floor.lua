@@ -15,7 +15,7 @@ aff.oncompleted and was ignored, so a counted affliction only text reported
 showed as pressure(0). Each handler now raises the count to the level it's
 given, or to 1 without one, once the affliction is recorded.
 
-Six things it pins:
+Seven things it pins:
 
   * each of the 15 handlers records its affliction at count 1 from 0, and
     publishes that once.
@@ -27,6 +27,9 @@ Six things it pins:
   * every entry in the file with a count field either has the floor or is
     listed in OWN_AMOUNT with the reason it sets its own count, so a new
     counted affliction can't be added without deciding.
+  * svo.rmaff leaves no level behind, so a GMCP List resync that drops one
+    and a later gain by text in blackout starts it at 1, not the old level.
+    This one runs the real loaders.
 
 A control strips the floor from one real handler and expects the count to
 stay at 0, so the checks above can't pass without the floor doing the work.
@@ -233,6 +236,42 @@ for name in pairs(seen) do
 end
 for _, name in ipairs(FLOORED) do check(name .. " is a counted entry", seen[name], true) end
 for name in pairs(OWN_AMOUNT) do check(name .. " is a counted entry", seen[name], true) end
+
+-- A removal leaves no level behind. The floor never lowers a count, so a
+-- level an affliction had when it went, through a GMCP List resync or an
+-- empty cure, which reset nothing, used to come back with the next gain by
+-- text. This part runs the real loaders (tools/svof_world.lua)
+local world = dofile("tools/svof_world.lua")
+do
+  local w = world.new({ class = "Infernal" })
+  local svo, env = w.svo, w.env
+  local function list(names)
+    local l = {}
+    for i, n in ipairs(names) do l[i] = { name = n, desc = "" } end
+    env.gmcp.Char.Afflictions.List = l
+    svo.signals.gmcpcharafflictionslist:emit()
+  end
+  list({})
+  env.gmcp.Char.Afflictions.Add = { name = "pressure (3)", desc = "" }
+  svo.signals.gmcpcharafflictionsadd:emit()
+  check("GMCP's Add sets pressure at 3", svo.dict.pressure.count, 3)
+  list({}) -- its Remove was missed, and a resync drops it
+  check("a List resync that drops pressure leaves no level", svo.dict.pressure.count, 0)
+  svo.addaffdict(svo.dict.blackout) -- GMCP goes quiet, text decides
+  svo.paragraph_length = 1
+  svo.valid.simplepressure()
+  w.prompt()
+  check("so the gain line in blackout records it at 1", svo.dict.pressure.count, 1)
+end
+do -- GMCP off
+  local w = world.new({ class = "Infernal" })
+  local svo = w.svo
+  svo.addaffdict(svo.dict.skullfractures)
+  check("skullfractures is tracked", svo.affs.skullfractures ~= nil, true)
+  svo.dict.skullfractures.count = 4
+  svo.rmaff('skullfractures') -- as an empty cure removes, resetting nothing
+  check("any removal leaves no level", svo.dict.skullfractures.count, 0)
+end
 
 print(string.format("%d checks, %d failures", checks, failures))
 if failures > 0 then print("FAILED") os.exit(1) end
