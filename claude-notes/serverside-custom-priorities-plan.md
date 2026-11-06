@@ -20,7 +20,7 @@ control in three ways:
   number is a judgment call.
 - **In-game edits never stick.** The before-state starts blank at load
   (`Serverside.lua:36`), so the first sync re-sends every number.
-  `vconfig serverside on` sends `PRIORITY RESET` (`Serverside.lua:496`), and a
+  `vconfig serverside on` sends `PRIORITY RESET` (`Serverside.lua:503`), and a
   class change sends `curing priority reset` (`svo.classchange.lua:36`).
 - **The defence numbers are svof's too.** The server keeps up whatever is on
   its defence list, and svof writes that list, numbers included, from its
@@ -127,7 +127,7 @@ control in three ways:
   - temporary ignores: `Sit.lua` and `Toggle_mediation.lua` (prone),
     `Sleep.lua` (sleep), the lovers and hoisted options
     (`Config_system.lua:1186`, `:1244`), extispicy (the dictionary,
-    line 13294), and `vignore` (`Alias_functions.lua:69`)
+    line 13523), and `vignore` (`Alias_functions.lua:69`)
   - `onservereignore` on afflictions: `blindaff` and `deafaff` while blind
     or deaf are on keepup or defup, and `ablaze` (burning) for fire
     elementals with torch
@@ -136,12 +136,12 @@ control in three ways:
     paralysis or impatience is above it
   - `pva`, `avs`, and `pvd`, which swap paralysis with asthma, slickness with
     impatience, and paralysis with darkshade in svof's herb list, through
-    `svo.prio_swap` (`Controllers.lua:486`)
+    `svo.prio_swap` (`Controllers.lua:509`)
 - **Not affliction numbers, so out of scope:** `shh` (`prio_makefirst` on
   `healhealth` in slow curing) and the health and mana mirror
   (`codepaste.serversideahealthmanaprio` sends `curing priority health` or
   `mana`).
-- **The send path.** `svo.sendcuringprio` (`Curing_skeleton.lua:2453`)
+- **The send path.** `svo.sendcuringprio` (`Curing_skeleton.lua:2509`)
   batches entries into one `curing priority a 1 b 2 ...` command per queue.
   The slow queue wraps its command in `curingset switch slowcuring` and,
   when not in slow curing, `curingset switch normal`. **The normal queue
@@ -178,14 +178,14 @@ control in three ways:
 - **Defences.** `splitdefs` sends each keepup defence its position, and
   gives every defence the mode marks off `curing priority defence <def>
   reset`. Every mode marks each defence it doesn't use as off
-  (`Defences.lua:3147`, `:3489`), so the server's list holds exactly the
+  (`Defences.lua:3158`, `:3526`), so the server's list holds exactly the
   keepup defences. During defup, svof swaps the list to the mode's defup
-  defences, and swaps it back on `svo done defup` (`Serverside.lua:754`).
+  defences, and swaps it back on `svo done defup` (`Serverside.lua:761`).
   `vshow keepup` links to `CURING PRIORITY DEFENCE LIST` and says it's the
   same as svof's keepup list.
 - **The keepup and defup toggles.** `vshow keepup` and `vshow defup` show a
   grid of toggles, three per row in fixed-width columns, that call
-  `defs.keepup` and `defs.defup` (`Defences.lua:3035`, `:3089`). Keepup
+  `defs.keepup` and `defs.defup` (`Defences.lua:3041`, `:3098`). Keepup
   changes raise `svo keepup changed`, which the sync listens to. Defup
   changes raise `svo defup changed`, which nothing listens to, so a change
   during defup reaches the server only at the next sync.
@@ -210,7 +210,7 @@ control in three ways:
 ### The table
 
 `svo/config/serverprios`, loaded and saved like `serverignore`
-(`Setup.lua:2121`):
+(`Setup.lua:2333`):
 
 ```lua
 {
@@ -459,7 +459,7 @@ instead, and the defence numbers are covered in the Defences section.
   trailing `server` first. No svof action is called `server`, so svof's own
   forms can't be mistaken for it. `vexportprio`'s `(.*)` already takes the
   extra word.
-- **The `ss aff` column of `vp`** (`echoserver`, `Controllers.lua:982`)
+- **The `ss aff` column of `vp`** (`echoserver`, `Controllers.lua:1005`)
   shows the table's number in custom mode instead of the list position.
 
 ## Steps
@@ -487,7 +487,7 @@ instead, and the defence numbers are covered in the Defences section.
    gates on the affliction sync, `PRIORITY RESET`, and the class-change
    reset.
 4. **Overrides and the echo-loop guard**, safety reasons first, hooked to
-   the events the sync listens on today (`Serverside.lua:747` to `754`).
+   the events the sync listens on today (`Serverside.lua:754` to `761`).
 5. **Tactical overrides**: autoslick in server numbers, `pva`, `avs`, `pvd`.
 6. **Stack entries and `vignore <aff> <count>`.**
 7. **Warnings.**
