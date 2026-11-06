@@ -168,9 +168,12 @@ empty.treecurables = {'ablaze', 'addiction', 'aeon', 'agoraphobia', 'anorexia', 
 -- treecurables: svo.gettreeableaffs removes it by its index there.
 -- Whispering madness blocks nothing: its ability file says only that focus
 -- takes longer to recover from. Its block here was from before the 2020
--- Occultist rework
+-- Occultist rework. While condemned, ablaze can't be cured (AFFLICTION SHOW),
+-- so a tree touch can't cure it either, and an empty touch says nothing
+-- about it
 empty.treeblocks = {
   hypothermia = {'frozen', 'shivering'},
+  condemned = {'ablaze'},
 }
 -- expose publicly
 svo.treecurables = empty.treecurables
