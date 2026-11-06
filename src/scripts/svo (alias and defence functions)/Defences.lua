@@ -862,8 +862,12 @@ if svo.haveskillset('subterfuge') then
   defs_data:set('lipread', { type = 'subterfuge',
     on = {"You will now lip read to overcome the effects of deafness.", "You are already lipreading."},
     def = "You are lipreading to overcome deafness.",
+    -- defup doesn't wait for it while you can't lip read: blind, without
+    -- mindseye to see through it, as svo.dict.lipread's isadvisable has it.
+    -- This read a global mindseye, which is always nil, so defup never
+    -- waited for it
     specialskip = function()
-      return (not mindseye or (defc.blind or affs.blindaff))
+      return (not defc.mindseye and (defc.blind or affs.blindaff ~= nil)) or false
     end })
   defs_data:set('weaving', { type = 'subterfuge',
     mana = 'lots',
