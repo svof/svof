@@ -379,7 +379,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "e89aa778598a5be4",
+      "digest": "66784ea8d33d03cc",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -414,7 +414,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "6fe24b84efee14d3",
+      "digest": "b615f22c5fb334d1",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -504,17 +504,17 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Dragonheal curing strats|script",
-      "digest": "71f01ab1c6120e9e",
+      "digest": "09919fcc364dd002",
       "text": "Script   svo (install me in module manager) svo Utilities/Dragonheal curing strats [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Shrugging curing strats|script",
-      "digest": "08ddba2c355e08d0",
+      "digest": "eaca759db5a2bf8f",
       "text": "Script   svo (install me in module manager) svo Utilities/Shrugging curing strats [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Tree curing strats|script",
-      "digest": "2b89878d61041630",
+      "digest": "1c8802c6976b6da5",
       "text": "Script   svo (install me in module manager) svo Utilities/Tree curing strats [script]"
     },
     {
@@ -634,7 +634,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "3929d91d59ff8361",
+      "digest": "ea4b3f7fab5be165",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

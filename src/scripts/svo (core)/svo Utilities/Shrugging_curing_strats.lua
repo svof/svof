@@ -25,9 +25,9 @@ svo.shrugging.riftlock = {
 }
 
 svo.shrugging.aeon = {
-  desc = "when we have aeon with asthma",
+  desc = "when we have aeon with asthma or mucous in our lungs",
 
-  function () return svo.affl.aeon and svo.affl.asthma end
+  function () return svo.affl.aeon and (svo.affl.asthma or svo.lungs_clogged()) end
 }
 
 svo.shrugging.hardlock = {

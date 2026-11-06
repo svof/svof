@@ -1895,6 +1895,12 @@ svo.lostbal_smoke = function(howlong)
   raiseEvent("svo lost balance", 'smoke')
 end
 
+-- whether mucous fills your lungs: the longer smoke recovery it started
+-- (svo.dict.mucouslungs) is the one still running
+function svo.lungs_clogged()
+  return sk.mucous_smoketick ~= nil and sk.mucous_smoketick == sk.smoketick and not bals.smoke
+end
+
 svo.lostbal_dragonheal = function()
   bals.dragonheal = false
   svo.startbalancewatch('dragonheal')
