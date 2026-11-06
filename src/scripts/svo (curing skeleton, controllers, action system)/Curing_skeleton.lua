@@ -258,7 +258,7 @@ local check_for_asthma = {
   checkasthma = {p = svo.dict.checkasthma}
 }
 svo.check_smoke = function(sync_mode)
-  if not bals.smoke or affs.stun or affs.unconsciousness or affs.sleep or affs.deepsleep or affs.asthma or affs.mucous then
+  if not bals.smoke or affs.stun or affs.unconsciousness or affs.sleep or affs.deepsleep or affs.asthma then
     return
   end
 
@@ -1873,13 +1873,15 @@ svo.lostbal_purgative = function()
   raiseEvent("svo lost balance", 'purgative')
 end
 
-svo.lostbal_smoke = function()
+-- howlong is how long smoke balance takes to come back, when it's longer
+-- than a smoke's usual recovery, as it is after mucous fills your lungs
+svo.lostbal_smoke = function(howlong)
   bals.smoke = false
   svo.startbalancewatch('smoke')
   sk.smoketick = sk.smoketick + 1
   local oldsmoketick = sk.smoketick
 
-  tempTimer(conf.ai_resetsmokebal, function ()
+  tempTimer(howlong or conf.ai_resetsmokebal, function ()
     if not bals.smoke and sk.smoketick == oldsmoketick then
       bals.smoke = true
       svo.make_gnomes_work()
@@ -1891,6 +1893,12 @@ svo.lostbal_smoke = function()
   startStopWatch(watch['bal_smoke'])
 
   raiseEvent("svo lost balance", 'smoke')
+end
+
+-- whether mucous fills your lungs: the longer smoke recovery it started
+-- (svo.dict.mucouslungs) is the one still running
+function svo.lungs_clogged()
+  return sk.mucous_smoketick ~= nil and sk.mucous_smoketick == sk.smoketick and not bals.smoke
 end
 
 svo.lostbal_dragonheal = function()

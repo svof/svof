@@ -1511,7 +1511,7 @@ end
 
 
 do
-  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'flamefisted', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'mucous', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed', 'scalded', 'enmesh', 'constricted', 'snared', 'vinewreathed'}
+  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'flamefisted', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed', 'scalded', 'enmesh', 'constricted', 'snared', 'vinewreathed'}
   if svo.haveskillset('metamorphosis') then
     afflist[#afflist+1] = 'cantmorph'
   end
@@ -2618,9 +2618,12 @@ function svo.valid.smoke_failed_asthma()
   end
 end
 
--- mucous is a tempered phlegmatic humour's side effect on smoking, not an
--- affliction the game lists: see svo.dict.mucous
-function svo.valid.got_mucous()
+-- Mucous in your lungs is a longer smoke recovery, not an affliction: see
+-- svo.dict.mucouslungs, which does what these lines say at the prompt.
+--   "As you attempt to inhale the smoke, your lungs fill with a thick mucous."
+--   "Your lungs are too clogged with mucous for you to attempt smoking."
+-- Both answer svof's own asthma check, which can't tell anything from them
+local function lungs_clogged_line()
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
 
   if actions.checkasthma_smoke then
@@ -2629,33 +2632,20 @@ function svo.valid.got_mucous()
 
   local r = svo.findbybal('smoke')
   if r or not conf.aillusion then
-
-    if not affs.mucous then
-      lifevision.answering(r, function()
-        svo.checkaction(svo.dict.mucous.aff, true)
-        lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
-      end)
-    end
+    svo.checkaction(svo.dict.mucouslungs.happened, true)
+    lifevision.add(actions.mucouslungs_happened.p)
   elseif conf.aillusion then
     svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
   end
 end
 
-function svo.valid.have_mucous()
-  if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
+svo.valid.got_mucous = lungs_clogged_line
+svo.valid.have_mucous = lungs_clogged_line
 
-  local r = svo.findbybal('smoke')
-  if r or not conf.aillusion then
-
-    if not affs.mucous then
-      lifevision.answering(r, function()
-        svo.checkaction(svo.dict.mucous.aff, true)
-        lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
-      end)
-    end
-  elseif conf.aillusion then
-    svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
-  end
+-- "You manage to cough away the mucous filling your lungs."
+function svo.valid.mucous_woreoff()
+  svo.checkaction(svo.dict.mucouslungs.happened, true)
+  lifevision.add(actions.mucouslungs_happened.p, 'coughed')
 end
 
 function svo.valid.unlit_pipe()
