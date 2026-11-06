@@ -216,6 +216,23 @@ for _, affname in ipairs({'skullfractures', 'crackedribs', 'wristfractures', 'to
   end
 end
 
+-- Each line that sets you alight is catching fire again, a level each
+-- (codepaste.add_burn), so two in one paragraph are two levels. The generated
+-- handler kept one claim per paragraph, so the second line raised nothing.
+-- A level given, as the generated handler took one, sets that level instead
+valid.simpleablaze = function (level)
+  svo.checkaction(svo.dict.ablaze.aff, true)
+
+  if tonumber(level) then
+    lifevision.add(actions.ablaze_aff.p, nil, level)
+    return
+  end
+
+  local claim = lifevision.l.ablaze_aff
+  local lines = (claim and claim.other_action == 'ignite' and claim.arg or 0) + 1
+  lifevision.add(actions.ablaze_aff.p, 'ignite', lines)
+end
+
 -- historical API compatibility
 svo.valid.proper_crippledleftleg = valid.simplecrippledrightleg
 svo.valid.proper_crippledrightleg = valid.simplecrippledrightleg

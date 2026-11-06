@@ -4686,7 +4686,7 @@ function svo.valid.skirmish_drag()
 end
 
 function svo.valid.cured_burn_health()
-  local result = svo.checkany(svo.dict.ablaze.salve, svo.dict.severeburn.salve, svo.dict.extremeburn.salve, svo.dict.charredburn.salve, svo.dict.meltingburn.salve)
+  local result = svo.checkany(svo.dict.ablaze.salve)
 
   if not result then return end
 
@@ -4697,7 +4697,7 @@ function svo.valid.cured_burn_health()
 end
 
 function svo.valid.cured_burns_health()
-  local result = svo.checkany(svo.dict.ablaze.salve, svo.dict.severeburn.salve, svo.dict.extremeburn.salve, svo.dict.charredburn.salve, svo.dict.meltingburn.salve)
+  local result = svo.checkany(svo.dict.ablaze.salve)
 
   if not result then return end
 
@@ -4812,10 +4812,18 @@ function svo.valid.smash_high()
   svo.lostbal_focus()
 end
 
+-- catching fire again raises burning a level (the user, 2026-10-31)
 function svo.valid.proper_ablaze()
-  if not affs.severeburn and not affs.extremeburn and not affs.charredburn and not affs.meltingburn then
-    valid.simpleablaze()
-  end
+  valid.simpleablaze()
+end
+
+-- "Flames lick around you - you are on fire!" and the firewall and firestorm
+-- lines only show you're burning, and raise no level (the user, 2026-11-06).
+-- They add burning at level 1 when svof isn't tracking it, and otherwise
+-- leave the level, a line in the same paragraph claiming it included
+function svo.valid.symptom_ablaze()
+  if affs.ablaze or lifevision.l.ablaze_aff then return end
+  valid.simpleablaze()
 end
 
 function svo.valid.riding_alreadyon()
