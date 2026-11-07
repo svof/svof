@@ -83,8 +83,12 @@ check("and keeps its other wordings, such as insulation", defstrip and defstrip:
 check("GMCP and serverside still name mass density", dict:find("gamename = 'density'", 1, true) ~= nil)
 
 -- the text a player reads names no transmutation vial either: the
--- dictionary's descriptions, and the tips
+-- dictionary's descriptions, the tips, and vconfig's help
 local funnies = read("src/scripts/svo (setup, misc, empty, funnies, dor)/Funnies.lua")
+local config = read("src/scripts/svo (install, config, pipes, rift, parry, prios)/Config_system.lua")
+for _, name in ipairs({ 'vitality', 'mentality' }) do
+  check("vconfig's help offers no " .. name, not config:find("health or " .. name, 1, true) and not config:find("mana or " .. name, 1, true))
+end
 for description in dict:gmatch('description = "([^"]*)"') do
   for word in description:gmatch("%a+") do
     check("a description names no transmutation vial: " .. description, not DEAD[word:lower()] or word:lower() == 'density')
