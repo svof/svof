@@ -290,7 +290,9 @@ do
   -- the two lines of the attack, through the real triggers
   local PUPPET = ATTACKER .. " twists and contorts the wooden tongue of a puppet of " .. ME .. "."
   local PUPPET_OTHER = ATTACKER .. " twists and contorts the wooden tongue of a puppet of " .. OTHER .. "."
-  local GAIN = "Your tongue twists and writhes in your mouth as if with a will of its own."
+  -- a name that holds yours, as Annabelle holds Ann (review of #911)
+  local PUPPET_LONGER = ATTACKER .. " twists and contorts the wooden tongue of a puppet of " .. ME .. "son."
+  local GAIN ="Your tongue twists and writhes in your mouth as if with a will of its own."
   local V = "Vodun & Puppetry"
 
   local function see(w, lines)
@@ -320,6 +322,7 @@ do
   check("blackout: the puppet line, then the gain line, adds it", see(blackout(true), { PUPPET, GAIN }), true)
   check("blackout: the gain line, then the puppet line, adds it", see(blackout(true), { GAIN, PUPPET }), true)
   check("blackout: a puppet of someone else doesn't count", see(blackout(true), { PUPPET_OTHER, GAIN }), false)
+  check("blackout: nor one of a longer name that holds yours", see(blackout(true), { PUPPET_LONGER, GAIN }), false)
 
   w = blackout(true)
   see(w, { PUPPET })
