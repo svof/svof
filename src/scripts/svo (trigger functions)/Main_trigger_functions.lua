@@ -745,6 +745,12 @@ function svo.valid.transfixily()
   -- special workaround for waking up not showing up in blackout: clear sleep if we saw this msg
   -- it's an issue otherwise to miss the sleep msg from a totem while in blackout and think you're still asleep
   if affs.sleep then svo.rmaff('sleep') end
+  -- and the wake and its wait (999s), as waking ends them: left in flight,
+  -- the next sleep sent no wake
+  if not affs.sleep then
+    if actions.curingsleep_waitingfor then svo.killaction(svo.dict.curingsleep.waitingfor) end
+    if actions.sleep_misc then svo.killaction(svo.dict.sleep.misc) end
+  end
 end
 
 function svo.valid.symp_roped()

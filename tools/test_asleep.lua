@@ -5,11 +5,12 @@ svof's. Neither ever ran.
   * svo.valid.symp_asleep, on "You are asleep and can do nothing. WAKE will
     attempt to wake you.", the game refusing a command sent while asleep.
     What svof had in flight failed, so it's cleared and goes again once
-    awake; nothing is sent while asleep. The wake and a cure being recorded
-    stay.
+    awake; nothing is sent while asleep. The wake, a cure being recorded,
+    and what a line in the paragraph already answered stay.
   * svo.valid.transfixily, on the transfixed and arms-bound refusals, which
     the game gives only to someone awake. It takes sleep off, for blackout,
-    where the wake line can be missed. Outside it, GMCP decides.
+    where the wake line can be missed, and the wait for waking with it.
+    Outside it, GMCP decides.
 
 The first sleep symptom and the stun symptom clear what's in flight through
 the same svo.cancel_sent_actions, and keep a cure being recorded too.
@@ -90,12 +91,50 @@ do -- a cure line, then the stun symptom, in one paragraph: the cure stands
   eq(svo.affs.paralysis, nil, "a paralysis cure line before a stun symptom still cures it")
 end
 
+-- What a line in the paragraph already answered stands through the refusal
+-- too: a herb's cure line puts its claim in lifevision, and a balance coming
+-- back is a happened action. Both were cancelled (review of #893)
+do
+  local w = world.new()
+  local svo = w.svo
+  svo.conf.aillusion = false
+  svo.addaffdict(svo.dict.asthma)
+  svo.addaffdict(svo.dict.sleep)
+  w.prompt()
+  svo.doaction(svo.dict.asthma.herb)
+  svo.paragraph_length = 1
+  svo.valid.herb_cured_asthma()
+  svo.paragraph_length = 2
+  svo.valid.symp_asleep()
+  w.prompt()
+  eq(svo.affs.asthma, nil, "a herb's cure line, then the refusal: the cure stands")
+end
+do
+  local w = world.new()
+  local svo = w.svo
+  svo.conf.aillusion = false
+  svo.addaffdict(svo.dict.sleep)
+  w.prompt()
+  svo.bals.herb = false
+  svo.paragraph_length = 1
+  svo.valid.gotherb()
+  svo.paragraph_length = 2
+  svo.valid.symp_asleep()
+  w.prompt()
+  eq(svo.bals.herb, true, "herb balance back, then the refusal: the balance stands")
+end
+
 do -- the transfixed refusal, in blackout
   local w = world.new()
   local svo = w.svo
   svo.addaffdict(svo.dict.sleep)
+  svo.doaction(svo.dict.curingsleep.waitingfor)
   svo.valid.transfixily()
   eq(svo.affs.sleep, nil, "a transfixed refusal takes sleep off")
+  -- and ends the wait for waking (999s), which kept the next sleep from waking
+  eq(svo.actions.curingsleep_waitingfor, nil, "and ends the wait for waking")
+  svo.addaffdict(svo.dict.sleep)
+  eq(svo.dict.sleep.misc.isadvisable(), true, "so the next sleep wakes again")
 end
 
 do -- and while GMCP still reports sleep
@@ -104,8 +143,10 @@ do -- and while GMCP still reports sleep
   w.env.gmcp.Char.Afflictions.List = { { name = "sleeping", cure = "", desc = "" } }
   svo.signals.gmcpcharafflictionslist:emit()
   eq(svo.affs.sleep ~= nil, true, "GMCP's sleeping is svof's sleep")
+  svo.doaction(svo.dict.curingsleep.waitingfor)
   svo.valid.transfixily()
   eq(svo.affs.sleep ~= nil, true, "a transfixed refusal leaves sleep while GMCP reports it")
+  eq(svo.actions.curingsleep_waitingfor ~= nil, true, "and the wait for waking")
 end
 
 print(string.format("%d checks, %d failures", checks, #failures))

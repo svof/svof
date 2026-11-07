@@ -351,15 +351,18 @@ end
 
 -- Cancels the commands svof has in flight, which the game refused: stun and
 -- sleep both stop every command, and svof sends them again once they're over.
--- What waits on time (waitingfor), the afflictions and cures the paragraph
--- has already seen (aff, gone), and the action named keep stay. They're
--- listed first: killing one while going through actions moves the next into
--- its place, and the loop skipped it
+-- What waits on time (waitingfor), what the paragraph has already seen
+-- (aff, gone, happened, such as a balance coming back, and any command a line
+-- has already answered: its claim is in lifevision, as a herb's cure line
+-- puts one), and the action named keep stay. They're listed first: killing
+-- one while going through actions moves the next into its place, and the
+-- loop skipped it
 svo.cancel_sent_actions = function (keep)
   local failed = {}
   for _, v in actions:iter() do
     local balance = v.p.balance
-    if balance ~= 'waitingfor' and balance ~= 'aff' and balance ~= 'gone' and v.p.name ~= keep then
+    if balance ~= 'waitingfor' and balance ~= 'aff' and balance ~= 'gone' and balance ~= 'happened'
+      and v.p.name ~= keep and not lifevision.l[v.p.name] then
       failed[#failed+1] = svo.dict[v.p.action_name][balance]
     end
   end
