@@ -4820,10 +4820,12 @@ end
 -- "Flames lick around you - you are on fire!" and the firewall and firestorm
 -- lines only show you're burning, and raise no level (the user, 2026-11-06).
 -- They add burning at level 1 when svof isn't tracking it, and otherwise
--- leave the level, a line in the same paragraph claiming it included
+-- leave the level, a line in the same paragraph claiming it included. The
+-- claim is level 1, not an ignite line's, so an ignite line after it in the
+-- paragraph doesn't count it as a level too
 function svo.valid.symptom_ablaze()
   if affs.ablaze or lifevision.l.ablaze_aff then return end
-  valid.simpleablaze()
+  valid.simpleablaze(1)
 end
 
 function svo.valid.riding_alreadyon()

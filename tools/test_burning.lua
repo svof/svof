@@ -161,6 +161,29 @@ do -- the fire symptoms show you're burning and raise no level (the user, 2026-1
   eq(level(svo), 2, "an ignite line and a symptom in one paragraph raise one level")
 end
 
+-- a symptom before an ignite line in one paragraph is one level too, as the
+-- other order: its claim was an ignite line's, so the ignite made it level 2
+-- (review of #891)
+do
+  local symptom = read(T .. "General/Symptoms/Ablaze.lua")
+  local w = world.new()
+  w.run(symptom, "Symptoms/Ablaze")
+  w.svo.valid.proper_ablaze()
+  w.prompt()
+  eq(level(w.svo), 1, "not burning: a symptom then an ignite line is level 1")
+  w = world.new()
+  w.svo.valid.proper_ablaze()
+  w.run(symptom, "Symptoms/Ablaze")
+  w.prompt()
+  eq(level(w.svo), 1, "not burning: an ignite line then a symptom is level 1")
+  w = world.new()
+  w.run(symptom, "Symptoms/Ablaze")
+  w.svo.valid.proper_ablaze()
+  w.svo.valid.proper_ablaze()
+  w.prompt()
+  eq(level(w.svo), 2, "not burning: a symptom then two ignite lines is level 2")
+end
+
 do -- two ignite lines in one paragraph are two levels
   local w = world.new()
   local svo = w.svo
@@ -256,6 +279,21 @@ do -- mending at level 1
   svo.valid.cured_burn_health()
   w.prompt()
   eq(level(svo), nil, "a level off level 1 ends it")
+end
+
+-- svo.removeafflevel, documented for counted afflictions: ablaze's gone had no
+-- general_cure, so it raised and left the level (review of #891)
+do
+  local w = world.new()
+  local svo = w.svo
+  burning(w, 3)
+  local ok, err = pcall(svo.removeafflevel, 'ablaze')
+  eq(ok, true, "removeafflevel on ablaze runs (" .. tostring(err) .. ")")
+  eq(level(svo), 2, "and takes a level off")
+  pcall(svo.removeafflevel, 'ablaze', 5, true)
+  eq(level(svo), 1, "with keep, many levels leave it at the first")
+  pcall(svo.removeafflevel, 'ablaze', 1)
+  eq(level(svo), nil, "and without, a level off the first ends it")
 end
 
 do -- passive curing

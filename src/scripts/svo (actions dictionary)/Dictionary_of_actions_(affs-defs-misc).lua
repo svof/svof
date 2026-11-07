@@ -4799,6 +4799,16 @@ if not next(svo.dict) then
         -- cured at once: amount levels down, or one
         generic_reducelevel = function(amount)
           codepaste.reduce_burn(tonumber(amount) or 1)
+        end,
+
+        -- svo.removeafflevel's: amount levels down, and off below one, or
+        -- kept at the first when dontkeep isn't set. As a player's
+        -- instruction, it doesn't wait on GMCP, as reduce_burn does
+        general_cure = function(amount, dontkeep)
+          local count = (svo.dict.ablaze.count or 1) - (tonumber(amount) or 1)
+          if count < 1 and dontkeep then svo.rmaff('ablaze') return end
+          svo.dict.ablaze.count = math.max(count, 1)
+          svo.updateaffcount(svo.dict.ablaze)
         end
       },
       -- having it at all is level 1, whichever way it was added, and GMCP
