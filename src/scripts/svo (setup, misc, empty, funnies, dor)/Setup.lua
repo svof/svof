@@ -195,6 +195,16 @@ svo.renamed_affs = {
   seriousconcussion = 'mangledhead',
 }
 
+-- and a player's script may still read one in svo.affl by its old name.
+-- Deprecated: read the new one. Only reads are passed on, so going through
+-- svo.affl with pairs shows the new names alone
+if not getmetatable(svo.affl) then
+  setmetatable(svo.affl, { __index = function(t, old)
+    local new = svo.renamed_affs[old]
+    if new then return rawget(t, new) end
+  end })
+end
+
 
 local oldecho = svo.conf.commandecho
 signals.changecuring = signals.changecuring or luanotify.signal.new()
