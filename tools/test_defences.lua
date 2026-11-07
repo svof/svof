@@ -2754,6 +2754,28 @@ do
   eq(echoed(w, "isn't a profession defence"), false, "changes: leaving svof's own class alone")
 end
 
+do -- saving Defences.lua in Mudlet's editor runs the defences loader alone,
+   -- which makes svo.defs_data anew. Custom defences kept the old one, so a
+   -- change went into a table nothing reads (review of #887)
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local old = svo.defs_data
+  svo.loader.defences()
+  eq(svo.defs_data ~= old, true, "reloaded: the defences loader makes defs_data anew")
+  svo.defences.customdef_command("softfocus def My eyes are soft.")
+  w.run('svo.defences.edit_install("softfocus", true)')
+  local function has(rec)
+    local def = rec and rec.def
+    if type(def) ~= 'table' then return def == "My eyes are soft." end
+    for _, line in ipairs(def) do
+      if line == "My eyes are soft." then return true end
+    end
+    return false
+  end
+  eq(has(svo.defs_data.softfocus), true, "reloaded: a change goes into the defs_data in use")
+  eq(has(old.softfocus), false, "reloaded: and not the old one")
+end
+
 do -- a change is put into play as svof loads, and says when svof's own changed since
   local w = world.new({ class = "Occultist" })
   local svo = w.svo
