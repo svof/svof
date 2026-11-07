@@ -12568,8 +12568,16 @@ if not next(svo.dict) then
     }) do
       local command, list = group.command, group.list
 
+      -- whether another stays rather than which: while deffing, defup's own
+      -- choice decides, and otherwise, or with none in defup, one that's up
+      -- stays. Defup and keepup can each hold a different one, and keepup's
+      -- counting while deffing had the two take each other off for good
       local function kept_up(which)
-        if sys.deffing then return false end
+        if sys.deffing then
+          for _, other in ipairs(list) do
+            if defdefup[defs.mode][other] then return other ~= which end
+          end
+        end
         for _, other in ipairs(list) do
           if other ~= which and defc[other] then return true end
         end

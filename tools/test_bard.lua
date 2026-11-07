@@ -8,8 +8,10 @@ as a Bard and checks:
   * the skillsets, and that nothing of what the rework removed is left
   * tune's command, which leaves wielding a rapier to the player
   * the dances and tempos: their commands and lines, one at a time, defup
-    switching to the one chosen, and keepup leaving a picked one alone
-  * the tempo triggers, run from their real scripts
+    switching to the one chosen, and keepup leaving a picked one alone, defup's
+    included
+  * the tempo triggers, run from their real scripts, and a tempo going when
+    GMCP's one tempo or DEF no longer has one
   * circling, encircling and aria: tracked from GMCP, their lines and DEF, with
     nothing to choose in defup or keepup
   * the five earworm and crescendo triggers, moved and otherwise untouched
@@ -200,7 +202,7 @@ do -- GMCP knows two of the three
   w.gmcp_defence_add("wavedance")
   eq(w.svo.defc.wavedance, true, "GMCP's wavedance sets it")
   eq(w.svo.dict.sstosvod.harrying, nil, "the game's list has no harrying")
-  eq(w.svo.dict.sstosvod.tempo, false, "and its one tempo is one svof leaves alone")
+  eq(w.svo.dict.sstosvod.tempo, false, "and its one tempo is none of svof's four by itself")
 end
 
 do -- DEF: a dance's line sets it, and a dance DEF doesn't print isn't lost
@@ -267,6 +269,51 @@ do -- defup switches to the one chosen
   eq(svo.dict.adagio.physical.isadvisable(), false, "but not while another of them is in flight")
 end
 
+do -- defup and keepup choosing different dances: defup's wins until defup is
+   -- done, and keepup then leaves it alone. Both were wanted, each one's
+   -- completion took the other off, and defup never finished (review of #908)
+  local w = bard({ keepup = true })
+  local svo = w.svo
+  svo.defdefup.basic.hawkstep = true
+  svo.defdefup.basic.balancing = true
+  svo.defkeepup.basic.wavedance = true
+  svo.sys.deffing = true
+  svo.showprompt = function() end
+  local danced = {}
+  for _ = 1, 8 do
+    w.sent = {}
+    gnomes(w)
+    for _, dance in ipairs(DANCES) do
+      if sent(w, "dance " .. dance) then
+        danced[#danced + 1] = dance
+        local up = svo.defc.harrying or svo.defc.hawkstep or svo.defc.wavedance
+        game(w, up and SWITCH[dance] or ON[dance])
+      end
+    end
+    if sent(w, "balancing on") then game(w, "You move onto the balls of your feet and begin to concentrate on balance.") end
+    -- as the prompt does while deffing
+    svo.defupfinish()
+    if not svo.sys.deffing then break end
+  end
+  eq(table.concat(danced, " "), "hawkstep", "defup and keepup apart: defup dances its own, once")
+  eq(svo.defc.hawkstep, true, "defup and keepup apart: and it's up")
+  eq(svo.defc.balancing, true, "defup and keepup apart: defup goes on to the rest")
+  eq(svo.sys.deffing, false, "defup and keepup apart: and finishes")
+  w.sent = {}
+  gnomes(w)
+  eq(sent(w, "dance wavedance"), false, "defup and keepup apart: keepup then leaves defup's dance alone")
+
+  -- with nothing of the group in defup, a dance that's up stays while deffing too
+  w = bard({ keepup = true })
+  svo = w.svo
+  svo.defdefup.basic.balancing = true
+  svo.defkeepup.basic.wavedance = true
+  svo.defences.got("hawkstep")
+  svo.sys.deffing = true
+  gnomes(w)
+  eq(sent(w, "dance wavedance"), false, "defup with no dance: keepup leaves one that's up alone")
+end
+
 do -- with paralysis or prone, none of them
   local w = bard({ keepup = true })
   w.svo.defkeepup.basic.harrying = true
@@ -328,6 +375,63 @@ do -- "already" names no tempo: it's the one svof sent, and no other
   end
   tempo_trigger(w, "Tempo_shown", "hawkstep")
   eq(w.svo.defc.hawkstep, nil, "and a dance's name in that place doesn't set the dance")
+end
+
+do -- a tempo has no line of its own going, so GMCP's one tempo and DEF say
+   -- when none is up. Nothing took one off, and keepup never raised it again
+   -- (review of #908)
+  local w = world.new({ class = "Bard" })
+  local svo = w.svo
+  tempo_trigger(w, "Tempo_set", "vivace")
+  w.gmcp_defence_remove("tempo")
+  eq(svo.defc.vivace, false, "GMCP's tempo going takes the tempo off")
+  w.gmcp_defence_add("tempo")
+  for _, tempo in ipairs(TEMPOS) do
+    eq(svo.defc[tempo] == true, false, "GMCP's tempo coming doesn't say which, so no " .. tempo)
+  end
+  tempo_trigger(w, "Tempo_set", "adagio")
+  w.gmcp_defence_remove("hawkstep")
+  eq(svo.defc.adagio, true, "another defence going leaves the tempo")
+  w.gmcp_defence_list({ "tempo", "hawkstep" })
+  eq(svo.defc.adagio, true, "a GMCP list with tempo leaves it")
+  w.gmcp_defence_list({ "hawkstep" })
+  eq(svo.defc.adagio, false, "a GMCP list without tempo takes it off")
+
+  -- DEF, with and without the tempo's line
+  local function def(shown)
+    svo.doaction(svo.dict.defcheck.physical)
+    svo.defs.defstart()
+    if shown then
+      w.env.matches = { "whole line", shown }
+      w.run(read(TRIGGERS .. "Bladedance/Tempo_shown.lua"), "Tempo_shown")
+    end
+    svo.defs.defline()
+    w.prompt()
+    -- DEF's own display, which clears what this DEF listed
+    svo.showprompt = function() end
+    w.run_timers()
+  end
+  w = world.new({ class = "Bard" })
+  svo = w.svo
+  tempo_trigger(w, "Tempo_set", "vivace")
+  def()
+  eq(svo.defc.vivace, false, "DEF naming no tempo takes the tempo off")
+  tempo_trigger(w, "Tempo_set", "vivace")
+  def("vivace")
+  eq(svo.defc.vivace, true, "DEF naming it keeps it")
+  def("adagio")
+  eq(svo.defc.adagio, true, "DEF naming another sets that")
+  eq(svo.defc.vivace, false, "and takes this one off")
+
+  -- so keepup raises it again
+  w = bard({ keepup = true })
+  svo = w.svo
+  svo.defkeepup.basic.vivace = true
+  tempo_trigger(w, "Tempo_set", "vivace")
+  w.gmcp_defence_remove("tempo")
+  w.sent = {}
+  gnomes(w)
+  eq(sent(w, "tempo vivace"), true, "keepup raises a tempo GMCP took off")
 end
 
 do -- another class seeing these lines

@@ -942,12 +942,19 @@ if svo.haveskillset('bladedance') then
     off = "You cease your peerless dancing, returning to explosive stillness."})
 
   -- the Bladedance triggers and svo.valid.bard_tempo track these: their lines
-  -- hold the tempo's name, and one doesn't name it at all
+  -- hold the tempo's name, and one doesn't name it at all. No line says one
+  -- has gone, so the rest say when none is up: GMCP's one tempo (gmcp_group)
+  -- going or missing from its list, and DEF without one (deflisted, as DEF
+  -- names it, though custom_def_type alone would leave it to its own lines)
   local one_tempo = one_of({'adagio', 'moderato', 'allegro', 'vivace'})
-  defs_data:set('adagio', { type = 'bladedance', custom_def_type = 'bladedance', onenable = one_tempo })
-  defs_data:set('moderato', { type = 'bladedance', custom_def_type = 'bladedance', onenable = one_tempo })
-  defs_data:set('allegro', { type = 'bladedance', custom_def_type = 'bladedance', onenable = one_tempo })
-  defs_data:set('vivace', { type = 'bladedance', custom_def_type = 'bladedance', onenable = one_tempo })
+  defs_data:set('adagio', { type = 'bladedance', custom_def_type = 'bladedance', onenable = one_tempo,
+    gmcp_group = 'tempo', deflisted = true })
+  defs_data:set('moderato', { type = 'bladedance', custom_def_type = 'bladedance', onenable = one_tempo,
+    gmcp_group = 'tempo', deflisted = true })
+  defs_data:set('allegro', { type = 'bladedance', custom_def_type = 'bladedance', onenable = one_tempo,
+    gmcp_group = 'tempo', deflisted = true })
+  defs_data:set('vivace', { type = 'bladedance', custom_def_type = 'bladedance', onenable = one_tempo,
+    gmcp_group = 'tempo', deflisted = true })
 
   -- these come and go with the fight, so svof tracks them for a player's
   -- scripts and doesn't raise them. circling comes up with most Bladedance
@@ -6893,16 +6900,21 @@ end
 svo.process_defs = function ()
   local addback = {}
 
+  -- a custom_def_type defence is left to its own lines, unless DEF lists it
+  local function own_lines(defname)
+    return defs_data[defname] and defs_data[defname].custom_def_type and not defs_data[defname].deflisted
+  end
+
   for defname, _ in pairs(defc) do
     -- clear ones we don't have
-    if defc[defname] and not defences.def_def_list[defname] and not (defs_data[defname] and (defs_data[defname].invisibledef or defs_data[defname].custom_def_type or (defs_data[defname].nodef and defences.nodef_list[defname]))) then
+    if defc[defname] and not defences.def_def_list[defname] and not (defs_data[defname] and (defs_data[defname].invisibledef or own_lines(defname) or (defs_data[defname].nodef and defences.nodef_list[defname]))) then
       if svo.dict[defname] and svo.dict[defname].gone then
         svo.checkaction(svo.dict[defname].gone, true)
         lifevision.add(actions[defname..'_gone'].p)
       else
         defences.lost(defname)
       end
-    elseif defc[defname] and defences.def_def_list[defname] and not (defs_data[defname] and defs_data[defname].custom_def_type) then -- if we do have it, remove from def list
+    elseif defc[defname] and defences.def_def_list[defname] and not own_lines(defname) then -- if we do have it, remove from def list
       addback[defname] = defences.def_def_list[defname]
       defences.def_def_list[defname] = nil
     end

@@ -955,6 +955,15 @@ function svo.valid.bard_tempo(tempo)
   if got then got() end
 end
 
+-- DEF named the tempo: it's listed, so a DEF without one takes the tempo off
+function svo.valid.bard_tempo_shown(tempo)
+  local name = tempo:lower()
+  if actions.defcheck_physical and table.contains(bard_tempos, name) and svo.defs['got_'..name] then
+    defences.def_def_list[name] = true
+  end
+  svo.valid.bard_tempo(tempo)
+end
+
 -- "You are already dancing to that tempo." doesn't say which: the one svof sent
 function svo.valid.bard_tempo_already()
   for _, name in ipairs(bard_tempos) do

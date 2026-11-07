@@ -69,7 +69,7 @@
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/Bladedance/Tempo shown",
-      "digest": "63e751d57b03ab62",
+      "digest": "5f0464b575340e8b",
       "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Tempo shown [only in the package]"
     },
     {
@@ -714,7 +714,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "44938758fb75c7e0",
+      "digest": "43bab8478170ab38",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -724,7 +724,7 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "f4e635df7f83aa5b",
+      "digest": "11b8e90978d77d66",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -959,7 +959,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "266074f473e43ba2",
+      "digest": "e8cd1e07de470390",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -974,7 +974,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "f00a0e1422523553",
+      "digest": "d7380bd8290ba8c8",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

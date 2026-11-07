@@ -1238,6 +1238,20 @@ local function gmcp_defence(thisdef)
   return def and svo.defs_data[def] and def or nil
 end
 
+-- Defences GMCP reports under one name they share, one up at a time
+-- (gmcp_group in their record, such as Bard's four tempos as the game's
+-- tempo). That name coming doesn't say which, so only its going counts:
+-- the ones up whose name gone() says is gone are taken off.
+local function gmcp_groups_lost(gone)
+  local up = {}
+  for def, on in pairs(defc) do
+    local group = on and svo.defs_data[def] and svo.defs_data[def].gmcp_group
+    if group and gone(group) then up[#up + 1] = def end
+  end
+  table.sort(up)
+  for _, def in ipairs(up) do defences.unconfirm(def) end
+end
+
 signals.gmcpchardefencesadd:connect(function()
   local thisdef = gmcp.Char.Defences.Add.name
   svo.gdefc[thisdef] = true
@@ -1262,6 +1276,7 @@ signals.gmcpchardefencesremove:connect(function()
     sk.gmcp_def_sightings[def] = nil
     defences.unconfirm(def)
   end
+  gmcp_groups_lost(function(group) return group == thisdef end)
 end, 'track lost gmcp def')
 
 signals.gmcpchardefenceslist:connect(function()
@@ -1294,6 +1309,7 @@ signals.gmcpchardefenceslist:connect(function()
       defences.unconfirm(defname)
     end
   end
+  gmcp_groups_lost(function(group) return not svo.gdefc[group] end)
 
   -- the game's whole picture: GMCP has the final word on defences from here
   -- (svo.gmcp_defs_live), every entry counting, any a blackout left too

@@ -1,1 +1,1 @@
-svo.valid.bard_tempo(matches[2])
+svo.valid.bard_tempo_shown(matches[2])
