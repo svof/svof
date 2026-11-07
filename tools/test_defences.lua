@@ -1593,6 +1593,42 @@ do
   eq(asked("oncesix gmcp none"), "defence show oncesix", "asks once: no GMCP name, so by its name")
 end
 
+-- A new one's screen waits for the game's answer whoever asks, not only
+-- when it asks by its own name (review of #904)
+do
+  local function waiting(first, confirm)
+    local w = world.new({ class = "Monk" })
+    local svo = w.svo
+    if confirm then svo.defences.gmcp_confirmed[confirm] = true end
+    local name = first:match("^%S+")
+    svo.defences.customdef_command(first)
+    w.echoes = {}
+    svo.defences.customdef_command(name)
+    return echoed(w, "Asking the game for " .. name .. "'s lines."),
+      echoed(w, name .. ", a defence you are defining"), w
+  end
+  local waits, shown = waiting("waitone fetch testwait")
+  eq(waits, true, "a new one's fetch by another name: its screen waits for the game")
+  eq(shown, false, "and isn't shown empty")
+  eq((waiting("waittwo fetch")), true, "a new one's fetch by its own name: the same")
+  eq((waiting("waitfour gmcp testwait", "testwait")), true, "a new one's GMCP name the game has confirmed: the same")
+
+  -- the answer shows it, filled in
+  local w
+  waits, shown, w = waiting("waitfive fetch testwait")
+  local function game(text) w.env.line = text w.svo.defences.custom_fetch_line() w.run_timers() end
+  w.echoes = {}
+  game("Defence:            Testwait (testwait)")
+  game("EnactMsg:           You begin to testwait.")
+  w.env.isPrompt = function() return true end
+  game("9975h, 6252m cexkdb-")
+  w.env.isPrompt = function() return false end
+  eq(echoed(w, "waitfive, a defence you are defining"), true, "the game's answer shows the screen")
+  w.echoes = {}
+  w.svo.defences.customdef_command("waitfive")
+  eq(echoed(w, "waitfive, a defence you are defining"), true, "and it's shown after, not waited for")
+end
+
 -- For a defence the game knows, DEFENCE SHOW gives its lines and GMCP name
 -- (the reply's layout is the owner's capture, 2026-10-09)
 do

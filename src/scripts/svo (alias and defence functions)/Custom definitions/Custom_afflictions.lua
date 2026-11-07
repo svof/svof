@@ -701,11 +701,10 @@ local function draft(name, asking)
     if why then return nil, why end
     d = copy({})
     afflictions.drafts[name] = d
-    -- if the game knows it by this name, the rest comes from the game
-    if not asking then
-      afflictions.fetch(name, name)
-      show_waits[name] = true
-    end
+    -- if the game knows it by this name, the rest comes from the game, and
+    -- the screen waits for it whoever asks
+    if not asking then afflictions.fetch(name, name) end
+    show_waits[name] = true
     return d
   end
   afflictions.drafts[name] = d
@@ -857,10 +856,7 @@ function afflictions.set(name, field, value)
     end
     d.gmcp = gmcp
     -- the rest of a new one comes from the game, by the name it knows
-    if gmcp and new then
-      afflictions.fetch(name, gmcp)
-      show_waits[name] = true
-    end
+    if gmcp and new then afflictions.fetch(name, gmcp) end
   elseif field == 'cures' then
     if value == '' then svo.echof("What cures %s? As the game's Cure(s) says, such as Eat Kelp / Eat Aurum.", name) return end
     d.cures = value

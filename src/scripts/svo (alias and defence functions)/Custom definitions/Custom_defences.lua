@@ -613,11 +613,10 @@ local function custom_draft(name, asking)
     if why then return nil, why end
     d = { class = class_key(me.class), on = {}, off = {} }
     defences.custom_drafts[name] = d
-    -- if the game knows it by this name, its lines come from the game
-    if not asking then
-      defences.custom_fetch(name, name)
-      show_waits[name] = true
-    end
+    -- if the game knows it by this name, its lines come from the game, and
+    -- the screen waits for them whoever asks
+    if not asking then defences.custom_fetch(name, name) end
+    show_waits[name] = true
     return d
   end
   defences.custom_drafts[name] = d

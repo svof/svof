@@ -1085,6 +1085,46 @@ do
   eq(asked("oncefive cures Eat Kelp"), "affliction show oncefive", "asks once: a new one's other fields, by its name")
 end
 
+-- A new one's screen waits for the game's answer whoever asks, not only
+-- when it asks by its own name (review of #904)
+do
+  local function waiting(first)
+    local w = world.new({ class = "Monk" })
+    local svo = w.svo
+    local name = first:match("^%S+")
+    svo.afflictions.command(first)
+    w.echoes = {}
+    svo.afflictions.command(name)
+    return echoed(w, "Asking the game about " .. name .. "."),
+      echoed(w, name .. ", an affliction you are defining"), w
+  end
+  local waits, shown = waiting("waitone fetch testwait")
+  eq(waits, true, "a new one's fetch by another name: its screen waits for the game")
+  eq(shown, false, "and isn't shown empty")
+  eq((waiting("waittwo fetch")), true, "a new one's fetch by its own name: the same")
+  -- one with a GMCP name the game has confirmed is shown by its gmcp
+  -- command, which says it waits
+  do
+    local w = world.new({ class = "Monk" })
+    w.svo.afflictions.confirmed.testwait = true
+    w.svo.afflictions.command("waitfour gmcp testwait")
+    eq(echoed(w, "Asking the game about waitfour."), true, "a new one's GMCP name the game has confirmed: the same")
+  end
+
+  -- the answer shows it, filled in
+  local w
+  waits, shown, w = waiting("waitfive fetch testwait")
+  local game, prompt = reader(w, "svo.afflictions.show_line()")
+  w.echoes = {}
+  game("Affliction:         Testwait")
+  game("Cured msg:          The testwait passes.")
+  prompt()
+  eq(echoed(w, "waitfive, an affliction you are defining"), true, "the game's answer shows the screen")
+  w.echoes = {}
+  w.svo.afflictions.command("waitfive")
+  eq(echoed(w, "waitfive, an affliction you are defining"), true, "and it's shown after, not waited for")
+end
+
 if #failures > 0 then
   for _, f in ipairs(failures) do print("FAIL: " .. f) end
   print(string.format("%d checks, %d failures", checks, #failures))
