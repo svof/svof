@@ -6,7 +6,8 @@ It runs svof's real loaders through tools/svof_world.lua and checks:
 
   * both mucous lines cancel the smoke in flight and take smoke balance for
     the 6-second recovery, at the prompt and not before it, so a paragraph
-    found to be an illusion changes nothing.
+    found to be an illusion changes nothing, and only alone in their
+    paragraph, as the old mucous affliction's claim was.
   * the cough line ends that recovery early, at the prompt, once, and only
     that recovery: it leaves an ordinary smoke's recovery alone.
   * both lines answer svof's asthma check, which then isn't in flight.
@@ -70,6 +71,19 @@ do -- a mucous line in a paragraph found to be an illusion
   w.prompt()
   eq(svo.bals.smoke, true, "illusion: smoke balance stays")
   eq(svo.lungs_clogged(), false, "illusion: and the lungs aren't clogged")
+end
+
+-- a mucous line first in a paragraph that grows: the line has to be alone in
+-- its paragraph, as the old affliction's claim did (review of #882)
+for _, line in ipairs({ 'got_mucous', 'have_mucous' }) do
+  local w = world.new()
+  local svo = smoking(w)
+  svo.valid[line]()
+  svo.paragraph_length = 3
+  w.prompt()
+  eq(svo.bals.smoke, true, line .. " in a longer paragraph: smoke balance stays")
+  eq(svo.actions.slickness_smoke ~= nil, true, line .. " in a longer paragraph: the smoke is still in flight")
+  eq(svo.lungs_clogged(), false, line .. " in a longer paragraph: and the lungs aren't clogged")
 end
 
 do -- the cough line ends mucous's recovery early, once

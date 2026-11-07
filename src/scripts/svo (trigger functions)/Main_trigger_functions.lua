@@ -2633,7 +2633,9 @@ local function lungs_clogged_line()
   local r = svo.findbybal('smoke')
   if r or not conf.aillusion then
     svo.checkaction(svo.dict.mucouslungs.happened, true)
-    lifevision.add(actions.mucouslungs_happened.p)
+    -- alone in its paragraph, as the old mucous affliction's claim was: a
+    -- longer one is taken for an illusion at the prompt
+    lifevision.add(actions.mucouslungs_happened.p, nil, nil, 1)
   elseif conf.aillusion then
     svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
   end
