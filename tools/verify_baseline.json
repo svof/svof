@@ -394,7 +394,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "fd78b8b84454acd8",
+      "digest": "8606e0483ea98202",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
@@ -446,6 +446,11 @@
       "id": "item|Script|svo (install me in module manager)|Create Svof namespace|script",
       "digest": "64629833bfe0560e",
       "text": "Script   svo (install me in module manager) Create Svof namespace [script]"
+    },
+    {
+      "id": "item|Script|svo (install me in module manager)|Load & init/svo.classchange|script",
+      "digest": "92340d8368deeade",
+      "text": "Script   svo (install me in module manager) Load & init/svo.classchange [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|Load & init/svo.uninstall_all_modules|events",

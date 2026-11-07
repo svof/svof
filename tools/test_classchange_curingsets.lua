@@ -17,9 +17,12 @@ landed in slowcuring and normal, cleared by a class change in aeon, got
 nothing back. They switch to normal and back now, the way slowcuring's
 priorities already switched to slowcuring and back outside it.
 
-svof resends nothing at the change itself. The next keepup, ignore or
-defence mode change diffs against a blank snapshot and sends everything, so
-the test makes one and checks both curingsets got it.
+Clearing both also left slowcuring curing in the game's default order until
+the next keepup, ignore or defence mode change, which was the first thing to
+resend anything. The class change resends the new class's priorities itself
+now, with the health and mana order. The test compares each curingset's
+affliction priorities with a fresh Druid sync's, then makes a keepup change
+and checks both curingsets got that too.
 
 This runs all 23 real loaders through tools/svof_world.lua, turns serverside
 on for a Magi with three Magi defences on keepup, changes class to Druid
@@ -119,6 +122,12 @@ local function foreign(w, defences)
   return out
 end
 
+local function count(t)
+  local n = 0
+  for _ in pairs(t) do n = n + 1 end
+  return n
+end
+
 -- ===== a Magi on serverside, changing to Druid =====
 
 -- svof's names, and the game's, which the curingsets hold
@@ -126,6 +135,8 @@ local MAGI_DEFS = { "stoneskin", "reflection", "diamondskin" }
 local MAGI_GAMENAMES = { "stoneskin", "reflections", "diamondskin" }
 -- and one every class has, which the Druid puts on keepup after the change
 local GENERAL_DEF = "deathsight"
+-- each curingset's affliction priority count from a fresh Druid sync
+local druid_affs = {}
 
 local function magi_on_serverside()
   local w = world.new({ class = "Magi" })
@@ -171,6 +182,7 @@ local function run(in_aeon)
     check(label .. ": slowcuring in use before the class change", server.current == "slowcuring", server.current)
   end
 
+  local changed_from = next_sent
   w.svo.classchange("Druid")
   settle(w)
   next_sent = replay(w, server, next_sent)
@@ -179,11 +191,22 @@ local function run(in_aeon)
   for _, name in ipairs({ "normal", "slowcuring" }) do
     local left = foreign(w, server.set(name).defences)
     check(label .. ": no Magi defences left in " .. name, #left == 0, table.concat(left, ", "))
+    -- the class change resends the new class's priorities itself, so
+    -- neither curingset cures in the game's default order until the next
+    -- keepup or ignore change
+    local got, want = count(server.set(name).affs), druid_affs[name]
+    check(label .. ": Druid " .. name .. " gets its affliction priorities at the change",
+      want > 0 and got == want, ("%d, a fresh Druid sync sends %d"):format(got, want))
   end
+  local healthormana = false
+  for i = changed_from, #w.sent do
+    local cmd = w.sent[i]:lower()
+    if cmd == "curing priority health" or cmd == "curing priority mana" then healthormana = true end
+  end
+  check(label .. ": the class change resends the health or mana order", healthormana)
 
-  -- svof resends nothing at the change itself: the next keepup, ignore or
-  -- defence mode change does, diffing against a blank snapshot, so it sends
-  -- everything to both curingsets. The reset must not be sent after it.
+  -- the next keepup, ignore or defence mode change diffs against what the
+  -- class change sent, and must reach both curingsets too
   local svo = w.svo
   svo.defkeepup[svo.defs.mode][GENERAL_DEF] = true
   svo.signals["svo keepup changed"]:emit(svo.defs.mode, GENERAL_DEF, true)
@@ -198,6 +221,18 @@ local function run(in_aeon)
   end
   check(label .. ": the curingset in use is unchanged",
     server.current == (in_aeon and "slowcuring" or "normal"), server.current)
+end
+
+-- what each curingset holds once a Druid turns serverside on, to compare the
+-- class change's resend against
+do
+  local w = world.new({ class = "Druid" })
+  w.svo.conf.serverside = true
+  w.svo.signals["svo config changed"]:emit("serverside")
+  settle(w)
+  local server = new_server()
+  replay(w, server)
+  for _, name in ipairs({ "normal", "slowcuring" }) do druid_affs[name] = count(server.set(name).affs) end
 end
 
 run(false)

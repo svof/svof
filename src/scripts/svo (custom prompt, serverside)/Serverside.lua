@@ -60,6 +60,23 @@ function sk.resetserversideprios()
   sk.priosbeforechange = sk.getblankbeforestateprios()
 end
 
+-- after a class change has reloaded the system: the reset left both
+-- curingsets on the game's defaults, so send the new class's priorities now
+-- rather than at the next keepup or ignore change
+function sk.resyncserversideprios()
+  if not conf.serverside then return end
+
+  sk.handleserversideswitch()
+  -- health and mana order, which the diff doesn't cover
+  for _, actiont in pairs(svo.dict) do
+    for _, balancet in pairs(actiont) do
+      if type(balancet) == 'table' and balancet.onprioswitch then
+        balancet.onprioswitch()
+      end
+    end
+  end
+end
+
 function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache, slow)
   local isdefence, priority, gamename, istype
 	
