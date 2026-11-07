@@ -10,7 +10,9 @@ svo = svo or {}; svo.loader = svo.loader or {}
 svo.loader.customdefs = function()
 
 local sys, conf, sk, me, defs, defc = svo.sys, svo.conf, svo.sk, svo.me, svo.defs, svo.defc
-local defences, defs_data, signals, lifevision = svo.defences, svo.defs_data, svo.signals, svo.lifevision
+-- svo.defs_data is read where it's used: the defences loader makes it anew,
+-- as saving Defences.lua in Mudlet's editor runs that loader alone
+local defences, signals, lifevision = svo.defences, svo.signals, svo.lifevision
 
 -- Defences the player defines (vcustomdef). They are saved under
 -- <profile>/svo/custom/defs, which a package update leaves alone, and
@@ -83,7 +85,7 @@ defences.gmcp_held = defences.gmcp_held or {}
 local item_defences = { mindnet = true, lifevision = true, shroud = true }
 function defences.custom_taken(name)
   if defences.custom_registered[name] then return false end
-  return (defs_data[name] or svo.dict[name] or item_defences[name]) and true or false
+  return (svo.defs_data[name] or svo.dict[name] or item_defences[name]) and true or false
 end
 
 -- a record's line or lines, as a new list
@@ -323,7 +325,7 @@ function defences.clash(name, parts)
     end
   end
   local lines, subs = parts.lines or {}, parts.subs or {}
-  for other, rec in defs_data:iter() do
+  for other, rec in svo.defs_data:iter() do
     if other ~= name then
       for _, field in ipairs(exact_fields) do
         for _, theirs in ipairs(line_list(rec[field])) do
@@ -459,15 +461,15 @@ signals.systemstart:connect(function ()
   table.sort(names)
   for _, name in ipairs(names) do
     local copy = type(defences.custom[name].copy) == 'table'
-    if copy and defs_data[name] and defences.custom[name].class == 'all' then
+    if copy and svo.defs_data[name] and defences.custom[name].class == 'all' then
       -- a copy for every class isn't needed in a class with Svof's own,
       -- which is used instead
-    elseif copy and defs_data[name] then
+    elseif copy and svo.defs_data[name] then
       svo.echofn("Svof has its own %s in this class now, so your copy of it isn't used. ", name)
       custom_link("(delete it)", string.format("svo.defences.custom_delete(%q)", name), "Delete your copy of " .. name,
         'remove')
       echo("\n")
-    elseif defences.custom_taken(name) and defs_data[name] then
+    elseif defences.custom_taken(name) and svo.defs_data[name] then
       -- saved in another class, where svof's own didn't show: it can
       -- become a change to svof's own instead
       svo.echofn("Svof has its own %s in this class, so the one you defined isn't used. ", name)
@@ -2119,13 +2121,13 @@ end
 -- whether name is svof's own defence in this class, which the player can
 -- change, rather than one they defined
 function defences.is_own(name)
-  return defs_data[name] ~= nil and not defences.custom_registered[name]
+  return svo.defs_data[name] ~= nil and not defences.custom_registered[name]
 end
 
 -- the change saved for svof's own defence name in this class, and whose
 -- it is
 local function edit_of(name)
-  local key = edit_key(defs_data[name])
+  local key = edit_key(svo.defs_data[name])
   return defences.edits and defences.edits[key] and defences.edits[key][name], key
 end
 
@@ -2144,7 +2146,7 @@ local function own_version(name)
       notondef = snap.invisibledef and true or nil, command = snap.command, gmcp = snap.gmcp,
       skillset = snap.type, sendsaction = phys and phys.sendsaction }
   end
-  local rec = defs_data[name]
+  local rec = svo.defs_data[name]
   return { on = line_list(rec.on), off = line_list(rec.off), def = line_list(rec.def),
     onr = line_list(rec.onr), offr = line_list(rec.offr), defr = line_list(rec.defr),
     notondef = rec.invisibledef and true or nil, command = phys and phys.action, gmcp = svo.dict.svotossd[name],
@@ -2204,7 +2206,7 @@ end
 -- puts a change into play over svof's own version, keeping that to put
 -- back. A GMCP name svof has since given another defence stays that one's
 local function edit_apply(name, edit)
-  local rec, entry, phys = defs_data[name], svo.dict[name], physical_of(name)
+  local rec, entry, phys = svo.defs_data[name], svo.dict[name], physical_of(name)
   local snap = { on = rec.on, off = rec.off, def = rec.def, onr = rec.onr, offr = rec.offr, defr = rec.defr,
     invisibledef = rec.invisibledef, gmcp = svo.dict.svotossd[name],
     gamename = type(entry) == 'table' and entry.gamename or nil, command = phys and phys.action,
@@ -2232,7 +2234,7 @@ local function edit_restore(name)
   local snap = defences.own[name]
   if not snap then return end
   defences.own[name] = nil
-  local rec, phys = defs_data[name], physical_of(name)
+  local rec, phys = svo.defs_data[name], physical_of(name)
   if rec then
     rec.on, rec.off, rec.def, rec.invisibledef = snap.on, snap.off, snap.def, snap.invisibledef
     rec.onr, rec.offr, rec.defr = snap.onr, snap.offr, snap.defr
@@ -2252,7 +2254,7 @@ end
 -- makes a defence's triggers again from its record's lines
 local function rewire(name)
   for _, id in ipairs(defences.triggers_of[name] or {}) do killTrigger(id) end
-  defences.wire_triggers(name, defs_data[name])
+  defences.wire_triggers(name, svo.defs_data[name])
 end
 
 -- serverside knows a defence by its GMCP name: once that changes, svof's
@@ -2353,14 +2355,14 @@ function defences.edits_start()
   defences.own, defences.edit_drafts, defences.edit_converting = {}, {}, {}
   if not defences.edits then defences.edits_load() end
   if not conf.customdefinitions then return end
-  for name in defs_data:iter() do defences.edit_put(name) end
+  for name in svo.defs_data:iter() do defences.edit_put(name) end
 
   -- a change to a defence svof doesn't have any more. An item's defence
   -- registers later
   for _, key in ipairs({ 'all', class_key(me.class) }) do
     local names = {}
     for name in pairs(defences.edits[key] or {}) do
-      if not defs_data[name] and not item_defences[name] then names[#names + 1] = name end
+      if not svo.defs_data[name] and not item_defences[name] then names[#names + 1] = name end
     end
     table.sort(names)
     for _, name in ipairs(names) do
@@ -2460,7 +2462,7 @@ end
 -- what a change to svof's own defence doesn't reach, as svof does more
 -- with it than the lines, GMCP name and command
 local function edit_notes(name)
-  local rec, phys = defs_data[name], physical_of(name)
+  local rec, phys = svo.defs_data[name], physical_of(name)
   local notes = {}
   local function add(note) notes[#notes + 1] = note end
   if rec.on_only or rec.on_free or rec.off_free or rec.offs then add("other lines it watches for") end
@@ -2515,7 +2517,7 @@ function defences.edit_show(name)
   if not same(d.gmcp, own.gmcp) then svofs({ own.gmcp }) end
   -- the skillset it's listed under, which a class update can move it from
   custom_label("skillset:")
-  if edit_key(defs_data[name]) == 'all' then
+  if edit_key(svo.defs_data[name]) == 'all' then
     echo(tostring(d.skillset) .. ", which every class has, so it stays there\n")
   else
     echo(tostring(d.skillset) .. "  ")
@@ -2644,7 +2646,7 @@ function defences.edit_set(name, field, value)
     if not table.contains(lines, value) then lines[#lines + 1] = value end
     if field == 'def' then d.notondef = nil end
   elseif field == 'skillset' then
-    if edit_key(defs_data[name]) == 'all' then
+    if edit_key(svo.defs_data[name]) == 'all' then
       svo.echof("Svof's own %s is a %s defence, which every class has, so its skillset stays.", name, tostring(own.skillset))
       return
     end
@@ -2680,7 +2682,7 @@ function defences.edit_fetch(name, keyword)
 end
 
 function defences.edit_test(name)
-  local d, own, rec = edit_draft(name), own_version(name), defs_data[name]
+  local d, own, rec = edit_draft(name), own_version(name), svo.defs_data[name]
   local key = edit_key(rec)
   svo.echof("%s, Svof's own, for %s:", name, key == 'all' and "every class" or key)
   local changes = {}
@@ -2768,7 +2770,7 @@ end
 -- the list, names another class's change, which is only deleted
 function defences.edit_reset(name, key)
   if not defences.edits then defences.edits_load() end
-  local here = defs_data[name] and edit_key(defs_data[name])
+  local here = svo.defs_data[name] and edit_key(svo.defs_data[name])
   key = key or here
   -- a change being made, and not installed, is thrown away
   local draft = key == here and defences.edit_drafts[name]
@@ -2856,7 +2858,7 @@ function defences.edits_menu()
   table.sort(changes, function (a, b) return a.name < b.name or (a.name == b.name and a.key < b.key) end)
   svo.echof("Svof's own defences you changed:")
   for _, c in ipairs(changes) do
-    local here = defs_data[c.name] ~= nil and edit_key(defs_data[c.name]) == c.key
+    local here = svo.defs_data[c.name] ~= nil and edit_key(svo.defs_data[c.name]) == c.key
     local state = c.draft and "not installed"
       or not here and "not for this class"
       or defences.edit_drafts[c.name] and not draft_installed(c.name, defences.edit_drafts[c.name]) and "changes not installed"
@@ -2891,7 +2893,7 @@ function defences.edits_import(changes, path)
     table.sort(names)
     for _, name in ipairs(names) do
       local edit = changes[key][name]
-      local here = defs_data[name] and edit_key(defs_data[name]) == key
+      local here = svo.defs_data[name] and edit_key(svo.defs_data[name]) == key
       local problem = imported_gmcp_problem(edit.gmcp)
       -- a GMCP name this class gives another defence, as edit_problem refuses
       local mapped = here and type(edit.gmcp) == 'string' and svo.dict.sstosvod[edit.gmcp:lower()]
@@ -2911,7 +2913,7 @@ function defences.edits_import(changes, path)
         if type(changes[key][name].gmcp) == 'string' then changes[key][name].gmcp = changes[key][name].gmcp:lower() end
         defences.edits[key] = defences.edits[key] or {}
         defences.edits[key][name] = changes[key][name]
-        if conf.customdefinitions and defs_data[name] and edit_key(defs_data[name]) == key then
+        if conf.customdefinitions and svo.defs_data[name] and edit_key(svo.defs_data[name]) == key then
           edit_live(name, changes[key][name])
         end
         svo.echof("Added the change to Svof's own %s from %s.", name, path)
