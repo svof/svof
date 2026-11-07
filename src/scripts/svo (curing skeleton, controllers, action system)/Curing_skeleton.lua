@@ -1532,6 +1532,10 @@ local function public_removeaff(which)
   return removed
 end
 
+-- counted afflictions whose count isn't a level: bleeding's is how much you
+-- bleed for, so it has one level, as an affliction that isn't counted
+local count_is_amount = { bleeding = true }
+
 local function public_removeafflevel(which, amount, keep)
   svo.assert(type(which) == 'string', "svo.removeafflevel: what aff would you like to remove? name must be a string")
   svo.assert(svo.dict[which] and svo.dict[which].aff, "svo.removeafflevel: "..which.." isn't a known aff name")
@@ -1548,7 +1552,7 @@ local function public_removeafflevel(which, amount, keep)
   -- a single level: it goes, as removeaff takes it, or with keep it stays
   local entry = svo.dict[which]
   if affs[which] then
-    if type(entry.count) == 'number' then
+    if type(entry.count) == 'number' and not count_is_amount[which] then
       local left = entry.count - (amount or 1)
       if left >= 1 or keep then
         entry.count = math.max(left, 1)

@@ -96,6 +96,22 @@ local ok, err = pcall(function()
 end)
 eq(ok, true, "removeafflevel with keep runs (" .. tostring(err) .. ")")
 
+-- bleeding's count is how much you bleed for, not a level: removeafflevel
+-- took 1 HP off and left it tracked (review of #897)
+ok, err = pcall(function()
+  svo.addaffdict(svo.dict.bleeding)
+  svo.dict.bleeding.count = 400
+  eq(svo.removeafflevel('bleeding'), true, "removeafflevel on bleeding reports it removed")
+  eq(svo.affs.bleeding, nil, "and takes bleeding off, whatever it bleeds for")
+  eq(svo.dict.bleeding.count, 0, "with nothing left to bleed")
+  svo.addaffdict(svo.dict.bleeding)
+  svo.dict.bleeding.count = 400
+  svo.removeafflevel('bleeding', nil, true)
+  eq(svo.affs.bleeding ~= nil, true, "with keep, bleeding stays, as one that isn't counted")
+  eq(svo.dict.bleeding.count, 400, "and bleeds for what it did")
+end)
+eq(ok, true, "removeafflevel on bleeding runs (" .. tostring(err) .. ")")
+
 -- ===== 3. every name read is an entry =====
 
 -- names read that aren't entries, and why. A fixed one fails until it's
