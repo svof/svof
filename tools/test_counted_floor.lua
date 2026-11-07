@@ -273,6 +273,23 @@ do -- GMCP off
   check("any removal leaves no level", svo.dict.skullfractures.count, 0)
 end
 
+-- The unknowncrippled stacks put one fewer back in onremoved, which reads the
+-- count, so rmaff resetting it first wiped the whole stack on one mending
+-- (review of #883)
+for _, name in ipairs({ "unknowncrippledarm", "unknowncrippledleg", "unknowncrippledlimb" }) do
+  local w = world.new({ class = "Infernal" })
+  local svo = w.svo
+  svo.dict[name].aff.oncompleted()
+  svo.dict[name].aff.oncompleted()
+  check(name .. ": two are tracked", svo.dict[name].count, 2)
+  svo.dict[name].salve.oncompleted()
+  check(name .. ": one mending leaves one", svo.dict[name].count, 1)
+  check(name .. ": and it's still tracked", svo.affs[name] ~= nil, true)
+  svo.dict[name].salve.oncompleted()
+  check(name .. ": a second mending leaves none", svo.dict[name].count, 0)
+  check(name .. ": and it's gone", svo.affs[name] ~= nil, false)
+end
+
 print(string.format("%d checks, %d failures", checks, failures))
 if failures > 0 then print("FAILED") os.exit(1) end
 print("ALL PASS")
