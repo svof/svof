@@ -136,12 +136,18 @@ end
 
 -- the player's own smokes and tap-outs, from the live run: svof held 9 puffs
 -- after 9 smokes had emptied the pipe, and 10 on a tapped-out one
+-- The Smoke trigger is multiline and ends in a one-line spacer, so Mudlet runs
+-- its script and its children on the line after the drag line, with the drag
+-- line as its first match (review of #906)
+local PROMPT = "4926h, 4926m, 21200e, 22106w  exckdb---"
+local function smoke_trigger(w, drag)
+  w.env.line = PROMPT
+  w.env.multimatches = { { drag }, {} }
+  w.svo.pipe_smoke_line()
+end
 local function smoke(w, drag, ...)
   w.env.lastCommands = { ... }
-  w.env.line = drag
-  w.svo.pipe_smoke_line()
-  -- svo smoke1 and svo smoke2 run on the line after
-  w.env.line = "4926h, 4926m, 21200e, 22106w  exckdb---"
+  smoke_trigger(w, drag)
   w.svo.valid.smoke1()
   w.svo.valid.smoke2()
 end
@@ -201,6 +207,23 @@ do -- an older SMOKE <id> of another herb doesn't decide
   eq(elm.puffs, 4, "a line with no herb: the pipe the command named")
   smoke(w, GURGLE, "smoke 999")
   eq(elm.puffs, 4, "a line with no herb and an unknown pipe: nothing")
+  -- a pipe svof doesn't track, though the line names a herb it does
+  smoke(w, "You take a long drag of slippery elm off your pipe.", "smoke 999")
+  eq(elm.puffs, 4, "a line with a herb and an unknown pipe: nothing")
+  eq(pipe.puffs + pipe.puffs2, 10, "a line with a herb and an unknown pipe: nor any other pipe")
+end
+
+do -- the drag line comes from the trigger's match, not the line it runs on
+  local w = world.new()
+  local elm = set_pipe(w.svo, 'elm', { id = 201, puffs = 7, filledwith = 'elm' })
+  smoke(w, "You take a long drag of slippery elm off your pipe.", "smoke elm")
+  eq(elm.puffs, 6, "by name with nothing else to go on: the line's herb")
+  w.env.multimatches = {}
+  w.env.line = "You take a long drag of slippery elm off your pipe."
+  w.svo.pipe_smoke_line()
+  w.svo.valid.smoke1()
+  w.svo.valid.smoke2()
+  eq(elm.puffs, 6, "with no match to read, nothing is counted")
 end
 
 do -- counted once
@@ -214,8 +237,7 @@ do -- counted once
 
   -- a cure answered it, so its action counts it, not this
   w.env.lastCommands = { "smoke 101" }
-  w.env.line = DRAG
-  svo.pipe_smoke_line()
+  smoke_trigger(w, DRAG)
   svo.smoke_cure = true
   svo.valid.smoke2()
   eq(pipe.puffs, 4, "a cure answered it: nothing here")

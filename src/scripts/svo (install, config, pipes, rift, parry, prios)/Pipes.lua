@@ -139,19 +139,22 @@ local function pipe_counted(herb)
   if herb == 'valerian' then svo.signals.after_lifevision_processing:unblock(svo.cnrl.checkwarning) end
 end
 
--- The Smoke trigger's own line. Its children, which decide whether anything
--- answered the smoke, run on the line after, so the drag line is gone by then
+-- The Smoke trigger's drag line. The trigger is multiline, ending in a one-line
+-- spacer, so it and its children, which decide whether anything answered the
+-- smoke, run on the line after: line is that one, and the drag line is the
+-- trigger's first match
 local smoke_line
 
 function svo.pipe_smoke_line()
-  smoke_line = line
+  smoke_line = type(multimatches) == 'table' and multimatches[1] and multimatches[1][1] or nil
 end
 
 -- A smoke with nothing of svof's or the server's to answer it: one the player
 -- sent. svof's own puffs count from the action, and this used to count nothing,
 -- so a pipe read full after it was smoked out. The line names what was smoked,
 -- and SMOKE <id> names the pipe, unless that's a stale one: of another herb, or
--- holding something else than the line names
+-- holding something else than the line names. An ID svof doesn't track is a
+-- pipe it doesn't count, as for a fill
 --   You take a long drag of valerian off your pipe.
 function svo.pipe_smoked()
   local drag = smoke_line
@@ -160,7 +163,9 @@ function svo.pipe_smoked()
 
   local contents = drag:match("long drag of (.-) off your pipe")
   local herb = contents and pipe_holding(contents)
-  local sent, puffs = tracked_pipe(latest_sent_id({smoke = true, puff = true}))
+  local id = latest_sent_id({smoke = true, puff = true})
+  local sent, puffs = tracked_pipe(id)
+  if id and not sent then return end
   if herb and sent ~= herb then puffs = nil end
   herb = herb or sent
   if not herb then return end
