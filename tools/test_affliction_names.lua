@@ -9,9 +9,13 @@ Static test of two afflictions svof filed under the wrong name.
   * homunculusmercury is svof's swellskin: the game's cure and DIAGNOSE lines
     for it are the ones svof's swellskin triggers read. GMCP's name was
     mapped to false, so GMCP never added or removed swellskin.
+  * deepsleep is its own entry, not sleep, and svof doesn't wake you from
+    it. Only GMCP says it ended, so when blackout ends with it held, svof
+    tries waking once, and a wake line clears it.
 
 This reads the real sources and checks the entry, the GMCP map, the
-enmeshment handler and the triggers.
+enmeshment handler and the triggers, and runs the deepsleep cases through
+tools/svof_world.lua.
 
 Run: lua tools/test_affliction_names.lua
 Exits 0 and prints "ALL PASS" on success, exits 1 and prints failures.
@@ -181,6 +185,74 @@ for path, src in pairs({ [DICT] = outside_sleep, [SKELETON] = read_file(SKELETON
 end
 local misc_check = read_file(SKELETON):match("\nsvo%.check_misc = function%(sync_mode, onlyamnesia%)\n(.-)\n  end\n") or ""
 check("the misc check returns early in deepsleep", misc_check:find("if affs.stun or affs.unconsciousness or affs.deepsleep then", 1, true) ~= nil, true)
+
+-- Only GMCP says deepsleep ended, and it can't in blackout, so a deepsleep that
+-- ended there stayed and svof cured nothing (review of #881). When blackout
+-- ends with deepsleep held and unconfirmed, svof tries waking once, and "You
+-- already are awake." clears it (the user, 2026-11-07)
+do
+  local function world_with(names)
+    local w = dofile("tools/svof_world.lua").new({ paused = false })
+    local svo = w.svo
+    local function gmcp(kind, name)
+      if kind == "add" then
+        w.env.gmcp.Char.Afflictions.Add = { name = name, cure = "", desc = "" }
+        svo.signals.gmcpcharafflictionsadd:emit()
+      else
+        w.env.gmcp.Char.Afflictions.Remove = { name }
+        svo.signals.gmcpcharafflictionsremove:emit()
+      end
+      w.prompt()
+    end
+    w.env.gmcp.Char.Afflictions.List = {}
+    svo.signals.gmcpcharafflictionslist:emit()
+    for _, name in ipairs(names) do gmcp("add", name) end
+    return w, svo, gmcp
+  end
+  local function wakes(w)
+    local n = 0
+    for _, c in ipairs(w.sent) do if c == "wake up" then n = n + 1 end end
+    return n
+  end
+
+  local w, svo, gmcp = world_with({ "deepsleep" })
+  gmcp("add", "blackout")
+  w.sent = {}
+  gmcp("remove", "blackout")
+  check("blackout ends with deepsleep held: svof tries waking once", wakes(w), 1)
+  svo.make_gnomes_work()
+  w.prompt()
+  check("and only once", wakes(w), 1)
+  check("deepsleep is held until the game answers", svo.affs.deepsleep ~= nil, true)
+  svo.valid.wake_done()
+  w.prompt()
+  check("\"You already are awake.\" then clears it", svo.affs.deepsleep, nil)
+
+  w, svo, gmcp = world_with({ "deepsleep" })
+  w.sent = {}
+  svo.valid.wake_done()
+  w.prompt()
+  check("outside blackout, GMCP still reporting deepsleep keeps it", svo.affs.deepsleep ~= nil, true)
+  check("and svof sends no wake", wakes(w), 0)
+
+  w, svo, gmcp = world_with({ "blackout" })
+  w.sent = {}
+  gmcp("remove", "blackout")
+  check("blackout ending without deepsleep sends no wake", wakes(w), 0)
+
+  -- a deepsleep's own lines: the refusal is the deepsleep's, not a sleep to
+  -- wake from, and a bind shows as it does in sleep
+  -- in blackout, where GMCP can't refuse what a line claims
+  w, svo, gmcp = world_with({ "deepsleep", "blackout" })
+  svo.conf.aillusion = true
+  svo.paragraph_length = 1
+  svo.valid.symp_asleep()
+  w.prompt()
+  check("in deepsleep, the asleep refusal adds no sleep", svo.affs.sleep, nil)
+  svo.valid.subterfuge_bind()
+  w.prompt()
+  check("in deepsleep, a bind with anti-illusion on is believed, as in sleep", svo.affs.bound ~= nil, true)
+end
 
 print(string.format("%d checks, %d failures", checks, #failures))
 if #failures > 0 then
