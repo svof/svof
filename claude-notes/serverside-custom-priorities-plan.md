@@ -278,18 +278,27 @@ A 26 override beats a tactical one. Among tactical overrides, the latest
 wins.
 
 **Autoslick in server numbers.** Lower is more important on the server, the
-reverse of svof's lists. The check compares the server numbers of asthma,
-paralysis, and impatience instead of `svo.prio.getnumber`. To move asthma
-above both, it gets one less than the lower of the two numbers. When that
-lower number is already 1, asthma gets 1 and whichever of the two is at 1
-moves to 2, so the order never rests on a tie.
+reverse of svof's lists. As today (`svo_autoslickprio.lua`, which moves
+asthma above every other entry), asthma goes to the top: server number 1.
+Whatever held 1 moves to 2, so the order never rests on a tie. Both are
+overrides, so when autoslick ends, asthma and the entry it moved each get
+the user's number back from the table (the user, 2026-11-07). The check
+compares the server numbers of asthma, paralysis, and impatience instead of
+`svo.prio.getnumber`.
 
-**The echo-loop guard.** svof records every override send as pending, per
-set and entry. A confirmation that matches a pending send clears it and
-goes no further. Any other confirmation is the user's edit. When svof reads
-the list while an override is active, the table keeps its own value for that
-entry. Without this, svof would record autoslick's `asthma 1` as the user's
-number, and asthma would stay on top after the restore.
+**The echo-loop guard.** svof records each override as pending, per set and
+entry, with the value it last sent. It records what actually went out, after
+`sendcuringprio` (`Curing_skeleton.lua`) drops a repeat within the same
+tick. Queueing `latched 26`, then 5, then 26 again sends
+`curing priority latched 26 latched 5`, so the pending value for latched is
+5, the last one sent, not the 26 queued after it. A confirmation that
+matches the pending value clears it and goes no further. Any other
+confirmation is the user's edit. A pending entry that no confirmation
+clears within a few seconds is dropped, so a lost confirmation doesn't
+leave the guard waiting. When svof reads the list while an override is
+active, the table keeps its own value for that entry. Without this, svof
+would record autoslick's `asthma 1` as the user's number, and asthma would
+stay on top after the restore.
 
 ### Stack entries
 
@@ -346,6 +355,9 @@ svof echoes each warning once per change, with a clickable fix:
   always has a number to use.
 - **Where the numbers start.** Switching to custom fills the current mode
   from the server's defence list, and every other mode from auto's order.
+  The server's list holds only the defences on keepup, so a defence it
+  doesn't list, such as fly when it's off keepup, takes auto's number in
+  the current mode too.
   svof's defence order is shared by every mode, so auto's number for a
   defence is the same in each. A custom defence created later gets auto's
   number in every mode.
@@ -389,7 +401,15 @@ svof echoes each warning once per change, with a clickable fix:
 - **Auto to custom.** Read the normal list, then the slowcuring list (inside
   a `curingset switch` wrapper), then the defence list, and commit each.
   The defence list gives the current mode's numbers, and every other mode
-  starts from auto's (see Defences). Then stop the affliction half of the
+  starts from auto's (see Defences).
+  - The affliction lists still hold auto's 26s: for each affliction svof
+    cures, each one svof ignores for now (such as prone while sitting), and
+    each `onservereignore` one. Those aren't the user's numbers, so for
+    each entry auto sent 26 for (`sk.splitdefs`' `disabledaffs`), the table
+    takes auto's own number for it instead, the place svof's list gives it.
+    Without this, restoring one later sends 26 again: run with
+    `ignore.prone` set and `serverignore.latched = false`, `sk.splitdefs`
+    gives `disabledaffs (sent 26): latched prone`. Then stop the affliction half of the
   sync, switch the defence half to the user's numbers, and apply the
   overrides. The overrides mostly match what auto already sent.
 - **In custom:**
@@ -409,8 +429,12 @@ svof echoes each warning once per change, with a clickable fix:
 - **Custom to auto.** Give every per-stack ignore its number back, clear the
   per-stack ignores, then run the full resync `vconfig serverside on` does
   today, which also gives the defences svof's positions again.
-  Say that any stack entries the user set stay on the server, since auto
-  never touches them.
+  That resync sends `PRIORITY RESET` (`Serverside.lua`), and whether a
+  reset clears stack entries is still a step 0 capture. Until it's known,
+  the switch says nothing about them. If a reset keeps them, say that the
+  stack entries the user set stay on the server, since auto never touches
+  them. If it clears them, say that they're gone, and that switching back
+  to custom sends them again from the table.
 
 ### Commands for the server lists
 
