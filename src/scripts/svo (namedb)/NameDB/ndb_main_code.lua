@@ -94,6 +94,25 @@ function ndb.getclass(name)
   return r[1].class:lower()
 end
 
+-- every class someone has been seen as, the current one included, in the
+-- order NameDB first saw them; ndb.getclass gives the current one
+function ndb.getclasses(name)
+  local person = ndb.getname(name)
+  local classes = {}
+  if not person then return classes end
+  for class in tostring(person.classes or ""):gmatch("[^,]+") do classes[#classes + 1] = class end
+  return classes
+end
+
+-- true if they've been seen as that class, now or before
+function ndb.hasclass(name, class)
+  class = class:lower()
+  for _, known in ipairs(ndb.getclasses(name)) do
+    if known == class then return true end
+  end
+  return false
+end
+
 function ndb.setclass(name, class)
   class = class:lower()
   svo.assert(ndb.isvalidclass(class), "ndb.setclass: invalid class given")

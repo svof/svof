@@ -376,6 +376,13 @@ jobs:
       - name: test namedb api lookups
         run: lua tools/test_ndb_api.lua
 
+      # Gate 1.996. NameDB's classes column: the SQLite triggers and backfill
+      # in ndb.classes_sql (ndb.init.lua), run in a real SQLite. Every class
+      # written to people.class, by any path, is added once to
+      # people.classes, lower-case and in the order seen; dragon is not.
+      - name: test namedb classes
+        run: python3 tools/test_ndb_classes.py
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

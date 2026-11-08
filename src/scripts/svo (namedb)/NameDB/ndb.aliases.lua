@@ -80,6 +80,14 @@ function ndb.showwhois(whom)
       getclass(),
       getinfamous()
     ))
+    -- the other classes they've been seen as; Class above is the current one
+    local others = {}
+    for _, class in ipairs(ndb.getclasses(data.name)) do
+      if class ~= (data.class or ""):lower() then others[#others + 1] = class end
+    end
+    if others[1] then
+      cecho(string.format("<a_darkgrey>    Also:   %s\n", table.concat(others, ", ")))
+    end
     cecho(string.format("<a_darkgrey>    Level:  %-24s XP rank:     %s\n",
       getlevel(),
       getxprank()

@@ -569,12 +569,12 @@
     },
     {
       "id": "item|Script|svo (namedb)|NameDB/ndb main code|script",
-      "digest": "e70a062b8f9f519a",
+      "digest": "16495d995700c007",
       "text": "Script   svo (namedb) NameDB/ndb main code [script]"
     },
     {
       "id": "item|Script|svo (namedb)|NameDB/ndb.aliases|script",
-      "digest": "c651747b6284d949",
+      "digest": "dfc34e5e64802c9e",
       "text": "Script   svo (namedb) NameDB/ndb.aliases [script]"
     },
     {
@@ -584,7 +584,7 @@
     },
     {
       "id": "item|Script|svo (namedb)|NameDB/ndb.init|script",
-      "digest": "8db19707f44cad1a",
+      "digest": "30ae2df8286bf105",
       "text": "Script   svo (namedb) NameDB/ndb.init [script]"
     },
     {
