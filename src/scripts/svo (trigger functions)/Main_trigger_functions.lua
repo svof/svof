@@ -4871,6 +4871,16 @@ function svo.valid.skirmish_gouge()
   end)
 end
 
+-- The old names of the renamed afflictions (svo.renamed_affs), which a
+-- player's own triggers may still call, as svof's help tells them to call
+-- svo.valid functions. Deprecated: call the new ones. Each passes the call on
+-- when it's made, so it follows the function svof has then
+for old, new in pairs(svo.renamed_affs) do
+  for _, kind in ipairs({'simple', 'proper_', 'curing'}) do
+    valid[kind..old] = function(...) return valid[kind..new](...) end
+  end
+end
+
 end -- end of svo valid_main loader
 
 if svo.systemloaded then svo.loader.valid_main() end

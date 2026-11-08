@@ -2,7 +2,8 @@
 svof's mildconcussion and seriousconcussion are the game's damagedhead and
 mangledhead (AFFLICTION SHOW, captured 2026-10-20), and now have those names.
 A player's saved priorities and ignore list name them the old way, and both
-loads read the old names as the new ones (svo.renamed_affs).
+loads read the old names as the new ones (svo.renamed_affs). The old svo.valid
+functions and svo.affl names stay as deprecated aliases of the new ones.
 
 It runs svof's real loaders through tools/svof_world.lua.
 
@@ -28,6 +29,32 @@ do -- the entries and GMCP's names
   eq(svo.dict.sstosvoa.mangledhead, "mangledhead", "GMCP's mangledhead is svof's")
   eq(svo.dict.damagedhead.gamename, nil, "damagedhead needs no gamename")
   eq(svo.dict.mangledhead.gamename, nil, "nor mangledhead")
+end
+
+-- A player's own triggers may call svo.valid functions by the old names, as
+-- svof's help tells them to, and scripts read svo.affl by them. Deprecated
+-- aliases pass both on (review of #889)
+for old, new in pairs({ mildconcussion = "damagedhead", seriousconcussion = "mangledhead" }) do
+  for _, kind in ipairs({ "simple", "proper_", "curing" }) do
+    local w = world.new()
+    local svo = w.svo
+    local called
+    svo.valid[kind .. new] = function(...) called = select('#', ...) .. ":" .. tostring((...)) end
+    local ok, err = pcall(svo.valid[kind .. old], "x")
+    eq(ok, true, "svo.valid." .. kind .. old .. " runs (" .. tostring(err) .. ")")
+    eq(called, "1:x", "and calls svo.valid." .. kind .. new .. " with what it was given")
+  end
+
+  local w = world.new()
+  local svo = w.svo
+  pcall(svo.valid["simple" .. old])
+  w.prompt()
+  eq(svo.affs[new] ~= nil, true, "svo.valid.simple" .. old .. " adds " .. new)
+  eq(svo.affl[old], svo.affl[new], "svo.affl." .. old .. " reads " .. new)
+  eq(svo.affl[old] ~= nil, true, "which svof tracks")
+  local names = {}
+  for name in pairs(svo.affl) do names[#names + 1] = name end
+  eq(table.concat(names, ","), new, "and going through svo.affl shows the new name alone")
 end
 
 -- a saved list, as prio.export writes one, with the old names
