@@ -542,6 +542,7 @@ end
 function ndb.cancelhonors(quietly)
   ndb.manualcheck = nil
   ndb.checkingqwi = nil
+  ndb.honorseveryone = nil
 
   if (ndb.honorslist and next(ndb.honorslist)) or ndb.honorsid then
     ndb.honorslist = {}
@@ -569,11 +570,18 @@ function ndb.updatebyhonors()
 
   local data = db:fetch(ndb.db.people, db:AND(db:not_eq(ndb.db.people.immortal, 1), db:eq(ndb.db.people.xp_rank, -1)))
 
+  -- With the Achaea API filling names in, HONORS only adds what the API can't
+  -- say, so it's kept to the people seen this session: the whole database is
+  -- thousands of names. ndb update all and ndb update unranked ask for
+  -- everyone, and get everyone.
+  local seen = (svo.conf.ndbapi and not ndb.honorseveryone and ndb.api) and ndb.api.seen
+
   ndb.honorslist = (function ()
     local t = {}
     for _,j in ipairs(data) do
       -- sanity check for weird names
-      if j.name:find("^%u%l+$") then t[j.name] = true
+      if j.name:find("^%u%l+$") then
+        if not seen or seen[j.name] then t[j.name] = true end
       else db:delete(ndb.db.people, db:eq(ndb.db.people.name, j.name)) end
     end return t end)()
 
@@ -857,6 +865,7 @@ function ndb.finished_honors(event, name, type)
     end
 
     ndb.manualcheck = nil
+    ndb.honorseveryone = nil
     ndb.hidehonorswindow()
     return
   end
@@ -868,7 +877,13 @@ function ndb.honors_next(argument)
   if not svo.conf.usehonors and argument then return end -- argument is passed if this comes from a balance,
                                                          -- which is for usehonors only - with it off, autohonors will start many honors processes
 
-  local name = next(ndb.honorslist or {})
+  -- people whose city the Achaea API hides first: theirs is the one gap that
+  -- changes how a name is highlighted
+  local name
+  for hidden in pairs(ndb.api and ndb.api.hiddencity or {}) do
+    if ndb.honorslist and ndb.honorslist[hidden] then name = hidden break end
+  end
+  name = name or next(ndb.honorslist or {})
   if not name then return end
 
   if svo.conf.usehonors then

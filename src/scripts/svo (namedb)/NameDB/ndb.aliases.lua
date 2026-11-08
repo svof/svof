@@ -2,7 +2,16 @@ function ndb.showwhois(whom)
   whom = whom:lower():title()
   local data = ndb.getname(whom)
 
-  if not data then svo.echof("I'm afraid we don't know person named %s.", matches[2]:title()) svo.showprompt() return end
+  if not data then
+    if svo.conf.ndbapi and ndb.lookup and ndb.isvalidname(whom) then
+      ndb.lookup(whom, true)
+      svo.echof("I'm afraid we don't know person named %s yet - looking them up on the Achaea API, so try again in a moment.", whom)
+    else
+      svo.echof("I'm afraid we don't know person named %s.", whom)
+    end
+    svo.showprompt()
+    return
+  end
 
   cecho("\n<a_darkblue>--<purple>(svo) <a_grey>"..data.name.."'s ("..data.gender:sub(1,1)..") NameDB profile<a_darkblue>" .. ("-"):rep(55-#data.name) .. "\n")
 
@@ -57,7 +66,8 @@ function ndb.showwhois(whom)
       (data.guild == '' and 'unknown' or data.guild),
       (data.city == '' and 'unknown' or data.city),
       (data.city_rank == 0 and '?' or data.city_rank),
-      (data.city_soldier == 0 and '' or ' (S)')
+      -- -2 is a soldier; -1 is never honored, which used to show as (S) too
+      (data.city_soldier == -2 and (' (S' .. ((tonumber(data.army_rank) or -1) > 0 and ', ar' .. data.army_rank or '') .. ')') or '')
     ))
 
     cecho(string.format("<a_darkgrey>    Order:  %-24s Mark:        %s\n",

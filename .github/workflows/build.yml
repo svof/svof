@@ -364,6 +364,18 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.995. NameDB's Achaea API lookups: the reply parser (gods and
+      # the Guides are immortal, a hidden city keeps the known one, xp_rank
+      # is never written because it marks who HONORS hasn't seen), the queue
+      # (four in flight, a name asked once a day), "Character not found"
+      # as an answer rather than an outage, the back-off that counts one
+      # outage once and stops after five, the hourly ceiling, the online
+      # poll, and HONORS kept to the people seen this session. Runs the two
+      # API files whole, and the two honours functions extracted from
+      # ndb_main_code.lua, in a stub Mudlet.
+      - name: test namedb api lookups
+        run: lua tools/test_ndb_api.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

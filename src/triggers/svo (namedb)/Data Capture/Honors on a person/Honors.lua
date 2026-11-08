@@ -8,7 +8,6 @@ local function getGender()
   elseif pronoun == "Fae" or pronoun == "Faes" then return "non-binary"
   end
 end
-ndb.getinfo(ndb.honorsname)
 
 temp_name_list = {}
 temp_name_list[1] = {name = ndb.honorsname, city = "", city_rank = 0, dragon = 0,

@@ -32,7 +32,9 @@ ndb.schema = {
     divorces      = 0, -- 0 default,
     motto         = "",
     warcry        = "",
-    infamous      = -1, -- -1 default, 0 not infamous, 1 nearly, 2-7 infamous 
+    infamous      = -1, -- -1 default, 0 not infamous, 1 nearly, 2-7 infamous
+    army_rank     = -1, -- -1 default, > 0 the number HONORS gives a city soldier's rank
+    api_checked   = 0, -- 0 never, else os.time() of the last Achaea API lookup
 
     _unique     = {"name"},
     _violations = "REPLACE"
@@ -186,6 +188,22 @@ function ndb.init()
       conn:execute(sql_add)
       conn:commit()
       cecho("(namedb): upgraded your database to have a field to track a persons level.\n")
+    end
+
+    if someperson.army_rank == nil then
+      local conn = db.__conn.namedb
+      local sql_add = [[ALTER TABLE people ADD COLUMN "army_rank" REAL NULL DEFAULT -1]]
+      conn:execute(sql_add)
+      conn:commit()
+      cecho("(namedb): upgraded your database to have a field for the persons army rank.\n")
+    end
+
+    if someperson.api_checked == nil then
+      local conn = db.__conn.namedb
+      local sql_add = [[ALTER TABLE people ADD COLUMN "api_checked" REAL NULL DEFAULT 0]]
+      conn:execute(sql_add)
+      conn:commit()
+      cecho("(namedb): upgraded your database to have a field for when the Achaea API was last asked about a person.\n")
     end
   end
 

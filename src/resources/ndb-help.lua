@@ -21,13 +21,19 @@
   {
     term = "vconfig autocheck yep/nope",
     definition = {
-      "Sets whenever NameDB should automatically check new people it comes across to gather information about them or not. Most of the time this does grab their citizenship."
+      "Sets whenever NameDB should automatically honors new people it comes across to gather information about them or not. Looking names up on the Achaea API (vconfig ndbapi) happens either way."
     }
   },
   {
     term = "vconfig usehonors yep/nope",
     definition = {
       "Sets whenever NameDB should use honors for checking names - honors allows qwm, qwi and qwic to work."
+    }
+  },
+  {
+    term = "vconfig ndbapi yep/nope",
+    definition = {
+      "Sets whenever NameDB should look people up on the Achaea API: everyone online, everyone in your room or talking on a channel, and everyone on a list NameDB reads, at most once a day each. The API gives their city, house, class and level, and says who the gods are, without spending equilibrium. With usehonors on, honors then adds what only honors shows, starting with people whose city the API hides."
     }
   },
   {
