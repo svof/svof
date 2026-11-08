@@ -238,6 +238,51 @@ end
 run(false)
 run(true)
 
+-- ===== logging in: nothing leaves the sync stuck =====
+
+-- sk.updateserversideprios returns early while svo.logging_in is set. It has
+-- to clear sk.priochangetimer when it does, or handleserversideswitch never
+-- starts another and no later change reaches serverside.
+local function next_keepup_reaches_both(label, w, from)
+  local svo, server = w.svo, new_server()
+  check(label .. ": the sync isn't left pending", svo.sk.priochangetimer == nil, tostring(svo.sk.priochangetimer))
+  svo.logging_in = false
+  svo.defkeepup[svo.defs.mode][GENERAL_DEF] = true
+  svo.signals["svo keepup changed"]:emit(svo.defs.mode, GENERAL_DEF, true)
+  settle(w)
+  replay(w, server, from)
+  for _, name in ipairs({ "normal", "slowcuring" }) do
+    check(label .. ": the next keepup change reaches " .. name, server.set(name).defences[GENERAL_DEF] ~= nil)
+  end
+end
+
+do
+  local label = "class change while logging in"
+  local w = magi_on_serverside()
+  local from = #w.sent + 1
+  w.svo.logging_in = true
+  w.svo.classchange("Druid")
+  settle(w)
+  local healthormana = false
+  for i = from, #w.sent do
+    local cmd = w.sent[i]:lower()
+    if cmd == "curing priority health" or cmd == "curing priority mana" then healthormana = true end
+  end
+  check(label .. ": no health or mana order sent yet", not healthormana)
+  next_keepup_reaches_both(label, w, from)
+end
+
+do
+  local label = "keepup change while logging in"
+  local w = magi_on_serverside()
+  local from = #w.sent + 1
+  local svo = w.svo
+  svo.logging_in = true
+  svo.signals["svo keepup changed"]:emit(svo.defs.mode, "stoneskin", false)
+  settle(w)
+  next_keepup_reaches_both(label, w, from)
+end
+
 -- ===== serverside off: a class change sends no curingset switch =====
 
 do
