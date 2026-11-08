@@ -11,8 +11,11 @@ end
 
 temp_name_list = {}
 temp_name_list[1] = {name = ndb.honorsname, city = "", city_rank = 0, dragon = 0,
-  guild = "", gender = getGender(), mark = "",
+  gender = getGender(), mark = "",
 }
+-- HONORS doesn't always show a house that the Achaea API reports, so with
+-- the API on, the house is left alone unless the Housemate line names one
+if not svo.conf.ndbapi then temp_name_list[1].guild = "" end
 
 moveCursorEnd() -- make sure the cursor is at the current line
 
