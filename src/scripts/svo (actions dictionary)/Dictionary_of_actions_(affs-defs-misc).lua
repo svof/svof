@@ -5652,7 +5652,11 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('sleep')
-  
+          -- awake, so not in a deepsleep either: one that ended in blackout,
+          -- which GMCP couldn't say, goes here. While GMCP still reports it,
+          -- the removal gate keeps it
+          svo.rmaff('deepsleep')
+
           -- reset sleep so we try waking up again after being awoken and slept at once (like in a dsl or a delph snipe)
           if svo.actions.sleep_misc then
             svo.killaction(svo.dict.sleep.misc)

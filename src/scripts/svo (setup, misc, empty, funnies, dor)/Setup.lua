@@ -1464,6 +1464,16 @@ signals.svogotaff:connect(function(aff)
   if aff ~= 'blackout' then return end
   for rawaff in pairs(gaffl) do sk.gmcp_unconfirmed[rawaff] = true end
 end, 'gmcp affs unconfirmed after blackout')
+-- Deepsleep has no cure and no line of its own ending, so only GMCP says it
+-- ended, and it can't in blackout. svof doesn't try to wake you from it, but
+-- when blackout ends with deepsleep held and GMCP not saying it again yet, it
+-- tries once: awake, "You already are awake." clears it (curingsleep). Still
+-- in deepsleep, the wake fails, and svof doesn't try again until the next
+-- blackout ends (the user, 2026-11-07)
+signals.svolostaff:connect(function(aff)
+  if aff ~= 'blackout' or not affs.deepsleep or svo.gmcp_reports('deepsleep') or svo.conf.paused then return end
+  send('wake up', svo.conf.commandecho)
+end, 'try waking once from a deepsleep blackout may have hidden the end of')
 -- and the same for defences, which have a List of their own
 signals.connected:connect(function() sk.gmcp_defs_listed = false end, 'gmcp defs untrusted until the login List')
 signals.svogotaff:connect(function(aff)
