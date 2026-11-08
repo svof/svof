@@ -112,6 +112,29 @@ ok, err = pcall(function()
 end)
 eq(ok, true, "removeafflevel on bleeding runs (" .. tostring(err) .. ")")
 
+-- taking every level off a counted affliction leaves it gone at 0. The
+-- unknowncrippled stacks' onremoved put one back when the count was still
+-- above 0, and paradox kept its blocked herb (review of #897)
+for _, name in ipairs(names) do
+  if type(svo.dict[name].count) == 'number' and name ~= 'bleeding' and not GONE_KEEPS[name] then
+    for _, levels in ipairs({ 2, 3 }) do
+      ok, err = pcall(function()
+        svo.addaffdict(svo.dict[name])
+        svo.dict[name].count = levels
+        eq(svo.removeafflevel(name, levels), true, name .. " at " .. levels .. ": removeafflevel reports it removed")
+      end)
+      eq(ok, true, name .. " at " .. levels .. ": removeafflevel runs (" .. tostring(err) .. ")")
+      eq(svo.affs[name], nil, name .. " at " .. levels .. ": every level off takes it off")
+      eq(svo.dict[name].count, 0, name .. " at " .. levels .. ": at a count of 0")
+    end
+  end
+end
+svo.addaffdict(svo.dict.paradox)
+svo.dict.paradox.count = 2
+svo.dict.paradox.blocked_herb = "kelp"
+svo.removeafflevel('paradox', 2)
+eq(svo.dict.paradox.blocked_herb, "", "paradox's blocked herb goes with it")
+
 -- ===== 3. every name read is an entry =====
 
 -- names read that aren't entries, and why. A fixed one fails until it's

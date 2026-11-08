@@ -1559,6 +1559,10 @@ local function public_removeafflevel(which, amount, keep)
         svo.updateaffcount(entry)
       elseif entry.gone and entry.gone.general_cured then
         entry.gone.general_cured()
+      elseif entry.gone then
+        -- its own removal zeroes the count first: the unknowncrippled stacks'
+        -- onremoved puts one back while the count is above 0
+        entry.gone.oncompleted()
       else
         svo.rmaff(which)
         entry.count = 0
