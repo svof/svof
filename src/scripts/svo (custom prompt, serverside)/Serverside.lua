@@ -67,7 +67,7 @@ end
 -- curingsets on the game's defaults, so send the new class's priorities now
 -- rather than at the next keepup or ignore change
 function sk.resyncserversideprios()
-  if not conf.serverside then return end
+  if not conf.serverside or svo.logging_in then return end
 
   sk.handleserversideswitch()
   -- health and mana order, which the diff doesn't cover
@@ -142,15 +142,16 @@ function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache,
 end
 
 function sk.updateserversideprios()
---Don't do anything before we log in.
-  if svo.logging_in then return end 
-  
+--Don't do anything before we log in. Clear the timer on the way out, or
+--nothing would ever start another sync
+  if svo.logging_in then sk.priochangetimer = nil return end
+
   if not sk.priochangetimer then return end
   sk.updateserverwatch = sk.updateserverwatch or createStopWatch()
   startStopWatch(sk.updateserverwatch)
 
   -- don't notify of prio changes until the system is loaded, as they can get shuffled around a bit
-  if not svo.systemloaded then return end
+  if not svo.systemloaded then sk.priochangetimer = nil return end
   local afterstate = sk.getafterstateprios()
   svo.debugf("sk.updateserverwatch sk.getafterstateprios: %s", getStopWatchTime(sk.updateserverwatch))
 
