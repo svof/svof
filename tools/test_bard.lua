@@ -205,17 +205,54 @@ do -- GMCP knows two of the three
   eq(w.svo.dict.sstosvod.tempo, false, "and its one tempo is none of svof's four by itself")
 end
 
-do -- DEF: a dance's line sets it, and a dance DEF doesn't print isn't lost
+do -- DEF: a dance's line sets it and takes the old one off, and a dance DEF
+   -- doesn't print isn't lost
+  local function def(w, line)
+    local svo = w.svo
+    svo.doaction(svo.dict.defcheck.physical)
+    svo.defs.defstart()
+    if line then w.line(line) end
+    svo.defs.defline()
+    w.prompt()
+  end
   local w = world.new({ class = "Bard" })
   local svo = w.svo
   svo.defences.got("harrying")
-  svo.doaction(svo.dict.defcheck.physical)
-  svo.defs.defstart()
-  w.line("You have the grace of a striking hawk.")
-  svo.defs.defline()
-  w.prompt()
+  def(w, "You have the grace of a striking hawk.")
   eq(svo.defc.hawkstep, true, "DEF's hawkstep line sets it")
-  eq(svo.defc.harrying, true, "and harrying, which DEF has no line for, stays")
+  eq(svo.defc.harrying, false, "and takes harrying off, as only one is up")
+
+  w = world.new({ class = "Bard" })
+  svo = w.svo
+  svo.defences.got("harrying")
+  def(w)
+  eq(svo.defc.harrying, true, "a DEF with no dance line leaves harrying, which DEF has no line for")
+end
+
+-- A missed switch line, as in blackout, left two dances up, and neither DEF
+-- nor GMCP corrected it (review of #908)
+do
+  local w = world.new({ class = "Bard" })
+  w.svo.defences.got("harrying")
+  w.gmcp_defence_add("hawkstep")
+  eq(w.svo.defc.hawkstep, true, "GMCP adds a dance")
+  eq(w.svo.defc.harrying, false, "and takes the old one off")
+
+  w = world.new({ class = "Bard" })
+  w.svo.defences.got("harrying")
+  w.gmcp_defence_list({ "hawkstep" })
+  eq(w.svo.defc.hawkstep, true, "a GMCP list names a dance")
+  eq(w.svo.defc.harrying, false, "and takes the old one off too")
+
+  -- so defup's choice goes up again
+  w = bard()
+  local svo = w.svo
+  svo.sys.deffing = true
+  svo.defdefup.basic.harrying = true
+  svo.defences.got("harrying")
+  w.gmcp_defence_add("hawkstep")
+  gnomes(w)
+  eq(sent(w, "dance harrying"), true, "defup sends its own dance again")
 end
 
 -- ===== Choosing one =====

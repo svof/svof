@@ -926,17 +926,27 @@ if svo.haveskillset('bladedance') then
   end
 
   local one_dance = one_of({'harrying', 'hawkstep', 'wavedance'})
+  -- Only one is up at a time, so one coming up by any path takes the others
+  -- off. DEF and GMCP leave a dance to its own lines, so if the line of a
+  -- switch was missed, as in blackout, nothing else would
+  local function only_dance(which)
+    return function ()
+      for _, other in ipairs({'harrying', 'hawkstep', 'wavedance'}) do
+        if other ~= which then defences.lost(other) end
+      end
+    end
+  end
   defs_data:set('harrying', { type = 'bladedance', custom_def_type = 'bladedance',
-    onenable = one_dance,
+    onenable = one_dance, ongot = only_dance('harrying'),
     on = {"You begin the spiral steps of your blade-wrought song, weapon and body in perfect symmetry.", "Spiral steps bleed into a perfect staccato as for the briefest moment you transition into the deadly harrying.", "You are already dancing the harrying."},
     off = "You cease your peerless dancing, returning to explosive stillness."})
   defs_data:set('hawkstep', { type = 'bladedance', custom_def_type = 'bladedance',
-    onenable = one_dance,
+    onenable = one_dance, ongot = only_dance('hawkstep'),
     on = {"Your step moves in the exacting precision of a staccato bladesong, the flawless footwork rapidly accelerating in tune with the unheard beat as your surroundings blur.", "Spiral steps bleed into a perfect staccato as for the briefest moment you move in a harrying hawkstep.", "You are already dancing the hawkstep."},
     def = "You have the grace of a striking hawk.",
     off = "You cease your peerless dancing, returning to explosive stillness."})
   defs_data:set('wavedance', { type = 'bladedance', custom_def_type = 'bladedance',
-    onenable = one_dance,
+    onenable = one_dance, ongot = only_dance('wavedance'),
     on = {"You begin the unrelenting dance of the waves, feet carrying you ever forward and yet never quite at the full extent of motion.", "Spiral steps bleed into a perfect staccato as for the briefest moment you move as the crashing waves.", "You are already dancing like the unrelenting waves."},
     def = "You are as the endlessly crashing waves.",
     off = "You cease your peerless dancing, returning to explosive stillness."})

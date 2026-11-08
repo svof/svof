@@ -1116,7 +1116,7 @@ return {
     counted = "bladedance",
     off = { "You cease your peerless dancing, returning to explosive stillness." },
     on = { "You begin the spiral steps of your blade-wrought song, weapon and body in perfect symmetry.", "Spiral steps bleed into a perfect staccato as for the briefest moment you transition into the deadly harrying.", "You are already dancing the harrying." },
-    rules = { "counted", "onenable", "own_code" },
+    rules = { "counted", "onenable", "ongot", "own_code" },
     type = "bladedance"
   } },
   hawkstep = { {
@@ -1127,7 +1127,7 @@ return {
     gmcp = "hawkstep",
     off = { "You cease your peerless dancing, returning to explosive stillness." },
     on = { "Your step moves in the exacting precision of a staccato bladesong, the flawless footwork rapidly accelerating in tune with the unheard beat as your surroundings blur.", "Spiral steps bleed into a perfect staccato as for the briefest moment you move in a harrying hawkstep.", "You are already dancing the hawkstep." },
-    rules = { "counted", "onenable", "own_code" },
+    rules = { "counted", "onenable", "ongot", "own_code" },
     type = "bladedance"
   } },
   heads = { {
@@ -2284,7 +2284,7 @@ return {
     gmcp = "wavedance",
     off = { "You cease your peerless dancing, returning to explosive stillness." },
     on = { "You begin the unrelenting dance of the waves, feet carrying you ever forward and yet never quite at the full extent of motion.", "Spiral steps bleed into a perfect staccato as for the briefest moment you move as the crashing waves.", "You are already dancing like the unrelenting waves." },
-    rules = { "counted", "onenable", "own_code" },
+    rules = { "counted", "onenable", "ongot", "own_code" },
     type = "bladedance"
   } },
   weathering = { {
