@@ -465,7 +465,11 @@ codepaste.add_burn = function(level, lines)
   local was = affs.ablaze
   svo.addaffdict(svo.dict.ablaze)
   if not affs.ablaze then return end
-  if svo.gmcp_holds('ablaze') and not tonumber(level) then return end
+  if svo.gmcp_holds('ablaze') and not tonumber(level) then
+    -- GMCP's Add set the level, and this line is still the one that warns
+    if (svo.dict.ablaze.count or 0) >= 5 then sk.warn 'golemdestroyable' end
+    return
+  end
   local count = svo.dict.ablaze.count or 0
   local raises = math.max(tonumber(lines) or 1, 1)
   if tonumber(level) then

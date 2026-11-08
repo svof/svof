@@ -237,6 +237,21 @@ do -- level 5 warns of a golem's destroy, as meltingburn did
   eq(warned, 1, "which warns of a golem's destroy")
 end
 
+-- and with GMCP, whose Add sets the level before the line: the line returned
+-- before the warning, so it never fired (review of #891)
+for _, case in ipairs({ { "burning (5)", 1, "level 5" }, { "burning (4)", 0, "level 4" } }) do
+  local w = world.new()
+  local svo = w.svo
+  local warned = 0
+  local warn = svo.sk.warn
+  svo.sk.warn = function(what) if what == 'golemdestroyable' then warned = warned + 1 end return warn(what) end
+  gmcp_list(w, { "burning (3)" })
+  gmcp_add(w, case[1])
+  w.run(read(T .. "Poisons + Generic lines/Melting_burn.lua"), "Melting_burn")
+  w.prompt()
+  eq(warned, case[2], "with GMCP at " .. case[3] .. ", the line warns of a golem's destroy this many times")
+end
+
 -- DIAGNOSE: "ablaze." at every level, so it adds level 1 when svof had no
 -- burning, and keeps the level svof has
 for _, case in ipairs({ { "ablaze", nil, 1 }, { "ablaze", 4, 4 } }) do
