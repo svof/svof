@@ -5,7 +5,8 @@ keeps ablaze from being cured while it lasts (AFFLICTION SHOW, captured
 
 It runs svof's real loaders through tools/svof_world.lua: GMCP's name maps
 to the entry, gaining it starts its 40 seconds, the wore-off line and the
-time each take it off, and no burn salve is advisable while it lasts.
+time each take it off, and no burn salve is advisable while it lasts. An
+empty tree touch or mending while it lasts says nothing about the burns.
 
   lua tools/test_condemned.lua
 ]]
@@ -85,6 +86,28 @@ do -- the tree: ablaze can't be cured while condemned, so a touch can't cure it
   eq(not not svo.affs.ablaze, true, "so an empty touch while condemned keeps ablaze")
   svo.rmaff('condemned')
   eq(table.concat(svo.gettreeableaffs(), ","), "ablaze", "and the tree can cure it again once condemned is gone")
+end
+
+-- an empty mending while condemned says nothing about burning either. With
+-- GMCP off it took it off, and once condemned wore off nothing cured it
+-- (review of #888)
+for _, level in ipairs(BURNS) do
+  local w = world.new()
+  local svo = w.svo
+  local burn = "burning " .. level
+  svo.addaffdict(svo.dict.ablaze)
+  svo.dict.ablaze.count = level
+  svo.addaffdict(svo.dict.crippledleftarm)
+  svo.addaffdict(svo.dict.condemned)
+  eq(svo.gmcp_live(), false, burn .. ": GMCP isn't live here")
+  svo.empty.apply_mending()
+  eq(not not svo.affs.ablaze, true, burn .. ": an empty mending while condemned keeps it")
+  eq(svo.dict.ablaze.count, level, burn .. ": at its level")
+  eq(not not svo.affs.crippledleftarm, false, burn .. ": and still rules out what mending cures")
+  svo.rmaff('condemned')
+  eq(svo.dict.ablaze.salve.isadvisable(), true, burn .. ": and its salve is advisable once condemned is gone")
+  svo.empty.apply_mending()
+  eq(not not svo.affs.ablaze, false, burn .. ": then an empty mending rules it out, as before")
 end
 
 do -- its abbreviation in the @affs prompt tag
