@@ -192,6 +192,94 @@ for _, setting in ipairs({ true, false }) do
   eq(svo.serverignore.seriousconcussion, nil, "and the old name is gone")
 end
 
+do -- a saved ignore list from then: ignoring seriousconcussion stopped svof
+   -- curing GMCP's concussion too, so concussion stays ignored (review of #890)
+  local w = world.new()
+  local svo = w.svo
+  w.env.table.load = function(_, t) t.seriousconcussion = true end
+  local lfs = w.env.require('lfs')
+  local attributes = lfs.attributes
+  lfs.attributes = function(p)
+    if p == "./svo/config/ignore" then return {} end
+    return attributes(p)
+  end
+  for k in pairs(svo.ignore) do svo.ignore[k] = nil end
+  svo.signals.systemstart:emit()
+  lfs.attributes = attributes
+  eq(svo.ignore.concussion, true, "the ignore list: concussion starts ignored, as seriousconcussion was")
+  eq(svo.ignore.mangledhead, true, "and mangledhead")
+  eq(svo.ignore.seriousconcussion, nil, "and the old name is gone")
+end
+
+-- A priority list saved before concussion existed has no place for it, so it
+-- went to the bottom of salve and slow curing. It goes where the default list
+-- puts it: after mangledhead, and in slow curing after crippledleftleg's
+-- salve (review of #890)
+local function import(text)
+  local w = world.new()
+  local svo = w.svo
+  local path = "test_concussion.tmp"
+  local f = assert(io.open(path, "w"))
+  f:write(text)
+  f:close()
+  w.env.invokeFileDialog = function() return path end
+  local attributes = w.env.lfs.attributes
+  w.env.lfs.attributes = function(p) if p == path then return {} end return attributes(p) end
+  -- prio.import reads the list with Lua 5.1's loadstring and setfenv
+  if not w.env.loadstring then
+    w.env.loadstring = function(code, name) return load(code, name) end
+    w.env.setfenv = function(fn, env) debug.setupvalue(fn, 1, env) return fn end
+  end
+  local done, ok = pcall(svo.prio.import, nil, false, false)
+  w.env.lfs.attributes = attributes
+  -- prio.import leaves the list open as io.input, which Windows won't delete
+  io.input(io.stdin)
+  collectgarbage()
+  os.remove(path)
+  if not done then error(ok, 0) end
+  return w, ok
+end
+do
+  local w, ok = import([[
+salve = {
+  [3] = "seriousconcussion",
+  [4] = "anorexia",
+}
+slowcuring = {
+  [7] = "crippledleftleg_salve",
+  [8] = "seriousconcussion_salve",
+  [9] = "anorexia_salve",
+}
+]])
+  local d = w.svo.dict
+  eq(ok, true, "a list saved before concussion imports")
+  eq(d.mangledhead.salve.aspriority < d.concussion.salve.aspriority and
+    d.concussion.salve.aspriority < d.anorexia.salve.aspriority, true, "concussion goes after mangledhead")
+  eq(d.crippledleftleg.salve.spriority < d.concussion.salve.spriority and
+    d.concussion.salve.spriority < d.mangledhead.salve.spriority, true, "and in slow curing, after crippledleftleg")
+
+  w = import([[
+salve = {
+  [3] = "concussion",
+  [4] = "anorexia",
+  [5] = "mangledhead",
+}
+]])
+  d = w.svo.dict
+  eq(d.concussion.salve.aspriority < d.anorexia.salve.aspriority and
+    d.anorexia.salve.aspriority < d.mangledhead.salve.aspriority, true, "a list that has concussion keeps its place")
+end
+
+do -- the Vodun temple flick gives a mangled head, and says so when ignored
+  local w = world.new()
+  local svo = w.svo
+  svo.conf.aillusion = true
+  local said
+  svo.ignore_illusion = function(msg) said = msg end
+  w.run(read("src/triggers/svo (aliases, triggers)/svo/Vodun & Puppetry/Concussion.lua"), "Concussion")
+  eq(said and said:find("Ignored a mangled head", 1, true) ~= nil, true, "the flick's echo names a mangled head")
+end
+
 do -- @affs, and the default priorities
   local tag = read("src/scripts/svo (core)/svo Utilities/Custom prompt tags/@affs.lua")
   eq(tag:match('\n%s*concussion%s*=%s*"([^"]*)"'), "conc", "@affs shows it as conc")

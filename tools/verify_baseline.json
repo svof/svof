@@ -529,7 +529,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Priorities|script",
-      "digest": "22ccda6513192cd5",
+      "digest": "4752064326714f27",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Priorities [script]"
     },
     {
@@ -614,7 +614,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "61ea9562ddea9081",
+      "digest": "29875c2854fec48c",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -2494,7 +2494,7 @@
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Vodun & Puppetry/Concussion|script",
-      "digest": "87efd2daa086e982",
+      "digest": "43050faa362bbfc5",
       "text": "Trigger  svo (aliases, triggers) svo/Vodun & Puppetry/Concussion [script]"
     },
     {

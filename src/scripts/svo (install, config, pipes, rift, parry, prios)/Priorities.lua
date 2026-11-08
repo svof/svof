@@ -536,6 +536,15 @@ local moved = {
   { action = 'madness', from = 'smoke', to = 'herb', after = 'impatience' },
 }
 
+-- Afflictions svof didn't have when a list was saved. The import would leave
+-- one at the bottom of its balance, so it goes where the default list puts
+-- it, after the cure named, and its slow curing entry after the one named
+-- there; at the bottom only when the list doesn't have that one.
+local added = {
+  -- seriousconcussion stood for concussion too
+  { action = 'concussion', balance = 'salve', after = 'mangledhead', slowafter = 'crippledleftleg_salve' },
+}
+
 -- puts the renamed afflictions in i, a saved list as read, under their new
 -- names (svo.renamed_affs), in the places the old names had. A slow curing
 -- action is named with its balance. A list that has the new name already
@@ -598,6 +607,34 @@ local function import_moved(i)
       for num, action in pairs(slow) do
         if action == old and not newat then slow[num] = new end
       end
+    end
+  end
+end
+
+-- puts action in list, a saved balance as read, one place above after, the
+-- ones above making room, as prio.insert's shuffle does. A list that has it
+-- already keeps it where it is
+local function insert_after(list, action, after)
+  local at = 0
+  for num, name in pairs(list) do
+    if name == action then return end
+    if name == after then at = num end
+  end
+  local nums = {}
+  for num in pairs(list) do
+    if type(num) == 'number' and num > at then nums[#nums + 1] = num end
+  end
+  table.sort(nums, function(a, b) return a > b end)
+  for _, num in ipairs(nums) do list[num + 1], list[num] = list[num], nil end
+  list[at + 1] = action
+end
+
+-- puts the added afflictions in i, a saved list as read, where they are now
+local function import_added(i)
+  for _, a in ipairs(added) do
+    if type(i[a.balance]) == 'table' then insert_after(i[a.balance], a.action, a.after) end
+    if type(i.slowcuring) == 'table' then
+      insert_after(i.slowcuring, a.action .. '_' .. a.balance, a.slowafter)
     end
   end
 end
@@ -679,6 +716,7 @@ function prio.import(name, echoback, report_errors, use_default)
   if not ok then failf("There's a syntax problem in the prios file, we couldn't load it:\n  %s", m) return end
   import_renamed(i)
   import_moved(i)
+  import_added(i)
 
   local function set(num, action, balance, priority)
     if not (svo.dict[action] and svo.dict[action][balance]) then
