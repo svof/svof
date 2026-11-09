@@ -70,20 +70,25 @@ function svo.valid.symp_asleep()
     return
   end
 
+  -- svo.reset non-wait things we were doing, because they got cancelled by the sleep.
+  -- This line is the game refusing a command sent while asleep, so what svof
+  -- had in flight failed, and goes again once awake: nothing is sent while
+  -- asleep. It checked a key named asleep, which svof never had, so until
+  -- 2026-10-31 it never ran, and only the first symptom (sleep.aff.symptom)
+  -- cleared them. The wake stays, as there, and so does a gone, a cure being
+  -- recorded (svo.cancel_sent_actions)
   -- in a deepsleep, this is that, not a sleep svof would try waking from
-  if not affs.sleep and not affs.deepsleep and not actions.sleep_aff then
-    svo.checkaction(svo.dict.sleep.aff, true)
-    lifevision.add(actions['sleep_aff'].p, 'symptom', nil, 1)
+  if affs.sleep or affs.deepsleep then
+    svo.cancel_sent_actions('sleep_misc')
+    return
   end
 
-  -- svo.reset non-wait things we were doing, because they got cancelled by the sleep
-  if affs.asleep or actions.asleep_aff then
-    for _,v in actions:iter() do
-      if v.p.balance ~= 'waitingfor' and v.p.balance ~= 'aff' then
-        svo.killaction(svo.dict[v.p.action_name][v.p.balance])
-      end
-    end
-  end
+  -- A sleep svof doesn't hold yet is only a claim until the prompt, and GMCP
+  -- can refuse it there, so the symptom clears what's in flight once it's
+  -- accepted. It takes over a claim an earlier line in the paragraph made
+  local first_claim = not actions.sleep_aff
+  svo.checkaction(svo.dict.sleep.aff, true)
+  lifevision.add(actions.sleep_aff.p, 'symptom', nil, first_claim and 1 or nil)
 end
 
 function svo.valid.cured_lovers()
@@ -591,13 +596,10 @@ function svo.valid.symp_stun()
     sk.stun_symptom()
   end
 
-  -- svo.reset non-wait things we were doing, because they got cancelled by the stun
+  -- svo.reset non-wait things we were doing, because they got cancelled by the
+  -- stun. A cure the paragraph already showed stays (svo.cancel_sent_actions)
   if affs.stun or actions.stun_aff then
-    for _,v in actions:iter() do
-      if v.p.balance ~= 'waitingfor' and v.p.balance ~= 'aff' then
-        svo.killaction(svo.dict[v.p.action_name][v.p.balance])
-      end
-    end
+    svo.cancel_sent_actions()
   end
 end
 
@@ -746,7 +748,13 @@ function svo.valid.transfixily()
 
   -- special workaround for waking up not showing up in blackout: clear sleep if we saw this msg
   -- it's an issue otherwise to miss the sleep msg from a totem while in blackout and think you're still asleep
-  if affs.asleep then svo.rmaff('asleep') end
+  if affs.sleep then svo.rmaff('sleep') end
+  -- and the wake and its wait (999s), as waking ends them: left in flight,
+  -- the next sleep sent no wake
+  if not affs.sleep then
+    if actions.curingsleep_waitingfor then svo.killaction(svo.dict.curingsleep.waitingfor) end
+    if actions.sleep_misc then svo.killaction(svo.dict.sleep.misc) end
+  end
 end
 
 function svo.valid.symp_roped()
