@@ -18,7 +18,8 @@ local bals, pipes, watch = svo.bals, svo.pipes, svo.watch
 
 sk.affqueueslow = {}
 sk.defqueueslow = {}
-sk.queuecount = sk.queuecount or 0
+sk.priopending = sk.priopending or {}
+sk.priosent = sk.priosent or {}
 sk.priolength = sk.priolength or {affqueue = 0, affqueueslow = 0, defqueue = 0, defqueueslow = 0}
 
 -- misc functions
@@ -2441,95 +2442,134 @@ function svo.sendcuring(what)
   sk.sendqueuecmd(what)
 end
 
-function sk.dosendprios()
-    local sys = svo.sys
-    local function resetpriolength()
-      sk.priolength = {affqueue = 0, affqueueslow = 0, defqueue = 0, defqueueslow = 0}
+-- the game takes 5 uses of CURING PRIORITY a second and refuses the rest, not
+-- counting viewing or the health and mana swap (Announce #5450). Commands sent
+-- about a second apart can reach it together, so stay well under that
+sk.prio_uses_allowed = 4
+sk.prio_uses_window = 2
+-- how far back to resend from when the game refuses one, and how often to try
+sk.prio_resend_window = 5
+sk.prio_resend_tries = 3
+
+local function sendprionow(what, queue)
+  local sys = svo.sys
+  if queue == "normal" and sys.sync == true and svo.conf.serverside then
+    -- in slow curing the game is on the slowcuring curingset
+    sendAll("curingset switch normal", what, "curingset switch slowcuring", false)
+  elseif queue == "slow" then
+    if sys.sync == true then
+      sendAll("curingset switch slowcuring", what, false)
+    else
+      sendAll("curingset switch slowcuring", what, "curingset switch normal", false)
     end
-    local function sendstuff(what, queue)
-      if queue == "normal" then
-        -- in slow curing the game is on the slowcuring curingset
-        if sys.sync == true and svo.conf.serverside then
-          sendAll("curingset switch normal", what, "curingset switch slowcuring", false)
-        else
-          send(what,false)
-        end
-      elseif queue == "slow" then
-        if sys.sync == true then
-          sendAll("curingset switch slowcuring", what, false)
-        else
-          sendAll("curingset switch slowcuring", what, "curingset switch normal", false)
-        end
+  else
+    send(what,false)
+  end
+end
+
+-- sends what the limit allows, in order, and comes back for the rest
+function sk.sendpendingprios()
+  if sk.priopendingtimer then killTimer(sk.priopendingtimer); sk.priopendingtimer = nil end
+
+  local now, window = getEpoch(), sk.prio_uses_window + getNetworkLatency()
+  while sk.priosent[1] and now - sk.priosent[1].time >= math.max(window, sk.prio_resend_window) do
+    table.remove(sk.priosent, 1)
+  end
+
+  while #sk.priopending > 0 do
+    local used, oldest = 0, nil
+    for _, use in ipairs(sk.priosent) do
+      if now - use.time < window then
+        used = used + 1
+        oldest = oldest or use.time
       end
     end
-    
+
+    local wait = 0
+    if used >= sk.prio_uses_allowed then wait = oldest + window - now end
+    if sk.prioblockeduntil and sk.prioblockeduntil - now > wait then wait = sk.prioblockeduntil - now end
+    if wait > 0 then
+      sk.priopendingtimer = tempTimer(wait + 0.05, sk.sendpendingprios)
+      return
+    end
+
+    local use = table.remove(sk.priopending, 1)
+    sendprionow(use.what, use.queue)
+    use.time = now
+    sk.priosent[#sk.priosent+1] = use
+  end
+end
+
+-- queue is "normal" or "slow" for that curingset, or "current" for the one in use
+function sk.sendpriocommand(what, queue)
+  sk.priopending[#sk.priopending+1] = {what = what, queue = queue}
+  sk.sendpendingprios()
+end
+
+-- drops everything waiting or resendable: it was all for what's being reset.
+-- What was sent still counts towards the limit
+function sk.clearpriocommands()
+  sk.priopending = {}
+  for _, use in ipairs(sk.priosent) do use.cleared = true end
+  if sk.priopendingtimer then killTimer(sk.priopendingtimer); sk.priopendingtimer = nil end
+end
+
+-- the game refused a priority command. Its line doesn't say which, so send the
+-- recent ones again, in order, ahead of what's waiting: setting a priority
+-- twice does no harm, and svof's diff would never send a lost one again
+function svo.hitpriospamlimit()
+  local now = getEpoch()
+
+  -- the other commands of a burst that was already dealt with
+  if sk.prioblockeduntil and now < sk.prioblockeduntil then return end
+  sk.prioblockeduntil = now + sk.prio_uses_window + getNetworkLatency()
+
+  if not sk.priorefusedlast or now - sk.priorefusedlast > 30 then sk.prioresends = 0 end
+  sk.priorefusedlast = now
+  sk.prioresends = sk.prioresends + 1
+  if sk.prioresends > sk.prio_resend_tries then
+    svo.echof("The game keeps refusing your curing priorities (Announce #5450), so some might be missing. To send them all again, use tf serverside and then tn serverside.")
+    return
+  end
+
+  local resend = {}
+  for _, use in ipairs(sk.priosent) do
+    if not use.cleared and now - use.time < sk.prio_resend_window then
+      resend[#resend+1] = {what = use.what, queue = use.queue}
+      use.cleared = true
+    end
+  end
+  for _, use in ipairs(sk.priopending) do resend[#resend+1] = use end
+  sk.priopending = resend
+  sk.sendpendingprios()
+end
+
+function sk.dosendprios()
     if sk.sendpriotimer then killTimer( sk.sendpriotimer ) end
-  
+
     if #sk.affqueue > 0 then
-        local what = "curing priority"..table.concat(sk.affqueue)
-        if sk.queuecount > 4 then
-          tempTimer(1+getNetworkLatency(),function()
-            sendstuff(what,"normal")
-            sk.affqueue = {}
-            sk.queuecount = 0
-          end)
-        else
-          sendstuff(what,"normal")
-          sk.affqueue = {}
-          sk.queuecount = sk.queuecount + 1
-        end
+      sk.sendpriocommand("curing priority"..table.concat(sk.affqueue), "normal")
+      sk.affqueue = {}
     end
     if #sk.defqueue > 0 then
-        local what = "curing priority defence"..table.concat(sk.defqueue)
-        if sk.queuecount > 4 then
-          tempTimer(1+getNetworkLatency(),function()
-          sendstuff(what,"normal")
-          sk.defqueue = {}
-          sk.queuecount = 0
-          end)
-        else
-          sendstuff(what,"normal")
-          sk.defqueue = {}
-          sk.queuecount = sk.queuecount + 1
-        end
+      sk.sendpriocommand("curing priority defence"..table.concat(sk.defqueue), "normal")
+      sk.defqueue = {}
     end
     if #sk.affqueueslow > 0 then
-        local what = "curing priority"..table.concat(sk.affqueueslow)
-        if sk.queuecount > 4 then
-          tempTimer(1+getNetworkLatency(),function()
-          sendstuff(what,"slow")
-          sk.affqueueslow = {}
-          sk.queuecount = 0
-          end)
-        else
-          sendstuff(what,"slow")
-          sk.affqueueslow = {}
-          sk.queuecount = sk.queuecount + 1
-        end
+      sk.sendpriocommand("curing priority"..table.concat(sk.affqueueslow), "slow")
+      sk.affqueueslow = {}
     end
     if #sk.defqueueslow > 0 then
-        local what = "curing priority defence"..table.concat(sk.defqueueslow)
-        if sk.queuecount > 4 then
-          tempTimer(1+getNetworkLatency(),function()
-          sendstuff(what,"slow")
-          sk.defqueueslow = {}
-          sk.queuecount = 0
-          end)
-        else
-          sendstuff(what,"slow")
-          sk.defqueueslow = {}
-          sk.queuecount = sk.queuecount + 1
-        end
+      sk.sendpriocommand("curing priority defence"..table.concat(sk.defqueueslow), "slow")
+      sk.defqueueslow = {}
     end
-  tempTimer(1,function() sk.queuecount = 0 end)     
   sk.sendpriotimer = nil
-  resetpriolength()
+  sk.priolength = {affqueue = 0, affqueueslow = 0, defqueue = 0, defqueueslow = 0}
 end
 
 function svo.sendcuringprio(prio, kind, slow)
-  local sys = svo.sys
   prio = " "..prio
-  local what, tab, cmd
+  local tab, cmd
   if kind == 'affliction' then
     tab = "affqueue"
     cmd = "curing priority"
@@ -2541,21 +2581,11 @@ function svo.sendcuringprio(prio, kind, slow)
   end
   if slow == true then tab = tab.."slow" end
   if (sk.priolength[tab] + #cmd + #prio) >= sk.achaea_command_max_length then
-    what = cmd..table.concat(sk[tab])
-    if slow == true then
-      if sys.sync then
-        sendAll( "curingset switch slowcuring", what, false )
-      else
-        sendAll( "curingset switch slowcuring", what, "curingset switch normal", false )
-      end
-    elseif sys.sync and svo.conf.serverside then
-      sendAll( "curingset switch normal", what, "curingset switch slowcuring", false )
-    else
-      send( what )
-    end
+    sk.sendpriocommand(cmd..table.concat(sk[tab]), slow == true and "slow" or "normal")
     sk[tab] = {}
+    sk.priolength[tab] = 0
   end
-  if not table.contains(sk[tab], prio) then 
+  if not table.contains(sk[tab], prio) then
     sk[tab][#sk[tab]+1] = prio
     sk.priolength[tab] = sk.priolength[tab] + #prio
   end

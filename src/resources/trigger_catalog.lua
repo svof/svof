@@ -531,6 +531,7 @@ return {
     { "Gag 0-9 alias shortcut use", { "start", "Wildcard out of range in command" } },
     { "Curingsets already exist", { "exact", "You already have a set with that name. Either pick a new name or rename the old set." } },
     { "Hit alias limit", { "exact", "You have reached your limit of 100 aliases." } },
+    { "Curing priority spam limit", { "exact", "You have exceeded the spam threshold for curing priority. Please see Announce #5450 for details." } },
     { "Defence list reset", { "exact", "All your defence priorities have been reset to defaults." } },
   },
   { "svo (aliases, triggers) / svo / General / Ship prompt",

@@ -44,9 +44,12 @@ function sk.resetserversideprios()
     -- old class and is resent from scratch after this
     sk.affqueue, sk.defqueue, sk.affqueueslow, sk.defqueueslow = {}, {}, {}, {}
     sk.priolength = {affqueue = 0, affqueueslow = 0, defqueue = 0, defqueueslow = 0}
-    sendAll("curingset switch normal", "curing priority reset", "curing priority defence list reset",
-      "curingset switch slowcuring", "curing priority reset", "curing priority defence list reset",
-      sys.sync and "curingset switch slowcuring" or "curingset switch normal", false)
+    sk.clearpriocommands()
+    send("curingset switch "..(sys.sync and "slowcuring" or "normal"), false)
+    for _, queue in ipairs({"normal", "slow"}) do
+      sk.sendpriocommand("curing priority reset", queue)
+      sk.sendpriocommand("curing priority defence list reset", queue)
+    end
   else
     svo.sendcuringprio("reset","affliction")
     svo.sendcuringprio("list reset","defence")
@@ -529,7 +532,7 @@ signals["svo config changed"]:connect(function(config)
     }
     -- sync everything
     sk.priosbeforechange = sk.getblankbeforestateprios()
-    svo.sendcuring("PRIORITY RESET")
+    sk.sendpriocommand("curing PRIORITY RESET", "current")
     sk.priochangetimer = true
     sk.updateserversideprios()
     -- sync all special things like health
