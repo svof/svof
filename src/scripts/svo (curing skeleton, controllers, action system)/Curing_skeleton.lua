@@ -18,7 +18,8 @@ local bals, pipes, watch = svo.bals, svo.pipes, svo.watch
 
 sk.affqueueslow = {}
 sk.defqueueslow = {}
-sk.queuecount = sk.queuecount or 0
+sk.priopending = sk.priopending or {}
+sk.priosent = sk.priosent or {}
 sk.priolength = sk.priolength or {affqueue = 0, affqueueslow = 0, defqueue = 0, defqueueslow = 0}
 
 -- misc functions
@@ -66,7 +67,7 @@ local healthchecks = {
 -- sort it, and do the topmost thing.
 svo.check_sip = function(sync_mode)
   -- can we even sip?
-  if not bals.sip or svo.usingbal('sip') or affs.stun or affs.unconsciousness or affs.sleep or affs.anorexia then
+  if not bals.sip or svo.usingbal('sip') or affs.stun or affs.unconsciousness or affs.sleep or affs.deepsleep or affs.anorexia then
       return
   end
 
@@ -95,7 +96,7 @@ end
 -- purgative check: needs to be asynced as well
 svo.check_purgative = function(sync_mode)
   -- can we even sip?
-  if not bals.purgative or svo.usingbal('purgative') or affs.stun or affs.unconsciousness or affs.sleep or affs.anorexia then
+  if not bals.purgative or svo.usingbal('purgative') or affs.stun or affs.unconsciousness or affs.sleep or affs.deepsleep or affs.anorexia then
       return
   end
 
@@ -133,7 +134,7 @@ end
 svo.check_salve = function(sync_mode)
   -- can we even use salves?
   if not bals.salve or svo.usingbal('salve') or
-    affs.sleep or affs.stun or affs.unconsciousness or affs.slickness then
+    affs.sleep or affs.deepsleep or affs.stun or affs.unconsciousness or affs.slickness then
       return
   end
 
@@ -165,7 +166,7 @@ end
 -- sort it, and do the topmost thing.
 svo.check_herb = function(sync_mode)
   -- can we even eat?
-  if not bals.herb or svo.usingbal('herb') or affs.sleep
+  if not bals.herb or svo.usingbal('herb') or affs.sleep or affs.deepsleep
     or affs.stun or affs.unconsciousness or svo.sacid or affs.anorexia
     or (conf.aillusion and conf.waitherbai and sk.checking_herb_ai()) then
       return
@@ -207,7 +208,7 @@ local amnesias = {
 }
 svo.check_misc = function(sync_mode, onlyamnesia)
   -- we -don't- check for sleep here, but a bit lower down - so waking can be on a misc
-  if affs.stun or affs.unconsciousness then
+  if affs.stun or affs.unconsciousness or affs.deepsleep then
     return
   end
 
@@ -258,7 +259,7 @@ local check_for_asthma = {
   checkasthma = {p = svo.dict.checkasthma}
 }
 svo.check_smoke = function(sync_mode)
-  if not bals.smoke or affs.stun or affs.unconsciousness or affs.sleep or affs.asthma or affs.mucous then
+  if not bals.smoke or affs.stun or affs.unconsciousness or affs.sleep or affs.deepsleep or affs.asthma then
     return
   end
 
@@ -291,7 +292,7 @@ end
 svo.check_moss = function(sync_mode)
   -- can we even sip?
   if not conf.moss or svo.usingbal('moss') or affs.stun or affs.unconsciousness or not bals.moss
-    or affs.sleep or affs.anorexia then
+    or affs.sleep or affs.deepsleep or affs.anorexia then
       return
   end
 
@@ -330,7 +331,7 @@ end
 svo.check_focus = function(sync_mode)
   -- can we even focus?
   if not next(affs) or svo.usingbal('focus') or affs.stun or affs.unconsciousness or not bals.focus
-    or affs.sleep or not svo.can_usemana() or not conf.focus or stats.currentwillpower <= 75
+    or affs.sleep or affs.deepsleep or not svo.can_usemana() or not conf.focus or stats.currentwillpower <= 75
     or affs.impatience or affs.sandfever or affs.inquisition or svo.focus_would_hurt() then
       return
   end
@@ -603,7 +604,7 @@ end
 
 -- balanceful check
 svo.check_balanceful_acts = function(sync_mode)
-  if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == 'Druid' and not bals.hydra)
+  if affs.sleep or affs.deepsleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == 'Druid' and not bals.hydra)
   then return end
 
   -- get all prios in the list
@@ -635,7 +636,7 @@ end
 
 -- balanceless check
 svo.check_balanceless_acts = function(sync_mode)
-  if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == 'Druid' and not bals.hydra)
+  if affs.sleep or affs.deepsleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == 'Druid' and not bals.hydra)
    then return end
 
   -- get all prios in the list
@@ -685,7 +686,7 @@ local balanceful = svo.balanceful or {}
 function svo.sk.balance_controller()
   if sys.balanceid == sys.balancetick then return end
 
-  if not (bals.balance and bals.equilibrium) or (affs.webbed or affs.bound or affs.transfixed or affs.roped or affs.impale or affs.daeggerimpale or affs.paralysis or affs.sleep) then return end
+  if not (bals.balance and bals.equilibrium) or (affs.webbed or affs.bound or affs.transfixed or affs.roped or affs.impale or affs.daeggerimpale or affs.paralysis or affs.sleep or affs.deepsleep) then return end
 
   -- loop through all balanceless functions
   for _, f in pairs(balanceless) do
@@ -1497,6 +1498,13 @@ svo.rmaff = function (old)
     svo.dict[old].onremoved()
   end
 
+  -- A counted affliction that's gone has no level left. Most callers reset
+  -- the count themselves, but a GMCP List resync and the empty cures didn't,
+  -- and a counted aff handler never lowers a count, so the next gain by text
+  -- kept the old level. This comes after onremoved, which for the
+  -- unknowncrippled stacks reads the count to put one fewer back
+  if type(svo.dict[old].count) == 'number' and not affs[old] then svo.dict[old].count = 0 end
+
   if conf.showafftimes and sw then
     svo.echoafftime(stopStopWatch(sw), old)
   end
@@ -1873,13 +1881,15 @@ svo.lostbal_purgative = function()
   raiseEvent("svo lost balance", 'purgative')
 end
 
-svo.lostbal_smoke = function()
+-- howlong is how long smoke balance takes to come back, when it's longer
+-- than a smoke's usual recovery, as it is after mucous fills your lungs
+svo.lostbal_smoke = function(howlong)
   bals.smoke = false
   svo.startbalancewatch('smoke')
   sk.smoketick = sk.smoketick + 1
   local oldsmoketick = sk.smoketick
 
-  tempTimer(conf.ai_resetsmokebal, function ()
+  tempTimer(howlong or conf.ai_resetsmokebal, function ()
     if not bals.smoke and sk.smoketick == oldsmoketick then
       bals.smoke = true
       svo.make_gnomes_work()
@@ -1891,6 +1901,12 @@ svo.lostbal_smoke = function()
   startStopWatch(watch['bal_smoke'])
 
   raiseEvent("svo lost balance", 'smoke')
+end
+
+-- whether mucous fills your lungs: the longer smoke recovery it started
+-- (svo.dict.mucouslungs) is the one still running
+function svo.lungs_clogged()
+  return sk.mucous_smoketick ~= nil and sk.mucous_smoketick == sk.smoketick and not bals.smoke
 end
 
 svo.lostbal_dragonheal = function()
@@ -2426,90 +2442,134 @@ function svo.sendcuring(what)
   sk.sendqueuecmd(what)
 end
 
-function sk.dosendprios()
-    local sys = svo.sys
-    local function resetpriolength()
-      sk.priolength = {affqueue = 0, affqueueslow = 0, defqueue = 0, defqueueslow = 0}
+-- the game takes 5 uses of CURING PRIORITY a second and refuses the rest, not
+-- counting viewing or the health and mana swap (Announce #5450). Commands sent
+-- about a second apart can reach it together, so stay well under that
+sk.prio_uses_allowed = 4
+sk.prio_uses_window = 2
+-- how far back to resend from when the game refuses one, and how often to try
+sk.prio_resend_window = 5
+sk.prio_resend_tries = 3
+
+local function sendprionow(what, queue)
+  local sys = svo.sys
+  if queue == "normal" and sys.sync == true and svo.conf.serverside then
+    -- in slow curing the game is on the slowcuring curingset
+    sendAll("curingset switch normal", what, "curingset switch slowcuring", false)
+  elseif queue == "slow" then
+    if sys.sync == true then
+      sendAll("curingset switch slowcuring", what, false)
+    else
+      sendAll("curingset switch slowcuring", what, "curingset switch normal", false)
     end
-    local function sendstuff(what, queue)
-      if queue == "normal" then
-        send(what,false)
-      elseif queue == "slow" then
-        if sys.sync == true then
-          sendAll("curingset switch slowcuring", what, false)
-        else
-          sendAll("curingset switch slowcuring", what, "curingset switch normal", false)
-        end
+  else
+    send(what,false)
+  end
+end
+
+-- sends what the limit allows, in order, and comes back for the rest
+function sk.sendpendingprios()
+  if sk.priopendingtimer then killTimer(sk.priopendingtimer); sk.priopendingtimer = nil end
+
+  local now, window = getEpoch(), sk.prio_uses_window + getNetworkLatency()
+  while sk.priosent[1] and now - sk.priosent[1].time >= math.max(window, sk.prio_resend_window) do
+    table.remove(sk.priosent, 1)
+  end
+
+  while #sk.priopending > 0 do
+    local used, oldest = 0, nil
+    for _, use in ipairs(sk.priosent) do
+      if now - use.time < window then
+        used = used + 1
+        oldest = oldest or use.time
       end
     end
-    
+
+    local wait = 0
+    if used >= sk.prio_uses_allowed then wait = oldest + window - now end
+    if sk.prioblockeduntil and sk.prioblockeduntil - now > wait then wait = sk.prioblockeduntil - now end
+    if wait > 0 then
+      sk.priopendingtimer = tempTimer(wait + 0.05, sk.sendpendingprios)
+      return
+    end
+
+    local use = table.remove(sk.priopending, 1)
+    sendprionow(use.what, use.queue)
+    use.time = now
+    sk.priosent[#sk.priosent+1] = use
+  end
+end
+
+-- queue is "normal" or "slow" for that curingset, or "current" for the one in use
+function sk.sendpriocommand(what, queue)
+  sk.priopending[#sk.priopending+1] = {what = what, queue = queue}
+  sk.sendpendingprios()
+end
+
+-- drops everything waiting or resendable: it was all for what's being reset.
+-- What was sent still counts towards the limit
+function sk.clearpriocommands()
+  sk.priopending = {}
+  for _, use in ipairs(sk.priosent) do use.cleared = true end
+  if sk.priopendingtimer then killTimer(sk.priopendingtimer); sk.priopendingtimer = nil end
+end
+
+-- the game refused a priority command. Its line doesn't say which, so send the
+-- recent ones again, in order, ahead of what's waiting: setting a priority
+-- twice does no harm, and svof's diff would never send a lost one again
+function svo.hitpriospamlimit()
+  local now = getEpoch()
+
+  -- the other commands of a burst that was already dealt with
+  if sk.prioblockeduntil and now < sk.prioblockeduntil then return end
+  sk.prioblockeduntil = now + sk.prio_uses_window + getNetworkLatency()
+
+  if not sk.priorefusedlast or now - sk.priorefusedlast > 30 then sk.prioresends = 0 end
+  sk.priorefusedlast = now
+  sk.prioresends = sk.prioresends + 1
+  if sk.prioresends > sk.prio_resend_tries then
+    svo.echof("The game keeps refusing your curing priorities (Announce #5450), so some might be missing. To send them all again, use tf serverside and then tn serverside.")
+    return
+  end
+
+  local resend = {}
+  for _, use in ipairs(sk.priosent) do
+    if not use.cleared and now - use.time < sk.prio_resend_window then
+      resend[#resend+1] = {what = use.what, queue = use.queue}
+      use.cleared = true
+    end
+  end
+  for _, use in ipairs(sk.priopending) do resend[#resend+1] = use end
+  sk.priopending = resend
+  sk.sendpendingprios()
+end
+
+function sk.dosendprios()
     if sk.sendpriotimer then killTimer( sk.sendpriotimer ) end
-  
+
     if #sk.affqueue > 0 then
-        local what = "curing priority"..table.concat(sk.affqueue)
-        if sk.queuecount > 4 then
-          tempTimer(1+getNetworkLatency(),function()
-            sendstuff(what,"normal")
-            sk.affqueue = {}
-            sk.queuecount = 0
-          end)
-        else
-          sendstuff(what,"normal")
-          sk.affqueue = {}
-          sk.queuecount = sk.queuecount + 1
-        end
+      sk.sendpriocommand("curing priority"..table.concat(sk.affqueue), "normal")
+      sk.affqueue = {}
     end
     if #sk.defqueue > 0 then
-        local what = "curing priority defence"..table.concat(sk.defqueue)
-        if sk.queuecount > 4 then
-          tempTimer(1+getNetworkLatency(),function()
-          sendstuff(what,"normal")
-          sk.defqueue = {}
-          sk.queuecount = 0
-          end)
-        else
-          sendstuff(what,"normal")
-          sk.defqueue = {}
-          sk.queuecount = sk.queuecount + 1
-        end
+      sk.sendpriocommand("curing priority defence"..table.concat(sk.defqueue), "normal")
+      sk.defqueue = {}
     end
     if #sk.affqueueslow > 0 then
-        local what = "curing priority"..table.concat(sk.affqueueslow)
-        if sk.queuecount > 4 then
-          tempTimer(1+getNetworkLatency(),function()
-          sendstuff(what,"slow")
-          sk.affqueueslow = {}
-          sk.queuecount = 0
-          end)
-        else
-          sendstuff(what,"slow")
-          sk.affqueueslow = {}
-          sk.queuecount = sk.queuecount + 1
-        end
+      sk.sendpriocommand("curing priority"..table.concat(sk.affqueueslow), "slow")
+      sk.affqueueslow = {}
     end
     if #sk.defqueueslow > 0 then
-        local what = "curing priority defence"..table.concat(sk.defqueueslow)
-        if sk.queuecount > 4 then
-          tempTimer(1+getNetworkLatency(),function()
-          sendstuff(what,"slow")
-          sk.defqueueslow = {}
-          sk.queuecount = 0
-          end)
-        else
-          sendstuff(what,"slow")
-          sk.defqueueslow = {}
-          sk.queuecount = sk.queuecount + 1
-        end
+      sk.sendpriocommand("curing priority defence"..table.concat(sk.defqueueslow), "slow")
+      sk.defqueueslow = {}
     end
-  tempTimer(1,function() sk.queuecount = 0 end)     
   sk.sendpriotimer = nil
-  resetpriolength()
+  sk.priolength = {affqueue = 0, affqueueslow = 0, defqueue = 0, defqueueslow = 0}
 end
 
 function svo.sendcuringprio(prio, kind, slow)
-  local sys = svo.sys
   prio = " "..prio
-  local what, tab, cmd
+  local tab, cmd
   if kind == 'affliction' then
     tab = "affqueue"
     cmd = "curing priority"
@@ -2521,19 +2581,11 @@ function svo.sendcuringprio(prio, kind, slow)
   end
   if slow == true then tab = tab.."slow" end
   if (sk.priolength[tab] + #cmd + #prio) >= sk.achaea_command_max_length then
-    what = cmd..table.concat(sk[tab])
-    if slow == true then
-      if sys.sync then
-        sendAll( "curingset switch slowcuring", what, false )
-      else
-        sendAll( "curingset switch slowcuring", what, "curingset switch normal", false )
-      end
-    else
-      send( what )
-    end
+    sk.sendpriocommand(cmd..table.concat(sk[tab]), slow == true and "slow" or "normal")
     sk[tab] = {}
+    sk.priolength[tab] = 0
   end
-  if not table.contains(sk[tab], prio) then 
+  if not table.contains(sk[tab], prio) then
     sk[tab][#sk[tab]+1] = prio
     sk.priolength[tab] = sk.priolength[tab] + #prio
   end

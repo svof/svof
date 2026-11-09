@@ -13,9 +13,19 @@
       "text": "Alias    svo (aliases, triggers) svo/(vcustomdef) Define your own defences [only in the package]"
     },
     {
-      "id": "added|Script|svo (alias and defence functions)|Custom afflictions",
-      "digest": "623f90d28ff27b8f",
-      "text": "Script   svo (alias and defence functions) Custom afflictions [only in the package]"
+      "id": "added|Script|svo (alias and defence functions)|Custom definitions",
+      "digest": "2eaf7a1e36492fce",
+      "text": "Script   svo (alias and defence functions) Custom definitions [only in the package]"
+    },
+    {
+      "id": "added|Script|svo (alias and defence functions)|Custom definitions/Custom afflictions",
+      "digest": "41b10197d64a33e6",
+      "text": "Script   svo (alias and defence functions) Custom definitions/Custom afflictions [only in the package]"
+    },
+    {
+      "id": "added|Script|svo (alias and defence functions)|Custom definitions/Custom defences",
+      "digest": "03b690d16cdc0edd",
+      "text": "Script   svo (alias and defence functions) Custom definitions/Custom defences [only in the package]"
     },
     {
       "id": "added|Script|svo (install me in module manager)|Check for system updates/svo.update_download_done",
@@ -128,6 +138,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got myrrh generic [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Server-side commands/Curing priority spam limit",
+      "digest": "0d35019022fec114",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Server-side commands/Curing priority spam limit [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Sip/svo sipped latched",
       "digest": "bfe8d80c98855831",
       "text": "Trigger  svo (aliases, triggers) svo/General/Sip/svo sipped latched [only in the package]"
@@ -148,9 +163,24 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure unweavingspirit tree [only in the package]"
     },
     {
-      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/concussion",
-      "digest": "033cb7624ca18953",
-      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/concussion [only in the package]"
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo condemned woreoff",
+      "digest": "a0be7c0c7617f61b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo condemned woreoff [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo constricted woreoff",
+      "digest": "ed5441c0224037a4",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo constricted woreoff [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/condemned",
+      "digest": "7b79e0ccb6703b5a",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/condemned [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/constricted",
+      "digest": "c42312278f15107f",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/constricted [only in the package]"
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/daeggerimpale",
@@ -168,9 +198,29 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/pyre [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/snared",
+      "digest": "17c5823d658aca72",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/snared [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/vinewreathed",
+      "digest": "60e0276be82cfbf3",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/vinewreathed [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo scalded woreoff",
       "digest": "b33cec5c384c9431",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo scalded woreoff [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo snared woreoff",
+      "digest": "ef97139c59e4516e",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo snared woreoff [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo vinewreathed woreoff",
+      "digest": "a6020fb1aa01a81c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo vinewreathed woreoff [only in the package]"
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo vitrification woreoff",
@@ -224,8 +274,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "1baeb8a41ed68579",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2549 in merged"
+      "digest": "bf0a84fbb470a97e",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2554 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -288,9 +338,24 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure voided tree [only in the originals]"
     },
     {
-      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo cure concussion",
-      "digest": "d516709e38be0398",
-      "text": "Trigger  svo (aliases, triggers) svo/General/svo cure concussion [only in the originals]"
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo diag/charredburn",
+      "digest": "3c5b5de482700483",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/charredburn [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo diag/extremeburn",
+      "digest": "573fa3328400127c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/extremeburn [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo diag/meltingburn",
+      "digest": "bdaebfaf0fd2bcee",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/meltingburn [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo diag/severeburn",
+      "digest": "3822a6915438bf86",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/severeburn [only in the originals]"
     },
     {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healer nothing cured",
@@ -359,17 +424,17 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "4a35515e13c07ea3",
+      "digest": "0ededad49c4bcde7",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Alias functions|script",
-      "digest": "d0dd3f6501b6a958",
+      "digest": "3db314c2076d27a3",
       "text": "Script   svo (alias and defence functions) Alias functions [script]"
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "81e5559370900a4d",
+      "digest": "4218ef8242e05c99",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -384,17 +449,17 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Action system|script",
-      "digest": "5adc5e290619f90a",
+      "digest": "9735a21e2f2c1f39",
       "text": "Script   svo (curing skeleton, controllers, action system) Action system [script]"
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Controllers|script",
-      "digest": "5fbb6e6d7cfddfa9",
+      "digest": "a13b10656c4e392c",
       "text": "Script   svo (curing skeleton, controllers, action system) Controllers [script]"
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "abd30d29c2c46696",
+      "digest": "46eea4a945f69ff8",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -404,7 +469,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "eec1570db15acbbf",
+      "digest": "52261e56e36d2abe",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
@@ -458,6 +523,11 @@
       "text": "Script   svo (install me in module manager) Create Svof namespace [script]"
     },
     {
+      "id": "item|Script|svo (install me in module manager)|Load & init/svo.classchange|script",
+      "digest": "92340d8368deeade",
+      "text": "Script   svo (install me in module manager) Load & init/svo.classchange [script]"
+    },
+    {
       "id": "item|Script|svo (install me in module manager)|Load & init/svo.uninstall_all_modules|events",
       "digest": "11a3fdf6c54d3446",
       "text": "Script   svo (install me in module manager) Load & init/svo.uninstall_all_modules [events]"
@@ -469,7 +539,7 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|Load & init/svo_init_system|script",
-      "digest": "39ca7a11ad968743",
+      "digest": "e8cc631ea96f68f1",
       "text": "Script   svo (install me in module manager) Load & init/svo_init_system [script]"
     },
     {
@@ -479,12 +549,12 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Custom prompt tags/@affs|script",
-      "digest": "03f735fd50774f20",
+      "digest": "0489930c2b6a56b7",
       "text": "Script   svo (install me in module manager) svo Utilities/Custom prompt tags/@affs [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Dragonheal curing strats|script",
-      "digest": "a9379a3a07b7d0bc",
+      "digest": "09919fcc364dd002",
       "text": "Script   svo (install me in module manager) svo Utilities/Dragonheal curing strats [script]"
     },
     {
@@ -494,17 +564,17 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Shrugging curing strats|script",
-      "digest": "c51bbf8ba2e500f6",
+      "digest": "eaca759db5a2bf8f",
       "text": "Script   svo (install me in module manager) svo Utilities/Shrugging curing strats [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Tree curing strats|script",
-      "digest": "de0de9aefac867dc",
+      "digest": "1c8802c6976b6da5",
       "text": "Script   svo (install me in module manager) svo Utilities/Tree curing strats [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/svo_onimportant_aff|script",
-      "digest": "caceef663b2b8413",
+      "digest": "d06407af58ce6744",
       "text": "Script   svo (install me in module manager) svo Utilities/svo_onimportant_aff [script]"
     },
     {
@@ -529,7 +599,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Priorities|script",
-      "digest": "4752064326714f27",
+      "digest": "22ccda6513192cd5",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Priorities [script]"
     },
     {
@@ -604,17 +674,17 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "2035b9519ec69471",
+      "digest": "6c2fc48385e366b5",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",
-      "digest": "05e8dd46298507ae",
+      "digest": "b348b3a5515302cf",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Miscellaneous functions [script]"
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "d1950602cb39e628",
+      "digest": "58b2637907b557c2",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -629,12 +699,12 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "edc4db19a3df9f10",
+      "digest": "ff0cc7213abb903a",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
       "id": "item|Script|svo (trigger functions)|Simple aff trigger functions|script",
-      "digest": "97a2a3df02ef047a",
+      "digest": "c9fe660a1b9779cc",
       "text": "Script   svo (trigger functions) Simple aff trigger functions [script]"
     },
     {
@@ -1063,9 +1133,19 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo salve slickness [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Prompt|patterns",
+      "digest": "ded5c9be6ce0eac5",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Prompt [patterns]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",
       "digest": "61baa56f5354675b",
       "text": "Trigger  svo (aliases, triggers) svo/General/Registration/Started [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Ablaze|script",
+      "digest": "b54e28afdd247a92",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Ablaze [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Anorexia|script",
@@ -1106,6 +1186,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Damaged arm/regexes (damaged arm)|script",
       "digest": "b50472e402949465",
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Damaged arm/regexes (damaged arm) [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Damaged arms|script",
+      "digest": "837cf7480dcf89f4",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Damaged arms [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Disloyalty|script",
@@ -1614,7 +1699,7 @@
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo cure damagedhead|script",
-      "digest": "ddf7b574dca56be9",
+      "digest": "e6509814a8e3e7c8",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo cure damagedhead [script]"
     },
     {
@@ -1686,11 +1771,6 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/calicifedskull|script",
       "digest": "7ca9efae0bc94562",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/calicifedskull [script]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/charredburn|script",
-      "digest": "f2b2835d535d12fb",
-      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/charredburn [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/choleric humour|script",
@@ -1821,11 +1901,6 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/epilepsy|script",
       "digest": "83d1156655a17038",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/epilepsy [script]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/extremeburn|script",
-      "digest": "6415f67261591a91",
-      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/extremeburn [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/fear|script",
@@ -2013,11 +2088,6 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/manaleech [script]"
     },
     {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/mangledhead|patterns",
-      "digest": "5f234ed356485af6",
-      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/mangledhead [patterns]"
-    },
-    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/mangledhead|script",
       "digest": "007d6a0ad381ff1a",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/mangledhead [script]"
@@ -2051,11 +2121,6 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/melancholic humour|script",
       "digest": "07251a3cd798c52f",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/melancholic humour [script]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/meltingburn|script",
-      "digest": "0d297ea7ffbc161e",
-      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/meltingburn [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/mildtrauma|script",
@@ -2218,6 +2283,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/sanguine humour [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/scalded|patterns",
+      "digest": "9c9354b1532fad4b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/scalded [patterns]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/scalded|script",
       "digest": "f562dd67ac567039",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/scalded [script]"
@@ -2236,11 +2306,6 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/serioustrauma|script",
       "digest": "e973262ad79c4044",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/serioustrauma [script]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/severeburn|script",
-      "digest": "aa56728870ff8850",
-      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/severeburn [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/shadowmadness|script",
@@ -2423,6 +2488,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo smoke failed asthma [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Generic illusions/Doublestab, single aff|script",
+      "digest": "12d964dd372b1895",
+      "text": "Trigger  svo (aliases, triggers) svo/Generic illusions/Doublestab, single aff [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Herb tracker/Capture inv|colorTrigger",
       "digest": "13c33f87153efd9e",
       "text": "Trigger  svo (aliases, triggers) svo/Herb tracker/Capture inv [colorTrigger]"
@@ -2473,19 +2543,34 @@
       "text": "Trigger  svo (aliases, triggers) svo/Pipelist/Pipelist start [colorTriggerFgColor]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Poisons + Generic lines/Charred burn|script",
+      "digest": "430ea401b2370887",
+      "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Charred burn [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Poisons + Generic lines/Extreme burn|script",
+      "digest": "2172f0043c6ef287",
+      "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Extreme burn [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Poisons + Generic lines/Melting burn|script",
+      "digest": "0cb5b3bd4545473b",
+      "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Melting burn [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Poisons + Generic lines/Mild concussion|script",
       "digest": "c483b4dd869bb7c1",
       "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Mild concussion [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Poisons + Generic lines/Serious concussion|script",
-      "digest": "bb983e8ddeda7714",
+      "digest": "2b468f77e55f04f3",
       "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Serious concussion [script]"
     },
     {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/Sculpting/Calcified Skull Concussion|script",
-      "digest": "8016b9f91e21d4a8",
-      "text": "Trigger  svo (aliases, triggers) svo/Sculpting/Calcified Skull Concussion [script]"
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Poisons + Generic lines/Severe burn|script",
+      "digest": "47f34a7a5a0fbea9",
+      "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Severe burn [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Striking/Flamefisted|script",
@@ -2493,8 +2578,13 @@
       "text": "Trigger  svo (aliases, triggers) svo/Striking/Flamefisted [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Tekura/Limb damage|script",
+      "digest": "2029e6a8601761a0",
+      "text": "Trigger  svo (aliases, triggers) svo/Tekura/Limb damage [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Vodun & Puppetry/Concussion|script",
-      "digest": "43050faa362bbfc5",
+      "digest": "87efd2daa086e982",
       "text": "Trigger  svo (aliases, triggers) svo/Vodun & Puppetry/Concussion [script]"
     },
     {
