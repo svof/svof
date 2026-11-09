@@ -4729,8 +4729,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingconcussion.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to head", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.concussion.salve, " to head")
         end,
