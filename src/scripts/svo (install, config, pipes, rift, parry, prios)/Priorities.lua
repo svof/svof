@@ -536,6 +536,31 @@ local moved = {
   { action = 'madness', from = 'smoke', to = 'herb', after = 'impatience' },
 }
 
+-- puts the renamed afflictions in i, a saved list as read, under their new
+-- names (svo.renamed_affs), in the places the old names had. A slow curing
+-- action is named with its balance. A list that has the new name already
+-- keeps that one
+local function import_renamed(i)
+  for _, list in pairs(i) do
+    if type(list) == 'table' then
+      local has = {}
+      for _, action in pairs(list) do
+        if type(action) == 'string' then has[action] = true end
+      end
+      for num, action in pairs(list) do
+        if type(action) == 'string' then
+          local name, bal = action:match('^(%w+)(_%w+)$')
+          if not name then name, bal = action, '' end
+          local new = svo.renamed_affs[name]
+          if new then
+            if has[new .. bal] then list[num] = nil else list[num] = new .. bal end
+          end
+        end
+      end
+    end
+  end
+end
+
 -- puts the moved cures in i, a saved list as read, where they are now
 local function import_moved(i)
   for _, m in ipairs(moved) do
@@ -652,6 +677,7 @@ function prio.import(name, echoback, report_errors, use_default)
 
   local ok, m = run(s)
   if not ok then failf("There's a syntax problem in the prios file, we couldn't load it:\n  %s", m) return end
+  import_renamed(i)
   import_moved(i)
 
   local function set(num, action, balance, priority)
