@@ -22,9 +22,10 @@ Three things it pins:
     svo.affs carries no __index, so reading affs.pyre.count gave nil and
     `nil >= 2` raised - aborting the whole prompt, not returning a wrong
     answer.
-  * the floor. Having pyre at all is level 1 or more, but only the GMCP path
-    ever raises svo.dict.pyre.count, so without GMCP the stored level sits at
-    0 while the affliction is genuinely there.
+  * the floor. Having pyre at all is level 1 or more. pyre's aff handler
+    raises a count of 0 to 1 (tools/test_counted_floor.lua runs it), and
+    pyre_holds still floors a stored 0 at 1 for anything that records pyre
+    some other way.
 
 It proves nothing about Mudlet integration or real combat.
 
@@ -142,9 +143,9 @@ affs.pyre = {p = {count = PYRE_CAP}}
 check("pyre at cap frees charredburn", codepaste.pyre_holds('charredburn'), false)
 check("pyre at cap frees meltingburn", codepaste.pyre_holds('meltingburn'), false)
 
--- Pyre present but its level never tracked - the non-GMCP case, where
--- svo.dict.pyre.count stays 0. Presence floors the level at 1, so ablaze is
--- held and the rest are not.
+-- Pyre present but its level never tracked, as when something records pyre
+-- without its aff handler. Presence floors the level at 1, so ablaze is held
+-- and the rest are not.
 affs.pyre = {p = {count = 0}}
 check("untracked pyre holds ablaze", codepaste.pyre_holds('ablaze'), true)
 check("untracked pyre frees severeburn", codepaste.pyre_holds('severeburn'), false)

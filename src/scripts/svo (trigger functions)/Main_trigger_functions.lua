@@ -70,7 +70,8 @@ function svo.valid.symp_asleep()
     return
   end
 
-  if not affs.sleep and not actions.sleep_aff then
+  -- in a deepsleep, this is that, not a sleep svof would try waking from
+  if not affs.sleep and not affs.deepsleep and not actions.sleep_aff then
     svo.checkaction(svo.dict.sleep.aff, true)
     lifevision.add(actions['sleep_aff'].p, 'symptom', nil, 1)
   end
@@ -1379,7 +1380,7 @@ function svo.valid.relapsing_asthma()
 end
 
 function svo.valid.subterfuge_bind()
-  if not conf.aillusion or affs.sleep then
+  if not conf.aillusion or affs.sleep or affs.deepsleep then
     valid.simplebound()
   end
 end
@@ -1511,7 +1512,7 @@ end
 
 
 do
-  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'flamefisted', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'mucous', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed', 'scalded', 'enmesh'}
+  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'flamefisted', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed', 'scalded', 'enmesh', 'constricted', 'snared', 'vinewreathed'}
   if svo.haveskillset('metamorphosis') then
     afflist[#afflist+1] = 'cantmorph'
   end
@@ -1926,11 +1927,13 @@ function svo.valid.got_pressure(calc)
 	end
 end
 
+-- count is how many times the line says the humour was tempered, which the
+-- aff handler would take as its level: a tempering line can't say the level,
+-- and can be an illusion, so it passes none. Kept for scripts that pass it
 function svo.valid.got_humour(which,count)
   svo.assert(svo.dict[which..'humour'], "svo.valid.got_humour: which humour to add?")
-  local humourlevels = count or 1
   svo.checkaction(svo.dict[which..'humour'].aff, true)
-  lifevision.add(actions[which..'humour_aff'].p, nil, humourlevels)
+  lifevision.add(actions[which..'humour_aff'].p)
 end
 
 function svo.valid.sanguine_inundate()
@@ -2618,7 +2621,12 @@ function svo.valid.smoke_failed_asthma()
   end
 end
 
-function svo.valid.got_mucous()
+-- Mucous in your lungs is a longer smoke recovery, not an affliction: see
+-- svo.dict.mucouslungs, which does what these lines say at the prompt.
+--   "As you attempt to inhale the smoke, your lungs fill with a thick mucous."
+--   "Your lungs are too clogged with mucous for you to attempt smoking."
+-- Both answer svof's own asthma check, which can't tell anything from them
+local function lungs_clogged_line()
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
 
   if actions.checkasthma_smoke then
@@ -2627,33 +2635,27 @@ function svo.valid.got_mucous()
 
   local r = svo.findbybal('smoke')
   if r or not conf.aillusion then
-
-    if not affs.mucous then
-      lifevision.answering(r, function()
-        svo.checkaction(svo.dict.mucous.aff, true)
-        lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
-      end)
-    end
+    svo.checkaction(svo.dict.mucouslungs.happened, true)
+    -- alone in its paragraph, as the old mucous affliction's claim was: a
+    -- longer one is taken for an illusion at the prompt
+    lifevision.add(actions.mucouslungs_happened.p, nil, nil, 1)
   elseif conf.aillusion then
     svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
   end
 end
 
-function svo.valid.have_mucous()
-  if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
+svo.valid.got_mucous = lungs_clogged_line
+svo.valid.have_mucous = lungs_clogged_line
 
-  local r = svo.findbybal('smoke')
-  if r or not conf.aillusion then
-
-    if not affs.mucous then
-      lifevision.answering(r, function()
-        svo.checkaction(svo.dict.mucous.aff, true)
-        lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
-      end)
-    end
-  elseif conf.aillusion then
-    svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
-  end
+-- "You manage to cough away the mucous filling your lungs."
+function svo.valid.mucous_woreoff()
+  -- a clog line earlier in this paragraph shares this claim, and only the last
+  -- one filed runs, so the claim has to do both (only reachable with vconfig
+  -- batch: otherwise the clog line's lineguard throws the paragraph out)
+  local pending = lifevision.l.mucouslungs_happened
+  local clogged = pending and not pending.other_action
+  svo.checkaction(svo.dict.mucouslungs.happened, true)
+  lifevision.add(actions.mucouslungs_happened.p, clogged and 'clogged_then_coughed' or 'coughed')
 end
 
 function svo.valid.unlit_pipe()
