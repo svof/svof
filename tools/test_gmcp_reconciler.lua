@@ -632,6 +632,36 @@ do
   eq(calls.rmaff[1], 'sensitivity', "G7: rmaff receives the resolved svof name")
 end
 
+-- ===== scenario 5c: an affliction with two game names =====
+-- seriousconcussion is both concussion and mangledhead. Losing one while the
+-- game still lists the other used to take seriousconcussion off.
+do
+  local env, h, calls, svo = new_environment()
+  load_block(block, env)
+
+  svo.dict.sstosvoa = { concussion = 'seriousconcussion', mangledhead = 'seriousconcussion', torntendons = 'torntendons' }
+  svo.dict.seriousconcussion = { name = 'seriousconcussion' }
+  svo.dict.torntendons = { name = 'torntendons', count = 2 }
+  svo.dict.unknownany.count = 1
+  env.gaffl.concussion, env.gaffl.mangledhead = true, true
+
+  env.gmcp.Char.Afflictions.Remove = { [1] = 'concussion' }
+  h.affremove()
+  eq(#calls.rmaff, 0, "two names: losing one while the other is listed keeps the affliction")
+  eq(#calls.remove_unknownany, 0, "two names: and accounts for no unknown")
+  eq(env.gaffl.concussion, nil, "two names: the lost name still leaves gaffl")
+
+  env.gmcp.Char.Afflictions.Remove = { [1] = 'mangledhead' }
+  h.affremove()
+  eq(calls.rmaff[1], 'seriousconcussion', "two names: losing the last one takes it off")
+
+  -- a level change is one name, not two, so it still takes the entry off
+  env.gaffl.torntendons, env.gaffl['torntendons (2)'] = true, true
+  env.gmcp.Char.Afflictions.Remove = { [1] = 'torntendons (2)' }
+  h.affremove()
+  eq(calls.rmaff[2], 'torntendons', "two names: a levelled entry of the same name is not another name")
+end
+
 -- ===== scenario 5b: GMCP-cured record for the trigger-side illusion checks =====
 -- GMCP is processed before the game text it accompanies, so by the time a
 -- cure's own line reaches a trigger, rmaff has already cleared affs[aff].
@@ -919,20 +949,20 @@ do
   load_block(block, env)
 
   svo.dict.sstosvoa = {
-    deepsleep = 'sleep', sleeping = 'sleep',
+    concussion = 'seriousconcussion', mangledhead = 'seriousconcussion',
     temperedcholeric = 'cholerichumour',
     deafness = false,
   }
   build_reverse_indexes(env)
 
-  -- svotossa keeps one of sleep's two game names, and which one depends on
-  -- pairs order. Report through the other one: that is the case svotossa
-  -- gets wrong and the forward walk has to get right.
-  local kept = svo.dict.svotossa.sleep
-  truthy(kept == 'deepsleep' or kept == 'sleeping', "reports: svotossa keeps one of sleep's game names")
-  local other = (kept == 'deepsleep') and 'sleeping' or 'deepsleep'
+  -- svotossa keeps one of seriousconcussion's two game names, and which one
+  -- depends on pairs order. Report through the other one: that is the case
+  -- svotossa gets wrong and the forward walk has to get right.
+  local kept = svo.dict.svotossa.seriousconcussion
+  truthy(kept == 'concussion' or kept == 'mangledhead', "reports: svotossa keeps one of seriousconcussion's game names")
+  local other = (kept == 'concussion') and 'mangledhead' or 'concussion'
   env.gaffl[other] = true
-  eq(svo.gmcp_reports('sleep'), true, "reports: sleep is found under the game name svotossa did not keep")
+  eq(svo.gmcp_reports('seriousconcussion'), true, "reports: seriousconcussion is found under the game name svotossa did not keep")
 
   env.gaffl[other] = nil
   env.gaffl['temperedcholeric (2)'] = true
@@ -1126,7 +1156,7 @@ do
 
   svo.dict.sstosvoa = {
     asthma = 'asthma', torntendons = 'torntendons', slickness = 'slickness',
-    deepsleep = 'sleep', sleeping = 'sleep',
+    concussion = 'seriousconcussion', mangledhead = 'seriousconcussion',
   }
   build_reverse_indexes(env)
   env.gmcp.Char.Afflictions.List = { { name = 'asthma' }, { name = 'torntendons (2)' } }
@@ -1137,10 +1167,10 @@ do
   eq(svo.gmcp_holds('slickness'), false, "holds: not one GMCP does not report")
   eq(svo.gmcp_holds('unknownany'), false, "holds: never one GMCP cannot report")
 
-  local kept = svo.dict.svotossa.sleep
-  local other = (kept == 'deepsleep') and 'sleeping' or 'deepsleep'
+  local kept = svo.dict.svotossa.seriousconcussion
+  local other = (kept == 'concussion') and 'mangledhead' or 'concussion'
   env.gaffl[other] = true
-  eq(svo.gmcp_holds('sleep'), true, "holds: sleep under the game name svotossa did not keep")
+  eq(svo.gmcp_holds('seriousconcussion'), true, "holds: seriousconcussion under the game name svotossa did not keep")
 
   svo.sk.gmcp_stands_aside = true
   eq(svo.gmcp_holds('asthma'), false, "holds: nothing in a paragraph the game vouches for")

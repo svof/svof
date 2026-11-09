@@ -372,6 +372,11 @@ jobs:
       - name: test class change curingsets
         run: lua tools/test_classchange_curingsets.lua
 
+      # Gate 1.995. Every affliction svof can show on the prompt has a short
+      # tag in @affs, and every tag names an affliction, in every class.
+      - name: test prompt tags
+        run: lua tools/test_prompt_tags.lua
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
