@@ -109,6 +109,12 @@ ITEM_RENAME = {
         "/Striking/Burning": "Flamefisted",
         "/General/svo diag/burning": "flamefisted",
         "/General/svo burning woreoff": "svo flamefisted woreoff",
+        # svof called the game's damagedhead and mangledhead mildconcussion and
+        # seriousconcussion, beside the game's own concussion.
+        "/General/svo diag/concussionhead": "damagedhead",
+        "/General/svo diag/seriousconcussion": "mangledhead",
+        "/General/svo cure mildconcussion": "svo cure damagedhead",
+        "/General/svo cure seriousconcussion": "svo cure mangledhead",
     },
 }
 
@@ -135,9 +141,10 @@ ITEM_MOVE_USED = set()
 # package doesn't have is structural.
 TOP_LEVEL_ADDED = {
     "Script": {
-        # the afflictions a player defines (vcustomaff). It loads straight
-        # after the defences, before the saved priorities are read
-        "Custom afflictions": ("svo (alias and defence functions)", "Defences"),
+        # what a player defines: the defences (vcustomdef) and afflictions
+        # (vcustomaff), a script each. They load straight after the
+        # defences, before the saved priorities are read
+        "Custom definitions": ("svo (alias and defence functions)", "Defences"),
     },
 }
 

@@ -23,8 +23,8 @@
 -- svo.dict is emptied on a class change and the loaders run again, so every
 -- definition (afflictions.defined, which outlives that) is registered again
 -- at systemstart. svo_init_system runs this loader straight after the
--- defences one and before prio's, so a definition is registered before the
--- saved priorities are read, as a defined defence is.
+-- defences and customdefs ones and before prio's, so a definition is
+-- registered before the saved priorities are read, as a defined defence is.
 
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.afflictions = svo.afflictions or {}
@@ -685,7 +685,8 @@ end
 
 -- the draft of name, started from the installed one or new; nil and why
 -- not when the name can't be a definition
-local function draft(name)
+-- asking: the caller asks the game itself, so a new one doesn't ask by its name
+local function draft(name, asking)
   local d = afflictions.drafts[name]
   if d then return d end
   if not afflictions.custom then afflictions.load() end
@@ -700,8 +701,9 @@ local function draft(name)
     if why then return nil, why end
     d = copy({})
     afflictions.drafts[name] = d
-    -- if the game knows it by this name, the rest comes from the game
-    afflictions.fetch(name, name)
+    -- if the game knows it by this name, the rest comes from the game, and
+    -- the screen waits for it whoever asks
+    if not asking then afflictions.fetch(name, name) end
     show_waits[name] = true
     return d
   end
@@ -831,7 +833,11 @@ function afflictions.show(name)
 end
 
 function afflictions.set(name, field, value)
-  local d, why = draft(name)
+  -- a GMCP name the game hasn't refused gets asked about further down
+  local given = field == 'gmcp' and value and value ~= '' and value:lower() ~= 'none' and value:lower()
+  if not afflictions.custom then afflictions.load() end
+  local new = not afflictions.drafts[name] and not afflictions.custom[name]
+  local d, why = draft(name, given and afflictions.gmcp_known(given) ~= false)
   if not d then
     svo.echof("<250,0,0>Can't%s define %s: %s.", svo.getDefaultColor(), name, why)
     return
@@ -849,6 +855,8 @@ function afflictions.set(name, field, value)
       return
     end
     d.gmcp = gmcp
+    -- the rest of a new one comes from the game, by the name it knows
+    if gmcp and new then afflictions.fetch(name, gmcp) end
   elseif field == 'cures' then
     if value == '' then svo.echof("What cures %s? As the game's Cure(s) says, such as Eat Kelp / Eat Aurum.", name) return end
     d.cures = value
@@ -1380,7 +1388,7 @@ function afflictions.command(rest)
   if verb == 'delete' then return afflictions.delete(name) end
   if verb == 'line' then return afflictions.capture(name, value:lower()) end
   if verb == 'fetch' then
-    local d, why = draft(name)
+    local d, why = draft(name, true)
     if not d then
       svo.echof("<250,0,0>Can't%s define %s: %s.", svo.getDefaultColor(), name, why)
       return
