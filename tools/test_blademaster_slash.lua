@@ -75,8 +75,8 @@ local function broke(name, lines)
   local w = world.new()
   local svo = w.svo
   svo.conf.aillusion = true
-  w.env.getLines = function() return lines end
-  w.env.getLastLineNumber = function() return #lines end
+  svo.paragraph_lines = {}
+  for i, text in ipairs(lines) do svo.paragraph_lines[i] = { n = 0, text = text } end
   local simple = false
   local real = svo.valid["simple" .. name]
   svo.valid["simple" .. name] = function(...) simple = true return real(...) end
