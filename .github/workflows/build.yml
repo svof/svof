@@ -364,6 +364,14 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.994. A class change clears the old class's priorities from
+      # both serverside curingsets, normal and slowcuring, in and out of
+      # aeon, and the next resync reaches both. Runs the real loaders
+      # (tools/svof_world.lua) and replays what svof sends through a model
+      # of the curingsets.
+      - name: test class change curingsets
+        run: lua tools/test_classchange_curingsets.lua
+
       # Gate 1.996. Counted afflictions gained from text: the gain line and
       # DIAGNOSE give no level, so each counted affliction's aff handler
       # records it at count 1, keeps a level GMCP set, and leaves a refused

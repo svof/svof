@@ -414,7 +414,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "f11857d667c48327",
+      "digest": "701b156cdd5119b7",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -424,7 +424,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "81ac641cfb8d58b9",
+      "digest": "cba49ffe9e4e1d10",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
@@ -476,6 +476,11 @@
       "id": "item|Script|svo (install me in module manager)|Create Svof namespace|script",
       "digest": "64629833bfe0560e",
       "text": "Script   svo (install me in module manager) Create Svof namespace [script]"
+    },
+    {
+      "id": "item|Script|svo (install me in module manager)|Load & init/svo.classchange|script",
+      "digest": "92340d8368deeade",
+      "text": "Script   svo (install me in module manager) Load & init/svo.classchange [script]"
     },
     {
       "id": "item|Script|svo (install me in module manager)|Load & init/svo.uninstall_all_modules|events",

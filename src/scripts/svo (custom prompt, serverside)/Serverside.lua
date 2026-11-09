@@ -38,15 +38,43 @@ signals["svo system loaded"]:connect(function()
 end, 'get initial state of prios')
 
 function sk.resetserversideprios()
-  svo.sendcuringprio("reset","affliction")
-  svo.sendcuringprio("list reset","defence")
-  
+  if conf.serverside then
+    -- clear both curingsets, not just the one in use, or the other keeps the
+    -- old class's defences on keepup. Anything still queued was meant for the
+    -- old class and is resent from scratch after this
+    sk.affqueue, sk.defqueue, sk.affqueueslow, sk.defqueueslow = {}, {}, {}, {}
+    sk.priolength = {affqueue = 0, affqueueslow = 0, defqueue = 0, defqueueslow = 0}
+    sendAll("curingset switch normal", "curing priority reset", "curing priority defence list reset",
+      "curingset switch slowcuring", "curing priority reset", "curing priority defence list reset",
+      sys.sync and "curingset switch slowcuring" or "curingset switch normal", false)
+  else
+    svo.sendcuringprio("reset","affliction")
+    svo.sendcuringprio("list reset","defence")
+  end
+
 	sk.priochangecache = {
     special = {
       focustoggle = conf.focus
     }
 	}
   sk.priosbeforechange = sk.getblankbeforestateprios()
+end
+
+-- after a class change has reloaded the system: the reset left both
+-- curingsets on the game's defaults, so send the new class's priorities now
+-- rather than at the next keepup or ignore change
+function sk.resyncserversideprios()
+  if not conf.serverside or svo.logging_in then return end
+
+  sk.handleserversideswitch()
+  -- health and mana order, which the diff doesn't cover
+  for _, actiont in pairs(svo.dict) do
+    for _, balancet in pairs(actiont) do
+      if type(balancet) == 'table' and balancet.onprioswitch then
+        balancet.onprioswitch()
+      end
+    end
+  end
 end
 
 function sk.sendpriorityswitch(action, balance, raffs, rdefs, cache, slow)
@@ -111,15 +139,16 @@ function sk.sendpriorityignore(action, balance, rignoreaffs, rignoredefs, cache,
 end
 
 function sk.updateserversideprios()
---Don't do anything before we log in.
-  if svo.logging_in then return end 
-  
+--Don't do anything before we log in. Clear the timer on the way out, or
+--nothing would ever start another sync
+  if svo.logging_in then sk.priochangetimer = nil return end
+
   if not sk.priochangetimer then return end
   sk.updateserverwatch = sk.updateserverwatch or createStopWatch()
   startStopWatch(sk.updateserverwatch)
 
   -- don't notify of prio changes until the system is loaded, as they can get shuffled around a bit
-  if not svo.systemloaded then return end
+  if not svo.systemloaded then sk.priochangetimer = nil return end
   local afterstate = sk.getafterstateprios()
   svo.debugf("sk.updateserverwatch sk.getafterstateprios: %s", getStopWatchTime(sk.updateserverwatch))
 

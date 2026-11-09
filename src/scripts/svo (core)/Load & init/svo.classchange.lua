@@ -36,6 +36,7 @@ function svo.classchange(override)
     svo.sk.resetserversideprios()
 		svo.dict = {}
     svo.systemloaded = false; svo_init_system()
+    svo.sk.resyncserversideprios()
     for defname,v in pairs(temp_defs) do
       svo.defences.got(defname)
     end
