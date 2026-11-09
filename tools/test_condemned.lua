@@ -26,7 +26,8 @@ local function gmcp_aff_add(w, name)
   w.svo.signals.gmcpcharafflictionsadd:emit()
 end
 
-local BURNS = { 'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn' }
+-- burning, at every level the old ladder had
+local BURNS = { 1, 2, 3, 4, 5 }
 
 do -- GMCP's name, and its time
   local w = world.new()
@@ -59,15 +60,17 @@ do -- DIAGNOSE
   eq(svo.sk.diag_list.condemned, true, "DIAGNOSE reports it")
 end
 
-for _, burn in ipairs(BURNS) do -- no burn salve while condemned
+for _, level in ipairs(BURNS) do -- no burn salve while condemned
   local w = world.new()
   local svo = w.svo
-  svo.addaffdict(svo.dict[burn])
-  eq(svo.dict[burn].salve.isadvisable(), true, burn .. "'s salve is advisable")
+  svo.addaffdict(svo.dict.ablaze)
+  svo.dict.ablaze.count = level
+  local burn = "burning " .. level
+  eq(svo.dict.ablaze.salve.isadvisable(), true, burn .. "'s salve is advisable")
   svo.addaffdict(svo.dict.condemned)
-  eq(svo.dict[burn].salve.isadvisable(), false, "but not while condemned")
+  eq(svo.dict.ablaze.salve.isadvisable(), false, "but not while condemned")
   svo.rmaff('condemned')
-  eq(svo.dict[burn].salve.isadvisable(), true, "and is again once it's gone")
+  eq(svo.dict.ablaze.salve.isadvisable(), true, "and is again once it's gone")
 end
 
 do -- the tree: ablaze can't be cured while condemned, so a touch can't cure it
@@ -85,23 +88,26 @@ do -- the tree: ablaze can't be cured while condemned, so a touch can't cure it
   eq(table.concat(svo.gettreeableaffs(), ","), "ablaze", "and the tree can cure it again once condemned is gone")
 end
 
--- an empty mending while condemned says nothing about the burns either. With
--- GMCP off it took them all off, and once condemned wore off nothing cured
--- them (review of #888)
-for _, burn in ipairs(BURNS) do
+-- an empty mending while condemned says nothing about burning either. With
+-- GMCP off it took it off, and once condemned wore off nothing cured it
+-- (review of #888)
+for _, level in ipairs(BURNS) do
   local w = world.new()
   local svo = w.svo
-  svo.addaffdict(svo.dict[burn])
+  local burn = "burning " .. level
+  svo.addaffdict(svo.dict.ablaze)
+  svo.dict.ablaze.count = level
   svo.addaffdict(svo.dict.crippledleftarm)
   svo.addaffdict(svo.dict.condemned)
   eq(svo.gmcp_live(), false, burn .. ": GMCP isn't live here")
   svo.empty.apply_mending()
-  eq(not not svo.affs[burn], true, burn .. ": an empty mending while condemned keeps it")
+  eq(not not svo.affs.ablaze, true, burn .. ": an empty mending while condemned keeps it")
+  eq(svo.dict.ablaze.count, level, burn .. ": at its level")
   eq(not not svo.affs.crippledleftarm, false, burn .. ": and still rules out what mending cures")
   svo.rmaff('condemned')
-  eq(svo.dict[burn].salve.isadvisable(), true, burn .. ": and its salve is advisable once condemned is gone")
+  eq(svo.dict.ablaze.salve.isadvisable(), true, burn .. ": and its salve is advisable once condemned is gone")
   svo.empty.apply_mending()
-  eq(not not svo.affs[burn], false, burn .. ": then an empty mending rules it out, as before")
+  eq(not not svo.affs.ablaze, false, burn .. ": then an empty mending rules it out, as before")
 end
 
 do -- its abbreviation in the @affs prompt tag

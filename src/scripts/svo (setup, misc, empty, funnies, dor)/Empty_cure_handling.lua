@@ -260,17 +260,16 @@ end
 -- keeps anything GMCP reports, and when it keeps a counted affliction it puts
 -- GMCP's level back at the prompt (svo.gmcp_refuse_remove in Setup.lua), so
 -- the reset here cannot leave a kept affliction at a count of 0.
--- While condemned, the burns can't be cured (AFFLICTION SHOW), so an empty
--- mending says nothing about them, as for the tree
-local condemned_keeps = { ablaze = true, severeburn = true, extremeburn = true, charredburn = true,
-  meltingburn = true }
+-- While condemned, burning can't be cured (AFFLICTION SHOW), so an empty
+-- mending says nothing about it, as for the tree
+local condemned_keeps = { ablaze = true }
 empty.apply_mending = function()
   svo.dict.unknowncrippledlimb.count = 0
   svo.dict.unknowncrippledarm.count = 0
   svo.dict.unknowncrippledleg.count = 0
   local gone = {}
   for _, aff in ipairs({'selarnia', 'crippledleftarm', 'crippledleftleg', 'crippledrightarm', 'crippledrightleg', 'ablaze',
-    'severeburn', 'extremeburn', 'charredburn', 'meltingburn', 'unknowncrippledarm', 'unknowncrippledleg',
+    'unknowncrippledarm', 'unknowncrippledleg',
     'unknowncrippledlimb'}) do
     if not (affs.condemned and condemned_keeps[aff]) then gone[#gone + 1] = aff end
   end
