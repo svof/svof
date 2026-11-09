@@ -253,6 +253,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Server-side commands/Curing priority spam limit [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Server-side commands/Server pipe fill",
+      "digest": "59b9d457f8196cf5",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Server-side commands/Server pipe fill [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Sip/svo sipped latched",
       "digest": "bfe8d80c98855831",
       "text": "Trigger  svo (aliases, triggers) svo/General/Sip/svo sipped latched [only in the package]"
@@ -469,8 +474,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "8a1a66f01a2d2bff",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2592 in merged"
+      "digest": "688b737541bb77af",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2593 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -659,7 +664,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "51a79bea33a7f4fc",
+      "digest": "e234703b6b326ac4",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -794,7 +799,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Pipes|script",
-      "digest": "fc3d7176e1b94e98",
+      "digest": "d0afade00b04c9ca",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Pipes [script]"
     },
     {
@@ -804,7 +809,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Rift|script",
-      "digest": "56f31ce7e8c7fca4",
+      "digest": "d39bfa75e714f2c2",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Rift [script]"
     },
     {
@@ -904,7 +909,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "e1b3deb1d9dd5a96",
+      "digest": "3fc59559cb92af05",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
