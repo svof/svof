@@ -517,7 +517,8 @@ end
 --              as the list names it: 'paralysis', or 'unweavingmind(2)' for
 --              exactly two stacks. Afflictions svof has no action for are
 --              kept too. A set is here only once its whole list was read
---   active     the curingset in use, once the game has said which
+--   active     the curingset in use, once the game has said which: in a
+--              switch, or in a list's header
 --   maxstacks  the game's affliction name -> the most stacks it said it has
 --   list       the list being read, and reader, the trigger reading it
 sk.serverread = sk.serverread or {sets = {}, maxstacks = {}}
@@ -546,7 +547,8 @@ end
 local function serverlist_closelevel(list)
   if not list.level then return true end
 
-  -- the game wraps a long level, so the entries are split only after joining
+  -- the game wraps a long level at the screen width, so the entries are
+  -- split only after joining. A level with nothing on it is an empty line
   for listed in table.concat(list.text, " "):gmatch("[^,]+") do
     local entry = listed:match("^%s*(.-)%s*$")
     if entry ~= "" then
@@ -607,7 +609,9 @@ function sk.serverprio_line(text)
   local set = text:match(serverlist_header)
   if set then
     serverlist_stop()
-    read.list = {set = set:lower(), entries = {}, levels = {}, lines = 0}
+    -- the game lists the curingset in use, and names it
+    read.active = set:lower()
+    read.list = {set = read.active, entries = {}, levels = {}, lines = 0}
     read.reader = tempRegexTrigger("^", "svo.sk.serverlist_line(line, isPrompt())")
     return
   end
@@ -637,9 +641,15 @@ function sk.serverprio_line(text)
   end
 
   if text == "All your curing affliction priorities have been reset to defaults." then
-    -- whether the game resets one set or all isn't known, so none is known now
+    -- the game resets only the curingset in use, stack entries included, and
+    -- its defaults aren't known until the list is read again. Without the
+    -- set in use, any of them could be the one that was reset
     serverlist_stop()
-    read.sets = {}
+    if read.active then
+      read.sets[read.active] = nil
+    else
+      read.sets = {}
+    end
   end
 end
 

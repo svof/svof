@@ -499,12 +499,13 @@ jobs:
         run: lua tools/test_mucous.lua
 
       # Gate 1.99997. Reading the game's own affliction priorities: CURING
-      # PRIORITY LIST with its wrapped levels and stack entries, the line
-      # confirming a changed entry, the curingset in use, a refused stack and
-      # a reset. A list that is cut short or has another line in it changes
-      # nothing, and reading sends nothing. Runs the real loaders
-      # (tools/svof_world.lua) on two captured lists, and reads the trigger's
-      # patterns from triggers.json.
+      # PRIORITY LIST with its wrapped, empty and unwrapped levels and its
+      # stack entries, the line confirming a changed entry, the curingset in
+      # use, a refused stack and a reset of the set in use. A list that is
+      # cut short or has another line in it changes nothing, and reading
+      # sends nothing. Runs the real loaders (tools/svof_world.lua) on
+      # captured lists and lines, and reads the trigger's patterns from
+      # triggers.json.
       - name: test server priority list
         run: lua tools/test_server_priority_list.lua
 

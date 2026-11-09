@@ -9,11 +9,11 @@ acts on it yet, and this test also checks that reading sends nothing.
 The two lists below are a player's captures from 2026-10-31, as the game
 printed them at a width of 80: a level's entries wrap onto lines with no
 number, and one wrapped line ends in a comma with no space after it. The
-second list has a stack entry, unweavingmind(2). The stack confirmation and
-the stack refusal are captured lines too. Three forms here are not captured
-and are this test's assumption, taken from the captured ones: the header of
-the slowcuring set's list, the confirmation of a plain entry, and the
-confirmation of 26.
+second list has a stack entry, unweavingmind(2). The third list, the
+confirmations, the refused stack in a batch, the switch lines and the reset
+line are from a live run on 2026-11-09. That run also showed that a list's
+header names the curingset in use, that the slowcuring list's header has the
+same form, and that a reset resets only the set in use.
 
 This runs the real loaders through tools/svof_world.lua. The trigger's
 patterns are read from triggers.json and its script from the .lua beside it,
@@ -84,6 +84,39 @@ local LIST_STACK = LIST_PLAIN
   :gsub("1:  aeon, anorexia", "1:  aeon, asthma, anorexia", 1)
   :gsub("4:  hellsight, asthma, torntendons", "4:  hellsight, torntendons", 1)
   :gsub("wristfractures\n", "wristfractures, unweavingmind(2)\n", 1)
+
+-- A reset set, captured 2026-11-09 from a character with no screen width set,
+-- so no level wraps: the game's defaults. Levels with nothing on them are
+-- printed bare, nothing is at 26, and blindness and deafness aren't listed.
+local LIST_DEFAULTS = [[
+Your affliction curing priorities for the priority set normal:
+1:  paralysis, aeon, peace, scytherus, anorexia, bound, whisperingmadness, sleeping, transfixation, voyria, webbed, prone, disrupted, latched, icebound
+2:  entangled, hellsight, slickness, asthma, recklessness, impatience, daeggerimpale, impaled, heartseed, spiritburn, tenderskin, guilt, crushedthroat, calcifiedskull, calcifiedtorso
+3:  brokenrightleg, brokenleftleg, damagedleftleg, lovers, confusion, pacified, clumsiness, healthleech, stupidity, manaleech, sensitivity, disloyalty, dissonance, temperedmelancholic, temperedcholeric, temperedsanguine, temperedphlegmatic, skullfractures, wristfractures, crackedribs, torntendons, retribution, grievouswounds
+4:  damagedrightleg, mangledrightleg, mangledleftleg, epilepsy, nausea, weariness, addiction, deadening, hypochondria, lethargy, darkshade, hypothermia, unweavingbody, unweavingmind, unweavingspirit, mindravaged, mycalium
+5:  itching, fear, brokenrightarm, brokenleftarm, dazed, justice, shyness, dizziness, haemophilia, masochism, vertigo, hypersomnia, shivering, frozen, scalded, kkractlebrand, pressure, frostbite
+6:  damagedrightarm, damagedleftarm, mangledrightarm, mangledleftarm, hallucinations, generosity, agoraphobia, loneliness, claustrophobia, shadowmadness, tension, flushings, rebbies, crescendo
+7:  damagedhead, mangledhead, concussion, dementia, paranoia, horror, depression, tonguetied, pyre
+8:  mildtrauma, serioustrauma, burning, internalbleeding, pyramides, fulminated, earworm
+9:  slashedthroat, laceratedthroat, parasite, timeloop, sandfever
+10: selarnia, fratricide
+11: stuttering
+12: diminished
+13:
+14:
+15:
+16:
+17:
+18:
+19:
+20: indifference
+21:
+22:
+23:
+24: stridulating
+25:
+26:
+Affs with priority 26 are ignored.]]
 
 local CONFIRM_STACK = "You have set the 'unweavingmind(2)' affliction to the 6 priority."
 local REFUSED_STACK = "The unweavingmind affliction can only have up to 5 stacks."
@@ -255,13 +288,9 @@ do
   g.line(CONFIRM_STACK)
   eq(g.read.sets.normal, nil, "a change before any list was read is not kept")
 
+  eq(g.read.active, nil, "the curingset in use isn't known at first")
   g.lines(LIST_PLAIN)
-  eq(g.read.active, nil, "a list doesn't say which curingset is in use")
-  g.line(CONFIRM_STACK)
-  eq(g.read.sets.normal["unweavingmind(2)"], nil, "nor is one before the game has named the curingset in use")
-
-  g.line(SWITCH_NORMAL)
-  eq(g.read.active, "normal", "the curingset in use")
+  eq(g.read.active, "normal", "a list's header names the curingset in use")
   g.line(CONFIRM_STACK)
   eq(g.read.sets.normal["unweavingmind(2)"], 6, "a changed stack entry")
   eq(g.read.sets.normal.unweavingmind, 25, "leaves the plain entry alone")
@@ -285,24 +314,50 @@ do
   eq(g.read.sets.normal.asthma, 4, "and doesn't land in the other set")
 
   g.line(SWITCH_SLOW)
+  g.read.active = nil
   g.lines((LIST_PLAIN:gsub("priority set normal", "priority set slowcuring", 1)))
+  eq(g.read.active, "slowcuring", "the slowcuring list's header names it as the set in use")
   g.line("You have set the 'asthma' affliction to the 1 priority.")
   g.line(SWITCH_NORMAL)
   eq(g.count("slowcuring"), 131, "the slowcuring set's list is kept under its own name")
   eq(g.read.sets.slowcuring.asthma, 1, "a change between two switches goes to the set switched to")
   eq(g.read.sets.normal.asthma, 4, "and not to the one switched back to")
 
-  -- ===== a refused stack, and a reset =====
+  -- ===== a batch with a refused stack =====
 
+  -- the game's reply to CURING PRIORITY PARALYSIS 3 UNWEAVINGMIND9 6 ASTHMA 5
+  g.line("You have set the 'paralysis' affliction to the 3 priority.")
   g.line(REFUSED_STACK)
+  g.line("You have set the 'asthma' affliction to the 5 priority.")
+  eq(g.read.sets.normal.paralysis, 3, "a batch's entry before a refused one")
+  eq(g.read.sets.normal.asthma, 5, "and the one after it")
   eq(g.read.maxstacks.unweavingmind, 5, "the most stacks the game said an affliction has")
   eq(g.count("normal"), 132, "a refusal changes no entry")
 
+  -- ===== a reset =====
+
   g.line(RESET)
-  eq(g.read.sets.normal, nil, "a reset forgets the normal set")
-  eq(g.read.sets.slowcuring, nil, "and the slowcuring set")
-  eq(g.read.active, "normal", "but not which set is in use")
+  eq(g.read.sets.normal, nil, "a reset forgets the set in use")
+  eq(g.count("slowcuring"), 131, "and not the other set")
+  eq(g.read.active, "normal", "nor which set is in use")
   eq(g.read.maxstacks.unweavingmind, 5, "nor the stacks")
+
+  -- the list after a reset: the game's defaults
+  g.lines(LIST_DEFAULTS)
+  local normal = g.read.sets.normal or {}
+  eq(g.count("normal"), 129, "entries read from a reset set's list")
+  eq(normal.latched, 1, "latched, in a level that doesn't wrap")
+  eq(normal.icebound, 1, "icebound, the last of it")
+  eq(normal.diminished, 12, "diminished, alone before the empty levels")
+  eq(normal.indifference, 20, "indifference, between empty levels")
+  eq(normal.stridulating, 24, "stridulating, before the empty last levels")
+  eq(normal["unweavingmind(2)"], nil, "the reset set has no stack entry")
+  eq(normal.blindness, nil, "the game's defaults don't list blindness")
+
+  -- the game's reply to CURING PRIORITY BLIND 26
+  g.line("You have set the 'blindness' affliction to the 26 priority.")
+  eq(g.read.sets.normal.blindness, 26, "a changed entry the list didn't have is added")
+  eq(g.count("normal"), 130, "as one entry")
 
   local stack = lines_of(LIST_STACK)
   for i = 1, 10 do g.line(stack[i]) end
@@ -310,6 +365,11 @@ do
   for i = 11, #stack do g.line(stack[i]) end
   eq(g.read.sets.normal, nil, "a reset in the middle of a list drops the list")
   eq(#g.readers(), 0, "and its reader")
+  eq(g.count("slowcuring"), 131, "the other set still stays")
+
+  g.read.active = nil
+  g.line(RESET)
+  eq(g.read.sets.slowcuring, nil, "a reset with the set in use unknown forgets every set")
 
   eq(#g.w.sent, sent, "none of it sends anything")
 end
