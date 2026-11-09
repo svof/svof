@@ -1497,6 +1497,13 @@ svo.rmaff = function (old)
     svo.dict[old].onremoved()
   end
 
+  -- A counted affliction that's gone has no level left. Most callers reset
+  -- the count themselves, but a GMCP List resync and the empty cures didn't,
+  -- and a counted aff handler never lowers a count, so the next gain by text
+  -- kept the old level. This comes after onremoved, which for the
+  -- unknowncrippled stacks reads the count to put one fewer back
+  if type(svo.dict[old].count) == 'number' and not affs[old] then svo.dict[old].count = 0 end
+
   if conf.showafftimes and sw then
     svo.echoafftime(stopStopWatch(sw), old)
   end
