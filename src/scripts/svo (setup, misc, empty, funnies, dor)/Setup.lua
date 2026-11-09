@@ -727,8 +727,7 @@ sk.gmcp_unconfirmed = sk.gmcp_unconfirmed or {}
 -- Whether the game currently reports this svof affliction over GMCP. Walks
 -- gaffl, which holds only what you have right now, and translates each game
 -- name forward through sstosvoa. Going forward matters: svotossa keeps only
--- one game name per svof name, and sleep (deepsleep, sleeping) and
--- mangledhead (concussion, mangledhead) each have two.
+-- one game name per svof name, and sleep has two (deepsleep, sleeping).
 function svo.gmcp_reports(aff)
   for rawaff in pairs(gaffl) do
     if not sk.gmcp_unconfirmed[rawaff] and svo.dict.sstosvoa[(parseaffname(rawaff))] == aff then return true end
@@ -2254,6 +2253,14 @@ local function import_renamed_affs(t)
   end
 end
 
+-- seriousconcussion stood for concussion too, so in a list saved with the
+-- old name, concussion starts as that was: ignoring it stopped svof curing
+-- GMCP's concussion, and leaving it to serverside left that there too. Run
+-- before import_renamed_affs takes the old name away
+local function start_concussion(t)
+  if t.concussion == nil then t.concussion = t.seriousconcussion end
+end
+
 -- load the ignore list
 signals.systemstart:connect(function ()
   local conf_path = getMudletHomeDir() .. "/svo/config/ignore"
@@ -2261,6 +2268,7 @@ signals.systemstart:connect(function ()
   if lfs.attributes(conf_path) then
     local t = {}
     table.load(conf_path, t)
+    start_concussion(t)
     import_renamed_affs(t)
     svo.update(svo.ignore, t)
   end
@@ -2389,7 +2397,10 @@ end, 'save dragonheal data')
 
 for _, config in ipairs{
  {location = 'serverignore', localtable = svo.serverignore, errormsg = "re-set all of the server ignore strats",
-  afterload = function () import_renamed_affs(svo.serverignore) end},
+  afterload = function ()
+    start_concussion(svo.serverignore)
+    import_renamed_affs(svo.serverignore)
+  end},
  -- a saved list can tick an affliction svof no longer focuses for, such as
  -- generosity, which sk.canfocus would still act on and the menu can't show
  {location = 'cadmusaffs', localtable = svo.me.cadmusaffs, errormsg = "re-set all of the cadmus affs",

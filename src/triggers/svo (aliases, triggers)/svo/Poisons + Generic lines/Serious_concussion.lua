@@ -1,1 +1,1 @@
-svo.valid.proper_mangledhead()
+svo.valid.proper_concussion()
