@@ -202,14 +202,7 @@ codepaste.addrestobreakleg = function(aff, oldhp, tekura)
 
   if not conf.aillusion or ((not oldhp or oldhp > stats.currenthealth) or svo.paragraph_length >= 3 or
     (affs.recklessness and getStopWatchTime(affs[aff].sw) >= conf.ai_restoreckless))
-    -- accept it when it was a tremolo hit that set us up for a break as well
-    or (sk.tremoloside and sk.tremoloside[leg])
   then
-
-    -- clear sk.tremoloside for the leg, so tremolo later on can know when it /didn't/ break a leg
-    if sk.tremoloside and sk.tremoloside[leg] then
-      sk.tremoloside[leg] = nil
-    end
 
     if not tekura then
       svo.addaffdict(svo.dict[aff])
@@ -448,70 +441,71 @@ codepaste.addunknownany = function(amount)
   svo.updateaffcount(svo.dict.unknownany)
 end
 
--- The burn ladder is legacy. Achaea made burning one stacking affliction,
--- which GMCP and serverside report as `burning` with a level, so these five
--- separate afflictions are no longer needed. Replacing them with one counted
--- entry (keeping the name ablaze), and reworking pyre with it, is planned as
--- its own change. Don't build new logic on sk.burns.
---
--- A known problem until then: GMCP's `burning` maps to ablaze alone, so when
--- a rung above it is gained, remove_burns tries to remove ablaze, GMCP still
--- reports burning, and svo.rmaff refuses. ablaze and the new rung both stay
--- tracked, and sk.current_burn returns ablaze.
-sk.burns = {'ablaze', 'severeburn', 'extremeburn', 'charredburn', 'meltingburn'}
--- removes all burning afflictions except for the optional specified one
-codepaste.remove_burns = function(skipaff)
-  local burns = deepcopy(sk.burns)
-  if skipaff then
-    table.remove(burns, table.index_of(burns, skipaff))
-  end
+-- Burning is one counted affliction, ablaze, as the game has it: GMCP and
+-- serverside report it as `burning` with a level (the repo owner, 2026-09-25;
+-- the user, 2026-10-31). Mending takes it down a level per application, and
+-- so does a tree touch; the line "The raging fire about your skin goes out."
+-- ends it. Catching fire again, or one of the four old escalation lines,
+-- raises it a level. DIAGNOSE shows "ablaze." at every level (the user,
+-- 2026-10-31), so it says only that you're burning. GMCP's level, outside
+-- blackout, has the final word.
 
-  svo.rmaff(burns)
+-- raises ablaze a level for each of lines, the ignite lines of one paragraph
+-- (svo.valid.simpleablaze), or one, or to level when one is given. Not
+-- burning before, the first line is level 1. While GMCP reports burning, its
+-- Add has already set the level the lines brought, so they leave it
+codepaste.add_burn = function(level, lines)
+  local was = affs.ablaze
+  svo.addaffdict(svo.dict.ablaze)
+  if not affs.ablaze then return end
+  if svo.gmcp_holds('ablaze') and not tonumber(level) then
+    -- GMCP's Add set the level, and this line is still the one that warns
+    if (svo.dict.ablaze.count or 0) >= 5 then sk.warn 'golemdestroyable' end
+    return
+  end
+  local count = svo.dict.ablaze.count or 0
+  local raises = math.max(tonumber(lines) or 1, 1)
+  if tonumber(level) then
+    count = tonumber(level)
+  elseif was then
+    count = count + raises
+  else
+    count = raises
+  end
+  svo.dict.ablaze.count = math.max(count, 1)
+  svo.updateaffcount(svo.dict.ablaze)
+  -- the old ladder's top, meltingburn, warned of this
+  if svo.dict.ablaze.count >= 5 then sk.warn 'golemdestroyable' end
+end
+
+-- takes ablaze down amount levels, and off below one. While GMCP reports
+-- burning, its Add or Remove has already said where the cure left it
+codepaste.reduce_burn = function(amount)
+  if not affs.ablaze then return end
+  if svo.gmcp_holds('ablaze') then return end
+  local count = (svo.dict.ablaze.count or 1) - (amount or 1)
+  if count < 1 then
+    svo.rmaff('ablaze')
+    return
+  end
+  svo.dict.ablaze.count = count
+  svo.updateaffcount(svo.dict.ablaze)
 end
 
 -- -> boolean
--- Pyre builds pyre and ablaze, and a burn cannot tick down below the pyre
--- level. Salving a burn that sits at or under that level is wasted - it comes
--- straight back - so this returns true when pyre is holding the given burn in
--- place and the salve should be skipped.
+-- While pyre is active, ablaze may not be cured below the intensity of the
+-- pyre's own stacks (AFFLICTION SHOW). Mending takes ablaze down one level,
+-- so salving it at or under pyre's level is wasted - it comes straight back -
+-- and this says to skip the salve.
 --
--- Applying takes the burn down exactly one rung, and the rung it lands on has
--- to be at or above the pyre level to survive, so the burn's own index in
--- sk.burns is the threshold: ablaze is held from pyre 1, severeburn from 2,
--- extremeburn from 3. Pyre caps at 3 in game, so charredburn and meltingburn
--- are never held today; they are written the same way rather than dropped, so
--- the rule stays right if that cap ever moves.
---
--- Two traps live here. The level is on .p - svo.affs entries are
--- { p = <the dict entry>, sw = <stopwatch> } with no __index on svo.affs - so
--- reading affs.pyre.count gave nil and raised on the comparison. And having
--- pyre at all is level 1 or more, which is why presence floors the answer at
--- 1: only the GMCP path ever raises svo.dict.pyre.count, since
--- svo.valid.simplepyre passes no argument and pyre sits in the plain diag list
--- rather than the counted one, so without GMCP the stored level stays 0 while
--- the affliction is genuinely there.
-codepaste.pyre_holds = function(burn)
-  if not affs.pyre then return false end
+-- The level is on .p - svo.affs entries are { p = <the dict entry>, sw =
+-- <stopwatch> } with no __index on svo.affs. And having pyre or ablaze at all
+-- is level 1 or more, which is why presence floors both at 1: without GMCP a
+-- stored level can sit at 0 while the affliction is genuinely there.
+codepaste.pyre_holds = function()
+  if not affs.pyre or not affs.ablaze then return false end
 
-  return math.max(affs.pyre.p.count or 0, 1) >= table.index_of(sk.burns, burn)
-end
-
-sk.next_burn = function()
-  for i,v in ipairs(sk.burns) do
-    if affs[v] then return sk.burns[i+1] or sk.burns[#sk.burns] end
-  end
-end
-
-sk.current_burn = function()
-  for _,v in ipairs(sk.burns) do
-    if affs[v] then return v end
-  end
-end
-
-sk.previous_burn = function(howfar)
-  for i,v in ipairs(sk.burns) do
-    if affs[v] then return sk.burns[i-(howfar and howfar or 1)] or nil end
-  end
+  return math.max(affs.pyre.p.count or 0, 1) >= math.max(affs.ablaze.p.count or 0, 1)
 end
 
 codepaste.serversideahealthmanaprio = function()
@@ -542,7 +536,7 @@ if not next(svo.dict) then
     gamename = nil,
     onservereignore = nil, -- (function) a function which'll return true if this needs to be ignored serverside
     healhealth = {
-      description = "heals health with health/vitality or moss/potash",
+      description = "heals health with health or moss/potash",
       sip = {
         name = false, --'healhealth_sip',
         balance = false, --'sip',
@@ -596,7 +590,7 @@ if not next(svo.dict) then
           codepaste.serversideahealthmanaprio()
         end,
   
-        sipcure = {'health', 'vitality'},
+        sipcure = {'health'},
   
         onstart = function()
           svo.sip(svo.dict.healhealth.sip)
@@ -626,7 +620,7 @@ if not next(svo.dict) then
       },
     },
     healmana = {
-      description = "heals mana with mana/mentality or moss/potash",
+      description = "heals mana with mana or moss/potash",
       sip = {
         -- managed outside priority lists
         irregular = true,
@@ -643,7 +637,7 @@ if not next(svo.dict) then
           codepaste.serversideahealthmanaprio()
         end,
   
-        sipcure = {'mana', 'mentality'},
+        sipcure = {'mana'},
   
         onstart = function()
           svo.sip(svo.dict.healmana.sip)
@@ -702,6 +696,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.skullfractures)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.skullfractures and svo.dict.skullfractures.count < level then svo.dict.skullfractures.count = level end
           svo.updateaffcount(svo.dict.skullfractures)
         end
       },
@@ -755,6 +753,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.crackedribs)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.crackedribs and svo.dict.crackedribs.count < level then svo.dict.crackedribs.count = level end
           svo.updateaffcount(svo.dict.crackedribs)
         end
       },
@@ -808,6 +810,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.wristfractures)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.wristfractures and svo.dict.wristfractures.count < level then svo.dict.wristfractures.count = level end
           svo.updateaffcount(svo.dict.wristfractures)
         end
       },
@@ -861,6 +867,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.torntendons)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.torntendons and svo.dict.torntendons.count < level then svo.dict.torntendons.count = level end
           svo.updateaffcount(svo.dict.torntendons)
         end
       },
@@ -917,6 +927,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.pressure)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.pressure and svo.dict.pressure.count < level then svo.dict.pressure.count = level end
           svo.updateaffcount(svo.dict.pressure)
         end
       },
@@ -977,6 +991,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.cholerichumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.cholerichumour and svo.dict.cholerichumour.count < level then svo.dict.cholerichumour.count = level end
           svo.updateaffcount(svo.dict.cholerichumour)
         end
       },
@@ -1037,6 +1055,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.melancholichumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.melancholichumour and svo.dict.melancholichumour.count < level then svo.dict.melancholichumour.count = level end
           svo.updateaffcount(svo.dict.melancholichumour)
         end
       },
@@ -1056,6 +1078,9 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- Tempered by an Alchemist. Besides its own effects, it gives smoking a
+    -- chance of filling your lungs with mucous, which svof tracks as a longer
+    -- smoke recovery, not an affliction: see svo.dict.mucouslungs
     phlegmatichumour = {
       gamename = 'temperedphlegmatic',
       name = 'phlegmatichumour',
@@ -1096,6 +1121,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.phlegmatichumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.phlegmatichumour and svo.dict.phlegmatichumour.count < level then svo.dict.phlegmatichumour.count = level end
           svo.updateaffcount(svo.dict.phlegmatichumour)
         end
       },
@@ -1143,18 +1172,22 @@ if not next(svo.dict) then
   
         noeffect = function() svo.lostbal_herb() end,
   
-        -- gives bleeding depending on your sanguine humour level, from 250 for first to 2500 for last
+        -- gives bleeding depending on your sanguine humour level, from 250 for first to 2500 for last. GMCP's
+        -- Bleed: in this paragraph's Char.Vitals already holds it, and Setup.lua recorded that amount, so it's
+        -- left alone. Without one, as in blackout, which stops Vitals, the level gives the amount until the next
         inundated = function()
           local min = 250
           -- local max = 2500
           if not affs.sanguinehumour then return end
-  
-          local bledfor = svo.dict.sanguinehumour.count * min
-  
-          svo.addaffdict(svo.dict.bleeding)
-          svo.dict.bleeding.count = bledfor
-          svo.updateaffcount(svo.dict.bleeding)
-  
+
+          if not sk.gmcp_bleed_seen then
+            local bledfor = svo.dict.sanguinehumour.count * min
+
+            svo.addaffdict(svo.dict.bleeding)
+            svo.dict.bleeding.count = bledfor
+            svo.updateaffcount(svo.dict.bleeding)
+          end
+
           svo.rmaff('sanguinehumour')
           svo.dict.sanguinehumour.count = 0
         end,
@@ -1166,6 +1199,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.sanguinehumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.sanguinehumour and svo.dict.sanguinehumour.count < level then svo.dict.sanguinehumour.count = level end
           svo.updateaffcount(svo.dict.sanguinehumour)
         end
       },
@@ -1223,6 +1260,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.horror)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.horror and svo.dict.horror.count < level then svo.dict.horror.count = level end
           svo.updateaffcount(svo.dict.horror)
         end
       },
@@ -1978,6 +2019,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.pyre)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.pyre and svo.dict.pyre.count < level then svo.dict.pyre.count = level end
           svo.updateaffcount(svo.dict.pyre)
         end
       },
@@ -3196,8 +3241,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingheartseed.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to torso", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.heartseed.salve, " to torso")
         end,
@@ -3234,7 +3279,7 @@ if not next(svo.dict) then
     calcifiedskull = {
       salve = {
         isadvisable = function()
-          return (affs.calcifiedskull and not affs.mildconcussion) or false
+          return (affs.calcifiedskull and not affs.damagedhead) or false
         end,
   
         oncompleted = function()
@@ -3243,8 +3288,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingcalcifiedskull.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to head", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.calcifiedskull.salve, " to head")
         end,
@@ -3290,8 +3335,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingcalcifiedtorso.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to torso", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.calcifiedtorso.salve, " to torso")
         end,
@@ -3337,8 +3382,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curinghypothermia.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to torso", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.hypothermia.salve, " to torso")
         end,
@@ -3384,8 +3429,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingtonguetied.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to head", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.tonguetied.salve, " to head")
         end,
@@ -3433,8 +3478,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmutilatedrightleg.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to legs", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mutilatedrightleg.salve, " to legs")
         end,
@@ -3514,8 +3559,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingparestolegs.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to legs", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.parestolegs.salve, " to legs")
         end,
@@ -3568,8 +3613,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmangledrightleg.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to legs", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mangledrightleg.salve, " to legs")
         end,
@@ -3653,8 +3698,8 @@ if not next(svo.dict) then
           if svo.dict.unknowncrippledleg.count <= 0 then svo.rmaff'unknowncrippledleg' else svo.updateaffcount(svo.dict.unknowncrippledleg) end
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending to legs", "apply mending", "apply renewal to legs", "apply renewal"},
+        applycure = {'mending'},
+        actions = {"apply mending to legs", "apply mending"},
         onstart = function()
           svo.apply(svo.dict.crippledrightleg.salve, " to legs")
         end,
@@ -3694,8 +3739,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmutilatedleftleg.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to legs", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mutilatedleftleg.salve, " to legs")
         end,
@@ -3770,8 +3815,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmangledleftleg.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to legs", "apply restoration", "apply reconstructive to legs", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to legs", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mangledleftleg.salve, " to legs")
         end,
@@ -3855,8 +3900,8 @@ if not next(svo.dict) then
           if svo.dict.unknowncrippledleg.count <= 0 then svo.rmaff'unknowncrippledleg' else svo.updateaffcount(svo.dict.unknowncrippledleg) end
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending to legs", "apply mending", "apply renewal to legs", "apply renewal"},
+        applycure = {'mending'},
+        actions = {"apply mending to legs", "apply mending"},
         onstart = function()
           svo.apply(svo.dict.crippledleftleg.salve, " to legs")
         end,
@@ -3901,8 +3946,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingparestoarms.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to arms", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.parestoarms.salve, " to arms")
         end,
@@ -3955,8 +4000,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmutilatedleftarm.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to arms", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mutilatedleftarm.salve, " to arms")
         end,
@@ -4026,8 +4071,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmangledleftarm.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to arms", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mangledleftarm.salve, " to arms")
         end,
@@ -4108,8 +4153,8 @@ if not next(svo.dict) then
           if svo.dict.unknowncrippledarm.count <= 0 then svo.rmaff'unknowncrippledarm' else svo.updateaffcount(svo.dict.unknowncrippledarm) end
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending to arms", "apply mending", "apply renewal to arms", "apply renewal"},
+        applycure = {'mending'},
+        actions = {"apply mending to arms", "apply mending"},
         onstart = function()
           svo.apply(svo.dict.crippledleftarm.salve, " to arms")
         end,
@@ -4149,8 +4194,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmutilatedrightarm.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to arms", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mutilatedrightarm.salve, " to arms")
         end,
@@ -4220,8 +4265,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmangledrightarm.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to arms", "apply restoration", "apply reconstructive to arms", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to arms", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mangledrightarm.salve, " to arms")
         end,
@@ -4302,8 +4347,8 @@ if not next(svo.dict) then
           if svo.dict.unknowncrippledarm.count <= 0 then svo.rmaff'unknowncrippledarm' else svo.updateaffcount(svo.dict.unknowncrippledarm) end
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending to arms", "apply mending", "apply renewal to arms", "apply renewal"},
+        applycure = {'mending'},
+        actions = {"apply mending to arms", "apply mending"},
         onstart = function()
           svo.apply(svo.dict.crippledrightarm.salve, " to arms")
         end,
@@ -4342,8 +4387,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curinglaceratedthroat.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to head", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.laceratedthroat.salve, " to head")
         end,
@@ -4406,8 +4451,8 @@ if not next(svo.dict) then
           empty.apply_epidermal_head()
         end,
   
-        applycure = {'epidermal', 'sensory'},
-        actions = {"apply epidermal to head", "apply epidermal", "apply sensory to head", "apply sensory"},
+        applycure = {'epidermal'},
+        actions = {"apply epidermal to head", "apply epidermal"},
         onstart = function()
           svo.apply(svo.dict.slashedthroat.salve, " to head")
         end
@@ -4440,8 +4485,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingserioustrauma.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to torso", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.serioustrauma.salve, " to torso")
         end,
@@ -4504,8 +4549,8 @@ if not next(svo.dict) then
           svo.doaction(svo.dict.curingmildtrauma.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to torso", "apply restoration", "apply reconstructive to torso", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to torso", "apply restoration"},
         onstart = function()
           svo.apply(svo.dict.mildtrauma.salve, " to torso")
         end,
@@ -4539,128 +4584,182 @@ if not next(svo.dict) then
         noeffect = function() svo.rmaff('mildtrauma') end
       }
     },
-    seriousconcussion = {
-      gamename = 'mangledhead',
+    mangledhead = {
       salve = {
         isadvisable = function()
-          return (affs.seriousconcussion) or false
+          return (affs.mangledhead) or false
         end,
   
         oncompleted = function()
           svo.lostbal_salve()
   
-          svo.doaction(svo.dict.curingseriousconcussion.waitingfor)
+          svo.doaction(svo.dict.curingmangledhead.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to head", "apply restoration"},
         onstart = function()
-          svo.apply(svo.dict.seriousconcussion.salve, " to head")
+          svo.apply(svo.dict.mangledhead.salve, " to head")
         end,
   
         -- we get no msg from an application of this
         empty = function()
-          svo.dict.seriousconcussion.salve.oncompleted()
+          svo.dict.mangledhead.salve.oncompleted()
         end
       },
       aff = {
         oncompleted = function (oldhp)
           if not conf.aillusion or not oldhp or oldhp > stats.currenthealth or svo.paragraph_length >= 3 then
-            if affs.mildconcussion then svo.rmaff('mildconcussion') end
-            svo.addaffdict(svo.dict.seriousconcussion)
+            if affs.damagedhead then svo.rmaff('damagedhead') end
+            svo.addaffdict(svo.dict.mangledhead)
             signals.after_lifevision_processing:unblock(cnrl.checkwarning)
           end
         end,
   
         forced = function()
-          if affs.mildconcussion then svo.rmaff('mildconcussion') end
-          svo.addaffdict(svo.dict.seriousconcussion)
+          if affs.damagedhead then svo.rmaff('damagedhead') end
+          svo.addaffdict(svo.dict.mangledhead)
         end
       },
       gone = {
-        oncompleted = function() svo.rmaff('seriousconcussion') end,
+        oncompleted = function() svo.rmaff('mangledhead') end,
       },
       onadded = function()
-        if affs.prone and affs.seriousconcussion then
+        if affs.prone and affs.mangledhead then
           sk.warn 'pulpable'
         end
       end
     },
-    curingseriousconcussion = {
+    curingmangledhead = {
       waitingfor = {
         customwait = 6,
   
         oncompleted = function()
-          svo.rmaff('seriousconcussion')
-          svo.addaffdict(svo.dict.mildconcussion)
+          svo.rmaff('mangledhead')
+          svo.addaffdict(svo.dict.damagedhead)
         end,
   
         ontimeout = function()
-          if affs.seriousconcussion then
-            svo.rmaff('seriousconcussion')
-            svo.addaffdict(svo.dict.mildconcussion)
+          if affs.mangledhead then
+            svo.rmaff('mangledhead')
+            svo.addaffdict(svo.dict.damagedhead)
           end
         end,
   
         onstart = function() end,
   
         noeffect = function()
-          svo.rmaff('seriousconcussion')
-          svo.rmaff('mildconcussion')
+          svo.rmaff('mangledhead')
+          svo.rmaff('damagedhead')
         end
       }
     },
-    mildconcussion = {
-      gamename = 'damagedhead',
+    damagedhead = {
       salve = {
         isadvisable = function()
-          return (affs.mildconcussion) or false
+          return (affs.damagedhead) or false
         end,
   
         oncompleted = function()
           svo.lostbal_salve()
   
-          svo.doaction(svo.dict.curingmildconcussion.waitingfor)
+          svo.doaction(svo.dict.curingdamagedhead.waitingfor)
         end,
   
-        applycure = {'restoration', 'reconstructive'},
-        actions = {"apply restoration to head", "apply restoration", "apply reconstructive to head", "apply reconstructive"},
+        applycure = {'restoration'},
+        actions = {"apply restoration to head", "apply restoration"},
         onstart = function()
-          svo.apply(svo.dict.mildconcussion.salve, " to head")
+          svo.apply(svo.dict.damagedhead.salve, " to head")
         end,
   
         -- we get no msg from an application of this
         empty = function()
-          svo.dict.mildconcussion.salve.oncompleted()
+          svo.dict.damagedhead.salve.oncompleted()
         end
       },
       aff = {
         oncompleted = function (oldhp)
           if not conf.aillusion or not oldhp or oldhp > stats.currenthealth or svo.paragraph_length >= 3 then
-            svo.addaffdict(svo.dict.mildconcussion)
+            svo.addaffdict(svo.dict.damagedhead)
             signals.after_lifevision_processing:unblock(cnrl.checkwarning)
           end
         end,
   
         forced = function()
-          svo.addaffdict(svo.dict.mildconcussion)
+          svo.addaffdict(svo.dict.damagedhead)
         end
       },
       gone = {
-        oncompleted = function() svo.rmaff('mildconcussion') end,
+        oncompleted = function() svo.rmaff('damagedhead') end,
       }
     },
-    curingmildconcussion = {
+    curingdamagedhead = {
       waitingfor = {
         customwait = 6,
   
-        oncompleted = function() svo.rmaff('mildconcussion') end,
+        oncompleted = function() svo.rmaff('damagedhead') end,
   
-        ontimeout = function() svo.rmaff('mildconcussion') end,
+        ontimeout = function() svo.rmaff('damagedhead') end,
   
         onstart = function() end,
   
-        noeffect = function() svo.rmaff('mildconcussion') end
+        noeffect = function() svo.rmaff('damagedhead') end
+      }
+    },
+    -- The game's third head affliction, beside damagedhead and mangledhead:
+    -- restoration to the head cures it outright, and its cure line is
+    -- damagedhead's (AFFLICTION SHOW, captured 2026-10-20). svof used to
+    -- count it as mangledhead.
+    concussion = {
+      salve = {
+        isadvisable = function()
+          return (affs.concussion) or false
+        end,
+  
+        oncompleted = function()
+          svo.lostbal_salve()
+  
+          svo.doaction(svo.dict.curingconcussion.waitingfor)
+        end,
+  
+        applycure = {'restoration'},
+        actions = {"apply restoration to head", "apply restoration"},
+        onstart = function()
+          svo.apply(svo.dict.concussion.salve, " to head")
+        end,
+  
+        -- we get no msg from an application of this
+        empty = function()
+          svo.dict.concussion.salve.oncompleted()
+        end
+      },
+      aff = {
+        oncompleted = function (oldhp)
+          if not conf.aillusion or not oldhp or oldhp > stats.currenthealth or svo.paragraph_length >= 3 then
+            svo.addaffdict(svo.dict.concussion)
+            signals.after_lifevision_processing:unblock(cnrl.checkwarning)
+          end
+        end,
+  
+        forced = function()
+          svo.addaffdict(svo.dict.concussion)
+        end
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('concussion') end,
+      }
+    },
+    curingconcussion = {
+      waitingfor = {
+        customwait = 6,
+  
+        oncompleted = function() svo.rmaff('concussion') end,
+  
+        ontimeout = function() svo.rmaff('concussion') end,
+  
+        onstart = function() end,
+  
+        noeffect = function() svo.rmaff('concussion') end
       }
     },
   
@@ -4686,8 +4785,8 @@ if not next(svo.dict) then
           empty.apply_epidermal_body()
         end,
   
-        applycure = {'epidermal', 'sensory'},
-        actions = {"apply epidermal to body", "apply epidermal", "apply sensory to body", "apply sensory"},
+        applycure = {'epidermal'},
+        actions = {"apply epidermal to body", "apply epidermal"},
         onstart = function()
           svo.apply(svo.dict.anorexia.salve, " to body")
         end
@@ -4727,29 +4826,36 @@ if not next(svo.dict) then
       }
     },
     
-    ablaze = {           
+    -- Burning, as one counted affliction: see codepaste.add_burn
+    ablaze = {
       gamename = 'burning',
+      count = 0,
       onservereignore = function()
         return ((svo.defdefup[svo.defs.mode].torch or svo.defkeepup[svo.defs.mode].torch) and 
         (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))
       end,
       salve = {
         isadvisable = function()
-          return (affs.ablaze and not codepaste.pyre_holds('ablaze') and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and
+          return (affs.ablaze and not affs.condemned and not codepaste.pyre_holds() and not (defdefup[defs.mode].torch or (conf.keepup and defkeepup[defs.mode].torch) and
           (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady"))) or false
         end,
   
+        -- "The fires consuming you diminish somewhat."
         oncompleted = function()
+          svo.lostbal_salve()
+          codepaste.reduce_burn(1)
+          if not affs.ablaze and defc.torch and (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
+            defences.lost('torch')
+          end
+        end,
+  
+        -- "The raging fire about your skin goes out."
+        all = function()
           svo.lostbal_salve()
           svo.rmaff('ablaze')
           if defc.torch and (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
             defences.lost('torch')
           end
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
         end,
   
         noeffect = function()
@@ -4769,224 +4875,52 @@ if not next(svo.dict) then
         end
       },
       aff = {
-        oncompleted = function()
-          if ((defdefup[defs.mode].torch) or (conf.keepup and defkeepup[defs.mode].torch)) and 
+        oncompleted = function(level, lines)
+          if ((defdefup[defs.mode].torch) or (conf.keepup and defkeepup[defs.mode].torch)) and
           (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
             defences.got('torch')
           else
-            codepaste.remove_burns('ablaze')
-            svo.addaffdict(svo.dict.ablaze)
+            codepaste.add_burn(level, lines)
           end
+        end,
+
+        -- the ignite lines of one paragraph, counted by svo.valid.simpleablaze
+        ignite = function(lines)
+          svo.dict.ablaze.aff.oncompleted(nil, lines)
         end,
       },
       gone = {
         oncompleted = function()
-          local currentburn = sk.current_burn()
-          svo.rmaff(currentburn)
+          svo.rmaff('ablaze')
           if defc.torch and (svo.me.class == "fire Elemental Lord" or svo.me.class == "fire Elemental Lady") then
             defences.lost('torch')
           end
         end,
   
-        -- used in blackout and passive curing where multiple levels could be cured at once
+        -- used in blackout and passive curing where several levels could be
+        -- cured at once: amount levels down, or one
         generic_reducelevel = function(amount)
-          -- if no amount is specified, find the current level and take it down a notch
-          if not amount then
-            local reduceto, currentburn = sk.previous_burn(), sk.current_burn()
-  
-            svo.rmaff(currentburn)
-            svo.addaffdict(svo.dict[reduceto])
-          else -- amount is specified
-            local reduceto, currentburn = sk.previous_burn(amount), sk.current_burn()
-            svo.rmaff(currentburn)
-  
-            if not reduceto then reduceto = 'ablaze' end
-            svo.addaffdict(svo.dict[reduceto])
-          end
-        end
-      }
-    },
-    severeburn = {
-      salve = {
-        irregular = true,
-  
-        isadvisable = function()
-          return (affs.severeburn and not codepaste.pyre_holds('severeburn')) or false
+          codepaste.reduce_burn(tonumber(amount) or 1)
         end,
-  
-        oncompleted = function()
-          svo.lostbal_salve()
-          svo.rmaff('severeburn')
-          svo.addaffdict(svo.dict.ablaze)
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
-        end,
-  
-        noeffect = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        empty = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        applycure = {'mending'},
-        actions = {"apply mending to body", "apply mending"},
-        onstart = function()
-          svo.apply(svo.dict.severeburn.salve, " to body")
+
+        -- svo.removeafflevel's: amount levels down, and off below one, or
+        -- kept at the first when dontkeep isn't set. As a player's
+        -- instruction, it doesn't wait on GMCP, as reduce_burn does
+        general_cure = function(amount, dontkeep)
+          local count = (svo.dict.ablaze.count or 1) - (tonumber(amount) or 1)
+          if count < 1 and dontkeep then svo.rmaff('ablaze') return end
+          svo.dict.ablaze.count = math.max(count, 1)
+          svo.updateaffcount(svo.dict.ablaze)
         end
       },
-      aff = {
-        oncompleted = function()
-          codepaste.remove_burns('severeburn')
-          svo.addaffdict(svo.dict.severeburn)
-        end,
-      },
-      gone = {
-        oncompleted = function() svo.rmaff('severeburn') end,
-      }
-    },
-    extremeburn = {
-      salve = {
-        irregular = true,
-  
-        isadvisable = function()
-          return (affs.extremeburn and not codepaste.pyre_holds('extremeburn')) or false
-        end,
-  
-        oncompleted = function()
-          svo.lostbal_salve()
-          svo.rmaff('extremeburn')
-          svo.addaffdict(svo.dict.severeburn)
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
-        end,
-  
-        noeffect = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        empty = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        applycure = {'mending'},
-        actions = {"apply mending to body", "apply mending"},
-        onstart = function()
-          svo.apply(svo.dict.extremeburn.salve, " to body")
-        end
-      },
-      aff = {
-        oncompleted = function()
-          codepaste.remove_burns('extremeburn')
-          svo.addaffdict(svo.dict.extremeburn)
-        end,
-      },
-      gone = {
-        oncompleted = function() svo.rmaff('extremeburn') end,
-      }
-    },
-    charredburn = {
-      salve = {
-        irregular = true,
-  
-        isadvisable = function()
-          return (affs.charredburn and not codepaste.pyre_holds('charredburn')) or false
-        end,
-  
-        oncompleted = function()
-          svo.lostbal_salve()
-          svo.rmaff('charredburn')
-          svo.addaffdict(svo.dict.extremeburn)
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
-        end,
-  
-        noeffect = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        empty = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        applycure = {'mending'},
-        actions = {"apply mending to body", "apply mending"},
-        onstart = function()
-          svo.apply(svo.dict.charredburn.salve, " to body")
-        end
-      },
-      aff = {
-        oncompleted = function()
-          codepaste.remove_burns('charredburn')
-          svo.addaffdict(svo.dict.charredburn)
-        end,
-      },
-      gone = {
-        oncompleted = function() svo.rmaff('charredburn') end,
-      }
-    },
-    meltingburn = {
-      salve = {
-        irregular = true,
-  
-        isadvisable = function()
-          return (affs.meltingburn and not codepaste.pyre_holds('meltingburn')) or false
-        end,
-  
-        oncompleted = function()
-          svo.lostbal_salve()
-          svo.rmaff('meltingburn')
-          svo.addaffdict(svo.dict.charredburn)
-        end,
-  
-        all = function()
-          svo.lostbal_salve()
-          codepaste.remove_burns()
-        end,
-  
-        noeffect = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        empty = function()
-          svo.lostbal_salve()
-          empty.apply_mending()
-        end,
-  
-        applycure = {'mending'},
-        actions = {"apply mending to body", "apply mending"},
-        onstart = function()
-          svo.apply(svo.dict.meltingburn.salve, " to body")
-        end
-      },
-      aff = {
-        oncompleted = function()
-          codepaste.remove_burns('meltingburn')
-          svo.addaffdict(svo.dict.meltingburn)
-  
-          sk.warn 'golemdestroyable'
-        end,
-      },
-      gone = {
-        oncompleted = function() svo.rmaff('meltingburn') end,
-      }
+      -- having it at all is level 1, whichever way it was added, and GMCP
+      -- sets its own level straight after
+      onadded = function()
+        if (svo.dict.ablaze.count or 0) < 1 then svo.dict.ablaze.count = 1 end
+      end,
+      onremoved = function()
+        svo.dict.ablaze.count = 0
+      end,
     },
     selarnia = {
       salve = {
@@ -5009,8 +4943,8 @@ if not next(svo.dict) then
           empty.apply_mending()
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending to body", "apply mending", "apply renewal to body", "apply renewal", "apply mending to torso", "apply renewal to torso"},
+        applycure = {'mending'},
+        actions = {"apply mending to body", "apply mending", "apply mending to torso"},
         onstart = function()
           svo.apply(svo.dict.selarnia.salve, " to body")
         end
@@ -5044,8 +4978,8 @@ if not next(svo.dict) then
           empty.apply_epidermal_body()
         end,
   
-        applycure = {'epidermal', 'sensory'},
-        actions = {"apply epidermal to body", "apply epidermal", "apply sensory to body", "apply sensory"},
+        applycure = {'epidermal'},
+        actions = {"apply epidermal to body", "apply epidermal"},
         onstart = function()
           svo.apply(svo.dict.itching.salve, " to body")
         end
@@ -5079,8 +5013,8 @@ if not next(svo.dict) then
           empty.apply_epidermal_head()
         end,
   
-        applycure = {'epidermal', 'sensory'},
-        actions = {"apply epidermal to head", "apply epidermal", "apply sensory to head", "apply sensory"},
+        applycure = {'epidermal'},
+        actions = {"apply epidermal to head", "apply epidermal"},
         onstart = function()
           svo.apply(svo.dict.stuttering.salve, " to head")
         end
@@ -5163,6 +5097,46 @@ if not next(svo.dict) then
       end,
       onremoved = function()
         if svo.actions.scalded_waitingfor then svo.killaction(svo.dict.scalded.waitingfor) end
+      end,
+    },
+    -- Nothing cures condemned; it wears off after 40 seconds (AFFLICTION SHOW,
+    -- 2026-10-20). While it lasts, ablaze can't be cured, so the burn salves
+    -- wait on it. The game prints no line when it's given, so GMCP or DIAGNOSE
+    -- adds it.
+    condemned = {
+      waitingfor = {
+        customwait = 40,
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('condemned')
+        end,
+
+        oncompleted = function()
+          svo.rmaff('condemned')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.condemned)
+        end,
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('condemned') end,
+      },
+      -- onadded and not aff.oncompleted, because GMCP adds it with addaffdict
+      -- and never runs the aff action.
+      onadded = function()
+        if not svo.actions.condemned_waitingfor then svo.doaction(svo.dict.condemned.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.condemned_waitingfor then svo.killaction(svo.dict.condemned.waitingfor) end
       end,
     },
     numbedleftarm = {
@@ -5351,8 +5325,8 @@ if not next(svo.dict) then
           empty.apply_epidermal_head()
         end,
   
-        applycure = {'epidermal', 'sensory'},
-        actions = {"apply epidermal to head", "apply epidermal", "apply sensory to head", "apply sensory"},
+        applycure = {'epidermal'},
+        actions = {"apply epidermal to head", "apply epidermal"},
         onstart = function()
           svo.apply(svo.dict.deafaff.salve, " to head")
         end
@@ -5392,8 +5366,8 @@ if not next(svo.dict) then
           svo.dict.caloric.salve.oncompleted ()
         end,
   
-        applycure = {'caloric', 'exothermic'},
-        actions = {"apply caloric to body", "apply caloric", "apply exothermic to body", "apply exothermic"},
+        applycure = {'caloric'},
+        actions = {"apply caloric to body", "apply caloric"},
         onstart = function()
           svo.apply(svo.dict.shivering.salve, " to body")
         end,
@@ -5432,8 +5406,8 @@ if not next(svo.dict) then
           svo.dict.caloric.salve.oncompleted ()
         end,
   
-        applycure = {'caloric', 'exothermic'},
-        actions = {"apply caloric to body", "apply caloric", "apply exothermic to body", "apply exothermic"},
+        applycure = {'caloric'},
+        actions = {"apply caloric to body", "apply caloric"},
         onstart = function()
           svo.apply(svo.dict.frozen.salve, " to body")
         end,
@@ -5466,7 +5440,7 @@ if not next(svo.dict) then
           svo.rmaff('voyria')
         end,
   
-        sipcure = {'immunity', 'antigen'},
+        sipcure = {'immunity'},
         onstart = function()
           svo.sip(svo.dict.voyria.purgative)
         end,
@@ -5630,13 +5604,11 @@ if not next(svo.dict) then
           if not affs.sleep then svo.addaffdict(svo.dict.sleep) defences.lost('insomnia') end
           svo.addaffdict(svo.dict.prone)
   
-          -- reset non-wait things we were doing, because they got cancelled by the stun
+          -- reset non-wait things we were doing, because they got cancelled by the
+          -- sleep. The wake stays, and so does a cure the paragraph already
+          -- showed (svo.cancel_sent_actions)
           if affs.sleep or svo.actions.sleep_aff then
-            for _,v in svo.actions:iter() do
-              if v.p.balance ~= 'waitingfor' and v.p.balance ~= 'aff' and v.p.name ~= 'sleep_misc' then
-                svo.killaction(svo.dict[v.p.action_name][v.p.balance])
-              end
-            end
+            svo.cancel_sent_actions('sleep_misc')
           end
         end
       },
@@ -5650,7 +5622,11 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('sleep')
-  
+          -- awake, so not in a deepsleep either: one that ended in blackout,
+          -- which GMCP couldn't say, goes here. While GMCP still reports it,
+          -- the removal gate keeps it
+          svo.rmaff('deepsleep')
+
           -- reset sleep so we try waking up again after being awoken and slept at once (like in a dsl or a delph snipe)
           if svo.actions.sleep_misc then
             svo.killaction(svo.dict.sleep.misc)
@@ -5668,7 +5644,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          if affs.bleeding and not svo.doingaction('bleeding') and not affs.bleeding.spammingbleed and not affs.haemophilia and not affs.sleep and svo.can_usemana() and conf.clot then
+          if affs.bleeding and not svo.doingaction('bleeding') and not affs.bleeding.spammingbleed and not affs.haemophilia and not affs.sleep and not affs.deepsleep and svo.can_usemana() and conf.clot then
             if (not affs.corrupted and svo.dict.bleeding.count >= conf.bleedamount) then
               return true
             elseif (affs.corrupted and svo.dict.bleeding.count >= conf.manableedamount) then
@@ -5769,7 +5745,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          if not next(affs) or not bals.tree or svo.doingaction('touchtree') or affs.sleep or not conf.tree or affs.stun
+          if not next(affs) or not bals.tree or svo.doingaction('touchtree') or affs.sleep or affs.deepsleep or not conf.tree or affs.stun
            or affs.unconsciousness or affs.numbedrightarm or affs.numbedleftarm or affs.paralysis or affs.webbed
             or affs.bound or affs.transfixed or affs.roped or affs.impale or affs.daeggerimpale or ((affs.crippledleftarm or affs.mangledleftarm
              or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))
@@ -5787,20 +5763,14 @@ if not next(svo.dict) then
           -- small heuristic - shivering can be upgraded to frozen
           if aff == 'shivering' and not affs.shivering and affs.frozen then
             svo.rmaff('frozen')
-          -- handle levels of burns
+          -- burning: a touch takes it down a level (the user, 2026-10-31), and
+          -- "goes out" ends it
   
           elseif aff == "all burns" then
-            codepaste.remove_burns()
+            svo.rmaff('ablaze')
   
           elseif aff == 'burn' then
-            local previousburn, currentburn = sk.previous_burn(), sk.current_burn()
-  
-            if not currentburn then
-              codepaste.remove_burns()
-            else
-              svo.rmaff(currentburn)
-              svo.addaffdict(svo.dict[previousburn])
-            end
+            codepaste.reduce_burn(1)
   
           elseif aff == 'skullfractures' then
             svo.updateaffcount(svo.dict.skullfractures)
@@ -6124,7 +6094,7 @@ if not next(svo.dict) then
         isadvisable = function()
           return (affs.prone and (not affs.paralysis or svo.doingaction'paralysis')
             and (svo.haveskillset('weaponmastery') and (sk.didfootingattack or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm)) or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm))
-            and not svo.doingaction('prone') and not affs.sleep
+            and not svo.doingaction('prone') and not affs.sleep and not affs.deepsleep
             and not affs.impale and not affs.daeggerimpale
             and not affs.transfixed
             and not affs.webbed and not affs.bound and not affs.roped
@@ -6160,7 +6130,7 @@ if not next(svo.dict) then
       },
       onremoved = function() svo.donext() end,
       onadded = function()
-        if affs.prone and affs.seriousconcussion then
+        if affs.prone and affs.mangledhead then
           sk.warn 'pulpable'
         end
       end
@@ -6170,7 +6140,7 @@ if not next(svo.dict) then
       misc = {
         isadvisable = function()
           return (affs.disrupt and not svo.doingaction('disrupt')
-            and not affs.confusion and not affs.sleep) or false
+            and not affs.confusion and not affs.sleep and not affs.deepsleep) or false
         end,
   
         oncompleted = function() svo.rmaff('disrupt') end,
@@ -6664,8 +6634,8 @@ if not next(svo.dict) then
           svo.rmaff('unknowncrippledlimb')
         end,
   
-        applycure = {'mending', 'renewal'},
-        actions = {"apply mending", "apply renewal"},
+        applycure = {'mending'},
+        actions = {"apply mending"},
         onstart = function()
           svo.apply(svo.dict.unknowncrippledlimb.salve)
         end,
@@ -6722,8 +6692,8 @@ if not next(svo.dict) then
           svo.rmaff('unknowncrippledarm')
         end,
   
-        actions = {"apply mending to arms", "apply mending", "apply renewal to arms", "apply renewal"},
-        applycure = {'mending', 'renewal'},
+        actions = {"apply mending to arms", "apply mending"},
+        applycure = {'mending'},
         onstart = function()
           svo.apply(svo.dict.unknowncrippledarm.salve, " to arms")
         end,
@@ -6775,8 +6745,8 @@ if not next(svo.dict) then
           svo.rmaff('unknowncrippledleg')
         end,
   
-        actions = {"apply mending to legs", "apply mending", "apply renewal to legs", "apply renewal"},
-        applycure = {'mending', 'renewal'},
+        actions = {"apply mending to legs", "apply mending"},
+        applycure = {'mending'},
         onstart = function()
           svo.apply(svo.dict.unknowncrippledleg.salve, " to legs")
         end,
@@ -6890,7 +6860,7 @@ if not next(svo.dict) then
         dontbatch = true,
   
         isadvisable = function()
-          return (affs.webbed and codepaste.writhe() and not (bals.balance and bals.rightarm and bals.leftarm and svo.dict.dragonflex.misc.isadvisable()) and (not svo.haveskillset('voicecraft') or (not conf.dwinnu or not svo.dict.dwinnu.misc.isadvisable()))) or false
+          return (affs.webbed and codepaste.writhe() and not (bals.balance and bals.rightarm and bals.leftarm and svo.dict.dragonflex.misc.isadvisable())) or false
         end,
   
         oncompleted = function()
@@ -6941,7 +6911,7 @@ if not next(svo.dict) then
         dontbatch = true,
   
         isadvisable = function()
-          return (affs.roped and codepaste.writhe() and not (bals.balance and bals.rightarm and bals.leftarm and svo.dict.dragonflex.misc.isadvisable()) and (not svo.haveskillset('voicecraft') or (not conf.dwinnu or not svo.dict.dwinnu.misc.isadvisable()))) or false
+          return (affs.roped and codepaste.writhe() and not (bals.balance and bals.rightarm and bals.leftarm and svo.dict.dragonflex.misc.isadvisable())) or false
         end,
   
         oncompleted = function()
@@ -7359,7 +7329,7 @@ if not next(svo.dict) then
         -- lets it through. So it waits while a focus would be punished, the
         -- same as check_focus does.
         isadvisable = function()
-          return (svo.affsp.impatience and not affs.sleep and bals.focus and conf.focus
+          return (svo.affsp.impatience and not affs.sleep and not affs.deepsleep and bals.focus and conf.focus
             and not svo.focus_would_hurt()) or false
         end,
   
@@ -7508,7 +7478,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          return (svo.affsp.hypersomnia and not affs.sleep) or false
+          return (svo.affsp.hypersomnia and not affs.sleep and not affs.deepsleep) or false
         end,
   
         oncompleted = function() end,
@@ -7599,7 +7569,7 @@ if not next(svo.dict) then
         if svo.paragraph_length > 2 then
             svo.dict.stun.aff.oncompleted()
             svo.killaction(svo.dict.checkstun.misc)
-          elseif not affs.sleep and not conf.paused then -- let autodetection take care of after we wake up. otherwise, a well timed stun & stun symptom on awake can trick us. if paused, let it through as well, because we don't want to kill affs
+          elseif not affs.sleep and not affs.deepsleep and not conf.paused then -- let autodetection take care of after we wake up. otherwise, a well timed stun & stun symptom on awake can trick us. if paused, let it through as well, because we don't want to kill affs
             svo.affsp.stun = true
             svo.dict.checkstun.time = num
             svo.dict.checkstun.templifevision = deepcopy(svo.lifevision.l)
@@ -7872,6 +7842,139 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- Vines that slow writhing, until time frees you: 30 seconds by default
+    -- (AFFLICTION SHOW, captured 2026-10-20). Not entanglement, which is
+    -- writhed out of
+    constricted = {
+      waitingfor = {
+        customwait = 30, -- AFFLICTION SHOW's default time
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('constricted')
+          svo.make_gnomes_work()
+        end,
+
+        oncompleted = function()
+          svo.rmaff('constricted')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.constricted)
+        end
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('constricted') end,
+      },
+      -- onadded and not aff.oncompleted, because GMCP adds it with addaffdict
+      -- and never runs the aff action
+      onadded = function()
+        if not svo.actions.constricted_waitingfor then svo.doaction(svo.dict.constricted.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.constricted_waitingfor then svo.killaction(svo.dict.constricted.waitingfor) end
+      end,
+    },
+    -- A rope trap about the ankles, until time frees you: 20 seconds by
+    -- default (AFFLICTION SHOW, captured 2026-10-20)
+    snared = {
+      waitingfor = {
+        customwait = 20, -- AFFLICTION SHOW's default time
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('snared')
+          svo.make_gnomes_work()
+        end,
+
+        oncompleted = function()
+          svo.rmaff('snared')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.snared)
+        end
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('snared') end,
+      },
+      -- as constricted's
+      onadded = function()
+        if not svo.actions.snared_waitingfor then svo.doaction(svo.dict.snared.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.snared_waitingfor then svo.killaction(svo.dict.snared.waitingfor) end
+      end,
+    },
+    -- A Viridian's flailing vines, which keep you from parrying their thorn
+    -- rends, until they recede: 20 seconds by default (AFFLICTION SHOW,
+    -- captured 2026-10-20)
+    vinewreathed = {
+      waitingfor = {
+        customwait = 20, -- AFFLICTION SHOW's default time
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('vinewreathed')
+          svo.make_gnomes_work()
+        end,
+
+        oncompleted = function()
+          svo.rmaff('vinewreathed')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.vinewreathed)
+        end
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('vinewreathed') end,
+      },
+      -- as constricted's
+      onadded = function()
+        if not svo.actions.vinewreathed_waitingfor then svo.doaction(svo.dict.vinewreathed.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.vinewreathed_waitingfor then svo.killaction(svo.dict.vinewreathed.waitingfor) end
+      end,
+    },
+    -- A sleep you never wake from on your own (AFFLICTION SHOW, captured
+    -- 2026-10-20): you can do nothing in it, as in sleep, but svof doesn't
+    -- try to wake you, which sleep's misc action would. GMCP's deepsleep
+    -- used to be read as sleep
+    deepsleep = {
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.deepsleep)
+        end
+      },
+      gone = {
+        oncompleted = function()
+          svo.rmaff('deepsleep')
+        end,
+      }
+    },
     pinshot = {
       waitingfor = {
         customwait = 21, -- AFFLICTION SHOW's default time
@@ -8052,41 +8155,6 @@ if not next(svo.dict) then
         end,
       }
     },
-    mucous = {
-      waitingfor = {
-        customwait = 6,
-  
-        isadvisable = function()
-          return false
-        end,
-  
-        onstart = function() end,
-  
-        oncompleted = function() svo.rmaff('mucous') end,
-  
-        ontimeout = function()
-          svo.rmaff('mucous')
-          svo.make_gnomes_work()
-        end
-      },
-      aff = {
-        oncompleted = function()
-          svo.addaffdict(svo.dict.mucous)
-          if not svo.actions.mucous_waitingfor then svo.doaction(svo.dict.mucous.waitingfor) end
-  
-          local r = svo.findbybal('smoke')
-          if r then
-            svo.killaction(svo.dict[r.action_name].smoke)
-          end
-        end
-      },
-      gone = {
-        oncompleted = function()
-          svo.rmaff('mucous')
-          svo.killaction(svo.dict.mucous.waitingfor)
-        end,
-      }
-    },
     phlogistication = {
       waitingfor = {
         customwait = 999, -- time increases
@@ -8180,9 +8248,8 @@ if not next(svo.dict) then
     -- are NOT precedent for it. The game calls all four *fisted and svof
     -- declines that name for the other three (airfisted is galed, icefisted
     -- is icing, voidfisted is voided), so this is now the only one of the
-    -- four whose svof name matches the game's. Nothing here belongs to the
-    -- ablaze burn escalation (severeburn -> meltingburn), which is
-    -- untouched.
+    -- four whose svof name matches the game's. Nothing here belongs to
+    -- ablaze, the game's burning.
     flamefisted = {
       waitingfor = {
         customwait = 15, -- AFFLICTION SHOW's default time
@@ -8925,6 +8992,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingbody)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingbody and svo.dict.unweavingbody.count < level then svo.dict.unweavingbody.count = level end
           svo.updateaffcount(svo.dict.unweavingbody)
         end
       },
@@ -8981,6 +9052,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingmind)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingmind and svo.dict.unweavingmind.count < level then svo.dict.unweavingmind.count = level end
           svo.updateaffcount(svo.dict.unweavingmind)
         end
       },
@@ -9037,6 +9112,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingspirit)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingspirit and svo.dict.unweavingspirit.count < level then svo.dict.unweavingspirit.count = level end
           svo.updateaffcount(svo.dict.unweavingspirit)
         end
       },
@@ -9356,6 +9435,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.crescendo)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.crescendo and svo.dict.crescendo.count < level then svo.dict.crescendo.count = level end
           svo.updateaffcount(svo.dict.crescendo)
         end
       },
@@ -9541,6 +9624,53 @@ if not next(svo.dict) then
         end
       }
     },
+    -- Mucous in your lungs, a tempered phlegmatic humour's effect on smoking
+    -- (svo.dict.phlegmatichumour, the game's temperedphlegmatic). It's not an
+    -- affliction: the game doesn't list it, and GMCP never reports it. HELP
+    -- HUMOURISM: "Smoking will have a chance of filling your lungs with
+    -- phlegm, increasing your lungs recovery time." So svof takes smoke
+    -- balance for longer than a smoke's usual recovery, and the smoke counts
+    -- as failed, so svof smokes for the same thing again later. The lines go
+    -- through lifevision (svo.valid.got_mucous), so nothing changes before the
+    -- prompt, and a paragraph found to be an illusion changes nothing.
+    --
+    -- Neither of those two is confirmed: how much longer recovery takes was
+    -- never measured, and nothing says whether the smoke's cure still lands.
+    -- recovery is the 6 seconds svof's old mucous affliction waited.
+    mucouslungs = {
+      happened = {
+        recovery = 6,
+
+        -- "As you attempt to inhale the smoke, your lungs fill with a thick
+        -- mucous." or "Your lungs are too clogged with mucous for you to
+        -- attempt smoking."
+        oncompleted = function()
+          local r = svo.findbybal('smoke')
+          if r and r.action_name ~= 'checkasthma' then svo.killaction(svo.dict[r.action_name].smoke) end
+          svo.lostbal_smoke(svo.dict.mucouslungs.happened.recovery)
+          sk.mucous_smoketick = sk.smoketick
+        end,
+
+        -- "You manage to cough away the mucous filling your lungs." The lungs
+        -- are clear, so the recovery mucous started ends early. If they
+        -- aren't, the next smoke's "too clogged" line takes smoke balance
+        -- again. Only that recovery: one a smoke started isn't mucous's to end
+        coughed = function()
+          if not svo.lungs_clogged() then return end
+          sk.mucous_smoketick = nil
+          bals.smoke = true
+          raiseEvent("svo got balance", 'smoke')
+          svo.endbalancewatch('smoke')
+        end,
+
+        -- both lines in one paragraph, the clog first: the smoke failed, and
+        -- the recovery is already over
+        clogged_then_coughed = function()
+          svo.dict.mucouslungs.happened.oncompleted()
+          svo.dict.mucouslungs.happened.coughed()
+        end
+      }
+    },
     gothit = {
       happened = {
         tempmap = {},
@@ -9633,7 +9763,7 @@ if not next(svo.dict) then
           defences.got('frost')
         end,
   
-        sipcure = {'frost', 'endothermia'},
+        sipcure = {'frost'},
   
         onstart = function()
           svo.sip(svo.dict.frost.purgative)
@@ -9662,7 +9792,7 @@ if not next(svo.dict) then
   
         noeffect = function() defences.got('venom') end,
   
-        sipcure = {'venom', 'toxin'},
+        sipcure = {'venom'},
   
         onstart = function()
           svo.sip(svo.dict.venom.purgative)
@@ -9684,7 +9814,7 @@ if not next(svo.dict) then
   
         noeffect = function() defences.got('levitation') end,
   
-        sipcure = {'levitation', 'hovering'},
+        sipcure = {'levitation'},
   
         onstart = function()
           svo.sip(svo.dict.levitation.purgative)
@@ -9724,7 +9854,7 @@ if not next(svo.dict) then
   
         noeffect = function() defences.got('speed') end,
   
-        sipcure = {'speed', 'haste'},
+        sipcure = {'speed'},
   
         onstart = function()
           svo.sip(svo.dict.speed.purgative)
@@ -10073,8 +10203,8 @@ if not next(svo.dict) then
         noeffect = function() end,
         empty = function() end,
   
-        applycure = {'mass', 'density'},
-        actions = {"apply mass to body", "apply mass", "apply density to body", "apply density"},
+        applycure = {'mass'},
+        actions = {"apply mass to body", "apply mass"},
         onstart = function()
           svo.apply(svo.dict.mass.salve, " to body")
         end,
@@ -10102,8 +10232,8 @@ if not next(svo.dict) then
           svo.dict.caloric.salve.oncompleted ()
         end,
   
-        applycure = {'caloric', 'exothermic'},
-        actions = {"apply caloric to body", "apply caloric", "apply exothermic to body", "apply exothermic"},
+        applycure = {'caloric'},
+        actions = {"apply caloric to body", "apply caloric"},
         onstart = function()
           svo.apply(svo.dict.caloric.salve, " to body")
         end,
@@ -10710,7 +10840,7 @@ if not next(svo.dict) then
         balanceful_act = true, def = true,
   
         isadvisable = function()
-          return (((sys.deffing and defdefup[defs.mode].shield and not defc.shield) or (conf.keepup and defkeepup[defs.mode].shield and not defc.shield)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not (affs.mangledleftarm and affs.mangledlrightarm) and not affs.prone) or false
+          return (((sys.deffing and defdefup[defs.mode].shield and not defc.shield) or (conf.keepup and defkeepup[defs.mode].shield and not defc.shield)) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not (affs.mangledleftarm and affs.mangledrightarm) and not affs.prone) or false
         end,
   
         oncompleted = function()
@@ -10760,15 +10890,17 @@ if not next(svo.dict) then
       calcifiedtorso = 'calcifiedtorso',
       claustrophobia = 'claustrophobia',
       clumsiness = 'clumsiness',
-      concussion = 'seriousconcussion',
+      concussion = 'concussion',
+      condemned = 'condemned',
       conflagration = false,
       confusion = 'confusion',
+      constricted = 'constricted',
       corruption = 'corrupted',
       crackedribs = 'crackedribs',
       crescendo = 'crescendo',
       crushedthroat = 'crushedthroat',
       daeggerimpale = 'daeggerimpale',
-      damagedhead = 'mildconcussion',
+      damagedhead = 'damagedhead',
       damagedleftarm = 'mangledleftarm',
       damagedleftleg = 'mangledleftleg',
       damagedrightarm = 'mangledrightarm',
@@ -10778,7 +10910,7 @@ if not next(svo.dict) then
       dazzled = false,
       deadening = 'deadening',
       deafness = false,
-      deepsleep = 'sleep',
+      deepsleep = 'deepsleep',
       degenerate = 'degenerate',
       dehydrated = 'dehydrated',
       dementia = 'dementia',
@@ -10835,7 +10967,7 @@ if not next(svo.dict) then
       loneliness = 'loneliness',
       lovers = 'inlove',
       manaleech = 'manaleech',
-      mangledhead = 'seriousconcussion',
+      mangledhead = 'mangledhead',
       mangledleftarm = 'mutilatedleftarm',
       mangledleftleg = 'mutilatedleftleg',
       mangledrightarm = 'mutilatedrightarm',
@@ -10882,6 +11014,7 @@ if not next(svo.dict) then
       sleeping = 'sleep',
       slickness = 'slickness',
       slimeobscure = 'ninkharsag',
+      snared = 'snared',
       spiritburn = 'spiritburn',
       stupidity = 'stupidity',
       stuttering = 'stuttering',
@@ -10902,7 +11035,7 @@ if not next(svo.dict) then
       unweavingmind = 'unweavingmind',
       unweavingspirit = 'unweavingspirit',
       vertigo = 'vertigo',
-      vinewreathed = false,
+      vinewreathed = 'vinewreathed',
       vitiated = false,
       vitrified = 'vitrification',
       voidfisted = 'voided',
@@ -10949,6 +11082,7 @@ if not next(svo.dict) then
       chargeshield = 'chargeshield',
       circulate = 'circulate',
       clinging = 'clinging',
+      circling = 'circling',
       cloak = 'cloak',
       coldresist = 'coldresist',
       consciousness = 'consciousness',
@@ -10973,12 +11107,12 @@ if not next(svo.dict) then
       dodging = 'dodging',
       dragonarmour = 'dragonarmour',
       dragonbreath = 'dragonbreath',
-      drunkensailor = 'drunkensailor',
       durability = 'tsuura',
       earthshield = 'earthblessing',
       eavesdropping = 'eavesdrop',
       electricresist = 'electricresist',
       elusiveness = 'elusiveness',
+      encircling = 'encircling',
       enduranceblessing = 'enduranceblessing',
       enhancedform = false,
       evadeblock = 'evadeblock',
@@ -11001,8 +11135,8 @@ if not next(svo.dict) then
       groundwatch = 'groundwatch',
       harmony = 'harmony',
       haste = false,
+      hawkstep = 'hawkstep',
       heads = 'heads',
-      heartsfury = 'heartsfury',
       heldbreath = 'breath',
       heresy = 'heresy',
       hiding = 'hiding',
@@ -11020,7 +11154,6 @@ if not next(svo.dict) then
       kaitrance = 'trance',
       kola = 'kola',
       lament = false,
-      lay = 'lay',
       leechlogograph = 'traceleech',
       levitating = 'levitation',
       lifegiver = false,
@@ -11078,7 +11211,6 @@ if not next(svo.dict) then
       skywatch = 'skywatch',
       slippery = 'slipperiness',
       softfocusing = 'softfocus',
-      songbird = 'songbird',
       soulcage = 'soulcage',
       speed = 'speed',
       spinning = 'spinning',
@@ -11097,6 +11229,7 @@ if not next(svo.dict) then
       tekurastance = false,
       telesense = 'telesense',
       temperance = 'frost',
+      tempo = false,
       tempest = 'tempest',
       tentacles = 'tentacles',
       thermalshield = 'thermalblessing',
@@ -11119,6 +11252,7 @@ if not next(svo.dict) then
       vitality = 'vitality',
       ward = false,
       waterwalking = 'waterwalk',
+      wavedance = 'wavedance',
       weakvigour = false,
       weathering = 'weathering',
       weaving = 'weaving',
@@ -12567,94 +12701,55 @@ if not next(svo.dict) then
     }
   end
   
-  if svo.haveskillset('swashbuckling') then
-    svo.dict.drunkensailor = {
-      physical = {
-        balanceful_act = true, def = true,
-  
-        isadvisable = function()
-          return ((sys.deffing and defdefup[defs.mode].drunkensailor and not defc.drunkensailor) or (conf.keepup and defkeepup[defs.mode].drunkensailor and not defc.drunkensailor) and not defc.heartsfury and not svo.doingaction'drunkensailor' and not affs.paralysis) or false
-        end,
-  
-        oncompleted = function() defences.got('drunkensailor') end,
-  
-        action = 'drunkensailor',
-        onstart = function() send('drunkensailor', conf.commandecho) end
-      },
-    }
-    svo.dict.heartsfury = {
-      physical = {
-        balanceful_act = true, def = true,
-  
-        isadvisable = function()
-          return ((sys.deffing and defdefup[defs.mode].heartsfury and not defc.heartsfury) or (conf.keepup and defkeepup[defs.mode].heartsfury and not defc.heartsfury) and not defc.drunkensailor and not svo.doingaction'heartsfury' and not affs.paralysis) or false
-        end,
-  
-        oncompleted = function() defences.got('heartsfury') end,
-  
-        action = 'heartsfury',
-        onstart = function() send('heartsfury', conf.commandecho) end
-      },
-    }
-  end
-  
-  if svo.haveskillset('voicecraft') then
-    svo.dict.lay = {
-      physical = {
-        balanceful_act = true, def = true,
-  
-        isadvisable = function()
-          return (((sys.deffing and defdefup[defs.mode].lay and not defc.lay) or (conf.keepup and defkeepup[defs.mode].lay and not defc.lay)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'lay' and bals.voice) or false
-        end,
-  
-        oncompleted = function()
-          defences.got('lay')
-          svo.lostbal_voice()
-        end,
-  
-        action = "sing lay",
-        onstart = function() send('sing lay', conf.commandecho) end
-      },
-    }
-    svo.dict.tune = {
-      physical = {
-        balanceful_act = true, def = true,
-  
-        isadvisable = function()
-          return (((sys.deffing and defdefup[defs.mode].tune and not defc.tune) or (conf.keepup and defkeepup[defs.mode].tune and not defc.tune)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'tune' and bals.voice) or false
-        end,
-  
-        oncompleted = function()
-          defences.got('tune')
-          svo.lostbal_voice()
-        end,
-  
-        action = "sing tune",
-        onstart = function() send('sing tune', conf.commandecho) end
-      },
-    }
-    svo.dict.aria = {
-      physical = {
-        balanceful_act = true, def = true,
-  
-        isadvisable = function()
-          return (((sys.deffing and defdefup[defs.mode].aria and not defc.aria) or (conf.keepup and defkeepup[defs.mode].aria and not defc.aria)) and not codepaste.balanceful_defs_codepaste() and not svo.doingaction'aria' and bals.voice) or false
-        end,
-  
-        oncompleted = function()
-          defences.got('aria')
-          svo.lostbal_voice()
-        end,
-        applycure = {'epidermal'},
-        action = 'sing aria at me',
-        onstart = function()
-          if defc.deaf or affs.deafaff then svo.apply(svo.dict.aria.salve, ' to ears', conf.commandecho) end
-          send('sing aria at me', conf.commandecho)   
+  if svo.haveskillset('bladedance') then
+    -- A dance or a tempo replaces whichever is up. Defup switches to the one
+    -- chosen, and keepup leaves alone one the player's offence picked
+    for _, group in ipairs({
+      {command = 'dance', list = {'harrying', 'hawkstep', 'wavedance'}},
+      {command = 'tempo', list = {'adagio', 'moderato', 'allegro', 'vivace'}},
+    }) do
+      local command, list = group.command, group.list
+
+      -- whether another stays rather than which: while deffing, defup's own
+      -- choice decides, and otherwise, or with none in defup, one that's up
+      -- stays. Defup and keepup can each hold a different one, and keepup's
+      -- counting while deffing had the two take each other off for good
+      local function kept_up(which)
+        if sys.deffing then
+          for _, other in ipairs(list) do
+            if defdefup[defs.mode][other] then return other ~= which end
+          end
         end
-      },
-    }
+        for _, other in ipairs(list) do
+          if other ~= which and defc[other] then return true end
+        end
+        return false
+      end
+
+      for _, which in ipairs(list) do
+        svo.dict[which] = {
+          physical = {
+            balanceful_act = true, def = true, undeffable = true,
+
+            isadvisable = function()
+              return (not defc[which] and ((sys.deffing and defdefup[defs.mode][which]) or (conf.keepup and defkeepup[defs.mode][which])) and not codepaste.balanceful_defs_codepaste() and sys.canoutr and not affs.paralysis and not affs.prone and not kept_up(which)) or false
+            end,
+
+            oncompleted = function()
+              for _, other in ipairs(list) do
+                if other ~= which then defences.lost(other) end
+              end
+              defences.got(which)
+            end,
+
+            action = command..' '..which,
+            onstart = function() send(command..' '..which, conf.commandecho) end
+          },
+        }
+      end
+    end
   end
-  
+
   if svo.haveskillset('occultism') then
     svo.dict.astralform = {
       physical = {
@@ -13472,7 +13567,7 @@ if not next(svo.dict) then
         balanceless_act = true,
   
         isadvisable = function()
-          if not next(affs) or not bals.shrugging or affs.sleep or not conf.shrugging or affs.stun or affs.unconsciousness or affs.weakness or codepaste.nonstdcure() or defc.dragonform then return false end
+          if not next(affs) or not bals.shrugging or affs.sleep or affs.deepsleep or not conf.shrugging or affs.stun or affs.unconsciousness or affs.weakness or codepaste.nonstdcure() or defc.dragonform then return false end
   
           for name, func in pairs(svo.shrugging) do
             if not me.disabledshruggingfunc[name] then
@@ -14454,23 +14549,6 @@ if not next(svo.dict) then
       }
     }
   end
-  if svo.haveskillset('voicecraft') then
-    svo.dict.dwinnu = {
-      misc = {
-        isadvisable = function()
-          return (conf.dwinnu and bals.voice and (affs.webbed or affs.roped) and codepaste.writhe() and not affs.paralysis and not defc.dragonform) or false
-        end,
-  
-        oncompleted = function()
-          svo.rmaff{'webbed', 'roped'}
-          svo.lostbal_voice()
-        end,
-  
-        action = "chant dwinnu",
-        onstart = function() send('chant dwinnu', conf.commandecho) end
-      },
-    }
-  end
   
   if svo.haveskillset('discipline') or svo.haveskillset('malignity') or svo.haveskillset('valour') or svo.haveskillset('dominion')  then
     svo.dict.rage = {
@@ -15059,31 +15137,12 @@ if svo.haveskillset('shindo') then
   basicdef('dodging', "dodging on")
   basicdef('immunity', 'immunity')
 end
-if svo.haveskillset('swashbuckling') then
-  basicdef('arrowcatch', "arrowcatch on", nil, 'arrowcatching')
+if svo.haveskillset('bladedance') then
+  basicdef('tune', "blade tune", nil, nil, true)
   basicdef('balancing', "balancing on")
   basicdef('acrobatics', "acrobatics on")
   basicdef('dodging', "dodging on")
   basicdef('grip', 'grip', true, 'gripping')
-end
-if svo.haveskillset('voicecraft') then
-  basicdef('songbird', "whistle for songbird")
-end
-if svo.haveskillset('harmonics') then
-  basicdef('lament', "play lament", nil, nil, true)
-  basicdef('anthem', "play anthem", nil, nil, true)
-  basicdef('harmonius', "play harmonius", nil, nil, true)
-  basicdef('contradanse', "play contradanse", nil, nil, true)
-  basicdef('paxmusicalis', "play paxmusicalis", nil, nil, true)
-  basicdef('gigue', "play gigue", nil, nil, true)
-  basicdef('bagatelle', "play bagatelle", nil, nil, true)
-  basicdef('partita', "play partita", nil, nil, true)
-  basicdef('berceuse', "play berceuse", nil, nil, true)
-  basicdef('continuo', "play continuo", nil, nil, true)
-  basicdef('wassail', "play wassail", nil, nil, true)
-  basicdef('canticle', "play canticle", nil, nil, true)
-  basicdef('reel', "play reel", nil, nil, true)
-  basicdef('hallelujah', "play hallelujah", nil, nil, true)
 end
 if svo.haveskillset('occultism') then
   basicdef('shroud', 'shroud')
@@ -15261,8 +15320,8 @@ local function aff_pair(pairs_of, item)
 end
 
 -- -> list of cures, or nil and why. Each cure is { kind = 'herb', item,
--- alt }, { kind = 'salve', item, alt, place }, { kind = 'smoke', item, alt },
--- { kind = 'purgative', item, alt } or { kind = 'time' }, at most one of a
+-- alt }, { kind = 'salve', item, place }, { kind = 'smoke', item, alt },
+-- { kind = 'purgative', item } or { kind = 'time' }, at most one of a
 -- kind: an entry has one action on each balance, and a herb and its mineral
 -- are one cure. A cure svof can't give is { kind = 'game', text }, with no
 -- action, and no text is no cures
@@ -15283,17 +15342,17 @@ function svo.affcures(text)
     elseif verb == 'apply' then
       local what, place = rest:match("^(%a+) to (%a+)$")
       what = what or rest
-      local salve, alt = aff_pair(rift.vial_conversions, what)
-      if salve and aff_salves[salve] and (not place or aff_salve_places[place]) then
-        cure = { kind = 'salve', salve, alt, place = place }
+      -- a salve has one name: the transmutation ones, such as sensory, are
+      -- gone from the game
+      if aff_salves[what] and (not place or aff_salve_places[place]) then
+        cure = { kind = 'salve', what, place = place }
       end
     elseif verb == 'smoke' then
       -- skullcap's mineral to smoke is malachite, not the azurite eaten
       local herb, mineral = aff_pair(rift.smoke_herb_conversions, rest)
       if herb and aff_pipes[herb] then cure = { kind = 'smoke', herb, mineral } end
     elseif verb == 'sip' or verb == 'drink' then
-      local elixir, alt = aff_pair(rift.vial_conversions, rest)
-      if elixir and aff_purgatives[elixir] then cure = { kind = 'purgative', elixir, alt } end
+      if aff_purgatives[rest] then cure = { kind = 'purgative', rest } end
     end
     if not cure and part ~= '' then cure = { kind = 'game', part } end
     local before = cure and seen[cure.kind]

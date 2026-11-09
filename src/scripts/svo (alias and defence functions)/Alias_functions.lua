@@ -780,13 +780,18 @@ function svo.enableallserverside()
 end
 
 function svo.enabledefaultserverside()
-  svo.unsetserverignore'impale'
-  svo.unsetserverignore'daeggerimpale'
-  svo.unsetserverignore'lovers'
-  svo.unsetserverignore'roped'
-  svo.unsetserverignore'transfixed'
-  svo.unsetserverignore'webbed'
-  svo.unsetserverignore'selfishness'
+  local actions = sk.getallserversideactions()
+
+  -- the same defaults a first setup gets (svo.setup_default_serverignore)
+  for i = 1, #actions do
+    local action = actions[i]
+
+    if sk.svof_handles_by_default[action] then
+      svo.unsetserverignore(action)
+    else
+      svo.setserverignore(action)
+    end
+  end
 
   svo.echof("Restored defaults on what should Svof handle instead of serverside.")
   svo.showprompt()
@@ -1010,7 +1015,7 @@ function svo.reset.bals(echoback)
   svo.bals.dragonheal = true
   svo.bals.smoke = true
 
-if svo.haveskillset('voicecraft') then
+if svo.haveskillset('sagas') then
   svo.bals.voice = true
 end
 if svo.me.class == 'Druid' then

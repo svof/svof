@@ -118,6 +118,7 @@ svo.dragonheal       = svo.dragonheal or {} -- stores dragonheal curing strats
 svo.lifep            = svo.lifep or {}
 svo.lifevision.l     = svo.lifevision.l or pl.OrderedMap()
 svo.paragraph_length = 0
+svo.paragraph_lines  = {}
 svo.restore          = svo.restore or {}
 svo.shrugging        = svo.shrugging or {} -- stores shrugging curing strats
 svo.sp               = svo.sp or {} -- parry
@@ -186,6 +187,24 @@ svo.affl = svo.affl or {}
 svo.serverignore = svo.serverignore or {}
 svo.ignore = svo.ignore or {}
 svo.dict = svo.dict or {}
+
+-- Afflictions renamed to the game's own names, old name to new. A player's
+-- saved priorities and ignore list name them the old way, so both loads
+-- read an old name as the new one
+svo.renamed_affs = {
+  mildconcussion = 'damagedhead',
+  seriousconcussion = 'mangledhead',
+}
+
+-- and a player's script may still read one in svo.affl by its old name.
+-- Deprecated: read the new one. Only reads are passed on, so going through
+-- svo.affl with pairs shows the new names alone
+if not getmetatable(svo.affl) then
+  setmetatable(svo.affl, { __index = function(t, old)
+    local new = svo.renamed_affs[old]
+    if new then return rawget(t, new) end
+  end })
+end
 
 
 local oldecho = svo.conf.commandecho
@@ -305,6 +324,13 @@ signals.gmcpcharvitals:connect(function()
       else
         local bleed = val:match("^Bleed: (%d+)$")
         if bleed then
+          -- the game's amount for this paragraph, which sanguinehumour's
+          -- inundated leaves alone. Vitals stops in blackout, so without one
+          -- inundated works the amount out. Cleared on the next prompt
+          sk.gmcp_bleed_seen = true
+          sk.onprompt_beforeaction_add('gmcpbleedseen', function()
+            sk.gmcp_bleed_seen = nil
+          end)
           if bleed == '0' then
             svo.rmaff('bleeding')
           else
@@ -337,7 +363,7 @@ end, 'save my class')
 svo.knownskills = {
   alchemist                = {'transmutation', 'physiology', 'alchemy'},
   apostate                 = {'evileye', 'necromancy', 'apostasy'},
-  bard                     = {'voicecraft', 'swashbuckling', 'harmonics'},
+  bard                     = {'bladedance', 'composition', 'sagas'},
   blademaster              = {'twoarts', 'striking', 'shindo'},
   depthswalker             = {'shadowmancy','aeonics','terminus'},
   druid                    = {'groves', 'metamorphosis', 'reclamation'},
@@ -701,8 +727,7 @@ sk.gmcp_unconfirmed = sk.gmcp_unconfirmed or {}
 -- Whether the game currently reports this svof affliction over GMCP. Walks
 -- gaffl, which holds only what you have right now, and translates each game
 -- name forward through sstosvoa. Going forward matters: svotossa keeps only
--- one game name per svof name, and sleep (deepsleep, sleeping) and
--- seriousconcussion (concussion, mangledhead) each have two.
+-- one game name per svof name, and sleep has two (deepsleep, sleeping).
 function svo.gmcp_reports(aff)
   for rawaff in pairs(gaffl) do
     if not sk.gmcp_unconfirmed[rawaff] and svo.dict.sstosvoa[(parseaffname(rawaff))] == aff then return true end
@@ -1108,6 +1133,16 @@ signals.gmcpcharafflictionsremove:connect(function()
   sk.gmcp_unconfirmed[thisaff] = nil
   if conf.gmcpaffechoes then svo.echof("Cured aff %s", thisaff) end
 
+  -- An affliction with two game names (seriousconcussion: concussion,
+  -- mangledhead) isn't gone while the game still lists the other one. Only
+  -- another name counts, so a levelled entry of this one changes nothing
+  if svoaffkey then
+    for other in pairs(gaffl) do
+      local othername = parseaffname(other)
+      if othername ~= affname and svo.dict.sstosvoa[othername] == svoaffkey then svoaffkey = nil break end
+    end
+  end
+
   -- "A real affliction was cured that svof wasn't tracking" means one of the
   -- unknowns is accounted for. That is only true when the GMCP name
   -- resolves to a real svof affliction and svof was not already tracking it
@@ -1238,6 +1273,20 @@ local function gmcp_defence(thisdef)
   return def and svo.defs_data[def] and def or nil
 end
 
+-- Defences GMCP reports under one name they share, one up at a time
+-- (gmcp_group in their record, such as Bard's four tempos as the game's
+-- tempo). That name coming doesn't say which, so only its going counts:
+-- the ones up whose name gone() says is gone are taken off.
+local function gmcp_groups_lost(gone)
+  local up = {}
+  for def, on in pairs(defc) do
+    local group = on and svo.defs_data[def] and svo.defs_data[def].gmcp_group
+    if group and gone(group) then up[#up + 1] = def end
+  end
+  table.sort(up)
+  for _, def in ipairs(up) do defences.unconfirm(def) end
+end
+
 signals.gmcpchardefencesadd:connect(function()
   local thisdef = gmcp.Char.Defences.Add.name
   svo.gdefc[thisdef] = true
@@ -1262,6 +1311,7 @@ signals.gmcpchardefencesremove:connect(function()
     sk.gmcp_def_sightings[def] = nil
     defences.unconfirm(def)
   end
+  gmcp_groups_lost(function(group) return group == thisdef end)
 end, 'track lost gmcp def')
 
 signals.gmcpchardefenceslist:connect(function()
@@ -1294,6 +1344,7 @@ signals.gmcpchardefenceslist:connect(function()
       defences.unconfirm(defname)
     end
   end
+  gmcp_groups_lost(function(group) return not svo.gdefc[group] end)
 
   -- the game's whole picture: GMCP has the final word on defences from here
   -- (svo.gmcp_defs_live), every entry counting, any a blackout left too
@@ -1454,6 +1505,16 @@ signals.svogotaff:connect(function(aff)
   if aff ~= 'blackout' then return end
   for rawaff in pairs(gaffl) do sk.gmcp_unconfirmed[rawaff] = true end
 end, 'gmcp affs unconfirmed after blackout')
+-- Deepsleep has no cure and no line of its own ending, so only GMCP says it
+-- ended, and it can't in blackout. svof doesn't try to wake you from it, but
+-- when blackout ends with deepsleep held and GMCP not saying it again yet, it
+-- tries once: awake, "You already are awake." clears it (curingsleep). Still
+-- in deepsleep, the wake fails, and svof doesn't try again until the next
+-- blackout ends (the user, 2026-11-07)
+signals.svolostaff:connect(function(aff)
+  if aff ~= 'blackout' or not affs.deepsleep or svo.gmcp_reports('deepsleep') or svo.conf.paused then return end
+  send('wake up', svo.conf.commandecho)
+end, 'try waking once from a deepsleep blackout may have hidden the end of')
 -- and the same for defences, which have a List of their own
 signals.connected:connect(function() sk.gmcp_defs_listed = false end, 'gmcp defs untrusted until the login List')
 signals.svogotaff:connect(function(aff)
@@ -1763,7 +1824,7 @@ else
 disableTrigger("Hydra balance")
 end
 
-if svo.haveskillset('voicecraft') then
+if svo.haveskillset('sagas') then
 enableTrigger("Voice balance")
 else
 disableTrigger("Voice balance")
@@ -1856,12 +1917,6 @@ if not svo.haveskillset('groves') then
 disableTrigger("Groves defences")
 else
 enableTrigger("Groves defences")
-end
-
-if not svo.haveskillset('harmonics') then
-disableTrigger("Harmonics defences")
-else
-enableTrigger("Harmonics defences")
 end
 
 if not svo.haveskillset('physiology') then
@@ -2197,6 +2252,25 @@ end, 'load hoist list')
 signals.saveconfig:connect(function () me.hoistlist = me.hoistlist or {}
   svo.tablesave(getMudletHomeDir() .. "/svo/config/hoistlist", me.hoistlist) end, 'save hoist list')
 
+-- moves a saved list's renamed afflictions to their new names. A list that
+-- has the new name already keeps that one
+local function import_renamed_affs(t)
+  for old, new in pairs(svo.renamed_affs) do
+    if t[old] ~= nil then
+      if t[new] == nil then t[new] = t[old] end
+      t[old] = nil
+    end
+  end
+end
+
+-- seriousconcussion stood for concussion too, so in a list saved with the
+-- old name, concussion starts as that was: ignoring it stopped svof curing
+-- GMCP's concussion, and leaving it to serverside left that there too. Run
+-- before import_renamed_affs takes the old name away
+local function start_concussion(t)
+  if t.concussion == nil then t.concussion = t.seriousconcussion end
+end
+
 -- load the ignore list
 signals.systemstart:connect(function ()
   local conf_path = getMudletHomeDir() .. "/svo/config/ignore"
@@ -2204,6 +2278,8 @@ signals.systemstart:connect(function ()
   if lfs.attributes(conf_path) then
     local t = {}
     table.load(conf_path, t)
+    start_concussion(t)
+    import_renamed_affs(t)
     svo.update(svo.ignore, t)
   end
   svo.ignore.checkparalysis = true
@@ -2330,7 +2406,11 @@ signals.saveconfig:connect(function ()
 end, 'save dragonheal data')
 
 for _, config in ipairs{
- {location = 'serverignore', localtable = svo.serverignore, errormsg = "re-set all of the server ignore strats"},
+ {location = 'serverignore', localtable = svo.serverignore, errormsg = "re-set all of the server ignore strats",
+  afterload = function ()
+    start_concussion(svo.serverignore)
+    import_renamed_affs(svo.serverignore)
+  end},
  -- a saved list can tick an affliction svof no longer focuses for, such as
  -- generosity, which sk.canfocus would still act on and the menu can't show
  {location = 'cadmusaffs', localtable = svo.me.cadmusaffs, errormsg = "re-set all of the cadmus affs",
