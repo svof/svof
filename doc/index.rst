@@ -20,17 +20,15 @@ Installing
 
 To install the system, make sure that you're connected to server **achaea.com** and port **23** (or 2003), and logged are in.
 
-1) Download ``svof.mpackage`` from the `latest release <https://github.com/TheLastDarkthorne/svof/releases/latest>`_.
+1) Download the `zip <https://github.com/svof/svof/archive/in-client-svof.zip>`_.
 
-   While the converted system is being play tested, releases come from the
-   testing fork rather than from ``svof/svof``. This link moves back once that
-   testing says it is ready.
+2) Unzip it somewhere permanent. Don't delete the unzipped files.
 
-2) Open it with Mudlet's ``Package Manager``.
+3) Install ``svo (install me in module manager).xml`` in the ``Module Manager``:
 
-3) Done. Nothing has to stay unzipped on disk - the package carries everything, and Mudlet keeps its own copy.
+.. image:: images/install-in-module-manager.png
 
-If you are upgrading from the older module-based install, Svof notices the 24 leftover modules on first run and removes them for you, because leaving them alongside the package would run the whole system twice. Only the modules are removed from the profile - nothing here deletes a file - but Mudlet itself rewrites synced module files while it saves the profile, so Svof keeps a copy of each module xml beside it as ``<file>.svof-backup`` before it starts.
+4) Done. Don't delete the unzipped files - that's where the system is always loaded from now.
 
 Now, use the **vinstall** command. This'll have the system run auto-configuration first - where it'll detect and enable skills that you have. After that, it'll ask you preference questions about the basic and essential options. Feel free to take your time to ask someone else as to what should you set an option to (like for sipping health). The installation otherwise is fairly painless - and you can always change any option you'd like later with the same command.
 
@@ -129,9 +127,7 @@ When you QQ, the system will automatically go into the *empty* defences mode - s
 
 Adjusting defence menus
 ^^^^^^^^^^^^^^^^^^^^^^^
-If you'd like to hide certain defences or groups from showing in the (huge) list, use the *vshow hidelist* alias and click a defence, or *hide them* beside a skillset, to hide it; hidden ones are grey, and clicking one shows it again. From the command line, *vshow hide <skillset or defence>* hides one and *vshow unhide <skillset or defence>* shows it again. *vshow hidelist* shows the groups your class has, and keeps what you hid in another class for when you change back. *vshow hidelist all* lists every class's skillsets too, so you can hide another class's skillset or defences before you change to it. *vshow hide* with another class's defence hides it in every skillset it's in. *vshow* says how many skillsets and defences you've hidden, with a link to the list.
-
-Hiding a defence, or a whole group, takes it off defup and keepup in every defence mode, so Svof doesn't raise what it hides. Svof says what it took off, with an **(undo)** link that shows it again and puts it all back. Showing it again later doesn't put it back. Hiding the general group hides the main list. To see hidden defences in the lists anyway, turn on *vconfig showhiddendefs*.
+If you'd like to hide certain defences or groups from showing in the (huge) list, use the *vshow hidelist* alias and click on - or + beside defences, or even entire skillsets, to hide or show them.
 
 Blocking
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -153,12 +149,6 @@ Keepup works in a special manner with selfishness - if it's off keepup, keepup w
 
 If you'd like to disable this behavior, do *vignore selfishness*.
 
-Elemental channels
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Put *simultaneity* on defup or keepup to keep all your elemental channels open: air, fire, water and earth for a Magi, or air, water and earth for a Sylvan. Simultaneity opens them all at once and costs 1000 mana however many it opens, so Svof uses it only when none is open, such as at the start of defup or after you lose them all. When you lose one or some, Svof opens those alone with *channel <element>*. Without 1000 mana, or with *vignore simultaneity*, Svof opens each channel by itself. You can also put a channel on defup or keepup by itself.
-
-Svof follows your open channels from the game's GMCP as well as from the channel lines, so it knows when one closes even if it missed the line. Serverside curing doesn't raise channels, so Svof always does.
-
 Lifevision & Shroud
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Lifevision is included in the system! If you have it as a skill (lifevision, clarity or astralvision) - then you can vdefup or vkeep it. The system will then subsequently when lifevision detects an illusion and will ignore it as such.
@@ -166,85 +156,6 @@ Lifevision is included in the system! If you have it as a skill (lifevision, cla
 If you have the lifevision artefact, then the system will realize that fact and enable it for defences as well. Though if yours is customized, then it won't realize that - you can turn it on with *vconfig havelifevision*.
 
 The same goes with shrouding - if you've got yours as an artefact, it will automatically detect it. If yours is customized, that's not a problem, you can enable it with *vconfig haveshroud*.
-
-.. _custom-defences:
-
-Define your own defences
-^^^^^^^^^^^^^^^^^^^^^^^^
-If Svof doesn't know a defence you have, you can define it with *vcustomdef*. Svof then puts it up on defup and keepup like any other.
-
-To see which of the game's defences Svof doesn't know, use *vcustomdef game*. Svof reads the game's *DEFENCE LIST*, all its pages, and lists the defences it doesn't track; click one to start defining it.
-
-To define one:
-
-1. Start it with *vcustomdef <name>*, using lower-case letters and digits. Svof shows what the definition holds so far, with links to change each part.
-2. Set the command that raises it with *vcustomdef <name> command <command>*. If raising it takes no balance, add *vcustomdef <name> balanceless yes*. As with its own defences, Svof recognizes the command when you type it or serverside sends it, and tracks it as its own.
-3. Tell Svof how it knows the defence is up. If the game knows the defence by the name you gave it, Svof asks with *DEFENCE SHOW* when you start the definition, and fills in its lines and GMCP name from the game's reply. *vcustomdef <name> fetch <game name>* asks about a different name. For a defence the game doesn't show, raise it once, then use *vcustomdef <name> line got* and click the line that says you gained it, or click **type one** and paste it in. Do the same with *line lost* for the line that says you lost it, and with *line def* for the line DEF shows. Without a DEF line, each DEF marks the defence gone and keepup raises it again, so *test* and *install* warn you. If DEF doesn't list the defence at all, as with Pariah's bloodiedknife, use *vcustomdef <name> def none*, and DEF leaves it alone.
-
-   For a line that varies, such as one with a name in it, add a pattern next to the exact lines: *vcustomdef <name> gotpattern <pattern>*, *lostpattern* or *defpattern*. A pattern is a regular expression, as Mudlet's regex triggers take, such as ``^You glint at (\w+)\.$``. Svof refuses one Mudlet can't read. Exact lines stay the default, and the safer choice: a loose pattern can match other defences' lines, which the clash check refuses (see :ref:`defence-clashes`).
-4. If Svof didn't get the GMCP name from the game and you know it, set it with *vcustomdef <name> gmcp <name>*, which also asks the game for its lines. Svof only takes a GMCP name the game confirms: by its reply to *DEFENCE SHOW*, by *DEFENCE LIST*, or by GMCP sending it. For a name the game doesn't have, Svof says so and keeps the name it had; check the name, or use *vcustomdef <name> gmcp none* for a defence GMCP doesn't report. Svof then takes GMCP's word on the defence, as it does for its own. With *vconfig gmcpdefechoes* on, Svof shows the GMCP names as defences come and go. Serverside curing knows a defence by its GMCP name, so with one it raises the defence while serverside is on, and Svof raises it otherwise. *vshow server* can leave it to Svof, as for Svof's own defences. Without a GMCP name, Svof always raises it.
-5. Check the definition with *vcustomdef <name> test*, then put it into play with *vcustomdef <name> install*.
-
-A definition belongs to the class you define it in. To change that, use *vcustomdef <name> class <class>*, or *class all* for a defence any class can have, such as an artefact's. Svof adds each definition when you're in its class. If an update gives Svof its own defence by that name in that class, Svof says so as it loads, with links to delete your definition or to make it a change to Svof's own; see :ref:`change-svof-defences`. When the game says a defence isn't a profession defence, Svof sets it to every class; when it is one, Svof asks which class has it, with a link for each.
-
-A defence for one class is shown under one of its skillsets in *vshow defup*, *vshow keepup* and *vshow hidelist*, next to Svof's own. Click the skillset in the definition. If the game has renamed a skillset, or Svof's list of the class's skillsets is out of date, type it with *vcustomdef <name> skillset <skillset>*, and Svof shows it under that name after the class's other skillsets. A defence for every class is shown with the general ones.
-
-Svof refuses a name it already uses for something else. With the name of one of Svof's own defences, *vcustomdef* changes that defence instead; see :ref:`change-svof-defences`. With the name of a defence Svof has only in other classes, *vcustomdef* offers to copy Svof's own into yours; see :ref:`copy-svof-defences`. Svof also refuses the name of one of its own actions that only other classes have and that isn't a defence, such as *fitness* for a Bard: the two would share a place in your priority lists. A definition with such a name, from an import or saved before Svof refused it, isn't added either, and Svof says why. To change a definition, change its parts and install it again; until then, Svof keeps using the installed one. *vcustomdef <name> delete* takes a definition out.
-
-*vcustomdef* lists every defence you defined, each a link to see or change it, and then your changes to Svof's own. *vshow* and *vconfig2* link to the same list. Under it, Svof lists every form *vcustomdef* takes, each a link that puts it on the command line; replace the parts in angle brackets, and pick one of each choice such as *got|lost*. *vcustomdef help* shows that list alone. The list also says whether *vconfig customdefinitions* is on, with a link to turn it off or on; that takes effect the next time Svof loads.
-
-In *vshow defup*, *vshow keepup*, the priority lists, *vshow server* and *vshow hidelist*, Svof puts ``*`` after a defence you defined and ``+`` after one of its own you changed, with a key under the list.
-
-Your definitions are saved in *svo/custom/defs* in your profile folder, which updates leave alone. *vcustomdef export <file>* saves them, and your changes to Svof's own, to a file you can share, and *vcustomdef import <file>* reads one in. Import checks the file's GMCP names against the game's *DEFENCE LIST* first, and leaves out a definition or change whose GMCP name the game doesn't have. If a definition breaks your curing, *vconfig customdefinitions off* starts Svof without any of them. Your priority lists keep the places of the definitions Svof leaves out, this way or because they're for another class, for when they're back.
-
-.. _change-svof-defences:
-
-Change Svof's own defences
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-When the game changes one of Svof's defences before Svof catches up, you can change Svof's own with *vcustomdef <name>*, using the name Svof shows in *vshow defup*. *vcustomdef svof* lists Svof's own defences for your class by skillset, each a link to its screen, and *vcustomdef svof all* lists every class's, where clicking another class's defence offers to copy it in. Svof shows its version of the defence, with links to change each part:
-
-- the lines that say you gained or lost it, and the lines DEF shows. Your change replaces Svof's lines, so take out the ones the game no longer sends. *vcustomdef <name> fetch* asks the game with *DEFENCE SHOW* and adds the lines it shows now. If DEF no longer lists the defence, use *vcustomdef <name> def none*.
-- its patterns for lines that vary, shown under the lines. As for a definition, add one with *gotpattern*, *lostpattern* or *defpattern*, and take one out with its **x**. Your change replaces Svof's patterns too.
-- its GMCP name, which serverside curing knows it by too. As for a definition, Svof only takes a name the game confirms.
-- the command that raises it, for a defence whose action only sends its command. Where Svof's action for the defence is written by hand, such as riding's or waterweird's, or Svof raises it another way, such as smoking for rebounding, the command stays Svof's.
-- the skillset it's listed under, for a class defence a class update moved to another skillset. Click one of your class's skillsets, or type one with *vcustomdef <name> skillset <skillset>*. A general defence stays general.
-
-Under those, Svof lists what it keeps doing as before, such as what gaining the defence does to your other defences. A change can't reach those.
-
-Check the change with *vcustomdef <name> test*, then put it into play with *vcustomdef <name> install*. The first time, Svof asks you to confirm, because your change replaces Svof's own version, and Svof's updates to that defence don't reach you while your change is in use. Svof remembers what its own version was when you changed it. If an update changes what you changed, Svof says so as it loads, with links to see both, to use Svof's, or to keep yours. *vcustomdef <name> reset* puts Svof's own back.
-
-A change to a defence every class has, such as a general one, is for every class. A change to a defence from a class's skillsets is for that class. Your changes are saved in *svo/custom/edits* in your profile folder, and *vconfig customdefinitions off* starts Svof without them as well.
-
-Reporting a defence that's out of date gets the fix into Svof for everyone, and your change can go once the fix is in.
-
-.. _copy-svof-defences:
-
-Copy Svof's own defences from another class
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Sometimes the game gives your class a defence that Svof has only for other classes, or an artefact gives a class defence to anyone who buys it. Instead of defining that defence again, copy Svof's own. *vcustomdef <name> copy*, or *vcustomdef <name>*, shows each class's version of it, with a **copy it** link for each one Svof can copy.
-
-A copy starts from Svof's version: its lines, its DEF line, its GMCP name, its command and whether that takes balance. Svof's patterns for its lines that vary come with it, shown and changed like a definition's. Any other lines Svof watches for come with it as they are. Pick a skillset for it, or use *vcustomdef <name> class all* for an artefact's, then check it and install it as you would a definition. You can change its lines, GMCP name and command, for example when the artefact uses a different command. The artefact versions so far use the class version's GMCP name.
-
-*vshow server* keeps one choice for each defence's name, in every class, so a copy shares Svof's own choice of whether serverside or Svof raises it. Installing or deleting a copy leaves that choice as it is. Unless that choice gives it to serverside, Svof raises the copy, and *vshow server* can change that.
-
-Svof copies only a defence it raises by sending its command and tracks by its lines. It doesn't copy one where it does more than that, because that extra handling doesn't come with a copy. For example, it won't copy a defence that can't be up with some others (such as a Monk's forms), one it counts with others (such as the channels), one it waits for after its command, or one that comes with an item. Svof has its own option for each item, such as *vconfig havemindnet*. The copy list says why for each version it can't copy.
-
-If you defined the defence before Svof had it in another class, *vcustomdef <name>* links to Svof's own, and copying it keeps your lines.
-
-Svof remembers its version when you copied it. If an update changes that version, Svof says so as it loads, with links to see Svof's, to copy it again, or to keep yours. If an update gives Svof its own version in your class, Svof uses its own, and says so for a copy you made for that class. A copy for every class gives way silently in a class that has Svof's own.
-
-.. _defence-clashes:
-
-Clashes with other defences
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-A line, GMCP name or command that two defences share makes the game's word on one count for the other as well. Svof refuses to install a definition, copy or change that shares any of these with another defence in your class:
-
-- a line it watches for: another defence's gain, loss or DEF line, or one another defence's pattern matches
-- a pattern that matches another defence's line, or the defence's own line of another kind, such as a gain pattern that matches its own loss line
-- its GMCP name: another defence's, Svof's own or one you defined. If two of your definitions share one, the first by name goes in as Svof loads, and the other stays out.
-- its command: one Svof already takes for another action when you type it or serverside sends it, such as a cure, or one another definition sends
-
-Svof checks again every time it loads, since a class change or an update can bring a clash. A definition or change that clashes then stays out, and Svof says what it clashes with. Svof can't check one pattern against another, so two patterns that both match some line the game sends aren't caught.
 
 Anti-illusion
 ~~~~~~~~~~~~~
@@ -847,16 +758,12 @@ If your custom prompt disappeared, or inra stopped working - upgrade your `Mudle
 Updating the system
 ~~~~~~~~~~~~~~~~~~~
 
-Svof checks for a new release when it loads, and tells you when one is
-available. Click the notice, or type **vupdate**, and it downloads and installs
-the new package for you. Restart Mudlet afterwards to finish - Svof will say so
-when it is done.
+a) uninstall the Svof package
+b) download the new package from the original link you got
+c) install new package
+d) restart mudlet. You can delete the zip now too, it's not needed anymore. Do not vinstall again either - your vconfig settings stayed.
 
-**vupdate force** reinstalls the latest release even if you are already on it,
-which is the thing to try if an install went wrong.
-
-Don't worry, your personal settings won't be lost: they are saved before the
-update and read back afterwards, and you should not run vinstall again.
+Don't worry, your personal settings won't be lost.
 
 Getting help
 ~~~~~~~~~~~~
@@ -1014,9 +921,6 @@ vconfig options
   customprompt
     see *Setting a custom prompt*.
 
-  diagafterblackout
-    has the system diagnose as soon as it can after a blackout ends. GMCP goes quiet during blackout, so afterwards the system doesn't know what you gained or were cured of while it lasted, and goes by what it saw during the blackout until your next diagnose. Diagnosing costs a balance you might rather attack with, so this option is off by default. The system always diagnoses after a Sylvan eclipse.
-
   doubledo
    has Svof do everything twice while afflicted with stupidity.
 
@@ -1055,12 +959,6 @@ vconfig options
   focuswithcadmus
     enables use of focus whenever you've got the Cadmus affliction (which will give you a physical aff if you do focus).
 
-  focuswithfulminated
-    enables use of focus while you have the fulminated affliction. Focusing for any mental affliction while you have fulminated paralyses you, so this option is off by default. Focus never cures fulminated itself. With serverside curing on, the system sets the game's own ``CURING FOCUS WITHFULMINATED`` or ``WITHOUTFULMINATED`` option to match.
-
-  focuswithguilt
-    enables use of focus while you have the guilt affliction. Focusing while you have guilt gives you another mental affliction, so this option is off by default. Focus doesn't cure guilt. With serverside curing on, the system sets the game's own ``CURING FOCUS WITHGUILT`` or ``WITHOUTGUILT`` option to match.
-
   gagbreath
     toggles whenever the system should gag (hide) breathing or not. It will completely gag it - commands to put it up will not be shown, and you holding breath and exhaling will be completely gagged as well - so you will see no extra spam, at all.
 
@@ -1081,12 +979,6 @@ vconfig options
 
   gagserverside
     toggles whenever the system should gag (hide) system's of serverside commands when serverside is enabled - this is things like priority switching, option changing and so on. This does not cover serverside's ``[CURING]:`` messages, use the ``gagservercuring`` option for that.
-
-  customdefinitions
-    (on by default) adds the defences you defined with *vcustomdef*, and uses your changes to Svof's own, when Svof loads. Turn it off to start Svof without them; your definitions keep their places in your priority lists.
-
-  showhiddendefs
-    lists the defences you hid with *vshow hidelist* in the defence lists too, so you can see whether any is on defup or keepup.
 
   havelifevision
     sets whenever you have the ability to raise the Lifevision defence through a customised artefact. If you have the skill, you don't need to enable this, and the system autodetects the uncustomised artefact for you as well.
@@ -1722,8 +1614,6 @@ The other, more long-term way to set priorities is to create whole lists of them
 
 To view the list of priorities that you can load, you can use the **vlistprios** alias or the :func:`svo.prio.list` function. The system always operates on the *current* priority. When you import a priority list, the system copies it into the *current* list - and that's what you modify via *vshow* and other functions. The original list that priorities were imported from is not affected. When you export a priority list, the *current* priority is copied into it.
 
-Svof keeps one *current* list for every class, so a cure, or a defence two classes have, has one place that every class uses. When you change class, the places of the actions the new class doesn't have stay in the list, for when you're back. *vcleargaps* and *vset* in the new class leave them next to the actions around them. If you put an action in a place one of them holds, Svof moves yours one place up, just above it, when it saves. Lists you export carry those places as well.
-
 To export your priorities, you can use the :func:`svo.prio.export` function or the *vexportprio <name> [<options>]* alias. ``name`` is the name you'd like to give to the priority list, ``options`` is a list of balances for it to export that you can selectively provide. If you don't provide it, it'll export all balances.
 
 When you export a priority with the *echoback* argument provided, it'll also tell you where it saved the file - it'll be somewhere in your Svof config folder. If you'd like to share this file with someone else, you can just send it to them, have them place it in their Svof config folder (not the system one, but one that is inside their Mudlet profile) and import it in.
@@ -1786,8 +1676,6 @@ To add a new bashing trigger, go to the 'Bashing triggers' Svof folder, and copy
 :note: if adding a bashing trigger that involves *svo.valid.proper_stun()*, make sure that comes before other afflictions in the trigger. This is the only case where the order matters.
 
 To add a trigger for anything else, you can use *svo.valid.proper_<affliction>()*, or if that function doesn't exist, *svo.valid.simple<affliction>()*. To see the list of affliction names, check *vshow afflist* - ones that have a *proper_* function are marked *pr* beside their name.  If you're on a recent enough version of Mudlet, then you can click on the affliction to get the text for the function.
-
-:note: every affliction *vshow afflist* lists has a *simple* function. They are generated from the system's dictionary, so an affliction has one as soon as it has an entry there.
 
 :note: bleeding, unknowncrippledlimb, unknowncrippledarm, unknowncrippledleg (and possibly others) take a number parameter - for example, if a mob breaks two random limbs, you do ``svo.valid.simpleunknowncrippledlimb(2)``.
 
@@ -2078,14 +1966,7 @@ General aliases
 
   vshowh
   vshow hidelist
-    shows your class's skillsets and defences, each a link to hide it from the defence lists or show it again. Hidden ones are grey.
-
-  vshow hidelist all
-    shows every class's skillsets and defences, to hide another class's.
-
-  vshow hide <skillset or defence>
-  vshow unhide <skillset or defence>
-    hides a skillset or defence from the defence lists, or shows it again. A defence of another class's is hidden in every skillset it's in.
+    shows the list of defences / groups which are currently shown or not. To toggle whenever a defence or a group of defences should be shown or not in defence lists, click on the + or - sign beside it.
 
   vshow ignorelist
     shows a list of all things - defences and afflictions - that you can ignore.
@@ -2128,9 +2009,6 @@ General aliases
   vkeep *<defence>* [on/off]
     adds/remove a defence to the keepup list. Note that keepup can also be enabled/disabled as a feature, and it won't put defences up when it's disabled.
 
-  vcustomdef [*<defence>*]
-    lists the defences you defined and your changes to Svof's own, or shows one to define, change or copy from another class. *vcustomdef svof* lists Svof's own defences to change, and *vcustomdef svof all* every class's. *vcustomdef help* lists every form it takes. See :ref:`custom-defences`, :ref:`change-svof-defences` and :ref:`copy-svof-defences`.
-
   vcreate defmode *<name>*
     creates a new fences mode with the given name. You may wish to have more than the default basic/combat ones in order to specialize for situations (ie when you're out bashing, raiding orgA, raiding orgB, etc.)
 
@@ -2167,9 +2045,6 @@ General aliases
   vswap <aff name> <balance> <priority number>
     swaps the cure on the given balance with another at a given number. ie, ``vswap asthma salve 30`` will set the salve cure for asthma at priority number 30 (and if anything was there previously, it'll be set to what asthma was).
 
-  vswapslow <action_balance> <action_balance or priority number>
-    swaps two cures in the aeon/retardation (slow curing) priorities, or moves a cure to a given number there, swapping with whatever was at that number. ``vswapslow asthma_herb paralysis_herb`` puts asthma's herb cure above paralysis's, and says the order the swap left. A name that isn't in the slow curing list is refused with the reason, and nothing moves.
-
   vset <aff name> <balance> <priority number>
     sets the cure on the given balance to be on the given number. ie, ``vset wristfractures sip 5`` will set the sip cure for wristfractures at priority number 5 - and if anything was there previously, it will be shuffled down to make space. For the aeon/retardation curing, use ``vset wristfractures_sip slowcuring 5`` instead.
 
@@ -2192,9 +2067,7 @@ General aliases
     shows the systems version.
 
   vupdate
-    checks for a new release and, if there is one, downloads and installs it.
-    Restart Mudlet afterwards. **vupdate force** reinstalls the latest release
-    even when you already have it.
+    shows the link(s) at which to download an update for your system.
 
   vupdate prios
     resets all priorities to the default ones.
@@ -2568,8 +2441,6 @@ Svof API functions
       -- move paranoia herb cure to the 30th spot, bumping down whatever was the 29, and everything else below it as necessary
       svo.prio.insert("paranoia", "herb", 30)
 
-    Returns true, or false and the reason if the action has no priority in that balance.
-
 .. function:: svo.prio_swap(what, balance, arg2, nil, echoback)
 
     Swaps action *what* with the balance of *balance* with the action that has a priority number of *arg2*.
@@ -2580,9 +2451,7 @@ Svof API functions
 
 .. function:: svo.prio_slowswap(what, whatwith, echoback)
 
-    Swaps action *what* (should be in the format of action_balance, ie *healhealth_sip*) with *whatwith*, which should be in a similar format, or be a priority number.
-
-    Returns true. If either name isn't in the slow curing list, nothing moves: with *echoback* it says why and returns false and the reason, and without it, it raises an error with the reason.
+    Swaps action *what* (should be in the format of action_balance, ie *healhealth_sip*) with *whatwith*, which should be in a similar format.
 
 .. function:: svo.asave()
 
@@ -2695,7 +2564,7 @@ Svof API functions
 
 .. function:: svo.ignoreskill(skill, newstatus, echoback)
 
-    Sets whenever a skill or a skillgroup shouldn't be displayed in defence lists (this is what ``vshow hidelist`` uses). A defence your class has is set in its skillset; another class's defence is set in every skillset it's in.
+    Sets whenever a skill or a skillgroup shouldn't be displayed in defence lists (this is what ``vshow hidelist`` uses).
 
 .. function:: svo.addaff(aff)
 
