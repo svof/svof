@@ -150,6 +150,22 @@ do
   check("sip noeffect keeps latched", #w.removed, 0)
 end
 
+-- priorities: latched is sipped before healhealth, in both default_prios
+-- copies. It was in neither list, so a default import left it at 0, below
+-- everything else on sip balance
+for _, path in ipairs({ "src/resources/default_prios", "default_prios" }) do
+  local prios = read_file(path)
+  local sip = prios:match("\nsip = {\n(.-)\n}") or ""
+  local order = {}
+  for name in sip:gmatch('"(%w+)"') do order[#order + 1] = name end
+  -- the end of an unnumbered list goes first
+  check(path .. ": latched is last on sip, after healhealth", order[#order] == "latched" and order[#order - 1] == "healhealth", true)
+  local slow = prios:match("\nslowcuring = {\n(.-)\n}") or ""
+  local latched = tonumber(slow:match('%[(%d+)%] = "latched_sip"'))
+  local healhealth = tonumber(slow:match('%[(%d+)%] = "healhealth_sip"'))
+  check(path .. ": latched_sip is just above healhealth_sip in slow curing", latched and healhealth and latched - healhealth, 1)
+end
+
 print(string.format("%d checks, %d failures", checks, failures))
 if failures > 0 then print("FAILED") os.exit(1) end
 print("ALL PASS")
