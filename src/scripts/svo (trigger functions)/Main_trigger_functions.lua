@@ -70,7 +70,8 @@ function svo.valid.symp_asleep()
     return
   end
 
-  if not affs.sleep and not actions.sleep_aff then
+  -- in a deepsleep, this is that, not a sleep svof would try waking from
+  if not affs.sleep and not affs.deepsleep and not actions.sleep_aff then
     svo.checkaction(svo.dict.sleep.aff, true)
     lifevision.add(actions['sleep_aff'].p, 'symptom', nil, 1)
   end
@@ -1379,7 +1380,7 @@ function svo.valid.relapsing_asthma()
 end
 
 function svo.valid.subterfuge_bind()
-  if not conf.aillusion or affs.sleep then
+  if not conf.aillusion or affs.sleep or affs.deepsleep then
     valid.simplebound()
   end
 end
@@ -1511,7 +1512,7 @@ end
 
 
 do
-  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'flamefisted', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'mucous', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed', 'scalded', 'enmesh'}
+  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'flamefisted', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'mucous', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed', 'scalded', 'enmesh', 'constricted', 'snared', 'vinewreathed'}
   if svo.haveskillset('metamorphosis') then
     afflist[#afflist+1] = 'cantmorph'
   end
@@ -2618,6 +2619,8 @@ function svo.valid.smoke_failed_asthma()
   end
 end
 
+-- mucous is a tempered phlegmatic humour's side effect on smoking, not an
+-- affliction the game lists: see svo.dict.mucous
 function svo.valid.got_mucous()
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
 
