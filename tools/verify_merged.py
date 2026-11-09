@@ -126,6 +126,12 @@ ITEM_RENAME = {
 # then records, so the moved item's body is still digested.
 ITEM_MOVE = {}
 
+# Every (kind, gone id) in ITEM_MOVE whose gone item and added item both
+# turned up during a run. An entry that names a pair the run never saw is as
+# silent as an unused ITEM_RENAME key, and goes dead the same two ways: a
+# typo, or the reference re-pinned to a tree where the move already happened.
+ITEM_MOVE_USED = set()
+
 # Top-level items only the package has, added on purpose, keyed by kind: the
 # item's name to (module, the module's top-level item it comes straight
 # after). Any other top-level item only the package has is structural. A
@@ -492,6 +498,10 @@ def compare(merged):
         # cured stupidity" sits in several folders), so a name match would
         # pair unrelated items.
         declared = ITEM_MOVE.get(kind, {})
+        gone_ids, added_ids = {g for g, _ in gone_items}, {a for a, _ in added_items}
+        for gid, aid in declared.items():
+            if gid in gone_ids and aid in added_ids:
+                ITEM_MOVE_USED.add((kind, gid))
         for gid, gd in gone_items:
             if not any(gd.get(k) for k in BEHAVIOUR_KEYS):
                 continue
@@ -549,6 +559,16 @@ def compare(merged):
                     "xmls - it is either a typo, or the reference has been "
                     "re-pinned to a tree where the rename already happened. "
                     "Remove it or fix the path." % (kind, path))
+
+    # The same for a declared move, and structural for the same reason
+    for kind, moves in ITEM_MOVE.items():
+        for gid in sorted(moves):
+            if (kind, gid) not in ITEM_MOVE_USED:
+                structural.append(
+                    "%-8s ITEM_MOVE entry %r -> %r matched no gone and added pair - "
+                    "it is either a typo, or the reference has been re-pinned to a "
+                    "tree where the move already happened. Remove it or fix the ids."
+                    % (kind, gid, moves[gid]))
 
     return structural, content, order_report
 
