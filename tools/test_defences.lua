@@ -25,7 +25,8 @@ behaviour meant to stay. All of these are in the 2018 module xmls:
       Bard rework, which also left svof nothing of aria's to raise)
   10  drunkensailor and heartsfury skipped their checks during defup (gone
       with the Bard rework)
-  11  lipread's specialskip reads an undefined global mindseye
+  11  lipread's specialskip reads an undefined global mindseye (fixed:
+      tools/test_lipread.lua)
   12  mindseye's oncompleted marks you deaf, and blind on keepup (and/or)
   13  svo.defs.curedblind and cureddeaf are called and never defined
   14  the Spirit channel's handlers are called and never defined
@@ -731,11 +732,11 @@ do -- 8: the demon armour strip line loses armour, the record's name
   eq(w.svo.defc.armour, false, "a demon armour strip loses armour")
 end
 
-do -- 11: lipread's specialskip reads a global that does not exist
+do -- 11: lipread's specialskip read a global that does not exist
   local w = world.new({ class = "Serpent" })
   w.svo.defences.got("mindseye")
-  eq(w.svo.defs_data.lipread.specialskip(), true, "today (defect 11): lipread is skipped in defup even with mindseye")
-  eq(w.unknown_globals.mindseye ~= nil, true, "today (defect 11): because it reads a global mindseye")
+  eq(w.svo.defs_data.lipread.specialskip(), false, "with mindseye, defup waits for lipread")
+  eq(w.unknown_globals.mindseye, nil, "and no global mindseye is read")
 end
 
 do -- 12: mindseye's oncompleted, run by svof's own touch

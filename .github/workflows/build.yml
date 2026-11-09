@@ -365,6 +365,18 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.99997. Defup waits for lipread unless you're blind without
+      # mindseye, and the skip reads no undefined global. Runs the real
+      # loaders (tools/svof_world.lua).
+      - name: test lipread
+        run: lua tools/test_lipread.lua
+
+      # Gate 1.99998. nightsight is a general defence: a Metamorphosis class
+      # raises it with no morph first, and serverside can raise it too. Runs
+      # the real loaders (tools/svof_world.lua).
+      - name: test nightsight
+        run: lua tools/test_nightsight.lua
+
       # Gate 1.99995. Small fixes to triggers and scripts with no test file of
       # their own, each section saying what it pins. The trigger sections read
       # the patterns and flags from the real triggers.json, match them against

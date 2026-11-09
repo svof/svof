@@ -383,7 +383,7 @@ end
 
 if svo.haveskillset('metamorphosis') then
   codepaste.nonmorphdefs = function()
-    for _, def in ipairs{'flame', 'lyre', 'nightsight', 'rest', 'resistance', 'stealth', 'temperance', 'elusiveness'} do
+    for _, def in ipairs{'flame', 'lyre', 'rest', 'resistance', 'stealth', 'temperance', 'elusiveness'} do
       if ((sys.deffing and defdefup[defs.mode][def]) or (not sys.deffing and conf.keepup and defkeepup[defs.mode][def])) and not defc[def] then return false end
     end
 
@@ -10810,28 +10810,18 @@ if not next(svo.dict) then
             not codepaste.balanceful_defs_codepaste() and
             sys.canoutr and
             not affs.prone and
-            not svo.doingaction'nightsight'
-            and (not svo.haveskillset('metamorphosis') or ((not affs.cantmorph and not svo.doingaction'waitingformorph' and sk.morphsforskill.nightsight) or defc.dragonform))) or false
+            not svo.doingaction'nightsight') or false
         end,
-  
+
         oncompleted = function() defences.got('nightsight') end,
-  
+
+        -- a general defence, not a Metamorphosis one (DEFENCE SHOW,
+        -- Profession: No), so no class needs a form for it. svof used to morph
+        -- a Metamorphosis class into one first, and wait on a morph that could
+        -- fail, so it never sent this
         action = "nightsight on",
         onstart = function()
-  if not svo.haveskillset('metamorphosis') then
           send("nightsight on", conf.commandecho)
-  else
-          if not defc.dragonform and (not conf.transmorph and sk.inamorph() and not sk.inamorphfor'nightsight') then
-            if defc.flame then send("relax flame", conf.commandecho) end
-            send('human', conf.commandecho)
-          elseif not defc.dragonform and not sk.inamorphfor'nightsight' then
-            if defc.flame then send("relax flame", conf.commandecho) end
-            send("morph "..sk.morphsforskill.nightsight[1], conf.commandecho)
-            if not conf.truemorph then svo.doaction(svo.dict.waitingformorph.waitingfor) end
-          elseif defc.dragonform or sk.inamorphfor'nightsight' then
-            send("nightsight on", conf.commandecho)
-          end
-  end
         end
       },
     },
@@ -11274,11 +11264,6 @@ if not next(svo.dict) then
     svo.dict.prone.misc.actions = {'stand', "recover footing"}
   else
     svo.dict.prone.misc.action = 'stand'
-  end
-  
-  -- undeffable since serverside can't morph to get a specific defence up
-  if svo.haveskillset('metamorphosis') then
-    svo.dict.nightsight.physical.undeffable = true
   end
   
   if svo.haveskillset('shindo') then
