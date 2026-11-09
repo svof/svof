@@ -1597,6 +1597,67 @@ do
     "serverside: there's no serverside switch; the GMCP name decides")
 end
 
+-- A new definition asks the game by its name, unless the command asks itself.
+-- Asking both ways printed the first reply, "There is no such defence.",
+-- ahead of the one wanted (live run, 2026-11-01)
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local cmd = svo.defences.customdef_command
+  local function asked(rest)
+    w.sent = {}
+    cmd(rest)
+    local out = {}
+    for _, sent in ipairs(w.sent) do
+      if sent:find("^defence show") then out[#out + 1] = sent end
+    end
+    return table.concat(out, "; ")
+  end
+
+  eq(asked("onceone fetch hiding"), "defence show hiding", "asks once: a new one's fetch, by the name given")
+  eq(asked("oncetwo fetch"), "defence show oncetwo", "asks once: a new one's fetch, by its own name")
+  eq(asked("oncethree gmcp somedefence"), "defence show somedefence", "asks once: a new one's GMCP name")
+  eq(asked("oncefour"), "defence show oncefour", "asks once: a new one on its own, by its name")
+  eq(asked("oncefive command raise it"), "defence show oncefive", "asks once: a new one's other fields, by its name")
+  eq(asked("oncesix gmcp none"), "defence show oncesix", "asks once: no GMCP name, so by its name")
+end
+
+-- A new one's screen waits for the game's answer whoever asks, not only
+-- when it asks by its own name (review of #904)
+do
+  local function waiting(first, confirm)
+    local w = world.new({ class = "Monk" })
+    local svo = w.svo
+    if confirm then svo.defences.gmcp_confirmed[confirm] = true end
+    local name = first:match("^%S+")
+    svo.defences.customdef_command(first)
+    w.echoes = {}
+    svo.defences.customdef_command(name)
+    return echoed(w, "Asking the game for " .. name .. "'s lines."),
+      echoed(w, name .. ", a defence you are defining"), w
+  end
+  local waits, shown = waiting("waitone fetch testwait")
+  eq(waits, true, "a new one's fetch by another name: its screen waits for the game")
+  eq(shown, false, "and isn't shown empty")
+  eq((waiting("waittwo fetch")), true, "a new one's fetch by its own name: the same")
+  eq((waiting("waitfour gmcp testwait", "testwait")), true, "a new one's GMCP name the game has confirmed: the same")
+
+  -- the answer shows it, filled in
+  local w
+  waits, shown, w = waiting("waitfive fetch testwait")
+  local function game(text) w.env.line = text w.svo.defences.custom_fetch_line() w.run_timers() end
+  w.echoes = {}
+  game("Defence:            Testwait (testwait)")
+  game("EnactMsg:           You begin to testwait.")
+  w.env.isPrompt = function() return true end
+  game("9975h, 6252m cexkdb-")
+  w.env.isPrompt = function() return false end
+  eq(echoed(w, "waitfive, a defence you are defining"), true, "the game's answer shows the screen")
+  w.echoes = {}
+  w.svo.defences.customdef_command("waitfive")
+  eq(echoed(w, "waitfive, a defence you are defining"), true, "and it's shown after, not waited for")
+end
+
 -- For a defence the game knows, DEFENCE SHOW gives its lines and GMCP name
 -- (the reply's layout is the owner's capture, 2026-10-09)
 do
@@ -2720,6 +2781,28 @@ do
   local kola = svo.defences.edit_drafts.kola or { on = {} }
   eq(kola.on[1], "You feel energy course through you.", "changes: and adds the game's gain line to the change")
   eq(echoed(w, "isn't a profession defence"), false, "changes: leaving svof's own class alone")
+end
+
+do -- saving Defences.lua in Mudlet's editor runs the defences loader alone,
+   -- which makes svo.defs_data anew. Custom defences kept the old one, so a
+   -- change went into a table nothing reads (review of #887)
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local old = svo.defs_data
+  svo.loader.defences()
+  eq(svo.defs_data ~= old, true, "reloaded: the defences loader makes defs_data anew")
+  svo.defences.customdef_command("softfocus def My eyes are soft.")
+  w.run('svo.defences.edit_install("softfocus", true)')
+  local function has(rec)
+    local def = rec and rec.def
+    if type(def) ~= 'table' then return def == "My eyes are soft." end
+    for _, line in ipairs(def) do
+      if line == "My eyes are soft." then return true end
+    end
+    return false
+  end
+  eq(has(svo.defs_data.softfocus), true, "reloaded: a change goes into the defs_data in use")
+  eq(has(old.softfocus), false, "reloaded: and not the old one")
 end
 
 do -- a change is put into play as svof loads, and says when svof's own changed since

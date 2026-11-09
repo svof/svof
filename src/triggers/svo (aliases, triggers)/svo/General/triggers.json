@@ -1201,6 +1201,186 @@
         ]
       },
       {
+        "name": "svo cured depression",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Maybe things aren't so bad after all.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo cured parasite",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The leeching of your strength comes to an end.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo cured retribution",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The terrible sense of foreboding lifts.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo cured shadowmadness",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Your sanity reestablishes itself.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo cured timeloop",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "You break out of the feedback loop.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo cured flushings",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The prickling in your skin fades and you feel blessedly cool.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo cured mycalium",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Your thoughts suddenly crystalise, the insidious whispers falling abruptly silent.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo cured pyramides",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The burning in your veins abruptly fades.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo cured rebbies",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Your skin ceases secreting slime.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo cured sandfever",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "Your fever finally breaks, the terrible burning retreating.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
         "name": "svo ate2",
         "isActive": "yes",
         "isFolder": "no",
@@ -1653,6 +1833,24 @@
         "patterns": [
           {
             "pattern": "You suddenly find the air much easier to breathe.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "svo cured earworm",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "The endlessly playing song in your mind falls silent.",
             "type": "exactMatch"
           }
         ]
@@ -3025,6 +3223,60 @@
         ]
       },
       {
+        "name": "constricted",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "being constricted by vines.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "snared",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "tangled up by a rope snare.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "vinewreathed",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "wreathed in flailing vines.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
         "name": "inlove",
         "isActive": "yes",
         "isFolder": "no",
@@ -4014,7 +4266,7 @@
         ]
       },
       {
-        "name": "concussionhead",
+        "name": "damagedhead",
         "isActive": "yes",
         "isFolder": "no",
         "multiline": "no",
@@ -4104,7 +4356,25 @@
         ]
       },
       {
-        "name": "seriousconcussion",
+        "name": "mangledhead",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "85",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "has a mangled head.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "concussion",
         "isActive": "yes",
         "isFolder": "no",
         "multiline": "no",
@@ -4117,10 +4387,6 @@
         "patterns": [
           {
             "pattern": "has a serious concussion.",
-            "type": "exactMatch"
-          },
-          {
-            "pattern": "has a mangled head.",
             "type": "exactMatch"
           }
         ]
@@ -4918,7 +5184,7 @@
         "highlightBG": "#ffff00",
         "patterns": [
           {
-            "pattern": "suffering from a scalded throat.",
+            "pattern": "horrifically scalded.",
             "type": "exactMatch"
           }
         ]
@@ -4937,78 +5203,6 @@
         "patterns": [
           {
             "pattern": "seriously dehydrated.",
-            "type": "exactMatch"
-          }
-        ]
-      },
-      {
-        "name": "severeburn",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "you are severely burned.",
-            "type": "exactMatch"
-          }
-        ]
-      },
-      {
-        "name": "extremeburn",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "you are extremely burned.",
-            "type": "exactMatch"
-          }
-        ]
-      },
-      {
-        "name": "charredburn",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "your flesh is blackened and charred.",
-            "type": "exactMatch"
-          }
-        ]
-      },
-      {
-        "name": "meltingburn",
-        "isActive": "yes",
-        "isFolder": "no",
-        "multiline": "no",
-        "multilineDelta": "0",
-        "filter": "no",
-        "fireLength": "0",
-        "highlight": "no",
-        "highlightFG": "#ff0000",
-        "highlightBG": "#ffff00",
-        "patterns": [
-          {
-            "pattern": "the flesh is melting from your bones.",
             "type": "exactMatch"
           }
         ]
@@ -5734,6 +5928,24 @@
         ]
       },
       {
+        "name": "condemned",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "you are condemned to burn.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
         "name": "Finished",
         "isActive": "yes",
         "isFolder": "no",
@@ -5806,7 +6018,7 @@
     "highlightBG": "#ffff00",
     "patterns": [
       {
-        "pattern": "if isPrompt() then return true else svo.paragraph_length = svo.paragraph_length + 1 return false end",
+        "pattern": "if isPrompt() then return true else svo.paragraph_length = svo.paragraph_length + 1 svo.note_paragraph_line() return false end",
         "type": "lua"
       }
     ],
@@ -6647,7 +6859,7 @@
     ]
   },
   {
-    "name": "svo cure mildconcussion",
+    "name": "svo cure damagedhead",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -6669,7 +6881,7 @@
     ]
   },
   {
-    "name": "svo cure seriousconcussion",
+    "name": "svo cure mangledhead",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "yes",
@@ -7295,24 +7507,6 @@
     ]
   },
   {
-    "name": "svo cure concussion",
-    "isActive": "yes",
-    "isFolder": "no",
-    "multiline": "no",
-    "multilineDelta": "0",
-    "filter": "no",
-    "fireLength": "0",
-    "highlight": "no",
-    "highlightFG": "#ff0000",
-    "highlightBG": "#ffff00",
-    "patterns": [
-      {
-        "pattern": "As your concussion lifts, your thinking becomes clearer.",
-        "type": "exactMatch"
-      }
-    ]
-  },
-  {
     "name": "svo cure fear",
     "isActive": "yes",
     "isFolder": "no",
@@ -7783,6 +7977,24 @@
     ]
   },
   {
+    "name": "svo condemned woreoff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The righteous condemnation lifts, and you breathe more easily.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
     "name": "svo unconsciousness woreoff",
     "isActive": "yes",
     "isFolder": "no",
@@ -7796,6 +8008,60 @@
     "patterns": [
       {
         "pattern": "You regain consciousness with a start.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo constricted woreoff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You manage to wrestle the vines away from your limbs.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo snared woreoff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "You manage to disentangle yourself from the rope trap which had snared your ankles.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo vinewreathed woreoff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The vines flailing about your form recede.",
         "type": "exactMatch"
       }
     ]

@@ -55,12 +55,14 @@ do
     ["Eat Ferrum"] = "herb ginseng/ferrum",
     ["eat   kelp "] = "herb kelp/aurum",
     ["Time"] = "time",
-    ["Apply Epidermal to Head"] = "salve epidermal/sensory to head",
-    ["Apply Sensory to Body / Apply Epidermal to Body"] = "salve epidermal/sensory to body",
-    ["Apply Caloric"] = "salve caloric/exothermic",
+    -- a salve or elixir has one name: the transmutation ones, such as
+    -- sensory and antigen, are gone from the game, so svof can't give one
+    ["Apply Epidermal to Head"] = "salve epidermal/nil to head",
+    ["Apply Sensory to Body / Apply Epidermal to Body"] = "game apply sensory to body/nil, salve epidermal/nil to body",
+    ["Apply Caloric"] = "salve caloric/nil",
     ["Smoke Valerian"] = "smoke valerian/realgar",
     ["Smoke Realgar"] = "smoke valerian/realgar",
-    ["Sip Immunity"] = "purgative immunity/antigen",
+    ["Sip Immunity"] = "purgative immunity/nil",
     ["Eat Bloodroot / Smoke Valerian"] = "herb bloodroot/magnesium, smoke valerian/realgar",
     -- the game's to cure, and svof only tracks it (the user, 2026-10-22)
     [""] = "",
@@ -196,7 +198,7 @@ end
 do -- salve with no place
   local w = world.new()
   local e = build(w, "testcold", { cures = "Apply Caloric" })
-  eq(same_list(e.salve.actions, { "apply caloric", "apply exothermic" }), true, "caloric with no place answers to apply caloric")
+  eq(same_list(e.salve.actions, { "apply caloric" }), true, "caloric with no place answers to apply caloric")
   eq(sends(w, e.salve), "apply caloric", "and sends it")
 end
 
@@ -1057,6 +1059,72 @@ do -- a name svof's own svo.valid handlers have can't be an affliction's
   A.set("testhandlers", "diag", "covered in test handlers.")
   eq(A.install("testhandlers"), true, "handlers: and it does")
   A.delete("testhandlers")
+end
+
+-- A new definition asks the game by its name, unless the command asks itself.
+-- Asking both ways printed the first reply ahead of the one wanted (live run,
+-- 2026-11-01)
+do
+  local w = world.new({ class = "Monk" })
+  local svo = w.svo
+  local function asked(rest)
+    w.sent = {}
+    svo.afflictions.command(rest)
+    local out = {}
+    for _, sent in ipairs(w.sent) do
+      if sent:find("^affliction show") then out[#out + 1] = sent end
+    end
+    return table.concat(out, "; ")
+  end
+
+  eq(asked("onceone fetch vertigo"), "affliction show vertigo", "asks once: a new one's fetch, by the name given")
+  eq(asked("oncetwo fetch"), "affliction show oncetwo", "asks once: a new one's fetch, by its own name")
+  eq(asked("oncethree gmcp someaff"), "affliction show someaff", "asks once: a new one's GMCP name")
+  eq(asked("oncesix gmcp vertigo"), "affliction show vertigo", "asks once: a new one's GMCP name the game knows, by that name")
+  eq(svo.afflictions.drafts.oncesix.gmcp, "vertigo", "and that name is set")
+  eq(asked("oncesix gmcp vertigo"), "", "asks nothing for one already started")
+  eq(asked("oncefour"), "affliction show oncefour", "asks once: a new one on its own, by its name")
+  eq(asked("oncefive cures Eat Kelp"), "affliction show oncefive", "asks once: a new one's other fields, by its name")
+end
+
+-- A new one's screen waits for the game's answer whoever asks, not only
+-- when it asks by its own name (review of #904)
+do
+  local function waiting(first)
+    local w = world.new({ class = "Monk" })
+    local svo = w.svo
+    local name = first:match("^%S+")
+    svo.afflictions.command(first)
+    w.echoes = {}
+    svo.afflictions.command(name)
+    return echoed(w, "Asking the game about " .. name .. "."),
+      echoed(w, name .. ", an affliction you are defining"), w
+  end
+  local waits, shown = waiting("waitone fetch testwait")
+  eq(waits, true, "a new one's fetch by another name: its screen waits for the game")
+  eq(shown, false, "and isn't shown empty")
+  eq((waiting("waittwo fetch")), true, "a new one's fetch by its own name: the same")
+  -- one with a GMCP name the game has confirmed is shown by its gmcp
+  -- command, which says it waits
+  do
+    local w = world.new({ class = "Monk" })
+    w.svo.afflictions.confirmed.testwait = true
+    w.svo.afflictions.command("waitfour gmcp testwait")
+    eq(echoed(w, "Asking the game about waitfour."), true, "a new one's GMCP name the game has confirmed: the same")
+  end
+
+  -- the answer shows it, filled in
+  local w
+  waits, shown, w = waiting("waitfive fetch testwait")
+  local game, prompt = reader(w, "svo.afflictions.show_line()")
+  w.echoes = {}
+  game("Affliction:         Testwait")
+  game("Cured msg:          The testwait passes.")
+  prompt()
+  eq(echoed(w, "waitfive, an affliction you are defining"), true, "the game's answer shows the screen")
+  w.echoes = {}
+  w.svo.afflictions.command("waitfive")
+  eq(echoed(w, "waitfive, an affliction you are defining"), true, "and it's shown after, not waited for")
 end
 
 if #failures > 0 then

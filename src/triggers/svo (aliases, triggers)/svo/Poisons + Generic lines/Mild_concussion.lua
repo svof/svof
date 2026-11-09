@@ -1,2 +1,2 @@
 svo.valid.simplestupidity()
-svo.valid.proper_mildconcussion()
+svo.valid.proper_damagedhead()
