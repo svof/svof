@@ -70,7 +70,8 @@ function svo.valid.symp_asleep()
     return
   end
 
-  if not affs.sleep and not actions.sleep_aff then
+  -- in a deepsleep, this is that, not a sleep svof would try waking from
+  if not affs.sleep and not affs.deepsleep and not actions.sleep_aff then
     svo.checkaction(svo.dict.sleep.aff, true)
     lifevision.add(actions['sleep_aff'].p, 'symptom', nil, 1)
   end
@@ -912,8 +913,9 @@ function svo.valid.disruptingshiver()
 end
 
 function svo.valid.check_dragonform()
-  -- show xp? ignore!
-  if svo.lastpromptnumber+1 == getLastLineNumber('main') or not svo.find_until_last_paragraph(me.name, 'substring') then return end
+  -- show xp? ignore! The paragraph's first line, counted in game lines: a
+  -- buffer line count took wrapped pieces and echoes for lines
+  if svo.paragraph_length == 1 or not svo.find_until_last_paragraph(me.name, 'substring') then return end
 
   if defc.dragonform and not svo.find_until_last_paragraph("Dragon)", 'substring') then
     echo"\n" svo.echof("Apparently we aren't in Dragon.")
@@ -1292,13 +1294,15 @@ function svo.valid.curse_dispel()
   if defc.shroud then defs.lost_shroud() return end
 end
 
+-- only as the paragraph's second line, counted in game lines: a buffer line
+-- count took a wrapped first line or an echo for a line
 function svo.valid.subterfuge_hallucinations()
-  if getLineNumber('main') ~= svo.lastpromptnumber+2 then return end
+  if svo.paragraph_length ~= 2 then return end
   valid.simplehallucinations()
 end
 
 function svo.valid.subterfuge_confusion()
-  if getLineNumber('main') ~= svo.lastpromptnumber+2 then return end
+  if svo.paragraph_length ~= 2 then return end
   valid.simpleconfusion()
 end
 
@@ -1379,7 +1383,7 @@ function svo.valid.relapsing_asthma()
 end
 
 function svo.valid.subterfuge_bind()
-  if not conf.aillusion or affs.sleep then
+  if not conf.aillusion or affs.sleep or affs.deepsleep then
     valid.simplebound()
   end
 end
@@ -1511,7 +1515,7 @@ end
 
 
 do
-  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'flamefisted', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'mucous', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed', 'scalded', 'enmesh'}
+  local afflist = {'hamstring', 'galed', 'voided', 'inquisition', 'flamefisted', 'icing', 'phlogistication', 'vitrification', 'corrupted', 'rixil', 'palpatar', 'cadmus', 'hecate', 'ninkharsag', 'swellskin', 'pinshot', 'dehydrated', 'timeflux', 'lullaby', 'numbedleftarm', 'numbedrightarm', 'unconsciousness', 'degenerate', 'deteriorate', 'hatred', 'ensorcelled', 'latency', 'indifference', 'revealed', 'scalded', 'enmesh', 'constricted', 'snared', 'vinewreathed'}
   if svo.haveskillset('metamorphosis') then
     afflist[#afflist+1] = 'cantmorph'
   end
@@ -1720,7 +1724,7 @@ end
 
 function svo.valid.gotsalve()
   if conf.aillusion and svo.paragraph_length ~= 1 then
-    local lastline = getLines(getLineNumber()-1, getLineNumber())[1]
+    local lastline = svo.previous_paragraph_line()
 
     local lines = {
       ["Your left leg feels stronger and healthier."] = {affs = {'curingmutilatedrightleg', 'curingmutilatedleftleg', 'curingmangledrightleg', 'curingmangledleftleg', 'curingparestolegs'}, location = 'legs'},
@@ -1926,11 +1930,13 @@ function svo.valid.got_pressure(calc)
 	end
 end
 
+-- count is how many times the line says the humour was tempered, which the
+-- aff handler would take as its level: a tempering line can't say the level,
+-- and can be an illusion, so it passes none. Kept for scripts that pass it
 function svo.valid.got_humour(which,count)
   svo.assert(svo.dict[which..'humour'], "svo.valid.got_humour: which humour to add?")
-  local humourlevels = count or 1
   svo.checkaction(svo.dict[which..'humour'].aff, true)
-  lifevision.add(actions[which..'humour_aff'].p, nil, humourlevels)
+  lifevision.add(actions[which..'humour_aff'].p)
 end
 
 function svo.valid.sanguine_inundate()
@@ -2618,7 +2624,12 @@ function svo.valid.smoke_failed_asthma()
   end
 end
 
-function svo.valid.got_mucous()
+-- Mucous in your lungs is a longer smoke recovery, not an affliction: see
+-- svo.dict.mucouslungs, which does what these lines say at the prompt.
+--   "As you attempt to inhale the smoke, your lungs fill with a thick mucous."
+--   "Your lungs are too clogged with mucous for you to attempt smoking."
+-- Both answer svof's own asthma check, which can't tell anything from them
+local function lungs_clogged_line()
   if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
 
   if actions.checkasthma_smoke then
@@ -2627,33 +2638,27 @@ function svo.valid.got_mucous()
 
   local r = svo.findbybal('smoke')
   if r or not conf.aillusion then
-
-    if not affs.mucous then
-      lifevision.answering(r, function()
-        svo.checkaction(svo.dict.mucous.aff, true)
-        lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
-      end)
-    end
+    svo.checkaction(svo.dict.mucouslungs.happened, true)
+    -- alone in its paragraph, as the old mucous affliction's claim was: a
+    -- longer one is taken for an illusion at the prompt
+    lifevision.add(actions.mucouslungs_happened.p, nil, nil, 1)
   elseif conf.aillusion then
     svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
   end
 end
 
-function svo.valid.have_mucous()
-  if conf.aillusion and svo.paragraph_length ~= 1 and not conf.batch then svo.ignore_illusion("not first") return end
+svo.valid.got_mucous = lungs_clogged_line
+svo.valid.have_mucous = lungs_clogged_line
 
-  local r = svo.findbybal('smoke')
-  if r or not conf.aillusion then
-
-    if not affs.mucous then
-      lifevision.answering(r, function()
-        svo.checkaction(svo.dict.mucous.aff, true)
-        lifevision.add(actions['mucous_aff'].p, nil, nil, 1)
-      end)
-    end
-  elseif conf.aillusion then
-    svo.ignore_illusion("Not actually trying to smoke anything right now (or we were forced).")
-  end
+-- "You manage to cough away the mucous filling your lungs."
+function svo.valid.mucous_woreoff()
+  -- a clog line earlier in this paragraph shares this claim, and only the last
+  -- one filed runs, so the claim has to do both (only reachable with vconfig
+  -- batch: otherwise the clog line's lineguard throws the paragraph out)
+  local pending = lifevision.l.mucouslungs_happened
+  local clogged = pending and not pending.other_action
+  svo.checkaction(svo.dict.mucouslungs.happened, true)
+  lifevision.add(actions.mucouslungs_happened.p, clogged and 'clogged_then_coughed' or 'coughed')
 end
 
 function svo.valid.unlit_pipe()
@@ -4024,20 +4029,10 @@ for _,name in ipairs({'rightarm', 'leftarm', 'leftleg', 'rightleg'}) do
         local limb = string.format("%s %s", string.match(name, "(%w+)(%w%w%w)"))
         local plural = name:sub(-3)..'s'
 
-        -- last line doesn't work with stuff like bm breaks, where it is limb\anothermsg\actualbreak. So go until the prompt.
-        local previouslinenumber, currentlinenumber = svo.lastpromptnumber+1, getLastLineNumber('main')
-
-        -- workaround for deleteLine() making svo.lastpromptnumber's tracking get invalidated
-        if currentlinenumber <= previouslinenumber then
-          previouslinenumber = currentlinenumber - 1
-        end
-
-        -- this, with short enough wrapping, might not get the line that the rend starts on. So if this line doesn't start with a capital, pull in one more line
-        local combined = table.concat(getLines(previouslinenumber, currentlinenumber))
-
-        if not combined:sub(1,1):match("%u") then
-          combined = table.concat(getLines(previouslinenumber-1, currentlinenumber))
-        end
+        -- last line doesn't work with stuff like bm breaks, where it is limb\anothermsg\actualbreak. So go until the prompt,
+        -- in the lines the game sent: the buffer's were cut where they wrapped, joined with no space at the cut, and
+        -- counted from a prompt line number that deleteLine() moved
+        local combined = table.concat(svo.paragraph_so_far(), "\n")
 
         -- remember blackout, don't check this in it
         if not affs.blackout and (combined:find(limb, 1, true) or combined:find(plural, 1, true)) then
@@ -4512,6 +4507,9 @@ function svo.valid.pyradius()
   -- no affs cured?
   if #cures == 0 then return end
 
+  -- feedTriggers saves each of them again (svo.note_paragraph_line), so
+  -- forget the copies saved as they first arrived
+  svo.forget_paragraph_so_far()
   for i = 1, #cures do
     moveCursor(0, startline-i)
     deleteLine()
