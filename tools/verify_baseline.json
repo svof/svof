@@ -173,6 +173,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo constricted woreoff [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/concussion",
+      "digest": "033cb7624ca18953",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/concussion [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/condemned",
       "digest": "7b79e0ccb6703b5a",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/condemned [only in the package]"
@@ -338,6 +343,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure voided tree [only in the originals]"
     },
     {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo cure concussion",
+      "digest": "d516709e38be0398",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo cure concussion [only in the originals]"
+    },
+    {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo diag/charredburn",
       "digest": "3c5b5de482700483",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/charredburn [only in the originals]"
@@ -424,7 +434,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "0ededad49c4bcde7",
+      "digest": "3b12251074e3e78c",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -449,7 +459,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Action system|script",
-      "digest": "9735a21e2f2c1f39",
+      "digest": "5adc5e290619f90a",
       "text": "Script   svo (curing skeleton, controllers, action system) Action system [script]"
     },
     {
@@ -459,7 +469,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "46eea4a945f69ff8",
+      "digest": "51a79bea33a7f4fc",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
@@ -549,7 +559,7 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Custom prompt tags/@affs|script",
-      "digest": "0489930c2b6a56b7",
+      "digest": "04fbe6977ab43590",
       "text": "Script   svo (install me in module manager) svo Utilities/Custom prompt tags/@affs [script]"
     },
     {
@@ -574,7 +584,7 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/svo_onimportant_aff|script",
-      "digest": "d06407af58ce6744",
+      "digest": "caceef663b2b8413",
       "text": "Script   svo (install me in module manager) svo Utilities/svo_onimportant_aff [script]"
     },
     {
@@ -599,7 +609,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Priorities|script",
-      "digest": "22ccda6513192cd5",
+      "digest": "4752064326714f27",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Priorities [script]"
     },
     {
@@ -679,12 +689,12 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",
-      "digest": "b348b3a5515302cf",
+      "digest": "74205682c2564b56",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Miscellaneous functions [script]"
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "58b2637907b557c2",
+      "digest": "1f344952aaf25788",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -699,7 +709,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "ff0cc7213abb903a",
+      "digest": "94d0862336b05c89",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -1699,7 +1709,7 @@
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo cure damagedhead|script",
-      "digest": "e6509814a8e3e7c8",
+      "digest": "ddf7b574dca56be9",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo cure damagedhead [script]"
     },
     {
@@ -2086,6 +2096,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/manaleech|script",
       "digest": "39a16bc202275a43",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/manaleech [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/mangledhead|patterns",
+      "digest": "5f234ed356485af6",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/mangledhead [patterns]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/mangledhead|script",
@@ -2564,13 +2579,18 @@
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Poisons + Generic lines/Serious concussion|script",
-      "digest": "2b468f77e55f04f3",
+      "digest": "bb983e8ddeda7714",
       "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Serious concussion [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Poisons + Generic lines/Severe burn|script",
       "digest": "47f34a7a5a0fbea9",
       "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Severe burn [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Sculpting/Calcified Skull Concussion|script",
+      "digest": "8016b9f91e21d4a8",
+      "text": "Trigger  svo (aliases, triggers) svo/Sculpting/Calcified Skull Concussion [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Striking/Flamefisted|script",
@@ -2584,7 +2604,7 @@
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Vodun & Puppetry/Concussion|script",
-      "digest": "87efd2daa086e982",
+      "digest": "43050faa362bbfc5",
       "text": "Trigger  svo (aliases, triggers) svo/Vodun & Puppetry/Concussion [script]"
     },
     {
