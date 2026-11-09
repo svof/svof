@@ -703,6 +703,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.skullfractures)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.skullfractures and svo.dict.skullfractures.count < level then svo.dict.skullfractures.count = level end
           svo.updateaffcount(svo.dict.skullfractures)
         end
       },
@@ -756,6 +760,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.crackedribs)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.crackedribs and svo.dict.crackedribs.count < level then svo.dict.crackedribs.count = level end
           svo.updateaffcount(svo.dict.crackedribs)
         end
       },
@@ -809,6 +817,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.wristfractures)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.wristfractures and svo.dict.wristfractures.count < level then svo.dict.wristfractures.count = level end
           svo.updateaffcount(svo.dict.wristfractures)
         end
       },
@@ -862,6 +874,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.torntendons)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.torntendons and svo.dict.torntendons.count < level then svo.dict.torntendons.count = level end
           svo.updateaffcount(svo.dict.torntendons)
         end
       },
@@ -918,6 +934,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.pressure)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.pressure and svo.dict.pressure.count < level then svo.dict.pressure.count = level end
           svo.updateaffcount(svo.dict.pressure)
         end
       },
@@ -978,6 +998,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.cholerichumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.cholerichumour and svo.dict.cholerichumour.count < level then svo.dict.cholerichumour.count = level end
           svo.updateaffcount(svo.dict.cholerichumour)
         end
       },
@@ -1038,6 +1062,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.melancholichumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.melancholichumour and svo.dict.melancholichumour.count < level then svo.dict.melancholichumour.count = level end
           svo.updateaffcount(svo.dict.melancholichumour)
         end
       },
@@ -1057,6 +1085,9 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- Tempered by an Alchemist. Besides its own effects, it gives smoking a
+    -- chance of filling your lungs with mucous, which svof tracks as a longer
+    -- smoke recovery, not an affliction: see svo.dict.mucouslungs
     phlegmatichumour = {
       gamename = 'temperedphlegmatic',
       name = 'phlegmatichumour',
@@ -1097,6 +1128,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.phlegmatichumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.phlegmatichumour and svo.dict.phlegmatichumour.count < level then svo.dict.phlegmatichumour.count = level end
           svo.updateaffcount(svo.dict.phlegmatichumour)
         end
       },
@@ -1144,18 +1179,22 @@ if not next(svo.dict) then
   
         noeffect = function() svo.lostbal_herb() end,
   
-        -- gives bleeding depending on your sanguine humour level, from 250 for first to 2500 for last
+        -- gives bleeding depending on your sanguine humour level, from 250 for first to 2500 for last. GMCP's
+        -- Bleed: in this paragraph's Char.Vitals already holds it, and Setup.lua recorded that amount, so it's
+        -- left alone. Without one, as in blackout, which stops Vitals, the level gives the amount until the next
         inundated = function()
           local min = 250
           -- local max = 2500
           if not affs.sanguinehumour then return end
-  
-          local bledfor = svo.dict.sanguinehumour.count * min
-  
-          svo.addaffdict(svo.dict.bleeding)
-          svo.dict.bleeding.count = bledfor
-          svo.updateaffcount(svo.dict.bleeding)
-  
+
+          if not sk.gmcp_bleed_seen then
+            local bledfor = svo.dict.sanguinehumour.count * min
+
+            svo.addaffdict(svo.dict.bleeding)
+            svo.dict.bleeding.count = bledfor
+            svo.updateaffcount(svo.dict.bleeding)
+          end
+
           svo.rmaff('sanguinehumour')
           svo.dict.sanguinehumour.count = 0
         end,
@@ -1167,6 +1206,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.sanguinehumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.sanguinehumour and svo.dict.sanguinehumour.count < level then svo.dict.sanguinehumour.count = level end
           svo.updateaffcount(svo.dict.sanguinehumour)
         end
       },
@@ -1224,6 +1267,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.horror)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.horror and svo.dict.horror.count < level then svo.dict.horror.count = level end
           svo.updateaffcount(svo.dict.horror)
         end
       },
@@ -1979,6 +2026,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.pyre)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.pyre and svo.dict.pyre.count < level then svo.dict.pyre.count = level end
           svo.updateaffcount(svo.dict.pyre)
         end
       },
@@ -5526,7 +5577,11 @@ if not next(svo.dict) then
   
         oncompleted = function()
           svo.rmaff('sleep')
-  
+          -- awake, so not in a deepsleep either: one that ended in blackout,
+          -- which GMCP couldn't say, goes here. While GMCP still reports it,
+          -- the removal gate keeps it
+          svo.rmaff('deepsleep')
+
           -- reset sleep so we try waking up again after being awoken and slept at once (like in a dsl or a delph snipe)
           if svo.actions.sleep_misc then
             svo.killaction(svo.dict.sleep.misc)
@@ -5544,7 +5599,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          if affs.bleeding and not svo.doingaction('bleeding') and not affs.bleeding.spammingbleed and not affs.haemophilia and not affs.sleep and svo.can_usemana() and conf.clot then
+          if affs.bleeding and not svo.doingaction('bleeding') and not affs.bleeding.spammingbleed and not affs.haemophilia and not affs.sleep and not affs.deepsleep and svo.can_usemana() and conf.clot then
             if (not affs.corrupted and svo.dict.bleeding.count >= conf.bleedamount) then
               return true
             elseif (affs.corrupted and svo.dict.bleeding.count >= conf.manableedamount) then
@@ -5645,7 +5700,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          if not next(affs) or not bals.tree or svo.doingaction('touchtree') or affs.sleep or not conf.tree or affs.stun
+          if not next(affs) or not bals.tree or svo.doingaction('touchtree') or affs.sleep or affs.deepsleep or not conf.tree or affs.stun
            or affs.unconsciousness or affs.numbedrightarm or affs.numbedleftarm or affs.paralysis or affs.webbed
             or affs.bound or affs.transfixed or affs.roped or affs.impale or affs.daeggerimpale or ((affs.crippledleftarm or affs.mangledleftarm
              or affs.mutilatedleftarm) and (affs.crippledrightarm or affs.mangledrightarm or affs.mutilatedrightarm))
@@ -5994,7 +6049,7 @@ if not next(svo.dict) then
         isadvisable = function()
           return (affs.prone and (not affs.paralysis or svo.doingaction'paralysis')
             and (svo.haveskillset('weaponmastery') and (sk.didfootingattack or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm)) or (bals.balance and bals.equilibrium and bals.leftarm and bals.rightarm))
-            and not svo.doingaction('prone') and not affs.sleep
+            and not svo.doingaction('prone') and not affs.sleep and not affs.deepsleep
             and not affs.impale and not affs.daeggerimpale
             and not affs.transfixed
             and not affs.webbed and not affs.bound and not affs.roped
@@ -6040,7 +6095,7 @@ if not next(svo.dict) then
       misc = {
         isadvisable = function()
           return (affs.disrupt and not svo.doingaction('disrupt')
-            and not affs.confusion and not affs.sleep) or false
+            and not affs.confusion and not affs.sleep and not affs.deepsleep) or false
         end,
   
         oncompleted = function() svo.rmaff('disrupt') end,
@@ -7229,7 +7284,7 @@ if not next(svo.dict) then
         -- lets it through. So it waits while a focus would be punished, the
         -- same as check_focus does.
         isadvisable = function()
-          return (svo.affsp.impatience and not affs.sleep and bals.focus and conf.focus
+          return (svo.affsp.impatience and not affs.sleep and not affs.deepsleep and bals.focus and conf.focus
             and not svo.focus_would_hurt()) or false
         end,
   
@@ -7378,7 +7433,7 @@ if not next(svo.dict) then
         uncurable = true,
   
         isadvisable = function()
-          return (svo.affsp.hypersomnia and not affs.sleep) or false
+          return (svo.affsp.hypersomnia and not affs.sleep and not affs.deepsleep) or false
         end,
   
         oncompleted = function() end,
@@ -7469,7 +7524,7 @@ if not next(svo.dict) then
         if svo.paragraph_length > 2 then
             svo.dict.stun.aff.oncompleted()
             svo.killaction(svo.dict.checkstun.misc)
-          elseif not affs.sleep and not conf.paused then -- let autodetection take care of after we wake up. otherwise, a well timed stun & stun symptom on awake can trick us. if paused, let it through as well, because we don't want to kill affs
+          elseif not affs.sleep and not affs.deepsleep and not conf.paused then -- let autodetection take care of after we wake up. otherwise, a well timed stun & stun symptom on awake can trick us. if paused, let it through as well, because we don't want to kill affs
             svo.affsp.stun = true
             svo.dict.checkstun.time = num
             svo.dict.checkstun.templifevision = deepcopy(svo.lifevision.l)
@@ -7742,6 +7797,139 @@ if not next(svo.dict) then
         end,
       }
     },
+    -- Vines that slow writhing, until time frees you: 30 seconds by default
+    -- (AFFLICTION SHOW, captured 2026-10-20). Not entanglement, which is
+    -- writhed out of
+    constricted = {
+      waitingfor = {
+        customwait = 30, -- AFFLICTION SHOW's default time
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('constricted')
+          svo.make_gnomes_work()
+        end,
+
+        oncompleted = function()
+          svo.rmaff('constricted')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.constricted)
+        end
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('constricted') end,
+      },
+      -- onadded and not aff.oncompleted, because GMCP adds it with addaffdict
+      -- and never runs the aff action
+      onadded = function()
+        if not svo.actions.constricted_waitingfor then svo.doaction(svo.dict.constricted.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.constricted_waitingfor then svo.killaction(svo.dict.constricted.waitingfor) end
+      end,
+    },
+    -- A rope trap about the ankles, until time frees you: 20 seconds by
+    -- default (AFFLICTION SHOW, captured 2026-10-20)
+    snared = {
+      waitingfor = {
+        customwait = 20, -- AFFLICTION SHOW's default time
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('snared')
+          svo.make_gnomes_work()
+        end,
+
+        oncompleted = function()
+          svo.rmaff('snared')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.snared)
+        end
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('snared') end,
+      },
+      -- as constricted's
+      onadded = function()
+        if not svo.actions.snared_waitingfor then svo.doaction(svo.dict.snared.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.snared_waitingfor then svo.killaction(svo.dict.snared.waitingfor) end
+      end,
+    },
+    -- A Viridian's flailing vines, which keep you from parrying their thorn
+    -- rends, until they recede: 20 seconds by default (AFFLICTION SHOW,
+    -- captured 2026-10-20)
+    vinewreathed = {
+      waitingfor = {
+        customwait = 20, -- AFFLICTION SHOW's default time
+
+        isadvisable = function()
+          return false
+        end,
+
+        onstart = function() end,
+
+        ontimeout = function()
+          svo.rmaff('vinewreathed')
+          svo.make_gnomes_work()
+        end,
+
+        oncompleted = function()
+          svo.rmaff('vinewreathed')
+          svo.make_gnomes_work()
+        end
+      },
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.vinewreathed)
+        end
+      },
+      gone = {
+        oncompleted = function() svo.rmaff('vinewreathed') end,
+      },
+      -- as constricted's
+      onadded = function()
+        if not svo.actions.vinewreathed_waitingfor then svo.doaction(svo.dict.vinewreathed.waitingfor) end
+      end,
+      onremoved = function()
+        if svo.actions.vinewreathed_waitingfor then svo.killaction(svo.dict.vinewreathed.waitingfor) end
+      end,
+    },
+    -- A sleep you never wake from on your own (AFFLICTION SHOW, captured
+    -- 2026-10-20): you can do nothing in it, as in sleep, but svof doesn't
+    -- try to wake you, which sleep's misc action would. GMCP's deepsleep
+    -- used to be read as sleep
+    deepsleep = {
+      aff = {
+        oncompleted = function()
+          svo.addaffdict(svo.dict.deepsleep)
+        end
+      },
+      gone = {
+        oncompleted = function()
+          svo.rmaff('deepsleep')
+        end,
+      }
+    },
     pinshot = {
       waitingfor = {
         customwait = 21, -- AFFLICTION SHOW's default time
@@ -7919,41 +8107,6 @@ if not next(svo.dict) then
         oncompleted = function()
           svo.rmaff('corrupted')
           svo.killaction(svo.dict.corrupted.waitingfor)
-        end,
-      }
-    },
-    mucous = {
-      waitingfor = {
-        customwait = 6,
-  
-        isadvisable = function()
-          return false
-        end,
-  
-        onstart = function() end,
-  
-        oncompleted = function() svo.rmaff('mucous') end,
-  
-        ontimeout = function()
-          svo.rmaff('mucous')
-          svo.make_gnomes_work()
-        end
-      },
-      aff = {
-        oncompleted = function()
-          svo.addaffdict(svo.dict.mucous)
-          if not svo.actions.mucous_waitingfor then svo.doaction(svo.dict.mucous.waitingfor) end
-  
-          local r = svo.findbybal('smoke')
-          if r then
-            svo.killaction(svo.dict[r.action_name].smoke)
-          end
-        end
-      },
-      gone = {
-        oncompleted = function()
-          svo.rmaff('mucous')
-          svo.killaction(svo.dict.mucous.waitingfor)
         end,
       }
     },
@@ -8794,6 +8947,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingbody)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingbody and svo.dict.unweavingbody.count < level then svo.dict.unweavingbody.count = level end
           svo.updateaffcount(svo.dict.unweavingbody)
         end
       },
@@ -8850,6 +9007,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingmind)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingmind and svo.dict.unweavingmind.count < level then svo.dict.unweavingmind.count = level end
           svo.updateaffcount(svo.dict.unweavingmind)
         end
       },
@@ -8906,6 +9067,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingspirit)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingspirit and svo.dict.unweavingspirit.count < level then svo.dict.unweavingspirit.count = level end
           svo.updateaffcount(svo.dict.unweavingspirit)
         end
       },
@@ -9225,6 +9390,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.crescendo)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.crescendo and svo.dict.crescendo.count < level then svo.dict.crescendo.count = level end
           svo.updateaffcount(svo.dict.crescendo)
         end
       },
@@ -9407,6 +9576,53 @@ if not next(svo.dict) then
   
         oncancel = function()
           svo.dict.gotbalance.happened.tempmap = {}
+        end
+      }
+    },
+    -- Mucous in your lungs, a tempered phlegmatic humour's effect on smoking
+    -- (svo.dict.phlegmatichumour, the game's temperedphlegmatic). It's not an
+    -- affliction: the game doesn't list it, and GMCP never reports it. HELP
+    -- HUMOURISM: "Smoking will have a chance of filling your lungs with
+    -- phlegm, increasing your lungs recovery time." So svof takes smoke
+    -- balance for longer than a smoke's usual recovery, and the smoke counts
+    -- as failed, so svof smokes for the same thing again later. The lines go
+    -- through lifevision (svo.valid.got_mucous), so nothing changes before the
+    -- prompt, and a paragraph found to be an illusion changes nothing.
+    --
+    -- Neither of those two is confirmed: how much longer recovery takes was
+    -- never measured, and nothing says whether the smoke's cure still lands.
+    -- recovery is the 6 seconds svof's old mucous affliction waited.
+    mucouslungs = {
+      happened = {
+        recovery = 6,
+
+        -- "As you attempt to inhale the smoke, your lungs fill with a thick
+        -- mucous." or "Your lungs are too clogged with mucous for you to
+        -- attempt smoking."
+        oncompleted = function()
+          local r = svo.findbybal('smoke')
+          if r and r.action_name ~= 'checkasthma' then svo.killaction(svo.dict[r.action_name].smoke) end
+          svo.lostbal_smoke(svo.dict.mucouslungs.happened.recovery)
+          sk.mucous_smoketick = sk.smoketick
+        end,
+
+        -- "You manage to cough away the mucous filling your lungs." The lungs
+        -- are clear, so the recovery mucous started ends early. If they
+        -- aren't, the next smoke's "too clogged" line takes smoke balance
+        -- again. Only that recovery: one a smoke started isn't mucous's to end
+        coughed = function()
+          if not svo.lungs_clogged() then return end
+          sk.mucous_smoketick = nil
+          bals.smoke = true
+          raiseEvent("svo got balance", 'smoke')
+          svo.endbalancewatch('smoke')
+        end,
+
+        -- both lines in one paragraph, the clog first: the smoke failed, and
+        -- the recovery is already over
+        clogged_then_coughed = function()
+          svo.dict.mucouslungs.happened.oncompleted()
+          svo.dict.mucouslungs.happened.coughed()
         end
       }
     },
@@ -10633,6 +10849,7 @@ if not next(svo.dict) then
       condemned = 'condemned',
       conflagration = false,
       confusion = 'confusion',
+      constricted = 'constricted',
       corruption = 'corrupted',
       crackedribs = 'crackedribs',
       crescendo = 'crescendo',
@@ -10648,7 +10865,7 @@ if not next(svo.dict) then
       dazzled = false,
       deadening = 'deadening',
       deafness = false,
-      deepsleep = 'sleep',
+      deepsleep = 'deepsleep',
       degenerate = 'degenerate',
       dehydrated = 'dehydrated',
       dementia = 'dementia',
@@ -10751,6 +10968,7 @@ if not next(svo.dict) then
       sleeping = 'sleep',
       slickness = 'slickness',
       slimeobscure = 'ninkharsag',
+      snared = 'snared',
       spiritburn = 'spiritburn',
       stupidity = 'stupidity',
       stuttering = 'stuttering',
@@ -10770,7 +10988,7 @@ if not next(svo.dict) then
       unweavingmind = 'unweavingmind',
       unweavingspirit = 'unweavingspirit',
       vertigo = 'vertigo',
-      vinewreathed = false,
+      vinewreathed = 'vinewreathed',
       vitiated = false,
       vitrified = 'vitrification',
       voidfisted = 'voided',
@@ -13340,7 +13558,7 @@ if not next(svo.dict) then
         balanceless_act = true,
   
         isadvisable = function()
-          if not next(affs) or not bals.shrugging or affs.sleep or not conf.shrugging or affs.stun or affs.unconsciousness or affs.weakness or codepaste.nonstdcure() or defc.dragonform then return false end
+          if not next(affs) or not bals.shrugging or affs.sleep or affs.deepsleep or not conf.shrugging or affs.stun or affs.unconsciousness or affs.weakness or codepaste.nonstdcure() or defc.dragonform then return false end
   
           for name, func in pairs(svo.shrugging) do
             if not me.disabledshruggingfunc[name] then
