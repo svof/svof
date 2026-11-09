@@ -143,8 +143,6 @@ local NOT_ENTRIES = {
   -- sk.unparryable_symptom's guard: a weapon you can't parry with is in
   -- me.unparryables, and no affliction is unparryable
   unparryable = true,
-  -- symp_asleep and transfixily, fixed by #893
-  asleep = true,
 }
 
 local CLASSES = { "Alchemist", "Apostate", "Bard", "Blademaster", "Depthswalker", "Druid", "Infernal", "Jester",
