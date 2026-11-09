@@ -508,6 +508,175 @@ function sk.getallserversideactions()
   return actionslist
 end
 
+--[[ reading the game's own affliction priorities ]]
+
+-- What the game says its affliction priorities are, read from CURING PRIORITY
+-- LIST and from the lines that answer a change. svof only keeps it for now:
+-- nothing is sent, saved or decided from it.
+--   sets       curingset name -> { [entry] = number }, with each entry named
+--              as the list names it: 'paralysis', or 'unweavingmind(2)' for
+--              exactly two stacks. Afflictions svof has no action for are
+--              kept too. A set is here only once its whole list was read
+--   active     the curingset in use, once the game has said which
+--   maxstacks  the game's affliction name -> the most stacks it said it has
+--   list       the list being read, and reader, the trigger reading it
+sk.serverread = sk.serverread or {sets = {}, maxstacks = {}}
+
+local serverlist_header = "^Your affliction curing priorities for the priority set (%w+):$"
+local serverlist_footer = "Affs with priority 26 are ignored."
+-- a list is 26 levels and their wraps; past this, something else is being read
+local serverlist_longest = 100
+
+-- 'paralysis' gives paralysis, 'unweavingmind(2)' gives unweavingmind and 2,
+-- and anything that isn't an entry gives nil
+function sk.serverentry(entry)
+  local name, stack = entry:match("^([%w_]+)%((%d+)%)$")
+  if name then return name, tonumber(stack) end
+  if entry:match("^[%w_]+$") then return entry end
+end
+
+local function serverlist_stop()
+  local read = sk.serverread
+  read.list = nil
+  if read.reader then killTrigger(read.reader); read.reader = nil end
+end
+
+-- files the open level's entries, false if one of them isn't an entry or was
+-- already listed
+local function serverlist_closelevel(list)
+  if not list.level then return true end
+
+  -- the game wraps a long level, so the entries are split only after joining
+  for listed in table.concat(list.text, " "):gmatch("[^,]+") do
+    local entry = listed:match("^%s*(.-)%s*$")
+    if entry ~= "" then
+      if not sk.serverentry(entry) or list.entries[entry] then return false end
+      list.entries[entry] = list.level
+    end
+  end
+
+  list.level, list.text = nil, nil
+  return true
+end
+
+-- every line after a list's header. The set is kept only when the footer
+-- arrives with every line before it read, so a list that is cut short, or
+-- that something else lands in, changes nothing
+function sk.serverlist_line(text, isprompt)
+  local read = sk.serverread
+  local list = read.list
+  if not list or isprompt then serverlist_stop() return end
+
+  if text == "" then return end
+  -- the reader can be handed the header that started it
+  if not list.level and not next(list.entries) and text:match(serverlist_header) then return end
+
+  list.lines = list.lines + 1
+  if list.lines > serverlist_longest then serverlist_stop() return end
+
+  if text == serverlist_footer then
+    if serverlist_closelevel(list) and next(list.entries) then
+      read.sets[list.set] = list.entries
+    end
+    serverlist_stop()
+    return
+  end
+
+  local level, rest = text:match("^(%d+):%s*(.*)$")
+  if level then
+    level = tonumber(level)
+    if not serverlist_closelevel(list) or level < 1 or level > 26 or list.levels[level] then
+      serverlist_stop()
+      return
+    end
+    list.level, list.text, list.levels[level] = level, {rest}, true
+  elseif list.level then
+    -- a wrapped level carries on without a number
+    list.text[#list.text+1] = text
+  else
+    serverlist_stop()
+  end
+end
+
+-- the game's lines about its affliction priorities, other than a list's own:
+-- a list's header, a curingset switch, a changed entry, a stack the
+-- affliction can't have, and a reset
+function sk.serverprio_line(text)
+  local read = sk.serverread
+
+  local set = text:match(serverlist_header)
+  if set then
+    serverlist_stop()
+    read.list = {set = set:lower(), entries = {}, levels = {}, lines = 0}
+    read.reader = tempRegexTrigger("^", "svo.sk.serverlist_line(line, isPrompt())")
+    return
+  end
+
+  set = text:match("^You will now cure using the (%w+) set%.$")
+  if set then
+    read.active = set:lower()
+    return
+  end
+
+  local entry, number = text:match("^You have set the '(.-)' affliction to the (%d+) priority%.$")
+  if entry then
+    number = tonumber(number)
+    -- only into a set that was read whole: one entry alone would pass for
+    -- knowing the set, and without the set in use there is nowhere to put it
+    local entries = read.active and read.sets[read.active]
+    if entries and sk.serverentry(entry) and number >= 1 and number <= 26 then
+      entries[entry] = number
+    end
+    return
+  end
+
+  local aff, most = text:match("^The (%w+) affliction can only have up to (%d+) stacks%.$")
+  if aff then
+    read.maxstacks[aff] = tonumber(most)
+    return
+  end
+
+  if text == "All your curing affliction priorities have been reset to defaults." then
+    -- whether the game resets one set or all isn't known, so none is known now
+    serverlist_stop()
+    read.sets = {}
+  end
+end
+
+-- the name the game's priority list has for each affliction action, and the
+-- action each of its names stands for. An action the game names another way
+-- when it reports afflictions (sstosvoa) is found by that name too
+function sk.serverprionames()
+  local toserver, toaction = {}, {}
+
+  for ssa, svoa in pairs(svo.dict.sstosvoa) do
+    if type(svoa) == 'string' then toaction[ssa] = svoa end
+  end
+
+  for action, entry in pairs(svo.dict) do
+    if type(entry) == 'table' and type(entry.aff) == 'table' and not entry.aff.notagameaff then
+      local name = entry.gamename or action
+      toserver[action] = name
+      toaction[name] = action
+    end
+  end
+
+  return toserver, toaction
+end
+
+-- the entries of a read set that svof has no action for, sorted
+function sk.serverunmapped(set)
+  local _, toaction = sk.serverprionames()
+  local unmapped = {}
+
+  for entry in pairs(sk.serverread.sets[set] or {}) do
+    if not toaction[(sk.serverentry(entry))] then unmapped[#unmapped+1] = entry end
+  end
+
+  table.sort(unmapped)
+  return unmapped
+end
+
 --[[ register all signals needed for this to work ]]
 
 signals.sync:connect(function ()

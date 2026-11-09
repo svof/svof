@@ -288,6 +288,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo got myrrh generic [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/Server-side commands/Curing priority lines",
+      "digest": "aec3cae023abdfa6",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Server-side commands/Curing priority lines [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/Server-side commands/Curing priority spam limit",
       "digest": "0d35019022fec114",
       "text": "Trigger  svo (aliases, triggers) svo/General/Server-side commands/Curing priority spam limit [only in the package]"
@@ -494,8 +499,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "f1eaa19c2bf34259",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2527 in merged"
+      "digest": "39705214264f0919",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2528 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -1044,7 +1049,7 @@
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Serverside|script",
-      "digest": "52261e56e36d2abe",
+      "digest": "e4e17d8b718ae811",
       "text": "Script   svo (custom prompt, serverside) Serverside [script]"
     },
     {
