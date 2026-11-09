@@ -23,8 +23,8 @@
 -- svo.dict is emptied on a class change and the loaders run again, so every
 -- definition (afflictions.defined, which outlives that) is registered again
 -- at systemstart. svo_init_system runs this loader straight after the
--- defences one and before prio's, so a definition is registered before the
--- saved priorities are read, as a defined defence is.
+-- defences and customdefs ones and before prio's, so a definition is
+-- registered before the saved priorities are read, as a defined defence is.
 
 svo = svo or {}; svo.loader = svo.loader or {}
 svo.afflictions = svo.afflictions or {}
