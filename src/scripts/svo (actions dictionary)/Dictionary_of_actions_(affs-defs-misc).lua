@@ -9683,6 +9683,13 @@ if not next(svo.dict) then
           bals.smoke = true
           raiseEvent("svo got balance", 'smoke')
           svo.endbalancewatch('smoke')
+        end,
+
+        -- both lines in one paragraph, the clog first: the smoke failed, and
+        -- the recovery is already over
+        clogged_then_coughed = function()
+          svo.dict.mucouslungs.happened.oncompleted()
+          svo.dict.mucouslungs.happened.coughed()
         end
       }
     },

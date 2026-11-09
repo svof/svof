@@ -2647,8 +2647,13 @@ svo.valid.have_mucous = lungs_clogged_line
 
 -- "You manage to cough away the mucous filling your lungs."
 function svo.valid.mucous_woreoff()
+  -- a clog line earlier in this paragraph shares this claim, and only the last
+  -- one filed runs, so the claim has to do both (only reachable with vconfig
+  -- batch: otherwise the clog line's lineguard throws the paragraph out)
+  local pending = lifevision.l.mucouslungs_happened
+  local clogged = pending and not pending.other_action
   svo.checkaction(svo.dict.mucouslungs.happened, true)
-  lifevision.add(actions.mucouslungs_happened.p, 'coughed')
+  lifevision.add(actions.mucouslungs_happened.p, clogged and 'clogged_then_coughed' or 'coughed')
 end
 
 function svo.valid.unlit_pipe()

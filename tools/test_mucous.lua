@@ -9,7 +9,8 @@ It runs svof's real loaders through tools/svof_world.lua and checks:
     found to be an illusion changes nothing, and only alone in their
     paragraph, as the old mucous affliction's claim was.
   * the cough line ends that recovery early, at the prompt, once, and only
-    that recovery: it leaves an ordinary smoke's recovery alone.
+    that recovery: it leaves an ordinary smoke's recovery alone. With vconfig
+    batch, a clog line then a cough line in one paragraph do both.
   * both lines answer svof's asthma check, which then isn't in flight.
   * the aeon strategies for tree, shrugging and dragonheal count clogged
     lungs, as they counted the old mucous affliction.
@@ -115,6 +116,38 @@ do -- the cough line leaves an ordinary smoke's recovery alone
   svo.valid.mucous_woreoff()
   w.prompt()
   eq(svo.bals.smoke, false, "cough during a smoke's own recovery: smoke balance stays out")
+end
+
+-- both lines in one paragraph share one claim, and with batch on the lineguard
+-- doesn't throw the paragraph out (review of #882)
+for _, line in ipairs({ 'got_mucous', 'have_mucous' }) do
+  local w = world.new()
+  local svo = smoking(w)
+  svo.conf.batch = true
+  local before = got_smoke_balance(w)
+  svo.valid[line]()
+  svo.paragraph_length = 2
+  svo.valid.mucous_woreoff()
+  w.prompt()
+  eq(svo.actions.slickness_smoke, nil, line .. " then a cough: the smoke is cancelled")
+  eq(svo.bals.smoke, true, line .. " then a cough: the recovery is over")
+  eq(svo.lungs_clogged(), false, line .. " then a cough: and the lungs aren't clogged")
+  eq(got_smoke_balance(w), before + 1, line .. " then a cough: smoke balance comes back once")
+  w.advance(7)
+  eq(got_smoke_balance(w), before + 1, line .. " then a cough: and the recovery's timer doesn't give it back again")
+end
+
+do -- a cough, then a clog: the lungs are clogged again
+  local w = world.new()
+  local svo = smoking(w)
+  svo.conf.batch = true
+  svo.valid.mucous_woreoff()
+  svo.paragraph_length = 2
+  svo.valid.got_mucous()
+  w.prompt()
+  eq(svo.actions.slickness_smoke, nil, "a cough then a clog: the smoke is cancelled")
+  eq(svo.bals.smoke, false, "a cough then a clog: smoke balance is out")
+  eq(svo.lungs_clogged(), true, "a cough then a clog: the lungs are clogged")
 end
 
 for _, line in ipairs({ 'got_mucous', 'have_mucous' }) do -- svof's own asthma check
