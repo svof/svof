@@ -59,6 +59,137 @@ function svo.pipeout()
   end
 end
 
+-- what a fill line put in a pipe, as svof names it
+local fill_contents = {
+  ["slippery elm"]                = 'elm',
+  ["a valerian leaf"]             = 'valerian',
+  ["a skullcap flower"]           = 'skullcap',
+  ["a pinch of ground cinnabar"]  = 'cinnabar',
+  ["a pinch of realgar crystals"] = 'realgar',
+  ["a pinch of ground malachite"] = 'malachite',
+}
+
+-- Serverside refills pipes itself (the user, 2026-10-31), so a fill line
+-- comes with nothing of svof's in flight:
+--   You fill your pipe with a skullcap flower.
+-- A fill always gives a pipe its full puffs, so the emptier of the herb's
+-- pipes is full again, holding what the line names. Under serverside the
+-- count stayed at what svof last saw, and read 0 on a pipe the server kept
+-- full
+--
+-- The fill line doesn't say which pipe, but the server's own comes right after
+--   [Curing]: PUT VALERIAN IN 535340
+-- which does
+local server_filling
+
+function svo.pipe_filling(id)
+  server_filling = tonumber(id)
+  svo.prompttrigger("clear server pipe fill", function() server_filling = nil end)
+end
+
+-- returns 1 or 2 for the pipe a fill went in, or nil for one svof doesn't track
+local function filled_pipe(pipe, id, contents)
+  if id and pipe.id ~= 0 then
+    if id == pipe.id then return 1 end
+    if id == pipe.id2 then return 2 end
+    return nil
+  end
+  if pipe.id2 == 0 then return 1 end
+  -- no pipe named: a fill of the player's. A pipe with anything in it won't
+  -- take one, so an empty one is it; then go by what they hold, then the emptier
+  if (pipe.puffs <= 0) ~= (pipe.puffs2 <= 0) then return pipe.puffs <= 0 and 1 or 2 end
+  local first, second = pipe.filledwith == contents, pipe.filledwith2 == contents
+  if first ~= second then return first and 1 or 2 end
+  return pipe.puffs2 < pipe.puffs and 2 or 1
+end
+
+function svo.pipe_refilled(herb)
+  local pipe = pipes[herb]
+  local contents = type(line) == 'string' and fill_contents[line:match("^You fill your pipe with (.-)%.$") or ""] or herb
+  local which = filled_pipe(pipe, server_filling, contents)
+  server_filling = nil
+  if which == 2 then
+    pipe.puffs2, pipe.filledwith2 = pipe.maxpuffs2 or 10, contents
+  elseif which == 1 then
+    pipe.puffs, pipe.filledwith = pipe.maxpuffs or 10, contents
+  end
+  svo.rift.invcontents[contents] = math.max((svo.rift.invcontents[contents] or 1) - 1, 0)
+end
+
+-- The ID that the latest of these commands named, or nil, from commandTracker's
+-- lastCommands, newest first. The latest counts, so one by another name, even
+-- after an older one with an ID, names no pipe
+local function latest_sent_id(verbs)
+  for _, command in ipairs(rawget(_G, 'lastCommands') or {}) do
+    local verb, what = command:match("^(%a+) (.-)%s*$")
+    if verb and verbs[verb] then return tonumber(what) end
+  end
+end
+
+-- the herb of the pipe with this ID and its puffs field, or nil
+local function tracked_pipe(id)
+  if not id or id == 0 then return end
+  for _, name in ipairs(pipes.pnames) do
+    if tonumber(pipes[name].id) == id then return name, 'puffs' end
+    if tonumber(pipes[name].id2) == id then return name, 'puffs2' end
+  end
+end
+
+local function pipe_counted(herb)
+  if herb == 'valerian' then svo.signals.after_lifevision_processing:unblock(svo.cnrl.checkwarning) end
+end
+
+-- The Smoke trigger's drag line. The trigger is multiline, ending in a one-line
+-- spacer, so it and its children, which decide whether anything answered the
+-- smoke, run on the line after: line is that one, and the drag line is the
+-- trigger's first match
+local smoke_line
+
+function svo.pipe_smoke_line()
+  smoke_line = type(multimatches) == 'table' and multimatches[1] and multimatches[1][1] or nil
+end
+
+-- A smoke with nothing of svof's or the server's to answer it: one the player
+-- sent. svof's own puffs count from the action, and this used to count nothing,
+-- so a pipe read full after it was smoked out. The line names what was smoked,
+-- and SMOKE <id> names the pipe, unless that's a stale one: of another herb, or
+-- holding something else than the line names. An ID svof doesn't track is a
+-- pipe it doesn't count, as for a fill
+--   You take a long drag of valerian off your pipe.
+function svo.pipe_smoked()
+  local drag = smoke_line
+  smoke_line = nil
+  if not drag or svo.conf.arena then return end
+
+  local contents = drag:match("long drag of (.-) off your pipe")
+  local herb = contents and pipe_holding(contents)
+  local id = latest_sent_id({smoke = true, puff = true})
+  local sent, puffs = tracked_pipe(id)
+  if id and not sent then return end
+  if herb and sent ~= herb then puffs = nil end
+  herb = herb or sent
+  if not herb then return end
+
+  local pipe = pipes[herb]
+  if contents and pipe.id2 ~= 0 then
+    local first, second = contents:find(pipe.filledwith, 1, true) ~= nil, contents:find(pipe.filledwith2, 1, true) ~= nil
+    if first ~= second then puffs = first and 'puffs' or 'puffs2' end
+  end
+  puffs = puffs or (pipe.puffs <= 0 and pipe.id2 ~= 0 and pipe.puffs2 > 0 and 'puffs2') or 'puffs'
+
+  pipe[puffs] = math.max(pipe[puffs] - 1, 0)
+  pipe_counted(herb)
+end
+
+-- A tap-out with nothing of svof's in flight: the player's own EMPTY <id>, the
+-- only thing that says which pipe, as the game's line doesn't
+function svo.pipe_tapped_out()
+  local herb, puffs = tracked_pipe(latest_sent_id({empty = true}))
+  if not herb then return end
+  pipes[herb][puffs] = 0
+  pipe_counted(herb)
+end
+
 -- the game lit every pipe that needed it, or said none did
 function svo.allpipeslit()
   for _, name in ipairs(pipes.pnames) do
