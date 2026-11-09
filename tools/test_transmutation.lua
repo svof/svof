@@ -97,6 +97,10 @@ end
 for _, name in ipairs({ 'vitality', 'mentality' }) do
   check("the tips don't offer " .. name, not funnies:find("mana or " .. name, 1, true) and not funnies:find("health or " .. name, 1, true))
 end
+local defences = read("src/scripts/svo (alias and defence functions)/Defences.lua")
+for tooltip in defences:gmatch('tooltip = "([^"]*)"') do
+  check("a defence's tooltip names no tonic: " .. tooltip, not tooltip:lower():find("tonic", 1, true))
+end
 
 print(string.format("%d checks, %d failures", checks, #failures))
 for _, f in ipairs(failures) do print("FAIL " .. f) end
