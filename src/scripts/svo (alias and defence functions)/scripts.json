@@ -10,8 +10,8 @@
     "isFolder": "no"
   },
   {
-    "name": "Custom afflictions",
+    "name": "Custom definitions",
     "isActive": "yes",
-    "isFolder": "no"
+    "isFolder": "yes"
   }
 ]
