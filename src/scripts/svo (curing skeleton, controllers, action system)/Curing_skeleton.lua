@@ -611,7 +611,7 @@ svo.check_balanceful_acts = function(sync_mode)
   local prios = {}
   local function check(what)
     for i, j in pairs(what) do
-      if not (conf.serverside and svo.serverignore[i]) and j.p.physical.balanceful_act and j.p.physical.isadvisable() and not svo.ignore[i] then
+      if not (conf.serverside and svo.serverignore[i] and not j.p.physical.undeffable) and j.p.physical.balanceful_act and j.p.physical.isadvisable() and not svo.ignore[i] then
         prios[i] = (not sync_mode) and j.p.physical.aspriority or j.p.physical.spriority
       end
     end
@@ -645,7 +645,7 @@ svo.check_balanceless_acts = function(sync_mode)
     local gotsomething = false
 
     for i, j in pairs(what) do
-      if not (conf.serverside and svo.serverignore[i]) and j.p.physical.balanceless_act and j.p.physical.isadvisable() and not svo.ignore[i] then
+      if not (conf.serverside and svo.serverignore[i] and not j.p.physical.undeffable) and j.p.physical.balanceless_act and j.p.physical.isadvisable() and not svo.ignore[i] then
         prios[i] = (not sync_mode) and j.p.physical.aspriority or j.p.physical.spriority
         gotsomething = true
       end

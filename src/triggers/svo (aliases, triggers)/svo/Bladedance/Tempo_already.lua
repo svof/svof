@@ -1,0 +1,1 @@
+svo.valid.bard_tempo_already()

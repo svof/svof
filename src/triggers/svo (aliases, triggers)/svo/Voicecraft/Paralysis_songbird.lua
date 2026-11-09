@@ -1,1 +1,0 @@
-svo.valid.proper_paralysis()

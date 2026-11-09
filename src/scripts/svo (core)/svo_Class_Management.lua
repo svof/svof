@@ -4,7 +4,7 @@ svo.classes = {
   air          = {fighting = false, skills = {"duress"}},
   alchemist    = {fighting = false, skills = {"transmutation", "physiology", "alchemy"}},
   apostate     = {fighting = false, skills = {"evileye", "necromancy", "apostasy"}},
-  bard         = {fighting = false, skills = {"voicecraft", "swashbuckling", "harmonics"}},
+  bard         = {fighting = false, skills = {"bladedance", "composition", "sagas"}},
   blademaster  = {fighting = false, skills = {"twoarts", "striking", "shindo"}},
   depthswalker = {fighting = false, skills = {"shadowmancy", "aeonics", "terminus"}},
   dragon       = {fighting = false, skills = {"dragoncraft"}},

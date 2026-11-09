@@ -1,6 +1,6 @@
 [
   {
-    "name": "Contradanse",
+    "name": "Earworm hum",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -12,13 +12,13 @@
     "highlightBG": "#ffff00",
     "patterns": [
       {
-        "pattern": "The Contradanse melody swells sharply in your ear with a discombobulating sonic burst.",
-        "type": "exactMatch"
+        "pattern": "^A hum on the edge of hearing emanates from the blade of (\\w+) as it finds your flesh\\.$",
+        "type": "regex"
       }
     ]
   },
   {
-    "name": "Lament",
+    "name": "Crescendo hum",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -30,13 +30,13 @@
     "highlightBG": "#ffff00",
     "patterns": [
       {
-        "pattern": "The dark Lament pervades your being as you cry out in fear.",
-        "type": "exactMatch"
+        "pattern": "^A rich, vibrant hum rises from the blade of (\\w+) as it finds your flesh\\.$",
+        "type": "regex"
       }
     ]
   },
   {
-    "name": "Bagatelle",
+    "name": "Tempo set",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -48,13 +48,13 @@
     "highlightBG": "#ffff00",
     "patterns": [
       {
-        "pattern": "Your ears are opened, your hearing restored through the bright ministrations of the Bagatelle.",
-        "type": "exactMatch"
+        "pattern": "^Your feet move in (\\w+) perfected, speeding each step within a new blade's song\\.$",
+        "type": "regex"
       }
     ]
   },
   {
-    "name": "Paxmusicalis",
+    "name": "Tempo shown",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -66,13 +66,13 @@
     "highlightBG": "#ffff00",
     "patterns": [
       {
-        "pattern": "Your mind softens as you feel your entire being filled with a deep inner peace.",
-        "type": "exactMatch"
+        "pattern": "^You are dancing to the tempo of (\\w+)\\.$",
+        "type": "regex"
       }
     ]
   },
   {
-    "name": "Berceuse",
+    "name": "Tempo already",
     "isActive": "yes",
     "isFolder": "no",
     "multiline": "no",
@@ -84,7 +84,7 @@
     "highlightBG": "#ffff00",
     "patterns": [
       {
-        "pattern": "You drift away into the soft music of the Berceuse, abandoning yourself to its soporific tones.",
+        "pattern": "You are already dancing to that tempo.",
         "type": "exactMatch"
       }
     ]

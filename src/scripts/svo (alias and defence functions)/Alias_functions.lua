@@ -1015,7 +1015,7 @@ function svo.reset.bals(echoback)
   svo.bals.dragonheal = true
   svo.bals.smoke = true
 
-if svo.haveskillset('voicecraft') then
+if svo.haveskillset('sagas') then
   svo.bals.voice = true
 end
 if svo.me.class == 'Druid' then

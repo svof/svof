@@ -1605,16 +1605,6 @@ if svo.haveskillset('kaido') then
       installstart = function () conf.transsipprone = true end
     })
 end
-if svo.haveskillset('voicecraft') then
-  svo.config_dict:insert(1, 'dwinnu', {
-    type = 'boolean',
-    vconfig1 = 'dwinnu',
-    onenabled = function () svo.echof("<0,250,0>Will%s use dwinnu for writhing.", svo.getDefaultColor()) end,
-    ondisabled = function () svo.echof("<250,0,0>Won't%s use dwinnu.", svo.getDefaultColor()) end,
-    installstart = function () conf.dwinnu = nil end,
-    installcheck = function () svo.echof("Can you make use of the Wwinnu skill?") end
-  })
-end
 if svo.haveskillset('weaponmastery') then
   svo.config_dict:insert(1, 'recoverfooting', {
       type = 'boolean',
