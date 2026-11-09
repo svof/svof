@@ -799,7 +799,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Pipes|script",
-      "digest": "d0afade00b04c9ca",
+      "digest": "7e4c5ba79cf09583",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Pipes [script]"
     },
     {
@@ -909,7 +909,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "3fc59559cb92af05",
+      "digest": "f0952f6eaa94a9a1",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -1351,6 +1351,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",
       "digest": "61baa56f5354675b",
       "text": "Trigger  svo (aliases, triggers) svo/General/Registration/Started [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Smoke|script",
+      "digest": "f22247d093e25983",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Smoke [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Ablaze|script",
