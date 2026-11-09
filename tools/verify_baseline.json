@@ -58,6 +58,46 @@
       "text": "Trigger  svo (aliases, triggers) svo/Apostasy/Daegger withdrew [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Bladedance/Crescendo hum",
+      "digest": "c58da71c51cdba8e",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Crescendo hum [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Bladedance/Earworm hum",
+      "digest": "27c3a90a962700f1",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Earworm hum [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Bladedance/Tempo already",
+      "digest": "2c787b1cfb9b975c",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Tempo already [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Bladedance/Tempo set",
+      "digest": "358fe2e9eb893d1a",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Tempo set [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Bladedance/Tempo shown",
+      "digest": "5f0464b575340e8b",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Tempo shown [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Composition/Crescendo begins",
+      "digest": "f766c761d81ba6fd",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Crescendo begins [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Composition/Crescendo draws closer",
+      "digest": "97039f74308f9385",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Crescendo draws closer [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/Composition/Crescendo peaks",
+      "digest": "ed314f8c523442db",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Crescendo peaks [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/Dragoncraft/Enmeshment freed",
       "digest": "075c83fe6d55356e",
       "text": "Trigger  svo (aliases, triggers) svo/Dragoncraft/Enmeshment freed [only in the package]"
@@ -433,31 +473,6 @@
       "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Revealed by star sigil [only in the package]"
     },
     {
-      "id": "added|Trigger|svo (aliases, triggers)|svo/Swashbuckling/Crescendo hum",
-      "digest": "7b425eed3828859f",
-      "text": "Trigger  svo (aliases, triggers) svo/Swashbuckling/Crescendo hum [only in the package]"
-    },
-    {
-      "id": "added|Trigger|svo (aliases, triggers)|svo/Swashbuckling/Earworm hum",
-      "digest": "656d2a5fa261ffe8",
-      "text": "Trigger  svo (aliases, triggers) svo/Swashbuckling/Earworm hum [only in the package]"
-    },
-    {
-      "id": "added|Trigger|svo (aliases, triggers)|svo/Voicecraft/Crescendo begins",
-      "digest": "4b75414ecea6bba0",
-      "text": "Trigger  svo (aliases, triggers) svo/Voicecraft/Crescendo begins [only in the package]"
-    },
-    {
-      "id": "added|Trigger|svo (aliases, triggers)|svo/Voicecraft/Crescendo draws closer",
-      "digest": "be0a1842bd22c5f4",
-      "text": "Trigger  svo (aliases, triggers) svo/Voicecraft/Crescendo draws closer [only in the package]"
-    },
-    {
-      "id": "added|Trigger|svo (aliases, triggers)|svo/Voicecraft/Crescendo peaks",
-      "digest": "f385578ae71ec397",
-      "text": "Trigger  svo (aliases, triggers) svo/Voicecraft/Crescendo peaks [only in the package]"
-    },
-    {
       "id": "count|Alias|svo (aliases, triggers)|svo",
       "digest": "54fafd06c004bb94",
       "text": "Alias    svo (aliases, triggers) / 'svo': 121 items originally, 123 in merged"
@@ -474,8 +489,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "688b737541bb77af",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2593 in merged"
+      "digest": "d863235624435d94",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2526 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -498,6 +513,316 @@
       "text": "Script   svo (install me in module manager) Load & init/svo.installed_as_package [only in the originals]"
     },
     {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Bladedance/Acciaccatura",
+      "digest": "eb789f69772f138a",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Acciaccatura [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Bladedance/Aurabless",
+      "digest": "7db579e5a59e3c48",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Aurabless [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Bladedance/DeathFromAbove",
+      "digest": "beb3b97e5144b31d",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/DeathFromAbove [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Bladedance/Fear",
+      "digest": "c1b64ee175bbd2e8",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Fear [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Bladedance/Handspring",
+      "digest": "194ff75f5579901e",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Handspring [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Bladedance/Jab",
+      "digest": "3493be88f772bbd2",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Jab [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Bladedance/Jab/Epteth-epseth",
+      "digest": "0f217a5ab63a02f3",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Jab/Epteth-epseth [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Bladedance/Jab/Tunesmithings",
+      "digest": "97d562860f651509",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Jab/Tunesmithings [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Bladedance/Lunge",
+      "digest": "0aeb8ef4b4e7ebe1",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Lunge [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Bladedance/Martellato",
+      "digest": "10e784c6057301b7",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Martellato [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Bladedance/Pesante (undeaf)",
+      "digest": "7ab6569c505c9a9f",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Pesante (undeaf) [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Bladedance/Prone",
+      "digest": "dc314cf2ced3fc21",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Prone [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Bladedance/Razed rebounding",
+      "digest": "8f44ffd8135bcb60",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Razed rebounding [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Bladedance/Razed speed",
+      "digest": "80ca57a818373b32",
+      "text": "Trigger  svo (aliases, triggers) svo/Bladedance/Razed speed [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Claustrophobia songbird",
+      "digest": "c76e0c8a42919762",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Claustrophobia songbird [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Clumsiness",
+      "digest": "b959560a493d26ed",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Clumsiness [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Clumsiness songbird",
+      "digest": "f65f95e6e042f5ea",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Clumsiness songbird [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Confusion",
+      "digest": "6baea9e693cc0c6b",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Confusion [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Confusion songbird",
+      "digest": "57f79e22eb74a048",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Confusion songbird [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Def strip",
+      "digest": "09a18a1d2dbe747a",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Def strip [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Epilepsy",
+      "digest": "4d5c4d5950b65b05",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Epilepsy [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Epilepsy songbird",
+      "digest": "98371619e95427d2",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Epilepsy songbird [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Fugue",
+      "digest": "db294408fef5b7c4",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Fugue [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Fugue songbird",
+      "digest": "61760b0138837079",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Fugue songbird [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Funeralmass continuation",
+      "digest": "4c139dd611c674f7",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Funeralmass continuation [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Funeralmass start",
+      "digest": "87e990d9a9ad5a17",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Funeralmass start [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Generosity",
+      "digest": "d451cbfe579a1acf",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Generosity [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Illness",
+      "digest": "12c7e42914c62fe9",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Illness [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Illness songbird",
+      "digest": "4a0cd3e39d354077",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Illness songbird [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Impatience",
+      "digest": "c4f170dba9b32c88",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Impatience [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Noise",
+      "digest": "be28ecdc3d2614f1",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Noise [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Noise/Cancelled tumble",
+      "digest": "39c9ea0791145d9d",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Noise/Cancelled tumble [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Paralysis",
+      "digest": "5485f5d376e705bf",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Paralysis [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Paralysis songbird",
+      "digest": "106d5bc2781f4364",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Paralysis songbird [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Paranoia",
+      "digest": "83a3327f3e36012d",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Paranoia [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Paranoia songbird",
+      "digest": "63effa95d6a94ba7",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Paranoia songbird [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Qasida",
+      "digest": "24a65090f516e3cd",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Qasida [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Qasida songbird",
+      "digest": "753873bf8033c4ef",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Qasida songbird [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Stupidity",
+      "digest": "3459800e60f68545",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Stupidity [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Tremolo",
+      "digest": "54403a412684677a",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Tremolo [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Tremolo already broken",
+      "digest": "d6a323e8111ac57d",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Tremolo already broken [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Vertigo",
+      "digest": "a1e15138a45988c5",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Vertigo [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Vertigo songbird",
+      "digest": "b7b684c843acab65",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Vertigo songbird [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Vibrato",
+      "digest": "0fe5ea3285675352",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Vibrato [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Composition/Vibrato already broken",
+      "digest": "15b195cda8a9c0ef",
+      "text": "Trigger  svo (aliases, triggers) svo/Composition/Vibrato already broken [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences",
+      "digest": "4421dd35871d689d",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list",
+      "digest": "a95112694125f907",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Anthem",
+      "digest": "a638f213ea260b60",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Anthem [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Bagatelle",
+      "digest": "3a234d9a36da56fc",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Bagatelle [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Berceuse",
+      "digest": "27d9cac59363bd18",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Berceuse [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Canticle",
+      "digest": "817d76f08d9983c3",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Canticle [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Continuo",
+      "digest": "751593d98ab691db",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Continuo [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Contradanse",
+      "digest": "34cf15a167a4b487",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Contradanse [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Gigue",
+      "digest": "357f34e7a3f460bd",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Gigue [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Hallelujah",
+      "digest": "bf1a98d19ae75ea2",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Hallelujah [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Harmonius",
+      "digest": "497ffbc2c6365070",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Harmonius [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Lament",
+      "digest": "ba262bab0ad98525",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Lament [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Partita",
+      "digest": "a1d8fe92667e4344",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Partita [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Paxmusicalis",
+      "digest": "23773b065ae76395",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Paxmusicalis [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Reel",
+      "digest": "633e8e864ee1bc42",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Reel [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/Harmonics list/Wassail",
+      "digest": "63352e933cd9bc23",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/Harmonics list/Wassail [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General defences/Harmonics defences/No harmonics",
+      "digest": "3520baeeff3db743",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/Harmonics defences/No harmonics [only in the originals]"
+    },
+    {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Applied salve/svo cure scalded",
       "digest": "b618797a78de67fc",
       "text": "Trigger  svo (aliases, triggers) svo/General/Applied salve/svo cure scalded [only in the originals]"
@@ -511,6 +836,11 @@
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Focus/svo cured weakness",
       "digest": "1ed3c3749c9af5ba",
       "text": "Trigger  svo (aliases, triggers) svo/General/Focus/svo cured weakness [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Passive-active heals/Hallelujah",
+      "digest": "023bbd5cb9e069c6",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Passive-active heals/Hallelujah [only in the originals]"
     },
     {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Smoke/svo cured madness",
@@ -603,6 +933,41 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo no healing balance [only in the originals]"
     },
     {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo voicecraft dwinnu",
+      "digest": "82972082297b2878",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo voicecraft dwinnu [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Harmonics",
+      "digest": "d8672fcb9de3e61d",
+      "text": "Trigger  svo (aliases, triggers) svo/Harmonics [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Harmonics/Bagatelle",
+      "digest": "03229ed332708bbb",
+      "text": "Trigger  svo (aliases, triggers) svo/Harmonics/Bagatelle [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Harmonics/Berceuse",
+      "digest": "e23468b247885494",
+      "text": "Trigger  svo (aliases, triggers) svo/Harmonics/Berceuse [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Harmonics/Contradanse",
+      "digest": "9f53773595a9cc95",
+      "text": "Trigger  svo (aliases, triggers) svo/Harmonics/Contradanse [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Harmonics/Lament",
+      "digest": "48cad4dd6502714e",
+      "text": "Trigger  svo (aliases, triggers) svo/Harmonics/Lament [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/Harmonics/Paxmusicalis",
+      "digest": "bba630a3278e6775",
+      "text": "Trigger  svo (aliases, triggers) svo/Harmonics/Paxmusicalis [only in the originals]"
+    },
+    {
       "id": "item|Alias|svo (aliases, triggers)|svo/(vversion) Show system version|script",
       "digest": "7b8e8fa2b7a3b73d",
       "text": "Alias    svo (aliases, triggers) svo/(vversion) Show system version [script]"
@@ -629,17 +994,17 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "16d4f5ddb9ca5b91",
+      "digest": "d95c039801bb3a9d",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Alias functions|script",
-      "digest": "3db314c2076d27a3",
+      "digest": "8014017d2ec6951b",
       "text": "Script   svo (alias and defence functions) Alias functions [script]"
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "d9e20ee045cb8985",
+      "digest": "890aab2df758e36e",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -664,12 +1029,12 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Curing skeleton|script",
-      "digest": "5b2d34e7655ae752",
+      "digest": "cf8389cc7c92780c",
       "text": "Script   svo (curing skeleton, controllers, action system) Curing skeleton [script]"
     },
     {
       "id": "item|Script|svo (custom prompt, serverside)|Custom prompt|script",
-      "digest": "168eba2e62c02b9a",
+      "digest": "9074358751e173dd",
       "text": "Script   svo (custom prompt, serverside) Custom prompt [script]"
     },
     {
@@ -753,6 +1118,11 @@
       "text": "Script   svo (install me in module manager) Load & init [script]"
     },
     {
+      "id": "item|Script|svo (install me in module manager)|svo Class Management|script",
+      "digest": "0d9842a374be2744",
+      "text": "Script   svo (install me in module manager) svo Class Management [script]"
+    },
+    {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Custom prompt tags/@affs|script",
       "digest": "04fbe6977ab43590",
       "text": "Script   svo (install me in module manager) svo Utilities/Custom prompt tags/@affs [script]"
@@ -784,12 +1154,12 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Config system|script",
-      "digest": "88ae0cbf2b97d7d8",
+      "digest": "42b36a13119af836",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Config system [script]"
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Install system|script",
-      "digest": "209a385a5e8a58af",
+      "digest": "e1ba5483c908e517",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Install system [script]"
     },
     {
@@ -894,7 +1264,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "1f344952aaf25788",
+      "digest": "8f337d46e32cae44",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -909,7 +1279,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "f0952f6eaa94a9a1",
+      "digest": "3509a7e58d3b8f8e",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -921,6 +1291,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/Apostasy/Dagger impaled|script",
       "digest": "da550d0b4c47c278",
       "text": "Trigger  svo (aliases, triggers) svo/Apostasy/Dagger impaled [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General defences/svo got rebounding|script",
+      "digest": "3a9b6644e39cb37c",
+      "text": "Trigger  svo (aliases, triggers) svo/General defences/svo got rebounding [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General defences/svo sileris-quicksilver slickness|script",
