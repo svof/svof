@@ -414,7 +414,7 @@
     },
     {
       "id": "item|Script|svo (curing skeleton, controllers, action system)|Controllers|script",
-      "digest": "b1aacedafbbb83b2",
+      "digest": "0b54a5f4dfbdca35",
       "text": "Script   svo (curing skeleton, controllers, action system) Controllers [script]"
     },
     {
@@ -624,12 +624,12 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",
-      "digest": "47f90edfc93eab09",
+      "digest": "1752b683e4c97a41",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Miscellaneous functions [script]"
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Setup|script",
-      "digest": "39a9ef8c71e98d9c",
+      "digest": "9a8de6a88188ec78",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Setup [script]"
     },
     {
@@ -644,7 +644,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "b766072cc2763084",
+      "digest": "fe1bb62db0a8291d",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -1078,6 +1078,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/General cures/svo salve slickness [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Prompt|patterns",
+      "digest": "ded5c9be6ce0eac5",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Prompt [patterns]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",
       "digest": "61baa56f5354675b",
       "text": "Trigger  svo (aliases, triggers) svo/General/Registration/Started [colorTriggerFgColor]"
@@ -1121,6 +1126,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Damaged arm/regexes (damaged arm)|script",
       "digest": "b50472e402949465",
       "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Damaged arm/regexes (damaged arm) [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Damaged arms|script",
+      "digest": "837cf7480dcf89f4",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Damaged arms [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Disloyalty|script",
@@ -2423,6 +2433,11 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo smoke failed asthma [script]"
     },
     {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Generic illusions/Doublestab, single aff|script",
+      "digest": "12d964dd372b1895",
+      "text": "Trigger  svo (aliases, triggers) svo/Generic illusions/Doublestab, single aff [script]"
+    },
+    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Herb tracker/Capture inv|colorTrigger",
       "digest": "13c33f87153efd9e",
       "text": "Trigger  svo (aliases, triggers) svo/Herb tracker/Capture inv [colorTrigger]"
@@ -2476,6 +2491,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/Striking/Flamefisted|script",
       "digest": "0d36ac310a873be1",
       "text": "Trigger  svo (aliases, triggers) svo/Striking/Flamefisted [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Tekura/Limb damage|script",
+      "digest": "2029e6a8601761a0",
+      "text": "Trigger  svo (aliases, triggers) svo/Tekura/Limb damage [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Zeal/Tenderskin|script",
