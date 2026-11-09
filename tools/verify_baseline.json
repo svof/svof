@@ -434,7 +434,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "93766efcd31c3ff7",
+      "digest": "e03ac5c922b3666c",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -444,7 +444,7 @@
     },
     {
       "id": "item|Script|svo (alias and defence functions)|Defences|script",
-      "digest": "4218ef8242e05c99",
+      "digest": "d9e20ee045cb8985",
       "text": "Script   svo (alias and defence functions) Defences [script]"
     },
     {
@@ -579,7 +579,7 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Tree curing strats|script",
-      "digest": "1c8802c6976b6da5",
+      "digest": "3e037ca3e3776ed7",
       "text": "Script   svo (install me in module manager) svo Utilities/Tree curing strats [script]"
     },
     {
@@ -589,7 +589,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Config system|script",
-      "digest": "de743316e588e980",
+      "digest": "88ae0cbf2b97d7d8",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Config system [script]"
     },
     {
@@ -614,7 +614,7 @@
     },
     {
       "id": "item|Script|svo (install, config, pipes, rift, parry, prios)|Rift|script",
-      "digest": "80753b5bc4ec1860",
+      "digest": "56f31ce7e8c7fca4",
       "text": "Script   svo (install, config, pipes, rift, parry, prios) Rift [script]"
     },
     {
@@ -688,6 +688,11 @@
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
+      "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Funnies|script",
+      "digest": "8f48444350a71a45",
+      "text": "Script   svo (setup, misc, empty, funnies, dor) Funnies [script]"
+    },
+    {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Miscellaneous functions|script",
       "digest": "74205682c2564b56",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Miscellaneous functions [script]"
@@ -709,7 +714,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "a857240a325e237e",
+      "digest": "e1b3deb1d9dd5a96",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {

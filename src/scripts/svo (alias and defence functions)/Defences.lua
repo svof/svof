@@ -2247,12 +2247,12 @@ if svo.haveskillset('alchemy') then
   defs_data:set('sulphur', { type = 'alchemy',
     on = {"Directing the energy of sulphur, you surround yourself with an aura of primal energies, bolstering your healing capacity.", "You are already drawing upon the power of sulphur."},
     off = "The symbol of sulphur inscribed about you fades away.",
-    tooltip = "Boosts the effect of the vitality tonic.",
+    tooltip = "Bolsters your healing capacity.",
     def = "You are bolstered by the energy of sulphur."})
   defs_data:set('mercury', { type = 'alchemy',
     on = {"Directing the energy of mercury, you surround yourself with an aura of primal energies, boosting your mental regeneration.", "You are already drawing upon the power of mercury."},
     off = "The symbol of mercury inscribed about you fades away.",
-    tooltip = "Boosts the effect of the mentality tonic.",
+    tooltip = "Boosts your mental regeneration.",
     def = "You are bolstered by the energy of mercury."})
   defs_data:set('extispicy', { type = 'alchemy',
     on = {"As you poke through the entrails, a pink and shiny intestine foretells good fortune.", "You've already divined the future, Alchemist.", "As you poke through the entrails, a bleeding ulcer predicts great victories."},
