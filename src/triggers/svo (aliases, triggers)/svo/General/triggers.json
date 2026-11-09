@@ -4972,7 +4972,7 @@
         "highlightBG": "#ffff00",
         "patterns": [
           {
-            "pattern": "suffering from a scalded throat.",
+            "pattern": "horrifically scalded.",
             "type": "exactMatch"
           }
         ]
@@ -5783,6 +5783,24 @@
         "patterns": [
           {
             "pattern": "being consigned to the flame.",
+            "type": "exactMatch"
+          }
+        ]
+      },
+      {
+        "name": "condemned",
+        "isActive": "yes",
+        "isFolder": "no",
+        "multiline": "no",
+        "multilineDelta": "0",
+        "filter": "no",
+        "fireLength": "0",
+        "highlight": "no",
+        "highlightFG": "#ff0000",
+        "highlightBG": "#ffff00",
+        "patterns": [
+          {
+            "pattern": "you are condemned to burn.",
             "type": "exactMatch"
           }
         ]
@@ -7832,6 +7850,24 @@
     "patterns": [
       {
         "pattern": "The terrible burning of your skin fades.",
+        "type": "exactMatch"
+      }
+    ]
+  },
+  {
+    "name": "svo condemned woreoff",
+    "isActive": "yes",
+    "isFolder": "no",
+    "multiline": "no",
+    "multilineDelta": "0",
+    "filter": "no",
+    "fireLength": "0",
+    "highlight": "no",
+    "highlightFG": "#ff0000",
+    "highlightBG": "#ffff00",
+    "patterns": [
+      {
+        "pattern": "The righteous condemnation lifts, and you breathe more easily.",
         "type": "exactMatch"
       }
     ]

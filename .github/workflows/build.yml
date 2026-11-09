@@ -364,6 +364,12 @@ jobs:
       - name: test affliction names
         run: lua tools/test_affliction_names.lua
 
+      # Gate 1.999. condemned: GMCP's name, its 40 seconds, its wore-off
+      # line and DIAGNOSE, and that no burn salve is advisable while it
+      # lasts. Runs the real loaders (tools/svof_world.lua).
+      - name: test condemned
+        run: lua tools/test_condemned.lua
+
       # Gate 1.998. The paragraph lookbacks search the lines the game sent,
       # saved by the Prompt trigger's condition, not Mudlet's buffer, where
       # svof's warning suffix and the wrap cut made exact lookbacks miss.
