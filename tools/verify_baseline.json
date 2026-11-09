@@ -163,9 +163,19 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure unweavingspirit tree [only in the package]"
     },
     {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo condemned woreoff",
+      "digest": "a0be7c0c7617f61b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo condemned woreoff [only in the package]"
+    },
+    {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo constricted woreoff",
       "digest": "ed5441c0224037a4",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo constricted woreoff [only in the package]"
+    },
+    {
+      "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/condemned",
+      "digest": "7b79e0ccb6703b5a",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/condemned [only in the package]"
     },
     {
       "id": "added|Trigger|svo (aliases, triggers)|svo/General/svo diag/constricted",
@@ -264,8 +274,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "93c526378ba00701",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2556 in merged"
+      "digest": "a50685995c165aaa",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2558 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -394,7 +404,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "10ca713c0e8a7767",
+      "digest": "b91fd3009a08dba2",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -519,7 +529,7 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Custom prompt tags/@affs|script",
-      "digest": "94e542e6f50001d5",
+      "digest": "82f678fd710faada",
       "text": "Script   svo (install me in module manager) svo Utilities/Custom prompt tags/@affs [script]"
     },
     {
@@ -629,7 +639,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "8d3b38ceb54de3a6",
+      "digest": "6ac4c66db3e347b8",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
@@ -654,7 +664,7 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "fe1bb62db0a8291d",
+      "digest": "d3f2681ff95a06dc",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
@@ -2231,6 +2241,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/sanguine humour|script",
       "digest": "82531dff1dbfbc8b",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/sanguine humour [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/scalded|patterns",
+      "digest": "9c9354b1532fad4b",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/scalded [patterns]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/scalded|script",
