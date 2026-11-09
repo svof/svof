@@ -372,10 +372,26 @@ jobs:
       - name: test class change curingsets
         run: lua tools/test_classchange_curingsets.lua
 
+      # Gate 1.996. Counted afflictions gained from text: the gain line and
+      # DIAGNOSE give no level, so each counted affliction's aff handler
+      # records it at count 1, keeps a level GMCP set, and leaves a refused
+      # add at 0. Also fails on a counted entry that neither has that floor
+      # nor is listed as setting its own count.
+      - name: test counted floor
+        run: lua tools/test_counted_floor.lua
+
       # Gate 1.995. Every affliction svof can show on the prompt has a short
       # tag in @affs, and every tag names an affliction, in every class.
       - name: test prompt tags
         run: lua tools/test_prompt_tags.lua
+
+      # Gate 1.99996. Mucous in your lungs, a longer smoke recovery and not an
+      # affliction: its lines act at the prompt, an illusion's paragraph
+      # changes nothing, the cough line ends only mucous's recovery, and the
+      # aeon strategies count clogged lungs. Runs the real loaders
+      # (tools/svof_world.lua).
+      - name: test mucous
+        run: lua tools/test_mucous.lua
 
       - uses: actions/setup-java@v4
         with:

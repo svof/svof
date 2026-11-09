@@ -258,7 +258,7 @@ local check_for_asthma = {
   checkasthma = {p = svo.dict.checkasthma}
 }
 svo.check_smoke = function(sync_mode)
-  if not bals.smoke or affs.stun or affs.unconsciousness or affs.sleep or affs.deepsleep or affs.asthma or affs.mucous then
+  if not bals.smoke or affs.stun or affs.unconsciousness or affs.sleep or affs.deepsleep or affs.asthma then
     return
   end
 
@@ -1497,6 +1497,13 @@ svo.rmaff = function (old)
     svo.dict[old].onremoved()
   end
 
+  -- A counted affliction that's gone has no level left. Most callers reset
+  -- the count themselves, but a GMCP List resync and the empty cures didn't,
+  -- and a counted aff handler never lowers a count, so the next gain by text
+  -- kept the old level. This comes after onremoved, which for the
+  -- unknowncrippled stacks reads the count to put one fewer back
+  if type(svo.dict[old].count) == 'number' and not affs[old] then svo.dict[old].count = 0 end
+
   if conf.showafftimes and sw then
     svo.echoafftime(stopStopWatch(sw), old)
   end
@@ -1873,13 +1880,15 @@ svo.lostbal_purgative = function()
   raiseEvent("svo lost balance", 'purgative')
 end
 
-svo.lostbal_smoke = function()
+-- howlong is how long smoke balance takes to come back, when it's longer
+-- than a smoke's usual recovery, as it is after mucous fills your lungs
+svo.lostbal_smoke = function(howlong)
   bals.smoke = false
   svo.startbalancewatch('smoke')
   sk.smoketick = sk.smoketick + 1
   local oldsmoketick = sk.smoketick
 
-  tempTimer(conf.ai_resetsmokebal, function ()
+  tempTimer(howlong or conf.ai_resetsmokebal, function ()
     if not bals.smoke and sk.smoketick == oldsmoketick then
       bals.smoke = true
       svo.make_gnomes_work()
@@ -1891,6 +1900,12 @@ svo.lostbal_smoke = function()
   startStopWatch(watch['bal_smoke'])
 
   raiseEvent("svo lost balance", 'smoke')
+end
+
+-- whether mucous fills your lungs: the longer smoke recovery it started
+-- (svo.dict.mucouslungs) is the one still running
+function svo.lungs_clogged()
+  return sk.mucous_smoketick ~= nil and sk.mucous_smoketick == sk.smoketick and not bals.smoke
 end
 
 svo.lostbal_dragonheal = function()

@@ -100,7 +100,6 @@ local aff_abbrev = {
   mildconcussion      = "h1",
   mildtrauma          = "t1",
   mindravaged         = "ravg",
-  mucous              = "muc",
   mutilatedleftarm    = "la3",
   mutilatedleftleg    = "ll3",
   mutilatedrightarm   = "ra3",

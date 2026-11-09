@@ -486,10 +486,9 @@ end
 -- { p = <the dict entry>, sw = <stopwatch> } with no __index on svo.affs - so
 -- reading affs.pyre.count gave nil and raised on the comparison. And having
 -- pyre at all is level 1 or more, which is why presence floors the answer at
--- 1: only the GMCP path ever raises svo.dict.pyre.count, since
--- svo.valid.simplepyre passes no argument and pyre sits in the plain diag list
--- rather than the counted one, so without GMCP the stored level stays 0 while
--- the affliction is genuinely there.
+-- 1. svo.valid.simplepyre and DIAGNOSE give no level, so pyre's aff handler
+-- raises a count of 0 to 1 itself, as every counted affliction's does; the
+-- floor stays for anything that records pyre some other way.
 codepaste.pyre_holds = function(burn)
   if not affs.pyre then return false end
 
@@ -702,6 +701,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.skullfractures)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.skullfractures and svo.dict.skullfractures.count < level then svo.dict.skullfractures.count = level end
           svo.updateaffcount(svo.dict.skullfractures)
         end
       },
@@ -755,6 +758,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.crackedribs)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.crackedribs and svo.dict.crackedribs.count < level then svo.dict.crackedribs.count = level end
           svo.updateaffcount(svo.dict.crackedribs)
         end
       },
@@ -808,6 +815,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.wristfractures)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.wristfractures and svo.dict.wristfractures.count < level then svo.dict.wristfractures.count = level end
           svo.updateaffcount(svo.dict.wristfractures)
         end
       },
@@ -861,6 +872,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.torntendons)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.torntendons and svo.dict.torntendons.count < level then svo.dict.torntendons.count = level end
           svo.updateaffcount(svo.dict.torntendons)
         end
       },
@@ -917,6 +932,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.pressure)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.pressure and svo.dict.pressure.count < level then svo.dict.pressure.count = level end
           svo.updateaffcount(svo.dict.pressure)
         end
       },
@@ -977,6 +996,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.cholerichumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.cholerichumour and svo.dict.cholerichumour.count < level then svo.dict.cholerichumour.count = level end
           svo.updateaffcount(svo.dict.cholerichumour)
         end
       },
@@ -1037,6 +1060,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.melancholichumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.melancholichumour and svo.dict.melancholichumour.count < level then svo.dict.melancholichumour.count = level end
           svo.updateaffcount(svo.dict.melancholichumour)
         end
       },
@@ -1057,7 +1084,8 @@ if not next(svo.dict) then
       }
     },
     -- Tempered by an Alchemist. Besides its own effects, it gives smoking a
-    -- chance of filling your lungs with mucous: see mucous
+    -- chance of filling your lungs with mucous, which svof tracks as a longer
+    -- smoke recovery, not an affliction: see svo.dict.mucouslungs
     phlegmatichumour = {
       gamename = 'temperedphlegmatic',
       name = 'phlegmatichumour',
@@ -1098,6 +1126,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.phlegmatichumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.phlegmatichumour and svo.dict.phlegmatichumour.count < level then svo.dict.phlegmatichumour.count = level end
           svo.updateaffcount(svo.dict.phlegmatichumour)
         end
       },
@@ -1168,6 +1200,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.sanguinehumour)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.sanguinehumour and svo.dict.sanguinehumour.count < level then svo.dict.sanguinehumour.count = level end
           svo.updateaffcount(svo.dict.sanguinehumour)
         end
       },
@@ -1225,6 +1261,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.horror)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.horror and svo.dict.horror.count < level then svo.dict.horror.count = level end
           svo.updateaffcount(svo.dict.horror)
         end
       },
@@ -1980,6 +2020,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.pyre)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.pyre and svo.dict.pyre.count < level then svo.dict.pyre.count = level end
           svo.updateaffcount(svo.dict.pyre)
         end
       },
@@ -8191,52 +8235,6 @@ if not next(svo.dict) then
         end,
       }
     },
-    -- Not an affliction of its own in the game's list, and GMCP never reports
-    -- it: a side effect of a tempered phlegmatic humour (phlegmatichumour,
-    -- the game's temperedphlegmatic), which an Alchemist's phlegmatic
-    -- tempering gives. AFFLICTION SHOW (captured 2026-10-20): "A tempered
-    -- phlegmatic humour fills your lungs with phlegm when you try to smoke."
-    -- While it's tempered, a smoke has a chance of filling your lungs with
-    -- mucous, which keeps you from smoking until you cough it up. Text alone
-    -- tracks it: "As you attempt to inhale the smoke, your lungs fill with a
-    -- thick mucous." or "Your lungs are too clogged with mucous for you to
-    -- attempt smoking." adds it, and "You manage to cough away the mucous
-    -- filling your lungs." or the end of the wait ends it
-    mucous = {
-      waitingfor = {
-        customwait = 6,
-  
-        isadvisable = function()
-          return false
-        end,
-  
-        onstart = function() end,
-  
-        oncompleted = function() svo.rmaff('mucous') end,
-  
-        ontimeout = function()
-          svo.rmaff('mucous')
-          svo.make_gnomes_work()
-        end
-      },
-      aff = {
-        oncompleted = function()
-          svo.addaffdict(svo.dict.mucous)
-          if not svo.actions.mucous_waitingfor then svo.doaction(svo.dict.mucous.waitingfor) end
-  
-          local r = svo.findbybal('smoke')
-          if r then
-            svo.killaction(svo.dict[r.action_name].smoke)
-          end
-        end
-      },
-      gone = {
-        oncompleted = function()
-          svo.rmaff('mucous')
-          svo.killaction(svo.dict.mucous.waitingfor)
-        end,
-      }
-    },
     phlogistication = {
       waitingfor = {
         customwait = 999, -- time increases
@@ -9075,6 +9073,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingbody)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingbody and svo.dict.unweavingbody.count < level then svo.dict.unweavingbody.count = level end
           svo.updateaffcount(svo.dict.unweavingbody)
         end
       },
@@ -9131,6 +9133,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingmind)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingmind and svo.dict.unweavingmind.count < level then svo.dict.unweavingmind.count = level end
           svo.updateaffcount(svo.dict.unweavingmind)
         end
       },
@@ -9187,6 +9193,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.unweavingspirit)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.unweavingspirit and svo.dict.unweavingspirit.count < level then svo.dict.unweavingspirit.count = level end
           svo.updateaffcount(svo.dict.unweavingspirit)
         end
       },
@@ -9506,6 +9516,10 @@ if not next(svo.dict) then
       aff = {
         oncompleted = function (number)
           svo.addaffdict(svo.dict.crescendo)
+          -- DIAGNOSE gives the level of one svof didn't have, and the gain line none: having it at all is level 1.
+          -- A higher level GMCP set is kept, and one GMCP refused is left at 0
+          local level = tonumber(number) or 1
+          if affs.crescendo and svo.dict.crescendo.count < level then svo.dict.crescendo.count = level end
           svo.updateaffcount(svo.dict.crescendo)
         end
       },
@@ -9688,6 +9702,53 @@ if not next(svo.dict) then
   
         oncancel = function()
           svo.dict.gotbalance.happened.tempmap = {}
+        end
+      }
+    },
+    -- Mucous in your lungs, a tempered phlegmatic humour's effect on smoking
+    -- (svo.dict.phlegmatichumour, the game's temperedphlegmatic). It's not an
+    -- affliction: the game doesn't list it, and GMCP never reports it. HELP
+    -- HUMOURISM: "Smoking will have a chance of filling your lungs with
+    -- phlegm, increasing your lungs recovery time." So svof takes smoke
+    -- balance for longer than a smoke's usual recovery, and the smoke counts
+    -- as failed, so svof smokes for the same thing again later. The lines go
+    -- through lifevision (svo.valid.got_mucous), so nothing changes before the
+    -- prompt, and a paragraph found to be an illusion changes nothing.
+    --
+    -- Neither of those two is confirmed: how much longer recovery takes was
+    -- never measured, and nothing says whether the smoke's cure still lands.
+    -- recovery is the 6 seconds svof's old mucous affliction waited.
+    mucouslungs = {
+      happened = {
+        recovery = 6,
+
+        -- "As you attempt to inhale the smoke, your lungs fill with a thick
+        -- mucous." or "Your lungs are too clogged with mucous for you to
+        -- attempt smoking."
+        oncompleted = function()
+          local r = svo.findbybal('smoke')
+          if r and r.action_name ~= 'checkasthma' then svo.killaction(svo.dict[r.action_name].smoke) end
+          svo.lostbal_smoke(svo.dict.mucouslungs.happened.recovery)
+          sk.mucous_smoketick = sk.smoketick
+        end,
+
+        -- "You manage to cough away the mucous filling your lungs." The lungs
+        -- are clear, so the recovery mucous started ends early. If they
+        -- aren't, the next smoke's "too clogged" line takes smoke balance
+        -- again. Only that recovery: one a smoke started isn't mucous's to end
+        coughed = function()
+          if not svo.lungs_clogged() then return end
+          sk.mucous_smoketick = nil
+          bals.smoke = true
+          raiseEvent("svo got balance", 'smoke')
+          svo.endbalancewatch('smoke')
+        end,
+
+        -- both lines in one paragraph, the clog first: the smoke failed, and
+        -- the recovery is already over
+        clogged_then_coughed = function()
+          svo.dict.mucouslungs.happened.oncompleted()
+          svo.dict.mucouslungs.happened.coughed()
         end
       }
     },
