@@ -1057,7 +1057,8 @@ if not next(svo.dict) then
       }
     },
     -- Tempered by an Alchemist. Besides its own effects, it gives smoking a
-    -- chance of filling your lungs with mucous: see mucous
+    -- chance of filling your lungs with mucous, which svof tracks as a longer
+    -- smoke recovery, not an affliction: see svo.dict.mucouslungs
     phlegmatichumour = {
       gamename = 'temperedphlegmatic',
       name = 'phlegmatichumour',
@@ -8191,52 +8192,6 @@ if not next(svo.dict) then
         end,
       }
     },
-    -- Not an affliction of its own in the game's list, and GMCP never reports
-    -- it: a side effect of a tempered phlegmatic humour (phlegmatichumour,
-    -- the game's temperedphlegmatic), which an Alchemist's phlegmatic
-    -- tempering gives. AFFLICTION SHOW (captured 2026-10-20): "A tempered
-    -- phlegmatic humour fills your lungs with phlegm when you try to smoke."
-    -- While it's tempered, a smoke has a chance of filling your lungs with
-    -- mucous, which keeps you from smoking until you cough it up. Text alone
-    -- tracks it: "As you attempt to inhale the smoke, your lungs fill with a
-    -- thick mucous." or "Your lungs are too clogged with mucous for you to
-    -- attempt smoking." adds it, and "You manage to cough away the mucous
-    -- filling your lungs." or the end of the wait ends it
-    mucous = {
-      waitingfor = {
-        customwait = 6,
-  
-        isadvisable = function()
-          return false
-        end,
-  
-        onstart = function() end,
-  
-        oncompleted = function() svo.rmaff('mucous') end,
-  
-        ontimeout = function()
-          svo.rmaff('mucous')
-          svo.make_gnomes_work()
-        end
-      },
-      aff = {
-        oncompleted = function()
-          svo.addaffdict(svo.dict.mucous)
-          if not svo.actions.mucous_waitingfor then svo.doaction(svo.dict.mucous.waitingfor) end
-  
-          local r = svo.findbybal('smoke')
-          if r then
-            svo.killaction(svo.dict[r.action_name].smoke)
-          end
-        end
-      },
-      gone = {
-        oncompleted = function()
-          svo.rmaff('mucous')
-          svo.killaction(svo.dict.mucous.waitingfor)
-        end,
-      }
-    },
     phlogistication = {
       waitingfor = {
         customwait = 999, -- time increases
@@ -9688,6 +9643,53 @@ if not next(svo.dict) then
   
         oncancel = function()
           svo.dict.gotbalance.happened.tempmap = {}
+        end
+      }
+    },
+    -- Mucous in your lungs, a tempered phlegmatic humour's effect on smoking
+    -- (svo.dict.phlegmatichumour, the game's temperedphlegmatic). It's not an
+    -- affliction: the game doesn't list it, and GMCP never reports it. HELP
+    -- HUMOURISM: "Smoking will have a chance of filling your lungs with
+    -- phlegm, increasing your lungs recovery time." So svof takes smoke
+    -- balance for longer than a smoke's usual recovery, and the smoke counts
+    -- as failed, so svof smokes for the same thing again later. The lines go
+    -- through lifevision (svo.valid.got_mucous), so nothing changes before the
+    -- prompt, and a paragraph found to be an illusion changes nothing.
+    --
+    -- Neither of those two is confirmed: how much longer recovery takes was
+    -- never measured, and nothing says whether the smoke's cure still lands.
+    -- recovery is the 6 seconds svof's old mucous affliction waited.
+    mucouslungs = {
+      happened = {
+        recovery = 6,
+
+        -- "As you attempt to inhale the smoke, your lungs fill with a thick
+        -- mucous." or "Your lungs are too clogged with mucous for you to
+        -- attempt smoking."
+        oncompleted = function()
+          local r = svo.findbybal('smoke')
+          if r and r.action_name ~= 'checkasthma' then svo.killaction(svo.dict[r.action_name].smoke) end
+          svo.lostbal_smoke(svo.dict.mucouslungs.happened.recovery)
+          sk.mucous_smoketick = sk.smoketick
+        end,
+
+        -- "You manage to cough away the mucous filling your lungs." The lungs
+        -- are clear, so the recovery mucous started ends early. If they
+        -- aren't, the next smoke's "too clogged" line takes smoke balance
+        -- again. Only that recovery: one a smoke started isn't mucous's to end
+        coughed = function()
+          if not svo.lungs_clogged() then return end
+          sk.mucous_smoketick = nil
+          bals.smoke = true
+          raiseEvent("svo got balance", 'smoke')
+          svo.endbalancewatch('smoke')
+        end,
+
+        -- both lines in one paragraph, the clog first: the smoke failed, and
+        -- the recovery is already over
+        clogged_then_coughed = function()
+          svo.dict.mucouslungs.happened.oncompleted()
+          svo.dict.mucouslungs.happened.coughed()
         end
       }
     },

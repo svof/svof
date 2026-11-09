@@ -1593,7 +1593,7 @@ local function overlook_env()
   load_block(block, env)
 
   local names = {'prone', 'slickness', 'sensitivity', 'anorexia', 'impatience', 'clumsiness',
-    'paralysis', 'asthma', 'mucous'}
+    'paralysis', 'asthma'}
   svo.dict.sstosvoa = {}
   for _, name in ipairs(names) do
     svo.dict.sstosvoa[name] = name
@@ -1997,13 +1997,10 @@ do
   local pipe = send('slickness', 'smoke')
   svo.valid.smoke_failed_asthma()
   eq((answer_of(svo, 'asthma') or {}).act, pipe, "refusal: a smoke refused answers the smoke")
-  svo.lifevision.l = ordered_map()
-  svo.valid.got_mucous()
-  eq((answer_of(svo, 'mucous') or {}).act, pipe, "refusal: mucous gained on a smoke answers it")
-  svo.lifevision.l = ordered_map()
-  svo.valid.have_mucous()
-  eq((answer_of(svo, 'mucous') or {}).act, pipe, "refusal: and mucous blocking one")
   svo.killaction(pipe)
+
+  -- mucous is a longer smoke recovery, not an affliction, and claims none:
+  -- tools/test_mucous.lua runs its lines through the real loaders
 
   svo.lifevision.l = ordered_map()
   local fill = send('fillskullcap', 'physical')
