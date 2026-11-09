@@ -96,11 +96,6 @@ if svo.haveskillset('venom') then
     gmcp = {group = 'venom', name = 'shrugging'}
   }
 end
-if svo.haveskillset('voicecraft') then
-  installdata.dwinnu = {
-    gmcp = {group = 'voicecraft', name = 'dwinnu'},
-  }
-end
 if not svo.haveskillset('tekura') then
   installdata.parry = {
     gmcp = {group = 'weaponry', name = 'parrying'},
@@ -366,7 +361,7 @@ signals.gmcpcharskillsinfo:block(install.checkskillgmcp)
 
 function svo.install.checkinvgmcp()
   local t = _G.gmcp.Char.Items.List
-  if not t.location == 'inv' then return end
+  if t.location ~= 'inv' then return end
 
   -- feh! Easier to hardcode it for such a miniscule amount of items.
   -- If list enlarges, fix appopriately.

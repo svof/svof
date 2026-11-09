@@ -27,6 +27,6 @@ svo.fitness.hellsightconc = {
   desc = "Use fitness if we've got hellsight and a concussion",
 
   function ()
-    return svo.affl.hellsight and (svo.affl.mildconcussion or svo.affl.seriousconcussion)
+    return svo.affl.hellsight and (svo.affl.damagedhead or svo.affl.mangledhead)
   end
 }

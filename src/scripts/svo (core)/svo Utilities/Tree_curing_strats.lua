@@ -18,9 +18,9 @@ svo.tree.blackout = {
 }
 
 svo.tree.aeon = {
-  desc = "Use tree to cure aeon when we have asthma or mucous",
+  desc = "Use tree to cure aeon when we have asthma or mucous in our lungs",
 
-  function () return svo.affl.aeon and (svo.affl.asthma or svo.affl.mucous) end
+  function () return svo.affl.aeon and (svo.affl.asthma or svo.lungs_clogged()) end
 }
 
 svo.tree.hardlock = {
@@ -79,12 +79,10 @@ svo.tree.curearmsfaster = {
 }
 
 svo.tree.novoyriacure = {
-  desc = "Use tree when you have voyria and no immunity/antigen for it",
+  desc = "Use tree when you have voyria and no immunity for it",
 
   function ()
-    return (svo.affl.voyria and ((svo.es_potions.elixir and svo.es_potions.elixir["an elixir of immunity"] and svo.es_potions.elixir["an elixir of immunity"].sips <= 1)
-      and (svo.es_potions.tonic and svo.es_potions.tonic["a tonic of antigen"] and svo.es_potions.tonic["a tonic of antigen"].sips <= 1))
-    )
+    return (svo.affl.voyria and svo.es_potions.elixir and svo.es_potions.elixir["an elixir of immunity"] and svo.es_potions.elixir["an elixir of immunity"].sips <= 1)
   end
 }
 

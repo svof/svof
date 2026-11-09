@@ -383,7 +383,7 @@ end
 
 function svo.lc_sethitsneeded(person, hits)
   if not tonumber(hits) then
-    echof("At how many hits do you want to set the breaking point at?")
+    svo.echof("At how many hits do you want to set the breaking point at?")
     return
   end
   svo.lc_break_at = hits

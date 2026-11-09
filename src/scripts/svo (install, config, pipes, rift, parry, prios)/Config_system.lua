@@ -1600,20 +1600,10 @@ if svo.haveskillset('kaido') then
   svo.config_dict:insert(1, 'transsipprone', {
       type = 'boolean',
       vconfig2 = "Transmute while prone",
-      onenabled = function () svo.echof("If you're prone and using transmute in a replaceall or replacehealth mode, we <0,250,0>will%s sip health or vitality instead of waiting on transmute to be usable. This is most optimal for PK.", svo.getDefaultColor()) end,
+      onenabled = function () svo.echof("If you're prone and using transmute in a replaceall or replacehealth mode, we <0,250,0>will%s sip health instead of waiting on transmute to be usable. This is most optimal for PK.", svo.getDefaultColor()) end,
       ondisabled = function () svo.echof("If you're prone and using transmute in a replaceall or replacehealth mode, we'll keep sipping mana and wait until we can use transmute again to heal our health. This is mainly good for bashing.", svo.getDefaultColor()) end,
       installstart = function () conf.transsipprone = true end
     })
-end
-if svo.haveskillset('voicecraft') then
-  svo.config_dict:insert(1, 'dwinnu', {
-    type = 'boolean',
-    vconfig1 = 'dwinnu',
-    onenabled = function () svo.echof("<0,250,0>Will%s use dwinnu for writhing.", svo.getDefaultColor()) end,
-    ondisabled = function () svo.echof("<250,0,0>Won't%s use dwinnu.", svo.getDefaultColor()) end,
-    installstart = function () conf.dwinnu = nil end,
-    installcheck = function () svo.echof("Can you make use of the Wwinnu skill?") end
-  })
 end
 if svo.haveskillset('weaponmastery') then
   svo.config_dict:insert(1, 'recoverfooting', {

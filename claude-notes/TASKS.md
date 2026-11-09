@@ -1,6 +1,7 @@
 # Task list
 
-Last updated 2026-10-31, later: #892 to #896 added (the Blademaster slash
+Last updated 2026-11-02: #903, #904, and #906 added, and the pipe counts item.
+2026-10-31, later: #892 to #896 added (the Blademaster slash
 lookback, sleep's two handlers, the transmutation cleanup, cure lines for 14
 tree-curable afflictions, and pipe puffs under serverside); the class defences
 batch stays open. Before that, 2026-10-31: #888 to #890 added to the in-flight note
@@ -61,7 +62,10 @@ In flight (2026-10-31), all ready for review and none merged:
 | #895 | `missing-cure-lines`, `C:\work\svof-curelines` | AFFLICTION SHOW's cure line on Ate, Smoke, General cures and Tree cures triggers for 15 tree-curable afflictions, 38 triggers; twelve had none, and phlogistication's is its Expire msg (gate 1.9996) |
 | #897 | `removal-path-check`, `C:\work\svof-removal` | `svo.removeaff` and `svo.removeafflevel` fixed for every affliction, and five wrong names a scan found (shield's `mangledlrightarm`, `unwknowncrippledarm`, the missing arms, `illness_constitution`); the scan, every gone and both public removals checked (gate 1.9998). `asleep` comes off its recorded list when #893 merges |
 | #898 | `verify-merged-hygiene`, `C:\work\svof-vmh` | an `ITEM_MOVE` entry that matches nothing is structural, as an unused `ITEM_RENAME` key is |
-| #896 | `pipe-puffs-by-herb`, `C:\work\svof-puffs` | under serverside the server's fill line refills the emptier pipe of its herb, a puff comes off pipe 1 then pipe 2, and filling pipe 2 keeps to its own fields (gate 1.9997) |
+| #896 | `pipe-puffs-by-herb`, `C:\work\svof-puffs` | under serverside the server's fill line refills the pipe it names, or the one holding what the line names, then the emptier; a puff comes off pipe 1 then pipe 2, and filling pipe 2 keeps to its own fields (gate 1.9997) |
+| #903 | `prio-spam-limit`, `C:\work\svof-priolimit` | stacked on #884: every `CURING PRIORITY` use goes through one paced queue, and refused ones are resent |
+| #904 | `custom-fetch-once`, `C:\work\svof-fetchonce` | stacked on #887: `fetch` and `gmcp` on a new `vcustomdef` or `vcustomaff` name ask the game once |
+| #906 | `pipe-own-smokes`, `C:\work\svof-puffs2` | stacked on #896: the player's own smokes and tap-outs count, and a fill with no pipe named goes in the only empty pipe |
 
 #883 to #889 and #892 to #896 each branch from `in-client-svof` and each regenerates
 `tools/verify_baseline.json`, and all but #887 add a gate to `build.yml`. After the first merges, regenerate the baseline on the others
@@ -78,8 +82,8 @@ saved priority list kept across the update and full parry on each limb; for
 skull; for #892, a Blademaster slash across the arms; for #893, a command
 refused while asleep and resent on waking, and a transfixed refusal in
 blackout; for #895, a herb cure of one of the ten in blackout and a tree
-touch curing one of the 15; for #896, a server refill under serverside, which
-#896 assumes prints the same fill line as your own; and the older ones in the
+touch curing one of the 15; for #896, a server fill that names a second pipe,
+as the live run on 2026-11-01 only saw first pipes named; and the older ones in the
 `svof-pending-live-tests` memory. Not done: the class defences batch below,
 left out on 2026-10-31. Waiting on the owner:
 which abilities constricted slows, the Spiritlore Snare and Tarot Hanged Man
@@ -510,6 +514,24 @@ own, and what does `PIPELIST` show (which pipe holds skullcap and which
 malachite)? Fix ideas, none agreed: charge the pipe whose contents match the
 herb in the smoke line; count a fill line that names a tracked pipe's herb;
 send `PIPELIST` at login under serverside.
+
+### Pipe counts miss the player's own smokes and tap-outs
+**Status: found 2026-11-01 in the live run for #896, read from its log. Both
+predate #896. Opened 2026-11-02 as #906, stacked on #896, with both fixed and
+checked against `PIPELIST` in game. The lit mismatch below is still open.**
+
+Both lasted until the next fill or `PIPELIST`:
+
+1. `smoke ID` sent outside svof isn't counted. svof still held 9 puffs after 9
+   such smokes had emptied the valerian pipe, and it held 10 on the elm pipe
+   through the same run.
+2. svof doesn't notice a player's own `empty ID`. "You tap out the contents of
+   your pipe." doesn't name the pipe, and the second pipe kept 10 puffs while
+   it was empty.
+
+A related mismatch from the same log: after a fill, `PIPELIST` showed
+`pipe688072` as out while svof held `lit2 = true`, and the server hadn't
+relit it. This might belong with `svof-pipe-relight`.
 
 ### The single-source implementation plan
 **Status: written 2026-09-22, four questions answered by the owner the same

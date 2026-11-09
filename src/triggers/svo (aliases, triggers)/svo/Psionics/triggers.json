@@ -74,7 +74,7 @@
     "highlightBG": "#ffff00",
     "patterns": [
       {
-        "pattern": "^Golden chains of light coalesce in the hands of \\w+, and \\w+ casts them out to bind you to \\w+\\.$",
+        "pattern": "^Golden chains of light coalesce in the hands of (\\w+), and \\w+ casts them out to bind you to \\w+\\.$",
         "type": "regex"
       }
     ]

@@ -2576,7 +2576,7 @@ Svof API functions
 
 .. function:: svo.removeafflevel(aff, amount, keep)
 
-   Removes a level of an affliction - applicable to things such as fractures. If *amount* is specified, then it removes that many levels, otherwise one. If *keep* is specified, then the affliction stays at the minimum first level instead of being removed when the count gets down to zero. ::
+   Removes a level of an affliction - applicable to things such as fractures. If *amount* is specified, then it removes that many levels, otherwise one. If *keep* is specified, then the affliction stays at the minimum first level instead of being removed when the count gets down to zero. An affliction that isn't counted has one level, so it's removed, or kept with *keep*. So does bleeding, because its count is how much you bleed for. ::
 
       -- removes one level of fractures
       svo.removeafflevel("skullfractures")

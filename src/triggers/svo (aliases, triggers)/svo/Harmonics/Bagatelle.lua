@@ -1,1 +1,0 @@
-svo.defs.lost_deaf()
