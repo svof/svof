@@ -911,6 +911,15 @@ function svo.hitcuringsetlimit()
   svo.tntf_set('serverside', 'off', true)
 end
 
+-- what Svof handles instead of serverside by default; serverside handles the
+-- rest. The first setup and (restore defaults) in vshow serverside both use it
+sk.svof_handles_by_default = {
+  impale        = true, -- serverside does not stack writhing atm
+  daeggerimpale = true, -- writhed as impale is
+  lovers        = true, -- lust not handled by serverside
+  selfishness   = true, -- doesn't take selfish off
+}
+
 function svo.setup_default_serverignore()
   if not next(svo.serverignore) then
     local list = sk.getallserversideactions()
@@ -919,10 +928,9 @@ function svo.setup_default_serverignore()
       svo.serverignore[action] = true
     end
 
-    svo.serverignore.impale     = false -- serverside does not stack writhing atm
-    svo.serverignore.daeggerimpale = false -- writhed as impale is
-    svo.serverignore.lovers     = false -- lust not handled by serverside
-    svo.serverignore.selfishness = false -- doesn't take selfish off
+    for action in pairs(sk.svof_handles_by_default) do
+      svo.serverignore[action] = false
+    end
   end
 end
 
