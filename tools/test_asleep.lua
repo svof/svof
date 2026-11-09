@@ -6,7 +6,8 @@ svof's. Neither ever ran.
     attempt to wake you.", the game refusing a command sent while asleep.
     What svof had in flight failed, so it's cleared and goes again once
     awake; nothing is sent while asleep. The wake, a cure being recorded,
-    and what a line in the paragraph already answered stay.
+    and what a line in the paragraph already answered stay. A sleep svof
+    doesn't hold yet waits for the prompt, where GMCP can refuse it.
   * svo.valid.transfixily, on the transfixed and arms-bound refusals, which
     the game gives only to someone awake. It takes sleep off, for blackout,
     where the wake line can be missed, and the wait for waking with it.
@@ -51,6 +52,50 @@ do -- asleep already, and a command refused
   eq(inflight:find("sleep_misc", 1, true) ~= nil, true, "and keeps the wake")
   eq(inflight:find("curingsleep_waitingfor", 1, true) ~= nil, true, "and the wait for it")
   eq(inflight:find("asthma_gone", 1, true) ~= nil, true, "and a cure being recorded")
+end
+
+do -- GMCP live and no sleeping: an illusion, and what's in flight stays (review of #893)
+  local w = world.new()
+  local svo = w.svo
+  w.env.gmcp.Char.Afflictions.List = {}
+  svo.signals.gmcpcharafflictionslist:emit()
+  w.prompt()
+  svo.doaction(svo.dict.asthma.herb)
+  svo.doaction(svo.dict.slickness.smoke)
+  svo.paragraph_length = 1
+  svo.valid.symp_asleep()
+  w.prompt()
+  eq(svo.affs.sleep, nil, "GMCP live and no sleeping: svof doesn't take sleep")
+  local inflight = w.inflight()
+  eq(inflight:find("asthma_herb", 1, true) ~= nil, true, "GMCP live and no sleeping: the herb stays in flight")
+  eq(inflight:find("slickness_smoke", 1, true) ~= nil, true, "GMCP live and no sleeping: and the smoke")
+end
+
+do -- no GMCP to ask: the claim stands at the prompt, and only then clears
+  local w = world.new()
+  local svo = w.svo
+  svo.doaction(svo.dict.asthma.herb)
+  svo.paragraph_length = 1
+  svo.valid.symp_asleep()
+  eq(w.inflight():find("asthma_herb", 1, true) ~= nil, true, "a sleep not held yet clears nothing before the prompt")
+  w.prompt()
+  eq(svo.affs.sleep ~= nil, true, "and the prompt takes sleep")
+  eq(w.inflight():find("asthma_herb", 1, true), nil, "and clears the herb")
+end
+
+do -- an earlier line's claim: the refusal still clears what's in flight
+  local w = world.new()
+  local svo = w.svo
+  svo.conf.aillusion = false
+  svo.doaction(svo.dict.asthma.herb)
+  svo.paragraph_length = 1
+  svo.checkaction(svo.dict.sleep.aff, true)
+  svo.lifevision.add(svo.actions.sleep_aff.p)
+  svo.paragraph_length = 2
+  svo.valid.symp_asleep()
+  w.prompt()
+  eq(svo.affs.sleep ~= nil, true, "a sleep line then the refusal: sleep is taken")
+  eq(w.inflight():find("asthma_herb", 1, true), nil, "a sleep line then the refusal: the herb is cleared")
 end
 
 -- The first sleep symptom and the stun symptom clear what's in flight the same

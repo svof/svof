@@ -70,11 +70,6 @@ function svo.valid.symp_asleep()
     return
   end
 
-  if not affs.sleep and not actions.sleep_aff then
-    svo.checkaction(svo.dict.sleep.aff, true)
-    lifevision.add(actions['sleep_aff'].p, 'symptom', nil, 1)
-  end
-
   -- svo.reset non-wait things we were doing, because they got cancelled by the sleep.
   -- This line is the game refusing a command sent while asleep, so what svof
   -- had in flight failed, and goes again once awake: nothing is sent while
@@ -82,9 +77,17 @@ function svo.valid.symp_asleep()
   -- 2026-10-31 it never ran, and only the first symptom (sleep.aff.symptom)
   -- cleared them. The wake stays, as there, and so does a gone, a cure being
   -- recorded (svo.cancel_sent_actions)
-  if affs.sleep or actions.sleep_aff then
+  if affs.sleep then
     svo.cancel_sent_actions('sleep_misc')
+    return
   end
+
+  -- A sleep svof doesn't hold yet is only a claim until the prompt, and GMCP
+  -- can refuse it there, so the symptom clears what's in flight once it's
+  -- accepted. It takes over a claim an earlier line in the paragraph made
+  local first_claim = not actions.sleep_aff
+  svo.checkaction(svo.dict.sleep.aff, true)
+  lifevision.add(actions.sleep_aff.p, 'symptom', nil, first_claim and 1 or nil)
 end
 
 function svo.valid.cured_lovers()
