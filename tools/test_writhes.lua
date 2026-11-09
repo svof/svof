@@ -171,8 +171,25 @@ end
 
 -- serverside: svof writhes it by default, as it does impale, until the
 -- player hands it over
-check("a new setup leaves daeggerimpale to svof", read_file(SERVER):find("\n    svo.serverignore.daeggerimpale = false", 1, true) ~= nil, true)
-check("restoring the defaults leaves daeggerimpale to svof", read_file(ALIAS):find("\n  svo.unsetserverignore'daeggerimpale'\n", 1, true) ~= nil, true)
+local defaults_src = read_file(SERVER):match("\nsk%.svof_handles_by_default = (%b{})")
+local defaults = defaults_src and (loadstring or load)("return " .. defaults_src)() or {}
+check("svof handles daeggerimpale by default", defaults.daeggerimpale, true)
+check("and impale", defaults.impale, true)
+for _, name in ipairs({ "roped", "transfixed", "webbed", "bound", "hoisted" }) do
+  check("serverside writhes " .. name .. " by default", defaults[name], nil)
+end
+
+-- the first setup and (restore defaults) both go by that one table, so they
+-- can't disagree again: restoring used to give roped, transfixed and webbed
+-- back to svof, which a first setup leaves to serverside
+local function body_of(src, fn)
+  return src:match("\nfunction " .. fn:gsub("%.", "%%.") .. "%(%)\n(.-)\nend\n") or ""
+end
+local setup_fn = body_of(read_file(SERVER), "svo.setup_default_serverignore")
+local restore_fn = body_of(read_file(ALIAS), "svo.enabledefaultserverside")
+check("a first setup goes by svof_handles_by_default", setup_fn:find("sk.svof_handles_by_default", 1, true) ~= nil, true)
+check("and so does restoring the defaults", restore_fn:find("sk.svof_handles_by_default", 1, true) ~= nil, true)
+check("restoring names no action of its own", restore_fn:find("serverignore'", 1, true), nil)
 
 -- priorities: just below impale in both lists, in both copies
 for _, path in ipairs(PRIOS) do
