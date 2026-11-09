@@ -274,8 +274,8 @@
     },
     {
       "id": "count|Trigger|svo (aliases, triggers)|svo",
-      "digest": "a50685995c165aaa",
-      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2558 in merged"
+      "digest": "bf0a84fbb470a97e",
+      "text": "Trigger  svo (aliases, triggers) / 'svo': 2533 items originally, 2554 in merged"
     },
     {
       "id": "gone|Script|svo (install me in module manager)|Check for system updates/svo_downloaded_file",
@@ -336,6 +336,26 @@
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/Tree cures/svo cure voided tree",
       "digest": "bb7b42be8d5a0e02",
       "text": "Trigger  svo (aliases, triggers) svo/General/Tree cures/svo cure voided tree [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo diag/charredburn",
+      "digest": "3c5b5de482700483",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/charredburn [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo diag/extremeburn",
+      "digest": "573fa3328400127c",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/extremeburn [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo diag/meltingburn",
+      "digest": "bdaebfaf0fd2bcee",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/meltingburn [only in the originals]"
+    },
+    {
+      "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo diag/severeburn",
+      "digest": "3822a6915438bf86",
+      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/severeburn [only in the originals]"
     },
     {
       "id": "gone|Trigger|svo (aliases, triggers)|svo/General/svo healer nothing cured",
@@ -404,7 +424,7 @@
     },
     {
       "id": "item|Script|svo (actions dictionary)|Dictionary of actions (affs-defs-misc)|script",
-      "digest": "b91fd3009a08dba2",
+      "digest": "8a0691e4057092fa",
       "text": "Script   svo (actions dictionary) Dictionary of actions (affs-defs-misc) [script]"
     },
     {
@@ -529,7 +549,7 @@
     },
     {
       "id": "item|Script|svo (install me in module manager)|svo Utilities/Custom prompt tags/@affs|script",
-      "digest": "82f678fd710faada",
+      "digest": "2c0850d965325695",
       "text": "Script   svo (install me in module manager) svo Utilities/Custom prompt tags/@affs [script]"
     },
     {
@@ -639,7 +659,7 @@
     },
     {
       "id": "item|Script|svo (setup, misc, empty, funnies, dor)|Empty cure handling|script",
-      "digest": "6ac4c66db3e347b8",
+      "digest": "ea57e054c016e104",
       "text": "Script   svo (setup, misc, empty, funnies, dor) Empty cure handling [script]"
     },
     {
@@ -664,12 +684,12 @@
     },
     {
       "id": "item|Script|svo (trigger functions)|Main trigger functions|script",
-      "digest": "d3f2681ff95a06dc",
+      "digest": "5d50ac5bfabf4cae",
       "text": "Script   svo (trigger functions) Main trigger functions [script]"
     },
     {
       "id": "item|Script|svo (trigger functions)|Simple aff trigger functions|script",
-      "digest": "af025ef8634f36f5",
+      "digest": "c9fe660a1b9779cc",
       "text": "Script   svo (trigger functions) Simple aff trigger functions [script]"
     },
     {
@@ -1106,6 +1126,11 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Registration/Started|colorTriggerFgColor",
       "digest": "61baa56f5354675b",
       "text": "Trigger  svo (aliases, triggers) svo/General/Registration/Started [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Ablaze|script",
+      "digest": "b54e28afdd247a92",
+      "text": "Trigger  svo (aliases, triggers) svo/General/Symptoms/Ablaze [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/Symptoms/Anorexia|script",
@@ -1723,11 +1748,6 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/calicifedskull [script]"
     },
     {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/charredburn|script",
-      "digest": "f2b2835d535d12fb",
-      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/charredburn [script]"
-    },
-    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/choleric humour|script",
       "digest": "6e7d078295f826a5",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/choleric humour [script]"
@@ -1856,11 +1876,6 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/epilepsy|script",
       "digest": "83d1156655a17038",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/epilepsy [script]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/extremeburn|script",
-      "digest": "6415f67261591a91",
-      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/extremeburn [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/fear|script",
@@ -2078,11 +2093,6 @@
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/melancholic humour [script]"
     },
     {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/meltingburn|script",
-      "digest": "0d297ea7ffbc161e",
-      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/meltingburn [script]"
-    },
-    {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/mildtrauma|script",
       "digest": "1edd28efdfeeea59",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/mildtrauma [script]"
@@ -2271,11 +2281,6 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/serioustrauma|script",
       "digest": "e973262ad79c4044",
       "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/serioustrauma [script]"
-    },
-    {
-      "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/severeburn|script",
-      "digest": "aa56728870ff8850",
-      "text": "Trigger  svo (aliases, triggers) svo/General/svo diag/severeburn [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/General/svo diag/shadowmadness|script",
@@ -2511,6 +2516,26 @@
       "id": "item|Trigger|svo (aliases, triggers)|svo/Pipelist/Pipelist start|colorTriggerFgColor",
       "digest": "91644142b74ffd77",
       "text": "Trigger  svo (aliases, triggers) svo/Pipelist/Pipelist start [colorTriggerFgColor]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Poisons + Generic lines/Charred burn|script",
+      "digest": "430ea401b2370887",
+      "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Charred burn [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Poisons + Generic lines/Extreme burn|script",
+      "digest": "2172f0043c6ef287",
+      "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Extreme burn [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Poisons + Generic lines/Melting burn|script",
+      "digest": "0cb5b3bd4545473b",
+      "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Melting burn [script]"
+    },
+    {
+      "id": "item|Trigger|svo (aliases, triggers)|svo/Poisons + Generic lines/Severe burn|script",
+      "digest": "47f34a7a5a0fbea9",
+      "text": "Trigger  svo (aliases, triggers) svo/Poisons + Generic lines/Severe burn [script]"
     },
     {
       "id": "item|Trigger|svo (aliases, triggers)|svo/Striking/Flamefisted|script",
